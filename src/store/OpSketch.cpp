@@ -1114,6 +1114,92 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate the streamDef into a struct as the stencil structure              */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vGenerateStencilStruct(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
+
+  switch (m_eStencilTo) {
+    case SR_IJ:
+      StrLib::vSprintCat((Stz *) m_sStencil, "\n  // Inflate J-Table"_Stz);
+      break;
+    case SR_IT:
+      StrLib::vSprintCat((Stz *) m_sStencil, "\n  // Inflate T-Table"_Stz);
+      break;
+    case SR_PL:
+      StrLib::vSprintCat((Stz *) m_sStencil, "\n  // Project PayLoad"_Stz);
+      break;
+    case SR_AT:
+      StrLib::vSprintCat((Stz *) m_sStencil, "\n  // Aggregate T-Table"_Stz);
+      break;
+    case SR_PT:
+      StrLib::vSprintCat((Stz *) m_sStencil, "\n  // Project T-Table"_Stz);
+      break;
+    case SR_TJ:
+      StrLib::vSprintCat((Stz *) m_sStencil, "\n  // IndexJoin TJ-Table"_Stz);
+      break;
+    default:
+      break;
+  }
+  StrLib::vSprintCat((Stz *) m_sStencil, "\n\n  struct %s { \n"_Stz, xStencilRow[m_eStencilTo]);
+
+  i8 i_DupCtr = 1;
+  s256 sColNm;
+  for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
+
+//    if (uSelectColumns) {
+//      if (!BitLib::bIsOn(uSelectColumns, i_Col))
+//        continue;
+//    }
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+    Column* pColumn = m_pStreamDefOut->pGetColumn(i_Col);
+
+    switch(pColumn->eColumnType()) {
+      case CT_BOOLEAN:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Bol_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_DATE:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Dte_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_DECIMAL:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Bcd_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_FLOAT:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Flt_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_INTEGER:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Int_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_INTERVAL_DT:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Ivl_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_INTERVAL_YM:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Ivl_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_TIME:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Tme_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_TIMESTAMP:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Tsp_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_UNKNOWN:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Unk_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      case CT_CHAR:
+      case CT_VARCHAR:
+        StrLib::vSprintCat((Stz *) m_sStencil, "    union Vch_T %s;\n"_Stz, sColNm.azChar());
+        break;
+      default:
+        NEVER_REACH
+    }
+  }
+
+  StrLib::vSprintCat((Stz *) m_sStencil, "  };"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
