@@ -2106,7 +2106,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
     case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
-    case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard; break;
+    case CK_INDEXJOIN:        *((Card**)&G.p_indexJoin)        = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_INDEXLIST:        *((Card**)&G.p_indexList)        = pCard; break;
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
     case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard;
@@ -2133,7 +2134,8 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LOADUNICAST:      *((Card**)&G.p_loadUnicast)      = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;
-    case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
+    case CK_NEXT:             *((Card**)&G.p_next)             = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
@@ -2151,11 +2153,13 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
-    case CK_SEND:             *((Card**)&G.p_send)             = pCard; break;
+    case CK_SEND:             *((Card**)&G.p_send)             = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_SIZE:             *((Card**)&G.p_size)             = pCard; break;
     case CK_SORT:             *((Card**)&G.p_sort)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
-    case CK_STAGE:            *((Card**)&G.p_stage)            = pCard; break;
+    case CK_STAGE:            *((Card**)&G.p_stage)            = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;

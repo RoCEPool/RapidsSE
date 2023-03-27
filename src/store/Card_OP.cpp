@@ -191,6 +191,8 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
       return C_CONTINUE_RECURSION;
 

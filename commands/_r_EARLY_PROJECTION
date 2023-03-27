@@ -29,8 +29,10 @@ select
        O_ORDERKEY = L_ORDERKEY
    and o_orderkey < 100
    and o_orderkey > 3
- group by O_ORDERKEY
- order by O_ORDERKEY
+ group
+       by O_ORDERKEY
+ order
+       by O_ORDERKEY
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
