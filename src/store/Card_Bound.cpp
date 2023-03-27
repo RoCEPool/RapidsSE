@@ -63,6 +63,8 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
 {
   _static_
 
+  p_PRED->vDump();
+
   Card_Term* p_term;
 
   Card_Term* pTerm_0 = _pCard_Term(p_PRED->pGetChild(0));

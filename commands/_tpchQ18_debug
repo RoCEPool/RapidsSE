@@ -2,6 +2,8 @@
 /* _tpchQ18_debug                                                             */
 /*============================================================================*/
 
+// --initial _tpchQ18_debug
+
 tag default <tpch_dir> = "../tpch/sf_0001";
 tag default <suffix>   = "csv";
 
@@ -22,7 +24,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_tpch_debug"
+/pipelineName = "_tpchQ18_debug"
 select
   c_name,
   c_custkey,

@@ -58,6 +58,8 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->G_vRestart();
   RASSERT(pCI->G_bEachMain_foldBreak(CK_TABLE));
+
+
   //RASSERT(pCI->G_bEachMain(CK_WHERE));
   RASSERT(pCI->G_bEachMain_foldBreak(CK_PROJECT));
 
@@ -67,7 +69,8 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 //  //pCI->G.p_filter = Card_Filter::pNew(p_constraint);
 //  pCI->G.p_table->vAppend(pCI->G.p_constraint);
 
-  pCI->G.pDeck->vRemove(pCI->G.p_table);
+  Card_Table* p_table_exists = pCI->G.p_table;
+  pCI->G.pDeck->vRemove(p_table_exists);
 
   pCI->G.p_term = pCI->G.p_project->pSub_term();
   pCI->G.p_project->vRemoveSub(pCI->G.p_term);
@@ -84,20 +87,33 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->vRestart();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
-  pCI->G.pDeck->vInsertBefore(pCI->G.p_table,pCI->G.p_where);
+
+  RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_TABLE));
+  Card_Projection* p_projection_table = pCI->G.p_table->pSub_projection();
+
+  pCI->vRestart();
+  RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
+
+
+  pCI->G.pDeck->vInsertBefore(p_table_exists,pCI->G.p_where);
 
   pCI->G.p_boolCalc = pCI->G.p_where->pSub_boolCalc();
   pCI->G.p_cmpPred = pCI->G.p_boolCalc->pCmpPred_whichCallsSubQuery(pCI);
 
   if (pCI->G.p_cmpPred->bIsValue("in"_Stz) || pCI->G.p_cmpPred->bIsValue("exists"_Stz))
-    pCI->G.p_table->vAppend(new Card_KeyExists);
+    p_table_exists->vAppend(new Card_KeyExists);
   else
   if (pCI->G.p_cmpPred->bIsValue("notIn"_Stz) || pCI->G.p_cmpPred->bIsValue("notExists"_Stz))
-    pCI->G.p_table->vAppend(new Card_KeyNotExists);
+    p_table_exists->vAppend(new Card_KeyNotExists);
 
+  pCI->ProjectionAnalysis.m_pProjection_running = p_projection_table;
   pCI->G.p_cmpPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
+
+  pCI->G.pDeck->vRenumberRecursive();
+
+  pCI->vPrintBoard();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -106,13 +122,35 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
     return;
   }
 
-  Card_Term::bReplaceValueOfSub(pCI, pCI->G.p_table,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
+  // todo: the %1 needs to be decoded... its a parameter
+  Card* p_parent;
+  Card_Term* p_term_sqyarg = _pCard_Term(p_table_exists->pFindValueRecursive(CK_TERM,"%1"_Stz,p_parent));
+
+  Card_Expr* p_expr_found =
+      p_projection_table->pGetExpr(p_term_sqyarg->iGetOdnNo() - 1);
+
+  p_expr_found->vDump();
+  Card_Term* p_term_found = p_expr_found->pProjectedTerm();
+
+  Card_Term* p_term_stamp = new Card_Term(pCI->Sqy.m_sSqyArg);
+  p_term_stamp->Y_vSet(P_Type,p_term_found->Y_szGet(P_Type));
+  p_term_stamp->vDump();
+
+
+  //Card_Term::bReplaceValueOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
+  Card_Term::bUpdateTermOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,p_term_stamp);
+
+  delete p_term_stamp;
+
+  pCI->vPrintBoard();
 
   pCI->G_vRestart();
   if (pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vCullPred(MARK_AT);
   }
-  
+
+  pCI->vPrintBoard();
+
   pCI->G_vRestart();
   pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
 

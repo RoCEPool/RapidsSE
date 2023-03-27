@@ -687,6 +687,17 @@ void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
       continue;
 
     Card_Term* p_term = _pCard_Term(pChildCard);
+
+    if (Card::bIsStreamColOrdinal(p_term->szValue()) ||
+        Card::bIsTableColOrdinal(p_term->szValue())) {
+
+      if (!p_term->Y_bHas(P_Type)) {
+        p_term->vDump();
+        pChildCard->vDump();
+        RASSERT(p_term->Y_bHas(P_Type));
+      }
+    }
+
     szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
   }
 }
@@ -820,6 +831,17 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
         continue;
 
       Card_Term* p_term = _pCard_Term(pSubCard);
+
+      if (Card::bIsStreamColOrdinal(p_term->szValue()) ||
+          Card::bIsTableColOrdinal(p_term->szValue())) {
+
+        if (!p_term->Y_bHas(P_Type)) {
+          p_term->vDump();
+          pSubCard->vDump();
+          RASSERT(p_term->Y_bHas(P_Type));
+        }
+      }
+
       szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
     }
 
@@ -867,6 +889,17 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
           continue;
 
         Card_Term* p_term = _pCard_Term(pSubCard);
+
+        if (Card::bIsStreamColOrdinal(p_term->szValue()) ||
+            Card::bIsTableColOrdinal(p_term->szValue())) {
+
+          if (!p_term->Y_bHas(P_Type)) {
+            p_term->vDump();
+            pSubCard->vDump();
+            RASSERT(p_term->Y_bHas(P_Type));
+          }
+        }
+
         szRpnExpr->vCatSprint(" %s"_Stz,p_term->sz());
       }
 
@@ -912,6 +945,17 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
         continue;
 
       Card_Term *p_term = _pCard_Term(pSubCard);
+
+      if (Card::bIsStreamColOrdinal(p_term->szValue()) ||
+          Card::bIsTableColOrdinal(p_term->szValue())) {
+
+        if (!p_term->Y_bHas(P_Type)) {
+          p_term->vDump();
+          pSubCard->vDump();
+          RASSERT(p_term->Y_bHas(P_Type));
+        }
+      }
+
       szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
     }
 
@@ -990,6 +1034,17 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
         continue;
 
       Card_Term *p_term = _pCard_Term(pSubCard);
+
+      if (Card::bIsStreamColOrdinal(p_term->szValue()) ||
+          Card::bIsTableColOrdinal(p_term->szValue())) {
+
+        if (!p_term->Y_bHas(P_Type)) {
+          p_term->vDump();
+          pSubCard->vDump();
+          RASSERT(p_term->Y_bHas(P_Type));
+        }
+      }
+
       szRpnExpr->vCatSprint(" %s"_Stz, p_term->sz());
     }
 
