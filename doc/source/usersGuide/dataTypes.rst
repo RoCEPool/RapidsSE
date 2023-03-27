@@ -221,25 +221,37 @@ there is no valid conversion between the two categories.
 
    INTERVAL + INTERVAL
    INTERVAL - INTERVAL
-   INTERVAL * INTEGER
-   INTEGER  * INTERVAL
+   INTERVAL * INTEGER    (and vice versa)
    INTERVAL / INTEGER
 
-   INTERVAL + DATE
-   DATE + INTERVAL
+   INTERVAL + DATE    (and vice versa)
    DATE - INTERVAL
 
-   INTERVAL_DT + TIME
-   TIME + INTERVAL_DT
+   INTERVAL_DT + TIME    (and vice versa)
    TIME - INTERVAL_DT
 
-   INTERVAL + TIMESTAMP
-   TIMESTAMP + INTERVAL
+   INTERVAL + TIMESTAMP    (and vice versa)
    TIMESTAMP - INTERVAL
 
    DATE - DATE
    TIME - TIME
    TIMESTAMP - TIMESTAMP
+
+   INTERVAL <  INTERVAL
+   INTERVAL <= INTERVAL
+   INTERVAL =  INTERVAL
+   INTERVAL != INTERVAL
+   INTERVAL >= INTERVAL
+   INTERVAL >  INTERVAL
+
+   INTERVAL <  INTEGER     (and vice versa; single field intervals only)
+   INTERVAL <= INTEGER     (and vice versa; single field intervals only)
+   INTERVAL =  INTEGER     (and vice versa; single field intervals only)
+   INTERVAL != INTEGER     (and vice versa; single field intervals only)
+   INTERVAL >= INTEGER     (and vice versa; single field intervals only)
+   INTERVAL >  INTEGER     (and vice versa; single field intervals only)
+   INTERVAL BETWEEN INTERVAL AND INTERVAL (and combinations with INTEGER; single field intervals only)
+
 
 When an expression involves intervals of different types (but within the same
 category), the result may yield an interval of a type that encompasses all of
@@ -251,6 +263,11 @@ two operands (the ``HOUR`` field and the ``SECOND`` field).
 Similarly, the addition of an ``INTERVAL HOUR TO SECOND`` and an
 ``INTERVAL MINUTE`` would yield an ``INTERVAL HOUR TO SECOND`` because that
 already encompasses the ``MINUTE`` field of the second operand.
+
+For convenience, a single field interval (e.g. ``INTERVAL HOUR``) can be directly
+compared to an integer with any of the comparison operators (``<``, ``<=``, ``=``,
+``!=``, ``>=``, ``>`` and ``BETWEEN``). Multi-field intervals (e.g.
+``INTERVAL HOUR TO MINUTE``) cannot be coerced to an ``INTEGER``.
 
 
 .. index::
@@ -357,24 +374,30 @@ the compiler how the expression is to be executed.
    ``VARCHAR`` literal           ``TIMESTAMP``                    Only if the ``VARCHAR`` literal contains a valid ``TIMESTAMP`` value. E.g. ``'2000-12-31 12:31:45'``.
    ``DATE``                      ``TIMESTAMP``
    ``BOOLEAN``                   ``VARCHAR``
-   ``INTERVAL YEAR``             ``INTERVAL YEAR TO MONTH``
-   ``INTERVAL MONTH``            ``INTERVAL YEAR TO MONTH``
+   ``INTERVAL YEAR``             | ``INTERVAL YEAR TO MONTH``
+                                 | ``INTEGER`` [#1]_
+   ``INTERVAL MONTH``            | ``INTERVAL YEAR TO MONTH``
+                                 | ``INTEGER`` [#1]_
    ``INTERVAL DAY``              | ``INTERVAL DAY TO HOUR``
                                  | ``INTERVAL DAY TO MINUTE``
                                  | ``INTERVAL DAY TO SECOND``
+                                 | ``INTEGER`` [#1]_
    ``INTERVAL HOUR``             | ``INTERVAL DAY TO HOUR``
                                  | ``INTERVAL DAY TO MINUTE``
                                  | ``INTERVAL DAY TO SECOND``
                                  | ``INTERVAL HOUR TO MINUTE``
                                  | ``INTERVAL HOUR TO SECOND``
+                                 | ``INTEGER`` [#1]_
    ``INTERVAL MINUTE``           | ``INTERVAL DAY TO MINUTE``
                                  | ``INTERVAL DAY TO SECOND``
                                  | ``INTERVAL HOUR TO MINUTE``
                                  | ``INTERVAL HOUR TO SECOND``
                                  | ``INTERVAL MINUTE TO SECOND``
+                                 | ``INTEGER`` [#1]_
    ``INTERVAL SECOND``           | ``INTERVAL DAY TO SECOND``
                                  | ``INTERVAL HOUR TO SECOND``
                                  | ``INTERVAL MINUTE TO SECOND``
+                                 | ``INTEGER`` [#1]_
    ``INTERVAL DAY TO HOUR``      | ``INTERVAL DAY TO MINUTE``
                                  | ``INTERVAL DAY TO SECOND``
    ``INTERVAL DAY TO MINUTE``    | ``INTERVAL DAY TO SECOND``
@@ -385,6 +408,10 @@ the compiler how the expression is to be executed.
    ``INTERVAL MINUTE TO SECOND`` | ``INTERVAL DAY TO SECOND``
                                  | ``INTERVAL HOUR TO SECOND``
    ============================= ================================ ======================
+
+.. [#1] Coercion of a single field interval to an integer only occurs when that
+        single field interval is used in a comparison with an integer (for example,
+        a ``<``, ``<=``, ``=``, ``!=``, ``>=``, ``>`` or ``BETWEEN`` expression).
 
 If the source expression is a literal value then the SQL compiler will replace
 this value with the coerced value of the new type directly in the plan. If the
@@ -431,9 +458,9 @@ operator. The supported explicit type conversions are listed below.
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``BOOLEAN``   |     Yes     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``CHAR``      |     ---     |   Yes    | Yes [3]_ |    Yes [3]_ | Yes [3]_  |   Yes [3]_  |     ---          |     ---          | Yes [3]_ |    Yes [3]_   |     Yes     |
+   | ``CHAR``      |     ---     |   Yes    |Yes [#4]_ |   Yes [#4]_ | Yes [#4]_ |  Yes [#4]_  |     ---          |     ---          |Yes [#4]_ |   Yes [#4]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``DATE``      |     ---     |   Yes    |   Yes    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |    Yes [1]_   |     Yes     |
+   | ``DATE``      |     ---     |   Yes    |   Yes    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |   Yes [#2]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``DECIMAL``   |     ---     |   Yes    |   ---    |    Yes      |    Yes    |     Yes     |     ---          |     ---          |   ---    |      ---      |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
@@ -447,17 +474,17 @@ operator. The supported explicit type conversions are listed below.
    | ``INTERVAL``  |     ---     |   ---    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   ---    |      ---      |     ---     |
    | ``Y-M``       |             |          |          |             |           |             |                  |                  |          |               |             |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``TIME``      |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |    Yes [2]_   |     Yes     |
+   | ``TIME``      |     ---     |   Yes    |   ---    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |   Yes [#3]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
    | ``TIMESTAMP`` |     ---     |   Yes    |   Yes    |    ---      |    ---    |     ---     |     ---          |     ---          |   Yes    |      Yes      |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
-   | ``VARCHAR``   |     ---     |   Yes    | Yes [3]_ |    Yes [3]_ | Yes [3]_  |   Yes [3]_  |     ---          |     ---          | Yes [3]_ |    Yes [3]_   |     Yes     |
+   | ``VARCHAR``   |     ---     |   Yes    |Yes [#4]_ |   Yes [#4]_ | Yes [#4]_ |  Yes [#4]_  |     ---          |     ---          |Yes [#4]_ |   Yes [#4]_   |     Yes     |
    +---------------+-------------+----------+----------+-------------+-----------+-------------+------------------+------------------+----------+---------------+-------------+
 
 
-.. [1] When casting a date to a timestamp the time portion of the timestamp
+.. [#2] When casting a date to a timestamp the time portion of the timestamp
        will be set to all zeros (midnight).
-.. [2] When casting a time to a timestamp the date portion of the timestamp
+.. [#3] When casting a time to a timestamp the date portion of the timestamp
        will reflect the local current date on the server.
-.. [3] The content of the CHAR or VARCHAR string must contain in string form a
+.. [#4] The content of the CHAR or VARCHAR string must contain in string form a
        valid representation of a value of the target expression type.

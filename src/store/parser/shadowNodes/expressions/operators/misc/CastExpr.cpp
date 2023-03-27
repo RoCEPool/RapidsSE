@@ -385,10 +385,37 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
         case IV_MINUTE:
         case IV_SECOND:
           if (eTargetTypeId == CT_INTEGER && pParentExpr && ComparisonExpr::bIsOfType(pParentExpr)) {
-            TypeId xType1 = Expr::xTypeId(_pQueryNode(pParentExpr->pFirstChild()), pRootNode);
-            TypeId xType2 = Expr::xTypeId(_pQueryNode(pParentExpr->pSecondChild()), pRootNode);
 
-            return (xType1.eCTVal() == CT_INTEGER || xType2.eCTVal() == CT_INTEGER);
+            // There must be at least one integer child and any interval children must all be
+            // of the same type. Remember that a BETWEEN expr has more than 2 children.
+            bool bFoundInteger = false;
+            eIV eIvlType = IV_NONE;
+
+            PlanNodeIter* pChildIter = pParentExpr->pNewChildrenIter();
+            while (pChildIter->bHasNext()) {
+              PlanNode* pChild = pChildIter->pNext();
+              TypeId xChildType = Expr::xTypeId(_pQueryNode(pChild), pRootNode);
+
+              if (xChildType.eCTVal() == CT_INTEGER) {
+                bFoundInteger = true;
+                continue;
+              }
+              if (xChildType.eCTVal() == CT_INTERVAL_YM || xChildType.eCTVal() == CT_INTERVAL_DT) {
+                if (eIvlType == IV_NONE) {
+                  eIvlType = xChildType.eIVVal();
+                  continue;
+                }
+
+                if (eIvlType != xChildType.eIVVal()) {
+                  // Found more than 1 interval type. This can occur in a BETWEEN expression.
+                  delete pChildIter;
+                  return false;
+                }
+              }
+
+            }
+            delete pChildIter;
+            return bFoundInteger;
           }
           // TODO: Support casting an INTERVAL SECOND to a DECIMAL.
 
