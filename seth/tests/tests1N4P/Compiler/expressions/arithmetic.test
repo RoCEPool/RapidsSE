@@ -144,6 +144,27 @@ EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '2' MONTH F
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
+// Can mix YM and DT intervals if there is a valid intermediate result
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY + DATE '2023-02-16' + INTERVAL '10-11' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY + DATE ''2023-02-16'' + INTERVAL ''10-11'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH ; Ordinal Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH) ; type: DATE
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Cannot mix YM and DT intervals if the intermediate result is in the wrong order.
+EXPLAIN SELECT INTERVAL '30' DAY + INTERVAL '10-11' YEAR TO MONTH + DATE '2023-02-16' FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+
 // Interval multiplication /1 (integer)
 EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM nation;
 rows: (*,'explainPlan','
