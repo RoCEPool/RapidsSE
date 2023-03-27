@@ -19,17 +19,17 @@ __vDeleteFunction(Card_Term,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Term::Card_Term(Card_Term* p_term_arg)
-: Card(CK_TERM,p_term_arg->szValue())
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  Y_vAll(p_term_arg);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
+//Card_Term::Card_Term(Card_Term* p_term_arg)
+//: Card(CK_TERM,p_term_arg->szValue())
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  _checkInitialised_(CN_CARD);
+//
+//  Y_vAll(p_term_arg);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -239,6 +239,8 @@ Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
 
+    //pMain->vDump();
+
     if (Card_Projection* p_projection = pMain->pSub_projection()) {
       i8 nChildren_prj = p_projection->nChildCards();
       for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
@@ -348,6 +350,20 @@ Card_Term* Card_Term::pClone(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   return _pCard_Term(pDupCardAndSubCards());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Term::pClone(Stz* szDiffValue)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* p_term_clone = pClone();
+
+  p_term_clone->vValue(szDiffValue);
+
+  return p_term_clone;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -464,6 +480,28 @@ void Card_Term::vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList)
 
   this->vMark1('I');
   this->vMark2(i_IdxCol);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! Y_bHas(P_Column)) {
+    vPrintCard_bySettings(pRibbon, iDepth);
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  s256 sTerm = szValue();
+  s32 sType_short = Y_szGet(P_Type);
+
+  pRibbon->vSprintRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
+
+  //vPrintCard_bySettings(pRibbon, iDepth);
 }
 
 /*----------------------------------------------------------------------------*/

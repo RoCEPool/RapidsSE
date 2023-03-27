@@ -165,19 +165,29 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (Y_bHas(P_BreakPt)) {
+    vDump();
+    vDebugPoint();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI](Card* pCard)
+  auto bLambdaFn = [pCI,this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    //vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+    vTrace("CONVERT %s\n"_Stz,p_term->szValue());
 
-    if (! Card::bIsTableColOrdinal(p_term->szValue()))
+    if (Y_bHas(P_BreakPt)) {
+      vDebugPoint();
+    }
+
+    if (! p_term->bIsTblColOdn())
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI)) {
       p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+      vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
       return C_CONTINUE_RECURSION;
     }
 
@@ -193,6 +203,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     sColOfThisTable.vSprint("$%lld"_Stz,nExpr_prior+i_Col);
     szStmColOdn = sColOfThisTable.szStz();
     p_term->vSetValueMark1(szStmColOdn, MARK_CHANGED);
+    vTrace("  TO %s\n"_Stz,szStmColOdn);
     return C_CONTINUE_RECURSION;
 
   };
@@ -200,6 +211,12 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   bApplyRecursive(CK_TERM, bLambdaFn);
+
+  if (Y_bHas(P_BreakPt)) {
+    vDump();
+    vDebugPoint();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -527,7 +544,7 @@ void Card_OP::vUpdate_projection_Off_running(CardIter* pCI)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->ProjectionAnalysis.m_pProjection_running)
-    p_projection = _pCard_Projection(pCI->ProjectionAnalysis.m_pProjection_running->pDeduce(pCI));
+    p_projection = pCI->ProjectionAnalysis.m_pProjection_running->pClone();
   else
     p_projection = new Card_Projection;
 
@@ -545,21 +562,27 @@ void Card_OP::vUpdate_projection_Off_running(CardIter* pCI)
     p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
     p_projection->vAppend(p_expr);
 
-    Stz* szType = aCT[pColumn->eColumnType()];
+    eCT eColumnType = pColumn->eColumnType();
+    Stz *szType = aCT[eColumnType];
     Card_Type *pCard_Type = new Card_Type(szType);
     p_expr->vAppend(pCard_Type);
 
-    Card_As* p_as = new Card_As(pColumn->szColNm());
+    Card_As *p_as = new Card_As(pColumn->szColNm());
     p_expr->vAppend(p_as);
 
-    Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+    Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
+    p_rpnCalc->Y_vSet(P_Type,szCT_char[eColumnType]);
 
-    s32 sCn;
-    sCn.vSprint("$%c.%lld"_Stz,cTblSyn,i_Col+1);
+    s32 sTblCol_from_SEmetadata;
+    sTblCol_from_SEmetadata.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
 
-    Card_Term* p_term = new Card_Term(sCn);
+    Card_Term *p_term = new Card_Term(sTblCol_from_SEmetadata);
     p_rpnCalc->vAppend(p_term);
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    p_term->Y_vSet(P_Column);
+    p_term->Y_vSet(P_Type,szCT_char[eColumnType]);
   }
 
   vAppend(p_projection);

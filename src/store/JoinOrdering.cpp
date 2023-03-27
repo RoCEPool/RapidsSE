@@ -264,7 +264,7 @@ void JoinOrdering::vPredicateReposition(void)
     m_pCI->G.p_boolCalc->vCopyMarkedPredsToTable(m_pCI->G.pDeck);
   }
 
-  m_pCI->vPrintBoard();
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G_vRestart();
 
@@ -272,7 +272,7 @@ void JoinOrdering::vPredicateReposition(void)
     m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
   }
 
-  m_pCI->vPrintBoard();
+  m_pCI->vPrintBoard(__LINE__);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -284,7 +284,7 @@ void JoinOrdering::vPredicateReposition(void)
     m_pCI->G.p_table->vRemove_filter_IfEmpty(m_pCI->G.p_filter);
   }
 
-  m_pCI->vPrintBoard();
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
 }

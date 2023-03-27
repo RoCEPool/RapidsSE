@@ -38,44 +38,8 @@ static Stz* aCT[]
     /*  9 */ "TIME"_Stz,
     /* 10 */ "TIMESTAMP"_Stz,
     /* 11 */ "VARCHAR"_Stz,
-    /* 12 */ "NULL"_Stz,
+    /* 12 */ "UNKNOWN"_Stz,
     /* 13 */ "ENUMS"_Stz
-};
-
-static Stz* aCT_long[]
-{
-  /*  0 */ "CT_NONE"_Stz,
-  /*  1 */ "CT_BOOLEAN"_Stz,
-  /*  2 */ "CT_CHAR"_Stz,
-  /*  3 */ "CT_DATE"_Stz,
-  /*  4 */ "CT_DECIMAL"_Stz,
-  /*  5 */ "CT_FLOAT"_Stz,
-  /*  6 */ "CT_INTEGER"_Stz,
-  /*  7 */ "CT_INTERVAL_DT"_Stz,
-  /*  8 */ "CT_INTERVAL_YM"_Stz,
-  /*  9 */ "CT_TIME"_Stz,
-  /* 10 */ "CT_TIMESTAMP"_Stz,
-  /* 11 */ "CT_VARCHAR"_Stz,
-  /* 12 */ "CT_UNKNOWN"_Stz,
-  /* 13 */ "CT_ENUMS"_Stz
-};
-
-static Stz* aCT_short[]
-{
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "b"_Stz,  // boolean
-  /*  2 */ "c"_Stz,  // char
-  /*  3 */ "d"_Stz,  // date
-  /*  4 */ "m"_Stz,  // decimal
-  /*  5 */ "f"_Stz,  // float
-  /*  6 */ "i"_Stz,  // integer
-  /*  7 */ "ld"_Stz, // interval day to second
-  /*  8 */ "ly"_Stz, // interval year to month
-  /*  9 */ "t"_Stz,  // time
-  /* 10 */ "p"_Stz,  // timestamp
-  /* 11 */ "s"_Stz,  // varchar
-  /* 12 */ "x"_Stz,  // unknown
-  /* 13 */ "ENUMS"_Stz
 };
 
 static Stz* szCT_char[]
@@ -84,13 +48,13 @@ static Stz* szCT_char[]
   /*  1 */ "b"_Stz, // boolean
   /*  2 */ "c"_Stz, // char
   /*  3 */ "d"_Stz, // date
-  /*  4 */ "m"_Stz, // decimal
+  /*  4 */ "l"_Stz, // decimal
   /*  5 */ "f"_Stz, // float
   /*  6 */ "i"_Stz, // integer
-  /*  7 */ "l"_Stz, // interval day to second
-  /*  8 */ "y"_Stz, // interval year to month
+  /*  7 */ "s"_Stz, // interval day to second
+  /*  8 */ "m"_Stz, // interval year to month
   /*  9 */ "t"_Stz, // time
-  /* 10 */ "s"_Stz, // timestamp
+  /* 10 */ "p"_Stz, // timestamp
   /* 11 */ "v"_Stz, // varchar
   /* 12 */ "x"_Stz, // unknown
   /* 13 */ "?"_Stz

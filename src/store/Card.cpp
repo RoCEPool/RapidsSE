@@ -572,6 +572,21 @@ eCK Card::eTo_eCK(Stz* szCardNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find eCT by name                                                           */
+/*----------------------------------------------------------------------------*/
+eCT Card::eTo_eCT(Stz* szType)
+{
+  _static_
+
+  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
+    if (aCT[i_Type]->bSame(szType))
+      return (eCT)i_Type;
+
+  return CT_NONE;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* convert eYG to eAL                                                         */
 /*----------------------------------------------------------------------------*/
 eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
@@ -1387,6 +1402,43 @@ bool Card::bIsPRED(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card a projecting card ?                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsProjecting(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  switch (m_eCard) {
+
+    case CK_AGGREG:
+    case CK_CROSSJOIN:
+    case CK_FLAT:
+    case CK_FOLD:
+    case CK_GBYAGG:
+    case CK_HAVING:
+    case CK_INDEXJOIN:
+    case CK_INDEXSCAN:
+    case CK_ORDAGG:
+    case CK_PROJECT:
+    case CK_SCAN:
+    case CK_TABLE:
+      return true;
+
+    case CK_FILTER:
+    case CK_KEYEXISTS:
+    case CK_KEYNOTEXISTS:
+    case CK_LIMIT:
+    case CK_SORT:
+    case CK_TOP:
+      return false;
+
+    default:
+      return false;
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* does this card have same value as argument?                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsValue(char cValue)
@@ -1663,6 +1715,10 @@ void Card::vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth)
 
     case CK_TABLE:
       _pCard_Table(this)->vPrint(pRibbon, iDepth);
+      break;
+
+    case CK_TERM:
+      _pCard_Term(this)->vPrint(pRibbon, iDepth);
       break;
 
     default:
@@ -2596,6 +2652,26 @@ Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
 
 
 /*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode enum                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (szEnum->bSame("eLevel"_Stz))      return aAL[iEnum];
+  if (szEnum->bSame("eSendKind"_Stz))   return aXK[iEnum];
+  if (szEnum->bSame("eStageTopo"_Stz))  return aYG[iEnum];
+  if (szEnum->bSame("eType"_Stz))       return aCT[iEnum];
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -3034,6 +3110,19 @@ Card_NCorrCols* Card::pSub_nCorrCols(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Needed.hpp"
+Card_Needed* Card::pSub_needed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Needed* p_needed =
+      _pCard_Needed(pFindSubCard(CK_NEEDED));
+  return p_needed;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Next.hpp"
 Card_Next* Card::pSub_next(void)
 {
@@ -3318,29 +3407,6 @@ Card_Where* Card::pSub_where(void)
   return p_where;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* Aggregate View                                                             */
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* decode enum                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  if (szEnum->bSame("eLevel"_Stz))      return aAL[iEnum];
-  if (szEnum->bSame("eStageTopo"_Stz))  return aYG[iEnum];
-  if (szEnum->bSame("eSendKind"_Stz))   return aXK[iEnum];
-
-  return nullptr; //"**unknown**"_Stz;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

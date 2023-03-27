@@ -11,6 +11,7 @@
 #include "Card_HshCol.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -67,6 +68,8 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   if (p_expr->pSub_rpnCalc())
     p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardAndSubCards());
   p_expr_new->vAppend(p_rpnCalc);
+
+  p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = new Card_Direction(p_expr->pSub_direction()->szValue());
@@ -145,6 +148,17 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vTypes_For_stmColOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    xKid.p_expr()->vTypes_For_stmColOdn(pCI);
 }
 
 

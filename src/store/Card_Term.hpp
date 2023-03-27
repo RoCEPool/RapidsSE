@@ -17,7 +17,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Card_Term(Card_Term* p_term_arg);
+    //Card_Term(Card_Term* p_term_arg);
     Card_Term(Stz* szTerm, Stz* szStem=nullptr);
    ~Card_Term(void) noexcept(false);
 
@@ -27,12 +27,14 @@ namespace STORE
     void vBump_KeyOrdinal(i8 nBy=1);
     void vBump_StreamColOrdinal(i8 nBy=1);
     Card_Term* pClone(void);
+    Card_Term* pClone(Stz* szDiffValue);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vEnsure_tblCol_flip(void);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     Card_Expr* pExpr_For_col(CardIter* pCI, i8 i_Before=C_UNKNOWN);
     Card_Expr* pExpr_For_colNm(CardIter* pCI, i8 i_Before=C_UNKNOWN);
+    void vFlip(Card_Projection* p_projection_needed);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
     bool bIsBoardNm(CardIter* pCI);
@@ -44,8 +46,8 @@ namespace STORE
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $c.n
     void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vReplace_sqCall_With_sqResult(Stz* szStmColOdn);
-    void vFlip(Card_Projection* p_projection_needed);
     eTE  eTermEval(void);
   };
 

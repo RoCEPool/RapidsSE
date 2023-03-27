@@ -66,7 +66,7 @@ Card_Expr::Card_Expr(Card_Type*    p_type_arg,
   Card_Type*    p_type    = new Card_Type(p_type_arg);
   Card_As  *    p_as      = new Card_As(p_as_arg);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(p_term_0_arg);
+  Card_Term*    p_term    = p_term_0_arg->pClone();
 
   vAppend(p_type);
   vAppend(p_as);
@@ -94,14 +94,19 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
+  RASSERT(pExpr_corr->pSub_rpnCalc()->Y_bHas(P_Type));
+
   Card_Expr*    p_gbyExpr = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(pExpr_corr->szValue(),pExpr_corr->pSub_term()->szValue());
+  Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
 
   p_gbyExpr->vAppend(p_type);
   p_gbyExpr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
+
+  if (p_type)
+    p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_type->szValue())]);
 
   return p_gbyExpr;
 }
@@ -120,13 +125,17 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(sKn.szStz());
+  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(sKn.szStz());
 
   p_expr->vAppend(p_type);
   if (p_as)
     p_expr->vAppend(p_as);
   p_expr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
+
+  if (p_type)
+    p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_type->szValue())]);
+
 
   return p_expr;
 }
@@ -139,8 +148,6 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 {
   _static_
 
-  //Card_Expr* p_expr_simple = _pCard_Expr(p_expr->pDupCardAndSubCards());
-
   s32 sDn;
   sDn.vSprint("$%lld"_Stz,i_Col);
 
@@ -149,8 +156,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term* p_term = new Card_Term(sDn);
+  Card_Term* p_term = p_expr->pSub_term()->pClone(sDn);
   p_rpnCalc->vAppend(p_term);
+
+  p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
 
   p_expr_simple->vAppend(p_rpnCalc);
 
@@ -352,7 +361,7 @@ void Card_Expr::vReconstruct(Card_Type*  p_type_arg,
   vRemoveDeleteAllChildren();
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = new Card_Term(p_term_0_arg);
+  Card_Term*    p_term    = p_term_0_arg->pClone();
 
   vAppend(p_type_arg);
   vAppend(p_as_arg);
@@ -393,40 +402,6 @@ void Card_Expr::vRenumberAsStmColOdn(BASE::i8 i_Expr)
   vValueSprint("$%lld"_Stz,i_Expr);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pDeduce(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  /*
-   * produce the projection of this expression
-   */
-
-  Card_Type*    p_type;
-  Card_As*      p_as;
-  Card_RpnCalc* p_rpnCalc;
-  Card_Term*    p_term_0;
-
-  vDeconstruct(p_type,p_as,p_term_0);
-  p_rpnCalc = pSub_rpnCalc();
-
-
-  Card_Expr* p_expr_right = new Card_Expr;
-
-  p_expr_right->vAppend(p_type->pDupCardAndSubCards());
-  if (p_as)
-    p_expr_right->vAppend(p_as->pDupCardAndSubCards());
-  p_expr_right->vAppend(p_rpnCalc->pDupCardAndSubCards());
-
-//  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
-//    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-
-  return p_expr_right;
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -464,51 +439,8 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
   p_term_0_early->vDump();
   p_expr_early->vAppend(p_rpnCalc_early);
 
-//  if (pCI->ProjectionAnalysis.m_pProjection_running && pCI->EarlyProject.m_pProjection_needed)
-//    p_rpnCalc->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-
   return p_expr_early;
 }
-/*----------------------------------------------------------------------------*/
-//Card_Expr* Card_Expr::pCraft_expr_early(Card_Projection *p_projection_needed)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//  /*
-//   * produce the projection of this expression
-//   */
-//
-//  Card_Expr* p_expr_reproject = new Card_Expr;
-//
-//  p_expr_reproject->vAppend(pSub_type()->pDupCardAndSubCards());
-//  if (pSub_as())
-//    p_expr_reproject->vAppend(pSub_as()->pDupCardAndSubCards());
-//
-//  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-//  p_expr_reproject->vAppend(p_rpnCalc);
-//
-//  if (Y_bHas(P_Becomes)) {
-//    //+ becomes
-//    Card_Term* pPrjTerm = pProjectedTerm();
-//    Card_Term *p_term = new Card_Term(Y_szGet(P_Becomes));
-//    p_term->Y_vSet(P_TblCol,pPrjTerm->szValue());
-//    p_rpnCalc->vAppend(p_term);
-//  }
-//  else
-//  if (bIsColOrdinal()) {
-//    //+ projection is same column ordinal
-//    Card_Term* pPrjTerm = pProjectedTerm();
-//    Card_Term *p_term = new Card_Term(pPrjTerm);
-//    p_rpnCalc->vAppend(p_term);
-//  }
-//  else {
-//    //+ projection is $n/$Kn of this expression
-//    Card_Term *p_term = new Card_Term(szDollarOdn());
-//    p_rpnCalc->vAppend(p_term);
-//  }
-//
-//  return p_expr_reproject;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -533,6 +465,18 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
   }
 
   return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vTypes_For_stmColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->G.p_rpnCalc = pSub_rpnCalc();
+
+  pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
 }
 
 /*============================================================================*/

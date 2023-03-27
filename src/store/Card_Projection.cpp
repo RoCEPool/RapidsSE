@@ -32,6 +32,20 @@ Card_Projection::Card_Projection(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Projection::Card_Projection(eCK eCard)
+: Card_ELIST(eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Projection::~Card_Projection(void) noexcept(false)
@@ -76,37 +90,6 @@ Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
 
   return p_projection_early;
 }
-/*----------------------------------------------------------------------------*/
-//Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
-//{
-//  _static_
-//
-//  Card_Projection* p_projection_early = new Card_Projection;
-//
-//  pCI->EarlyProject.m_pProjection_needed->vDump();
-//
-//  CardIter xCI_projectionOfOp(pCI->G.p_projection);
-//  while (xCI_projectionOfOp.G_bEachMain(CK_EXPR)) {
-//    xCI_projectionOfOp.G.p_expr->vDump();
-//
-//    if (! pCI->EarlyProject.m_pProjection_needed->pHasSame(xCI_projectionOfOp.G.p_expr))
-//      continue;
-//    if (p_projection_early->pHasSame(xCI_projectionOfOp.G.p_expr))
-//      continue;
-//
-//    // denoted expr (of this denoted projection of denoted main op)
-//    //   is needed and not yet in early projection
-//
-//    Card_Expr* p_expr_early = xCI_projectionOfOp.G.p_expr->pCraft_expr_early(pCI);
-//    p_projection_early->vAppend(p_expr_early);
-//    p_expr_early->vRenumber(p_projection_early->nChildCards());
-//  }
-//
-//
-//  p_projection_early->vDump();
-//
-//  return p_projection_early;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* projection analysis (post fold)                                            */
@@ -137,10 +120,36 @@ void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
       continue;
     }
 
-    if (pCI->G.p_MainCard->pSub_projection())
+    if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
+      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
+        pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
+      continue;
+    }
+
+
+
+    //pCI->G.p_MainCard->vDump();
+
+    if (33 == pCI->G.p_MainCard->iCardNo())
+      vDebugPoint();
+
+    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+      if (pCI->ProjectionAnalysis.m_pProjection_running) {
+        pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_key->vRenumberAllExpr();
+      }
+    }
+
+    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+
+      if (pCI->ProjectionAnalysis.m_pProjection_running) {
+        pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_projection->vRenumberAllExpr();
+      }
+
       pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_MainCard->pSub_projection();
-    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection()))
-      pCI->G.p_projection->vRenumberAllExpr();
+    }
+
   }
 }
 
@@ -270,17 +279,6 @@ Card_Projection* Card_Projection::pCraftInitial_projection_needed(CardIter* pCI)
 
   return p_projection_needed;
 }
-/*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pToCarry(Card_Key* p_key)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // temp: take a copy of this projection
-  Card_Projection* p_projection_carry =
-      _pCard_Projection(pDupCardAndSubCards());
-
-  return p_projection_carry;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -378,24 +376,15 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* re-projection                                                              */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pDeduce(CardIter* pCI)
+void Card_Projection::vTypes_For_stmColOdn(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Projection* p_projection_deduced = new Card_Projection;
-
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_EXPR)) {
-    Card_Expr* p_expr_deduced = xCI_this.G.p_expr->pDeduce(pCI);
-    p_projection_deduced->vAppend(p_expr_deduced);
-    p_expr_deduced->vRenumber(p_projection_deduced->nChildCards());
-  }
-
-  return p_projection_deduced;
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    xKid.p_expr()->vTypes_For_stmColOdn(pCI);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

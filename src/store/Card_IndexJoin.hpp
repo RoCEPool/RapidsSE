@@ -26,7 +26,6 @@ namespace STORE
 
     void vEarly_project_recurse_add(CardIter* pCI);
 
-    void vComputeProjection(CardIter* pCI); // prototype
   };
 
   Card_IndexJoin* _pCard_IndexJoin(void* aAddr);

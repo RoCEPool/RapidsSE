@@ -61,6 +61,9 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 
   RASSERT(! pCI->EarlyProject.m_pProjection_needed);
 
+  Y_vSet(P_BreakPt);
+
+
   pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
 
   pCI->G.p_key = pSub_key();
@@ -81,12 +84,12 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_key->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+  //pCI->G.p_key->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+  //pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection;
 

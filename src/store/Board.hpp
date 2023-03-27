@@ -74,6 +74,7 @@
 #include "Card_LoadUnicast.hpp"
 
 #include "Card_NCorrCols.hpp"
+#include "Card_Needed.hpp"
 #include "Card_Next.hpp"
 #include "Card_Note.hpp"
 #include "Card_NotPred.hpp"
@@ -159,7 +160,6 @@ namespace STORE
 
     static void vAdd_Partitioning(CardIter* pCI);
 
-    static void vDerive_fold_projection_From_projection(CardIter* pCI);
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
     static void vDerive_foldProjection_F(CardIter* pCI);
 

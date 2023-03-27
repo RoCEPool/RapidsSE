@@ -115,17 +115,6 @@ void Board::vAdd_Partitioning(CardIter* pCI)
 
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vDerive_fold_projection_From_projection(CardIter* pCI)
-{
-  _static_
-
-  pCI->G.p_fold->vAppend(pCI->G.p_projection->pDupCardAndSubCards());
-}
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -145,9 +134,6 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 
   pCI->G.p_type = pCI->G.p_projection->pSub_type();
 
-//  pCI->G_vAppendNewChild(pCI->G.p_fold, CK_FOLDELIST);
-//  pCI->G_vAppendNewChild(pCI->G.p_foldElist, CK_EXPR);
-
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
   if (pCI->G.p_type) {
@@ -159,6 +145,14 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$1"_Stz);
+
+  Card_Expr* p_expr_found =
+      pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(0);
+
+  pCI->G.p_term->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
+  pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
+
 }
 
 /*----------------------------------------------------------------------------*/

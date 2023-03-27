@@ -122,8 +122,13 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));
     pCard->vRemoveChild(p_term_1);
-    DELETE_CARD(p_term_1);
     pCI->G_vAppendNewChild(pCard, CK_TERM, "$1"_Stz);
+
+    Card_Expr* p_expr_found =
+        pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(0);
+    pCI->G.p_term->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
+    DELETE_CARD(p_term_1);
 
     return C_CONTINUE_RECURSION;
   };

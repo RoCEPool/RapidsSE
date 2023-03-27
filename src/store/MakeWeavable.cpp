@@ -58,20 +58,15 @@ void MakeWeavable::vMakeWeavable(void)
 
 //  vSeries(BK_SUBQUERY, 0, __func__);
 
-  //vGroup_CullBounds();
   vCullNonusedBounds();
   vCullUsedBoundsFromFilter();
 
-  //vGroup_Filters();
   vIndividuateFilter();
 
-  //vGroup_Staging();
   vReinstateStages();
 
-  //vGroup_Partitioning();
   vAddPartitioning();
 
-  //vGroup_FinalAdjustments();
   vTblColToStmCol();
   vStmColToColNmOfKeyExists();
 
@@ -272,6 +267,8 @@ void MakeWeavable::vStmColToColNmOfKeyExists(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
 
   m_pCI->vTransform(__func__, "((20))))"_Stz);
+
+  m_pCI->vRestart();
 
   while (m_pCI->G_bEachMain()) {
 

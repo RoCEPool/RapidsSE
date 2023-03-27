@@ -46,22 +46,6 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-//Card_Project* Card_Project::pNew_project(Card_Projection *p_projection)
-//{
-//  _static_
-//
-//  Card_Project* p_project = new Card_Project(CK_PROJECT);
-//
-//  Card_Level* p_level = new Card_Level(AL_PARTITION);
-//  p_project->vAppend(p_level);
-//
-//  p_project->vAppend(p_projection);
-//
-//  return p_project;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -262,7 +246,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);
 
-  pCI->G.p_term = new Card_Term("$1"_Stz);
+  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone("$1"_Stz);
 
   pCI->G.p_rpnCalc->vAppend(pCI->G.p_term);
 

@@ -14,6 +14,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Projection(void);
+    Card_Projection(eCK eCard);
    ~Card_Projection(void) noexcept(false);
 
     Card_Projection* pCraft_projection_early(CardIter* pCI);
@@ -29,8 +30,8 @@ namespace STORE
     Card_Expr* pFind_expr_With_projectedCol(Card_Term* p_term_col);
     Card_Expr* pHasSame(Card_Expr* p_expr_arg);
     void vKeyProjection(CardIter* pCI);
-    Card_Projection* pDeduce(CardIter* pCI);
-    Card_Projection* pToCarry(Card_Key* p_key);
+    void vTypes_For_stmColOdn(CardIter* pCI);
+
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

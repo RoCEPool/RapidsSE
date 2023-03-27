@@ -166,6 +166,7 @@ namespace STORE
     Card_LoadUnicast *   p_loadUnicast;
 
     Card_NCorrCols *     p_nCorrCols;
+    Card_Needed *        p_needed;
     Card_Next *          p_next;
     Card_Note *          p_note;
     Card_NotPred *       p_notPred;

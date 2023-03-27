@@ -369,23 +369,6 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
 
   pCard_Filter->vAppend(pCard_RpnCalc);
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // TODO: Hacking the missing $P1 of an exists... chat w Alka
-
-
-  if (2 == pCard_RpnCalc->nChildCards() &&
-      pCard_RpnCalc->pGetChild(0)->bSame("$1"_Stz) &&
-      pCard_RpnCalc->pGetChild(1)->bSame("=="_Stz)) {
-    pCard_RpnCalc->vPush(new Card_Term("$P1"_Stz));
-  }
-  else
-  if (6 == pCard_RpnCalc->nChildCards() &&
-      pCard_RpnCalc->pGetChild(0)->bSame("$1"_Stz) &&
-      pCard_RpnCalc->pGetChild(1)->bSame("=="_Stz)) {
-    pCard_RpnCalc->vPush(new Card_Term("$P1"_Stz));
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it filter or having?
   
@@ -842,7 +825,7 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
       continue;
     }
 
-    // TYPE <type> [ AS <as> ] <calc>
+    // TYPE <type> [ AS <as> ] <rpnCalc>
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
     pCard_Expr->vCardNo(++iCardNo);
     //vAsEnsure(pCard_Expr);
@@ -872,7 +855,6 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   else
     pCard_Expr->vValueSprint("$%lld"_Stz,ri_Expr);
 
-  L_TYPE:
 
   // TYPE <type>
   Card_Type* pCard_Type = pType(pCard_RpnTerms);
@@ -889,9 +871,12 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   }
 
 
-  // <calcExpr>
+  // <rpnCalc>
   Card_RpnCalc* pCard_RpnCalc = pCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_RpnCalc);
+
+  pCard_RpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCard_Type->szValue())]);
+
 
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();
@@ -901,6 +886,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
   }
+
 
   // [ ASC | DESC ]
   pCard_Term_head = pCard_RpnTerms->pHead();
@@ -1169,15 +1155,15 @@ Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
 
-    s256 sVal;
+    s256 sDissectedVal;
     if (pToken->eToken() == TN_STRING) {
-      sVal.vSprint("'%s'"_Stz, pToken->szChars());
+      sDissectedVal.vSprint("'%s'"_Stz, pToken->szChars());
     }
     else {
-      sVal = pToken->szChars();
+      sDissectedVal = pToken->szChars();
     }
 
-    Card_Term* pCard_Term = new Card_Term(sVal);
+    Card_Term* pCard_Term = new Card_Term(sDissectedVal);
 
     pCard_RpnTerms->vAppend(pCard_Term);
   }

@@ -71,6 +71,7 @@ enum eCK // card kind
   /* */ CK_LOADUNICAST,
 
   /* */ CK_NCORRCOLS,
+  /* */ CK_NEEDED,
   /* */ CK_NEXT,
   /* */ CK_NOTE,
   /* */ CK_NOTPRED,
@@ -183,6 +184,7 @@ static Stz* aCK[]
   /* */ "CK_LOADUNICAST"_Stz,  // CK_LOADUNICAST
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
+  /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
   /* */ "CK_NEXT"_Stz,         // CK_NEXT
   /* */ "CK_NOTE"_Stz,         // CK_NOTE
   /* */ "CK_NOTPRED"_Stz,      // CK_NOTPRED
@@ -295,6 +297,7 @@ static Stz* aCK_short[]
   /* */ "loadUnicast"_Stz,     // CK_LOADUNICAST
 
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
+  /* */ "needed"_Stz,          // CK_NEEDED
   /* */ "next"_Stz,            // CK_NEXT
   /* */ "note"_Stz,            // CK_NOTE
   /* */ "notPred"_Stz,         // CK_NOTPRED

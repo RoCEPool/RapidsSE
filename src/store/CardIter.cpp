@@ -283,6 +283,7 @@ void CardIter::G_vClearMembers(void)
   G.p_loadPermSeq      = nullptr;
   G.p_loadUnicast      = nullptr;
   G.p_nCorrCols        = nullptr;
+  G.p_needed           = nullptr;
   G.p_next             = nullptr;
   G.p_note             = nullptr;
   G.p_notPred          = nullptr;
@@ -1107,6 +1108,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_LOADPERMSEQ:      return G.p_loadPermSeq;
     case CK_LOADUNICAST:      return G.p_loadUnicast;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
+    case CK_NEEDED:           return G.p_needed;
     case CK_NEXT:             return G.p_next;
     case CK_NOTE:             return G.p_note;
     case CK_NOTPRED:          return G.p_notPred;
@@ -1260,6 +1262,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_LOADPERMSEQ:      return "G.p_loadPermSeq"_Stz;
     case CK_LOADUNICAST:      return "G.p_loadUnicast"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
+    case CK_NEEDED:           return "G.p_needed"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
     case CK_NOTE:             return "G.p_note"_Stz;
     case CK_NOTPRED:          return "G.p_notPred"_Stz;
@@ -2129,6 +2132,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LOADPERMSEQ:      *((Card**)&G.p_loadPermSeq)      = pCard; break;
     case CK_LOADUNICAST:      *((Card**)&G.p_loadUnicast)      = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
+    case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard;

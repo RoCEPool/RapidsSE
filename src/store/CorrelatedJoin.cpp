@@ -175,6 +175,11 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
+  while (! pCI->G.p_MainCard->pSub_projection())
+    pCI->G_bEachMain_reverse();
+
+  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_MainCard->pSub_projection();
+  RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
   pCI->G.p_boolCalc->vBump_Rightwards(2);
@@ -193,6 +198,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //                               // __subquery0002
 
   vConvert_CrlPrmOdn_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
+  pCI->vPrintBoard(__LINE__);
   vConvert_SubQryCall_Into_StmColOdn(pCI, pCI->G.p_boolCalc);
   pCI->vPrintBoard(__LINE__);
 
@@ -319,6 +325,8 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
       pCI->G.p_key->vAppend(pCI->G.p_expr);
 
+      if (pCI->G.p_expr->pSub_type())
+        pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
     }
     // TODO: hack...
     pCI->G.p_expr->vCardNo(0);
@@ -335,6 +343,8 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,"__SQCRLKEY"_Stz);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
+      if (pCI->G.p_expr->pSub_type())
+        pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
     }
 
     pCI->G.p_expr->Y_vSet(P_InjCrlKey);
@@ -386,6 +396,9 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,szAs);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
+
+  if (pCI->G.p_type)
+    pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added
@@ -445,6 +458,12 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         if (Card::bIsCorrParamOrdinal(xCI.G.p_MainCard->szValue())) {
           xCI.G.p_MainCard->vValue("$1"_Stz);  // TODO: hack!!
+
+          Card_Expr* p_expr_found =
+              pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(0);
+
+          xCI.G.p_MainCard->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
         }
         else
         if (xCI.G.p_MainCard->bIsCard(CK_TERM) && Card::bIsTableColOrdinal(xCI.G.p_MainCard->szValue())) {
@@ -534,6 +553,13 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
 
           Card_Term* p_term_new = new Card_Term("$2"_Stz);
           p_pred->vInsertAfter(p_term_new,xCI.G.p_MainCard);
+
+
+          Card_Expr* p_expr_found =
+              pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(1);
+
+          p_term_new->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
 
           p_pred->vRemoveChild(p_arg);
           DELETE_CARD(p_arg);
