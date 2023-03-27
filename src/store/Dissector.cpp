@@ -862,7 +862,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
 
 
   pCard_Expr->vAppend(pCard_Type);
-  Stz* szP_Type = pCard_Type->szValue();
+  Stz* szP_Type = szCT_char[Card::eTo_eCT(pCard_Type->szValue())];
 
 
 
