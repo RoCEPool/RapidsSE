@@ -67,12 +67,12 @@ Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
 
   Card_Projection* p_projection_early = new Card_Projection;
 
-  pCI->EarlyProject.m_pProjection_needed->vDump();
+  pCI->EarlyProject.m_pNeeded->vDump();
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     xKid.p_expr()->vDump();
 
-    if (! pCI->EarlyProject.m_pProjection_needed->pHasSame(xKid.p_expr()))
+    if (! pCI->EarlyProject.m_pNeeded->pHasSame(xKid.p_expr()))
       continue;
     if (p_projection_early->pHasSame(xKid.p_expr()))
       continue;

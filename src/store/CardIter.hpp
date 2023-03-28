@@ -59,7 +59,7 @@ namespace STORE
 
     struct {
       Card_OP* m_pOP_root;
-      Card_Projection * m_pProjection_needed;
+      Card_Projection * m_pNeeded;
     } EarlyProject;
 
   protected:
