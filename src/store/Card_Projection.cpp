@@ -302,6 +302,8 @@ Card_Expr* Card_Projection::pFind_expr_By_projectedCol(Stz* szCol)
 
   i8 nExpr = nChildCards();
   for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
+    if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
+      break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
     if (p_expr->bIsProjectedCol(szCol))
       return p_expr;

@@ -165,6 +165,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  if (bIsCard(CK_INDEXSCAN) || bIsCard(CK_SCAN))
+    return;
+
   if (Y_bHas(P_BreakPt)) {
     vDump();
     vDebugPoint();
@@ -176,7 +179,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    vTrace("CONVERT %s\n"_Stz,p_term->szValue());
+    vTrace("CONVERT %s %s (%s %s)\n"_Stz,
+           p_term->szValue(),p_term->szBearing(),
+           szCardNm(),szBearing());
 
     if (Y_bHas(P_BreakPt)) {
       vDebugPoint();
@@ -185,11 +190,20 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (! p_term->bIsTblColOdn())
       return C_CONTINUE_RECURSION;
 
-    if (Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI)) {
-      p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
-      vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
-      return C_CONTINUE_RECURSION;
+    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+      if (Card_Expr* p_expr_col =
+          pCI->ProjectionAnalysis.m_pProjection_running->pFind_expr_By_projectedCol(p_term->szValue())) {
+        p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+        vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
+        return C_CONTINUE_RECURSION;
+      }
     }
+
+//    if (Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI)) {
+//      p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+//      vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
+//      return C_CONTINUE_RECURSION;
+//    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -212,7 +226,38 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  bApplyRecursive(CK_TERM, bLambdaFn);
+  if ((pCI->G.p_key = pSub_key()))
+    pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
+
+  if (Card_IndexList* p_indexList_curr = pSub_indexList())
+    if (Card_Index* p_index_chosen = p_indexList_curr->pFindChosenIndex())
+      p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
+
+  if (bIsCard(CK_PROJECT)) {
+    pCI->G.p_projection = pSub_projection();
+    pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
+  }
+
+  if (bIsCard(CK_FILTER) || bIsCard(CK_WHERE) || bIsCard(CK_HAVING)) {
+    pCI->G.p_boolCalc = pSub_boolCalc();
+    pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bLambdaFn);
+  }
+
+  if (bIsCard(CK_AGGREG) && bIsPartitionLevel()) {
+    pCI->G.p_projection = pSub_projection();
+    pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
+  }
+
+  if (bIsCard(CK_GBYAGG) && bIsPartitionLevel()) {
+    pCI->G.p_projection = pSub_projection();
+    pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
+  }
+
+  if (bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS)) {
+    pCI->G.p_constraint = pSub_constraint();
+    pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+    pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bLambdaFn);
+  }
 
   if (Y_bHas(P_BreakPt)) {
     vDump();
