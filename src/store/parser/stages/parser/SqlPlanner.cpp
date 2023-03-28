@@ -4101,6 +4101,7 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
+                            ": non-digit value '%c' encountered"_Stz,
                             *psChar);
   }
 
