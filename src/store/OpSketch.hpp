@@ -21,6 +21,8 @@ namespace STORE
   {
 
     friend class CombinedSrc;
+    friend class Stencil_v2;
+    friend class CodeSynthUtils;
 
   private:
 
@@ -39,7 +41,8 @@ namespace STORE
     eSR m_eStencilTo;
 
     // stencil sketch
-    s256 m_sStencil;
+    s256 m_sStencilTo;
+    s256 m_sStencilFrom;
 
     // labels
     s256 m_sLabel;
@@ -88,7 +91,8 @@ namespace STORE
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
     void vGenerateExprStacks(IntStack* pPreExpStack);
-    void vGenerateStencilStruct(void);
+    void vGenerateStencilFromStruct(void);
+    void vGenerateStencilToStruct(void);
 
     eSK eSketchKind(void);
 

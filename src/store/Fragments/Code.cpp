@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 #include "Combined.hpp"
+#include "TccStuff.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Code Fragments ----------------------------------------------------------*/
@@ -31,15 +32,18 @@ i8 vExprCheck(Combined_T* aCombinedT) {
 void vFilterBegin(Combined_T* aCombinedT) {
 
   char* szStrArea;
-  struct SR_IT* pSR_IT;
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
   __L_LABEL_LOOP__:
 
   // marker-start
-  __L_LABEL__:
 
-  pSR_IT = (struct SR_IT*)aCombinedT->m_aRowCellArrayT;
-  szStrArea = aCombinedT->m_racStrAreaT;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // FILTER-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+__L_LABEL__:
+
   if (!aCombinedT->m_iProcessRow) {
     aCombinedT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
@@ -72,6 +76,8 @@ void vInflateCrwBegin(Combined_T* aCombinedT) {
   i8 i_CurrentRow;
 
   // marker-start
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // INFLATE-CRW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,8 +134,10 @@ void vInflateCrwCol(Combined_T* aCombinedT) {
 // function-vInflateCrwColLast
 void vInflateCrwColLast(Combined_T* aCombinedT) {
 
+  char* szStrArea;
   char* acStrArea;
   void* aSubReturnLabel;
+  struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // marker-start
   aSubReturnLabel = && L_InflateCrwRet;
@@ -139,12 +147,13 @@ void vInflateCrwColLast(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L_InflateCrwRet:
+
   aCombinedT->m_racStrAreaT = acStrArea;
-  goto __L_LABEL_NEXT__;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayT;
+  szStrArea = aCombinedT->m_racStrAreaT;
 
   // marker-end
 
-  __L_LABEL_NEXT__:
   return;
 }
 
@@ -154,31 +163,131 @@ void vInflateCrwColLast(Combined_T* aCombinedT) {
 // function-vProjectBegin
 void vProjectBegin(Combined_T* aCombinedT) {
 
-  struct SR_IT* pSR_IT;
-  struct SR_PT* pSR_PT;
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  struct __STRUCT_TO__*   p__STRUCT_TO__;
+
   char* szStrArea;
 
   __L_LABEL_LOOP__:
 
   // marker-start
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // PROJECT-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   __L_LABEL__:
 
-  pSR_IT = (struct SR_IT*)aCombinedT->m_aRowCellArrayT;
-
-  szStrArea = aCombinedT->m_racStrAreaT;
   if (!aCombinedT->m_iProcessRow) {
     aCombinedT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
-  pSR_PT = (struct SR_PT*)aCombinedT->m_aRowCellArrayP;
-
   aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayP;
   szStrArea = aCombinedT->m_racStrAreaP;
+
   // marker-end
 
   return;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vProjectEnd -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vProjectEnd
+i8 iProjectEnd(Combined_T* aCombinedT) {
+
+  struct __STRUCT_TO__*   p__STRUCT_TO__;
+
+  char* szStrArea;
+
+  // marker-start
+
+  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayP;
+  szStrArea = aCombinedT->m_racStrAreaP;
+
+  // marker-end
+
+  return 0;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vTubBegin ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iTubBegin
+i8 iTubBegin(Combined_T* aCombinedT) {
+
+  struct __STRUCT_TO__ {
+    i8 iDummy;
+  };
+
+  char* szStrArea;
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TUB
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  struct __STRUCT_TO__* pTub;
+
+  __L_LABEL__:
+
+  if (!aCombinedT->m_iProcessRow) {
+    aCombinedT->m_iProcessRow = 1;
+    goto __L_LABEL_LOOP__;
+  }
+
+  // allocate a row from the tub
+  //aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  pTub = (struct __STRUCT_TO__*)aCombinedT->m_aRowTub;
+
+  // marker-end
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vTubCol -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vTubIntCol
+void vTubIntCol(Combined_T* aCombinedT) {
+
+  struct __STRUCT_FROM__ {
+    union Int_T __INT_COL__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Int_T __INT_COL__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN__
+
+  p__STRUCT_TO__->__INT_COL__.m_iAsI8 = p__STRUCT_FROM__->__INT_COL__.m_iAsI8;
+
+  // marker-end
 }
 
 /*============================================================================*/

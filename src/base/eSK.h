@@ -16,10 +16,12 @@ enum eSK // sketch kind
   /*   */ SK_INDEXSCAN,   // index scan
   /*   */ SK_INFLATE_CRW, // inflate CRW
   /*   */ SK_INFLATE_ROW, // inflate ROW
+  /*   */ SK_POT,         // pot
   /*   */ SK_PROJECT,     // projection
   /*   */ SK_SEMIJOIN,    // semi-join
   /*   */ SK_SORT,        // sort
   /*   */ SK_TOP,         // top
+  /*   */ SK_TUB,         // tub
 };
 
 static Stz* aSK[]
@@ -35,10 +37,12 @@ static Stz* aSK[]
   /*   */ "INDEXSCAN"_Stz,
   /*   */ "INFLATE_CRW"_Stz,
   /*   */ "INFLATE_ROW"_Stz,
+  /*   */ "POT"_Stz,
   /*   */ "PROJECT"_Stz,
   /*   */ "SEMIJOIN"_Stz,
   /*   */ "SORT"_Stz,
   /*   */ "TOP"_Stz,
+  /*   */ "TUB"_Stz,
 
  /*   */ "ENUMS"_Stz
 };

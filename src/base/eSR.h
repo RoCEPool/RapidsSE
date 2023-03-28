@@ -12,6 +12,7 @@ enum eSR // stencil row
   /*    */ SR_IT,   // inflate T
   /*    */ SR_PL,   // project PayLoad
   /*    */ SR_PT,   // project T
+  /*    */ SR_TB,   // Tub
   /*    */ SR_TJ,   // join T with J
 
   /*    */ SR_ENUMS
@@ -26,6 +27,7 @@ static Stz* aSR[]
   /*    */ "SR_IT"_Stz,
   /*    */ "SR_PL"_Stz,
   /*    */ "SR_PT"_Stz,
+  /*    */ "SR_TB"_Stz,
   /*    */ "SR_TJ"_Stz,
 
   /*    */ "ENUMS"_Stz

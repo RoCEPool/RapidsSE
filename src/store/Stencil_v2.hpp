@@ -155,11 +155,8 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchPot(Op* pLastOp, eSR ePrevStencil_v2, IntStack* pPreExpStack,
-                      Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
+    OpSketch* pSketchTub(OpSketch* pLastOp, Stz* sLabelLoop, eSR ePrevStencil_v2);
     OpSketch* pSketchReturn(void);
-    OpSketch* pSketchTub(Op* pLastOp, eSR ePrevStencil_v2, IntStack* pPreExpStack,
-                      Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
     OpSketch* pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
 
 

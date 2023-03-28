@@ -520,8 +520,8 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
   bool bInflateGenerated = false;
 
-  OpSketch* pOpSketch;
-  IntStack *pPreExpStack = nullptr;
+  OpSketch *pOpSketch;
+  OpSketch *pPotTubSketch;
 
   eSR ePrevStencil_v2 = SR_NONE;
 
@@ -616,6 +616,22 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       vAppend(pOpSketch);
     }
 
+  }
+
+  if (m_xStageOps.m_bGeneratePotTub) {
+
+    sLabel.vSprint("L_AddRowToTubPot"_Stz);
+
+    if (pCombined->aCombinedT()->m_iHashRows) {
+      RASSERT(0);
+      //pPotTubSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
+    }
+    else {
+      pPotTubSketch = pSketchTub(pOpSketch, sLabelLoop, ePrevStencil_v2);
+    }
+
+    // add the op sketch to the stencil
+    vAppend(pPotTubSketch);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1675,7 +1691,7 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilStruct();
+  pOpSketch->vGenerateStencilToStruct();
 
   return pOpSketch;
 }
@@ -1754,7 +1770,7 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilStruct();
+  pOpSketch->vGenerateStencilToStruct();
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(pPreExpStack);
@@ -2017,7 +2033,7 @@ OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* p
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-  // get the aggregate type stack
+  // get the predicate expression stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
@@ -2033,7 +2049,7 @@ OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* p
   pOpSketch->vGenerateExprStacks(pPreExpStack);
 
   // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilStruct();
+  pOpSketch->vGenerateStencilToStruct();
 
   return pOpSketch;
 }
@@ -2186,27 +2202,32 @@ OpSketch* Stencil_v2::pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch pot                                                                 */
+/* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchPot(Op* pLastOp, eSR ePrevStencil_v2,
-                           IntStack* pPreExpStack, Stz* sLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg) {
+OpSketch* Stencil_v2::pSketchTub(OpSketch* pLastOp, Stz* sLabelLoop, eSR ePrevStencil_v2) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
+  s4K sLabel;
+  s4K sLabelNext;
+
   // get the streamDefOut
-  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  StreamDef *pStreamDefOut = pLastOp->m_pStreamDefOut;
   RASSERT(pStreamDefOut);
 
-  // create a new shape
-  OpSketch* pShape = new OpSketch;
+  // create a new opSketch
+  OpSketch* pOpSketch = new OpSketch(""_Stz, SK_TUB, ePrevStencil_v2, SR_TB, pStreamDefOut, pStreamDefOut);
 
-  CodeSynth_v2* pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
+  sLabel = "L_AddRowToTubPot"_Stz;
+  sLabelNext = ""_Stz;
 
-  pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, false, sLabel, sLabelLoop, sLabelOrdAgg);
-  pShape->vCodeSynthB(pCodeSynth);
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  return pShape;
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2226,30 +2247,6 @@ OpSketch* Stencil_v2::pSketchReturn(void) {
   return pShape;
 }
 
-/*----------------------------------------------------------------------------*/
-/* sketch tub                                                                 */
-/*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchTub(Op* pLastOp, eSR ePrevStencil_v2,
-                           IntStack* pPreExpStack, Stz* sLabel,
-                           Stz* sLabelLoop, Stz* sLabelOrdAgg) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  // get the streamDefOut
-  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  RASSERT(pStreamDefOut);
-
-  // create a new shape
-  OpSketch* pShape = new OpSketch;
-
-  CodeSynth_v2* pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
-
-  pCodeSynth->vSynthAllocTubRow(nullptr, false, sLabel, sLabelLoop, sLabelOrdAgg);
-  pShape->vCodeSynthB(pCodeSynth);
-
-  return pShape;
-}
 
 /*----------------------------------------------------------------------------*/
 /* Func header                                                                */

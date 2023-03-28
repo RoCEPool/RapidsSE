@@ -3,8 +3,8 @@
 /*============================================================================*/
 
 #include "CodeSynthUtils.hpp"
-//#include "Fragments/Code.hpp"
 #include "StrLib.hpp"
+#include "OpSketch.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bExtract(File* pFile, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode)
+bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode)
 {
 
   i8 nFileSize = pFile->iSize();
@@ -68,21 +68,45 @@ bool CodeSynthUtils::bExtract(File* pFile, Stz* sLabel, Stz* sLabelNext, Stz* sL
     else {
       if (bFoundStart) {
 
+        if (StrLib::bContains(sLine.azChar(), "p__STRUCT_TO__")) {
+          RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
+          RASSERT(bResult);
+        }
+
+        if (StrLib::bContains(sLine.azChar(), "__STRUCT_TO__")) {
+          RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__STRUCT_TO__", (char*)aSR[pOpSketch->m_eStencilTo]);
+          RASSERT(bResult);
+        }
+
+        if (StrLib::bContains(sLine.azChar(), "p__STRUCT_FROM__")) {
+          RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
+          RASSERT(bResult);
+        }
+
+        if (StrLib::bContains(sLine.azChar(), "__STRUCT_FROM__")) {
+          RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__STRUCT_FROM__", (char*)aSR[pOpSketch->m_eStencilFrom]);
+          RASSERT(bResult);
+        }
+
         if (StrLib::bContains(sLine.azChar(), "__L_LABEL__")) {
-          RASSERT( ! sLabelLoop->bSame(""_Stz) );
-          bool bResult = StrLib::bReplace(sLine.azChar(), "__L_LABEL__", sLabel->azChar());
+          RASSERT( ! pOpSketch->m_sLabel.bSame(""_Stz) );
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__L_LABEL__", pOpSketch->m_sLabel.azChar());
           RASSERT(bResult);
         }
 
         if (StrLib::bContains(sLine.azChar(), "__L_LABEL_NEXT__")) {
-          RASSERT( ! sLabelLoop->bSame(""_Stz) );
-          bool bResult = StrLib::bReplace(sLine.azChar(), "__L_LABEL_NEXT__", sLabelNext->azChar());
+          RASSERT( ! pOpSketch->m_sLabelNext.bSame(""_Stz) );
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__L_LABEL_NEXT__", pOpSketch->m_sLabelNext.azChar());
           RASSERT(bResult);
         }
 
         if (StrLib::bContains(sLine.azChar(), "__L_LABEL_LOOP__")) {
-          RASSERT( ! sLabelLoop->bSame(""_Stz) );
-          bool bResult = StrLib::bReplace(sLine.azChar(), "__L_LABEL_LOOP__", sLabelLoop->azChar());
+          RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__L_LABEL_LOOP__", pOpSketch->m_sLabelLoop.azChar());
           RASSERT(bResult);
         }
 

@@ -4,12 +4,13 @@
 #pragma once
 
 #include "BASE.h"
+#include "OpSketch.hpp"
 
 namespace STORE
 {
   class CodeSynthUtils {
   public:
-    static bool bExtract(File *pFile, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
+    static bool bExtract(File *pFile, OpSketch* pOpSketch,
                          Stz *szFunMkr, Stz *szStartMkr,
                          Stz *szEndMkr, String *sCode);
 
