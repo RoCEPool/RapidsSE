@@ -294,12 +294,15 @@ void MakeWeavable::vTblColToStmCol(void)
   m_pCI->vTransform(__func__, "vTblColToStmCol"_Stz);
 
   m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain()) {
+  while (m_pCI->G_bEachMain_reverse()) {
+
+    m_pCI->Analysis.m_pProjection = Card_Projection::pResolvePriorProjection(m_pCI);
+
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
-    if (m_pCI->G.p_OP->pSub_projection())
-      m_pCI->Analysis.m_pProjection =
-          m_pCI->G.p_OP->pSub_projection();
+//    if (m_pCI->G.p_OP->pSub_projection())
+//      m_pCI->Analysis.m_pProjection =
+//          m_pCI->G.p_OP->pSub_projection();
   }
   m_pCI->vEndTransform();
 }
