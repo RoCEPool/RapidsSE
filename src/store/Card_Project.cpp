@@ -64,8 +64,11 @@ Card_Project* Card_Project::pNew_project_early(CardIter* pCI)
   Card_Projection* p_projection_early = pCI->G.p_projection->pCraft_projection_early(pCI);
   p_project_early->vAppend(p_projection_early);
 
+
   // debug
-  p_project_early->vAppend(pCI->EarlyProject.m_pNeeded->pDupCardAndSubCards());
+  //p_project_early->vAppend(pCI->EarlyProject.m_pProjection_needed->pDupCardAndSubCards());
+
+  p_project_early->vAppend(pCI->EarlyProject.m_pNeeded->pClone());
 
   return p_project_early;
 }

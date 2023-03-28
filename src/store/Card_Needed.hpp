@@ -15,6 +15,8 @@ namespace STORE
 
     Card_Needed(void);
    ~Card_Needed(void) noexcept(false);
+
+    Card_Needed* pClone(void);
   };
 
   Card_Needed* _pCard_Needed(void* aAddr);

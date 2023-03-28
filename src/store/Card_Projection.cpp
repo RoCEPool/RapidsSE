@@ -67,7 +67,7 @@ Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
 
   Card_Projection* p_projection_early = new Card_Projection;
 
-  pCI->EarlyProject.m_pNeeded->vDump();
+  //pCI->EarlyProject.m_pNeeded->vDump();
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
     xKid.p_expr()->vDump();

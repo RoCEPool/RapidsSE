@@ -329,7 +329,7 @@ void Card_OP::vEarly_project_backstep(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->EarlyProject.m_pNeeded);
+  RASSERT(pCI->EarlyProject.m_pProjection_needed);
 
   if (bIsEarlyLeaf(pCI))
     return;
