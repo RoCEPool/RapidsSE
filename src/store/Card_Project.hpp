@@ -36,6 +36,8 @@ namespace STORE
     void vInject_foldExpr(CardIter* pCI);
     void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);
     void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vUpdate_projection_off_running(CardIter* pCI);
   };
 
   Card_Project* _pCard_Project(void* aAddr);

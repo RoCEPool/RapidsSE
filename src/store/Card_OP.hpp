@@ -35,7 +35,7 @@ namespace STORE
     bool bPeg_Key(CardIter* pCI);
     bool bPeg_Projection(CardIter* pCI);
 
-    void vUpdate_projection_Off_running(CardIter* pCI);
+    void vUpdate_projection(CardIter* pCI);
 
   };
 

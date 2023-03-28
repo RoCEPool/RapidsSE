@@ -92,6 +92,23 @@ void Card_Aggreg::vSmooth(CardIter* pCI)
   pCI->G.p_aggreg->Y_vSet(P_Smoothed);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Aggreg::vUpdate_projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+
+    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+      pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
+      pCI->G.p_projection->vRenumberAllExpr();
+    }
+
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -86,9 +86,15 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     if (Card::bIsSqyColOrdinal(pCI->G.p_as->szValue()))
       continue;
 
+    pCI->vPrintBoard(__LINE__);
+
     Card_Expr* p_expr_simple = Card_Expr::pProj_Simple_expr_Of(pCI->G.p_expr,i_Col);
 
     p_projection_unproject->vAppend(p_expr_simple);
+
+    pCI->vPrintBoard(__LINE__);
+
+    vDebugPoint();
   }
 
   p_projection_unproject->vRenumberAllExpr();

@@ -24,6 +24,8 @@ namespace STORE
     void vDerive_Projection_Key(CardIter* pCI);
 
     void vSmooth(CardIter* pCI);
+    void vUpdate_projection(CardIter* pCI);
+
   };
 
   Card_Aggreg* _pCard_Aggreg(void* aAddr);

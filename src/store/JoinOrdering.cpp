@@ -228,7 +228,7 @@ void JoinOrdering::vReorderTables(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
+  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
 
   m_pCI->vPrintBoard(__LINE__);
 

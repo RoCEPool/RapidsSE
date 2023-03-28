@@ -106,6 +106,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   else {
 
   }
+  pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get final SQ:<op>/<projection>
@@ -313,6 +314,8 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     pCI->G.p_gbyAgg->vInsertBefore(pCI->G.p_key,pCI->G.p_projection);
 
 
+    // key
+
     if (AL_PARTITION == e_Level) {
       pCI->G.p_expr = Card_Expr::pGby_expr_From_expr_corr(pCI->Sqy.m_pExpr_corr);
       pCI->G.p_key->vAppend(pCI->G.p_expr);
@@ -323,13 +326,18 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type->pDupCardAndSubCards());
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
+      pCI->G.p_term->Y_vSet(P_Type,pCI->Sqy.m_pExpr_corr->Y_szGet(P_Type));
       pCI->G.p_key->vAppend(pCI->G.p_expr);
 
-      if (pCI->G.p_expr->pSub_type())
+      if (pCI->G.p_expr->pSub_type()) {
         pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
+        pCI->G.p_term->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
+      }
     }
     // TODO: hack...
     pCI->G.p_expr->vCardNo(0);
+
+    // projection
 
     if (AL_PARTITION == e_Level) {
       pCI->G.p_expr = Card_Expr::pProj_expr_From_Gby_expr(pCI->G.p_expr,"__SQCRLKEY"_Stz);
@@ -343,8 +351,10 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,"__SQCRLKEY"_Stz);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
-      if (pCI->G.p_expr->pSub_type())
-        pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
+      if (pCI->G.p_expr->pSub_type()) {
+        pCI->G.p_rpnCalc->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
+        pCI->G.p_term->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
+      }
     }
 
     pCI->G.p_expr->Y_vSet(P_InjCrlKey);
@@ -397,8 +407,10 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
 
-  if (pCI->G.p_type)
-    pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
+  if (pCI->G.p_type) {
+    pCI->G.p_rpnCalc->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
+    pCI->G.p_term->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added

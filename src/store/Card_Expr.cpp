@@ -105,8 +105,10 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_gbyExpr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
-  if (p_type)
-    p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_type->szValue())]);
+  if (p_type) {
+    p_rpnCalc->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+    p_term->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+  }
 
   return p_gbyExpr;
 }
@@ -133,9 +135,10 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_expr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
-  if (p_type)
-    p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_type->szValue())]);
-
+  if (p_type) {
+    p_rpnCalc->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+    p_term->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+  }
 
   return p_expr;
 }
@@ -148,18 +151,23 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 {
   _static_
 
+  p_expr->vDump();
+
   s32 sDn;
   sDn.vSprint("$%lld"_Stz,i_Col);
 
   Card_Expr* p_expr_simple = new Card_Expr;
-
   p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+
   Card_Term* p_term = p_expr->pSub_term()->pClone(sDn);
+  p_term->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+  p_term->vDump();
+
   p_rpnCalc->vAppend(p_term);
 
-  p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
 
   p_expr_simple->vAppend(p_rpnCalc);
 

@@ -20,7 +20,7 @@ namespace STORE
     i8 i_Fold(void);
     Card_Fold* p_fold(void);
 
-    void vReprojection(CardIter* pCI);
+    void vProjectionUpdate(CardIter* pCI);
 
     Card_Projection* p_projection_fold(void);
 

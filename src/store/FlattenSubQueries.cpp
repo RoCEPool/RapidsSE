@@ -341,7 +341,7 @@ void FlattenSubQueries::vFlatten_10_F(void)
   Smooth* pSmooth = new Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
+  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 

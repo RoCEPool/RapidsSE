@@ -98,7 +98,7 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
   pCI->vPrintBoard();
 
-  vUpdate_projection_Off_running(pCI);
+  vUpdate_projection(pCI);
 
   pCI->vPrintBoard();
 

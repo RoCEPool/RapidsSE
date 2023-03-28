@@ -255,11 +255,16 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  pCI->vPrintBoard(__LINE__);
+
   pCI->G.p_gbyAgg->Y_vSet(P_Smoothed);
 
   if (pCarryForward->GbyAgg.m_bInject_foldExpr) {
     pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
   }
+
+  pCI->vPrintBoard(__LINE__);
+
 
   if (pCarryForward->GbyAgg.m_nBumpBy) {
     pCI->G.p_gbyAgg->vBump_Rightwards(pCarryForward->GbyAgg.m_nBumpBy);
@@ -267,6 +272,32 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   }
 
   pCI->G.pDeck->vRenumberRecursive();
+
+  pCI->vPrintBoard(__LINE__);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+      pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+      pCI->G.p_key->vRenumberAllExpr();
+    }
+  }
+
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+
+    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+      pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
+      pCI->G.p_projection->vRenumberAllExpr();
+    }
+
+  }
 }
 
 /*============================================================================*/

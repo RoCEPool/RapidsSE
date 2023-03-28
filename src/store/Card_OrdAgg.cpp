@@ -98,6 +98,31 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   vDebugPoint();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+      pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+      pCI->G.p_key->vRenumberAllExpr();
+    }
+  }
+
+  if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+
+    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+      pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
+      pCI->G.p_projection->vRenumberAllExpr();
+    }
+
+  }
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
