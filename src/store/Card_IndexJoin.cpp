@@ -80,12 +80,15 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
-  Card_Projection* p_projection_needed_save = pCI->EarlyProject.m_pProjection_needed->pClone();
+  Card_Needed* p_needed_save = pCI->EarlyProject.m_pNeeded->pClone();
 
-  // check for temporary/additional transients
-  vEarly_project_check_transients(pCI);
+  // check for additional/temporary transients
+  vEarly_project_add_transients(pCI);
 
-  vAppend(pCI->EarlyProject.m_pProjection_needed->pClone());
+  // insert new empty early project (has only needed) before this indexJoin
+  Card_Project* p_project_early = pCI->EarlyProject.m_pNeeded->pNew_project_early(pCI);
+  pCI->G_vInsertBefore(p_project_early, this);
+  pCI->G_vMainResynch();
 
   pCI->vPrintBoard();
 
@@ -99,21 +102,9 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
   pCI->vPrintBoard();
 
-  //pCI->G.p_filter->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-
-  //pCI->G.p_indexList->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-
-  pCI->G.p_projection = pSub_projection();
-  //pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
-
-  pCI->vPrintBoard();
-
-
-  Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);
-  pCI->G_vInsertAfter(p_project_early, this);
-
-  delete pCI->EarlyProject.m_pProjection_needed;
-  pCI->EarlyProject.m_pProjection_needed = p_projection_needed_save;
+  // restore needed
+  delete pCI->EarlyProject.m_pNeeded;
+  pCI->EarlyProject.m_pNeeded = p_needed_save;
 
   pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();
 
@@ -124,7 +115,7 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarly_project_check_transients(CardIter* pCI)
+void Card_IndexJoin::vEarly_project_add_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -148,18 +139,18 @@ void Card_IndexJoin::vEarly_project_check_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (! pCI->EarlyProject.m_pProjection_needed->pFind_expr_With_projectedCol(pCI->G.p_term)) {
+  if (! pCI->EarlyProject.m_pNeeded->pFind_expr_With_projectedCol(pCI->G.p_term)) {
 
-    pCI->EarlyProject.m_pProjection_needed->vDump();
+    pCI->EarlyProject.m_pNeeded->vDump();
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(pCI->G.p_term)) {
       p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
-      pCI->EarlyProject.m_pProjection_needed->vAppend(p_expr_clone);
-      pCI->EarlyProject.m_pProjection_needed->vRenumberAllExpr();
+      pCI->EarlyProject.m_pNeeded->vAppend(p_expr_clone);
+      pCI->EarlyProject.m_pNeeded->vRenumberAllExpr();
     }
 
-    pCI->EarlyProject.m_pProjection_needed->vDump();
+    pCI->EarlyProject.m_pNeeded->vDump();
 
     vDebugPoint();
   }

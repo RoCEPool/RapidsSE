@@ -36,6 +36,9 @@ namespace STORE
 
 
     bool bIsBraced(void);
+
+    Stz* szP_Type(void);
+
   };
 
   Card_BoolCalc* _pCard_BoolCalc(void* aAddr);

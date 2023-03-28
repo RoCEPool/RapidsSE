@@ -346,33 +346,53 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bIsValue("exists"_Stz)) {
 
-    vCard(CK_CMPPRED);
+    pCI->vPrintBoard(__LINE__);
+
+    //vCard(CK_CMPPRED);
     vValue("=="_Stz);
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szValue())); //temp
     p_term_one->vValue(p_term ? p_term->szValue() : "$1"_Stz);
+
+    Card_Expr* p_expr_found =
+        pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(0);
+
+    p_term_one->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
+    pCI->vPrintBoard(__LINE__);
     return;
   }
 
   if (bIsValue("in"_Stz)) {
 
-    vCard(CK_CMPPRED);
+    //vCard(CK_CMPPRED);
     vValue("=="_Stz);
+
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szValue())); //temp
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
-    p_term_head->vValue(p_term?p_term->szValue():"$1"_Stz);
+
+    p_term_head->vValue(p_term ? p_term->szValue() : "$1"_Stz);
+
+    Card_Expr* p_expr_found =
+        pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(0);
+
+    p_term_head->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
+    pCI->vPrintBoard(__LINE__);
+
     return;
   }
 
   if (bIsValue("notIn"_Stz)) {
 
-    vCard(CK_CMPPRED);
+    //vCard(CK_CMPPRED);
     vValue("=="_Stz);
+
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szValue())); //temp
     DELETE_CARD(p_term_popped);

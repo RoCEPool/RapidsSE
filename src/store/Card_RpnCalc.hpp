@@ -34,6 +34,8 @@ namespace STORE
     i8 nTrimTerm(Stz* szValue);
     void vTypes_For_stmColOdn(CardIter* pCI);
 
+    Stz* szP_Type(void);
+
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);

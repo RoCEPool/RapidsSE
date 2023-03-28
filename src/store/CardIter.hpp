@@ -18,7 +18,6 @@ namespace STORE
 
     CardIterMembers G;
 
-    // Xgearing
     Bench*      m_pBench;
     CardCtl*    m_pCardCtl;
 
@@ -30,8 +29,17 @@ namespace STORE
 
     Card* m_pCard_new;
 
-    struct
-    {
+    struct {
+      Card_OP*          m_pOP_root;
+      //Card_Projection * m_pProjection_needed;
+      Card_Needed *     m_pNeeded;
+    } EarlyProject;
+
+    struct {
+      Card_Projection * m_pProjection_running;
+    } ProjectionAnalysis;
+
+    struct {
       i8         m_i_SubQuery;
       SubQuery*  m_pSubQuery;
 
@@ -46,21 +54,11 @@ namespace STORE
       Card*      m_pCard_sqCopy;
     } Sqy;
 
-    struct
-    {
-      Card_Projection *m_pProjection_running;
-    } ProjectionAnalysis;
-
-    struct
-    {
-      Card_Key *m_pKey_running;
-      Card_Projection *m_pProjection_running;
+    struct {
+      Card_Key *        m_pKey_running;
+      Card_Projection * m_pProjection_running;
     } StreamOrder;
 
-    struct {
-      Card_OP* m_pOP_root;
-      Card_Projection * m_pProjection_needed;
-    } EarlyProject;
 
   protected:
     // must be last
@@ -132,6 +130,7 @@ namespace STORE
 
     bool bJustRestarted(void);
 
+    void G_vMainResynch(void);
     Stz* szMemberNm(eCK eMember);
     bool bMore(void);
     bool G_bMoreMain(void);

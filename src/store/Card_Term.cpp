@@ -92,6 +92,42 @@ bool Card_Term::bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
 }
 
 /*----------------------------------------------------------------------------*/
+/* find sub card with given value and replace                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
+                                   Stz* szValue, Card_Term* p_term_stamp)
+{
+  _static_
+
+  bool bReplaced = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pCI, szValue, p_term_stamp, &bReplaced](Card *pCard)
+  {
+    pCI->G.p_term = _pCard_Term(pCard);
+
+    if (! pCI->G.p_term->bIsValue(szValue))
+      return C_CONTINUE_RECURSION;
+
+    pCI->G.p_term->vValue(p_term_stamp->szValue());
+
+    pCI->G.p_term->Y_vAll(p_term_stamp);
+
+    bReplaced = true;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCard->bApplyRecursive(eSub, bLambdaFn);
+
+  return bReplaced;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
