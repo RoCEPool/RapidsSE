@@ -41,6 +41,50 @@ Card_Deck::~Card_Deck(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add partitioning                                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Deck::vAdd_Partitioning(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+
+  Card_OP*       p_main_prior = nullptr;
+  Card_Next*     p_next_prior = nullptr;
+  Card_Combined* p_combined_prior = nullptr;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  while (pCI->G_bEachMain()) {
+    if (CK_INDEXJOIN == pCI->G.e_MainCard ||
+        CK_INDEXSCAN == pCI->G.e_MainCard ||
+        CK_KEYEXISTS == pCI->G.e_MainCard ||
+        CK_KEYNOTEXISTS == pCI->G.e_MainCard ||
+        CK_SCAN == pCI->G.e_MainCard) {
+      if (p_main_prior) {
+        i8 nSkip = Board::iStage_Partitioning(pCI, p_main_prior, p_combined_prior, p_next_prior);
+        while (nSkip--)
+          pCI->G_vSkipNextMain();
+        pCI->vPrintBoard(__LINE__);
+        vDebugPoint();
+      }
+      p_main_prior = pCI->G.p_OP;
+    }
+    else
+    if (CK_COMBINED == pCI->G.e_MainCard) {
+      p_combined_prior = pCI->G.p_combined;
+    }
+    else
+    if (CK_NEXT == pCI->G.e_MainCard) {
+      p_next_prior = pCI->G.p_next;
+    }
+
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* find i_fold (reverse)                                                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Deck::p_expr_fold(void)

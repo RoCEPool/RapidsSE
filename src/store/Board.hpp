@@ -158,8 +158,6 @@ namespace STORE
     Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    static void vAdd_Partitioning(CardIter* pCI);
-
     static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
     static void vDerive_foldProjection_F(CardIter* pCI);
 
@@ -170,11 +168,10 @@ namespace STORE
     static void vMorph_Table_To_EEop(CardIter* pCI);
 
 
-    static i8 iStage_Partitioning(CardIter* pCI,
-                                  Card* p_main_prior,
+    static i8 iStage_Partitioning(CardIter*      pCI,
+                                  Card_OP*       p_main_prior,
                                   Card_Combined* p_combined_prior,
-                                  Card_Next* p_next_prior,
-                                  Card* p_main_curr);
+                                  Card_Next*     p_next_prior);
 
     // vSeries_A0_Make_Weavable
     static void vIndividuate_indexJoin_filter_b(CardIter* pCI);

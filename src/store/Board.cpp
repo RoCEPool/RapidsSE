@@ -72,50 +72,6 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add partitioning                                                           */
-/*----------------------------------------------------------------------------*/
-void Board::vAdd_Partitioning(CardIter* pCI)
-{
-  _static_
-
-
-  Card_Next* p_next_prior = nullptr;
-  Card_Combined* p_combined_prior = nullptr;
-
-  Card* p_main_prior = nullptr;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  while (pCI->G_bEachMain()) {
-    if (CK_INDEXJOIN == pCI->G.e_MainCard ||
-        CK_INDEXSCAN == pCI->G.e_MainCard ||
-        CK_KEYEXISTS == pCI->G.e_MainCard ||
-        CK_KEYNOTEXISTS == pCI->G.e_MainCard ||
-        CK_SCAN == pCI->G.e_MainCard) {
-      if (p_main_prior) {
-        i8 nSkip = Board::iStage_Partitioning(pCI, p_main_prior, p_combined_prior,
-                                              p_next_prior, pCI->G.p_MainCard);
-        while (nSkip--)
-          pCI->G_vSkipNextMain();
-        pCI->vPrintBoard(__LINE__);
-        vDebugPoint();
-      }
-      p_main_prior = pCI->G.p_MainCard;
-    }
-    else
-    if (CK_COMBINED == pCI->G.e_MainCard) {
-      p_combined_prior = pCI->G.p_combined;
-    }
-    else
-    if (CK_NEXT == pCI->G.e_MainCard) {
-      p_next_prior = pCI->G.p_next;
-    }
-
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
@@ -323,22 +279,22 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Board::iStage_Partitioning(CardIter* pCI, Card* p_main_prior,
-                             Card_Combined* p_combined_prior,
-                             Card_Next* p_next_prior,
-                             Card* p_main_curr)
+i8 Board::iStage_Partitioning(CardIter*      pCI,
+                              Card_OP*       p_main_prior,
+                              Card_Combined* p_combined_prior,
+                              Card_Next*     p_next_prior)
 {
   _static_
 
-  Card_Table*      p_table_prior      = p_main_prior->pSub_table();
+  Card_Table*      p_table_prior    = p_main_prior->pSub_table();
 
-  Card_Table*      p_table_curr     = p_main_curr->pSub_table();
-  Card_IndexList*  p_indexList_curr = p_main_curr->pSub_indexList();
+  Card_Table*      p_table_curr     = pCI->G.p_MainCard->pSub_table();
+  Card_IndexList*  p_indexList_curr = pCI->G.p_MainCard->pSub_indexList();
 
   //p_indexList_curr->vDump();
 
   Card_Index*      p_index_curr     = p_indexList_curr->pFindChosenIndex();
-  Card_Bounds*     p_bounds_curr    = p_main_curr->pSub_bounds();
+  Card_Bounds*     p_bounds_curr    = pCI->G.p_MainCard->pSub_bounds();
 
   Card_Hash* p_hash;
   Card_Term* p_term_hash;

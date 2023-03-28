@@ -87,7 +87,7 @@ void MakeWeavable::vAddPartitioning(void)
 
   m_pCI->vTransform(__func__, "add partitioning"_Stz);
 
-  Board::vAdd_Partitioning(m_pCI);
+  m_pCI->G.pDeck->vAdd_Partitioning(m_pCI);
 
   m_pCI->vEndTransform();
 }
