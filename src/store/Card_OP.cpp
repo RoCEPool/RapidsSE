@@ -165,9 +165,6 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(CK_INDEXSCAN) || bIsCard(CK_SCAN))
-    return;
-
   if (Y_bHas(P_BreakPt)) {
     vDump();
     vDebugPoint();
@@ -222,6 +219,10 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (bIsCard(CK_INDEXSCAN) || bIsCard(CK_SCAN)) {
+
+  }
+
   if (bIsCard(CK_PROJECT)) {
     if ((pCI->G.p_key = pSub_key()))
       pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
@@ -239,7 +240,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
   }
 
-  if (bIsCard(CK_GBYAGG) && bIsPartitionLevel()) {
+  if ((bIsCard(CK_GBYAGG) || bIsCard(CK_ORDAGG)) && bIsPartitionLevel()) {
     if ((pCI->G.p_key = pSub_key()))
       pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
     pCI->G.p_projection = pSub_projection();
