@@ -254,6 +254,10 @@ TypeId TypeMap1D::xLookup(TypeId xArg1)
 {
   _precondition_(_MAGIC_,CN_TYPEMAP1D,_FOOTER_);
 
+  if (!xArg1.bIsValid()) {
+    return TypeId{};
+  }
+
   ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iSize);
 
   i1 iResultId = m_aiTypeArray[xArg1.iIdVal()];

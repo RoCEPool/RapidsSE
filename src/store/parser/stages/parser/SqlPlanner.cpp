@@ -1885,11 +1885,6 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
   } else if (pCtx->intervalLiteral()) {
     pLiteral = nullptr;
 
-    // Interval literals are disabled in releases for now
-    if (gpAttachMap->bDisablePromptCommands()) {
-      SemanticException::vThrow(EC_DISABLED_STATEMENT, ": INTERVAL literal"_Stz);
-    }
-
     // This is handled in visitYearMonthInterval and visitDayTimeInterval
     if (!pCtx->intervalLiteral()->yearMonthInterval() && !pCtx->intervalLiteral()->dayTimeInterval()) {
       NEVER_REACH
@@ -4127,7 +4122,7 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing '-' separator"_Stz,
+                            ": expected '-' separator, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4274,7 +4269,7 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ' ' separator between day and hour digits"_Stz,
+                            ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4422,7 +4417,7 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ' ' separator between day and hour digits"_Stz,
+                            ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4462,7 +4457,7 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -4614,7 +4609,7 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ' ' separator between day and hour digits"_Stz,
+                            ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4654,7 +4649,7 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -4692,7 +4687,7 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between minute and second digits"_Stz,
+                            ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -4888,7 +4883,7 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -5037,7 +5032,7 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -5075,7 +5070,7 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between minute and second digits"_Stz,
+                            ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -5278,7 +5273,7 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between minute and second digits"_Stz,
+                            ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;

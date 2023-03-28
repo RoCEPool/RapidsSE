@@ -83,6 +83,11 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp,
                   (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void* pvArg)
                   -> GraphNav::eWalkCtrl {
 
+    UNUSED(sCurrentPath);
+    UNUSED(iDepth);
+    UNUSED(eWalkEvent);
+    UNUSED(pvArg);
+
     if (!PlanObject::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;
     }
@@ -159,6 +164,11 @@ QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
   auto fVisitor = [&pHintList, szHintKey, pSqlOp]
       (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void* pvArg)
       -> GraphNav::eWalkCtrl {
+
+    UNUSED(sCurrentPath);
+    UNUSED(iDepth);
+    UNUSED(eWalkEvent);
+    UNUSED(pvArg);
 
     if (!PlanObject::bIsOfType(pNode)) {
       return GraphNav::WALK_CONTINUE;

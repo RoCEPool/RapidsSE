@@ -14,6 +14,7 @@
 #include "GraphNav.hpp"
 #include "TypeSystem.hpp"
 #include "TypeMap2D.hpp"
+#include "ComparisonExpr.hpp"
 
 using namespace Parser;
 
@@ -315,7 +316,8 @@ TypeId CastExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be coerced to a given data type via a cast     */
 /*----------------------------------------------------------------------------*/
-b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                      QueryNode* pParentExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
@@ -372,9 +374,55 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
       }
       break;
 
-//    case CT_INTERVAL_YM:
-//    case CT_INTERVAL_DT:
-      // no implicit casts needed for intervals
+    case CT_INTERVAL_YM:
+    case CT_INTERVAL_DT:
+      // We support the casting of a single field interval to an integer.
+      switch (xCurrentType.eIVVal()) {
+        case IV_YEAR:
+        case IV_MONTH:
+        case IV_DAY:
+        case IV_HOUR:
+        case IV_MINUTE:
+        case IV_SECOND:
+          if (eTargetTypeId == CT_INTEGER && pParentExpr && ComparisonExpr::bIsOfType(pParentExpr)) {
+
+            // There must be at least one integer child and any interval children must all be
+            // of the same type. Remember that a BETWEEN expr has more than 2 children.
+            bool bFoundInteger = false;
+            eIV eIvlType = IV_NONE;
+
+            PlanNodeIter* pChildIter = pParentExpr->pNewChildrenIter();
+            while (pChildIter->bHasNext()) {
+              PlanNode* pChild = pChildIter->pNext();
+              TypeId xChildType = Expr::xTypeId(_pQueryNode(pChild), pRootNode);
+
+              if (xChildType.eCTVal() == CT_INTEGER) {
+                bFoundInteger = true;
+                continue;
+              }
+              if (xChildType.eCTVal() == CT_INTERVAL_YM || xChildType.eCTVal() == CT_INTERVAL_DT) {
+                if (eIvlType == IV_NONE) {
+                  eIvlType = xChildType.eIVVal();
+                  continue;
+                }
+
+                if (eIvlType != xChildType.eIVVal()) {
+                  // Found more than 1 interval type. This can occur in a BETWEEN expression.
+                  delete pChildIter;
+                  return false;
+                }
+              }
+
+            }
+            delete pChildIter;
+            return bFoundInteger;
+          }
+          // TODO: Support casting an INTERVAL SECOND to a DECIMAL.
+
+        default:
+          break;
+      }
+      break;
 
     default:
       break;
