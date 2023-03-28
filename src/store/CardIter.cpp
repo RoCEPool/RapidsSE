@@ -340,7 +340,6 @@ void CardIter::G_vClearRegisters(void)
   ProjectionAnalysis.m_pProjection_running = nullptr;
 
   EarlyProject.m_pOP_root   = nullptr;
-  EarlyProject.m_pProjection_needed   = nullptr;
   EarlyProject.m_pNeeded   = nullptr;
 
   StreamOrder.m_pProjection_running = nullptr;

@@ -59,46 +59,37 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 
   RASSERT(bIsPartitionLevel());
 
-  RASSERT(! pCI->EarlyProject.m_pProjection_needed);
   RASSERT(! pCI->EarlyProject.m_pNeeded);
 
   Y_vSet(P_BreakPt);
 
-
-  pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
-
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
 
-  // get the needed form of ordAgg's projection
-  pCI->EarlyProject.m_pProjection_needed =
-      pCI->G.p_projection->pCraftInitial_projection_needed(pCI);
+  // get the root needed form of ordAgg's projection
+  pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
+  pCI->EarlyProject.m_pNeeded  = pCI->G.p_projection->pCraftRoot_needed(pCI);
 
-  Card_Projection* pProjectionNeeded =
-      pCI->EarlyProject.m_pProjection_needed->pClone();
-  pProjectionNeeded->vCard(CK_NEEDED);
-  pCI->EarlyProject.m_pNeeded = _pCard_Needed(pProjectionNeeded);
-
-  Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);
+  // insert empty early projection (has only needed) before this ordAgg
+  Card_Project* p_project_early = pCI->EarlyProject.m_pNeeded->pNew_project_early(pCI);
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-
   pCI->vPrintBoard();
+
 
   Card_OP::vEarly_project_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+
   pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
-  //pCI->G.p_key->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
-  //pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
 
   pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection;
 

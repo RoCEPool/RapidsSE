@@ -147,7 +147,6 @@ static Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
 static Stz* P_Level        = "eLevel"_Stz;
-static Stz* P_Needed       = "bNeeded"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_ParamOdn     = "szParamOdn"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;

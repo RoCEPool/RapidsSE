@@ -47,32 +47,6 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Project* Card_Project::pNew_project_early(CardIter* pCI)
-
-{
-  _static_
-
-  Card_Project* p_project_early = new Card_Project(CK_PROJECT);
-  p_project_early->Y_vSet(P_Early);
-
-  Card_Level* p_level = new Card_Level(AL_PARTITION);
-  p_project_early->vAppend(p_level);
-
-//  Card_Projection* p_projection_early = pCI->G.p_projection->pCraft_projection_early(pCI);
-//  p_project_early->vAppend(p_projection_early);
-
-
-  // debug
-  //p_project_early->vAppend(pCI->EarlyProject.m_pProjection_needed->pDupCardAndSubCards());
-
-  p_project_early->vAppend(pCI->EarlyProject.m_pNeeded->pClone());
-
-  return p_project_early;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -227,7 +201,7 @@ void Card_Project::vEarly_project_recurse(CardIter* pCI)
 
   Card_OP::vEarly_project_backstep(pCI);
 
-  // todo: arrived back ...
+  // ... arrived back ...
 
 }
 
