@@ -5,16 +5,22 @@
 
 #include <stdio.h>
 #include <string.h>
+
 #include "../src/primitives/BaseTypes_tcc.h"
 #include "../src/base/TccStuff.h"
 
 // function-vInflateCrw
 
 // marker-start
+
+#ifdef WITH_TINYC
+  #include "tcclib.h" // include libc header for TCC
+#endif
+
 /*--------------------------------------------------------------------*/
 /* flattened function -- CRWBUFFER                                    */
 /*--------------------------------------------------------------------*/
-int vInflateCrw(struct Combined_T* aCombinedT)
+int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
 {
 
   #include "../src/store/vFLAT_Parameters.h"

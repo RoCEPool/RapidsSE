@@ -79,6 +79,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
   s16KB sCode;
+  s256 sFunSignature;
+
   File* pFileHeader;
   File* pFunctionHeader;
   File* pFunctionFooter;
@@ -86,6 +88,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   bool  bOpened;
   bool bExtracted;
   i8 nFileSize;
+  bool bResult;
 
   // open the file header file
   pFileHeader = new File(this);
@@ -106,6 +109,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   pFunctionFooter = new File(this);
   bOpened = pFunctionFooter->bOpenRead("../src/store/Fragments/functionFooters.cpp"_Stz);
   RASSERT(bOpened);
+
+  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TCC");
 
   // read the file header in
   nFileSize = pFileHeader->iSize();
@@ -164,6 +169,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         pFunctionHeader->vSeekStart();
         bExtracted = CodeSynthUtils::bExtract(pFunctionHeader, pOpSketch, "vInflateCrw"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
+        //sFunSignature.vSprint("  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, m_szStageNm.azChar());
+        //bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_CRW__", sFunSignature.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());

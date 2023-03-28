@@ -82,16 +82,19 @@ void vInflateCrwBegin(Combined_T* aCombinedT) {
   // INFLATE-CRW
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
  L_InflateT:
 
- paW = &aCombinedT->m_aW[0];
 
- i_CurrentRow = -1;
+  paW = &aCombinedT->m_aW[0];
 
- // process the row
- aCombinedT->m_iProcessRow = 1;
+  i_CurrentRow = -1;
 
- aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;
+  // process the row
+  aCombinedT->m_iProcessRow = 1;
+
+  aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;
 
   // marker-end
 }
@@ -164,7 +167,6 @@ void vInflateCrwColLast(Combined_T* aCombinedT) {
 void vProjectBegin(Combined_T* aCombinedT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  struct __STRUCT_TO__*   p__STRUCT_TO__;
 
   char* szStrArea;
 
@@ -177,6 +179,8 @@ void vProjectBegin(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PROJECT-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
 

@@ -69,6 +69,10 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, S
       if (bFoundStart) {
 
         if (pColumn) {
+          s256 sColNm;
+          sColNm = pColumn->szColNm();
+          StrLib::vToUpper((char*)sColNm.azChar());
+
           if (StrLib::bContains(sLine.azChar(), "__COLUMN_NO__")) {
             s256 sColumn;
             StrLib::vSprint(sColumn,"%lld"_Stz,pColumn->iColumnNo());
@@ -76,11 +80,11 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, S
             RASSERT(bResult);
           }
           if (StrLib::bContains(sLine.azChar(), "__COLUMN_TO__")) {
-            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_TO__", (char*)pColumn->szColNm());
+            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_TO__", sColNm.azChar());
             RASSERT(bResult);
           }
           if (StrLib::bContains(sLine.azChar(), "__COLUMN_FROM__")) {
-            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_FROM__", (char*)pColumn->szColNm());
+            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_FROM__", sColNm.azChar());
             RASSERT(bResult);
           }
 

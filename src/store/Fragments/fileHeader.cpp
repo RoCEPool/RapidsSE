@@ -3,10 +3,12 @@
   /* Flattened code combinedOp                                          */
   /*====================================================================*/
 
+#ifdef WITH_TCC
+  #include "tcclib.h" // include libc header for TCC
+#else
   #include <stdio.h>
   #include <string.h>
-
-  //#include "tcclib.h" // include libc header for TCC
+#endif
 
   #include "../src/primitives/BaseTypes_tcc.h"
   #include "../src/base/TccStuff.h"
