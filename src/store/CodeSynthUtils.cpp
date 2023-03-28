@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode)
+bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode, Column* pColumn)
 {
 
   i8 nFileSize = pFile->iSize();
@@ -67,6 +67,24 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, S
     }
     else {
       if (bFoundStart) {
+
+        if (pColumn) {
+          if (StrLib::bContains(sLine.azChar(), "__COLUMN_NO__")) {
+            s256 sColumn;
+            StrLib::vSprint(sColumn,"%lld"_Stz,pColumn->iColumnNo());
+            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_NO__", sColumn.azChar());
+            RASSERT(bResult);
+          }
+          if (StrLib::bContains(sLine.azChar(), "__COLUMN_TO__")) {
+            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_TO__", (char*)pColumn->szColNm());
+            RASSERT(bResult);
+          }
+          if (StrLib::bContains(sLine.azChar(), "__COLUMN_FROM__")) {
+            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_FROM__", (char*)pColumn->szColNm());
+            RASSERT(bResult);
+          }
+
+        }
 
         if (StrLib::bContains(sLine.azChar(), "p__STRUCT_TO__")) {
           RASSERT( pOpSketch->m_eStencilTo != SR_NONE );

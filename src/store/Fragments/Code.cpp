@@ -241,7 +241,7 @@ i8 iTubBegin(Combined_T* aCombinedT) {
   // TUB
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  struct __STRUCT_TO__* pTub;
+  struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
 
@@ -256,7 +256,7 @@ i8 iTubBegin(Combined_T* aCombinedT) {
     return 0;
   }
 
-  pTub = (struct __STRUCT_TO__*)aCombinedT->m_aRowTub;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowTub;
 
   // marker-end
 
@@ -270,22 +270,74 @@ i8 iTubBegin(Combined_T* aCombinedT) {
 void vTubIntCol(Combined_T* aCombinedT) {
 
   struct __STRUCT_FROM__ {
-    union Int_T __INT_COL__;
+    union Int_T __COLUMN_FROM__;
   };
 
-  struct __STRUCT_TO__* p__STRUCT_FROM__;
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
   struct __STRUCT_TO__ {
-    union Int_T __INT_COL__;
+    union Int_T __COLUMN_TO__;
   };
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // column __COLUMN__
+  // column __COLUMN_NO__
 
-  p__STRUCT_TO__->__INT_COL__.m_iAsI8 = p__STRUCT_FROM__->__INT_COL__.m_iAsI8;
+  p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+
+  // marker-end
+}
+
+// function-vTubVchCol
+void vTubVchCol(Combined_T* aCombinedT) {
+
+  struct __STRUCT_FROM__ {
+    union Vch_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Vch_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  char* szSrcStz;
+  char* szDstStz;
+
+  i8  nSrcSize;
+  i8  iOffset;
+  m8* amCellAddress;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  // get the source string
+  szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iOffset;
+  if (szSrcStz == (char*)C_DATUM_NULL) {
+    // copy the source to the destination
+    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = C_DATUM_NULL;
+  }
+  else {
+    nSrcSize = strlen(szSrcStz) + 1;
+
+    // get the destination string
+    szDstStz = aCombinedT->m_racTubStrArea;
+    strncpy(szDstStz, szSrcStz, nSrcSize);
+
+    // copy the source to the destination
+    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
+    iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);
+    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
+
+    // update the tub string size
+    aCombinedT->m_racTubStrArea += nSrcSize;
+    //vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
+  }
 
   // marker-end
 }

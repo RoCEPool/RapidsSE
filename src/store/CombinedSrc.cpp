@@ -81,6 +81,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   s16KB sCode;
   File* pFileHeader;
   File* pFunctionHeader;
+  File* pFunctionFooter;
   File* pFileCode;
   bool  bOpened;
   bool bExtracted;
@@ -99,6 +100,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   // open the code fragments file
   pFileCode = new File(this);
   bOpened = pFileCode->bOpenRead("../src/store/Fragments/Code.cpp"_Stz);
+  RASSERT(bOpened);
+
+  // open the function footer file
+  pFunctionFooter = new File(this);
+  bOpened = pFunctionFooter->bOpenRead("../src/store/Fragments/functionFooters.cpp"_Stz);
   RASSERT(bOpened);
 
   // read the file header in
@@ -214,12 +220,21 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           pFileCode->vSeekStart();
 
           Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
+
           switch(pColumn->eColumnType()) {
-            CT_INTEGER:
-              //bExtracted = CodeSynthUtils::bExtractColumn(pFileCode, sColumn, pOpSketch, "marker-start"_Stz, "marker-end"_Stz, sCode);
+
+            case CT_INTEGER:
+              bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vTubIntCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
               RASSERT(bExtracted);
               StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
               break;
+
+            case CT_VARCHAR:
+              bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vTubVchCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
+              RASSERT(bExtracted);
+              StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+              break;
+
             default:
               break;
               //NEVER_REACH
@@ -234,7 +249,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     }
   }
 
-  StrLib::vAppendString(&m_azCodeCrs, "}");
+  sCode = ""_Stz;
+  pFunctionHeader->vSeekStart();
+  bExtracted = CodeSynthUtils::bExtract(pFunctionFooter, nullptr, "vInflateCrwEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  RASSERT(bExtracted);
+  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
   vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
 
