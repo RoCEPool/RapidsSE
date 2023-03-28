@@ -169,8 +169,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         pFunctionHeader->vSeekStart();
         bExtracted = CodeSynthUtils::bExtract(pFunctionHeader, pOpSketch, "vInflateCrw"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
-        //sFunSignature.vSprint("  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, m_szStageNm.azChar());
-        //bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_CRW__", sFunSignature.azChar());
+        sFunSignature.vSprint("iFun0_%s"_Stz, pStencil->szStageNm());
+        bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_CRW__", sFunSignature.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());

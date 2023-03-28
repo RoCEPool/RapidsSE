@@ -255,7 +255,9 @@ i8 iTubBegin(Combined_T* aCombinedT) {
   }
 
   // allocate a row from the tub
-  //aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+#ifdef WITH_TINYC
+  aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+#endif
   if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
@@ -340,7 +342,9 @@ void vTubVchCol(Combined_T* aCombinedT) {
 
     // update the tub string size
     aCombinedT->m_racTubStrArea += nSrcSize;
-    //vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
+#ifdef WITH_TINYC
+    vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
+#endif
   }
 
   // marker-end

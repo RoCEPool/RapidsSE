@@ -85,6 +85,7 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
   void *aEntFound;
   void *aCrwJ;
 
+  printf("HELLO WORLD\n");
   // marker-end
 
   L_InflateT:

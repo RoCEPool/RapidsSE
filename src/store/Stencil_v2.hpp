@@ -94,12 +94,11 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     static void vRepair(Object* pObject);
 
     void vCombine(bool bGenerateCCode);
-  
     Stz* szOpSource(void);
-
     void vPrint(void);
     void vSetup(Combined* pCombined, Stream* pStream);
     eEC  eSketch(Combined* pCombined, Stream* pStream);
+    Stz* szStageNm(void);
 
   private:
     void vAppendFuncEmpty(CodeSynth_v2* pCodeSynth, Stz* szDesc, Stz* szFunNm);
