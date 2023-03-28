@@ -19,7 +19,12 @@ namespace STORE
     Card_Expr* p_expr_fold(void);
     i8 i_Fold(void);
     Card_Fold* p_fold(void);
+
+    void vReprojection(CardIter* pCI);
+
     Card_Projection* p_projection_fold(void);
+
+    void vProjectionAnalysis(CardIter* pCI);
 
   };
 

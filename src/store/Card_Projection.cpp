@@ -92,68 +92,6 @@ Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* projection analysis (post fold)                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Projection::vProjection_Analysis_v2(CardIter* pCI)
-{
-  _static_
-
-  pCI->vRestart();
-  while (pCI->G_bEachMain(CK_TABLE))
-    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
-
-  bool bPostFold = false;
-
-  pCI->vRestart();
-  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection = nullptr;
-
-  while (pCI->G_bEachMain()) {
-
-    if (CK_FOLD == pCI->G.e_MainCard) {
-      bPostFold = true;
-      continue;
-    }
-
-    if (CK_TABLE == pCI->G.e_MainCard) {
-      pCI->G.p_table->vUpdate_projection_Off_running(pCI);
-      continue;
-    }
-
-    if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
-      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-        pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
-      continue;
-    }
-
-
-
-    //pCI->G.p_MainCard->vDump();
-
-    if (33 == pCI->G.p_MainCard->iCardNo())
-      vDebugPoint();
-
-    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-      if (pCI->ProjectionAnalysis.m_pProjection_running) {
-        pCI->G.p_key->vTypes_For_stmColOdn(pCI);
-        pCI->G.p_key->vRenumberAllExpr();
-      }
-    }
-
-    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
-
-      if (pCI->ProjectionAnalysis.m_pProjection_running) {
-        pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
-        pCI->G.p_projection->vRenumberAllExpr();
-      }
-
-      pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_MainCard->pSub_projection();
-    }
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* resolve (right-left) projection prior to main card                         */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)

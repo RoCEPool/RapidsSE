@@ -243,7 +243,7 @@ void PrepareSubQueries::vProjectionAnalysis(void)
 
   m_pCI->vTransform(__func__, "((desc))"_Stz);
 
-  Card_Projection::vProjection_Analysis_v2(m_pCI);
+  m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
 
   m_pCI->vEndTransform();
 }
