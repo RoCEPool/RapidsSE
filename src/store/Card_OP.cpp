@@ -199,16 +199,12 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       }
     }
 
-//    if (Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI)) {
-//      p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
-//      vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
-//      return C_CONTINUE_RECURSION;
-//    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
       return C_CONTINUE_RECURSION;
+
+    // column of this table
 
     Stz* szStmColOdn;
     s32 sColOfThisTable;
@@ -225,21 +221,6 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//  if ((pCI->G.p_key = pSub_key()) &&
-//        ! (bIsCard(CK_GBYAGG) || bIsCard(CK_PROJECT) || bIsCard(CK_INDEXJOIN) || bIsCard(CK_SORT))) {
-//    vTrace("CARD %s %s\n"_Stz,szCardNm(),szBearing());
-//    pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
-//  }
-//
-//  if (! (bIsCard(CK_INDEXJOIN) || bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS))) {
-//    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
-//      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
-//        vTrace("CARD %s %s\n"_Stz, szCardNm(), szBearing());
-//        p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
-//      }
-//    }
-//  }
 
   if (bIsCard(CK_PROJECT)) {
     if ((pCI->G.p_key = pSub_key()))
