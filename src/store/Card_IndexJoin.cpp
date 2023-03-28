@@ -112,7 +112,8 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
 
   Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);
-  pCI->G_vInsertAfter(p_project_early, this);
+  pCI->G_vInsertBefore(p_project_early, this);
+  pCI->G_vMainResynch();
 
   delete pCI->EarlyProject.m_pProjection_needed;
   pCI->EarlyProject.m_pProjection_needed = p_projection_needed_save;

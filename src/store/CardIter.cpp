@@ -1206,6 +1206,21 @@ bool CardIter::bJustRestarted(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::G_vMainResynch(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  for (G.xKid.vChild(-1); G.xKid.bEach(); /**/)
+    if (G.p_MainCard == G.xKid.pChild())
+      break;
+
+  RASSERT(G.p_MainCard == G.xKid.pChild());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* update member card                                                         */
 /*----------------------------------------------------------------------------*/
 Stz* CardIter::szMemberNm(eCK eMember)

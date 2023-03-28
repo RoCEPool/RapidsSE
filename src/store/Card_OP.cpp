@@ -401,7 +401,7 @@ bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
   if (CK_NONE    == eChild_prev ||
       CK_GBYAGG  == eChild_prev ||
       CK_ORDAGG  == eChild_prev ||
-      CK_PROJECT == eChild_prev)
+      (CK_PROJECT == eChild_prev && ! pChild_prev->pSub_needed()))
     return true;
 
   return false;

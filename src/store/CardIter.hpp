@@ -130,6 +130,7 @@ namespace STORE
 
     bool bJustRestarted(void);
 
+    void G_vMainResynch(void);
     Stz* szMemberNm(eCK eMember);
     bool bMore(void);
     bool G_bMoreMain(void);

@@ -79,6 +79,10 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   pProjectionNeeded->vCard(CK_NEEDED);
   pCI->EarlyProject.m_pNeeded = _pCard_Needed(pProjectionNeeded);
 
+  Card_Project* p_project_early = Card_Project::pNew_project_early(pCI);
+  pCI->G_vInsertBefore(p_project_early, this);
+  pCI->G_vMainResynch();
+
 
   pCI->vPrintBoard();
 

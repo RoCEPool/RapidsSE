@@ -61,8 +61,8 @@ Card_Project* Card_Project::pNew_project_early(CardIter* pCI)
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   p_project_early->vAppend(p_level);
 
-  Card_Projection* p_projection_early = pCI->G.p_projection->pCraft_projection_early(pCI);
-  p_project_early->vAppend(p_projection_early);
+//  Card_Projection* p_projection_early = pCI->G.p_projection->pCraft_projection_early(pCI);
+//  p_project_early->vAppend(p_projection_early);
 
 
   // debug
