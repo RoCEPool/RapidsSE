@@ -226,14 +226,24 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if ((pCI->G.p_key = pSub_key()))
-    pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
-
-  if (Card_IndexList* p_indexList_curr = pSub_indexList())
-    if (Card_Index* p_index_chosen = p_indexList_curr->pFindChosenIndex())
-      p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
+//  if ((pCI->G.p_key = pSub_key()) &&
+//        ! (bIsCard(CK_GBYAGG) || bIsCard(CK_PROJECT) || bIsCard(CK_INDEXJOIN) || bIsCard(CK_SORT))) {
+//    vTrace("CARD %s %s\n"_Stz,szCardNm(),szBearing());
+//    pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
+//  }
+//
+//  if (! (bIsCard(CK_INDEXJOIN) || bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS))) {
+//    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
+//      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
+//        vTrace("CARD %s %s\n"_Stz, szCardNm(), szBearing());
+//        p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
+//      }
+//    }
+//  }
 
   if (bIsCard(CK_PROJECT)) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
     pCI->G.p_projection = pSub_projection();
     pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
   }
@@ -249,14 +259,39 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   }
 
   if (bIsCard(CK_GBYAGG) && bIsPartitionLevel()) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
     pCI->G.p_projection = pSub_projection();
     pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
   }
 
+  if (bIsCard(CK_INDEXJOIN)) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
+
+    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
+      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
+        p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
+      }
+    }
+
+  }
+
   if (bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS)) {
+    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
+      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
+        p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
+      }
+    }
+
     pCI->G.p_constraint = pSub_constraint();
     pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
     pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bLambdaFn);
+  }
+
+  if (bIsCard(CK_SORT)) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
   }
 
   if (Y_bHas(P_BreakPt)) {
