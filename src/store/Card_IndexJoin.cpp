@@ -80,13 +80,13 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
-  Card_Needed* p_needed_save = pCI->EarlyProject.m_pNeeded->pClone();
+  Card_Needed* p_needed_save = pCI->Early.m_pNeeded->pClone();
 
   // check for additional/temporary transients
   vEarly_project_add_transients(pCI);
 
   // insert new empty early project (has only needed) before this indexJoin
-  Card_Project* p_project_early = pCI->EarlyProject.m_pNeeded->pNew_project_early(pCI);
+  Card_Project* p_project_early = pCI->Early.m_pNeeded->pNew_project_early(pCI);
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
@@ -103,10 +103,10 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
   pCI->vPrintBoard();
 
   // restore needed
-  delete pCI->EarlyProject.m_pNeeded;
-  pCI->EarlyProject.m_pNeeded = p_needed_save;
+  delete pCI->Early.m_pNeeded;
+  pCI->Early.m_pNeeded = p_needed_save;
 
-  pCI->ProjectionAnalysis.m_pProjection_running = p_project_early->pSub_projection();
+  pCI->Analysis.m_pProjection = pSub_projection();
 
   pCI->vPrintBoard();
 
@@ -139,18 +139,18 @@ void Card_IndexJoin::vEarly_project_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (! pCI->EarlyProject.m_pNeeded->pFind_expr_With_projectedCol(pCI->G.p_term)) {
+  if (! pCI->Early.m_pNeeded->pFind_expr_With_projectedCol(pCI->G.p_term)) {
 
-    pCI->EarlyProject.m_pNeeded->vDump();
+    pCI->Early.m_pNeeded->vDump();
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(pCI->G.p_term)) {
       p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
-      pCI->EarlyProject.m_pNeeded->vAppend(p_expr_clone);
-      pCI->EarlyProject.m_pNeeded->vRenumberAllExpr();
+      pCI->Early.m_pNeeded->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded->vRenumberAllExpr();
     }
 
-    pCI->EarlyProject.m_pNeeded->vDump();
+    pCI->Early.m_pNeeded->vDump();
 
     vDebugPoint();
   }

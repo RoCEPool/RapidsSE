@@ -106,7 +106,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   if (pCI->G.p_cmpPred->bIsValue("notIn"_Stz) || pCI->G.p_cmpPred->bIsValue("notExists"_Stz))
     p_table_exists->vAppend(new Card_KeyNotExists);
 
-  pCI->ProjectionAnalysis.m_pProjection_running = p_projection_table;
+  pCI->Analysis.m_pProjection = p_projection_table;
   pCI->G.p_cmpPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);

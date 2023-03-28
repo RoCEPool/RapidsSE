@@ -337,10 +337,10 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol      = nullptr;
 
-  ProjectionAnalysis.m_pProjection_running = nullptr;
+  Analysis.m_pProjection = nullptr;
 
-  EarlyProject.m_pOP_root   = nullptr;
-  EarlyProject.m_pNeeded   = nullptr;
+  Early.m_pOP_root   = nullptr;
+  Early.m_pNeeded   = nullptr;
 
   StreamOrder.m_pProjection_running = nullptr;
   StreamOrder.m_pKey_running        = nullptr;

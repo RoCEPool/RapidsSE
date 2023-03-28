@@ -110,15 +110,15 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 
   RASSERT(bIsPartitionLevel());
 
-  RASSERT(! pCI->EarlyProject.m_pNeeded);
+  RASSERT(! pCI->Early.m_pNeeded);
 
-  pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
+  pCI->Early.m_pOP_root = (Card_OP*)this;
 
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
 
   // get the needed form of ordAgg's projection
-  pCI->EarlyProject.m_pNeeded =
+  pCI->Early.m_pNeeded =
       pCI->G.p_projection->pCraftRoot_needed(pCI);
 
   pCI->vPrintBoard();
@@ -130,14 +130,14 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
   pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();
-  pCI->G.p_key->vFlipTerms(pCI->EarlyProject.m_pNeeded);
+  pCI->G.p_key->vFlipTerms(pCI->Early.m_pNeeded);
 
   pCI->vPrintBoard();
 
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pNeeded);
+  pCI->G.p_projection->vFlipTerms(pCI->Early.m_pNeeded);
 
-  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection;
+  pCI->Analysis.m_pProjection = pCI->G.p_projection;
 
   pCI->vPrintBoard();
 
@@ -150,14 +150,14 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 //
 //  RASSERT(bIsPartitionLevel());
 //
-//  RASSERT(! pCI->EarlyProject.m_pProjection_needed);
+//  RASSERT(! pCI->Early.m_pProjection_needed);
 //
-//  pCI->EarlyProject.m_pOP_root = (Card_OP*)this;
+//  pCI->Early.m_pOP_root = (Card_OP*)this;
 //
 //  pCI->G.p_key = pSub_key();
 //
 //  // get the needed form of ordAgg's projection
-//  pCI->EarlyProject.m_pProjection_needed =
+//  pCI->Early.m_pProjection_needed =
 //      pSub_projection()->pCraftRoot_needed(pCI);
 //
 //  Card_OP::vEarly_project_backstep(pCI);
@@ -166,14 +166,14 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 //  pCI->vPrintBoard();
 //
 //  pCI->G.p_key = pSub_key();
-//  pCI->G.p_key->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//  pCI->G.p_key->vFlipTerms(pCI->Early.m_pProjection_needed);
 //
 //  pCI->vPrintBoard();
 //
 //  pCI->G.p_projection = pSub_projection();
-//  pCI->G.p_projection->vFlipTerms(pCI->EarlyProject.m_pProjection_needed);
+//  pCI->G.p_projection->vFlipTerms(pCI->Early.m_pProjection_needed);
 //
-//  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_projection;
+//  pCI->Analysis.m_pProjection = pCI->G.p_projection;
 //
 //  pCI->vPrintBoard();
 //
@@ -243,7 +243,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
     pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+  pCI->Analysis.m_pProjection = pSub_projection();
 
   pCI->G.pDeck->vRenumberRecursive();
 }
@@ -284,7 +284,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+    if (pCI->Analysis.m_pProjection) {
       pCI->G.p_key->vTypes_For_stmColOdn(pCI);
       pCI->G.p_key->vRenumberAllExpr();
     }
@@ -292,7 +292,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
-    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+    if (pCI->Analysis.m_pProjection) {
       pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
       pCI->G.p_projection->vRenumberAllExpr();
     }

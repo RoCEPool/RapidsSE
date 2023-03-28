@@ -191,12 +191,12 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
       break;
 
     if (Card_Projection* p_projection = pCI->G.p_MainCard->pSub_projection())
-      pCI->ProjectionAnalysis.m_pProjection_running = p_projection;
+      pCI->Analysis.m_pProjection = p_projection;
   }
 
   RASSERT(CK_FOLD == pCI->G.e_MainCard);
 
-  pCI->G.p_fold->vAppend(pCI->ProjectionAnalysis.m_pProjection_running->pDupCardAndSubCards());
+  pCI->G.p_fold->vAppend(pCI->Analysis.m_pProjection->pDupCardAndSubCards());
 
   pCI->G.pDeck->vRenumberRecursive();
 
@@ -266,7 +266,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
   while (pCI->G_bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_projection())
-      pCI->ProjectionAnalysis.m_pProjection_running =
+      pCI->Analysis.m_pProjection =
           pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
 
     if (pCI->G_bIsNextMain(CK_FOLD))
@@ -409,7 +409,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   while (pCI->G_bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_projection())
-      pCI->ProjectionAnalysis.m_pProjection_running =
+      pCI->Analysis.m_pProjection =
           pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
 
     if (pCI->G_bIsNextMain(CK_FOLD))

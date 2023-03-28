@@ -58,40 +58,6 @@ Card_Projection::~Card_Projection(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* craft projection for a new early project to be inserted after current op   */
-/* from this denoted projection of current op                                 */
-/*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pCraft_projection_early(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Projection* p_projection_early = new Card_Projection;
-
-  //pCI->EarlyProject.m_pNeeded->vDump();
-
-  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
-    xKid.p_expr()->vDump();
-
-    if (! pCI->EarlyProject.m_pNeeded->pHasSame(xKid.p_expr()))
-      continue;
-    if (p_projection_early->pHasSame(xKid.p_expr()))
-      continue;
-
-    // denoted expr (of this denoted projection of denoted main op)
-    //   is needed and not yet in early projection
-
-    Card_Expr* p_expr_early = xKid.p_expr()->pCraft_expr_early(pCI);
-    p_projection_early->vAppend(p_expr_early);
-    p_expr_early->vRenumber(p_projection_early->nChildCards());
-  }
-
-
-  p_projection_early->vDump();
-
-  return p_projection_early;
-}
-
-/*----------------------------------------------------------------------------*/
 /* resolve (right-left) projection prior to main card                         */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)

@@ -596,7 +596,7 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
     if (Card::bIsStreamColOrdinal(xKid.p_term()->szValue())) {
 
       Card_Expr *p_expr_found =
-          pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
+          pCI->Analysis.m_pProjection->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
       xKid.p_term()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 
       continue;

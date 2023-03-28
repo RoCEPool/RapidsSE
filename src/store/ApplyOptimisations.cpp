@@ -473,7 +473,7 @@ void ApplyOptimisations::vEarly_projections(void)
   m_pCI->vPrintBoard();
 
 
-  RASSERT(nullptr == m_pCI->EarlyProject.m_pNeeded);
+  RASSERT(nullptr == m_pCI->Early.m_pNeeded);
 
   bool bEarlyRoot = false;
   while (m_pCI->G_bEachMain_reverse())
@@ -485,11 +485,11 @@ void ApplyOptimisations::vEarly_projections(void)
   if (bEarlyRoot)
     m_pCI->G.p_OP->vEarly_project_root(m_pCI);
 
-  if (m_pCI->EarlyProject.m_pNeeded) {
-    DELETE_CARD(m_pCI->EarlyProject.m_pNeeded);
+  if (m_pCI->Early.m_pNeeded) {
+    DELETE_CARD(m_pCI->Early.m_pNeeded);
   }
 
-  m_pCI->EarlyProject.m_pOP_root = nullptr;
+  m_pCI->Early.m_pOP_root = nullptr;
 
   m_pCI->vEndTransform();
   vDebugPoint();

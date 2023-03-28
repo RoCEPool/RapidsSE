@@ -6,6 +6,7 @@
 
 #include "Card_As.hpp"
 #include "Card_Level.hpp"
+#include "Card_Projection.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
@@ -137,6 +138,41 @@ void Card_Project::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* craft projection for a new early project to be inserted after current op   */
+/* from this denoted projection of current op                                 */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Projection* p_projection_early = new Card_Projection;
+
+  //pCI->Early.m_pNeeded->vDump();
+
+  for (Kid xKid(pCI->Analysis.m_pProjection); xKid.bEach(CK_EXPR); /**/) {
+    xKid.p_expr()->vDump();
+
+    if (! pCI->Early.m_pNeeded->pHasSame(xKid.p_expr()))
+      continue;
+    if (p_projection_early->pHasSame(xKid.p_expr()))
+      continue;
+
+    // denoted expr (of this denoted projection of denoted main op)
+    //   is needed and not yet in early projection
+
+    Card_Expr* p_expr_early = xKid.p_expr()->pCraft_expr_early(pCI);
+    p_projection_early->vAppend(p_expr_early);
+    p_expr_early->vRenumber(p_projection_early->nChildCards());
+  }
+
+
+  p_projection_early->vDump();
+
+  return p_projection_early;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Project::vDerive_Projection_Key(CardIter* pCI)
@@ -158,47 +194,6 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* early project check                                                        */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vEarly_project_check(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(pCI->G.p_bound);
-
-
-  // todo: ...
-
-  Card_Term* p_term_bound = pCI->G.p_bound->pGet_tblColOdn();
-  p_term_bound->vDump();
-
-  Card* pPrevChild = pCI->pPrevChild();
-
-  if (pPrevChild->bIsCard(CK_INDEXJOIN)) {
-    pCI->G.p_indexJoin = _pCard_IndexJoin(pPrevChild);
-    pCI->G.p_projection = pCI->G.p_indexJoin->pSub_projection();
-
-    // todo: ...
-  }
-  else
-  if (pPrevChild->bIsCard(CK_INDEXSCAN)) {
-    pCI->G.p_indexScan = _pCard_IndexScan(pPrevChild);
-    pCI->G.p_projection = pCI->G.p_indexScan->pSub_projection();
-
-    // todo: ...
-  }
-  else
-  if (pPrevChild->bIsCard(CK_SCAN)) {
-    pCI->G.p_scan = _pCard_Scan(pPrevChild);
-    pCI->G.p_projection = pCI->G.p_scan->pSub_projection();
-
-    // todo: ...
-  }
-
-  // todo: ...
-}
-
-/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_Project::vEarly_project_recurse(CardIter* pCI)
@@ -207,8 +202,20 @@ void Card_Project::vEarly_project_recurse(CardIter* pCI)
 
   Card_OP::vEarly_project_backstep(pCI);
 
-  // ... arrived back ...
+  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+  if (! (pCI->G.p_needed = pSub_needed()))
+    return;
+
+  pCI->G.p_projection = pCraft_projection_early(pCI);
+
+  vInsertBefore(pCI->G.p_projection,pCI->G.p_needed);
+
+  pCI->Analysis.m_pProjection = pCI->G.p_projection;
+
+  pCI->vPrintBoard();
+
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,7 +260,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
     pCI->G.p_project->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+  pCI->Analysis.m_pProjection = pSub_projection();
 
 }
 
@@ -270,7 +277,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);
   }
 
-  pCI->ProjectionAnalysis.m_pProjection_running = pSub_projection();
+  pCI->Analysis.m_pProjection = pSub_projection();
 
 }
 

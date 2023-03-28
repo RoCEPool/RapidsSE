@@ -33,11 +33,11 @@ namespace STORE
       Card_OP*          m_pOP_root;
       //Card_Projection * m_pProjection_needed;
       Card_Needed *     m_pNeeded;
-    } EarlyProject;
+    } Early;
 
     struct {
-      Card_Projection * m_pProjection_running;
-    } ProjectionAnalysis;
+      Card_Projection * m_pProjection;
+    } Analysis;
 
     struct {
       i8         m_i_SubQuery;

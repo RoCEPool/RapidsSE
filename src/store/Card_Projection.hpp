@@ -17,7 +17,6 @@ namespace STORE
     Card_Projection(eCK eCard);
    ~Card_Projection(void) noexcept(false);
 
-    Card_Projection* pCraft_projection_early(CardIter* pCI);
 
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 

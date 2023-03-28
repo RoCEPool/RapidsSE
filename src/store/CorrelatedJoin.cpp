@@ -179,7 +179,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   while (! pCI->G.p_MainCard->pSub_projection())
     pCI->G_bEachMain_reverse();
 
-  pCI->ProjectionAnalysis.m_pProjection_running = pCI->G.p_MainCard->pSub_projection();
+  pCI->Analysis.m_pProjection = pCI->G.p_MainCard->pSub_projection();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
@@ -472,7 +472,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           xCI.G.p_MainCard->vValue("$1"_Stz);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
-              pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(0);
+              pCI->Analysis.m_pProjection->pGetExpr(0);
 
           xCI.G.p_MainCard->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 
@@ -568,7 +568,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
 
 
           Card_Expr* p_expr_found =
-              pCI->ProjectionAnalysis.m_pProjection_running->pGetExpr(1);
+              pCI->Analysis.m_pProjection->pGetExpr(1);
 
           p_term_new->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 

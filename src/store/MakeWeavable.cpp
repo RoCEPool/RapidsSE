@@ -298,7 +298,7 @@ void MakeWeavable::vTblColToStmCol(void)
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
     if (m_pCI->G.p_OP->pSub_projection())
-      m_pCI->ProjectionAnalysis.m_pProjection_running =
+      m_pCI->Analysis.m_pProjection =
           m_pCI->G.p_OP->pSub_projection();
   }
   m_pCI->vEndTransform();

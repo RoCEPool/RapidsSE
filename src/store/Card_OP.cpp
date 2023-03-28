@@ -187,9 +187,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (! p_term->bIsTblColOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->ProjectionAnalysis.m_pProjection_running) {
+    if (pCI->Analysis.m_pProjection) {
       if (Card_Expr* p_expr_col =
-          pCI->ProjectionAnalysis.m_pProjection_running->pFind_expr_By_projectedCol(p_term->szValue())) {
+          pCI->Analysis.m_pProjection->pFind_expr_By_projectedCol(p_term->szValue())) {
         p_term->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
         vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
         return C_CONTINUE_RECURSION;
@@ -257,6 +257,8 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       }
     }
 
+    pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
   }
 
   if (bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS)) {
@@ -329,7 +331,7 @@ void Card_OP::vEarly_project_backstep(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->EarlyProject.m_pNeeded);
+  RASSERT(pCI->Early.m_pNeeded);
 
   if (bIsEarlyLeaf(pCI))
     return;
@@ -592,9 +594,9 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     vRemoveChild(p_projection_needed);
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_projection = _pCard_Projection(pCI->ProjectionAnalysis.m_pProjection_running->pDupCardAndSubCards());
+    p_projection = _pCard_Projection(pCI->Analysis.m_pProjection->pDupCardAndSubCards());
     vAppend(p_projection);
-    pCI->ProjectionAnalysis.m_pProjection_running = p_projection;
+    pCI->Analysis.m_pProjection = p_projection;
     if (p_projection_needed)
       vAppend(p_projection_needed);
     return;
@@ -607,8 +609,8 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  if (pCI->ProjectionAnalysis.m_pProjection_running)
-    p_projection = pCI->ProjectionAnalysis.m_pProjection_running->pClone();
+  if (pCI->Analysis.m_pProjection)
+    p_projection = pCI->Analysis.m_pProjection->pClone();
   else
     p_projection = new Card_Projection;
 
@@ -651,7 +653,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   vAppend(p_projection);
 
-  pCI->ProjectionAnalysis.m_pProjection_running = p_projection;
+  pCI->Analysis.m_pProjection = p_projection;
 
   if (p_projection_needed)
     vAppend(p_projection_needed);
