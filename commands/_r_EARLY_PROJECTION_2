@@ -32,8 +32,10 @@ select
 
    and c_custkey > 10
 
- group by O_ORDERKEY
- order by O_ORDERKEY
+ group
+       by o_orderkey
+ order
+       by o_orderkey
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
