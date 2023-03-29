@@ -21,6 +21,10 @@ namespace STORE
                                            char cTblSyn_boundedTo);
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 
+    eXK eNextCast(Card_TablePtn* p_tablePtn_prior,
+                  Card_TablePtn* p_tablePtn_later,
+                  Card_Index*    p_index_later,
+                  Card_Term*&    rp_term_tblCol_to_be_hashed);
 
     Card_Term* pGetTerm(i8 i_Term);
 

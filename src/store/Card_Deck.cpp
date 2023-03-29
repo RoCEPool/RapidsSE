@@ -43,9 +43,9 @@ Card_Deck::~Card_Deck(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add stage casts                                                            */
+/* add next casts                                                             */
 /*----------------------------------------------------------------------------*/
-void Card_Deck::vAddStageCasts(CardIter* pCI)
+void Card_Deck::vAddNextCasts(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,8 +65,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
         CK_SCAN == pCI->G.e_MainCard) {
       if (p_main_prior) {
         i8 nSkip;
-        eXK eCast = pCI->G.pDeck->eAddStageCast(pCI, p_main_prior, p_combined_prior, p_next_prior,
-                                                /*&*/nSkip);
+        eXK eCast = pCI->G.pDeck->eAddNextCast(pCI, p_main_prior, p_combined_prior, p_next_prior,
+            /*&*/nSkip);
         while (nSkip--)
           pCI->G_vSkipNextMain();
         if (XK_UNICAST != eCast) {
@@ -94,11 +94,11 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eXK Card_Deck::eAddStageCast(CardIter*      pCI,
-                             Card_OP*       p_main_prior,
-                             Card_Combined* p_combined_prior,
-                             Card_Next*     p_next_prior,
-                             i8&            rnSkip)
+eXK Card_Deck::eAddNextCast(CardIter*      pCI,
+                            Card_OP*       p_main_prior,
+                            Card_Combined* p_combined_prior,
+                            Card_Next*     p_next_prior,
+                            i8&            rnSkip)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -114,11 +114,11 @@ eXK Card_Deck::eAddStageCast(CardIter*      pCI,
   Card_Hash* p_hash_prior_new;
   Card_Term* p_term_tblCol_to_be_hashed;
 
-  eXK eCastKind = p_bounds_later->eCastKind(p_tablePtn_prior,
-                                            p_tablePtn_later,
-                                            p_index_later,
+  eXK eNextCast = p_bounds_later->pSub_bound()->eNextCast(p_tablePtn_prior,
+                                                          p_tablePtn_later,
+                                                          p_index_later,
       /*&*/p_term_tblCol_to_be_hashed);
-  switch (eCastKind) {
+  switch (eNextCast) {
     case XK_BROADCAST:
       p_next_prior->vValue("broadcast"_Stz);
 

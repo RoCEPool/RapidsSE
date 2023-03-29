@@ -149,6 +149,40 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eXK Card_Bound::eNextCast(Card_TablePtn* p_tablePtn_prior,
+                          Card_TablePtn* p_tablePtn_later,
+                          Card_Index*    p_index_later,
+                          Card_Term*&    rp_term_tblCol_to_be_hashed)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term*  p_term_tblColOdn_later = pGet_tblColOdn();
+  Card_Term*  p_term_idxColOdn_later = pGet_idxColOdn();
+
+  Card_IdxColList* p_idxColList_later = p_index_later->pSub_idxColList();
+  Card_IdxCol *p_idxCol_later =
+      p_idxColList_later->pGetIdxCol_byIdxColOdn(p_term_idxColOdn_later->szValue());
+
+  if (! p_term_tblColOdn_later)
+    return XK_BROADCAST;
+
+  if (p_idxCol_later->bSameValue(p_tablePtn_later))
+    // + later index is on table ptn
+    if (p_term_tblColOdn_later->bSameValue(p_tablePtn_prior))
+      // + prior table column is same later table column
+      return XK_UNICAST;
+    else {
+      rp_term_tblCol_to_be_hashed = p_term_tblColOdn_later;
+      return XK_HASHCAST;
+    }
+  else
+    return XK_BROADCAST;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Term* Card_Bound::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
