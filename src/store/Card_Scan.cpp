@@ -104,17 +104,13 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
- void Card_Scan::vEarly_project_leaf_add(CardIter* pCI)
+ void Card_Scan::vEarly_project_leaf(CardIter* pCI)
  {
    vDump(0,(Stz*)__func__);
 
    _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-   Card_OP::vEarly_project_backstep(pCI);
-
-   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
-
-   RASSERT(pCI->Early.m_pOP_leaf);
+   pCI->Early.m_pOP_leaf = this;
 
    pCI->Analysis.m_pProjection_prior = pSub_projection();
 

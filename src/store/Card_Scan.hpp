@@ -22,7 +22,7 @@ namespace STORE
 
     void vComputeProjection(CardIter* pCI); // prototype
 
-    void vEarly_project_leaf_add(CardIter* pCI);
+    void vEarly_project_leaf(CardIter* pCI);
 
   };
 

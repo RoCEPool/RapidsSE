@@ -195,6 +195,23 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
+void Card_Project::vEarly_project_leaf(CardIter* pCI)
+{
+  vDump(0,(Stz*)__func__);
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->Early.m_pOP_leaf = this;
+
+  pCI->vPrintBoard();
+
+  vDebugPoint();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* early project                                                              */
+/*----------------------------------------------------------------------------*/
 void Card_Project::vEarly_project_recurse(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);

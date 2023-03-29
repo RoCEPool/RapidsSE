@@ -341,10 +341,12 @@ void Card_OP::vEarly_project_backstep(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pNeeded_later);
 
-  if (bIsEarlyLeaf(pCI)) {
-    pCI->Early.m_pOP_leaf = pCI->G.p_OP;
-    return;
-  }
+  Card_OP* p_OP_leaf_maybe = pCI->G.p_OP;
+
+//  if (bIsEarlyLeaf(pCI)) {
+//    pCI->Early.m_pOP_leaf = pCI->G.p_OP;
+//    return;
+//  }
 
   while (pCI->G_bEachMain_reverse()) {
 
@@ -353,18 +355,25 @@ void Card_OP::vEarly_project_backstep(CardIter* pCI)
       // -- -- -- -- -- -- --
       case CK_GBYAGG:
         // temp: don't go any further
+        pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
         return;
 
       case CK_ORDAGG:
         // temp: don't go any further
+        pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
         return;
 
       // -- -- -- -- -- -- --
       case CK_PROJECT:
         // recurse into...
-        pCI->vSave();
-        pCI->G.p_project->vEarly_project_recurse(pCI);
-        pCI->vRestore();
+        if (pCI->G.p_project->pSub_needed()) {
+          pCI->vSave();
+          pCI->G.p_project->vEarly_project_recurse(pCI);
+          pCI->vRestore();
+        }
+        else {
+          pCI->G.p_project->vEarly_project_leaf(pCI);
+        }
         return;
 
       case CK_INDEXJOIN:
@@ -377,21 +386,22 @@ void Card_OP::vEarly_project_backstep(CardIter* pCI)
       case CK_INDEXSCAN:
         // recurse into...
         pCI->vSave();
-        pCI->G.p_indexScan->vEarly_project_leaf_add(pCI);
+        pCI->G.p_indexScan->vEarly_project_leaf(pCI);
         pCI->vRestore();
         return;
 
       case CK_SCAN:
         // recurse into...
         pCI->vSave();
-        pCI->G.p_scan->vEarly_project_leaf_add(pCI);
+        pCI->G.p_scan->vEarly_project_leaf(pCI);
         pCI->vRestore();
         return;
 
       // -- -- -- -- -- -- --
       default:
         // repeat while so as to move to previous card
-        break;
+        pCI->G.p_MainCard->vDump();
+        NEVER_REACH
     }
   }
 
