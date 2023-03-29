@@ -85,6 +85,8 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_IndexScan::vEarly_project_leaf_add(CardIter* pCI)
 {
+  vDump(0,(Stz*)__func__);
+
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_OP::vEarly_project_backstep(pCI);

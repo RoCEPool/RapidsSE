@@ -76,7 +76,20 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 {
+  vDump(0,(Stz*)__func__);
+
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
+
+    pCI->Early.m_pOP_leaf = this;
+    pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+    pCI->vPrintBoard();
+    return;
+
+
+  }
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
@@ -90,6 +103,7 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
+  pCI->G.pDeck->vRenumberRecursive();
   pCI->vPrintBoard();
 
   Card_OP::vEarly_project_backstep(pCI);

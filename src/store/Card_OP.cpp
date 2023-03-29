@@ -410,10 +410,11 @@ bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
   Card* pChild_prev = pCI->pPrevChild();
   eCK   eChild_prev = pChild_prev ? pChild_prev->eCard() : CK_NONE;
 
-  if (CK_NONE    == eChild_prev ||
-      CK_GBYAGG  == eChild_prev ||
-      CK_ORDAGG  == eChild_prev ||
-      (CK_PROJECT == eChild_prev && ! pChild_prev->pSub_needed()))
+  if (CK_NONE      == eChild_prev ||
+      CK_CROSSJOIN == eChild_prev ||
+      CK_GBYAGG    == eChild_prev ||
+      CK_ORDAGG    == eChild_prev ||
+      (CK_PROJECT  == eChild_prev && ! pChild_prev->pSub_needed()))
     return true;
 
   return false;

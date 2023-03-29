@@ -55,11 +55,16 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 {
+  vDump(0,(Stz*)__func__);
+
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(bIsPartitionLevel());
 
   RASSERT(! pCI->Early.m_pNeeded_later);
+
+  if (pCI->pPrevChild()->bIsCard(CK_PROJECT))
+    return;
 
   Y_vSet(P_BreakPt);
 
@@ -76,6 +81,7 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
+  pCI->G.pDeck->vRenumberRecursive();
   pCI->vPrintBoard();
 
 
