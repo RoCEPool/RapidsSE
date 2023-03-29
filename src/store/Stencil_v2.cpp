@@ -595,7 +595,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupProjectExp(pCombined, pStream, pOp);
+        vSetupProject(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pOpSketch = pSketchProject(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
@@ -627,6 +627,12 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       //pPotTubSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
     }
     else {
+
+      Op* pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupTub(pCombined, pStream, pLastOp);
+
       pPotTubSketch = pSketchTub(pOpSketch, sLabelLoop, ePrevStencil_v2);
     }
 
@@ -701,7 +707,7 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
-    if (pOp->szOpNm()->bSame("filter"_Stz)) {
+    if (pOp->szOpNm()->bSame("filter_v2"_Stz)) {
       continue;
     }
 
@@ -717,18 +723,18 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp / projectOP
-    if (pOp->szOpNm()->bSame("project"_Stz)) {
+    if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
 
-      if (eExprKind == EK_PROJECT) {
-        vSetupProjectExp(pCombined, pStream, pOp);
-      }
-      else {
-        RASSERT(eExprKind == EK_AGGREG);
-        vSetupProjectAgg(pCombined, pStream, pOp);
-      }
+      //if (eExprKind == EK_PROJECT) {
+        vSetupProject(pCombined, pStream, pOp);
+      //}
+      //else {
+      //  RASSERT(eExprKind == EK_AGGREG);
+      //  vSetupProjectAgg(pCombined, pStream, pOp);
+      //}
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1164,7 +1170,7 @@ void Stencil_v2::vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* set up for project expression                                              */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupProject(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1178,7 +1184,26 @@ void Stencil_v2::vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp)
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
                                       &pCombined->aCombinedT()->m_racStrAreaP);
   pCombined->aCombinedT()->m_racStrAreaPSav = pCombined->aCombinedT()->m_racStrAreaP;
+}
 
+/*----------------------------------------------------------------------------*/
+/* set up for project expression                                              */
+/*----------------------------------------------------------------------------*/
+void Stencil_v2::vSetupTub(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  RASSERT(pStreamDefOut);
+
+  Tub *pTub = _pTub(pCombined->aCombinedT()->m_pTub);
+
+  // get the row
+  RowPix *pRowPix = pStreamDefOut->pRowPix();
+  pTub->vRowPix(pRowPix);
+  pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
 }
 
 /*----------------------------------------------------------------------------*/

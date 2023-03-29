@@ -110,7 +110,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   bOpened = pFunctionFooter->bOpenRead("../src/store/Fragments/functionFooters.cpp"_Stz);
   RASSERT(bOpened);
 
-  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TCC");
+  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TINYC");
 
   // read the file header in
   nFileSize = pFileHeader->iSize();
