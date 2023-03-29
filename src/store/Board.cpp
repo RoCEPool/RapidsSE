@@ -240,6 +240,8 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
     }
 
 
+    // restructure
+
     if ((pCI->G.p_tableNm = pCI->G.p_MainCard->pSub_tableNm())) {
       pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tableNm);
       pCI->G.p_table->vAppend(pCI->G.p_tableNm);
@@ -254,9 +256,7 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
     }
 
     pCI->G.pDeck->vRenumberRecursive();
-
     pCI->vPrintBoard(__LINE__);
-
     vDebugPoint();
   }
 
