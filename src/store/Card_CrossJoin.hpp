@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_OP.hpp"
 
 namespace STORE
 {
-  class Card_CrossJoin : public Card
+  class Card_CrossJoin : public Card_OP
   {
   public:
     void* operator new(size_t);
@@ -16,9 +16,12 @@ namespace STORE
     Card_CrossJoin(void);
    ~Card_CrossJoin(void) noexcept(false);
 
-   static void vIndividuateFilter(CardIter* pCI);
+    static void vIndividuateFilter(CardIter* pCI);
 
-   static void vTableMorphsToCrossJoin(CardIter* pCI);
+    static void vTableMorphsToCrossJoin(CardIter* pCI);
+
+    void vEarlyProject_recurse(CardIter* pCI);
+
   };
 
   Card_CrossJoin* _pCard_CrossJoin(void* aAddr);

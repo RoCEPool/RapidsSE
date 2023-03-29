@@ -23,6 +23,8 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vDerive_Projection_Key(CardIter* pCI);
 
+    void vEarlyProject_root(CardIter* pCI);
+
     void vSmooth(CardIter* pCI);
     void vUpdate_projection(CardIter* pCI);
 

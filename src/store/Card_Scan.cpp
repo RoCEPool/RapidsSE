@@ -104,7 +104,7 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
- void Card_Scan::vEarly_project_leaf(CardIter* pCI)
+ void Card_Scan::vEarlyProject_leaf(CardIter* pCI)
  {
    vDump(0,(Stz*)__func__);
 

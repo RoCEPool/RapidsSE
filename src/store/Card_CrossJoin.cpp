@@ -19,7 +19,7 @@ __vDeleteFunction(Card_CrossJoin,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CrossJoin::Card_CrossJoin(void)
-: Card(CK_CROSSJOIN)
+: Card_OP(CK_CROSSJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -78,6 +78,47 @@ void Card_CrossJoin::vTableMorphsToCrossJoin(STORE::CardIter *pCI)
     pCI->G.p_bound->vAppend(pCI->G.p_term);
 
     pCI->G.p_MainCard = pCI->G.p_crossJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* early project                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_CrossJoin::vEarlyProject_recurse(CardIter* pCI)
+{
+  vDump(0,(Stz*)__func__);
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // save the current projection needed
+  //   we can restore to this save if projection needed get extended
+  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
+
+  pCI->vPrintBoard();
+
+  Card_OP::vEarlyProject_backstep(pCI);
+
+  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+  pCI->vPrintBoard();
+
+  vUpdate_projection(pCI);
+
+  pCI->vPrintBoard();
+
+  // restore needed
+  delete pCI->Early.m_pNeeded_later;
+  pCI->Early.m_pNeeded_later = p_needed_save;
+
+  pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+  pCI->vPrintBoard();
+
+  vDebugPoint();
 }
 
 /*============================================================================*/

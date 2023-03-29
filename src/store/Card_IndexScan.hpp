@@ -20,7 +20,7 @@ namespace STORE
 
     void vDerive_Projection_Key(CardIter* pCI);
 
-    void vEarly_project_leaf(CardIter* pCI);
+    void vEarlyProject_leaf(CardIter* pCI);
 
   };
 

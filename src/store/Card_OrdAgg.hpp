@@ -18,7 +18,7 @@ namespace STORE
 
     void vComputeProjection(CardIter* pCI); // prototype
 
-    void vEarly_project_root(CardIter* pCI);
+    void vEarlyProject_root(CardIter* pCI);
     void vUpdate_projection(CardIter* pCI);
 
   };

@@ -22,9 +22,9 @@ namespace STORE
 
     void vDerive_Projection_Key(CardIter* pCI);
 
-    void vEarly_project_add_transients(CardIter* pCI);
+    void vEarlyProject_add_transients(CardIter* pCI);
 
-    void vEarly_project_recurse_add(CardIter* pCI);
+    void vEarlyProject_recurse_add(CardIter* pCI);
 
   };
 

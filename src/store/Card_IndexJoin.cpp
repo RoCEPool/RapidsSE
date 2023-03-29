@@ -74,7 +74,7 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
+void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);
 
@@ -96,7 +96,7 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
   Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
   // check for additional/temporary transients
-  vEarly_project_add_transients(pCI);
+  vEarlyProject_add_transients(pCI);
 
   // insert new empty early project (has only needed) before this indexJoin
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
@@ -106,7 +106,7 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
   pCI->G.pDeck->vRenumberRecursive();
   pCI->vPrintBoard();
 
-  Card_OP::vEarly_project_backstep(pCI);
+  Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
@@ -126,10 +126,11 @@ void Card_IndexJoin::vEarly_project_recurse_add(CardIter* pCI)
 
   vDebugPoint();
 }
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vEarly_project_add_transients(CardIter* pCI)
+void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

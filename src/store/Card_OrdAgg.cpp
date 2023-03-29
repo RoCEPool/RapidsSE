@@ -53,7 +53,7 @@ void Card_OrdAgg::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
+void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);
 
@@ -85,7 +85,7 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   pCI->vPrintBoard();
 
 
-  Card_OP::vEarly_project_backstep(pCI);
+  Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 

@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  //vEarly_projections();
+  //vEarlyProjections();
   vDebugPoint();
 }
 
@@ -460,7 +460,7 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vEarly_projections(void)
+void ApplyOptimisations::vEarlyProjections(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
@@ -483,7 +483,7 @@ void ApplyOptimisations::vEarly_projections(void)
     }
 
   if (bEarlyRoot)
-    m_pCI->G.p_OP->vEarly_project_root(m_pCI);
+    m_pCI->G.p_OP->vEarlyProject_root(m_pCI);
 
   if (m_pCI->Early.m_pNeeded_later) {
     DELETE_CARD(m_pCI->Early.m_pNeeded_later);

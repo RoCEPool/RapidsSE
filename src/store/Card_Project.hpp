@@ -30,8 +30,8 @@ namespace STORE
 
     void vDerive_Projection_Key(CardIter* pCI);
 
-    void vEarly_project_leaf(CardIter* pCI);
-    void vEarly_project_recurse(CardIter* pCI);
+    void vEarlyProject_given_leaf(CardIter* pCI);
+    void vEarlyProject_needed_recurse(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
     void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);

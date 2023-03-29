@@ -195,7 +195,7 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vEarly_project_leaf(CardIter* pCI)
+void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);
 
@@ -212,13 +212,13 @@ void Card_Project::vEarly_project_leaf(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vEarly_project_recurse(CardIter* pCI)
+void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_OP::vEarly_project_backstep(pCI);
+  Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 

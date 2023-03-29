@@ -21,8 +21,8 @@ namespace STORE
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
-    void vEarly_project_root(CardIter* pCI);
-    void vEarly_project_backstep(CardIter* pCI);
+    void vEarlyProject_root(CardIter* pCI);
+    void vEarlyProject_backstep(CardIter* pCI);
 
     bool bIsEarlyLeaf(CardIter* pCI);
     bool bIsEarlyRoot(void);

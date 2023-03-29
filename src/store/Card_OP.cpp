@@ -296,7 +296,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vEarly_project_root(CardIter* pCI)
+void Card_OP::vEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -305,14 +305,15 @@ void Card_OP::vEarly_project_root(CardIter* pCI)
     // -- -- -- -- -- -- --
     case CK_AGGREG:
       // todo: temp...
+      pCI->G.p_aggreg->vEarlyProject_root(pCI);
       break;
 
     case CK_GBYAGG:
-      pCI->G.p_gbyAgg->vEarly_project_root(pCI);
+      pCI->G.p_gbyAgg->vEarlyProject_root(pCI);
       break;
 
     case CK_ORDAGG:
-      pCI->G.p_ordAgg->vEarly_project_root(pCI);
+      pCI->G.p_ordAgg->vEarlyProject_root(pCI);
       break;
 
       // -- -- -- -- -- -- --
@@ -335,7 +336,7 @@ void Card_OP::vEarly_project_root(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vEarly_project_backstep(CardIter* pCI)
+void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -353,53 +354,55 @@ void Card_OP::vEarly_project_backstep(CardIter* pCI)
     switch (pCI->G.e_MainCard) {
 
       // -- -- -- -- -- -- --
+      // don't go any further
       case CK_GBYAGG:
-        // temp: don't go any further
         pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
         return;
 
       case CK_ORDAGG:
-        // temp: don't go any further
         pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
         return;
 
       // -- -- -- -- -- -- --
+      // recurse into...
       case CK_PROJECT:
-        // recurse into...
         if (pCI->G.p_project->pSub_needed()) {
           pCI->vSave();
-          pCI->G.p_project->vEarly_project_recurse(pCI);
+          pCI->G.p_project->vEarlyProject_needed_recurse(pCI);
           pCI->vRestore();
         }
         else {
-          pCI->G.p_project->vEarly_project_leaf(pCI);
+          pCI->G.p_project->vEarlyProject_given_leaf(pCI);
         }
         return;
 
       case CK_INDEXJOIN:
-        // recurse into...
         pCI->vSave();
-        pCI->G.p_indexJoin->vEarly_project_recurse_add(pCI);
+        pCI->G.p_indexJoin->vEarlyProject_recurse_add(pCI);
         pCI->vRestore();
         return;
 
       case CK_INDEXSCAN:
-        // recurse into...
         pCI->vSave();
-        pCI->G.p_indexScan->vEarly_project_leaf(pCI);
+        pCI->G.p_indexScan->vEarlyProject_leaf(pCI);
         pCI->vRestore();
         return;
 
       case CK_SCAN:
-        // recurse into...
         pCI->vSave();
-        pCI->G.p_scan->vEarly_project_leaf(pCI);
+        pCI->G.p_scan->vEarlyProject_leaf(pCI);
         pCI->vRestore();
         return;
 
-      // -- -- -- -- -- -- --
+      case CK_CROSSJOIN:
+        pCI->vSave();
+        pCI->G.p_crossJoin->vEarlyProject_recurse(pCI);
+        pCI->vRestore();
+        return;
+
+        // -- -- -- -- -- -- --
+      // missing??
       default:
-        // repeat while so as to move to previous card
         pCI->G.p_MainCard->vDump();
         NEVER_REACH
     }

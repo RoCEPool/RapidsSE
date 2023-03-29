@@ -104,7 +104,7 @@ void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
+void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);
 
@@ -141,7 +141,7 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
   pCI->vPrintBoard();
 
 
-  Card_OP::vEarly_project_backstep(pCI);
+  Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
@@ -162,7 +162,7 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
   vDebugPoint();
 }
 /*----------------------------------------------------------------------------*/
-//void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
+//void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 //
@@ -178,7 +178,7 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 //  pCI->Early.m_pProjection_needed =
 //      pSub_projection()->pCraftRoot_needed(pCI);
 //
-//  Card_OP::vEarly_project_backstep(pCI);
+//  Card_OP::vEarlyProject_backstep(pCI);
 //
 //  // todo: arrived back ...
 //  pCI->vPrintBoard();

@@ -83,7 +83,7 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* add an early project after this index scan                                 */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vEarly_project_leaf(CardIter* pCI)
+void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);
 
