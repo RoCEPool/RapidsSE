@@ -1,0 +1,86 @@
+/*============================================================================*/
+/* _jm_q16 -- Query16                                                         */
+/*============================================================================*/
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+///////////////////////
+// QUERY 16
+
+/jobMetrics
+select
+  p_brand,
+  p_type,
+  p_size,
+  count(distinct ps_suppkey) as supplier_cnt
+from
+  partsupp,
+  part
+where
+  p_partkey = ps_partkey
+  and p_brand <> 'Brand#45'
+  and p_type not like 'MEDIUM POLISHED%'
+  and p_size in (49,14,23,45,19,3,36,9)
+  and ps_suppkey not in
+    (
+     select
+       s_suppkey
+     from
+       supplier
+     where
+       s_comment like '%Customer%Complaints%' )
+group by
+ p_brand,
+ p_type,
+ p_size
+order by
+ supplier_cnt desc,
+ p_brand,
+ p_type,
+ p_size;
+
+
+///////////////////////
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 5;
+
+// generate system report data
+sysReport;
+
+// get network data
+select thisNodeName as thisNode,
+     otherNodeName as otherNode,
+     sum(sendCount)  as sCount,
+     sum(sendBytes)  as sBytes,
+     sum(recvCount)  as rCount,
+     sum(recvBytes)  as rBytes
+  from se__jobNetwork group by thisNodeName, otherNodeName;
+/*
+-------------------------------------------
+SF1 (2N4P)
+-------------------------------------------
+row: ('NODE0','NODE0',15,650400,30,650400)
+row: ('NODE0','NODE1',25,307768,68,353016)
+row: ('NODE1','NODE0',34,353016,50,307768)
+row: ('NODE1','NODE1',0,0,0,0)
+-------------------------------------------
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
