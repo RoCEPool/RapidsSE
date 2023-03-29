@@ -117,7 +117,7 @@ eXK Card_Deck::eAddNextCast(CardIter*      pCI,
   eXK eNextCast = p_bounds_later->pSub_bound()->eNextCast(p_tablePtn_prior,
                                                           p_tablePtn_later,
                                                           p_index_later,
-      /*&*/p_term_tblCol_to_be_hashed);
+                                                          /*&*/p_term_tblCol_to_be_hashed);
   switch (eNextCast) {
     case XK_BROADCAST:
       p_next_prior->vValue("broadcast"_Stz);
