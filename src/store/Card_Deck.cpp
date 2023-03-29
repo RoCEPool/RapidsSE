@@ -128,7 +128,7 @@ eXK Card_Deck::eAddNextCast(CardIter*      pCI,
     case XK_HASHCAST:
       p_next_prior->vValue("hashcast"_Stz);
 
-      pCI->G.p_expr = p_term_tblCol_to_be_hashed->pExpr_For_col(pCI, pCI->G.i_MainCard + 1);
+      pCI->G.p_expr = p_term_tblCol_to_be_hashed->pExpr_For_col(pCI, pCI->G.i_MainCard);
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr);
 
       if (p_combined_prior) {
