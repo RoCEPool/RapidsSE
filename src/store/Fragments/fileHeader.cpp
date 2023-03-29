@@ -3,7 +3,7 @@
   /* Flattened code combinedOp                                          */
   /*====================================================================*/
 
-#ifdef WITH_TCC
+#ifdef WITH_TINYC
   #include "tcclib.h" // include libc header for TCC
 #else
   #include <stdio.h>

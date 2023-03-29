@@ -148,7 +148,7 @@
   0 EV_M_EOS EG_ZK LogicUnit[].diaryNote
 
  0 locals| errorCode |
-
+/*
   nullptr Fun3[] 0 Combined[].execute not if
     to errorCode
     Pipein[].delete
@@ -158,7 +158,7 @@
     true
     exit
   then
-
+*/
   // pipeout all Tub[]/Pot[]
   Combined[].hashRows@ if
     Pot[].pipeOutRemainderPtns

@@ -120,10 +120,11 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupProject(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupTub(Combined* pCombined, Stream* pStream, Op* pOp);
 
 
     OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
