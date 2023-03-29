@@ -136,11 +136,11 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
 
   pCI->vRestart();
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_INDEXLIST))
-    pCI->G.p_indexList->vDeleteAllBounds();
+    pCI->G.p_indexList->vDeleteAll_bounds();
 
   pCI->vRestart();
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER))
-    pCI->G.p_table->vBounds_DeriveFrom_filter_v3(pCI->G.p_filter);
+    pCI->G.p_table->vDeriveBoundsFrom_filter(pCI->G.p_filter);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,7 +297,7 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 /*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
+void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -324,7 +324,7 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
       if (!p_pred_Of_filter->bIsIndexBounds_v3(p_index))
         return C_CONTINUE_RECURSION;
 
-      // - - - -
+      // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
       Card_Bounds *p_bounds = p_index->pSub_bounds();
       if (! p_bounds) {
@@ -338,7 +338,8 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
 
       p_pred_Of_filter->vMark1(MARK_UP);
 
-      p_index->vSet_Choose_index();
+      if (p_bound->bIsEBound())
+        p_index->vSet_Choose_index();
 
       return C_CONTINUE_RECURSION;
     };

@@ -76,7 +76,7 @@ Card_IndexList* Card_IndexList::pDerive(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexList::vDeleteAllBounds(void)
+void Card_IndexList::vDeleteAll_bounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
