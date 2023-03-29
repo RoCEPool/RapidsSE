@@ -1,0 +1,87 @@
+/*============================================================================*/
+/* _jm_q11 -- Query11                                                         */
+/*============================================================================*/
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+///////////////////////
+// QUERY 11
+
+/jobMetrics
+select
+  ps_partkey,
+  sum(ps_supplycost * ps_availqty) as value
+from
+  partsupp,
+  supplier,
+  nation
+where
+  ps_suppkey = s_suppkey
+  and s_nationkey = n_nationkey
+  and n_name = 'GERMANY'
+group by
+  ps_partkey
+having
+  sum(ps_supplycost * ps_availqty) > (
+
+    select
+      sum(ps_supplycost * ps_availqty) * 0.0000010000
+    from
+      partsupp,
+      supplier,
+      nation
+    where
+      ps_suppkey = s_suppkey
+      and s_nationkey = n_nationkey
+      and n_name = 'GERMANY' )
+order by
+  value desc;
+
+
+///////////////////////
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 5;
+
+// generate system report data
+sysReport;
+
+print "-------------------------------------------";
+print "NETWORK FOR QUERY 11.......................";
+
+// get network data
+select thisNodeName as thisNode,
+     otherNodeName as otherNode,
+     sum(sendCount)  as sCount,
+     sum(sendBytes)  as sBytes,
+     sum(recvCount)  as rCount,
+     sum(recvBytes)  as rBytes
+  from se__jobNetwork group by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+
+/*
+-------------------------------------------
+SF1 (2N4P)
+-------------------------------------------
+
+-------------------------------------------
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
