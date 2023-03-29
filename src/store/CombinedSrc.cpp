@@ -1,6 +1,6 @@
 
 /*============================================================================*/
-/* CombinedSrc.cpp -- Code Synthesizer                                          */
+/* CombinedSrc.cpp -- Code Synthesizer                                        */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -90,6 +90,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   i8 nFileSize;
   bool bResult;
 
+  OpSketch* pEOSSketch = nullptr;
+
+  eSK eDrivingStencil = SK_NONE;
+
   // open the file header file
   pFileHeader = new File(this);
   bOpened = pFileHeader->bOpenRead("../src/store/Fragments/fileHeader.cpp"_Stz);
@@ -122,6 +126,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     OpSketch* pOpSketch = pStencil->pGet(iOpSketch);
 
     switch(pOpSketch->eSketchKind()) {
+
+      case SK_EOS:
+        pEOSSketch = pOpSketch;
+        break;
 
       case SK_FILTER:
         sCode = ""_Stz;
@@ -164,7 +172,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         break;
 
       case SK_INFLATE_CRW:
-
+        eDrivingStencil = SK_INFLATE_CRW;
         sCode = ""_Stz;
         pFunctionHeader->vSeekStart();
         bExtracted = CodeSynthUtils::bExtract(pFunctionHeader, pOpSketch, "vInflateCrw"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
@@ -256,9 +264,32 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     }
   }
 
+  switch (eDrivingStencil) {
+
+    case SK_INFLATE_CRW:
+      sCode = ""_Stz;
+      pFunctionHeader->vSeekStart();
+      bExtracted = CodeSynthUtils::bExtract(pFunctionFooter, nullptr, "vInflateCrwEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+      RASSERT(bExtracted);
+      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+      break;
+
+    default:
+      NEVER_REACH;
+  }
+
+  // generate the code for the EOS handler
   sCode = ""_Stz;
   pFunctionHeader->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(pFunctionFooter, nullptr, "vInflateCrwEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  bExtracted = CodeSynthUtils::bExtract(pFunctionHeader, pEOSSketch, "vEosHandler"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  RASSERT(bExtracted);
+  sFunSignature.vSprint("iFun3_%s"_Stz, pStencil->szStageNm());
+  bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_EOS__", sFunSignature.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+  sCode = ""_Stz;
+  pFunctionHeader->vSeekStart();
+  bExtracted = CodeSynthUtils::bExtract(pFunctionFooter, nullptr, "vEosEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 

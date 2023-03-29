@@ -18,7 +18,7 @@
 #endif
 
 /*--------------------------------------------------------------------*/
-/* flattened function -- CRWBUFFER                                    */
+/* flattened function -- CRWBUFFER HANDLER                            */
 /*--------------------------------------------------------------------*/
 int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
 {
@@ -90,7 +90,20 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
 
   L_InflateT:
   L_Return:
-
-  return 0;
+    return 0;
 }
 
+//function-vEosHandler
+
+// marker-start
+
+/*--------------------------------------------------------------------*/
+/* flattened function -- EOS Handler                                  */
+/*--------------------------------------------------------------------*/
+int __FUNCTION_EOS__(struct Combined_T* aCombinedT) {
+
+  L_Return:
+    return 1;
+
+  // marker-end
+}

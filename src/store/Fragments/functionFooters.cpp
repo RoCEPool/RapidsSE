@@ -34,3 +34,13 @@ int vInflateCrwEnd(struct Combined_T* aCombinedT)
   }
  // marker-end
 }
+
+// function-vEosEnd
+/*--------------------------------------------------------------------*/
+/* flattened function -- EOS                                          */
+/*--------------------------------------------------------------------*/
+int vEosEnd(struct Combined_T* aCombinedT)
+{
+  // marker-start
+}
+// marker-end

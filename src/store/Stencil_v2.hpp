@@ -127,10 +127,10 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSetupTub(Combined* pCombined, Stream* pStream, Op* pOp);
 
 
+    OpSketch* pSketchEos(Stream* pStream, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp);
-    OpSketch* pSketchProject(Combined* pCombined, Stream* pStream, Op* pOp,
-                             eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp);
+    OpSketch* pSketchProject(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
 
 
 

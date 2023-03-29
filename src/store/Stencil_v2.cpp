@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Stencil_v2.cpp -- Op Stencil_v2                                                  */
+/* Stencil_v2.cpp -- Op Stencil_v2                                            */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -521,7 +521,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
   bool bInflateGenerated = false;
 
   OpSketch *pOpSketch;
-  OpSketch *pPotTubSketch;
 
   eSR ePrevStencil_v2 = SR_NONE;
 
@@ -581,7 +580,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       vSetupScan(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchInflateCrw(pCombined, pStream, pOp);
+      pOpSketch = pSketchInflateCrw(pStream, pOp);
       vAppend(pOpSketch);
 
       m_bRowBuffer = true;
@@ -598,7 +597,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
         vSetupProject(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pOpSketch = pSketchProject(pCombined, pStream, pOp, ePrevStencil_v2, sLabelLoop);
+        pOpSketch = pSketchProject(pStream, pOp, ePrevStencil_v2, sLabelLoop);
         vAppend(pOpSketch);
 
         ePrevStencil_v2 = SR_PT;
@@ -633,12 +632,17 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupTub(pCombined, pStream, pLastOp);
 
-      pPotTubSketch = pSketchTub(pOpSketch, sLabelLoop, ePrevStencil_v2);
+      pOpSketch = pSketchTub(pOpSketch, sLabelLoop, ePrevStencil_v2);
     }
 
     // add the op sketch to the stencil
-    vAppend(pPotTubSketch);
+    vAppend(pOpSketch);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sketch EOS handler function
+  pOpSketch = pSketchEos(pStream, ePrevStencil_v2, ""_Stz);
+  vAppend(pOpSketch);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form entries in header
@@ -1694,7 +1698,7 @@ OpSketch* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op*
 /*----------------------------------------------------------------------------*/
 /* sketch inflate compact rows of crwBuffer)                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1809,6 +1813,28 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(pPreExpStack);
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch eos                                                                 */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchEos(Stream* pStream, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  // create a new opSketch
+  OpSketch* pOpSketch = new OpSketch(""_Stz, SK_EOS, ePrevStencil_v2, SR_NONE, nullptr, nullptr);
+
+  sLabel = ""_Stz;
+  sLabelNext = ""_Stz;
+
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   return pOpSketch;
 }
@@ -2050,7 +2076,7 @@ OpSketch* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchProject(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchProject(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
