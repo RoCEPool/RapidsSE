@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* _jm_q6 -- Query6                                                           */
+/*============================================================================*/
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+///////////////////////
+// QUERY 6
+
+/jobMetrics
+select
+    sum(l_extendedprice*l_discount) as revenue
+from
+   lineitem
+where
+    l_shipdate >= '1994-01-01'
+    and l_shipdate < '1995-01-01'
+    and l_discount between .06 - 0.01 and .06 + 0.01
+    and l_quantity < 24;
+
+///////////////////////
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 5;
+
+// generate system report data
+sysReport;
+
+// get network data
+select thisNodeName as thisNode,
+     otherNodeName as otherNode,
+     sum(sendCount)  as sCount,
+     sum(sendBytes)  as sBytes,
+     sum(recvCount)  as rCount,
+     sum(recvBytes)  as rBytes
+  from se__jobNetwork group by thisNodeName, otherNodeName;
+/*
+-------------------------------------------
+SF1 (2N4P)
+-------------------------------------------
+row: ('NODE0','NODE0',15,650400,30,650400)
+row: ('NODE0','NODE1',25,307768,68,353016)
+row: ('NODE1','NODE0',34,353016,50,307768)
+row: ('NODE1','NODE1',0,0,0,0)
+-------------------------------------------
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
