@@ -338,6 +338,8 @@ void Card_Table::vBounds_DeriveFrom_filter_v3(Card_Filter* p_filter)
 
       p_pred_Of_filter->vMark1(MARK_UP);
 
+      p_index->vSet_Choose_index();
+
       return C_CONTINUE_RECURSION;
     };
 

@@ -147,7 +147,7 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* determine the cast for the prior p_next                                    */
 /*----------------------------------------------------------------------------*/
 eXK Card_Bound::eNextCast(Card_TablePtn* p_tablePtn_prior,
                           Card_TablePtn* p_tablePtn_later,
@@ -156,29 +156,34 @@ eXK Card_Bound::eNextCast(Card_TablePtn* p_tablePtn_prior,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term*  p_term_tblColOdn_later = pGet_tblColOdn();
-  Card_Term*  p_term_idxColOdn_later = pGet_idxColOdn();
-
   Card_IdxColList* p_idxColList_later = p_index_later->pSub_idxColList();
-  Card_IdxCol *p_idxCol_later =
-      p_idxColList_later->pGetIdxCol_byIdxColOdn(p_term_idxColOdn_later->szValue());
+  Card_Term*       p_term_later_idxColOdn = pGet_idxColOdn();
+  Card_IdxCol *    p_idxCol_later =
+                       p_idxColList_later->pGetIdxCol_byIdxColOdn(p_term_later_idxColOdn->szValue());
 
-  if (! p_term_tblColOdn_later)
+  Card_Term* p_term_prior_tblColOdn = pGet_tblColOdn();
+  if (! p_term_prior_tblColOdn)
+    // - no prior table column (referenced in this bound) -- probably cross join
     return XK_BROADCAST;
 
-  if (p_idxCol_later->bSameValue(p_tablePtn_later))
-    // + later index is on table ptn
-    if (p_term_tblColOdn_later->bSameValue(p_tablePtn_prior))
-      // + prior table column is same later table column
+  if (p_idxCol_later->bSameValue(p_tablePtn_later)) {
+    // + later indexed column (referenced in this bound) is later table ptn
+    if (p_term_prior_tblColOdn->bSameValue(p_tablePtn_prior)) {
+      // + prior table column (referenced in this bound) is prior table ptn
       return XK_UNICAST;
+    }
     else {
-      rp_term_tblCol_to_be_hashed = p_term_tblColOdn_later;
+      // - prior table column (referenced in this bound) is not prior table ptn
+      //     but the prior table column can be used for hash cast
+      rp_term_tblCol_to_be_hashed = p_term_prior_tblColOdn;
       return XK_HASHCAST;
     }
-  else
+  }
+  else {
+    // - later indexed column in this bound is not later table ptn
     return XK_BROADCAST;
+  }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

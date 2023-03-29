@@ -124,7 +124,7 @@ void Card_IndexJoin::vEarly_project_add_transients(CardIter* pCI)
   pCI->G.p_indexList = pSub_indexList();
   pCI->G.p_index     = pCI->G.p_indexList->pFindChosenIndex();
   pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
-  pCI->G.p_bound     = pCI->G.p_bounds->pSub_bound();
+  pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
   pCI->G.p_bound->vDump();
   pCI->G.p_term      = pCI->G.p_bound->pGet_tblColOdn();
 

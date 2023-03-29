@@ -27,7 +27,7 @@ select
        Orders,
        Lineitem
  where
-       C_CUSTKEY  = O_ORDERKEY
+       C_CUSTKEY  = O_CUSTKEY
    and O_ORDERKEY = L_ORDERKEY
 
    and c_custkey > 10
@@ -37,6 +37,7 @@ select
  order
        by o_orderkey
 ;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

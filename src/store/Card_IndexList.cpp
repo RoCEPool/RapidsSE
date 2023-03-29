@@ -111,9 +111,15 @@ void Card_IndexList::vChoose_index_For_indexJoin(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_INDEX)) {
-    if (xCI.G.p_index->pSub_bound() && xCI.G.p_index->pSub_bound()->bIsEBound()) {
-      xCI.G.p_index->vSet_Choose_index();
-      break;
+    if (! xCI.G.p_index->pSub_bounds())
+      continue;
+    CardIter xCI_bounds(xCI.G.p_index->pSub_bounds());
+    while (xCI_bounds.G_bEachMain(CK_BOUND)) {
+      if (xCI_bounds.G.p_bound->bIsEBound()) {
+        xCI.G.p_index->vSet_Choose_index();
+        xCI_bounds.G.p_bound->Y_vSet(P_ChosenBound);
+        return;
+      }
     }
   }
 }

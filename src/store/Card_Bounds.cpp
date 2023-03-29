@@ -73,6 +73,23 @@ void Card_Bounds::vCullBound(char cWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Bound* Card_Bounds::pFindChosenBound(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_BOUND)) {
+    if (xCI.G.p_bound->Y_bHas(P_ChosenBound))
+      return xCI.G.p_bound;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Bounds::vFlipTerms(Card_Projection* p_projection_reduced)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

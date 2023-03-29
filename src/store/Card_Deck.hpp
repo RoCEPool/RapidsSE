@@ -24,6 +24,7 @@ namespace STORE
 
     eXK eAddNextCast(CardIter*      pCI,
                      Card_OP*       p_main_prior,
+                     Card_Project*  p_project_prior,
                      Card_Combined* p_combined_prior,
                      Card_Next*     p_next_prior,
                      i8&            rnSkip);
