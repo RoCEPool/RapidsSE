@@ -93,7 +93,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_IdxCol* Card_IdxColList::pIdxCol_byIdxColOdn(Stz* szIdxColOdn)
+Card_IdxCol* Card_IdxColList::pGetIdxCol_byIdxColOdn(Stz* szIdxColOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

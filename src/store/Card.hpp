@@ -92,6 +92,7 @@ namespace STORE
   class Card_NotPred;
 
   class Card_On;
+  class Card_OP;
   class Card_OrdAgg;
   class Card_OrdElmOdn;
   class Card_OrPred;

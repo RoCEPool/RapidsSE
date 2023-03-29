@@ -87,7 +87,7 @@ void MakeWeavable::vAddStageCasts(void)
 
   m_pCI->vTransform(__func__, "add stage casts"_Stz);
 
-  m_pCI->G.pDeck->vAdd_StageCasts(m_pCI);
+  m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 
   m_pCI->vEndTransform();
 }

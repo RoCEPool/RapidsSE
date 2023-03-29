@@ -55,43 +55,35 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eXK Card_Bounds::eCastKind_v2(Card_Table* p_table_prior,
-                              Card_Table* p_table_curr,
-                              Card_Index* p_index_curr,
-                              Card_Term*& rp_term_to_be_hashed)
+eXK Card_Bounds::eCastKind(Card_TablePtn* p_tablePtn_prior,
+                           Card_TablePtn* p_tablePtn_later,
+                           Card_Index*    p_index_later,
+                           Card_Term*&    rp_term_tblCol_to_be_hashed)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_IdxColList* p_idxColList = p_index_curr->pSub_idxColList();
-  Card_TablePtn*   p_tablePtn_l = p_table_prior->pSub_tablePtn();
-  Card_TablePtn*   p_tablePtn_r = p_table_curr->pSub_tablePtn();
+  Card_IdxColList* p_idxColList_later = p_index_later->pSub_idxColList();
 
-  //p_idxColList->vDump();
-  //p_tablePtn_l->vDump();
-  //p_tablePtn_r->vDump();
+  Card_Bound* p_bound = pSub_bound();
+  Card_Term*  p_term_tblColOdn_bound = p_bound->pGet_tblColOdn();
+  Card_Term*  p_term_idxColOdn_bound = p_bound->pGet_idxColOdn();
 
+  Card_IdxCol *p_idxCol_bound =
+      p_idxColList_later->pGetIdxCol_byIdxColOdn(p_term_idxColOdn_bound->szValue());
 
-  Card_Bound *p_ebound = pSub_bound();
-
-  Card_Term* pIdxColOdn_inBounds = p_ebound->pGet_idxColOdn();
-  Card_IdxCol *p_idxCol_inBounds =
-      p_idxColList->pIdxCol_byIdxColOdn(pIdxColOdn_inBounds->szValue());
-
-  Card_Term* pTblColOdn_inBounds = p_ebound->pGet_tblColOdn();
-  rp_term_to_be_hashed = pTblColOdn_inBounds;
-
-  if (! pTblColOdn_inBounds)
+  if (! p_term_tblColOdn_bound)
     return XK_BROADCAST;
 
-  if (p_idxCol_inBounds->bSameValue(p_tablePtn_r))
-    if (pTblColOdn_inBounds->bSameValue(p_tablePtn_l))
+  if (p_idxCol_bound->bSameValue(p_tablePtn_later))
+    if (p_term_tblColOdn_bound->bSameValue(p_tablePtn_prior))
       return XK_UNICAST;
-    else
+    else {
+      rp_term_tblCol_to_be_hashed = p_term_tblColOdn_bound;
       return XK_HASHCAST;
+    }
   else
     return XK_BROADCAST;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

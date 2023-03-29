@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_Deck.hpp"
+
+#include "Card_OP.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +45,7 @@ Card_Deck::~Card_Deck(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add stage casts                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Deck::vAdd_StageCasts(CardIter* pCI)
+void Card_Deck::vAddStageCasts(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -63,8 +65,8 @@ void Card_Deck::vAdd_StageCasts(CardIter* pCI)
         CK_SCAN == pCI->G.e_MainCard) {
       if (p_main_prior) {
         i8 nSkip;
-        eXK eCast = Board::eStage_Cast(pCI, p_main_prior, p_combined_prior, p_next_prior,
-                                       /*r*/nSkip);
+        eXK eCast = pCI->G.pDeck->eAddStageCast(pCI, p_main_prior, p_combined_prior, p_next_prior,
+                                                /*&*/nSkip);
         while (nSkip--)
           pCI->G_vSkipNextMain();
         if (XK_UNICAST != eCast) {
@@ -88,6 +90,74 @@ void Card_Deck::vAdd_StageCasts(CardIter* pCI)
   pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+eXK Card_Deck::eAddStageCast(CardIter*      pCI,
+                             Card_OP*       p_main_prior,
+                             Card_Combined* p_combined_prior,
+                             Card_Next*     p_next_prior,
+                             i8&            rnSkip)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Table*     p_table_prior     = p_main_prior->pSub_table();
+  Card_TablePtn*  p_tablePtn_prior  = p_table_prior->pSub_tablePtn();
+
+  Card_Table*     p_table_later     = pCI->G.p_MainCard->pSub_table();
+  Card_TablePtn*  p_tablePtn_later  = p_table_later->pSub_tablePtn();
+  Card_IndexList* p_indexList_later = pCI->G.p_MainCard->pSub_indexList();
+  Card_Index*     p_index_later     = p_indexList_later->pFindChosenIndex();
+  Card_Bounds*    p_bounds_later    = p_index_later->pSub_bounds();
+
+  Card_Hash* p_hash_prior_new;
+  Card_Term* p_term_tblCol_to_be_hashed;
+
+  eXK eCastKind = p_bounds_later->eCastKind(p_tablePtn_prior,
+                                            p_tablePtn_later,
+                                            p_index_later,
+      /*&*/p_term_tblCol_to_be_hashed);
+  switch (eCastKind) {
+    case XK_BROADCAST:
+      p_next_prior->vValue("broadcast"_Stz);
+
+      rnSkip = 0;
+      return XK_BROADCAST;
+
+    case XK_HASHCAST:
+      p_next_prior->vValue("hashcast"_Stz);
+
+      pCI->G.p_expr = p_term_tblCol_to_be_hashed->pExpr_For_col(pCI, pCI->G.i_MainCard + 1);
+      p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr);
+
+      if (p_combined_prior) {
+        pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prior);
+        rnSkip = 1;
+        return XK_HASHCAST;
+      }
+      else
+      if (p_next_prior) {
+        pCI->G_vInsertBefore(p_hash_prior_new, p_next_prior);
+        Card_Combined* p_combined = new Card_Combined;
+        pCI->G_vInsertBefore(p_combined, p_next_prior);
+        rnSkip = 2;
+        return XK_HASHCAST;
+      }
+      else
+        NEVER_REACH
+
+    case XK_UNICAST:
+      rnSkip = 0;
+      return XK_UNICAST;
+
+    default:
+      NEVER_REACH
+  }
+
+  NEVER_REACH
+}
+
 
 
 /*----------------------------------------------------------------------------*/
