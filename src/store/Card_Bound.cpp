@@ -161,6 +161,13 @@ eXK Card_Bound::eNextCast(Card_TablePtn* p_tablePtn_prior,
   Card_IdxCol *    p_idxCol_later =
                        p_idxColList_later->pGetIdxCol_byIdxColOdn(p_term_later_idxColOdn->szValue());
 
+  if (p_idxCol_later && p_idxCol_later->bIsReplicated()) {
+    // + later table is replicated so always unicast
+    p_idxCol_later->vDump();
+    vDebugPoint();
+    return XK_UNICAST;
+  }
+
   Card_Term* p_term_prior_tblColOdn = pGet_tblColOdn();
   if (! p_term_prior_tblColOdn)
     // - no prior table column (referenced in this bound) -- probably cross join
