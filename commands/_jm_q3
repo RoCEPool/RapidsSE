@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* _jm_q3 -- Query3                                                           */
+/*============================================================================*/
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+///////////////////////
+// QUERY 3
+
+/jobMetrics
+select l_orderkey,
+      sum(l_extendedprice*(1-l_discount)) as revenue,
+      o_orderdate,
+      o_shippriority
+from  customer,
+      orders,
+      lineitem
+where c_mktsegment = 'BUILDING'
+      and c_custkey = o_custkey
+      and l_orderkey = o_orderkey
+      and o_orderdate < '1995-03-15'
+      and l_shipdate > '1995-03-15'
+group by
+     l_orderkey,
+     o_orderdate,
+     o_shippriority
+order by
+     revenue desc,
+     o_orderdate
+limit 10;
+///////////////////////
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 5;
+
+// generate system report data
+sysReport;
+
+// get network data
+select thisNodeName as thisNode,
+     otherNodeName as otherNode,
+     sum(sendCount)  as sCount,
+     sum(sendBytes)  as sBytes,
+     sum(recvCount)  as rCount,
+     sum(recvBytes)  as rBytes
+  from se__jobNetwork group by thisNodeName, otherNodeName;
+/*
+-------------------------------------------
+SF1 (2N4P)
+-------------------------------------------
+row: ('NODE0','NODE0',42,1821120,84,1821120)
+row: ('NODE0','NODE1',1644,618728112,3332,616902640)
+row: ('NODE1','NODE0',1666,616902640,3288,618728112)
+row: ('NODE1','NODE1',0,0,0,0)
+-------------------------------------------
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,69 @@
+/*============================================================================*/
+/* _jm_q4 -- Query4                                                           */
+/*============================================================================*/
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+///////////////////////
+// QUERY 4
+
+/jobMetrics
+select o_orderpriority,
+       count(*) as order_count
+from orders
+where o_orderdate >= '1993-07-01'
+      and o_orderdate < '1993-10-01'
+      and exists (
+          select *
+          from lineitem
+          where l_orderkey = o_orderkey
+                and l_commitdate < l_receiptdate )
+group by
+     o_orderpriority
+order by
+    o_orderpriority;
+
+///////////////////////
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 5;
+
+// generate system report data
+sysReport;
+
+// get network data
+select thisNodeName as thisNode,
+     otherNodeName as otherNode,
+     sum(sendCount)  as sCount,
+     sum(sendBytes)  as sBytes,
+     sum(recvCount)  as rCount,
+     sum(recvBytes)  as rBytes
+  from se__jobNetwork group by thisNodeName, otherNodeName;
+/*
+-------------------------------------------
+SF1 (2N4P)
+-------------------------------------------
+row: ('NODE0','NODE0',42,1821120,84,1821120)
+row: ('NODE0','NODE1',400,35691728,860,38040656)
+row: ('NODE1','NODE0',430,38040656,800,35691728)
+row: ('NODE1','NODE1',0,0,0,0)
+-------------------------------------------
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

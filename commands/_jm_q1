@@ -2,42 +2,69 @@
 /* _jm_q1 -- Query1                                                           */
 /*============================================================================*/
 
-__TPCH_SCHEMA
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
 
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
 metricsCtl enable;
 
-/time /jobMetrics
-  select l_returnflag, l_linestatus,
-    sum(l_quantity) as sum_qty,
-    sum(l_extendedprice) as sum_base_price,
-    sum(l_extendedprice*(1-l_discount)) as sum_disc_price,
-    sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge,
-    avg(l_quantity) as avg_qty,
-    avg(l_extendedprice) as avg_price,
-    avg(l_discount) as avg_disc,
-    count(*) as count_order
-  from lineitem
-  where l_shipdate <= DATE '1998-09-01'
-  group by l_returnflag, l_linestatus
- order by l_returnflag, l_linestatus;
+///////////////////////
+// QUERY 1
 
+/jobMetrics
+select l_returnflag, l_linestatus,
+  sum(l_quantity) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*(1-l_discount)) as sum_disc_price,
+  sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from lineitem
+where l_shipdate <= DATE '1998-09-01'
+group by l_returnflag, l_linestatus
+order by l_returnflag, l_linestatus;
+
+///////////////////////
+
+// disable metrics
 metricsCtl disable;
 
+// sleep
 sleep 5;
 
+// generate system report data
 sysReport;
 
+// get network data
 select thisNodeName as thisNode,
      otherNodeName as otherNode,
      sum(sendCount)  as sCount,
      sum(sendBytes)  as sBytes,
-     sum(sendBuffer) as sBuffer,
      sum(recvCount)  as rCount,
-     sum(recvBytes)  as rBytes,
-     sum(recvBuffer) as rBuffer
+     sum(recvBytes)  as rBytes
   from se__jobNetwork group by thisNodeName, otherNodeName;
 
+/*
+-------------------------------------------
+SF1 (2N4P)
+-------------------------------------------
+row: ('NODE0','NODE0',42,1821120,84,1821120)
+row: ('NODE0','NODE1',80,881360,220,3230288)
+row: ('NODE1','NODE0',110,3230288,160,881360)
+row: ('NODE1','NODE1',0,0,0,0)
+-------------------------------------------
 
+*/
 
 /*============================================================================*/
 /* end                                                                        */
