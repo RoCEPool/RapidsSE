@@ -51,6 +51,9 @@ sleep 5;
 // generate system report data
 sysReport;
 
+print "-------------------------------------------";
+print "NETWORK FOR QUERY 3.......................";
+
 // get network data
 select thisNodeName as thisNode,
      otherNodeName as otherNode,
@@ -59,6 +62,9 @@ select thisNodeName as thisNode,
      sum(recvCount)  as rCount,
      sum(recvBytes)  as rBytes
   from se__jobNetwork group by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+
 /*
 -------------------------------------------
 SF1 (2N4P)
