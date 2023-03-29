@@ -147,10 +147,13 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(); /**/)
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    if (! pGetChild(xKid.i_Child())->bIsCard(CK_EXPR))
+      break;
     if (Card_Expr *p_expr = pGetExpr(xKid.i_Child()))
       if (p_expr->bIsProjectedCol(szPrjCol))
         return p_expr;
+  }
 
   return nullptr;
 }

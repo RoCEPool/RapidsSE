@@ -204,8 +204,8 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
 
   Card_Expr* p_clone = _pCard_Expr(pDupCardAndSubCards());
 
-  if (bStmCol_flip)
-    p_clone->pProjectedTerm()->vEnsure_tblCol_flip();
+//  if (bStmCol_flip)
+//    p_clone->pProjectedTerm()->vEnsure_tblCol_flip();
 
   return p_clone;
 }

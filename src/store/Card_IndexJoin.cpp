@@ -119,7 +119,6 @@ void Card_IndexJoin::vEarly_project_add_transients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->G.p_filter = pSub_filter();
 
   pCI->G.p_indexList = pSub_indexList();
   pCI->G.p_index     = pCI->G.p_indexList->pFindChosenIndex();
@@ -156,6 +155,36 @@ void Card_IndexJoin::vEarly_project_add_transients(CardIter* pCI)
   }
 
   vDebugPoint();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambda = [pCI] (Card_Term* p_term) {
+
+    if (! p_term->bIsColOdn())
+      return C_CONTINUE_RECURSION;
+
+    if (pCI->Early.m_pNeeded->pFind_expr_With_projectedCol(p_term))
+      return C_CONTINUE_RECURSION;
+
+    if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(p_term)) {
+      p_expr_defn->vDump();
+      Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
+      pCI->Early.m_pNeeded->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded->vRenumberAllExpr();
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  pCI->G.p_filter = pSub_filter();
+
+  CardIter xCI_filter(pCI->G.p_filter);
+  while (xCI_filter.G_bEachMain(CK_BOOLCALC)) {
+
+    xCI_filter.G.p_boolCalc->bApplyRecursive_term(bLambda);
+
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
