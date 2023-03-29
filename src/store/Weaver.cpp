@@ -820,7 +820,18 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
 
   Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
   if (pCard_bounds) {
-    Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pGetChild(0);
+    //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pGetChild(0);
+
+    Card_Bound* p_bound = nullptr;
+    for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {
+
+      if (xKid.pChild()->Y_bHas(P_ChosenBound)) {
+        p_bound = _pCard_Bound(xKid.pChild());
+        break;
+      }
+    }
+
+
     szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
 
     i8 nSubs = p_bound->nChildCards();

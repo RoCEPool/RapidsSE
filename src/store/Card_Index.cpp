@@ -52,7 +52,7 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
   _static_
 
   // find & ignore the first ebound
-  bool bFoundFirst = false;
+  //bool bFoundFirst = false;
 
   CardIter xCI_indexes(pCI->G.p_indexList);
 
@@ -65,9 +65,8 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
       continue;
 
     CardIter xCI_bounds(xCI_indexes.G.p_bounds);
-    while (xCI_bounds.G_bEachMain()) {
-      if (bChosenIndex && ! bFoundFirst && xCI_bounds.G.p_MainCard->bIsCard(CK_BOUND)) {
-        bFoundFirst = true;
+    while (xCI_bounds.G_bEachMain(CK_BOUND)) {
+      if (xCI_bounds.G.p_bound->Y_bHas(P_ChosenBound)) {
         continue;
       }
 
@@ -144,6 +143,7 @@ void Card_Index::vDeleteBounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Y_vCut(P_ChosenIndex);
   Card_Bounds* p_Bounds = pSub_bounds();
   vRemoveDeleteChild(p_Bounds);
 }
