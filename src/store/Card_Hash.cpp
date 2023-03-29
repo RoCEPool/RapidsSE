@@ -56,7 +56,7 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
   p_hash->vAppend(p_type->pDupCardAndSubCards());
 
   Card_HshCol* p_hshCol = new Card_HshCol;
-  p_hshCol->vValueSprint(p_expr->szValue());
+  p_hshCol->vValueSprint(p_expr->szProjectedCol());
   p_hash->vAppend(p_hshCol);
 
   return p_hash;

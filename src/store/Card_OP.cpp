@@ -247,6 +247,14 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
   }
 
+  if (bIsCard(CK_HASH)) {
+    Card_HshCol *p_hshCol = pSub_hshCol();
+    if (Card_Expr *p_expr_col =
+        pCI->Analysis.m_pProjection->pFind_expr_By_projectedCol(p_hshCol->szValue())) {
+      p_hshCol->vSetValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+    }
+  }
+
   if (bIsCard(CK_INDEXJOIN)) {
     if ((pCI->G.p_key = pSub_key()))
       pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
