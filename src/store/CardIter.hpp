@@ -32,11 +32,11 @@ namespace STORE
     struct {
       Card_OP*          m_pOP_root;
       //Card_Projection * m_pProjection_needed;
-      Card_Needed *     m_pNeeded;
+      Card_Needed *     m_pNeeded_later;
     } Early;
 
     struct {
-      Card_Projection * m_pProjection;
+      Card_Projection * m_pProjection_prior;
     } Analysis;
 
     struct {

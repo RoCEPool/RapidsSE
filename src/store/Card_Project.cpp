@@ -147,12 +147,12 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 
   Card_Projection* p_projection_early = new Card_Projection;
 
-  //pCI->Early.m_pNeeded->vDump();
+  //pCI->Early.m_pNeeded_later->vDump();
 
-  for (Kid xKid(pCI->Analysis.m_pProjection); xKid.bEach(CK_EXPR); /**/) {
+  for (Kid xKid(pCI->Analysis.m_pProjection_prior); xKid.bEach(CK_EXPR); /**/) {
     xKid.p_expr()->vDump();
 
-    if (! pCI->Early.m_pNeeded->pHasSame(xKid.p_expr()))
+    if (! pCI->Early.m_pNeeded_later->pHasSame(xKid.p_expr()))
       continue;
     if (p_projection_early->pHasSame(xKid.p_expr()))
       continue;
@@ -211,7 +211,7 @@ void Card_Project::vEarly_project_recurse(CardIter* pCI)
 
   vInsertBefore(pCI->G.p_projection,pCI->G.p_needed);
 
-  pCI->Analysis.m_pProjection = pCI->G.p_projection;
+  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
 
   pCI->vPrintBoard();
 
@@ -260,7 +260,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
     pCI->G.p_project->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->Analysis.m_pProjection = pSub_projection();
+  pCI->Analysis.m_pProjection_prior = pSub_projection();
 
 }
 
@@ -277,7 +277,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);
   }
 
-  pCI->Analysis.m_pProjection = pSub_projection();
+  pCI->Analysis.m_pProjection_prior = pSub_projection();
 
 }
 

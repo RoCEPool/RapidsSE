@@ -69,7 +69,7 @@ Card_Project* Card_Needed::pNew_project_early(CardIter* pCI)
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   p_project_early->vAppend(p_level);
 
-  p_project_early->vAppend(pCI->Early.m_pNeeded->pClone());
+  p_project_early->vAppend(pCI->Early.m_pNeeded_later->pClone());
 
   return p_project_early;
 }

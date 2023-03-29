@@ -101,7 +101,7 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
-    if (pCI->Analysis.m_pProjection) {
+    if (pCI->Analysis.m_pProjection_prior) {
       pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
       pCI->G.p_projection->vRenumberAllExpr();
     }

@@ -82,7 +82,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
-  pCI->Analysis.m_pProjection = pSub_projection();
+  pCI->Analysis.m_pProjection_prior = pSub_projection();
 
   pCI->G.pDeck->vRenumberRecursive();
 }
@@ -125,7 +125,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
     pCI->G_vAppendNewChild(pCard, CK_TERM, "$1"_Stz);
 
     Card_Expr* p_expr_found =
-        pCI->Analysis.m_pProjection->pGetExpr(0);
+        pCI->Analysis.m_pProjection_prior->pGetExpr(0);
     pCI->G.p_term->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 
     DELETE_CARD(p_term_1);

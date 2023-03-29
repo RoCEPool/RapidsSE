@@ -265,7 +265,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
 
   pCI->vRestart();
-  pCI->Analysis.m_pProjection = pCI->G.p_projection = nullptr;
+  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
 
   while (pCI->G_bEachMain()) {
 
@@ -285,7 +285,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       vDebugPoint();
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-      if (pCI->Analysis.m_pProjection) {
+      if (pCI->Analysis.m_pProjection_prior) {
         pCI->G.p_key->vTypes_For_stmColOdn(pCI);
         pCI->G.p_key->vRenumberAllExpr();
       }
@@ -293,12 +293,12 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
     if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
-      if (pCI->Analysis.m_pProjection) {
+      if (pCI->Analysis.m_pProjection_prior) {
         pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
         pCI->G.p_projection->vRenumberAllExpr();
       }
 
-      pCI->Analysis.m_pProjection = pCI->G.p_MainCard->pSub_projection();
+      pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
     }
 
   }
@@ -319,7 +319,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   bool bSawFold = false;
 
   pCI->vRestart();
-  pCI->Analysis.m_pProjection = pCI->G.p_projection = nullptr;
+  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
 
   while (pCI->G_bEachMain()) {
 
@@ -351,7 +351,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
     }
 
     if (pCI->G.p_MainCard->pSub_projection()) {
-      pCI->Analysis.m_pProjection = pCI->G.p_MainCard->pSub_projection();
+      pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
     }
 
   }
