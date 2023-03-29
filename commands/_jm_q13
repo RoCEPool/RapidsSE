@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* _jm_q13 -- Query13                                                         */
+/*============================================================================*/
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+///////////////////////
+// QUERY 13
+
+/jobMetrics
+elect
+  c_count,
+  count(*) as custdist
+from (
+  select
+    c_custkey,
+    count(o_orderkey) as c_count
+  from
+    customer left outer join orders on
+    c_custkey = o_custkey
+    and o_comment not like '%special%requests%'
+  group by
+    c_custkey
+  ) as c_orders (c_custkey, c_count)
+group by
+   c_count
+order by
+   c_count desc,
+   custdist desc
+;
+
+///////////////////////
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 5;
+
+// generate system report data
+sysReport;
+
+// get network data
+select thisNodeName as thisNode,
+     otherNodeName as otherNode,
+     sum(sendCount)  as sCount,
+     sum(sendBytes)  as sBytes,
+     sum(recvCount)  as rCount,
+     sum(recvBytes)  as rBytes
+  from se__jobNetwork group by thisNodeName, otherNodeName;
+/*
+-------------------------------------------
+SF1 (2N4P)
+-------------------------------------------
+row: ('NODE0','NODE0',15,650400,30,650400)
+row: ('NODE0','NODE1',25,307768,68,353016)
+row: ('NODE1','NODE0',34,353016,50,307768)
+row: ('NODE1','NODE1',0,0,0,0)
+-------------------------------------------
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
