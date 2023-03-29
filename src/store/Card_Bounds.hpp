@@ -18,6 +18,8 @@ namespace STORE
 
     void vCullBound(char cWithMark);
 
+    Card_Bound* pFindChosenBound(void);
+
     void vFlipTerms(Card_Projection* p_projection_reduced);
   };
 
