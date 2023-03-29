@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eEC.h"
+#include "eCB.h"
 
 namespace BASE { class Text; };
 namespace STORE
@@ -13,23 +14,25 @@ namespace STORE
     friend class CompileLib;
 
   private:
-    s256  m_sBaseName;
-    s256  m_sSrcFilePath;
-    s256  m_sLogFilePath;
-    s256  m_sDynLibPath;
+    s256  m_sBaseName;        // The unique base of all filenames
+    s256  m_sSrcFilePath;     // Path of the single source file being compiled
+    s256  m_sLogFilePath;     // Path of the log file capturing the compilation output
+    s256  m_sDynLibPath;      // Path of the compiled shared object
 
-    s256  m_sCompileCmd;
+    eCB   m_eCompilerType;    // The breed of compiler we're using
+    s256  m_sCompilerPath;    // The path to the compiler specified
+    s256  m_sCompileCmd;      // The command used to compile the source file to the shared object
 
-    void* m_pvDynLib;
-    eEC   m_eErrCode;
-    s2K   m_sErrDetails;
+    void* m_pvDynLib;         // Handle of the dynamically loaded shared object
+    eEC   m_eErrCode;         // The last error code encountered or EC_NONE
+    s2K   m_sErrDetails;      // Any extra details associated with the above error code
 
-    bool  m_bCollectStats;
-    u8    m_uCompileNanos;
-    u8    m_uDynLinkNanos;
-    u8    m_uSymAddrNanos;
-    u8    m_uDynUnlinkNanos;
-    u8    m_uDeleteNanos;
+    bool  m_bCollectStats;    // If true then the timings below will be measured
+    u8    m_uCompileNanos;    // Time in ns to write the src to disk and compile it
+    u8    m_uDynLinkNanos;    // Time in ns to dynamically load the shared object
+    u8    m_uSymAddrNanos;    // Time in ns to resolve a symbol name to an address
+    u8    m_uDynUnlinkNanos;  // Time in ns to unload the shared object from memory
+    u8    m_uDeleteNanos;     // Time in ns to delete all src/log/bin files previously created
 
     // must be last
     Footer m_xFooter;

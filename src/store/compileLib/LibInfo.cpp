@@ -25,6 +25,7 @@ LibInfo::LibInfo(bool bCollectStats)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIBINFO,_FOOTER_);
 
+  m_eCompilerType = CB_NONE;
   m_pvDynLib = nullptr;
   m_eErrCode = EC_NONE;
 
