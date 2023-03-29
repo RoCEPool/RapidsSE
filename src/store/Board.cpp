@@ -279,10 +279,11 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Board::iStage_Partitioning(CardIter*      pCI,
-                              Card_OP*       p_main_prior,
-                              Card_Combined* p_combined_prior,
-                              Card_Next*     p_next_prior)
+eXK Board::eStage_Cast(CardIter*      pCI,
+                       Card_OP*       p_main_prior,
+                       Card_Combined* p_combined_prior,
+                       Card_Next*     p_next_prior,
+                       i8&            rnSkip)
 {
   _static_
 
@@ -291,53 +292,48 @@ i8 Board::iStage_Partitioning(CardIter*      pCI,
   Card_Table*      p_table_curr     = pCI->G.p_MainCard->pSub_table();
   Card_IndexList*  p_indexList_curr = pCI->G.p_MainCard->pSub_indexList();
 
-  //p_indexList_curr->vDump();
-
   Card_Index*      p_index_curr     = p_indexList_curr->pFindChosenIndex();
   Card_Bounds*     p_bounds_curr    = pCI->G.p_MainCard->pSub_bounds();
 
-  Card_Hash* p_hash;
-  Card_Term* p_term_hash;
-  Stz* szTblColOdn;
-  i8 i_StmCol;
+  Card_Hash* p_hash_prior_new;
+  Card_Term* p_term_to_be_hashed;
 
-  eXK eCastKind = p_bounds_curr->eCastKind_v2(p_index_curr,
-                                              p_table_prior, p_table_curr,
-                                              p_term_hash);
-
+  eXK eCastKind = p_bounds_curr->eCastKind_v2(p_table_prior,
+                                              p_table_curr,
+                                              p_index_curr,
+                                              /*&*/p_term_to_be_hashed);
   switch (eCastKind) {
     case XK_BROADCAST:
       p_next_prior->vValue("broadcast"_Stz);
-      return 0;
+
+      rnSkip = 0;
+      return XK_BROADCAST;
 
     case XK_HASHCAST:
       p_next_prior->vValue("hashcast"_Stz);
 
-      szTblColOdn = p_term_hash->szValue();
-      //p_stmCol_hash = p_stmColList_prior->pStmCol_FindBy_tblColOdn(szTblColOdn, i_StmCol);
-      //p_hash = Card_Hash::pDerive(p_stmCol_hash);
-
-      pCI->G.p_expr = p_term_hash->pExpr_For_col(pCI,pCI->G.i_MainCard+1);
-      //p_hash = Card_Hash::pDerive(pCI->G.p_stmCol);
-      p_hash = Card_Hash::pDerive(pCI->G.p_expr);
-
+      pCI->G.p_expr = p_term_to_be_hashed->pExpr_For_col(pCI, pCI->G.i_MainCard + 1);
+      p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr);
 
       if (p_combined_prior) {
-        pCI->G_vInsertBefore(p_hash, p_combined_prior);
-        return 1;
+        pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prior);
+        rnSkip = 1;
+        return XK_HASHCAST;
       }
       else
       if (p_next_prior) {
-        pCI->G_vInsertBefore(p_hash, p_next_prior);
+        pCI->G_vInsertBefore(p_hash_prior_new, p_next_prior);
         Card_Combined* p_combined = new Card_Combined;
         pCI->G_vInsertBefore(p_combined, p_next_prior);
-        return 2;
+        rnSkip = 2;
+        return XK_HASHCAST;
       }
       else
         NEVER_REACH
 
     case XK_UNICAST:
-      return 0;
+      rnSkip = 0;
+      return XK_UNICAST;
 
     default:
       NEVER_REACH
@@ -347,18 +343,9 @@ i8 Board::iStage_Partitioning(CardIter*      pCI,
 }
 
 
-
-
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-/*                                                    vSeries_75_EE_operators */
-/*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                               vSeries_A0_Make_Weavable */
-/*============================================================================*/
-
 void Board::vIndividuate_indexJoin_filter_b(CardIter* pCI)
 {
   _static_
@@ -392,10 +379,6 @@ void Board::vIndividuate_crossJoin_filter(CardIter* pCI)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*                                                vSeries_Z0_Restate_Pipeline */
-/*============================================================================*/
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

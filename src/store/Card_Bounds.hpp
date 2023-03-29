@@ -16,8 +16,10 @@ namespace STORE
     Card_Bounds(void);
    ~Card_Bounds(void) noexcept(false);
 
-    eXK eCastKind_v2(Card_Index* p_index_r, Card_Table* p_table_l, Card_Table* p_table_r,
-                     Card_Term*& rp_left_column_to_be_hashed);
+    eXK eCastKind_v2(Card_Table* p_table_prior,
+                     Card_Table* p_table_curr,
+                     Card_Index* p_index_curr,
+                     Card_Term*& rp_term_to_be_hashed);
 
     void vCullBound(char cWithMark);
 

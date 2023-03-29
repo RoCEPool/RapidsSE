@@ -168,10 +168,11 @@ namespace STORE
     static void vMorph_Table_To_EEop(CardIter* pCI);
 
 
-    static i8 iStage_Partitioning(CardIter*      pCI,
-                                  Card_OP*       p_main_prior,
-                                  Card_Combined* p_combined_prior,
-                                  Card_Next*     p_next_prior);
+    static eXK eStage_Cast(CardIter*      pCI,
+                           Card_OP*       p_main_prior,
+                           Card_Combined* p_combined_prior,
+                           Card_Next*     p_next_prior,
+                           i8&            rnSkip);
 
     // vSeries_A0_Make_Weavable
     static void vIndividuate_indexJoin_filter_b(CardIter* pCI);

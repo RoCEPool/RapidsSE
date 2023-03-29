@@ -55,15 +55,16 @@ Card_Bounds::~Card_Bounds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eXK Card_Bounds::eCastKind_v2(Card_Index* p_index_r,
-                              Card_Table* p_table_l, Card_Table* p_table_r,
-                              Card_Term*& rp_left_column_to_be_hashed)
+eXK Card_Bounds::eCastKind_v2(Card_Table* p_table_prior,
+                              Card_Table* p_table_curr,
+                              Card_Index* p_index_curr,
+                              Card_Term*& rp_term_to_be_hashed)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_IdxColList* p_idxColList = p_index_r->pSub_idxColList();
-  Card_TablePtn*   p_tablePtn_l = p_table_l->pSub_tablePtn();
-  Card_TablePtn*   p_tablePtn_r = p_table_r->pSub_tablePtn();
+  Card_IdxColList* p_idxColList = p_index_curr->pSub_idxColList();
+  Card_TablePtn*   p_tablePtn_l = p_table_prior->pSub_tablePtn();
+  Card_TablePtn*   p_tablePtn_r = p_table_curr->pSub_tablePtn();
 
   //p_idxColList->vDump();
   //p_tablePtn_l->vDump();
@@ -77,7 +78,7 @@ eXK Card_Bounds::eCastKind_v2(Card_Index* p_index_r,
       p_idxColList->pIdxCol_byIdxColOdn(pIdxColOdn_inBounds->szValue());
 
   Card_Term* pTblColOdn_inBounds = p_ebound->pGet_tblColOdn();
-  rp_left_column_to_be_hashed = pTblColOdn_inBounds;
+  rp_term_to_be_hashed = pTblColOdn_inBounds;
 
   if (! pTblColOdn_inBounds)
     return XK_BROADCAST;

@@ -41,9 +41,9 @@ Card_Deck::~Card_Deck(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add partitioning                                                           */
+/* add stage casts                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Deck::vAdd_Partitioning(CardIter* pCI)
+void Card_Deck::vAdd_StageCasts(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -62,11 +62,15 @@ void Card_Deck::vAdd_Partitioning(CardIter* pCI)
         CK_KEYNOTEXISTS == pCI->G.e_MainCard ||
         CK_SCAN == pCI->G.e_MainCard) {
       if (p_main_prior) {
-        i8 nSkip = Board::iStage_Partitioning(pCI, p_main_prior, p_combined_prior, p_next_prior);
+        i8 nSkip;
+        eXK eCast = Board::eStage_Cast(pCI, p_main_prior, p_combined_prior, p_next_prior,
+                                       /*r*/nSkip);
         while (nSkip--)
           pCI->G_vSkipNextMain();
-        pCI->vPrintBoard(__LINE__);
-        vDebugPoint();
+        if (XK_UNICAST != eCast) {
+          pCI->vPrintBoard(__LINE__);
+          vDebugPoint();
+        }
       }
       p_main_prior = pCI->G.p_OP;
     }
@@ -81,6 +85,8 @@ void Card_Deck::vAdd_Partitioning(CardIter* pCI)
 
   }
 
+  pCI->vPrintBoard(__LINE__);
+  vDebugPoint();
 }
 
 
