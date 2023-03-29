@@ -67,7 +67,8 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
   pCI->G.p_projection = pSub_projection();
 
   // get the root needed form of ordAgg's projection
-  pCI->Early.m_pOP_root = (Card_OP*)this;
+  pCI->Early.m_pOP_root = this;
+  pCI->Early.m_pOP_leaf = nullptr;
   pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
@@ -82,6 +83,7 @@ void Card_OrdAgg::vEarly_project_root(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+  RASSERT(pCI->Early.m_pOP_leaf);
 
   pCI->vPrintBoard();
 

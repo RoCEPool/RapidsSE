@@ -136,6 +136,7 @@ void Card_GbyAgg::vEarly_project_root(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+  RASSERT(pCI->Early.m_pOP_leaf);
 
   pCI->vPrintBoard();
 

@@ -91,6 +91,8 @@ void Card_IndexScan::vEarly_project_leaf_add(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+  RASSERT(pCI->Early.m_pOP_leaf);
+
   pCI->Analysis.m_pProjection_prior = pSub_projection();
 
   pCI->vPrintBoard();

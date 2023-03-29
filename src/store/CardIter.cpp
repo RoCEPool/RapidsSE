@@ -67,7 +67,6 @@ CardIter::CardIter(Bench* pBench)
   m_iXform     = 0;
   m_iTrace     = 0;
 
-  m_pCard_new      = nullptr;
   Sqy.m_pCard_sqCopy   = nullptr;
 
   Sqy.m_pExpr_fold = nullptr;
@@ -313,6 +312,7 @@ void CardIter::G_vClearMembers(void)
   G.p_unique           = nullptr;
   G.p_where            = nullptr;
 
+  G.p_NEW              = nullptr;
   G.p_OP               = nullptr;
   G.p_PRED             = nullptr;
 }
@@ -340,6 +340,7 @@ void CardIter::G_vClearRegisters(void)
   Analysis.m_pProjection_prior = nullptr;
 
   Early.m_pOP_root   = nullptr;
+  Early.m_pOP_leaf   = nullptr;
   Early.m_pNeeded_later   = nullptr;
 
   StreamOrder.m_pProjection_running = nullptr;
@@ -1393,10 +1394,10 @@ void CardIter::G_vNewMember(eCK eMember, bool bUpdateMember)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  m_pCard_new = new Card(eMember);
+  G.p_NEW = new Card(eMember);
 
   if (bUpdateMember)
-    G_vUpdateMember(eMember, m_pCard_new, __func__);
+    G_vUpdateMember(eMember, G.p_NEW, __func__);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1408,7 +1409,7 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 
   G_vNewMember(eMember, bUpdateMember);
 
-  m_pCard_new->vValue(szValue);
+  G.p_NEW->vValue(szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1421,11 +1422,11 @@ void CardIter::G_vNewMemberBefore(eCK eMember, Stz* szValue,
 
   G_vNewMember(eMember, bUpdateMember);
 
-  m_pCard_new->vValue(szValue);
+  G.p_NEW->vValue(szValue);
 
   Card* p_before = G_pGetMember(eBefore);
 
-  G.pDeck->vInsertBefore(m_pCard_new,p_before);
+  G.pDeck->vInsertBefore(G.p_NEW,p_before);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1438,7 +1439,7 @@ void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
 
   G_vNewMember(eMember, bUpdateMember);
 
-  m_pCard_new->vValue(szValue);
+  G.p_NEW->vValue(szValue);
 
   G_vAppendChild(eOf,eMember);
 }

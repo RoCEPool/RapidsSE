@@ -27,12 +27,10 @@ namespace STORE
     s256        m_sXform;
     s256        m_sXdesc;
 
-    Card* m_pCard_new;
-
     struct {
-      Card_OP*          m_pOP_root;
-      //Card_Projection * m_pProjection_needed;
-      Card_Needed *     m_pNeeded_later;
+      Card_OP*      m_pOP_root;
+      Card_OP *     m_pOP_leaf;
+      Card_Needed * m_pNeeded_later;
     } Early;
 
     struct {

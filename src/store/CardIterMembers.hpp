@@ -203,6 +203,7 @@ namespace STORE
 
     Card_Where *         p_where;
 
+    Card*                p_NEW;
     Card_OP *            p_OP;
     Card_PRED *          p_PRED;
 

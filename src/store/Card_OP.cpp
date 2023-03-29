@@ -341,8 +341,10 @@ void Card_OP::vEarly_project_backstep(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pNeeded_later);
 
-  if (bIsEarlyLeaf(pCI))
+  if (bIsEarlyLeaf(pCI)) {
+    pCI->Early.m_pOP_leaf = pCI->G.p_OP;
     return;
+  }
 
   while (pCI->G_bEachMain_reverse()) {
 

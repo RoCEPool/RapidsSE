@@ -143,8 +143,8 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  // this projection will be in a gbyAgg or ordAgg
-  RASSERT(pCI->G.p_MainCard->bIsCard(CK_GBYAGG) || pCI->G.p_MainCard->bIsCard(CK_ORDAGG));
+  // this projection will be in an aggreg, gbyAgg or ordAgg
+  RASSERT(pCI->G.p_OP->bIsEarlyRoot());
 
   Card_Needed* p_needed = new Card_Needed;
 

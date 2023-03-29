@@ -490,6 +490,7 @@ void ApplyOptimisations::vEarly_projections(void)
   }
 
   m_pCI->Early.m_pOP_root = nullptr;
+  m_pCI->Early.m_pOP_leaf = nullptr;
 
   m_pCI->vEndTransform();
   vDebugPoint();

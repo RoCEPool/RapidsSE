@@ -138,8 +138,7 @@ void Card_Project::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft projection for a new early project to be inserted after current op   */
-/* from this denoted projection of current op                                 */
+/* craft projection for early project                                         */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 {
@@ -203,6 +202,8 @@ void Card_Project::vEarly_project_recurse(CardIter* pCI)
   Card_OP::vEarly_project_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+  RASSERT(pCI->Early.m_pOP_leaf);
 
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
