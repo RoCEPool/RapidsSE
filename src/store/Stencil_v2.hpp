@@ -59,13 +59,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     CombinedSrc* m_pOpSource;
 
-    CodeSynth_v2* m_pBannerHead;
-    CodeSynth_v2* m_pBannerTail;
-    CodeSynth_v2* m_pPreliminary;
-    CodeSynth_v2* m_pPreliminaryFun0;
-    CodeSynth_v2* m_pPreliminaryFun1;
-    CodeSynth_v2* m_pPreliminaryFun2;
-    CodeSynth_v2* m_pPreliminaryEos;
     CodeSynth_v2* m_pConcluding;
     CodeSynth_v2* m_pConcludingFun0;
     CodeSynth_v2* m_pConcludingFun1;
@@ -101,12 +94,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     Stz* szStageNm(void);
 
   private:
-    void vAppendFuncEmpty(CodeSynth_v2* pCodeSynth, Stz* szDesc, Stz* szFunNm);
-    void vAppendFuncHeader0(void);
-    void vAppendFuncHeader1(void);
-    void vAppendFuncHeader2(void);
-    void vAppendFuncHeader3(void);
-    void vAppendHeaderEntries(i8 iStage);
 
     eEC eCollectStage(Combined* pCombined, Stream* pStream);
 
