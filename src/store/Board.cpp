@@ -232,22 +232,6 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
       Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
     }
 
-
-    // restructure
-
-    if ((pCI->G.p_tableNm = pCI->G.p_MainCard->pSub_tableNm())) {
-      pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tableNm);
-      pCI->G.p_table->vAppend(pCI->G.p_tableNm);
-    }
-    if ((pCI->G.p_tablePtn = pCI->G.p_MainCard->pSub_tablePtn())) {
-      pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tablePtn);
-      pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
-    }
-    if ((pCI->G.p_size = pCI->G.p_MainCard->pSub_size())) {
-      pCI->G.p_MainCard->vRemoveSub(pCI->G.p_size);
-      pCI->G.p_table->vAppend(pCI->G.p_size);
-    }
-
     pCI->G.pDeck->vRenumberRecursive();
     pCI->vPrintBoard(__LINE__);
     vDebugPoint();

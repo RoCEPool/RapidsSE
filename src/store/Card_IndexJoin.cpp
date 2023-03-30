@@ -234,18 +234,6 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
   pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_indexJoin);
 
   pCI->G.p_indexList->vChoose_index_For_indexJoin();
-
-
-//  pCI->G.p_indexJoin->vTransferChildren(pCI->G.p_table);
-//
-//  pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, pCI->G.p_indexJoin);
-//  pCI->G.p_indexJoin->vInsert(pCI->G.p_table);
-//
-//  //pCI->G.p_indexJoin->vRemoveSub(pCI->G.p_index);
-//  //pCI->G.p_indexJoin->vAppend(pCI->G.p_index);
-//
-//  pCI->G.p_MainCard = pCI->G.p_indexJoin;
-
 }
 
 /*----------------------------------------------------------------------------*/

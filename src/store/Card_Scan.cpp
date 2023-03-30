@@ -65,20 +65,6 @@ void Card_Scan::vMorph_table_To_scan(STORE::CardIter *pCI)
 
   pCI->G_vNewMember(CK_SCAN);
   pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_scan);
-
-//  pCI->G.p_scan = new Card_Scan;
-//  pCI->G.p_scan->vTransferChildren(pCI->G.p_table);
-//
-//  pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table,pCI->G.p_scan);
-//  pCI->G.p_scan->vInsert(pCI->G.p_table);
-
-//  if (pCI->G.p_indexJoin) {
-//    NEVER_REACH
-//    pCI->G.p_scan->vRemoveChild(pCI->G.p_indexJoin);
-//    DELETE_CARD(pCI->G.p_indexJoin);
-//  }
-
-//  pCI->G.p_MainCard = pCI->G.p_scan;
 }
 
 /*----------------------------------------------------------------------------*/

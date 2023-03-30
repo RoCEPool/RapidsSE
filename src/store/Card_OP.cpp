@@ -635,6 +635,22 @@ void Card_OP::vRelegate_table(CardIter* pCI, Card_OP* p_under)
   pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, p_under);
 
   pCI->G.p_MainCard = p_under;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // restructure
+
+  if ((pCI->G.p_tableNm = pCI->G.p_MainCard->pSub_tableNm())) {
+    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tableNm);
+    pCI->G.p_table->vAppend(pCI->G.p_tableNm);
+  }
+  if ((pCI->G.p_tablePtn = pCI->G.p_MainCard->pSub_tablePtn())) {
+    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tablePtn);
+    pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
+  }
+  if ((pCI->G.p_size = pCI->G.p_MainCard->pSub_size())) {
+    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_size);
+    pCI->G.p_table->vAppend(pCI->G.p_size);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
