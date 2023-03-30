@@ -459,6 +459,10 @@ failure contains: 'EC_DIVIDE_BY_ZERO'
 SELECT INTERVAL '1' YEAR / 0 from nation where n_nationkey = 2;
 failure contains: 'EC_DIVIDE_BY_ZERO'
 
+SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
+rows:
+  (INTERVAL '3 4:5' DAY TO MINUTE)
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval Between
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
