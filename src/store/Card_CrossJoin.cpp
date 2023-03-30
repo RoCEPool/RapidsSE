@@ -55,29 +55,31 @@ void Card_CrossJoin::vIndividuateFilter(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* table morphs to crossJoin                                                  */
 /*----------------------------------------------------------------------------*/
-void Card_CrossJoin::vTableMorphsToCrossJoin(STORE::CardIter *pCI)
+void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 {
   _static_
     //Board::vChoose_index_For_crossJoin(pCI);
 
-    pCI->G.p_index = pCI->G.p_table->pSub_index();
+  pCI->G_vNewMember(CK_CROSSJOIN);
+  pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
 
-    pCI->G.p_crossJoin = new Card_CrossJoin;
-    pCI->G.p_crossJoin->vTransferChildren(pCI->G.p_table);
+//  pCI->G.p_crossJoin = new Card_CrossJoin;
+//  pCI->G.p_crossJoin->vTransferChildren(pCI->G.p_table);
+//  pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table,pCI->G.p_crossJoin);
+//  pCI->G.p_crossJoin->vInsert(pCI->G.p_table);
+//  pCI->G.p_MainCard = pCI->G.p_crossJoin;
 
-    pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table,pCI->G.p_crossJoin);
-    pCI->G.p_crossJoin->vInsert(pCI->G.p_table);
+  pCI->G.p_index = pCI->G.p_crossJoin->pSub_index();
 
-    pCI->G_vNewMember(CK_BOUNDS,"cross"_Stz);
-    pCI->G.p_index->vAppend(pCI->G.p_bounds);
+  pCI->G_vNewMember(CK_BOUNDS,"cross"_Stz);
+  pCI->G.p_index->vAppend(pCI->G.p_bounds);
 
-    pCI->G_vNewMember(CK_BOUND);
-    pCI->G.p_bounds->vAppend(pCI->G.p_bound);
+  pCI->G_vNewMember(CK_BOUND);
+  pCI->G.p_bounds->vAppend(pCI->G.p_bound);
 
-    pCI->G_vNewMember(CK_TERM,"$I1"_Stz);
-    pCI->G.p_bound->vAppend(pCI->G.p_term);
+  pCI->G_vNewMember(CK_TERM,"$I1"_Stz);
+  pCI->G.p_bound->vAppend(pCI->G.p_term);
 
-    pCI->G.p_MainCard = pCI->G.p_crossJoin;
 }
 
 /*----------------------------------------------------------------------------*/

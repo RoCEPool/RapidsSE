@@ -189,18 +189,11 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert <table> into either <scan>, <indexJoin> or <keyExists>             */
 /*----------------------------------------------------------------------------*/
-void Board::vMorph_Table_To_EEop(CardIter* pCI)
+void Board::vMorphAll_table_To_EEop(CardIter* pCI)
 {
   _static_
 
   pCI->vPrintBoard(__LINE__);
-
-//  i8 i_Fold = C_UNKNOWN;
-//  bool bFold = pCI->G_bLocateCard(CK_FOLD,C_UNKNOWN,i_Fold);
-
-  pCI->vRestart();
-  while (pCI->G_bEachMain(CK_FLAT))
-    pCI->G.pDeck->vRemoveDeleteChild(pCI->G.p_flat);
 
   pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE)) {
@@ -217,26 +210,26 @@ void Board::vMorph_Table_To_EEop(CardIter* pCI)
 
     RASSERT(! pCI->G.p_indexJoin);
 
-
-    // SCAN
+    // TABLE to:
+    // a) SCAN
     if (0 == pCI->G.i_MainCard)  {
-      Card_Scan::vTableMorphsToScan(pCI);
+      Card_Scan::vMorph_table_To_scan(pCI);
     }
-    // KEYEXISTS
+    // b) KEYEXISTS
     else if (pCI->G.p_keyExists) {
-      Card_KeyExists::vTableMorphsToKeyExists(pCI);
+      Card_KeyExists::vMorph_table_To_keyExists(pCI);
     }
-    // KEYNOTEXISTS
+    // c) KEYNOTEXISTS
     else if (pCI->G.p_keyNotExists) {
-      Card_KeyNotExists::vTableMorphsToKeyNotExists(pCI);
+      Card_KeyNotExists::vMorph_table_To_keyNotExists(pCI);
     }
-    // CROSSJOIN
+    // d) CROSSJOIN
     else if (! pCI->G.p_bounds) { // && bFold && pCI->G.i_MainCard == i_Fold+1) {
-      Card_CrossJoin::vTableMorphsToCrossJoin(pCI);
+      Card_CrossJoin::vMorph_table_To_crossJoin(pCI);
     }
-    // INDEXJOIN
+    // e) INDEXJOIN
     else {
-      Card_IndexJoin::vTableMorphsToIndexJoin(pCI);
+      Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
     }
 
 

@@ -22,7 +22,7 @@ namespace STORE
 
     void vEarlyProject_recurse_add(CardIter* pCI);
 
-    static void vTableMorphsToKeyExists(CardIter* pCI);
+    static void vMorph_table_To_keyExists(CardIter* pCI);
 
     void vUpdate_projection(CardIter* pCI);
 

@@ -165,7 +165,7 @@ namespace STORE
 
 
 
-    static void vMorph_Table_To_EEop(CardIter* pCI);
+    static void vMorphAll_table_To_EEop(CardIter* pCI);
 
 
 

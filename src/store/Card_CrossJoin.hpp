@@ -18,7 +18,7 @@ namespace STORE
 
     static void vIndividuateFilter(CardIter* pCI);
 
-    static void vTableMorphsToCrossJoin(CardIter* pCI);
+    static void vMorph_table_To_crossJoin(CardIter* pCI);
 
     void vEarlyProject_recurse_update(CardIter* pCI);
 

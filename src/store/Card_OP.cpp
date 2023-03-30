@@ -622,6 +622,22 @@ bool Card_OP::bPeg_Projection(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRelegate_table(CardIter* pCI, Card_OP* p_under)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_table->vRemoveSub(p_under);
+  p_under->vTransferChildren(pCI->G.p_table);
+  p_under->vInsert(pCI->G.p_table);
+
+  pCI->G.pBoard->pDeck()->vReplace(pCI->G.p_table, p_under);
+
+  pCI->G.p_MainCard = p_under;
+}
+
+/*----------------------------------------------------------------------------*/
 /* table projection analysis                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vUpdate_projection(CardIter* pCI)

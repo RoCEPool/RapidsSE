@@ -57,6 +57,8 @@ void ApplyOptimisations::vOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
+  vDelete_flat();
+
   vMorph_table_To_EEop();
   vMorph_scan_To_indexScan();
 
@@ -424,6 +426,18 @@ void ApplyOptimisations::vCut_sort(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void ApplyOptimisations::vDelete_flat(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+
+  m_pCI->vRestart();
+  while (m_pCI->G_bEachMain(CK_FLAT))
+    m_pCI->G.pDeck->vRemoveDeleteChild(m_pCI->G.p_flat);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void ApplyOptimisations::vDerive_Projection_Keys(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
@@ -530,7 +544,7 @@ void ApplyOptimisations::vMorph_table_To_EEop(void)
 
   m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
-  Board::vMorph_Table_To_EEop(m_pCI);
+  Board::vMorphAll_table_To_EEop(m_pCI);
 
   m_pCI->vEndTransform();
 }
