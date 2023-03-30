@@ -432,11 +432,32 @@ SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / 2 FROM nation where n_nationkey = 
 rows:
  (INTERVAL -'16 4:59:59.500000' DAY TO SECOND)
 
+SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / -2 FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '16 4:59:59.500000' DAY TO SECOND)
+
+SELECT INTERVAL '9' YEAR / -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
+SELECT INTERVAL -'9' YEAR / -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL '3' YEAR)
+
+SELECT INTERVAL -'9' YEAR / 3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
 // CHECK WITH CRAIG
 SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
 rows :
   (INTERVAL '0' YEAR)
 
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM nation where n_nationkey = 2;
+failure contains: 'EC_DIVIDE_BY_ZERO'
+
+SELECT INTERVAL '1' YEAR / 0 from nation where n_nationkey = 2;
+failure contains: 'EC_DIVIDE_BY_ZERO'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval Between
