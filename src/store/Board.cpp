@@ -198,43 +198,19 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
   pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE)) {
 
-    pCI->G.p_bounds         = pCI->G.p_table->pSub_bounds();
-    pCI->G.p_index          = pCI->G.p_table->pSub_index();
-    pCI->G.p_indexJoin      = pCI->G.p_table->pSub_indexJoin();
-    pCI->G.p_indexList      = pCI->G.p_table->pSub_indexList();
-    pCI->G.p_keyExists      = pCI->G.p_table->pSub_keyExists();
-    pCI->G.p_keyNotExists   = pCI->G.p_table->pSub_keyNotExists();
+    pCI->G.p_bounds = pCI->G.p_table->pSub_bounds();
+    pCI->G.p_index = pCI->G.p_table->pSub_index();
+    pCI->G.p_indexJoin = pCI->G.p_table->pSub_indexJoin();
+    pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
+    pCI->G.p_keyExists = pCI->G.p_table->pSub_keyExists();
+    pCI->G.p_keyNotExists = pCI->G.p_table->pSub_keyNotExists();
 
     vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
-           pCI->G.p_table,pCI->G.p_table->iCardNo(),aCK[pCI->G.p_table->eCard()],pCI->G.p_table->szValue());
+           pCI->G.p_table, pCI->G.p_table->iCardNo(), aCK[pCI->G.p_table->eCard()], pCI->G.p_table->szValue());
 
-    RASSERT(! pCI->G.p_indexJoin);
+    RASSERT(!pCI->G.p_indexJoin);
 
-    // TABLE to:
-    // a) SCAN
-    if (0 == pCI->G.i_MainCard)  {
-      Card_Scan::vMorph_table_To_scan(pCI);
-    }
-    // b) KEYEXISTS
-    else if (pCI->G.p_keyExists) {
-      Card_KeyExists::vMorph_table_To_keyExists(pCI);
-    }
-    // c) KEYNOTEXISTS
-    else if (pCI->G.p_keyNotExists) {
-      Card_KeyNotExists::vMorph_table_To_keyNotExists(pCI);
-    }
-    // d) CROSSJOIN
-    else if (! pCI->G.p_bounds) { // && bFold && pCI->G.i_MainCard == i_Fold+1) {
-      Card_CrossJoin::vMorph_table_To_crossJoin(pCI);
-    }
-    // e) INDEXJOIN
-    else {
-      Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
-    }
-
-    pCI->G.pDeck->vRenumberRecursive();
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
+    pCI->G.p_table->vMorph_table_To_EEop(pCI);
   }
 
   pCI->vPrintBoard(__LINE__);

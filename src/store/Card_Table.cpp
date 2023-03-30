@@ -371,6 +371,44 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert <table> into either <scan>, <indexJoin> or <keyExists>             */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
+{
+  _static_
+
+  pCI->vPrintBoard(__LINE__);
+
+
+  // TABLE to:
+  // a) SCAN
+  if (0 == pCI->G.i_MainCard)  {
+    Card_Scan::vMorph_table_To_scan(pCI);
+  }
+    // b) KEYEXISTS
+  else if (pCI->G.p_keyExists) {
+    Card_KeyExists::vMorph_table_To_keyExists(pCI);
+  }
+    // c) KEYNOTEXISTS
+  else if (pCI->G.p_keyNotExists) {
+    Card_KeyNotExists::vMorph_table_To_keyNotExists(pCI);
+  }
+    // d) CROSSJOIN
+  else if (! pCI->G.p_bounds) { // && bFold && pCI->G.i_MainCard == i_Fold+1) {
+    Card_CrossJoin::vMorph_table_To_crossJoin(pCI);
+  }
+    // e) INDEXJOIN
+  else {
+    Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
+  }
+
+  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vPrintBoard(__LINE__);
+  vDebugPoint();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
