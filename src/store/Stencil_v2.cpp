@@ -76,51 +76,21 @@ Stencil_v2::Stencil_v2(void)
   m_xStageOps.m_sLabelOrdAgg = ""_Stz;
   m_xStageOps.m_sHashExpr = ""_Stz;
 
-  m_pConcluding     = nullptr;
-  m_pConcludingFun0 = nullptr;
-  m_pConcludingFun1 = nullptr;
-  m_pConcludingFun2 = nullptr;
-  m_pConcludingEos  = nullptr;
   m_pOpHeader    = nullptr;
   m_pOpSource    = nullptr;
-  m_pEmptyFun0   = nullptr;
-  m_pEmptyFun1   = nullptr;
-  m_pEmptyFun2   = nullptr;
 
-  m_pShapeCRW    = nullptr;
-  m_pShapeROW    = nullptr;
-  m_pShapeIDX    = nullptr;
-  m_pShapeEOS    = nullptr;
 
   try {
 
     m_pOpSource    = new CombinedSrc;
-
-    m_pConcluding     = new CodeSynth_v2;
-    m_pConcludingFun0 = new CodeSynth_v2;
-    m_pConcludingFun1 = new CodeSynth_v2;
-    m_pConcludingFun2 = new CodeSynth_v2;
-    m_pConcludingEos  = new CodeSynth_v2;
     m_pOpHeader    = new CodeSynth_v2;
-    m_pEmptyFun0   = new CodeSynth_v2;
-    m_pEmptyFun1   = new CodeSynth_v2;
-    m_pEmptyFun2   = new CodeSynth_v2;
-    m_pShapeEOS    = new OpSketch;
+
   }
   catch (LowMemory xLowMemory) {
 
-    delete m_pConcluding;
-    delete m_pConcludingFun0;
-    delete m_pConcludingFun1;
-    delete m_pConcludingFun2;
-    delete m_pConcludingEos;
-    delete m_pOpHeader;
-    delete m_pOpSource;
-    delete m_pEmptyFun0;
-    delete m_pEmptyFun1;
-    delete m_pEmptyFun2;
 
-    delete m_pShapeEOS;
+    delete m_pOpHeader;
+
 
     throw xLowMemory;
   }
@@ -137,22 +107,8 @@ Stencil_v2::~Stencil_v2(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
-  delete m_pConcluding;
-  delete m_pConcludingFun0;
-  delete m_pConcludingFun1;
-  delete m_pConcludingFun2;
-  delete m_pConcludingEos;
   delete m_pOpHeader;
   delete m_pOpSource;
-  delete m_pEmptyFun0;
-  delete m_pEmptyFun1;
-  delete m_pEmptyFun2;
-
-  delete m_pShapeCRW;
-  delete m_pShapeROW;
-  delete m_pShapeIDX;
-  delete m_pShapeEOS;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,7 +466,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     // skip scan OP
     if (pOp->szOpNm()->bSame("scan"_Stz))
       continue;
-
+/*
     // generate code for indexScan OP
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
@@ -524,7 +480,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       ePrevStencil_v2 = SR_IT;
       continue;
     }
-
+*/
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (driving code) if not already inflated
     if (!bInflateGenerated) {
@@ -1245,6 +1201,7 @@ void Stencil_v2::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
+/*
 void Stencil_v2::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, TypedStack* pInitStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1316,10 +1273,12 @@ void Stencil_v2::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* 
   // append concluding code
   Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
+/*
 void Stencil_v2::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1395,10 +1354,12 @@ void Stencil_v2::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* 
   // append concluding code
   Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for sort OP                                       */
 /*----------------------------------------------------------------------------*/
+/*
 void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1467,10 +1428,12 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   // append concluding code
   Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for top OP                                        */
 /*----------------------------------------------------------------------------*/
+/*
 void Stencil_v2::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1522,6 +1485,7 @@ void Stencil_v2::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   // append concluding code
   Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* sketch code for indexJoin                                                  */

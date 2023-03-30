@@ -29,9 +29,7 @@ struct stageOps_V2 {
 
   bool m_bScan;
   bool m_bIndexScan;
-
   bool m_bPayloadOp;
-
   bool m_bGeneratePotTub;
 
   Op* m_pCombinedOp;
@@ -52,27 +50,12 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
   private:
 
     s256        m_szStageNm;
-    bool        m_bScan;
     bool        m_bRowBuffer;
 
     stageOps_V2 m_xStageOps;
 
     CombinedSrc* m_pOpSource;
-
-    CodeSynth_v2* m_pConcluding;
-    CodeSynth_v2* m_pConcludingFun0;
-    CodeSynth_v2* m_pConcludingFun1;
-    CodeSynth_v2* m_pConcludingFun2;
-    CodeSynth_v2* m_pConcludingEos;
     CodeSynth_v2* m_pOpHeader;
-    CodeSynth_v2* m_pEmptyFun0;
-    CodeSynth_v2* m_pEmptyFun1;
-    CodeSynth_v2* m_pEmptyFun2;
-
-    OpSketch*     m_pShapeCRW;
-    OpSketch*     m_pShapeROW;
-    OpSketch*     m_pShapeIDX;
-    OpSketch*     m_pShapeEOS;
 
     // must be last
     Footer m_xFooter;
