@@ -67,7 +67,7 @@ void ApplyOptimisations::vOptimise(void)
 
   // --- --- --- --- --- --- ---
 
-  //vEarlyProjections();
+  vEarlyProjections();
   vDebugPoint();
 }
 

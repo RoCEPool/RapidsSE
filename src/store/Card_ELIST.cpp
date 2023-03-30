@@ -229,7 +229,7 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* renumber all expr                                                          */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vRenumberAllExpr(void)
+void Card_ELIST::vRenumberAll_expr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -20,7 +20,7 @@ namespace STORE
 
     static void vTableMorphsToCrossJoin(CardIter* pCI);
 
-    void vEarlyProject_recurse(CardIter* pCI);
+    void vEarlyProject_recurse_update(CardIter* pCI);
 
   };
 

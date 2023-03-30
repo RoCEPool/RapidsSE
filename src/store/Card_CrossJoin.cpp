@@ -88,7 +88,7 @@ void Card_CrossJoin::vTableMorphsToCrossJoin(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_CrossJoin::vEarlyProject_recurse(CardIter* pCI)
+void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 {
   vDump(0,(Stz*)__func__);
 

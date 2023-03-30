@@ -98,7 +98,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
     vDebugPoint();
   }
 
-  p_projection_unproject->vRenumberAllExpr();
+  p_projection_unproject->vRenumberAll_expr();
 }
 
 
@@ -161,19 +161,21 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 
     Card_Expr* p_expr_early = x_prior.p_expr()->pCraft_expr_early(pCI);
     p_projection_early->vAppend(p_expr_early);
-    p_expr_early->vRenumber(p_projection_early->nChildCards());
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  for (Kid xKid_needed(pCI->Early.m_pNeeded_later); xKid_needed.bEach(CK_EXPR); /**/) {
-//    if (! xKid_needed.p_expr()->pProjectedTerm()->bIsStmColOdn())
-//      continue;
-//
-//    Card_Expr* p_expr_early = xKid_needed.p_expr()->pClone(false);
-//    p_projection_early->vInsert(p_expr_early);
-//    p_expr_early->vRenumber(p_projection_early->nChildCards());
-//  }
+  for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
+    if (! x_needed.p_expr()->pProjectedTerm()->bIsStmColOdn())
+      continue;
+    if (p_projection_early->pContains(x_needed.p_expr()))
+      continue;
+
+    Card_Expr* p_expr_early = x_needed.p_expr()->pClone(false);
+    p_projection_early->vInsert(p_expr_early);
+  }
+
+  p_projection_early->vRenumberAll_expr();
 
   p_projection_early->vDump();
 
@@ -273,7 +275,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_projection = pSub_projection();
 
   pCI->G.p_projection->vPush(pCI->G.p_expr);
-  pCI->G.p_projection->vRenumberAllExpr();
+  pCI->G.p_projection->vRenumberAll_expr();
 
 }
 

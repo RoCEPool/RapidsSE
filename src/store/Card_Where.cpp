@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Where,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Where::Card_Where(void)
-: Card(CK_WHERE)
+: Card_OP(CK_WHERE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -198,6 +198,27 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 //    p_constraint->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
     p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* early project                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vEarlyProject_recurse_passthru(CardIter* pCI)
+{
+  vDump(0,(Stz*)__func__);
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->vPrintBoard();
+
+  Card_OP::vEarlyProject_backstep(pCI);
+
+  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+
+  pCI->vPrintBoard();
+
+  vDebugPoint();
 }
 
 

@@ -196,7 +196,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  p_needed->vRenumberAllExpr();
+  p_needed->vRenumberAll_expr();
   p_needed->vDump();
 
   return p_needed;

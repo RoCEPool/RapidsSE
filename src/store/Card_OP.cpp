@@ -355,6 +355,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
       // -- -- -- -- -- -- --
       // don't go any further
+
       case CK_GBYAGG:
         pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
         return;
@@ -366,15 +367,11 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
       // -- -- -- -- -- -- --
       // recurse into...
-      case CK_PROJECT:
-        if (pCI->G.p_project->pSub_needed()) {
-          pCI->vSave();
-          pCI->G.p_project->vEarlyProject_needed_recurse(pCI);
-          pCI->vRestore();
-        }
-        else {
-          pCI->G.p_project->vEarlyProject_given_leaf(pCI);
-        }
+
+      case CK_CROSSJOIN:
+        pCI->vSave();
+        pCI->G.p_crossJoin->vEarlyProject_recurse_update(pCI);
+        pCI->vRestore();
         return;
 
       case CK_INDEXJOIN:
@@ -401,20 +398,31 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         pCI->vRestore();
         return;
 
+      case CK_PROJECT:
+        if (pCI->G.p_project->pSub_needed()) {
+          pCI->vSave();
+          pCI->G.p_project->vEarlyProject_needed_recurse(pCI);
+          pCI->vRestore();
+        }
+        else {
+          pCI->G.p_project->vEarlyProject_given_leaf(pCI);
+        }
+        return;
+
       case CK_SCAN:
         pCI->vSave();
         pCI->G.p_scan->vEarlyProject_leaf(pCI);
         pCI->vRestore();
         return;
 
-      case CK_CROSSJOIN:
-        pCI->vSave();
-        pCI->G.p_crossJoin->vEarlyProject_recurse(pCI);
-        pCI->vRestore();
+      case CK_WHERE:
+        pCI->G.p_where->vEarlyProject_recurse_passthru(pCI);
         return;
+
 
         // -- -- -- -- -- -- --
       // missing??
+
       default:
         pCI->G.p_MainCard->vDump();
         NEVER_REACH

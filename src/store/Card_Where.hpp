@@ -4,14 +4,13 @@
 #pragma once
 
 #include "Card.hpp"
-#include "Card_PRED.hpp"
 #include "CarryForward.hpp"
 
 namespace STORE
 {
   class CarryForward;
 
-  class Card_Where : public Card
+  class Card_Where : public Card_OP
   {
   public:
     void* operator new(size_t);
@@ -28,7 +27,8 @@ namespace STORE
 
     static Card_Where* pNewWhereConstruct(void);
 
-     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vEarlyProject_recurse_passthru(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
   };
 

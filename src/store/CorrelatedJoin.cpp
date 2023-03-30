@@ -367,8 +367,8 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G.p_key->Y_vSet(P_ProjBumped);
     }
 
-    pCI->G.p_key->vRenumberAllExpr();
-    pCI->G.p_projection->vRenumberAllExpr();
+    pCI->G.p_key->vRenumberAll_expr();
+    pCI->G.p_projection->vRenumberAll_expr();
 
     if (pCI->G_bEachMain()) {
       if (! pCI->G.p_MainCard->bIsCard(CK_AGGREG)) {
@@ -438,7 +438,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 //  pCI->G.p_projection->Y_vSet(P_ProjBumped,(i8)nBumpBy);
 //  pCI->G.p_projection->Y_vCut(P_ProjBump);
 
-  pCI->G.p_projection->vRenumberAllExpr();
+  pCI->G.p_projection->vRenumberAll_expr();
 }
 
 /*----------------------------------------------------------------------------*/
