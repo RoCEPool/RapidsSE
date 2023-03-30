@@ -388,6 +388,15 @@ SELECT INTERVAL '1 2' DAY TO HOUR * 2 FROM nation where n_nationkey = 2;
 rows:
   (INTERVAL '2 4' DAY TO HOUR)
 
+SELECT INTERVAL '1 2' DAY TO HOUR * -2 FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'2 4' DAY TO HOUR)
+
+SELECT -2 * INTERVAL '1 2' DAY TO HOUR FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'2 4' DAY TO HOUR)
+
+
 // Interval multiplication /4 (integer first)
 SELECT 2 * INTERVAL '32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
 rows:
@@ -396,6 +405,18 @@ rows:
 SELECT 2 * INTERVAL -'32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
 rows:
  (INTERVAL -'64 19:59:58' DAY TO SECOND)
+
+SELECT INTERVAL '1' YEAR * -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
+SELECT -3 * INTERVAL '1' YEAR from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3 from nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'15:20.367036' MINUTE TO SECOND)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval / Integer
@@ -410,6 +431,12 @@ rows:
 SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / 2 FROM nation where n_nationkey = 2;
 rows:
  (INTERVAL -'16 4:59:59.500000' DAY TO SECOND)
+
+// CHECK WITH CRAIG
+SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL '0' YEAR)
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval Between

@@ -944,13 +944,20 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
-                                                                           \
-      i8 iMonths = iArg1 / iArg2;                                          \
-                                                                           \
       wIvlResult.m_iAsI8 = 0;                                              \
       wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
-      wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;                \
+                                                                           \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      if (iArg2 < 0 || ivlArg1.m_xIvl.m_bIsNeg)                            \
+         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
+                                                                           \
+      if (iArg2 < 0)                                                       \
+        iArg2 = (-1) * iArg2;                                              \
+                                                                           \
+      i8 iMonths = iArg1 / iArg2;                                          \
+      printf("%lld %lld %lld\n", iArg1, iArg2, iMonths);                   \
+                                                                           \
       wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                    \
      *paW++ = wIvlResult.m_iAsI8;                                          \
    }                                                                       \
@@ -968,6 +975,15 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
+                                                                           \
+      if (iArg1 < 0 || ivlArg2.m_xIvl.m_bIsNeg)                            \
+         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
+                                                                           \
+      if (iArg1 < 0)                                                       \
+        iArg1 = (-1) * iArg1;                                              \
+                                                                           \
       iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
                                                                            \
       i8 iMicros = iArg1 * iArg2;                                          \
@@ -978,9 +994,6 @@
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
       else {                                                               \
-        wIvlResult.m_iAsI8 = 0;                                            \
-        wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                \
-        wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;              \
         wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
         *paW++ = wIvlResult.m_iAsI8;                                       \
       }                                                                    \
@@ -998,7 +1011,15 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                  \
       iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      if (iArg1 < 0 || ivlArg2.m_xIvl.m_bIsNeg)                            \
+         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
+                                                                           \
+      if (iArg1 < 0)                                                       \
+        iArg1 = (-1) * iArg1;                                              \
                                                                            \
       i8 iMonths = iArg1 * iArg2;                                          \
                                                                            \
@@ -1008,9 +1029,6 @@
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
       else {                                                               \
-        wIvlResult.m_iAsI8 = 0;                                            \
-        wIvlResult.m_xIvl.m_eType = ivlArg2.m_xIvl.m_eType;                \
-        wIvlResult.m_xIvl.m_bIsNeg = ivlArg2.m_xIvl.m_bIsNeg;              \
         wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                  \
         *paW++ = wIvlResult.m_iAsI8;                                       \
       }                                                                    \
@@ -1028,7 +1046,16 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+                                                                           \
       iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                         \
+                                                                           \
+      if (iArg2 < 0 || ivlArg1.m_xIvl.m_bIsNeg)                            \
+         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
+                                                                           \
+      if (iArg2 < 0)                                                       \
+        iArg2 = (-1) * iArg2;                                              \
                                                                            \
       i8 iMicros = iArg1 * iArg2;                                          \
                                                                            \
@@ -1038,9 +1065,6 @@
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
       else {                                                               \
-        wIvlResult.m_iAsI8 = 0;                                            \
-        wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                \
-        wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;              \
         wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
         *paW++ = wIvlResult.m_iAsI8;                                       \
       }                                                                    \
@@ -1058,7 +1082,16 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
+      wIvlResult.m_iAsI8 = 0;                                              \
+      wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                  \
+                                                                           \
       iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
+                                                                           \
+      if (iArg2 < 0 || ivlArg1.m_xIvl.m_bIsNeg)                            \
+         wIvlResult.m_xIvl.m_bIsNeg = 1;                                   \
+                                                                           \
+      if (iArg2 < 0)                                                       \
+        iArg2 = (-1) * iArg2;                                              \
                                                                            \
       i8 iMonths = iArg1 * iArg2;                                          \
                                                                            \
@@ -1068,11 +1101,8 @@
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
       else {                                                               \
-        wIvlResult.m_iAsI8 = 0;                                            \
-        wIvlResult.m_xIvl.m_eType = ivlArg1.m_xIvl.m_eType;                \
-        wIvlResult.m_xIvl.m_bIsNeg = ivlArg1.m_xIvl.m_bIsNeg;              \
-        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = iMonths;                  \
-       *paW++ = wIvlResult.m_iAsI8;                                        \
+        wIvlResult.m_xIvl.u.m_xIvlYM.m_uMonths = (u8)iMonths;              \
+        *paW++ = wIvlResult.m_iAsI8;                                       \
      }                                                                     \
    }                                                                       \
   }
