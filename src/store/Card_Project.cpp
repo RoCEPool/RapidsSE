@@ -148,22 +148,32 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 
   //pCI->Early.m_pNeeded_later->vDump();
 
-  for (Kid xKid(pCI->Analysis.m_pProjection_prior); xKid.bEach(CK_EXPR); /**/) {
-    xKid.p_expr()->vDump();
+  for (Kid x_prior(pCI->Analysis.m_pProjection_prior); x_prior.bEach(CK_EXPR); /**/) {
+    x_prior.p_expr()->vDump();
 
-    if (! pCI->Early.m_pNeeded_later->pHasSame(xKid.p_expr()))
+    if (! pCI->Early.m_pNeeded_later->pContains(x_prior.p_expr()))
       continue;
-    if (p_projection_early->pHasSame(xKid.p_expr()))
+    if (p_projection_early->pContains(x_prior.p_expr()))
       continue;
 
     // denoted expr (of this denoted projection of denoted main op)
     //   is needed and not yet in early projection
 
-    Card_Expr* p_expr_early = xKid.p_expr()->pCraft_expr_early(pCI);
+    Card_Expr* p_expr_early = x_prior.p_expr()->pCraft_expr_early(pCI);
     p_projection_early->vAppend(p_expr_early);
     p_expr_early->vRenumber(p_projection_early->nChildCards());
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//  for (Kid xKid_needed(pCI->Early.m_pNeeded_later); xKid_needed.bEach(CK_EXPR); /**/) {
+//    if (! xKid_needed.p_expr()->pProjectedTerm()->bIsStmColOdn())
+//      continue;
+//
+//    Card_Expr* p_expr_early = xKid_needed.p_expr()->pClone(false);
+//    p_projection_early->vInsert(p_expr_early);
+//    p_expr_early->vRenumber(p_projection_early->nChildCards());
+//  }
 
   p_projection_early->vDump();
 

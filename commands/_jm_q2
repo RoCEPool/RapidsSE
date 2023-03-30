@@ -72,7 +72,7 @@ limit 100;
 metricsCtl disable;
 
 // sleep
-sleep 5;
+sleep 30;
 
 // generate system report data
 sysReport;

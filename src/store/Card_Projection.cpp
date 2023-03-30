@@ -135,6 +135,20 @@ Card_Projection* Card_Projection::pClone(void)
   return _pCard_Projection(pDupCardAndSubCards());
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pContains(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR))
+    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
+      return xCI_this.G.p_expr;
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* craft reduced form of this projection needed for early projects            */
@@ -231,21 +245,6 @@ Card_Expr* Card_Projection::pFind_expr_With_projectedCol(Card_Term* p_term_col)
     if (p_expr->bHasProjectedCol(p_term_col))
       return p_expr;
   }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pHasSame(Card_Expr* p_expr_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_EXPR))
-    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
-      return xCI_this.G.p_expr;
 
   return nullptr;
 }

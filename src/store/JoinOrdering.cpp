@@ -89,6 +89,8 @@ void JoinOrdering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
 
+//  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
 
