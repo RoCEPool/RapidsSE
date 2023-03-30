@@ -493,7 +493,7 @@ SizeHeap gxaSizeHeap[]
   {CN_OPENFILES,                sizeof(OpenFiles),          HT_T_TINY    , FILL },
   {CN_OPERANDQUEUE,             sizeof(OperandQueue),       HT_T_TINY    , FILL },
   {CN_OPERANDWATCH,             sizeof(OperandWatch),       HT_T_SMALL   , FILL },
-  {CN_OPSKETCH,                 sizeof(OpSketch),           HT_T_SMALL   , FILL },
+  {CN_OPSKETCH,                 sizeof(OpSketch),           HT_T_MEDIUM  , FILL },
   {CN_OPMETRICS,                sizeof(OpMetrics),          HT_T_TINY    , FILL },
   {CN_OPSPEC,                   sizeof(OpSpec),             HT_T_MEDIUM  , FILL },
   {CN_OPTIMISER,                sizeof(Optimiser),          HT_T_LARGE   , FILL },

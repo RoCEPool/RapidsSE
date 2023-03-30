@@ -29,9 +29,7 @@ struct stageOps_V2 {
 
   bool m_bScan;
   bool m_bIndexScan;
-
   bool m_bPayloadOp;
-
   bool m_bGeneratePotTub;
 
   Op* m_pCombinedOp;
@@ -52,34 +50,12 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
   private:
 
     s256        m_szStageNm;
-    bool        m_bScan;
     bool        m_bRowBuffer;
 
     stageOps_V2 m_xStageOps;
 
     CombinedSrc* m_pOpSource;
-
-    CodeSynth_v2* m_pBannerHead;
-    CodeSynth_v2* m_pBannerTail;
-    CodeSynth_v2* m_pPreliminary;
-    CodeSynth_v2* m_pPreliminaryFun0;
-    CodeSynth_v2* m_pPreliminaryFun1;
-    CodeSynth_v2* m_pPreliminaryFun2;
-    CodeSynth_v2* m_pPreliminaryEos;
-    CodeSynth_v2* m_pConcluding;
-    CodeSynth_v2* m_pConcludingFun0;
-    CodeSynth_v2* m_pConcludingFun1;
-    CodeSynth_v2* m_pConcludingFun2;
-    CodeSynth_v2* m_pConcludingEos;
     CodeSynth_v2* m_pOpHeader;
-    CodeSynth_v2* m_pEmptyFun0;
-    CodeSynth_v2* m_pEmptyFun1;
-    CodeSynth_v2* m_pEmptyFun2;
-
-    OpSketch*     m_pShapeCRW;
-    OpSketch*     m_pShapeROW;
-    OpSketch*     m_pShapeIDX;
-    OpSketch*     m_pShapeEOS;
 
     // must be last
     Footer m_xFooter;
@@ -101,12 +77,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     Stz* szStageNm(void);
 
   private:
-    void vAppendFuncEmpty(CodeSynth_v2* pCodeSynth, Stz* szDesc, Stz* szFunNm);
-    void vAppendFuncHeader0(void);
-    void vAppendFuncHeader1(void);
-    void vAppendFuncHeader2(void);
-    void vAppendFuncHeader3(void);
-    void vAppendHeaderEntries(i8 iStage);
 
     eEC eCollectStage(Combined* pCombined, Stream* pStream);
 

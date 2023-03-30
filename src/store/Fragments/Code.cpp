@@ -132,10 +132,10 @@ void vInflateCrwCol(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vInflateCrwColLast ------------------------------------------------------*/
+/*-- vInflateCrwReturn -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vInflateCrwColLast
-void vInflateCrwColLast(Combined_T* aCombinedT) {
+// function-vInflateCrwReturn
+void vInflateCrwReturn(Combined_T* aCombinedT) {
 
   char* szStrArea;
   char* acStrArea;
@@ -272,8 +272,8 @@ i8 iTubBegin(Combined_T* aCombinedT) {
 /*----------------------------------------------------------------------------*/
 /*-- vTubCol -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vTubIntCol
-void vTubIntCol(Combined_T* aCombinedT) {
+// function-vTubCol
+void vTubCol(Combined_T* aCombinedT) {
 
   struct __STRUCT_FROM__ {
     union Int_T __COLUMN_FROM__;
