@@ -29,7 +29,7 @@ namespace STORE
     eSK  m_eSketchKind;
 
     // expression string
-    s256 m_sExprString;
+    s4K m_sExprString;
 
     // definitions
     StreamDef* m_pStreamDefLft;
@@ -41,8 +41,8 @@ namespace STORE
     eSR m_eStencilTo;
 
     // stencil sketch
-    s256 m_sStencilTo;
-    s256 m_sStencilFrom;
+    s4K m_sStencilTo;
+    s4K m_sStencilFrom;
 
     // labels
     s256 m_sLabel;

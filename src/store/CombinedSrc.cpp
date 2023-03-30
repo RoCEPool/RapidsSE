@@ -200,19 +200,16 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           sCode = ""_Stz;
           pFileCode->vSeekStart();
 
-          if (i_Col < pOpSketch->m_pStreamDefLft->nColumns() - 1) {
-            bExtracted = CodeSynthUtils::bExtractInflate(pFileCode, sColumn, sReturnToColumn, "vInflateCrwCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-            RASSERT(bExtracted);
-            StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-          }
-          else {
-            bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vInflateCrwColLast"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-            RASSERT(bExtracted);
-            StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-          }
-
+          bExtracted = CodeSynthUtils::bExtractInflate(pFileCode, sColumn, sReturnToColumn, "vInflateCrwCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+          RASSERT(bExtracted);
+          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
         }
 
+        sCode = ""_Stz;
+        pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vInflateCrwReturn"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        RASSERT(bExtracted);
+        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
         break;
 
       case SK_TUB:
@@ -238,12 +235,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
           switch(pColumn->eColumnType()) {
 
-            case CT_INTEGER:
-              bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vTubIntCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
-              RASSERT(bExtracted);
-              StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-              break;
-
             case CT_VARCHAR:
               bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vTubVchCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
               RASSERT(bExtracted);
@@ -251,6 +242,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
               break;
 
             default:
+              bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vTubCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
+              RASSERT(bExtracted);
+              StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
               break;
               //NEVER_REACH
           }
