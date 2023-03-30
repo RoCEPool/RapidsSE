@@ -131,7 +131,7 @@ Stz* SP_Ivd::sz(i8 iIvd, i8 iScale)
                          aIV_field[wIvd.T.m_xIvl.m_eType]);
         else
           StrLib::vSprint(m_caResult,
-                         (Stz *) "INTERVAL -'%lld' %s",
+                         (Stz *) "INTERVAL '%lld' %s",
                          uSecs,
                          aIV_field[wIvd.T.m_xIvl.m_eType]);
       }
