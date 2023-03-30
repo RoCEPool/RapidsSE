@@ -359,6 +359,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
         return;
 
+
       case CK_ORDAGG:
         pCI->Early.m_pOP_leaf = p_OP_leaf_maybe;
         return;
@@ -385,6 +386,18 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
       case CK_INDEXSCAN:
         pCI->vSave();
         pCI->G.p_indexScan->vEarlyProject_leaf(pCI);
+        pCI->vRestore();
+        return;
+
+      case CK_KEYEXISTS:
+        pCI->vSave();
+        pCI->G.p_keyExists->vEarlyProject_recurse_add(pCI);
+        pCI->vRestore();
+        return;
+
+      case CK_KEYNOTEXISTS:
+        pCI->vSave();
+        pCI->G.p_keyNotExists->vEarlyProject_recurse_add(pCI);
         pCI->vRestore();
         return;
 
@@ -461,10 +474,10 @@ bool Card_OP::bIsEarlyRoot(void)
 
   switch (eCard) {
 
-    case CK_AGGREG:
-      if (bIsPartitionLevel())
-        return true;
-      return false;
+//    case CK_AGGREG:
+//      if (bIsPartitionLevel())
+//        return true;
+//      return false;
 
     case CK_GBYAGG:
       if (bIsPartitionLevel())
@@ -529,9 +542,11 @@ bool Card_OP::bNeedsProjectionAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsCard(CK_TABLE)     ||
-      bIsCard(CK_SCAN)      ||
-      bIsCard(CK_INDEXSCAN) ||
+  if (bIsCard(CK_TABLE)        ||
+      bIsCard(CK_SCAN)         ||
+      bIsCard(CK_KEYEXISTS)    ||
+      bIsCard(CK_KEYNOTEXISTS) ||
+      bIsCard(CK_INDEXSCAN)    ||
       bIsCard(CK_INDEXJOIN))
     return true;
 

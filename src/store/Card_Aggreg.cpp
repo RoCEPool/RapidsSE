@@ -97,11 +97,9 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   Y_vSet(P_BreakPt);
 
-  pCI->G.p_key = pSub_key();
-  pCI->G.p_projection = pSub_projection();
-
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
+  pCI->G.p_projection = pSub_projection();
   pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
 
   // insert empty early projection (has only needed) before this ordAgg
