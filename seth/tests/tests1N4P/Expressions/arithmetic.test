@@ -164,6 +164,20 @@ SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_na
 rows:
   (DATE '2034-01-16')
 
+SELECT INTERVAL '132-5' year to month + DATE '2023-02-13' FROM nation where n_nationkey = 2;
+rows:
+ (DATE '2155-07-13')
+
+SELECT DATE '2023-02-13' + INTERVAL '132-5' year to month FROM nation where n_nationkey = 2;
+rows:
+ (DATE '2155-07-13')
+
+SELECT DATE '2023-02-13' + INTERVAL '134-5' year to month FROM nation where n_nationkey = 2;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
+SELECT INTERVAL '134-5' year to month + DATE '2023-02-13' FROM nation where n_nationkey = 2;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval + time
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -80,6 +80,7 @@ enum eEC : u2 // error codes
   EC_CSV_YEAR_TOO_LARGE,
 
   /* _D_ */
+  EC_DATE_OUT_OF_RANGE,
   EC_DECIMAL_NOT_SUPPORTED,
   EC_DISABLED_STATEMENT,
   EC_DISK_SPACE_CHECK_FAILED,
@@ -346,6 +347,7 @@ static Stz* aEC[] =
   /* EC_CSV_YEAR_TOO_LARGE            */ (Stz*)"EC_CSV_YEAR_TOO_LARGE",
 
   /* _D_ */
+  /* EC_DATE_OUT_OF_RANGE             */ (Stz*)"date out of range",
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
   /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DISK_SPACE_CHECK_FAILED       */ (Stz*)"disk space check failed",
@@ -606,6 +608,7 @@ static Stz* aEC2[] = // error code
   /* EC_CSV_YEAR_TOO_LARGE            */ (Stz*)"EC_CSV_YEAR_TOO_LARGE",
 
   /* _D_ */
+  /* EC_DATE_OUT_OF_RANGE             */ (Stz*)"EC_DATE_OUT_OF_RANGE",
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"EC_DECIMAL_NOT_SUPPORTED",
   /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DISK_SPACE_CHECK_FAILED       */ (Stz*)"EC_DISK_SPACE_CHECK_FAILED",
@@ -876,6 +879,7 @@ static Stz* aErrorMsg[] =
   /* EC_CSV_YEAR_TOO_LARGE            */ (Stz*)"EC_CSV_YEAR_TOO_LARGE",
 
   /* _D_ */
+  /* EC_DATE_OUT_OF_RANGE             */ (Stz*)"date out of range",
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
   /* EC_DISABLED_STATEMENT            */ (Stz*)"statement is temporarily disabled",
   /* EC_DISK_SPACE_CHECK_FAILED       */ (Stz*)"failed to check disk space",

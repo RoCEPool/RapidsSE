@@ -351,14 +351,22 @@
      xDte2.m_uSpare       = 0;                                             \
                                                                            \
     iArg1 = xDte2.m_uMonth + iArg2;                                        \
+    i8 iYear;                                                              \
     if (iArg1 > 12) {                                                      \
-      xDte2.m_uYearDelta +=  iArg1/12;                                     \
+      iYear = xDte2.m_uYearDelta + iArg1/12;                               \
       xDte2.m_uMonth = iArg1%12;                                           \
     }                                                                      \
     else {                                                                 \
+      iYear = xDte2.m_uYearDelta;                                          \
       xDte2.m_uMonth = iArg1;                                              \
     }                                                                      \
-    *paW++ = xDte2.m_iAsI8;                                                \
+                                                                           \
+    if (iYear > C_YEAR_RANGE)                                              \
+      eErrorCode = EC_DATE_OUT_OF_RANGE;                                   \
+    else {                                                                 \
+      xDte2.m_uYearDelta = iYear;                                          \
+      *paW++ = xDte2.m_iAsI8;                                              \
+    }                                                                      \
   }                                                                        \
 }
 
@@ -423,11 +431,19 @@
      xDte1.m_uSpare       = 0;                                             \
                                                                            \
     iArg1 = xDte1.m_uMonth + iArg2;                                        \
+    i8 iYear;                                                              \
     if (iArg1 > 12) {                                                      \
-      xDte1.m_uYearDelta +=  iArg1/12;                                     \
+      iYear = xDte2.m_uYearDelta + iArg1/12;                               \
       xDte1.m_uMonth = iArg1%12;                                           \
+      if (iYear > C_YEAR_RANGE)                                            \
+        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      else {                                                               \
+        xDte1.m_uYearDelta = iYear;                                        \
+        *paW++ = xDte1.m_iAsI8;                                            \
+      }                                                                    \
     }                                                                      \
-    *paW++ = xDte1.m_iAsI8;                                                \
+    else                                                                   \
+      *paW++ = xDte1.m_iAsI8;                                              \
   }                                                                        \
 }
 
