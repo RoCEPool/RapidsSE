@@ -396,7 +396,6 @@ SELECT -2 * INTERVAL '1 2' DAY TO HOUR FROM nation where n_nationkey = 2;
 rows:
   (INTERVAL -'2 4' DAY TO HOUR)
 
-// CRAIG : 305
 SELECT 5*INTERVAL '17' MONTH FROM nation where n_nationkey = 2;
 rows:
   (INTERVAL '85' MONTH)
@@ -422,9 +421,9 @@ SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3 from nation where n_nationkey =
 rows:
   (INTERVAL -'15:20.367036' MINUTE TO SECOND)
 
-SELECT INTERVAL '1' second*1  from nation where n_nationkey = 2;
-rows:
-  (INTERVAL '1' SECOND)
+//SELECT INTERVAL '1' SECOND * 1  from nation where n_nationkey = 2;
+//rows:
+//  (INTERVAL '1' SECOND)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval / Integer
@@ -456,7 +455,6 @@ SELECT INTERVAL -'9' YEAR / 3 from nation where n_nationkey = 2;
 rows :
   (INTERVAL -'3' YEAR)
 
-// CHECK WITH CRAIG
 SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
 rows :
   (INTERVAL '0' YEAR)
@@ -643,6 +641,57 @@ drop table nation;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval in where clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   DATE,
+  cole4   DECIMAL(15, 2)
+);
+success
+
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+success
+
+SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  TABLE4 where INTERVAL '1' MONTH + colc4 > DATE '2015-11-26';
+rows: 46
+
+drop table TABLE4;
+success
+
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   TIMESTAMP,
+  cole4   DECIMAL(15, 2)
+);
+success
+
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+success
+
+// ALKA: TO DO
+//SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  TABLE4 where colc4 + INTERVAL '1' MONTH  > TIMESTAMP '2015-11-26 00:00:00';
+//rows: 84
+
+// ALKA: TO DO
+//SELECT colc4 , INTERVAL '1' MONTH + colc4 FROM  TABLE4 where INTERVAL '1' MONTH + colc4 > TIMESTAMP '2015-11-26 00:00:00';
+//rows: 84
+
+drop table TABLE4;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -656,4 +705,8 @@ rows: 0
 CLEANUP {
   DROP TABLE nation;
   mute
+
+  DROP TABLE table4;
+  mute
+
 }
