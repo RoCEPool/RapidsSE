@@ -47,9 +47,12 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
 {
   _static_
 
+  pCI->G.p_keyExists = pCI->G.p_table->pSub_keyExists();
+
   pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_keyExists);
 
   // todo: this should be in index list
+  pCI->G.p_index = pCI->G.p_keyExists->pSub_index();
   pCI->G.p_index->vSet_Choose_index();
   pCI->G.p_index->pSub_bound()->Y_vSet(P_ChosenBound);
 

@@ -221,6 +221,11 @@ void Card_IndexJoin::vMorph_table_To_indexJoin(STORE::CardIter *pCI)
 {
   _static_
 
+  pCI->G.p_indexJoin = pCI->G.p_table->pSub_indexJoin();
+  pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
+
+  pCI->G.p_bounds = pCI->G.p_table->pSub_bounds();
+
   if (! pCI->G.p_bounds) {
     s256 sErrorMsg;
     sErrorMsg.vSprint("No index for table(%c) %s"_Stz,
