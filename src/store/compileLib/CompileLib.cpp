@@ -25,7 +25,7 @@ static Stz* C_STARTUP_DIRS[] = {
 static eCB C_DEFAULT_COMPILER = CB_NONE;
 static Stz* C_DEFAULT_COMPILER_PATH = nullptr;
 
-static Stz* C_GCC_COMPILER_FLAGS = "-std=c++11 -g -Wl,--unresolved-symbols=ignore-in-shared-libs -I../src -O3 -fpic -shared"_Stz;
+static Stz* C_GCC_COMPILER_FLAGS = "-std=c++11 -g -Wl,--unresolved-symbols=ignore-all -I../src -O3 -fpic -shared"_Stz;
 static Stz* C_CLANG_COMPILER_FLAGS = "-std=c++11 -g -Wl,-undefined,dynamic_lookup -I../src -O3 -fpic -shared"_Stz;
 
 static Stz* C_TCC_PATH = "../thirdparty/tcc/bin/tcc"_Stz;
@@ -326,7 +326,7 @@ void CompileLib::vTest()
   // The function pointer we want to call in the shared library
   void (*pfTestFn)(void);
 
-  if (!bCompile(szSrc, szDynLibNm, pLibInfo)) {
+  if (!bCompile(szSrc, szDynLibNm, pLibInfo, "clang"_Stz)) {
     vTrace("Compilation failed\n"_Stz);
 
     vDelete(pLibInfo);
@@ -416,29 +416,6 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     return true;
   }
 
-  // Do we have an absolute pathname?
-  if (szCompiler->bBeginsWith("/"_Stz)) {
-    // We still need to know what type of compiler it is (gcc, clang, tcc, other?)
-    if      (szCompiler->bContains("g++"_Stz))      { pLibInfo->m_eCompilerType = CB_GCC;   }
-    else if (szCompiler->bContains("gcc"_Stz))      { pLibInfo->m_eCompilerType = CB_GCC;   }
-    else if (szCompiler->bContains("clang++"_Stz))  { pLibInfo->m_eCompilerType = CB_CLANG; }
-    else if (szCompiler->bContains("clang"_Stz))    { pLibInfo->m_eCompilerType = CB_CLANG; }
-    else if (szCompiler->bContains("tcc"_Stz))      { pLibInfo->m_eCompilerType = CB_TCC;   }
-    else {
-      // Unknown/unsupported compiler. We don't know how to call it, what flags or
-      // arguments it accepts, etc.
-      pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
-      pLibInfo->m_sErrDetails.vSprint("Unrecognised or unsupported compiler '%s'"_Stz, szCompiler);
-      return false;
-    }
-
-    // Save the path of this compiler
-    pLibInfo->m_sCompilerPath = szCompiler;
-
-    // Check that the compiler exists
-    return bCheckCompilerExists(szCompiler, pLibInfo);
-  }
-
   // Do we have a compiler mnemonic?
   // If so, translate this into a compiler type and path.
 
@@ -475,6 +452,45 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     pLibInfo->m_eCompilerType = CB_SCL_CLANG;
     pLibInfo->m_sCompilerPath = C_CLANGPLUSPLUS;
     return bCheckCompilerExists(szCompiler, C_CLANGPLUSPLUS, pLibInfo);
+  }
+
+  // Do we have an absolute pathname?
+  if (szCompiler->bBeginsWith("/"_Stz)) {
+    // We still need to know what type of compiler it is (gcc, clang, tcc, other?)
+    if      (szCompiler->bContains("g++"_Stz)) {
+      pLibInfo->m_eCompilerType = CB_GCC;
+
+    } else if (szCompiler->bContains("gcc"_Stz)) {
+      pLibInfo->m_eCompilerType = CB_GCC;
+      // We actually need to compile with g++, so fix this in the compiler path
+      pLibInfo->m_sCompilerPath = szCompiler;
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "gcc", "g++");
+
+    } else if (szCompiler->bContains("clang++"_Stz)) {
+      pLibInfo->m_eCompilerType = CB_CLANG;
+
+    } else if (szCompiler->bContains("clang"_Stz)) {
+      pLibInfo->m_eCompilerType = CB_CLANG;
+      // We actually need to compile with clang++, so fix this in the compiler path
+      pLibInfo->m_sCompilerPath = szCompiler;
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "clang", "clang++");
+
+    } else if (szCompiler->bContains("tcc"_Stz)) {
+      pLibInfo->m_eCompilerType = CB_TCC;
+
+    } else {
+      // Unknown/unsupported compiler. We don't know how to call it, what flags or
+      // arguments it accepts, etc.
+      pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+      pLibInfo->m_sErrDetails.vSprint("Unrecognised or unsupported compiler '%s'"_Stz, szCompiler);
+      return false;
+    }
+
+    // Save the path of this compiler if it hasn't already been set
+    pLibInfo->m_sCompilerPath = szCompiler;
+
+    // Check that the compiler exists
+    return bCheckCompilerExists(szCompiler, pLibInfo);
   }
 
   // Unknown compiler
