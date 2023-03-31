@@ -122,6 +122,10 @@ eXK Card_JoinPermSeq::eCastKind(Card_TableList* p_tableList,
 //  if ( (p_tablePtn_l->bSameValue(p_term_0) && p_tablePtn_r->bSameValue(p_term_1)) ||
 //       (p_tablePtn_l->bSameValue(p_term_1) && p_tablePtn_r->bSameValue(p_term_0)) )
 
+  if ( (cTblSyn_r >= 'A' && cTblSyn_r <= 'Z') ||
+       (cTblSyn_l >= 'A' && cTblSyn_l <= 'Z') )
+    return XK_UNICAST;
+
   // t:$x.1 == l_ptn && t:$y.1 == r_ptn
   if ( ( (p_term_0->bSameValue(p_tablePtn_l) && p_term_1->bSameValue(p_tablePtn_r)) ||
          (p_term_0->bSameValue(p_tablePtn_r) && p_term_1->bSameValue(p_tablePtn_l)) )

@@ -29,8 +29,9 @@ namespace STORE
 
   private:
 
-    void vReorderTables(void);
     void vPredicateReposition(void);
+
+    void vReorderTables(void);
 
   protected:
     Footer* aFooter(void);

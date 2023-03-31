@@ -60,16 +60,17 @@ void ApplyOptimisations::vOptimise(void)
   vDelete_flat();
 
   vMorph_table_To_EEop();
+
   vMorph_scan_To_indexScan();
 
   vDerive_Projection_Keys();
+
   vCut_sort();
 
   vPromote_gbyAgg_To_ordAgg();
 
-  // --- --- --- --- --- --- ---
+  //vEarlyProjections();
 
-  vEarlyProjections();
   vDebugPoint();
 }
 
