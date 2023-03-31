@@ -1,0 +1,39 @@
+/*============================================================================*/
+/* _SUPPLIER_SUM                                                              */
+/*============================================================================*/
+
+// --initial _SUPPLIER_SUM
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+select * from dummy;
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_SUPPLIER_SUM"
+select
+        sum(s_acctbal)
+   from
+        Supplier
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
