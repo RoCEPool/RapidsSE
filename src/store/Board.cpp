@@ -205,19 +205,6 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
   }
 
   pCI->vPrintBoard(__LINE__);
-
-  pCI->G_vRestart();
-  while (pCI->G_bEachMain(CK_SCAN)) {
-    i8 i_Child;
-    pCI->G.p_note = _pCard_Note(pCI->G.p_scan->pFindChild(CK_NOTE,i_Child));
-
-    if (i_Child == pCI->G.p_scan->nChildCards() - 1) {
-      pCI->G.p_scan->vRemoveChild(pCI->G.p_note);
-      DELETE_CARD(pCI->G.p_note);
-    }
-  }
-  pCI->vPrintBoard(__LINE__);
-
 }
 
 /*----------------------------------------------------------------------------*/
