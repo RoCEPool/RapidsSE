@@ -168,6 +168,14 @@ rows:
 //  Interval + time
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+SELECT time '00:00:00' + INTERVAL '31' HOUR  FROM nation where n_nationkey = 2;
+rows:
+ (TIME '07:00:00')
+
+SELECT time '06:23:10' - INTERVAL '31' HOUR  FROM nation where n_nationkey = 2;
+rows:
+ (TIME '23:23:10')
+
 // Interval HMS + time
 SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation where n_nationkey = 2;
 rows:
@@ -400,6 +408,11 @@ SELECT 5*INTERVAL '17' MONTH FROM nation where n_nationkey = 2;
 rows:
   (INTERVAL '85' MONTH)
 
+// SE-305
+//SELECT 5*INTERVAL '17' MONTH FROM nation where n_nationkey = 2;
+//rows :
+//  (INTERVAL '7-1' YEAR TO MONTH)
+
 // Interval multiplication /4 (integer first)
 SELECT 2 * INTERVAL '32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
 rows:
@@ -458,6 +471,10 @@ rows :
 SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
 rows :
   (INTERVAL '0' YEAR)
+
+//SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
+//rows :
+//  (INTERVAL -'4' MONTH)
 
 SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM nation where n_nationkey = 2;
 failure contains: 'EC_DIVIDE_BY_ZERO'

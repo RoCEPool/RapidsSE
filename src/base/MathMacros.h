@@ -1419,14 +1419,17 @@
 #define _MICROS_TO_TIME                                                    \
   {                                                                        \
                                                                            \
-    xTme2.m_uHour   = (iMicros / (_C_SECS_PER_HR  * _C_1M)) % _C_HOURS_PER_DAY;  \
+    xTme2.m_uHour   = (iMicros / (_C_SECS_PER_HR  * _C_1M)) % _C_HOURS_PER_DAY; \
     xTme2.m_uMinute = (iMicros % (_C_SECS_PER_HR  * _C_1M)) / (_C_SECS_PER_MIN * _C_1M);   \
     xTme2.m_uSecond = (iMicros % (_C_SECS_PER_MIN * _C_1M)) / _C_1M;       \
     xTme2.m_uMicro  = iMicros % _C_1M;                                     \
     xTme2.m_uSpare = 0;                                                    \
                                                                            \
+    if (xTme2.m_uHour > 24)                                                \
+      xTme2.m_uHour   = xTme2.m_uHour % 24;                                \
+                                                                           \
     *paW++ = xTme2.m_iAsI8;                                                \
-  }                                                                        \
+  }
 
 #define _ADD_TMEIVD(eErrorCode)                                            \
   {                                                                        \
@@ -1508,9 +1511,12 @@
       else                                                                 \
         iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
-     iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                    \
-     i8 iMicros = iArg1 - iArg2;                                           \
+      iArg2 %= _C_SECS_PER_DAY  * _C_1M;                                   \
                                                                            \
+     if (iArg2 > iArg1)                                                    \
+      iArg1 += _C_SECS_PER_DAY *  _C_1M;                                   \
+                                                                           \
+     i8 iMicros = iArg1 - iArg2;                                           \
     _MICROS_TO_TIME;                                                       \
   }                                                                        \
 }
