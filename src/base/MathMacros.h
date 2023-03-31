@@ -415,7 +415,7 @@
                                                                            \
     if (eErrorCode != EC_NONE ||                                           \
         ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        xDte2.m_iAsI8 == C_DATUM_NULL) {                                 \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
@@ -561,6 +561,10 @@
     xDte2.m_uYearDelta = iArg1/12;                                         \
     xDte2.m_uMonth = iArg1%12;                                             \
                                                                            \
+    if (xDte2.m_uMonth == 0) {                                             \
+      xDte2.m_uMonth = 12;                                                 \
+      xDte2.m_uYearDelta--;                                                \
+    }                                                                      \
     *paW++ = xDte2.m_iAsI8;                                                \
   }                                                                        \
 }
