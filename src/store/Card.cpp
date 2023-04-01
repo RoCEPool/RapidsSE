@@ -878,24 +878,6 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card a PRED ?                                                      */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsPRED(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  switch (m_eCard){
-    case CK_ANDPRED:
-    case CK_CMPPRED:
-    case CK_NOTPRED:
-    case CK_ORPRED :
-      return true;
-    default:
-      return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* does this card have same value as argument?                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsValue(char cValue)

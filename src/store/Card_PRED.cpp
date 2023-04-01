@@ -50,6 +50,29 @@ Card_PRED::~Card_PRED(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* is card a PRED ?                                                           */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bIsPRED(Card* p_card)
+{
+  _static_;
+
+  switch (p_card->eCard()){
+    case CK_ANDPRED:
+    case CK_CMPPRED:
+    case CK_NOTPRED:
+    case CK_ORPRED :
+      return true;
+    default:
+      return false;
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -80,7 +103,7 @@ bool Card_PRED::bDescend(std::function<bool(Card_PRED* )> bfLambdaFn)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    if (! xCI.G.p_MainCard->bIsPRED())
+    if (! Card_PRED::bIsPRED(xCI.G.p_MainCard))
       continue;
 
     bool bContinue = ((Card_PRED*)xCI.G.p_MainCard)->bDescend(bfLambdaFn);

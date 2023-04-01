@@ -479,7 +479,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card_PRED*& p_pred_yanked)
   {
     //p_test->vDump();
 
-    if (p_test->bIsPRED()) {
+    if (Card_PRED::bIsPRED(p_test)) {
       if (p_test->cMark1() == cWithMark) {
         p_pred_yanked = static_cast<Card_PRED*>(p_test);
         p_boolCalc->vRemovePred(p_pred_yanked);
@@ -525,7 +525,7 @@ bool Card_BoolCalc::bYank_PRED(char cWithMark, Card* p_test,
 
   RASSERT(' ' != cWithMark);
 
-  if (p_test->bIsPRED()) {
+  if (Card_PRED::bIsPRED(p_test)) {
     if (p_test->cMark1() == cWithMark) {
       p_pred_yanked = static_cast<Card_PRED*>(p_test);
       this->vRemovePred(p_pred_yanked);

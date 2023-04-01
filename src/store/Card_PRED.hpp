@@ -14,6 +14,8 @@ namespace STORE
     Card_PRED(eCK eCard, Stz* szValue);
    ~Card_PRED(void) noexcept(false);
 
+    static bool bIsPRED(Card* p_card);
+
     bool bContains_callToSubQuery(CardIter* pCI);
     bool bDescend(std::function<bool(Card_PRED* )> bfLambdaFn);
     Stz* szGetBoardNmInTerm(CardIter* pCI);

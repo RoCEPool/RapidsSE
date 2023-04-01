@@ -454,7 +454,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
   auto vResolve = [pCI, p_boolCalc](Card_PRED* p_pred,
                                     auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (! p_pred->bIsPRED())
+    if (! Card_PRED::bIsPRED(p_pred))
       return; /* this effectively declares resolve as void */
 
     if (p_pred->bIsCard(CK_CMPPRED)) {
@@ -503,7 +503,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
     if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
       CardIter xCI(p_pred);
       while (xCI.G_bEachMain()) {
-        RASSERT(xCI.G.p_PRED->bIsPRED());
+        RASSERT(Card_PRED::bIsPRED(xCI.G.p_PRED));
         vResolve(xCI.G.p_PRED, vResolve);
       }
     }
@@ -533,7 +533,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
   auto vResolve = [pCI, p_boolCalc](Card_PRED* p_pred,
                                     auto&& vResolve /*oddity permits recursive lambda*/)
   {
-    if (! p_pred->bIsPRED())
+    if (! Card_PRED::bIsPRED(p_pred))
       return; /* this effectively declares resolve as void */
 
 //    if (p_pred->bIsCard(CK_CMPPRED)) {
@@ -554,7 +554,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
       p_pred->vCard(CK_CMPPRED);
       CardIter xCI(p_pred);
       while (xCI.G_bEachMain()) {
-        if (xCI.G.p_MainCard->bIsPRED()) {
+        if (Card_PRED::bIsPRED(xCI.G.p_MainCard)) {
           vResolve(static_cast<Card_PRED*>(xCI.G.p_MainCard), vResolve);
           continue;
         }
@@ -588,7 +588,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
     if (p_pred->bIsCard(CK_ANDPRED) || p_pred->bIsCard(CK_ORPRED)) {
       CardIter xCI(p_pred);
       while (xCI.G_bEachMain()) {
-        RASSERT(xCI.G.p_PRED->bIsPRED());
+        RASSERT(Card_PRED::bIsPRED(xCI.G.p_PRED));
         vResolve(xCI.G.p_PRED, vResolve);
       }
     }

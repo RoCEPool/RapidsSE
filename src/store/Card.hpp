@@ -310,7 +310,6 @@ namespace STORE
 
     void vAddPredUnder_main(Card_PRED *p_PRED);
     bool bIsAggOp(void);
-    bool bIsPRED(void);
 
 
 
