@@ -172,21 +172,8 @@ static Stz* C_NA                = "n/a"_Stz;
 
 static char MARK_AT         = '@';
 static char MARK_BLANK      = ' ';
-static char MARK_CALL       = '~';
 static char MARK_CHANGED    = '`';
-static char MARK_DOWNWARDS  = 'v';
-static char MARK_EXE        = '$';
-static char MARK_LEFTWARDS  = '<';
-static char MARK_LINK       = '%';
-static char MARK_MANY       = '*';
-static char MARK_MORE       = '+';
-static char MARK_REPLACE    = '#';
-static char MARK_RIGHTWARDS = '>';
-static char MARK_TWIST      = '{';
 static char MARK_UP         = '^';
-
-static Stz* SEP_DERIVED    = "+ + + + + + + + + "_Stz;
-static Stz* SEP_SCRATCH    = "? ? ? ? ? ? ? ? ? "_Stz;
 
 namespace STORE
 {
@@ -523,26 +510,6 @@ EndDefine
     RASSERT_CARD(pObject,CN); \
     \
     return pObject; \
-  } \
-EndDefine
-
-/*----------------------------------------------------------------------------*/
-/* macro for find childCard function                                          */
-/*----------------------------------------------------------------------------*/
-#define __pChildFunction_Card(SPACENM,CARDNM,CN) \
-  Card_##CARDNM* SPACENM::_pSub_##CARDNM(Card* pCard) \
-  { \
-    return _pCard_##CARDNM(pCard->pFindChild(CN)); \
-  } \
-EndDefine
-
-/*----------------------------------------------------------------------------*/
-/* macro for find subCard function                                            */
-/*----------------------------------------------------------------------------*/
-#define __pSubFunction_Card(SPACENM,CARDNM,CN) \
-  Card_##CARDNM* SPACENM::_pSub_##CARDNM(Card* pCard) \
-  { \
-    return _pCard_##CARDNM(pCard->pFindSubCard(CN)); \
   } \
 EndDefine
 
