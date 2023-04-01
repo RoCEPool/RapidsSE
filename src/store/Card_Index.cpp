@@ -165,7 +165,7 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  ASSERT(Card::bIsTableColOrdinal(szTblColOdn));
+  ASSERT(SymVal::bIsTableColOrdinal(szTblColOdn));
 
   Card_IdxColList* p_idxColList = this->pSub_idxColList();
 

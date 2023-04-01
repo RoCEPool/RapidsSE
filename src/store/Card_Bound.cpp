@@ -72,7 +72,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
 
   Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szValue());
 
-  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
+  if (SymVal::bIsTableColOrdinal(pTerm_0->szValue())) {
     char cTblSyn_term_0 = Card::cTableColSyn(pTerm_0->szValue());
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
@@ -81,7 +81,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
       p_bound->vAppend(p_term);
     }
     else
-    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+    if (SymVal::bIsTableColOrdinal(pTerm_1->szValue())) {
       char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = new Card_Term("$I1"_Stz);
@@ -94,7 +94,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     }
   }
   else
-  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+  if (SymVal::bIsTableColOrdinal(pTerm_1->szValue())) {
     char cTblSyn_term_1 = Card::cTableColSyn(pTerm_1->szValue());
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
@@ -298,7 +298,7 @@ Stz* Card_Bound::szGet_tblColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (Card::bIsTableColOrdinal(xCI.G.p_term->szValue()))
+    if (SymVal::bIsTableColOrdinal(xCI.G.p_term->szValue()))
       return xCI.G.p_term->szValue();
 
   return nullptr;

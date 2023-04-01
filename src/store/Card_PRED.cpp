@@ -207,10 +207,10 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (Card::bIsTableColOrdinal(pTerm_0->szValue())) {
+  if (SymVal::bIsTableColOrdinal(pTerm_0->szValue())) {
     // + term_0 is $c.n
 
-    if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+    if (SymVal::bIsTableColOrdinal(pTerm_1->szValue())) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -231,7 +231,7 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
     }
   }
   else
-  if (Card::bIsTableColOrdinal(pTerm_1->szValue())) {
+  if (SymVal::bIsTableColOrdinal(pTerm_1->szValue())) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
@@ -328,8 +328,8 @@ bool Card_PRED::bMaybeJoinPred(void)
   Card_Term* pTerm_0 = pGetTerm(0);
   Card_Term* pTerm_1 = pGetTerm(1);
 
-  if (Card::bIsTableColOrdinal(pTerm_0->szValue()) &&
-      Card::bIsTableColOrdinal(pTerm_1->szValue()))
+  if (SymVal::bIsTableColOrdinal(pTerm_0->szValue()) &&
+      SymVal::bIsTableColOrdinal(pTerm_1->szValue()))
     // + term_0 and term_1 are $c.n
     return true;
 

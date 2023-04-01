@@ -248,7 +248,7 @@ Stz* Card_Expr::szDollarOdn(void)
 
   Stz* szVal = szValue();
 
-  RASSERT(Card::bIsStreamColOrdinal(szVal) || Card::bIsKeyOrdinal(szVal));
+  RASSERT(SymVal::bIsStreamColOrdinal(szVal) || Card::bIsKeyOrdinal(szVal));
 
   return szVal;
 }

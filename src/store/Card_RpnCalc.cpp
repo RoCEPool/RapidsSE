@@ -71,7 +71,7 @@ void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
 
-    if (Card::bIsStreamColOrdinal(xCI.G.p_term->szValue())) {
+    if (SymVal::bIsStreamColOrdinal(xCI.G.p_term->szValue())) {
       xCI.G.p_term->vBump_StreamColOrdinal(nBumpBy);
       xCI.G.p_term->vMark1(MARK_CHANGED);
     }
@@ -149,7 +149,7 @@ Card_Term* Card_RpnCalc::pGetSingle_stmColOdn(void)
 
   Card_Term* p_term = this->pSub_term();
   Stz* szTerm = p_term->szValue();
-  if (! Card::bIsStreamColOrdinal(szTerm))
+  if (! SymVal::bIsStreamColOrdinal(szTerm))
     return nullptr;
 
   return p_term;
@@ -593,7 +593,7 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
       continue;
     }
 
-    if (Card::bIsStreamColOrdinal(xKid.p_term()->szValue())) {
+    if (SymVal::bIsStreamColOrdinal(xKid.p_term()->szValue())) {
 
       Card_Expr *p_expr_found =
           pCI->Analysis.m_pProjection_prior->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);

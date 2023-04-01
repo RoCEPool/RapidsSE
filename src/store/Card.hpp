@@ -220,6 +220,10 @@ namespace STORE
     char m_cMark2;
 
     TagSet* m_pProperties;
+
+    static bool bIsStreamColOrdinal(Stz* szValue); // $n
+    static bool bIsTableColOrdinal(Stz* szValue);  // $c.n
+
   };
 
   class Card : public Object
@@ -292,9 +296,7 @@ namespace STORE
 
     static bool bIsSqyColOrdinal(Stz* szValue);    // __n
 
-    static bool bIsStreamColOrdinal(Stz* szValue); // $n
 
-    static bool bIsTableColOrdinal(Stz* szValue);  // $c.n
 
     static char cTableColSyn(Stz* szValue);
 

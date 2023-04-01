@@ -289,258 +289,6 @@ eQO Card::eEvalSubQryOp(Stz* szValue)
 
 
 /*----------------------------------------------------------------------------*/
-/* get column ordinal n  (i.e. $n)                                            */
-/*----------------------------------------------------------------------------*/
-i8 Card::iGetColOdn(Stz* szValue)
-{
-  _static_
-
-  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
-
-  return i_Col;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a boolean function?                                               */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsBoolFn(Stz* szValue)
-{
-  _static_
-
-       if (szValue->bSame("between"_Stz))         return true;
-  else if (szValue->bSame("inList"_Stz))          return true;
-  else if (szValue->bSame("isNull"_Stz))          return true;
-  else if (szValue->bSame("like2"_Stz))           return true;
-  else if (szValue->bSame("like3"_Stz))           return true;
-  else if (szValue->bSame("matchLeading"_Stz))    return true;
-  else if (szValue->bSame("matchMiddle"_Stz))     return true;
-  else if (szValue->bSame("matchMiddle1"_Stz))    return true;
-  else if (szValue->bSame("matchTrailing"_Stz))   return true;
-
-  else return false;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* is term an index-column ordinal?  (i.e. $In)                               */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsIndexColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-
-  if ('$' == acFirst
-      && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a key ordinal?  (i.e. $Kn)                                        */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsKeyOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-
-  if ('$' == acFirst
-      && ('K' == acSecond || 'k' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a column ordinal?  (i.e. $n or $c.n)                              */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsColOrdinal(Stz* szValue)
-{
-  _static_
-
-  if (Card::bIsStreamColOrdinal(szValue) || Card::bIsTableColOrdinal(szValue))
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* is value a correlation parameter ordinal?  (i.e. %n)                       */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsCorrParamOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('%' == acFirst
-      && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a relational operator?                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsRelnOp(Stz* szValue)
-{
-  _static_
-
-  if (RO_NONE != Card::eEvalRelnOp(szValue))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a result ordinal?  (i.e. #n)                                      */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsResultOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a sub-query operator?                                             */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSubQueryOp(Stz* szValue)
-{
-  _static_
-
-       if (szValue->bSame("exists"_Stz))    return true;
-  else if (szValue->bSame("notExists"_Stz)) return true;
-  else if (szValue->bSame("in"_Stz))        return true;
-  else if (szValue->bSame("notIn"_Stz))     return true;
-
-  else return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSubQueryPattern(BASE::Stz *szValue)
-{
-  _static_
-
-//  char acFirst  = szValue->azChar()[0];
-//  char acSecond = szValue->azChar()[1];
-//  char acThird  = szValue->azChar()[2];
-//  char acFourth = szValue->azChar()[3];
-//
-//  if ('_' == acFirst
-//      && '_' == acSecond
-//      && 's' == acThird
-//      && 'u' == acFourth)
-//    return true;
-
-  if (StrLib::bBeginsWith(szValue->azChar(),"__subquery") ||
-      StrLib::bBeginsWith(szValue->azChar(),"__sq"))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a subQuery-column ordinal?  (i.e. __n)                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSqyColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && StrLib::bIsDigit(acThird))
-    return true;
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && 'S' == acThird
-      && 'Q' == acFourth)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a stream-column ordinal?  (i.e. $n)                               */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsStreamColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a table-column ordinal?  (i.e. $c.n)                              */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsTableColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  if ('$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '.' == acThird
-      && StrLib::bIsDigit(acFourth))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table column syn from $c.n                                             */
-/*----------------------------------------------------------------------------*/
-char Card::cTableColSyn(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  RASSERT('$' == acFirst);
-  RASSERT('.' == acThird);
-
-  return acSecond;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
 eCK Card::eTo_eCK(Stz* szCardNm)
@@ -2378,7 +2126,7 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 
   if (szPpyNm->bSame(P_TblCol)) {
     vDebugPoint();
-    RASSERT(Card::bIsTableColOrdinal(szPpy));
+    RASSERT(SymVal::bIsTableColOrdinal(szPpy));
   }
 
   if (! m_xSymVal.m_pProperties)
@@ -3148,7 +2896,274 @@ Card_Where* Card::pSub_where(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get column ordinal n  (i.e. $n)                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card::iGetColOdn(Stz* szValue)
+{
+  _static_
+
+  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
+
+  return i_Col;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a boolean function?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsBoolFn(Stz* szValue)
+{
+  _static_
+
+  if (szValue->bSame("between"_Stz))         return true;
+  else if (szValue->bSame("inList"_Stz))          return true;
+  else if (szValue->bSame("isNull"_Stz))          return true;
+  else if (szValue->bSame("like2"_Stz))           return true;
+  else if (szValue->bSame("like3"_Stz))           return true;
+  else if (szValue->bSame("matchLeading"_Stz))    return true;
+  else if (szValue->bSame("matchMiddle"_Stz))     return true;
+  else if (szValue->bSame("matchMiddle1"_Stz))    return true;
+  else if (szValue->bSame("matchTrailing"_Stz))   return true;
+
+  else return false;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsIndexColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('$' == acFirst
+      && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a key ordinal?  (i.e. $Kn)                                        */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsKeyOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+
+  if ('$' == acFirst
+      && ('K' == acSecond || 'k' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a column ordinal?  (i.e. $n or $c.n)                              */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsColOrdinal(Stz* szValue)
+{
+  _static_
+
+  if (SymVal::bIsStreamColOrdinal(szValue) || SymVal::bIsTableColOrdinal(szValue))
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* is value a correlation parameter ordinal?  (i.e. %n)                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsCorrParamOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('%' == acFirst
+      && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a relational operator?                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsRelnOp(Stz* szValue)
+{
+  _static_
+
+  if (RO_NONE != Card::eEvalRelnOp(szValue))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a result ordinal?  (i.e. #n)                                      */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsResultOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a sub-query operator?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSubQueryOp(Stz* szValue)
+{
+  _static_
+
+  if (szValue->bSame("exists"_Stz))    return true;
+  else if (szValue->bSame("notExists"_Stz)) return true;
+  else if (szValue->bSame("in"_Stz))        return true;
+  else if (szValue->bSame("notIn"_Stz))     return true;
+
+  else return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a __subQuery like name?                                           */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSubQueryPattern(BASE::Stz *szValue)
+{
+  _static_
+
+//  char acFirst  = szValue->azChar()[0];
+//  char acSecond = szValue->azChar()[1];
+//  char acThird  = szValue->azChar()[2];
+//  char acFourth = szValue->azChar()[3];
+//
+//  if ('_' == acFirst
+//      && '_' == acSecond
+//      && 's' == acThird
+//      && 'u' == acFourth)
+//    return true;
+
+  if (StrLib::bBeginsWith(szValue->azChar(),"__subquery") ||
+      StrLib::bBeginsWith(szValue->azChar(),"__sq"))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a subQuery-column ordinal?  (i.e. __n)                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsSqyColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && StrLib::bIsDigit(acThird))
+    return true;
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && 'S' == acThird
+      && 'Q' == acFourth)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column syn from $c.n                                             */
+/*----------------------------------------------------------------------------*/
+char Card::cTableColSyn(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  RASSERT('$' == acFirst);
+  RASSERT('.' == acThird);
+
+  return acSecond;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* is value a stream-column ordinal?  (i.e. $n)                               */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsStreamColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a table-column ordinal?  (i.e. $c.n)                              */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsTableColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  if ('$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '.' == acThird
+      && StrLib::bIsDigit(acFourth))
+    return true;
+  else
+    return false;
+}
+

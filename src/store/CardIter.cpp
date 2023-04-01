@@ -2296,12 +2296,12 @@ Card_Expr* CardIter::pResolvePriorExpr_With_ProjectedCol(Card_Term* p_term)
     return nullptr;
 
   Stz* szPrjCol = p_term->szValue();
-  if (Card::bIsStreamColOrdinal(szPrjCol)) {
+  if (SymVal::bIsStreamColOrdinal(szPrjCol)) {
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term);
     return p_expr_prior;
   }
   else
-  if (Card::bIsTableColOrdinal(szPrjCol)) {
+  if (SymVal::bIsTableColOrdinal(szPrjCol)) {
     Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(szPrjCol);
     return p_expr_prior;
   }

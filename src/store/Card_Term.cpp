@@ -192,7 +192,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
     ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->Y_iGet(P_Level));
   }
 
-  if (! Card::bIsStreamColOrdinal(szValue()))
+  if (! SymVal::bIsStreamColOrdinal(szValue()))
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -209,7 +209,7 @@ void Card_Term::vEnsure_tblCol_flip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card::bIsTableColOrdinal(szValue()))
+  if (SymVal::bIsTableColOrdinal(szValue()))
     return;
 
   RASSERT(Y_bHas(P_TblCol));
@@ -475,7 +475,7 @@ bool Card_Term::bIsStmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Card::bIsStreamColOrdinal(this->szValue());
+  bool b = SymVal::bIsStreamColOrdinal(this->szValue());
 
   return b;
 }
@@ -487,10 +487,10 @@ bool Card_Term::bIsTblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Card::bIsTableColOrdinal(szValue()))
+  if (SymVal::bIsTableColOrdinal(szValue()))
     return true;
 
-  if (Y_bHas(P_TblCol) && Card::bIsTableColOrdinal(Y_szGet(P_TblCol)))
+  if (Y_bHas(P_TblCol) && SymVal::bIsTableColOrdinal(Y_szGet(P_TblCol)))
     return true;
 
   return false;
