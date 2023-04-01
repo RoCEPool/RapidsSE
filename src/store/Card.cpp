@@ -52,7 +52,7 @@ Card::Card(eCK eCard, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPptVal)
+Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpt)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -61,13 +61,13 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPptVal)
 
   vValue(szValue);
 
-  Y_vSet(szPpyNm, iPptVal);
+  Y_vSet(szPpyNm, iPpt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPptVal)
+Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpt)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -76,7 +76,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPptVal)
 
   vValue(szValue);
 
-  Y_vSet(szPpyNm, szPptVal);
+  Y_vSet(szPpyNm, szPpt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1069,6 +1069,7 @@ bool Card::bIsPRED(void)
   switch (m_eCard){
     case CK_ANDPRED:
     case CK_CMPPRED:
+    case CK_NOTPRED:
     case CK_ORPRED :
       return true;
     default:
@@ -1656,66 +1657,6 @@ bool Card::bSameValue(Card* pArg)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vSetIndexColOrdinal(i8 iIdxColOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vValueSprint("$I%lld"_Stz, iIdxColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vSetKeyOrdinal(i8 iKeyOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vValueSprint("$K%lld"_Stz, iKeyOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vSetParamOrdinal(i8 iParamOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vValueSprint("$P%lld"_Stz, iParamOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vSetStreamColOrdinal(i8 iStmColOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vValueSprint("$%lld"_Stz, iStmColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* replace c in $c.n                                                          */
-/*----------------------------------------------------------------------------*/
-void Card::vSetTableColSyn(char cTblSyn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  ((char*) this->szValue())[1] = cTblSyn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vValueSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-}
 
 /*----------------------------------------------------------------------------*/
 /* get val                                                                    */

@@ -140,7 +140,7 @@ void Card_Term::vBump_KeyOrdinal(i8 nBy)
 
   i8 iKeyOdn = SymVal::i_GetColOdn(this->szValue());
 
-  this->vSetKeyOrdinal(iKeyOdn+nBy);
+  this->pSymVal()->vSetKeyOrdinal(iKeyOdn+nBy);
 
   if (this->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->Y_iGet(P_BumpedBy);
@@ -160,7 +160,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 
   i8 iStmColOdn = SymVal::i_GetColOdn(this->szValue());
 
-  this->vSetStreamColOrdinal(iStmColOdn+nBy);
+  this->pSymVal()->vSetStreamColOrdinal(iStmColOdn+nBy);
 
   if (this->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->Y_iGet(P_BumpedBy);
