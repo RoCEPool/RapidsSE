@@ -1043,23 +1043,6 @@ bool Card::bIsCommaSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this an AND, NOT or an OR?                                              */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsConjunction(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (   bIsCard(CK_ANDPRED)
-      || bIsCard(CK_NOTPRED)
-      || bIsCard(CK_ORPRED)
-      )
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* is this card a PRED ?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsPRED(void)
@@ -1076,43 +1059,6 @@ bool Card::bIsPRED(void)
       return false;
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* is this card a projecting card ?                                           */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsProjecting(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  switch (m_eCard) {
-
-    case CK_AGGREG:
-    case CK_CROSSJOIN:
-    case CK_FLAT:
-    case CK_FOLD:
-    case CK_GBYAGG:
-    case CK_HAVING:
-    case CK_INDEXJOIN:
-    case CK_INDEXSCAN:
-    case CK_ORDAGG:
-    case CK_PROJECT:
-    case CK_SCAN:
-    case CK_TABLE:
-      return true;
-
-    case CK_FILTER:
-    case CK_KEYEXISTS:
-    case CK_KEYNOTEXISTS:
-    case CK_LIMIT:
-    case CK_SORT:
-    case CK_TOP:
-      return false;
-
-    default:
-      return false;
-  }
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* does this card have same value as argument?                                */
@@ -1969,16 +1915,14 @@ eTN Card::Y_ePpyTkn(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, char cPpy)
+void Card::Y_vSet(Stz* szPpyNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
 
   if (! m_xSymVal.m_pProperties)
     m_xSymVal.m_pProperties = new TagSet;
 
-  s32 sPptVal;
-  sPptVal.vSprint("%c"_Stz, cPpy);
-  m_xSymVal.m_pProperties->vReplace(szPpyNm, sPptVal);
+  m_xSymVal.m_pProperties->vReplace(szPpyNm, "y"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1992,19 +1936,6 @@ void Card::Y_vSet(Stz* szPpyNm, i8 iPpy)
     m_xSymVal.m_pProperties = new TagSet;
 
   m_xSymVal.m_pProperties->vReplace(szPpyNm, iPpy);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
-
-  if (! m_xSymVal.m_pProperties)
-    m_xSymVal.m_pProperties = new TagSet;
-
-  m_xSymVal.m_pProperties->vReplace(szPpyNm, "y"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

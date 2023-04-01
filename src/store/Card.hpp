@@ -25,7 +25,6 @@ namespace STORE
   class Card_AndPred;
   class Card_As;
 
-  class Card_BoardNo;
   class Card_BoolCalc;
   class Card_Bound;
   class Card_Bounds;
@@ -93,7 +92,6 @@ namespace STORE
   class Card_On;
   class Card_OP;
   class Card_OrdAgg;
-  class Card_OrdElmOdn;
   class Card_OrPred;
   class Card_OuterColNm;
   class Card_OuterJoin;
@@ -364,9 +362,7 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
     bool bIsCommaSeparator(void);
-    bool bIsConjunction(void);
     bool bIsPRED(void);
-    bool bIsProjecting(void);
     bool bIsValue(char cValue);
     bool bIsValue(Stz* szValue);
 
@@ -421,9 +417,8 @@ namespace STORE
     i8   Y_nPpy(void);
     Stz* Y_szPpyNm(i8 i_Ppy);
     eTN  Y_ePpyTkn(i8 i_Ppy);
-    void Y_vSet(Stz* szPpyNm, char cPpy);
-    void Y_vSet(Stz* szPpyNm, i8 iPpy);
     void Y_vSet(Stz* szPpyNm);
+    void Y_vSet(Stz* szPpyNm, i8 iPpy);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
@@ -431,7 +426,6 @@ namespace STORE
 
     Card_Aggreg*        pSub_aggreg(void);
     Card_As*            pSub_as(void);
-    Card_BoardNo*       pSub_boardNo(void);
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
@@ -473,7 +467,6 @@ namespace STORE
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);
     Card_On*            pSub_on(void);
-    Card_OrdElmOdn*     pSub_ordElmOdn(void);
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
     Card_Projection*    pSub_projection(void);
