@@ -221,6 +221,7 @@ namespace STORE
 
     TagSet* m_pProperties;
 
+  public:
     static eRO  e_EvalRelnOp(Stz* szValue);
     static eQO  e_EvalSubQryOp(Stz* szValue);
     static i8   i_GetColOdn(Stz* szValue);
@@ -254,6 +255,15 @@ namespace STORE
     bool bIsSqyColOrdinal(void);    // __n
     bool bIsTableColOrdinal(void);  // $c.n
     char cTableColSyn(void);
+
+    void vSetIndexColOrdinal(i8 iIdxColOdn);
+    void vSetKeyOrdinal(i8 iKeyOdn);
+    void vSetParamOrdinal(i8 iParamOdn);
+    void vSetStreamColOrdinal(i8 iStmColOdn);
+    void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
+    void vSetTableColSyn(char cTblSyn);
+
+    void vSprint(Stz* szFormat, ...);
   };
 
   class Card : public Object
