@@ -97,7 +97,7 @@ void Card::vInit(eCK eCard)
   m_xSymVal.m_cMark1 = ' ';
   m_xSymVal.m_cMark2 = ' ';
 
-  m_pProperties = nullptr;
+  m_xSymVal.m_pProperties = nullptr;
 
   m_pLastPrintParent = nullptr;
 
@@ -141,7 +141,7 @@ Card::~Card(void) noexcept(false)
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
   
-  delete m_pProperties;
+  delete m_xSymVal.m_pProperties;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -628,10 +628,10 @@ void Card::vAppendDupSubCards(Card* pFromCard)
 
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
 
-    if (pSubCard->m_pProperties) {
-      if (! pSubCard_dup->m_pProperties)
-        pSubCard_dup->m_pProperties = new TagSet;
-      pSubCard_dup->m_pProperties->vCopy(pSubCard->m_pProperties);
+    if (pSubCard->m_xSymVal.m_pProperties) {
+      if (! pSubCard_dup->m_xSymVal.m_pProperties)
+        pSubCard_dup->m_xSymVal.m_pProperties = new TagSet;
+      pSubCard_dup->m_xSymVal.m_pProperties->vCopy(pSubCard->m_xSymVal.m_pProperties);
     }
 
     this->vAppend(pSubCard_dup);
@@ -759,9 +759,9 @@ void Card::vBearing(void)
 
   sPretty = aCK[m_eCard];
 
-  if (m_pProperties) {
+  if (m_xSymVal.m_pProperties) {
     s4K sProperties;
-    m_pProperties->vToString(sProperties,true);
+    m_xSymVal.m_pProperties->vToString(sProperties,true);
     sPretty.vConcat(": "_Stz);
     sPretty.vConcat(sProperties);
   }
@@ -873,8 +873,8 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 
   s48K sProperties;
   
-  if (m_pProperties)
-    m_pProperties->vToString(sProperties);
+  if (m_xSymVal.m_pProperties)
+    m_xSymVal.m_pProperties->vToString(sProperties);
   else
     sProperties = "no properties"_Stz;
   
@@ -923,7 +923,7 @@ Card* Card::pDup(void)
 
   Card* pCard_dup = new Card(m_eCard);
   pCard_dup->vValue(szValue());
-  if (m_pProperties)
+  if (m_xSymVal.m_pProperties)
     pCard_dup->Y_vAll(this);
 
   return pCard_dup;
@@ -938,7 +938,7 @@ Card* Card::pDupCardAndSubCards(void)
   
   Card* pCard_dup = new Card(m_eCard);
   pCard_dup->vValue(szValue());
-  if (m_pProperties)
+  if (m_xSymVal.m_pProperties)
     pCard_dup->Y_vAll(this);
 
   i8 nSubCards = this->nChildCards();
@@ -1012,8 +1012,8 @@ bool Card::bEquivalentTo(Card* pCard_OTHER)
   if (pCard_OTHER->eCard() != pCard_THIS->eCard())
     return false;
 
-  TagSet* pProperties_THISCARD  = m_pProperties;
-  TagSet* pProperties_OTHERCARD = pCard_OTHER->m_pProperties;
+  TagSet* pProperties_THISCARD  = m_xSymVal.m_pProperties;
+  TagSet* pProperties_OTHERCARD = pCard_OTHER->m_xSymVal.m_pProperties;
 
   if (pProperties_THISCARD) {
     if (pProperties_OTHERCARD) {
@@ -1029,7 +1029,7 @@ bool Card::bEquivalentTo(Card* pCard_OTHER)
     return false;
   }
   else {
-    RASSERT(! m_pProperties);
+    RASSERT(! m_xSymVal.m_pProperties);
     RASSERT(! pProperties_OTHERCARD);
   }
 
@@ -1813,7 +1813,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return;
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
@@ -2150,18 +2150,18 @@ void Card::Y_vAll(Card* pCard_arg)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 
-  if (! pCard_arg->m_pProperties) {
-    if (m_pProperties) {
-      delete m_pProperties;
-      m_pProperties = nullptr;
+  if (! pCard_arg->m_xSymVal.m_pProperties) {
+    if (m_xSymVal.m_pProperties) {
+      delete m_xSymVal.m_pProperties;
+      m_xSymVal.m_pProperties = nullptr;
     }
     return;
   }
 
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
+  if (! m_xSymVal.m_pProperties)
+    m_xSymVal.m_pProperties = new TagSet;
 
-  m_pProperties->vCopy(pCard_arg->m_pProperties);
+  m_xSymVal.m_pProperties->vCopy(pCard_arg->m_xSymVal.m_pProperties);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2171,10 +2171,10 @@ void Card::Y_vCut(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return;
 
-  m_pProperties->vDelete(szPpyNm);
+  m_xSymVal.m_pProperties->vDelete(szPpyNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2200,10 +2200,10 @@ i8 Card::Y_iGet(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return C_UNKNOWN;
 
-  i8 iValue = m_pProperties->iValue(szPpyNm);
+  i8 iValue = m_xSymVal.m_pProperties->iValue(szPpyNm);
 
   return iValue;
 }
@@ -2215,10 +2215,10 @@ i8 Card::Y_iGet(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return C_UNKNOWN;
 
-  i8 iValue = m_pProperties->iValue(i_Ppy);
+  i8 iValue = m_xSymVal.m_pProperties->iValue(i_Ppy);
 
   return iValue;
 }
@@ -2230,10 +2230,10 @@ Stz* Card::Y_szGet(Stz* szPptNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return nullptr;
 
-  Stz* szValue = m_pProperties->szValue(szPptNm);
+  Stz* szValue = m_xSymVal.m_pProperties->szValue(szPptNm);
 
   return szValue;
 }
@@ -2245,10 +2245,10 @@ Stz* Card::Y_szGet(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return nullptr;
 
-  Stz* szValue = m_pProperties->szValue(i_Ppy);
+  Stz* szValue = m_xSymVal.m_pProperties->szValue(i_Ppy);
 
   return szValue;
 }
@@ -2260,10 +2260,10 @@ bool Card::Y_bHas(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return false;
 
-  return m_pProperties->bHasName(szPpyNm);
+  return m_xSymVal.m_pProperties->bHasName(szPpyNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2273,10 +2273,10 @@ i8 Card::Y_nPpy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return 0;
 
-  i8 nProperties = m_pProperties->nItems();
+  i8 nProperties = m_xSymVal.m_pProperties->nItems();
 
   return nProperties;
 }
@@ -2288,10 +2288,10 @@ Stz* Card::Y_szPpyNm(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return nullptr;
 
-  Stz* szName = m_pProperties->szName(i_Ppy);
+  Stz* szName = m_xSymVal.m_pProperties->szName(i_Ppy);
 
   return szName;
 }
@@ -2303,10 +2303,10 @@ eTN Card::Y_ePpyTkn(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
+  if (! m_xSymVal.m_pProperties)
     return TN_NONE;
 
-  eTN eToken = m_pProperties->eToken(i_Ppy);
+  eTN eToken = m_xSymVal.m_pProperties->eToken(i_Ppy);
 
   return eToken;
 }
@@ -2318,12 +2318,12 @@ void Card::Y_vSet(Stz* szPpyNm, char cPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
+  if (! m_xSymVal.m_pProperties)
+    m_xSymVal.m_pProperties = new TagSet;
 
   s32 sPptVal;
   sPptVal.vSprint("%c"_Stz, cPpy);
-  m_pProperties->vReplace(szPpyNm, sPptVal);
+  m_xSymVal.m_pProperties->vReplace(szPpyNm, sPptVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2333,10 +2333,10 @@ void Card::Y_vSet(Stz* szPpyNm, i8 iPpy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
+  if (! m_xSymVal.m_pProperties)
+    m_xSymVal.m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, iPpy);
+  m_xSymVal.m_pProperties->vReplace(szPpyNm, iPpy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2346,10 +2346,10 @@ void Card::Y_vSet(Stz* szPpyNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
 
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
+  if (! m_xSymVal.m_pProperties)
+    m_xSymVal.m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, "y"_Stz);
+  m_xSymVal.m_pProperties->vReplace(szPpyNm, "y"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2381,10 +2381,10 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
     RASSERT(Card::bIsTableColOrdinal(szPpy));
   }
 
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
+  if (! m_xSymVal.m_pProperties)
+    m_xSymVal.m_pProperties = new TagSet;
 
-  m_pProperties->vReplace(szPpyNm, szPpy);
+  m_xSymVal.m_pProperties->vReplace(szPpyNm, szPpy);
 }
 
 

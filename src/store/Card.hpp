@@ -218,6 +218,8 @@ namespace STORE
     s256 m_sValue;
     char m_cMark1;
     char m_cMark2;
+
+    TagSet* m_pProperties;
   };
 
   class Card : public Object
@@ -232,8 +234,6 @@ namespace STORE
     i8   m_i_Child;
 
     SymVal  m_xSymVal;
-
-    TagSet* m_pProperties;
 
     Card* m_pLastPrintParent;
 
