@@ -248,7 +248,7 @@ Stz* Card_Expr::szDollarOdn(void)
 
   Stz* szVal = szValue();
 
-  RASSERT(SymVal::bIsStreamColOrdinal(szVal) || SymVal::bIsKeyOrdinal(szVal));
+  RASSERT(SymVal::b_IsStreamColOrdinal(szVal) || SymVal::b_IsKeyOrdinal(szVal));
 
   return szVal;
 }
@@ -466,8 +466,8 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
 
   CardIter xCI(p_rpnCalc);
   while (xCI.G_bEachMain())  {
-    if (SymVal::bIsKeyOrdinal(xCI.G.p_term->szValue())) {
-      i8 i_Key = SymVal::iGetColOdn(xCI.G.p_term->szValue());
+    if (SymVal::b_IsKeyOrdinal(xCI.G.p_term->szValue())) {
+      i8 i_Key = SymVal::i_GetColOdn(xCI.G.p_term->szValue());
       return i_Key;
     }
   }

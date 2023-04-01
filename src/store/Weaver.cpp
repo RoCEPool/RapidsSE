@@ -688,8 +688,8 @@ void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
 
     Card_Term* p_term = _pCard_Term(pChildCard);
 
-    if (SymVal::bIsStreamColOrdinal(p_term->szValue()) ||
-        SymVal::bIsTableColOrdinal(p_term->szValue())) {
+    if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
+        SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
       if (!p_term->Y_bHas(P_Type)) {
         p_term->vDump();
@@ -843,8 +843,8 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
 
       Card_Term* p_term = _pCard_Term(pSubCard);
 
-      if (SymVal::bIsStreamColOrdinal(p_term->szValue()) ||
-          SymVal::bIsTableColOrdinal(p_term->szValue())) {
+      if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
+          SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
         if (!p_term->Y_bHas(P_Type)) {
           p_term->vDump();
@@ -901,8 +901,8 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
 
         Card_Term* p_term = _pCard_Term(pSubCard);
 
-        if (SymVal::bIsStreamColOrdinal(p_term->szValue()) ||
-            SymVal::bIsTableColOrdinal(p_term->szValue())) {
+        if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
+            SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
           if (!p_term->Y_bHas(P_Type)) {
             p_term->vDump();
@@ -957,8 +957,8 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (SymVal::bIsStreamColOrdinal(p_term->szValue()) ||
-          SymVal::bIsTableColOrdinal(p_term->szValue())) {
+      if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
+          SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
         if (!p_term->Y_bHas(P_Type)) {
           p_term->vDump();
@@ -1046,8 +1046,8 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (SymVal::bIsStreamColOrdinal(p_term->szValue()) ||
-          SymVal::bIsTableColOrdinal(p_term->szValue())) {
+      if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
+          SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
         if (!p_term->Y_bHas(P_Type)) {
           p_term->vDump();
@@ -1398,8 +1398,8 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         szRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_TERM:
-        if (SymVal::bIsStreamColOrdinal(pSubCard->szValue()) ||
-            SymVal::bIsTableColOrdinal(pSubCard->szValue())) {
+        if (SymVal::b_IsStreamColOrdinal(pSubCard->szValue()) ||
+            SymVal::b_IsTableColOrdinal(pSubCard->szValue())) {
 
           if (!pSubCard->Y_bHas(P_Type)) {
             p_part->vDump();
@@ -1441,8 +1441,8 @@ void Weaver::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  if (SymVal::bIsStreamColOrdinal(pCard_Term->szValue()) ||
-      SymVal::bIsTableColOrdinal(pCard_Term->szValue())) {
+  if (SymVal::b_IsStreamColOrdinal(pCard_Term->szValue()) ||
+      SymVal::b_IsTableColOrdinal(pCard_Term->szValue())) {
 
     if (!pCard_Term->Y_bHas(P_Type)) {
       pCard_Term->vDump();

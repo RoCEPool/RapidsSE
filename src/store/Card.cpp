@@ -255,40 +255,6 @@ eYG Card::eAggrLevelToStageTopology(eAL eLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Card::eEvalRelnOp(Stz* szValue)
-{
-  _static_
-
-       if (szValue->bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (szValue->bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (szValue->bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (szValue->bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (szValue->bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (szValue->bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (szValue->bSame(">"_Stz))   return RO_GREATER_THAN;
-
-  else return RO_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* evaluate sub-query op                                                      */
-/*----------------------------------------------------------------------------*/
-eQO Card::eEvalSubQryOp(Stz* szValue)
-{
-  _static_
-
-       if (szValue->bSame("exists"_Stz))    return QO_EXISTS_OP;
-  else if (szValue->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
-  else if (szValue->bSame("in"_Stz))        return QO_IN_OP;
-  else if (szValue->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
-
-  else return QO_NONE;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* find eCK by card name                                                      */
 /*----------------------------------------------------------------------------*/
 eCK Card::eTo_eCK(Stz* szCardNm)
@@ -2126,7 +2092,7 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 
   if (szPpyNm->bSame(P_TblCol)) {
     vDebugPoint();
-    RASSERT(SymVal::bIsTableColOrdinal(szPpy));
+    RASSERT(SymVal::b_IsTableColOrdinal(szPpy));
   }
 
   if (! m_xSymVal.m_pProperties)
@@ -2896,10 +2862,57 @@ Card_Where* Card::pSub_where(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/*============================================================================*/
+/* SymVal.cpp -- Symbolic Value                                               */
+/*============================================================================*/
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO SymVal::e_EvalRelnOp(Stz* szValue)
+{
+  _static_
+
+  if (szValue->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szValue->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szValue->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szValue->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szValue->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szValue->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szValue->bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate sub-query op                                                      */
+/*----------------------------------------------------------------------------*/
+eQO SymVal::e_EvalSubQryOp(Stz* szValue)
+{
+  _static_
+
+  if (szValue->bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (szValue->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (szValue->bSame("in"_Stz))        return QO_IN_OP;
+  else if (szValue->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+
+  else return QO_NONE;
+}
+
 /*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
 /*----------------------------------------------------------------------------*/
-i8 SymVal::iGetColOdn(Stz* szValue)
+i8 SymVal::i_GetColOdn(Stz* szValue)
 {
   _static_
 
@@ -2911,7 +2924,7 @@ i8 SymVal::iGetColOdn(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a boolean function?                                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsBoolFn(Stz* szValue)
+bool SymVal::b_IsBoolFn(Stz* szValue)
 {
   _static_
 
@@ -2932,7 +2945,7 @@ bool SymVal::bIsBoolFn(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsIndexColOrdinal(Stz* szValue)
+bool SymVal::b_IsIndexColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2951,7 +2964,7 @@ bool SymVal::bIsIndexColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a key ordinal?  (i.e. $Kn)                                        */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsKeyOrdinal(Stz* szValue)
+bool SymVal::b_IsKeyOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2970,11 +2983,11 @@ bool SymVal::bIsKeyOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a column ordinal?  (i.e. $n or $c.n)                              */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsColOrdinal(Stz* szValue)
+bool SymVal::b_IsColOrdinal(Stz* szValue)
 {
   _static_
 
-  if (SymVal::bIsStreamColOrdinal(szValue) || SymVal::bIsTableColOrdinal(szValue))
+  if (SymVal::b_IsStreamColOrdinal(szValue) || SymVal::b_IsTableColOrdinal(szValue))
     return true;
 
   return false;
@@ -2984,7 +2997,7 @@ bool SymVal::bIsColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a correlation parameter ordinal?  (i.e. %n)                       */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsCorrParamOrdinal(Stz* szValue)
+bool SymVal::b_IsCorrParamOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3001,11 +3014,11 @@ bool SymVal::bIsCorrParamOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a relational operator?                                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsRelnOp(Stz* szValue)
+bool SymVal::b_IsRelnOp(Stz* szValue)
 {
   _static_
 
-  if (RO_NONE != Card::eEvalRelnOp(szValue))
+  if (RO_NONE != SymVal::e_EvalRelnOp(szValue))
     return true;
 
   return false;
@@ -3014,7 +3027,7 @@ bool SymVal::bIsRelnOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a result ordinal?  (i.e. #n)                                      */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsResultOrdinal(Stz* szValue)
+bool SymVal::b_IsResultOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3030,7 +3043,7 @@ bool SymVal::bIsResultOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a stream-column ordinal?  (i.e. $n)                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsStreamColOrdinal(Stz* szValue)
+bool SymVal::b_IsStreamColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3046,7 +3059,7 @@ bool SymVal::bIsStreamColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a sub-query operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsSubQueryOp(Stz* szValue)
+bool SymVal::b_IsSubQueryOp(Stz* szValue)
 {
   _static_
 
@@ -3061,7 +3074,7 @@ bool SymVal::bIsSubQueryOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsSubQueryPattern(BASE::Stz *szValue)
+bool SymVal::b_IsSubQueryPattern(BASE::Stz *szValue)
 {
   _static_
 
@@ -3086,7 +3099,7 @@ bool SymVal::bIsSubQueryPattern(BASE::Stz *szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a subQuery-column ordinal?  (i.e. __n)                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsSqyColOrdinal(Stz* szValue)
+bool SymVal::b_IsSqyColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3112,7 +3125,7 @@ bool SymVal::bIsSqyColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a table-column ordinal?  (i.e. $c.n)                              */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsTableColOrdinal(Stz* szValue)
+bool SymVal::b_IsTableColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3133,7 +3146,7 @@ bool SymVal::bIsTableColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* get table column syn from $c.n                                             */
 /*----------------------------------------------------------------------------*/
-char SymVal::cTableColSyn(Stz* szValue)
+char SymVal::c_TableColSyn(Stz* szValue)
 {
   _static_
 
@@ -3149,8 +3162,135 @@ char SymVal::cTableColSyn(Stz* szValue)
 }
 
 
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
+/*----------------------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO SymVal::eEvalRelnOp(void)
+{
+  return e_EvalRelnOp(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate sub-query op                                                      */
+/*----------------------------------------------------------------------------*/
+eQO SymVal::eEvalSubQryOp(void)
+{
+  return e_EvalSubQryOp(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column ordinal n  (i.e. $n)                                            */
+/*----------------------------------------------------------------------------*/
+i8 SymVal::iGetColOdn(void)
+{
+  return i_GetColOdn(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a boolean function?                                               */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsBoolFn(void)
+{
+  return b_IsBoolFn(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is term an index-column ordinal?  (i.e. $In)                               */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsIndexColOrdinal(void)
+{
+  return b_IsIndexColOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a key ordinal?  (i.e. $Kn)                                        */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsKeyOrdinal(void)
+{
+  return b_IsKeyOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a column ordinal?  (i.e. $n or $c.n)                              */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsColOrdinal(void)
+{
+  return b_IsColOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a correlation parameter ordinal?  (i.e. %n)                       */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsCorrParamOrdinal(void)
+{
+  return b_IsCorrParamOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a relational operator?                                            */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsRelnOp(void)
+{
+  return b_IsRelnOp(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a result ordinal?  (i.e. #n)                                      */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsResultOrdinal(void)
+{
+  return b_IsResultOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a stream-column ordinal?  (i.e. $n)                               */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsStreamColOrdinal(void)
+{
+  return b_IsStreamColOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a sub-query operator?                                             */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsSubQueryOp(void)
+{
+  return b_IsSubQueryOp(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a __subQuery like name?                                           */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsSubQueryPattern(void)
+{
+  return b_IsSubQueryPattern(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a subQuery-column ordinal?  (i.e. __n)                            */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsSqyColOrdinal(void)
+{
+  return b_IsSqyColOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a table-column ordinal?  (i.e. $c.n)                              */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsTableColOrdinal(void)
+{
+  return b_IsTableColOrdinal(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table column syn from $c.n                                             */
+/*----------------------------------------------------------------------------*/
+char SymVal::cTableColSyn(void)
+{
+  return c_TableColSyn(m_sValue);
+}
 

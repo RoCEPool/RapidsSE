@@ -221,20 +221,39 @@ namespace STORE
 
     TagSet* m_pProperties;
 
-    static i8   iGetColOdn(Stz* szValue);
-    static bool bIsBoolFn(Stz* szValue);           // between, ... matchTrailing
-    static bool bIsIndexColOrdinal(Stz* szValue);  // $In
-    static bool bIsKeyOrdinal(Stz* szValue);       // #Kn
-    static bool bIsColOrdinal(Stz* szValue);       // $n or $c.n
-    static bool bIsCorrParamOrdinal(Stz* szValue); // %n
-    static bool bIsRelnOp(Stz* szValue);           // <, <=, ... >
-    static bool bIsResultOrdinal(Stz* szValue);    // #n
-    static bool bIsStreamColOrdinal(Stz* szValue); // $n
-    static bool bIsSubQueryOp(Stz* szValue);       // exists, in, ...
-    static bool bIsSubQueryPattern(Stz* szValue);  // __subqueryN
-    static bool bIsSqyColOrdinal(Stz* szValue);    // __n
-    static bool bIsTableColOrdinal(Stz* szValue);  // $c.n
-    static char cTableColSyn(Stz* szValue);
+    static eRO  e_EvalRelnOp(Stz* szValue);
+    static eQO  e_EvalSubQryOp(Stz* szValue);
+    static i8   i_GetColOdn(Stz* szValue);
+    static bool b_IsBoolFn(Stz* szValue);           // between, ... matchTrailing
+    static bool b_IsIndexColOrdinal(Stz* szValue);  // $In
+    static bool b_IsKeyOrdinal(Stz* szValue);       // #Kn
+    static bool b_IsColOrdinal(Stz* szValue);       // $n or $c.n
+    static bool b_IsCorrParamOrdinal(Stz* szValue); // %n
+    static bool b_IsRelnOp(Stz* szValue);           // <, <=, ... >
+    static bool b_IsResultOrdinal(Stz* szValue);    // #n
+    static bool b_IsStreamColOrdinal(Stz* szValue); // $n
+    static bool b_IsSubQueryOp(Stz* szValue);       // exists, in, ...
+    static bool b_IsSubQueryPattern(Stz* szValue);  // __subqueryN
+    static bool b_IsSqyColOrdinal(Stz* szValue);    // __n
+    static bool b_IsTableColOrdinal(Stz* szValue);  // $c.n
+    static char c_TableColSyn(Stz* szValue);
+
+    eRO  eEvalRelnOp(void);
+    eQO  eEvalSubQryOp(void);
+    i8   iGetColOdn(void);
+    bool bIsBoolFn(void);           // between, ... matchTrailing
+    bool bIsIndexColOrdinal(void);  // $In
+    bool bIsKeyOrdinal(void);       // #Kn
+    bool bIsColOrdinal(void);       // $n or $c.n
+    bool bIsCorrParamOrdinal(void); // %n
+    bool bIsRelnOp(void);           // <, <=, ... >
+    bool bIsResultOrdinal(void);    // #n
+    bool bIsStreamColOrdinal(void); // $n
+    bool bIsSubQueryOp(void);       // exists, in, ...
+    bool bIsSubQueryPattern(void);  // __subqueryN
+    bool bIsSqyColOrdinal(void);    // __n
+    bool bIsTableColOrdinal(void);  // $c.n
+    char cTableColSyn(void);
   };
 
   class Card : public Object
@@ -281,9 +300,6 @@ namespace STORE
     static char cAggrLevelToChar(eAL eLevel);
 
     static eYG  eAggrLevelToStageTopology(eAL eLevel);
-
-    static eRO  eEvalRelnOp(Stz* szValue);
-    static eQO  eEvalSubQryOp(Stz* szValue);
 
 
     static eCK  eTo_eCK(Stz* szCardNm);
@@ -472,9 +488,7 @@ namespace STORE
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
 
-
   private:
-
     Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);
   
   protected:

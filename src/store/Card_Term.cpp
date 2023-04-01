@@ -138,7 +138,7 @@ void Card_Term::vBump_KeyOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = SymVal::iGetColOdn(this->szValue());
+  i8 iKeyOdn = SymVal::i_GetColOdn(this->szValue());
 
   this->vSetKeyOrdinal(iKeyOdn+nBy);
 
@@ -158,7 +158,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = SymVal::iGetColOdn(this->szValue());
+  i8 iStmColOdn = SymVal::i_GetColOdn(this->szValue());
 
   this->vSetStreamColOrdinal(iStmColOdn+nBy);
 
@@ -192,7 +192,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
     ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->Y_iGet(P_Level));
   }
 
-  if (! SymVal::bIsStreamColOrdinal(szValue()))
+  if (! SymVal::b_IsStreamColOrdinal(szValue()))
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -209,7 +209,7 @@ void Card_Term::vEnsure_tblCol_flip(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (SymVal::bIsTableColOrdinal(szValue()))
+  if (SymVal::b_IsTableColOrdinal(szValue()))
     return;
 
   RASSERT(Y_bHas(P_TblCol));
@@ -255,7 +255,7 @@ eRO Card_Term::eEvalRelOp(void)
 
   Stz* szValue = this->szValue();
 
-  eRO eRelOp = Card::eEvalRelnOp(szValue);
+  eRO eRelOp = SymVal::e_EvalRelnOp(szValue);
 
   return eRelOp;
 }
@@ -425,7 +425,7 @@ bool Card_Term::bIsCorPrmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = SymVal::bIsCorrParamOrdinal(this->szValue());
+  bool b = SymVal::b_IsCorrParamOrdinal(this->szValue());
 
   return b;
 }
@@ -450,7 +450,7 @@ bool Card_Term::bIsKeyOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = SymVal::bIsKeyOrdinal(this->szValue());
+  bool b = SymVal::b_IsKeyOrdinal(this->szValue());
 
   return b;
 }
@@ -475,7 +475,7 @@ bool Card_Term::bIsStmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = SymVal::bIsStreamColOrdinal(this->szValue());
+  bool b = SymVal::b_IsStreamColOrdinal(this->szValue());
 
   return b;
 }
@@ -487,10 +487,10 @@ bool Card_Term::bIsTblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (SymVal::bIsTableColOrdinal(szValue()))
+  if (SymVal::b_IsTableColOrdinal(szValue()))
     return true;
 
-  if (Y_bHas(P_TblCol) && SymVal::bIsTableColOrdinal(Y_szGet(P_TblCol)))
+  if (Y_bHas(P_TblCol) && SymVal::b_IsTableColOrdinal(Y_szGet(P_TblCol)))
     return true;
 
   return false;
@@ -587,9 +587,9 @@ eTE Card_Term::eTermEval(void)
   else if (szValue->bSame("notExists"_Stz))  return TE_NOTEXISTS;
   else if (szValue->bSame("notIn"_Stz))      return TE_NOTIN;
 
-  else if (SymVal::bIsRelnOp(szValue))         return TE_RELNOP;
+  else if (SymVal::b_IsRelnOp(szValue))         return TE_RELNOP;
 
-  else if (SymVal::bIsBoolFn(szValue))         return TE_BOOLFN;
+  else if (SymVal::b_IsBoolFn(szValue))         return TE_BOOLFN;
 
   else return TE_OTHER;
 }

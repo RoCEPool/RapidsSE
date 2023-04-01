@@ -468,7 +468,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
       while (xCI.G_bEachMain()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (SymVal::bIsCorrParamOrdinal(xCI.G.p_MainCard->szValue())) {
+        if (SymVal::b_IsCorrParamOrdinal(xCI.G.p_MainCard->szValue())) {
           xCI.G.p_MainCard->vValue("$1"_Stz);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
@@ -478,7 +478,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         }
         else
-        if (xCI.G.p_MainCard->bIsCard(CK_TERM) && SymVal::bIsTableColOrdinal(xCI.G.p_MainCard->szValue())) {
+        if (xCI.G.p_MainCard->bIsCard(CK_TERM) && SymVal::b_IsTableColOrdinal(xCI.G.p_MainCard->szValue())) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack

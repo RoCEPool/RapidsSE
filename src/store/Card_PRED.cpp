@@ -160,7 +160,7 @@ bool Card_PRED::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (SymVal::bIsBoolFn(szValue()))
+  if (SymVal::b_IsBoolFn(szValue()))
     return true;
 
   return false;
@@ -207,10 +207,10 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (SymVal::bIsTableColOrdinal(pTerm_0->szValue())) {
+  if (SymVal::b_IsTableColOrdinal(pTerm_0->szValue())) {
     // + term_0 is $c.n
 
-    if (SymVal::bIsTableColOrdinal(pTerm_1->szValue())) {
+    if (SymVal::b_IsTableColOrdinal(pTerm_1->szValue())) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -231,7 +231,7 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
     }
   }
   else
-  if (SymVal::bIsTableColOrdinal(pTerm_1->szValue())) {
+  if (SymVal::b_IsTableColOrdinal(pTerm_1->szValue())) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
@@ -276,7 +276,7 @@ bool Card_PRED::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (SymVal::bIsRelnOp(szValue()))
+  if (SymVal::b_IsRelnOp(szValue()))
     return true;
 
   return false;
@@ -289,7 +289,7 @@ bool Card_PRED::bIsSubQueryOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (SymVal::bIsSubQueryOp(szValue()))
+  if (SymVal::b_IsSubQueryOp(szValue()))
     return true;
 
   return false;
@@ -302,7 +302,7 @@ bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (RO_NONE == eEvalRelnOp(szValue()))
+  if (RO_NONE == SymVal::e_EvalRelnOp(szValue()))
     return false;
 
   if (bContains_callToSubQuery(pCI))
@@ -328,8 +328,8 @@ bool Card_PRED::bMaybeJoinPred(void)
   Card_Term* pTerm_0 = pGetTerm(0);
   Card_Term* pTerm_1 = pGetTerm(1);
 
-  if (SymVal::bIsTableColOrdinal(pTerm_0->szValue()) &&
-      SymVal::bIsTableColOrdinal(pTerm_1->szValue()))
+  if (SymVal::b_IsTableColOrdinal(pTerm_0->szValue()) &&
+      SymVal::b_IsTableColOrdinal(pTerm_1->szValue()))
     // + term_0 and term_1 are $c.n
     return true;
 
