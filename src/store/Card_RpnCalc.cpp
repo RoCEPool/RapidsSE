@@ -414,7 +414,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->sz());
+        p_cmpPred->vValue(p_term_next->szValue());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
@@ -439,7 +439,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->sz());
+        p_cmpPred->vValue(p_term_next->szValue());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsSubQueryOp())
         p_boolCalc->vAppend(p_cmpPred);
@@ -452,7 +452,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term_next->sz());
+          p_cmpPred->vValue(p_term_next->szValue());
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_cmpPred);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -493,7 +493,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term_next->sz());
+          p_cmpPred->vValue(p_term_next->szValue());
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -505,7 +505,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
       case TE_BOOLFN:
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->sz());
+        p_cmpPred->vValue(p_term_next->szValue());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
         p_boolCalc->vAppend(p_cmpPred);

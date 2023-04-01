@@ -962,7 +962,7 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
 
   // <name>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szAsNm = pCard_Term->sz();
+  Stz* szAsNm = pCard_Term->szValue();
 
   Card_As* pCard_As = new Card_As(szAsNm);
   delete pCard_Term;
@@ -1002,7 +1002,7 @@ Card_Direction* Dissector::pDirection(Card_RpnTerms* pCard_RpnTerms)
 
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szDirn = pCard_Term->sz();
+  Stz* szDirn = pCard_Term->szValue();
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* pCard_SortDirn = new Card_Direction(szDirn);
@@ -1022,7 +1022,7 @@ Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
   
   // TYPE
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szTerm = pCard_Term->sz();
+  Stz* szTerm = pCard_Term->szValue();
   RASSERT(szTerm->bSame("TYPE"_Stz));
 
   delete pCard_Term;
@@ -1031,7 +1031,7 @@ Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
 
-  Card_Type* pCard_Type = new Card_Type(pCard_Term_type->sz());
+  Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szValue());
 
   delete pCard_Term_type;
   pCard_Term_type = nullptr;

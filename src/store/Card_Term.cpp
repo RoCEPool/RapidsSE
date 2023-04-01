@@ -357,7 +357,7 @@ char Card_Term::cGetTableSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->sz();
+  Stz* szTerm = this->szValue();
 
   char cSyn = szTerm->azChar()[1];
 
@@ -503,7 +503,7 @@ void Card_Term::vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szTerm = this->sz();
+  Stz* szTerm = this->szValue();
   if (!szTerm->bIsStreamColOrd())
     return;
 

@@ -685,7 +685,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   pCI->G.p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szValue());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Analysis.m_pProjection_prior)

@@ -82,7 +82,7 @@ void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc)
 
   auto bConcat = [this](Card *pCard) {
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    if (! p_cmpPred->sz()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
+    if (! p_cmpPred->szValue()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
       return true;
 
     Card_Term* p_term_0 = p_cmpPred->pGetTerm(0);

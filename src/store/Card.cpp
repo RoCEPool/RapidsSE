@@ -111,6 +111,11 @@ void Card::vInit(eCK eCard)
   m_cMark1 = ' ';
   m_cMark2 = ' ';
 
+  m_xVal.m_sValue = ""_Stz;
+  m_xVal.m_cMark1 = ' ';
+  m_xVal.m_cMark2 = ' ';
+
+
   m_pProperties = nullptr;
 
   m_pLastPrintParent = nullptr;
@@ -189,7 +194,7 @@ void Card::vCardLeaks(void)
 //    if (gapCard[i_Card]) {
 //      Card *pLeaked = gapCard[i_Card];
 //      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->sz());
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szValue());
 //      vDebugPoint();
 //    }
 //  }
@@ -232,7 +237,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //         i_Card,
 //         p_cardInQuestion,
 //         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->sz());
+//         p_cardInQuestion->szValue());
 //    vDebugPoint();
 //  }
 //
@@ -1160,7 +1165,7 @@ Card* Card::pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Car
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szValue(),md_Bearing);
 
   if (eCard == m_eCard && cValue() == cWithValue) {
     rpParent = _pWalkParent_;
@@ -1184,7 +1189,7 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,sz(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szValue(),md_Bearing);
 
   if (eCard == m_eCard && bSame(szValue)) {
     rpParent = _pWalkParent_;
@@ -1772,12 +1777,12 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
     else
     if (nSubs == 1) {
       Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintRight("%s"_Stz,pSub_0->sz());
+      pRibbon->vSprintRight("%s"_Stz, pSub_0->szValue());
     }
     else {
       Card *pSub_0 = pChild->pGetChild(0);
       Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintRight("%s == %s"_Stz,pSub_0->sz(),pSub_1->sz());
+      pRibbon->vSprintRight("%s == %s"_Stz, pSub_0->szValue(), pSub_1->szValue());
     }
 
   }
@@ -2137,7 +2142,7 @@ void Card::vSetTableColSyn(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  ((char*)this->sz())[1] = cTblSyn;
+  ((char*) this->szValue())[1] = cTblSyn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2166,13 +2171,13 @@ void Card::vTakeAllSubCards(Card* pCard, bool bDeleteCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card value                                                             */
+/* get val                                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* Card::sz(void)
+Val* Card::pVal(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return m_sValue.szStz();
+  return &m_xVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2285,7 +2290,7 @@ bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
       return false;
 
     //if (CK_TERM == eCard_a)
-    if (! this->sz()->bSame(pCard_b->sz()))
+    if (!this->szValue()->bSame(pCard_b->szValue()))
       return false;
   }
 

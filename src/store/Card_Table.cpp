@@ -119,7 +119,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
 
   while (pCI->G_bEachMain(CK_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->sz());
+    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szValue());
 
     pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
 
@@ -156,7 +156,7 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
 
     Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = AM::pTableFind(p_tableNm->sz());
+    Table* pTable = AM::pTableFind(p_tableNm->szValue());
 
     pCI->G.p_size = Card_Size::pDerive(pTable);
     pCI->G.p_table->vAppend(pCI->G.p_size);
@@ -452,7 +452,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szTerm = p_term->sz();
+  Stz* szTerm = p_term->szValue();
 
   // parameters are considered within scope
   if (Card::bIsCorrParamOrdinal(szTerm))
@@ -483,7 +483,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 
   Card_TableNm* p_tableNm = this->pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->sz());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
 
   this->vMark1(MARK_CHANGED);
 

@@ -92,7 +92,7 @@ Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->sz();
+  Stz* szTerm0 = pTerm0->szValue();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return nullptr;
@@ -114,7 +114,7 @@ bool Card_CmpPred::bCmpPredHasBounds(Index* pIndex)
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->sz();
+  Stz* szTerm0 = pTerm0->szValue();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return false;

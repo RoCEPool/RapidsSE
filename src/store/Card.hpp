@@ -214,6 +214,12 @@ namespace STORE
   static const i8 C_MQ_BOARD   = 0;
   static const i8 C_SQ_BOARD   = 1;
 
+  class Val {
+  public:
+    s256 m_sValue;
+    char m_cMark1;
+    char m_cMark2;
+  };
 
   class Card : public Object
              , public ChildCards
@@ -229,6 +235,8 @@ namespace STORE
     s256 m_sValue;
     char m_cMark1;
     char m_cMark2;
+
+    Val  m_xVal;
 
     TagSet* m_pProperties;
     //PpySet  m_oPpySet; // todo: remove PpySet
@@ -404,7 +412,8 @@ namespace STORE
 
     void vTakeAllSubCards(Card* pCard, bool bDeleteCard=false);
 
-    Stz* sz(void);
+    Val* pVal(void);
+
     char cValue(void);
     i8   iValue(void);
     Stz* szValue(void);

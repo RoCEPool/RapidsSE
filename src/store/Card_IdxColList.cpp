@@ -76,7 +76,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_IDXCOL)) {
-    Stz* szColNm = xCI.G.p_idxCol->sz();
+    Stz* szColNm = xCI.G.p_idxCol->szValue();
 
   CardIter xCI_p(p_projection);
   while (xCI_p.G_bEachMain(CK_EXPR)) {

@@ -138,13 +138,13 @@ bool Card_TableList::bIsCmpPredCoPtn(Card_CmpPred* p_cmpPred)
 
   Card_Table* p_table_0 = pFind(cTableSyn_0);
   Card_TablePtn* p_tablePtn_0 = p_table_0->pSub_tablePtn();
-  Stz* szTablePtn_0 = p_tablePtn_0->sz();
+  Stz* szTablePtn_0 = p_tablePtn_0->szValue();
 
   Card_Table* p_table_1 = pFind(cTableSyn_1);
   Card_TablePtn* p_tablePtn_1 = p_table_1->pSub_tablePtn();
-  Stz* szTablePtn_1 = p_tablePtn_1->sz();
+  Stz* szTablePtn_1 = p_tablePtn_1->szValue();
 
-  if (szTablePtn_0->bSame(p_term_0->sz()) && szTablePtn_1->bSame(p_term_1->sz()))
+  if (szTablePtn_0->bSame(p_term_0->szValue()) && szTablePtn_1->bSame(p_term_1->szValue()))
     return true;
 
   return false;
