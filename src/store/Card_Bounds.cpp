@@ -79,7 +79,7 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_BOUND)) {
-    if (xCI.G.p_bound->Y_bHas(P_ChosenBound))
+    if (xCI.G.p_bound->pSymVal()->Y_bHas(P_ChosenBound))
       return xCI.G.p_bound;
   }
 

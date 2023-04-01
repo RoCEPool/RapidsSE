@@ -95,7 +95,7 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_INDEX)) {
-    if (xCI.G.p_index->Y_bHas(P_ChosenIndex))
+    if (xCI.G.p_index->pSymVal()->Y_bHas(P_ChosenIndex))
       return xCI.G.p_index;
   }
 
@@ -117,7 +117,7 @@ void Card_IndexList::vChoose_index_For_indexJoin(void)
     while (xCI_bounds.G_bEachMain(CK_BOUND)) {
       if (xCI_bounds.G.p_bound->bIsEBound()) {
         xCI.G.p_index->vSet_Choose_index();
-        xCI_bounds.G.p_bound->Y_vSet(P_ChosenBound);
+        xCI_bounds.G.p_bound->pSymVal()->Y_vSet(P_ChosenBound);
         return;
       }
     }

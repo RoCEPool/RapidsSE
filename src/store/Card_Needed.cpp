@@ -64,7 +64,7 @@ Card_Project* Card_Needed::pNew_project_early(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Project* p_project_early = new Card_Project(CK_PROJECT);
-  p_project_early->Y_vSet(P_Early);
+  p_project_early->pSymVal()->Y_vSet(P_Early);
 
   Card_Level* p_level = new Card_Level(AL_PARTITION);
   p_project_early->vAppend(p_level);

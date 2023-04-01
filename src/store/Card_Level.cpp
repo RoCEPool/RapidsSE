@@ -21,7 +21,7 @@ Card_Level::Card_Level(eAL eAggLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Y_vSet(P_Level, (i8)eAggLevel);
+  pSymVal()->Y_vSet(P_Level, (i8)eAggLevel);
   
   _checkInitialised_(CN_CARD);
   

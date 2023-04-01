@@ -61,7 +61,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
   Card_Project* p_project_unproject = new Card_Project(CK_PROJECT);
   pCI->G.pDeck->vAppend(p_project_unproject);
-  p_project_unproject->Y_vSet(P_Unproject);
+  p_project_unproject->pSymVal()->Y_vSet(P_Unproject);
 
   Card_Level* p_level = new Card_Level(AL_ORIGIN);
   p_project_unproject->vAppend(p_level);
@@ -259,7 +259,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_expr = new Card_Expr;
 
-  pCI->G.p_expr->Y_vSet(P_Injected);
+  pCI->G.p_expr->pSymVal()->Y_vSet(P_Injected);
 
   pCI->G.p_expr->vAppend(pCI->Sqy.m_pExpr_fold->pSub_type()->pDupCardAndSubCards());
 
@@ -286,7 +286,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_project->Y_vSet(P_Smoothed);
+  pCI->G.p_project->pSymVal()->Y_vSet(P_Smoothed);
 
   if (nBumpBy) {
     pCI->G.p_project->vBump_Rightwards(nBumpBy);
@@ -303,7 +303,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_project->Y_vSet(P_Smoothed);
+  pCI->G.p_project->pSymVal()->Y_vSet(P_Smoothed);
 
   if (pCarryForward->Project_postAgg.m_nBumpBy) {
     pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);

@@ -95,7 +95,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
     p_main = pCI->G.pDeck->pGetChild(i_Main);
     e_main = p_main->eCard();
-    eAL e_level_main = (eAL) p_main->pSub_level()->Y_iGet(P_Level);
+    eAL e_level_main = (eAL) p_main->pSub_level()->pSymVal()->Y_iGet(P_Level);
 
     // change of level
     if (e_level_main != e_level_running) {
@@ -263,7 +263,7 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
 
     Card_OP* p_card_OP = (Card_OP*)(pCI->G.pDeck->pGetChild(i_Main));
     eCK      e_card_OP = p_card_OP->eCard();
-    eAL      e_level   = (eAL) p_card_OP->pSub_level()->Y_iGet(P_Level);
+    eAL      e_level   = (eAL) p_card_OP->pSub_level()->pSymVal()->Y_iGet(P_Level);
 
     if (bAddCombined(pSawOpCards,p_card_OP))
       vAddCombined(pCI, p_card_OP, i_Main);

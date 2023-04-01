@@ -162,7 +162,7 @@ void Dissector::vStage(i8 i_StageSpec)
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
       p_param->vValue(pParamsSpec->pGet(0)->szParamNm());
-      p_param->Y_vSet(P_ParamOdn, "%1"_Stz);
+      p_param->pSymVal()->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppend(p_param);
     }
   }
@@ -340,7 +340,7 @@ Card* Dissector::pOp_Debug(TagSet* pArgTags)
   Stz* szOption = szArgCheckLast(pArgTags,0);
   Card_Debug* pCard_Debug = new Card_Debug;
 
-  pCard_Debug->Y_vSet(P_DebugOption, szOption);
+  pCard_Debug->pSymVal()->Y_vSet(P_DebugOption, szOption);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -619,7 +619,7 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_RpnCalc* p_rpnCalc = pCard_Project->pSub_rpnCalc();
-  if (p_rpnCalc && p_rpnCalc->Y_bHas(P_AggOp))
+  if (p_rpnCalc && p_rpnCalc->pSymVal()->Y_bHas(P_AggOp))
     pCard_Project->vCard(CK_AGGREG);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -680,7 +680,7 @@ Card* Dissector::pOp_Send(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // eSendKind
 
-  pCard_Send->Y_vSet(P_SendKind, (i8)eSendKind);
+  pCard_Send->pSymVal()->Y_vSet(P_SendKind, (i8)eSendKind);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -882,7 +882,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   Card_RpnCalc* pCard_RpnCalc = pCalc(pCard_RpnTerms);
   pCard_Expr->vAppend(pCard_RpnCalc);
 
-  pCard_RpnCalc->Y_vSet(P_Type,szP_Type);
+  pCard_RpnCalc->pSymVal()->Y_vSet(P_Type,szP_Type);
 
 
   // [ AS <as> ]
@@ -935,7 +935,7 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
     }
 
     if (pCard_Term_popped->bIsAggOp())
-      pCard_RpnCalc->Y_vSet(P_AggOp);
+      pCard_RpnCalc->pSymVal()->Y_vSet(P_AggOp);
 
     pCard_RpnCalc->vAppend(pCard_Term_popped);
   }

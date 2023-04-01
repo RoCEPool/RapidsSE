@@ -105,9 +105,9 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   Card_Expr* p_expr_found =
       pCI->Analysis.m_pProjection_prior->pGetExpr(0);
 
-  pCI->G.p_term->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+  pCI->G.p_term->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 
-  pCI->G.p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
+  pCI->G.p_rpnCalc->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
 
 }
 
@@ -368,7 +368,7 @@ void Board::vPinCards(Ribbon* pRibbon)
 
     // skip non-printable horizontal lines
     if (pCardCtl->bHeatNext(xBI.G.e_MainCard) &&
-        xBI.G.p_MainCard->Y_bHas(pCardCtl->szHorizExclude(xBI.G.e_MainCard))) {
+        xBI.G.p_MainCard->pSymVal()->Y_bHas(pCardCtl->szHorizExclude(xBI.G.e_MainCard))) {
 
       while (Card* pNextMain = xBI.pNextChild()) {
         eCK eNextCard = pNextMain->eCard();
@@ -418,7 +418,7 @@ void Board::vPinCards(Ribbon* pRibbon)
     eAL eLevel = AL_NONE;
     Card_Level* p_level = xBI.G.p_MainCard->pSub_level();
     if (p_level)
-      eLevel = (eAL) p_level->Y_iGet(P_Level);
+      eLevel = (eAL) p_level->pSymVal()->Y_iGet(P_Level);
     xBI.G.p_MainCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);
   }
 

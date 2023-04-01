@@ -133,7 +133,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   Card_Term* p_term_found = p_expr_found->pProjectedTerm();
 
   Card_Term* p_term_stamp = new Card_Term(pCI->Sqy.m_sSqyArg);
-  p_term_stamp->Y_vSet(P_Type,p_term_found->Y_szGet(P_Type));
+  p_term_stamp->pSymVal()->Y_vSet(P_Type,p_term_found->pSymVal()->Y_szGet(P_Type));
   p_term_stamp->vDump();
 
 

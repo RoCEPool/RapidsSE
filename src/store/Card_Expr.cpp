@@ -94,7 +94,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
-  RASSERT(pExpr_corr->pSub_rpnCalc()->Y_bHas(P_Type));
+  RASSERT(pExpr_corr->pSub_rpnCalc()->pSymVal()->Y_bHas(P_Type));
 
   Card_Expr*    p_gbyExpr = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
@@ -106,8 +106,8 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_rpnCalc->vAppend(p_term);
 
   if (p_type) {
-    p_rpnCalc->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
-    p_term->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+    p_rpnCalc->pSymVal()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+    p_term->pSymVal()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
   }
 
   return p_gbyExpr;
@@ -136,8 +136,8 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_rpnCalc->vAppend(p_term);
 
   if (p_type) {
-    p_rpnCalc->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
-    p_term->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+    p_rpnCalc->pSymVal()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
+    p_term->pSymVal()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
   }
 
   return p_expr;
@@ -160,10 +160,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+  p_rpnCalc->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
 
   Card_Term* p_term = p_expr->pSub_term()->pClone(sDn);
-  p_term->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+  p_term->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
   p_term->vDump();
 
   p_rpnCalc->vAppend(p_term);
@@ -438,8 +438,8 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
 
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardAndSubCards());
   Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
-  if (p_term_0_early->Y_bHas(P_TblCol)) {
-    p_term_0_early->vValue(p_term_0_early->Y_szGet(P_TblCol));
+  if (p_term_0_early->pSymVal()->Y_bHas(P_TblCol)) {
+    p_term_0_early->vValue(p_term_0_early->pSymVal()->Y_szGet(P_TblCol));
   }
   else {
     vDebugPoint();

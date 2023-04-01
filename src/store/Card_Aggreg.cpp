@@ -95,7 +95,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(! pCI->Early.m_pNeeded_later);
 
-  Y_vSet(P_BreakPt);
+  pSymVal()->Y_vSet(P_BreakPt);
 
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
@@ -139,7 +139,7 @@ void Card_Aggreg::vSmooth(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_aggreg->Y_vSet(P_Smoothed);
+  pCI->G.p_aggreg->pSymVal()->Y_vSet(P_Smoothed);
 }
 
 /*----------------------------------------------------------------------------*/

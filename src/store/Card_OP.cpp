@@ -141,7 +141,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
       CK_GBYAGG  == pCI->G.e_MainCard ||
       CK_PROJECT == pCI->G.e_MainCard) {
     pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
-    if (pCI->G.p_level && AL_PARTITION != pCI->G.p_level->Y_iGet(P_Level))
+    if (pCI->G.p_level && AL_PARTITION != pCI->G.p_level->pSymVal()->Y_iGet(P_Level))
       return;
   }
 
@@ -165,7 +165,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Y_bHas(P_BreakPt)) {
+  if (pSymVal()->Y_bHas(P_BreakPt)) {
     vDump();
     vDebugPoint();
   }
@@ -180,7 +180,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
            p_term->szValue(),p_term->szBearing(),
            szCardNm(),szBearing());
 
-    if (Y_bHas(P_BreakPt)) {
+    if (pSymVal()->Y_bHas(P_BreakPt)) {
       vDebugPoint();
     }
 
@@ -286,7 +286,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
   }
 
-  if (Y_bHas(P_BreakPt)) {
+  if (pSymVal()->Y_bHas(P_BreakPt)) {
     vDump();
     vDebugPoint();
   }
@@ -524,7 +524,7 @@ bool Card_OP::bIsNodeLevel(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Level* p_level = pSub_level())
-    if (AL_NODE == p_level->Y_iGet(P_Level))
+    if (AL_NODE == p_level->pSymVal()->Y_iGet(P_Level))
       return true;
 
   return false;
@@ -538,7 +538,7 @@ bool Card_OP::bIsOriginLevel(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Level* p_level = pSub_level())
-    if (AL_ORIGIN == p_level->Y_iGet(P_Level))
+    if (AL_ORIGIN == p_level->pSymVal()->Y_iGet(P_Level))
       return true;
 
   return false;
@@ -552,7 +552,7 @@ bool Card_OP::bIsPartitionLevel(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Level* p_level = pSub_level())
-    if (AL_PARTITION == p_level->Y_iGet(P_Level))
+    if (AL_PARTITION == p_level->pSymVal()->Y_iGet(P_Level))
       return true;
 
   return false;
@@ -732,7 +732,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
-    p_rpnCalc->Y_vSet(P_Type,szCT_char[eColumnType]);
+    p_rpnCalc->pSymVal()->Y_vSet(P_Type,szCT_char[eColumnType]);
 
     s32 sTblCol_from_SEmetadata;
     sTblCol_from_SEmetadata.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
@@ -741,8 +741,8 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    p_term->Y_vSet(P_Column);
-    p_term->Y_vSet(P_Type,szCT_char[eColumnType]);
+    p_term->pSymVal()->Y_vSet(P_Column);
+    p_term->pSymVal()->Y_vSet(P_Type,szCT_char[eColumnType]);
   }
 
   vAppend(p_projection);

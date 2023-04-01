@@ -155,7 +155,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
-  eYG eStageTopo = (eYG) pCard_Stage->pSub_topology()->Y_iGet(P_StageTopo);
+  eYG eStageTopo = (eYG) pCard_Stage->pSub_topology()->pSymVal()->Y_iGet(P_StageTopo);
   
   //vTabOp();  vConcat("next"_Stz);  vEolOp();
 
@@ -691,10 +691,10 @@ void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
     if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
         SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
-      if (!p_term->Y_bHas(P_Type)) {
+      if (!p_term->pSymVal()->Y_bHas(P_Type)) {
         p_term->vDump();
         pChildCard->vDump();
-        RASSERT(p_term->Y_bHas(P_Type));
+        RASSERT(p_term->pSymVal()->Y_bHas(P_Type));
       }
     }
 
@@ -825,7 +825,7 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
     Card_Bound* p_bound = nullptr;
     for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {
 
-      if (xKid.pChild()->Y_bHas(P_ChosenBound)) {
+      if (xKid.pChild()->pSymVal()->Y_bHas(P_ChosenBound)) {
         p_bound = _pCard_Bound(xKid.pChild());
         break;
       }
@@ -846,10 +846,10 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
       if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
           SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
-        if (!p_term->Y_bHas(P_Type)) {
+        if (!p_term->pSymVal()->Y_bHas(P_Type)) {
           p_term->vDump();
           pSubCard->vDump();
-          RASSERT(p_term->Y_bHas(P_Type));
+          RASSERT(p_term->pSymVal()->Y_bHas(P_Type));
         }
       }
 
@@ -904,10 +904,10 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
         if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
             SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
-          if (!p_term->Y_bHas(P_Type)) {
+          if (!p_term->pSymVal()->Y_bHas(P_Type)) {
             p_term->vDump();
             pSubCard->vDump();
-            RASSERT(p_term->Y_bHas(P_Type));
+            RASSERT(p_term->pSymVal()->Y_bHas(P_Type));
           }
         }
 
@@ -960,10 +960,10 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
       if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
           SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
-        if (!p_term->Y_bHas(P_Type)) {
+        if (!p_term->pSymVal()->Y_bHas(P_Type)) {
           p_term->vDump();
           pSubCard->vDump();
-          RASSERT(p_term->Y_bHas(P_Type));
+          RASSERT(p_term->pSymVal()->Y_bHas(P_Type));
         }
       }
 
@@ -1049,10 +1049,10 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
       if (SymVal::b_IsStreamColOrdinal(p_term->szValue()) ||
           SymVal::b_IsTableColOrdinal(p_term->szValue())) {
 
-        if (!p_term->Y_bHas(P_Type)) {
+        if (!p_term->pSymVal()->Y_bHas(P_Type)) {
           p_term->vDump();
           pSubCard->vDump();
-          RASSERT(p_term->Y_bHas(P_Type));
+          RASSERT(p_term->pSymVal()->Y_bHas(P_Type));
         }
       }
 
@@ -1327,9 +1327,9 @@ void Weaver::vRpnCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_RpnCalc)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  if (! pCard_RpnCalc->Y_bHas(P_Type)) {
+  if (! pCard_RpnCalc->pSymVal()->Y_bHas(P_Type)) {
     pCard_RpnCalc->vDump();
-    RASSERT(pCard_RpnCalc->Y_bHas(P_Type));
+    RASSERT(pCard_RpnCalc->pSymVal()->Y_bHas(P_Type));
   }
 
   i8 nSubCards = pCard_RpnCalc->nItems();
@@ -1401,10 +1401,10 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         if (SymVal::b_IsStreamColOrdinal(pSubCard->szValue()) ||
             SymVal::b_IsTableColOrdinal(pSubCard->szValue())) {
 
-          if (!pSubCard->Y_bHas(P_Type)) {
+          if (!pSubCard->pSymVal()->Y_bHas(P_Type)) {
             p_part->vDump();
             pSubCard->vDump();
-            RASSERT(pSubCard->Y_bHas(P_Type));
+            RASSERT(pSubCard->pSymVal()->Y_bHas(P_Type));
           }
         }
         szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->szValue());
@@ -1444,9 +1444,9 @@ void Weaver::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
   if (SymVal::b_IsStreamColOrdinal(pCard_Term->szValue()) ||
       SymVal::b_IsTableColOrdinal(pCard_Term->szValue())) {
 
-    if (!pCard_Term->Y_bHas(P_Type)) {
+    if (!pCard_Term->pSymVal()->Y_bHas(P_Type)) {
       pCard_Term->vDump();
-      RASSERT(pCard_Term->Y_bHas(P_Type));
+      RASSERT(pCard_Term->pSymVal()->Y_bHas(P_Type));
     }
 }
 

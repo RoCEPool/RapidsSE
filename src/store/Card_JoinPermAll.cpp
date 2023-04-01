@@ -68,7 +68,7 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
     pPermGen->vCalcPermutation(i_Permutation);
 
     Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
-    p_joinPermSeq->Y_vSet(P_Permutation, i_Permutation);
+    p_joinPermSeq->pSymVal()->Y_vSet(P_Permutation, i_Permutation);
 
     i8 i_JoinInvalid = p_joinPermSeq->iOnePermutedJoin(p_tableList,
                                                        p_joinPredList,
@@ -166,7 +166,7 @@ void Card_JoinPermAll::vRemoveInvalid(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    if (xCI.G.p_joinPermSeq->Y_bHas(P_Invalid))
+    if (xCI.G.p_joinPermSeq->pSymVal()->Y_bHas(P_Invalid))
       xCI.G_vRemoveDeleteMain(CK_JOINPERMSEQ);
   }
 }

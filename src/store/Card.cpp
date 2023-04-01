@@ -61,7 +61,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpt)
 
   vValue(szValue);
 
-  Y_vSet(szPpyNm, iPpt);
+  pSymVal()->Y_vSet(szPpyNm, iPpt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpt)
 
   vValue(szValue);
 
-  Y_vSet(szPpyNm, szPpt);
+  pSymVal()->Y_vSet(szPpyNm, szPpt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,7 +638,7 @@ Card* Card::pDup(void)
   Card* pCard_dup = new Card(m_eCard);
   pCard_dup->vValue(szValue());
   if (m_xSymVal.m_pProperties)
-    pCard_dup->Y_vAll(this);
+    pCard_dup->pSymVal()->Y_vAll(this);
 
   return pCard_dup;
 }
@@ -653,7 +653,7 @@ Card* Card::pDupCardAndSubCards(void)
   Card* pCard_dup = new Card(m_eCard);
   pCard_dup->vValue(szValue());
   if (m_xSymVal.m_pProperties)
-    pCard_dup->Y_vAll(this);
+    pCard_dup->pSymVal()->Y_vAll(this);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -833,7 +833,7 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ( (CK_NONE == eOfCard || eOfCard == m_eCard)) {
-    if (Y_bHas(szPpy))
+    if (pSymVal()->Y_bHas(szPpy))
       return this;
   }
 
@@ -1370,17 +1370,17 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
   bool bPrintPptName = pCardCtl->bPrintPptName(m_eCard);
 
-  i8 nProperties = this->Y_nPpy();
+  i8 nProperties = pSymVal()->Y_nPpy();
 
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
 
-    eTN eTkn = Y_ePpyTkn(i_Property);
+    eTN eTkn = pSymVal()->Y_ePpyTkn(i_Property);
 
     switch (eTkn) {
 
       case TN_INTEGER: {
-        Stz* szName = Y_szPpyNm(i_Property);
-        i8   iValue = Y_iGet(i_Property);
+        Stz* szName = pSymVal()->Y_szPpyNm(i_Property);
+        i8   iValue = pSymVal()->Y_iGet(i_Property);
 
         Stz* szDecode = szDecodeEnum(szName,iValue);
         if (szDecode)
@@ -1394,8 +1394,8 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
       }
 
       case TN_STRING: {
-        Stz* szName  = Y_szPpyNm(i_Property);
-        Stz* szValue = Y_szGet(i_Property);
+        Stz* szName  = pSymVal()->Y_szPpyNm(i_Property);
+        Stz* szValue = pSymVal()->Y_szGet(i_Property);
         if (bPrintPptName)
           pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
         else
@@ -1667,220 +1667,6 @@ void Card::vValueSprint(Stz* szFormat, ...)
   va_end(xArgs);
 
   vValue(sValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vAll(Card* pCard_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-
-  if (! pCard_arg->m_xSymVal.m_pProperties) {
-    if (m_xSymVal.m_pProperties) {
-      delete m_xSymVal.m_pProperties;
-      m_xSymVal.m_pProperties = nullptr;
-    }
-    return;
-  }
-
-  if (! m_xSymVal.m_pProperties)
-    m_xSymVal.m_pProperties = new TagSet;
-
-  m_xSymVal.m_pProperties->vCopy(pCard_arg->m_xSymVal.m_pProperties);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove given property                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vCut(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return;
-
-  m_xSymVal.m_pProperties->vDelete(szPpyNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Card::Y_iGet(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return C_UNKNOWN;
-
-  i8 iValue = m_xSymVal.m_pProperties->iValue(szPpyNm);
-
-  return iValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Card::Y_iGet(i8 i_Ppy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return C_UNKNOWN;
-
-  i8 iValue = m_xSymVal.m_pProperties->iValue(i_Ppy);
-
-  return iValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Card::Y_szGet(Stz* szPptNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return nullptr;
-
-  Stz* szValue = m_xSymVal.m_pProperties->szValue(szPptNm);
-
-  return szValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Card::Y_szGet(i8 i_Ppy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return nullptr;
-
-  Stz* szValue = m_xSymVal.m_pProperties->szValue(i_Ppy);
-
-  return szValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* has given property ?                                                       */
-/*----------------------------------------------------------------------------*/
-bool Card::Y_bHas(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return false;
-
-  return m_xSymVal.m_pProperties->bHasName(szPpyNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of properties                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Card::Y_nPpy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return 0;
-
-  i8 nProperties = m_xSymVal.m_pProperties->nItems();
-
-  return nProperties;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property name                                                    */
-/*----------------------------------------------------------------------------*/
-Stz* Card::Y_szPpyNm(i8 i_Ppy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return nullptr;
-
-  Stz* szName = m_xSymVal.m_pProperties->szName(i_Ppy);
-
-  return szName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type of property                                                       */
-/*----------------------------------------------------------------------------*/
-eTN Card::Y_ePpyTkn(i8 i_Ppy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    return TN_NONE;
-
-  eTN eToken = m_xSymVal.m_pProperties->eToken(i_Ppy);
-
-  return eToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_)
-
-  if (! m_xSymVal.m_pProperties)
-    m_xSymVal.m_pProperties = new TagSet;
-
-  m_xSymVal.m_pProperties->vReplace(szPpyNm, "y"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, i8 iPpy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_xSymVal.m_pProperties)
-    m_xSymVal.m_pProperties = new TagSet;
-
-  m_xSymVal.m_pProperties->vReplace(szPpyNm, iPpy);
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint card property value                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s256 sPpyValue;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sPpyValue.azChar(),xArgs,(char*)szFormat);
-  va_end(xArgs);
-
-  Y_vSet(szPpyNm,sPpyValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (szPpyNm->bSame(P_TblCol)) {
-    vDebugPoint();
-    RASSERT(SymVal::b_IsTableColOrdinal(szPpy));
-  }
-
-  if (! m_xSymVal.m_pProperties)
-    m_xSymVal.m_pProperties = new TagSet;
-
-  m_xSymVal.m_pProperties->vReplace(szPpyNm, szPpy);
 }
 
 

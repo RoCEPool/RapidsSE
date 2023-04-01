@@ -69,7 +69,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardAndSubCards());
   p_expr_new->vAppend(p_rpnCalc);
 
-  p_rpnCalc->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+  p_rpnCalc->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = new Card_Direction(p_expr->pSub_direction()->szValue());

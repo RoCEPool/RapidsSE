@@ -408,21 +408,6 @@ namespace STORE
     void vValueMark1(Stz* szValue, char cMark1);
     void vValueSprint(Stz* szFormat, ...);
 
-    void Y_vAll(Card* pCard_arg);
-    void Y_vCut(Stz* szPpyNm);
-    i8   Y_iGet(i8 i_Ppy);
-    i8   Y_iGet(Stz* szPpyNm);
-    Stz* Y_szGet(i8 i_Ppy);
-    Stz* Y_szGet(Stz* szPptNm);
-    bool Y_bHas(Stz* szPpyNm);
-    i8   Y_nPpy(void);
-    Stz* Y_szPpyNm(i8 i_Ppy);
-    eTN  Y_ePpyTkn(i8 i_Ppy);
-    void Y_vSet(Stz* szPpyNm);
-    void Y_vSet(Stz* szPpyNm, i8 iPpy);
-    void Y_vSet(Stz* szPpyNm, Stz* szPpy);
-    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
-
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_Aggreg*        pSub_aggreg(void);
