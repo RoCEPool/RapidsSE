@@ -28,7 +28,6 @@
 #include "eOR.h"
 #include "ePF.h"
 #include "eYG.h"
-#include "ePY.h"
 #include "eYX.h"
 #include "eRG.h"
 #include "eRO.h"
@@ -5019,7 +5018,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
     case EG_PT: return aPT[i_Enum];
-    case EG_PY: return aPY[i_Enum];
 
     case EG_QK: return aQK[i_Enum];
 

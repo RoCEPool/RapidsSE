@@ -1426,26 +1426,6 @@ bool Card::bIsValue(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get last print parent                                                      */
-/*----------------------------------------------------------------------------*/
-Card* Card::pLastPrintParent(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_pLastPrintParent;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set last print parent                                                     */
-/*----------------------------------------------------------------------------*/
-void Card::vLastPrintParent(Card* pLastPrintParent)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_pLastPrintParent = pLastPrintParent;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get mark 1                                                                 */
 /*----------------------------------------------------------------------------*/
 char Card::cMark1(void)

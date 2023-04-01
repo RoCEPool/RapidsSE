@@ -15,7 +15,6 @@
 #include "eXK.h"
 
 #include "ChildCards.hpp"
-#include "PpySet.hpp"
 
 #include "Ribbon.hpp"
 
@@ -235,7 +234,6 @@ namespace STORE
     SymVal  m_xSymVal;
 
     TagSet* m_pProperties;
-    //PpySet  m_oPpySet; // todo: remove PpySet
 
     Card* m_pLastPrintParent;
 
@@ -357,9 +355,6 @@ namespace STORE
     bool bIsProjecting(void);
     bool bIsValue(char cValue);
     bool bIsValue(Stz* szValue);
-
-    Card* pLastPrintParent(void);
-    void vLastPrintParent(Card* pLastPrintParent);
 
     char cMark1(void);
     void vMark1(char cMark1);

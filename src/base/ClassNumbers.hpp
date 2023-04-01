@@ -252,9 +252,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANOPERAND,
   /* */ CN_POT,
   /* */ CN_PORT,
-  /* */ CN_PPY,
-  /* */ CN_PPYSET,
-  /* */ CN_PREDICATE,
+ /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
   /* */ CN_PREPARESUBQUERIES,
   /* */ CN_PRIMITIVENODE,
@@ -693,8 +691,6 @@ static Stz* aCN[]
   /* */ "PLANOPERAND"_Stz,          // CN_PLANOPERAND
   /* */ "POT"_Stz,                  // CN_POT
   /* */ "PORT"_Stz,                 // CN_PORT
-  /* */ "PPY"_Stz,                  // CN_PPY
-  /* */ "PPYSET"_Stz,               // CN_PPYSET
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
   /* */ "PREPARESUBQUERIES"_Stz,    // CN_PREPARESUBQUERIES
