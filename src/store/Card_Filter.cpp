@@ -71,7 +71,7 @@ void Card_Filter::vDeleteEmptyFilters(CardIter* pCI) {
 
   while (pCI->G_bEachMain()) {
     if ((pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()))
-      pCI->G.p_MainCard->vDeleteFilterIfEmpty(pCI->G.p_filter);
+      pCI->G.p_OP->vDeleteFilterIfEmpty(pCI->G.p_filter);
   }
 }
 

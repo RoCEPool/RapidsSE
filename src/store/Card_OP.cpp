@@ -296,6 +296,21 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_OP::vDeleteFilterIfEmpty(Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_filter->bIsEmpty())
+    return;
+
+  this->vRemoveChild(p_filter);
+  DELETE_CARD(p_filter);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_OP::vEarlyProject_root(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

@@ -859,21 +859,6 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vDeleteFilterIfEmpty(Card_Filter* p_filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (! p_filter->bIsEmpty())
-    return;
-
-  this->vRemoveChild(p_filter);
-  DELETE_CARD(p_filter);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(i8 iDepth, Stz* szTitle)

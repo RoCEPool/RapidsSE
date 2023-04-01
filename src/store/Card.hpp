@@ -328,7 +328,6 @@ namespace STORE
     void v_Child(i8 i_Child);
     void vClearMarksRecursive(void);
 
-    void vDeleteFilterIfEmpty(Card_Filter* p_filter);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDup(void);
     Card* pDupCardAndSubCards(void);
