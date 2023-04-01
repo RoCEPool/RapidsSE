@@ -67,21 +67,6 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPptVal)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Object* pPptVal)
-    : Object(CN_CARD)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vInit(eCard);
-
-  vValue(szValue);
-
-  Y_vSet(szPpyNm, pPptVal);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPptVal)
     : Object(CN_CARD)
 {
@@ -1516,16 +1501,6 @@ char Card::cMark2(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get mark 2                                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Card::iMark2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_xSymVal.m_cMark2 - '0';
-}
-
-/*----------------------------------------------------------------------------*/
 /* set mark 2                                                                 */
 /*----------------------------------------------------------------------------*/
 void Card::vMark2(i8 iMark2)
@@ -1546,25 +1521,6 @@ void Card::vMark2(char cMark2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Merge given card with this card only if they are of the same type          */
-/*----------------------------------------------------------------------------*/
-bool Card::bMerge(Card* pCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if(pCard->eCard() != m_eCard)
-    return false;
-
-  while (Card* pSubCard = pCard->pPop()) {
-    vPush(pSubCard);
-  }
-
-  delete pCard;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* morph all children of eFrom to be eTo                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vMorphChildrenTo(eCK eFrom, eCK eTo)
@@ -1574,17 +1530,6 @@ void Card::vMorphChildrenTo(eCK eFrom, eCK eTo)
   CardIter xCI(this);
   while (xCI.G_bEachMain(eFrom))
     xCI.G.p_MainCard->vCard(eTo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move given to child to be last child                                       */
-/*----------------------------------------------------------------------------*/
-void Card::vMoveToLastChild(Card* pChildCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vRemoveChild(pChildCard);
-  vAppend(pChildCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1943,15 +1888,6 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
         break;
       }
 
-      case TN_OBJECT: {
-        Stz* szName = Y_szPpyNm(i_Property);
-        Object* pObject = Y_pGet(i_Property);
-        pRibbon->vSprintRight("%s->  "_Stz,szName);
-        pRibbon->vSprintRight("%p"_Stz,pObject);
-        pRibbon->vSprintRight("%s"_Stz,aCN[pObject->eGetClassNo()]);
-        break;
-      }
-
       case TN_STRING: {
         Stz* szName  = Y_szPpyNm(i_Property);
         Stz* szValue = Y_szGet(i_Property);
@@ -2291,6 +2227,28 @@ bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::Y_vAll(Card* pCard_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+  if (! pCard_arg->m_pProperties) {
+    if (m_pProperties) {
+      delete m_pProperties;
+      m_pProperties = nullptr;
+    }
+    return;
+  }
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vCopy(pCard_arg->m_pProperties);
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given property                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::Y_vCut(Stz* szPpyNm)
@@ -2317,28 +2275,6 @@ void Card::Y_vCutRecursive(Stz* szPpyNm)
     Card *pChildCard = pGetChild(i_Child);
     pChildCard->Y_vCutRecursive(szPpyNm);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vAll(Card* pCard_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-
-  if (! pCard_arg->m_pProperties) {
-    if (m_pProperties) {
-      delete m_pProperties;
-      m_pProperties = nullptr;
-    }
-    return;
-  }
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vCopy(pCard_arg->m_pProperties);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2403,36 +2339,6 @@ i8 Card::Y_iGet(i8 i_Ppy)
   i8 iValue = m_pProperties->iValue(i_Ppy);
 
   return iValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Object* Card::Y_pGet(Stz* szPptNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return nullptr;
-
-  Object* pValue = m_pProperties->pValue(szPptNm);
-
-  return pValue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-Object* Card::Y_pGet(i8 i_Ppy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return nullptr;
-
-  Object* pValue = m_pProperties->pValue(i_Ppy);
-
-  return pValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2579,19 +2485,6 @@ void Card::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
   va_end(xArgs);
 
   Y_vSet(szPpyNm,sPpyValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vSet(Stz* szPpyNm, Object* pPpy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vReplace(szPpyNm, pPpy);
 }
 
 /*----------------------------------------------------------------------------*/

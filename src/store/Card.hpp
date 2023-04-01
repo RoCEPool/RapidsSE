@@ -254,7 +254,6 @@ namespace STORE
     Card(eCK eCard);
     Card(eCK eCard, Stz* szValue);
     Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPptVal);
-    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Object* pPptVal);
     Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPptVal);
     void vInit(eCK eCard);
 
@@ -368,12 +367,9 @@ namespace STORE
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
-    i8   iMark2(void);
     void vMark2(i8 iMark2);
     void vMark2(char cMark2);
-    bool bMerge(Card* pCard);
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
-    void vMoveToLastChild(Card* pChildCard);
 
     bool bNeedsBrace(void);
 
@@ -417,16 +413,13 @@ namespace STORE
     void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
+    void Y_vAll(Card* pCard_arg);
     void Y_vCut(Stz* szPpyNm);
     void Y_vCutRecursive(Stz* szPpyNm);
-
-    void Y_vAll(Card* pCard_arg);
     char Y_cGet(i8 i_Ppy);
     char Y_cGet(Stz* szPpyNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
-    Object* Y_pGet(i8 i_Ppy);
-    Object* Y_pGet(Stz* szPptNm);
     Stz* Y_szGet(i8 i_Ppy);
     Stz* Y_szGet(Stz* szPptNm);
     bool Y_bHas(Stz* szPpyNm);
@@ -437,7 +430,6 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, char cPpy);
     void Y_vSet(Stz* szPpyNm, i8 iPpy);
     void Y_vSet(Stz* szPpyNm);
-    void Y_vSet(Stz* szPpyNm, Object* pPpy);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
 
