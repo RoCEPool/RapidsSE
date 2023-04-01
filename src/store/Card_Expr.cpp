@@ -121,7 +121,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   _static_
 
   s32 sKn;
-  sKn.vSprint("$K%lld"_Stz,p_expr_gby->iCardNo()+1);
+  sKn.vSprint("$K%lld"_Stz, p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());

@@ -230,7 +230,7 @@ namespace STORE
     char md_Bearing[256];
 
     eCK  m_eCard;
-    i8   m_iCardNo;
+    i8   m_i_Child;
 
     SymVal  m_xSymVal;
 
@@ -324,11 +324,9 @@ namespace STORE
     eCK  eCard(void);
     void vCard(eCK eCard);
     Stz* szCardNm(void);
-    i8   iCardNo(void);
-    void vCardNo(i8 iCardNo);
+    i8   i_Child(void);
+    void v_Child(i8 i_Child);
     void vClearMarksRecursive(void);
-    //void vConvert_stmColOdn_To_tblColOdn_original(CardIter* pCI);
-    void vCopyProperties(Card* pFrom);
 
     void vDeleteFilterIfEmpty(Card_Filter* p_filter);
     void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
@@ -340,7 +338,7 @@ namespace STORE
     bool bEquivalentTo(Card* pCard_OTHER);
 
     Card* pFindCardRecursive(eCK eCard);
-    Card* pFindParent(Card* pSubCard);
+    Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
@@ -385,11 +383,8 @@ namespace STORE
     void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
     void vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
-    TagSet* pProperties(void);
-    void vPropertiesEnsure(void);
 
     void vRenumberRecursive(Card* pParent=nullptr);
-    void vRemove_filter_IfEmpty(Card_Filter* p_filter);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSame(Stz* szArg);
@@ -400,7 +395,6 @@ namespace STORE
     void vSetStreamColOrdinal(i8 iStmColOdn);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
-    void vSetValueMark1(Stz* szValue, char cMark1);
 
     SymVal* pSymVal(void);
 
@@ -410,14 +404,13 @@ namespace STORE
     void vValue(char cValue);
     void vValue(i8 iValue);
     void vValue(Stz* szValue);
+    void vValueMark1(Stz* szValue, char cMark1);
     void vValueSprint(Stz* szFormat, ...);
     bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
     void Y_vAll(Card* pCard_arg);
     void Y_vCut(Stz* szPpyNm);
     void Y_vCutRecursive(Stz* szPpyNm);
-    char Y_cGet(i8 i_Ppy);
-    char Y_cGet(Stz* szPpyNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);
@@ -426,7 +419,6 @@ namespace STORE
     i8   Y_nPpy(void);
     Stz* Y_szPpyNm(i8 i_Ppy);
     eTN  Y_ePpyTkn(i8 i_Ppy);
-
     void Y_vSet(Stz* szPpyNm, char cPpy);
     void Y_vSet(Stz* szPpyNm, i8 iPpy);
     void Y_vSet(Stz* szPpyNm);

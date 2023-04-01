@@ -154,7 +154,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     }
 
     if (szColNm)
-      p_term->vSetValueMark1(szColNm, MARK_CHANGED);
+      p_term->vValueMark1(szColNm, MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;
   };

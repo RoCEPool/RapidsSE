@@ -84,7 +84,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 
         Stz* szPrjCol = xCI_p.G.p_expr->szProjectedCol();
 
-      xCI.G.p_idxCol->vSetValueMark1(szPrjCol, MARK_CHANGED);
+      xCI.G.p_idxCol->vValueMark1(szPrjCol, MARK_CHANGED);
       }
     }
   }

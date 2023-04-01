@@ -161,7 +161,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   pCI->vPrintBoard(__LINE__);
 
   // tidy up empty SQ:<table>/<filter>
-  pCI->G.p_table->vRemove_filter_IfEmpty(pCI->G.p_filter);
+  pCI->G.p_table->vDeleteFilterIfEmpty(pCI->G.p_filter);
   pCI->vPrintBoard(__LINE__);
 
   //                   v           //  ]filter
@@ -335,7 +335,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       }
     }
     // TODO: hack...
-    pCI->G.p_expr->vCardNo(0);
+    pCI->G.p_expr->v_Child(0);
 
     // projection
 

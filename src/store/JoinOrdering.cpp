@@ -283,7 +283,7 @@ void JoinOrdering::vPredicateReposition(void)
   m_pCI->G_vRestart();
 
   while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
-    m_pCI->G.p_table->vRemove_filter_IfEmpty(m_pCI->G.p_filter);
+    m_pCI->G.p_table->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
   }
 
   m_pCI->vPrintBoard(__LINE__);

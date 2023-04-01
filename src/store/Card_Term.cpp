@@ -199,7 +199,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   if (Card_Expr* p_expr_prior = pCI->pResolvePriorExpr_With_ProjectedCol(this))
     if (Stz* szPrjCol = p_expr_prior->szProjectedCol())
-      vSetValueMark1(szPrjCol, MARK_CHANGED);
+      vValueMark1(szPrjCol, MARK_CHANGED);
 }
 
 /*----------------------------------------------------------------------------*/

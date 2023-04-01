@@ -281,7 +281,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       continue;
     }
 
-    if (33 == pCI->G.p_MainCard->iCardNo())
+    if (33 == pCI->G.p_MainCard->i_Child())
       vDebugPoint();
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {

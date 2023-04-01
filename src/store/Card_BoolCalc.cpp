@@ -361,7 +361,7 @@ void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pParentCard = this->pFindParent(p_pred);
+  Card* pParentCard = this->pFindParentRecursive(p_pred);
 
   pParentCard->vRemoveSub(p_pred);
 
@@ -372,7 +372,7 @@ void Card_BoolCalc::vRemovePred(Card_PRED* p_pred)
     }
     else {
       Card* pSiblingCard = pParentCard->pGetChild(0);
-      Card* pGrandCard = this->pFindParent((pParentCard));
+      Card* pGrandCard = this->pFindParentRecursive((pParentCard));
       pParentCard->vRemoveSub(pSiblingCard);
       pGrandCard->vReplaceChild(pParentCard, pSiblingCard);
     }

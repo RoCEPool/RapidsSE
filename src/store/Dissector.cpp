@@ -772,7 +772,7 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
 
     // TYPE <type> <calcExpr> [ AS <as> ]
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,true,i_Expr);
-    pCard_Expr->vCardNo(++i_CardNo);
+    pCard_Expr->v_Child(++i_CardNo);
 
 //    Card_As* p_as = pCard_Expr->pSub_as();
 //    if (p_as) {
@@ -827,7 +827,7 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
 
     // TYPE <type> [ AS <as> ] <rpnCalc>
     Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
-    pCard_Expr->vCardNo(++iCardNo);
+    pCard_Expr->v_Child(++iCardNo);
     //vAsEnsure(pCard_Expr);
 
     pCard_Projection->vAppend(pCard_Expr);
@@ -983,7 +983,7 @@ void Dissector::vAsEnsure(Card_Expr* p_expr)
     return;
 
   s32 sAs;
-  sAs.vSprint("COL_%lld"_Stz,p_expr->iCardNo());
+  sAs.vSprint("COL_%lld"_Stz, p_expr->i_Child());
 
   pCard_As = new Card_As(sAs);
 

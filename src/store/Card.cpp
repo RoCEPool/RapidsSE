@@ -91,7 +91,7 @@ void Card::vInit(eCK eCard)
     vDebugPoint();
 
   m_eCard   = eCard;
-  m_iCardNo = C_UNKNOWN;
+  m_i_Child = C_UNKNOWN;
 
   m_xSymVal.m_sValue = ""_Stz;
   m_xSymVal.m_cMark1 = ' ';
@@ -203,7 +203,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //      continue;
 //
 //    // is the card in the deck?
-//    if (p_deck->pFindParent(p_cardInQuestion))
+//    if (p_deck->pFindParentRecursive(p_cardInQuestion))
 //      continue;
 //
 //    // **Leak Detected**
@@ -629,8 +629,9 @@ void Card::vAppendDupSubCards(Card* pFromCard)
     Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
 
     if (pSubCard->m_pProperties) {
-      pSubCard_dup->vPropertiesEnsure();
-      pSubCard_dup->pProperties()->vCopy(pSubCard->m_pProperties);
+      if (! pSubCard_dup->m_pProperties)
+        pSubCard_dup->m_pProperties = new TagSet;
+      pSubCard_dup->m_pProperties->vCopy(pSubCard->m_pProperties);
     }
 
     this->vAppend(pSubCard_dup);
@@ -779,10 +780,10 @@ void Card::vBearing(Card* pParentCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pParentCard) {
-    sprintf(md_Bearing, "%s.%lld", pParentCard->md_Bearing, m_iCardNo);
+    sprintf(md_Bearing, "%s.%lld", pParentCard->md_Bearing, m_i_Child);
   }
   else {
-    sprintf(md_Bearing, "%lld", m_iCardNo);
+    sprintf(md_Bearing, "%lld", m_i_Child);
   }
 
 //  vTrace("%s\n"_Stz,md_Bearing);
@@ -830,21 +831,21 @@ void Card::vClearMarksRecursive(void)
 /*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Card::iCardNo(void)
+i8 Card::i_Child(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_iCardNo;
+  return m_i_Child;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set card no                                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vCardNo(i8 iCardNo)
+void Card::v_Child(i8 i_Child)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_iCardNo = iCardNo;
+  m_i_Child = i_Child;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -855,17 +856,6 @@ Stz* Card::szCardNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return aCK_short[m_eCard];
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy properties from given card into this card                             */
-/*----------------------------------------------------------------------------*/
-void Card::vCopyProperties(Card* pFrom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vPropertiesEnsure();
-  m_pProperties->vCopy(pFrom->m_pProperties);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -905,7 +895,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
   
 //  vTrace("%s%lld %s %s { %s }\n"_Stz
 //         ,Stz::szTab(iDepth)
-//         ,m_iCardNo
+//         ,m_i_Child
 //         ,szCardNm()
 //         ,aCK[m_eCard]
 //         ,sProperties.szStz()
@@ -949,7 +939,7 @@ Card* Card::pDup(void)
   Card* pCard_dup = new Card(m_eCard);
   pCard_dup->vValue(szValue());
   if (m_pProperties)
-    pCard_dup->vCopyProperties(this);
+    pCard_dup->Y_vAll(this);
 
   return pCard_dup;
 }
@@ -964,7 +954,7 @@ Card* Card::pDupCardAndSubCards(void)
   Card* pCard_dup = new Card(m_eCard);
   pCard_dup->vValue(szValue());
   if (m_pProperties)
-    pCard_dup->vCopyProperties(this);
+    pCard_dup->Y_vAll(this);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1038,7 +1028,7 @@ bool Card::bEquivalentTo(Card* pCard_OTHER)
     return false;
 
   TagSet* pProperties_THISCARD  = m_pProperties;
-  TagSet* pProperties_OTHERCARD = pCard_OTHER->pProperties();
+  TagSet* pProperties_OTHERCARD = pCard_OTHER->m_pProperties;
 
   if (pProperties_THISCARD) {
     if (pProperties_OTHERCARD) {
@@ -1079,7 +1069,7 @@ bool Card::bEquivalentTo(Card* pCard_OTHER)
 /*----------------------------------------------------------------------------*/
 /* find parent of given sub-card                                              */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindParent(Card* pSubCard)
+Card* Card::pFindParentRecursive(Card* pSubCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1090,7 +1080,7 @@ Card* Card::pFindParent(Card* pSubCard)
     if (pSubCard == pTestCard)
       return this;
 
-    Card* pParent = pTestCard->pFindParent(pSubCard);
+    Card* pParent = pTestCard->pFindParentRecursive(pSubCard);
     if (pParent)
       return pParent;
   }
@@ -1744,7 +1734,7 @@ void Card::vPrintHeader(Ribbon* pRibbon, eAL eLevel)
     default           : cLevel = '?'; break;
   }
 
-  pRibbon->vSprint("==%02lld %c--------------"_Stz,m_iCardNo,cLevel);
+  pRibbon->vSprint("==%02lld %c--------------"_Stz, m_i_Child, cLevel);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1780,7 +1770,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
     if (pCardCtl->bPrintNo(m_eCard))
       sName.vSprint("%s%lld]"_Stz,
                     Stz::szDots(iDepth - 1),
-                    m_iCardNo);
+                    m_i_Child);
     if (szCustomName)
       sName.vSprintCat("%s"_Stz,
                     szCustomName);
@@ -1829,8 +1819,8 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   else {
     if (pCardCtl->bPrintNo(m_eCard))
       sNameValue.vSprint("%s%lld]"_Stz,
-                    Stz::szDots(iDepth - 1),
-                    m_iCardNo);
+                         Stz::szDots(iDepth - 1),
+                         m_i_Child);
     if (bHasValue())
       sNameValue.vSprintCat("%s%s %s"_Stz,
                        sName.szStz(),
@@ -1925,27 +1915,6 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get properties tagSet                                                      */
-/*----------------------------------------------------------------------------*/
-TagSet* Card::pProperties(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_pProperties;
-}
-
-/*----------------------------------------------------------------------------*/
-/* ensure this card has a m_pProperties tagSet                                */
-/*----------------------------------------------------------------------------*/
-void Card::vPropertiesEnsure(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-}
-
-/*----------------------------------------------------------------------------*/
 /* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberRecursive(Card* pParent)
@@ -1960,7 +1929,7 @@ void Card::vRenumberRecursive(Card* pParent)
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
 
-    pSubCard->vCardNo(iSubCardNo++);
+    pSubCard->v_Child(iSubCardNo++);
     pSubCard->vRenumberRecursive(this);
   }
 
@@ -1970,31 +1939,13 @@ void Card::vRenumberRecursive(Card* pParent)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vRemove_filter_IfEmpty(Card_Filter* p_filter)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // todo: xt
-
-  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-
-  if (p_boolCalc->nChildCards())
-    return;
-
-  this->vRemoveChild(p_filter);
-  delete p_filter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* replace subCard                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card* pParent = pFindParent(pSub);
+  Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
 
@@ -2166,7 +2117,7 @@ void Card::vValue(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* set card value and Mark1                                                   */
 /*----------------------------------------------------------------------------*/
-void Card::vSetValueMark1(Stz* szValue, char cMark1)
+void Card::vValueMark1(Stz* szValue, char cMark1)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2275,40 +2226,6 @@ void Card::Y_vCutRecursive(Stz* szPpyNm)
     Card *pChildCard = pGetChild(i_Child);
     pChildCard->Y_vCutRecursive(szPpyNm);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-char Card::Y_cGet(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return ' ';
-
-  Stz* szValue = m_pProperties->szValue(szPpyNm);
-  if (! szValue)
-    return ' ';
-
-  return *szValue->azChar();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-char Card::Y_cGet(i8 i_Ppy)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return ' ';
-
-  Stz* szValue = m_pProperties->szValue(i_Ppy);
-  if (! szValue)
-    return ' ';
-
-  return *szValue->azChar();
 }
 
 /*----------------------------------------------------------------------------*/
