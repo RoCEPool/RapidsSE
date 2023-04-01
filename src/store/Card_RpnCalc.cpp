@@ -93,11 +93,11 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
     if (! xCI.bMore())
       break;
 
-    if (xCI.G.p_term->bSame("exists"_Stz)) {
+    if (xCI.G.p_term->bIsValue("exists"_Stz)) {
 
       RASSERT(xCI.G_bEachMain(CK_TERM));
       Card_Term* p_term_next = xCI.G.p_term;
-      if (p_term_next->bSame("not"_Stz)) {
+      if (p_term_next->bIsValue("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
         p_term->vValue("notExists"_Stz);
@@ -106,11 +106,11 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       continue;
     }
 
-    if (xCI.G.p_term->bSame("in"_Stz)) {
+    if (xCI.G.p_term->bIsValue("in"_Stz)) {
 
       RASSERT(xCI.G_bEachMain(CK_TERM));
       Card_Term* p_term_next = xCI.G.p_term;
-      if (p_term_next->bSame("not"_Stz)) {
+      if (p_term_next->bIsValue("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
         p_term->vValue("notIn"_Stz);
@@ -248,7 +248,7 @@ bool Card_RpnCalc::bHasWhen(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bSame("WHEN"_Stz))
+    if (xCI.G.p_term->bIsValue("WHEN"_Stz))
       return true;
   }
 

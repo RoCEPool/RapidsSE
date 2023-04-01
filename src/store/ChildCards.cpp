@@ -152,7 +152,7 @@ Card* ChildCards::pFindChild(eCK eCard, Stz* szValue, i8& i_Child)
   for (i_Child = 0; i_Child < nChildren; i_Child++) {
     Card* pChildCard = pGetChild(i_Child, eChildCard);
 
-    if (eCard == pChildCard->eCard() && pChildCard->bSame(szValue)) {
+    if (eCard == pChildCard->eCard() && pChildCard->bIsValue(szValue)) {
       pFoundCard = pChildCard;
       break;
     }

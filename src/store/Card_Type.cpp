@@ -87,7 +87,7 @@ bool Card_Type::bIsSame(Card_Type* p_type_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-    if (! this->bSame(p_type_arg->szValue()))
+    if (! this->bIsValue(p_type_arg->szValue()))
       return false;
 
   return true;

@@ -377,8 +377,8 @@ namespace STORE
     void vRenumberRecursive(Card* pParent=nullptr);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSame(Stz* szArg);
     bool bSameValue(Card* pCard);
+    bool bSameValueRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
     SymVal* pSymVal(void);
 
@@ -390,7 +390,6 @@ namespace STORE
     void vValue(Stz* szValue);
     void vValueMark1(Stz* szValue, char cMark1);
     void vValueSprint(Stz* szFormat, ...);
-    bool bValuesSameRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
     void Y_vAll(Card* pCard_arg);
     void Y_vCut(Stz* szPpyNm);

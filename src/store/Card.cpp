@@ -813,7 +813,7 @@ Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParen
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bSame(szValue)) {
+  if (bIsValue(szValue)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -861,7 +861,7 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
 
   //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szValue(),md_Bearing);
 
-  if (eCard == m_eCard && bSame(szValue)) {
+  if (eCard == m_eCard && bIsValue(szValue)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -1132,19 +1132,19 @@ bool Card::bNeedsBrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bSame("between"_Stz))
+  if (bIsValue("between"_Stz))
     return true;
-  if (bSame("case"_Stz))
+  if (bIsValue("case"_Stz))
     return true;
-  if (bSame("in"_Stz))
+  if (bIsValue("in"_Stz))
     return true;
-  if (bSame("matchLeading"_Stz))
+  if (bIsValue("matchLeading"_Stz))
     return true;
-  if (bSame("matchMiddle"_Stz))
+  if (bIsValue("matchMiddle"_Stz))
     return true;
-  if (bSame("matchMiddle1"_Stz))
+  if (bIsValue("matchMiddle1"_Stz))
     return true;
-  if (bSame("matchTrailing"_Stz))
+  if (bIsValue("matchTrailing"_Stz))
     return true;
 
   return false;
@@ -1557,19 +1557,6 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 /*----------------------------------------------------------------------------*/
 /* is this card's value the same as given arg?                                */
 /*----------------------------------------------------------------------------*/
-bool Card::bSame(Stz* szArg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (szValue()->bSame(szArg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this card's value the same as given arg?                                */
-/*----------------------------------------------------------------------------*/
 bool Card::bSameValue(Card* pArg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1580,6 +1567,40 @@ bool Card::bSameValue(Card* pArg)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* are the two cards recursively the same                                     */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
+{
+  _static_
+
+  if (iDepth || (0 == iDepth && bTestL0)) {
+
+    eCK eCard_a = this->eCard();
+    eCK eCard_b = pCard_b->eCard();
+
+    if (eCard_a != eCard_b)
+      return false;
+
+    //if (CK_TERM == eCard_a)
+    if (!this->szValue()->bSame(pCard_b->szValue()))
+      return false;
+  }
+
+  i8 nChildren_a = this->nChildCards();
+  i8 nChildren_b = pCard_b->nChildCards();
+  if (nChildren_a != nChildren_b)
+    return false;
+
+  for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
+    Card* pChild_a = this->pGetChild(i_Child);
+    Card* pChild_b = pCard_b->pGetChild(i_Child);
+    if (!pChild_a->bSameValueRecursive(pChild_b, iDepth + 1, bTestL0))
+      return false;
+  }
+
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get val                                                                    */
@@ -1683,41 +1704,6 @@ void Card::vValueSprint(Stz* szFormat, ...)
   va_end(xArgs);
 
   vValue(sValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* are the two cards recursively the same                                     */
-/*----------------------------------------------------------------------------*/
-bool Card::bValuesSameRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
-{
-  _static_
-
-  if (iDepth || (0 == iDepth && bTestL0)) {
-
-    eCK eCard_a = this->eCard();
-    eCK eCard_b = pCard_b->eCard();
-
-    if (eCard_a != eCard_b)
-      return false;
-
-    //if (CK_TERM == eCard_a)
-    if (!this->szValue()->bSame(pCard_b->szValue()))
-      return false;
-  }
-
-  i8 nChildren_a = this->nChildCards();
-  i8 nChildren_b = pCard_b->nChildCards();
-  if (nChildren_a != nChildren_b)
-    return false;
-
-  for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
-    Card* pChild_a = this->pGetChild(i_Child);
-    Card* pChild_b = pCard_b->pGetChild(i_Child);
-    if (! pChild_a->bValuesSameRecursive(pChild_b, iDepth+1, bTestL0))
-      return false;
-  }
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
