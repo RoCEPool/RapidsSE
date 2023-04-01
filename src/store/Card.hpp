@@ -255,6 +255,22 @@ namespace STORE
     void vSprint(Stz* szFormat, ...);
 
     char cTableColSyn(void);
+
+    void Y_vAll(Card* pCard_arg);
+    void Y_vCut(Stz* szPpyNm);
+    i8   Y_iGet(i8 i_Ppy);
+    i8   Y_iGet(Stz* szPpyNm);
+    Stz* Y_szGet(i8 i_Ppy);
+    Stz* Y_szGet(Stz* szPptNm);
+    bool Y_bHas(Stz* szPpyNm);
+    i8   Y_nPpy(void);
+    Stz* Y_szPpyNm(i8 i_Ppy);
+    eTN  Y_ePpyTkn(i8 i_Ppy);
+    void Y_vSet(Stz* szPpyNm);
+    void Y_vSet(Stz* szPpyNm, i8 iPpy);
+    void Y_vSet(Stz* szPpyNm, Stz* szPpy);
+    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
+
   };
 
   class Card : public Object
@@ -360,7 +376,6 @@ namespace STORE
     void vMark1(char cMark1);
     char cMark2(void);
     void vMark2(char cMark2);
-    void vMorphChildrenTo(eCK eFrom, eCK eTo);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,
@@ -395,7 +410,6 @@ namespace STORE
 
     void Y_vAll(Card* pCard_arg);
     void Y_vCut(Stz* szPpyNm);
-    void Y_vCutRecursive(Stz* szPpyNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);

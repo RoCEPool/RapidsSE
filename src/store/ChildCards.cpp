@@ -271,6 +271,20 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* morph all children of eFrom to be eTo                                      */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vMorphChildrenTo(eCK eFrom, eCK eTo)
+{
+  i8 nSubCards = nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *p_child = pGetChild(i_Sub);
+    if (p_child->bIsCard(eFrom))
+      p_child->vCard(eTo);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert child values to an stz list                                        */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vOntoStzList(StzList* pStzList)

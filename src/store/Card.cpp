@@ -1063,18 +1063,6 @@ void Card::vMark2(char cMark2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* morph all children of eFrom to be eTo                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vMorphChildrenTo(eCK eFrom, eCK eTo)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(eFrom))
-    xCI.G.p_MainCard->vCard(eTo);
-}
-
-/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
@@ -1714,22 +1702,6 @@ void Card::Y_vCut(Stz* szPpyNm)
     return;
 
   m_xSymVal.m_pProperties->vDelete(szPpyNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete given property (recursively)                                        */
-/*----------------------------------------------------------------------------*/
-void Card::Y_vCutRecursive(Stz* szPpyNm)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Y_vCut(szPpyNm);
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pChildCard = pGetChild(i_Child);
-    pChildCard->Y_vCutRecursive(szPpyNm);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3201,3 +3173,203 @@ char SymVal::cTableColSyn(void)
 {
   return c_TableColSyn(m_sValue);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+void SymVal::Y_vAll(Card* pCard_arg)
+{
+
+  if (! pCard_arg->pSymVal()->m_pProperties) {
+    if (m_pProperties) {
+      delete m_pProperties;
+      m_pProperties = nullptr;
+    }
+    return;
+  }
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vCopy(pCard_arg->pSymVal()->m_pProperties);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given property                                                      */
+/*----------------------------------------------------------------------------*/
+void SymVal::Y_vCut(Stz* szPpyNm)
+{
+
+  if (! m_pProperties)
+    return;
+
+  m_pProperties->vDelete(szPpyNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+i8 SymVal::Y_iGet(Stz* szPpyNm)
+{
+
+  if (! m_pProperties)
+    return C_UNKNOWN;
+
+  i8 iValue = m_pProperties->iValue(szPpyNm);
+
+  return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+i8 SymVal::Y_iGet(i8 i_Ppy)
+{
+
+  if (! m_pProperties)
+    return C_UNKNOWN;
+
+  i8 iValue = m_pProperties->iValue(i_Ppy);
+
+  return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* SymVal::Y_szGet(Stz* szPptNm)
+{
+
+  if (! m_pProperties)
+    return nullptr;
+
+  Stz* szValue = m_pProperties->szValue(szPptNm);
+
+  return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* SymVal::Y_szGet(i8 i_Ppy)
+{
+
+  if (! m_pProperties)
+    return nullptr;
+
+  Stz* szValue = m_pProperties->szValue(i_Ppy);
+
+  return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has given property ?                                                       */
+/*----------------------------------------------------------------------------*/
+bool SymVal::Y_bHas(Stz* szPpyNm)
+{
+
+  if (! m_pProperties)
+    return false;
+
+  return m_pProperties->bHasName(szPpyNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of properties                                                   */
+/*----------------------------------------------------------------------------*/
+i8 SymVal::Y_nPpy(void)
+{
+
+  if (! m_pProperties)
+    return 0;
+
+  i8 nProperties = m_pProperties->nItems();
+
+  return nProperties;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property name                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* SymVal::Y_szPpyNm(i8 i_Ppy)
+{
+
+  if (! m_pProperties)
+    return nullptr;
+
+  Stz* szName = m_pProperties->szName(i_Ppy);
+
+  return szName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type of property                                                       */
+/*----------------------------------------------------------------------------*/
+eTN SymVal::Y_ePpyTkn(i8 i_Ppy)
+{
+
+  if (! m_pProperties)
+    return TN_NONE;
+
+  eTN eToken = m_pProperties->eToken(i_Ppy);
+
+  return eToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void SymVal::Y_vSet(Stz* szPpyNm)
+{
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vReplace(szPpyNm, "y"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void SymVal::Y_vSet(Stz* szPpyNm, i8 iPpy)
+{
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vReplace(szPpyNm, iPpy);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint card property value                                                 */
+/*----------------------------------------------------------------------------*/
+void SymVal::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
+{
+
+  s256 sPpyValue;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sPpyValue.azChar(),xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  Y_vSet(szPpyNm,sPpyValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void SymVal::Y_vSet(Stz* szPpyNm, Stz* szPpy)
+{
+
+  if (szPpyNm->bSame(P_TblCol)) {
+    vDebugPoint();
+    RASSERT(SymVal::b_IsTableColOrdinal(szPpy));
+  }
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vReplace(szPpyNm, szPpy);
+}
+
