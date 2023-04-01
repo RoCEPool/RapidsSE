@@ -160,7 +160,7 @@ bool Card_PRED::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card::bIsBoolFn(szValue()))
+  if (SymVal::bIsBoolFn(szValue()))
     return true;
 
   return false;
@@ -276,7 +276,7 @@ bool Card_PRED::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card::bIsRelnOp(szValue()))
+  if (SymVal::bIsRelnOp(szValue()))
     return true;
 
   return false;
@@ -289,7 +289,7 @@ bool Card_PRED::bIsSubQueryOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Card::bIsSubQueryOp(szValue()))
+  if (SymVal::bIsSubQueryOp(szValue()))
     return true;
 
   return false;

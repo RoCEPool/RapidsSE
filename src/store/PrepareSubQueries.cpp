@@ -295,7 +295,7 @@ void PrepareSubQueries::vShortenQueryNames(void)
 
 
   s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
-  if (Card::bIsSubQueryPattern(sBoardNm)) {
+  if (SymVal::bIsSubQueryPattern(sBoardNm)) {
     i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
     sBoardNm.vSprint("__sq%02lld"_Stz, iSqNo);
     m_pCI->G.pBoard->vBoardNm(sBoardNm);
@@ -306,7 +306,7 @@ void PrepareSubQueries::vShortenQueryNames(void)
   CardIter* pCI = m_pCI;
 
   auto bLambdaFn = [pCI](Card* p_card) {
-    if (! Card::bIsSubQueryPattern(p_card->szValue()))
+    if (! SymVal::bIsSubQueryPattern(p_card->szValue()))
       return C_CONTINUE_RECURSION;
 
     i8 iSqNo = StrLib::iGleanInt(p_card->szValue()->azChar());

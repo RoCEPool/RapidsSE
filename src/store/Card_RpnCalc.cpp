@@ -232,7 +232,7 @@ bool Card_RpnCalc::bIsSingleCol(void)
   Card* pChild = pGetChild(0);
   Stz* szVal = pChild->szValue();
 
-  if (Card::bIsColOrdinal(szVal))
+  if (SymVal::bIsColOrdinal(szVal))
     return true;
 
   return true;
@@ -584,7 +584,7 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
     if (xKid.p_term()->Y_bHas(P_Type))
       continue;
 
-    if (Card::bIsKeyOrdinal(xKid.p_term()->szValue())) {
+    if (SymVal::bIsKeyOrdinal(xKid.p_term()->szValue())) {
 
       Card_Expr *p_expr_found =
           pCI->G.p_key->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);

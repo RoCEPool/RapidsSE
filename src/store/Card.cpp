@@ -2899,7 +2899,7 @@ Card_Where* Card::pSub_where(void)
 /*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card::iGetColOdn(Stz* szValue)
+i8 SymVal::iGetColOdn(Stz* szValue)
 {
   _static_
 
@@ -2911,7 +2911,7 @@ i8 Card::iGetColOdn(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a boolean function?                                               */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsBoolFn(Stz* szValue)
+bool SymVal::bIsBoolFn(Stz* szValue)
 {
   _static_
 
@@ -2932,7 +2932,7 @@ bool Card::bIsBoolFn(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsIndexColOrdinal(Stz* szValue)
+bool SymVal::bIsIndexColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2951,7 +2951,7 @@ bool Card::bIsIndexColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a key ordinal?  (i.e. $Kn)                                        */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsKeyOrdinal(Stz* szValue)
+bool SymVal::bIsKeyOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2970,7 +2970,7 @@ bool Card::bIsKeyOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a column ordinal?  (i.e. $n or $c.n)                              */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsColOrdinal(Stz* szValue)
+bool SymVal::bIsColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2984,7 +2984,7 @@ bool Card::bIsColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a correlation parameter ordinal?  (i.e. %n)                       */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsCorrParamOrdinal(Stz* szValue)
+bool SymVal::bIsCorrParamOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3001,7 +3001,7 @@ bool Card::bIsCorrParamOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a relational operator?                                            */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsRelnOp(Stz* szValue)
+bool SymVal::bIsRelnOp(Stz* szValue)
 {
   _static_
 
@@ -3014,7 +3014,7 @@ bool Card::bIsRelnOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a result ordinal?  (i.e. #n)                                      */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsResultOrdinal(Stz* szValue)
+bool SymVal::bIsResultOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3028,9 +3028,25 @@ bool Card::bIsResultOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is value a stream-column ordinal?  (i.e. $n)                               */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsStreamColOrdinal(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is value a sub-query operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsSubQueryOp(Stz* szValue)
+bool SymVal::bIsSubQueryOp(Stz* szValue)
 {
   _static_
 
@@ -3045,7 +3061,7 @@ bool Card::bIsSubQueryOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsSubQueryPattern(BASE::Stz *szValue)
+bool SymVal::bIsSubQueryPattern(BASE::Stz *szValue)
 {
   _static_
 
@@ -3070,7 +3086,7 @@ bool Card::bIsSubQueryPattern(BASE::Stz *szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a subQuery-column ordinal?  (i.e. __n)                            */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsSqyColOrdinal(Stz* szValue)
+bool SymVal::bIsSqyColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -3094,59 +3110,6 @@ bool Card::bIsSqyColOrdinal(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table column syn from $c.n                                             */
-/*----------------------------------------------------------------------------*/
-char Card::cTableColSyn(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  RASSERT('$' == acFirst);
-  RASSERT('.' == acThird);
-
-  return acSecond;
-}
-
-
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* is value a stream-column ordinal?  (i.e. $n)                               */
-/*----------------------------------------------------------------------------*/
-bool SymVal::bIsStreamColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a table-column ordinal?  (i.e. $c.n)                              */
 /*----------------------------------------------------------------------------*/
 bool SymVal::bIsTableColOrdinal(Stz* szValue)
@@ -3166,4 +3129,28 @@ bool SymVal::bIsTableColOrdinal(Stz* szValue)
   else
     return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get table column syn from $c.n                                             */
+/*----------------------------------------------------------------------------*/
+char SymVal::cTableColSyn(Stz* szValue)
+{
+  _static_
+
+  char acFirst  = szValue->azChar()[0];
+  char acSecond = szValue->azChar()[1];
+  char acThird  = szValue->azChar()[2];
+  char acFourth = szValue->azChar()[3];
+
+  RASSERT('$' == acFirst);
+  RASSERT('.' == acThird);
+
+  return acSecond;
+}
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
 

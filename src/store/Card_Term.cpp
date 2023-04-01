@@ -138,7 +138,7 @@ void Card_Term::vBump_KeyOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = Card::iGetColOdn(this->szValue());
+  i8 iKeyOdn = SymVal::iGetColOdn(this->szValue());
 
   this->vSetKeyOrdinal(iKeyOdn+nBy);
 
@@ -158,7 +158,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = Card::iGetColOdn(this->szValue());
+  i8 iStmColOdn = SymVal::iGetColOdn(this->szValue());
 
   this->vSetStreamColOrdinal(iStmColOdn+nBy);
 
@@ -425,7 +425,7 @@ bool Card_Term::bIsCorPrmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Card::bIsCorrParamOrdinal(this->szValue());
+  bool b = SymVal::bIsCorrParamOrdinal(this->szValue());
 
   return b;
 }
@@ -450,7 +450,7 @@ bool Card_Term::bIsKeyOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Card::bIsKeyOrdinal(this->szValue());
+  bool b = SymVal::bIsKeyOrdinal(this->szValue());
 
   return b;
 }
@@ -587,9 +587,9 @@ eTE Card_Term::eTermEval(void)
   else if (szValue->bSame("notExists"_Stz))  return TE_NOTEXISTS;
   else if (szValue->bSame("notIn"_Stz))      return TE_NOTIN;
 
-  else if (Card::bIsRelnOp(szValue))         return TE_RELNOP;
+  else if (SymVal::bIsRelnOp(szValue))         return TE_RELNOP;
 
-  else if (Card::bIsBoolFn(szValue))         return TE_BOOLFN;
+  else if (SymVal::bIsBoolFn(szValue))         return TE_BOOLFN;
 
   else return TE_OTHER;
 }
