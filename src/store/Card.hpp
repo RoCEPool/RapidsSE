@@ -228,6 +228,7 @@ namespace STORE
     eQO  eEvalSubQryOp(void);
     i8   iGetColOdn(void);
     bool bIsBoolFn(void);           // between, ... matchTrailing
+    bool bIsCommaSeparator(void);
     bool bIsIndexColOrdinal(void);  // $In
     bool bIsKeyOrdinal(void);       // #Kn
     bool bIsColOrdinal(void);       // $n or $c.n
@@ -348,7 +349,6 @@ namespace STORE
 
     bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
-    bool bIsCommaSeparator(void);
     bool bIsPRED(void);
     bool bIsValue(char cValue);
     bool bIsValue(Stz* szValue);
@@ -356,7 +356,6 @@ namespace STORE
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
-    void vMark2(i8 iMark2);
     void vMark2(char cMark2);
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
 

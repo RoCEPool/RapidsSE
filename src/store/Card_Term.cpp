@@ -499,28 +499,6 @@ bool Card_Term::bIsTblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szTerm = this->szValue();
-  if (!szTerm->bIsStreamColOrd())
-    return;
-
-  i8 i_IdxCol = C_UNKNOWN;
-
-  Card_IdxCol* p_idxCol =
-      _pCard_IdxCol(p_idxColList->pFindChild(CK_IDXCOL, szTerm, i_IdxCol));
-  if (! p_idxCol)
-    return;
-
-  this->vMark1('I');
-  this->vMark2(i_IdxCol);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

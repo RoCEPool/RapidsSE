@@ -47,7 +47,6 @@ namespace STORE
     bool bIsSame(Card_Term* p_term_arg);
     bool bIsStmColOdn(void); // $n
     bool bIsTblColOdn(void); // $c.n
-    void vMarkIfMatchesAn_idxCol(Card_IdxColList* p_idxColList);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vReplace_sqCall_With_sqResult(Stz* szStmColOdn);
     eTE  eTermEval(void);

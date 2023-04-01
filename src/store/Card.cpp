@@ -1030,19 +1030,6 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a comma separator?                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsCommaSeparator(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (szValue()->bSame(","_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this card a PRED ?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsPRED(void)
@@ -1114,16 +1101,6 @@ char Card::cMark2(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_xSymVal.m_cMark2;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set mark 2                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vMark2(i8 iMark2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_xSymVal.m_cMark2 = iMark2 + '0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3068,6 +3045,17 @@ i8 SymVal::iGetColOdn(void)
 bool SymVal::bIsBoolFn(void)
 {
   return b_IsBoolFn(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a comma separator?                                            */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsCommaSeparator(void)
+{
+  if (m_sValue.bSame(","_Stz))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
