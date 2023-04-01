@@ -214,7 +214,7 @@ namespace STORE
   static const i8 C_MQ_BOARD   = 0;
   static const i8 C_SQ_BOARD   = 1;
 
-  class Val {
+  class SymVal {
   public:
     s256 m_sValue;
     char m_cMark1;
@@ -232,11 +232,7 @@ namespace STORE
     eCK  m_eCard;
     i8   m_iCardNo;
 
-    s256 m_sValue;
-    char m_cMark1;
-    char m_cMark2;
-
-    Val  m_xVal;
+    SymVal  m_xSymVal;
 
     TagSet* m_pProperties;
     //PpySet  m_oPpySet; // todo: remove PpySet
@@ -410,9 +406,7 @@ namespace STORE
     void vSetTableColSyn(char cTblSyn);
     void vSetValueMark1(Stz* szValue, char cMark1);
 
-    void vTakeAllSubCards(Card* pCard, bool bDeleteCard=false);
-
-    Val* pVal(void);
+    SymVal* pSymVal(void);
 
     char cValue(void);
     i8   iValue(void);
@@ -435,13 +429,10 @@ namespace STORE
     Object* Y_pGet(Stz* szPptNm);
     Stz* Y_szGet(i8 i_Ppy);
     Stz* Y_szGet(Stz* szPptNm);
-
     bool Y_bHas(Stz* szPpyNm);
-
-    Stz* Y_szNm(i8 i_Ppy);
-
-    eTN  Y_ePpy(i8 i_Ppy);
     i8   Y_nPpy(void);
+    Stz* Y_szPpyNm(i8 i_Ppy);
+    eTN  Y_ePpyTkn(i8 i_Ppy);
 
     void Y_vSet(Stz* szPpyNm, char cPpy);
     void Y_vSet(Stz* szPpyNm, i8 iPpy);
@@ -449,8 +440,6 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Object* pPpy);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
-
-    Card_SubSet* pYankSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

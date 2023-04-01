@@ -108,13 +108,9 @@ void Card::vInit(eCK eCard)
   m_eCard   = eCard;
   m_iCardNo = C_UNKNOWN;
 
-  m_cMark1 = ' ';
-  m_cMark2 = ' ';
-
-  m_xVal.m_sValue = ""_Stz;
-  m_xVal.m_cMark1 = ' ';
-  m_xVal.m_cMark2 = ' ';
-
+  m_xSymVal.m_sValue = ""_Stz;
+  m_xSymVal.m_cMark1 = ' ';
+  m_xSymVal.m_cMark2 = ' ';
 
   m_pProperties = nullptr;
 
@@ -145,7 +141,7 @@ Card::~Card(void) noexcept(false)
   static Card* pPriorCard = nullptr;
 
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-//         md__SeqNo,this,aCK[m_eCard],m_sValue.szStz(),md_Bearing);
+//         md__SeqNo,this,aCK[m_eCard],m_xSymVal.m_sValue.szStz(),md_Bearing);
 //
 //  if (this == pPriorCard)
 //    vDebugPoint();
@@ -1320,7 +1316,7 @@ bool Card::bHasValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (*m_sValue.azChar())
+  if (*m_xSymVal.m_sValue.azChar())
     return true;
 
   return false;
@@ -1496,7 +1492,7 @@ char Card::cMark1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_cMark1;
+  return m_xSymVal.m_cMark1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1506,7 +1502,7 @@ void Card::vMark1(char cMark1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_cMark1 = cMark1;
+  m_xSymVal.m_cMark1 = cMark1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1516,7 +1512,7 @@ char Card::cMark2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_cMark2;
+  return m_xSymVal.m_cMark2;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1526,7 +1522,7 @@ i8 Card::iMark2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_cMark2 - '0';
+  return m_xSymVal.m_cMark2 - '0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1536,7 +1532,7 @@ void Card::vMark2(i8 iMark2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_cMark2 = iMark2 + '0';
+  m_xSymVal.m_cMark2 = iMark2 + '0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1546,7 +1542,7 @@ void Card::vMark2(char cMark2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_cMark2 = cMark2;
+  m_xSymVal.m_cMark2 = cMark2;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1639,8 +1635,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (m_pLastPrintParent != pParent) {
-    if (MARK_BLANK == m_cMark1)
-      m_cMark1 = MARK_CHANGED;
+    if (MARK_BLANK == m_xSymVal.m_cMark1)
+      m_xSymVal.m_cMark1 = MARK_CHANGED;
     m_pLastPrintParent = pParent;
   }
 
@@ -1649,8 +1645,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   else
     vPrintCard_bySettings(pRibbon, iDepth);
 
-  if (MARK_CHANGED == m_cMark1)
-    m_cMark1 = MARK_BLANK;
+  if (MARK_CHANGED == m_xSymVal.m_cMark1)
+    m_xSymVal.m_cMark1 = MARK_BLANK;
 
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;
@@ -1849,7 +1845,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
                        sHiddenChildren.szStz());
   }
 
-  pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sName.szStz());
+  pRibbon->vSprint("%c%c%-18s"_Stz, m_xSymVal.m_cMark1, m_xSymVal.m_cMark2, sName.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1902,7 +1898,7 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   }
 
   if (sNameValue.nLength() <= 18) {
-    pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameValue.szStz());
+    pRibbon->vSprint("%c%c%-18s"_Stz, m_xSymVal.m_cMark1, m_xSymVal.m_cMark2, sNameValue.szStz());
   }
   else {
     vPrintName(pRibbon, iDepth);
@@ -1928,12 +1924,12 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
   for (i8 i_Property = 0; i_Property < nProperties; i_Property++) {
 
-    eTN eTkn = Y_ePpy(i_Property);
+    eTN eTkn = Y_ePpyTkn(i_Property);
 
     switch (eTkn) {
 
       case TN_INTEGER: {
-        Stz* szName = Y_szNm(i_Property);
+        Stz* szName = Y_szPpyNm(i_Property);
         i8   iValue = Y_iGet(i_Property);
 
         Stz* szDecode = szDecodeEnum(szName,iValue);
@@ -1948,7 +1944,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
       }
 
       case TN_OBJECT: {
-        Stz* szName = Y_szNm(i_Property);
+        Stz* szName = Y_szPpyNm(i_Property);
         Object* pObject = Y_pGet(i_Property);
         pRibbon->vSprintRight("%s->  "_Stz,szName);
         pRibbon->vSprintRight("%p"_Stz,pObject);
@@ -1957,7 +1953,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
       }
 
       case TN_STRING: {
-        Stz* szName  = Y_szNm(i_Property);
+        Stz* szName  = Y_szPpyNm(i_Property);
         Stz* szValue = Y_szGet(i_Property);
         if (bPrintPptName)
           pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
@@ -1984,7 +1980,7 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks) {
-    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szValue());
+    pRibbon->vSprintRight("%c%c%18s"_Stz, m_xSymVal.m_cMark1, m_xSymVal.m_cMark2, szValue());
 
   }
   else {
@@ -2156,28 +2152,13 @@ void Card::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Take all subcards from given card and move under this card (top)           */
-/*----------------------------------------------------------------------------*/
-void Card::vTakeAllSubCards(Card* pCard, bool bDeleteCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  while(Card* pSubCard = pCard->pPop()) {
-    vPush(pSubCard);
-  }
-
-  if(bDeleteCard)
-    delete pCard;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get val                                                                    */
 /*----------------------------------------------------------------------------*/
-Val* Card::pVal(void)
+SymVal* Card::pSymVal(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return &m_xVal;
+  return &m_xSymVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2187,7 +2168,7 @@ char Card::cValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char c = * m_sValue.azChar();
+  char c = * m_xSymVal.m_sValue.azChar();
 
   return c;
 }
@@ -2199,7 +2180,7 @@ i8 Card::iValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i = m_sValue.iToI8();
+  i8 i = m_xSymVal.m_sValue.iToI8();
 
   return i;
 }
@@ -2211,7 +2192,7 @@ Stz* Card::szValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return m_sValue.szStz();
+  return m_xSymVal.m_sValue.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2241,9 +2222,9 @@ void Card::vValue(Stz* szValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //RASSERT(! *m_sValue.azChar());
+  //RASSERT(! *m_xSymVal.m_sValue.azChar());
 
-  m_sValue = szValue;
+  m_xSymVal.m_sValue = szValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2498,9 +2479,24 @@ bool Card::Y_bHas(Stz* szPpyNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of properties                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card::Y_nPpy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return 0;
+
+  i8 nProperties = m_pProperties->nItems();
+
+  return nProperties;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get given property name                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* Card::Y_szNm(i8 i_Ppy)
+Stz* Card::Y_szPpyNm(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2515,7 +2511,7 @@ Stz* Card::Y_szNm(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* get type of property                                                       */
 /*----------------------------------------------------------------------------*/
-eTN Card::Y_ePpy(i8 i_Ppy)
+eTN Card::Y_ePpyTkn(i8 i_Ppy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -2525,21 +2521,6 @@ eTN Card::Y_ePpy(i8 i_Ppy)
   eTN eToken = m_pProperties->eToken(i_Ppy);
 
   return eToken;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of properties                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Card::Y_nPpy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (! m_pProperties)
-    return 0;
-
-  i8 nProperties = m_pProperties->nItems();
-
-  return nProperties;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2629,30 +2610,6 @@ void Card::Y_vSet(Stz* szPpyNm, Stz* szPpy)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, szPpy);
-}
-
-/*----------------------------------------------------------------------------*/
-/* yank some subcards                                                         */
-/*----------------------------------------------------------------------------*/
-Card_SubSet* Card::pYankSubCards(i8 i_From, i8 i_Till)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  while (i_From < nChildCards()
-         && (C_UNKNOWN == i_Till || i_From <= i_Till)) {
-    Card* p_child = pGetChild(i_From);
-
-    vRemoveChild(p_child);
-
-    p_subSet->vAppend(p_child);
-
-    if (C_UNKNOWN != i_Till)
-      i_Till--;
-  }
-
-  return p_subSet;
 }
 
 
