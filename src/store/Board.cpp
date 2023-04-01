@@ -93,7 +93,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
   if (pCI->G.p_type) {
-    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
+    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardRecursive());
   }
   else {
     pCI->G_vAppendNewChild(pCI->G.p_expr, CK_TYPE, "((type missing))"_Stz);
@@ -127,7 +127,7 @@ void Board::vDerive_foldProjection_F(CardIter* pCI)
   if (! pCI->G.p_projection)
     return;
 
-  pCI->G.p_fold->vAppend(pCI->G.p_projection->pDupCardAndSubCards());
+  pCI->G.p_fold->vAppend(pCI->G.p_projection->pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,7 +221,7 @@ void Board::vIndividuate_indexJoin_filter_b(CardIter* pCI)
                              pCI->G.p_indexJoin);
 
   if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPush(pCI->G.p_indexJoin->pSub_level()->pDupCardAndSubCards());
+    pCI->G.p_filter->vPush(pCI->G.p_indexJoin->pSub_level()->pDupCardRecursive());
   }
 }
 
@@ -239,7 +239,7 @@ void Board::vIndividuate_crossJoin_filter(CardIter* pCI)
                              pCI->G.p_crossJoin);
 
   if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPush(pCI->G.p_crossJoin->pSub_level()->pDupCardAndSubCards());
+    pCI->G.p_filter->vPush(pCI->G.p_crossJoin->pSub_level()->pDupCardRecursive());
   }
 }
 

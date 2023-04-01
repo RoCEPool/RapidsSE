@@ -154,7 +154,7 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vAppend(new Card_Section("All Permutations"_Stz));
   CardIter xCI(p_joinPermAll);
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -166,7 +166,7 @@ void JoinOrdering::vReorderTables(void)
 
   xCI.vRestart();
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -177,7 +177,7 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vAppend(new Card_Section("Join Loads"_Stz));
   xCI.vRestart();
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardAndSubCards());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -203,7 +203,7 @@ void JoinOrdering::vReorderTables(void)
   Card_JoinOrdering* p_joinOrdering =
       Card_JoinOrdering::pPick(p_joinPermAll);
   m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
-  m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardAndSubCards());
+  m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 

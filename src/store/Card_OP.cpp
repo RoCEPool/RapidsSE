@@ -101,8 +101,8 @@ void Card_OP::vAdd_Pred_Under_filter(Card_PRED *p_PRED)
 
   Card_Filter* p_filter = this->pSub_filter();
   if (! p_filter) {
-    p_filter = _pCard_Filter(this->pAppendNewCardTail(CK_FILTER));
-    p_filter->vAppendNewCardTail(CK_BOOLCALC);
+    p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
+    p_filter->vAppendNewCard(CK_BOOLCALC);
   }
 
   p_filter->vAddPred(p_PRED);
@@ -688,7 +688,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     vRemoveChild(p_projection_needed);
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_projection = _pCard_Projection(pCI->Analysis.m_pProjection_prior->pDupCardAndSubCards());
+    p_projection = _pCard_Projection(pCI->Analysis.m_pProjection_prior->pDupCardRecursive());
     vAppend(p_projection);
     pCI->Analysis.m_pProjection_prior = p_projection;
     if (p_projection_needed)

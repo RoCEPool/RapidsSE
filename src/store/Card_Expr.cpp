@@ -157,7 +157,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   sDn.vSprint("$%lld"_Stz,i_Col);
 
   Card_Expr* p_expr_simple = new Card_Expr;
-  p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardAndSubCards());
+  p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardRecursive());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
@@ -171,7 +171,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   p_expr_simple->vAppend(p_rpnCalc);
 
-  p_expr_simple->vAppend(p_expr->pSub_as()->pDupCardAndSubCards());
+  p_expr_simple->vAppend(p_expr->pSub_as()->pDupCardRecursive());
 
   return p_expr_simple;
 }
@@ -202,7 +202,7 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Expr* p_clone = _pCard_Expr(pDupCardAndSubCards());
+  Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
 
 //  if (bStmCol_flip)
 //    p_clone->pProjectedTerm()->vEnsure_tblCol_flip();
@@ -436,7 +436,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
   if (p_as)
     p_expr_early->vAppend(p_as->pClone());
 
-  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardAndSubCards());
+  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
   Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
   if (p_term_0_early->pSymVal()->Y_bHas(P_TblCol)) {
     p_term_0_early->vValue(p_term_0_early->pSymVal()->Y_szGet(P_TblCol));

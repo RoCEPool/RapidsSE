@@ -57,7 +57,7 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
   s32 sTableSyn;
 
   Card_JoinPermSeq* p_joinPermSeq_dup =
-      _pCard_JoinPermSeq(p_joinPermSeq->pDupCardAndSubCards());
+      _pCard_JoinPermSeq(p_joinPermSeq->pDupCardRecursive());
 
   p_joinPermSeq_dup->vCard(CK_JOINORDERING);
 

@@ -57,7 +57,7 @@ Card_As* Card_As::pClone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return _pCard_As(pDupCardAndSubCards());
+  return _pCard_As(pDupCardRecursive());
 }
 
 

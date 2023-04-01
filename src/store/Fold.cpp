@@ -196,7 +196,7 @@ void Fold::vDerive_Correleted_fold_projection(CardIter* pCI)
 
   RASSERT(CK_FOLD == pCI->G.e_MainCard);
 
-  pCI->G.p_fold->vAppend(pCI->Analysis.m_pProjection_prior->pDupCardAndSubCards());
+  pCI->G.p_fold->vAppend(pCI->Analysis.m_pProjection_prior->pDupCardRecursive());
 
   pCI->G.pDeck->vRenumberRecursive();
 
@@ -241,7 +241,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
 
   // 3) get copy of sq
-  pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCards(i_dup_from);
+  pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(i_dup_from);
 
   // 4) pop back to mq
   pCI->G_vPopIter();
@@ -323,7 +323,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
     NEVER_REACH
   }
 
-  pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCards(0);
+  pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
   pCI->vPrintBoard(__LINE__);
 
@@ -384,7 +384,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
   vSubQuery(pCI->pBoard()->pSubQuery());
 
   // 3) get copy of sq
-  pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCards(0);
+  pCI->Sqy.m_pCard_sqCopy = pCI->G.pDeck->pDupSubCardsRecursive(0);
 
   // 4) pop back to mq
   pCI->G_vPopIter();

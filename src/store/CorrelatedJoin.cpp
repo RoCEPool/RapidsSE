@@ -323,7 +323,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     else {
       pCI->G.p_type = pCI->Sqy.m_pExpr_corr->pSub_type();
       pCI->G_vNewMember(CK_EXPR);
-      pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type->pDupCardAndSubCards());
+      pCI->G_vAppendChild(CK_EXPR, pCI->G.p_type->pDupCardRecursive());
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
       pCI->G.p_term->pSymVal()->Y_vSet(P_Type,pCI->Sqy.m_pExpr_corr->pSymVal()->Y_szGet(P_Type));
@@ -344,7 +344,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     }
     else {
       pCI->G.p_key->pSymVal()->Y_vSet(P_ProjBump, (i8)1);
-      pCI->G.p_type = _pCard_Type(pCI->G.p_expr->pSub_type()->pDupCardAndSubCards());
+      pCI->G.p_type = _pCard_Type(pCI->G.p_expr->pSub_type()->pDupCardRecursive());
 
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type);
@@ -402,7 +402,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 
   // push <project>/__SQCRLKEY
   pCI->G_vPushNewChild(pCI->G.p_projection, CK_EXPR);
-  pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardRecursive());
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,szAs);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
@@ -482,7 +482,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack
-          Card* p_card = p_outerColNm->pDupCardAndSubCards();
+          Card* p_card = p_outerColNm->pDupCardRecursive();
           p_card->vCard(CK_TERM);
           Card_Term* p_term = _pCard_Term(p_card);
 

@@ -261,9 +261,9 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_expr->pSymVal()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->vAppend(pCI->Sqy.m_pExpr_fold->pSub_type()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(pCI->Sqy.m_pExpr_fold->pSub_type()->pDupCardRecursive());
 
-  pCI->G.p_expr->vAppend(pCI->Sqy.m_pExpr_fold->pSub_as()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(pCI->Sqy.m_pExpr_fold->pSub_as()->pDupCardRecursive());
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);

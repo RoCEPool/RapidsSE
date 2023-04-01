@@ -53,7 +53,7 @@ Card_Needed* Card_Needed::pClone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return _pCard_Needed(pDupCardAndSubCards());
+  return _pCard_Needed(pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/

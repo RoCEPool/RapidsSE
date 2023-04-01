@@ -385,7 +385,7 @@ Card_Term* Card_Term::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return _pCard_Term(pDupCardAndSubCards());
+  return _pCard_Term(pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/

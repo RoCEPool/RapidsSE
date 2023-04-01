@@ -178,32 +178,11 @@ static char MARK_UP         = '^';
 namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
-  static const bool C_PRINT_HAND          = true;
-  static const bool C_PRINT_XFORM         = true;
-  static const bool C_TRACE_Y             = true;
-  static const bool C_UPDATE_MEMBER       = true;
-
-  static const bool C_QUIET_PHASE         = false;
-  static const bool C_QUIET_XFORM         = false;
   static const bool C_TERMINATE_RECURSION = false;
-  static const bool C_TRACE_N             = false;
-
-  static const i8 C_NO    = 0;
-  static const i8 C_MAYBE = 1;
-  static const i8 C_YES   = 2;
-
-  static const bool C_ENABLED  = true;
-  static const bool C_DISABLED = false;
-
-  static const i8 C_MQ_BOARD   = 0;
-  static const i8 C_SQ_BOARD   = 1;
 
   class SymVal {
   public:
-    s256 m_sValue;
-    char m_cMark1;
-    char m_cMark2;
-
+    s256    m_sValue;
     TagSet* m_pProperties;
 
   public:
@@ -279,18 +258,20 @@ namespace STORE
   protected:
     static i8 m__iSeqGen;
 
-    char md_Bearing[256];
+    char    md_Bearing[256];
 
-    eCK  m_eCard;
-    i8   m_i_Child;
+    eCK     m_eCard;
+    i8      m_i_Child;
 
+    char    m_cMark1;
+    char    m_cMark2;
     SymVal  m_xSymVal;
 
-    Card* m_pLastPrintParent;
+    Card*   m_pLastPrintParent;
 
-    i8    md__SeqNo;
-    i8    md__FirstDetected;
-    i8    md__LeakDetected;
+    i8 md__SeqNo;
+    i8 md__FirstDetected;
+    i8 md__LeakDetected;
 
   protected:
     // must be last
@@ -328,11 +309,15 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vAddPredUnder_main(Card_PRED *p_PRED);
-    void vAppendDupSubCards(Card* pFromCard);
+    bool bIsAggOp(void);
+    bool bIsPRED(void);
+
+
+
+
     void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
-    Card* pAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
-    void vAppendNewCardTail(eCK eCard, Stz* szValue=nullptr);
-    void vAppendNewCardTop(eCK eCard, Stz* szValue=nullptr);
+    Card* pAppendNewCard(eCK eCard, Stz* szValue=nullptr);
+    void vAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
@@ -347,11 +332,10 @@ namespace STORE
     void v_Child(i8 i_Child);
     void vClearMarksRecursive(void);
 
-    void vDump(i8 iDepth=0, Stz* szTitle=nullptr);
-    Card* pDup(void);
-    Card* pDupCardAndSubCards(void);
-    Card_SubSet* pDupSubCards(void);
-    Card_SubSet* pDupSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
+    void  vDump(i8 iDepth=0, Stz* szTitle=nullptr);
+    Card* pDupCard(void);
+    Card* pDupCardRecursive(void);
+    Card_SubSet* pDupSubCardsRecursive(i8 i_From, i8 i_Till=C_UNKNOWN);
 
     Card* pFindCardRecursive(eCK eCard);
     Card* pFindParentRecursive(Card* pSubCard);
@@ -360,15 +344,11 @@ namespace STORE
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
-    bool bHasChildWithValue(Stz* szValue);
     bool bHasSubRecursive(Card* pSubCard);
-    bool bHasSubRecursive(Card* pSubCard, Card*& rpParent);
-    bool bHasSubWithValue(eCK eCard, Stz* szValue);
+    bool bHasSubWithValueRecursive(eCK eCard, Stz* szValue);
     bool bHasValue(void);
 
-    bool bIsAggOp(void);
     bool bIsCard(eCK eCard);
-    bool bIsPRED(void);
     bool bIsValue(char cValue);
     bool bIsValue(Stz* szValue);
 

@@ -57,7 +57,7 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
   pCI->G.p_projection->vDelete_key(pCI);
 
   if (pCI->StreamOrder.m_pKey_running) {
-    pCI->G.p_key = _pCard_Key(pCI->StreamOrder.m_pKey_running->pDupCardAndSubCards());
+    pCI->G.p_key = _pCard_Key(pCI->StreamOrder.m_pKey_running->pDupCardRecursive());
     pCI->G.p_projection->vAppend(pCI->G.p_key);
   }
   else {

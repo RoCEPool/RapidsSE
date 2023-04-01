@@ -93,7 +93,7 @@ void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
 
   RASSERT(bPeg_Key(pCI));
 
-  pCI->G.p_key = _pCard_Key(pCI->G.p_key->pDupCardAndSubCards());
+  pCI->G.p_key = _pCard_Key(pCI->G.p_key->pDupCardRecursive());
   pCI->G.p_projection->vAppend(pCI->G.p_key);
 
   // set running projection for use by next op

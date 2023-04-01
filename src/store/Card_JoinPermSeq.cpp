@@ -211,7 +211,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
-        p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardAndSubCards());
+        p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
         break;
       }
     }
@@ -332,7 +332,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
         char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
 
         if (bHasKnownJoin(cTblSyn_other)) {
-          p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardAndSubCards());
+          p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
           break;
         }
       }

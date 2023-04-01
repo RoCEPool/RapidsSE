@@ -91,7 +91,7 @@ void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc)
     if ( ! (p_term_0->bIsTblColOdn() && p_term_1->bIsTblColOdn()))
       return true;
 
-    Card_CmpPred* p_cmpPred_new = _pCard_CmpPred(p_cmpPred->pDupCardAndSubCards());
+    Card_CmpPred* p_cmpPred_new = _pCard_CmpPred(p_cmpPred->pDupCardRecursive());
     this->vAppend(p_cmpPred_new);
 
     return true;

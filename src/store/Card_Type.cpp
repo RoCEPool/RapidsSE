@@ -77,7 +77,7 @@ Card_Type* Card_Type::pClone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return _pCard_Type(pDupCardAndSubCards());
+  return _pCard_Type(pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/

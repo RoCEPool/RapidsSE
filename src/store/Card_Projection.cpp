@@ -109,15 +109,15 @@ void Card_Projection::vAs_Review(CardIter* pCI)
 
       if (p_expr_prj->pSub_as()) {
         p_expr_key->vRemoveDeleteChild(pCI->G.p_as);
-        p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardAndSubCards());
+        p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
       }
       else {
-        p_expr_prj->vAppend(p_expr_key->pSub_as()->pDupCardAndSubCards());
+        p_expr_prj->vAppend(p_expr_key->pSub_as()->pDupCardRecursive());
       }
     }
     else
     if (p_expr_prj->pSub_as()) {
-      p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardAndSubCards());
+      p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
     }
 
     vDebugPoint();
@@ -132,7 +132,7 @@ Card_Projection* Card_Projection::pClone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return _pCard_Projection(pDupCardAndSubCards());
+  return _pCard_Projection(pDupCardRecursive());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,7 +275,7 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 
       // annotation or direction in passing
       if (p_expr_runkey->pSub_direction() && ! p_expr_prjCol->pSub_direction()) {
-        p_expr_prjCol->vAppend(p_expr_runkey->pSub_direction()->pDupCardAndSubCards());
+        p_expr_prjCol->vAppend(p_expr_runkey->pSub_direction()->pDupCardRecursive());
       }
 
       pCI->G.p_key->vAdd_key_expr_BasedOn_expr(p_expr_prjCol,false);

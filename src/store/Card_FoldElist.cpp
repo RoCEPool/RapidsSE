@@ -51,9 +51,9 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI, Card_Expr* p_
 
   pCI->G.p_expr->pSymVal()->Y_vSet(P_Injected);
 
-  pCI->G.p_expr->vAppend(p_expr_fold->pSub_type()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(p_expr_fold->pSub_type()->pDupCardRecursive());
 
-  pCI->G.p_expr->vAppend(p_expr_fold->pSub_rpnCalc()->pDupCardAndSubCards());
+  pCI->G.p_expr->vAppend(p_expr_fold->pSub_rpnCalc()->pDupCardRecursive());
 
   pCI->G.p_key->vPush(pCI->G.p_expr);
 }
@@ -71,9 +71,9 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
 
   p_expr_new->pSymVal()->Y_vSet(P_Injected);
 
-  p_expr_new->vAppend(p_expr_fold->pSub_type()->pDupCardAndSubCards());
+  p_expr_new->vAppend(p_expr_fold->pSub_type()->pDupCardRecursive());
 
-  p_expr_new->vAppend(p_expr_fold->pSub_as()->pDupCardAndSubCards());
+  p_expr_new->vAppend(p_expr_fold->pSub_as()->pDupCardRecursive());
 
   Card_RpnCalc* p_rpnCalc_new = new Card_RpnCalc;
   p_expr_new->vAppend(p_rpnCalc_new);

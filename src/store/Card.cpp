@@ -94,8 +94,8 @@ void Card::vInit(eCK eCard)
   m_i_Child = C_UNKNOWN;
 
   m_xSymVal.m_sValue = ""_Stz;
-  m_xSymVal.m_cMark1 = ' ';
-  m_xSymVal.m_cMark2 = ' ';
+  m_cMark1 = MARK_BLANK;
+  m_cMark2 = MARK_BLANK;
 
   m_xSymVal.m_pProperties = nullptr;
 
@@ -319,37 +319,14 @@ void Card::vAddPredUnder_main(Card_PRED *p_PRED)
 
   Card_Filter* p_filter = this->pSub_filter();
   if (! p_filter) {
-    p_filter = _pCard_Filter(this->pAppendNewCardTail(CK_FILTER));
-    //Card_Constraint* p_constraint = _pCard_Constraint(p_filter->pAppendNewCardTail(CK_CONSTRAINT));
+    p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
+    //Card_Constraint* p_constraint = _pCard_Constraint(p_filter->pAppendNewCard(CK_CONSTRAINT));
 
-    //p_constraint->vAppendNewCardTail(CK_BOOLCALC);
-    p_filter->vAppendNewCardTail(CK_BOOLCALC);
+    //p_constraint->vAppendNewCard(CK_BOOLCALC);
+    p_filter->vAppendNewCard(CK_BOOLCALC);
   }
 
   p_filter->vAddPred(p_PRED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* duplicate the sub cards                                                    */
-/*----------------------------------------------------------------------------*/
-void Card::vAppendDupSubCards(Card* pFromCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nSubCards = pFromCard->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pFromCard->pGetChild(i_Child);
-
-    Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
-
-    if (pSubCard->m_xSymVal.m_pProperties) {
-      if (! pSubCard_dup->m_xSymVal.m_pProperties)
-        pSubCard_dup->m_xSymVal.m_pProperties = new TagSet;
-      pSubCard_dup->m_xSymVal.m_pProperties->vCopy(pSubCard->m_xSymVal.m_pProperties);
-    }
-
-    this->vAppend(pSubCard_dup);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,17 +345,17 @@ void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vAppendNewCardTail(eCK eCard, Stz* szValue)
+void Card::vAppendNewCard(eCK eCard, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard = pAppendNewCardTail(eCard,szValue);
+  Card* pCard = pAppendNewCard(eCard, szValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pAppendNewCardTail(eCK eCard, Stz* szValue)
+Card* Card::pAppendNewCard(eCK eCard, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card* pCard;
@@ -393,22 +370,7 @@ Card* Card::pAppendNewCardTail(eCK eCard, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append new card to top                                                     */
-/*----------------------------------------------------------------------------*/
-void Card::vAppendNewCardTop(eCK eCard, Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  Card* pCard;
-  if(szValue != nullptr)
-    pCard = new Card(eCard, szValue);
-  else
-    pCard = new Card(eCard);
-
-  vPush(pCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* visit all sub-cards of given eToSubs and apply lambda function               */
+/* visit all sub-cards of given eToSubs and apply lambda function             */
 /*----------------------------------------------------------------------------*/
 bool Card::bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn)
 {
@@ -530,8 +492,8 @@ void Card::vClearMarksRecursive(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vMark1(' ');
-  vMark2(' ');
+  vMark1(MARK_BLANK);
+  vMark2(MARK_BLANK);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
@@ -631,7 +593,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 /*----------------------------------------------------------------------------*/
 /* duplicate this card, its value and properties                              */
 /*----------------------------------------------------------------------------*/
-Card* Card::pDup(void)
+Card* Card::pDupCard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -646,7 +608,7 @@ Card* Card::pDup(void)
 /*----------------------------------------------------------------------------*/
 /* duplicate this card and its sub cards                                      */
 /*----------------------------------------------------------------------------*/
-Card* Card::pDupCardAndSubCards(void)
+Card* Card::pDupCardRecursive(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -659,7 +621,7 @@ Card* Card::pDupCardAndSubCards(void)
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card* pSubCard = pGetChild(i_Child);
     
-    Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
+    Card* pSubCard_dup = pSubCard->pDupCardRecursive();
     pCard_dup->vAppend(pSubCard_dup);
   }
   
@@ -669,27 +631,7 @@ Card* Card::pDupCardAndSubCards(void)
 /*----------------------------------------------------------------------------*/
 /* duplicate the sub cards                                                    */
 /*----------------------------------------------------------------------------*/
-Card_SubSet* Card::pDupSubCards(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_SubSet* pCard_SubSet = new Card_SubSet;
-  
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pSubCard = pGetChild(i_Child);
-    
-    Card* pSubCard_dup = pSubCard->pDupCardAndSubCards();
-    pCard_SubSet->vAppend(pSubCard_dup);
-  }
-  
-  return pCard_SubSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* duplicate the sub cards                                                    */
-/*----------------------------------------------------------------------------*/
-Card_SubSet* Card::pDupSubCards(i8 i_From, i8 i_Till)
+Card_SubSet* Card::pDupSubCardsRecursive(i8 i_From, i8 i_Till)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -707,7 +649,7 @@ Card_SubSet* Card::pDupSubCards(i8 i_From, i8 i_Till)
   for (i8 i_Child = i_From; i_Child < i_Break; i_Child++) {
     Card* pChild = pGetChild(i_Child);
 
-    Card* pChild_dup = pChild->pDupCardAndSubCards();
+    Card* pChild_dup = pChild->pDupCardRecursive();
     pCard_SubSet->vAppend(pChild_dup);
   }
 
@@ -847,25 +789,6 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
   return nullptr;
 }
 
-
-
-/*----------------------------------------------------------------------------*/
-/* is there an immediate child with given value?                              */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasChildWithValue(Stz* szValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  for (i8 i_Child = 0; i_Child < nChildCards(); i_Child++) {
-    Card* pChildCard = pGetChild(i_Child);
-
-    if (pChildCard->bIsValue(szValue))
-      return true;
-  }
-
-  return false;
-}
-
 /*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
@@ -890,31 +813,7 @@ bool Card::bHasSubRecursive(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasSubRecursive(Card* pSubCard, Card*& rpParent)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *pTestCard = pGetChild(i_Child);
-
-    if (pTestCard == pSubCard) {
-      rpParent = this;
-      return true;
-    }
-
-    if (pTestCard->bHasSubRecursive(pSubCard, rpParent))
-      return true;
-  }
-
-  rpParent = nullptr;
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given card a sub card of this card?                                     */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasSubWithValue(eCK eCard, Stz* szValue)
+bool Card::bHasSubWithValueRecursive(eCK eCard, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -925,7 +824,7 @@ bool Card::bHasSubWithValue(eCK eCard, Stz* szValue)
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *p_sub = pGetChild(i_Child);
 
-    if (p_sub->bHasSubWithValue(eCard,szValue))
+    if (p_sub->bHasSubWithValueRecursive(eCard, szValue))
       return true;
   }
 
@@ -1029,7 +928,7 @@ char Card::cMark1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_xSymVal.m_cMark1;
+  return m_cMark1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1039,7 +938,7 @@ void Card::vMark1(char cMark1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_xSymVal.m_cMark1 = cMark1;
+  m_cMark1 = cMark1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1049,7 +948,7 @@ char Card::cMark2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_xSymVal.m_cMark2;
+  return m_cMark2;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1059,7 +958,7 @@ void Card::vMark2(char cMark2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_xSymVal.m_cMark2 = cMark2;
+  m_cMark2 = cMark2;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1085,8 +984,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (m_pLastPrintParent != pParent) {
-    if (MARK_BLANK == m_xSymVal.m_cMark1)
-      m_xSymVal.m_cMark1 = MARK_CHANGED;
+    if (MARK_BLANK == m_cMark1)
+      m_cMark1 = MARK_CHANGED;
     m_pLastPrintParent = pParent;
   }
 
@@ -1095,8 +994,8 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   else
     vPrintCard_bySettings(pRibbon, iDepth);
 
-  if (MARK_CHANGED == m_xSymVal.m_cMark1)
-    m_xSymVal.m_cMark1 = MARK_BLANK;
+  if (MARK_CHANGED == m_cMark1)
+    m_cMark1 = MARK_BLANK;
 
   if (pCardCtl->bPrune(m_eCard))
     rbPrune = true;
@@ -1295,7 +1194,7 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
                        sHiddenChildren.szStz());
   }
 
-  pRibbon->vSprint("%c%c%-18s"_Stz, m_xSymVal.m_cMark1, m_xSymVal.m_cMark2, sName.szStz());
+  pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sName.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1348,7 +1247,7 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   }
 
   if (sNameValue.nLength() <= 18) {
-    pRibbon->vSprint("%c%c%-18s"_Stz, m_xSymVal.m_cMark1, m_xSymVal.m_cMark2, sNameValue.szStz());
+    pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameValue.szStz());
   }
   else {
     vPrintName(pRibbon, iDepth);
@@ -1421,7 +1320,7 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks) {
-    pRibbon->vSprintRight("%c%c%18s"_Stz, m_xSymVal.m_cMark1, m_xSymVal.m_cMark2, szValue());
+    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szValue());
 
   }
   else {

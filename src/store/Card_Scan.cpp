@@ -51,7 +51,7 @@ Card_Scan::~Card_Scan(void) noexcept(false)
      pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_scan);
 
      if (! pCI->G.p_filter->pSub_level()) {
-       pCI->G.p_filter->vPush(pCI->G.p_scan->pSub_level()->pDupCardAndSubCards());
+       pCI->G.p_filter->vPush(pCI->G.p_scan->pSub_level()->pDupCardRecursive());
      }
    }
  }
