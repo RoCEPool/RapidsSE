@@ -440,7 +440,7 @@ bool Card_BoolCalc::bIsBraced(void)
   bool bBraced = false;
   auto bTestBraced=[&bBraced](Card* p_card) {
 
-    if (p_card->bNeedsBrace()) {
+    if (p_card->pSymVal()->bNeedsBrace()) {
       bBraced = true;
       return C_TERMINATE_RECURSION;
     }

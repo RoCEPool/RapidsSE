@@ -715,57 +715,6 @@ Card_SubSet* Card::pDupSubCards(i8 i_From, i8 i_Till)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card equivalent to some other card?                                */
-/*----------------------------------------------------------------------------*/
-bool Card::bEquivalentTo(Card* pCard_OTHER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pCard_THIS = this;
-
-  if (pCard_OTHER->eCard() != pCard_THIS->eCard())
-    return false;
-
-  TagSet* pProperties_THISCARD  = m_xSymVal.m_pProperties;
-  TagSet* pProperties_OTHERCARD = pCard_OTHER->m_xSymVal.m_pProperties;
-
-  if (pProperties_THISCARD) {
-    if (pProperties_OTHERCARD) {
-      if (! pProperties_THISCARD->bSame(pProperties_OTHERCARD))
-        return false;
-    }
-    else {
-      return false;
-    }
-  }
-  else
-  if (pProperties_OTHERCARD) {
-    return false;
-  }
-  else {
-    RASSERT(! m_xSymVal.m_pProperties);
-    RASSERT(! pProperties_OTHERCARD);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  eCK eChild_THISCARD;
-  i8 nChildren_THISCARD = pCard_THIS->nChildCards();
-  for (i8 i_Child = 0; i_Child < nChildren_THISCARD; i_Child++) {
-    Card* pChild_THISCARD = pCard_THIS->pGetChild(i_Child, eChild_THISCARD);
-    
-    Card* pChild_OTHERCARD = pCard_OTHER->pFindSubCard(eChild_THISCARD);
-    if (! pChild_OTHERCARD)
-      return false;
-
-    if (!pChild_THISCARD->bEquivalentTo(pChild_OTHERCARD))
-      return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* find parent of given sub-card                                              */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindParentRecursive(Card* pSubCard)
@@ -1123,31 +1072,6 @@ void Card::vMorphChildrenTo(eCK eFrom, eCK eTo)
   CardIter xCI(this);
   while (xCI.G_bEachMain(eFrom))
     xCI.G.p_MainCard->vCard(eTo);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bNeedsBrace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsValue("between"_Stz))
-    return true;
-  if (bIsValue("case"_Stz))
-    return true;
-  if (bIsValue("in"_Stz))
-    return true;
-  if (bIsValue("matchLeading"_Stz))
-    return true;
-  if (bIsValue("matchMiddle"_Stz))
-    return true;
-  if (bIsValue("matchMiddle1"_Stz))
-    return true;
-  if (bIsValue("matchTrailing"_Stz))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1596,6 +1520,57 @@ bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
     Card* pChild_a = this->pGetChild(i_Child);
     Card* pChild_b = pCard_b->pGetChild(i_Child);
     if (!pChild_a->bSameValueRecursive(pChild_b, iDepth + 1, bTestL0))
+      return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this card equivalent to some other card?                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameValuePpyRecursive(Card* pCard_OTHER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card* pCard_THIS = this;
+
+  if (pCard_OTHER->eCard() != pCard_THIS->eCard())
+    return false;
+
+  TagSet* pProperties_THISCARD  = m_xSymVal.m_pProperties;
+  TagSet* pProperties_OTHERCARD = pCard_OTHER->m_xSymVal.m_pProperties;
+
+  if (pProperties_THISCARD) {
+    if (pProperties_OTHERCARD) {
+      if (! pProperties_THISCARD->bSame(pProperties_OTHERCARD))
+        return false;
+    }
+    else {
+      return false;
+    }
+  }
+  else
+  if (pProperties_OTHERCARD) {
+    return false;
+  }
+  else {
+    RASSERT(! m_xSymVal.m_pProperties);
+    RASSERT(! pProperties_OTHERCARD);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  eCK eChild_THISCARD;
+  i8 nChildren_THISCARD = pCard_THIS->nChildCards();
+  for (i8 i_Child = 0; i_Child < nChildren_THISCARD; i_Child++) {
+    Card* pChild_THISCARD = pCard_THIS->pGetChild(i_Child, eChild_THISCARD);
+
+    Card* pChild_OTHERCARD = pCard_OTHER->pFindSubCard(eChild_THISCARD);
+    if (! pChild_OTHERCARD)
+      return false;
+
+    if (!pChild_THISCARD->bSameValuePpyRecursive(pChild_OTHERCARD))
       return false;
   }
 
@@ -3133,12 +3108,28 @@ bool SymVal::bIsTableColOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table column syn from $c.n                                             */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
-char SymVal::cTableColSyn(void)
+bool SymVal::bNeedsBrace(void)
 {
-  return c_TableColSyn(m_sValue);
+  if (m_sValue.bSame("between"_Stz))
+    return true;
+  if (m_sValue.bSame("case"_Stz))
+    return true;
+  if (m_sValue.bSame("in"_Stz))
+    return true;
+  if (m_sValue.bSame("matchLeading"_Stz))
+    return true;
+  if (m_sValue.bSame("matchMiddle"_Stz))
+    return true;
+  if (m_sValue.bSame("matchMiddle1"_Stz))
+    return true;
+  if (m_sValue.bSame("matchTrailing"_Stz))
+    return true;
+
+  return false;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* sprint value                                                               */
@@ -3203,3 +3194,10 @@ void SymVal::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get table column syn from $c.n                                             */
+/*----------------------------------------------------------------------------*/
+char SymVal::cTableColSyn(void)
+{
+  return c_TableColSyn(m_sValue);
+}

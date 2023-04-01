@@ -180,7 +180,7 @@ bool Card_RpnCalc::bIsBraced(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bNeedsBrace())
+    if (xCI.G.p_term->pSymVal()->bNeedsBrace())
       return true;
   }
 

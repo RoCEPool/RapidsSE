@@ -226,7 +226,9 @@ namespace STORE
 
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
+
     i8   iGetColOdn(void);
+
     bool bIsBoolFn(void);           // between, ... matchTrailing
     bool bIsCommaSeparator(void);
     bool bIsIndexColOrdinal(void);  // $In
@@ -240,7 +242,8 @@ namespace STORE
     bool bIsSubQueryPattern(void);  // __subqueryN
     bool bIsSqyColOrdinal(void);    // __n
     bool bIsTableColOrdinal(void);  // $c.n
-    char cTableColSyn(void);
+
+    bool bNeedsBrace(void);
 
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
@@ -250,6 +253,8 @@ namespace STORE
     void vSetTableColSyn(char cTblSyn);
 
     void vSprint(Stz* szFormat, ...);
+
+    char cTableColSyn(void);
   };
 
   class Card : public Object
@@ -332,8 +337,6 @@ namespace STORE
     Card_SubSet* pDupSubCards(void);
     Card_SubSet* pDupSubCards(i8 i_From, i8 i_Till=C_UNKNOWN);
 
-    bool bEquivalentTo(Card* pCard_OTHER);
-
     Card* pFindCardRecursive(eCK eCard);
     Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
@@ -359,8 +362,6 @@ namespace STORE
     void vMark2(char cMark2);
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
 
-    bool bNeedsBrace(void);
-
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,
                              bool bPrintBelow);
@@ -379,6 +380,7 @@ namespace STORE
 
     bool bSameValue(Card* pCard);
     bool bSameValueRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
+    bool bSameValuePpyRecursive(Card* pCard_OTHER); // not needed??
 
     SymVal* pSymVal(void);
 
