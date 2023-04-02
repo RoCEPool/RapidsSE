@@ -193,8 +193,6 @@ namespace STORE
     // auto conversion
     operator Stz*(void);
 
-
-    static eQO  e_EvalSubQryOp(Stz* szValue);
     static i8   i_GetColOdn(Stz* szValue);
 
     static bool b_IsStreamColOrdinal(Stz* szValue); // $n
@@ -206,9 +204,9 @@ namespace STORE
 
     i8   iGetColOdn(void);
 
-    bool bIsAggOp(void);
+    bool bIsAggOp(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, ... matchTrailing
-    bool bIsCommaSeparator(void);
+    bool bIsComma(void);            // ,
     bool bIsIndexColOrdinal(void);  // $In
     bool bIsKeyOrdinal(void);       // $Kn
     bool bIsColOrdinal(void);       // $n or $c.n
@@ -216,22 +214,20 @@ namespace STORE
     bool bIsRelnOp(void);           // <, <=, ... >
     bool bIsResultOrdinal(void);    // #n
     bool bIsStreamColOrdinal(void); // $n
-    bool bIsSubQueryOp(void);       // exists, in, ...
+    bool bIsSubQueryOp(void);       // exists, in, notExists, notIn
     bool bIsSubQueryPattern(void);  // __subqueryN
     bool bIsSqyColOrdinal(void);    // __n
     bool bIsTableColOrdinal(void);  // $c.n
 
-    bool bNeedsBrace(void);
+    bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
     void vSet(Symbol* pSymbol);
-
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSetStreamColOrdinal(i8 iStmColOdn);
     void vSetSubQueryOrdinal(i8 iSqNo);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
-
     void vSprint(Stz* szFormat, ...);
 
     char cTableColSyn(void);
@@ -253,7 +249,6 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, i8 iPpy);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
-
   };
 
   class Card : public Object

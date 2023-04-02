@@ -2347,21 +2347,6 @@ Symbol::operator Stz*(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* evaluate sub-query op                                                      */
-/*----------------------------------------------------------------------------*/
-eQO Symbol::e_EvalSubQryOp(Stz* szValue)
-{
-  _static_
-
-  if (szValue->bSame("exists"_Stz))    return QO_EXISTS_OP;
-  else if (szValue->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
-  else if (szValue->bSame("in"_Stz))        return QO_IN_OP;
-  else if (szValue->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
-
-  else return QO_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
 /*----------------------------------------------------------------------------*/
 i8 Symbol::i_GetColOdn(Stz* szValue)
@@ -2450,7 +2435,12 @@ eRO Symbol::eEvalRelnOp(void)
 /*----------------------------------------------------------------------------*/
 eQO Symbol::eEvalSubQryOp(void)
 {
-  return e_EvalSubQryOp(m_sValue);
+       if (m_sValue.bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (m_sValue.bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (m_sValue.bSame("in"_Stz))        return QO_IN_OP;
+  else if (m_sValue.bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+
+  else return QO_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2500,7 +2490,7 @@ bool Symbol::bIsBoolFn(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a comma separator?                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsCommaSeparator(void)
+bool Symbol::bIsComma(void)
 {
   if (m_sValue.bSame(","_Stz))
     return true;
@@ -2615,8 +2605,8 @@ bool Symbol::bIsStreamColOrdinal(void)
 bool Symbol::bIsSubQueryOp(void)
 {
        if (m_sValue.bSame("exists"_Stz))    return true;
-  else if (m_sValue.bSame("notExists"_Stz)) return true;
   else if (m_sValue.bSame("in"_Stz))        return true;
+  else if (m_sValue.bSame("notExists"_Stz)) return true;
   else if (m_sValue.bSame("notIn"_Stz))     return true;
 
   else return false;
@@ -2669,20 +2659,13 @@ bool Symbol::bIsTableColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bNeedsBrace(void)
 {
-  if (m_sValue.bSame("between"_Stz))
-    return true;
-  if (m_sValue.bSame("case"_Stz))
-    return true;
-  if (m_sValue.bSame("in"_Stz))
-    return true;
-  if (m_sValue.bSame("matchLeading"_Stz))
-    return true;
-  if (m_sValue.bSame("matchMiddle"_Stz))
-    return true;
-  if (m_sValue.bSame("matchMiddle1"_Stz))
-    return true;
-  if (m_sValue.bSame("matchTrailing"_Stz))
-    return true;
+       if (m_sValue.bSame("between"_Stz))        return true;
+  else if (m_sValue.bSame("case"_Stz))           return true;
+  else if (m_sValue.bSame("in"_Stz))             return true;
+  else if (m_sValue.bSame("matchLeading"_Stz))   return true;
+  else if (m_sValue.bSame("matchMiddle"_Stz))    return true;
+  else if (m_sValue.bSame("matchMiddle1"_Stz))   return true;
+  else if (m_sValue.bSame("matchTrailing"_Stz))  return true;
 
   return false;
 }

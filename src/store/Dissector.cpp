@@ -765,7 +765,7 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
     }
 
     // SEPARATOR
-    if (pCard_Term_head->pSymbol()->bIsCommaSeparator()) {
+    if (pCard_Term_head->pSymbol()->bIsComma()) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -820,7 +820,7 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
     }
 
     // SEPARATOR
-    if (pCard_Term_head->pSymbol()->bIsCommaSeparator()) {
+    if (pCard_Term_head->pSymbol()->bIsComma()) {
       delete pCard_RpnTerms->pPop();
       continue;
     }
@@ -933,7 +933,7 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
         || pCard_Term_popped->bIsValue("ASC"_Stz)
         || pCard_Term_popped->bIsValue("DESC"_Stz)
         || pCard_Term_popped->bIsValue("GROUPBY"_Stz)
-        || pCard_Term_popped->pSymbol()->bIsCommaSeparator()
+        || pCard_Term_popped->pSymbol()->bIsComma()
         ) {
       pCard_RpnTerms->vPush(pCard_Term_popped);
       break;
