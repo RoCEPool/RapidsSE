@@ -32,8 +32,6 @@ namespace STORE
                       Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
 
-    Stz* szDollarOdn(void);
-    bool bIsCalcSequence(void);
     bool bIsColOrdinal(void);
     bool bIsProjectedCol(Stz* szProjectedCol);
     bool bHasProjectedCol(Card_Term* p_term_arg);

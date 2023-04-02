@@ -584,7 +584,7 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
     if (xKid.p_term()->pSymbol()->Y_bHas(P_Type))
       continue;
 
-    if (Symbol::b_IsKeyOrdinal(xKid.p_term()->szValue())) {
+    if (xKid.p_term()->pSymbol()->bIsKeyOrdinal()) {
 
       Card_Expr *p_expr_found =
           pCI->G.p_key->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);

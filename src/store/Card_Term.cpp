@@ -450,7 +450,7 @@ bool Card_Term::bIsKeyOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Symbol::b_IsKeyOrdinal(this->szValue());
+  bool b = pSymbol()->bIsKeyOrdinal();
 
   return b;
 }

@@ -2393,25 +2393,6 @@ i8 Symbol::i_GetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a key ordinal?  (i.e. $Kn)                                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsKeyOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-
-  if ('$' == acFirst
-      && ('K' == acSecond || 'k' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a column ordinal?  (i.e. $n or $c.n)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsColOrdinal(Stz* szValue)
@@ -2691,7 +2672,16 @@ bool Symbol::bIsIndexColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsKeyOrdinal(void)
 {
-  return b_IsKeyOrdinal(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+  char acThird  = m_sValue.azChar()[2];
+
+  if ('$' == acFirst
+      && ('K' == acSecond || 'k' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
