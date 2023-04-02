@@ -39,6 +39,23 @@ Card::Card(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Card::Card(eCK eCard, SymVal* pSymVal)
+    : Object(CN_CARD)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vInit(eCard);
+
+  if (pSymVal->m_pProperties)
+    m_xSymVal.Y_vAll(pSymVal->m_pProperties);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Card::Card(eCK eCard, Stz* szValue)
     : Object(CN_CARD)
 {
@@ -309,27 +326,6 @@ eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vAddPredUnder_main(Card_PRED *p_PRED)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  RASSERT(Card_OP::bIsOp(this));
-
-  Card_Filter* p_filter = this->pSub_filter();
-  if (! p_filter) {
-    p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
-    //Card_Constraint* p_constraint = _pCard_Constraint(p_filter->pAppendNewCard(CK_CONSTRAINT));
-
-    //p_constraint->vAppendNewCard(CK_BOOLCALC);
-    p_filter->vAppendNewCard(CK_BOOLCALC);
-  }
-
-  p_filter->vAddPred(p_PRED);
-}
 
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
@@ -2291,6 +2287,34 @@ Card_Where* Card::pSub_where(void)
 
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void SymVal::operator =(Stz* szArg)
+{
+  m_sValue = szArg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void SymVal::operator =(SymVal* pSymVal)
+{
+  m_sValue = pSymVal->m_sValue;
+
+  if (pSymVal->m_pProperties) {
+    if (! m_pProperties)
+      m_pProperties = new TagSet;
+    m_pProperties->vCopy(pSymVal->m_pProperties);
+  }
+  else
+  if (m_pProperties) {
+    delete m_pProperties;
+    m_pProperties = nullptr;
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -2845,6 +2869,18 @@ void SymVal::Y_vAll(Card* pCard_arg)
     m_pProperties = new TagSet;
 
   m_pProperties->vCopy(pCard_arg->pSymVal()->m_pProperties);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+void SymVal::Y_vAll(TagSet* pProperties)
+{
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vCopy(pProperties);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -186,6 +186,9 @@ namespace STORE
     TagSet* m_pProperties;
 
   public:
+    void operator =(Stz* szArg);
+    void operator =(SymVal* pSymVal);
+
     static eRO  e_EvalRelnOp(Stz* szValue);
     static eQO  e_EvalSubQryOp(Stz* szValue);
     static i8   i_GetColOdn(Stz* szValue);
@@ -237,6 +240,7 @@ namespace STORE
     char cTableColSyn(void);
 
     void Y_vAll(Card* pCard_arg);
+    void Y_vAll(TagSet* pProperties);
     void Y_vCut(Stz* szPpyNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
@@ -283,6 +287,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card(eCK eCard);
+    Card(eCK eCard, SymVal* pSymVal);
     Card(eCK eCard, Stz* szValue);
     Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpt);
     Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpt);
@@ -308,11 +313,6 @@ namespace STORE
     static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    void vAddPredUnder_main(Card_PRED *p_PRED);
-
-
-
 
     Card* pAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     void vAppendNewCard(eCK eCard, Stz* szValue=nullptr);
