@@ -200,7 +200,6 @@ namespace STORE
 
     static bool b_IsStreamColOrdinal(Stz* szValue); // $n
     static bool b_IsSubQueryPattern(Stz* szValue);  // __subqueryN
-    static bool b_IsSqyColOrdinal(Stz* szValue);    // __n
     static bool b_IsTableColOrdinal(Stz* szValue);  // $c.n
 
     eRO  eEvalRelnOp(void);

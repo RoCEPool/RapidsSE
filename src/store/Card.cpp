@@ -2434,32 +2434,6 @@ bool Symbol::b_IsSubQueryPattern(BASE::Stz *szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a subQuery-column ordinal?  (i.e. __n)                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsSqyColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && StrLib::bIsDigit(acThird))
-    return true;
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && 'S' == acThird
-      && 'Q' == acFourth)
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a table-column ordinal?  (i.e. $c.n)                              */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsTableColOrdinal(Stz* szValue)
@@ -2678,7 +2652,24 @@ bool Symbol::bIsSubQueryPattern(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSqyColOrdinal(void)
 {
-  return b_IsSqyColOrdinal(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+  char acThird  = m_sValue.azChar()[2];
+  char acFourth = m_sValue.azChar()[3];
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && StrLib::bIsDigit(acThird))
+    return true;
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && 'S' == acThird
+      && 'Q' == acFourth)
+    return true;
+
+  return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
