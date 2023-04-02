@@ -312,7 +312,7 @@ bool Card_PRED::bIsSubQueryOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Symbol::b_IsSubQueryOp(szValue()))
+  if (pSymbol()->bIsSubQueryOp())
     return true;
 
   return false;

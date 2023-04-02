@@ -198,9 +198,7 @@ namespace STORE
     static eQO  e_EvalSubQryOp(Stz* szValue);
     static i8   i_GetColOdn(Stz* szValue);
 
-    static bool b_IsResultOrdinal(Stz* szValue);    // #n
     static bool b_IsStreamColOrdinal(Stz* szValue); // $n
-    static bool b_IsSubQueryOp(Stz* szValue);       // exists, in, ...
     static bool b_IsSubQueryPattern(Stz* szValue);  // __subqueryN
     static bool b_IsSqyColOrdinal(Stz* szValue);    // __n
     static bool b_IsTableColOrdinal(Stz* szValue);  // $c.n

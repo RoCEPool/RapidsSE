@@ -2393,22 +2393,6 @@ i8 Symbol::i_GetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a result ordinal?  (i.e. #n)                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsResultOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a stream-column ordinal?  (i.e. $n)                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsStreamColOrdinal(Stz* szValue)
@@ -2422,21 +2406,6 @@ bool Symbol::b_IsStreamColOrdinal(Stz* szValue)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a sub-query operator?                                             */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsSubQueryOp(Stz* szValue)
-{
-  _static_
-
-  if (szValue->bSame("exists"_Stz))    return true;
-  else if (szValue->bSame("notExists"_Stz)) return true;
-  else if (szValue->bSame("in"_Stz))        return true;
-  else if (szValue->bSame("notIn"_Stz))     return true;
-
-  else return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2665,7 +2634,13 @@ bool Symbol::bIsRelnOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsResultOrdinal(void)
 {
-  return b_IsResultOrdinal(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+
+  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2681,7 +2656,13 @@ bool Symbol::bIsStreamColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryOp(void)
 {
-  return b_IsSubQueryOp(m_sValue);
+       if (m_sValue.bSame("exists"_Stz))    return true;
+  else if (m_sValue.bSame("notExists"_Stz)) return true;
+  else if (m_sValue.bSame("in"_Stz))        return true;
+  else if (m_sValue.bSame("notIn"_Stz))     return true;
+
+  else return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
