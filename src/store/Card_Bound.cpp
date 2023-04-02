@@ -255,7 +255,7 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (Symbol::b_IsIndexColOrdinal(xCI.G.p_term->szValue()))
+    if (xCI.G.p_term->pSymbol()->bIsIndexColOrdinal())
       return xCI.G.p_term;
 
   return nullptr;
@@ -271,7 +271,7 @@ Stz* Card_Bound::szGet_idxColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (Symbol::b_IsIndexColOrdinal(xCI.G.p_term->szValue()))
+    if (xCI.G.p_term->pSymbol()->bIsIndexColOrdinal())
       return xCI.G.p_term->szValue();
 
   return nullptr;

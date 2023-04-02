@@ -2393,25 +2393,6 @@ i8 Symbol::i_GetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is term an index-column ordinal?  (i.e. $In)                               */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsIndexColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-
-  if ('$' == acFirst
-      && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a key ordinal?  (i.e. $Kn)                                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsKeyOrdinal(Stz* szValue)
@@ -2693,7 +2674,16 @@ bool Symbol::bIsCommaSeparator(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsIndexColOrdinal(void)
 {
-  return b_IsIndexColOrdinal(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+  char acThird  = m_sValue.azChar()[2];
+
+  if ('$' == acFirst
+      && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
