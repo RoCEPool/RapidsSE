@@ -325,6 +325,8 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendChild(CK_EXPR, pCI->G.p_type->pDupCardRecursive());
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
+      Symbol x_Symbol_stmCol1;
+      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
       pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->Sqy.m_pExpr_corr->pSymbol()->Y_szGet(P_Type));
       pCI->G.p_key->vAppend(pCI->G.p_expr);
@@ -409,6 +411,8 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,szAs);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
+  Symbol x_Symbol_stmCol1;
+  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
 
   if (pCI->G.p_type) {
     pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
@@ -473,7 +477,9 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         if (xCI.G.p_MainCard->pSymbol()->bIsCorrParamOrdinal()) {
 
-          xCI.G.p_MainCard->vValue("$1"_Stz);  // TODO: hack!!
+          Symbol x_Symbol_stmCol1;
+          x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+          xCI.G.p_MainCard->vValue(x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
               pCI->Analysis.m_pProjection_prior->pGetExpr(0);

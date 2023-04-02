@@ -174,7 +174,10 @@ Card_Where* Card_Where::pNewWhereConstruct(void)
   p_where->vAppend(p_constraint);
 
   Card_Expr* p_expr = new Card_Expr;
-  p_expr->vValue("$1"_Stz);
+  Symbol x_Symbol_stmCol1;
+  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+
+  p_expr->vValue(x_Symbol_stmCol1);
   p_constraint->vAppend(p_expr);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
@@ -237,7 +240,10 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   }
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
-    pCI->Sqy.m_pTerm_sqCall->vReplace_sqCall_With_sqResult("$1"_Stz); // todo: sq result no
+    Symbol x_Symbol_stmCol1;
+    x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+
+    pCI->Sqy.m_pTerm_sqCall->vReplace_sqCall_With_sqResult(x_Symbol_stmCol1); // todo: sq result no
   }
 
   pCI->G.pDeck->vRenumberRecursive();

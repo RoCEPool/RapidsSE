@@ -268,7 +268,9 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);
 
-  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone("$1"_Stz);
+  Symbol x_Symbol_stmCol1;
+  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(x_Symbol_stmCol1);
 
   pCI->G.p_rpnCalc->vAppend(pCI->G.p_term);
 

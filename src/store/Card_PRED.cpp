@@ -371,12 +371,17 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     pCI->vPrintBoard(__LINE__);
 
-    //vCard(CK_CMPPRED);
     vValue("=="_Stz);
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szValue())); //temp
-    p_term_one->vValue(p_term ? p_term->szValue() : "$1"_Stz);
+
+    Symbol x_Symbol_stmCol1;
+    if (p_term)
+      x_Symbol_stmCol1.m_sValue = p_term->szValue();
+    else
+      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    p_term_one->vValue(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
@@ -389,7 +394,6 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bIsValue("in"_Stz)) {
 
-    //vCard(CK_CMPPRED);
     vValue("=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
@@ -399,7 +403,12 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
 
-    p_term_head->vValue(p_term ? p_term->szValue() : "$1"_Stz);
+    Symbol x_Symbol_stmCol1;
+    if (p_term)
+      x_Symbol_stmCol1.m_sValue = p_term->szValue();
+    else
+      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    p_term_head->vValue(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
@@ -413,7 +422,6 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bIsValue("notIn"_Stz)) {
 
-    //vCard(CK_CMPPRED);
     vValue("=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
@@ -422,7 +430,14 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
     ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
-    p_term_head->vValue(p_term?p_term->szValue():"$1"_Stz);
+
+    Symbol x_Symbol_stmCol1;
+    x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    if (p_term)
+      x_Symbol_stmCol1.m_sValue = p_term->szValue();
+    else
+      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    p_term_head->vValue(x_Symbol_stmCol1);
     return;
   }
 
