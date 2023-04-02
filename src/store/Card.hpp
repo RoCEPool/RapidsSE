@@ -246,6 +246,8 @@ namespace STORE
 
     char cTableColSyn(void);
 
+    Stz* szValue(void);
+
     void Y_vAll(Card* pCard_arg);
     void Y_vAll(TagSet* pProperties);
     void Y_vCut(Stz* szPpyNm);

@@ -204,18 +204,16 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     // column of this table
 
-    Stz* szStmColOdn;
-    s32 sColOfThisTable;
-
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
     i8 nExpr_prior = pCI->G.p_projection->nChildCards();
     i8 i_Col = p_term->iGetOdnNo();
-    sColOfThisTable.vSprint("$%lld"_Stz,nExpr_prior+i_Col);
-    szStmColOdn = sColOfThisTable.szStz();
-    p_term->vValueMark1(szStmColOdn, MARK_CHANGED);
-    vTrace("  TO %s\n"_Stz,szStmColOdn);
-    return C_CONTINUE_RECURSION;
 
+    Symbol xSymbol_stmColOdn;
+    xSymbol_stmColOdn.vSetStreamColOrdinal(nExpr_prior+i_Col);
+    p_term->vValueMark1(xSymbol_stmColOdn, MARK_CHANGED);
+
+    vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szValue());
+    return C_CONTINUE_RECURSION;
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -735,10 +733,6 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_expr->vAppend(p_rpnCalc);
     p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
 
-//    s32 sTblCol_from_SEmetadata;
-//    sTblCol_from_SEmetadata.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
-//    Card_Term *p_term = new Card_Term(sTblCol_from_SEmetadata);
-//    p_rpnCalc->vAppend(p_term);
     Symbol xSymbol_tblCol;
     xSymbol_tblCol.vSetTableColOrdinal(cTblSyn, i_Col + 1);
     Card_Term *p_term = new Card_Term(xSymbol_tblCol);

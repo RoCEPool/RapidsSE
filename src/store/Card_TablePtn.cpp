@@ -62,10 +62,6 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   Column* pStmColumn = pStreamDef->pFindColumn(pPtnColumn->szColNm());
   i8 iStmColNo = pStmColumn->iColumnNo();
 
-//  s32 sTablePtn;
-//  sTablePtn.vSprint("$%c.%lld"_Stz, cTableSyn, iStmColNo + 1);
-//  Card_TablePtn* p_tablePtn = new Card_TablePtn;
-//  p_tablePtn->vValue(sTablePtn);
   Card_TablePtn* p_tablePtn = new Card_TablePtn;
   Symbol xSymbol_tablePtn;
   xSymbol_tablePtn.vSetTableColOrdinal(cTableSyn, iStmColNo + 1);
