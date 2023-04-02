@@ -346,11 +346,14 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
       pCI->G.p_type = _pCard_Type(pCI->G.p_expr->pSub_type()->pDupCardRecursive());
 
+      Symbol xSymbol_keyOdn;
+      xSymbol_keyOdn.vSetKeyOrdinal(1);
+
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendChild(CK_EXPR,pCI->G.p_type);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,"__SQCRLKEY"_Stz);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
-      pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$K1"_Stz);
+      pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, xSymbol_keyOdn);
       if (pCI->G.p_expr->pSub_type()) {
         pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
         pCI->G.p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);

@@ -163,10 +163,6 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
     char cTblSyn_ith = p_table->cValue();
 
-//    if (i_Item)
-//      vTrace(", "_Stz,i_Table);
-//    vTrace("%c"_Stz, cTblSyn_ith);
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (0 == nChildCards()) {
@@ -253,10 +249,6 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     i8 i_Table = pPermGen->iElement(i_Item);
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
     char cTblSyn_ith = p_table->cValue();
-
-//    if (i_Item)
-//      vTrace(", "_Stz,i_Table);
-//    vTrace("%c"_Stz, cTblSyn_ith);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
