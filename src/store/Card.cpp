@@ -2393,23 +2393,6 @@ i8 Symbol::i_GetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a correlation parameter ordinal?  (i.e. %n)                       */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsCorrParamOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('%' == acFirst
-      && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a relational operator?                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsRelnOp(Stz* szValue)
@@ -2687,7 +2670,15 @@ bool Symbol::bIsColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsCorrParamOrdinal(void)
 {
-  return b_IsCorrParamOrdinal(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+
+  if ('%' == acFirst
+      && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+
 }
 
 /*----------------------------------------------------------------------------*/

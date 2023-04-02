@@ -172,11 +172,11 @@ Card_Term* Card_CmpPred::pGetCorrCol(void)
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
 
-  if (Symbol::b_IsCorrParamOrdinal(p_child_0->szValue()))
+  if (p_child_0->pSymbol()->bIsCorrParamOrdinal())
     return _pCard_Term(p_child_1);
 
   else
-  if (Symbol::b_IsCorrParamOrdinal(p_child_1->szValue()))
+  if (p_child_1->pSymbol()->bIsCorrParamOrdinal())
     return _pCard_Term(p_child_0);
 
   else
@@ -196,11 +196,11 @@ Card_Term* Card_CmpPred::pExtractParamTerm(void)
   Card* p_child_0 = this->pGetChild(0);
   Card* p_child_1 = this->pGetChild(1);
 
-  if (Symbol::b_IsCorrParamOrdinal(p_child_0->szValue()))
+  if (p_child_0->pSymbol()->bIsCorrParamOrdinal())
     return _pCard_Term(p_child_0);
 
   else
-  if (Symbol::b_IsCorrParamOrdinal(p_child_1->szValue()))
+  if (p_child_1->pSymbol()->bIsCorrParamOrdinal())
     return _pCard_Term(p_child_1);
 
   else

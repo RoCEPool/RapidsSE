@@ -425,7 +425,7 @@ bool Card_Term::bIsCorPrmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Symbol::b_IsCorrParamOrdinal(this->szValue());
+  bool b = pSymbol()->bIsCorrParamOrdinal();
 
   return b;
 }
