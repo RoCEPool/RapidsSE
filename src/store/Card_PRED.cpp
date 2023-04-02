@@ -299,7 +299,7 @@ bool Card_PRED::bIsRelnOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Symbol::b_IsRelnOp(szValue()))
+  if (pSymbol()->bIsRelnOp())
     return true;
 
   return false;

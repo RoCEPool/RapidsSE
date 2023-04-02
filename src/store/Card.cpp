@@ -2393,19 +2393,6 @@ i8 Symbol::i_GetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a relational operator?                                            */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsRelnOp(Stz* szValue)
-{
-  _static_
-
-  if (RO_NONE != Symbol::e_EvalRelnOp(szValue))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a result ordinal?  (i.e. #n)                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsResultOrdinal(Stz* szValue)
@@ -2667,7 +2654,10 @@ bool Symbol::bIsCorrParamOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsRelnOp(void)
 {
-  return b_IsRelnOp(m_sValue);
+  if (RO_NONE != Symbol::e_EvalRelnOp(m_sValue))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -564,9 +564,8 @@ eTE Card_Term::eTermEval(void)
   else if (bIsValue("notExists"_Stz))  return TE_NOTEXISTS;
   else if (bIsValue("notIn"_Stz))      return TE_NOTIN;
 
-  else if (Symbol::b_IsRelnOp(szValue))         return TE_RELNOP;
-
-  else if (pSymbol()->bIsBoolFn())         return TE_BOOLFN;
+  else if (pSymbol()->bIsRelnOp())     return TE_RELNOP;
+  else if (pSymbol()->bIsBoolFn())     return TE_BOOLFN;
 
   else return TE_OTHER;
 }
