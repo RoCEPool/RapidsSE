@@ -63,6 +63,7 @@ bool Card_OP::bIsOp(Card* pCard)
     case CK_WHERE:
     case CK_SCAN:
     case CK_SORT:
+    case CK_TABLE:
     case CK_TOP:
       return true;
 

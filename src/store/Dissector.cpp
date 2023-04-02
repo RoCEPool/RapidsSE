@@ -934,7 +934,7 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
       break;
     }
 
-    if (pCard_Term_popped->bIsAggOp())
+    if (pCard_Term_popped->pSymVal()->bIsAggOp())
       pCard_RpnCalc->pSymVal()->Y_vSet(P_AggOp);
 
     pCard_RpnCalc->vAppend(pCard_Term_popped);

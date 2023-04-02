@@ -74,7 +74,7 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
                                                        p_joinPredList,
                                                        pPermGen);
 
-    p_joinPermAll->vAppendMain(p_joinPermSeq);
+    p_joinPermAll->vAppend(p_joinPermSeq);
 
     if (C_UNKNOWN == i_JoinInvalid) {
       //vTrace("VALID PERMUTATION %lld\n"_Stz, i_Permutation);

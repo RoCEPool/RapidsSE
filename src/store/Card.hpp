@@ -208,6 +208,7 @@ namespace STORE
 
     i8   iGetColOdn(void);
 
+    bool bIsAggOp(void);
     bool bIsBoolFn(void);           // between, ... matchTrailing
     bool bIsCommaSeparator(void);
     bool bIsIndexColOrdinal(void);  // $In
@@ -309,12 +310,10 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vAddPredUnder_main(Card_PRED *p_PRED);
-    bool bIsAggOp(void);
 
 
 
 
-    void vAppendMain(Card* pNewMainCard, bool bRenumber= true);
     Card* pAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     void vAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);

@@ -317,6 +317,8 @@ void Card::vAddPredUnder_main(Card_PRED *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  RASSERT(Card_OP::bIsOp(this));
+
   Card_Filter* p_filter = this->pSub_filter();
   if (! p_filter) {
     p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
@@ -327,19 +329,6 @@ void Card::vAddPredUnder_main(Card_PRED *p_PRED)
   }
 
   p_filter->vAddPred(p_PRED);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append new main card at end                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vAppendMain(Card* pNewMainCard, bool bRenumber)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vAppend(pNewMainCard);
-
-  if (bRenumber)
-    vRenumberRecursive();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -840,26 +829,6 @@ bool Card::bHasValue(void)
 
   if (*m_xSymVal.m_sValue.azChar())
     return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this atom an aggregate op?                                              */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szTerm = szValue();
-
-       if (szTerm->bSame("avg"_Stz))      return true;
-  else if (szTerm->bSame("count"_Stz))    return true;
-  else if (szTerm->bSame("countAll"_Stz)) return true;
-  else if (szTerm->bSame("max"_Stz))      return true;
-  else if (szTerm->bSame("min"_Stz))      return true;
-//else if (szTerm->bSame("stddev"_Stz))   return true;
-  else if (szTerm->bSame("sum"_Stz))      return true;
 
   return false;
 }
@@ -2637,6 +2606,23 @@ eQO SymVal::eEvalSubQryOp(void)
 i8 SymVal::iGetColOdn(void)
 {
   return i_GetColOdn(m_sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this atom an aggregate op?                                              */
+/*----------------------------------------------------------------------------*/
+bool SymVal::bIsAggOp(void)
+{
+
+       if (m_sValue.bSame("avg"_Stz))      return true;
+  else if (m_sValue.bSame("count"_Stz))    return true;
+  else if (m_sValue.bSame("countAll"_Stz)) return true;
+  else if (m_sValue.bSame("max"_Stz))      return true;
+  else if (m_sValue.bSame("min"_Stz))      return true;
+//else if (m_sValue.bSame("stddev"_Stz))   return true;
+  else if (m_sValue.bSame("sum"_Stz))      return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

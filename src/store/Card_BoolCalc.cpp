@@ -161,7 +161,7 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
     if (! p_table)
       continue;
 
-    pMainCard->vAddPredUnder_main((Card_PRED*) p_pred->pDupCardRecursive());
+    ((Card_OP*)pMainCard)->vAdd_Pred_Under_filter((Card_PRED*) p_pred->pDupCardRecursive());
 
     // todo: is this needed?
     Card_Filter* p_filter = pMainCard->pSub_filter();
