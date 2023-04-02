@@ -178,7 +178,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
 
       if (p_table->pSub_keyExists() || p_table->pSub_keyNotExists()) {
         p_joinHead->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
-        pSymVal()->Y_vSet(P_Invalid);
+        pSymbol()->Y_vSet(P_Invalid);
         iNotValid = i_Item;
         break;
       }
@@ -222,7 +222,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
 
     // join of ith table is not possible at this point
     p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
-    pSymVal()->Y_vSet(P_Invalid);
+    pSymbol()->Y_vSet(P_Invalid);
 
     iNotValid = i_Item;
     break;
@@ -317,7 +317,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
 
       if (i_NotValid == i_Item) {
         p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
-        pSymVal()->Y_vSet(P_Invalid);
+        pSymbol()->Y_vSet(P_Invalid);
         break;
       }
 

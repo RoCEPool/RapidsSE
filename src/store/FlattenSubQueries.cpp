@@ -356,7 +356,7 @@ void FlattenSubQueries::vFlatten_10_F(void)
     if (m_pCI->G_bEachMain(CK_WHERE)) {
       Card_Level* p_level_where = m_pCI->G.p_where->pSub_level();
       if (m_pCI->G_bEachMainWithSub(CK_PROJECT, CK_LEVEL)) {
-        p_level_where->pSymVal()->Y_vSet(P_Level,m_pCI->G.p_level->pSymVal()->Y_iGet(P_Level));
+        p_level_where->pSymbol()->Y_vSet(P_Level, m_pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
       }
     }
   }

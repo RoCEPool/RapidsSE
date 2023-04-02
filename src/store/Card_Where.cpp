@@ -229,7 +229,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_where->pSymVal()->Y_vSet(P_Smoothed);
+  pCI->G.p_where->pSymbol()->Y_vSet(P_Smoothed);
 
   if (pCarryForward->Where_preAgg.m_bMorph_sqlOp_To_Eq) {
     pCI->G.p_cmpPred = pCI->G.p_where->pSub_cmpPred();

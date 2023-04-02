@@ -54,7 +54,7 @@ void Card_KeyExists::vMorph_table_To_keyExists(STORE::CardIter *pCI)
   // todo: this should be in index list
   pCI->G.p_index = pCI->G.p_keyExists->pSub_index();
   pCI->G.p_index->vSet_Choose_index();
-  pCI->G.p_index->pSub_bound()->pSymVal()->Y_vSet(P_ChosenBound);
+  pCI->G.p_index->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
 
   pCI->G.p_filter = pCI->G.p_keyExists->pSub_filter();
   pCI->G.p_filter->vCard(CK_CONSTRAINT);

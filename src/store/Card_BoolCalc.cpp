@@ -326,8 +326,8 @@ void Card_BoolCalc::vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED *p_PRED)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  p_PRED->pSymVal()->Y_vCut(P_CrlKeyPred);
-  p_PRED->pSymVal()->Y_vSet(P_CrlKeyTest);
+  p_PRED->pSymbol()->Y_vCut(P_CrlKeyPred);
+  p_PRED->pSymbol()->Y_vSet(P_CrlKeyTest);
 
   if (this->nChildCards()) {
     this->vPushPred(p_PRED);
@@ -440,7 +440,7 @@ bool Card_BoolCalc::bIsBraced(void)
   bool bBraced = false;
   auto bTestBraced=[&bBraced](Card* p_card) {
 
-    if (p_card->pSymVal()->bNeedsBrace()) {
+    if (p_card->pSymbol()->bNeedsBrace()) {
       bBraced = true;
       return C_TERMINATE_RECURSION;
     }

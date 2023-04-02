@@ -42,7 +42,7 @@ Card_Term::Card_Term(Stz* szTerm, Stz* szStem)
   _checkInitialised_(CN_CARD);
 
   if (szStem)
-    pSymVal()->Y_vSet(P_TblCol, szStem);
+    pSymbol()->Y_vSet(P_TblCol, szStem);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -112,7 +112,7 @@ bool Card_Term::bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
 
     pCI->G.p_term->vValue(p_term_stamp->szValue());
 
-    pCI->G.p_term->pSymVal()->Y_vAll(p_term_stamp);
+    pCI->G.p_term->pSymbol()->Y_vAll(p_term_stamp);
 
     bReplaced = true;
 
@@ -140,14 +140,14 @@ void Card_Term::vBump_KeyOrdinal(i8 nBy)
 
   i8 iKeyOdn = Symbol::i_GetColOdn(this->szValue());
 
-  this->pSymVal()->vSetKeyOrdinal(iKeyOdn+nBy);
+  this->pSymbol()->vSetKeyOrdinal(iKeyOdn + nBy);
 
-  if (this->pSymVal()->Y_bHas(P_BumpedBy)) {
-    i8 nBumpedBy = this->pSymVal()->Y_iGet(P_BumpedBy);
-    this->pSymVal()->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
+  if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
+    this->pSymbol()->Y_vSet(P_BumpedBy, nBumpedBy + nBy);
   }
   else {
-    this->pSymVal()->Y_vSet(P_BumpedBy,(i8)nBy);
+    this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
   }
 }
 
@@ -160,14 +160,14 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 
   i8 iStmColOdn = Symbol::i_GetColOdn(this->szValue());
 
-  this->pSymVal()->vSetStreamColOrdinal(iStmColOdn+nBy);
+  this->pSymbol()->vSetStreamColOrdinal(iStmColOdn + nBy);
 
-  if (this->pSymVal()->Y_bHas(P_BumpedBy)) {
-    i8 nBumpedBy = this->pSymVal()->Y_iGet(P_BumpedBy);
-    this->pSymVal()->Y_vSet(P_BumpedBy,nBumpedBy+nBy);
+  if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
+    i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
+    this->pSymbol()->Y_vSet(P_BumpedBy, nBumpedBy + nBy);
   }
   else {
-    this->pSymVal()->Y_vSet(P_BumpedBy,(i8)nBy);
+    this->pSymbol()->Y_vSet(P_BumpedBy, (i8)nBy);
   }
 }
 
@@ -189,7 +189,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
       CK_GBYAGG  == pCI->G.e_MainCard ||
       CK_PROJECT == pCI->G.e_MainCard) {
     pCI->G.p_level = pCI->G.p_MainCard->pSub_level();
-    ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymVal()->Y_iGet(P_Level));
+    ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
   }
 
   if (! Symbol::b_IsStreamColOrdinal(szValue()))
@@ -212,11 +212,11 @@ void Card_Term::vEnsure_tblCol_flip(void)
   if (Symbol::b_IsTableColOrdinal(szValue()))
     return;
 
-  RASSERT(pSymVal()->Y_bHas(P_TblCol));
+  RASSERT(pSymbol()->Y_bHas(P_TblCol));
 
-  vValue(pSymVal()->Y_szGet(P_TblCol));
+  vValue(pSymbol()->Y_szGet(P_TblCol));
 
-  pSymVal()->Y_vCut(P_TblCol);
+  pSymbol()->Y_vCut(P_TblCol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,7 +490,7 @@ bool Card_Term::bIsTblColOdn(void)
   if (Symbol::b_IsTableColOrdinal(szValue()))
     return true;
 
-  if (pSymVal()->Y_bHas(P_TblCol) && Symbol::b_IsTableColOrdinal(pSymVal()->Y_szGet(P_TblCol)))
+  if (pSymbol()->Y_bHas(P_TblCol) && Symbol::b_IsTableColOrdinal(pSymbol()->Y_szGet(P_TblCol)))
     return true;
 
   return false;
@@ -503,7 +503,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! pSymVal()->Y_bHas(P_Column)) {
+  if (!pSymbol()->Y_bHas(P_Column)) {
     vPrintCard_bySettings(pRibbon, iDepth);
     return;
   }
@@ -511,7 +511,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   s256 sTerm = szValue();
-  s32 sType_short = pSymVal()->Y_szGet(P_Type);
+  s32 sType_short = pSymbol()->Y_szGet(P_Type);
 
   pRibbon->vSprintRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
@@ -540,7 +540,7 @@ void Card_Term::vFlip(Card_Projection* p_projection_needed)
     Stz* szStem = szValue();
     Stz* szBecomes = p_expr_needed->szValue();
 
-    pSymVal()->Y_vSet(P_TblCol, szStem);
+    pSymbol()->Y_vSet(P_TblCol, szStem);
     vValue(szBecomes);
   }
 }

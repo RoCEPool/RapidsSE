@@ -180,7 +180,7 @@ bool Card_RpnCalc::bIsBraced(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->pSymVal()->bNeedsBrace())
+    if (xCI.G.p_term->pSymbol()->bNeedsBrace())
       return true;
   }
 
@@ -208,7 +208,7 @@ bool Card_RpnCalc::bIsSame(Card_RpnCalc* p_rpnCalc_arg)
     if (szThis->bSame(szArg))
       continue;
 
-    Stz* szArg_tblCol = p_term_arg->pSymVal()->Y_szGet(P_TblCol);
+    Stz* szArg_tblCol = p_term_arg->pSymbol()->Y_szGet(P_TblCol);
     if (szArg_tblCol && szThis->bSame(szArg_tblCol))
       continue;
 
@@ -581,14 +581,14 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
 
-    if (xKid.p_term()->pSymVal()->Y_bHas(P_Type))
+    if (xKid.p_term()->pSymbol()->Y_bHas(P_Type))
       continue;
 
     if (Symbol::b_IsKeyOrdinal(xKid.p_term()->szValue())) {
 
       Card_Expr *p_expr_found =
           pCI->G.p_key->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
-      xKid.p_term()->pSymVal()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+      xKid.p_term()->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 
       continue;
     }
@@ -597,7 +597,7 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
 
       Card_Expr *p_expr_found =
           pCI->Analysis.m_pProjection_prior->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
-      xKid.p_term()->pSymVal()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+      xKid.p_term()->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 
       continue;
     }
@@ -612,7 +612,7 @@ Stz* Card_RpnCalc::szP_Type(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szP_Type = pSymVal()->Y_szGet(P_Type);
+  Stz* szP_Type = pSymbol()->Y_szGet(P_Type);
   if (szP_Type)
     return szP_Type;
 

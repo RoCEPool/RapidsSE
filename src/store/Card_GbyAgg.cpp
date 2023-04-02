@@ -123,7 +123,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
     return;
   }
 
-  pSymVal()->Y_vSet(P_BreakPt);
+  pSymbol()->Y_vSet(P_BreakPt);
 
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
@@ -228,7 +228,7 @@ void Card_GbyAgg::vPromote_gbyAgg_To_ordAgg(CardIter* pCI)
   if (! (pCI->G.p_level = pSub_level()) )
     return;
 
-  if (AL_PARTITION != pCI->G.p_level->pSymVal()->Y_iGet(P_Level))
+  if (AL_PARTITION != pCI->G.p_level->pSymbol()->Y_iGet(P_Level))
     return;
 
   if (! pCI->StreamOrder.m_pKey_running)
@@ -251,7 +251,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_gbyAgg->pSymVal()->Y_vSet(P_Smoothed);
+  pCI->G.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 
   if (bInject_foldExpr) {
     pCI->G.p_gbyAgg->vInject_foldExpr(pCI);
@@ -275,7 +275,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->vPrintBoard(__LINE__);
 
-  pCI->G.p_gbyAgg->pSymVal()->Y_vSet(P_Smoothed);
+  pCI->G.p_gbyAgg->pSymbol()->Y_vSet(P_Smoothed);
 
   if (pCarryForward->GbyAgg.m_bInject_foldExpr) {
     pCI->G.p_gbyAgg->vInject_foldExpr(pCI);

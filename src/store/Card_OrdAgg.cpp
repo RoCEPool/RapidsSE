@@ -66,7 +66,7 @@ void Card_OrdAgg::vEarlyProject_root(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT))
     return;
 
-  pSymVal()->Y_vSet(P_BreakPt);
+  pSymbol()->Y_vSet(P_BreakPt);
 
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();

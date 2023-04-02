@@ -21,7 +21,7 @@ Card_Topology::Card_Topology(eYG eStageTopo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pSymVal()->Y_vSet(P_StageTopo, (i8)eStageTopo);
+  pSymbol()->Y_vSet(P_StageTopo, (i8)eStageTopo);
   
   _checkInitialised_(CN_CARD);
   

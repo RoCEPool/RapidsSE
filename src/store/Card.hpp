@@ -277,7 +277,7 @@ namespace STORE
 
     char    m_cMark1;
     char    m_cMark2;
-    Symbol  m_xSymVal;
+    Symbol  m_xSymbol;
 
     Card*   m_pLastPrintParent;
 
@@ -382,7 +382,7 @@ namespace STORE
     bool bSameValueRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     bool bSameValuePpyRecursive(Card* pCard_OTHER); // not needed??
 
-    Symbol* pSymVal(void);
+    Symbol* pSymbol(void);
 
     char cValue(void);
     i8   iValue(void);

@@ -60,7 +60,7 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_having->pSymVal()->Y_vSet(P_Smoothed);
+  pCI->G.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
   bool bBump = ! bSawProject;
 
@@ -75,7 +75,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pCI->G.p_having->pSymVal()->Y_vSet(P_Smoothed);
+  pCI->G.p_having->pSymbol()->Y_vSet(P_Smoothed);
 
   bool bBump = ! pCarryForward->Project_postAgg.m_bSeen;
 
@@ -126,7 +126,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
-    pCI->G.p_term->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+    pCI->G.p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
 
     DELETE_CARD(p_term_1);
 

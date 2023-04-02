@@ -49,7 +49,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_key(CardIter* pCI, Card_Expr* p_
 
   pCI->G.p_expr = new Card_Expr;
 
-  pCI->G.p_expr->pSymVal()->Y_vSet(P_Injected);
+  pCI->G.p_expr->pSymbol()->Y_vSet(P_Injected);
 
   pCI->G.p_expr->vAppend(p_expr_fold->pSub_type()->pDupCardRecursive());
 
@@ -69,7 +69,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
 
   Card_Expr* p_expr_new = new Card_Expr;
 
-  p_expr_new->pSymVal()->Y_vSet(P_Injected);
+  p_expr_new->pSymbol()->Y_vSet(P_Injected);
 
   p_expr_new->vAppend(p_expr_fold->pSub_type()->pDupCardRecursive());
 
@@ -80,7 +80,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
 
   Card_Term* p_term_new = p_expr_fold->pSub_term()->pClone("$K1"_Stz);
   if (p_expr_fold->pSub_type())
-    p_rpnCalc_new->pSymVal()->Y_vSet(P_Type,szCT_char[Card::eTo_eCT(p_expr_fold->pSub_type()->szValue())]);
+    p_rpnCalc_new->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_fold->pSub_type()->szValue())]);
 
   p_rpnCalc_new->vAppend(p_term_new);
 

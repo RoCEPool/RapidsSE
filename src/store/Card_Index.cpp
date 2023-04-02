@@ -58,7 +58,7 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
 
   while (xCI_indexes.G_bEachMain(CK_INDEX)) {
 
-    bool bChosenIndex = xCI_indexes.G.p_index->pSymVal()->Y_bHas(P_ChosenIndex);
+    bool bChosenIndex = xCI_indexes.G.p_index->pSymbol()->Y_bHas(P_ChosenIndex);
 
     xCI_indexes.G.p_bounds = xCI_indexes.G.p_index->pSub_bounds();
     if (! xCI_indexes.G.p_bounds)
@@ -66,7 +66,7 @@ void Card_Index::vCullNonusedBounds(CardIter* pCI) {
 
     CardIter xCI_bounds(xCI_indexes.G.p_bounds);
     while (xCI_bounds.G_bEachMain(CK_BOUND)) {
-      if (xCI_bounds.G.p_bound->pSymVal()->Y_bHas(P_ChosenBound)) {
+      if (xCI_bounds.G.p_bound->pSymbol()->Y_bHas(P_ChosenBound)) {
         continue;
       }
 
@@ -143,7 +143,7 @@ void Card_Index::vDeleteBounds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pSymVal()->Y_vCut(P_ChosenIndex);
+  pSymbol()->Y_vCut(P_ChosenIndex);
   Card_Bounds* p_Bounds = pSub_bounds();
   vRemoveDeleteChild(p_Bounds);
 }
@@ -155,7 +155,7 @@ void Card_Index::vSet_Choose_index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  this->pSymVal()->Y_vSet(P_ChosenIndex);
+  this->pSymbol()->Y_vSet(P_ChosenIndex);
 }
 
 /*----------------------------------------------------------------------------*/
