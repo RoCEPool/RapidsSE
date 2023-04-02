@@ -2342,28 +2342,9 @@ Symbol::operator Stz*(void)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Symbol::e_EvalRelnOp(Stz* szValue)
-{
-  _static_
-
-  if (szValue->bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (szValue->bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (szValue->bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (szValue->bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (szValue->bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (szValue->bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (szValue->bSame(">"_Stz))   return RO_GREATER_THAN;
-
-  else return RO_NONE;
-}
 
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
@@ -2453,7 +2434,15 @@ bool Symbol::b_IsTableColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 eRO Symbol::eEvalRelnOp(void)
 {
-  return e_EvalRelnOp(m_sValue);
+       if (m_sValue.bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (m_sValue.bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (m_sValue.bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (m_sValue.bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (m_sValue.bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (m_sValue.bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (m_sValue.bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2586,7 +2575,7 @@ bool Symbol::bIsCorrParamOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsRelnOp(void)
 {
-  if (RO_NONE != Symbol::e_EvalRelnOp(m_sValue))
+  if (RO_NONE != eEvalRelnOp())
     return true;
 
   return false;
@@ -2611,7 +2600,13 @@ bool Symbol::bIsResultOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsStreamColOrdinal(void)
 {
-  return b_IsStreamColOrdinal(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

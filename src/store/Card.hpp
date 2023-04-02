@@ -194,7 +194,6 @@ namespace STORE
     operator Stz*(void);
 
 
-    static eRO  e_EvalRelnOp(Stz* szValue);
     static eQO  e_EvalSubQryOp(Stz* szValue);
     static i8   i_GetColOdn(Stz* szValue);
 

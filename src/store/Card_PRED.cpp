@@ -325,7 +325,7 @@ bool Card_PRED::bMaybeFilterPred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (RO_NONE == Symbol::e_EvalRelnOp(szValue()))
+  if (RO_NONE == pSymbol()->eEvalRelnOp())
     return false;
 
   if (bContains_callToSubQuery(pCI))

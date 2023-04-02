@@ -253,9 +253,7 @@ eRO Card_Term::eEvalRelOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szValue = this->szValue();
-
-  eRO eRelOp = Symbol::e_EvalRelnOp(szValue);
+  eRO eRelOp = pSymbol()->eEvalRelnOp();
 
   return eRelOp;
 }
