@@ -735,10 +735,13 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_expr->vAppend(p_rpnCalc);
     p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
 
-    s32 sTblCol_from_SEmetadata;
-    sTblCol_from_SEmetadata.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
-
-    Card_Term *p_term = new Card_Term(sTblCol_from_SEmetadata);
+//    s32 sTblCol_from_SEmetadata;
+//    sTblCol_from_SEmetadata.vSprint("$%c.%lld"_Stz, cTblSyn, i_Col + 1);
+//    Card_Term *p_term = new Card_Term(sTblCol_from_SEmetadata);
+//    p_rpnCalc->vAppend(p_term);
+    Symbol xSymbol_tblCol;
+    xSymbol_tblCol.vSetTableColOrdinal(cTblSyn, i_Col + 1);
+    Card_Term *p_term = new Card_Term(xSymbol_tblCol);
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

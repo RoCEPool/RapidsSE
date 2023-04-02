@@ -296,8 +296,8 @@ namespace STORE
     Card(eCK eCard);
     Card(eCK eCard, Symbol* pSymbol);
     Card(eCK eCard, Stz* szValue);
-    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpt);
-    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpt);
+    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpy);
+    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpy);
     void vInit(eCK eCard);
 
    ~Card(void) noexcept(false);

@@ -69,7 +69,7 @@ Card::Card(eCK eCard, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpt)
+Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpy)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -78,13 +78,13 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpt)
 
   vValue(szValue);
 
-  pSymbol()->Y_vSet(szPpyNm, iPpt);
+  pSymbol()->Y_vSet(szPpyNm, iPpy);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpt)
+Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpy)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -93,7 +93,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpt)
 
   vValue(szValue);
 
-  pSymbol()->Y_vSet(szPpyNm, szPpt);
+  pSymbol()->Y_vSet(szPpyNm, szPpy);
 }
 
 /*----------------------------------------------------------------------------*/
