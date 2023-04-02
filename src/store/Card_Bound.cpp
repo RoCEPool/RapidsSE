@@ -72,10 +72,13 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
 
   Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szValue());
 
+  Symbol xSymbol_idxColOdn;
+  xSymbol_idxColOdn.vSetIndexColOrdinal(1);
+
   if (Symbol::b_IsTableColOrdinal(pTerm_0->szValue())) {
     char cTblSyn_term_0 = Symbol::c_TableColSyn(pTerm_0->szValue());
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
-      p_term = new Card_Term("$I1"_Stz);
+      p_term = new Card_Term(xSymbol_idxColOdn);
       p_bound->vAppend(p_term);
       p_term = pTerm_1->pClone();
       p_bound->vAppend(p_term);
@@ -84,7 +87,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     if (Symbol::b_IsTableColOrdinal(pTerm_1->szValue())) {
       char cTblSyn_term_1 = Symbol::c_TableColSyn(pTerm_1->szValue());
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
-        p_term = new Card_Term("$I1"_Stz);
+        p_term = new Card_Term(xSymbol_idxColOdn);
         p_bound->vAppend(p_term);
         p_term = pTerm_0->pClone();
         p_bound->vAppend(p_term);
@@ -97,7 +100,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   if (Symbol::b_IsTableColOrdinal(pTerm_1->szValue())) {
     char cTblSyn_term_1 = Symbol::c_TableColSyn(pTerm_1->szValue());
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
-      p_term = new Card_Term("$I1"_Stz);
+      p_term = new Card_Term(xSymbol_idxColOdn);
       p_bound->vAppend(p_term);
       p_term = pTerm_0->pClone();
       p_bound->vAppend(p_term);

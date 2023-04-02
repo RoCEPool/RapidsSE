@@ -237,7 +237,6 @@ namespace STORE
 
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
-    void vSetParamOrdinal(i8 iParamOdn);
     void vSetStreamColOrdinal(i8 iStmColOdn);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);

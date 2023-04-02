@@ -120,14 +120,14 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
   _static_
 
-  s32 sKn;
-  sKn.vSprint("$K%lld"_Stz, p_expr_gby->i_Child() + 1);
+  Symbol xSymbol_Kn;
+  xSymbol_Kn.vSetKeyOrdinal(p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(sKn.szStz());
+  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(xSymbol_Kn);
 
   p_expr->vAppend(p_type);
   if (p_as)
@@ -397,7 +397,10 @@ void Card_Expr::vRenumberAsKeyOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValueSprint("$K%lld"_Stz,i_Expr);
+  Symbol xSymbol;
+  xSymbol.vSetKeyOrdinal(i_Expr);
+
+  vValue(xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
