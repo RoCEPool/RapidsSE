@@ -232,7 +232,7 @@ bool Card_RpnCalc::bIsSingleCol(void)
   Card* pChild = pGetChild(0);
   Stz* szVal = pChild->szValue();
 
-  if (Symbol::b_IsColOrdinal(szVal))
+  if (pChild->pSymbol()->bIsColOrdinal())
     return true;
 
   return true;

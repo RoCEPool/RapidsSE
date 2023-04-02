@@ -2393,20 +2393,6 @@ i8 Symbol::i_GetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a column ordinal?  (i.e. $n or $c.n)                              */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsColOrdinal(Stz* szValue)
-{
-  _static_
-
-  if (Symbol::b_IsStreamColOrdinal(szValue) || Symbol::b_IsTableColOrdinal(szValue))
-    return true;
-
-  return false;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* is value a correlation parameter ordinal?  (i.e. %n)                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsCorrParamOrdinal(Stz* szValue)
@@ -2689,7 +2675,11 @@ bool Symbol::bIsKeyOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsColOrdinal(void)
 {
-  return b_IsColOrdinal(m_sValue);
+  Stz* szValue = m_sValue;
+  if (b_IsStreamColOrdinal(szValue) || Symbol::b_IsTableColOrdinal(szValue))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
