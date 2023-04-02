@@ -128,7 +128,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (! SymVal::b_IsStreamColOrdinal(p_term->szValue()))
+    if (! Symbol::b_IsStreamColOrdinal(p_term->szValue()))
       return C_CONTINUE_RECURSION;
 
     Stz* szColNm = nullptr;

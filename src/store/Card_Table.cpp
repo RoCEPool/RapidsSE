@@ -455,17 +455,17 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
   Stz* szTerm = p_term->szValue();
 
   // parameters are considered within scope
-  if (SymVal::b_IsCorrParamOrdinal(szTerm))
+  if (Symbol::b_IsCorrParamOrdinal(szTerm))
     return true;
 
   // literals are considered within scope
-  if (! SymVal::b_IsTableColOrdinal(szTerm)) {
+  if (! Symbol::b_IsTableColOrdinal(szTerm)) {
     return true;
   }
 
   // is the table column within scope?
   char cTblSyn_table = this->cValue();
-  char cTblSyn_term = SymVal::c_TableColSyn(szTerm);
+  char cTblSyn_term = Symbol::c_TableColSyn(szTerm);
 //  if (cTblSyn_term <= cTblSyn_table)
 //    return true;
   if (pScope->bInScope(cTblSyn_term))

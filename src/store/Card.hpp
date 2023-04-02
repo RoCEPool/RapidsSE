@@ -180,21 +180,26 @@ namespace STORE
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_TERMINATE_RECURSION = false;
 
-  class SymVal {
+  class Symbol {
   public:
     s256    m_sValue;
     TagSet* m_pProperties;
 
   public:
     void operator =(Stz* szArg);
-    void operator =(SymVal* pSymVal);
+    void operator =(Symbol* pSymbol);
+    void operator =(Symbol& rxSymbol);
+
+    // auto conversion
+    operator Stz*(void);
+
 
     static eRO  e_EvalRelnOp(Stz* szValue);
     static eQO  e_EvalSubQryOp(Stz* szValue);
     static i8   i_GetColOdn(Stz* szValue);
     static bool b_IsBoolFn(Stz* szValue);           // between, ... matchTrailing
     static bool b_IsIndexColOrdinal(Stz* szValue);  // $In
-    static bool b_IsKeyOrdinal(Stz* szValue);       // #Kn
+    static bool b_IsKeyOrdinal(Stz* szValue);       // $Kn
     static bool b_IsColOrdinal(Stz* szValue);       // $n or $c.n
     static bool b_IsCorrParamOrdinal(Stz* szValue); // %n
     static bool b_IsRelnOp(Stz* szValue);           // <, <=, ... >
@@ -215,7 +220,7 @@ namespace STORE
     bool bIsBoolFn(void);           // between, ... matchTrailing
     bool bIsCommaSeparator(void);
     bool bIsIndexColOrdinal(void);  // $In
-    bool bIsKeyOrdinal(void);       // #Kn
+    bool bIsKeyOrdinal(void);       // $Kn
     bool bIsColOrdinal(void);       // $n or $c.n
     bool bIsCorrParamOrdinal(void); // %n
     bool bIsRelnOp(void);           // <, <=, ... >
@@ -227,6 +232,8 @@ namespace STORE
     bool bIsTableColOrdinal(void);  // $c.n
 
     bool bNeedsBrace(void);
+
+    void vSet(Symbol* pSymbol);
 
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
@@ -270,7 +277,7 @@ namespace STORE
 
     char    m_cMark1;
     char    m_cMark2;
-    SymVal  m_xSymVal;
+    Symbol  m_xSymVal;
 
     Card*   m_pLastPrintParent;
 
@@ -287,7 +294,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card(eCK eCard);
-    Card(eCK eCard, SymVal* pSymVal);
+    Card(eCK eCard, Symbol* pSymbol);
     Card(eCK eCard, Stz* szValue);
     Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpt);
     Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpt);
@@ -375,7 +382,7 @@ namespace STORE
     bool bSameValueRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     bool bSameValuePpyRecursive(Card* pCard_OTHER); // not needed??
 
-    SymVal* pSymVal(void);
+    Symbol* pSymVal(void);
 
     char cValue(void);
     i8   iValue(void);

@@ -72,8 +72,8 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
 
   Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szValue());
 
-  if (SymVal::b_IsTableColOrdinal(pTerm_0->szValue())) {
-    char cTblSyn_term_0 = SymVal::c_TableColSyn(pTerm_0->szValue());
+  if (Symbol::b_IsTableColOrdinal(pTerm_0->szValue())) {
+    char cTblSyn_term_0 = Symbol::c_TableColSyn(pTerm_0->szValue());
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
@@ -81,8 +81,8 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
       p_bound->vAppend(p_term);
     }
     else
-    if (SymVal::b_IsTableColOrdinal(pTerm_1->szValue())) {
-      char cTblSyn_term_1 = SymVal::c_TableColSyn(pTerm_1->szValue());
+    if (Symbol::b_IsTableColOrdinal(pTerm_1->szValue())) {
+      char cTblSyn_term_1 = Symbol::c_TableColSyn(pTerm_1->szValue());
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = new Card_Term("$I1"_Stz);
         p_bound->vAppend(p_term);
@@ -94,8 +94,8 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     }
   }
   else
-  if (SymVal::b_IsTableColOrdinal(pTerm_1->szValue())) {
-    char cTblSyn_term_1 = SymVal::c_TableColSyn(pTerm_1->szValue());
+  if (Symbol::b_IsTableColOrdinal(pTerm_1->szValue())) {
+    char cTblSyn_term_1 = Symbol::c_TableColSyn(pTerm_1->szValue());
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = new Card_Term("$I1"_Stz);
       p_bound->vAppend(p_term);
@@ -252,7 +252,7 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (SymVal::b_IsIndexColOrdinal(xCI.G.p_term->szValue()))
+    if (Symbol::b_IsIndexColOrdinal(xCI.G.p_term->szValue()))
       return xCI.G.p_term;
 
   return nullptr;
@@ -268,7 +268,7 @@ Stz* Card_Bound::szGet_idxColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (SymVal::b_IsIndexColOrdinal(xCI.G.p_term->szValue()))
+    if (Symbol::b_IsIndexColOrdinal(xCI.G.p_term->szValue()))
       return xCI.G.p_term->szValue();
 
   return nullptr;
@@ -298,7 +298,7 @@ Stz* Card_Bound::szGet_tblColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (SymVal::b_IsTableColOrdinal(xCI.G.p_term->szValue()))
+    if (Symbol::b_IsTableColOrdinal(xCI.G.p_term->szValue()))
       return xCI.G.p_term->szValue();
 
   return nullptr;

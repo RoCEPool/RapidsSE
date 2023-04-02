@@ -99,7 +99,7 @@ void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
     if (bSkipFoldExpr && p_term->bIsFoldExpr())
       return C_CONTINUE_RECURSION;
 
-    if (SymVal::b_IsStreamColOrdinal(p_term->szValue())) {
+    if (Symbol::b_IsStreamColOrdinal(p_term->szValue())) {
       p_term->vBump_StreamColOrdinal(nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }

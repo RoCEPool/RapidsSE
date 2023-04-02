@@ -84,7 +84,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
     pCI->G.p_as = pCI->G.p_expr->pSub_as();
 
-    if (SymVal::b_IsSqyColOrdinal(pCI->G.p_as->szValue()))
+    if (Symbol::b_IsSqyColOrdinal(pCI->G.p_as->szValue()))
       continue;
 
     pCI->vPrintBoard(__LINE__);

@@ -39,15 +39,15 @@ Card::Card(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, SymVal* pSymVal)
+Card::Card(eCK eCard, Symbol* pSymbol)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vInit(eCard);
 
-  if (pSymVal->m_pProperties)
-    m_xSymVal.Y_vAll(pSymVal->m_pProperties);
+  if (pSymbol->m_pProperties)
+    m_xSymVal.Y_vAll(pSymbol->m_pProperties);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -1414,7 +1414,7 @@ bool Card::bSameValuePpyRecursive(Card* pCard_OTHER)
 /*----------------------------------------------------------------------------*/
 /* get val                                                                    */
 /*----------------------------------------------------------------------------*/
-SymVal* Card::pSymVal(void)
+Symbol* Card::pSymVal(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2282,14 +2282,14 @@ Card_Where* Card::pSub_where(void)
 /*============================================================================*/
 
 /*============================================================================*/
-/* SymVal.cpp -- Symbolic Value                                               */
+/* Symbol.cpp -- Symbolic Value                                               */
 /*============================================================================*/
 
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void SymVal::operator =(Stz* szArg)
+void Symbol::operator =(Stz* szArg)
 {
   m_sValue = szArg;
 }
@@ -2297,14 +2297,14 @@ void SymVal::operator =(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void SymVal::operator =(SymVal* pSymVal)
+void Symbol::operator =(Symbol* pSymbol)
 {
-  m_sValue = pSymVal->m_sValue;
+  m_sValue = pSymbol->m_sValue;
 
-  if (pSymVal->m_pProperties) {
+  if (pSymbol->m_pProperties) {
     if (! m_pProperties)
       m_pProperties = new TagSet;
-    m_pProperties->vCopy(pSymVal->m_pProperties);
+    m_pProperties->vCopy(pSymbol->m_pProperties);
   }
   else
   if (m_pProperties) {
@@ -2312,6 +2312,35 @@ void SymVal::operator =(SymVal* pSymVal)
     m_pProperties = nullptr;
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::operator =(Symbol& rxSymbol)
+{
+  m_sValue = rxSymbol.m_sValue;
+
+  if (rxSymbol.m_pProperties) {
+    if (! m_pProperties)
+      m_pProperties = new TagSet;
+    m_pProperties->vCopy(rxSymbol.m_pProperties);
+  }
+  else
+  if (m_pProperties) {
+    delete m_pProperties;
+    m_pProperties = nullptr;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* auto conversion operator : as Stz*                                         */
+/*----------------------------------------------------------------------------*/
+Symbol::operator Stz*(void)
+{
+
+  return m_sValue.szStz();
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -2321,7 +2350,7 @@ void SymVal::operator =(SymVal* pSymVal)
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO SymVal::e_EvalRelnOp(Stz* szValue)
+eRO Symbol::e_EvalRelnOp(Stz* szValue)
 {
   _static_
 
@@ -2339,7 +2368,7 @@ eRO SymVal::e_EvalRelnOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
-eQO SymVal::e_EvalSubQryOp(Stz* szValue)
+eQO Symbol::e_EvalSubQryOp(Stz* szValue)
 {
   _static_
 
@@ -2354,7 +2383,7 @@ eQO SymVal::e_EvalSubQryOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
 /*----------------------------------------------------------------------------*/
-i8 SymVal::i_GetColOdn(Stz* szValue)
+i8 Symbol::i_GetColOdn(Stz* szValue)
 {
   _static_
 
@@ -2366,7 +2395,7 @@ i8 SymVal::i_GetColOdn(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a boolean function?                                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsBoolFn(Stz* szValue)
+bool Symbol::b_IsBoolFn(Stz* szValue)
 {
   _static_
 
@@ -2387,7 +2416,7 @@ bool SymVal::b_IsBoolFn(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsIndexColOrdinal(Stz* szValue)
+bool Symbol::b_IsIndexColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2406,7 +2435,7 @@ bool SymVal::b_IsIndexColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a key ordinal?  (i.e. $Kn)                                        */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsKeyOrdinal(Stz* szValue)
+bool Symbol::b_IsKeyOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2425,11 +2454,11 @@ bool SymVal::b_IsKeyOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a column ordinal?  (i.e. $n or $c.n)                              */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsColOrdinal(Stz* szValue)
+bool Symbol::b_IsColOrdinal(Stz* szValue)
 {
   _static_
 
-  if (SymVal::b_IsStreamColOrdinal(szValue) || SymVal::b_IsTableColOrdinal(szValue))
+  if (Symbol::b_IsStreamColOrdinal(szValue) || Symbol::b_IsTableColOrdinal(szValue))
     return true;
 
   return false;
@@ -2439,7 +2468,7 @@ bool SymVal::b_IsColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a correlation parameter ordinal?  (i.e. %n)                       */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsCorrParamOrdinal(Stz* szValue)
+bool Symbol::b_IsCorrParamOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2456,11 +2485,11 @@ bool SymVal::b_IsCorrParamOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a relational operator?                                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsRelnOp(Stz* szValue)
+bool Symbol::b_IsRelnOp(Stz* szValue)
 {
   _static_
 
-  if (RO_NONE != SymVal::e_EvalRelnOp(szValue))
+  if (RO_NONE != Symbol::e_EvalRelnOp(szValue))
     return true;
 
   return false;
@@ -2469,7 +2498,7 @@ bool SymVal::b_IsRelnOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a result ordinal?  (i.e. #n)                                      */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsResultOrdinal(Stz* szValue)
+bool Symbol::b_IsResultOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2485,7 +2514,7 @@ bool SymVal::b_IsResultOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a stream-column ordinal?  (i.e. $n)                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsStreamColOrdinal(Stz* szValue)
+bool Symbol::b_IsStreamColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2501,7 +2530,7 @@ bool SymVal::b_IsStreamColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a sub-query operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsSubQueryOp(Stz* szValue)
+bool Symbol::b_IsSubQueryOp(Stz* szValue)
 {
   _static_
 
@@ -2516,7 +2545,7 @@ bool SymVal::b_IsSubQueryOp(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsSubQueryPattern(BASE::Stz *szValue)
+bool Symbol::b_IsSubQueryPattern(BASE::Stz *szValue)
 {
   _static_
 
@@ -2541,7 +2570,7 @@ bool SymVal::b_IsSubQueryPattern(BASE::Stz *szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a subQuery-column ordinal?  (i.e. __n)                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsSqyColOrdinal(Stz* szValue)
+bool Symbol::b_IsSqyColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2567,7 +2596,7 @@ bool SymVal::b_IsSqyColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a table-column ordinal?  (i.e. $c.n)                              */
 /*----------------------------------------------------------------------------*/
-bool SymVal::b_IsTableColOrdinal(Stz* szValue)
+bool Symbol::b_IsTableColOrdinal(Stz* szValue)
 {
   _static_
 
@@ -2588,7 +2617,7 @@ bool SymVal::b_IsTableColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* get table column syn from $c.n                                             */
 /*----------------------------------------------------------------------------*/
-char SymVal::c_TableColSyn(Stz* szValue)
+char Symbol::c_TableColSyn(Stz* szValue)
 {
   _static_
 
@@ -2608,10 +2637,11 @@ char SymVal::c_TableColSyn(Stz* szValue)
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
-eRO SymVal::eEvalRelnOp(void)
+eRO Symbol::eEvalRelnOp(void)
 {
   return e_EvalRelnOp(m_sValue);
 }
@@ -2619,7 +2649,7 @@ eRO SymVal::eEvalRelnOp(void)
 /*----------------------------------------------------------------------------*/
 /* evaluate sub-query op                                                      */
 /*----------------------------------------------------------------------------*/
-eQO SymVal::eEvalSubQryOp(void)
+eQO Symbol::eEvalSubQryOp(void)
 {
   return e_EvalSubQryOp(m_sValue);
 }
@@ -2627,7 +2657,7 @@ eQO SymVal::eEvalSubQryOp(void)
 /*----------------------------------------------------------------------------*/
 /* get column ordinal n  (i.e. $n)                                            */
 /*----------------------------------------------------------------------------*/
-i8 SymVal::iGetColOdn(void)
+i8 Symbol::iGetColOdn(void)
 {
   return i_GetColOdn(m_sValue);
 }
@@ -2635,7 +2665,7 @@ i8 SymVal::iGetColOdn(void)
 /*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsAggOp(void)
+bool Symbol::bIsAggOp(void)
 {
 
        if (m_sValue.bSame("avg"_Stz))      return true;
@@ -2652,7 +2682,7 @@ bool SymVal::bIsAggOp(void)
 /*----------------------------------------------------------------------------*/
 /* is value a boolean function?                                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsBoolFn(void)
+bool Symbol::bIsBoolFn(void)
 {
   return b_IsBoolFn(m_sValue);
 }
@@ -2660,7 +2690,7 @@ bool SymVal::bIsBoolFn(void)
 /*----------------------------------------------------------------------------*/
 /* is this term a comma separator?                                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsCommaSeparator(void)
+bool Symbol::bIsCommaSeparator(void)
 {
   if (m_sValue.bSame(","_Stz))
     return true;
@@ -2671,7 +2701,7 @@ bool SymVal::bIsCommaSeparator(void)
 /*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsIndexColOrdinal(void)
+bool Symbol::bIsIndexColOrdinal(void)
 {
   return b_IsIndexColOrdinal(m_sValue);
 }
@@ -2679,7 +2709,7 @@ bool SymVal::bIsIndexColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is value a key ordinal?  (i.e. $Kn)                                        */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsKeyOrdinal(void)
+bool Symbol::bIsKeyOrdinal(void)
 {
   return b_IsKeyOrdinal(m_sValue);
 }
@@ -2687,7 +2717,7 @@ bool SymVal::bIsKeyOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is value a column ordinal?  (i.e. $n or $c.n)                              */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsColOrdinal(void)
+bool Symbol::bIsColOrdinal(void)
 {
   return b_IsColOrdinal(m_sValue);
 }
@@ -2695,7 +2725,7 @@ bool SymVal::bIsColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is value a correlation parameter ordinal?  (i.e. %n)                       */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsCorrParamOrdinal(void)
+bool Symbol::bIsCorrParamOrdinal(void)
 {
   return b_IsCorrParamOrdinal(m_sValue);
 }
@@ -2703,7 +2733,7 @@ bool SymVal::bIsCorrParamOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is value a relational operator?                                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsRelnOp(void)
+bool Symbol::bIsRelnOp(void)
 {
   return b_IsRelnOp(m_sValue);
 }
@@ -2711,7 +2741,7 @@ bool SymVal::bIsRelnOp(void)
 /*----------------------------------------------------------------------------*/
 /* is value a result ordinal?  (i.e. #n)                                      */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsResultOrdinal(void)
+bool Symbol::bIsResultOrdinal(void)
 {
   return b_IsResultOrdinal(m_sValue);
 }
@@ -2719,7 +2749,7 @@ bool SymVal::bIsResultOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is value a stream-column ordinal?  (i.e. $n)                               */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsStreamColOrdinal(void)
+bool Symbol::bIsStreamColOrdinal(void)
 {
   return b_IsStreamColOrdinal(m_sValue);
 }
@@ -2727,7 +2757,7 @@ bool SymVal::bIsStreamColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is value a sub-query operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsSubQueryOp(void)
+bool Symbol::bIsSubQueryOp(void)
 {
   return b_IsSubQueryOp(m_sValue);
 }
@@ -2735,7 +2765,7 @@ bool SymVal::bIsSubQueryOp(void)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsSubQueryPattern(void)
+bool Symbol::bIsSubQueryPattern(void)
 {
   return b_IsSubQueryPattern(m_sValue);
 }
@@ -2743,7 +2773,7 @@ bool SymVal::bIsSubQueryPattern(void)
 /*----------------------------------------------------------------------------*/
 /* is value a subQuery-column ordinal?  (i.e. __n)                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsSqyColOrdinal(void)
+bool Symbol::bIsSqyColOrdinal(void)
 {
   return b_IsSqyColOrdinal(m_sValue);
 }
@@ -2751,7 +2781,7 @@ bool SymVal::bIsSqyColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* is value a table-column ordinal?  (i.e. $c.n)                              */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bIsTableColOrdinal(void)
+bool Symbol::bIsTableColOrdinal(void)
 {
   return b_IsTableColOrdinal(m_sValue);
 }
@@ -2759,7 +2789,7 @@ bool SymVal::bIsTableColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool SymVal::bNeedsBrace(void)
+bool Symbol::bNeedsBrace(void)
 {
   if (m_sValue.bSame("between"_Stz))
     return true;
@@ -2779,11 +2809,32 @@ bool SymVal::bNeedsBrace(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet(Symbol* pSymbol)
+{
+
+  m_sValue = pSymbol->m_sValue;
+
+  if (pSymbol->m_pProperties) {
+    if (! m_pProperties)
+      m_pProperties = new TagSet;
+    m_pProperties->vCopy(pSymbol->m_pProperties);
+  }
+  else
+  if (m_pProperties) {
+    delete m_pProperties;
+    m_pProperties = nullptr;
+  }
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* sprint value                                                               */
 /*----------------------------------------------------------------------------*/
-void SymVal::vSprint(Stz* szFormat, ...)
+void Symbol::vSprint(Stz* szFormat, ...)
 {
   s256 sValue;
 
@@ -2798,7 +2849,7 @@ void SymVal::vSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void SymVal::vSetIndexColOrdinal(i8 iIdxColOdn)
+void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 {
   vSprint("$I%lld"_Stz, iIdxColOdn);
 }
@@ -2806,7 +2857,7 @@ void SymVal::vSetIndexColOrdinal(i8 iIdxColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void SymVal::vSetKeyOrdinal(i8 iKeyOdn)
+void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 {
   vSprint("$K%lld"_Stz, iKeyOdn);
 }
@@ -2814,7 +2865,7 @@ void SymVal::vSetKeyOrdinal(i8 iKeyOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void SymVal::vSetParamOrdinal(i8 iParamOdn)
+void Symbol::vSetParamOrdinal(i8 iParamOdn)
 {
   vSprint("$P%lld"_Stz, iParamOdn);
 }
@@ -2822,7 +2873,7 @@ void SymVal::vSetParamOrdinal(i8 iParamOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void SymVal::vSetStreamColOrdinal(i8 iStmColOdn)
+void Symbol::vSetStreamColOrdinal(i8 iStmColOdn)
 {
   vSprint("$%lld"_Stz, iStmColOdn);
 }
@@ -2830,7 +2881,7 @@ void SymVal::vSetStreamColOrdinal(i8 iStmColOdn)
 /*----------------------------------------------------------------------------*/
 /* replace c in $c.n                                                          */
 /*----------------------------------------------------------------------------*/
-void SymVal::vSetTableColSyn(char cTblSyn)
+void Symbol::vSetTableColSyn(char cTblSyn)
 {
   ((char*) m_sValue.azChar())[1] = cTblSyn;
 }
@@ -2838,7 +2889,7 @@ void SymVal::vSetTableColSyn(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void SymVal::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
+void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 {
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 }
@@ -2846,7 +2897,7 @@ void SymVal::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 /* get table column syn from $c.n                                             */
 /*----------------------------------------------------------------------------*/
-char SymVal::cTableColSyn(void)
+char Symbol::cTableColSyn(void)
 {
   return c_TableColSyn(m_sValue);
 }
@@ -2854,7 +2905,7 @@ char SymVal::cTableColSyn(void)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-void SymVal::Y_vAll(Card* pCard_arg)
+void Symbol::Y_vAll(Card* pCard_arg)
 {
 
   if (! pCard_arg->pSymVal()->m_pProperties) {
@@ -2874,7 +2925,7 @@ void SymVal::Y_vAll(Card* pCard_arg)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-void SymVal::Y_vAll(TagSet* pProperties)
+void Symbol::Y_vAll(TagSet* pProperties)
 {
 
   if (! m_pProperties)
@@ -2886,7 +2937,7 @@ void SymVal::Y_vAll(TagSet* pProperties)
 /*----------------------------------------------------------------------------*/
 /* remove given property                                                      */
 /*----------------------------------------------------------------------------*/
-void SymVal::Y_vCut(Stz* szPpyNm)
+void Symbol::Y_vCut(Stz* szPpyNm)
 {
 
   if (! m_pProperties)
@@ -2898,7 +2949,7 @@ void SymVal::Y_vCut(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 SymVal::Y_iGet(Stz* szPpyNm)
+i8 Symbol::Y_iGet(Stz* szPpyNm)
 {
 
   if (! m_pProperties)
@@ -2912,7 +2963,7 @@ i8 SymVal::Y_iGet(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-i8 SymVal::Y_iGet(i8 i_Ppy)
+i8 Symbol::Y_iGet(i8 i_Ppy)
 {
 
   if (! m_pProperties)
@@ -2926,7 +2977,7 @@ i8 SymVal::Y_iGet(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* SymVal::Y_szGet(Stz* szPptNm)
+Stz* Symbol::Y_szGet(Stz* szPptNm)
 {
 
   if (! m_pProperties)
@@ -2940,7 +2991,7 @@ Stz* SymVal::Y_szGet(Stz* szPptNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* SymVal::Y_szGet(i8 i_Ppy)
+Stz* Symbol::Y_szGet(i8 i_Ppy)
 {
 
   if (! m_pProperties)
@@ -2954,7 +3005,7 @@ Stz* SymVal::Y_szGet(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* has given property ?                                                       */
 /*----------------------------------------------------------------------------*/
-bool SymVal::Y_bHas(Stz* szPpyNm)
+bool Symbol::Y_bHas(Stz* szPpyNm)
 {
 
   if (! m_pProperties)
@@ -2966,7 +3017,7 @@ bool SymVal::Y_bHas(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get number of properties                                                   */
 /*----------------------------------------------------------------------------*/
-i8 SymVal::Y_nPpy(void)
+i8 Symbol::Y_nPpy(void)
 {
 
   if (! m_pProperties)
@@ -2980,7 +3031,7 @@ i8 SymVal::Y_nPpy(void)
 /*----------------------------------------------------------------------------*/
 /* get given property name                                                    */
 /*----------------------------------------------------------------------------*/
-Stz* SymVal::Y_szPpyNm(i8 i_Ppy)
+Stz* Symbol::Y_szPpyNm(i8 i_Ppy)
 {
 
   if (! m_pProperties)
@@ -2994,7 +3045,7 @@ Stz* SymVal::Y_szPpyNm(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* get type of property                                                       */
 /*----------------------------------------------------------------------------*/
-eTN SymVal::Y_ePpyTkn(i8 i_Ppy)
+eTN Symbol::Y_ePpyTkn(i8 i_Ppy)
 {
 
   if (! m_pProperties)
@@ -3008,7 +3059,7 @@ eTN SymVal::Y_ePpyTkn(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void SymVal::Y_vSet(Stz* szPpyNm)
+void Symbol::Y_vSet(Stz* szPpyNm)
 {
 
   if (! m_pProperties)
@@ -3020,7 +3071,7 @@ void SymVal::Y_vSet(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void SymVal::Y_vSet(Stz* szPpyNm, i8 iPpy)
+void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
 {
 
   if (! m_pProperties)
@@ -3032,7 +3083,7 @@ void SymVal::Y_vSet(Stz* szPpyNm, i8 iPpy)
 /*----------------------------------------------------------------------------*/
 /* sprint card property value                                                 */
 /*----------------------------------------------------------------------------*/
-void SymVal::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
+void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 {
 
   s256 sPpyValue;
@@ -3048,12 +3099,12 @@ void SymVal::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void SymVal::Y_vSet(Stz* szPpyNm, Stz* szPpy)
+void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
 
   if (szPpyNm->bSame(P_TblCol)) {
     vDebugPoint();
-    RASSERT(SymVal::b_IsTableColOrdinal(szPpy));
+    RASSERT(Symbol::b_IsTableColOrdinal(szPpy));
   }
 
   if (! m_pProperties)

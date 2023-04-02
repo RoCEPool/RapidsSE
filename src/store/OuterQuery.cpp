@@ -227,9 +227,9 @@ void OuterQuery::vAnalysis_Of_where_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
     }
 
-    RASSERT(SymVal::b_IsSubQueryOp(szValue_pred));
+    RASSERT(Symbol::b_IsSubQueryOp(szValue_pred));
 
-    eQO eSubQryOp = SymVal::e_EvalSubQryOp(szValue_pred);
+    eQO eSubQryOp = Symbol::e_EvalSubQryOp(szValue_pred);
     RASSERT(QO_NONE != eSubQryOp);
 
     pSubQuery->vCaller(pCI->G.i_Board);
