@@ -485,13 +485,14 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
 
-  this->vMark1(MARK_CHANGED);
-
   char cTableSyn_actual = *cTableSyn;
   if (pTable->bIsReplicated())
     cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
-  this->vValueSprint("%c"_Stz,cTableSyn_actual);
+  Symbol xSymbol_tblSyn;
+  xSymbol_tblSyn.vSetTableColSyn(cTableSyn_actual);
+
+  this->vValueMark1(xSymbol_tblSyn,MARK_CHANGED);
 
   (*cTableSyn)++;
 }

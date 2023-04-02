@@ -2871,11 +2871,13 @@ void Symbol::vSetStreamColOrdinal(i8 iStmColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* replace c in $c.n                                                          */
+/*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetTableColSyn(char cTblSyn)
 {
-  ((char*) m_sValue.azChar())[1] = cTblSyn;
+  //((char*) m_sValue.azChar())[1] = cTblSyn;
+
+  vSprint("%c"_Stz, cTblSyn);
 }
 
 /*----------------------------------------------------------------------------*/
