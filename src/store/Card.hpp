@@ -199,7 +199,7 @@ namespace STORE
     static i8   i_GetColOdn(Stz* szValue);
 
     static bool b_IsStreamColOrdinal(Stz* szValue); // $n
-    static bool b_IsSubQueryPattern(Stz* szValue);  // __subqueryN
+    static bool b_IsSubQueryOrdinal(Stz* szValue);  // __subqueryN
     static bool b_IsTableColOrdinal(Stz* szValue);  // $c.n
 
     eRO  eEvalRelnOp(void);
@@ -229,6 +229,7 @@ namespace STORE
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSetStreamColOrdinal(i8 iStmColOdn);
+    void vSetSubQueryOrdinal(i8 iSqNo);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
 

@@ -2411,20 +2411,9 @@ bool Symbol::b_IsStreamColOrdinal(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::b_IsSubQueryPattern(BASE::Stz *szValue)
+bool Symbol::b_IsSubQueryOrdinal(BASE::Stz *szValue)
 {
   _static_
-
-//  char acFirst  = szValue->azChar()[0];
-//  char acSecond = szValue->azChar()[1];
-//  char acThird  = szValue->azChar()[2];
-//  char acFourth = szValue->azChar()[3];
-//
-//  if ('_' == acFirst
-//      && '_' == acSecond
-//      && 's' == acThird
-//      && 'u' == acFourth)
-//    return true;
 
   if (StrLib::bBeginsWith(szValue->azChar(),"__subquery") ||
       StrLib::bBeginsWith(szValue->azChar(),"__sq"))
@@ -2644,7 +2633,7 @@ bool Symbol::bIsSubQueryOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryPattern(void)
 {
-  return b_IsSubQueryPattern(m_sValue);
+  return b_IsSubQueryOrdinal(m_sValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2762,6 +2751,14 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 void Symbol::vSetStreamColOrdinal(i8 iStmColOdn)
 {
   vSprint("$%lld"_Stz, iStmColOdn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
+{
+  vSprint("__sq%02lld"_Stz, iSqNo);
 }
 
 /*----------------------------------------------------------------------------*/

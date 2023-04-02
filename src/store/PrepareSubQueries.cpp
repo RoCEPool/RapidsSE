@@ -293,12 +293,12 @@ void PrepareSubQueries::vShortenQueryNames(void)
 
   m_pCI->vTransform(__func__, "vShortenQueryNames"_Stz);
 
-
   s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
-  if (Symbol::b_IsSubQueryPattern(sBoardNm)) {
+  if (Symbol::b_IsSubQueryOrdinal(sBoardNm)) {
     i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
-    sBoardNm.vSprint("__sq%02lld"_Stz, iSqNo);
-    m_pCI->G.pBoard->vBoardNm(sBoardNm);
+    Symbol xSymbol_sqNo;
+    xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);
+    m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -306,12 +306,14 @@ void PrepareSubQueries::vShortenQueryNames(void)
   CardIter* pCI = m_pCI;
 
   auto bLambdaFn = [pCI](Card* p_card) {
-    if (! Symbol::b_IsSubQueryPattern(p_card->szValue()))
+    if (!Symbol::b_IsSubQueryOrdinal(p_card->szValue()))
       return C_CONTINUE_RECURSION;
 
     i8 iSqNo = StrLib::iGleanInt(p_card->szValue()->azChar());
 
-    p_card->vValueSprint("__sq%02lld"_Stz, iSqNo);
+    Symbol xSymbol_sqNo;
+    xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);
+    p_card->vValue(xSymbol_sqNo);
 
     return C_CONTINUE_RECURSION;
   };
