@@ -718,7 +718,9 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     Card_Expr* p_expr = new Card_Expr;
-    p_expr->vValueSprint("$%lld"_Stz,i_Expr++);
+    Symbol xSymbol;
+    xSymbol.vSetStreamColOrdinal(i_Expr++);
+    p_expr->vValue(xSymbol);
     p_projection->vAppend(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();

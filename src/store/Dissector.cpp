@@ -850,11 +850,14 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
 
   Card_Expr* pCard_Expr = new Card_Expr;
 
-  if (bIsKeyExpr)
-    pCard_Expr->vValueSprint("$K%lld"_Stz,ri_Expr);
-  else
-    pCard_Expr->vValueSprint("$%lld"_Stz,ri_Expr);
-
+  if (bIsKeyExpr) {
+    pCard_Expr->vValueSprint("$K%lld"_Stz, ri_Expr);
+  }
+  else {
+    Symbol xSymbol_stmColOdn;
+    xSymbol_stmColOdn.vSetStreamColOrdinal(ri_Expr);
+    pCard_Expr->vValueSprint(xSymbol_stmColOdn);
+  }
 
   // TYPE <type>
   Card_Type* pCard_Type = pType(pCard_RpnTerms);
