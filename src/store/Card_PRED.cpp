@@ -183,7 +183,7 @@ bool Card_PRED::bIsBoolFn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (Symbol::b_IsBoolFn(szValue()))
+  if (pSymbol()->bIsBoolFn())
     return true;
 
   return false;

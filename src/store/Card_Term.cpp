@@ -555,19 +555,18 @@ eTE Card_Term::eTermEval(void)
 
   Stz* szValue = this->szValue();
 
-       if (szValue->bSame("and"_Stz))        return TE_AND;
-  else if (szValue->bSame("or"_Stz))         return TE_OR;
-  else if (szValue->bSame("not"_Stz))        return TE_NOT;
-
-  else if (szValue->bSame("}"_Stz))          return TE_EXECUTE;
-  else if (szValue->bSame("exists"_Stz))     return TE_EXISTS;
-  else if (szValue->bSame("in"_Stz))         return TE_IN;
-  else if (szValue->bSame("notExists"_Stz))  return TE_NOTEXISTS;
-  else if (szValue->bSame("notIn"_Stz))      return TE_NOTIN;
+       if (bIsValue("and"_Stz))        return TE_AND;
+  else if (bIsValue("or"_Stz))         return TE_OR;
+  else if (bIsValue("not"_Stz))        return TE_NOT;
+  else if (bIsValue("}"_Stz))          return TE_EXECUTE;
+  else if (bIsValue("exists"_Stz))     return TE_EXISTS;
+  else if (bIsValue("in"_Stz))         return TE_IN;
+  else if (bIsValue("notExists"_Stz))  return TE_NOTEXISTS;
+  else if (bIsValue("notIn"_Stz))      return TE_NOTIN;
 
   else if (Symbol::b_IsRelnOp(szValue))         return TE_RELNOP;
 
-  else if (Symbol::b_IsBoolFn(szValue))         return TE_BOOLFN;
+  else if (pSymbol()->bIsBoolFn())         return TE_BOOLFN;
 
   else return TE_OTHER;
 }

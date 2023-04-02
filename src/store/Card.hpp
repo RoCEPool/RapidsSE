@@ -197,7 +197,6 @@ namespace STORE
     static eRO  e_EvalRelnOp(Stz* szValue);
     static eQO  e_EvalSubQryOp(Stz* szValue);
     static i8   i_GetColOdn(Stz* szValue);
-    static bool b_IsBoolFn(Stz* szValue);           // between, ... matchTrailing
     static bool b_IsIndexColOrdinal(Stz* szValue);  // $In
     static bool b_IsKeyOrdinal(Stz* szValue);       // $Kn
     static bool b_IsColOrdinal(Stz* szValue);       // $n or $c.n

@@ -2393,27 +2393,6 @@ i8 Symbol::i_GetColOdn(Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a boolean function?                                               */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsBoolFn(Stz* szValue)
-{
-  _static_
-
-  if (szValue->bSame("between"_Stz))         return true;
-  else if (szValue->bSame("inList"_Stz))          return true;
-  else if (szValue->bSame("isNull"_Stz))          return true;
-  else if (szValue->bSame("like2"_Stz))           return true;
-  else if (szValue->bSame("like3"_Stz))           return true;
-  else if (szValue->bSame("matchLeading"_Stz))    return true;
-  else if (szValue->bSame("matchMiddle"_Stz))     return true;
-  else if (szValue->bSame("matchMiddle1"_Stz))    return true;
-  else if (szValue->bSame("matchTrailing"_Stz))   return true;
-
-  else return false;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* is term an index-column ordinal?  (i.e. $In)                               */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsIndexColOrdinal(Stz* szValue)
@@ -2684,7 +2663,18 @@ bool Symbol::bIsAggOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsBoolFn(void)
 {
-  return b_IsBoolFn(m_sValue);
+       if (m_sValue.bSame("between"_Stz))         return true;
+  else if (m_sValue.bSame("inList"_Stz))          return true;
+  else if (m_sValue.bSame("isNull"_Stz))          return true;
+  else if (m_sValue.bSame("like2"_Stz))           return true;
+  else if (m_sValue.bSame("like3"_Stz))           return true;
+  else if (m_sValue.bSame("matchLeading"_Stz))    return true;
+  else if (m_sValue.bSame("matchMiddle"_Stz))     return true;
+  else if (m_sValue.bSame("matchMiddle1"_Stz))    return true;
+  else if (m_sValue.bSame("matchTrailing"_Stz))   return true;
+
+  else return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
