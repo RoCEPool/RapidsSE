@@ -2524,29 +2524,10 @@ bool Symbol::b_IsTableColOrdinal(Stz* szValue)
     return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get table column syn from $c.n                                             */
-/*----------------------------------------------------------------------------*/
-char Symbol::c_TableColSyn(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  RASSERT('$' == acFirst);
-  RASSERT('.' == acThird);
-
-  return acSecond;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
@@ -2844,7 +2825,16 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 char Symbol::cTableColSyn(void)
 {
-  return c_TableColSyn(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+  char acThird  = m_sValue.azChar()[2];
+  char acFourth = m_sValue.azChar()[3];
+
+  RASSERT('$' == acFirst);
+  RASSERT('.' == acThird);
+
+  return acSecond;
+
 }
 
 /*----------------------------------------------------------------------------*/
