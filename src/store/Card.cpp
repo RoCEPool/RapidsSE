@@ -2415,10 +2415,11 @@ char Symbol::cGetTableSyn(void)
   char acFourth = m_sSymbol.azChar()[3];
 
   RASSERT('$' == acFirst);
+  RASSERT(StrLib::bIsAlpha(acSecond));
   RASSERT('.' == acThird);
+  RASSERT(StrLib::bIsDigit(acFourth));
 
   return acSecond;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2475,10 +2476,12 @@ bool Symbol::bIsIndexColumn(void)
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
+  char acFourth = m_sSymbol.azChar()[3];
 
   if ('$' == acFirst
       && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird))
+      && StrLib::bIsDigit(acThird)
+      && ! acFourth)
     return true;
   else
     return false;
@@ -2492,10 +2495,12 @@ bool Symbol::bIsKey(void)
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
+  char acFourth = m_sSymbol.azChar()[3];
 
   if ('$' == acFirst
       && ('K' == acSecond || 'k' == acSecond)
-      && StrLib::bIsDigit(acThird))
+      && StrLib::bIsDigit(acThird)
+      && ! acFourth)
     return true;
   else
     return false;
@@ -2519,9 +2524,11 @@ bool Symbol::bIsCorrParam(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
 
   if ('%' == acFirst
-      && StrLib::bIsDigit(acSecond))
+      && StrLib::bIsDigit(acSecond)
+      && ! acThird)
     return true;
   else
     return false;
@@ -2546,8 +2553,11 @@ bool Symbol::bIsResult(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
 
-  if ('#' == acFirst && StrLib::bIsDigit(acSecond))
+  if ('#' == acFirst
+      && StrLib::bIsDigit(acSecond)
+      && ! acThird)
     return true;
   else
     return false;
@@ -2561,7 +2571,8 @@ bool Symbol::bIsStreamColumn(void)
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
 
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+  if ('$' == acFirst &&
+      StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
@@ -2667,7 +2678,6 @@ void Symbol::vSet(Symbol* pSymbol)
   }
 
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* sprint value                                                               */
