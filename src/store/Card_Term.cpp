@@ -203,23 +203,6 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vEnsure_tblCol_flip(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (Symbol::b_IsTableColOrdinal(szValue()))
-    return;
-
-  RASSERT(pSymbol()->Y_bHas(P_TblCol));
-
-  vValue(pSymbol()->Y_szGet(P_TblCol));
-
-  pSymbol()->Y_vCut(P_TblCol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
 ePB Card_Term::eEvalBound(void)
@@ -486,9 +469,6 @@ bool Card_Term::bIsTblColOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Symbol::b_IsTableColOrdinal(szValue()))
-    return true;
-
-  if (pSymbol()->Y_bHas(P_TblCol) && Symbol::b_IsTableColOrdinal(pSymbol()->Y_szGet(P_TblCol)))
     return true;
 
   return false;

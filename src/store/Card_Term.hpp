@@ -31,7 +31,6 @@ namespace STORE
     Card_Term* pClone(void);
     Card_Term* pClone(Stz* szDiffValue);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
-    void vEnsure_tblCol_flip(void);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     Card_Expr* pExpr_For_col(CardIter* pCI, i8 i_Before=C_UNKNOWN);

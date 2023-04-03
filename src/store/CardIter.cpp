@@ -2301,7 +2301,7 @@ Card_Expr* CardIter::pResolvePriorExpr_With_ProjectedCol(Card_Term* p_term)
     return p_expr_prior;
   }
   else
-  if (Symbol::b_IsTableColOrdinal(szPrjCol)) {
+  if (p_term->pSymbol()->bIsTableColOrdinal()) {
     Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(szPrjCol);
     return p_expr_prior;
   }
