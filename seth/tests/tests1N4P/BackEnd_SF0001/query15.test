@@ -90,15 +90,15 @@ begin
       | stageMarker4982
     stage stageMarker4982 on all partitions :
       scan rapidsse public revenue
-      | project " type DECIMAL )  $2 max  "
+      | aggreg " type DECIMAL )  $2 max  "
       | combined 0
       | stageMarker4985
     stage stageMarker4985 on all nodes :
-      project " type DECIMAL )  $1 max  "
+      aggreg " type DECIMAL )  $1 max  "
       | combined 0
       | stageMarker4988
     stage stageMarker4988 on origin :
-      project " type DECIMAL )  $1 max  "
+      aggreg " type DECIMAL )  $1 max  "
       | combined 0
       | stageMarker4991
     stage stageMarker4991 on origin :

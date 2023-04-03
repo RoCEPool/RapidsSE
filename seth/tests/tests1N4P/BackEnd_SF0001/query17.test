@@ -37,15 +37,15 @@ begin
     stage stageMarker1222 on all partitions :
       scan rapidsse public LineItem
       | filter " type BOOLEAN  $2 ==  "
-      | project " type DECIMAL )  $5 sum  , type INTEGER )  $5 count  "
+      | aggreg " type DECIMAL )  $5 sum  , type INTEGER )  $5 count  "
       | combined 0
       | stageMarker1225
     stage stageMarker1225 on all nodes :
-      project " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+      aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
       | combined 0
       | stageMarker1379
     stage stageMarker1379 on origin :
-      project " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+      aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
       | combined 0
       | stageMarker1228
     stage stageMarker1228 on origin :
@@ -74,15 +74,15 @@ begin
     | stageMarker1240
   stage stageMarker1240 on all partitions :
     filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#23''  ==  and  $23 ''MED BOX''  ==  and  $5 $17 __subquery0003  <  and  "
-    | project " type DECIMAL )  $6 sum  "
+    | aggreg " type DECIMAL )  $6 sum  "
     | combined 0
     | stageMarker1243
   stage stageMarker1243 on all nodes :
-    project " type DECIMAL )  $1 sum  "
+    aggreg " type DECIMAL )  $1 sum  "
     | combined 0
     | stageMarker1382
   stage stageMarker1382 on origin :
-    project " type DECIMAL )  $1 sum  "
+    aggreg " type DECIMAL )  $1 sum  "
     | combined 0
     | stageMarker1246
   stage stageMarker1246 on origin :
@@ -148,17 +148,17 @@ begin
   stage S06 on all partitions :
     indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
     | filter " type BOOLEAN  J1_L_QUANTITY AV <  "
-    | project " type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  "
+    | aggreg " type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  "
     | combined 0
     | next
 
   stage S07 on all nodes :
-    project " type decimal as avg_yearly ) $1 sum  "
+    aggreg " type decimal as avg_yearly ) $1 sum  "
     | combined 0
     | next
 
   stage S08 on origin :
-    project " type DECIMAL as avg_yearly ) $1 sum "
+    aggreg " type DECIMAL as avg_yearly ) $1 sum "
     | combined 0
     | next
 

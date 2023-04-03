@@ -471,15 +471,15 @@ begin
     | next broadcast
   stage stageB on all partitions :
     indexJoin lineitem lineitem_part "bound $I1 $L1 =="
-    | project " type integer as SUM_PARTKEY ) J1_L_PARTKEY sum"
+    | aggreg " type integer as SUM_PARTKEY ) J1_L_PARTKEY sum"
     | combined 0
     | next
   stage stageC on all nodes :
-    project " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    aggreg " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
     | combined 0
     | next
   stage stageD on origin :
-    project " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    aggreg " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
     | combined 0
     | next
   stage stageLast on origin :

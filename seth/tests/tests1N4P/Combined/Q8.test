@@ -190,17 +190,17 @@ begin
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   stage G_AGG_P on all partitions :
-    project " type INTEGER as x_rowCntPtn )  countAll  "
+    aggreg " type INTEGER as x_rowCntPtn )  countAll  "
     | combined 0
     | next
 
   stage G_AGG_N on all nodes :
-    project " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    aggreg " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
     | combined 0
     | next
 
   stage G_AGG_O on origin :
-    project " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    aggreg " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
     | combined 0
     | next
 

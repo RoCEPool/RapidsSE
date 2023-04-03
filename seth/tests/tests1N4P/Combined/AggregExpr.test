@@ -36,15 +36,15 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan lineitem
-     | project " type INTEGER as CNT ) countall"
+     | aggreg " type INTEGER as CNT ) countall"
      | combined 0
      | next
    stage stageB on all nodes :
-    project " type INTEGER as CNT ) CNT sum"
+    aggreg " type INTEGER as CNT ) CNT sum"
     | combined 0
     | next
    stage stageC on origin :
-    project " type INTEGER as CNT ) CNT sum"
+    aggreg " type INTEGER as CNT ) CNT sum"
     | combined 0
     | next
   stage stageLast on origin :
