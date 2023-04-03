@@ -18,9 +18,9 @@ namespace STORE
     Card_JoinPermSeq(void);
    ~Card_JoinPermSeq(void) noexcept(false);
 
-     void vEstCost(Card_TableList* p_tableList);
+     void vCalculateLoad(Card_TableList* p_tableList);
 
-     eXK eNextCast(Card_TableList* p_tableList,
+     eXK eCastKind(Card_TableList* p_tableList,
                    Card_JoinNext*  p_joinNext);
 
      i8 iOnePermutedJoin(Card_TableList*    p_tableList,

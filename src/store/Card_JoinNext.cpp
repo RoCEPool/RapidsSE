@@ -52,13 +52,13 @@ Card_JoinNext::~Card_JoinNext(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate the arriving network, arriving unicast and join volumes           */
+/* calculate join load                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinNext::nEstVolumes(eXK eNextCast,
-                              i8 nBuff_moving,
-                              Card_TableList* p_tableList,
-                              char cTblSyn_r,
-                              i8 iSize_r)
+i8 Card_JoinNext::nCalculateLoad(i8 nNodes,
+                                 eXK eCast,
+                                 i8 nBuffersIn,
+                                 Card_TableList* p_tableList,
+                                 char cTblSyn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card_Load*        p_loadJoin    = new Card_Load;
@@ -67,17 +67,13 @@ i8 Card_JoinNext::nEstVolumes(eXK eNextCast,
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
   Card_LoadJoined*  p_loadJoined  = new Card_LoadJoined;
 
-  p_cast->vValue(aXK[eNextCast]);
+  p_cast->vValue(aXK[eCast]);
 
-  // estimate arriving network volume
-  p_loadNetwork->vEstNetworkVol(eNextCast, nBuff_moving, p_tableList, cTblSyn_r, iSize_r);
+  i8 nBuffersNetwork = p_loadNetwork->nCalculateLoad(nNodes,eCast,nBuffersIn,p_tableList,cTblSyn_r);
+  i8 nBuffersUnicast = p_loadUnicast->nCalculateLoad(nNodes,eCast,nBuffersIn,p_tableList,cTblSyn_r);
+  i8 nBuffersJoined  = p_loadJoined->nCalculateLoad(nNodes,eCast,nBuffersIn,p_tableList,cTblSyn_r);
 
-  // estimate arriving unicast volume
-  p_loadUnicast->vEstUnicastVol(eNextCast, nBuff_moving);
-
-  // estimate buffers produced by join
-  i8 nBuff_produced  =
-      p_loadJoined->nEstJoinVol(nBuff_moving, p_tableList, cTblSyn_r, iSize_r);
+  i8 iLoadJoin = p_loadJoin->nCalculateLoad(p_loadNetwork,p_loadUnicast);
 
   p_loadJoin->vAppend(p_cast);
   p_loadJoin->vAppend(p_loadNetwork);
@@ -85,7 +81,12 @@ i8 Card_JoinNext::nEstVolumes(eXK eNextCast,
   p_loadJoin->vAppend(p_loadJoined);
   vAppend(p_loadJoin);
 
-  return nBuff_produced;
+//  if (nBuffersNetwork)
+//    return nBuffersNetwork;
+//  else
+//    return nBuffersUnicast;
+
+  return nBuffersJoined;
 }
 
 /*============================================================================*/
