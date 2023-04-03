@@ -54,13 +54,14 @@ Card_JoinNext::~Card_JoinNext(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate join load                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinNext::nCalculateLoad(eXK eCast,
+i8 Card_JoinNext::nCalculateLoad(i8 nNodes,
+                                 eXK eCast,
                                  i8 nBuffersIn,
                                  Card_TableList* p_tableList,
                                  char cTblSyn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  Card_Load*    p_loadJoin    = new Card_Load;
+  Card_Load*        p_loadJoin    = new Card_Load;
   Card_Cast*        p_cast        = new Card_Cast;
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
@@ -68,9 +69,9 @@ i8 Card_JoinNext::nCalculateLoad(eXK eCast,
 
   p_cast->vValue(aXK[eCast]);
 
-  i8 nBuffersNetwork = p_loadNetwork->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_r);
-  i8 nBuffersUnicast = p_loadUnicast->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_r);
-  i8 nBuffersJoined  = p_loadJoined->nCalculateLoad(eCast,nBuffersIn,p_tableList,cTblSyn_r);
+  i8 nBuffersNetwork = p_loadNetwork->nCalculateLoad(nNodes,eCast,nBuffersIn,p_tableList,cTblSyn_r);
+  i8 nBuffersUnicast = p_loadUnicast->nCalculateLoad(nNodes,eCast,nBuffersIn,p_tableList,cTblSyn_r);
+  i8 nBuffersJoined  = p_loadJoined->nCalculateLoad(nNodes,eCast,nBuffersIn,p_tableList,cTblSyn_r);
 
   i8 iLoadJoin = p_loadJoin->nCalculateLoad(p_loadNetwork,p_loadUnicast);
 

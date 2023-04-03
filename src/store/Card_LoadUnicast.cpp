@@ -49,10 +49,11 @@ Card_LoadUnicast::~Card_LoadUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate unicast load                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadUnicast::nCalculateLoad(eXK eCast,
-                                      i8 nBuffersIn,
-                                      Card_TableList* p_tableList,
-                                      char cTblSyn_r)
+i8 Card_LoadUnicast::nCalculateLoad(i8 nNodes,
+                                    eXK eCast,
+                                    i8 nBuffersIn,
+                                    Card_TableList* p_tableList,
+                                    char cTblSyn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
