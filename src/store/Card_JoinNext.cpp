@@ -5,7 +5,7 @@
 #include "Card_JoinNext.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_Cast.hpp"
+#include "Card_CastNext.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_CostNext.hpp"
 #include "Card_LoadJoined.hpp"
@@ -60,12 +60,12 @@ i8 Card_JoinNext::nEstNextCosts(eXK eNextCast,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card_CostNext*    p_costNext    = new Card_CostNext;
-  Card_Cast*        p_cast        = new Card_Cast;
+  Card_CastNext*    p_castNext    = new Card_CastNext;
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
   Card_LoadJoined*  p_loadJoined  = new Card_LoadJoined;
 
-  p_cast->vValue(aXK[eNextCast]);
+  p_castNext->vValue(aXK[eNextCast]);
 
   p_loadNetwork->vEstNetworkVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
 
@@ -73,7 +73,7 @@ i8 Card_JoinNext::nEstNextCosts(eXK eNextCast,
 
   i8 nBuff_produced = p_loadJoined->nEstJoinVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
 
-  p_costNext->vAppend(p_cast);
+  p_costNext->vAppend(p_castNext);
   p_costNext->vAppend(p_loadNetwork);
   p_costNext->vAppend(p_loadUnicast);
   p_costNext->vAppend(p_loadJoined);

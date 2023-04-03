@@ -387,7 +387,7 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
 
-      xCI.G.p_cast = xCI.G.p_joinNext->pSub_cast();
+      xCI.G.p_cast = xCI.G.p_joinNext->pSub_castNext();
       if (xCI.G.p_cast && ! xCI.G.p_cast->bIsValue("XK_UNICAST"_Stz))
         return false;
     }
@@ -397,7 +397,7 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
     ASSERT(xCI.G.p_MainCard->bIsCard(CK_JOINHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
-      xCI.G.p_cast = xCI.G.p_joinNext->pSub_cast();
+      xCI.G.p_cast = xCI.G.p_joinNext->pSub_castNext();
       if (xCI.G.p_cast && ! xCI.G.p_cast->bIsValue("XK_UNICAST"_Stz))
         return false;
     }

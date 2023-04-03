@@ -1067,7 +1067,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_BOUND:            return G.p_bound;
     case CK_BOUNDS:           return G.p_bounds;
     case CK_CALL:             return G.p_call;
-    case CK_CAST:             return G.p_cast;
+    case CK_CASTNEXT:             return G.p_cast;
     case CK_CMPPRED:          return G.p_cmpPred;
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
@@ -1248,7 +1248,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_BOUND:            return "G.p_bound"_Stz;
     case CK_BOUNDS:           return "G.p_bounds"_Stz;
     case CK_CALL:             return "G.p_call"_Stz;
-    case CK_CAST:             return "G.p_cast"_Stz;
+    case CK_CASTNEXT:             return "G.p_cast"_Stz;
     case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
     case CK_COMBINED:         return "G.p_combined"_Stz;
     case CK_CONSTRAINT:       return "G.p_constraint"_Stz;
@@ -2108,7 +2108,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
-    case CK_CAST:             *((Card**)&G.p_cast)             = pCard; break;
+    case CK_CASTNEXT: *((Card**)&G.p_cast)             = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;

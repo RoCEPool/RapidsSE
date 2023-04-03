@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Cast.hpp -- Cast                                                      */
+/* Card_CastNext.hpp -- How buffers were cast to a next join                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_Cast : public Card
+  class Card_CastNext : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Cast(void);
-   ~Card_Cast(void) noexcept(false);
+    Card_CastNext(void);
+   ~Card_CastNext(void) noexcept(false);
   };
 
-  Card_Cast* _pCard_Cast(void* aAddr);
+  Card_CastNext* _pCard_CastNext(void* aAddr);
 }
 
 /*============================================================================*/
