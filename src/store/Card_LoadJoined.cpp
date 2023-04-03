@@ -54,8 +54,6 @@ Card_LoadJoined::~Card_LoadJoined(void) noexcept(false)
 i8 Card_LoadJoined::nEstJoinVolume(i8 nNodes,
                                    eXK eNextCast,
                                    i8 nBuff_arriving,
-                                   Card_TableList* p_tableList,
-                                   char cTblSyn_r,
                                    i8 iSize_r)
 
 {

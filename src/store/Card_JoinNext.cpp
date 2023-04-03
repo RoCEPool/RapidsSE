@@ -62,7 +62,7 @@ i8 Card_JoinNext::nEstNextCost(i8 nNodes,
                                i8 iSize_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  Card_Load*        p_loadJoin    = new Card_Load;
+  Card_Load*        p_load        = new Card_Load;
   Card_Cast*        p_cast        = new Card_Cast;
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
@@ -74,20 +74,13 @@ i8 Card_JoinNext::nEstNextCost(i8 nNodes,
 
   p_loadUnicast->vEstUnicastVolume(nNodes, eNextCast, nBuff_arriving, p_tableList, cTblSyn_r,iSize_r);
 
-  i8 nBuff_produced  = p_loadJoined->nEstJoinVolume(nNodes, eNextCast, nBuff_arriving, p_tableList, cTblSyn_r,iSize_r);
+  i8 nBuff_produced = p_loadJoined->nEstJoinVolume(nNodes, eNextCast, nBuff_arriving, iSize_r);
 
-  i8 iLoadJoin = p_loadJoin->nCalculateLoad(p_loadNetwork,p_loadUnicast);
-
-  p_loadJoin->vAppend(p_cast);
-  p_loadJoin->vAppend(p_loadNetwork);
-  p_loadJoin->vAppend(p_loadUnicast);
-  p_loadJoin->vAppend(p_loadJoined);
-  vAppend(p_loadJoin);
-
-//  if (nBuffersNetwork)
-//    return nBuffersNetwork;
-//  else
-//    return nBuffersUnicast;
+  p_load->vAppend(p_cast);
+  p_load->vAppend(p_loadNetwork);
+  p_load->vAppend(p_loadUnicast);
+  p_load->vAppend(p_loadJoined);
+  vAppend(p_load);
 
   return nBuff_produced;
 }

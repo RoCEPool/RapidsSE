@@ -19,8 +19,6 @@ namespace STORE
     i8 nEstJoinVolume(i8 nNodes,
                       eXK eNextCast,
                       i8 nBuff_arriving,
-                      Card_TableList* p_tableList,
-                      char cTblSyn_r,
                       i8 iSize_r);
 
   };
