@@ -24,7 +24,7 @@ namespace STORE
     static void  vDelete(LibInfo* pLibInfo);
 
     // Temporary
-    static void  vTest(void);
+    static void  vTest(Stz* szCompiler = nullptr);
 
   private:
     static bool bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo);

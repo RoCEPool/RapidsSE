@@ -296,7 +296,7 @@ void CompileLib::vDelete(LibInfo* pLibInfo)
 /*----------------------------------------------------------------------------*/
 /* Temporary stub to test this stuff out.                                     */
 /*----------------------------------------------------------------------------*/
-void CompileLib::vTest()
+void CompileLib::vTest(Stz* szCompiler)
 {
   static Stz* szSrc =
 "#include <stdio.h>\n"
@@ -326,7 +326,10 @@ void CompileLib::vTest()
   // The function pointer we want to call in the shared library
   void (*pfTestFn)(void);
 
-  if (!bCompile(szSrc, szDynLibNm, pLibInfo, "clang"_Stz)) {
+  // szCompiler can be set to:
+  //   nullptr, "gcc", "clang", "devtoolset-10", "llvm-toolset-7.0", "/path/to/g++", ...
+
+  if (!bCompile(szSrc, szDynLibNm, pLibInfo, szCompiler)) {
     vTrace("Compilation failed\n"_Stz);
 
     vDelete(pLibInfo);
@@ -445,12 +448,12 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
 
   } else if (szCompiler->bBeginsWith("devtoolset-"_Stz)) {
     pLibInfo->m_eCompilerType = CB_SCL_GCC;
-    pLibInfo->m_sCompilerPath = C_GPLUSPLUS;
+    pLibInfo->m_sCompilerPath = szCompiler;
     return bCheckCompilerExists(szCompiler, C_GPLUSPLUS, pLibInfo);
 
   } else if (szCompiler->bBeginsWith("llvm-toolset-"_Stz)) {
     pLibInfo->m_eCompilerType = CB_SCL_CLANG;
-    pLibInfo->m_sCompilerPath = C_CLANGPLUSPLUS;
+    pLibInfo->m_sCompilerPath = szCompiler;
     return bCheckCompilerExists(szCompiler, C_CLANGPLUSPLUS, pLibInfo);
   }
 
