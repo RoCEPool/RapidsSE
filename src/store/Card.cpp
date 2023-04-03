@@ -110,7 +110,7 @@ void Card::vInit(eCK eCard)
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
-  m_xSymbol.m_sValue = ""_Stz;
+  m_xSymbol.m_sSymbol = ""_Stz;
   m_cMark1 = MARK_BLANK;
   m_cMark2 = MARK_BLANK;
 
@@ -143,7 +143,7 @@ Card::~Card(void) noexcept(false)
   static Card* pPriorCard = nullptr;
 
 //  vTrace("Card [~%02lld] %p %s %s : %s\n"_Stz,
-//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sValue.szStz(),md_Bearing);
+//         md__SeqNo,this,aCK[m_eCard],m_xSymbol.m_sSymbol.szStz(),md_Bearing);
 //
 //  if (this == pPriorCard)
 //    vDebugPoint();
@@ -823,7 +823,7 @@ bool Card::bHasValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (*m_xSymbol.m_sValue.azChar())
+  if (*m_xSymbol.m_sSymbol.azChar())
     return true;
 
   return false;
@@ -1428,7 +1428,7 @@ char Card::cValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char c = * m_xSymbol.m_sValue.azChar();
+  char c = * m_xSymbol.m_sSymbol.azChar();
 
   return c;
 }
@@ -1440,7 +1440,7 @@ i8 Card::iValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i = m_xSymbol.m_sValue.iToI8();
+  i8 i = m_xSymbol.m_sSymbol.iToI8();
 
   return i;
 }
@@ -1452,7 +1452,7 @@ Stz* Card::szValue(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return m_xSymbol.m_sValue.szStz();
+  return m_xSymbol.m_sSymbol.szStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1482,9 +1482,9 @@ void Card::vValue(Stz* szValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  //RASSERT(! *m_xSymbol.m_sValue.azChar());
+  //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.m_sValue = szValue;
+  m_xSymbol.m_sSymbol = szValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2291,7 +2291,7 @@ Card_Where* Card::pSub_where(void)
 /*----------------------------------------------------------------------------*/
 void Symbol::operator =(Stz* szArg)
 {
-  m_sValue = szArg;
+  m_sSymbol = szArg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2299,7 +2299,7 @@ void Symbol::operator =(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 void Symbol::operator =(Symbol* pSymbol)
 {
-  m_sValue = pSymbol->m_sValue;
+  m_sSymbol = pSymbol->m_sSymbol;
 
   if (pSymbol->m_pProperties) {
     if (! m_pProperties)
@@ -2318,7 +2318,7 @@ void Symbol::operator =(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 void Symbol::operator =(Symbol& rxSymbol)
 {
-  m_sValue = rxSymbol.m_sValue;
+  m_sSymbol = rxSymbol.m_sSymbol;
 
   if (rxSymbol.m_pProperties) {
     if (! m_pProperties)
@@ -2338,7 +2338,7 @@ void Symbol::operator =(Symbol& rxSymbol)
 Symbol::operator Stz*(void)
 {
 
-  return m_sValue.szStz();
+  return m_sSymbol.szStz();
 }
 
 
@@ -2370,13 +2370,13 @@ bool Symbol::b_IsSubQueryName(BASE::Stz *szValue)
 /*----------------------------------------------------------------------------*/
 eRO Symbol::eEvalRelnOp(void)
 {
-       if (m_sValue.bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (m_sValue.bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (m_sValue.bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (m_sValue.bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (m_sValue.bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (m_sValue.bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (m_sValue.bSame(">"_Stz))   return RO_GREATER_THAN;
+       if (m_sSymbol.bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (m_sSymbol.bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (m_sSymbol.bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (m_sSymbol.bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (m_sSymbol.bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (m_sSymbol.bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (m_sSymbol.bSame(">"_Stz))   return RO_GREATER_THAN;
 
   else return RO_NONE;
 }
@@ -2386,10 +2386,10 @@ eRO Symbol::eEvalRelnOp(void)
 /*----------------------------------------------------------------------------*/
 eQO Symbol::eEvalSubQryOp(void)
 {
-       if (m_sValue.bSame("exists"_Stz))    return QO_EXISTS_OP;
-  else if (m_sValue.bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
-  else if (m_sValue.bSame("in"_Stz))        return QO_IN_OP;
-  else if (m_sValue.bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+       if (m_sSymbol.bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (m_sSymbol.bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (m_sSymbol.bSame("in"_Stz))        return QO_IN_OP;
+  else if (m_sSymbol.bSame("notIn"_Stz))     return QO_NOT_IN_OP;
 
   else return QO_NONE;
 }
@@ -2399,7 +2399,7 @@ eQO Symbol::eEvalSubQryOp(void)
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iGetOrdinal(void)
 {
-  i8 i_Col = StrLib::iGleanInt(m_sValue.azChar());
+  i8 i_Col = StrLib::iGleanInt(m_sSymbol.azChar());
 
   return i_Col;
 }
@@ -2409,10 +2409,10 @@ i8 Symbol::iGetOrdinal(void)
 /*----------------------------------------------------------------------------*/
 char Symbol::cGetTableSyn(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
-  char acThird  = m_sValue.azChar()[2];
-  char acFourth = m_sValue.azChar()[3];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
+  char acFourth = m_sSymbol.azChar()[3];
 
   RASSERT('$' == acFirst);
   RASSERT('.' == acThird);
@@ -2427,13 +2427,13 @@ char Symbol::cGetTableSyn(void)
 bool Symbol::bIsAggOp(void)
 {
 
-       if (m_sValue.bSame("avg"_Stz))      return true;
-  else if (m_sValue.bSame("count"_Stz))    return true;
-  else if (m_sValue.bSame("countAll"_Stz)) return true;
-  else if (m_sValue.bSame("max"_Stz))      return true;
-  else if (m_sValue.bSame("min"_Stz))      return true;
-//else if (m_sValue.bSame("stddev"_Stz))   return true;
-  else if (m_sValue.bSame("sum"_Stz))      return true;
+       if (m_sSymbol.bSame("avg"_Stz))      return true;
+  else if (m_sSymbol.bSame("count"_Stz))    return true;
+  else if (m_sSymbol.bSame("countAll"_Stz)) return true;
+  else if (m_sSymbol.bSame("max"_Stz))      return true;
+  else if (m_sSymbol.bSame("min"_Stz))      return true;
+//else if (m_sSymbol.bSame("stddev"_Stz))   return true;
+  else if (m_sSymbol.bSame("sum"_Stz))      return true;
 
   return false;
 }
@@ -2443,18 +2443,17 @@ bool Symbol::bIsAggOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsBoolFn(void)
 {
-       if (m_sValue.bSame("between"_Stz))         return true;
-  else if (m_sValue.bSame("inList"_Stz))          return true;
-  else if (m_sValue.bSame("isNull"_Stz))          return true;
-  else if (m_sValue.bSame("like2"_Stz))           return true;
-  else if (m_sValue.bSame("like3"_Stz))           return true;
-  else if (m_sValue.bSame("matchLeading"_Stz))    return true;
-  else if (m_sValue.bSame("matchMiddle"_Stz))     return true;
-  else if (m_sValue.bSame("matchMiddle1"_Stz))    return true;
-  else if (m_sValue.bSame("matchTrailing"_Stz))   return true;
+       if (m_sSymbol.bSame("between"_Stz))         return true;
+  else if (m_sSymbol.bSame("inList"_Stz))          return true;
+  else if (m_sSymbol.bSame("isNull"_Stz))          return true;
+  else if (m_sSymbol.bSame("like2"_Stz))           return true;
+  else if (m_sSymbol.bSame("like3"_Stz))           return true;
+  else if (m_sSymbol.bSame("matchLeading"_Stz))    return true;
+  else if (m_sSymbol.bSame("matchMiddle"_Stz))     return true;
+  else if (m_sSymbol.bSame("matchMiddle1"_Stz))    return true;
+  else if (m_sSymbol.bSame("matchTrailing"_Stz))   return true;
 
-  else return false;
-
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2462,7 +2461,7 @@ bool Symbol::bIsBoolFn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsComma(void)
 {
-  if (m_sValue.bSame(","_Stz))
+  if (m_sSymbol.bSame(","_Stz))
     return true;
   else
     return false;
@@ -2473,9 +2472,9 @@ bool Symbol::bIsComma(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsIndexColumn(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
-  char acThird  = m_sValue.azChar()[2];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
 
   if ('$' == acFirst
       && ('I' == acSecond || 'i' == acSecond)
@@ -2490,9 +2489,9 @@ bool Symbol::bIsIndexColumn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsKey(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
-  char acThird  = m_sValue.azChar()[2];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
 
   if ('$' == acFirst
       && ('K' == acSecond || 'k' == acSecond)
@@ -2518,8 +2517,8 @@ bool Symbol::bIsColumn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsCorrParam(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
 
   if ('%' == acFirst
       && StrLib::bIsDigit(acSecond))
@@ -2545,8 +2544,8 @@ bool Symbol::bIsRelnOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsResult(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
 
   if ('#' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
@@ -2559,8 +2558,8 @@ bool Symbol::bIsResult(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsStreamColumn(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
@@ -2573,12 +2572,12 @@ bool Symbol::bIsStreamColumn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryOp(void)
 {
-       if (m_sValue.bSame("exists"_Stz))    return true;
-  else if (m_sValue.bSame("in"_Stz))        return true;
-  else if (m_sValue.bSame("notExists"_Stz)) return true;
-  else if (m_sValue.bSame("notIn"_Stz))     return true;
+       if (m_sSymbol.bSame("exists"_Stz))    return true;
+  else if (m_sSymbol.bSame("in"_Stz))        return true;
+  else if (m_sSymbol.bSame("notExists"_Stz)) return true;
+  else if (m_sSymbol.bSame("notIn"_Stz))     return true;
 
-  else return false;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2586,7 +2585,7 @@ bool Symbol::bIsSubQueryOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryName(void)
 {
-  return b_IsSubQueryName(m_sValue);
+  return b_IsSubQueryName(m_sSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2594,10 +2593,10 @@ bool Symbol::bIsSubQueryName(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryColumn(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
-  char acThird  = m_sValue.azChar()[2];
-  char acFourth = m_sValue.azChar()[3];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
+  char acFourth = m_sSymbol.azChar()[3];
 
   if ('_' == acFirst
       && '_' == acSecond
@@ -2618,10 +2617,10 @@ bool Symbol::bIsSubQueryColumn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsTableColumn(void)
 {
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
-  char acThird  = m_sValue.azChar()[2];
-  char acFourth = m_sValue.azChar()[3];
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
+  char acFourth = m_sSymbol.azChar()[3];
 
   if ('$' == acFirst
       && StrLib::bIsAlpha(acSecond)
@@ -2637,13 +2636,13 @@ bool Symbol::bIsTableColumn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bNeedsBrace(void)
 {
-       if (m_sValue.bSame("between"_Stz))        return true;
-  else if (m_sValue.bSame("case"_Stz))           return true;
-  else if (m_sValue.bSame("in"_Stz))             return true;
-  else if (m_sValue.bSame("matchLeading"_Stz))   return true;
-  else if (m_sValue.bSame("matchMiddle"_Stz))    return true;
-  else if (m_sValue.bSame("matchMiddle1"_Stz))   return true;
-  else if (m_sValue.bSame("matchTrailing"_Stz))  return true;
+       if (m_sSymbol.bSame("between"_Stz))        return true;
+  else if (m_sSymbol.bSame("case"_Stz))           return true;
+  else if (m_sSymbol.bSame("in"_Stz))             return true;
+  else if (m_sSymbol.bSame("matchLeading"_Stz))   return true;
+  else if (m_sSymbol.bSame("matchMiddle"_Stz))    return true;
+  else if (m_sSymbol.bSame("matchMiddle1"_Stz))   return true;
+  else if (m_sSymbol.bSame("matchTrailing"_Stz))  return true;
 
   return false;
 }
@@ -2654,7 +2653,7 @@ bool Symbol::bNeedsBrace(void)
 void Symbol::vSet(Symbol* pSymbol)
 {
 
-  m_sValue = pSymbol->m_sValue;
+  m_sSymbol = pSymbol->m_sSymbol;
 
   if (pSymbol->m_pProperties) {
     if (! m_pProperties)
@@ -2682,7 +2681,7 @@ void Symbol::vSprint(Stz* szFormat, ...)
   StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
   va_end(xArgs);
 
-  m_sValue = sValue;
+  m_sSymbol = sValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2722,7 +2721,7 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetTableColSyn(char cTblSyn)
 {
-  //((char*) m_sValue.azChar())[1] = cTblSyn;
+  //((char*) m_sSymbol.azChar())[1] = cTblSyn;
 
   vSprint("%c"_Stz, cTblSyn);
 }
@@ -2740,7 +2739,7 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szValue(void)
 {
-  return m_sValue.szStz();
+  return m_sSymbol.szStz();
 }
 
 

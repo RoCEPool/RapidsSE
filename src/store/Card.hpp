@@ -182,7 +182,7 @@ namespace STORE
 
   class Symbol {
   public:
-    s256    m_sValue;
+    s256    m_sSymbol;
     TagSet* m_pProperties;
 
   public:

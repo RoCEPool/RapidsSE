@@ -378,7 +378,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     Symbol x_Symbol_stmCol1;
     if (p_term)
-      x_Symbol_stmCol1.m_sValue = p_term->szValue();
+      x_Symbol_stmCol1.m_sSymbol = p_term->szValue();
     else
       x_Symbol_stmCol1.vSetStreamColOrdinal(1);
     p_term_one->vValue(x_Symbol_stmCol1);
@@ -405,7 +405,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     Symbol x_Symbol_stmCol1;
     if (p_term)
-      x_Symbol_stmCol1.m_sValue = p_term->szValue();
+      x_Symbol_stmCol1.m_sSymbol = p_term->szValue();
     else
       x_Symbol_stmCol1.vSetStreamColOrdinal(1);
     p_term_head->vValue(x_Symbol_stmCol1);
@@ -434,7 +434,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Symbol x_Symbol_stmCol1;
     x_Symbol_stmCol1.vSetStreamColOrdinal(1);
     if (p_term)
-      x_Symbol_stmCol1.m_sValue = p_term->szValue();
+      x_Symbol_stmCol1.m_sSymbol = p_term->szValue();
     else
       x_Symbol_stmCol1.vSetStreamColOrdinal(1);
     p_term_head->vValue(x_Symbol_stmCol1);
