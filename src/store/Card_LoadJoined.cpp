@@ -49,20 +49,16 @@ Card_LoadJoined::~Card_LoadJoined(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate join load                                                        */
+/* estimate buffers produced by join                                          */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadJoined::nCalculateLoad(i8 nNodes,
-                                   eXK eCast,
-                                   i8 nBuffersIn,
-                                   Card_TableList* p_tableList,
-                                   char cTblSyn_r)
-
+i8 Card_LoadJoined::nEstJoinVol(i8 nNodes,
+                                i8 nBuffersIn,
+                                Card_TableList* p_tableList,
+                                char cTblSyn_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
-
-  //i8 iLoadJoined = (i8)(1.0 * (nBuffersIn * iSize_r));
 
   i8 iLoadJoined = C_UNKNOWN;
   if (nBuffersIn > iSize_r)

@@ -133,7 +133,7 @@ void Card_JoinPermAll::vCalculateLoad(Card_TableList* p_tableList)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain())
-    xCI.G.p_joinPermSeq->vCalculateLoad(p_tableList);
+    xCI.G.p_joinPermSeq->vEstCost(p_tableList);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,16 +50,16 @@ Card_JoinPermSeq::~Card_JoinPermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compute the load of this join permutation                                   */
+/* compute the cost of this join permutation                                  */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
+void Card_JoinPermSeq::vEstCost(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 nSumLoadNetwork = 0;
   i8 nSumLoadUnicast = 0;
 
-  i8 nBuffersIn = 0;
+  i8 nBuff_arriving = 0;
 
   i8 nNodes = AM::PTNMAP::nKnownNodes();
 
@@ -68,7 +68,7 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD)) {
       char cTblSyn_l = xCI.G.p_joinHead->cValue();
-      nBuffersIn = p_tableList->pGetTableSize(cTblSyn_l)->iValue();
+      nBuff_arriving = p_tableList->pGetTableSize(cTblSyn_l)->iValue();
       continue;
     }
 
@@ -77,10 +77,10 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 
     char cTblSyn_r = xCI.G.p_joinNext->cValue();
 
-    eXK eCast = eCastKind(p_tableList, xCI.G.p_joinNext);
+    eXK eNextCast = eNextCast(p_tableList, xCI.G.p_joinNext);
 
-    nBuffersIn = xCI.G.p_joinNext->nCalculateLoad(nNodes, eCast, nBuffersIn,
-                                                  p_tableList, cTblSyn_r);
+    nBuff_arriving = xCI.G.p_joinNext->nEstVolumes(nNodes, eNextCast, nBuff_arriving,
+                                                   p_tableList, cTblSyn_r);
 
     Card_Load* p_load_next = xCI.G.p_joinNext->pSub_load();
 
@@ -106,7 +106,7 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 /*----------------------------------------------------------------------------*/
 /* compute the cast of given join                                             */
 /*----------------------------------------------------------------------------*/
-eXK Card_JoinPermSeq::eCastKind(Card_TableList* p_tableList,
+eXK Card_JoinPermSeq::eNextCast(Card_TableList* p_tableList,
                                 Card_JoinNext*  p_joinNext)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

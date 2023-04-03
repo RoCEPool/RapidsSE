@@ -16,9 +16,9 @@ namespace STORE
     Card_LoadNetwork(void);
    ~Card_LoadNetwork(void) noexcept(false);
 
-    i8 nCalculateLoad(i8 nNodes,
-                      eXK eCast,
-                      i8 nBuffersIn,
+    i8 nEstNetworkVol(i8 nNodes,
+                      eXK eNextCast,
+                      i8 nBuff_arriving,
                       Card_TableList* p_tableList,
                       char cTblSyn_r);
   };
