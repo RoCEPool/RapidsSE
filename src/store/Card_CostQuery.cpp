@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_LoadPermSeq.cpp -- JLoad of join Permutation Sequence                 */
+/* Card_CostQuery.cpp -- JLoad of join Permutation Sequence                 */
 /*============================================================================*/
 
-#include "Card_LoadPermSeq.hpp"
+#include "Card_CostQuery.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -16,16 +16,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_LoadPermSeq, CK_LOADPERMSEQ)
-__aNewFunction(Card_LoadPermSeq, CN_CARD)
-__vDeleteFunction(Card_LoadPermSeq, CN_CARD)
+__pCastFunction_Card(STORE, Card_CostQuery, CK_COSTQUERY)
+__aNewFunction(Card_CostQuery, CN_CARD)
+__vDeleteFunction(Card_CostQuery, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_LoadPermSeq::Card_LoadPermSeq(void)
-: Card(CK_LOADPERMSEQ)
+Card_CostQuery::Card_CostQuery(void)
+: Card(CK_COSTQUERY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -37,7 +37,7 @@ Card_LoadPermSeq::Card_LoadPermSeq(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_LoadPermSeq::~Card_LoadPermSeq(void) noexcept(false)
+Card_CostQuery::~Card_CostQuery(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -49,12 +49,12 @@ Card_LoadPermSeq::~Card_LoadPermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is this permutation sequence load less than given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Card_LoadPermSeq::bIsLessLoad(Card_LoadPermSeq* p_loadPermSeq_arg)
+bool Card_CostQuery::bIsLessLoad(Card_CostQuery* p_costQuery_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_LoadNetwork* p_loadNetwork_this = pSub_loadNetwork();
-  Card_LoadNetwork* p_loadNetwork_arg  = p_loadPermSeq_arg->pSub_loadNetwork();
+  Card_LoadNetwork* p_loadNetwork_arg  = p_costQuery_arg->pSub_loadNetwork();
 
   i8 iloadNetwork_this = p_loadNetwork_this->iValue();
   i8 iloadNetwork_arg  = p_loadNetwork_arg->iValue();
@@ -67,7 +67,7 @@ bool Card_LoadPermSeq::bIsLessLoad(Card_LoadPermSeq* p_loadPermSeq_arg)
 
 
   Card_LoadUnicast* p_loadUnicast_this = pSub_loadUnicast();
-  Card_LoadUnicast* p_loadUnicast_arg  = p_loadPermSeq_arg->pSub_loadUnicast();
+  Card_LoadUnicast* p_loadUnicast_arg  = p_costQuery_arg->pSub_loadUnicast();
 
   i8 iloadUnicast_this = p_loadUnicast_this->iValue();
   i8 iloadUnicast_arg  = p_loadUnicast_arg->iValue();

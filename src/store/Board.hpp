@@ -70,7 +70,7 @@
 #include "Card_Load.hpp"
 #include "Card_LoadJoined.hpp"
 #include "Card_LoadNetwork.hpp"
-#include "Card_LoadPermSeq.hpp"
+#include "Card_CostQuery.hpp"
 #include "Card_LoadUnicast.hpp"
 
 #include "Card_NCorrCols.hpp"

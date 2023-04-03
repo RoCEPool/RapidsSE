@@ -115,9 +115,9 @@ void Card_JoinOrdering::vJoinOrderString(String* pString, Card_TableList* p_tabl
   }
 
   // the load
-  Card_LoadPermSeq* p_loadPermSeq = pSub_loadPermSeq();
-  Card_LoadNetwork* p_loadNetwork = p_loadPermSeq->pSub_loadNetwork();
-  Card_LoadUnicast* p_loadUnicast = p_loadPermSeq->pSub_loadUnicast();
+  Card_CostQuery* p_costQuery = pSub_costQuery();
+  Card_LoadNetwork* p_loadNetwork = p_costQuery->pSub_loadNetwork();
+  Card_LoadUnicast* p_loadUnicast = p_costQuery->pSub_loadUnicast();
 
   pString->vCatSprint(", %lld, %lld"_Stz,p_loadNetwork->iValue(),p_loadUnicast->iValue());
 }

@@ -80,7 +80,7 @@ namespace STORE
   class Card_Load;
   class Card_LoadJoined;
   class Card_LoadNetwork;
-  class Card_LoadPermSeq;
+  class Card_CostQuery;
   class Card_LoadUnicast;
 
   class Card_NCorrCols;
@@ -412,7 +412,7 @@ namespace STORE
     Card_Load*          pSub_load(void);
     Card_LoadJoined*    pSub_loadJoined(void);
     Card_LoadNetwork*   pSub_loadNetwork(void);
-    Card_LoadPermSeq*   pSub_loadPermSeq(void);
+    Card_CostQuery*     pSub_costQuery(void);
     Card_LoadUnicast*   pSub_loadUnicast(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);

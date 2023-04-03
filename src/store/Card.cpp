@@ -1936,14 +1936,14 @@ Card_LoadNetwork* Card::pSub_loadNetwork(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_LoadPermSeq.hpp"
-Card_LoadPermSeq* Card::pSub_loadPermSeq(void)
+#include "Card_CostQuery.hpp"
+Card_CostQuery* Card::pSub_costQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_LoadPermSeq* p_loadPermSeq =
-      _pCard_LoadPermSeq(pFindSubCard(CK_LOADPERMSEQ));
-  return p_loadPermSeq;
+  Card_CostQuery* p_costQuery =
+      _pCard_CostQuery(pFindSubCard(CK_COSTQUERY));
+  return p_costQuery;
 }
 
 /*----------------------------------------------------------------------------*/

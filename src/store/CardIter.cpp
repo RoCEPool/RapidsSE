@@ -279,7 +279,7 @@ void CardIter::G_vClearMembers(void)
   G.p_load             = nullptr;
   G.p_loadJoined       = nullptr;
   G.p_loadNetwork      = nullptr;
-  G.p_loadPermSeq      = nullptr;
+  G.p_costQuery      = nullptr;
   G.p_loadUnicast      = nullptr;
   G.p_nCorrCols        = nullptr;
   G.p_needed           = nullptr;
@@ -1106,7 +1106,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_LOAD:             return G.p_load;
     case CK_LOADJOINED:       return G.p_loadJoined;
     case CK_LOADNETWORK:      return G.p_loadNetwork;
-    case CK_LOADPERMSEQ:      return G.p_loadPermSeq;
+    case CK_COSTQUERY:      return G.p_costQuery;
     case CK_LOADUNICAST:      return G.p_loadUnicast;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
@@ -1286,7 +1286,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_LOAD:             return "G.p_load"_Stz;
     case CK_LOADJOINED:       return "G.p_loadJoined"_Stz;
     case CK_LOADNETWORK:      return "G.p_loadNetwork"_Stz;
-    case CK_LOADPERMSEQ:      return "G.p_loadPermSeq"_Stz;
+    case CK_COSTQUERY:      return "G.p_costQuery"_Stz;
     case CK_LOADUNICAST:      return "G.p_loadUnicast"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEEDED:           return "G.p_needed"_Stz;
@@ -2157,7 +2157,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LOAD:             *((Card**)&G.p_load)             = pCard; break;
     case CK_LOADJOINED:       *((Card**)&G.p_loadJoined)       = pCard; break;
     case CK_LOADNETWORK:      *((Card**)&G.p_loadNetwork)      = pCard; break;
-    case CK_LOADPERMSEQ:      *((Card**)&G.p_loadPermSeq)      = pCard; break;
+    case CK_COSTQUERY: *((Card**)&G.p_costQuery)      = pCard; break;
     case CK_LOADUNICAST:      *((Card**)&G.p_loadUnicast)      = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;

@@ -162,7 +162,7 @@ namespace STORE
     Card_Load *          p_load;
     Card_LoadJoined *    p_loadJoined;
     Card_LoadNetwork *   p_loadNetwork;
-    Card_LoadPermSeq *   p_loadPermSeq;
+    Card_CostQuery *     p_costQuery;
     Card_LoadUnicast *   p_loadUnicast;
 
     Card_NCorrCols *     p_nCorrCols;

@@ -97,11 +97,11 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
   p_loadUnicast->vValue(nSumUnicastCost);
 
-  Card_LoadPermSeq* p_loadPermSeq = new Card_LoadPermSeq;
-  p_loadPermSeq->vAppend(p_loadNetwork);
-  p_loadPermSeq->vAppend(p_loadUnicast);
+  Card_CostQuery* p_costQuery = new Card_CostQuery;
+  p_costQuery->vAppend(p_loadNetwork);
+  p_costQuery->vAppend(p_loadUnicast);
 
-  vInsert(p_loadPermSeq);
+  vInsert(p_costQuery);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -362,10 +362,10 @@ bool Card_JoinPermSeq::bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_LoadPermSeq* p_loadPermSeq_this = pSub_loadPermSeq();
-  Card_LoadPermSeq* p_loadPermSeq_arg  = p_joinPermSeq_arg->pSub_loadPermSeq();
+  Card_CostQuery* p_costQuery_this = pSub_costQuery();
+  Card_CostQuery* p_costQuery_arg  = p_joinPermSeq_arg->pSub_costQuery();
 
-  if (p_loadPermSeq_this->bIsLessLoad(p_loadPermSeq_arg))
+  if (p_costQuery_this->bIsLessLoad(p_costQuery_arg))
     return true;
   else
     return false;
