@@ -52,7 +52,7 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
     while ((xCI2.G_bEachMain(CK_TERM))) {
       Stz *szTerm = xCI2.G.p_term->szValue();
 
-      if (xCI2.G.p_term->pSymbol()->bIsKeyOrdinal()) {
+      if (xCI2.G.p_term->pSymbol()->bIsKey()) {
         xCI2.G.p_term->vBump_KeyOrdinal();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
@@ -80,7 +80,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
     while (xCI2.G_bEachMain(CK_TERM)) {
       Stz *szTerm = xCI2.G.p_term->szValue();
 
-      if (xCI2.G.p_term->pSymbol()->bIsStreamColOrdinal()) {
+      if (xCI2.G.p_term->pSymbol()->bIsStreamColumn()) {
         xCI2.G.p_term->vBump_StreamColOrdinal();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;

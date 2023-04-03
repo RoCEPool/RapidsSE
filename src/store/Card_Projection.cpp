@@ -94,7 +94,7 @@ void Card_Projection::vAs_Review(CardIter* pCI)
 
     //Stz* szPrjCol_prj = p_expr_prj->szProjectedCol();
     Card_Term* p_term_prj = p_expr_prj->pProjectedTerm();
-    if ( (! p_term_prj || (! p_term_prj->pSymbol()->bIsKeyOrdinal())) )
+    if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKey())) )
       continue;
 
     // the <gbyAgg>/<projection>/<expr> is a single projected column

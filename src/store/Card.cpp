@@ -2349,7 +2349,7 @@ Symbol::operator Stz*(void)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::b_IsSubQueryOrdinal(BASE::Stz *szValue)
+bool Symbol::b_IsSubQueryName(BASE::Stz *szValue)
 {
   _static_
 
@@ -2395,9 +2395,9 @@ eQO Symbol::eEvalSubQryOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column ordinal n  (i.e. $n)                                            */
+/* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
 /*----------------------------------------------------------------------------*/
-i8 Symbol::iGetColOdn(void)
+i8 Symbol::iGetOrdinal(void)
 {
   i8 i_Col = StrLib::iGleanInt(m_sValue.azChar());
 
@@ -2405,7 +2405,24 @@ i8 Symbol::iGetColOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this atom an aggregate op?                                              */
+/* get table synonym from $c.n                                                */
+/*----------------------------------------------------------------------------*/
+char Symbol::cGetTableSyn(void)
+{
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+  char acThird  = m_sValue.azChar()[2];
+  char acFourth = m_sValue.azChar()[3];
+
+  RASSERT('$' == acFirst);
+  RASSERT('.' == acThird);
+
+  return acSecond;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsAggOp(void)
 {
@@ -2422,7 +2439,7 @@ bool Symbol::bIsAggOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a boolean function?                                               */
+/* is this symbol a boolean function?                                         */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsBoolFn(void)
 {
@@ -2441,7 +2458,7 @@ bool Symbol::bIsBoolFn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a comma separator?                                            */
+/* is this symbol a comma separator?                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsComma(void)
 {
@@ -2452,9 +2469,9 @@ bool Symbol::bIsComma(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is term an index-column ordinal?  (i.e. $In)                               */
+/* is this a symbol for an index-column?  (i.e. $In)                          */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsIndexColOrdinal(void)
+bool Symbol::bIsIndexColumn(void)
 {
   char acFirst  = m_sValue.azChar()[0];
   char acSecond = m_sValue.azChar()[1];
@@ -2469,9 +2486,9 @@ bool Symbol::bIsIndexColOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a key ordinal?  (i.e. $Kn)                                        */
+/* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsKeyOrdinal(void)
+bool Symbol::bIsKey(void)
 {
   char acFirst  = m_sValue.azChar()[0];
   char acSecond = m_sValue.azChar()[1];
@@ -2486,21 +2503,20 @@ bool Symbol::bIsKeyOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a column ordinal?  (i.e. $n or $c.n)                              */
+/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsColOrdinal(void)
+bool Symbol::bIsColumn(void)
 {
-  Stz* szValue = m_sValue;
-  if (bIsStreamColOrdinal() || bIsTableColOrdinal())
+  if (bIsStreamColumn() || bIsTableColumn())
     return true;
 
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a correlation parameter ordinal?  (i.e. %n)                       */
+/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsCorrParamOrdinal(void)
+bool Symbol::bIsCorrParam(void)
 {
   char acFirst  = m_sValue.azChar()[0];
   char acSecond = m_sValue.azChar()[1];
@@ -2514,7 +2530,7 @@ bool Symbol::bIsCorrParamOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a relational operator?                                            */
+/* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsRelnOp(void)
 {
@@ -2525,9 +2541,9 @@ bool Symbol::bIsRelnOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a result ordinal?  (i.e. #n)                                      */
+/* is this a symbol for a subQuery-result?  (i.e. #n)                         */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsResultOrdinal(void)
+bool Symbol::bIsResult(void)
 {
   char acFirst  = m_sValue.azChar()[0];
   char acSecond = m_sValue.azChar()[1];
@@ -2539,9 +2555,9 @@ bool Symbol::bIsResultOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a stream-column ordinal?  (i.e. $n)                               */
+/* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsStreamColOrdinal(void)
+bool Symbol::bIsStreamColumn(void)
 {
   char acFirst  = m_sValue.azChar()[0];
   char acSecond = m_sValue.azChar()[1];
@@ -2553,7 +2569,7 @@ bool Symbol::bIsStreamColOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a sub-query operator?                                             */
+/* is this a symbol for a subQuery-operator?                                  */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryOp(void)
 {
@@ -2563,21 +2579,20 @@ bool Symbol::bIsSubQueryOp(void)
   else if (m_sValue.bSame("notIn"_Stz))     return true;
 
   else return false;
-
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
+/* is this a symbol for a subQuery-name?                                      */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryPattern(void)
+bool Symbol::bIsSubQueryName(void)
 {
-  return b_IsSubQueryOrdinal(m_sValue);
+  return b_IsSubQueryName(m_sValue);
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a subQuery-column ordinal?  (i.e. __n)                            */
+/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsSqyColOrdinal(void)
+bool Symbol::bIsSubQueryColumn(void)
 {
   char acFirst  = m_sValue.azChar()[0];
   char acSecond = m_sValue.azChar()[1];
@@ -2596,13 +2611,12 @@ bool Symbol::bIsSqyColOrdinal(void)
     return true;
 
   return false;
-
 }
 
 /*----------------------------------------------------------------------------*/
-/* is value a table-column ordinal?  (i.e. $c.n)                              */
+/* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsTableColOrdinal(void)
+bool Symbol::bIsTableColumn(void)
 {
   char acFirst  = m_sValue.azChar()[0];
   char acSecond = m_sValue.azChar()[1];
@@ -2616,7 +2630,6 @@ bool Symbol::bIsTableColOrdinal(void)
     return true;
   else
     return false;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2720,23 +2733,6 @@ void Symbol::vSetTableColSyn(char cTblSyn)
 void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 {
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table column syn from $c.n                                             */
-/*----------------------------------------------------------------------------*/
-char Symbol::cTableColSyn(void)
-{
-  char acFirst  = m_sValue.azChar()[0];
-  char acSecond = m_sValue.azChar()[1];
-  char acThird  = m_sValue.azChar()[2];
-  char acFourth = m_sValue.azChar()[3];
-
-  RASSERT('$' == acFirst);
-  RASSERT('.' == acThird);
-
-  return acSecond;
-
 }
 
 /*----------------------------------------------------------------------------*/

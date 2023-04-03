@@ -453,16 +453,16 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   // parameters are considered within scope
-  if (p_term->pSymbol()->bIsCorrParamOrdinal())
+  if (p_term->pSymbol()->bIsCorrParam())
     return true;
 
   // literals are considered within scope
-  if (! p_term->pSymbol()->bIsTableColOrdinal()) {
+  if (!p_term->pSymbol()->bIsTableColumn()) {
     return true;
   }
 
   // is the table column within scope?
-  char cTblSyn_term = p_term->pSymbol()->cTableColSyn();
+  char cTblSyn_term = p_term->pSymbol()->cGetTableSyn();
   if (pScope->bInScope(cTblSyn_term))
     return true;
 

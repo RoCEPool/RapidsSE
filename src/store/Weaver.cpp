@@ -688,8 +688,8 @@ void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
 
     Card_Term* p_term = _pCard_Term(pChildCard);
 
-    if (p_term->pSymbol()->bIsStreamColOrdinal() ||
-        p_term->pSymbol()->bIsTableColOrdinal()) {
+    if (p_term->pSymbol()->bIsStreamColumn() ||
+        p_term->pSymbol()->bIsTableColumn()) {
 
       if (!p_term->pSymbol()->Y_bHas(P_Type)) {
         p_term->vDump();
@@ -843,8 +843,8 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
 
       Card_Term* p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIsStreamColOrdinal() ||
-          p_term->pSymbol()->bIsTableColOrdinal()) {
+      if (p_term->pSymbol()->bIsStreamColumn() ||
+          p_term->pSymbol()->bIsTableColumn()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
           p_term->vDump();
@@ -901,8 +901,8 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
 
         Card_Term* p_term = _pCard_Term(pSubCard);
 
-        if (p_term->pSymbol()->bIsStreamColOrdinal() ||
-            p_term->pSymbol()->bIsTableColOrdinal()) {
+        if (p_term->pSymbol()->bIsStreamColumn() ||
+            p_term->pSymbol()->bIsTableColumn()) {
 
           if (!p_term->pSymbol()->Y_bHas(P_Type)) {
             p_term->vDump();
@@ -957,8 +957,8 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIsStreamColOrdinal() ||
-          p_term->pSymbol()->bIsTableColOrdinal()) {
+      if (p_term->pSymbol()->bIsStreamColumn() ||
+          p_term->pSymbol()->bIsTableColumn()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
           p_term->vDump();
@@ -1046,8 +1046,8 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
 
       Card_Term *p_term = _pCard_Term(pSubCard);
 
-      if (p_term->pSymbol()->bIsStreamColOrdinal() ||
-          p_term->pSymbol()->bIsTableColOrdinal()) {
+      if (p_term->pSymbol()->bIsStreamColumn() ||
+          p_term->pSymbol()->bIsTableColumn()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
           p_term->vDump();
@@ -1398,8 +1398,8 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         szRpnExpr->vCatSprint(" or"_Stz);
         break;
       case CK_TERM:
-        if (pSubCard->pSymbol()->bIsStreamColOrdinal() ||
-            pSubCard->pSymbol()->bIsTableColOrdinal()) {
+        if (pSubCard->pSymbol()->bIsStreamColumn() ||
+            pSubCard->pSymbol()->bIsTableColumn()) {
 
           if (!pSubCard->pSymbol()->Y_bHas(P_Type)) {
             p_part->vDump();
@@ -1441,8 +1441,8 @@ void Weaver::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  if (pCard_Term->pSymbol()->bIsStreamColOrdinal() ||
-      pCard_Term->pSymbol()->bIsTableColOrdinal()) {
+  if (pCard_Term->pSymbol()->bIsStreamColumn() ||
+      pCard_Term->pSymbol()->bIsTableColumn()) {
 
     if (!pCard_Term->pSymbol()->Y_bHas(P_Type)) {
       pCard_Term->vDump();

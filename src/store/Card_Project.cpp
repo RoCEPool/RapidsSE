@@ -84,7 +84,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
 
     pCI->G.p_as = pCI->G.p_expr->pSub_as();
 
-    if (pCI->G.p_as->pSymbol()->bIsSqyColOrdinal())
+    if (pCI->G.p_as->pSymbol()->bIsSubQueryColumn())
       continue;
 
     pCI->vPrintBoard(__LINE__);

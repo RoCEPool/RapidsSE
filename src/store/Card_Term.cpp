@@ -138,7 +138,7 @@ void Card_Term::vBump_KeyOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = pSymbol()->iGetColOdn();
+  i8 iKeyOdn = pSymbol()->iGetOrdinal();
 
   this->pSymbol()->vSetKeyOrdinal(iKeyOdn + nBy);
 
@@ -158,7 +158,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = pSymbol()->iGetColOdn();
+  i8 iStmColOdn = pSymbol()->iGetOrdinal();
 
   this->pSymbol()->vSetStreamColOrdinal(iStmColOdn + nBy);
 
@@ -192,7 +192,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
     ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
   }
 
-  if (! pSymbol()->bIsStreamColOrdinal())
+  if (!pSymbol()->bIsStreamColumn())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -406,7 +406,7 @@ bool Card_Term::bIsCorPrmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsCorrParamOrdinal();
+  bool b = pSymbol()->bIsCorrParam();
 
   return b;
 }
@@ -431,7 +431,7 @@ bool Card_Term::bIsKeyOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsKeyOrdinal();
+  bool b = pSymbol()->bIsKey();
 
   return b;
 }
@@ -456,7 +456,7 @@ bool Card_Term::bIsStmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsStreamColOrdinal();
+  bool b = pSymbol()->bIsStreamColumn();
 
   return b;
 }
@@ -468,7 +468,7 @@ bool Card_Term::bIsTblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bIsTableColOrdinal())
+  if (pSymbol()->bIsTableColumn())
     return true;
 
   return false;

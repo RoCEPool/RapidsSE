@@ -193,29 +193,30 @@ namespace STORE
     // auto conversion
     operator Stz*(void);
 
-    static bool b_IsSubQueryOrdinal(Stz* szValue);  // __subqueryN
+    static bool b_IsSubQueryName(Stz* szValue);  // __subqueryN
 
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
-    i8   iGetColOdn(void);
+    i8   iGetOrdinal(void);
+    char cGetTableSyn(void);
 
-    bool bIsAggOp(void);            // avg, count, ... sum
-    bool bIsBoolFn(void);           // between, ... matchTrailing
-    bool bIsComma(void);            // ,
-    bool bIsIndexColOrdinal(void);  // $In
-    bool bIsKeyOrdinal(void);       // $Kn
-    bool bIsColOrdinal(void);       // $n or $c.n
-    bool bIsCorrParamOrdinal(void); // %n
-    bool bIsRelnOp(void);           // <, <=, ... >
-    bool bIsResultOrdinal(void);    // #n
-    bool bIsStreamColOrdinal(void); // $n
-    bool bIsSubQueryOp(void);       // exists, in, notExists, notIn
-    bool bIsSubQueryPattern(void);  // __subqueryN
-    bool bIsSqyColOrdinal(void);    // __n
-    bool bIsTableColOrdinal(void);  // $c.n
+    bool bIsAggOp(void);          // avg, count, ... sum
+    bool bIsBoolFn(void);         // between, case ... matchTrailing
+    bool bIsComma(void);          // ,
+    bool bIsIndexColumn(void);    // $In
+    bool bIsKey(void);            // $Kn
+    bool bIsColumn(void);         // $n or $c.n
+    bool bIsCorrParam(void);      // %n
+    bool bIsRelnOp(void);         // <, <=, ... >
+    bool bIsResult(void);         // #n
+    bool bIsStreamColumn(void);   // $n
+    bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
+    bool bIsSubQueryName(void);   // __subqueryN
+    bool bIsSubQueryColumn(void); // __n
+    bool bIsTableColumn(void);    // $c.n
 
-    bool bNeedsBrace(void);         // between, case, ... matchTrailing
+    bool bNeedsBrace(void);       // between, case, ... matchTrailing
 
     void vSet(Symbol* pSymbol);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
@@ -225,8 +226,6 @@ namespace STORE
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
     void vSprint(Stz* szFormat, ...);
-
-    char cTableColSyn(void);
 
     Stz* szValue(void);
 
