@@ -16,7 +16,8 @@ namespace STORE
     Card_JoinNext(void);
    ~Card_JoinNext(void) noexcept(false);
 
-    i8 nCalculateLoad(eXK eCast,
+    i8 nCalculateLoad(i8 nNodes,
+                      eXK eCast,
                       i8 nBuffersIn,
                       Card_TableList* p_tableList,
                       char cTblSyn_r);

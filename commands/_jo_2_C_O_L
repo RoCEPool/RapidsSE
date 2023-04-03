@@ -4,7 +4,7 @@
 
 // --initial _jo_2_C_O_L
 
-__TPCH_SCHEMA_RAY
+__TPCH_SCHEMA
 
 // truncate metrics tables
 truncate se__jobMetrics;
@@ -24,7 +24,7 @@ metricsCtl enable;
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_jo_O_L"
+/pipelineName = "_jo_2_C_O_L"
 select
        count(*)
   from

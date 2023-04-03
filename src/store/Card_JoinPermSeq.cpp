@@ -61,6 +61,8 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 
   i8 nBuffersIn = 0;
 
+  i8 nNodes = AM::PTNMAP::nKnownNodes();
+
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
@@ -77,7 +79,8 @@ void Card_JoinPermSeq::vCalculateLoad(Card_TableList* p_tableList)
 
     eXK eCast = eCastKind(p_tableList, xCI.G.p_joinNext);
 
-    nBuffersIn = xCI.G.p_joinNext->nCalculateLoad(eCast, nBuffersIn, p_tableList, cTblSyn_r);
+    nBuffersIn = xCI.G.p_joinNext->nCalculateLoad(nNodes, eCast, nBuffersIn,
+                                                  p_tableList, cTblSyn_r);
 
     Card_Load* p_load_next = xCI.G.p_joinNext->pSub_load();
 

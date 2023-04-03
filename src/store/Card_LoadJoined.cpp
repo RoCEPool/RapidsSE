@@ -51,7 +51,8 @@ Card_LoadJoined::~Card_LoadJoined(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* calculate join load                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadJoined::nCalculateLoad(eXK eCast,
+i8 Card_LoadJoined::nCalculateLoad(i8 nNodes,
+                                   eXK eCast,
                                    i8 nBuffersIn,
                                    Card_TableList* p_tableList,
                                    char cTblSyn_r)
@@ -61,8 +62,13 @@ i8 Card_LoadJoined::nCalculateLoad(eXK eCast,
 
   i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
+  //i8 iLoadJoined = (i8)(1.0 * (nBuffersIn * iSize_r));
 
-  i8 iLoadJoined = (i8)(1.0 * (nBuffersIn * iSize_r));
+  i8 iLoadJoined = C_UNKNOWN;
+  if (nBuffersIn > iSize_r)
+    iLoadJoined = ((d8)nBuffersIn / (d8)iSize_r) * (nBuffersIn + iSize_r);
+  else
+    iLoadJoined = ((d8)iSize_r / (d8)nBuffersIn) * (nBuffersIn + iSize_r);
 
   vValue((i8)iLoadJoined);
 
