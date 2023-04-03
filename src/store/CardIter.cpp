@@ -278,7 +278,7 @@ void CardIter::G_vClearMembers(void)
   G.p_limit            = nullptr;
   G.p_costNext             = nullptr;
   G.p_loadJoined       = nullptr;
-  G.p_loadNetwork      = nullptr;
+  G.p_costNetwork      = nullptr;
   G.p_costQuery      = nullptr;
   G.p_loadUnicast      = nullptr;
   G.p_nCorrCols        = nullptr;
@@ -1105,7 +1105,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_LIMIT:            return G.p_limit;
     case CK_COSTNEXT:             return G.p_costNext;
     case CK_LOADJOINED:       return G.p_loadJoined;
-    case CK_LOADNETWORK:      return G.p_loadNetwork;
+    case CK_COSTNETWORK:      return G.p_costNetwork;
     case CK_COSTQUERY:      return G.p_costQuery;
     case CK_LOADUNICAST:      return G.p_loadUnicast;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
@@ -1285,7 +1285,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_LIMIT:            return "G.p_limit"_Stz;
     case CK_COSTNEXT:             return "G.p_costNext"_Stz;
     case CK_LOADJOINED:       return "G.p_loadJoined"_Stz;
-    case CK_LOADNETWORK:      return "G.p_loadNetwork"_Stz;
+    case CK_COSTNETWORK:      return "G.p_costNetwork"_Stz;
     case CK_COSTQUERY:      return "G.p_costQuery"_Stz;
     case CK_LOADUNICAST:      return "G.p_loadUnicast"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
@@ -2156,7 +2156,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_COSTNEXT: *((Card**)&G.p_costNext)             = pCard; break;
     case CK_LOADJOINED:       *((Card**)&G.p_loadJoined)       = pCard; break;
-    case CK_LOADNETWORK:      *((Card**)&G.p_loadNetwork)      = pCard; break;
+    case CK_COSTNETWORK: *((Card**)&G.p_costNetwork)      = pCard; break;
     case CK_COSTQUERY: *((Card**)&G.p_costQuery)      = pCard; break;
     case CK_LOADUNICAST:      *((Card**)&G.p_loadUnicast)      = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;

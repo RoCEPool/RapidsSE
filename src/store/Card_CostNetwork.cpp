@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_LoadNetwork.cpp -- Load of Network (in load of join)                  */
+/* Card_CostNetwork.cpp -- Load of Network (in load of join)                  */
 /*============================================================================*/
 
-#include "Card_LoadNetwork.hpp"
+#include "Card_CostNetwork.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -16,16 +16,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_LoadNetwork, CK_LOADNETWORK)
-__aNewFunction(Card_LoadNetwork, CN_CARD)
-__vDeleteFunction(Card_LoadNetwork, CN_CARD)
+__pCastFunction_Card(STORE, Card_CostNetwork, CK_COSTNETWORK)
+__aNewFunction(Card_CostNetwork, CN_CARD)
+__vDeleteFunction(Card_CostNetwork, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_LoadNetwork::Card_LoadNetwork(void)
-: Card(CK_LOADNETWORK)
+Card_CostNetwork::Card_CostNetwork(void)
+: Card(CK_COSTNETWORK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -37,7 +37,7 @@ Card_LoadNetwork::Card_LoadNetwork(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_LoadNetwork::~Card_LoadNetwork(void) noexcept(false)
+Card_CostNetwork::~Card_CostNetwork(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -49,7 +49,7 @@ Card_LoadNetwork::~Card_LoadNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate network volume (as part of cost estimate of next join)            */
 /*----------------------------------------------------------------------------*/
-void Card_LoadNetwork::vEstNetworkVolume(eXK eNextCast,
+void Card_CostNetwork::vEstNetworkVolume(eXK eNextCast,
                                          i8 nBuff_arriving,
                                          i8 nBuff_joiningTo)
 {

@@ -6,7 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_LoadNetwork.hpp"
+#include "Card_CostNetwork.hpp"
 #include "Card_LoadUnicast.hpp"
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
@@ -53,11 +53,11 @@ bool Card_CostQuery::bIsLessLoad(Card_CostQuery* p_costQuery_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_LoadNetwork* p_loadNetwork_this = pSub_loadNetwork();
-  Card_LoadNetwork* p_loadNetwork_arg  = p_costQuery_arg->pSub_loadNetwork();
+  Card_CostNetwork* p_costNetwork_this = pSub_costNetwork();
+  Card_CostNetwork* p_costNetwork_arg  = p_costQuery_arg->pSub_costNetwork();
 
-  i8 iloadNetwork_this = p_loadNetwork_this->iValue();
-  i8 iloadNetwork_arg  = p_loadNetwork_arg->iValue();
+  i8 iloadNetwork_this = p_costNetwork_this->iValue();
+  i8 iloadNetwork_arg  = p_costNetwork_arg->iValue();
 
   if (iloadNetwork_this < iloadNetwork_arg)
     return true;

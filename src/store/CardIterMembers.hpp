@@ -161,7 +161,7 @@ namespace STORE
     Card_Limit *         p_limit;
     Card_CostNext *      p_costNext;
     Card_LoadJoined *    p_loadJoined;
-    Card_LoadNetwork *   p_loadNetwork;
+    Card_CostNetwork *   p_costNetwork;
     Card_CostQuery *     p_costQuery;
     Card_LoadUnicast *   p_loadUnicast;
 

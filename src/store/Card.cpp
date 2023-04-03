@@ -1923,13 +1923,13 @@ Card_LoadJoined* Card::pSub_loadJoined(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_LoadNetwork.hpp"
-Card_LoadNetwork* Card::pSub_loadNetwork(void)
+#include "Card_CostNetwork.hpp"
+Card_CostNetwork* Card::pSub_costNetwork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_LoadNetwork* p_loadNetwork =
-      _pCard_LoadNetwork(pFindSubCard(CK_LOADNETWORK));
+  Card_CostNetwork* p_loadNetwork =
+      _pCard_CostNetwork(pFindSubCard(CK_COSTNETWORK));
   return p_loadNetwork;
 }
 

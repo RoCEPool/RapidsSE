@@ -6,7 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_LoadNetwork.hpp"
+#include "Card_CostNetwork.hpp"
 #include "Card_LoadUnicast.hpp"
 #include "Card_Size.hpp"
 #include "Card_Table.hpp"
