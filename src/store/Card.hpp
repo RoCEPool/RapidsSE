@@ -193,10 +193,8 @@ namespace STORE
     // auto conversion
     operator Stz*(void);
 
-    static i8   i_GetColOdn(Stz* szValue);
-
-    static bool b_IsStreamColOrdinal(Stz* szValue); // $n
     static bool b_IsSubQueryOrdinal(Stz* szValue);  // __subqueryN
+
     static bool b_IsTableColOrdinal(Stz* szValue);  // $c.n
 
     eRO  eEvalRelnOp(void);

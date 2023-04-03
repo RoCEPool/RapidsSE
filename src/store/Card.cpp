@@ -2347,34 +2347,6 @@ Symbol::operator Stz*(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get column ordinal n  (i.e. $n)                                            */
-/*----------------------------------------------------------------------------*/
-i8 Symbol::i_GetColOdn(Stz* szValue)
-{
-  _static_
-
-  i8 i_Col = StrLib::iGleanInt(szValue->azChar());
-
-  return i_Col;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is value a stream-column ordinal?  (i.e. $n)                               */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsStreamColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsSubQueryOrdinal(BASE::Stz *szValue)
@@ -2448,7 +2420,9 @@ eQO Symbol::eEvalSubQryOp(void)
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iGetColOdn(void)
 {
-  return i_GetColOdn(m_sValue);
+  i8 i_Col = StrLib::iGleanInt(m_sValue.azChar());
+
+  return i_Col;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2538,7 +2512,7 @@ bool Symbol::bIsKeyOrdinal(void)
 bool Symbol::bIsColOrdinal(void)
 {
   Stz* szValue = m_sValue;
-  if (b_IsStreamColOrdinal(szValue) || Symbol::b_IsTableColOrdinal(szValue))
+  if (bIsStreamColOrdinal() || Symbol::b_IsTableColOrdinal(szValue))
     return true;
 
   return false;

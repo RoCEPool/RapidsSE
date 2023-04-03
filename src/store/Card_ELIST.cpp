@@ -80,7 +80,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
     while (xCI2.G_bEachMain(CK_TERM)) {
       Stz *szTerm = xCI2.G.p_term->szValue();
 
-      if (Symbol::b_IsStreamColOrdinal(szTerm)) {
+      if (xCI2.G.p_term->pSymbol()->bIsStreamColOrdinal()) {
         xCI2.G.p_term->vBump_StreamColOrdinal();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;

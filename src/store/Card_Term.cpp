@@ -138,7 +138,7 @@ void Card_Term::vBump_KeyOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = Symbol::i_GetColOdn(this->szValue());
+  i8 iKeyOdn = pSymbol()->iGetColOdn();
 
   this->pSymbol()->vSetKeyOrdinal(iKeyOdn + nBy);
 
@@ -158,7 +158,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = Symbol::i_GetColOdn(this->szValue());
+  i8 iStmColOdn = pSymbol()->iGetColOdn();
 
   this->pSymbol()->vSetStreamColOrdinal(iStmColOdn + nBy);
 
@@ -192,7 +192,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
     ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
   }
 
-  if (! Symbol::b_IsStreamColOrdinal(szValue()))
+  if (! pSymbol()->bIsStreamColOrdinal())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -473,7 +473,7 @@ bool Card_Term::bIsStmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = Symbol::b_IsStreamColOrdinal(this->szValue());
+  bool b = pSymbol()->bIsStreamColOrdinal();
 
   return b;
 }

@@ -2296,7 +2296,7 @@ Card_Expr* CardIter::pResolvePriorExpr_With_ProjectedCol(Card_Term* p_term)
     return nullptr;
 
   Stz* szPrjCol = p_term->szValue();
-  if (Symbol::b_IsStreamColOrdinal(szPrjCol)) {
+  if (p_term->pSymbol()->bIsStreamColOrdinal()) {
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term);
     return p_expr_prior;
   }
