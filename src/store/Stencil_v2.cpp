@@ -1740,10 +1740,8 @@ OpSketch* Stencil_v2::pSketchEos(Stream* pStream, eSR ePrevStencil_v2, Stz* sLab
   s4K sLabel;
   s4K sLabelNext;
 
-#define SK_EOS 0
-
   // create a new opSketch
-  OpSketch* pOpSketch = nullptr; //new OpSketch(""_Stz, SK_EOS, ePrevStencil_v2, SR_NONE, nullptr, nullptr);
+  OpSketch* pOpSketch = new OpSketch(""_Stz, SK_EOS, ePrevStencil_v2, SR_NONE, nullptr, nullptr);
 
   sLabel = ""_Stz;
   sLabelNext = ""_Stz;

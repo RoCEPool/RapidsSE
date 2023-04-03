@@ -60,15 +60,15 @@ begin
       | stageMarker4614
     stage stageMarker4614 on all partitions :
       filter " type BOOLEAN  $2 $6 ==  $9 $13 ==  and  $14 ''GERMANY''  ==  and  "
-      | project " type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
+      | aggreg " type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
       | combined 0
       | stageMarker4617
     stage stageMarker4617 on all nodes :
-      project " type DECIMAL )  $1 sum  "
+      aggreg " type DECIMAL )  $1 sum  "
       | combined 0
       | stageMarker4744
     stage stageMarker4744 on origin :
-      project " type DECIMAL )  $1 sum  "
+      aggreg " type DECIMAL )  $1 sum  "
       | combined 0
       | stageMarker4620
     stage stageMarker4620 on origin :
@@ -149,17 +149,17 @@ begin
   stage stageMarkerC on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
-    | project " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
   stage stageMarkerD on all nodes :
-    project " type DECIMAL as INNERRESULT )  $1 sum"
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum"
     | combined 0
     | next
 
   stage stageMarkerD on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
@@ -240,17 +240,17 @@ begin
 
  stage stageMarkerC on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | project " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
   stage stageMarkerD on all nodes :
-    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
  stage stageMarkerD on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum "
     | combined 0
     | next
 
@@ -331,17 +331,17 @@ begin
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | project " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
     | combined 0
     | next broadcast
 
@@ -427,17 +427,17 @@ begin
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | project " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
     | combined 0
     | next
 
   stage S04 on all nodes :
-    project " type DECIMAL as INNERRESULT )  $1 sum  "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
     | combined 0
     | next
 
   stage S05 on origin :
-    project " type DECIMAL as INNERRESULT )  $1 sum "
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum "
     | combined 0
     | next broadcast
 

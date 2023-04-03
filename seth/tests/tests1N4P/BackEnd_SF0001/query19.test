@@ -93,15 +93,15 @@ begin
     | stageMarker2365
   stage stageMarker2365 on all partitions :
     filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#12''  ==  and  }  ''SM CASE''  ''M BOX''  ''SM PACK''  ''SM PKG''  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL CAST  <=  and  }  1  5  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  $17 $2 ==  $20 ''Brand#23''  ==  and  }  ''MED BAG''  ''MED BOX''  ''MED PKG''  ''MED PACK''  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL CAST  <=  and  }  1  10  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  $17 $2 ==  $20 ''Brand#34''  ==  and  }  ''LG CASE''  ''LG BOX''  ''LG PACK''  ''LG PKG''  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL CAST  <=  and  }  1  15  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  "
-    | project " type DECIMAL )  $6 1.00  $7 -  *  sum  "
+    | aggreg " type DECIMAL )  $6 1.00  $7 -  *  sum  "
     | combined 0
     | stageMarker2368
   stage stageMarker2368 on all nodes :
-    project " type DECIMAL )  $1 sum  "
+    aggreg " type DECIMAL )  $1 sum  "
     | combined 0
     | stageMarker2371
   stage stageMarker2371 on origin :
-    project " type DECIMAL as revenue )  $1 sum  "
+    aggreg " type DECIMAL as revenue )  $1 sum  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -131,17 +131,17 @@ pipeline unamed
                   $20 'Brand#12'  == }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL CAST  <=  and  }  1  5  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and
                   $20 'Brand#23'  == }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL CAST  <=  and  }  1  10  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or
                   $20 'Brand#34'  == }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL CAST  <=  and  }  1  15  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or  "
-     | project " type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | aggreg " type DECIMAL )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
    stage stageMarker2368 on all nodes :
-     project " type DECIMAL )  $1 sum  "
+     aggreg " type DECIMAL )  $1 sum  "
      | combined 0
      | next
 
    stage stageMarker2371 on origin :
-     project " type DECIMAL as revenue )  $1 sum  "
+     aggreg " type DECIMAL as revenue )  $1 sum  "
      | combined 0
      | next
 
@@ -203,17 +203,17 @@ pipeline unamed
      | next
 
   stage stageMarker2368 on all partitions :
-     project " type DECIMAL )  l_extendedprice 1.00  l_discount -  *  sum  "
+     aggreg " type DECIMAL )  l_extendedprice 1.00  l_discount -  *  sum  "
      | combined 0
      | next
 
    stage stageMarker2368_a on all nodes :
-     project " type DECIMAL )  $1 sum  "
+     aggreg " type DECIMAL )  $1 sum  "
      | combined 0
      | next
 
    stage stageMarker2371 on origin :
-     project " type DECIMAL as revenue )  $1 sum  "
+     aggreg " type DECIMAL as revenue )  $1 sum  "
      | combined 0
      | next
 
@@ -282,17 +282,17 @@ begin
    | next
 
 stage S03 on all partitions :
-   project " type DECIMAL )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  "
+   aggreg " type DECIMAL )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  "
    | combined 0
    | next
 
  stage S04 on all nodes :
-   project " type DECIMAL )  $1 sum  "
+   aggreg " type DECIMAL )  $1 sum  "
    | combined 0
    | next
 
  stage S05 on origin :
-   project " type DECIMAL as revenue )  $1 sum  "
+   aggreg " type DECIMAL as revenue )  $1 sum  "
    | combined 0
    | next
 

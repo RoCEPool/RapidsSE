@@ -121,15 +121,15 @@ begin
       | stageMarker6140
     stage stageMarker6140 on all partitions :
       filter " type BOOLEAN  $1 ==  $6 $2 ==  and  $9 $13 ==  and  $15 $17 ==  and  $18 ''AFRICA''  ==  and  "
-      | project " type DECIMAL )  $4 min  "
+      | aggreg " type DECIMAL )  $4 min  "
       | combined 0
       | stageMarker6143
     stage stageMarker6143 on all nodes :
-      project " type DECIMAL )  $1 min  "
+      aggreg " type DECIMAL )  $1 min  "
       | combined 0
       | stageMarker6146
     stage stageMarker6146 on origin :
-      project " type DECIMAL )  $1 min  "
+      aggreg " type DECIMAL )  $1 min  "
       | combined 0
       | stageMarker6149
     stage stageMarker6149 on origin :

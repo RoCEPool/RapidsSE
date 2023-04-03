@@ -74,15 +74,15 @@ begin
     stage stageMarker1081 on all partitions :
       scan rapidsse public Customer
       | filter " type BOOLEAN  $6 0.00  >  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  and  "
-      | project " type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
+      | aggreg " type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
       | combined 0
       | stageMarker1084
     stage stageMarker1084 on all nodes :
-      project " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+      aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
       | combined 0
       | stageMarker1226
     stage stageMarker1226 on origin :
-      project " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+      aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
       | combined 0
       | stageMarker1087
     stage stageMarker1087 on origin :
@@ -152,17 +152,17 @@ begin
     scan Customer
     | filter " type BOOLEAN  C_ACCTBAL 0.00  >
                }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
-    | project " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
+    | aggreg " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    project " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+    aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
     | combined 0
     | next
 
   stage S04 on origin :
-    project " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+    aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
     | combined 0
     | next
 

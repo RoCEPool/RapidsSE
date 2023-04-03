@@ -91,17 +91,17 @@ begin
   stage stageQ17_2_a on all partitions :
     indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
     | filter " type BOOLEAN  $7 $2 <  "
-    | project " type DECIMAL as avg_yearly ) $8 sum  "
+    | aggreg " type DECIMAL as avg_yearly ) $8 sum  "
     | combined 0
     | next
 
   stage stageQ17_2_b on all nodes :
-    project " type DECIMAL as avg_yearly ) $1 sum  "
+    aggreg " type DECIMAL as avg_yearly ) $1 sum  "
     | combined 0
     | next
 
   stage stageQ17_2_c on origin :
-    project " type DECIMAL as avg_yearly ) $1 sum "
+    aggreg " type DECIMAL as avg_yearly ) $1 sum "
     | combined 0
     | next
 
