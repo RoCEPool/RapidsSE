@@ -174,6 +174,13 @@ debug : all
 release : all
 
 
+# CentOS 7 builds
+centos7Debug :
+	@source /opt/rh/devtoolset-10/enable && $(MAKE) -e debug
+
+centos7Release :
+	@source /opt/rh/devtoolset-10/enable && $(MAKE) -e release
+
 # RapidsSE executable
 $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(DIR_GUARD)
