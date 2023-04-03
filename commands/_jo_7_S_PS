@@ -1,0 +1,68 @@
+/*============================================================================*/
+/* _jo_7_S_PS -- join order: Supplier, PartSupp                               */
+/*============================================================================*/
+
+// --initial _jo_7_S_PS
+
+__TPCH_SCHEMA_RAY
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+/jobMetrics
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo_O_L"
+select
+       count(*)
+  from
+       Supplier, //   2
+       PartSupp  // 131
+ where
+       S_SUPPKEY  = PS_SUPPKEY
+;
+
+///////////////////////
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 20;
+
+// generate system report data
+sysReport;
+
+print "-------------------------------------------";
+print "NETWORK VOLUME FOR JOIN ORDER O L .........";
+
+// get network data
+select
+       thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(sendCount)  as sCount,
+       sum(sendBytes)  as sBytes,
+       sum(recvCount)  as rCount,
+       sum(recvBytes)  as rBytes
+  from
+       se__jobNetwork
+ group
+       by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
