@@ -291,6 +291,32 @@
 // DATE
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// Convert to a valid date
+#define _CONVERT_TO_VALID_DATE \
+{                              \
+  if (iMonth <= 0) {                                                       \
+    iMonth += 12;                                                          \
+    iYearDelta--;                                                          \
+  }                                                                        \
+  if (iMonth > 12) {                                                       \
+    iYearDelta = iYearDelta+iMonth/12;                                     \
+    iMonth = iMonth%12;                                                    \
+  }                                                                        \
+  i8 iYear = iYearDelta + C_YEAR_BASE;                                     \
+  i8 bIsLeapYear = ( (iYear % 4 == 0) && (iYear % 100 != 0) ) || (iYear % 400 == 0); \
+  if (bIsLeapYear) {                                                       \
+    if (iDay > iDaysPerMonthLeap[iMonth]) {                                \
+      iDay = iDaysPerMonthLeap[iMonth];                                    \
+    }                                                                      \
+  }                                                                        \
+  else {                                                                   \
+    if (iDay > iDaysPerMonth[iMonth]) {                                    \
+      iDay = iDaysPerMonth[iMonth];                                        \
+    }                                                                      \
+  }                                                                        \
+}
+
+
 #define _ADD_DTEIVD(eErrorCode)                                            \
   {                                                                        \
     ivlArg2.m_iAsI8 = *(--paW);                                            \
@@ -303,10 +329,10 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
-      else                                                                 \
-        iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
+    if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
+      iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                \
+    else                                                                 \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
     struct tm xDateTime = {0} ;                                            \
                                                                            \
@@ -340,35 +366,40 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
-      else                                                                 \
-        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
                                                                            \
-     xDte2.m_uYearDelta = xDte1.m_uYearDelta;                              \
-     xDte2.m_uMonth     = xDte1.m_uMonth;                                  \
-     xDte2.m_uDay       = xDte1.m_uDay;                                    \
-     xDte2.m_uSpare       = 0;                                             \
+      i8 iYear_arg2 = iArg2/12;                                            \
+      i8 iMonth_arg2 = iArg2%12;                                           \
                                                                            \
-    iArg1 = xDte2.m_uMonth + iArg2;                                        \
-    i8 iYear;                                                              \
-    if (iArg1 > 12) {                                                      \
-      iYear = xDte2.m_uYearDelta + iArg1/12;                               \
-      xDte2.m_uMonth = iArg1%12;                                           \
-    }                                                                      \
-    else {                                                                 \
-      iYear = xDte2.m_uYearDelta;                                          \
-      xDte2.m_uMonth = iArg1;                                              \
-    }                                                                      \
+      if (ivlArg2.m_xIvl.m_bIsNeg) {                                       \
+        iYear_arg2 = -1 * iYear_arg2;                                      \
+        iMonth_arg2 = (-1) * iMonth_arg2;                                  \
+      }                                                                    \
                                                                            \
-    if (iYear > C_YEAR_RANGE)                                              \
-      eErrorCode = EC_DATE_OUT_OF_RANGE;                                   \
-    else {                                                                 \
-      xDte2.m_uYearDelta = iYear;                                          \
-      *paW++ = xDte2.m_iAsI8;                                              \
-    }                                                                      \
-  }                                                                        \
-}
+      xDte2.m_uYearDelta = xDte1.m_uYearDelta;                             \
+      xDte2.m_uMonth     = xDte1.m_uMonth;                                 \
+      xDte2.m_uDay       = xDte1.m_uDay;                                   \
+      xDte2.m_uSpare       = 0;                                            \
+                                                                           \
+      i8 iYearDelta;                                                       \
+      i8 iMonth;                                                           \
+      i8 iDay;                                                             \
+      iYearDelta = xDte2.m_uYearDelta + iYear_arg2;                        \
+      iMonth = xDte2.m_uMonth + iMonth_arg2;                               \
+      iDay = xDte2.m_uDay;                                                 \
+                                                                           \
+      if (iYearDelta > C_YEAR_RANGE) {                                     \
+        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      }                                                                    \
+      else {                                                               \
+        _CONVERT_TO_VALID_DATE                                             \
+        xDte2.m_uYearDelta = iYearDelta;                                   \
+        xDte2.m_uMonth = iMonth;                                           \
+        xDte2.m_uDay = iDay;                                               \
+        *paW++ = xDte2.m_iAsI8;                                            \
+      }                                                                    \
+   }                                                                       \
+ }
 
 #define _ADD_IVDDTE(eErrorCode)                                            \
   {                                                                        \
@@ -414,38 +445,46 @@
     ivlArg1.m_iAsI8 = *(--paW);                                            \
                                                                            \
     if (eErrorCode != EC_NONE ||                                           \
-        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
-        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL ||                                   \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                 \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
                                                                            \
-      if (ivlArg1.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                \
-      else                                                                 \
-        iArg2 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
                                                                            \
-     xDte1.m_uYearDelta = xDte2.m_uYearDelta;                              \
-     xDte1.m_uMonth     = xDte2.m_uMonth;                                  \
-     xDte1.m_uDay       = xDte2.m_uDay;                                    \
-     xDte1.m_uSpare       = 0;                                             \
+      i8 iYear_arg1 = iArg1/12;                                            \
+      i8 iMonth_arg1 = iArg1%12;                                           \
                                                                            \
-    iArg1 = xDte1.m_uMonth + iArg2;                                        \
-    i8 iYear;                                                              \
-    if (iArg1 > 12) {                                                      \
-      iYear = xDte2.m_uYearDelta + iArg1/12;                               \
-      xDte1.m_uMonth = iArg1%12;                                           \
-      if (iYear > C_YEAR_RANGE)                                            \
+      if (ivlArg1.m_xIvl.m_bIsNeg) {                                       \
+        iYear_arg1 = (-1) * iYear_arg1;                                    \
+        iMonth_arg1 = (-1) * iMonth_arg1;                                  \
+      }                                                                    \
+                                                                           \
+      xDte1.m_uYearDelta = xDte2.m_uYearDelta;                             \
+      xDte1.m_uMonth     = xDte2.m_uMonth;                                 \
+      xDte1.m_uDay       = xDte2.m_uDay;                                   \
+      xDte1.m_uSpare       = 0;                                            \
+                                                                           \
+      i8 iYearDelta;                                                       \
+      i8 iMonth;                                                           \
+      i8 iDay;                                                             \
+      iYearDelta = xDte1.m_uYearDelta + iYear_arg1;                        \
+      iMonth = xDte1.m_uMonth + iMonth_arg1;                               \
+      iDay = xDte1.m_uDay;                                                 \
+                                                                           \
+      if (iYearDelta > C_YEAR_RANGE) {                                     \
         eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      }                                                                    \
       else {                                                               \
-        xDte1.m_uYearDelta = iYear;                                        \
+        _CONVERT_TO_VALID_DATE                                             \
+        xDte1.m_uYearDelta = iYearDelta;                                   \
+        xDte1.m_uMonth = iMonth;                                           \
+        xDte1.m_uDay = iDay;                                               \
         *paW++ = xDte1.m_iAsI8;                                            \
       }                                                                    \
-    }                                                                      \
-    else                                                                   \
-      *paW++ = xDte1.m_iAsI8;                                              \
-  }                                                                        \
-}
+   }                                                                       \
+ }
 
 #define _SUB_DTEDTE(eErrorCode)                                            \
   {                                                                        \
@@ -515,7 +554,7 @@
       else                                                                 \
         iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                       \
                                                                            \
-    struct tm xDateTime = {0} ;                                            \
+      struct tm xDateTime = {0} ;                                            \
                                                                            \
     xDateTime.tm_year = xDte1.m_uYearDelta;                                \
     xDateTime.tm_mon  = xDte1.m_uMonth - 1;                                \
@@ -547,27 +586,41 @@
     }                                                                      \
     else {                                                                 \
                                                                            \
-      if (ivlArg2.m_xIvl.m_bIsNeg)                                         \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                \
-      else                                                                 \
-        iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                       \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                         \
                                                                            \
-     xDte2.m_uYearDelta = xDte1.m_uYearDelta;                              \
-     xDte2.m_uMonth     = xDte1.m_uMonth;                                  \
-     xDte2.m_uDay       = xDte1.m_uDay;                                    \
-     xDte2.m_uSpare       = 0;                                             \
+      i8 iYear_arg2 = iArg2/12;                                            \
+      i8 iMonth_arg2 = iArg2%12;                                           \
                                                                            \
-    iArg1 = xDte2.m_uYearDelta*12 + xDte2.m_uMonth - iArg2;                \
-    xDte2.m_uYearDelta = iArg1/12;                                         \
-    xDte2.m_uMonth = iArg1%12;                                             \
+      if (ivlArg2.m_xIvl.m_bIsNeg) {                                       \
+        iYear_arg2 = (-1) * iYear_arg2;                                    \
+        iMonth_arg2 = (-1) * iMonth_arg2;                                  \
+      }                                                                    \
                                                                            \
-    if (xDte2.m_uMonth == 0) {                                             \
-      xDte2.m_uMonth = 12;                                                 \
-      xDte2.m_uYearDelta--;                                                \
-    }                                                                      \
-    *paW++ = xDte2.m_iAsI8;                                                \
-  }                                                                        \
-}
+      xDte2.m_uYearDelta = xDte1.m_uYearDelta;                             \
+      xDte2.m_uMonth     = xDte1.m_uMonth;                                 \
+      xDte2.m_uDay       = xDte1.m_uDay;                                   \
+      xDte2.m_uSpare       = 0;                                            \
+                                                                           \
+      i8 iYearDelta;                                                       \
+      i8 iMonth;                                                           \
+      i8 iDay;                                                             \
+      iYearDelta = xDte2.m_uYearDelta - iYear_arg2;                        \
+      iMonth = xDte2.m_uMonth - iMonth_arg2;                               \
+      iDay = xDte2.m_uDay;                                                 \
+                                                                           \
+      if (iYearDelta > C_YEAR_RANGE) {                                     \
+        eErrorCode = EC_DATE_OUT_OF_RANGE;                                 \
+      }                                                                    \
+      else {                                                               \
+        _CONVERT_TO_VALID_DATE                                             \
+        xDte2.m_uYearDelta = iYearDelta;                                   \
+        xDte2.m_uMonth = iMonth;                                           \
+        xDte2.m_uDay = iDay;                                               \
+        *paW++ = xDte2.m_iAsI8;                                            \
+      }                                                                    \
+   }                                                                       \
+ }
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FLOAT

@@ -699,7 +699,7 @@ Load TABLE4 "../DATA/Load/tbl4data.csv" ;
 success
 
 SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  TABLE4 where INTERVAL '1' MONTH + colc4 > DATE '2015-11-26';
-rows: 46
+rows: 84
 
 drop table TABLE4;
 success
