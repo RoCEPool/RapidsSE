@@ -56,10 +56,10 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 nSumLoadNetwork = 0;
-  i8 nSumLoadUnicast = 0;
+  i8 nSumNetworkCost = 0;
+  i8 nSumUnicastCost = 0;
 
-  i8 nBuff_moving   = 0;
+  i8 nBuff_forwarded   = 0;
   i8 nBuff_produced = 0;
 
   i8 nNodes = AM::PTNMAP::nKnownNodes();
@@ -67,41 +67,37 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
-    nBuff_moving = nBuff_produced;
+    nBuff_forwarded = nBuff_produced;
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD)) {
-      char cTblSyn_l = xCI.G.p_joinHead->cValue();
-      nBuff_produced = p_tableList->pGetTableSize(cTblSyn_l)->iValue();
+      char cTblSyn_head = xCI.G.p_joinHead->cValue();
+      nBuff_produced = p_tableList->pGetTableSize(cTblSyn_head)->iValue();
       continue;
     }
 
     if (! xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
       continue;
 
-    char cTblSyn_r = xCI.G.p_joinNext->cValue();
+    char cTblSyn_next = xCI.G.p_joinNext->cValue();
+    eXK eNextCast = this->eNextCast(p_tableList, xCI.G.p_joinNext);
+    i8 nBuff_joiningTo = p_tableList->pGetTableSize(cTblSyn_next)->iValue();
 
-    eXK eNextCast = this->eCastKind(p_tableList, xCI.G.p_joinNext);
-
-    i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
-
-    nBuff_produced = xCI.G.p_joinNext->nEstNextCost(nNodes, eNextCast, nBuff_moving,
-                                                    p_tableList, cTblSyn_r, iSize_r);
+    nBuff_produced = xCI.G.p_joinNext->nEstNextCosts(eNextCast, nBuff_forwarded, nBuff_joiningTo);
 
     Card_Load* p_load_next = xCI.G.p_joinNext->pSub_load();
-
     Card_LoadNetwork* p_loadNetwork = p_load_next->pSub_loadNetwork();
-    nSumLoadNetwork += p_loadNetwork->iValue();
+    nSumNetworkCost += p_loadNetwork->iValue();
     Card_LoadUnicast* p_loadUnicast = p_load_next->pSub_loadUnicast();
-    nSumLoadUnicast += p_loadUnicast->iValue();
+    nSumUnicastCost += p_loadUnicast->iValue();
   }
 
-  Card_LoadPermSeq* p_loadPermSeq = new Card_LoadPermSeq;
-
   Card_LoadNetwork* p_loadNetwork = new Card_LoadNetwork;
-  p_loadNetwork->vValue(nSumLoadNetwork);
-  Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
-  p_loadUnicast->vValue(nSumLoadUnicast);
+  p_loadNetwork->vValue(nSumNetworkCost);
 
+  Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
+  p_loadUnicast->vValue(nSumUnicastCost);
+
+  Card_LoadPermSeq* p_loadPermSeq = new Card_LoadPermSeq;
   p_loadPermSeq->vAppend(p_loadNetwork);
   p_loadPermSeq->vAppend(p_loadUnicast);
 
@@ -111,7 +107,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 /*----------------------------------------------------------------------------*/
 /* compute the cast of given join                                             */
 /*----------------------------------------------------------------------------*/
-eXK Card_JoinPermSeq::eCastKind(Card_TableList* p_tableList,
+eXK Card_JoinPermSeq::eNextCast(Card_TableList* p_tableList,
                                 Card_JoinNext*  p_joinNext)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

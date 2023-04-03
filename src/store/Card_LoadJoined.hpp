@@ -16,10 +16,9 @@ namespace STORE
     Card_LoadJoined(void);
    ~Card_LoadJoined(void) noexcept(false);
 
-    i8 nEstJoinVolume(i8 nNodes,
-                      eXK eNextCast,
+    i8 nEstJoinVolume(eXK eNextCast,
                       i8 nBuff_arriving,
-                      i8 iSize_r);
+                      i8 nBuff_joiningTo);
 
   };
 

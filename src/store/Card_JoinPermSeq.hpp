@@ -20,7 +20,7 @@ namespace STORE
 
      void vEstQueryCost(Card_TableList* p_tableList);
 
-     eXK eCastKind(Card_TableList* p_tableList,
+     eXK eNextCast(Card_TableList* p_tableList,
                    Card_JoinNext*  p_joinNext);
 
      i8 iOnePermutedJoin(Card_TableList*    p_tableList,

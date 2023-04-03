@@ -16,12 +16,9 @@ namespace STORE
     Card_JoinNext(void);
    ~Card_JoinNext(void) noexcept(false);
 
-    i8 nEstNextCost(i8 nNodes,
-                    eXK eNextCast,
-                    i8 nBuff_arriving,
-                    Card_TableList* p_tableList,
-                    char cTblSyn_r,
-                    i8 iSize_r);
+    i8 nEstNextCosts(eXK eNextCast,
+                     i8 nBuff_arriving,
+                     i8 nBuff_joiningTo);
 
   };
 

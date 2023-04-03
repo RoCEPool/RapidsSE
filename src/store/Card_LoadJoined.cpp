@@ -51,23 +51,22 @@ Card_LoadJoined::~Card_LoadJoined(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate join volume (as part of cost estimate of next join)               */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadJoined::nEstJoinVolume(i8 nNodes,
-                                   eXK eNextCast,
+i8 Card_LoadJoined::nEstJoinVolume(eXK eNextCast,
                                    i8 nBuff_arriving,
-                                   i8 iSize_r)
+                                   i8 nBuff_joiningTo)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
+  //i8 nBuff_joiningTo = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
-  //i8 iLoadJoined = (i8)(1.0 * (nBuff_arriving * iSize_r));
+  //i8 iLoadJoined = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo));
 
   i8 iLoadJoined = C_UNKNOWN;
-  if (nBuff_arriving > iSize_r)
-    iLoadJoined = ((d8)nBuff_arriving / (d8)iSize_r) * (nBuff_arriving + iSize_r);
+  if (nBuff_arriving > nBuff_joiningTo)
+    iLoadJoined = ((d8)nBuff_arriving / (d8)nBuff_joiningTo) * (nBuff_arriving + nBuff_joiningTo);
   else
-    iLoadJoined = ((d8)iSize_r / (d8)nBuff_arriving) * (nBuff_arriving + iSize_r);
+    iLoadJoined = ((d8)nBuff_joiningTo / (d8)nBuff_arriving) * (nBuff_arriving + nBuff_joiningTo);
 
   vValue((i8)iLoadJoined);
 

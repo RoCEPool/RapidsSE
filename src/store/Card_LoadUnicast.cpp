@@ -49,16 +49,11 @@ Card_LoadUnicast::~Card_LoadUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate unicast volume (as part of cost estimate of next join)            */
 /*----------------------------------------------------------------------------*/
-void Card_LoadUnicast::vEstUnicastVolume(i8 nNodes,
-                                       eXK eNextCast,
-                                       i8 nBuff_arriving,
-                                       Card_TableList* p_tableList,
-                                       char cTblSyn_r,
-                                         i8 iSize_r)
+void Card_LoadUnicast::vEstUnicastVolume(eXK eNextCast,
+                                         i8 nBuff_arriving,
+                                         i8 nBuff_joiningTo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
   i8 iLoadUnicast = 0;
   i8 nBuffersOut = 0;
@@ -67,7 +62,7 @@ void Card_LoadUnicast::vEstUnicastVolume(i8 nNodes,
 
     case XK_UNICAST:
       iLoadUnicast = (i8)(1.0 * (nBuff_arriving));
-      nBuffersOut = (i8)(1.0 * (nBuff_arriving * iSize_r));
+      nBuffersOut = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo));
       break;
 
     case XK_HASHCAST:

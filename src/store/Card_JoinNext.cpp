@@ -54,12 +54,9 @@ Card_JoinNext::~Card_JoinNext(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate cost of next join                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinNext::nEstNextCost(i8 nNodes,
-                               eXK eNextCast,
-                               i8 nBuff_arriving,
-                               Card_TableList* p_tableList,
-                               char cTblSyn_r,
-                               i8 iSize_r)
+i8 Card_JoinNext::nEstNextCosts(eXK eNextCast,
+                                i8 nBuff_arriving,
+                                i8 nBuff_joiningTo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card_Load*        p_load        = new Card_Load;
@@ -70,11 +67,11 @@ i8 Card_JoinNext::nEstNextCost(i8 nNodes,
 
   p_cast->vValue(aXK[eNextCast]);
 
-  p_loadNetwork->vEstNetworkVolume(nNodes, eNextCast, nBuff_arriving, p_tableList, cTblSyn_r,iSize_r);
+  p_loadNetwork->vEstNetworkVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
 
-  p_loadUnicast->vEstUnicastVolume(nNodes, eNextCast, nBuff_arriving, p_tableList, cTblSyn_r,iSize_r);
+  p_loadUnicast->vEstUnicastVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
 
-  i8 nBuff_produced = p_loadJoined->nEstJoinVolume(nNodes, eNextCast, nBuff_arriving, iSize_r);
+  i8 nBuff_produced = p_loadJoined->nEstJoinVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
 
   p_load->vAppend(p_cast);
   p_load->vAppend(p_loadNetwork);

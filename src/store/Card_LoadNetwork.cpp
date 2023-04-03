@@ -49,20 +49,16 @@ Card_LoadNetwork::~Card_LoadNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate network volume (as part of cost estimate of next join)            */
 /*----------------------------------------------------------------------------*/
-void Card_LoadNetwork::vEstNetworkVolume(i8 nNodes,
-                                         eXK eNextCast,
+void Card_LoadNetwork::vEstNetworkVolume(eXK eNextCast,
                                          i8 nBuff_arriving,
-                                         Card_TableList* p_tableList,
-                                         char cTblSyn_r,
-                                         i8 iSize_r)
+                                         i8 nBuff_joiningTo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // todo: complete...
 
   i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
-
-  //i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
+  i8 nNodes = AM::PTNMAP::nKnownNodes();
 
   i8 iLoad = 0;
   i8 nBuffersOut = 0;
@@ -73,12 +69,12 @@ void Card_LoadNetwork::vEstNetworkVolume(i8 nNodes,
 
     case XK_HASHCAST:
       iLoad = (i8)(1.0 * nBuff_arriving);
-      nBuffersOut = (i8)(1.0 * (nBuff_arriving * iSize_r));
+      nBuffersOut = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo));
       break;
 
     case XK_BROADCAST:
       iLoad = (i8)(1.0 * (nBuff_arriving * nPtnsPerNode));
-      nBuffersOut = (i8)(1.0 * (nBuff_arriving * iSize_r * nPtnsPerNode));
+      nBuffersOut = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo * nPtnsPerNode));
       break;
 
     default:
