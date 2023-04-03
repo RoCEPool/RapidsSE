@@ -258,7 +258,11 @@ void Step::vInfoSetAddRowCount(void)
 
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
   pInfoSet->vOpInfoSet(OI_COUNT);
-  
+
+  // RAY: UNCOMMENT next 2 lines to see relative sizes when running "count tableName;"
+  //i8 iRelativeSize = pTable->iRelativeSize();
+  //vTrace("Relative size of table %s is %lld\n"_Stz, pTable->szTableNm(), iRelativeSize);
+
   i8 nBuffers = 0;
   i8 nRows = 0;
   

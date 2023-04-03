@@ -80,6 +80,7 @@ namespace STORE
     void    vListContents(i8 i_Depth);
     bool    bPopulateIndex(i8 iIndexNo);
     PtnDef*  pPtnDef(void);
+    i8      iRelativeSize(void);
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);
