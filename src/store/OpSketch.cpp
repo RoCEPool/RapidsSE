@@ -2006,7 +2006,11 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
       break;
 
-    case SK_AGGGBY:
+    case SK_FILTER:
+      pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
+      break;
+
+    case SK_GBYAGG:
 
       if (ePreExp == PE_GKY) {
         break;
@@ -2049,10 +2053,6 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
 
       pExprStack->vPushStz(sPush);
-      break;
-
-    case SK_FILTER:
-      pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       break;
 
     case SK_INDEXJOIN:
@@ -2357,8 +2357,8 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
   switch(m_eSketchKind) {
-    case SK_AGGGBY:
     case SK_AGGREG:
+    case SK_GBYAGG:
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)
         return m_pExprStack;

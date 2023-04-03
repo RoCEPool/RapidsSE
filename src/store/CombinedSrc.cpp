@@ -127,9 +127,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
     switch(pOpSketch->eSketchKind()) {
 
-//      case SK_EOS:
-//        pEOSSketch = pOpSketch;
-//        break;
+      case SK_EOS:
+        pEOSSketch = pOpSketch;
+        break;
 
       case SK_FILTER:
         sCode = ""_Stz;
