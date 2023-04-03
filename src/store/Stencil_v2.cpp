@@ -622,7 +622,7 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp / projectOP
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       vSetupAggreg(pCombined, pOp);
 
@@ -2295,7 +2295,7 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // aggregate Op
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       m_xStageOps.m_iAggregOp++;
 

@@ -9,17 +9,17 @@ success
 rows:
  (0,'VIETNAM')
 
-// scan + filter + aggreg
+// scan + filter + gbyAgg
 /weaved select min(n_name) , max(n_nationkey) from nation;
 rows:
  ('ALGERIA',24)
 
-// scan + filter + aggreg
+// scan + filter + gbyAgg
 /weaved select count(*) from nation where n_name < 'E';
 rows:
   (5)
 
-// indexscan + filter + aggreg
+// indexscan + filter + gbyAgg
 /weaved select count(*) from nation where n_nationkey < 22;
 rows:
   (22)

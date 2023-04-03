@@ -98,15 +98,15 @@ begin
     | stageMarker2590
   stage stageMarker2590 on all partitions :
     call "profit "
-    | aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    | gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker2593
   stage stageMarker2593 on all nodes :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker2596
   stage stageMarker2596 on origin :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
     | sort " type VARCHAR as nation $1 ASC  , type INTEGER as o_year $2 DESC  "
     | combined 0
     | stageLast
@@ -175,7 +175,7 @@ pipeline unamed
     | next
 
   stage S07 on all partitions :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                     type VARCHAR as NATION $K1 ,
@@ -185,7 +185,7 @@ pipeline unamed
     | next
 
   stage S08 on all nodes :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -195,7 +195,7 @@ pipeline unamed
     | next
 
   stage S09 on origin :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -267,17 +267,17 @@ pipeline Query9
     | next
 
   stage stageMarker2587 on all partitions :
-    aggreg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
     | combined 0
     | next
 
@@ -346,17 +346,17 @@ rows: 41
     | next
 
   stage stageMarker2587 on all partitions :
-    aggreg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
+    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
@@ -425,17 +425,17 @@ ORDERS PARTITIONED ON O_ORDERKEY
     | next
 
   stage stageMarker2587 on all partitions :
-    aggreg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
+    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year O_YEAR aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  AMOUNT sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as SUM_PROFIT )  SUM_PROFIT sum  "
     | combined 0
     | next
 
@@ -503,17 +503,17 @@ SF10: 6.9s
     | next
 
   stage stageMarker2587 on all partitions :
-    aggreg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as NATION NATION , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2593 on all nodes :
-    aggreg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 , type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker2596 on origin :
-    aggreg " groupBy  type VARCHAR as nation $1 ,  type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as nation $1 ,  type INTEGER as o_year $2 aggregates type VARCHAR $K1 , type INTEGER $K2 , type DECIMAL as sum_profit )  $3 sum  "
     | combined 0
     | next
 
@@ -582,7 +582,7 @@ pipeline Query9
     | next
 
   stage S06 on all partitions :
-    aggreg "groupBy    type INTEGER S_NATIONKEY ,
+    gbyAgg "groupBy    type INTEGER S_NATIONKEY ,
                        type INTEGER O_YEAR
             aggregates type INTEGER as S_NATIONKEY $K1 ,
                        type INTEGER as O_YEAR $K2 ,
@@ -591,7 +591,7 @@ pipeline Query9
     | next
 
   stage S07 on all nodes :
-    aggreg "groupBy type INTEGER S_NATIONKEY ,
+    gbyAgg "groupBy type INTEGER S_NATIONKEY ,
     type INTEGER O_YEAR
     aggregates type INTEGER as S_NATIONKEY $K1 ,
     type INTEGER as O_YEAR $K2 ,
@@ -600,7 +600,7 @@ pipeline Query9
     | next
 
   stage S08 on origin :
-    aggreg "groupBy    type INTEGER S_NATIONKEY ,
+    gbyAgg "groupBy    type INTEGER S_NATIONKEY ,
                        type INTEGER O_YEAR
             aggregates type INTEGER as S_NATIONKEY $K1 ,
                        type INTEGER as O_YEAR $K2 ,
@@ -688,7 +688,7 @@ pipeline Query9
     | next
 
   stage S07 on all partitions :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                     type VARCHAR as NATION $K1 ,
@@ -698,7 +698,7 @@ pipeline Query9
     | next
 
   stage S08 on all nodes :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -708,7 +708,7 @@ pipeline Query9
     | next
 
   stage S09 on origin :
-    aggreg "groupBy type VARCHAR NATION ,
+    gbyAgg "groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,

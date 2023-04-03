@@ -78,9 +78,8 @@ create table TABLE9 (
 );
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
-/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
-/glean_cue_trace = "x"
-/glean_interactive
-/transliterated
-/weaved
-select 0.0 < dec_col7 from datums;
+
+//explain stage transliterate select dec_col6 from datums;
+//explain stage transliterate select min(dec_col6) from datums;
+//explain stage transliterate select min(dec_col6) from datums group by int_col0;
+

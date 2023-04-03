@@ -609,7 +609,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
@@ -638,7 +638,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       Op *pPrevOp = pStream->pGet(i_Op - 1);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      if ( ! pPrevOp->szOpNm()->bSame("aggreg"_Stz) ) {
+      if ( ! pPrevOp->szOpNm()->bSame("gbyAgg"_Stz) ) {
         pShape = pSketchFilter(pStream, pOp, ePrevStencil, sLabelLoop);
         vAppend(pShape);
       }
@@ -759,7 +759,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         // get the project kind
         eExprKind = pLogicUnit->m_eExprKind;
 
-        if (eExprKind == EK_PROJECT) {
+        RASSERT(eExprKind == EK_PROJECT);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           vSetupProjectExp(pCombined, pStream, pOp);
@@ -769,26 +769,44 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           vAppend(pShape);
 
           ePrevStencil = SR_PT;
-        } else {
+      }
+      else {
+        RASSERT(0);
+      }
 
-          RASSERT(eExprKind == EK_AGGREG);
+    }
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSetupProjectAgg(pCombined, pStream, pOp);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOP
+    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          pShape = pSketchPrjAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
-          vAppend(pShape);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // project after sort will move to the EOS marker
+      if ( ! m_xStageOps.m_pPostProjectOp ) {
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSetupEosPayload(pCombined, pOp);
+        // get the aggregate type stack
+        pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          vSketchEosProjectAgg(pCombined, pStream, pOp, pShape->pCodeSynthA()->pInitStack());
-          m_xStageOps.m_bGeneratePotTub = false;
+        // get the project kind
+        eExprKind = pLogicUnit->m_eExprKind;
 
-          ePrevStencil = SR_AT;
-        }
+        RASSERT(eExprKind == EK_AGGREG);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupProjectAgg(pCombined, pStream, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pShape = pSketchPrjAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
+        vAppend(pShape);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupEosPayload(pCombined, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSketchEosProjectAgg(pCombined, pStream, pOp, pShape->pCodeSynthA()->pInitStack());
+        m_xStageOps.m_bGeneratePotTub = false;
+
+        ePrevStencil = SR_AT;
       }
       else {
         RASSERT(0);
@@ -961,7 +979,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp / projectOP
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       vSetupAggreg(pCombined, pOp);
 
@@ -1116,7 +1134,7 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
       continue;
     }
 
-    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
+    if (pOp->szOpNm()->bSame("gbyAgg"_Stz) ||
         pOp->szOpNm()->bSame("project"_Stz) ||
         pOp->szOpNm()->bSame("ordagg"_Stz)) {
       LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
@@ -2837,7 +2855,7 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // aggregate Op
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       m_xStageOps.m_iAggregOp++;
 

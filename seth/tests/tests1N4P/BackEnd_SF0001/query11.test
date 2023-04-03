@@ -101,15 +101,15 @@ begin
     | stageMarker4635
   stage stageMarker4635 on all partitions :
     filter " type BOOLEAN  $2 $6 ==  $9 $13 ==  and  $14 ''GERMANY''  ==  and  "
-    | aggreg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
+    | gbyAgg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
     | combined 0
     | stageMarker4638
   stage stageMarker4638 on all nodes :
-    aggreg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | stageMarker4641
   stage stageMarker4641 on origin :
-    aggreg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL as value )  $2 sum  "
+    gbyAgg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL as value )  $2 sum  "
     | filter " type BOOLEAN  $2 __subquery0003  >  "
     | sort " type DECIMAL $2 DESC  "
     | combined 0
@@ -184,17 +184,17 @@ begin
   stage stageMarkerG on all partitions :
     indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
     | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
-    | aggreg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerH on all nodes :
-    aggreg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerI on origin :
-    aggreg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
@@ -274,17 +274,17 @@ begin
 
   stage stageMarkerG on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " groupBy type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | gbyAgg " groupBy type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerH on all nodes :
-    aggreg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage stageMarkerI on origin :
-    aggreg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    gbyAgg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
@@ -362,7 +362,7 @@ begin
 
   stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " groupBy    type INTEGER J1_PS_PARTKEY
+    | gbyAgg " groupBy    type INTEGER J1_PS_PARTKEY
                aggregates
                           type INTEGER as PS_PARTKEY $K1 ,
                           type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
@@ -371,14 +371,14 @@ begin
     | next
 
   stage S09 on all nodes :
-    aggreg " groupBy    type INTEGER PS_PARTKEY
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
                         type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
     | combined 0
     | next
 
   stage S10 on origin :
-    aggreg " groupBy    type INTEGER PS_PARTKEY
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
                         type DECIMAL as VALUE as VALUE ) VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT"
@@ -464,7 +464,7 @@ begin
 
   stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
-    | aggreg " groupBy    type INTEGER J1_PS_PARTKEY
+    | gbyAgg " groupBy    type INTEGER J1_PS_PARTKEY
                aggregates type INTEGER as PS_PARTKEY $K1 ,
                           type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
                           type DECIMAL as INNERRESULT INNERRESULT"
@@ -472,7 +472,7 @@ begin
     | next
 
   stage S09 on all nodes :
-    aggreg " groupBy    type INTEGER PS_PARTKEY
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
                         type DECIMAL as VALUE ) VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT"
@@ -480,7 +480,7 @@ begin
     | next
 
   stage S10 on origin :
-    aggreg " groupBy    type INTEGER PS_PARTKEY
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
                         type DECIMAL as VALUE )  VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT"

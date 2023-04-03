@@ -6,10 +6,10 @@
 enum eEK // expression kind
 {
   /*   */ EK_NONE=0,
-  /*   */ EK_AGGGBY,     // aggregate with group by
   /*   */ EK_AGGORD,     // ordered aggregate with group by
   /*   */ EK_AGGREG,     // projection with aggreagte
   /*   */ EK_FILTER,     // filter
+  /*   */ EK_GBYAGG,     // aggregate with group by
   /*   */ EK_HASH,       // hash
   /*   */ EK_INDEXJOIN,  // index join
   /*   */ EK_INDEXSCAN,  // index scan
@@ -23,10 +23,10 @@ enum eEK // expression kind
 static Stz* aEK[]
 {
   /*   */ "NONE"_Stz,
-  /*   */ "AGGGBY"_Stz,
   /*   */ "AGGORD"_Stz,
   /*   */ "AGGREG"_Stz,
   /*   */ "FILTER"_Stz,
+  /*   */ "GBYAGG"_Stz,
   /*   */ "HASH"_Stz,
   /*   */ "INDEXJOIN"_Stz,
   /*   */ "INDEXSCAN"_Stz,

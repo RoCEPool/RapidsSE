@@ -53,15 +53,15 @@ begin
   stage stageMarker4125 on all partitions :
     scan rapidsse public LineItem
     | filter " type BOOLEAN  $11 DATE ''1996-01-01''  >=  $11 DATE ''1996-04-01''  <  and  "
-    | aggreg " groupBy  type INTEGER as l_suppkey $3 aggregates  type INTEGER $K1 , type DECIMAL )  $6 1.00  $7 -  *  sum  "
+    | gbyAgg " groupBy  type INTEGER as l_suppkey $3 aggregates  type INTEGER $K1 , type DECIMAL )  $6 1.00  $7 -  *  sum  "
     | combined 0
     | stageMarker4128
   stage stageMarker4128 on all nodes :
-    aggreg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | stageMarker4131
   stage stageMarker4131 on origin :
-    aggreg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type INTEGER as l_suppkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -151,21 +151,21 @@ pipeline Query15
 
    stage S02 on all partitions :
      indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
-     | aggreg " groupBy    type INTEGER as l_suppkey $3
+     | gbyAgg " groupBy    type INTEGER as l_suppkey $3
                 aggregates type INTEGER $K1 ,
                            type DECIMAL )  $6 1.00  $7 -  *  sum  "
      | combined 0
      | next
 
    stage S03 on all nodes :
-     aggreg " groupBy    type INTEGER as l_suppkey $1
+     gbyAgg " groupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER $K1 ,
                          type DECIMAL )  $2 sum  "
      | combined 0
      | next
 
    stage S04 on origin :
-     aggreg " groupBy    type INTEGER as l_suppkey $1
+     gbyAgg " groupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER as supplier_no $K1 ,
                          type DECIMAL as TOTAL_REVENUE ) $2 sum  "
      | combined 0

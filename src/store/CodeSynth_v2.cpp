@@ -470,7 +470,7 @@ TypedStack* CodeSynth_v2::pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLab
   vGenerateProcessRow(sLabelLoop);
 
   // generate the expression code
-  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_AGGGBY, m_pStreamDefLft, ""_Stz);
+  vGenerateExpr((char *) sProjectExpr, pPostStack, EK_GBYAGG, m_pStreamDefLft, ""_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate payload key
@@ -3076,7 +3076,7 @@ void CodeSynth_v2::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprK
       iGbyCols++;
 /*
       if (eExprKind == EK_GROUPBY)
-        eExprKind = EK_AGGGBY;
+        eExprKind = EK_GBYAGG;
       else {
         RASSERT(eExprKind == EK_ORDGROUPBY);
         RASSERT(ePreExp == PE_GBY);
@@ -3892,7 +3892,7 @@ void CodeSynth_v2::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
   sStructColumn.vSprint("p%s->%s"_Stz,
                         xRowRef_v2[m_eStencilTo], sColumn.azChar());
 
-  if (eExprKind == EK_AGGGBY) {
+  if (eExprKind == EK_GBYAGG) {
 //    if (bHashRows)
 //      sStructColumn.vSprint("p%s_pot->%s"_Stz,
 //                            xRowRef_v2[m_eStencilTo], sColumn.azChar());
@@ -3914,7 +3914,7 @@ void CodeSynth_v2::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
 
   switch (ePreExp) {
     case PE_ALL:
-      if (eExprKind == EK_AGGGBY) {
+      if (eExprKind == EK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
@@ -3934,7 +3934,7 @@ void CodeSynth_v2::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
       break;
 
     case PE_CNT:
-      if (eExprKind == EK_AGGGBY) {
+      if (eExprKind == EK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
@@ -3954,7 +3954,7 @@ void CodeSynth_v2::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
       break;
 
     case PE_MIN:
-      if (eExprKind == EK_AGGGBY) {
+      if (eExprKind == EK_GBYAGG) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -4000,7 +4000,7 @@ void CodeSynth_v2::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
       break;
 
     case PE_MAX:
-      if (eExprKind == EK_AGGGBY) {
+      if (eExprKind == EK_GBYAGG) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -4047,7 +4047,7 @@ void CodeSynth_v2::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack,
       break;
 
     case PE_SUM:
-      if (eExprKind == EK_AGGGBY) {
+      if (eExprKind == EK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
@@ -4635,7 +4635,7 @@ void CodeSynth_v2::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack
         pPostStack->vReset();
       break;
 
-    case EK_AGGGBY:
+    case EK_GBYAGG:
 
       if (ePreExp == PE_GKY) {
         break;
@@ -5391,7 +5391,7 @@ TypedStack* CodeSynth_v2::pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH_V2, _FOOTER_);
 
   switch(eExprKind) {
-    case EK_AGGGBY:
+    case EK_GBYAGG:
     case EK_AGGREG:
       if (ePreExp == PE_GKY ||
           ePreExp == PE_EXP)

@@ -116,15 +116,15 @@ begin
     | stageMarker3312
   stage stageMarker3312 on all partitions :
     call "all_nations "
-    | aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  } type DECIMAL $3 ''BRAZIL''  ==  WHEN  $2 THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    | gbyAgg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  } type DECIMAL $3 ''BRAZIL''  ==  WHEN  $2 THEN  0.00  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | stageMarker3315
   stage stageMarker3315 on all nodes :
-    aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker3509
   stage stageMarker3509 on origin :
-    aggreg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker3318
   stage stageMarker3318 on origin :
@@ -204,17 +204,17 @@ begin
     | next
 
   stage stageMarkerI on all partitions :
-    aggreg " groupBy type INTEGER O_YEAR aggregates type INTEGER as O_YEAR $K1 , type DECIMAL  ) VOLUME sum  , type DECIMAL )  } type DECIMAL NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    gbyAgg " groupBy type INTEGER O_YEAR aggregates type INTEGER as O_YEAR $K1 , type DECIMAL  ) VOLUME sum  , type DECIMAL )  } type DECIMAL NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
 
   stage stageMarkerJ on all nodes :
-    aggreg " groupBy type INTEGER O_YEAR aggregates  type INTEGER as O_YEAR $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy type INTEGER O_YEAR aggregates  type INTEGER as O_YEAR $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarkerK on origin :
-    aggreg " groupBy  type INTEGER O_YEAR aggregates  type INTEGER as O_YEAR $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type INTEGER O_YEAR aggregates  type INTEGER as O_YEAR $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
@@ -315,7 +315,7 @@ begin
     | next
 
   stage S09 on all partitions :
-    aggreg " groupBy type INTEGER O_YEAR
+    gbyAgg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
                      type DECIMAL  ) VOLUME sum  ,
@@ -324,7 +324,7 @@ begin
     | next
 
   stage S010 on all nodes :
-    aggreg " groupBy type INTEGER O_YEAR
+    gbyAgg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
                      type DECIMAL )  $2 sum  ,
@@ -333,7 +333,7 @@ begin
     | next
 
   stage S011 on origin :
-    aggreg " groupBy type INTEGER O_YEAR
+    gbyAgg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
                      type DECIMAL )  $2 sum  ,
@@ -437,7 +437,7 @@ begin
     | next
 
   stage S09 on all partitions :
-    aggreg " groupBy type INTEGER O_YEAR
+    gbyAgg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
                      type DECIMAL  ) VOLUME sum  ,
@@ -446,7 +446,7 @@ begin
     | next
 
   stage S010 on all nodes :
-    aggreg " groupBy type INTEGER O_YEAR
+    gbyAgg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
                      type DECIMAL )  $2 sum  ,
@@ -455,7 +455,7 @@ begin
     | next
 
   stage S011 on origin :
-    aggreg " groupBy type INTEGER O_YEAR
+    gbyAgg " groupBy type INTEGER O_YEAR
              aggregates
                      type INTEGER as O_YEAR $K1 ,
                      type DECIMAL )  $2 sum  ,

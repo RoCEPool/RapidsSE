@@ -183,15 +183,15 @@ from (
      | stageMarker2206
    stage stageMarker2206 on all partitions :
      call "shipping "
-     | aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+     | gbyAgg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
      | combined 0
      | stageMarker2209
    stage stageMarker2209 on all nodes :
-     aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+     gbyAgg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
      | combined 0
      | stageMarker2212
    stage stageMarker2212 on origin :
-     aggreg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL as revenue )  $4 sum  "
+     gbyAgg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL as revenue )  $4 sum  "
      | sort " type VARCHAR as supp_nation $1 ASC  , type VARCHAR as cust_nation $2 ASC  , type INTEGER as l_year $3 ASC  "
      | combined 0
      | stageLast
@@ -263,7 +263,7 @@ begin
      | next
 
   stage S07 on all partitions :
-     aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+     gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
                       type VARCHAR as N2_N_NAME N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR aggregates
                       type VARCHAR as N1_N_NAME $K1 ,
@@ -274,7 +274,7 @@ begin
      | next
 
    stage S08 on all nodes :
-    aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+    gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
                      type VARCHAR as N2_N_NAME N2_N_NAME ,
                      type INTEGER as L_YEAR L_YEAR
                      aggregates
@@ -286,7 +286,7 @@ begin
      | next
 
    stage S09 on origin :
-     aggreg " groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
+     gbyAgg " groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
                       type VARCHAR as CUST_NATION N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR
                       aggregates
@@ -358,17 +358,17 @@ begin
    | next
 
  stage stageMarker2206 on all partitions :
-   aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) VOLUME sum  "
+   gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) VOLUME sum  "
    | combined 0
    | next
 
  stage stageMarker2209 on all nodes :
-  aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
+  gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
    | combined 0
    | next
 
  stage stageMarker2212 on origin :
-   aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
+   gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
    //| sort " type VARCHAR as supp_nation $1 ASC  , type VARCHAR as cust_nation $2 ASC  , type INTEGER as l_year $3 ASC  "
    | combined 0
    | next

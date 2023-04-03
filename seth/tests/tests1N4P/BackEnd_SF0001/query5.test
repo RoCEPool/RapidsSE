@@ -85,15 +85,15 @@ begin
     | stageMarker10522
   stage stageMarker10522 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $20 $34 ==  and  $4 $37 ==  and  $37 $41 ==  and  $43 $45 ==  and  $46 ''AMERICA''  ==  and  $13 DATE ''1994-01-01''  >=  and  $13 DATE ''1995-01-01''  <  and  "
-    | aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  "
+    | gbyAgg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  "
     | combined 0
     | stageMarker10525
   stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | stageMarker10528
   stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
     | sort " type DECIMAL $2 DESC  "
     | combined 0
     | stageLast
@@ -173,17 +173,17 @@ begin
                           J5_R_NAME 'AMERICA'  ==  and
                           J1_O_ORDERDATE DATE '1994-01-01'  >=  and
                           J1_O_ORDERDATE DATE '1995-01-01'  <  and  "
-    | aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
+    | gbyAgg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
     | combined 0
     | next
 
@@ -255,17 +255,17 @@ begin
     | next
 
   stage stageMarker10522 on all partitions :
-    aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
     | combined 0
     | next
 
@@ -356,21 +356,21 @@ begin
     | next
 
   stage S06 on all partitions :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage S07 on all nodes :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
   stage S08 on origin :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
              type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
@@ -463,21 +463,21 @@ begin
     | next
 
   stage S06 on all partitions :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage S07 on all nodes :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
   stage S08 on origin :
-    aggreg " groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
              type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0

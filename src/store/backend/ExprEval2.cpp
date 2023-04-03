@@ -267,7 +267,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
 
-      eExprKind = EK_AGGGBY;
+      eExprKind = EK_GBYAGG;
       bGroupBy = true;
       ePreExp = PE_GBY;
       pIndexDef->vIndexNm("gby_idx"_Stz);

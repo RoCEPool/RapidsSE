@@ -119,15 +119,15 @@ begin
     | stageMarker1099
   stage stageMarker1099 on all partitions :
     call "custsale "
-    | aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
     | combined 0
     | stageMarker1102
   stage stageMarker1102 on all nodes :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | stageMarker1105
   stage stageMarker1105 on origin :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
     | sort " type VARCHAR as cntrycode $1 ASC  "
     | combined 0
     | stageLast
@@ -187,17 +187,17 @@ begin
     | next
 
  stage S08 on all partitions :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage S09 on all nodes :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
     | combined 0
     | next
 
   stage S10 on origin :
-    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
     | combined 0
     | next
 

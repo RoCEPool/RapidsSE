@@ -58,15 +58,15 @@ begin
     | stageMarker27171
   stage stageMarker27171 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $13 TIMESTAMP ''1993-10-01 00:00:00''  >=  and  $13 TIMESTAMP ''1994-01-01 00:00:00''  <  and  $26 ''R''  ==  and  $4 $34 ==  and  "
-    | aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $6 , type VARCHAR as c_phone $5 , type VARCHAR as n_name $35 , type VARCHAR as c_address $3 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $23 1.  $24 -  *  sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    | gbyAgg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $6 , type VARCHAR as c_phone $5 , type VARCHAR as n_name $35 , type VARCHAR as c_address $3 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $23 1.  $24 -  *  sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
     | combined 0
     | stageMarker27174
   stage stageMarker27174 on all nodes :
-    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    gbyAgg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
     | combined 0
     | stageMarker27177
   stage stageMarker27177 on origin :
-    aggreg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL as revenue )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
+    gbyAgg " groupBy  type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type DECIMAL as c_acctbal $4 , type VARCHAR as c_phone $7 , type VARCHAR as n_name $5 , type VARCHAR as c_address $6 , type VARCHAR as c_comment $8 aggregates  type INTEGER $K1 , type VARCHAR $K2 , type DECIMAL as revenue )  $3 sum  , type DECIMAL $K3 , type VARCHAR $K5 , type VARCHAR $K6 , type VARCHAR $K4 , type VARCHAR $K7 "
     | sort " type DECIMAL $3 DESC  "
     | limit 20
     | combined 0
@@ -132,7 +132,7 @@ begin
                                J2_L_RETURNFLAG 'R'  ==  and"
                                //C_NATIONKEY J3_N_NATIONKEY ==  and  "
 
-    | aggreg " groupBy  type INTEGER as C_CUSTKEY C_CUSTKEY ,
+    | gbyAgg " groupBy  type INTEGER as C_CUSTKEY C_CUSTKEY ,
                         type VARCHAR as C_NAME C_NAME ,
                         type DECIMAL as C_ACCTBAL C_ACCTBAL ,
                         type VARCHAR as C_PHONE C_PHONE ,
@@ -153,7 +153,7 @@ begin
     | next
 
   stage stageMarker27174 on all nodes :
-    aggreg " groupBy  type INTEGER as C_CUSTKEY $1 ,
+    gbyAgg " groupBy  type INTEGER as C_CUSTKEY $1 ,
                       type VARCHAR as C_NAME $2 ,
                       type DECIMAL as C_ACCTBAL $4 ,
                       type VARCHAR as C_PHONE $7 ,
@@ -172,7 +172,7 @@ begin
     | combined 0
     | next
   stage stageMarker27177 on origin :
-    aggreg " groupBy  type INTEGER as C_CUSTKEY $1 ,
+    gbyAgg " groupBy  type INTEGER as C_CUSTKEY $1 ,
                       type VARCHAR as C_NAME $2 ,
                       type DECIMAL as C_ACCTBAL $4 ,
                       type VARCHAR as C_PHONE $7 ,
@@ -273,7 +273,7 @@ pipeline unnamed
     stage Gj_LINEITEM on all partitions :
       indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==  //J2
       | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-      | aggreg expr groupby type INTEGER _custkey
+      | gbyAgg expr groupby type INTEGER _custkey
                      aggregates
                      type INTEGER as _custkey $K1 ,
                      type VARCHAR as c_name c_name ,
@@ -288,7 +288,7 @@ pipeline unnamed
 
     // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
     stage G_AGG_N on all nodes :
-      aggreg expr groupby type INTEGER _custkey
+      gbyAgg expr groupby type INTEGER _custkey
                   aggregates
                   type INTEGER as _custkey $K1 ,
                   type VARCHAR as c_name c_name ,
@@ -302,7 +302,7 @@ pipeline unnamed
       | next
 
     stage G_GAG_O on origin :
-      aggreg expr groupby type INTEGER _custkey
+      gbyAgg expr groupby type INTEGER _custkey
                   aggregates type INTEGER as _custkey $K1 ,
                   type VARCHAR as c_name c_name ,
                   type DECIMAL as REVENUE ) REVENUE  sum ,
@@ -397,7 +397,7 @@ begin
   stage S03 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-    | aggreg  "groupby    type INTEGER O_CUSTKEY
+    | gbyAgg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
                           type VARCHAR as C_NAME C_NAME ,
                           type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum ,
@@ -410,7 +410,7 @@ begin
     | next
 
   stage S04 on all nodes :
-    aggreg "groupby    type INTEGER O_CUSTKEY
+    gbyAgg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type VARCHAR as C_NAME C_NAME ,
                        type DECIMAL as REVENUE ) REVENUE  sum ,
@@ -423,7 +423,7 @@ begin
     | next
 
   stage S05 on origin :
-    aggreg "groupby    type INTEGER O_CUSTKEY
+    gbyAgg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type VARCHAR as C_NAME C_NAME ,
                        type DECIMAL as REVENUE ) REVENUE  sum ,
@@ -509,12 +509,12 @@ begin
     | next
 
   stage S04 on all nodes :
-    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum "
+    gbyAgg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S05 on origin :
-    aggreg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum"
+    gbyAgg "groupby    type INTEGER O_CUSTKEY aggregates type INTEGER as O_CUSTKEY $K1 , type DECIMAL as REVENUE ) REVENUE  sum"
     | combined 0
     | next
 
@@ -588,21 +588,21 @@ begin
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
     | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-    | aggreg  "groupby    type INTEGER O_CUSTKEY
+    | gbyAgg  "groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
                           type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum "
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg "groupby    type INTEGER O_CUSTKEY
+    gbyAgg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum "
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg "groupby    type INTEGER O_CUSTKEY
+    gbyAgg "groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum"
     | combined 0

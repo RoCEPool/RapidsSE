@@ -59,15 +59,15 @@ begin
       | stageMarker1264
     stage stageMarker1264 on all partitions :
       scan rapidsse public LineItem
-      | aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $5 sum  "
+      | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $5 sum  "
       | combined 0
       | stageMarker1267
     stage stageMarker1267 on all nodes :
-      aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+      gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
       | combined 0
       | stageMarker1294
     stage stageMarker1294 on origin :
-      aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+      gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
       | filter " type BOOLEAN  $2 100.00  >  "
       | combined 0
       | stageMarker1270
@@ -101,15 +101,15 @@ begin
     | stageMarker1285
   stage stageMarker1285 on all partitions :
     filter " type BOOLEAN  }  __subquery0003  #1  $9 in  $1 $10 ==  and  $9 $18 ==  and  "
-    | aggreg " groupBy  type VARCHAR as c_name $2 , type INTEGER as c_custkey $1 , type INTEGER as o_orderkey $9 , type DATE as o_orderdate $13 , type DECIMAL as o_totalprice $12 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $22 sum  "
+    | gbyAgg " groupBy  type VARCHAR as c_name $2 , type INTEGER as c_custkey $1 , type INTEGER as o_orderkey $9 , type DATE as o_orderdate $13 , type DECIMAL as o_totalprice $12 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $22 sum  "
     | combined 0
     | stageMarker1288
   stage stageMarker1288 on all nodes :
-    aggreg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type DATE as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
+    gbyAgg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type DATE as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
     | combined 0
     | stageMarker1291
   stage stageMarker1291 on origin :
-    aggreg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type DATE as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
+    gbyAgg " groupBy  type VARCHAR as c_name $1 , type INTEGER as c_custkey $2 , type INTEGER as o_orderkey $3 , type DATE as o_orderdate $4 , type DECIMAL as o_totalprice $5 aggregates  type VARCHAR $K1 , type INTEGER $K2 , type INTEGER $K3 , type DATE $K4 , type DECIMAL $K5 , type DECIMAL )  $6 sum  "
     | sort " type DECIMAL as o_totalprice $5 DESC  , type DATE as o_orderdate $4 ASC  "
     | combined 0
     | stageLast
@@ -157,7 +157,7 @@ begin
      | next
 
    stage S04 on all partitions :
-     aggreg " groupBy type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy type VARCHAR as C_NAME C_NAME ,
                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
                       type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -173,7 +173,7 @@ begin
      | next
 
    stage S05 on all nodes :
-     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -189,7 +189,7 @@ begin
      | next
 
    stage S06 on origin :
-     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -355,7 +355,7 @@ begin
      | next
 
    stage S04 on all partitions :
-     aggreg " groupBy type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy type VARCHAR as C_NAME C_NAME ,
                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
                       type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -371,7 +371,7 @@ begin
      | next
 
    stage S05 on all nodes :
-     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -387,7 +387,7 @@ begin
      | next
 
    stage S06 on origin :
-     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg " groupBy  type VARCHAR as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,

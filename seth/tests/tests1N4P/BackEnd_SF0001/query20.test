@@ -174,7 +174,7 @@ begin
     stage S02 on all partitions :
       indexJoin lineitem IxL_PARTKEY "BOUND $I1 P_PARTKEY =="
       | filter " type BOOLEAN  J1_L_SHIPDATE DATE '1994-01-01' >= J1_L_SHIPDATE DATE '1995-01-01'  <  and  "
-      | aggreg " groupBy  type integer P_PARTKEY ,
+      | gbyAgg " groupBy  type integer P_PARTKEY ,
                           type integer J1_L_SUPPKEY
                        aggregates type integer as P_PARTKEY $K1 ,
                                   type integer as L_SUPPKEY $K2 ,
@@ -183,7 +183,7 @@ begin
       | next
 
     stage S03 on all nodes :
-      aggreg " groupBy type integer P_PARTKEY ,
+      gbyAgg " groupBy type integer P_PARTKEY ,
                        type integer L_SUPPKEY
                   aggregates type integer as P_PARTKEY $K1 ,
                              type integer as L_SUPPKEY $K2 ,
@@ -192,7 +192,7 @@ begin
       | next
 
     stage S04 on origin :
-      aggreg " groupBy type integer P_PARTKEY ,
+      gbyAgg " groupBy type integer P_PARTKEY ,
                        type integer L_SUPPKEY
                    aggregates type integer as P_PARTKEY $K1 ,
                               type integer as L_SUPPKEY $K2 ,
@@ -214,7 +214,7 @@ begin
      | next hashcast
 
    stage S06a on all partitions :
-     aggreg " groupBy type integer PS_SUPPKEY
+     gbyAgg " groupBy type integer PS_SUPPKEY
                         aggregates type integer as PS_SUPPKEY $K1"
      | combined 0
      | next

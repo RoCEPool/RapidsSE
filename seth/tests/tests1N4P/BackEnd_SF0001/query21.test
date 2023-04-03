@@ -178,15 +178,15 @@ begin
     | stageMarker2124
   stage stageMarker2124 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  $24 $8 ==  and  $26 ''F''  ==  and  $20 $19 >  and  $8 $10 __subquery0003  exists  and  $8 $10 __subquery0005  exists  not  and  $4 $33 ==  and  $34 ''SAUDI ARABIA''  ==  and  "
-    | aggreg " groupBy  type VARCHAR as s_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
+    | gbyAgg " groupBy  type VARCHAR as s_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
     | combined 0
     | stageMarker2127
   stage stageMarker2127 on all nodes :
-    aggreg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
     | combined 0
     | stageMarker2130
   stage stageMarker2130 on origin :
-    aggreg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER as numwait )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER as numwait )  $2 sum  "
     | sort " type INTEGER $2 DESC  , type VARCHAR as s_name $1 ASC  "
     | limit 100
     | combined 0
@@ -215,7 +215,7 @@ begin
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 L_ORDERKEY =="
     | filter " type BOOLEAN  J1_L_SUPPKEY L_SUPPKEY  != "
-    | aggreg " groupBy type integer L_ORDERKEY ,
+    | gbyAgg " groupBy type integer L_ORDERKEY ,
                        type integer L_SUPPKEY
                aggregates type integer as L_ORDERKEY $K1 ,
                           type integer as L_SUPPKEY $K2"
@@ -239,17 +239,17 @@ begin
   stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
     | filter " type BOOLEAN J1_N_NAME 'SAUDI ARABIA' ==  "
-    | aggreg " groupBy  type VARCHAR as S_NAME $2 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
+    | gbyAgg " groupBy  type VARCHAR as S_NAME $2 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
     | combined 0
     | next
 
   stage S05 on all nodes :
-    aggreg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
     | combined 0
     | next
 
   stage S06 on origin :
-    aggreg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER as numwait )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as s_name $1 aggregates  type VARCHAR $K1 , type INTEGER as numwait )  $2 sum  "
     | combined 0
     | next
 

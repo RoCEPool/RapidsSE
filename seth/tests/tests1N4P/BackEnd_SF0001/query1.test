@@ -47,15 +47,15 @@ begin
   stage stageMarker4857 on all partitions :
     scan rapidsse public LineItem
     | filter " type BOOLEAN  $11 casttype TIMESTAMP CAST  TIMESTAMP ''1998-09-01 00:00:00''  <=  "
-    | aggreg " groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type DECIMAL )  $6 1.00  $7 -  *  sum  , type DECIMAL )  $6 1.00  $7 -  *  1.00  $8 +  *  sum  , type INTEGER )  $5 count  , type INTEGER )  $6 count  , type DECIMAL )  $7 sum  , type INTEGER )  $7 count  , type INTEGER )  countAll  "
+    | gbyAgg " groupBy  type VARCHAR as l_returnflag $9 , type VARCHAR as l_linestatus $10 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type DECIMAL )  $6 1.00  $7 -  *  sum  , type DECIMAL )  $6 1.00  $7 -  *  1.00  $8 +  *  sum  , type INTEGER )  $5 count  , type INTEGER )  $6 count  , type DECIMAL )  $7 sum  , type INTEGER )  $7 count  , type INTEGER )  countAll  "
     | combined 0
     | stageMarker4860
   stage stageMarker4860 on all nodes :
-    aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL )  $3 sum  , type DECIMAL )  $4 sum  , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type DECIMAL )  $9 sum  , type INTEGER )  $10 sum  , type INTEGER )  $11 sum  "
+    gbyAgg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL )  $3 sum  , type DECIMAL )  $4 sum  , type DECIMAL )  $5 sum  , type DECIMAL )  $6 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type DECIMAL )  $9 sum  , type INTEGER )  $10 sum  , type INTEGER )  $11 sum  "
     | combined 0
     | stageMarker5083
   stage stageMarker5083 on origin :
-    aggreg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL as sum_qty )  $3 sum  , type DECIMAL as sum_base_price )  $4 sum  , type DECIMAL as sum_disc_price )  $5 sum  , type DECIMAL as sum_charge )  $6 sum  , type INTEGER as count_order )  $11 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type INTEGER )  $10 sum  , type DECIMAL )  $9 sum  "
+    gbyAgg " groupBy  type VARCHAR as l_returnflag $1 , type VARCHAR as l_linestatus $2 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type DECIMAL as sum_qty )  $3 sum  , type DECIMAL as sum_base_price )  $4 sum  , type DECIMAL as sum_disc_price )  $5 sum  , type DECIMAL as sum_charge )  $6 sum  , type INTEGER as count_order )  $11 sum  , type INTEGER )  $7 sum  , type INTEGER )  $8 sum  , type INTEGER )  $10 sum  , type DECIMAL )  $9 sum  "
     | combined 0
     | stageMarker4863
   stage stageMarker4863 on origin :
@@ -89,7 +89,7 @@ begin
   stage S01 on all partitions :
     scan rapidsse public lineitem
     | filter " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
-    | aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    | gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
@@ -106,7 +106,7 @@ begin
     | next
 
   stage S02 on all nodes :
-    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
@@ -123,7 +123,7 @@ begin
     | next
 
   stage S03 on origin :
-    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,

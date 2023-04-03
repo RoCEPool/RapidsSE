@@ -63,7 +63,7 @@ pipeline unnamed
      | next
    stage stageA on all partitions :
      scan lineitem
-     | aggreg " groupby type INTEGER L_PARTKEY
+     | gbyAgg " groupby type INTEGER L_PARTKEY
                   aggregates
                   type INTEGER as COL0 $K1 ,
                   type INTEGER as COL1 L_PARTKEY 11 + ,
@@ -75,7 +75,7 @@ pipeline unnamed
      | combined 0
      | next
    stage stageB on all nodes :
-      aggreg " groupby type INTEGER COL0
+      gbyAgg " groupby type INTEGER COL0
                  aggregates
                  type INTEGER as COL0 $K1 ,
                  type INTEGER as COL1 COL1 ,
@@ -87,7 +87,7 @@ pipeline unnamed
       | combined 0
       | next
    stage stageC on origin :
-       aggreg " groupby type INTEGER COL0
+       gbyAgg " groupby type INTEGER COL0
                   aggregates
                   type INTEGER as COL0 $K1 ,
                   type INTEGER as COL1 COL1 ,

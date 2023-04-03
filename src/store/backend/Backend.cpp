@@ -359,7 +359,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    pBackend->vAppendNextOp("aggreg \""_Stz);
+    pBackend->vAppendNextOp("gbyAgg \""_Stz);
     pBackend->m_bCombinedOp = true;
 
     // Get the groupBy from ProjectOp
@@ -672,14 +672,43 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   // We don't need to free this object.
   QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pBackend->m_pPlanRoot);
 
-  // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
-
-    pBackend->vAppendNextOp("project \""_Stz);
-    pBackend->m_bCombinedOp = true;
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
+
+    // Iterate each projected expression to see if there are any aggregates
+    bool bHasAggregate = false;
+
+    while (pIter->bHasNext()) {
+
+      // get the next projectedColumn from the iterator
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
+      QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
+
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      RASSERT(pOrdinalExpr);
+
+      if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
+        bHasAggregate = true;
+      }
+
+      delete pOrdinalExpr;
+    }
+
+    // does the projection have aggregates ?
+    if (bHasAggregate)
+      pBackend->vAppendNextOp("aggreg \""_Stz);
+    else
+      pBackend->vAppendNextOp("project \""_Stz);
+
+    pBackend->m_bCombinedOp = true;
+
+    // get a plan node iterator
+    pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -697,9 +726,6 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-//      if (AggregateExpr::bIsOfType(pExprNode)) {
-//        vTrace("Its an aggregate\n"_Stz);
-//      }
       RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 

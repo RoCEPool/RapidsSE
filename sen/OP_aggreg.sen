@@ -27,10 +27,6 @@
     StreamDefOut[].delete
   then
 
-  IndexDef[].isNull not if
-    IndexDef[].delete
-  then
-
   EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
   EV_M_CLEANING_handler
@@ -48,11 +44,8 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
-  // create an indexDef[]
-  indexDef[].new
-
   // generate streamDefOut from expr and streamDefIn
-  <expr> indexDef[] StreamDefLft[] StreamDefOut[].generate to eError
+  <expr> nullptr StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -71,7 +64,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* filter request                                                       SPAWN */
+/* aggreg request                                                       SPAWN */
 /*----------------------------------------------------------------------------*/
 : aggreg_op \operator
 
@@ -79,8 +72,9 @@
 
   op__topology
 
-  find: aggreg_Cleaning   EV_M_CLEANING      [op].handler!
-  find: aggreg_StreamDef  EV_D_STREAMDEF     [op].handler!
+  // handle combined operator
+  find: aggreg_Cleaning  EV_M_CLEANING      [op].handler!
+  find: aggreg_StreamDef EV_D_STREAMDEF     [op].handler!
 
   op__loop
 

@@ -499,7 +499,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
       iGbyCols++;
 /*
       if (m_eExprKind == EK_GROUPBY)
-        m_eExprKind = EK_AGGGBY;
+        m_eExprKind = EK_GBYAGG;
       else {
         RASSERT(m_eExprKind == EK_ORDGROUPBY);
         RASSERT(ePreExp == PE_GBY);
@@ -1328,7 +1328,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
   sStructColumn.vSprint("p%s->%s"_Stz,
                         xStencilRow[m_eStencilTo], sColumn.azChar());
 
-  if (m_eSketchKind == EK_AGGGBY) {
+  if (m_eSketchKind == EK_GBYAGG) {
     vInitAgg(ePreExp);
     sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
     m_pInitStack->vPushStr(sOperation);
@@ -1343,7 +1343,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
 
   switch (ePreExp) {
     case PE_ALL:
-      if (m_eSketchKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
@@ -1361,7 +1361,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_CNT:
-      if (m_eSketchKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
@@ -1379,7 +1379,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_MIN:
-      if (m_eSketchKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_GBYAGG) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1422,7 +1422,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_MAX:
-      if (m_eSketchKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_GBYAGG) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1466,7 +1466,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_SUM:
-      if (m_eSketchKind == EK_AGGGBY) {
+      if (m_eSketchKind == EK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);

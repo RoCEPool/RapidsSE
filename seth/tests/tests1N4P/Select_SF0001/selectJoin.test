@@ -70,7 +70,7 @@ rows:
   (538.58,'Manufacturer#4',5,185)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Join + Aggreg + Filter
+// Join + gbyAgg + Filter
 select sum(ps_supplycost)
   from Part,
        PartSupp

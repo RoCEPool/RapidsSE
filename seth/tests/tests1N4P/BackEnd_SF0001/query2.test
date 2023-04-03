@@ -240,7 +240,7 @@ begin
   stage S04 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
     | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
-    | aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+    | gbyAgg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
                  aggregates
                  type INTEGER as PS_PARTKEY $K1 ,
                  type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
@@ -254,7 +254,7 @@ begin
     | next
 
   stage S05 on all nodes :
-    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+    gbyAgg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
              aggregates
              type INTEGER as PS_PARTKEY $K1 ,
              type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
@@ -268,7 +268,7 @@ begin
     | next
 
   stage S06 on origin :
-    aggreg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+    gbyAgg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
              aggregates
              type INTEGER as PS_PARTKEY $K1 ,
              type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
@@ -375,21 +375,21 @@ begin
   stage S05 on all partitions :
     indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
     | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
-    | aggreg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+    | gbyAgg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min "
     | combined 0
     | next
 
   stage S06 on all nodes :
-     aggreg " GroupBy     type INTEGER as P_PARTKEY P_PARTKEY
+     gbyAgg " GroupBy     type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
     | combined 0
     | next
 
   stage S07 on origin :
-     aggreg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+     gbyAgg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
     | hash "type INTEGER P_PARTKEY"
