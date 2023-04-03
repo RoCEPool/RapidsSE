@@ -468,7 +468,7 @@ bool Card_Term::bIsTblColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (Symbol::b_IsTableColOrdinal(szValue()))
+  if (pSymbol()->bIsTableColOrdinal())
     return true;
 
   return false;
