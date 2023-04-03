@@ -2625,7 +2625,19 @@ bool Symbol::bIsSqyColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsTableColOrdinal(void)
 {
-  return b_IsTableColOrdinal(m_sValue);
+  char acFirst  = m_sValue.azChar()[0];
+  char acSecond = m_sValue.azChar()[1];
+  char acThird  = m_sValue.azChar()[2];
+  char acFourth = m_sValue.azChar()[3];
+
+  if ('$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '.' == acThird
+      && StrLib::bIsDigit(acFourth))
+    return true;
+  else
+    return false;
+
 }
 
 /*----------------------------------------------------------------------------*/
