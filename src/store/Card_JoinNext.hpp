@@ -16,11 +16,11 @@ namespace STORE
     Card_JoinNext(void);
    ~Card_JoinNext(void) noexcept(false);
 
-    i8 nEstVolumes(i8 nNodes,
-                   eXK eNextCast,
-                   i8 nBuff_arriving,
+    i8 nEstVolumes(eXK eNextCast,
+                   i8 nBuff_moving,
                    Card_TableList* p_tableList,
-                   char cTblSyn_r);
+                   char cTblSyn_r,
+                   i8 iSize_r);
 
   };
 

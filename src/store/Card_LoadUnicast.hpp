@@ -16,11 +16,8 @@ namespace STORE
     Card_LoadUnicast(void);
    ~Card_LoadUnicast(void) noexcept(false);
 
-    i8 nEstUnicastVol(i8 nNodes,
-                      eXK eNextCast,
-                      i8 nBuff_arriving,
-                      Card_TableList* p_tableList,
-                      char cTblSyn_r);
+    void vEstUnicastVol(eXK eNextCast,
+                        i8 nBuff_arriving);
   };
 
   Card_LoadUnicast* _pCard_LoadUnicast(void* aAddr);

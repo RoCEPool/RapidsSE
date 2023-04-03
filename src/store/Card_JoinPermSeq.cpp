@@ -59,16 +59,16 @@ void Card_JoinPermSeq::vEstCost(Card_TableList* p_tableList)
   i8 nSumLoadNetwork = 0;
   i8 nSumLoadUnicast = 0;
 
-  i8 nBuff_arriving = 0;
-
-  i8 nNodes = AM::PTNMAP::nKnownNodes();
+  i8 nBuff_moving   = 0;
+  i8 nBuff_produced = 0;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD)) {
       char cTblSyn_l = xCI.G.p_joinHead->cValue();
-      nBuff_arriving = p_tableList->pGetTableSize(cTblSyn_l)->iValue();
+      nBuff_produced = p_tableList->pGetTableSize(cTblSyn_l)->iValue();
+      nBuff_moving = nBuff_produced;
       continue;
     }
 
@@ -77,10 +77,13 @@ void Card_JoinPermSeq::vEstCost(Card_TableList* p_tableList)
 
     char cTblSyn_r = xCI.G.p_joinNext->cValue();
 
-    eXK eNextCast = eNextCast(p_tableList, xCI.G.p_joinNext);
+    i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
-    nBuff_arriving = xCI.G.p_joinNext->nEstVolumes(nNodes, eNextCast, nBuff_arriving,
-                                                   p_tableList, cTblSyn_r);
+    eXK eNextCast = this->eNextCast(p_tableList, xCI.G.p_joinNext);
+
+    nBuff_produced = xCI.G.p_joinNext->nEstVolumes(eNextCast, nBuff_moving,
+                                                   p_tableList, cTblSyn_r, iSize_r);
+    nBuff_moving += nBuff_produced;
 
     Card_Load* p_load_next = xCI.G.p_joinNext->pSub_load();
 

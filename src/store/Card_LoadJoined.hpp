@@ -16,10 +16,10 @@ namespace STORE
     Card_LoadJoined(void);
    ~Card_LoadJoined(void) noexcept(false);
 
-    i8 nEstJoinVol(i8 nNodes,
-                   i8 nBuffersIn,
+    i8 nEstJoinVol(i8 nBuff_arriving,
                    Card_TableList* p_tableList,
-                   char cTblSyn_r);
+                   char cTblSyn_r,
+                   i8 iSize_r);
 
   };
 

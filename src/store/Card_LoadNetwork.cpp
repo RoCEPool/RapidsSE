@@ -49,13 +49,15 @@ Card_LoadNetwork::~Card_LoadNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate arriving network volume                                           */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadNetwork::nEstNetworkVol(i8 nNodes,
-                                    eXK eNextCast,
-                                    i8 nBuff_arriving,
-                                    Card_TableList* p_tableList,
-                                    char cTblSyn_r)
+void Card_LoadNetwork::vEstNetworkVol(eXK eNextCast,
+                                      i8 nBuff_arriving,
+                                      Card_TableList* p_tableList,
+                                      char cTblSyn_r,
+                                      i8 iSize_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nNodes = AM::PTNMAP::nKnownNodes();
 
 
   vValue(nBuff_arriving);
@@ -65,8 +67,6 @@ i8 Card_LoadNetwork::nEstNetworkVol(i8 nNodes,
 
 
   i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
-
-  i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
   i8 nBuff_produced = 0;
 
@@ -86,8 +86,6 @@ i8 Card_LoadNetwork::nEstNetworkVol(i8 nNodes,
     default:
       NEVER_REACH
   }
-
-  return nBuff_produced;
 }
 
 /*============================================================================*/

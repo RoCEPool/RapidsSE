@@ -49,23 +49,17 @@ Card_LoadUnicast::~Card_LoadUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate arriving unicast volume                                           */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadUnicast::nEstUnicastVol(i8 nNodes,
-                                    eXK eNextCast,
-                                    i8 nBuff_arriving,
-                                    Card_TableList* p_tableList,
-                                    char cTblSyn_r)
+void Card_LoadUnicast::vEstUnicastVol(eXK eNextCast,
+                                      i8 nBuff_arriving)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(nBuff_arriving);
+  i8 nNodes = AM::PTNMAP::nKnownNodes();
 
-  i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
-
-  i8 nEstBuffers = 0;
   switch (eNextCast) {
 
     case XK_UNICAST:
-      nEstBuffers = (i8)(1.0 * (nBuff_arriving * iSize_r));
+      vValue(nBuff_arriving);
       break;
 
     case XK_HASHCAST:
@@ -77,9 +71,6 @@ i8 Card_LoadUnicast::nEstUnicastVol(i8 nNodes,
     default:
       NEVER_REACH
   }
-
-
-  return nEstBuffers;
 }
 
 /*============================================================================*/

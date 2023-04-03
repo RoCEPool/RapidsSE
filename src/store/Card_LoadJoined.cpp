@@ -49,29 +49,35 @@ Card_LoadJoined::~Card_LoadJoined(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate buffers produced by join                                          */
+/* estimate number of buffers produced by join                                */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadJoined::nEstJoinVol(i8 nNodes,
-                                i8 nBuffersIn,
+i8 Card_LoadJoined::nEstJoinVol(i8 nBuff_arriving,
                                 Card_TableList* p_tableList,
-                                char cTblSyn_r)
+                                char cTblSyn_r,
+                                i8 iSize_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
+  i8 nNodes = AM::PTNMAP::nKnownNodes();
 
-  i8 iLoadJoined = C_UNKNOWN;
-  if (nBuffersIn > iSize_r)
-    iLoadJoined = ((d8)nBuffersIn / (d8)iSize_r) * (nBuffersIn + iSize_r);
-  else
-    iLoadJoined = ((d8)iSize_r / (d8)nBuffersIn) * (nBuffersIn + iSize_r);
+  //i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
-  vValue((i8)iLoadJoined);
+  i8 nBuff_produced = C_UNKNOWN;
 
-  return iLoadJoined;
+  if (nBuff_arriving > iSize_r) {
+    d8 dExpansionCoeff = (d8) nBuff_arriving / (d8) iSize_r;
+    nBuff_produced = (i8) (dExpansionCoeff * (d8) (nBuff_arriving + iSize_r));
+  }
+  else {
+    d8 dExpansionCoeff = (d8) iSize_r / (d8) nBuff_arriving;
+    nBuff_produced = (i8) (dExpansionCoeff * (d8) (nBuff_arriving + iSize_r));
+  }
+
+  vValue(nBuff_produced);
+
+  return nBuff_produced;
 }
 
-
-//*============================================================================*/
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

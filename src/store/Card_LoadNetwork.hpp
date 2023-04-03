@@ -16,11 +16,11 @@ namespace STORE
     Card_LoadNetwork(void);
    ~Card_LoadNetwork(void) noexcept(false);
 
-    i8 nEstNetworkVol(i8 nNodes,
-                      eXK eNextCast,
-                      i8 nBuff_arriving,
-                      Card_TableList* p_tableList,
-                      char cTblSyn_r);
+    void vEstNetworkVol(eXK eNextCast,
+                        i8 nBuff_arriving,
+                        Card_TableList* p_tableList,
+                        char cTblSyn_r,
+                        i8 iSize_r);
   };
 
   Card_LoadNetwork* _pCard_LoadNetwork(void* aAddr);
