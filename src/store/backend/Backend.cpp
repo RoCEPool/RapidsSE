@@ -699,6 +699,8 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       delete pOrdinalExpr;
     }
 
+    delete pIter;
+
     // does the projection have aggregates ?
     if (bHasAggregate)
       pBackend->vAppendNextOp("aggreg \""_Stz);
