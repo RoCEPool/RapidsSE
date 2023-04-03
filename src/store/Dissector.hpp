@@ -46,6 +46,7 @@ namespace STORE
     Card* pOp_Consume  (TagSet* pArgTags);
     Card* pOp_Debug    (TagSet* pArgTags);
     Card* pOp_Filter   (TagSet* pArgTags);
+    Card* pOp_GbyAgg   (TagSet* pArgTags);
     Card* pOp_Hash     (TagSet* pArgTags);
     Card* pOp_IndexJoin(TagSet* pArgTags);
     Card* pOp_IndexScan(TagSet* pArgTags);

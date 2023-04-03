@@ -201,6 +201,7 @@ void Dissector::vOp(i8 i_OpSpec)
   else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_Consume  (pArgTags);
   else if (szOpNm->bSame("debug"_Stz))        pCard = pOp_Debug    (pArgTags);
   else if (szOpNm->bSame("filter"_Stz))       pCard = pOp_Filter   (pArgTags);
+  else if (szOpNm->bSame("gbyAgg"_Stz))       pCard = pOp_GbyAgg   (pArgTags);
   else if (szOpNm->bSame("hash"_Stz))         pCard = pOp_Hash     (pArgTags);
   else if (szOpNm->bSame("indexJoin"_Stz))    pCard = pOp_IndexJoin(pArgTags);
   else if (szOpNm->bSame("indexScan"_Stz))    pCard = pOp_IndexScan(pArgTags);
@@ -266,11 +267,11 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // gbyElist : optional groupBy expression list
 
-  if (pCard_RpnTerms->nItems()) {
-    Card_Key* pCard_Key = pKey(pCard_RpnTerms,true);
-    pCard_Aggreg->vAppend(pCard_Key);
-    pCard_Aggreg->vCard(CK_GBYAGG);
-  }
+//  if (pCard_RpnTerms->nItems()) {
+//    Card_Key* pCard_Key = pKey(pCard_RpnTerms,true);
+//    pCard_Aggreg->vAppend(pCard_Key);
+//    pCard_Aggreg->vCard(CK_GBYAGG);
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
@@ -389,6 +390,43 @@ Card* Dissector::pOp_Filter(TagSet* pArgTags)
     pCard_Filter->vCard(CK_WHERE);
     return pCard_Filter;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : gbyAgg <szRpnExpr : 0) aggElist ; 1) gbyElist>                   */
+/*----------------------------------------------------------------------------*/
+Card* Dissector::pOp_GbyAgg(TagSet* pArgTags)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  m_bSawAggOp = true;
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
+  Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
+
+  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+  pCard_Aggreg->vAppend(pCard_AggLevel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gbyElist : optional groupBy expression list
+
+  if (pCard_RpnTerms->nItems()) {
+    Card_Key* pCard_Key = pKey(pCard_RpnTerms,true);
+    pCard_Aggreg->vAppend(pCard_Key);
+    pCard_Aggreg->vCard(CK_GBYAGG);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // aggElist : aggregate expression list
+
+  Card_Projection* pCard_Projection = pProjection(pCard_RpnTerms);
+  pCard_Aggreg->vAppend(pCard_Projection);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  delete pCard_RpnTerms;
+
+  return pCard_Aggreg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -618,9 +656,9 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_RpnCalc* p_rpnCalc = pCard_Project->pSub_rpnCalc();
-  if (p_rpnCalc && p_rpnCalc->pSymbol()->Y_bHas(P_AggOp))
-    pCard_Project->vCard(CK_AGGREG);
+//  Card_RpnCalc* p_rpnCalc = pCard_Project->pSub_rpnCalc();
+//  if (p_rpnCalc && p_rpnCalc->pSymbol()->Y_bHas(P_AggOp))
+//    pCard_Project->vCard(CK_AGGREG);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

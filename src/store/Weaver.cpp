@@ -235,12 +235,12 @@ void Weaver::vOp(Card* pCard)
 
   s32 sOpNm;
 
-  if (CK_AGGREG == eCard)
-    sOpNm = "project"_Stz;
-  else
-  if (CK_GBYAGG == eCard)
-    sOpNm = "aggreg"_Stz;
-  else
+//  if (CK_AGGREG == eCard)
+//    sOpNm = "project"_Stz;
+//  else
+//  if (CK_GBYAGG == eCard)
+//    sOpNm = "aggreg"_Stz;
+//  else
   if (CK_CROSSJOIN == eCard)
     sOpNm = "indexJoin"_Stz;
   else
