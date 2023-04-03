@@ -18,7 +18,7 @@ namespace STORE
     Card_JoinPermSeq(void);
    ~Card_JoinPermSeq(void) noexcept(false);
 
-     void vCalculateLoad(Card_TableList* p_tableList);
+     void vEstQueryCost(Card_TableList* p_tableList);
 
      eXK eCastKind(Card_TableList* p_tableList,
                    Card_JoinNext*  p_joinNext);

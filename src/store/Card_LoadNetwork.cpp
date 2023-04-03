@@ -47,13 +47,14 @@ Card_LoadNetwork::~Card_LoadNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate network load                                                     */
+/* estimate network volume (as part of cost estimate of next join)            */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadNetwork::nCalculateLoad(i8 nNodes,
-                                    eXK eCast,
-                                    i8 nBuffersIn,
-                                    Card_TableList* p_tableList,
-                                    char cTblSyn_r)
+void Card_LoadNetwork::vEstNetworkVolume(i8 nNodes,
+                                         eXK eNextCast,
+                                         i8 nBuff_arriving,
+                                         Card_TableList* p_tableList,
+                                         char cTblSyn_r,
+                                         i8 iSize_r)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -61,28 +62,30 @@ i8 Card_LoadNetwork::nCalculateLoad(i8 nNodes,
 
   i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
 
-  i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
+  //i8 iSize_r = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
 
   i8 iLoad = 0;
   i8 nBuffersOut = 0;
-  switch (eCast) {
+
+  switch (eNextCast) {
     case XK_UNICAST:
       break;
+
     case XK_HASHCAST:
-      iLoad = (i8)(1.0 * nBuffersIn);
-      nBuffersOut = (i8)(1.0 * (nBuffersIn * iSize_r));
+      iLoad = (i8)(1.0 * nBuff_arriving);
+      nBuffersOut = (i8)(1.0 * (nBuff_arriving * iSize_r));
       break;
+
     case XK_BROADCAST:
-      iLoad = (i8)(1.0 * (nBuffersIn * nPtnsPerNode));
-      nBuffersOut = (i8)(1.0 * (nBuffersIn * iSize_r * nPtnsPerNode));
+      iLoad = (i8)(1.0 * (nBuff_arriving * nPtnsPerNode));
+      nBuffersOut = (i8)(1.0 * (nBuff_arriving * iSize_r * nPtnsPerNode));
       break;
+
     default:
       NEVER_REACH
   }
 
   vValue((i8)iLoad);
-
-  return nBuffersOut;
 }
 
 //*============================================================================*/
