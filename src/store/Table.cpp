@@ -662,6 +662,29 @@ PtnDef* Table::pPtnDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the relative size of the table based on buffers in a partition         */
+/*----------------------------------------------------------------------------*/
+i8 Table::iRelativeSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  i8 nBuffers = 0;
+  i8 nRows = 0;
+
+  i8 i_TablePtn = iPtnNoToTablePtn(0);
+
+  vAnalyze(i_TablePtn, nBuffers, nRows);
+
+  // get the apriori (fixed) table size
+  i8 jTableSize = m_pStreamDef->jTableSize();
+
+  if (nBuffers < jTableSize)
+    return jTableSize;
+  else
+    return nBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get StreamDef                                                              */
 /*----------------------------------------------------------------------------*/
 StreamDef* Table::pStreamDef(void)
