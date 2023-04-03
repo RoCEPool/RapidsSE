@@ -2360,27 +2360,6 @@ bool Symbol::b_IsSubQueryOrdinal(BASE::Stz *szValue)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* is value a table-column ordinal?  (i.e. $c.n)                              */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsTableColOrdinal(Stz* szValue)
-{
-  _static_
-
-  char acFirst  = szValue->azChar()[0];
-  char acSecond = szValue->azChar()[1];
-  char acThird  = szValue->azChar()[2];
-  char acFourth = szValue->azChar()[3];
-
-  if ('$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '.' == acThird
-      && StrLib::bIsDigit(acFourth))
-    return true;
-  else
-    return false;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -2512,7 +2491,7 @@ bool Symbol::bIsKeyOrdinal(void)
 bool Symbol::bIsColOrdinal(void)
 {
   Stz* szValue = m_sValue;
-  if (bIsStreamColOrdinal() || Symbol::b_IsTableColOrdinal(szValue))
+  if (bIsStreamColOrdinal() || bIsTableColOrdinal())
     return true;
 
   return false;
@@ -2968,12 +2947,6 @@ void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
-
-  if (szPpyNm->bSame(P_TblCol)) {
-    vDebugPoint();
-    RASSERT(Symbol::b_IsTableColOrdinal(szPpy));
-  }
-
   if (! m_pProperties)
     m_pProperties = new TagSet;
 

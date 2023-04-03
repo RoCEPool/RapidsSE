@@ -195,8 +195,6 @@ namespace STORE
 
     static bool b_IsSubQueryOrdinal(Stz* szValue);  // __subqueryN
 
-    static bool b_IsTableColOrdinal(Stz* szValue);  // $c.n
-
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
