@@ -159,7 +159,7 @@ namespace STORE
 
     Card_Level *         p_level;
     Card_Limit *         p_limit;
-    Card_Load *          p_load;
+    Card_CostNext *      p_costNext;
     Card_LoadJoined *    p_loadJoined;
     Card_LoadNetwork *   p_loadNetwork;
     Card_CostQuery *     p_costQuery;

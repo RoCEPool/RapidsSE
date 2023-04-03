@@ -1896,14 +1896,14 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Load.hpp"
-Card_Load* Card::pSub_load(void)
+#include "Card_CostNext.hpp"
+Card_CostNext* Card::pSub_costNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Load* p_load =
-      _pCard_Load(pFindSubCard(CK_LOAD));
-  return p_load;
+  Card_CostNext* p_costNext =
+      _pCard_CostNext(pFindSubCard(CK_COSTNEXT));
+  return p_costNext;
 }
 
 /*----------------------------------------------------------------------------*/

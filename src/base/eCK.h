@@ -23,6 +23,7 @@ enum eCK // card kind
   /* */ CK_CONSTRAINT,
   /* */ CK_CORRELATION,
   /* */ CK_COSTQUERY,
+  /* */ CK_COSTNEXT,
   /* */ CK_CROSSJOIN,
 
   /* */ CK_DEBUG,
@@ -65,7 +66,6 @@ enum eCK // card kind
 
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
-  /* */ CK_LOAD,
   /* */ CK_LOADJOINED,
   /* */ CK_LOADNETWORK,
   /* */ CK_LOADUNICAST,
@@ -136,6 +136,7 @@ static Stz* aCK[]
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTQUERY"_Stz,    // CK_COSTQUERY
+  /* */ "CK_COSTNEXT"_Stz,         // CK_COSTNEXT
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
@@ -178,7 +179,6 @@ static Stz* aCK[]
 
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
-  /* */ "CK_LOAD"_Stz,         // CK_LOAD
   /* */ "CK_LOADJOINED"_Stz,   // CK_LOADJOINED
   /* */ "CK_LOADNETWORK"_Stz,  // CK_LOADNETWORK
   /* */ "CK_LOADUNICAST"_Stz,  // CK_LOADUNICAST
@@ -249,6 +249,7 @@ static Stz* aCK_short[]
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "costQuery"_Stz,       // CK_COSTQUERY
+  /* */ "costNext"_Stz,        // CK_COSTNEXT
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
   /* */ "debug"_Stz,           // CK_DEBUG
@@ -291,7 +292,6 @@ static Stz* aCK_short[]
 
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
-  /* */ "load"_Stz,            // CK_LOAD
   /* */ "loadJoined"_Stz,      // CK_LOADJOINED
   /* */ "loadNetwork"_Stz,     // CK_LOADNETWORK
   /* */ "loadUnicast"_Stz,     // CK_LOADUNICAST

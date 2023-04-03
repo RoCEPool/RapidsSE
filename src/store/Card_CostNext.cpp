@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Load.cpp -- Load of Join                                         */
+/* Card_CostNext.cpp -- Estimate cost for a JoinNext of a Query               */
 /*============================================================================*/
 
-#include "Card_Load.hpp"
+#include "Card_CostNext.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -16,16 +16,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Load, CK_LOAD)
-__aNewFunction(Card_Load, CN_CARD)
-__vDeleteFunction(Card_Load, CN_CARD)
+__pCastFunction_Card(STORE, Card_CostNext, CK_COSTNEXT)
+__aNewFunction(Card_CostNext, CN_CARD)
+__vDeleteFunction(Card_CostNext, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Load::Card_Load(void)
-: Card(CK_LOAD)
+Card_CostNext::Card_CostNext(void)
+: Card(CK_COSTNEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -34,10 +34,10 @@ Card_Load::Card_Load(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
+/*-----------------------Ï-----------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Load::~Card_Load(void) noexcept(false)
+Card_CostNext::~Card_CostNext(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -67,7 +67,7 @@
 
 #include "Card_Level.hpp"
 #include "Card_Limit.hpp"
-#include "Card_Load.hpp"
+#include "Card_CostNext.hpp"
 #include "Card_LoadJoined.hpp"
 #include "Card_LoadNetwork.hpp"
 #include "Card_CostQuery.hpp"
