@@ -264,7 +264,7 @@ void CardIter::G_vClearMembers(void)
   G.p_indexList        = nullptr;
   G.p_indexNm          = nullptr;
   G.p_indexScan        = nullptr;
-  G.p_joinHead         = nullptr;
+  G.p_dataStart         = nullptr;
   G.p_joinNext         = nullptr;
   G.p_joinOrder        = nullptr;
   G.p_joinOrdering     = nullptr;
@@ -1091,7 +1091,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXLIST:        return G.p_indexList;
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
-    case CK_JOINHEAD:         return G.p_joinHead;
+    case CK_DATASTART:         return G.p_dataStart;
     case CK_JOINNEXT:         return G.p_joinNext;
     case CK_JOINORDER:        return G.p_joinOrder;
     case CK_JOINORDERING:     return G.p_joinOrdering;
@@ -1271,7 +1271,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_INDEXLIST:        return "G.p_indexList"_Stz;
     case CK_INDEXNM:          return "G.p_indexNm"_Stz;
     case CK_INDEXSCAN:        return "G.p_indexScan"_Stz;
-    case CK_JOINHEAD:         return "G.p_joinHead"_Stz;
+    case CK_DATASTART:         return "G.p_dataStart"_Stz;
     case CK_JOINNEXT:         return "G.p_joinNext"_Stz;
     case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
     case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
@@ -2139,7 +2139,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
     case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
-    case CK_JOINHEAD:         *((Card**)&G.p_joinHead)         = pCard; break;
+    case CK_DATASTART: *((Card**)&G.p_dataStart)         = pCard; break;
     case CK_JOINNEXT:         *((Card**)&G.p_joinNext)         = pCard; break;
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;

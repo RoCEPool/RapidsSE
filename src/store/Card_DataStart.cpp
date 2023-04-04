@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinHead.cpp -- Join Head (head of join sequence)                     */
+/* Card_DataStart.cpp -- Join Head (head of join sequence)                     */
 /*============================================================================*/
 
-#include "Card_JoinHead.hpp"
+#include "Card_DataStart.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -14,16 +14,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_JoinHead, CK_JOINHEAD)
-__aNewFunction(Card_JoinHead, CN_CARD)
-__vDeleteFunction(Card_JoinHead, CN_CARD)
+__pCastFunction_Card(STORE, Card_DataStart, CK_DATASTART)
+__aNewFunction(Card_DataStart, CN_CARD)
+__vDeleteFunction(Card_DataStart, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinHead::Card_JoinHead(void)
-: Card(CK_JOINHEAD)
+Card_DataStart::Card_DataStart(void)
+: Card(CK_DATASTART)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -35,7 +35,7 @@ Card_JoinHead::Card_JoinHead(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinHead::~Card_JoinHead(void) noexcept(false)
+Card_DataStart::~Card_DataStart(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

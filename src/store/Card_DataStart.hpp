@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinHead.hpp -- Join Head (head of join sequence)                     */
+/* Card_DataStart.hpp -- Join Head (head of join sequence)                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-   class Card_JoinHead : public Card
+   class Card_DataStart : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinHead(void);
-   ~Card_JoinHead(void) noexcept(false);
+    Card_DataStart(void);
+   ~Card_DataStart(void) noexcept(false);
    };
 
-  Card_JoinHead* _pCard_JoinHead(void* aAddr);
+  Card_DataStart* _pCard_DataStart(void* aAddr);
 }
 
 /*============================================================================*/

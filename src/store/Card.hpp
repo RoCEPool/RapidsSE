@@ -63,7 +63,7 @@ namespace STORE
   class Card_IndexNm;
   class Card_IndexScan;
 
-  class Card_JoinHead;
+  class Card_DataStart;
   class Card_JoinNext;
   class Card_JoinOrder;
   class Card_JoinOrdering;
@@ -401,7 +401,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_JoinHead*      pSub_joinHead(void);
+    Card_DataStart*     pSub_dataStart(void);
     Card_JoinNext*      pSub_joinNext(void);
     Card_JoinPermAll*   pSub_joinPermAll(void);
     Card_JoinPermSeq*   pSub_joinPermList(void);

@@ -29,6 +29,7 @@ enum eCK // card kind
   /* */ CK_COSTUNICAST,
   /* */ CK_CROSSJOIN,
 
+  /* */ CK_DATASTART,
   /* */ CK_DEBUG,
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
@@ -55,7 +56,6 @@ enum eCK // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
-  /* */ CK_JOINHEAD,
   /* */ CK_JOINNEXT,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
@@ -142,6 +142,7 @@ static Stz* aCK[]
   /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
 
+  /* */ "CK_DATASTART"_Stz,    // CK_DATASTART
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
@@ -168,7 +169,6 @@ static Stz* aCK[]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
-  /* */ "CK_JOINHEAD"_Stz,     // CK_JOINHEAD
   /* */ "CK_JOINNEXT"_Stz,     // CK_JOINNEXT
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
@@ -255,6 +255,7 @@ static Stz* aCK_short[]
   /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
+  /* */ "dataStart"_Stz,       // CK_DATASTART
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
@@ -281,7 +282,6 @@ static Stz* aCK_short[]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
-  /* */ "joinHead"_Stz,        // CK_JOINHEAD
   /* */ "joinNext"_Stz,        // CK_JOINNEXT
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING

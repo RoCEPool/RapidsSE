@@ -69,8 +69,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 
     nBuff_forwarded = nBuff_produced;
 
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINHEAD)) {
-      char cTblSyn_head = xCI.G.p_joinHead->cValue();
+    if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
+      char cTblSyn_head = xCI.G.p_dataStart->cValue();
       nBuff_produced = p_tableList->pGetTableSize(cTblSyn_head)->iValue();
       continue;
     }
@@ -172,12 +172,12 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     if (0 == nChildCards()) {
       //+ table is head/first of join sequence
 
-      Card_JoinHead *p_joinHead = new Card_JoinHead;
-      p_joinHead->vValue(cTblSyn_ith);
-      vAppend(p_joinHead);
+      Card_DataStart *p_dataStart = new Card_DataStart;
+      p_dataStart->vValue(cTblSyn_ith);
+      vAppend(p_dataStart);
 
       if (p_table->pSub_keyExists() || p_table->pSub_keyNotExists()) {
-        p_joinHead->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
+        p_dataStart->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         iNotValid = i_Item;
         break;
@@ -302,9 +302,9 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     char cTblSyn_ith = p_table->cValue();
 
     if (0 == i_Item) {
-      Card_JoinHead *p_joinHead = new Card_JoinHead;
-      p_joinHead->vValue(cTblSyn_ith);
-      vAppend(p_joinHead);
+      Card_DataStart *p_dataStart = new Card_DataStart;
+      p_dataStart->vValue(cTblSyn_ith);
+      vAppend(p_dataStart);
     }
     else {
       Card_JoinNext *p_joinNext = new Card_JoinNext;
@@ -347,7 +347,7 @@ bool Card_JoinPermSeq::bHasKnownJoin(char cTblSyn)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_JOINHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
     if (xCI.G.p_MainCard->bIsValue(cTblSyn))
       return true;
   }
@@ -380,7 +380,7 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_JOINHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
 
     if (xCI.G.p_MainCard->cValue() == cTblSyn)
       break;
@@ -394,7 +394,7 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
   }
 
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_JOINHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
       xCI.G.p_cast = xCI.G.p_joinNext->pSub_castNext();
