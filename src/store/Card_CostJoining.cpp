@@ -2,7 +2,7 @@
 /* Card_LoadJoined.cpp -- Load of the actual Join                              */
 /*============================================================================*/
 
-#include "Card_LoadJoined.hpp"
+#include "Card_CostJoining.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -18,16 +18,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_LoadJoined, CK_LOADJOINED)
-__aNewFunction(Card_LoadJoined, CN_CARD)
-__vDeleteFunction(Card_LoadJoined, CN_CARD)
+__pCastFunction_Card(STORE, Card_CostJoining, CK_COSTJOINING)
+__aNewFunction(Card_CostJoining, CN_CARD)
+__vDeleteFunction(Card_CostJoining, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_LoadJoined::Card_LoadJoined(void)
-: Card(CK_LOADJOINED)
+Card_CostJoining::Card_CostJoining(void)
+: Card(CK_COSTJOINING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -39,7 +39,7 @@ Card_LoadJoined::Card_LoadJoined(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_LoadJoined::~Card_LoadJoined(void) noexcept(false)
+Card_CostJoining::~Card_CostJoining(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -51,9 +51,9 @@ Card_LoadJoined::~Card_LoadJoined(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate join volume (as part of cost estimate of next join)               */
 /*----------------------------------------------------------------------------*/
-i8 Card_LoadJoined::nEstJoinVolume(eXK eNextCast,
-                                   i8 nBuff_arriving,
-                                   i8 nBuff_joiningTo)
+i8 Card_CostJoining::nEstJoinVolume(eXK eNextCast,
+                                    i8 nBuff_arriving,
+                                    i8 nBuff_joiningTo)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

@@ -8,7 +8,7 @@
 #include "Card_CastNext.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_CostNext.hpp"
-#include "Card_LoadJoined.hpp"
+#include "Card_CostJoining.hpp"
 #include "Card_CostNetwork.hpp"
 #include "Card_LoadUnicast.hpp"
 #include "Card_Table.hpp"
@@ -63,7 +63,7 @@ i8 Card_JoinNext::nEstNextCosts(eXK eNextCast,
   Card_CastNext*    p_castNext    = new Card_CastNext;
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
   Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
-  Card_LoadJoined*  p_loadJoined  = new Card_LoadJoined;
+  Card_CostJoining* p_costJoining = new Card_CostJoining;
 
   p_castNext->vValue(aXK[eNextCast]);
 
@@ -71,12 +71,12 @@ i8 Card_JoinNext::nEstNextCosts(eXK eNextCast,
 
   p_loadUnicast->vEstUnicastVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
 
-  i8 nBuff_produced = p_loadJoined->nEstJoinVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
+  i8 nBuff_produced = p_costJoining->nEstJoinVolume(eNextCast, nBuff_arriving, nBuff_joiningTo);
 
   p_costNext->vAppend(p_castNext);
   p_costNext->vAppend(p_costNetwork);
   p_costNext->vAppend(p_loadUnicast);
-  p_costNext->vAppend(p_loadJoined);
+  p_costNext->vAppend(p_costJoining);
   vAppend(p_costNext);
 
   return nBuff_produced;

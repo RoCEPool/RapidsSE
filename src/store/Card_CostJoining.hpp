@@ -7,22 +7,21 @@
 
 namespace STORE
 {
-  class Card_LoadJoined : public Card
+  class Card_CostJoining : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_LoadJoined(void);
-   ~Card_LoadJoined(void) noexcept(false);
+    Card_CostJoining(void);
+   ~Card_CostJoining(void) noexcept(false);
 
     i8 nEstJoinVolume(eXK eNextCast,
                       i8 nBuff_arriving,
                       i8 nBuff_joiningTo);
-
   };
 
-  Card_LoadJoined* _pCard_LoadJoined(void* aAddr);
+  Card_CostJoining* _pCard_CostJoining(void* aAddr);
 }
 
 /*============================================================================*/

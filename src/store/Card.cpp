@@ -1909,14 +1909,14 @@ Card_CostNext* Card::pSub_costNext(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_LoadJoined.hpp"
-Card_LoadJoined* Card::pSub_loadJoined(void)
+#include "Card_CostJoining.hpp"
+Card_CostJoining* Card::pSub_costJoining(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_LoadJoined* p_loadJoined =
-      _pCard_LoadJoined(pFindSubCard(CK_LOADJOINED));
-  return p_loadJoined;
+  Card_CostJoining* p_costJoining =
+      _pCard_CostJoining(pFindSubCard(CK_COSTJOINING));
+  return p_costJoining;
 }
 
 
