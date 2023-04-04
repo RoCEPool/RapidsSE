@@ -56,7 +56,7 @@ enum eCK // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
-  /* */ CK_JOINNEXT,
+  /* */ CK_JOINLOCUS,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPERMALL,
@@ -169,7 +169,7 @@ static Stz* aCK[]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
-  /* */ "CK_JOINNEXT"_Stz,     // CK_JOINNEXT
+  /* */ "CK_JOINLOCUS"_Stz,    // CK_JOINLOCUS
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
   /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
@@ -282,7 +282,7 @@ static Stz* aCK_short[]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
-  /* */ "joinNext"_Stz,        // CK_JOINNEXT
+  /* */ "joinLocus"_Stz,       // CK_JOINLOCUS
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL

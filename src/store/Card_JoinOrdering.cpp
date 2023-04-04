@@ -64,7 +64,7 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
   Card_JoinOrdering* p_joinOrdering = _pCard_JoinOrdering(p_joinPermSeq_dup);
 
   p_joinOrdering->vMorphChildrenTo(CK_DATASTART, CK_JOINORDER);
-  p_joinOrdering->vMorphChildrenTo(CK_JOINNEXT,CK_JOINORDER);
+  p_joinOrdering->vMorphChildrenTo(CK_JOINLOCUS, CK_JOINORDER);
 
   return p_joinOrdering;
 }

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinNext.cpp -- Join Head (head of join sequence)                     */
+/* Card_JoinLocus.cpp -- Join Head (head of join sequence)                     */
 /*============================================================================*/
 
-#include "Card_JoinNext.hpp"
+#include "Card_JoinLocus.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CastNext.hpp"
@@ -21,16 +21,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_JoinNext, CK_JOINNEXT)
-__aNewFunction(Card_JoinNext, CN_CARD)
-__vDeleteFunction(Card_JoinNext, CN_CARD)
+__pCastFunction_Card(STORE, Card_JoinLocus, CK_JOINLOCUS)
+__aNewFunction(Card_JoinLocus, CN_CARD)
+__vDeleteFunction(Card_JoinLocus, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinNext::Card_JoinNext(void)
-: Card(CK_JOINNEXT)
+Card_JoinLocus::Card_JoinLocus(void)
+: Card(CK_JOINLOCUS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -42,7 +42,7 @@ Card_JoinNext::Card_JoinNext(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinNext::~Card_JoinNext(void) noexcept(false)
+Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -54,9 +54,9 @@ Card_JoinNext::~Card_JoinNext(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate cost of next join                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinNext::nEstNextCosts(eXK eNextCast,
-                                i8 nBuff_arriving,
-                                i8 nBuff_joiningTo)
+i8 Card_JoinLocus::nEstLocusCosts(eXK eNextCast,
+                                  i8 nBuff_arriving,
+                                  i8 nBuff_joiningTo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   Card_CostNext*    p_costNext    = new Card_CostNext;

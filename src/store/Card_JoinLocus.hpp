@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinNext.hpp -- Join Head (head of join sequence)                     */
+/* Card_JoinLocus.hpp -- Join Head (head of join sequence)                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,22 +7,22 @@
 
 namespace STORE
 {
-  class Card_JoinNext : public Card
+  class Card_JoinLocus : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinNext(void);
-   ~Card_JoinNext(void) noexcept(false);
+    Card_JoinLocus(void);
+   ~Card_JoinLocus(void) noexcept(false);
 
-    i8 nEstNextCosts(eXK eNextCast,
-                     i8 nBuff_arriving,
-                     i8 nBuff_joiningTo);
+    i8 nEstLocusCosts(eXK eNextCast,
+                      i8 nBuff_arriving,
+                      i8 nBuff_joiningTo);
 
   };
 
-  Card_JoinNext* _pCard_JoinNext(void* aAddr);
+  Card_JoinLocus* _pCard_JoinLocus(void* aAddr);
 }
 
 /*============================================================================*/

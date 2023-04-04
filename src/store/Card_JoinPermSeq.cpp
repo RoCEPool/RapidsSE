@@ -75,16 +75,16 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
       continue;
     }
 
-    if (! xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
       continue;
 
-    char cTblSyn_next = xCI.G.p_joinNext->cValue();
-    eXK eNextCast = this->eNextCast(p_tableList, xCI.G.p_joinNext);
+    char cTblSyn_next = xCI.G.p_joinLocus->cValue();
+    eXK eNextCast = this->eNextCast(p_tableList, xCI.G.p_joinLocus);
     i8 nBuff_joiningTo = p_tableList->pGetTableSize(cTblSyn_next)->iValue();
 
-    nBuff_produced = xCI.G.p_joinNext->nEstNextCosts(eNextCast, nBuff_forwarded, nBuff_joiningTo);
+    nBuff_produced = xCI.G.p_joinLocus->nEstLocusCosts(eNextCast, nBuff_forwarded, nBuff_joiningTo);
 
-    Card_CostNext* p_costNext = xCI.G.p_joinNext->pSub_costNext();
+    Card_CostNext* p_costNext = xCI.G.p_joinLocus->pSub_costNext();
     Card_CostNetwork* p_costNetwork = p_costNext->pSub_costNetwork();
     nSumNetworkCost += p_costNetwork->iValue();
     Card_CostUnicast* p_costUnicast = p_costNext->pSub_costUnicast();
@@ -108,15 +108,15 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 /* compute the cast of given join                                             */
 /*----------------------------------------------------------------------------*/
 eXK Card_JoinPermSeq::eNextCast(Card_TableList* p_tableList,
-                                Card_JoinNext*  p_joinNext)
+                                Card_JoinLocus* p_joinLocus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CmpPred* p_cmpPred = p_joinNext->pSub_cmpPred();
+  Card_CmpPred* p_cmpPred = p_joinLocus->pSub_cmpPred();
   Card_Term* p_term_0 = p_cmpPred->pGetTerm_0();
   Card_Term* p_term_1 = p_cmpPred->pGetTerm_1();
 
-  char cTblSyn_r = p_joinNext->cValue();
+  char cTblSyn_r = p_joinLocus->cValue();
   char cTblSyn_l = p_cmpPred->cOtherTable(cTblSyn_r);
 
   Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
@@ -189,9 +189,9 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // table is next/subsequent of join sequence
 
-    Card_JoinNext *p_joinNext = new Card_JoinNext;
-    p_joinNext->vValue(cTblSyn_ith);
-    vAppend(p_joinNext);
+    Card_JoinLocus *p_joinLocus = new Card_JoinLocus;
+    p_joinLocus->vValue(cTblSyn_ith);
+    vAppend(p_joinLocus);
 
 
     bool bSupported = false;
@@ -211,7 +211,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
 
       if (bHasKnownJoin(cTblSyn_other)) {
         bSupported = true;
-        p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
+        p_joinLocus->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
         break;
       }
     }
@@ -221,7 +221,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
       continue;
 
     // join of ith table is not possible at this point
-    p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+    p_joinLocus->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
     pSymbol()->Y_vSet(P_Invalid);
 
     iNotValid = i_Item;
@@ -307,12 +307,12 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
       vAppend(p_dataStart);
     }
     else {
-      Card_JoinNext *p_joinNext = new Card_JoinNext;
-      p_joinNext->vValue(cTblSyn_ith);
-      vAppend(p_joinNext);
+      Card_JoinLocus *p_joinLocus = new Card_JoinLocus;
+      p_joinLocus->vValue(cTblSyn_ith);
+      vAppend(p_joinLocus);
 
       if (i_NotValid == i_Item) {
-        p_joinNext->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
+        p_joinLocus->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
         break;
       }
@@ -328,7 +328,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
         char cTblSyn_other = xCI.G.p_cmpPred->cOtherTable(cTblSyn_ith);
 
         if (bHasKnownJoin(cTblSyn_other)) {
-          p_joinNext->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
+          p_joinLocus->vAppend(xCI.G.p_cmpPred->pDupCardRecursive());
           break;
         }
       }
@@ -347,7 +347,7 @@ bool Card_JoinPermSeq::bHasKnownJoin(char cTblSyn)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
     if (xCI.G.p_MainCard->bIsValue(cTblSyn))
       return true;
   }
@@ -380,24 +380,24 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
     if (xCI.G.p_MainCard->cValue() == cTblSyn)
       break;
 
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
+    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
 
-      xCI.G.p_cast = xCI.G.p_joinNext->pSub_castNext();
+      xCI.G.p_cast = xCI.G.p_joinLocus->pSub_castNext();
       if (xCI.G.p_cast && ! xCI.G.p_cast->bIsValue("XK_UNICAST"_Stz))
         return false;
     }
   }
 
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINNEXT))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINNEXT)) {
-      xCI.G.p_cast = xCI.G.p_joinNext->pSub_castNext();
+    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
+      xCI.G.p_cast = xCI.G.p_joinLocus->pSub_castNext();
       if (xCI.G.p_cast && ! xCI.G.p_cast->bIsValue("XK_UNICAST"_Stz))
         return false;
     }
