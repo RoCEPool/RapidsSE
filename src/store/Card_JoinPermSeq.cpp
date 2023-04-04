@@ -56,18 +56,16 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 nSumNetworkCost = 0;
-  i8 nSumUnicastCost = 0;
-
-  i8 nBuff_forwarded   = 0;
+  i8 nBuff_emitted  = 0;
   i8 nBuff_produced = 0;
 
-  i8 nNodes = AM::PTNMAP::nKnownNodes();
+  i8 nSumNetworkCost = 0;
+  i8 nSumUnicastCost = 0;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
-    nBuff_forwarded = nBuff_produced;
+    nBuff_emitted = nBuff_produced;
 
     if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
       char cTblSyn_head = xCI.G.p_dataStart->cValue();
@@ -78,11 +76,11 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
     if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
       continue;
 
-    char cTblSyn_next = xCI.G.p_joinLocus->cValue();
-    eXK eNextCast = this->eNextCast(p_tableList, xCI.G.p_joinLocus);
-    i8 nBuff_joiningTo = p_tableList->pGetTableSize(cTblSyn_next)->iValue();
+    char cTblSyn_locus = xCI.G.p_joinLocus->cValue();
+    eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus);
+    i8 nBuff_joining = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
 
-    nBuff_produced = xCI.G.p_joinLocus->nEstLocusCosts(eNextCast, nBuff_forwarded, nBuff_joiningTo);
+    nBuff_produced = xCI.G.p_joinLocus->nEstLocusCosts(eLocusCast, nBuff_emitted, nBuff_joining);
 
     Card_CostLocus* p_costLocus = xCI.G.p_joinLocus->pSub_costLocus();
     Card_CostNetwork* p_costNetwork = p_costLocus->pSub_costNetwork();
@@ -107,8 +105,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 /*----------------------------------------------------------------------------*/
 /* compute the cast of given join                                             */
 /*----------------------------------------------------------------------------*/
-eXK Card_JoinPermSeq::eNextCast(Card_TableList* p_tableList,
-                                Card_JoinLocus* p_joinLocus)
+eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
+                                 Card_JoinLocus* p_joinLocus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -387,8 +385,8 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
 
-      xCI.G.p_cast = xCI.G.p_joinLocus->pSub_castNext();
-      if (xCI.G.p_cast && ! xCI.G.p_cast->bIsValue("XK_UNICAST"_Stz))
+      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
+      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
         return false;
     }
   }
@@ -397,8 +395,8 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
     ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
-      xCI.G.p_cast = xCI.G.p_joinLocus->pSub_castNext();
-      if (xCI.G.p_cast && ! xCI.G.p_cast->bIsValue("XK_UNICAST"_Stz))
+      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
+      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
         return false;
     }
   }

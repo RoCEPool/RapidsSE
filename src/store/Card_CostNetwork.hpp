@@ -16,9 +16,8 @@ namespace STORE
     Card_CostNetwork(void);
    ~Card_CostNetwork(void) noexcept(false);
 
-    void vEstNetworkVolume(eXK eCastLocus,
-                           i8 nBuff_arriving,
-                           i8 nBuff_joiningTo);
+    void vEstNetworkBufferVolume(eXK eLocusCast,
+                                 i8 nBuff_emitted);
   };
 
   Card_CostNetwork* _pCard_CostNetwork(void* aAddr);

@@ -5,7 +5,7 @@
 #include "Card_JoinLocus.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_CastNext.hpp"
+#include "Card_LocusCast.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_CostLocus.hpp"
 #include "Card_CostJoining.hpp"
@@ -52,28 +52,29 @@ Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate costs at this join locus                                          */
+/* estimate costs for this join locus                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinLocus::nEstLocusCosts(eXK eCastLocus,
-                                  i8 nBuff_arriving,
-                                  i8 nBuff_joiningTo)
+i8 Card_JoinLocus::nEstLocusCosts(eXK eLocusCast,
+                                  i8 nBuff_emitted,
+                                  i8 nBuff_joining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_LocusCast* p_locusCast = new Card_LocusCast;
+  p_locusCast->vValue(aXK[eLocusCast]);
+
   Card_CostLocus*   p_costLocus   = new Card_CostLocus;
-  Card_CastNext*    p_castNext    = new Card_CastNext;
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
   Card_CostJoining* p_costJoining = new Card_CostJoining;
 
-  p_castNext->vValue(aXK[eCastLocus]);
+  p_costNetwork->vEstNetworkBufferVolume(eLocusCast, nBuff_emitted);
+  p_costUnicast->vEstUnicastBufferVolume(eLocusCast, nBuff_emitted);
 
-  p_costNetwork->vEstNetworkVolume(eCastLocus, nBuff_arriving, nBuff_joiningTo);
+  i8 nBuff_produced =
+      p_costJoining->nEstJoiningBufferVolume(eLocusCast, nBuff_emitted, nBuff_joining);
 
-  p_costUnicast->vEstUnicastVolume(eCastLocus, nBuff_arriving, nBuff_joiningTo);
-
-  i8 nBuff_produced = p_costJoining->nEstJoinVolume(eCastLocus, nBuff_arriving, nBuff_joiningTo);
-
-  p_costLocus->vAppend(p_castNext);
+  p_costLocus->vAppend(p_locusCast);
   p_costLocus->vAppend(p_costNetwork);
   p_costLocus->vAppend(p_costUnicast);
   p_costLocus->vAppend(p_costJoining);

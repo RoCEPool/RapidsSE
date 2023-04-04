@@ -17,7 +17,6 @@ enum eCK // card kind
   /* */ CK_BOUNDS,
 
   /* */ CK_CALL,
-  /* */ CK_CASTNEXT,
   /* */ CK_CMPPRED,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
@@ -69,6 +68,7 @@ enum eCK // card kind
 
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
+  /* */ CK_LOCUSCAST,
 
   /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
@@ -130,7 +130,6 @@ static Stz* aCK[]
   /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
-  /* */ "CK_CASTNEXT"_Stz,     // CK_CASTNEXT
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
@@ -182,6 +181,7 @@ static Stz* aCK[]
 
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
+  /* */ "CK_LOCUSCAST"_Stz,    // CK_LOCUSCAST
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
@@ -243,7 +243,6 @@ static Stz* aCK_short[]
   /* */ "bounds"_Stz,          // CK_BOUNDS
 
   /* */ "call"_Stz,            // CK_CALL
-  /* */ "castNext"_Stz,        // CK_CASTNEXT
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
@@ -295,6 +294,7 @@ static Stz* aCK_short[]
 
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
+  /* */ "locusCast"_Stz,       // CK_LOCUSCAST
 
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED

@@ -1610,13 +1610,13 @@ Card_Bounds* Card::pSub_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CastNext.hpp"
-Card_CastNext* Card::pSub_castNext(void)
+#include "Card_LocusCast.hpp"
+Card_LocusCast* Card::pSub_locusCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CastNext* p_castNext =
-      _pCard_CastNext(pFindSubCard(CK_CASTNEXT));
+  Card_LocusCast* p_castNext =
+      _pCard_LocusCast(pFindSubCard(CK_LOCUSCAST));
   return p_castNext;
 }
 

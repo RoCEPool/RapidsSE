@@ -49,24 +49,25 @@ Card_CostJoining::~Card_CostJoining(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate join volume (as part of cost estimate of next join)               */
+/* estimate buffers produced by the join of this locus                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_CostJoining::nEstJoinVolume(eXK eCastLocus,
-                                    i8 nBuff_arriving,
-                                    i8 nBuff_joiningTo)
+i8 Card_CostJoining::nEstJoiningBufferVolume(eXK eLocusCast,
+                                             i8 nBuff_emitted,
+                                             i8 nBuff_joining)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iLoadJoined = C_UNKNOWN;
-  if (nBuff_arriving > nBuff_joiningTo)
-    iLoadJoined = ((d8)nBuff_arriving / (d8)nBuff_joiningTo) * (nBuff_arriving + nBuff_joiningTo);
+  i8 nBuff_produced = C_UNKNOWN;
+
+  if (nBuff_emitted > nBuff_joining)
+    nBuff_produced = ((d8)nBuff_emitted / (d8)nBuff_joining) * (nBuff_emitted + nBuff_joining);
   else
-    iLoadJoined = ((d8)nBuff_joiningTo / (d8)nBuff_arriving) * (nBuff_arriving + nBuff_joiningTo);
+    nBuff_produced = ((d8)nBuff_joining / (d8)nBuff_emitted) * (nBuff_emitted + nBuff_joining);
 
-  vValue((i8)iLoadJoined);
+  vValue((i8)nBuff_produced);
 
-  return iLoadJoined;
+  return nBuff_produced;
 }
 
 

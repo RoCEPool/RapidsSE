@@ -47,11 +47,10 @@ Card_CostNetwork::~Card_CostNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate network volume (as part of cost estimate of next join)            */
+/* estimate buffers arriving at this locus over the network                   */
 /*----------------------------------------------------------------------------*/
-void Card_CostNetwork::vEstNetworkVolume(eXK eCastLocus,
-                                         i8 nBuff_arriving,
-                                         i8 nBuff_joiningTo)
+void Card_CostNetwork::vEstNetworkBufferVolume(eXK eLocusCast,
+                                               i8 nBuff_emitted)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -60,28 +59,25 @@ void Card_CostNetwork::vEstNetworkVolume(eXK eCastLocus,
   i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
   i8 nNodes = AM::PTNMAP::nKnownNodes();
 
-  i8 iLoad = 0;
-  i8 nBuffersOut = 0;
+  i8 nBuff_network = 0;
 
-  switch (eCastLocus) {
+  switch (eLocusCast) {
     case XK_UNICAST:
       break;
 
     case XK_HASHCAST:
-      iLoad = (i8)(1.0 * nBuff_arriving);
-      nBuffersOut = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo));
+      nBuff_network = (i8)(1.0 * nBuff_emitted);
       break;
 
     case XK_BROADCAST:
-      iLoad = (i8)(1.0 * (nBuff_arriving * nPtnsPerNode));
-      nBuffersOut = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo * nPtnsPerNode));
+      nBuff_network = (i8)(1.0 * (nBuff_emitted * nPtnsPerNode));
       break;
 
     default:
       NEVER_REACH
   }
 
-  vValue((i8)iLoad);
+  vValue((i8)nBuff_network);
 }
 
 //*============================================================================*/

@@ -47,22 +47,19 @@ Card_CostUnicast::~Card_CostUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate unicast volume (as part of cost estimate of next join)            */
+/* estimate buffers arriving at this locus via unicast                        */
 /*----------------------------------------------------------------------------*/
-void Card_CostUnicast::vEstUnicastVolume(eXK eCastLocus,
-                                         i8 nBuff_arriving,
-                                         i8 nBuff_joiningTo)
+void Card_CostUnicast::vEstUnicastBufferVolume(eXK eLocusCast,
+                                               i8 nBuff_emitted)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 iLoadUnicast = 0;
-  i8 nBuffersOut = 0;
+  i8 nBuff_unicast = 0;
 
-  switch (eCastLocus) {
+  switch (eLocusCast) {
 
     case XK_UNICAST:
-      iLoadUnicast = (i8)(1.0 * (nBuff_arriving));
-      nBuffersOut = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo));
+      nBuff_unicast = (i8)(1.0 * (nBuff_emitted));
       break;
 
     case XK_HASHCAST:
@@ -75,7 +72,7 @@ void Card_CostUnicast::vEstUnicastVolume(eXK eCastLocus,
       NEVER_REACH
   }
 
-  vValue((i8)iLoadUnicast);
+  vValue((i8)nBuff_unicast);
 }
 
 /*============================================================================*/

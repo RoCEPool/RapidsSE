@@ -29,7 +29,7 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_CastNext;
+  class Card_LocusCast;
   class Card_CmpPred;
   class Card_Combined;
   class Card_Constraint;
@@ -382,7 +382,7 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_CastNext*          pSub_castNext(void);
+    Card_LocusCast*     pSub_locusCast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);

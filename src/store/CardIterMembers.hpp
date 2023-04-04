@@ -114,7 +114,7 @@ namespace STORE
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
-    Card_CastNext *          p_cast;
+    Card_LocusCast *     p_locusCast;
     Card_CmpPred *       p_cmpPred;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
