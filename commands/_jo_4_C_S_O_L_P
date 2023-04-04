@@ -4,7 +4,7 @@
 
 // --initial _jo_4_C_S_O_L_P
 
-__TPCH_SCHEMA_RAY
+__TPCH_SCHEMA
 
 // truncate metrics tables
 truncate se__jobMetrics;

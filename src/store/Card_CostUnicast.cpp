@@ -47,7 +47,7 @@ Card_CostUnicast::~Card_CostUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate possible buffers arriving at this locus via unicast               */
+/* estimate possible buffers arriving at this locus because of a unicast      */
 /*----------------------------------------------------------------------------*/
 void Card_CostUnicast::vEstUnicastBufferVolume(i8 nLocus,
                                                i8 nBuff_emitted_prior,
@@ -60,7 +60,7 @@ void Card_CostUnicast::vEstUnicastBufferVolume(i8 nLocus,
   switch (eLocusCast) {
 
     case XK_UNICAST:
-      // buffers arriving to this locus via a unicast
+      // buffers arriving to this locus because of a unicast
       nBuff_unicast = (i8)(1.0 * (nBuff_emitted_prior));
       break;
 
