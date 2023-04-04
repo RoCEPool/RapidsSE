@@ -1107,7 +1107,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COSTJOINING:       return G.p_costJoining;
     case CK_COSTNETWORK:      return G.p_costNetwork;
     case CK_COSTQUERY:      return G.p_costQuery;
-    case CK_LOADUNICAST:      return G.p_loadUnicast;
+    case CK_COSTUNICAST:      return G.p_loadUnicast;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
     case CK_NEXT:             return G.p_next;
@@ -1287,7 +1287,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COSTJOINING:       return "G.p_costJoining"_Stz;
     case CK_COSTNETWORK:      return "G.p_costNetwork"_Stz;
     case CK_COSTQUERY:      return "G.p_costQuery"_Stz;
-    case CK_LOADUNICAST:      return "G.p_loadUnicast"_Stz;
+    case CK_COSTUNICAST:      return "G.p_loadUnicast"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEEDED:           return "G.p_needed"_Stz;
     case CK_NEXT:             return "G.p_next"_Stz;
@@ -2158,7 +2158,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COSTJOINING: *((Card**)&G.p_costJoining)       = pCard; break;
     case CK_COSTNETWORK: *((Card**)&G.p_costNetwork)      = pCard; break;
     case CK_COSTQUERY: *((Card**)&G.p_costQuery)      = pCard; break;
-    case CK_LOADUNICAST:      *((Card**)&G.p_loadUnicast)      = pCard; break;
+    case CK_COSTUNICAST: *((Card**)&G.p_loadUnicast)      = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;
     case CK_NEXT:             *((Card**)&G.p_next)             = pCard;

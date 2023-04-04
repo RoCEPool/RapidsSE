@@ -1928,9 +1928,9 @@ Card_CostNetwork* Card::pSub_costNetwork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CostNetwork* p_loadNetwork =
+  Card_CostNetwork* p_costNetwork =
       _pCard_CostNetwork(pFindSubCard(CK_COSTNETWORK));
-  return p_loadNetwork;
+  return p_costNetwork;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1949,13 +1949,13 @@ Card_CostQuery* Card::pSub_costQuery(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_LoadUnicast.hpp"
-Card_LoadUnicast* Card::pSub_loadUnicast(void)
+#include "Card_CostUnicast.hpp"
+Card_CostUnicast* Card::pSub_costUnicast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_LoadUnicast* p_loadUnicast =
-      _pCard_LoadUnicast(pFindSubCard(CK_LOADUNICAST));
+  Card_CostUnicast* p_loadUnicast =
+      _pCard_CostUnicast(pFindSubCard(CK_COSTUNICAST));
   return p_loadUnicast;
 }
 

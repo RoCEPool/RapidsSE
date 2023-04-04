@@ -81,7 +81,7 @@ namespace STORE
   class Card_CostJoining;
   class Card_CostNetwork;
   class Card_CostQuery;
-  class Card_LoadUnicast;
+  class Card_CostUnicast;
 
   class Card_NCorrCols;
   class Card_Needed;
@@ -410,10 +410,10 @@ namespace STORE
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_Level*         pSub_level(void);
     Card_CostNext*      pSub_costNext(void);
-    Card_CostJoining*    pSub_costJoining(void);
+    Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
     Card_CostQuery*     pSub_costQuery(void);
-    Card_LoadUnicast*   pSub_loadUnicast(void);
+    Card_CostUnicast*   pSub_costUnicast(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);
     Card_Next*          pSub_next(void);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_LoadUnicast.hpp -- Load of Unicast (in load of join)                  */
+/* Card_CostUnicast.hpp -- Load of Unicast (in load of join)                  */
 /*============================================================================*/
 #pragma once
 
@@ -7,21 +7,21 @@
 
 namespace STORE
 {
-  class Card_LoadUnicast : public Card
+  class Card_CostUnicast : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_LoadUnicast(void);
-   ~Card_LoadUnicast(void) noexcept(false);
+    Card_CostUnicast(void);
+   ~Card_CostUnicast(void) noexcept(false);
 
     void vEstUnicastVolume(eXK eNextCast,
                            i8 nBuff_arriving,
                            i8 nBuff_joiningTo);
   };
 
-  Card_LoadUnicast* _pCard_LoadUnicast(void* aAddr);
+  Card_CostUnicast* _pCard_CostUnicast(void* aAddr);
 }
 
 /*============================================================================*/

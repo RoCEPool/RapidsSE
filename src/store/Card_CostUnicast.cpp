@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_LoadUnicast.cpp -- Join Head (head of join sequence)                     */
+/* Card_CostUnicast.cpp -- Join Head (head of join sequence)                     */
 /*============================================================================*/
 
-#include "Card_LoadUnicast.hpp"
+#include "Card_CostUnicast.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -16,16 +16,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_LoadUnicast, CK_LOADUNICAST)
-__aNewFunction(Card_LoadUnicast, CN_CARD)
-__vDeleteFunction(Card_LoadUnicast, CN_CARD)
+__pCastFunction_Card(STORE, Card_CostUnicast, CK_COSTUNICAST)
+__aNewFunction(Card_CostUnicast, CN_CARD)
+__vDeleteFunction(Card_CostUnicast, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_LoadUnicast::Card_LoadUnicast(void)
-: Card(CK_LOADUNICAST)
+Card_CostUnicast::Card_CostUnicast(void)
+: Card(CK_COSTUNICAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -37,7 +37,7 @@ Card_LoadUnicast::Card_LoadUnicast(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_LoadUnicast::~Card_LoadUnicast(void) noexcept(false)
+Card_CostUnicast::~Card_CostUnicast(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -49,7 +49,7 @@ Card_LoadUnicast::~Card_LoadUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate unicast volume (as part of cost estimate of next join)            */
 /*----------------------------------------------------------------------------*/
-void Card_LoadUnicast::vEstUnicastVolume(eXK eNextCast,
+void Card_CostUnicast::vEstUnicastVolume(eXK eNextCast,
                                          i8 nBuff_arriving,
                                          i8 nBuff_joiningTo)
 {

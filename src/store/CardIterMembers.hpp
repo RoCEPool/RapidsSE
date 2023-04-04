@@ -163,7 +163,7 @@ namespace STORE
     Card_CostJoining *   p_costJoining;
     Card_CostNetwork *   p_costNetwork;
     Card_CostQuery *     p_costQuery;
-    Card_LoadUnicast *   p_loadUnicast;
+    Card_CostUnicast *   p_loadUnicast;
 
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;

@@ -7,7 +7,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_CostNetwork.hpp"
-#include "Card_LoadUnicast.hpp"
+#include "Card_CostUnicast.hpp"
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
 
@@ -56,21 +56,21 @@ bool Card_CostQuery::bIsLessLoad(Card_CostQuery* p_costQuery_arg)
   Card_CostNetwork* p_costNetwork_this = pSub_costNetwork();
   Card_CostNetwork* p_costNetwork_arg  = p_costQuery_arg->pSub_costNetwork();
 
-  i8 iloadNetwork_this = p_costNetwork_this->iValue();
-  i8 iloadNetwork_arg  = p_costNetwork_arg->iValue();
+  i8 iCostNetwork_this = p_costNetwork_this->iValue();
+  i8 iCostNetwork_arg  = p_costNetwork_arg->iValue();
 
-  if (iloadNetwork_this < iloadNetwork_arg)
+  if (iCostNetwork_this < iCostNetwork_arg)
     return true;
 
-  if (iloadNetwork_this > iloadNetwork_arg)
+  if (iCostNetwork_this > iCostNetwork_arg)
     return false;
 
 
-  Card_LoadUnicast* p_loadUnicast_this = pSub_loadUnicast();
-  Card_LoadUnicast* p_loadUnicast_arg  = p_costQuery_arg->pSub_loadUnicast();
+  Card_CostUnicast* p_costUnicast_this = pSub_costUnicast();
+  Card_CostUnicast* p_costUnicast_arg  = p_costQuery_arg->pSub_costUnicast();
 
-  i8 iloadUnicast_this = p_loadUnicast_this->iValue();
-  i8 iloadUnicast_arg  = p_loadUnicast_arg->iValue();
+  i8 iloadUnicast_this = p_costUnicast_this->iValue();
+  i8 iloadUnicast_arg  = p_costUnicast_arg->iValue();
 
   if (iloadUnicast_this < iloadUnicast_arg)
     return true;

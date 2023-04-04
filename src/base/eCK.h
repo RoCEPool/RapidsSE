@@ -23,9 +23,10 @@ enum eCK // card kind
   /* */ CK_CONSTRAINT,
   /* */ CK_CORRELATION,
   /* */ CK_COSTJOINING,
-  /* */ CK_COSTQUERY,
   /* */ CK_COSTNETWORK,
   /* */ CK_COSTNEXT,
+  /* */ CK_COSTQUERY,
+  /* */ CK_COSTUNICAST,
   /* */ CK_CROSSJOIN,
 
   /* */ CK_DEBUG,
@@ -68,7 +69,6 @@ enum eCK // card kind
 
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
-  /* */ CK_LOADUNICAST,
 
   /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
@@ -136,9 +136,10 @@ static Stz* aCK[]
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
-  /* */ "CK_COSTQUERY"_Stz,    // CK_COSTQUERY
   /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
   /* */ "CK_COSTNEXT"_Stz,     // CK_COSTNEXT
+  /* */ "CK_COSTQUERY"_Stz,    // CK_COSTQUERY
+  /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
@@ -181,7 +182,6 @@ static Stz* aCK[]
 
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
-  /* */ "CK_LOADUNICAST"_Stz,  // CK_LOADUNICAST
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
@@ -248,10 +248,11 @@ static Stz* aCK_short[]
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "correlation"_Stz,     // CK_CORRELATION
-  /* */ "costQuery"_Stz,       // CK_COSTQUERY
   /* */ "costJoining"_Stz,     // CK_COSTJOINING
   /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
   /* */ "costNext"_Stz,        // CK_COSTNEXT
+  /* */ "costQuery"_Stz,       // CK_COSTQUERY
+  /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
   /* */ "debug"_Stz,           // CK_DEBUG
@@ -294,7 +295,6 @@ static Stz* aCK_short[]
 
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
-  /* */ "loadUnicast"_Stz,     // CK_LOADUNICAST
 
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED

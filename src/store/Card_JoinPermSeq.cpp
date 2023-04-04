@@ -87,19 +87,19 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
     Card_CostNext* p_costNext = xCI.G.p_joinNext->pSub_costNext();
     Card_CostNetwork* p_costNetwork = p_costNext->pSub_costNetwork();
     nSumNetworkCost += p_costNetwork->iValue();
-    Card_LoadUnicast* p_loadUnicast = p_costNext->pSub_loadUnicast();
-    nSumUnicastCost += p_loadUnicast->iValue();
+    Card_CostUnicast* p_costUnicast = p_costNext->pSub_costUnicast();
+    nSumUnicastCost += p_costUnicast->iValue();
   }
 
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
   p_costNetwork->vValue(nSumNetworkCost);
 
-  Card_LoadUnicast* p_loadUnicast = new Card_LoadUnicast;
-  p_loadUnicast->vValue(nSumUnicastCost);
+  Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
+  p_costUnicast->vValue(nSumUnicastCost);
 
   Card_CostQuery* p_costQuery = new Card_CostQuery;
   p_costQuery->vAppend(p_costNetwork);
-  p_costQuery->vAppend(p_loadUnicast);
+  p_costQuery->vAppend(p_costUnicast);
 
   vInsert(p_costQuery);
 }
