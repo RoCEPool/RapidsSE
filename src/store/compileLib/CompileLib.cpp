@@ -25,13 +25,15 @@ static Stz* C_STARTUP_DIRS[] = {
 static eCB C_DEFAULT_COMPILER = CB_NONE;
 static Stz* C_DEFAULT_COMPILER_PATH = nullptr;
 
-static Stz* C_GCC_COMPILER_FLAGS = "-std=c++11 -g -Wl,--unresolved-symbols=ignore-all -I../src -O3 -fpic -shared"_Stz;
-static Stz* C_CLANG_COMPILER_FLAGS = "-std=c++11 -g -Wl,-undefined,dynamic_lookup -I../src -O3 -fpic -shared"_Stz;
+static Stz* C_GCC_COMPILER_FLAGS = "-g -Wl,--unresolved-symbols=ignore-all -I../src -O3 -fpic -shared"_Stz;
+static Stz* C_CLANG_COMPILER_FLAGS = "-g -Wl,-undefined,dynamic_lookup -I../src -O3 -fpic -shared"_Stz;
 
 static Stz* C_TCC_PATH = "../thirdparty/tcc/bin/tcc"_Stz;
-static Stz* C_TCC_COMPILER_FLAGS = "-g -I../src -shared"_Stz;
+static Stz* C_TCC_COMPILER_FLAGS = "-B../thirdparty/tcc/lib/tcc -g -I../src -rdynamic -shared"_Stz;
 
+static Stz* C_GCC = "gcc"_Stz;
 static Stz* C_GPLUSPLUS = "g++"_Stz;
+static Stz* C_CLANG = "clang"_Stz;
 static Stz* C_CLANGPLUSPLUS = "clang++"_Stz;
 
 /*----------------------------------------------------------------------------*/
@@ -59,14 +61,14 @@ bool CompileLib::bInit()
 
 #ifdef WITH_APPLE
   C_DEFAULT_COMPILER = CB_CLANG;
-  C_DEFAULT_COMPILER_PATH = C_CLANGPLUSPLUS;
-  szCompilerExistsCmd = "which clang++ &>/dev/null"_Stz;
+  C_DEFAULT_COMPILER_PATH = C_CLANG;
+  szCompilerExistsCmd = "which clang &>/dev/null"_Stz;
 #endif
 
 #ifdef WITH_LINUX
   C_DEFAULT_COMPILER = CB_GCC;
-  C_DEFAULT_COMPILER_PATH = C_GPLUSPLUS;
-  szCompilerExistsCmd = "which g++ &>/dev/null"_Stz;
+  C_DEFAULT_COMPILER_PATH = C_GCC;
+  szCompilerExistsCmd = "which gcc &>/dev/null"_Stz;
 
   // TODO: Check if we are on CentOS 7, if SCL is available, and if gcc
   //       or clang are installed with it. We would probably prefer this
@@ -74,8 +76,8 @@ bool CompileLib::bInit()
 #endif
 
   // Check that the default compiler exists. SE will fail early if it cannot be found.
-  SysCall oSysCall;
-  if (Shell::iExecute(szCompilerExistsCmd, oSysCall) != 0) {
+  s48K sStdOut;
+  if (Shell::iExecute(szCompilerExistsCmd, sStdOut) != 0) {
     vTrace("Default compiler not found. RapidsSE requires a compiler for executing queries. "
            "The compiler %s could not be found with the command \"%s\".\n"_Stz,
            C_DEFAULT_COMPILER_PATH, szCompilerExistsCmd);
@@ -303,12 +305,14 @@ void CompileLib::vTest(Stz* szCompiler)
 "#include \"primitives/BaseTypes_tcc.h\"\n"
 "\n"
 "// Declaration of a function inside SE\n"
-"// This only compiles because we are supplying a linker flag\n"
-"// to ignore unresolved symbols. So if SE does not provide this\n"
-"// symbol then this call will crash.\n"
-"extern void vTraceExternal(char* psFormat, ...);\n"
+"// We either need to supply a basic implementation, or we need\n"
+"// to give no implementation but supply a linker flag to ignore\n"
+"// the unresolved linkage. If we give an implementation then we\n"
+"// need to ensure that the entire function call is not optimised\n"
+"// out, or we supply a compiler attribute to not optimise this function.\n"
+"extern void __attribute__((optnone)) vTraceExternal(char* psFormat, ...) { };\n"
 "\n"
-"extern \"C\" void vTestEntry(void)\n"
+"void vTestEntry(void)\n"
 "{\n"
 "  printf(\"Inside vTestEntry!\\n\");\n"
 "\n"
@@ -327,20 +331,20 @@ void CompileLib::vTest(Stz* szCompiler)
   void (*pfTestFn)(void);
 
   // szCompiler can be set to:
-  //   nullptr, "gcc", "clang", "devtoolset-10", "llvm-toolset-7.0", "/path/to/g++", ...
+  //   nullptr, "gcc", "clang", "devtoolset-10", "llvm-toolset-7.0", "/path/to/gcc", ...
 
-  if (!bCompile(szSrc, szDynLibNm, pLibInfo, szCompiler)) {
-    vTrace("Compilation failed\n"_Stz);
+  if (!CompileLib::bCompile(szSrc, szDynLibNm, pLibInfo, szCompiler)) {
+    vTrace("Compilation failed: %s\n"_Stz, pLibInfo->szErrDetails());
 
-    vDelete(pLibInfo);
+    CompileLib::vDelete(pLibInfo);
     delete pLibInfo;
     return;
   }
 
-  if (!bDynamicLink(pLibInfo)) {
-    vTrace("Dynamic linking & loading failed\n"_Stz);
+  if (!CompileLib::bDynamicLink(pLibInfo)) {
+    vTrace("Dynamic linking & loading failed: %s\n"_Stz, pLibInfo->szErrDetails());
 
-    vDelete(pLibInfo);
+    CompileLib::vDelete(pLibInfo);
     delete pLibInfo;
     return;
   }
@@ -352,16 +356,16 @@ void CompileLib::vTest(Stz* szCompiler)
   // to a void* for the assignment.
   // Reference: The Linux Programming Interface, Chapter 42.1.3
 
-  *(void **)(&pfTestFn) = pvSymbolAddr(szFuncNm, pLibInfo);
+  *(void **)(&pfTestFn) = CompileLib::pvSymbolAddr(szFuncNm, pLibInfo);
 
   if (!pfTestFn) {
-    vTrace("Symbol resolution failed of symbol %s\n"_Stz, szFuncNm);
+    vTrace("Symbol resolution failed of symbol %s: %s\n"_Stz, szFuncNm, pLibInfo->szErrDetails());
 
     if (!CompileLib::bDynamicUnlink(pLibInfo)) {
-      vTrace("Dynamic unlink failed\n"_Stz);
+      vTrace("Dynamic unlink failed: %s\n"_Stz, pLibInfo->szErrDetails());
     }
 
-    vDelete(pLibInfo);
+    CompileLib::vDelete(pLibInfo);
     delete pLibInfo;
     return;
   }
@@ -370,8 +374,8 @@ void CompileLib::vTest(Stz* szCompiler)
   (*pfTestFn)();
 
   // Unlink
-  if (!bDynamicUnlink(pLibInfo)) {
-    vTrace("Dynamic unlinking failed\n"_Stz);
+  if (!CompileLib::bDynamicUnlink(pLibInfo)) {
+    vTrace("Dynamic unlinking failed: %s\n"_Stz, pLibInfo->szErrDetails());
 
     vDelete(pLibInfo);
     delete pLibInfo;
@@ -379,7 +383,7 @@ void CompileLib::vTest(Stz* szCompiler)
   }
 
   // Cleanup temporary files
-  vDelete(pLibInfo);
+  CompileLib::vDelete(pLibInfo);
 
   vTrace("\n  Compile time:  %lluns"
          "\n  Dyn Link time: %lluns"
@@ -424,13 +428,13 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
 
   if (szCompiler->bEqual("gcc"_Stz) || szCompiler->bEqual("g++"_Stz)) {
     pLibInfo->m_eCompilerType = CB_GCC;
-    pLibInfo->m_sCompilerPath = C_GPLUSPLUS;
-    return bCheckCompilerExists(C_GPLUSPLUS, pLibInfo);
+    pLibInfo->m_sCompilerPath = C_GCC;
+    return bCheckCompilerExists(C_GCC, pLibInfo);
 
-  } else if (szCompiler->bBeginsWith("clang"_Stz) || szCompiler->bBeginsWith("clang++"_Stz)) {
+  } else if (szCompiler->bBeginsWith("clang"_Stz)) {
     pLibInfo->m_eCompilerType = CB_CLANG;
-    pLibInfo->m_sCompilerPath = C_CLANGPLUSPLUS;
-    return bCheckCompilerExists(C_CLANGPLUSPLUS, pLibInfo);
+    pLibInfo->m_sCompilerPath = C_CLANG;
+    return bCheckCompilerExists(C_CLANG, pLibInfo);
 
   } else if (szCompiler->bEqual("tcc"_Stz)) {
 #ifdef WITH_APPLE
@@ -449,12 +453,12 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
   } else if (szCompiler->bBeginsWith("devtoolset-"_Stz)) {
     pLibInfo->m_eCompilerType = CB_SCL_GCC;
     pLibInfo->m_sCompilerPath = szCompiler;
-    return bCheckCompilerExists(szCompiler, C_GPLUSPLUS, pLibInfo);
+    return bCheckCompilerExists(szCompiler, C_GCC, pLibInfo);
 
   } else if (szCompiler->bBeginsWith("llvm-toolset-"_Stz)) {
     pLibInfo->m_eCompilerType = CB_SCL_CLANG;
     pLibInfo->m_sCompilerPath = szCompiler;
-    return bCheckCompilerExists(szCompiler, C_CLANGPLUSPLUS, pLibInfo);
+    return bCheckCompilerExists(szCompiler, C_CLANG, pLibInfo);
   }
 
   // Do we have an absolute pathname?
@@ -462,21 +466,21 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
     // We still need to know what type of compiler it is (gcc, clang, tcc, other?)
     if      (szCompiler->bContains("g++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
+      // We actually need to compile with gcc, so fix this in the compiler path
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "g++", "gcc");
 
     } else if (szCompiler->bContains("gcc"_Stz)) {
       pLibInfo->m_eCompilerType = CB_GCC;
-      // We actually need to compile with g++, so fix this in the compiler path
       pLibInfo->m_sCompilerPath = szCompiler;
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "gcc", "g++");
 
     } else if (szCompiler->bContains("clang++"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;
+      // We actually need to compile with clang, so fix this in the compiler path
+      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "clang++", "clang");
 
     } else if (szCompiler->bContains("clang"_Stz)) {
       pLibInfo->m_eCompilerType = CB_CLANG;
-      // We actually need to compile with clang++, so fix this in the compiler path
       pLibInfo->m_sCompilerPath = szCompiler;
-      StrLib::bReplace(pLibInfo->m_sCompilerPath.azChar(), "clang", "clang++");
 
     } else if (szCompiler->bContains("tcc"_Stz)) {
       pLibInfo->m_eCompilerType = CB_TCC;
@@ -508,18 +512,18 @@ bool CompileLib::bValidateCompiler(Stz* szCompiler, LibInfo* pLibInfo)
 bool CompileLib::bCheckCompilerExists(Stz* szCompiler, LibInfo* pLibInfo)
 {
   s256 sCmd;
-  SysCall oSysCall;
+  s48K sStdOut;
 
   // Is it on the $PATH?
-  sCmd.vSprint("which %s &>/dev/null"_Stz, szCompiler);
+  sCmd.vSprint("which %s 2>/dev/null"_Stz, szCompiler);
 
-  if (Shell::iExecute(sCmd.szStz(), oSysCall) == 0) {
+  if (Shell::iExecute(sCmd.szStz(), sStdOut) == 0) {
     return true;
   }
 
   // Can it be resolved as a relative or absolute path?
-  sCmd.vSprint("ls %s &>/dev/null"_Stz, szCompiler);
-  if (Shell::iExecute(sCmd.szStz(), oSysCall) == 0) {
+  sCmd.vSprint("ls %s 2>/dev/null"_Stz, szCompiler);
+  if (Shell::iExecute(sCmd.szStz(), sStdOut) == 0) {
     return true;
   }
 
@@ -534,17 +538,17 @@ bool CompileLib::bCheckCompilerExists(Stz* szCompiler, LibInfo* pLibInfo)
 bool CompileLib::bCheckCompilerExists(Stz* szSclEnv, Stz* szCompiler, LibInfo* pLibInfo)
 {
   s256 sCmd;
-  SysCall oSysCall;
+  s48K sStdOut;
 
   // Is it on the $PATH?
-  sCmd.vSprint("scl enable %s 'which %s' &>/dev/null"_Stz, szSclEnv, szCompiler);
+  sCmd.vSprint("scl enable %s 'which %s' 2>/dev/null || false"_Stz, szSclEnv, szCompiler);
 
-  if (Shell::iExecute(sCmd.szStz(), oSysCall) == 0) {
+  if (Shell::iExecute(sCmd.szStz(), sStdOut) == 0) {
     return true;
   }
 
   pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
-  pLibInfo->m_sErrDetails.vSprint("Compiler %s not found in SCL environment %s"_Stz, szCompiler, szSclEnv);
+  pLibInfo->m_sErrDetails.vSprint("Compiler %s not found or SCL environment %s does not exist"_Stz, szCompiler, szSclEnv);
   return false;
 }
 
@@ -667,7 +671,7 @@ void CompileLib::vBuildSclGccCompileCommand(LibInfo* pLibInfo)
 
   pLibInfo->m_sCompileCmd.vSprint("scl enable %s '%s %s -o %s %s' > %s 2>&1"_Stz,
                                   pLibInfo->m_sCompilerPath.szStz(),
-                                  C_GPLUSPLUS,
+                                  C_GCC,
                                   C_GCC_COMPILER_FLAGS,
                                   pLibInfo->m_sDynLibPath.szStz(),
                                   pLibInfo->m_sSrcFilePath.szStz(),
@@ -691,7 +695,7 @@ void CompileLib::vBuildSclClangCompileCommand(LibInfo* pLibInfo)
 
   pLibInfo->m_sCompileCmd.vSprint("scl enable %s '%s %s -o %s %s' > %s 2>&1"_Stz,
                                   pLibInfo->m_sCompilerPath.szStz(),
-                                  C_CLANGPLUSPLUS,
+                                  C_CLANG,
                                   C_CLANG_COMPILER_FLAGS,
                                   pLibInfo->m_sDynLibPath.szStz(),
                                   pLibInfo->m_sSrcFilePath.szStz(),

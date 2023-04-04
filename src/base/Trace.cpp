@@ -37,7 +37,7 @@ void BASE::vTraceM(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* report a trace message from a shared object calling back into SE.          */
 /*----------------------------------------------------------------------------*/
-void vTraceExternal(char* psFormat, ...)
+extern "C" void vTraceExternal(char* psFormat, ...)
 {
   va_list xVarArgs;
 

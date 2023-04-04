@@ -1707,7 +1707,10 @@ void Engine::vStartSystem(void)
 
   vTrace("\n\nllvm-toolset-7.0 compiler:\n"_Stz);
   CompileLib::vTest("llvm-toolset-7.0"_Stz);
-  
+
+  vTrace("\n\ntcc compiler:\n"_Stz);
+  CompileLib::vTest("tcc"_Stz);
+
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
