@@ -127,7 +127,7 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 /*----------------------------------------------------------------------------*/
 /* compute the load of all permutations                                       */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermAll::vCalculateLoad(Card_TableList* p_tableList)
+void Card_JoinPermAll::vEstCostsForAllJoinPerm(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

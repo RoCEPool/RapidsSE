@@ -1896,14 +1896,14 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CostNext.hpp"
-Card_CostNext* Card::pSub_costNext(void)
+#include "Card_CostLocus.hpp"
+Card_CostLocus* Card::pSub_costLocus(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CostNext* p_costNext =
-      _pCard_CostNext(pFindSubCard(CK_COSTNEXT));
-  return p_costNext;
+  Card_CostLocus* p_costLocus =
+      _pCard_CostLocus(pFindSubCard(CK_COSTLOCUS));
+  return p_costLocus;
 }
 
 /*----------------------------------------------------------------------------*/

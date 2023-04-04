@@ -23,8 +23,8 @@ enum eCK // card kind
   /* */ CK_CONSTRAINT,
   /* */ CK_CORRELATION,
   /* */ CK_COSTJOINING,
+  /* */ CK_COSTLOCUS,
   /* */ CK_COSTNETWORK,
-  /* */ CK_COSTNEXT,
   /* */ CK_COSTQUERY,
   /* */ CK_COSTUNICAST,
   /* */ CK_CROSSJOIN,
@@ -136,8 +136,8 @@ static Stz* aCK[]
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
+  /* */ "CK_COSTLOCUS"_Stz,    // CK_COSTLOCUS
   /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
-  /* */ "CK_COSTNEXT"_Stz,     // CK_COSTNEXT
   /* */ "CK_COSTQUERY"_Stz,    // CK_COSTQUERY
   /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
@@ -249,8 +249,8 @@ static Stz* aCK_short[]
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "costJoining"_Stz,     // CK_COSTJOINING
+  /* */ "costLocus"_Stz,       // CK_COSTLOCUS
   /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
-  /* */ "costNext"_Stz,        // CK_COSTNEXT
   /* */ "costQuery"_Stz,       // CK_COSTQUERY
   /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN

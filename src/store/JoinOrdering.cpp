@@ -173,7 +173,7 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5) Calculate join load
 
-  p_joinPermAll->vCalculateLoad(m_pCI->G.p_tableList);
+  p_joinPermAll->vEstCostsForAllJoinPerm(m_pCI->G.p_tableList);
   m_pCI->G.pDeck->vAppend(new Card_Section("Join Loads"_Stz));
   xCI.vRestart();
   while (xCI.G_bEachMain())

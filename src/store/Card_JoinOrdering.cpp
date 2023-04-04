@@ -106,7 +106,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString, Card_TableList* p_tabl
   while (xCI.G_bEachMain(CK_JOINORDER)) {
     char cNextTable = xCI.G.p_joinOrder->cValue();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
-    xCI.G.p_costNext = xCI.G.p_joinOrder->pSub_costNext();
+    xCI.G.p_costNext = xCI.G.p_joinOrder->pSub_costLocus();
     xCI.G.p_cast = xCI.G.p_costNext->pSub_castNext();
     s32 sCast = xCI.G.p_cast->szValue();
     StrLib::vShuffleLeft(sCast.azChar(),3);

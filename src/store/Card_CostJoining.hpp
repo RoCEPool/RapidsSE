@@ -16,7 +16,7 @@ namespace STORE
     Card_CostJoining(void);
    ~Card_CostJoining(void) noexcept(false);
 
-    i8 nEstJoinVolume(eXK eNextCast,
+    i8 nEstJoinVolume(eXK eCastLocus,
                       i8 nBuff_arriving,
                       i8 nBuff_joiningTo);
   };

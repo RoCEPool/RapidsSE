@@ -49,7 +49,7 @@ Card_CostNetwork::~Card_CostNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate network volume (as part of cost estimate of next join)            */
 /*----------------------------------------------------------------------------*/
-void Card_CostNetwork::vEstNetworkVolume(eXK eNextCast,
+void Card_CostNetwork::vEstNetworkVolume(eXK eCastLocus,
                                          i8 nBuff_arriving,
                                          i8 nBuff_joiningTo)
 {
@@ -63,7 +63,7 @@ void Card_CostNetwork::vEstNetworkVolume(eXK eNextCast,
   i8 iLoad = 0;
   i8 nBuffersOut = 0;
 
-  switch (eNextCast) {
+  switch (eCastLocus) {
     case XK_UNICAST:
       break;
 

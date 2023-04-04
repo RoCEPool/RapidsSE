@@ -51,16 +51,12 @@ Card_CostJoining::~Card_CostJoining(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate join volume (as part of cost estimate of next join)               */
 /*----------------------------------------------------------------------------*/
-i8 Card_CostJoining::nEstJoinVolume(eXK eNextCast,
+i8 Card_CostJoining::nEstJoinVolume(eXK eCastLocus,
                                     i8 nBuff_arriving,
                                     i8 nBuff_joiningTo)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //i8 nBuff_joiningTo = p_tableList->pGetTableSize(cTblSyn_r)->iValue();
-
-  //i8 iLoadJoined = (i8)(1.0 * (nBuff_arriving * nBuff_joiningTo));
 
   i8 iLoadJoined = C_UNKNOWN;
   if (nBuff_arriving > nBuff_joiningTo)

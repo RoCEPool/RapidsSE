@@ -77,7 +77,7 @@ namespace STORE
 
   class Card_Level;
   class Card_Limit;
-  class Card_CostNext;
+  class Card_CostLocus;
   class Card_CostJoining;
   class Card_CostNetwork;
   class Card_CostQuery;
@@ -409,7 +409,7 @@ namespace STORE
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_Level*         pSub_level(void);
-    Card_CostNext*      pSub_costNext(void);
+    Card_CostLocus*     pSub_costLocus(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
     Card_CostQuery*     pSub_costQuery(void);

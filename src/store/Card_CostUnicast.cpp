@@ -49,7 +49,7 @@ Card_CostUnicast::~Card_CostUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate unicast volume (as part of cost estimate of next join)            */
 /*----------------------------------------------------------------------------*/
-void Card_CostUnicast::vEstUnicastVolume(eXK eNextCast,
+void Card_CostUnicast::vEstUnicastVolume(eXK eCastLocus,
                                          i8 nBuff_arriving,
                                          i8 nBuff_joiningTo)
 {
@@ -58,7 +58,7 @@ void Card_CostUnicast::vEstUnicastVolume(eXK eNextCast,
   i8 iLoadUnicast = 0;
   i8 nBuffersOut = 0;
 
-  switch (eNextCast) {
+  switch (eCastLocus) {
 
     case XK_UNICAST:
       iLoadUnicast = (i8)(1.0 * (nBuff_arriving));

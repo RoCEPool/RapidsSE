@@ -16,7 +16,7 @@ namespace STORE
     Card_CostNetwork(void);
    ~Card_CostNetwork(void) noexcept(false);
 
-    void vEstNetworkVolume(eXK eNextCast,
+    void vEstNetworkVolume(eXK eCastLocus,
                            i8 nBuff_arriving,
                            i8 nBuff_joiningTo);
   };

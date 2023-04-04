@@ -16,7 +16,7 @@ namespace STORE
     Card_CostUnicast(void);
    ~Card_CostUnicast(void) noexcept(false);
 
-    void vEstUnicastVolume(eXK eNextCast,
+    void vEstUnicastVolume(eXK eCastLocus,
                            i8 nBuff_arriving,
                            i8 nBuff_joiningTo);
   };

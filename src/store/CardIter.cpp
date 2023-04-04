@@ -1103,7 +1103,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
-    case CK_COSTNEXT:             return G.p_costNext;
+    case CK_COSTLOCUS:             return G.p_costNext;
     case CK_COSTJOINING:       return G.p_costJoining;
     case CK_COSTNETWORK:      return G.p_costNetwork;
     case CK_COSTQUERY:      return G.p_costQuery;
@@ -1283,7 +1283,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;
     case CK_LEVEL:            return "G.p_level"_Stz;
     case CK_LIMIT:            return "G.p_limit"_Stz;
-    case CK_COSTNEXT:             return "G.p_costNext"_Stz;
+    case CK_COSTLOCUS:             return "G.p_costNext"_Stz;
     case CK_COSTJOINING:       return "G.p_costJoining"_Stz;
     case CK_COSTNETWORK:      return "G.p_costNetwork"_Stz;
     case CK_COSTQUERY:      return "G.p_costQuery"_Stz;
@@ -2154,7 +2154,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
-    case CK_COSTNEXT: *((Card**)&G.p_costNext)             = pCard; break;
+    case CK_COSTLOCUS: *((Card**)&G.p_costNext)             = pCard; break;
     case CK_COSTJOINING: *((Card**)&G.p_costJoining)       = pCard; break;
     case CK_COSTNETWORK: *((Card**)&G.p_costNetwork)      = pCard; break;
     case CK_COSTQUERY: *((Card**)&G.p_costQuery)      = pCard; break;
