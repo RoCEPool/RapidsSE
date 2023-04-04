@@ -75,7 +75,7 @@ void Card_CostUnicast::vEstUnicastBufferVolume(i8 nBuff_emitted_prior,
       NEVER_REACH
   }
 
-  vValue((i8)nBuff_unicast);
+  vValue(nBuff_unicast);
 }
 
 /*============================================================================*/

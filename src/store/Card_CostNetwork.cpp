@@ -73,14 +73,14 @@ void Card_CostNetwork::vEstNetworkBufferVolume(i8 nBuff_emitted_prior,
 
     case XK_BROADCAST:
       // network cost for a broadcast to this join locus
-      nBuff_network = (i8)(1.0 * (nBuff_emitted_prior * nPtnsPerNode));
+      nBuff_network = (i8)(1.0 * (nBuff_emitted_prior * nNodes));
       break;
 
     default:
       NEVER_REACH
   }
 
-  vValue((i8)nBuff_network);
+  vValue(nBuff_network);
 }
 
 //*============================================================================*/

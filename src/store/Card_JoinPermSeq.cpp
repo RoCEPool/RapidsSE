@@ -67,7 +67,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 
     nBuff_emitted_prior = nBuff_produced_locus;
 
-    // calculate the buffers produced at start
+    // calculate the buffers produced at the start of join sequence
     if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
       char cTblSyn_head = xCI.G.p_dataStart->cValue();
       nBuff_produced_locus = p_tableList->pGetTableSize(cTblSyn_head)->iValue();
@@ -77,12 +77,12 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
     if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
       continue;
 
-    // get join locus info
+    // get info for locus of join sequence
     char cTblSyn_locus = xCI.G.p_joinLocus->cValue();
     eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus);
     i8 nBuff_joining_with = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
 
-    // calculate the costs for join locus
+    // calculate the various costs for locus of join sequence
     nBuff_produced_locus =
         xCI.G.p_joinLocus->nEstLocusCosts(nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
 

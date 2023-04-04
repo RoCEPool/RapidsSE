@@ -72,7 +72,7 @@ i8 Card_CostJoining::nEstJoiningBufferVolume(i8 nBuff_emitted_prior,
         (i8) (dExpansionCoeff * (d8)(nBuff_emitted_prior + nBuff_joining_with));
   }
 
-  vValue((i8)nBuff_produced_locus);
+  vValue(nBuff_produced_locus);
 
   return nBuff_produced_locus;
 }
