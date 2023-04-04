@@ -46,7 +46,8 @@ void FileMap::operator delete(void* pFileMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FileMap::FileMap(void)
-    : PoolBuffer(CN_FILEMAP)
+ : Object(CN_FILEMAP),
+ m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP);
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
@@ -106,27 +107,27 @@ void FileMap::vToDisk(Operand* pOperand)
   //---------------------------------------------------------------------------
   // Operand could be an address or a buffer id. Check flag bit.
 
-  BufferId oBufferId((void*)pOperand);
-
-  if(1 == BufferId::bIsBufferId(oBufferId)) {
-    vTrace("Writing BufferId %p to disk\n"_Stz, oBufferId.m_pvAsAddress);
-    pOperand = (Operand*) BufferId::aAddressFromId(oBufferId);//hashmap
-  }
-
-  //---------------------------------------------------------------------------
-  // Look at page no bits in buffer id and assign to corresponding PageFile
-
-    // To do once we have multiple page files...
-    // m_pPageFile[oBufferId.m_uPageFile];
-
-  //---------------------------------------------------------------------------
-  // Write to page file
-  RASSERT(CN_ROWBUFFER == pOperand->eGetClassNo() ||
-          CN_CRWBUFFER == pOperand->eGetClassNo());
-
-  DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
-
-  m_pPageFile->vWriteDataBufferToPFile(pDataBuffer);
+//  BufferId oBufferId((void*)pOperand);
+//
+//  if(1 == BufferId::bIsBufferId(oBufferId)) {
+//    vTrace("Writing BufferId %p to disk\n"_Stz, oBufferId.m_pvAsAddress);
+//    pOperand = (Operand*) BufferId::aAddressFromId(oBufferId);//hashmap
+//  }
+//
+//  //---------------------------------------------------------------------------
+//  // Look at page no bits in buffer id and assign to corresponding PageFile
+//
+//    // To do once we have multiple page files...
+//    // m_pPageFile[oBufferId.m_uPageFile];
+//
+//  //---------------------------------------------------------------------------
+//  // Write to page file
+//  RASSERT(CN_ROWBUFFER == pOperand->eGetClassNo() ||
+//          CN_CRWBUFFER == pOperand->eGetClassNo());
+//
+//  DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
+//
+//  m_pPageFile->vWriteDataBufferToPFile(pDataBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +140,7 @@ void FileMap::vToDisk(DataBuffer* pDataBuffer)
   //---------------------------------------------------------------------------
   // Look at page no bits in buffer id and assign to corresponding PageFile
 
-  // To do once we have multiple page files...
+  // TODO: once we have multiple page files...
   // m_pPageFile[oBufferId.m_uPageFile];
 
   //---------------------------------------------------------------------------
@@ -156,6 +157,8 @@ void FileMap::vToDisk(DataBuffer* pDataBuffer)
 /*----------------------------------------------------------------------------*/
 BufferId FileMap::oGetNewBufferId(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
   //---------------------------------------------------------------------------
   // Figure out which PageFile has space for a new RowBuffer
 
@@ -163,6 +166,8 @@ BufferId FileMap::oGetNewBufferId(void)
 
   //---------------------------------------------------------------------------
   // Calculate the BufferId
+
+  vGrabWriteLock();
 
   BufferId oFreeBufferId;
 
@@ -172,6 +177,8 @@ BufferId FileMap::oGetNewBufferId(void)
   oFreeBufferId.m_uSeekOffset = uFreeSubset;
   oFreeBufferId.m_uPageFile = m_pPageFile->m_uPFIndex;
   oFreeBufferId.m_bIdFlag = 1;
+
+  vDropWriteLock();
   return oFreeBufferId;
 
 //  return BufferId::vBufferIdFromNo(iPoolBufferNo);
@@ -187,10 +194,104 @@ PoolBuffer* FileMap::pToPoolBuffer(i8 i_PoolBuffer)
 
   i8 iOffset = C_SIZE_POOL_BUFFER * i_PoolBuffer;
 
-  PoolBuffer* pPoolBuffer = static_cast<PoolBuffer*>(MemLib::aAddBytes(gpBufferPool->m_pBase,iOffset));
+  PoolBuffer* pPoolBuffer = static_cast<PoolBuffer*>(
+      MemLib::aAddBytes(gpBufferPool->m_pBase,iOffset));
 
   return pPoolCheck<PoolBuffer*>(pPoolBuffer,__func__);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vGrabWriteLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  m_okLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vDropWriteLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vGrabReadLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  m_okLock.vGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vDropReadLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vStartPageIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  vGrabReadLock();
+
+  if(! m_pPageFile->m_pFile->bIsOpen()) {
+    m_pPageFile->m_pFile->bOpenMode(
+        m_pPageFile->m_szPFilePath, C_OPEN_READ_WRITE_EXIST);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vEndPageIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+  vDropReadLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vStartPageOut(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  vGrabWriteLock();
+
+  if(! m_pPageFile->m_pFile->bIsOpen()) {
+    m_pPageFile->m_pFile->bOpenMode(
+        m_pPageFile->m_szPFilePath, C_OPEN_READ_WRITE_EXIST);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void FileMap::vEndPageOut(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+
+  m_pPageFile->m_pFile->vFlush();
+  m_pPageFile->m_pFile->vSync();
+  m_pPageFile->m_pFile->vClose();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */

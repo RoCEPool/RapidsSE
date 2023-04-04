@@ -16,7 +16,7 @@ namespace BASE
     Paging(void);
     ~Paging(void) noexcept(false);
 
-    static void vRandomAlgo(HashMap* pHashMap, i8 nTotal);
+    static void vRandomAlgo(i8 nTotal);
 
   private:
 

@@ -416,7 +416,7 @@ Object* HashMap::pValueAt(void* pKey)
       // Grab HashMapEntry read lock, to prevent it from potentially
       // being paged out immediately
       pIter->m_okLock.vGrabRead();
-//      vTrace("Value at key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
+//      vTrace("Value at key %p read locks task\n"_Stz, pIter->m_pKeyObject);
 
       // Release the HashMap lock
       m_okLock.vDropRead();

@@ -11,7 +11,7 @@ namespace BASE
   class PageFile : public Object
   {
   public:
-    File*  m_pFile;               // Page File file pointer
+    File*  m_pFile;               // Paging file pointer
     Stz*   m_szPFilePath;         // Page File path
     u8     m_uPFIndex;            // Index of Page File
     u8     m_uPFSize;             // Size of Page File

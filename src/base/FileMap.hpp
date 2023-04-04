@@ -9,9 +9,10 @@
 
 namespace BASE
 {
-  class FileMap : public PoolBuffer
+  class FileMap : public Object
   {
   public:
+    Lock       m_okLock;
     Stz*       m_szFilePath;
     i8         m_iFileSize;
     i8         m_iCreated;
@@ -30,12 +31,22 @@ namespace BASE
     ~FileMap(void);
 
     DataBuffer* pDataBufferFromDisk(BufferId oBufferId);
-#ifdef WITH_BUFFER_ID
     BufferId oGetNewBufferId(void);
-#endif
+
     void vToDisk(Operand* pOperand);
     void vToDisk(DataBuffer* pDataBuffer);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
+
+    void vGrabWriteLock(void);
+    void vDropWriteLock(void);
+    void vGrabReadLock(void);
+    void vDropReadLock(void);
+
+    void vStartPageIn(void);
+    void vEndPageIn(void);
+
+    void vStartPageOut(void);
+    void vEndPageOut(void);
 
   private:
 

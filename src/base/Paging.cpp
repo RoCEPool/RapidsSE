@@ -27,20 +27,26 @@ Paging::~Paging(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Paging::vRandomAlgo(HashMap* pHashMap, i8 nTotal)
+void Paging::vRandomAlgo(i8 nTotal)
 {
   _static_
 
-  pHashMap->m_okLock.vGrabWrite();
+  FileMap* pFileMap = AM::pFileMap();
+  HashMap* pHashMap = AM::pHashMap();
 
-  // Ensure we have enough buffers in the HashMap to page out
-  RASSERT(pHashMap->m_uNoOfEntries > nTotal);
+
+  pFileMap->vStartPageOut();
+  pHashMap->m_okLock.vGrabWrite();
 
   u8 uSize = pHashMap->m_pHashMapSlot->uGetNoSlots();
 
+  i8 iTimeOut = 0;
   i8 nPagedOut = 0;
   while(nPagedOut < nTotal)
   {
+    iTimeOut++;
+    if(iTimeOut > 3)
+      break;
     // Start iterating the hashmap from a random point
     for(u8 i = arc4random() % uSize; i < uSize; i++) {
       HashMapEntry* pEntry = pHashMap->pGetEntryAtIndex(i);
@@ -55,7 +61,8 @@ void Paging::vRandomAlgo(HashMap* pHashMap, i8 nTotal)
 
       // Check if this entry is queued for output
       DataBuffer* pDataBuffer = _pDataBuffer(pEntry->m_pValObject);
-      if(pDataBuffer->bOutputQueued()) {
+      if(pDataBuffer->eGetClassNo() == CN_ROWBUFFER ||
+         pDataBuffer->bOutputQueued()) {
         pEntry->m_okLock.vDropWrite();
         continue;
       }
@@ -65,7 +72,7 @@ void Paging::vRandomAlgo(HashMap* pHashMap, i8 nTotal)
       pHashMap->m_pHashMapSlot->m_pEntry[i] = pEntry->m_pNext;
 
       // Write the buffer to disk
-      AM::pFileMap()->vToDisk(pDataBuffer);
+      pFileMap->vToDisk(pDataBuffer);
 
       // HACK: to prevent dead lock, since the delete of databuffer will try to grab
       // a lock on the hashmap
@@ -95,7 +102,14 @@ void Paging::vRandomAlgo(HashMap* pHashMap, i8 nTotal)
     }
   }
 
+  pFileMap->vEndPageOut();
+
+//  Thread* pThread = Thread::pThisTLSThread();
+//  pThread->pPsxThd()->vSleepSsec(30,CN_WORD);
+
   pHashMap->m_okLock.vDropWrite();
+  pFileMap->vDropWriteLock();
+
   return;
 }
 
