@@ -76,10 +76,10 @@ select count(*)
    join C on B.B_COL0 = C.C_COL0
  ;
 rows:
-  ('A UNICAST B UNICAST C, 0, 1001000')
-  ('B UNICAST A UNICAST C, 0, 1001000')
-  ('B UNICAST C UNICAST A, 0, 1001000')
-  ('C UNICAST B UNICAST A, 0, 1001000')
+  ('A UNICAST B UNICAST C')
+  ('B UNICAST A UNICAST C')
+  ('B UNICAST C UNICAST A')
+  ('C UNICAST B UNICAST A')
 
 /joinOrder
 select count(*)
@@ -87,7 +87,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL0 = C.C_COL0
  ;
-rows: ('A UNICAST B UNICAST C, 0, 1001000')
+rows: ('A UNICAST B UNICAST C')
 
 select count(*)
   from A
@@ -129,10 +129,10 @@ select count(*)
   join C on B.B_COL0 = C.C_COL1
 ;
 rows:
-  ('A UNICAST B BROADCAST C, 4000000, 1000')
-  ('B UNICAST A BROADCAST C, 4000000, 1000')
-  ('B BROADCAST C HASHCAST A, 1004000, 0')
-  ('C HASHCAST B UNICAST A, 1000, 1000000')
+  ('A UNICAST B BROADCAST C')
+  ('B UNICAST A BROADCAST C')
+  ('B BROADCAST C HASHCAST A')
+  ('C HASHCAST B UNICAST A')
 
 
 /joinOrder
@@ -141,7 +141,7 @@ select count(*)
   join B on A.A_COL0 = B.B_COL0
   join C on B.B_COL0 = C.C_COL1
 ;
-rows: ('C HASHCAST B UNICAST A, 1000, 1000000')
+rows: ('C HASHCAST B UNICAST A')
 
 select count(*)
  from A
@@ -183,10 +183,10 @@ select count(*)
    join C on B.B_COL1 = C.C_COL0
  ;
 rows:
-  ('A UNICAST B HASHCAST C, 1000000, 1000')
-  ('B UNICAST A HASHCAST C, 1000000, 1000')
-  ('B HASHCAST C HASHCAST A, 1001000, 0')
-  ('C BROADCAST B UNICAST A, 4000, 1000000')
+  ('A UNICAST B HASHCAST C')
+  ('B UNICAST A HASHCAST C')
+  ('B HASHCAST C HASHCAST A')
+  ('C BROADCAST B UNICAST A')
 
 
 /joinOrder
@@ -195,7 +195,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL1 = C.C_COL0
  ;
-rows: ('C BROADCAST B UNICAST A, 4000, 1000000')
+rows: ('C BROADCAST B UNICAST A')
 
 
 select count(*)
@@ -239,10 +239,10 @@ select count(*)
    join C on B.B_COL1 = C.C_COL1
  ;
 rows:
-  ('A UNICAST B BROADCAST C, 4000000, 1000')
-  ('B UNICAST A BROADCAST C, 4000000, 1000')
-  ('B BROADCAST C HASHCAST A, 1004000, 0')
-  ('C BROADCAST B UNICAST A, 4000, 1000000')
+  ('A UNICAST B BROADCAST C')
+  ('B UNICAST A BROADCAST C')
+  ('B BROADCAST C HASHCAST A')
+  ('C BROADCAST B UNICAST A')
 
 
 /joinOrder
@@ -251,7 +251,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL0
    join C on B.B_COL1 = C.C_COL1
  ;
-rows: ('C BROADCAST B UNICAST A, 4000, 1000000')
+rows: ('C BROADCAST B UNICAST A')
 
 select count(*)
  from A
@@ -293,10 +293,10 @@ select count(*)
    join C on B.B_COL0 = C.C_COL0
  ;
 rows:
-  ('A BROADCAST B UNICAST C, 4000, 1000000')
-  ('B HASHCAST A HASHCAST C, 1001000, 0')
-  ('B UNICAST C HASHCAST A, 1000000, 1000')
-  ('C UNICAST B HASHCAST A, 1000000, 1000')
+  ('A BROADCAST B UNICAST C')
+  ('B HASHCAST A HASHCAST C')
+  ('B UNICAST C HASHCAST A')
+  ('C UNICAST B HASHCAST A')
 
 /joinOrder
 select count(*)
@@ -304,7 +304,7 @@ select count(*)
    join B on A.A_COL0 = B.B_COL1
    join C on B.B_COL0 = C.C_COL0
  ;
-rows: ('A BROADCAST B UNICAST C, 4000, 1000000')
+rows: ('A BROADCAST B UNICAST C')
 
 select count(*)
   from A
@@ -345,10 +345,10 @@ select count(*)
    join C on B.B_COL0 = C.C_COL0
  ;
 rows:
-  ('A HASHCAST B UNICAST C, 1000, 1000000')
-  ('B BROADCAST A HASHCAST C, 1004000, 0')
-  ('B UNICAST C BROADCAST A, 4000000, 1000')
-  ('C UNICAST B BROADCAST A, 4000000, 1000')
+  ('A HASHCAST B UNICAST C')
+  ('B BROADCAST A HASHCAST C')
+  ('B UNICAST C BROADCAST A')
+  ('C UNICAST B BROADCAST A')
 
 
 /joinOrder
@@ -357,7 +357,7 @@ select count(*)
    join B on A.A_COL1 = B.B_COL0
    join C on B.B_COL0 = C.C_COL0
  ;
-rows: ('A HASHCAST B UNICAST C, 1000, 1000000')
+rows: ('A HASHCAST B UNICAST C')
 
 select count(*)
   from A
@@ -398,10 +398,10 @@ select count(*)
    join C on B.B_COL0 = C.C_COL0
  ;
 rows:
-  ('A BROADCAST B UNICAST C, 4000, 1000000')
-  ('B BROADCAST A HASHCAST C, 1004000, 0')
-  ('B UNICAST C BROADCAST A, 4000000, 1000')
-  ('C UNICAST B BROADCAST A, 4000000, 1000')
+  ('A BROADCAST B UNICAST C')
+  ('B BROADCAST A HASHCAST C')
+  ('B UNICAST C BROADCAST A')
+  ('C UNICAST B BROADCAST A')
 
 
 /joinOrder
@@ -410,7 +410,7 @@ select count(*)
    join B on A.A_COL1 = B.B_COL1
    join C on B.B_COL0 = C.C_COL0
  ;
-rows: ('A BROADCAST B UNICAST C, 4000, 1000000')
+rows: ('A BROADCAST B UNICAST C')
 
 select count(*)
   from A
@@ -452,10 +452,10 @@ select count(*)
    join C on B.B_COL1 = C.C_COL1
  ;
 rows:
-  ('A BROADCAST B BROADCAST C, 4004000, 0')
-  ('B BROADCAST A BROADCAST C, 4004000, 0')
-  ('B BROADCAST C BROADCAST A, 4004000, 0')
-  ('C BROADCAST B BROADCAST A, 4004000, 0')
+  ('A BROADCAST B BROADCAST C')
+  ('B BROADCAST A BROADCAST C')
+  ('B BROADCAST C BROADCAST A')
+  ('C BROADCAST B BROADCAST A')
 
 
 /joinOrder
@@ -464,7 +464,7 @@ select count(*)
    join B on A.A_COL1 = B.B_COL1
    join C on B.B_COL1 = C.C_COL1
  ;
-rows: ('A BROADCAST B BROADCAST C, 4004000, 0')
+rows: ('A BROADCAST B BROADCAST C')
 
 select count(*)
   from A
