@@ -56,8 +56,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 nBuff_emitted  = 0;
-  i8 nBuff_produced = 0;
+  i8 nBuff_emitted_prior  = 0;
+  i8 nBuff_produced_locus = 0;
 
   i8 nSumNetworkCost = 0;
   i8 nSumUnicastCost = 0;
@@ -65,23 +65,28 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
-    nBuff_emitted = nBuff_produced;
+    nBuff_emitted_prior = nBuff_produced_locus;
 
+    // calculate the buffers produced at start
     if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
       char cTblSyn_head = xCI.G.p_dataStart->cValue();
-      nBuff_produced = p_tableList->pGetTableSize(cTblSyn_head)->iValue();
+      nBuff_produced_locus = p_tableList->pGetTableSize(cTblSyn_head)->iValue();
       continue;
     }
 
     if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
       continue;
 
+    // get join locus info
     char cTblSyn_locus = xCI.G.p_joinLocus->cValue();
     eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus);
-    i8 nBuff_joining = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
+    i8 nBuff_joining_with = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
 
-    nBuff_produced = xCI.G.p_joinLocus->nEstLocusCosts(eLocusCast, nBuff_emitted, nBuff_joining);
+    // calculate the costs for join locus
+    nBuff_produced_locus =
+        xCI.G.p_joinLocus->nEstLocusCosts(nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
 
+    // running sum of the network and unicast costs
     Card_CostLocus* p_costLocus = xCI.G.p_joinLocus->pSub_costLocus();
     Card_CostNetwork* p_costNetwork = p_costLocus->pSub_costNetwork();
     nSumNetworkCost += p_costNetwork->iValue();
@@ -89,6 +94,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
     nSumUnicastCost += p_costUnicast->iValue();
   }
 
+  // record the sum network and unicast costs
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
   p_costNetwork->vValue(nSumNetworkCost);
 

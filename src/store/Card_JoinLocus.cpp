@@ -52,11 +52,11 @@ Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate costs for this join locus                                         */
+/* estimate the various costs for this join locus                             */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinLocus::nEstLocusCosts(eXK eLocusCast,
-                                  i8 nBuff_emitted,
-                                  i8 nBuff_joining)
+i8 Card_JoinLocus::nEstLocusCosts(i8 nBuff_emitted_prior,
+                                  eXK eLocusCast,
+                                  i8 nBuff_joining_with)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -68,11 +68,15 @@ i8 Card_JoinLocus::nEstLocusCosts(eXK eLocusCast,
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
   Card_CostJoining* p_costJoining = new Card_CostJoining;
 
-  p_costNetwork->vEstNetworkBufferVolume(eLocusCast, nBuff_emitted);
-  p_costUnicast->vEstUnicastBufferVolume(eLocusCast, nBuff_emitted);
+  // calculate the possible network cost for this join locus
+  p_costNetwork->vEstNetworkBufferVolume(nBuff_emitted_prior, eLocusCast);
 
-  i8 nBuff_produced =
-      p_costJoining->nEstJoiningBufferVolume(eLocusCast, nBuff_emitted, nBuff_joining);
+  // calculate the possible unicast cost for this join locus
+  p_costUnicast->vEstUnicastBufferVolume(nBuff_emitted_prior, eLocusCast);
+
+  // calculate buffers produced by this join locus
+  i8 nBuff_produced_locus =
+      p_costJoining->nEstJoiningBufferVolume(nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
 
   p_costLocus->vAppend(p_locusCast);
   p_costLocus->vAppend(p_costNetwork);
@@ -80,7 +84,7 @@ i8 Card_JoinLocus::nEstLocusCosts(eXK eLocusCast,
   p_costLocus->vAppend(p_costJoining);
   vAppend(p_costLocus);
 
-  return nBuff_produced;
+  return nBuff_produced_locus;
 }
 
 /*============================================================================*/

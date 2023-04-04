@@ -47,10 +47,10 @@ Card_CostNetwork::~Card_CostNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate buffers arriving at this locus over the network                   */
+/* estimate possible buffers arriving at this locus over the network          */
 /*----------------------------------------------------------------------------*/
-void Card_CostNetwork::vEstNetworkBufferVolume(eXK eLocusCast,
-                                               i8 nBuff_emitted)
+void Card_CostNetwork::vEstNetworkBufferVolume(i8 nBuff_emitted_prior,
+                                               eXK eLocusCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -63,14 +63,17 @@ void Card_CostNetwork::vEstNetworkBufferVolume(eXK eLocusCast,
 
   switch (eLocusCast) {
     case XK_UNICAST:
+      // no network costs associated with a unicast
       break;
 
     case XK_HASHCAST:
-      nBuff_network = (i8)(1.0 * nBuff_emitted);
+      // network cost for a hashcast to this join locus
+      nBuff_network = (i8)(1.0 * nBuff_emitted_prior);
       break;
 
     case XK_BROADCAST:
-      nBuff_network = (i8)(1.0 * (nBuff_emitted * nPtnsPerNode));
+      // network cost for a broadcast to this join locus
+      nBuff_network = (i8)(1.0 * (nBuff_emitted_prior * nPtnsPerNode));
       break;
 
     default:

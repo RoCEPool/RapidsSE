@@ -47,10 +47,10 @@ Card_CostUnicast::~Card_CostUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate buffers arriving at this locus via unicast                        */
+/* estimate possible buffers arriving at this locus via unicast               */
 /*----------------------------------------------------------------------------*/
-void Card_CostUnicast::vEstUnicastBufferVolume(eXK eLocusCast,
-                                               i8 nBuff_emitted)
+void Card_CostUnicast::vEstUnicastBufferVolume(i8 nBuff_emitted_prior,
+                                               eXK eLocusCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -59,13 +59,16 @@ void Card_CostUnicast::vEstUnicastBufferVolume(eXK eLocusCast,
   switch (eLocusCast) {
 
     case XK_UNICAST:
-      nBuff_unicast = (i8)(1.0 * (nBuff_emitted));
+      // buffers arriving to this locus via a unicast
+      nBuff_unicast = (i8)(1.0 * (nBuff_emitted_prior));
       break;
 
     case XK_HASHCAST:
+      // no unicast buffers arriving to this locus via hashcast
       break;
 
     case XK_BROADCAST:
+      // no unicast buffers arriving to this locus via broadcast
       break;
 
     default:

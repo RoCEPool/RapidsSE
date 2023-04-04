@@ -16,9 +16,9 @@ namespace STORE
     Card_CostJoining(void);
    ~Card_CostJoining(void) noexcept(false);
 
-    i8 nEstJoiningBufferVolume(eXK eLocusCast,
-                               i8 nBuff_emitted,
-                               i8 nBuff_joining);
+    i8 nEstJoiningBufferVolume(i8 nBuff_emitted_prior,
+                               eXK eLocusCast,
+                               i8 nBuff_joining_with);
   };
 
   Card_CostJoining* _pCard_CostJoining(void* aAddr);

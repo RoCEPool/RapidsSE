@@ -44,6 +44,7 @@ Card_CostJoining::~Card_CostJoining(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -51,26 +52,31 @@ Card_CostJoining::~Card_CostJoining(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate buffers produced by the join of this locus                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_CostJoining::nEstJoiningBufferVolume(eXK eLocusCast,
-                                             i8 nBuff_emitted,
-                                             i8 nBuff_joining)
+i8 Card_CostJoining::nEstJoiningBufferVolume(i8 nBuff_emitted_prior,
+                                             eXK eLocusCast,
+                                             i8 nBuff_joining_with)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nBuff_produced = C_UNKNOWN;
+  i8 nBuff_produced_locus = C_UNKNOWN;
 
-  if (nBuff_emitted > nBuff_joining)
-    nBuff_produced = ((d8)nBuff_emitted / (d8)nBuff_joining) * (nBuff_emitted + nBuff_joining);
-  else
-    nBuff_produced = ((d8)nBuff_joining / (d8)nBuff_emitted) * (nBuff_emitted + nBuff_joining);
+  if (nBuff_emitted_prior > nBuff_joining_with) {
+    d8 dExpansionCoeff = (d8) nBuff_emitted_prior / (d8) nBuff_joining_with;
+    nBuff_produced_locus =
+        (i8) (dExpansionCoeff * (d8)(nBuff_emitted_prior + nBuff_joining_with));
+  }
+  else {
+    d8 dExpansionCoeff = (d8) nBuff_joining_with / (d8) nBuff_emitted_prior;
+    nBuff_produced_locus =
+        (i8) (dExpansionCoeff * (d8)(nBuff_emitted_prior + nBuff_joining_with));
+  }
 
-  vValue((i8)nBuff_produced);
+  vValue((i8)nBuff_produced_locus);
 
-  return nBuff_produced;
+  return nBuff_produced_locus;
 }
 
-
-//*============================================================================*/
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

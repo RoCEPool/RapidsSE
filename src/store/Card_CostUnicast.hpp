@@ -16,8 +16,7 @@ namespace STORE
     Card_CostUnicast(void);
    ~Card_CostUnicast(void) noexcept(false);
 
-    void vEstUnicastBufferVolume(eXK eLocusCast,
-                                 i8 nBuff_emitted);
+    void vEstUnicastBufferVolume(i8 nBuff_emitted_prior, eXK eLocusCast);
   };
 
   Card_CostUnicast* _pCard_CostUnicast(void* aAddr);
