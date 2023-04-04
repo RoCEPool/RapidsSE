@@ -62,6 +62,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
   i8 nSumNetworkCost = 0;
   i8 nSumUnicastCost = 0;
 
+  i8 nLocus = 0;
+
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
@@ -77,6 +79,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
     if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
       continue;
 
+    nLocus++;
+
     // get info for locus of join sequence
     char cTblSyn_locus = xCI.G.p_joinLocus->cValue();
     eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus);
@@ -84,7 +88,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
 
     // calculate the various costs for locus of join sequence
     nBuff_produced_locus =
-        xCI.G.p_joinLocus->nEstLocusCosts(nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
+        xCI.G.p_joinLocus->nEstLocusCosts(nLocus, nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
 
     // running sum of the network and unicast costs
     Card_CostLocus* p_costLocus = xCI.G.p_joinLocus->pSub_costLocus();
@@ -180,6 +184,8 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
       p_dataStart->vValue(cTblSyn_ith);
       vAppend(p_dataStart);
 
+      p_dataStart->vAppend(new Card_TableNm(p_table->pSub_tableNm()->szValue()));
+
       if (p_table->pSub_keyExists() || p_table->pSub_keyNotExists()) {
         p_dataStart->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
@@ -196,6 +202,8 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     Card_JoinLocus *p_joinLocus = new Card_JoinLocus;
     p_joinLocus->vValue(cTblSyn_ith);
     vAppend(p_joinLocus);
+
+    p_joinLocus->vAppend(new Card_TableNm(p_table->pSub_tableNm()->szValue()));
 
 
     bool bSupported = false;

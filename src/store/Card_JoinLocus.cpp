@@ -54,7 +54,8 @@ Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the various costs for this join locus                             */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinLocus::nEstLocusCosts(i8 nBuff_emitted_prior,
+i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
+                                  i8 nBuff_emitted_prior,
                                   eXK eLocusCast,
                                   i8 nBuff_joining_with)
 {
@@ -69,14 +70,14 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nBuff_emitted_prior,
   Card_CostJoining* p_costJoining = new Card_CostJoining;
 
   // calculate the possible network cost for this join locus
-  p_costNetwork->vEstNetworkBufferVolume(nBuff_emitted_prior, eLocusCast);
+  p_costNetwork->vEstNetworkBufferVolume(nLocus, nBuff_emitted_prior, eLocusCast);
 
   // calculate the possible unicast cost for this join locus
-  p_costUnicast->vEstUnicastBufferVolume(nBuff_emitted_prior, eLocusCast);
+  p_costUnicast->vEstUnicastBufferVolume(nLocus, nBuff_emitted_prior, eLocusCast);
 
   // calculate buffers produced by this join locus
   i8 nBuff_produced_locus =
-      p_costJoining->nEstJoiningBufferVolume(nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
+      p_costJoining->nEstJoiningBufferVolume(nLocus, nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
 
   p_costLocus->vAppend(p_locusCast);
   p_costLocus->vAppend(p_costNetwork);

@@ -112,12 +112,14 @@ create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/*
 /time loadReplicated region   "<tpch_dir>/region.<suffix>"   ;
 /time loadReplicated nation   "<tpch_dir>/nation.<suffix>"   ;
 /time load supplier           "<tpch_dir>/supplier.<suffix>" ;
 /time load customer           "<tpch_dir>/customer.<suffix>" ;
 /time load part               "<tpch_dir>/part.<suffix>"     ;
 /time load partsupp           "<tpch_dir>/partsupp.<suffix>" ;
+*/
 /time load orders             "<tpch_dir>/orders.<suffix>"   ;
 /time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
 

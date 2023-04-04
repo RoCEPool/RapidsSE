@@ -695,8 +695,7 @@ Card* Dissector::pOp_Scan(TagSet* pArgTags)
   
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
-  Card_TableNm* pCard_TableNm = new Card_TableNm;
-  pCard_TableNm->vValue(szTableNm);
+  Card_TableNm* pCard_TableNm = new Card_TableNm(szTableNm);
   pCard_Table->vAppend(pCard_TableNm);
   pOp_Scan->vAppend(pCard_Table);
 

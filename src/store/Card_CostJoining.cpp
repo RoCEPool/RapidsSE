@@ -52,7 +52,8 @@ Card_CostJoining::~Card_CostJoining(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate buffers produced by the join of this locus                        */
 /*----------------------------------------------------------------------------*/
-i8 Card_CostJoining::nEstJoiningBufferVolume(i8 nBuff_emitted_prior,
+i8 Card_CostJoining::nEstJoiningBufferVolume(i8 nLocus,
+                                             i8 nBuff_emitted_prior,
                                              eXK eLocusCast,
                                              i8 nBuff_joining_with)
 

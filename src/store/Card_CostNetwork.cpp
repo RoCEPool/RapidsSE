@@ -49,7 +49,8 @@ Card_CostNetwork::~Card_CostNetwork(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate possible buffers arriving at this locus over the network          */
 /*----------------------------------------------------------------------------*/
-void Card_CostNetwork::vEstNetworkBufferVolume(i8 nBuff_emitted_prior,
+void Card_CostNetwork::vEstNetworkBufferVolume(i8 nLocus,
+                                               i8 nBuff_emitted_prior,
                                                eXK eLocusCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

@@ -16,7 +16,8 @@ namespace STORE
     Card_JoinLocus(void);
    ~Card_JoinLocus(void) noexcept(false);
 
-    i8 nEstLocusCosts(i8 nBuff_emitted_prior,
+    i8 nEstLocusCosts(i8 nLocus,
+                      i8 nBuff_emitted_prior,
                       eXK eLocusCast,
                       i8 nBuff_joining_with);
 

@@ -49,7 +49,8 @@ Card_CostUnicast::~Card_CostUnicast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate possible buffers arriving at this locus via unicast               */
 /*----------------------------------------------------------------------------*/
-void Card_CostUnicast::vEstUnicastBufferVolume(i8 nBuff_emitted_prior,
+void Card_CostUnicast::vEstUnicastBufferVolume(i8 nLocus,
+                                               i8 nBuff_emitted_prior,
                                                eXK eLocusCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
