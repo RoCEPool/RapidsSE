@@ -2,6 +2,11 @@
 /* _jm_q3 -- Query3                                                           */
 /*============================================================================*/
 
+//tag default <tpch_dir> = "../tpch/sf1";
+//tag default <suffix>   = "csv";
+
+//__TPCH_SCHEMA
+
 // truncate metrics tables
 truncate se__jobMetrics;
 truncate se__jobOperands;
@@ -19,8 +24,10 @@ metricsCtl enable;
 ///////////////////////
 // QUERY 3
 
+// /joWrite
 /jobMetrics
 /weaved
+/jo=3
 select l_orderkey,
       sum(l_extendedprice*(1-l_discount)) as revenue,
       o_orderdate,
@@ -41,6 +48,7 @@ order by
      revenue desc,
      o_orderdate
 limit 10;
+
 ///////////////////////
 
 // disable metrics
