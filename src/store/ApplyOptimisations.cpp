@@ -450,28 +450,27 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
 
-  bool bFoundStart = false;
+  bool bFoundKeyStart = false;
   for (;;) {
-    if (Card* p_card = m_pCI->pNextChild()) {
-      if (p_card->bIsCard(CK_INDEXSCAN)) {
-        bFoundStart = true;
-        break;
-      }
+    if (m_pCI->pNextChildIf(CK_INDEXSCAN) ||
+        m_pCI->pNextChildIf(CK_GBYAGG)    ||
+        m_pCI->pNextChildIf(CK_SORT) ) {
+      bFoundKeyStart = true;
+      break;
     }
 
     if (! m_pCI->G_bEachMain())
       break;
   }
 
-  if (bFoundStart) {
+  if (bFoundKeyStart) {
 
     while (m_pCI->G_bEachMain()) {
 
       switch (m_pCI->G.e_MainCard) {
 
-        //case CK_AGGREG:    m_pCI->G.p_aggreg->vDerive_Projection_Key(m_pCI);    break;
-
-        case CK_GBYAGG: m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);
+        case CK_GBYAGG:
+          m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);
           break;
         case CK_INDEXJOIN:
           m_pCI->G.p_indexJoin->vDerive_Projection_Key(m_pCI);
