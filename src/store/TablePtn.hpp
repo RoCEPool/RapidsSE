@@ -3,10 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-
-#include "Bucket.hpp"
-
-namespace STORE { class CrwTablePtn; class RowTablePtn; class Bucket;}
+namespace STORE { class CrwTablePtn; class RowTablePtn;}
 
 namespace STORE
 {

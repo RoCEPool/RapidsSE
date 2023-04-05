@@ -13,7 +13,6 @@
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
 #include "BucketMap.hpp"
-#include "Bucket.hpp"
 #include "TablePtn.hpp"
 #include "PtnStream.hpp"
 #include "Table.hpp"
@@ -101,8 +100,6 @@ void Step::vBucketGetAndClear(void)
   ENTRY();
 
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBucketGet);
-
-  m_pLogicUnit->m_xpBucket = nullptr;
 
   EXIT();
 }
