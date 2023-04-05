@@ -57,10 +57,15 @@ Card_JoinPredList* Card_JoinPredList::pExtract(Card_Deck* p_deck)
 
   CardIter xCI(p_deck);
   while (xCI.G_bEachMain()) {
-    if (Card_Filter *p_filter = xCI.G.p_MainCard->pSub_filter()) {
-      Card_BoolCalc *p_boolCalc = p_filter->pSub_boolCalc();
-      p_joinPredList->vConcat(p_boolCalc);
-    }
+    if (! (xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList()) )
+      continue;
+    if (! (xCI.G.p_bounds = xCI.G.p_MainCard->pSub_bounds()) )
+      continue;
+    if (! (xCI.G.p_filter = xCI.G.p_MainCard->pSub_filter()) )
+      continue;
+
+    xCI.G.p_boolCalc = xCI.G.p_filter->pSub_boolCalc();
+    p_joinPredList->vConcat(xCI.G.p_boolCalc,xCI.G.p_indexList, xCI.G.p_bounds);
   }
 
   return p_joinPredList;
@@ -74,27 +79,31 @@ Card_JoinPredList* Card_JoinPredList::pExtract(Card_Deck* p_deck)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc)
+void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc,
+                                Card_IndexList* p_indexList, Card_Bounds* p_bounds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  auto bConcat = [this](Card *pCard) {
+  auto bConcat = [this, p_indexList, p_bounds](Card *pCard) {
     Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    if (! p_cmpPred->szValue()->bSame("=="_Stz)) //RAYMOND CAN DO BETTER!
-      return true;
+    if (! p_cmpPred->bIsEqOp())
+      return C_CONTINUE_RECURSION;
+
+    if (! p_indexList->bHas_cmpPred_In_bounds(p_cmpPred))
+      return C_CONTINUE_RECURSION;
 
     Card_Term* p_term_0 = p_cmpPred->pGetTerm(0);
     Card_Term* p_term_1 = p_cmpPred->pGetTerm(1);
 
     if ( ! (p_term_0->bIsTblColOdn() && p_term_1->bIsTblColOdn()))
-      return true;
+      return C_CONTINUE_RECURSION;
 
     Card_CmpPred* p_cmpPred_new = _pCard_CmpPred(p_cmpPred->pDupCardRecursive());
     this->vAppend(p_cmpPred_new);
 
-    return true;
+    return C_CONTINUE_RECURSION;
   };
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---

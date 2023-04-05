@@ -78,13 +78,12 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
   while (xCI.G_bEachMain(CK_IDXCOL)) {
     Stz* szColNm = xCI.G.p_idxCol->szValue();
 
-  CardIter xCI_p(p_projection);
-  while (xCI_p.G_bEachMain(CK_EXPR)) {
-    if (xCI_p.G.p_expr->pSub_as()->bIsValue(szColNm)) {
-
+    CardIter xCI_p(p_projection);
+    while (xCI_p.G_bEachMain_reverse(CK_EXPR)) {
+      if (xCI_p.G.p_expr->pSub_as()->bIsValue(szColNm)) {
         Stz* szPrjCol = xCI_p.G.p_expr->szProjectedCol();
 
-      xCI.G.p_idxCol->vValueMark1(szPrjCol, MARK_CHANGED);
+        xCI.G.p_idxCol->vValueMark1(szPrjCol, MARK_CHANGED);
       }
     }
   }

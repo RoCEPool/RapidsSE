@@ -24,7 +24,8 @@ namespace STORE
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
 
-    void vFlipTerms(Card_Projection* p_projection_reduced);
+
+    bool bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred);
 
   };
 

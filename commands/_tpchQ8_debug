@@ -2,6 +2,9 @@
 /* _tpchQ8_debug                                                              */
 /*============================================================================*/
 
+// --initial _tpchQ8_debug
+
+
 tag default <tpch_dir> = "../tpch/sf_0001";
 tag default <suffix>   = "csv";
 
