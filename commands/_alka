@@ -81,5 +81,5 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 
 //explain stage transliterate select dec_col6 from datums;
 //explain stage transliterate select min(dec_col6) from datums;
-//explain stage transliterate select min(dec_col6) from datums group by int_col0;
+explain stage transliterate select min(dec_col6) from datums group by int_col0;
 
