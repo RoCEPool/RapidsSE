@@ -217,25 +217,44 @@ void JoinOrdering::vReorderTables(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) Pick final join ordering
+  // 6) Pick final join ordering\
 
-  Card_JoinOrdering* p_joinOrdering =
-      Card_JoinOrdering::pPick(p_joinPermAll);
+  Card_JoinOrdering* p_joinOrdering;
+  Stz* sJoinOrder = ""_Stz;
+
+  // Specific join order /jo ?
+  if (AM::JOB::bHasTag(C_JOIN_ORDER)) {
+    sJoinOrder= AM::JOB::szTagValue(C_JOIN_ORDER);
+    i8 iJoinOrder = StrLib::iToI8((char*)sJoinOrder);
+    p_joinOrdering =
+        Card_JoinOrdering::pPick(p_joinPermAll, iJoinOrder);
+
+    if ( ! p_joinOrdering ) {
+      vTrace("\n\nWARNING: INVALID JOIN OREDER IN /JO, PICKING THE BEST!!!\n\n"_Stz);
+    }
+
+  }
+
+  if ( ! p_joinOrdering ) {
+    p_joinOrdering =
+        Card_JoinOrdering::pPick(p_joinPermAll);
+  }
+
   m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
   m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
   // get the final join ordering string
-  s256 sJoinOrder;
+  s256 sJoinOrdering;
   if (pFile) {
-    p_joinOrdering->vJoinOrderString(sJoinOrder, m_pCI->G.p_tableList, true);
+    p_joinOrdering->vJoinOrderString(sJoinOrdering, m_pCI->G.p_tableList, true);
     //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
-    pFile->vPrint("\nPicked:\n%s\n\n"_Stz, sJoinOrder.szStz());
+    pFile->vPrint("\nPicked:\n%s\n\n"_Stz, sJoinOrdering.szStz());
   }
-  p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
-  //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
-  pOptimiser->vJoinOrder(sJoinOrder);
+  p_joinOrdering->vJoinOrderString(sJoinOrdering,m_pCI->G.p_tableList);
+  //vTrace("JoinOrder: %s\n"_Stz,sJoinOrdering.szStz());
+  pOptimiser->vJoinOrder(sJoinOrdering);
 
   if (pFile) {
     pFile->vClose();

@@ -137,6 +137,27 @@ void Card_JoinPermAll::vEstCostsForAllJoinPerm(Card_TableList* p_tableList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pick given order                                                           */
+/*----------------------------------------------------------------------------*/
+Card_JoinPermSeq* Card_JoinPermAll::pJoinOrder(i8 iJoinOrder)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 iPermutation;
+  Card_JoinPermSeq* pPermutation = nullptr;
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
+    pPermutation = xCI.G.p_joinPermSeq;
+    iPermutation = pPermutation->pSymbol()->Y_iGet(P_Permutation);
+    if (iJoinOrder == iPermutation)
+      return (pPermutation);
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pick join permseq with lowest load                                         */
 /*----------------------------------------------------------------------------*/
 Card_JoinPermSeq* Card_JoinPermAll::pLowestLoad(void)

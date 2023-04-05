@@ -72,6 +72,24 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
 /*----------------------------------------------------------------------------*/
 /* pick optimal join ordering from join permutation set                       */
 /*----------------------------------------------------------------------------*/
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll, i8 iJoinOrder)
+{
+  _static_
+
+  Card_JoinPermSeq* p_joinPermSeq = p_joinPermAll->pJoinOrder(iJoinOrder);
+
+  // is it a valid join order ?
+  if ( ! p_joinPermSeq )
+    return nullptr;
+
+  Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq);
+
+  return p_joinOrdering;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pick optimal join ordering from join permutation set                       */
+/*----------------------------------------------------------------------------*/
 Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll)
 {
   _static_

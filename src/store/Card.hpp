@@ -170,6 +170,8 @@ static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
 static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
 static Stz* C_NA                = "n/a"_Stz;
 
+static Stz* C_JOIN_ORDER = "<jo>"_Stz;
+
 static char MARK_AT         = '@';
 static char MARK_BLANK      = ' ';
 static char MARK_CHANGED    = '`';

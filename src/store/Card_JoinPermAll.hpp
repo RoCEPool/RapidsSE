@@ -20,6 +20,7 @@ namespace STORE
                                                Card_JoinPredList* p_joinPredList);
 
     void vEstCostsForAllJoinPerm(Card_TableList* p_tableList);
+    Card_JoinPermSeq* pJoinOrder(i8 iJoinOrder);
     Card_JoinPermSeq* pLowestLoad(void);
     void vRemoveInvalid(void);
    };
