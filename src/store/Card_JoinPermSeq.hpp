@@ -18,7 +18,8 @@ namespace STORE
     Card_JoinPermSeq(void);
    ~Card_JoinPermSeq(void) noexcept(false);
 
-     void vEstQueryCost(Card_TableList* p_tableList);
+     void vEstQueryCost(Card_TableList* p_tableList,
+                        Card_FiltPredList* p_filtPredList);
 
      eXK eLocusCast(Card_TableList* p_tableList,
                     Card_JoinLocus* p_joinLocus);

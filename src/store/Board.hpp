@@ -31,13 +31,15 @@
 #include "Card_Deck.hpp"
 #include "Card_Direction.hpp"
 
-#include "Card_Expr.hpp"
+#include "Card_Expr.hpp"         //
 
-#include "Card_Filter.hpp"
-#include "Card_Flat.hpp"
-#include "Card_Fold.hpp"
-#include "Card_FoldElist.hpp"
-#include "Card_From.hpp"
+#include "Card_Filter.hpp"       //
+#include "Card_FiltPred.hpp"     //
+#include "Card_FiltPredList.hpp" //
+#include "Card_Flat.hpp"         //
+#include "Card_Fold.hpp"         //
+#include "Card_FoldElist.hpp"    //
+#include "Card_From.hpp"         //
 
 #include "Card_GbyAgg.hpp"
 
@@ -56,22 +58,22 @@
 #include "Card_DataStart.hpp"
 #include "Card_JoinLocus.hpp"
 #include "Card_JoinOrder.hpp"
-#include "Card_JoinOrdering.hpp"
-#include "Card_JoinPermAll.hpp"
-#include "Card_JoinPermSeq.hpp"
-#include "Card_JoinPredList.hpp"
+#include "Card_JoinOrdering.hpp" //
+#include "Card_JoinPermAll.hpp"  //
+#include "Card_JoinPermSeq.hpp"  //
+#include "Card_JoinPredList.hpp" //
 
-#include "Card_Key.hpp"
-#include "Card_KeyExists.hpp"
-#include "Card_KeyNotExists.hpp"
+#include "Card_Key.hpp"          //
+#include "Card_KeyExists.hpp"    //
+#include "Card_KeyNotExists.hpp" //
 
-#include "Card_Level.hpp"
-#include "Card_Limit.hpp"
-#include "Card_CostLocus.hpp"
-#include "Card_CostJoining.hpp"
-#include "Card_CostNetwork.hpp"
-#include "Card_CostQuery.hpp"
-#include "Card_CostUnicast.hpp"
+#include "Card_Level.hpp"        //
+#include "Card_Limit.hpp"        //
+#include "Card_CostLocus.hpp"    //
+#include "Card_CostJoining.hpp"  //
+#include "Card_CostNetwork.hpp"  //
+#include "Card_CostQuery.hpp"    //
+#include "Card_CostUnicast.hpp"  //
 
 #include "Card_NCorrCols.hpp"
 #include "Card_Needed.hpp"
@@ -163,16 +165,10 @@ namespace STORE
 
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
 
-
-
     static void vMorphAll_table_To_EEop(CardIter* pCI);
-
-
 
     static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
     static void vIndividuate_crossJoin_filter(CardIter* pCI);
-
-
 
     i8  i_Board(void);
     void vBoardNo(i8 i_Board);

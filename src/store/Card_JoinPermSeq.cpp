@@ -7,6 +7,8 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_CmpPred.hpp"
+#include "Card_FiltPred.hpp"
+#include "Card_FiltPredList.hpp"
 #include "Card_JoinPermAll.hpp"
 #include "Card_JoinPredList.hpp"
 #include "Card_Table.hpp"
@@ -52,7 +54,8 @@ Card_JoinPermSeq::~Card_JoinPermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the query cost of this join permutation                           */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
+void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
+                                     Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -86,9 +89,17 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList)
     eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus);
     i8 nBuff_joining_with = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
 
-    // calculate the various costs for locus of join sequence
+    i8 nFiltPred = 0;
+    CardIter xCI_filtPred(p_filtPredList);
+    while (xCI_filtPred.G_bEachMain()) {
+      if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn_locus) {
+        nFiltPred = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
+        break;
+      }
+    }
+        // calculate the various costs for locus of join sequence
     nBuff_produced_locus =
-        xCI.G.p_joinLocus->nEstLocusCosts(nLocus, nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
+        xCI.G.p_joinLocus->nEstLocusCosts(nLocus, nBuff_emitted_prior, eLocusCast, nBuff_joining_with, nFiltPred);
 
     // running sum of the network and unicast costs
     Card_CostLocus* p_costLocus = xCI.G.p_joinLocus->pSub_costLocus();

@@ -57,7 +57,8 @@ Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
 i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
                                   i8 nBuff_emitted_prior,
                                   eXK eLocusCast,
-                                  i8 nBuff_joining_with)
+                                  i8 nBuff_joining_with,
+                                  i8 nFiltPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -77,7 +78,8 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
 
   // calculate buffers produced by this join locus
   i8 nBuff_produced_locus =
-      p_costJoining->nEstJoiningBufferVolume(nLocus, nBuff_emitted_prior, eLocusCast, nBuff_joining_with);
+      p_costJoining->nEstJoiningBufferVolume(nLocus, nBuff_emitted_prior, eLocusCast,
+                                             nBuff_joining_with, nFiltPred);
 
   p_costLocus->vAppend(p_locusCast);
   p_costLocus->vAppend(p_costNetwork);

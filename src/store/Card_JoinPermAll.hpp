@@ -19,7 +19,8 @@ namespace STORE
     static Card_JoinPermAll* pAllPermutedJoins(Card_TableList* p_tableList,
                                                Card_JoinPredList* p_joinPredList);
 
-    void vEstCostsForAllJoinPerm(Card_TableList* p_tableList);
+    void vEstCostsForAllJoinPerm(Card_TableList*    p_tableList,
+                                 Card_FiltPredList* p_filtPredList);
     Card_JoinPermSeq* pJoinOrder(i8 iJoinOrder);
     Card_JoinPermSeq* pLowestLoad(void);
     void vRemoveInvalid(void);

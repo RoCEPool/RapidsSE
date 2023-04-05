@@ -120,8 +120,8 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->vTransform(__func__, "join ordering"_Stz);
 
   File* pFile = nullptr;
-//  pFile = new File(this);
-//  RASSERT(pFile->bOpenAppend("/tmp/optimiser.txt"_Stz));
+  pFile = new File(this);
+  RASSERT(pFile->bOpenAppend("/tmp/optimiser.txt"_Stz));
 
 
   Optimiser* pOptimiser = m_pCI->m_pBench->pOptimiser();
@@ -160,6 +160,14 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2b) Extract filtPredList from pipeline
+
+  m_pCI->G.p_filtPredList = Card_FiltPredList::pExtract(pPipeline);
+  m_pCI->G.pDeck->vAppend(m_pCI->G.p_filtPredList);
+  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3) Compute all possible join permutations
 
   Card_JoinPermAll* p_joinPermAll =
@@ -187,7 +195,7 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5) Calculate join load
 
-  p_joinPermAll->vEstCostsForAllJoinPerm(m_pCI->G.p_tableList);
+  p_joinPermAll->vEstCostsForAllJoinPerm(m_pCI->G.p_tableList,m_pCI->G.p_filtPredList);
   m_pCI->G.pDeck->vAppend(new Card_Section("Join Cost Est."_Stz));
   xCI.vRestart();
   while (xCI.G_bEachMain())
