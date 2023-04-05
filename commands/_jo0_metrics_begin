@@ -1,0 +1,21 @@
+/*============================================================================*/
+/* _jo0_metrics_begin -- begin of metrics                                     */
+/*============================================================================*/
+
+// truncate metrics tables
+truncate se__jobMetrics;
+truncate se__jobOperands;
+truncate se__jobOperators;
+
+truncate se__jobNetwork;
+truncate se__jobNetDissect;
+
+truncate se__sysMetrics;
+truncate se__sysLocks;
+
+// enable metrics
+metricsCtl enable;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

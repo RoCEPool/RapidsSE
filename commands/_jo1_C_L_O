@@ -1,23 +1,27 @@
 /*============================================================================*/
-/* _jo_0_all -- join order:                                                   */
+/* _jo1_C_L_O -- join order test                                              */
 /*============================================================================*/
 
-// --initial _jo_0_all
+// --initial _jo1_C_L_O
 
-tag default <tpch_dir> = "../tpch/sf_0001";
-tag default <suffix>   = "csv";
+__TPCH_SCHEMA
 
-__TPCH_SCHEMA_RAY
-
-_jo_1_O_L
-_jo_2_C_O_L
-_jo_3_C_S_O_L
-_jo_4_C_S_O_L_P
-_jo_5_L_P
-_jo_6_S_O_L_P_PS
-_jo_7_S_PS
-_jo_8_S_P_PS
-_jo_9_P_PS
+/jobMetrics
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo1_C_L_O"
+/jo = 6
+select
+       count(*)
+  from
+       Customer, //  29
+       Lineitem, // 630
+       Orders    // 181
+ where
+       C_CUSTKEY  = O_CUSTKEY
+   and O_ORDERKEY = L_ORDERKEY
+;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -64,11 +64,11 @@ i8 Card_CostJoining::nEstJoiningBufferVolume(i8 nLocus,
 
   if (nBuff_joining_with > nBuff_emitted_prior) {
     nBuff_produced_locus =
-        (nLocus + 2) * nBuff_joining_with;
+        2 * nBuff_joining_with;
   }
   else {
     nBuff_produced_locus =
-        (nLocus + 2) * nBuff_emitted_prior;
+        2 * nBuff_emitted_prior;
   }
 
   vValue(nBuff_produced_locus);

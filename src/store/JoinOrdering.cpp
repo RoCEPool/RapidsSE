@@ -119,7 +119,21 @@ void JoinOrdering::vReorderTables(void)
 
   m_pCI->vTransform(__func__, "join ordering"_Stz);
 
+  File* pFile = nullptr;
+//  pFile = new File(this);
+//  RASSERT(pFile->bOpenAppend("/tmp/optimiser.txt"_Stz));
+
+
   Optimiser* pOptimiser = m_pCI->m_pBench->pOptimiser();
+
+  if (pFile) {
+    s256 sBar;
+    StrLib::vPad(sBar.azChar(),120,'-');
+    pFile->vPrint("%s\n"_Stz,sBar.azChar());
+    pFile->vPrint("Query %s\n"_Stz,pOptimiser->szQueryNm());
+    pFile->vPrint("%s\n"_Stz,sBar.azChar());
+    pFile->vPrint("\n"_Stz);
+  }
 
   Card_Deck* pPipeline = m_pCI->G.pDeck;
 
@@ -188,6 +202,11 @@ void JoinOrdering::vReorderTables(void)
     Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_joinPermSeq);
     //p_joinOrdering->vDump();
     s256 sJoinOrder;
+    if (pFile) {
+      p_joinOrdering->vJoinOrderString(sJoinOrder, m_pCI->G.p_tableList, true);
+      //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
+      pFile->vPrint("%s\n"_Stz, sJoinOrder.szStz());
+    }
     p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
     //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
     pOptimiser->vJoinPermutation(iJoinPermutations, sJoinOrder);
@@ -209,10 +228,20 @@ void JoinOrdering::vReorderTables(void)
 
   // get the final join ordering string
   s256 sJoinOrder;
+  if (pFile) {
+    p_joinOrdering->vJoinOrderString(sJoinOrder, m_pCI->G.p_tableList, true);
+    //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
+    pFile->vPrint("\nPicked:\n%s\n\n"_Stz, sJoinOrder.szStz());
+  }
   p_joinOrdering->vJoinOrderString(sJoinOrder,m_pCI->G.p_tableList);
-  vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
+  //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());
   pOptimiser->vJoinOrder(sJoinOrder);
 
+  if (pFile) {
+    pFile->vClose();
+    delete pFile;
+    pFile = nullptr;
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   DELETE_CARD(p_joinPermAll);

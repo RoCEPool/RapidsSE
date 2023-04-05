@@ -20,7 +20,8 @@ namespace STORE
 
     static Card_JoinOrdering* pPick(Card_JoinPermAll* p_joinPermAll);
 
-    void vJoinOrderString(String* pString, Card_TableList* p_tableList);
+    void vJoinOrderString(String* pString, Card_TableList* p_tableList,
+                          bool bNumbers=false);
     void vReorder(Card_Deck* pDeck);
   };
 
