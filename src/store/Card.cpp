@@ -1701,6 +1701,32 @@ Card_Filter* Card::pSub_filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_FiltPred.hpp"
+Card_FiltPred* Card::pSub_filtPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_FiltPred* p_filtPred =
+      _pCard_FiltPred(pFindSubCard(CK_FILTPRED));
+  return p_filtPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_FiltPredList.hpp"
+Card_FiltPredList* Card::pSub_filtPredList(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_FiltPredList* p_filtPredList =
+      _pCard_FiltPredList(pFindSubCard(CK_FILTPREDLIST));
+  return p_filtPredList;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Flat.hpp"
 Card_Flat* Card::pSub_flat(void)
 {

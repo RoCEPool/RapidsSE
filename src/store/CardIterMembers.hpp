@@ -126,6 +126,8 @@ namespace STORE
     Card_Expr *          p_expr;
 
     Card_Filter *        p_filter;
+    Card_FiltPred *      p_filtPred;
+    Card_FiltPredList *  p_filtPredList;
     Card_Flat *          p_flat;
     Card_Fold *          p_fold;
     Card_FoldElist *     p_foldElist;

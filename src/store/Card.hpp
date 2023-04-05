@@ -44,6 +44,8 @@ namespace STORE
   class Card_Expr;
 
   class Card_Filter;
+  class Card_FiltPred;
+  class Card_FiltPredList;
   class Card_Flat;
   class Card_Fold;
   class Card_FoldElist;
@@ -134,6 +136,7 @@ static Stz* P_BumpedBy     = "nBumpedBy"_Stz;
 static Stz* P_ChosenBound  = "bChosenBound"_Stz;
 static Stz* P_ChosenIndex  = "bChosenIndex"_Stz;
 static Stz* P_Column       = "bColumn"_Stz;
+static Stz* P_Count        = "nCount"_Stz;
 static Stz* P_CrlKeyExpr   = "bCrlKeyExpr"_Stz;
 static Stz* P_CrlKeyPred   = "bCrlKeyPred"_Stz;
 static Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
@@ -390,6 +393,8 @@ namespace STORE
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
+    Card_FiltPred*      pSub_filtPred(void);
+    Card_FiltPredList*  pSub_filtPredList(void);
     Card_Flat*          pSub_flat(void);
     Card_Fold*          pSub_fold(void);
     Card_FoldElist*     pSub_foldElist(void);
