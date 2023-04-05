@@ -20,6 +20,7 @@ metricsCtl enable;
 // QUERY 2
 
 /jobMetrics
+/weaved
 select
   s_acctbal,
   s_name,

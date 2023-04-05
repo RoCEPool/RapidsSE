@@ -20,6 +20,7 @@ metricsCtl enable;
 // QUERY 8
 
 /jobMetrics
+/weaved
 select o_year,
    sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share
 from ( select
