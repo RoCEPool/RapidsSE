@@ -120,8 +120,11 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->vTransform(__func__, "join ordering"_Stz);
 
   File* pFile = nullptr;
-  pFile = new File(this);
-  RASSERT(pFile->bOpenAppend("/tmp/optimiser.txt"_Stz));
+
+  if (AM::JOB::bHasTag(C_JOWRITE)) {
+    pFile = new File(this);
+    RASSERT(pFile->bOpenAppend("/tmp/optimiser.txt"_Stz));
+  }
 
 
   Optimiser* pOptimiser = m_pCI->m_pBench->pOptimiser();

@@ -9,10 +9,11 @@ tag default <suffix>   = "csv";
 
 __TPCH_SCHEMA
 
-// /filterPred
+/filterPred
 /glean_interactive
 /transliterated
 /weaved
+/joWrite
 /pipelineName = "_jo3_C_L_O2_S_N_R1"
 select
        count(*)
