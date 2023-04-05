@@ -90,9 +90,18 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll)
 /*----------------------------------------------------------------------------*/
 /* derive the join order string                                               */
 /*----------------------------------------------------------------------------*/
-void Card_JoinOrdering::vJoinOrderString(String* pString, Card_TableList* p_tableList)
+void Card_JoinOrdering::vJoinOrderString(String* pString,
+                                         Card_TableList* p_tableList,
+                                         bool bNumbers)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_CostQuery*   p_costQuery   = pSub_costQuery();
+  Card_CostNetwork* p_costNetwork = pSub_costNetwork();
+
+  if (bNumbers) {
+    pString->vSprint("JO %5lld "_Stz,pSymbol()->Y_iGet(P_Permutation));
+  }
 
   // the join sequence
   CardIter xCI(this);
@@ -100,18 +109,31 @@ void Card_JoinOrdering::vJoinOrderString(String* pString, Card_TableList* p_tabl
     char cHeadTable = xCI.G.p_joinOrder->cValue();
     s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
 
-    pString->vSprint("%s"_Stz,sHeadTable.szStz());
+    if (bNumbers)
+      pString->vCatSprint("NetCost %5s : %8s"_Stz,p_costNetwork->szValue(),sHeadTable.szStz());
+    else
+      pString->vSprint("%s"_Stz,sHeadTable.szStz());
   }
 
   while (xCI.G_bEachMain(CK_JOINORDER)) {
     char cNextTable = xCI.G.p_joinOrder->cValue();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
-    xCI.G.p_costNext = xCI.G.p_joinOrder->pSub_costLocus();
-    xCI.G.p_locusCast = xCI.G.p_costNext->pSub_locusCast();
+    xCI.G.p_costLocus = xCI.G.p_joinOrder->pSub_costLocus();
+    xCI.G.p_locusCast = xCI.G.p_costLocus->pSub_locusCast();
+    xCI.G.p_costUnicast = xCI.G.p_costLocus->pSub_costUnicast();
+    xCI.G.p_costNetwork = xCI.G.p_costLocus->pSub_costNetwork();
     s32 sCast = xCI.G.p_locusCast->szValue();
     StrLib::vShuffleLeft(sCast.azChar(),3);
 
-    pString->vCatSprint(" %s %s"_Stz,sCast.szStz(), sNextTable.szStz());
+    if (bNumbers)
+      pString->vCatSprint(" %5s %9s %8s"_Stz,  sCast.bSame("UNICAST"_Stz)
+                                              ? xCI.G.p_costUnicast->szValue()
+                                              : xCI.G.p_costNetwork->szValue(),
+                                            sCast.szStz(),
+                                            sNextTable.szStz());
+    else
+      pString->vCatSprint(" %s %s"_Stz,sCast.szStz(),
+                          sNextTable.szStz());
   }
 
   // the load

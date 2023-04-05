@@ -175,6 +175,8 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
     char cTblSyn_ith = p_table->cValue();
 
+    if ('F' == cTblSyn_ith)
+      vDebugPoint();
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (0 == nChildCards()) {
