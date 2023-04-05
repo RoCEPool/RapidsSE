@@ -72,8 +72,10 @@ i8 Card_CostJoining::nEstJoiningBufferVolume(i8 nLocus,
         2 * nBuff_emitted_prior;
   }
 
-//  while (nFiltPred--)
-//    nBuff_produced_locus = 0.2 * nBuff_produced_locus;
+  if (AM::JOB::bHasTag(C_FILTERPRED)) {
+    while (nFiltPred--)
+      nBuff_produced_locus = 0.2 * nBuff_produced_locus;
+  }
 
   vValue(nBuff_produced_locus);
 

@@ -227,7 +227,7 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 6) Pick final join ordering\
 
-  Card_JoinOrdering* p_joinOrdering;
+  Card_JoinOrdering* p_joinOrdering = nullptr;
   Stz* sJoinOrder = ""_Stz;
 
   // Specific join order /jo ?
