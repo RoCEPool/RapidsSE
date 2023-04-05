@@ -20,6 +20,7 @@ metricsCtl enable;
 // QUERY 7
 
 /jobMetrics
+/weaved
 select
     supp_nation,
     cust_nation,
