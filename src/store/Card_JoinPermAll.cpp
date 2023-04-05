@@ -127,13 +127,14 @@ Card_JoinPermAll* Card_JoinPermAll::pAllPermutedJoins(Card_TableList* p_tableLis
 /*----------------------------------------------------------------------------*/
 /* compute the load of all permutations                                       */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermAll::vEstCostsForAllJoinPerm(Card_TableList* p_tableList)
+void Card_JoinPermAll::vEstCostsForAllJoinPerm(Card_TableList*    p_tableList,
+                                               Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain())
-    xCI.G.p_joinPermSeq->vEstQueryCost(p_tableList);
+    xCI.G.p_joinPermSeq->vEstQueryCost(p_tableList,p_filtPredList);
 }
 
 /*----------------------------------------------------------------------------*/

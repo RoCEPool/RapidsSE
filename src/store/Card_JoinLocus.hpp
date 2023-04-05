@@ -19,7 +19,8 @@ namespace STORE
     i8 nEstLocusCosts(i8 nLocus,
                       i8 nBuff_emitted_prior,
                       eXK eLocusCast,
-                      i8 nBuff_joining_with);
+                      i8 nBuff_joining_with,
+                      i8 nFilters);
 
   };
 

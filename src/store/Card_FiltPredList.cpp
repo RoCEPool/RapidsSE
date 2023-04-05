@@ -46,6 +46,44 @@ Card_FiltPredList::~Card_FiltPredList(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_FiltPredList* Card_FiltPredList::pExtract(Card_Deck* p_deck)
+{
+  _static_
+
+  i8 nFilters = 0;
+
+  auto bLambda = [&nFilters] (Card* p_card) {
+
+    if (! _pCard_CmpPred(p_card)->bIsJoinPred())
+      nFilters++;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  Card_FiltPredList* p_filtPredList = new Card_FiltPredList;
+
+  CardIter xCI(p_deck);
+  while (xCI.G_bEachMainWithSub(CK_TABLE,CK_FILTER)) {
+
+    xCI.G.p_boolCalc = xCI.G.p_filter->pSub_boolCalc();
+
+    nFilters = 0;
+    xCI.G.p_boolCalc->bApplyRecursive(CK_CMPPRED,bLambda);
+
+    if (nFilters) {
+      Card_FiltPred* p_filtPred = new Card_FiltPred;
+      p_filtPred->vValue(xCI.G.p_table->szValue());
+      p_filtPred->pSymbol()->Y_vSet(P_Count,nFilters);
+      p_filtPredList->vAppend(p_filtPred);
+    }
+  }
+
+  return p_filtPredList;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
