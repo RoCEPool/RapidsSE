@@ -22,6 +22,13 @@ static Stz* C_STARTUP_DIRS[] = {
     C_QUERYLIBS_BIN
 };
 
+#ifdef WITH_LINUX
+static Stz* C_LIB_EXT = "so"_Stz;
+#endif
+#ifdef WITH_APPLE
+static Stz* C_LIB_EXT = "dylib"_Stz;
+#endif
+
 static eCB C_DEFAULT_COMPILER = CB_NONE;
 static Stz* C_DEFAULT_COMPILER_PATH = nullptr;
 
@@ -29,7 +36,32 @@ static Stz* C_GCC_COMPILER_FLAGS = "-g -Wl,--unresolved-symbols=ignore-all -I../
 static Stz* C_CLANG_COMPILER_FLAGS = "-g -Wl,-undefined,dynamic_lookup -I../src -O3 -fpic -shared"_Stz;
 
 static Stz* C_TCC_PATH = "../thirdparty/tcc/bin/tcc"_Stz;
+
+#ifdef WITH_LINUX
 static Stz* C_TCC_COMPILER_FLAGS = "-B../thirdparty/tcc/lib/tcc -g -I../src -rdynamic -shared"_Stz;
+#endif
+#ifdef WITH_APPLE
+// tcc cannot find the header files and library files because they are not in a standard place.
+// We can try to help it, but specifying the options below (which is likely not portable),
+// but we still get issues with:
+//  * An unsupported compiler warning on system header cdefs.h
+//  * An error that library 'c' and file 'crtn.o' not found.
+// It also makes the compile command line much bigger, so we need to increase the size of
+// LibInfo::m_sCompileCmd from s256 to s2K (and therefore LibInfo from the small to the medium heap).
+// Leaving this in here for posterity.
+static Stz* C_TCC_COMPILER_FLAGS =
+    "-B../thirdparty/tcc/lib/tcc -g -I../src "
+    "-isystem /usr/local/include"
+    "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1 "
+    "-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/13.0.0/include "
+    "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include "
+    "-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include "
+    "-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks "
+    "-L/usr/local/lib "
+    "-L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib "
+    "-nostdlib "
+    "-rdynamic -shared"_Stz;
+#endif
 
 static Stz* C_GCC = "gcc"_Stz;
 //static Stz* C_GPLUSPLUS = "g++"_Stz;
@@ -117,7 +149,7 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz
 
   // Come up with file path for the source file and output file
   pLibInfo->m_sSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
-  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.so"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.%s"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz(), C_LIB_EXT);
   pLibInfo->m_sLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
 
   // Write the source file to disk
