@@ -133,7 +133,10 @@ void JoinOrdering::vReorderTables(void)
     s256 sBar;
     StrLib::vPad(sBar.azChar(),120,'-');
     pFile->vPrint("%s\n"_Stz,sBar.azChar());
-    pFile->vPrint("Query %s\n"_Stz,pOptimiser->szQueryNm());
+    pFile->vPrint("Query %s"_Stz,pOptimiser->szQueryNm());
+    if (AM::JOB::bHasTag(C_FILTERPRED))
+      pFile->vPrint(" /filterPred"_Stz);
+    pFile->vPrint("\n"_Stz,pOptimiser->szQueryNm());
     pFile->vPrint("%s\n"_Stz,sBar.azChar());
     pFile->vPrint("\n"_Stz);
   }
