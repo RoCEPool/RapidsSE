@@ -32,9 +32,9 @@ static Stz* C_TCC_PATH = "../thirdparty/tcc/bin/tcc"_Stz;
 static Stz* C_TCC_COMPILER_FLAGS = "-B../thirdparty/tcc/lib/tcc -g -I../src -rdynamic -shared"_Stz;
 
 static Stz* C_GCC = "gcc"_Stz;
-static Stz* C_GPLUSPLUS = "g++"_Stz;
+//static Stz* C_GPLUSPLUS = "g++"_Stz;
 static Stz* C_CLANG = "clang"_Stz;
-static Stz* C_CLANGPLUSPLUS = "clang++"_Stz;
+//static Stz* C_CLANGPLUSPLUS = "clang++"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public Functions---------------------------------------------------------*/
@@ -310,7 +310,7 @@ void CompileLib::vTest(Stz* szCompiler)
 "// the unresolved linkage. If we give an implementation then we\n"
 "// need to ensure that the entire function call is not optimised\n"
 "// out, or we supply a compiler attribute to not optimise this function.\n"
-"extern void __attribute__((optnone)) vTraceExternal(char* psFormat, ...) { };\n"
+"extern void vTraceExternal(char* psFormat, ...) __attribute__((weak_import));\n"
 "\n"
 "void vTestEntry(void)\n"
 "{\n"
