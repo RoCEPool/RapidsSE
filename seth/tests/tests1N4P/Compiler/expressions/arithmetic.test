@@ -155,7 +155,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT INTERVAL ''30'' DAY + DATE ''2023-02-16'' + INTERVAL ''10-11'' YEAR TO MONTH FROM nation"
 
 -> -> projectOp
-      » column: (Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH ; Ordinal Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH) ; type: DATE
+      » column: (Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH ; Ordinal Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -363,7 +363,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT INTERVAL ''1'' DAY + DATE ''2000-02-28'' FROM nation"
 
 -> -> projectOp
-      » column: (Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'') ; type: DATE
+      » column: (Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -379,7 +379,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1'' DAY FROM nation"
 
 -> -> projectOp
-      » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY) ; type: DATE
+      » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
