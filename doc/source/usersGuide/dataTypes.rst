@@ -252,6 +252,7 @@ there is no valid conversion between the two categories.
    INTERVAL >  INTEGER     (and vice versa; single field intervals only)
    INTERVAL BETWEEN INTERVAL AND INTERVAL (and combinations with INTEGER; single field intervals only)
 
+.. rubric:: Notes on operations involving intervals
 
 When an expression involves intervals of different types (but within the same
 category), the result may yield an interval of a type that encompasses all of
@@ -264,10 +265,23 @@ Similarly, the addition of an ``INTERVAL HOUR TO SECOND`` and an
 ``INTERVAL MINUTE`` would yield an ``INTERVAL HOUR TO SECOND`` because that
 already encompasses the ``MINUTE`` field of the second operand.
 
+Interval types are not expanded where it is not required. That is, if an expression
+takes an interval as an input and returns an interval as an output, where it is
+possible RapidsSE tries to keep the same interval type on the output as was provided
+on the input.
+
+For example, ``INTERVAL '1' YEAR / 2`` will give the result
+``INTERVAL '0' YEAR`` and not ``INTERVAL '6' MONTH`` because the input was of
+type ``INTERVAL YEAR``. If the user wants the result to be in years and months
+then the input interval value can be cast or rewritten with the appropriate type.
+For example, ``INTERVAL '1-0' YEAR TO MONTH / 2`` will give the result
+``INTERVAL '0-6' YEAR TO MONTH``.
+
 For convenience, a single field interval (e.g. ``INTERVAL HOUR``) can be directly
 compared to an integer with any of the comparison operators (``<``, ``<=``, ``=``,
 ``!=``, ``>=``, ``>`` and ``BETWEEN``). Multi-field intervals (e.g.
-``INTERVAL HOUR TO MINUTE``) cannot be coerced to an ``INTEGER``.
+``INTERVAL HOUR TO MINUTE``) cannot be coerced to an ``INTEGER``. For example,
+``INTERVAL '1' HOUR = 1`` would evaluate to ``TRUE``.
 
 
 .. index::
