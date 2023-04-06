@@ -196,6 +196,12 @@
 /* org_ org */  then
 /* org_ org */
 /* org_ org */
+               "<jobMetrics>" [job].tagSet@ tagSet.hasName if
+                 PipeSpec[].IsSqlCompiler if
+                   [job].disableJobMetrics
+                 then
+               then
+
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // test if distributed job may execute

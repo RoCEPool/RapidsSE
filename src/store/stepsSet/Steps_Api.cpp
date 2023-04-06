@@ -41,7 +41,8 @@ void Step::vAddSteps_Api(void)
 
   vAddStep("api::deleteJob"_Stz,       &Step::vApiDeleteJob);
   vAddStep("api::reapableJob@"_Stz,    &Step::vApiReapableJobFetch);
-  vAddStep("api::reapableJobIsOriginator"_Stz,    &Step::vApiReapableIsOriginator);
+  vAddStep("api::reapableJobIsOriginator"_Stz,      &Step::vApiReapableIsOriginator);
+  vAddStep("api::reapableJobMetricsEnabled"_Stz,    &Step::vApiReapableJobMetricsEnabled);
   vAddStep("api::reapableJobTags@"_Stz,&Step::vApiReapableJobTagsFetch);
   vAddStep("api::spawnJob"_Stz,        &Step::vApiSpawnJob);
 }
@@ -322,6 +323,19 @@ void Step::vApiReapableIsOriginator(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* api::reapableJobMetricsEnabledr -- is reapable job metrics enabled?        */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapableJobMetricsEnabled(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pJob->bJobMetrics());
+
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* api::reapableJobTags@ -- fetch tagSet of reapable job                      */
 /*----------------------------------------------------------------------------*/
