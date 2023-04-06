@@ -668,20 +668,26 @@ i8 Table::iRelativeSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  i8 nBuffers = 0;
+  i8 nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
+
+  i8 nBuffersPerPtn = 0;
   i8 nRows = 0;
 
   i8 i_TablePtn = iPtnNoToTablePtn(0);
 
-  vAnalyze(i_TablePtn, nBuffers, nRows);
+  vAnalyze(i_TablePtn, nBuffersPerPtn, nRows);
 
   // get the apriori (fixed) table size
   i8 jTableSize = m_pStreamDef->jTableSize();
 
-  if (nBuffers < jTableSize)
-    return jTableSize;
+//  if (nBuffersPerPtn < jTableSize)
+//    return jTableSize;
+//  else
+//    return nBuffersPerPtn;
+  if (nBuffersPerPtn > 1)
+    return nBuffersPerPtn * nPtnsInGrid;
   else
-    return nBuffers;
+    return jTableSize;
 }
 
 /*----------------------------------------------------------------------------*/
