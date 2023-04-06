@@ -499,7 +499,7 @@ void FlattenSubQueries::vFlatten_34_W_A_NC_ro(void)
   // Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
 
   m_pCI->vRestart();
-  RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
   Smooth* pSmooth = new Smooth;

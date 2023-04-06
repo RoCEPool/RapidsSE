@@ -115,7 +115,8 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CostQuery*   p_costQuery   = pSub_costQuery();
-  Card_CostNetwork* p_costNetwork = pSub_costNetwork();
+  Card_CostNetwork* p_costNetwork = p_costQuery->pSub_costNetwork();
+  Card_CostUnicast* p_costUnicast = p_costQuery->pSub_costUnicast();
 
   if (bNumbers) {
     pString->vSprint("JO %5lld "_Stz,pSymbol()->Y_iGet(P_Permutation));
@@ -128,7 +129,9 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
     s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
 
     if (bNumbers)
-      pString->vCatSprint("NetCost %5s : %8s"_Stz,p_costNetwork->szValue(),sHeadTable.szStz());
+      pString->vCatSprint("NetCost %5s UniCost %5s : %8s"_Stz,p_costNetwork->szValue(),
+                                                              p_costUnicast->szValue(),
+                                                              sHeadTable.szStz());
     else
       pString->vSprint("%s"_Stz,sHeadTable.szStz());
   }

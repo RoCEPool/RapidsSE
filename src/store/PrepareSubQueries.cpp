@@ -193,11 +193,13 @@ void PrepareSubQueries::vIndexAnalysis(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "move @c predicates to a filter under table"_Stz);
+  m_pCI->vTransform(__func__, "index analysis"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append Index List Under All Table
   Card_Table::vAppendIndexList(m_pCI);
+
+  m_pCI->vPrintBoard();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix TblColOdn To All IdxCol

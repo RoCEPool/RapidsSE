@@ -4,9 +4,17 @@
 
 // --initial _jo1_L_O
 
+tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf1";
+//tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
 __TPCH_SCHEMA
 
+_jo0_metrics_begin
+
 /jobMetrics
+/joWrite
+/jo=0
 /glean_interactive
 /transliterated
 /weaved
@@ -19,6 +27,8 @@ select
  where
        L_ORDERKEY = O_ORDERKEY
 ;
+
+_jo0_metrics_end
 
 /*============================================================================*/
 /* end                                                                        */

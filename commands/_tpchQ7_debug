@@ -15,9 +15,11 @@ trackMemory;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// /filterPred
 /glean_interactive
 /transliterated
 /weaved
+/joWrite
 /pipelineName = "_tpchQ7_debug"
 select supp_nation,
        cust_nation,

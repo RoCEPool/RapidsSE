@@ -231,7 +231,7 @@ void JoinOrdering::vReorderTables(void)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 6) Pick final join ordering\
+  // 6) Pick final join ordering
 
   Card_JoinOrdering* p_joinOrdering = nullptr;
   Stz* sJoinOrder = ""_Stz;
@@ -244,7 +244,7 @@ void JoinOrdering::vReorderTables(void)
         Card_JoinOrdering::pPick(p_joinPermAll, iJoinOrder);
 
     if ( ! p_joinOrdering ) {
-      vTrace("\n\nWARNING: INVALID JOIN OREDER IN /JO, PICKING THE BEST!!!\n\n"_Stz);
+      vTrace("\n\nWARNING: INVALID JOIN ORDER IN /JO, PICKING THE BEST!!!\n\n"_Stz);
     }
 
   }

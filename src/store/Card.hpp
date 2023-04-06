@@ -176,6 +176,7 @@ static Stz* C_NA                = "n/a"_Stz;
 static Stz* C_JOIN_ORDER = "<jo>"_Stz;
 static Stz* C_FILTERPRED = "<filterPred>"_Stz;
 static Stz* C_JOWRITE    = "<joWrite>"_Stz;
+static Stz* C_EARLY_PROJECTIONS = "<ep>"_Stz;
 
 static char MARK_AT         = '@';
 static char MARK_BLANK      = ' ';

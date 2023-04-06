@@ -450,22 +450,47 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
 
-  while (m_pCI->G_bEachMain()) {
-
-    switch (m_pCI->G.e_MainCard) {
-
-      //case CK_AGGREG:    m_pCI->G.p_aggreg->vDerive_Projection_Key(m_pCI);    break;
-      case CK_GBYAGG:    m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);    break;
-      case CK_INDEXJOIN: m_pCI->G.p_indexJoin->vDerive_Projection_Key(m_pCI); break;
-      case CK_INDEXSCAN: m_pCI->G.p_indexScan->vDerive_Projection_Key(m_pCI); break;
-      case CK_PROJECT:   m_pCI->G.p_project->vDerive_Projection_Key(m_pCI);   break;
-      case CK_SORT:      m_pCI->G.p_sort->vDerive_Projection_Key(m_pCI);      break;
-
-      default:
-        break;
+  bool bFoundKeyStart = false;
+  for (;;) {
+    if (m_pCI->pNextChildIf(CK_INDEXSCAN) ||
+        m_pCI->pNextChildIf(CK_GBYAGG)    ||
+        m_pCI->pNextChildIf(CK_SORT) ) {
+      bFoundKeyStart = true;
+      break;
     }
 
-    m_pCI->vPrintBoard(__LINE__);
+    if (! m_pCI->G_bEachMain())
+      break;
+  }
+
+  if (bFoundKeyStart) {
+
+    while (m_pCI->G_bEachMain()) {
+
+      switch (m_pCI->G.e_MainCard) {
+
+        case CK_GBYAGG:
+          m_pCI->G.p_gbyAgg->vDerive_Projection_Key(m_pCI);
+          break;
+        case CK_INDEXJOIN:
+          m_pCI->G.p_indexJoin->vDerive_Projection_Key(m_pCI);
+          break;
+        case CK_INDEXSCAN:
+          m_pCI->G.p_indexScan->vDerive_Projection_Key(m_pCI);
+          break;
+        case CK_PROJECT:
+          m_pCI->G.p_project->vDerive_Projection_Key(m_pCI);
+          break;
+        case CK_SORT:
+          m_pCI->G.p_sort->vDerive_Projection_Key(m_pCI);
+          break;
+
+        default:
+          break;
+      }
+
+      m_pCI->vPrintBoard(__LINE__);
+    }
   }
 
   m_pCI->vEndTransform();
@@ -475,9 +500,58 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+//void ApplyOptimisations::vEarlyProjections(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+//
+////  if (! AM::JOB::bHasTag(C_EARLY_PROJECTIONS)) {
+////    return;
+////  }
+//
+//  m_pCI->vTransform(__func__, "Early projections"_Stz);
+//
+//  m_pCI->G_vRestart();
+//
+//  m_pCI->G.pDeck->vRenumberRecursive();
+//
+//  m_pCI->vPrintBoard();
+//
+//  RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
+//
+//  for (;;) {
+//
+//    m_pCI->Early.m_pOP_root = nullptr;
+//    m_pCI->Early.m_pOP_leaf = nullptr;
+//
+//    bool bEarlyRoot = false;
+//    while (m_pCI->G_bEachMain_reverse())
+//      if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot()) {
+//        bEarlyRoot = true;
+//        break;
+//      }
+//    if (! bEarlyRoot)
+//      break;
+//
+//    m_pCI->G.p_OP->vEarlyProject_root(m_pCI);
+//
+//    if (m_pCI->Early.m_pNeeded_later) {
+//      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
+//    }
+//
+//    m_pCI->G_vMainResynch(m_pCI->Early.m_pOP_leaf);
+//  }
+//
+//  m_pCI->vEndTransform();
+//  vDebugPoint();
+//}
+/*----------------------------------------------------------------------------*/
 void ApplyOptimisations::vEarlyProjections(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+
+//  if (! AM::JOB::bHasTag(C_EARLY_PROJECTIONS)) {
+//    return;
+//  }
 
   m_pCI->vTransform(__func__, "Early projections"_Stz);
 

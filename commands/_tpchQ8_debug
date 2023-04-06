@@ -2,6 +2,9 @@
 /* _tpchQ8_debug                                                              */
 /*============================================================================*/
 
+// --initial _tpchQ8_debug
+
+
 tag default <tpch_dir> = "../tpch/sf_0001";
 tag default <suffix>   = "csv";
 
@@ -19,6 +22,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
+/ep
 /pipelineName = "_tpchQ8_debug"
 select o_year,
        sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share

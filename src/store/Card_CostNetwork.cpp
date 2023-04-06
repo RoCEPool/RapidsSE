@@ -64,7 +64,7 @@ void Card_CostNetwork::vEstNetworkBufferVolume(i8 nLocus,
 
   switch (eLocusCast) {
     case XK_UNICAST:
-      // no network associated with a unicast
+      // no network associated with a unicast to this locus
       break;
 
     case XK_HASHCAST:
@@ -74,7 +74,10 @@ void Card_CostNetwork::vEstNetworkBufferVolume(i8 nLocus,
 
     case XK_BROADCAST:
       // network buffers arriving at this locus because of a broadcast
-      nBuff_network = (i8)(1.0 * (nBuff_emitted_prior * nNodes));
+      if (1 == nNodes)
+        nBuff_network = (i8)(1.0 * (nBuff_emitted_prior));
+      else
+        nBuff_network = (i8)(1.0 * (nBuff_emitted_prior * (nNodes - 1)));
       break;
 
     default:
