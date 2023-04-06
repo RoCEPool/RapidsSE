@@ -22,6 +22,7 @@ trackMemory;
 /glean_interactive
 /transliterated
 /weaved
+/ep
 /pipelineName = "_tpchQ8_debug"
 select o_year,
        sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share
