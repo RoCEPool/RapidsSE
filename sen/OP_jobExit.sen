@@ -120,8 +120,10 @@
       // generate the job metrics here
       "<jobMetrics>" pJobToBeDeleted api::reapableJobTags@ tagSet.hasName if
         pJobToBeDeleted api::reapableJobIsOriginator not if
-          pJobToBeDeleted >str "Inserting JobMetrics for job %v" str.format .
-          pJobToBeDeleted insertJobMetrics
+          pJobToBeDeleted api::reapableJobMetricsEnabled if
+            pJobToBeDeleted >str "Inserting JobMetrics for job %v" str.format .
+            pJobToBeDeleted insertJobMetrics
+          then
         then
       then
 
