@@ -108,10 +108,12 @@ i8 Card_JoinLocus::nEstLocusCosts_v2(i8 nLocus,
 
   i8 nBuff_produced_locus = 0;
 
+  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
+  i8 nNodes = AM::PTNMAP::nKnownNodes();
+
+  i8 nBuff_network = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // calculate the possible unicast cost for this join locus
-  // estimate possible buffers arriving at this locus because of a unicast
 
   i8 nBuff_unicast = 0;
 
@@ -120,44 +122,20 @@ i8 Card_JoinLocus::nEstLocusCosts_v2(i8 nLocus,
     case XK_UNICAST:
       // buffers arriving to this locus because of a unicast
       nBuff_unicast = (i8)(1.0 * (nBuff_emitted_prior));
-      break;
 
-    case XK_HASHCAST:
-      // no unicast buffers arriving to this locus via hashcast
-      break;
-
-    case XK_BROADCAST:
-      // no unicast buffers arriving to this locus via broadcast
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  p_costUnicast->vValue(nBuff_unicast);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // calculate the possible network cost for this join locus
-  // estimate possible buffers arriving at this locus over the network
-
-
-  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
-  i8 nNodes = AM::PTNMAP::nKnownNodes();
-
-  i8 nBuff_network = 0;
-
-  switch (eLocusCast) {
-    case XK_UNICAST:
       // no network associated with a unicast to this locus
       break;
 
     case XK_HASHCAST:
+      // no unicast buffers arriving to this locus via hashcast
+
       // network buffers arriving at this locus because of a hashcast
       nBuff_network = (i8)(1.0 * nBuff_emitted_prior);
       break;
 
     case XK_BROADCAST:
+      // no unicast buffers arriving to this locus via broadcast
+
       // network buffers arriving at this locus because of a broadcast
       if (1 == nNodes)
         nBuff_network = (i8)(1.0 * (nBuff_emitted_prior));
@@ -169,11 +147,7 @@ i8 Card_JoinLocus::nEstLocusCosts_v2(i8 nLocus,
       NEVER_REACH
   }
 
-  p_costNetwork->vValue(nBuff_network);
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // calculate buffers produced by this join locus
   // estimate buffers produced by the join of this locus
 
   if (nBuff_joining_with > nBuff_emitted_prior) {
@@ -190,11 +164,12 @@ i8 Card_JoinLocus::nEstLocusCosts_v2(i8 nLocus,
       nBuff_produced_locus = 0.2 * nBuff_produced_locus;
   }
 
+
+  p_costUnicast->vValue(nBuff_unicast);
+  p_costNetwork->vValue(nBuff_network);
   p_costJoining->vValue(nBuff_produced_locus);
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
   p_costLocus->vAppend(p_locusCast);
   p_costLocus->vAppend(p_costNetwork);
