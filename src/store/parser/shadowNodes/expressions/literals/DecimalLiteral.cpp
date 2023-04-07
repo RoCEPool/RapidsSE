@@ -126,7 +126,12 @@ Bcd DecimalLiteral::xParseStr(Stz* szStr)
   ASSERT(szStr);
 
   i8 nLen = szStr->nLength();
-  ASSERT(szStr->nLength() > 0);
+
+  if (nLen == 0) {
+    SemanticException::vThrow(EC_INVALID_VALUE,
+                              ": '%s': Unable to convert string literal to decimal literal"_Stz,
+                              szStr);
+  }
 
   i8 iSign = (szStr->azChar()[0] == '-' || szStr->azChar()[0] == '+') ? 1 : 0;
 
@@ -137,7 +142,14 @@ Bcd DecimalLiteral::xParseStr(Stz* szStr)
     // This can come about through implicit coercion. e.g. we are
     // coercing the string '2' to a decimal.
     bool bOverflow = false;
-    i8 iMantissa = StrLib::iToI8(szStr->azChar(), &bOverflow);
+    bool bInvalid = false;
+    i8 iMantissa = StrLib::iToI8(szStr->azChar(), &bInvalid, &bOverflow);
+
+    if (bInvalid) {
+      SemanticException::vThrow(EC_INVALID_VALUE,
+                                ": '%s': Unable to convert string literal to decimal mantissa"_Stz,
+                                szStr);
+    }
 
     if (bOverflow || iMantissa > C_BCD_MAX || iMantissa < C_BCD_MIN) {
       SemanticException::vThrow(

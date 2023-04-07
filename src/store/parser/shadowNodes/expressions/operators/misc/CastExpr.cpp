@@ -153,10 +153,10 @@ static TypeMap2D* S_pTypeMap = (new TypeMap2D())
 
     // All intervals can be cast to a string. They could print something like:
     // "1 day, 2 hours, 3 minutes, 4.5 seconds"
-    ->pAddMapping(TM_ALL_DT_INTERVALS,            TypeId::xIdOf(CT_VARCHAR),        TypeMap2D::SAME_AS_ARG2)
-    ->pAddMapping(TM_ALL_DT_INTERVALS,            TypeId::xIdOf(CT_CHAR),           TypeMap2D::SAME_AS_ARG2)
-    ->pAddMapping(TM_ALL_YM_INTERVALS,            TypeId::xIdOf(CT_VARCHAR),        TypeMap2D::SAME_AS_ARG2)
-    ->pAddMapping(TM_ALL_YM_INTERVALS,            TypeId::xIdOf(CT_CHAR),           TypeMap2D::SAME_AS_ARG2)
+//    ->pAddMapping(TM_ALL_DT_INTERVALS,            TypeId::xIdOf(CT_VARCHAR),        TypeMap2D::SAME_AS_ARG2)
+//    ->pAddMapping(TM_ALL_DT_INTERVALS,            TypeId::xIdOf(CT_CHAR),           TypeMap2D::SAME_AS_ARG2)
+//    ->pAddMapping(TM_ALL_YM_INTERVALS,            TypeId::xIdOf(CT_VARCHAR),        TypeMap2D::SAME_AS_ARG2)
+//    ->pAddMapping(TM_ALL_YM_INTERVALS,            TypeId::xIdOf(CT_CHAR),           TypeMap2D::SAME_AS_ARG2)
 
     // NULL
     ->pAddMapping(TM_ALL_INC_UNKNOWN,             TypeId::xIdOf(CT_UNKNOWN),        TypeId::xIdOf(CT_UNKNOWN))

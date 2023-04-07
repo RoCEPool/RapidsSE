@@ -1130,21 +1130,22 @@ void Expr::vCoerceCastLiteral(Parser::QueryNode* pExpr, Parser::PlanNode* pRootN
 
   QueryNode* pLiteralExpr = pTargetExpr;
 
-  if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pExpr, pRootNode)) {
-    // There are some casts that are not implicitly coercible but yet are still supported.
-    // e.g Implicit coercion will not cast a float to a decimal, but yet this is still a
-    // valid thing to do with an explicit cast. So don't give an error if we can't do this
-    // coercion implicitly.
-    return;
-  }
+//  if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pExpr, pRootNode)) {
+//    // There are some casts that are not implicitly coercible but yet are still supported.
+//    // e.g Implicit coercion will not cast a float to a decimal, but yet this is still a
+//    // valid thing to do with an explicit cast. So don't give an error if we can't do this
+//    // coercion implicitly.
+//    return;
+//  }
 
   // It still might not be coercible because it overflows the target types bounds.
   // This next call could also generate an exception.
   QueryNode* pCoercedLiteral = Expr::pCoerceTo(xTargetType, pLiteralExpr, pRootNode);
-  ASSERT(pCoercedLiteral);
 
   // Convert the pExpr from a CastExpr to the coerced literal
-  pExpr->vTransmogrifyTo(pCoercedLiteral, true);
+  if (pCoercedLiteral) {
+    pExpr->vTransmogrifyTo(pCoercedLiteral, true);
+  }
 
   delete pCoercedLiteral;
 }

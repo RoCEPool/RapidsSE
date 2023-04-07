@@ -435,7 +435,8 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(eIV eCurrentIvl, TypeId xTargetTypeId,
 
 
 /*----------------------------------------------------------------------------*/
-/* Returns a new expression object which represents pExpr coerced to eTarget  */
+/* Returns a new expression object which represents pExpr coerced to eTarget. */
+/* Returns nullptr if nothing was coerced.                                    */
 /*----------------------------------------------------------------------------*/
 QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
 {
@@ -454,6 +455,8 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
   QueryNode* pResultNode;
   s2K sBuf;
   i8 iVal;
+  d8 dVal;
+  Bcd xBcd{};
   Ivl xIvl{IV_NONE};
 
   // Are we coercing the type to itself?
@@ -480,7 +483,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
               iVal,
               C_BCD_MIN,
               C_BCD_MAX);
-          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf);
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf.szStz());
         }
 
         // REVISE: If the value is small enough then represent it with 2 decimal places
@@ -498,7 +501,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
       } else if (eTargetType == CT_FLOAT) {
         return FloatLiteral::pCreate((d8) pExpr->iValue());
       }
-      NEVER_REACH
+      break;
 
     case CT_DECIMAL:
       if (eTargetType == CT_FLOAT) {
@@ -516,7 +519,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
         d8 dVal = xBcd.T.m_iMantissa / FltLib::dPow(10, xBcd.T.m_iScale);
         return FloatLiteral::pCreate(dVal);
       }
-      NEVER_REACH
+      break;
 
       // Note: The string conversions are dependent on value of the string itself.
     case CT_VARCHAR:  // fall through
@@ -525,7 +528,14 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
 
       if (eTargetType == CT_INTEGER) {
         bool bOverflowed = false;
-        iVal = StrLib::iToI8(szStr->azChar(), &bOverflowed);
+        bool bInvalid = false;
+        iVal = StrLib::iToI8(szStr->azChar(), &bInvalid, &bOverflowed);
+
+        if (bInvalid) {
+          SemanticException::vThrow(EC_INVALID_VALUE,
+                                    ": '%s': Unable to convert string literal to integer literal"_Stz,
+                                    szStr);
+        }
 
         if (bOverflowed) {
           sBuf.vSprint(
@@ -533,7 +543,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
               szStr,
               C_I8_MIN,
               C_I8_MAX);
-          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf);        }
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, sBuf.szStz());        }
 
         pResultNode = IntegerLiteral::pCreate(iVal);
         return pResultNode;
@@ -549,7 +559,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
         if (dVal == 0 && pEndPtr == szStr->azChar()) {
           // No conversion occurred
           SemanticException::vThrow(EC_INVALID_VALUE,
-                                    ": %s: Unable to convert string literal to float literal "_Stz,
+                                    ": '%s': Unable to convert string literal to float literal"_Stz,
                                     szStr);
 
         } else if ( (dVal == HUGE_VAL || dVal == -HUGE_VAL) && errno == ERANGE) {
@@ -602,7 +612,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
           pCoercedLiteral = TimestampLiteral::pCreate(xTsp);
 
         } else {
-          NEVER_REACH
+          break;
         }
 
           ASSERT(bParseResult);
@@ -611,7 +621,7 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
       } else if (eTargetType == CT_CHAR || eTargetType == CT_VARCHAR) {
         return pExpr->pDeepCopy(false);
       }
-      NEVER_REACH
+      break;
 
     case CT_DATE:
       if (eTargetType == CT_TIMESTAMP) {
@@ -620,13 +630,13 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
         xTsp.vSet(xDte.iYear(), xDte.iMonth(), xDte.iDay(), 0, 0, 0, 0);
         return TimestampLiteral::pCreate(xTsp);
       }
-      NEVER_REACH
+      break;
 
     case CT_BOOLEAN:
       if (eTargetType == CT_VARCHAR || eTargetType == CT_CHAR) {
         return StringLiteral::pCreate(pExpr->bValue() ? new Text("TRUE"_Stz) : new Text("FALSE"_Stz));
       }
-      NEVER_REACH
+      break;
 
     case CT_UNKNOWN:
       return NullLiteral::pCreate();
@@ -650,20 +660,60 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
           case IV_SECOND: iVal = (i8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / C_1M; break;
 
           default:
-            NEVER_REACH
+            return nullptr;
         }
 
         // Create the integer literal and return it.
         pResultNode = IntegerLiteral::pCreate(iVal);
         return pResultNode;
-      } // TODO: Support coercing the INTERVAL SECOND to a DECIMAL
+
+      } else if (eTargetType == CT_DECIMAL) {
+        // TODO: Support coercing the INTERVAL SECOND to a DECIMAL with fractional second support
+        // Extract the single field from the relevant intervals.
+        switch (xCurrentTypeId.eIVVal()) {
+          case IV_YEAR:   xBcd.vSet(xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12, 0); break;
+          case IV_MONTH:  xBcd.vSet(xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths, 0); break;
+          case IV_DAY:    xBcd.vSet(xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_DAY), 0); break;
+          case IV_HOUR:   xBcd.vSet(xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_HR), 0); break;
+          case IV_MINUTE: xBcd.vSet(xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_MIN), 0); break;
+          case IV_SECOND: xBcd.vSet(xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / C_1M, 0); break;
+
+          default:
+            return nullptr;
+        }
+
+        // Create the decimal literal and return it.
+        pResultNode = DecimalLiteral::pCreate(xBcd);
+        return pResultNode;
+
+      } else if (eTargetType == CT_FLOAT) {
+        // Extract the single field from the relevant intervals.
+        switch (xCurrentTypeId.eIVVal()) {
+          case IV_YEAR:   dVal = (d8) xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12; break;
+          case IV_MONTH:  dVal = (d8) xIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths; break;
+          case IV_DAY:    dVal = (d8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_DAY); break;
+          case IV_HOUR:   dVal = (d8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_HR); break;
+          case IV_MINUTE: dVal = (d8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_1M * C_SECS_PER_MIN); break;
+          case IV_SECOND: dVal = (d8) xIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / C_1M; break;
+
+          default:
+            return nullptr;
+        }
+
+        // Create the float literal and return it.
+        pResultNode = FloatLiteral::pCreate(dVal);
+        return pResultNode;
+      }
+      break;
 
 
     default:
-      NEVER_REACH
+      break;
   }
 
-  NEVER_REACH
+//  sBuf.vSprint(": Cannot cast type %s to %s"_Stz, xCurrentTypeId.szTypeName(), xTargetTypeId.szTypeName());
+//  SemanticException::vThrow(EC_INVALID_CAST, sBuf.szStz());
+  return nullptr;
 }
 
 /*============================================================================*/
