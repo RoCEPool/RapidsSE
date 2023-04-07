@@ -44,6 +44,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
   vAddStep("[job].disableAllocate"_Stz,  &Step::vJobDisableAllocate);
+  vAddStep("[job].disableJobMetrics"_Stz, &Step::vJobDisableJobMetrics);
   vAddStep("[job].disableObjectTracker"_Stz,&Step::vJobDisableObjectTracker);
   vAddStep("[job].distId@"_Stz,          &Step::vJobDistIdFetch);
   vAddStep("[job].distIdGenerate"_Stz,   &Step::vJobDistIdGenerate);
@@ -479,6 +480,19 @@ void Step::vJobDisableAllocate(void)
 
   Job* pJob = pOuterJobOfTask();
   pJob->vSetAllocate(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].disableJobMetrics -- disable job metrics for the job                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJobDisableJobMetrics(void)
+{
+  ENTRY();
+
+  Job* pJob = pOuterJobOfTask();
+  pJob->vJobMetrics(false);
 
   EXIT();
 }

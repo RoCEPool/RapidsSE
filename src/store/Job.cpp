@@ -80,6 +80,8 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_bNodeLoss     = false;
   m_bUpdateParent = false;
 
+  m_bJobMetrics   = true;
+
   m_pMetricsPipeline = nullptr;
 
   m_pExecuteJob   = nullptr;
@@ -951,6 +953,26 @@ void Job::vJobList(eJL eJobList)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eJobList = eJobList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobMetrics enabled/disabled                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vJobMetrics(bool bJobMetrics)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bJobMetrics = bJobMetrics;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobMetrics enabled/disabled                                            */
+/*----------------------------------------------------------------------------*/
+bool Job::bJobMetrics(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bJobMetrics;
 }
 
 /*----------------------------------------------------------------------------*/

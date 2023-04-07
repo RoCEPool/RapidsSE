@@ -47,6 +47,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool   m_bUpdateParent; // update parent
     bool   m_bPersistentTx; // persistent job transaction flag
 
+    bool   m_bJobMetrics;
+
     Pipeline* m_pMetricsPipeline;
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -184,6 +186,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     JobId tJobId(void);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
+    void vJobMetrics(bool bJobMetrics);
+    bool bJobMetrics(void);
     void vJobMetricsAdd(JobMetrics* pJobMetrics);
     JobMetrics* pJobMetricsChain(void);
     Stz* szJobNm(void);

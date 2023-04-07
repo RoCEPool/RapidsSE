@@ -121,6 +121,7 @@ public:
   void vApiForkChild2PC(void);
   void vApiReapableJobFetch(void);
   void vApiReapableIsOriginator(void);
+  void vApiReapableJobMetricsEnabled(void);
   void vApiReapableJobTagsFetch(void);
   void vApiSpawnJob(void);
 
@@ -845,6 +846,7 @@ void vDdlLockAssertNone(void);
   void vJobAssertReceived(void);
 
   void vJobDisableAllocate(void);
+  void vJobDisableJobMetrics(void);
   void vJobDisableObjectTracker(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
@@ -1439,6 +1441,7 @@ void vDdlLockAssertNone(void);
   void vPipeSpecGet(void);
   void vPipeSpecOptimisable(void);
   void vPipeSpecSet(void);
+  void vPipeSpecIsSqlCompiler(void);
 
 
   // plan
