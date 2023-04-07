@@ -28,6 +28,58 @@ select
        by thisNodeName, otherNodeName;
 
 print "-------------------------------------------";
+print "CRWBUFFERS FOR JOIN TEST ..................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as crwBuffersCount,
+       sum(bytes)      as crwBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'CRWBUFFER'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "ROWUFFERS FOR JOIN TEST ...................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as crwBuffersCount,
+       sum(bytes)      as crwBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'ROWBUFFER'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "BROADCASTS FOR JOIN TEST ..................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as broadCastCount,
+       sum(bytes)      as broadcastBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'SY_BROADCAST'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "HASHCASTS FOR JOIN TEST ..................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as broadCastCount,
+       sum(bytes)      as broadcastBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'SY_HASHCAST'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
 
 /*============================================================================*/
 /* end                                                                        */

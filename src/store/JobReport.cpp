@@ -278,7 +278,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                    ,aCN[i_Item]
 
                    ,pTotup->nCnt(i_Item)
-                   ,pTotup->iSum(i_Item)
+                   ,pTotup->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
@@ -315,7 +315,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                    ,aSY[i_Item]
 
                    ,pWhyTot->nCnt(i_Item)
-                   ,pWhyTot->iSum(i_Item)
+                   ,pWhyTot->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
@@ -355,7 +355,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                    ,aCN[i_Item]
 
                    ,pTotup->nCnt(i_Item)
-                   ,pTotup->iSum(i_Item)
+                   ,pTotup->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
@@ -392,7 +392,7 @@ eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
                    ,aSY[i_Item]
 
                    ,pWhyTot->nCnt(i_Item)
-                   ,pWhyTot->iSum(i_Item)
+                   ,pWhyTot->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
