@@ -334,7 +334,6 @@ void Step::vBucketGetGetBucket(void)
 
   Table* pTable = AM::pTableFind(sTableNm);
 
-  Bucket *pBucket = nullptr;
   if (pTable) {
     // Here we need to map the bucket to the partition
     //pTable->pBucketMap()->vSee();
