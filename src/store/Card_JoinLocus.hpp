@@ -22,6 +22,11 @@ namespace STORE
                       i8 nBuff_joining_with,
                       i8 nFilters);
 
+    i8 nEstLocusCosts_v2(i8 nLocus,
+                         i8 nBuff_emitted_prior,
+                         eXK eLocusCast,
+                         i8 nBuff_joining_with,
+                         i8 nFilters);
   };
 
   Card_JoinLocus* _pCard_JoinLocus(void* aAddr);
