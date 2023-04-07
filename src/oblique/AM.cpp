@@ -3530,7 +3530,7 @@ i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 FileMap* AM::pFileMap(void)   { return gpAttachMap->m_pFileMap;               }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : nullptr;                  }
-#ifdef WITH_HASHMAP
+#ifdef WITH_PAGING
 HashMap* AM::pHashMap(void)   { return gpAttachMap->m_pHashMap;           }
 #endif
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }

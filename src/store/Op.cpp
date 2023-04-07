@@ -1462,7 +1462,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
     {
       // Operand is not null
       // Check if it is a BufferId
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
       BufferId oBufferId;
       oBufferId.m_pvAsAddress = (void*)pPeekOperand;
       if(1 == oBufferId.m_bIdFlag)

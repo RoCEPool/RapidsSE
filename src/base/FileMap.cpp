@@ -151,7 +151,7 @@ void FileMap::vToDisk(DataBuffer* pDataBuffer)
   m_pPageFile->vWriteDataBufferToPFile(pDataBuffer);
 }
 
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
 /*----------------------------------------------------------------------------*/
 /* Find a free chunk in a page file and return that address                   */
 /*----------------------------------------------------------------------------*/

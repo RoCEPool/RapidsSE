@@ -11,7 +11,7 @@ namespace BASE
     Lock         m_okLock;        // lock
     i8           m_iBufferNo;     // this DataBuffer's buffer number
 
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
     BufferId     m_oBufferId;     // Location to where this buffer can be paged out to in page file on disk
 #endif
 
@@ -31,7 +31,7 @@ namespace BASE
 
     tXN m_tTxnNo; // transaction number
 
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
     PadWord m__PadToCacheLine[16];
 #else
     PadWord m__PadToCacheLine[18];
@@ -104,7 +104,7 @@ namespace BASE
     void vOutputQueued(bool bOutputQueued);
 
     void     vSetBufferNo(i8 iBufferNo);
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
     BufferId oGetBufferId(void);
     void vSetBufferId(void* pIdAsAddr);
 #endif

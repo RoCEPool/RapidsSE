@@ -429,7 +429,7 @@ void DataBuffer::vSetBufferNo(i8 iBufferNo)
   m_iBufferNo = iBufferNo;
 }
 
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
 /*----------------------------------------------------------------------------*/
 /* get the buffer id of this row buffer                                       */
 /*----------------------------------------------------------------------------*/

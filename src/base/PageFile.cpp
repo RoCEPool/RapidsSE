@@ -175,7 +175,7 @@ void PageFile::vInitialise(void)
 
 }
 
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
 /*----------------------------------------------------------------------------*/
 /* get the next available address of the free disk chunk in this page file    */
 /*----------------------------------------------------------------------------*/

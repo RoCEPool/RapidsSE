@@ -762,7 +762,7 @@ namespace OBLIQUE
 
     static JobList* pDemonJobs(void);
     static JobList* pExitedJobs(void);
-#ifdef WITH_HASHMAP
+#ifdef WITH_PAGING
     static HashMap* pHashMap(void);
 #endif
     static Heaps* pHeaps(void);

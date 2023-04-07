@@ -84,7 +84,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_xHeaps.vInit();
 
   m_pFileMap        = new FileMap();
-#ifdef WITH_HASHMAP
+#ifdef WITH_PAGING
   m_pHashMap        = new HashMap();
 #endif
   m_pBucketMap      = nullptr;

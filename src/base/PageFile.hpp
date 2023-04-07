@@ -36,7 +36,7 @@ namespace BASE
     void vInitMagic(void);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     void vInitialise(void);
-#ifdef WITH_BUFFER_ID
+#ifdef WITH_PAGING
     BufferId oNextFreeBufferId(void);
     u8 uNextFreeSubset(void);
     void vWriteDataBufferToPFile(DataBuffer* pDataBuffer);
