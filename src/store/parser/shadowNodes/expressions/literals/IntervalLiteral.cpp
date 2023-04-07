@@ -38,6 +38,24 @@ QueryNode* IntervalLiteral::pCreate(Ivl xIvlVal)
   return pExpr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Helper function to create expression literal nodes.                        */
+/*----------------------------------------------------------------------------*/
+QueryNode* IntervalLiteral::pCreateNull()
+{
+  _static_
+
+  // Create a unique name for this object
+  s256 sName;
+  NodeNamer::vGenerateName(C_INTERVAL_LITERAL_DEFN, sName);
+
+  Value xVal{};
+  xVal.vSetNull(Value::VT_INTERVAL);
+
+  QueryNode* pExpr = new QueryNode(sName, C_INTERVAL_LITERAL_DEFN, static_cast<Value&&>(xVal));
+  return pExpr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */

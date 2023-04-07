@@ -50,7 +50,7 @@ rows:
 (date '2021-11-12',date '2021-10-13')
 */
 
-// TODO: CRAIG TO LOOK AT
+// TODO: CRAIG TO LOOK AT (this should now work)
 /*
 select a,a-interval '31' hour from interval6;
 rows:
@@ -97,7 +97,7 @@ rows:
 (date '2000-01-31',date '1998-11-30')
 (date '2021-11-12',date '2020-09-12')
 
-// TODO: CRAIG TO LOOK AT
+// TODO: CRAIG TO LOOK AT (this should now work)
 /*
 select a,a-interval '1 2' day to hour from interval6;
 rows:

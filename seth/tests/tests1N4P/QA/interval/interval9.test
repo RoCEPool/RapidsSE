@@ -83,11 +83,12 @@ select time '14:28:01'-timestamp '2022-11-12 14:29:21' from interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 */
 
-// TODO: CRAIG TO LOOK AT
+// TODO: CRAIG TO LOOK AT (changed expected result from date to timestamp)
 /*
 select date '2023-03-31' -interval '277' month-interval '2' day  from interval1;
 rows:
-(date '2000-02-27')
+(timestamp '2000-02-27 00:00:00')
+//(date '2000-02-27')
 
 
 select date '2023-03-31' -interval '23-1' year to month -interval '2' day  from interval1;

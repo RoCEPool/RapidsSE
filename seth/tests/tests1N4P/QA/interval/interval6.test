@@ -335,7 +335,7 @@ rows:
 
 */
 
-// TODO: CRAIG TO LOOK AT
+// TODO: CRAIG TO LOOK AT (not supported - it is a meaningless computation)
 /*
 select c,c+interval '1' year from interval6;
 rows:
@@ -348,7 +348,7 @@ rows:
 (time '09:02:23',time '09:02:23')
 (time '13:36:09',time '13:36:09')
 
-// TODO: CRAIG TO LOOK AT
+// TODO: CRAIG TO LOOK AT (not supported - it is a meaningless computation)
 select c,c+interval '13' month from interval6;
 rows:
 (time '00:00:00',time '00:00:00')

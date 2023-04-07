@@ -632,28 +632,30 @@ rows:
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cast as Interval
+// NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT CAST(1  AS INTERVAL YEAR) FROM nation where n_nationkey = 2;
+SELECT CAST(1 + 0  AS INTERVAL YEAR) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(1.0  AS INTERVAL DAY) FROM nation where n_nationkey = 2;
+SELECT CAST(1.0 + 0  AS INTERVAL DAY) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(1.0e1  AS INTERVAL DAY) FROM nation where n_nationkey = 2;
+SELECT CAST(1.0e1 + 0 AS INTERVAL DAY) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cast Interval as
+// NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT CAST(INTERVAL '9' HOUR as INTEGER) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as INTEGER) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(INTERVAL '9' HOUR as DECIMAL) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as DECIMAL) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(INTERVAL '9' YEAR as FLOAT) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' YEAR + INTERVAL '0' HOUR as FLOAT) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
