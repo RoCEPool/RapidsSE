@@ -4342,7 +4342,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_BUCKETGET:       eOperand = EV_D_BUCKETGET;      break;
     case CN_BUCKETINFO:       eOperand = EV_D_BUCKETINFO;      break;
     case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
-    //case CN_BUCKET:     eOperand = EV_D_BUCKET;      break;
 
     default:
       vTrace("iOperandEvKind() what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

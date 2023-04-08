@@ -2124,6 +2124,7 @@ void vDdlLockAssertNone(void);
   // table partition
   void vTablePtnAttemptGrabRead(void);
   void vTablePtnAttemptGrabWrite(void);
+  void vTablePtnCleanup(void);
   void vTablePtnDropRead(void);
   void vTablePtnDropWrite(void);
 
@@ -2132,6 +2133,7 @@ void vDdlLockAssertNone(void);
   void vTablePtnGet(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnRoot(void);
+  void vTablePtnRootBufferId(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
   void vTablePtnTruncateIndex(void);
