@@ -1369,7 +1369,7 @@ void vDdlLockAssertNone(void);
   void vPageInTestPrint(void);
 
   // page out
-  void vPageOutPoolBuffer(void);
+  void vPageOutCheckLowMemory(void);
   void vPageOutTestPrint(void);
 
   // path identifier
