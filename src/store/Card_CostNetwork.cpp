@@ -46,47 +46,6 @@ Card_CostNetwork::~Card_CostNetwork(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* estimate possible buffers arriving at this locus over the network          */
-/*----------------------------------------------------------------------------*/
-void Card_CostNetwork::vEstNetworkBufferVolume(i8 nLocus,
-                                               i8 nBuff_emitted_prior,
-                                               eXK eLocusCast)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  // todo: complete...
-
-  i8 nPtnsPerNode = AM::PTNMAP::nPtnsPerNode();
-  i8 nNodes = AM::PTNMAP::nKnownNodes();
-
-  i8 nBuff_network = 0;
-
-  switch (eLocusCast) {
-    case XK_UNICAST:
-      // no network associated with a unicast to this locus
-      break;
-
-    case XK_HASHCAST:
-      // network buffers arriving at this locus because of a hashcast
-      nBuff_network = (i8)(1.0 * nBuff_emitted_prior);
-      break;
-
-    case XK_BROADCAST:
-      // network buffers arriving at this locus because of a broadcast
-      if (1 == nNodes)
-        nBuff_network = (i8)(1.0 * (nBuff_emitted_prior));
-      else
-        nBuff_network = (i8)(1.0 * (nBuff_emitted_prior * (nNodes - 1)));
-      break;
-
-    default:
-      NEVER_REACH
-  }
-
-  vValue(nBuff_network);
-}
-
-//*============================================================================*/
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
