@@ -98,7 +98,7 @@ static eDM eMacro_AddResult[DM_ENUMS][DM_ENUMS] = {
 /*  3 DTE  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE/*?*/, DM_TSP,     DM_DTE,     DM_NONE/*?*/, DM_NONE,    DM_NONE, DM_NONE    },
 /*  4 FLT  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_FLT,     DM_NONE,      DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK     },
 /*  5 INT  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE/*?*/, DM_NONE,    DM_INT,       DM_NONE,    DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_UNK     },
-/*  6 IVD  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_TSP,       DM_NONE,    DM_NONE,      DM_TSP,     DM_NONE,    DM_TME,       DM_TSP,     DM_NONE, DM_NONE    },
+/*  6 IVD  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_TSP,       DM_NONE,    DM_NONE,      DM_IVD,     DM_NONE,    DM_TME,       DM_TSP,     DM_NONE, DM_NONE    },
 /*  7 IVY  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_DTE,       DM_NONE,    DM_NONE,      DM_NONE,    DM_IVY,     DM_NONE,      DM_TSP,     DM_NONE, DM_NONE    },
 /*  8 TME  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE/*?*/, DM_NONE,    DM_NONE/*?*/, DM_TME,     DM_NONE,    DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },
 /*  9 TSP  */ { DM_NONE, DM_NONE,  DM_NONE,  DM_NONE,      DM_NONE,    DM_NONE,      DM_TSP,     DM_TSP,     DM_NONE,      DM_NONE,    DM_NONE, DM_NONE    },

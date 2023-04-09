@@ -655,7 +655,7 @@ failure contains: 'EC_NOT_IMPLEMENTED'
 SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as DECIMAL) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(INTERVAL '9' YEAR + INTERVAL '0' HOUR as FLOAT) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' YEAR + INTERVAL '0' YEAR as FLOAT) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
