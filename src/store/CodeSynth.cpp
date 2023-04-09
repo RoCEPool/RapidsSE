@@ -3622,7 +3622,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
 
 #ifdef WITH_DEBUG_VERSION
-
+/*
   TypeValueArea* pTypedCell;
 
 
@@ -3708,6 +3708,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     pTypedCell = pPostStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
+  */
 #endif
 
 

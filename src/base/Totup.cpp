@@ -47,26 +47,11 @@ Totup::~Totup(void) noexcept(false)
 void Totup::vAdd(i8 i_Item, i8 iQty)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOTUP,_FOOTER_);
-  
-  m_xaItem[i_Item].m_iSum += iQty;
+
+  m_xaItem[i_Item].m_iBytes += iQty;
   m_xaItem[i_Item].m_nCnt ++;
-  
-  if (iQty < m_xaItem[i_Item].m_iMin)
-    m_xaItem[i_Item].m_iMin = iQty;
-
-  if (iQty > m_xaItem[i_Item].m_iMax)
-    m_xaItem[i_Item].m_iMax = iQty;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get an iAvg                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Totup::iAvg(i8 i_Item)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOTUP,_FOOTER_);
-  
-  return m_xaItem[i_Item].m_iSum / m_xaItem[i_Item].m_nCnt;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get an nCnt                                                                */
@@ -79,33 +64,13 @@ i8 Totup::nCnt(i8 i_Item)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get an iMax                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Totup::iMax(i8 i_Item)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOTUP,_FOOTER_);
-  
-  return m_xaItem[i_Item].m_iMax;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get an iMin                                                                */
-/*----------------------------------------------------------------------------*/
-i8 Totup::iMin(i8 i_Item)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOTUP,_FOOTER_);
-  
-  return m_xaItem[i_Item].m_iMin;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get an iSum                                                                */
 /*----------------------------------------------------------------------------*/
-i8 Totup::iSum(i8 i_Item)
+i8 Totup::iBytes(i8 i_Item)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOTUP,_FOOTER_);
   
-  return m_xaItem[i_Item].m_iSum;
+  return m_xaItem[i_Item].m_iBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,9 +83,7 @@ void Totup::vReset(void)
   for (i8 i_Item = 0; i_Item < C_MAX_TOT_ITEMS; i_Item++) {
     
     m_xaItem[i_Item].m_nCnt = 0;
-    m_xaItem[i_Item].m_iSum = 0;
-    m_xaItem[i_Item].m_iMin = C_I8_MAX;
-    m_xaItem[i_Item].m_iMax = C_I8_MIN;
+    m_xaItem[i_Item].m_iBytes = 0;
 
   }
 }
