@@ -588,7 +588,11 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
 
       Card_Expr *p_expr_found =
           pCI->G.p_key->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
-      xKid.p_term()->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
+      Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
+
+      //xKid.p_term()->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+      xKid.p_term()->pSymbol()->Y_vSet(P_Type, p_rpnCalc_found->pSymbol()->Y_szGet(P_Type));
 
       continue;
     }
