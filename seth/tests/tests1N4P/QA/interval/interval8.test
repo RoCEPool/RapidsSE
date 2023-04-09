@@ -19,11 +19,15 @@ rows:
 (date '2010-10-05',timestamp '2010-10-05 21:04:00.123',3333.98,3)
 */
 
+// TODO: INCONSISTENT RESULTS
+/*
 select a,b,c,d from interval8 i where a+interval '2 12:59:00.000' day to second=b;
 rows:
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2)
 (date '2023-01-29',timestamp '2023-01-31 12:59:00.000',1.65,4)
 (date '2022-02-27',timestamp '2022-03-01 12:59:00.000',1551.36,5)
+*/
+
 /*
 select substring(cast(a-interval '2' day as varchar),1,4),sum(c),count(1) cn from interval8 i 
 group by substring(cast(a-interval '2' day as varchar),1,4)

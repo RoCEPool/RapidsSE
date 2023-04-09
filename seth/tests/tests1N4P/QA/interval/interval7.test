@@ -37,7 +37,7 @@ rows:
 (date '2023-04-30',date '2022-03-30')
 (date '2000-01-31',date '1998-12-31')
 (date '2021-11-12',date '2020-10-12')
-/*
+
 select a,a-interval '30' day from interval6;
 rows:
 (date '2023-01-31',date '2023-01-01')
@@ -48,10 +48,8 @@ rows:
 (date '2023-04-30',date '2023-03-31')
 (date '2000-01-31',date '2000-01-01')
 (date '2021-11-12',date '2021-10-13')
-*/
 
-// TODO: CRAIG TO LOOK AT (this should now work)
-/*
+
 select a,a-interval '31' hour from interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-29 17:00:00')
@@ -84,7 +82,6 @@ rows:
 (date '2023-04-30',timestamp '2023-04-29 22:53:20')
 (date '2000-01-31',timestamp '2000-01-30 22:53:20')
 (date '2021-11-12',timestamp '2021-11-11 22:53:20')
-*/
 
 select a,a-interval '1-2' year to month from interval6;
 rows:
@@ -97,8 +94,6 @@ rows:
 (date '2000-01-31',date '1998-11-30')
 (date '2021-11-12',date '2020-09-12')
 
-// TODO: CRAIG TO LOOK AT (this should now work)
-/*
 select a,a-interval '1 2' day to hour from interval6;
 rows:
 (date '2023-01-31',timestamp '2023-01-29 22:00:00')
@@ -166,7 +161,6 @@ rows:
 (date '2023-04-30',timestamp '2023-04-29 23:00:52')
 (date '2000-01-31',timestamp '2000-01-30 23:00:52')
 (date '2021-11-12',timestamp '2021-11-11 23:00:52')
-*/
 
 /*
 // TODO: SYNTAX ERROR : test is incorrect
@@ -425,7 +419,7 @@ rows:
 (time '13:36:09',time '13:36:09')
 */
 
-// TODO: CRIAG
+// TODO: SYNTAX ERROR: test in incorrect
 /*
 select c,c-interval '1 2' day to hour from interval6;
 rows:

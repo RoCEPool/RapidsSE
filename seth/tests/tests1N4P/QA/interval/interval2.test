@@ -3,7 +3,7 @@ create table interval1(a timestamp);
 success
 load interval1 "../DATA/QA/interval/interval1.csv";
 success
-/*
+
 select date '2000-02-29' - interval '1' day from interval1;
 rows:
 (date '2000-02-28')
@@ -16,7 +16,7 @@ rows:
 select date '2023-05-01' - interval '1' day from interval1;
 rows:
 (date '2023-04-30')
-*/
+
 select date '2000-03-30' - interval '1' month from interval1;
 rows:
 (date '2000-02-29')

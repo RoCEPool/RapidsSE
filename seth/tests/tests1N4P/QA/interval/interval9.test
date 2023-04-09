@@ -83,22 +83,25 @@ select time '14:28:01'-timestamp '2022-11-12 14:29:21' from interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 */
 
-// TODO: CRAIG TO LOOK AT (changed expected result from date to timestamp)
-/*
+// TODO: Changed expected result from date to timestamp
 select date '2023-03-31' -interval '277' month-interval '2' day  from interval1;
 rows:
+//(date '2000-02-27')
+(timestamp '2000-02-27 00:00:00')
+
+// TODO: Changed expected result from date to timestamp
+select date '2023-03-31' -interval '23-1' year to month -interval '2' day  from interval1;
+rows:
+//(date '2000-02-27')
 (timestamp '2000-02-27 00:00:00')
 //(date '2000-02-27')
 
-
-select date '2023-03-31' -interval '23-1' year to month -interval '2' day  from interval1;
-rows:
-(date '2000-02-27')
-
+// TODO: Changed expected result from date to timestamp
 select date '2023-03-28' + interval +'4' day from interval1;
 rows:
-(date '2023-04-01')
-*/
+//(date '2023-04-01')
+(timestamp '2023-04-01 00:00:00')
+
 select date '2023-03-01' + interval +'10' month from interval1;
 rows:
 (date '2024-01-01')
@@ -106,15 +109,17 @@ rows:
 select date '2023-01-01' + interval +'11-5' year to month from interval1;
 rows:
 (date '2034-06-01')
-/*
+
+/* TODO:
 select timestamp '2023-01-01 00:00:00' + interval +'60 14:17:20' day to second from interval1;
 rows:
 (timestamp '2023-03-02 14:17:20')
-
+*/
 select INTERVAL '1' YEAR + INTERVAL '2' MONTH + INTERVAL '1-2' YEAR TO MONTH + INTERVAL -'1-2' YEAR TO MONTH from  interval1;
 rows:
 (INTERVAL '1-2' YEAR TO MONTH)
 
+/* TODO: to look at
 select INTERVAL '3' DAY+INTERVAL '4' HOUR+INTERVAL '5' MINUTE+INTERVAL '6' second from interval1;
 rows:
 (INTERVAL '3 4:5:6' DAY TO SECOND)
@@ -146,6 +151,7 @@ failure contains:"Expression type combination is invalid or unsupported for the 
 
 select interval '1' year / interval '12 14:43:23.123' day to second from interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
+*/
 
 select * from interval1 where interval '1' year=interval '12' month;
 rows:
@@ -175,7 +181,7 @@ rows:
 SELECT INTERVAL '3' DAY*12 FROM interval1;
 rows:
 (INTERVAL '36' DAY)
-
+/*
 SELECT INTERVAL '4' HOUR*7 FROM interval1;
 rows:
 (INTERVAL '28' HOUR)

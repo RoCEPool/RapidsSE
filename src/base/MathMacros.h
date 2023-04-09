@@ -568,6 +568,7 @@
     xTsp2.m_uHour      = xDateTime.tm_hour;                                \
     xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
     xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
+    xTsp2.m_uMicro     = 0;                                                \
                                                                            \
     *paW++ = xTsp2.m_iAsI8;                                                \
   }                                                                        \
