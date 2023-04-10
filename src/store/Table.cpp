@@ -307,19 +307,22 @@ void Table::vAddIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
+void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   i8 nRowsTotal    = 0;
   i8 nBuffersTotal = 0;
-  
+  i8 jSumRowBytes  = 0;
   TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 
-  pTablePtn->vAnalyze(nBuffers, nRows);
+  pTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
   
   nRowsTotal += nRows;
   nBuffersTotal += nBuffers;
+
+  if (nRows)
+    jRowSize = jSumRowBytes / nRows;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -664,7 +667,7 @@ PtnDef* Table::pPtnDef(void)
 /*----------------------------------------------------------------------------*/
 /* get the relative size of the table based on buffers in a partition         */
 /*----------------------------------------------------------------------------*/
-i8 Table::iRelativeSize(void)
+i8 Table::iRelativeSize(i8 &jRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
@@ -675,7 +678,9 @@ i8 Table::iRelativeSize(void)
 
   i8 i_TablePtn = iPtnNoToTablePtn(0);
 
-  vAnalyze(i_TablePtn, nBuffersPerPtn, nRows);
+  jRowSize = 0;
+  vAnalyze(i_TablePtn, nBuffersPerPtn, nRows, jRowSize);
+
 
   // get the apriori (fixed) table size
   i8 jTableSize = m_pStreamDef->jTableSize();

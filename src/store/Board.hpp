@@ -91,6 +91,7 @@
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 
+#include "Card_RowSize.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_RpnTerms.hpp"
 

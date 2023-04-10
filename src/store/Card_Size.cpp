@@ -4,6 +4,8 @@
 
 #include "Card_Size.hpp"
 
+#include "Card_Table.hpp"
+
 #include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +56,11 @@ Card_Size* Card_Size::pDerive(Table* pTable)
   }
 
 //  i8 jTableSize = pTable->pStreamDef()->jTableSize();
-  i8 jTableSize = pTable->iRelativeSize();
+
+  i8 jTableSize = 0;
+  i8 jRowSize   = 0;
+
+  Card_Table::vGetSizes(pTable,jTableSize,jRowSize);
 
   Card_Size* p_size = new Card_Size;
   s32 sSize(jTableSize);

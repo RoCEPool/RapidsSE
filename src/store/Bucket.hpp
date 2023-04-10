@@ -50,7 +50,7 @@ namespace STORE
 
     bool bPopulateIndexTree(IndexTree *pIndexTree);
 
-    void vAnalyze(i8& nBuffers, i8& nRows);
+    void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     CrwBuffer* pRootCrwBuffer(void);
     RowBuffer* pRootRowBuffer(void);
     DataBuffer* pRootBuffer(void);

@@ -87,6 +87,7 @@ enum eCK // card kind
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
 
+  /* */ CK_ROWSIZE,
   /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
@@ -202,6 +203,7 @@ static Stz* aCK[]
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
+  /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
   /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
@@ -317,6 +319,7 @@ static Stz* aCK_short[]
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
 
+  /* */ "rowSize"_Stz,         // CK_ROWSIZE
   /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 

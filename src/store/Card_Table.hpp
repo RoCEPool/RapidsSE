@@ -23,6 +23,8 @@ namespace STORE
 
     static Table* pAccess_Table(Stz* szTableNm);
 
+    static void vGetSizes(Table* pTable, i8& jTableSize, i8& jRowSize);
+
     static void vAffixTableColOrd(CardIter* pCI);
     static void vAffixTableSyn(CardIter* pCI, char* cTableSyn);
     static void vAppendIndexList(CardIter* pCI);

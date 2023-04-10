@@ -80,6 +80,15 @@ Table* Card_Table::pAccess_Table(Stz* szTableNm)
   return pTable;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get size of a table and its rows                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vGetSizes(Table* pTable, i8& jTableSize, i8& jRowSize)
+{
+  _static_
+
+  jTableSize = pTable->iRelativeSize(jRowSize);
+}
 
 /*----------------------------------------------------------------------------*/
 /* affix table column ordinals to all idx cols                                */

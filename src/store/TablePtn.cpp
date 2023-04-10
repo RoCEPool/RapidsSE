@@ -454,7 +454,7 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAnalyze(i8& nBuffers, i8& nRows)
+void TablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
@@ -463,7 +463,7 @@ void TablePtn::vAnalyze(i8& nBuffers, i8& nRows)
   i8 nItems = m_pBucketVec->nItems();
   for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vAnalyze(nBuffers, nRows);
+    pBucket->vAnalyze(nBuffers, nRows, jSumRowBytes);
   }
 
   nRowsTotal += nRows;

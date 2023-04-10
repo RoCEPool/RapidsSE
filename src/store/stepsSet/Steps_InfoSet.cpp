@@ -265,8 +265,9 @@ void Step::vInfoSetAddRowCount(void)
 
   i8 nBuffers = 0;
   i8 nRows = 0;
-  
-  pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
+  i8 jSumRowBytes = 0;
+
+  pTable->vAnalyze(i_TablePtn, nBuffers, nRows, jSumRowBytes);
   
   Row* pRow = pInfoSet->pAllotRow(pStreamDef,
                                   C_VARGS_BEGIN,

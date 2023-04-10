@@ -102,6 +102,7 @@ namespace STORE
   class Card_Project;
   class Card_Projection;
 
+  class Card_RowSize;
   class Card_RpnCalc;
   class Card_RpnTerms;
 
@@ -113,6 +114,7 @@ namespace STORE
   class Card_Stage;
   class Card_SubSet;
 
+  class Card_Table;
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;

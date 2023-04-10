@@ -135,8 +135,9 @@ void Step::vStreamSetAddAnalyzeTable(void)
   
   i8 nBuffers = 0;
   i8 nRows = 0;
-  
-  pTable->vAnalyze(i_TablePtn, nBuffers, nRows);
+  i8 njRowSize = 0;
+
+  pTable->vAnalyze(i_TablePtn, nBuffers, nRows, njRowSize);
 
   Row* pRow = pStreamSet->pAllotRow(pStreamDef,
                                     C_VARGS_BEGIN,

@@ -367,14 +367,14 @@ bool Bucket::bVerifyTable(void)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-void Bucket::vAnalyze(i8& nBuffers, i8& nRows)
+void Bucket::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
   CrwBuffer* pCrwBuffer = pRootCrwBuffer();
 
   if (pCrwBuffer)
-    pCrwBuffer->vAnalyze(nBuffers, nRows);
+    pCrwBuffer->vAnalyze(nBuffers, nRows, jSumRowBytes);
 
 }
 
