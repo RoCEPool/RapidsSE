@@ -1,0 +1,51 @@
+/*============================================================================*/
+/* __CS1_prj : Code Synthesizer V1                                            */
+/*============================================================================*/
+
+_nation
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+//explain stage transliterate select n_nationkey, n_name from nation where n_nationkey < 2;
+
+/*
+/ccode pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0559
+  stage stageMarker0559 on all partitions :
+    scan rapidsse public Nation
+    | filter " type BOOLEAN  $1 2  <  "
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+_part
+/time load part   "<tpch_dir>/part.<suffix>";
+
+//explain stage transliterate select * from part where p_partkey < 2;
+
+/ccode pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0324
+  stage stageMarker0324 on all partitions :
+    scan rapidsse public Part
+    | filter " type BOOLEAN  $1 2  <  "
+    //| project " type INTEGER as P_PARTKEY $1 , type VARCHAR as P_NAME $2 , type VARCHAR as P_MFGR $3 , type VARCHAR as P_BRAND $4 , type VARCHAR as P_TYPE $5 , type INTEGER as P_SIZE $6 , type VARCHAR as P_CONTAINER $7 , type DECIMAL as P_RETAILPRICE $8 , type VARCHAR as P_COMMENT $9 "
+    | project " type INTEGER as P_PARTKEY $1 , type VARCHAR as P_NAME $2 , type VARCHAR as P_MFGR $3 , type VARCHAR as P_BRAND $4 , type VARCHAR as P_TYPE $5  , type INTEGER as P_SIZE $6 , type VARCHAR as P_CONTAINER $7 , type DECIMAL as P_RETAILPRICE $8 , type VARCHAR as P_COMMENT $9"
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;

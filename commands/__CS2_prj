@@ -40,7 +40,6 @@ begin
   stage stageMarker0324 on all partitions :
     scan rapidsse public Part
     | filter_v2 " type BOOLEAN  $1 2  <  "
-    //| project_v2 " type INTEGER as P_PARTKEY $1 , type VARCHAR as P_NAME $2 , type VARCHAR as P_MFGR $3 , type VARCHAR as P_BRAND $4 , type VARCHAR as P_TYPE $5 , type INTEGER as P_SIZE $6 , type VARCHAR as P_CONTAINER $7 , type DECIMAL as P_RETAILPRICE $8 , type VARCHAR as P_COMMENT $9 "
     | project_v2 " type INTEGER as P_PARTKEY $1 , type VARCHAR as P_NAME $2 , type VARCHAR as P_MFGR $3 , type VARCHAR as P_BRAND $4 , type VARCHAR as P_TYPE $5 , type INTEGER as P_SIZE $6 , type VARCHAR as P_CONTAINER $7 , type DECIMAL as P_RETAILPRICE $8 , type VARCHAR as P_COMMENT $9"
     | combined_v2 0
     | stageLast

@@ -4,30 +4,31 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-explain stage transliterate select sum(n_nationkey) from nation where n_nationkey = 5;
-
+explain stage transliterate select sum(n_nationkey) from nation where n_nationkey < 5;
 /ccode pipeline unamed
- begin
-   stage stageStart on origin :
-     start
-     | pulse once
-     | stageMarker0359
-   stage stageMarker0359 on all partitions :
-     scan rapidsse public Nation
-     | filter " type BOOLEAN  $1 5  ==  "
-     | project " type INTEGER )  $1 sum  "
-     | combined 0
-     | stageMarker0362
-   stage stageMarker0362 on all nodes :
-     project " type INTEGER )  $1 sum  "
-     | combined 0
-     | stageMarker0365
-   stage stageMarker0365 on origin :
-     project " type INTEGER )  $1 sum  "
-     | combined 0
-     | stageLast
-   stage stageLast on origin :
-     output
-     | sink
-     | stageStart
- end ;
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | filter_v2 " type BOOLEAN  $1 5  <  "
+    | aggreg_v2 " type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+    /*
+  stage S02 on all nodes :
+    aggreg_v2 " type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+  stage S03 on origin :
+    aggreg_v2 " type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+    */
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
