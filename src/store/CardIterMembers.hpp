@@ -182,6 +182,7 @@ namespace STORE
     Card_Project *       p_project;
     Card_Projection *    p_projection;
 
+    Card_RowSize *       p_rowSize;
     Card_RpnCalc *       p_rpnCalc;
 
     Card_Scan *          p_scan;

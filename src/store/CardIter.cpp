@@ -295,6 +295,7 @@ void CardIter::G_vClearMembers(void)
   G.p_outerJoin        = nullptr;
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
+  G.p_rowSize          = nullptr;
   G.p_rpnCalc          = nullptr;
   G.p_scan             = nullptr;
   G.p_section          = nullptr;
@@ -1124,6 +1125,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_OUTERJOIN:        return G.p_outerJoin;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
+    case CK_ROWSIZE:          return G.p_rowSize;
     case CK_RPNCALC:          return G.p_rpnCalc;
     case CK_SCAN:             return G.p_scan;
     case CK_SECTION:          return G.p_section;
@@ -1306,6 +1308,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_OUTERJOIN:        return "G.p_outerJoin"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
     case CK_PROJECTION:       return "G.p_projection"_Stz;
+    case CK_ROWSIZE:          return "G.p_rowSize"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
     case CK_SCAN:             return "G.p_scan"_Stz;
     case CK_SECTION:          return "G.p_section"_Stz;
@@ -2184,6 +2187,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
+    case CK_ROWSIZE:          *((Card**)&G.p_rowSize)          = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;

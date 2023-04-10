@@ -167,8 +167,19 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
     Table* pTable = AM::pTableFind(p_tableNm->szValue());
 
-    pCI->G.p_size = Card_Size::pDerive(pTable);
+    i8 jTableSize;
+    i8 jRowSize;
+
+    Card_Table::vGetSizes(pTable,jTableSize,jRowSize);
+
+    pCI->G.p_size = new Card_Size;
+    pCI->G.p_size->vValue(jTableSize);
     pCI->G.p_table->vAppend(pCI->G.p_size);
+
+    pCI->G.p_rowSize = new Card_RowSize;
+    pCI->G.p_rowSize->vValue(jRowSize);
+    pCI->G.p_table->vAppend(pCI->G.p_rowSize);
+
   }
 
 }
