@@ -118,6 +118,10 @@ create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
 /time load orders             "<tpch_dir>/orders.<suffix>"   ;
 /time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
 
+tablesizes;
+
+bpa;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

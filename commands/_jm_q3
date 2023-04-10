@@ -2,33 +2,9 @@
 /* _jm_q3 -- Query3                                                           */
 /*============================================================================*/
 
-tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf1";
-tag default <suffix>   = "csv";
-
-__TPCH_SCHEMA
-
-// truncate metrics tables
-truncate se__jobMetrics;
-truncate se__jobOperands;
-truncate se__jobOperators;
-
-truncate se__jobNetwork;
-truncate se__jobNetDissect;
-
-truncate se__sysMetrics;
-truncate se__sysLocks;
-
-// enable metrics
-metricsCtl enable;
-
-///////////////////////
-// QUERY 3
-
-// /jo=3
-/joWrite
-/glean_interactive
 /jobMetrics
-/weaved
+/joWrite
+/filterPred
 /pipelineName = "_jm_q3"
 select l_orderkey,
       sum(l_extendedprice*(1-l_discount)) as revenue,
@@ -40,9 +16,9 @@ from  customer,
 where
       c_custkey = o_custkey
   and l_orderkey = o_orderkey
-//and c_mktsegment = 'BUILDING'
-//and o_orderdate < '1995-03-15'
-//and l_shipdate > '1995-03-15'
+  and c_mktsegment = 'BUILDING'
+  and o_orderdate < '1995-03-15'
+  and l_shipdate > '1995-03-15'
 group by
      l_orderkey,
      o_orderdate,
@@ -52,38 +28,6 @@ order by
      o_orderdate
 limit 10;
 
-///////////////////////
-
-// disable metrics
-metricsCtl disable;
-
-// sleep
-sleep 30;
-
-// generate system report data
-sysReport;
-
-print "-------------------------------------------";
-print "NETWORK FOR QUERY 3.......................";
-
-// get network data
-select thisNodeName as thisNode,
-     otherNodeName as otherNode,
-     sum(sendCount)  as sCount,
-     sum(sendBytes)  as sBytes,
-     sum(recvCount)  as rCount,
-     sum(recvBytes)  as rBytes
-  from se__jobNetwork group by thisNodeName, otherNodeName;
-
-print "-------------------------------------------";
-
-/*
--------------------------------------------
-SF1 (2N4P)
--------------------------------------------
-
--------------------------------------------
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

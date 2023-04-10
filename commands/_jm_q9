@@ -2,25 +2,10 @@
 /* _jm_q9 -- Query9                                                           */
 /*============================================================================*/
 
-// truncate metrics tables
-truncate se__jobMetrics;
-truncate se__jobOperands;
-truncate se__jobOperators;
-
-truncate se__jobNetwork;
-truncate se__jobNetDissect;
-
-truncate se__sysMetrics;
-truncate se__sysLocks;
-
-// enable metrics
-metricsCtl enable;
-
-///////////////////////
-// QUERY 9
-
 /jobMetrics
-/weaved
+/joWrite
+/filterPred
+/pipelineName = "_jm_q9"
 select
   nation,
   o_year,
@@ -53,38 +38,6 @@ order by
   nation,
   o_year desc;
 
-///////////////////////
-
-// disable metrics
-metricsCtl disable;
-
-// sleep
-sleep 5;
-
-// generate system report data
-sysReport;
-
-print "-------------------------------------------";
-print "NETWORK FOR QUERY 9.......................";
-
-// get network data
-select thisNodeName as thisNode,
-     otherNodeName as otherNode,
-     sum(sendCount)  as sCount,
-     sum(sendBytes)  as sBytes,
-     sum(recvCount)  as rCount,
-     sum(recvBytes)  as rBytes
-  from se__jobNetwork group by thisNodeName, otherNodeName;
-
-print "-------------------------------------------";
-
-/*
--------------------------------------------
-SF1 (2N4P)
--------------------------------------------
-
--------------------------------------------
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

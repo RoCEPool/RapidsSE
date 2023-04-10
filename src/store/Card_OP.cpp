@@ -177,9 +177,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-    vTrace("CONVERT %s %s (%s %s)\n"_Stz,
-           p_term->szValue(),p_term->szBearing(),
-           szCardNm(),szBearing());
+//    vTrace("CONVERT %s %s (%s %s)\n"_Stz,
+//           p_term->szValue(),p_term->szBearing(),
+//           szCardNm(),szBearing());
 
     if (pSymbol()->Y_bHas(P_BreakPt)) {
       vDebugPoint();
@@ -192,7 +192,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       if (Card_Expr* p_expr_col =
           pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_term->szValue())) {
         p_term->vValueMark1(p_expr_col->szValue(), MARK_CHANGED);
-        vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
+        //vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
         return C_CONTINUE_RECURSION;
       }
     }
@@ -212,7 +212,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     xSymbol_stmColOdn.vSetStreamColOrdinal(nExpr_prior+i_Col);
     p_term->vValueMark1(xSymbol_stmColOdn, MARK_CHANGED);
 
-    vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szValue());
+    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szValue());
     return C_CONTINUE_RECURSION;
   };
 

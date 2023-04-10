@@ -2,24 +2,10 @@
 /* _jm_q12 -- Query12                                                         */
 /*============================================================================*/
 
-// truncate metrics tables
-truncate se__jobMetrics;
-truncate se__jobOperands;
-truncate se__jobOperators;
-
-truncate se__jobNetwork;
-truncate se__jobNetDissect;
-
-truncate se__sysMetrics;
-truncate se__sysLocks;
-
-// enable metrics
-metricsCtl enable;
-
-///////////////////////
-// QUERY 12
-
 /jobMetrics
+/joWrite
+/filterPred
+/pipelineName = "_jm_q12"
 select
   l_shipmode,
   sum(case when o_orderpriority ='1-URGENT' or o_orderpriority ='2-HIGH' then 1 else 0 end) as high_line_count,
@@ -39,38 +25,6 @@ group by
 order by
   l_shipmode;
 
-///////////////////////
-
-// disable metrics
-metricsCtl disable;
-
-// sleep
-sleep 5;
-
-// generate system report data
-sysReport;
-
-print "-------------------------------------------";
-print "NETWORK FOR QUERY 12.......................";
-
-// get network data
-select thisNodeName as thisNode,
-     otherNodeName as otherNode,
-     sum(sendCount)  as sCount,
-     sum(sendBytes)  as sBytes,
-     sum(recvCount)  as rCount,
-     sum(recvBytes)  as rBytes
-  from se__jobNetwork group by thisNodeName, otherNodeName;
-
-print "-------------------------------------------";
-
-/*
--------------------------------------------
-SF1 (2N4P)
--------------------------------------------
-
--------------------------------------------
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

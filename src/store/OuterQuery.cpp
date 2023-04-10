@@ -107,7 +107,7 @@ void OuterQuery::vQueryAnalysis(CardIter* pCI)
   pCI->vBoardIteration();
   while (pCI->bEachBoard()) {
     SubQuery* pOuterQuery = pCI->G.pBoard->pSubQuery();
-    pOuterQuery->vDump();
+    //pOuterQuery->vDump();
   }
 
   //pCI->vEndTransform();

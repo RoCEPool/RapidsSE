@@ -11,7 +11,6 @@ __TPCH_SCHEMA
 /transliterated
 /weaved
 /pipelineName = "_jo1_C_L_O"
-/jo = 6
 select
        count(*)
   from

@@ -2,24 +2,10 @@
 /* _jm_q18 -- Query18                                                         */
 /*============================================================================*/
 
-// truncate metrics tables
-truncate se__jobMetrics;
-truncate se__jobOperands;
-truncate se__jobOperators;
-
-truncate se__jobNetwork;
-truncate se__jobNetDissect;
-
-truncate se__sysMetrics;
-truncate se__sysLocks;
-
-// enable metrics
-metricsCtl enable;
-
-///////////////////////
-// QUERY 18
-
 /jobMetrics
+/joWrite
+/filterPred
+/pipelineName = "_jm_q18"
 select
   c_name,
   c_custkey,
@@ -53,38 +39,6 @@ order by
   o_totalprice desc,
   o_orderdate limit 100;
 
-///////////////////////
-
-// disable metrics
-metricsCtl disable;
-
-// sleep
-sleep 5;
-
-// generate system report data
-sysReport;
-
-print "-------------------------------------------";
-print "NETWORK FOR QUERY 18.......................";
-
-// get network data
-select thisNodeName as thisNode,
-     otherNodeName as otherNode,
-     sum(sendCount)  as sCount,
-     sum(sendBytes)  as sBytes,
-     sum(recvCount)  as rCount,
-     sum(recvBytes)  as rBytes
-  from se__jobNetwork group by thisNodeName, otherNodeName;
-
-print "-------------------------------------------";
-
-/*
--------------------------------------------
-SF1 (2N4P)
--------------------------------------------
-
--------------------------------------------
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

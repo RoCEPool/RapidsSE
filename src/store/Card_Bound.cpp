@@ -63,7 +63,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
 {
   _static_
 
-  p_PRED->vDump();
+  //p_PRED->vDump();
 
   Card_Term* p_term;
 
@@ -166,7 +166,7 @@ eXK Card_Bound::eNextCast(Card_TablePtn* p_tablePtn_prior,
 
   if (p_idxCol_later && p_idxCol_later->bIsReplicated()) {
     // + later table is replicated so always unicast
-    p_idxCol_later->vDump();
+    //p_idxCol_later->vDump();
     vDebugPoint();
     return XK_UNICAST;
   }

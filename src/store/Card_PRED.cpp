@@ -593,7 +593,7 @@ char Card_PRED::cTable_WhichTableFor_Pred(CardIter* pCI)
     }
 
     // skip over any other card??
-    vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
+    //vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
   }
 
   NEVER_REACH;

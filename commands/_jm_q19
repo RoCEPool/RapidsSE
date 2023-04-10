@@ -2,24 +2,10 @@
 /* _jm_q19 -- Query19                                                         */
 /*============================================================================*/
 
-// truncate metrics tables
-truncate se__jobMetrics;
-truncate se__jobOperands;
-truncate se__jobOperators;
-
-truncate se__jobNetwork;
-truncate se__jobNetDissect;
-
-truncate se__sysMetrics;
-truncate se__sysLocks;
-
-// enable metrics
-metricsCtl enable;
-
-///////////////////////
-// QUERY 19
-
 /jobMetrics
+/joWrite
+/filterPred
+/pipelineName = "_jm_q19"
 select
   sum(l_extendedprice * (1 - l_discount) ) as revenue
 from
@@ -50,38 +36,6 @@ where
      and l_shipmode in ('AIR', 'AIR REG')
      and l_shipinstruct = 'DELIVER IN PERSON' );
 
-///////////////////////
-
-// disable metrics
-metricsCtl disable;
-
-// sleep
-sleep 5;
-
-// generate system report data
-sysReport;
-
-print "-------------------------------------------";
-print "NETWORK FOR QUERY 19.......................";
-
-// get network data
-select thisNodeName as thisNode,
-     otherNodeName as otherNode,
-     sum(sendCount)  as sCount,
-     sum(sendBytes)  as sBytes,
-     sum(recvCount)  as rCount,
-     sum(recvBytes)  as rBytes
-  from se__jobNetwork group by thisNodeName, otherNodeName;
-
-print "-------------------------------------------";
-
-/*
--------------------------------------------
-SF1 (2N4P)
--------------------------------------------
-
--------------------------------------------
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
