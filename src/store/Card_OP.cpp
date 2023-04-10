@@ -665,6 +665,14 @@ void Card_OP::vRelegate_table(CardIter* pCI, Card_OP* p_under)
     pCI->G.p_MainCard->vRemoveSub(pCI->G.p_tableSize);
     pCI->G.p_table->vAppend(pCI->G.p_tableSize);
   }
+  if ((pCI->G.p_rowSize = pCI->G.p_MainCard->pSub_rowSize())) {
+    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_rowSize);
+    pCI->G.p_table->vAppend(pCI->G.p_rowSize);
+  }
+  if ((pCI->G.p_rowCount = pCI->G.p_MainCard->pSub_rowCount())) {
+    pCI->G.p_MainCard->vRemoveSub(pCI->G.p_rowCount);
+    pCI->G.p_table->vAppend(pCI->G.p_rowCount);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

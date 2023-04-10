@@ -75,9 +75,17 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
       p_tablePtn = _pCard_TablePtn(p_tablePtn->pDupCard());
       p_table_dup->vAppend(p_tablePtn);
     }
-    if (Card_TableSize* p_size = xCI.G.p_table->pSub_tableSize()) {
-      p_size = _pCard_TableSize(p_size->pDupCard());
-      p_table_dup->vAppend(p_size);
+    if (Card_TableSize* p_tableSize = xCI.G.p_table->pSub_tableSize()) {
+      p_tableSize = _pCard_TableSize(p_tableSize->pDupCard());
+      p_table_dup->vAppend(p_tableSize);
+    }
+    if (Card_RowSize* p_rowSize = xCI.G.p_table->pSub_rowSize()) {
+      p_rowSize = _pCard_RowSize(p_rowSize->pDupCard());
+      p_table_dup->vAppend(p_rowSize);
+    }
+    if (Card_RowCount* p_rowCount = xCI.G.p_table->pSub_rowCount()) {
+      p_rowCount = _pCard_RowCount(p_rowCount->pDupCard());
+      p_table_dup->vAppend(p_rowCount);
     }
 
     if (Card_KeyExists* p_keyExists = xCI.G.p_table->pSub_keyExists()) {
