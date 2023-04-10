@@ -4,11 +4,7 @@
 
 /jobMetrics
 /joWrite
-/filterPred
 /pipelineName = "_jm_q2"
-/glean_interactive
-/transliterated
-/weaved
 select
   s_acctbal,
   s_name,
