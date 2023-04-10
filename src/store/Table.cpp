@@ -665,34 +665,32 @@ PtnDef* Table::pPtnDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the relative size of the table based on buffers in a partition         */
+/* get estimates for the table based on partition 0                           */
 /*----------------------------------------------------------------------------*/
-i8 Table::iRelativeSize(i8 &jRowSize)
+void Table::vGetGridEstimates(i8 &jTableSize, i8 &jRowSize, i8& nRowCount)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   i8 nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
 
+  jTableSize = 0;
+  jRowSize   = 0;
+  nRowCount  = 0;
+
   i8 nBuffersPerPtn = 0;
-  i8 nRows = 0;
-
   i8 i_TablePtn = iPtnNoToTablePtn(0);
+  vAnalyze(i_TablePtn, nBuffersPerPtn, nRowCount, jRowSize);
 
-  jRowSize = 0;
-  vAnalyze(i_TablePtn, nBuffersPerPtn, nRows, jRowSize);
+  if (! bIsReplicated())
+    nRowCount *= nPtnsInGrid;
 
-
-  // get the apriori (fixed) table size
-  i8 jTableSize = m_pStreamDef->jTableSize();
-
-//  if (nBuffersPerPtn < jTableSize)
-//    return jTableSize;
-//  else
-//    return nBuffersPerPtn;
   if (nBuffersPerPtn > 1)
-    return nBuffersPerPtn * nPtnsInGrid;
+    if (bIsReplicated())
+      jTableSize = nBuffersPerPtn;
   else
-    return jTableSize;
+      jTableSize = nBuffersPerPtn * nPtnsInGrid;
+  else
+    jTableSize = m_pStreamDef->jTableSize();
 }
 
 /*----------------------------------------------------------------------------*/

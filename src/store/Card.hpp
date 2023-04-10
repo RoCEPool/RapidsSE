@@ -34,8 +34,14 @@ namespace STORE
   class Card_Combined;
   class Card_Constraint;
   class Card_Correlation;
+  class Card_CostLocus;
+  class Card_CostJoining;
+  class Card_CostNetwork;
+  class Card_CostQuery;
+  class Card_CostUnicast;
   class Card_CrossJoin;
 
+  class Card_DataStart;
   class Card_Debug;
   class Card_Deck;
   class Card_Direction;
@@ -65,7 +71,6 @@ namespace STORE
   class Card_IndexNm;
   class Card_IndexScan;
 
-  class Card_DataStart;
   class Card_JoinLocus;
   class Card_JoinOrder;
   class Card_JoinOrdering;
@@ -79,11 +84,6 @@ namespace STORE
 
   class Card_Level;
   class Card_Limit;
-  class Card_CostLocus;
-  class Card_CostJoining;
-  class Card_CostNetwork;
-  class Card_CostQuery;
-  class Card_CostUnicast;
 
   class Card_NCorrCols;
   class Card_Needed;
@@ -102,6 +102,7 @@ namespace STORE
   class Card_Project;
   class Card_Projection;
 
+  class Card_RowCount;
   class Card_RowSize;
   class Card_RpnCalc;
   class Card_RpnTerms;
@@ -109,7 +110,6 @@ namespace STORE
   class Card_Scan;
   class Card_Section;
   class Card_Send;
-  class Card_TableSize;
   class Card_Sort;
   class Card_Stage;
   class Card_SubSet;
@@ -118,6 +118,7 @@ namespace STORE
   class Card_TableList;
   class Card_TableNm;
   class Card_TablePtn;
+  class Card_TableSize;
   class Card_TblSyn;
   class Card_Term;
   class Card_Top;
@@ -403,6 +404,7 @@ namespace STORE
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
     Card_CrossJoin*     pSub_crossJoin(void);
+    Card_DataStart*     pSub_dataStart(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
@@ -419,7 +421,6 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_DataStart*     pSub_dataStart(void);
     Card_JoinLocus*     pSub_joinLocus(void);
     Card_JoinPermAll*   pSub_joinPermAll(void);
     Card_JoinPermSeq*   pSub_joinPermList(void);
@@ -441,6 +442,8 @@ namespace STORE
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
     Card_Projection*    pSub_projection(void);
+    Card_RowCount*      pSub_rowCount(void);
+    Card_RowSize*       pSub_rowSize(void);
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);

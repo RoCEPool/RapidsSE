@@ -295,12 +295,12 @@ void CardIter::G_vClearMembers(void)
   G.p_outerJoin        = nullptr;
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
+  G.p_rowCount         = nullptr;
   G.p_rowSize          = nullptr;
   G.p_rpnCalc          = nullptr;
   G.p_scan             = nullptr;
   G.p_section          = nullptr;
   G.p_send             = nullptr;
-  G.p_tableSize        = nullptr;
   G.p_sort             = nullptr;
   G.p_stage            = nullptr;
   G.p_subSet           = nullptr;
@@ -308,6 +308,7 @@ void CardIter::G_vClearMembers(void)
   G.p_tableList        = nullptr;
   G.p_tableNm          = nullptr;
   G.p_tablePtn         = nullptr;
+  G.p_tableSize        = nullptr;
   G.p_term             = nullptr;
   G.p_top              = nullptr;
   G.p_topology         = nullptr;
@@ -1125,6 +1126,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_OUTERJOIN:        return G.p_outerJoin;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
+    case CK_ROWCOUNT:         return G.p_rowCount;
     case CK_ROWSIZE:          return G.p_rowSize;
     case CK_RPNCALC:          return G.p_rpnCalc;
     case CK_SCAN:             return G.p_scan;
@@ -1308,12 +1310,12 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_OUTERJOIN:        return "G.p_outerJoin"_Stz;
     case CK_PROJECT:          return "G.p_project"_Stz;
     case CK_PROJECTION:       return "G.p_projection"_Stz;
+    case CK_ROWCOUNT:         return "G.p_rowCount"_Stz;
     case CK_ROWSIZE:          return "G.p_rowSize"_Stz;
     case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
     case CK_SCAN:             return "G.p_scan"_Stz;
     case CK_SECTION:          return "G.p_section"_Stz;
     case CK_SEND:             return "G.p_send"_Stz;
-    case CK_TABLESIZE:             return "G.p_tableSize"_Stz;
     case CK_SORT:             return "G.p_sort"_Stz;
     case CK_STAGE:            return "G.p_stage"_Stz;
     case CK_SUBSET:           return "G.p_subSet"_Stz;
@@ -1321,6 +1323,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TABLELIST:        return "G.p_tableList"_Stz;
     case CK_TABLENM:          return "G.p_tableNm"_Stz;
     case CK_TABLEPTN:         return "G.p_tablePtn"_Stz;
+    case CK_TABLESIZE:        return "G.p_tableSize"_Stz;
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOP:              return "G.p_top"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
@@ -2187,6 +2190,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
+    case CK_ROWCOUNT:         *((Card**)&G.p_rowCount)         = pCard; break;
     case CK_ROWSIZE:          *((Card**)&G.p_rowSize)          = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard;
@@ -2194,7 +2198,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
     case CK_SEND:             *((Card**)&G.p_send)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
-    case CK_TABLESIZE:        *((Card**)&G.p_tableSize)        = pCard; break;
     case CK_SORT:             *((Card**)&G.p_sort)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_STAGE:            *((Card**)&G.p_stage)            = pCard;
@@ -2205,6 +2208,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
     case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
     case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
+    case CK_TABLESIZE:        *((Card**)&G.p_tableSize)        = pCard; break;
     case CK_TERM:             *((Card**)&G.p_term)             = pCard; break;
     case CK_TOP:              *((Card**)&G.p_top)              = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;

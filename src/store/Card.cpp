@@ -2133,6 +2133,32 @@ Card_Projection* Card::pSub_projection(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_RowCount.hpp"
+Card_RowCount* Card::pSub_rowCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RowCount* p_rowCount =
+      _pCard_RowCount(pFindSubCard(CK_ROWCOUNT));
+  return p_rowCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_RowSize.hpp"
+Card_RowSize* Card::pSub_rowSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RowSize* p_rowSize =
+      _pCard_RowSize(pFindSubCard(CK_ROWSIZE));
+  return p_rowSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_RpnCalc.hpp"
 Card_RpnCalc* Card::pSub_rpnCalc(void)
 {

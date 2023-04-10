@@ -59,8 +59,9 @@ Card_TableSize* Card_TableSize::pDerive(Table* pTable)
 
   i8 jTableSize = 0;
   i8 jRowSize   = 0;
+  i8 nRowCount  = 0;
 
-  Card_Table::vGetSizes(pTable,jTableSize,jRowSize);
+  Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
   Card_TableSize* p_size = new Card_TableSize;
   s32 sSize(jTableSize);

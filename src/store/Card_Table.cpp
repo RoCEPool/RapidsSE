@@ -83,11 +83,11 @@ Table* Card_Table::pAccess_Table(Stz* szTableNm)
 /*----------------------------------------------------------------------------*/
 /* get size of a table and its rows                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vGetSizes(Table* pTable, i8& jTableSize, i8& jRowSize)
+void Card_Table::vGetSizes(Table* pTable, i8& jTableSize, i8& jRowSize, i8& nRowCount)
 {
   _static_
 
-  jTableSize = pTable->iRelativeSize(jRowSize);
+  pTable->vGetGridEstimates(jTableSize, jRowSize, nRowCount);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,8 +169,9 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
 
     i8 jTableSize;
     i8 jRowSize;
+    i8 nRowCount;
 
-    Card_Table::vGetSizes(pTable,jTableSize,jRowSize);
+    Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
     pCI->G.p_tableSize = new Card_TableSize;
     pCI->G.p_tableSize->vValue(jTableSize);
@@ -179,6 +180,10 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     pCI->G.p_rowSize = new Card_RowSize;
     pCI->G.p_rowSize->vValue(jRowSize);
     pCI->G.p_table->vAppend(pCI->G.p_rowSize);
+
+    pCI->G.p_rowCount = new Card_RowCount;
+    pCI->G.p_rowCount->vValue(nRowCount);
+    pCI->G.p_table->vAppend(pCI->G.p_rowCount);
 
   }
 
