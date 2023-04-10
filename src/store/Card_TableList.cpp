@@ -161,6 +161,38 @@ bool Card_TableList::bIsCmpPredCoPtn(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_RowCount* Card_TableList::pGetRowCount(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMainWithSub(CK_TABLE, CK_ROWCOUNT)) {
+    if (xCI.G.p_table->bIsValue(cTblSyn))
+      return xCI.G.p_rowCount;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_RowSize* Card_TableList::pGetRowSize(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMainWithSub(CK_TABLE, CK_ROWSIZE)) {
+    if (xCI.G.p_table->bIsValue(cTblSyn))
+      return xCI.G.p_rowSize;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_TablePtn* Card_TableList::pGetTablePtn(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
