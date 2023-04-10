@@ -235,13 +235,16 @@ namespace STORE
     void vSetTableColSyn(char cTblSyn);
     void vSprint(Stz* szFormat, ...);
 
+    eCT  eType(void);
+    Stz* szType(void);
+
     Stz* szValue(void);
 
     void Y_vAll(Card* pCard_arg);
     void Y_vAll(TagSet* pProperties);
     void Y_vCut(Stz* szPpyNm);
-    char Y_cGet(i8 i_Ppy);
-    char Y_cGet(Stz* szPptNm);
+//    char Y_cGet(i8 i_Ppy);
+//    char Y_cGet(Stz* szPptNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);
@@ -308,6 +311,7 @@ namespace STORE
     static eCK  eTo_eCK(Stz* szCardNm);
 
     static eCT  eTo_eCT(Stz* szType);
+    static eCT  eTo_eCT_char(Stz* szType);
 
     static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
 

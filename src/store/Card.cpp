@@ -302,6 +302,19 @@ eCT Card::eTo_eCT(Stz* szType)
   return CT_NONE;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find eCT by name                                                           */
+/*----------------------------------------------------------------------------*/
+eCT Card::eTo_eCT_char(Stz* szType)
+{
+  _static_
+
+  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
+    if (szCT_char[i_Type]->bSame(szType))
+      return (eCT)i_Type;
+
+  return CT_NONE;
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert eYG to eAL                                                         */
@@ -488,6 +501,7 @@ void Card::vClearMarksRecursive(void)
   }
 
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* get card no                                                                */
@@ -2771,6 +2785,33 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find eCT by name                                                           */
+/*----------------------------------------------------------------------------*/
+eCT Symbol::eType(void)
+{
+
+  Stz* szP_Type = Y_szGet(P_Type);
+
+  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
+    if (aCT[i_Type]->bSame(szP_Type))
+      return (eCT)i_Type;
+
+  return CT_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find eCT by name                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szType(void)
+{
+  _static_
+
+  eCT eType = this->eType();
+
+  return aCT[eType];
+}
+
+/*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szValue(void)
@@ -2826,36 +2867,36 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Symbol::Y_cGet(Stz* szPptNm)
-{
-
-  if (! m_pProperties)
-    return 0;
-
-  Stz* szValue = m_pProperties->szValue(szPptNm);
-
-  if (szValue)
-    return * szValue->azChar();
-  else
-    return 0;
-}
+//char Symbol::Y_cGet(Stz* szPptNm)
+//{
+//
+//  if (! m_pProperties)
+//    return 0;
+//
+//  Stz* szValue = m_pProperties->szValue(szPptNm);
+//
+//  if (szValue)
+//    return * szValue->azChar();
+//  else
+//    return 0;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Symbol::Y_cGet(i8 i_Ppy)
-{
-
-  if (! m_pProperties)
-    return 0;
-
-  Stz* szValue = m_pProperties->szValue(i_Ppy);
-
-  if (szValue)
-    return * szValue->azChar();
-  else
-    return 0;
-}
+//char Symbol::Y_cGet(i8 i_Ppy)
+//{
+//
+//  if (! m_pProperties)
+//    return 0;
+//
+//  Stz* szValue = m_pProperties->szValue(i_Ppy);
+//
+//  if (szValue)
+//    return * szValue->azChar();
+//  else
+//    return 0;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
