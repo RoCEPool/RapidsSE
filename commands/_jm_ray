@@ -2,11 +2,7 @@
 /* _jm_ray -- run all queries                                                 */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "../tpch/sf_0001";
-tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf1";
-tag default <suffix>   = "csv";
-
-__TPCH_SCHEMA
+__TPCH_SCHEMA_LOAD_SF1
 
 // -- -- -- -- -- --
 // Q1

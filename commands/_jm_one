@@ -2,18 +2,14 @@
 /* _jm_one -- run one query                                                   */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "../tpch/sf_0001";
-tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf1";
-tag default <suffix>   = "csv";
-
-__TPCH_SCHEMA
+__TPCH_SCHEMA_LOAD_SF1
 
 
 // -- -- -- -- -- --
-// Q2
-print "#Q2";
+// Q7
+print "#Q7";
 _metrics_begin
-_jm_q2
+_jm_q7
 _metrics_end
 
 /*============================================================================*/
