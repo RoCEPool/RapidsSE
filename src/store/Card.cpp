@@ -2793,7 +2793,7 @@ eCT Symbol::eType(void)
   Stz* szP_Type = Y_szGet(P_Type);
 
   for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (aCT[i_Type]->bSame(szP_Type))
+    if (szCT_char[i_Type]->bSame(szP_Type))
       return (eCT)i_Type;
 
   return CT_NONE;
