@@ -7,7 +7,7 @@
 #include "CardIter.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Deck.hpp"
-#include "Card_Size.hpp"
+#include "Card_TableSize.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableNm.hpp"
 #include "Card_TablePtn.hpp"
@@ -75,8 +75,8 @@ Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
       p_tablePtn = _pCard_TablePtn(p_tablePtn->pDupCard());
       p_table_dup->vAppend(p_tablePtn);
     }
-    if (Card_Size* p_size = xCI.G.p_table->pSub_size()) {
-      p_size = _pCard_Size(p_size->pDupCard());
+    if (Card_TableSize* p_size = xCI.G.p_table->pSub_tableSize()) {
+      p_size = _pCard_TableSize(p_size->pDupCard());
       p_table_dup->vAppend(p_size);
     }
 
@@ -169,14 +169,14 @@ Card_TablePtn* Card_TableList::pGetTablePtn(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Size* Card_TableList::pGetTableSize(char cTblSyn)
+Card_TableSize* Card_TableList::pGetTableSize(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
-  while (xCI.G_bEachMainWithSub(CK_TABLE,CK_SIZE)) {
+  while (xCI.G_bEachMainWithSub(CK_TABLE, CK_TABLESIZE)) {
     if (xCI.G.p_table->bIsValue(cTblSyn))
-      return xCI.G.p_size;
+      return xCI.G.p_tableSize;
   }
 
   return nullptr;

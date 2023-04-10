@@ -2172,13 +2172,13 @@ Card_Section* Card::pSub_section(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Size.hpp"
-Card_Size* Card::pSub_size(void)
+#include "Card_TableSize.hpp"
+Card_TableSize* Card::pSub_tableSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Size* p_size =
-      _pCard_Size(pFindSubCard(CK_SIZE));
+  Card_TableSize* p_size =
+      _pCard_TableSize(pFindSubCard(CK_TABLESIZE));
   return p_size;
 }
 

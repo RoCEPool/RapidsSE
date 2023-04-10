@@ -109,7 +109,7 @@ namespace STORE
   class Card_Scan;
   class Card_Section;
   class Card_Send;
-  class Card_Size;
+  class Card_TableSize;
   class Card_Sort;
   class Card_Stage;
   class Card_SubSet;
@@ -444,10 +444,10 @@ namespace STORE
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
-    Card_Size*          pSub_size(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
+    Card_TableSize*     pSub_tableSize(void);
     Card_TblSyn*        pSub_tblSyn(void);
     Card_Term*          pSub_term(void);
     Card_Top*           pSub_top(void);

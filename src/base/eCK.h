@@ -95,7 +95,6 @@ enum eCK // card kind
   /* */ CK_SECTION,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
-  /* */ CK_SIZE,
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_SUBSET,
@@ -104,6 +103,7 @@ enum eCK // card kind
   /* */ CK_TABLELIST,
   /* */ CK_TABLENM,
   /* */ CK_TABLEPTN,
+  /* */ CK_TABLESIZE,
   /* */ CK_TBLSYN,
   /* */ CK_TERM,
   /* */ CK_TOP,
@@ -211,7 +211,6 @@ static Stz* aCK[]
   /* */ "CK_SECTION"_Stz,      // CK_SECTION
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
-  /* */ "CK_SIZE"_Stz,         // CK_SIZE
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
@@ -220,6 +219,7 @@ static Stz* aCK[]
   /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
   /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
   /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
+  /* */ "CK_TABLESIZE"_Stz,    // CK_TABLESIZE
   /* */ "CK_TBLSYN"_Stz,       // CK_TBLSYN
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TOP"_Stz,          // CK_TOP
@@ -327,7 +327,6 @@ static Stz* aCK_short[]
   /* */ "section"_Stz,         // CK_SECTION
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
-  /* */ "size"_Stz,            // CK_SIZE
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "subSet"_Stz,          // CK_SUBSET
@@ -336,6 +335,7 @@ static Stz* aCK_short[]
   /* */ "tableList"_Stz,       // CK_TABLELIST
   /* */ "tableNm"_Stz,         // CK_TABLENM
   /* */ "tablePtn"_Stz,        // CK_TABLEPTN
+  /* */ "tableSize"_Stz,       // CK_TABLESIZE
   /* */ "tblSyn"_Stz,          // CK_TBLSYN
   /* */ "term"_Stz,            // CK_TERM
   /* */ "top"_Stz,             // CK_TOP

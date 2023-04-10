@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Size.hpp -- Size (of table)                                           */
+/* Card_TableSize.hpp -- Size (of table)                                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace STORE
 {
-  class Card_Size : public Card
+  class Card_TableSize : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Size(void);
-   ~Card_Size(void) noexcept(false);
+    Card_TableSize(void);
+   ~Card_TableSize(void) noexcept(false);
 
-   static Card_Size* pDerive(Table* pTable);
+   static Card_TableSize* pDerive(Table* pTable);
   };
 
-  Card_Size* _pCard_Size(void* aAddr);
+  Card_TableSize* _pCard_TableSize(void* aAddr);
 }
 
 /*============================================================================*/

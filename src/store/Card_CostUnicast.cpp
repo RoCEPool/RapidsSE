@@ -6,7 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_Size.hpp"
+#include "Card_TableSize.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"

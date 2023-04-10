@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Size.cpp -- Size (of table)                                           */
+/* Card_TableSize.cpp -- Size (of table)                                           */
 /*============================================================================*/
 
-#include "Card_Size.hpp"
+#include "Card_TableSize.hpp"
 
 #include "Card_Table.hpp"
 
@@ -12,16 +12,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Size,CK_SIZE)
-__aNewFunction(Card_Size,CN_CARD)
-__vDeleteFunction(Card_Size,CN_CARD)
+__pCastFunction_Card(STORE, Card_TableSize, CK_TABLESIZE)
+__aNewFunction(Card_TableSize,CN_CARD)
+__vDeleteFunction(Card_TableSize,CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Size::Card_Size(void)
-: Card(CK_SIZE)
+Card_TableSize::Card_TableSize(void)
+: Card(CK_TABLESIZE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -33,7 +33,7 @@ Card_Size::Card_Size(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Size::~Card_Size(void) noexcept(false)
+Card_TableSize::~Card_TableSize(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -46,7 +46,7 @@ Card_Size::~Card_Size(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* produce <size> of table                                                    */
 /*----------------------------------------------------------------------------*/
-Card_Size* Card_Size::pDerive(Table* pTable)
+Card_TableSize* Card_TableSize::pDerive(Table* pTable)
 {
   _static_
 
@@ -62,7 +62,7 @@ Card_Size* Card_Size::pDerive(Table* pTable)
 
   Card_Table::vGetSizes(pTable,jTableSize,jRowSize);
 
-  Card_Size* p_size = new Card_Size;
+  Card_TableSize* p_size = new Card_TableSize;
   s32 sSize(jTableSize);
   p_size->vValue(sSize);
 

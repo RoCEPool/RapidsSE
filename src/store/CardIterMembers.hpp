@@ -188,7 +188,7 @@ namespace STORE
     Card_Scan *          p_scan;
     Card_Section *       p_section;
     Card_Send *          p_send;
-    Card_Size *          p_size;
+    Card_TableSize *     p_tableSize;
     Card_Sort *          p_sort;
     Card_Stage *         p_stage;
     Card_SubSet *        p_subSet;
