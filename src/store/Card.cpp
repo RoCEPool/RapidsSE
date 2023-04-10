@@ -2826,6 +2826,40 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
+char Symbol::Y_cGet(Stz* szPptNm)
+{
+
+  if (! m_pProperties)
+    return 0;
+
+  Stz* szValue = m_pProperties->szValue(szPptNm);
+
+  if (szValue)
+    return * szValue->azChar();
+  else
+    return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+char Symbol::Y_cGet(i8 i_Ppy)
+{
+
+  if (! m_pProperties)
+    return 0;
+
+  Stz* szValue = m_pProperties->szValue(i_Ppy);
+
+  if (szValue)
+    return * szValue->azChar();
+  else
+    return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
 i8 Symbol::Y_iGet(Stz* szPpyNm)
 {
 
