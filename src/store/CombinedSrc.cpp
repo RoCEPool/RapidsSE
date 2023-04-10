@@ -131,6 +131,48 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         pEOSSketch = pOpSketch;
         break;
 
+      case SK_AGGREG:
+
+        StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+
+        sCode = ""_Stz;
+        pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iAggregBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        RASSERT(bExtracted);
+        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+        sCode = ""_Stz;
+        pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vAggregInitBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        RASSERT(bExtracted);
+        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+        sCode = ""_Stz;
+        pFileCode->vSeekStart();
+        vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iAggregInitEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        RASSERT(bExtracted);
+        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+        sCode = ""_Stz;
+        pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vAggregColsBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        RASSERT(bExtracted);
+        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+        sCode = ""_Stz;
+        pFileCode->vSeekStart();
+        vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
+
+        sCode = ""_Stz;
+        pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iAggregColsEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        RASSERT(bExtracted);
+        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+        RASSERT(bExtracted);
+
+        break;
+
       case SK_FILTER:
         sCode = ""_Stz;
         pFileCode->vSeekStart();
@@ -165,7 +207,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         sCode = ""_Stz;
         pFileCode->vSeekStart();
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vProjectEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iProjectEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 

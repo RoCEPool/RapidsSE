@@ -502,7 +502,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOP
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    if (pOp->szOpNm()->bSame("aggreg_v2"_Stz)) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupAggreg(pCombined, pStream, pOp);
@@ -1989,6 +1989,9 @@ OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eSR ePrevStencil_v
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks(pPreExpStack);
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();

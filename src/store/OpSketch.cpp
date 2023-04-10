@@ -132,7 +132,7 @@ OpSketch::OpSketch(Stz* sExprStr, eSK eSketchKind, eSR eStencilIn, eSR eStencilO
   m_pOrdAggStack = nullptr;
   m_pLowerStack  = nullptr;
   m_pUpperStack  = nullptr;
-  m_pInitStack   = nullptr;
+  m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;
@@ -161,6 +161,7 @@ OpSketch::~OpSketch(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   delete m_pExprStack;
+  delete m_pInitStack;
 
   delete m_pStructSynthA;
   delete m_pStructSynthB;
@@ -1020,8 +1021,9 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
   }
 
-  nExpr = pExprType->nItems();
-  RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
+  //nExpr = pExprType->nItems();
+  //RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
+  pExprStack = m_pExprStack;
 
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
     vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
@@ -1130,6 +1132,8 @@ void OpSketch::vGenerateStencilToStruct(void) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
+  StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"_Stz);
+
   switch (m_eStencilTo) {
     case SR_IJ:
       StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // Inflate J-Table"_Stz);
@@ -1233,7 +1237,7 @@ void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
 /*----------------------------------------------------------------------------*/
 void OpSketch::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
 
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
   switch (eDatum) {
     case DM_BCD: {
@@ -1276,7 +1280,7 @@ void OpSketch::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
 /*----------------------------------------------------------------------------*/
 void OpSketch::vInitAgg(ePE ePreExp)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH_V2, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
   s256 sOperation;
   s32  sInitValue;
