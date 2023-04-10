@@ -3,7 +3,7 @@ create table interval1(a timestamp);
 success
 load interval1 "../DATA/QA/interval/interval1.csv";
 success
-/*
+
 select timestamp '2023-02-13 13:53:27.123' + interval '1:2' hour to minute + interval '3' second from interval1;
 rows:
 (timestamp '2023-02-13 14:55:30.123')
@@ -30,7 +30,7 @@ rows:
 select timestamp '2023-02-13 13:53:27.123' + interval '3-6' year to month + interval '10 23:55:58' day to second from interval1;
 rows:
 (timestamp '2026-08-24 13:49:25.123')
-*/
+
 select time '14:57:23'+ interval '9:3' hour to minute from interval1;
 rows:
 (time '00:00:23')
