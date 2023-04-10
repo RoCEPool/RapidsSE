@@ -1300,6 +1300,9 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
         
       case CK_RPNCALC:
         p_rpnCalc = _pCard_RpnCalc(pCard);
+
+        //szRpnExpr->vCatSprint(" type %s"_Stz,p_rpnCalc->szP_Type());
+
         if (p_rpnCalc->bIsBraced()) {
           szRpnExpr->vConcat(" }"_Stz);
         }
