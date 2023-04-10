@@ -501,6 +501,28 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOP
+    if (pOp->szOpNm()->bSame("aggreg_v2"_Stz)) {
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupAggreg(pCombined, pStream, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pOpSketch = pSketchAggreg(pStream, pOp, ePrevStencil_v2, sLabelLoop);
+        vAppend(pOpSketch);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //vSetupEosPayload(pCombined, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        //vSketchEosProjectAgg(pCombined, pStream, pOp, pShape->pCodeSynthA()->pInitStack());
+        //m_xStageOps.m_bGeneratePotTub = false;
+
+        ePrevStencil_v2 = SR_AT;
+
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
 
@@ -1060,7 +1082,7 @@ void Stencil_v2::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* set up for project aggregate                                               */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1937,8 +1959,7 @@ OpSketch* Stencil_v2::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                                  eSR ePrevStencil_v2, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1947,11 +1968,10 @@ OpSketch* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pO
   s256 szStageNm;
 
   i8 i_Op = pOp->i_Op();
-  CodeSynth_v2 *pCodeSynth;
 
   // get project expr from OP
   TagSet* pOpTags = pOp->pOpTags();
-  Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+  Stz* sAggregExpr = pOpTags->szValue(C_TAG_EXPR);
 
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1962,28 +1982,21 @@ OpSketch* Stencil_v2::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pO
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new shape for this OP
-  OpSketch *pShape = new OpSketch;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the streamDef
-  pCodeSynth = new CodeSynth_v2(pStreamDefOut, SR_AT);
-  pCodeSynth->vSynthStruct(0);
-  pShape->vStructSynthA(pCodeSynth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the row projection
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, pStreamDefOut, nullptr, pPreExpStack, ePrevStencil_v2, SR_AT);
+  OpSketch *pOpSketch = new OpSketch(sAggregExpr, SK_AGGREG, ePrevStencil_v2, SR_AT, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  TypedStack* pPostStack = pCodeSynth->pSynthPrjAgg(sProjectExpr,
-                                                 sLabel,
-                                                 sLabelLoop);
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  pShape->vCodeSynthA(pCodeSynth);
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks(pPreExpStack);
 
-  return pShape;
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -89,7 +89,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupProject(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -101,6 +101,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp);
     OpSketch* pSketchProject(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchAggreg(Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
 
 
 
@@ -122,7 +123,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop);
     OpSketch* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchTub(OpSketch* pLastOp, Stz* sLabelLoop, eSR ePrevStencil_v2);
