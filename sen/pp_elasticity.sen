@@ -197,30 +197,6 @@
   procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2
-  STD_PATH_TAG
-  "
-  procedure getBucket
-    parameters $TableNm1 $TableNm2
-  begin
-
-    stage stageA on origin :
-      start | pulse once | bucketGet $TableNm1 | stageB
-
-    stage stageB on all partitions :
-      bucketSend $TableNm1 | stageC
-
-    stage stageC on all partitions :
-      insert $TableNm2 | stageD
-
-    stage stageD on origin :
-       sink | stageA
-
-  end ;
-  "
-  procedure::add
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
   
   STD_PATH_TAG
@@ -271,36 +247,6 @@
   procedure::add
 
 ;
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get bucket start from 0 of a table
-
-  STD_PATH_TAG
-  "
-  procedure getBkt0
-    parameters $TableNm
-  begin
-
-    stage stageA on origin :
-      start | pulse once | bktGet0 $TableNm | stageB
-
-    stage stageB on next node :
-      bktSend | stageC
-
-    // for debug in one machine
-    //stage stageB on next node :
-    //  bktSend | bktRecv | stageD
-
-    stage stageC on origin :
-      bktRecv | stageD
-
-    stage stageD on origin :
-      sink | stageA
-
-  end ;
-  "
-  procedure::add
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get bucket(s) for all tables
