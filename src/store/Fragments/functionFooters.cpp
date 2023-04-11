@@ -35,12 +35,14 @@ int vInflateCrwEnd(struct Combined_T* aCombinedT)
  // marker-end
 }
 
-// function-vEosEnd
+// function-iEosEnd
 /*--------------------------------------------------------------------*/
 /* flattened function -- EOS                                          */
 /*--------------------------------------------------------------------*/
-int vEosEnd(struct Combined_T* aCombinedT)
+int iEosEnd(struct Combined_T* aCombinedT)
 {
   // marker-start
+  L_Return:
+    return 1;
 }
 // marker-end

@@ -230,7 +230,7 @@ void Step::vStreamDefOutGenerate_V2(void)
 
   // TODO: V2 - ALKA REMOVED m_eExprKind from LU
   //m_pLogicUnit->m_eExprKind = eExprKind;
-/*
+
 #ifdef WITH_DEBUG_VERSION
 
   vTrace("*****************************************************\n"_Stz);
@@ -280,7 +280,7 @@ void Step::vStreamDefOutGenerate_V2(void)
   vTrace("\n\n\n"_Stz);
 
 #endif
-*/
+
 
   m_pDataStack->vPushInt(eError);
 

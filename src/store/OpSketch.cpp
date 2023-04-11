@@ -54,6 +54,7 @@ OpSketch::OpSketch(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_eSketchKind = SK_NONE;
+  m_eHandlerKind = HK_NONE;
 
   m_sExprString  = ""_Stz;
 
@@ -102,12 +103,14 @@ OpSketch::OpSketch(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch::OpSketch(Stz* sExprStr, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut)
+OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
+                   eSR eStencilOut, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack)
     : Object(CN_OPSKETCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_eSketchKind = eSketchKind;
+  m_eHandlerKind = eHandlerKind;
 
   m_sExprString  = sExprStr;
 
@@ -133,6 +136,14 @@ OpSketch::OpSketch(Stz* sExprStr, eSK eSketchKind, eSR eStencilIn, eSR eStencilO
   m_pLowerStack  = nullptr;
   m_pUpperStack  = nullptr;
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
+
+  if (pInitStack) {
+    s256 sOperation;
+    for (i8 i=0; i< pInitStack->nValues(); i++) {
+      pInitStack->vPopStz(sOperation, __func__);
+      m_pInitStack->vPushStz(sOperation);
+    }
+  }
 
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;

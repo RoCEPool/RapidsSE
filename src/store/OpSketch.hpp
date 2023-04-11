@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eSK.h"
+#include "eHK.h"
 #include "CodeSynth_v2.hpp"
 
 namespace STORE
@@ -27,6 +28,8 @@ namespace STORE
   private:
 
     eSK  m_eSketchKind;
+
+    eHK  m_eHandlerKind;
 
     // expression string
     s4K m_sExprString;
@@ -81,8 +84,8 @@ namespace STORE
     void  operator delete(void*);
 
     OpSketch(void);
-    OpSketch(Stz* sEprStr, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut,
-             StreamDef* pStreamDefIn, StreamDef* pStreamDefOut);
+    OpSketch(Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut,
+             StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack = nullptr);
 
    ~OpSketch(void) noexcept(false);
 

@@ -11,6 +11,7 @@
 #include "eFM.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
+#include "OpSketch.hpp"
 
 namespace STORE {
 
@@ -22,6 +23,11 @@ namespace STORE {
 
   class CombinedSrc : public Object {
   private:
+
+    File* m_pFileHeader;
+    File* m_pFunctionHeader;
+    File* m_pFunctionFooter;
+    File* m_pFileCode;
 
     char m_caCode[C_FLATTEN_SOURCE_V2];
     char *m_azCodeCrs;
@@ -48,7 +54,16 @@ namespace STORE {
 
 
   private:
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn = nullptr);
+    void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendFileHeaders(void);
+    void vAppendFunctionFooter(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, i8 iFunction, Stz* szStageNm);
+    void vAppendStencilTo(OpSketch* pOpSketch);
+    void vAppendCodeTubCols(OpSketch* pOpSketch);
+    void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
+    bool bOpenCodeFiles(void);
 
     Footer *aFooter(void);
   };
