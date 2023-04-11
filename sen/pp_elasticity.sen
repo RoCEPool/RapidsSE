@@ -222,63 +222,6 @@
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get updated bucket map for a table
-
-  STD_PATH_TAG
-  "
-  procedure getBktMap
-    parameters $TableNm
-  begin
-
-    stage stageA on origin :
-      start | pulse once | bktMapGet $TableNm | stageB
-
-    stage stageB on next node :
-      bktMapSend | stageC
-
-    stage stageC on all nodes :
-      bktMapRecv | stageD
-
-    stage stageD on origin :
-       sink | stageA
-
-  end ;
-  "
-  procedure::add
-
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get bucket(s) for all tables
-
-  STD_PATH_TAG
-    "
-    procedure getAllTableBkts
-    begin
-
-      stage stageStart on origin :
-        start
-        | pulse once
-        | next
-
-      stage stageA on next node :
-        metaTables
-        | next
-
-      stage stageA on origin :
-        callProc \"getbkt0\"
-        | next
-
-      stage stageLast on origin :
-        output
-        | sink
-        | stageStart
-
-    end ;
-    "
-    procedure::add
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get all metadata for user tables
 
   STD_PATH_TAG
