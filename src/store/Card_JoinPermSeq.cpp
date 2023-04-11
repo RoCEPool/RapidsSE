@@ -59,6 +59,11 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  i8 iPermutation = pSymbol()->Y_iGet(P_Permutation);
+
+  if (686 == iPermutation)
+    vDebugPoint();
+
   i8 nBuff_emitted_prior  = 0;
   i8 nBuff_produced_locus = 0;
 
@@ -75,7 +80,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
     // calculate the buffers produced at the start of join sequence
     if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
       char cTblSyn_head = xCI.G.p_dataStart->cValue();
-      nBuff_produced_locus = p_tableList->pGetTableSize(cTblSyn_head)->iValue();
+      nBuff_produced_locus = p_tableList->pGetTableSize(cTblSyn_head)->iValue() * C_EXPANSION_COEFF;
       continue;
     }
 

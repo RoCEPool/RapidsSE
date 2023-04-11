@@ -145,14 +145,14 @@ Card_JoinPermSeq* Card_JoinPermAll::pJoinOrder(i8 iJoinOrder)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 iPermutation;
-  Card_JoinPermSeq* pPermutation = nullptr;
+  Card_JoinPermSeq* p_joinPermSeq = nullptr;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
-    pPermutation = xCI.G.p_joinPermSeq;
-    iPermutation = pPermutation->pSymbol()->Y_iGet(P_Permutation);
+    p_joinPermSeq = xCI.G.p_joinPermSeq;
+    iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
-      return (pPermutation);
+      return (p_joinPermSeq);
   }
 
   return nullptr;

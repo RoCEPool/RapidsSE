@@ -4,10 +4,10 @@
 
 /jobMetrics
 /joWrite
-/filterPred
 /glean_interactive
 /transliterated
 /weaved
+/filterPred
 /pipelineName = "_jm_q7"
 select
     supp_nation,
