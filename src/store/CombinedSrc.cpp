@@ -45,6 +45,11 @@ CombinedSrc::CombinedSrc(void)
   MemLib::vZero(m_caCode,sizeof(m_caCode),CN_COMBINEDSRC);
 #endif
 
+  m_pFileHeader     = nullptr;
+  m_pFunctionHeader = nullptr;
+  m_pFunctionFooter = nullptr;
+  m_pFileCode       = nullptr;
+
   m_caCode[0]   = '\0';
   m_azCodeCrs   = m_caCode;
 
@@ -81,44 +86,25 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   s16KB sCode;
   s256 sFunSignature;
 
-  File* pFileHeader;
-  File* pFunctionHeader;
-  File* pFunctionFooter;
-  File* pFileCode;
-  bool  bOpened;
   bool bExtracted;
   i8 nFileSize;
   bool bResult;
+  bool bEmptyEosHandler = false;
 
   OpSketch* pEOSSketch = nullptr;
 
   eSK eDrivingStencil = SK_NONE;
 
-  // open the file header file
-  pFileHeader = new File(this);
-  bOpened = pFileHeader->bOpenRead("../src/store/Fragments/fileHeader.cpp"_Stz);
-  RASSERT(bOpened);
-
-  // open the function headers file
-  pFunctionHeader = new File(this);
-  bOpened = pFunctionHeader->bOpenRead("../src/store/Fragments/functionHeaders.cpp"_Stz);
-  RASSERT(bOpened);
-
-  // open the code fragments file
-  pFileCode = new File(this);
-  bOpened = pFileCode->bOpenRead("../src/store/Fragments/Code.cpp"_Stz);
-  RASSERT(bOpened);
-
-  // open the function footer file
-  pFunctionFooter = new File(this);
-  bOpened = pFunctionFooter->bOpenRead("../src/store/Fragments/functionFooters.cpp"_Stz);
-  RASSERT(bOpened);
+  bool bOpen = bOpenCodeFiles();
+  if ( ! bOpen ) {
+    return;
+  }
 
   StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TINYC");
 
   // read the file header in
-  nFileSize = pFileHeader->iSize();
-  pFileHeader->nReadBytes((void*)sCode.azChar(), nFileSize);
+  nFileSize = m_pFileHeader->iSize();
+  m_pFileHeader->nReadBytes((void*)sCode.azChar(), nFileSize);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
   for (i8 iOpSketch = 0; iOpSketch < pStencil->nItems(); iOpSketch++) {
@@ -136,37 +122,37 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iAggregBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iAggregBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vAggregInitBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vAggregInitBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
+        m_pFileCode->vSeekStart();
         vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iAggregInitEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iAggregInitEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vAggregColsBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vAggregColsBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
+        m_pFileCode->vSeekStart();
         vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iAggregColsEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iAggregColsEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
         RASSERT(bExtracted);
@@ -175,20 +161,20 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
       case SK_FILTER:
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vFilterBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vFilterBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
+        m_pFileCode->vSeekStart();
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vExprCheck"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vExprCheck"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         sCode = ""_Stz;
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iFilterEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iFilterEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
@@ -199,15 +185,15 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vProjectBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vProjectBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
+        m_pFileCode->vSeekStart();
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iProjectEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iProjectEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
@@ -216,8 +202,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
       case SK_INFLATE_CRW:
         eDrivingStencil = SK_INFLATE_CRW;
         sCode = ""_Stz;
-        pFunctionHeader->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFunctionHeader, pOpSketch, "vInflateCrw"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFunctionHeader->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pOpSketch, "vInflateCrw"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         sFunSignature.vSprint("iFun0_%s"_Stz, pStencil->szStageNm());
         bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_CRW__", sFunSignature.azChar());
@@ -226,8 +212,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vInflateCrwBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vInflateCrwBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
@@ -240,28 +226,72 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           StrLib::vSprint(sReturnToColumn,"L_RetT_Col%lld"_Stz,i_Col);
 
           sCode = ""_Stz;
-          pFileCode->vSeekStart();
+          m_pFileCode->vSeekStart();
 
-          bExtracted = CodeSynthUtils::bExtractInflate(pFileCode, sColumn, sReturnToColumn, "vInflateCrwCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+          bExtracted = CodeSynthUtils::bExtractInflate(m_pFileCode, sColumn, sReturnToColumn, "vInflateCrwCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
           RASSERT(bExtracted);
           StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
         }
 
         sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vInflateCrwReturn"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        m_pFileCode->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vInflateCrwReturn"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
         RASSERT(bExtracted);
         StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
         break;
 
       case SK_TUB:
-        StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+        if (pOpSketch->m_eHandlerKind == HK_EOS) {
+          switch (eDrivingStencil) {
 
-        sCode = ""_Stz;
-        pFileCode->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "iTubBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-        RASSERT(bExtracted);
-        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+            case SK_INFLATE_CRW:
+              sCode = ""_Stz;
+              m_pFunctionHeader->vSeekStart();
+              bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, "vInflateCrwEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+              RASSERT(bExtracted);
+              StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+              break;
+
+            default:
+              NEVER_REACH;
+          }
+
+          sCode = ""_Stz;
+          m_pFunctionHeader->vSeekStart();
+          bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pOpSketch, "vEosHandler"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+          RASSERT(bExtracted);
+          sFunSignature.vSprint("iFun3_%s"_Stz, pStencil->szStageNm());
+          bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_EOS__", sFunSignature.azChar());
+          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+          StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+
+          sCode = ""_Stz;
+          m_pFileCode->vSeekStart();
+          bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iEosTubBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+          RASSERT(bExtracted);
+          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+          sCode = ""_Stz;
+          m_pFileCode->vSeekStart();
+          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+          bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iEosTubBody"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+          RASSERT(bExtracted);
+          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+        }
+        else {
+          bEmptyEosHandler = true;
+
+          StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+
+          sCode = ""_Stz;
+          m_pFileCode->vSeekStart();
+          bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iTubBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+          RASSERT(bExtracted);
+          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+        }
+
 
         for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
@@ -271,20 +301,20 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           StrLib::vSprint(sColumn,"%lld"_Stz,i_Col);
 
           sCode = ""_Stz;
-          pFileCode->vSeekStart();
+          m_pFileCode->vSeekStart();
 
           Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
 
           switch(pColumn->eColumnType()) {
 
             case CT_VARCHAR:
-              bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vTubVchCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
+              bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubVchCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
               RASSERT(bExtracted);
               StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
               break;
 
             default:
-              bExtracted = CodeSynthUtils::bExtract(pFileCode, pOpSketch, "vTubCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
+              bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
               RASSERT(bExtracted);
               StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
               break;
@@ -298,43 +328,48 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
       default:
         NEVER_REACH
     }
+
   }
 
-  switch (eDrivingStencil) {
-
-    case SK_INFLATE_CRW:
-      sCode = ""_Stz;
-      pFunctionHeader->vSeekStart();
-      bExtracted = CodeSynthUtils::bExtract(pFunctionFooter, nullptr, "vInflateCrwEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-      RASSERT(bExtracted);
-      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-      break;
-
-    default:
-      NEVER_REACH;
+  if ( ! bEmptyEosHandler) {
+    sCode = ""_Stz;
+    m_pFunctionFooter->vSeekStart();
+    bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, "iEosEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+    RASSERT(bExtracted);
+    StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
 
-  // generate the code for the EOS handler
-  sCode = ""_Stz;
-  pFunctionHeader->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(pFunctionHeader, pEOSSketch, "vEosHandler"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-  RASSERT(bExtracted);
-  sFunSignature.vSprint("iFun3_%s"_Stz, pStencil->szStageNm());
-  bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_EOS__", sFunSignature.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  if (bEmptyEosHandler) {
 
-  sCode = ""_Stz;
-  pFunctionHeader->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(pFunctionFooter, nullptr, "vEosEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-  RASSERT(bExtracted);
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    switch (eDrivingStencil) {
+
+      case SK_INFLATE_CRW:
+        sCode = ""_Stz;
+        m_pFunctionFooter->vSeekStart();
+        bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, "vInflateCrwEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+        RASSERT(bExtracted);
+        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+        break;
+
+      default:
+        NEVER_REACH;
+    }
+
+    // generate the code for the EOS handler
+    sCode = ""_Stz;
+    m_pFunctionHeader->vSeekStart();
+    bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pEOSSketch, "vEmptyEosHandler"_Stz, "marker-start"_Stz,
+                                          "marker-end"_Stz, sCode);
+    RASSERT(bExtracted);
+    sFunSignature.vSprint("iFun3_%s"_Stz, pStencil->szStageNm());
+    bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_EOS_EMPTY__", sFunSignature.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  }
 
   vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
 
   // close the files
-  pFileHeader->vClose();
-  pFunctionHeader->vClose();
-  pFileCode->vClose();
+  vCloseCodeFiles();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -369,6 +404,20 @@ void CombinedSrc::vPrint(void) {
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* close the code fragment files                                             */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vCloseCodeFiles(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
+
+  // close the files
+  m_pFileHeader->vClose();
+  m_pFunctionHeader->vClose();
+  m_pFileCode->vClose();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for the expression                                           */
 /*----------------------------------------------------------------------------*/
 void CombinedSrc::vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent)
@@ -386,6 +435,41 @@ void CombinedSrc::vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent)
     sCopy.vSprint("\n%s%s"_Stz, sIndent, sExpr->azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print the synthesized code                                                 */
+/*----------------------------------------------------------------------------*/
+bool CombinedSrc::bOpenCodeFiles(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  bool  bOpened;
+
+  // open the file header file
+  m_pFileHeader = new File(this);
+  bOpened = m_pFileHeader->bOpenRead("../src/store/Fragments/fileHeader.cpp"_Stz);
+  if ( ! bOpened )
+    return false;
+
+  // open the function headers file
+  m_pFunctionHeader = new File(this);
+  bOpened = m_pFunctionHeader->bOpenRead("../src/store/Fragments/functionHeaders.cpp"_Stz);
+  if ( ! bOpened )
+    return false;
+
+  // open the code fragments file
+  m_pFileCode = new File(this);
+  bOpened = m_pFileCode->bOpenRead("../src/store/Fragments/Code.cpp"_Stz);
+  if ( ! bOpened )
+    return false;
+
+  // open the function footer file
+  m_pFunctionFooter = new File(this);
+  bOpened = m_pFunctionFooter->bOpenRead("../src/store/Fragments/functionFooters.cpp"_Stz);
+  if ( ! bOpened )
+    return false;
+
+  return true;
 }
 
 /*============================================================================*/

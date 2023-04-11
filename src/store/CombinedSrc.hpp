@@ -23,6 +23,11 @@ namespace STORE {
   class CombinedSrc : public Object {
   private:
 
+    File* m_pFileHeader;
+    File* m_pFunctionHeader;
+    File* m_pFunctionFooter;
+    File* m_pFileCode;
+
     char m_caCode[C_FLATTEN_SOURCE_V2];
     char *m_azCodeCrs;
 
@@ -48,7 +53,9 @@ namespace STORE {
 
 
   private:
+    void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
+    bool bOpenCodeFiles(void);
 
     Footer *aFooter(void);
   };

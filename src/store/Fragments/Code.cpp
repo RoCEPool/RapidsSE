@@ -377,6 +377,78 @@ i8 iTubBegin(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iEosTubBegin ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosTubBegin
+i8 iEosTubBegin(Combined_T* aCombinedT) {
+
+  struct __STRUCT_TO__ {
+    i8 iDummy;
+  };
+
+  char* szStrArea;
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TUB
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  struct __STRUCT_TO__* p__STRUCT_FROM__;
+
+  __L_LABEL__:
+
+  p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayAgg;
+  szStrArea = aCombinedT->m_racStrAreaAgg;
+  if ( aCombinedT->m_iProjectInit == 0 ) {
+    // marker-end
+  }
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iEosTubBody -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosTubBody
+i8 iEosTubBody(Combined_T* aCombinedT) {
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+    {
+      // marker-start
+
+      if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+        return 0;
+      }
+
+      aCombinedT->m_iRowsProcessed = 1;
+      aCombinedT->m_iProjectInit = 1;
+    }
+
+    if (!aCombinedT->m_iRowsProcessed)
+      goto L_Return;
+
+    // allocate a row from the tub
+#ifdef WITH_TINYC
+    aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+#endif
+    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+      return 0;
+    }
+
+    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aCombinedT->m_aRowTub;
+
+    // marker-end
+  L_Return:
+    return 0;
+  }
+
+/*----------------------------------------------------------------------------*/
 /*-- vTubCol -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vTubCol
