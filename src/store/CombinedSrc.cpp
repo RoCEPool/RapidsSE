@@ -155,7 +155,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
       case SK_INFLATE_CRW:
         eDrivingStencil = SK_INFLATE_CRW;
 
-        vAppendFunctionHeader(pOpSketch, "vInflateCrw"_Stz, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, "__FUNCTION_CRW__"_Stz, 0, pStencil->szStageNm());
 
         StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
         vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz);
@@ -176,72 +176,23 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
               NEVER_REACH;
           }
 
-          sCode = ""_Stz;
-          m_pFunctionHeader->vSeekStart();
-          bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pOpSketch, "vEosHandler"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-          RASSERT(bExtracted);
-          sFunSignature.vSprint("iFun3_%s"_Stz, pStencil->szStageNm());
-          bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_EOS__", sFunSignature.azChar());
-          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+          vAppendFunctionHeader(pOpSketch, "__FUNCTION_EOS__"_Stz, 3, pStencil->szStageNm());
 
-          StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+          vAppendStencilTo(pOpSketch);
 
-          sCode = ""_Stz;
-          m_pFileCode->vSeekStart();
-          bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iEosTubBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-          RASSERT(bExtracted);
-          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-
-          sCode = ""_Stz;
-          m_pFileCode->vSeekStart();
-          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-          bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iEosTubBody"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-          RASSERT(bExtracted);
-          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+          vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
+          vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
 
         }
         else {
           bEmptyEosHandler = true;
 
-          StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+          vAppendStencilTo(pOpSketch);
 
-          sCode = ""_Stz;
-          m_pFileCode->vSeekStart();
-          bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "iTubBegin"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-          RASSERT(bExtracted);
-          StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+          vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
         }
 
-
-        for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
-
-          s256 sColumn;
-          s256 sReturnToColumn;
-
-          StrLib::vSprint(sColumn,"%lld"_Stz,i_Col);
-
-          sCode = ""_Stz;
-          m_pFileCode->vSeekStart();
-
-          Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
-
-          switch(pColumn->eColumnType()) {
-
-            case CT_VARCHAR:
-              bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubVchCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
-              RASSERT(bExtracted);
-              StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-              break;
-
-            default:
-              bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubCol"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
-              RASSERT(bExtracted);
-              StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-              break;
-              //NEVER_REACH
-          }
-
-        }
+        vAppendCodeTubCols(pOpSketch);
 
         break;
 
@@ -252,11 +203,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   }
 
   if ( ! bEmptyEosHandler) {
-    sCode = ""_Stz;
-    m_pFunctionFooter->vSeekStart();
-    bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, "iEosEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-    RASSERT(bExtracted);
-    StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    vAppendFunctionFooter(nullptr, "iEosEnd"_Stz);
   }
 
   if (bEmptyEosHandler) {
@@ -264,11 +211,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     switch (eDrivingStencil) {
 
       case SK_INFLATE_CRW:
-        sCode = ""_Stz;
-        m_pFunctionFooter->vSeekStart();
-        bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, "vInflateCrwEnd"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
-        RASSERT(bExtracted);
-        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+        vAppendFunctionFooter(nullptr, "vInflateCrwEnd"_Stz);
         break;
 
       default:
@@ -278,7 +221,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     // generate the code for the EOS handler
     sCode = ""_Stz;
     m_pFunctionHeader->vSeekStart();
-    bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pEOSSketch, "vEmptyEosHandler"_Stz, "marker-start"_Stz,
+    bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pEOSSketch, "__FUNCTION_EOS_EMPTY__"_Stz, "marker-start"_Stz,
                                           "marker-end"_Stz, sCode);
     RASSERT(bExtracted);
     sFunSignature.vSprint("iFun3_%s"_Stz, pStencil->szStageNm());
@@ -327,7 +270,7 @@ void CombinedSrc::vPrint(void) {
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction)
+void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -336,7 +279,8 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction)
 
   sCode = ""_Stz;
   m_pFileCode->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, szFunction, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, szFunction,
+                                        "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 }
@@ -394,7 +338,7 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, Stz* szFunction)
 /*----------------------------------------------------------------------------*/
 /* append function header fragment                                            */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, Stz* szStageNm)
+void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, i8 iFunction, Stz* szStageNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -405,11 +349,11 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, St
 
   sCode = ""_Stz;
   m_pFunctionHeader->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pOpSketch, "vInflateCrw"_Stz, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pOpSketch, szFunction, "marker-start"_Stz, "marker-end"_Stz, sCode);
   RASSERT(bExtracted);
 
-  sFunSignature.vSprint("iFun0_%s"_Stz, szStageNm);
-  bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_CRW__", sFunSignature.azChar());
+  sFunSignature.vSprint("iFun%d_%s"_Stz, iFunction,szStageNm);
+  bResult = StrLib::bReplace(sCode.azChar(), (char*)szFunction, sFunSignature.azChar());
   RASSERT(bResult);
 
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
@@ -424,6 +368,45 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment for tub columns                                       */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeTubCols(OpSketch* pOpSketch)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s16KB sCode;
+  bool bExtracted;
+
+  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
+
+    sCode = ""_Stz;
+    m_pFileCode->vSeekStart();
+
+    Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
+
+    switch (pColumn->eColumnType()) {
+
+      case CT_VARCHAR:
+        vAppendCodeFragment(pOpSketch, "vTubVchCol"_Stz, pColumn);
+//        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubVchCol"_Stz, "marker-start"_Stz,
+//                                              "marker-end"_Stz, sCode, pColumn);
+//        RASSERT(bExtracted);
+//        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+        break;
+
+      default:
+        vAppendCodeFragment(pOpSketch, "vTubCol"_Stz, pColumn);
+//        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubCol"_Stz, "marker-start"_Stz,
+//                                              "marker-end"_Stz, sCode, pColumn);
+//        RASSERT(bExtracted);
+//        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+        break;
+    }
+  }
 
 }
 

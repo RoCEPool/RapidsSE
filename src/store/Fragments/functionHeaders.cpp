@@ -9,7 +9,7 @@
 #include "../src/primitives/BaseTypes_tcc.h"
 #include "../src/base/TccStuff.h"
 
-// function-vInflateCrw
+// function-__FUNCTION_CRW__
 
 // marker-start
 
@@ -92,7 +92,7 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
     return 0;
 }
 
-// function-vEmptyEosHandler
+// function-__FUNCTION_EOS_EMPTY__
 
 // marker-start
 
@@ -107,7 +107,7 @@ int __FUNCTION_EOS_EMPTY__(struct Combined_T* aCombinedT) {
 // marker-end
 
 
-//function-vEosHandler
+//function-__FUNCTION_EOS__
 
 // marker-start
 

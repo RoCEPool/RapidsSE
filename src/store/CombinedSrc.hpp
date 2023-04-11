@@ -54,11 +54,12 @@ namespace STORE {
 
 
   private:
-    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn = nullptr);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction);
     void vAppendFunctionFooter(OpSketch* pOpSketch, Stz* szFunction);
-    void vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, Stz* szStageNm);
+    void vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, i8 iFunction, Stz* szStageNm);
     void vAppendStencilTo(OpSketch* pOpSketch);
+    void vAppendCodeTubCols(OpSketch* pOpSketch);
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
     bool bOpenCodeFiles(void);
