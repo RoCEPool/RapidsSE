@@ -419,31 +419,31 @@ i8 iEosTubBody(Combined_T* aCombinedT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
-    {
-      // marker-start
+  {
+    // marker-start
 
-      if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
-        return 0;
-      }
-
-      aCombinedT->m_iRowsProcessed = 1;
-      aCombinedT->m_iProjectInit = 1;
-    }
-
-    if (!aCombinedT->m_iRowsProcessed)
-      goto L_Return;
-
-    // allocate a row from the tub
-#ifdef WITH_TINYC
-    aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
-#endif
     if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
 
-    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aCombinedT->m_aRowTub;
+    aCombinedT->m_iRowsProcessed = 1;
+    aCombinedT->m_iProjectInit = 1;
+  }
 
-    // marker-end
+  if (!aCombinedT->m_iRowsProcessed)
+    goto L_Return;
+
+  // allocate a row from the tub
+#ifdef WITH_TINYC
+  aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+#endif
+  if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+    return 0;
+  }
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aCombinedT->m_aRowTub;
+
+  // marker-end
   L_Return:
     return 0;
   }

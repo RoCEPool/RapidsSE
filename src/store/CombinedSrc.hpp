@@ -11,6 +11,7 @@
 #include "eFM.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
+#include "OpSketch.hpp"
 
 namespace STORE {
 
@@ -53,6 +54,11 @@ namespace STORE {
 
 
   private:
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendFunctionFooter(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, Stz* szStageNm);
+    void vAppendStencilTo(OpSketch* pOpSketch);
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
     bool bOpenCodeFiles(void);
