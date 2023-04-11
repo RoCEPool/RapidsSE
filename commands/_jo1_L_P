@@ -2,11 +2,9 @@
 /* _jo1_L_P -- join order: Lineitem, Part                                    */
 /*============================================================================*/
 
-// --initial _jo1_L_P
-
-__TPCH_SCHEMA
-
 /jobMetrics
+/joWrite
+/jo=0
 /glean_interactive
 /transliterated
 /weaved

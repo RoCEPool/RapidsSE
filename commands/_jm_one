@@ -2,11 +2,11 @@
 /* _jm_one -- run one query                                                   */
 /*============================================================================*/
 
-//__TPCH_SCHEMA_LOAD_SF1
+__TPCH_SCHEMA_LOAD_SF1
 
-tag default <tpch_dir> = "../tpch/sf_0001";
-tag default <suffix>   = "csv";
-__TPCH_SCHEMA
+//tag default <tpch_dir> = "../tpch/sf_0001";
+//tag default <suffix>   = "csv";
+//__TPCH_SCHEMA
 
 
 // -- -- -- -- -- --

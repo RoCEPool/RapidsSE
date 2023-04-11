@@ -4,6 +4,7 @@
 
 /jobMetrics
 /joWrite
+/jo=0
 /glean_interactive
 /transliterated
 /weaved
@@ -40,7 +41,7 @@ from (
      ) as shipping
  group by
    supp_nation,
-   cust_nation                                                ,
+   cust_nation,
    l_year
  order by
    supp_nation,

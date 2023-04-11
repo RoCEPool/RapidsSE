@@ -104,19 +104,21 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
       }
 
       // b) how much produced by this join locus
-      if (nBuff_joining_with * C_EXPANSION_COEFF > nBuff_sent_over_network) {
+      if (nBuff_joining_with > nBuff_sent_over_network) {
         nBuff_produced_byLocus =
             2 * nBuff_joining_with * C_EXPANSION_COEFF;
       }
       else {
         nBuff_produced_byLocus =
-            2 * nBuff_sent_over_network;
+            2 * nBuff_sent_over_network * C_EXPANSION_COEFF;
       }
 
       // c) produced is then reduced by filter
       if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        if (nFiltPred)
-          nBuff_produced_byLocus = 0.2 * nBuff_produced_byLocus;
+        vTrace("FILTERPRED: BROADCAST %lld "_Stz, nBuff_produced_byLocus);
+        while (nFiltPred--)
+          nBuff_produced_byLocus = C_FILTER_COEFF * nBuff_produced_byLocus;
+        vTrace("  down to %lld \n"_Stz, nBuff_produced_byLocus);
       }
 
       break;
@@ -138,19 +140,21 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
       }
 
       // b) how much produced by this join locus
-      if (nBuff_joining_with * C_EXPANSION_COEFF > nBuff_sent_over_network) {
+      if (nBuff_joining_with > nBuff_sent_over_network) {
         nBuff_produced_byLocus =
             2 * nBuff_joining_with * C_EXPANSION_COEFF;
       }
       else {
         nBuff_produced_byLocus =
-            2 * nBuff_sent_over_network;
+            2 * nBuff_sent_over_network* C_EXPANSION_COEFF;
       }
 
       // c) produced is then reduced by filter
       if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        if (nFiltPred)
-          nBuff_produced_byLocus = 0.2 * nBuff_produced_byLocus;
+        vTrace("FILTERPRED: HASHCAST %lld "_Stz, nBuff_produced_byLocus);
+        while (nFiltPred--)
+          nBuff_produced_byLocus = C_FILTER_COEFF * nBuff_produced_byLocus;
+        vTrace("  down to %lld \n"_Stz, nBuff_produced_byLocus);
       }
 
       break;
