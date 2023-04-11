@@ -1,6 +1,6 @@
 
 /*============================================================================*/
-/* CombinedSrc.cpp -- Code Synthesizer                                        */
+/* CombinedSrc.cpp -- Combined source                                         */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -83,12 +83,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
-  s16KB sCode;
-  s256 sFunSignature;
 
-  bool bExtracted;
-  i8 nFileSize;
-  bool bResult;
   bool bEmptyEosHandler = false;
 
   OpSketch* pEOSSketch = nullptr;
@@ -102,12 +97,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     return;
   }
 
-  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TINYC");
-
-  // read the file header in
-  nFileSize = m_pFileHeader->iSize();
-  m_pFileHeader->nReadBytes((void*)sCode.azChar(), nFileSize);
-  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  vAppendFileHeaders();
 
   for (i8 iOpSketch = 0; iOpSketch < pStencil->nItems(); iOpSketch++) {
 
@@ -157,9 +147,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         vAppendFunctionHeader(pOpSketch, "__FUNCTION_CRW__"_Stz, 0, pStencil->szStageNm());
 
-        StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+        vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz);
-
         vAppendCodeInflateCols(pOpSketch, "vInflateCrwCol"_Stz);
 
         break;
@@ -188,7 +177,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           bEmptyEosHandler = true;
 
           vAppendStencilTo(pOpSketch);
-
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
         }
 
@@ -219,14 +207,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     }
 
     // generate the code for the EOS handler
-    sCode = ""_Stz;
-    m_pFunctionHeader->vSeekStart();
-    bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pEOSSketch, "__FUNCTION_EOS_EMPTY__"_Stz, "marker-start"_Stz,
-                                          "marker-end"_Stz, sCode);
-    RASSERT(bExtracted);
-    sFunSignature.vSprint("iFun3_%s"_Stz, pStencil->szStageNm());
-    bResult = StrLib::bReplace(sCode.azChar(), "__FUNCTION_EOS_EMPTY__", sFunSignature.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    vAppendFunctionHeader(nullptr, "__FUNCTION_EOS_EMPTY__"_Stz, 3, pStencil->szStageNm());
   }
 
   vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
@@ -316,6 +297,23 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append file headers                                                        */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendFileHeaders(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  i8 nFileSize;
+  s16KB sCode;
+
+  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TINYC");
+
+  // read the file header in
+  nFileSize = m_pFileHeader->iSize();
+  m_pFileHeader->nReadBytes((void *) sCode.azChar(), nFileSize);
+  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /* append function footer fragment                                            */
 /*----------------------------------------------------------------------------*/
 void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, Stz* szFunction)
@@ -323,9 +321,7 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, Stz* szFunction)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   s16KB sCode;
-  s256 sFunSignature;
   bool bExtracted;
-  bool bResult;
 
   sCode = ""_Stz;
   m_pFunctionFooter->vSeekStart();

@@ -56,6 +56,7 @@ namespace STORE {
   private:
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn = nullptr);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendFileHeaders(void);
     void vAppendFunctionFooter(OpSketch* pOpSketch, Stz* szFunction);
     void vAppendFunctionHeader(OpSketch* pOpSketch, Stz* szFunction, i8 iFunction, Stz* szStageNm);
     void vAppendStencilTo(OpSketch* pOpSketch);
