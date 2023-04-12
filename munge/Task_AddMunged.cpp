@@ -19438,7 +19438,6 @@ void Task::vAddMunged(Task* )
     "\n"
     ": EV_D_BKTMAPGET_handler        \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_BUCKETGET_handler        \\handler STANDARD_PIPEOUT ;\n"
-    ": EV_D_BUCKETINFO_handler       \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_BUCKETMAP_dyn_handler    \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_CRWBUFFER_handler        \\handler STANDARD_PIPEOUT ;\n"
     ": EV_D_CSVBUFFER_handler        \\handler STANDARD_PIPEOUT ;\n"

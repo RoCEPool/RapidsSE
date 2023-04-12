@@ -24,7 +24,6 @@
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
 #include "BucketGet.hpp"
-#include "BucketInfo.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
 #include "Stencil.hpp"
@@ -91,7 +90,6 @@ namespace STORE
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
 
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
-    REG<BucketGet,      CN_BUCKETINFO    > m_xpBucketInfo;
     REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;

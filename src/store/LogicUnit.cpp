@@ -88,7 +88,6 @@ LogicUnit::LogicUnit(void)
 
 ,      m_xpBktMapGet(this,RF_REPAIR_DELETE,     BktMapGet::vRepair,         LR_BKTMAP)
 ,      m_xpBucketGet(this,RF_REPAIR_DELETE,     BucketGet::vRepair,      LR_BUCKETGET)
-,     m_xpBucketInfo(this,RF_REPAIR_DELETE,    BucketInfo::vRepair,     LR_BUCKETINFO)
 
 ,       m_xpCombined(this,RF_REPAIR_DELETE,      Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepairList,  LR_CRWBUFFER)

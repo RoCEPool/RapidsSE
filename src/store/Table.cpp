@@ -25,7 +25,6 @@
 
 #include "Grid.hpp"
 #include "MY.hpp"
-#include "BucketInfo.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 Atomic gixTable;
@@ -1012,9 +1011,6 @@ bool Table::bUpdateBucket(Parcel* pParcel)
     eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
 
     switch (eClass) {
-      case CN_BUCKETINFO:
-        // do nothing for now
-        break;
       case CN_CRWBUFFER:
       {
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
