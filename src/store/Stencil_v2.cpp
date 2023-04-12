@@ -517,7 +517,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
         ePrevStencil_v2 = SR_AT;
 
-        OpSketch* pLastOpSketch = pOpSketch;
+        OpSketch* pAggOpSketch = pOpSketch;
         Op *pLastOp = pOp;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -530,7 +530,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
         vSetupTub(pCombined, pLastOp, HK_EOS);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pOpSketch = pSketchTub(pLastOpSketch, HK_EOS, sLabelLoop, ePrevStencil_v2, pOpSketch->m_pInitStack);
+        pOpSketch = pSketchTub(pAggOpSketch, HK_EOS, sLabelLoop, ePrevStencil_v2, pAggOpSketch->m_pInitStack);
         vAppend(pOpSketch);
 
         bGeneratePotTub = false;
@@ -577,10 +577,11 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       Op *pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pLastOp, HK_CRWBUFFER);
+      vSetupTub(pCombined, pLastOp, eHandlerKind);
 
       pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, sLabelLoop, ePrevStencil_v2);
     }
+
     // add the op sketch to the stencil
     vAppend(pOpSketch);
 

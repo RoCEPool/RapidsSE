@@ -153,8 +153,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
+          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
           vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
-
         }
         else {
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);

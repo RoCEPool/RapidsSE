@@ -137,11 +137,13 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   m_pUpperStack  = nullptr;
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
+  // duplicate the init stack
   if (pInitStack) {
-    s256 sOperation;
-    for (i8 i=0; i< pInitStack->nValues(); i++) {
-      pInitStack->vPopStz(sOperation, __func__);
-      m_pInitStack->vPushStz(sOperation);
+    TypeValueArea xTypeValueArea;
+
+    for (i8 i = pInitStack->nValues() - 1; i >= 0; i--) {
+      pInitStack->vPeekTypeValueArea(i, &xTypeValueArea);
+      m_pInitStack->vPushStz(xTypeValueArea.szStz());
     }
   }
 
