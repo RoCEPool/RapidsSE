@@ -517,11 +517,20 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
         ePrevStencil_v2 = SR_AT;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vSetupTub(pCombined, pOp, HK_EOS);
+        OpSketch* pLastOpSketch = pOpSketch;
+        Op *pLastOp = pOp;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pOpSketch = pSketchTub(pOpSketch, HK_EOS, sLabelLoop, ePrevStencil_v2, pOpSketch->m_pInitStack);
+        //vSetupEos(pCombined, pOp, HK_EOS);
+
+        pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
+        vAppend(pOpSketch);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupTub(pCombined, pLastOp, HK_EOS);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pOpSketch = pSketchTub(pLastOpSketch, HK_EOS, sLabelLoop, ePrevStencil_v2, pOpSketch->m_pInitStack);
         vAppend(pOpSketch);
 
         bGeneratePotTub = false;
@@ -558,6 +567,13 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
   // generate the code for the TUB/POT
   if ( bGeneratePotTub ) {
 
+    OpSketch* pLastOpSketch = pOpSketch;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // sketch EOS handler function
+    pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
+    vAppend(pOpSketch);
+
     if (pCombined->aCombinedT()->m_iHashRows) {
       RASSERT(0);
       //pPotTubSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
@@ -568,16 +584,11 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupTub(pCombined, pLastOp, HK_CRWBUFFER);
 
-      pOpSketch = pSketchTub(pOpSketch, eHandlerKind, sLabelLoop, ePrevStencil_v2);
+      pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, sLabelLoop, ePrevStencil_v2);
     }
     // add the op sketch to the stencil
     vAppend(pOpSketch);
   }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sketch EOS handler function
-  //pOpSketch = pSketchEos(pStream, ePrevStencil_v2, ""_Stz);
-  //vAppend(pOpSketch);
 
   return EC_NONE;
 }
