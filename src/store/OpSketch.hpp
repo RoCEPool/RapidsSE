@@ -66,16 +66,6 @@ namespace STORE
 
     i8 m_iLimitRows;
 
-    /////////////////////////////////
-    // TO GO
-    /////////////////////////////////
-    CodeSynth_v2* m_pStructSynthA;
-    CodeSynth_v2* m_pStructSynthB;
-    CodeSynth_v2* m_pCodeSynthA;
-    CodeSynth_v2* m_pCodeSynthB;
-    CodeSynth_v2* m_pCodeSynthC;
-    /////////////////////////////////
-
     // must be last
     Footer m_xFooter;
   
@@ -100,21 +90,6 @@ namespace STORE
     eSK eSketchKind(void);
 
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
-
-    CodeSynth_v2* pStructSynthA(void);
-    void vStructSynthA(CodeSynth_v2* pStructSynth);
-
-    CodeSynth_v2* pStructSynthB(void);
-    void vStructSynthB(CodeSynth_v2* pStructSynth);
-
-    CodeSynth_v2* pCodeSynthA(void);
-    void vCodeSynthA(CodeSynth_v2* pCodeSynthA);
-
-    CodeSynth_v2* pCodeSynthB(void);
-    void vCodeSynthB(CodeSynth_v2* pCodeSynthB);
-
-    CodeSynth_v2* pCodeSynthC(void);
-    void vCodeSynthC(CodeSynth_v2* pCodeSynthC);
 
   private:
 
