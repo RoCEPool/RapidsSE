@@ -207,21 +207,6 @@ public:
   void vBpTotalSpace(void);
 
   // bucket
-  void vBucketGetGetBucketData(void);
-  void vBucketGetGetBucketTable(void);
-  void vBucketGetGetBucket(void);
-  void vBucketGetGetBucketNumber(void);
-  void vBucketSendGetBucketCrw(void);
-  void vBucketGetGetTablePtn(void);
-  void vBucketSendGetBucketPtnStream(void);
-  void vBucketGet(void);
-  void vBucketGetCrw(void);
-  void vBucketGetAndClear(void);
-  void vBucketGetNew(void);
-  void vBucketSet(void);
-  void vBucketIsNotNull(void);
-  void vBucketIsNull(void);
-  void vBucketDelete(void);
   void vBucketRecvPutParts(void);
 
   // BktMapGet

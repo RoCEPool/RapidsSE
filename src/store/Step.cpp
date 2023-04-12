@@ -60,7 +60,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_BktMapSend();
   Step::vAddSteps_BktMapRecv();
   Step::vAddSteps_Build();
-  Step::vAddSteps_BucketGet();
   Step::vAddSteps_BucketRecv();
 
   Step::vAddSteps_Class();
