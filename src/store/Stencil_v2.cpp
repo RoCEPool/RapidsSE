@@ -569,14 +569,9 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
     OpSketch* pLastOpSketch = pOpSketch;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // sketch EOS handler function
-    pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
-    vAppend(pOpSketch);
-
     if (pCombined->aCombinedT()->m_iHashRows) {
       RASSERT(0);
-      //pPotTubSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
+      //pOpSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
     } else {
 
       Op *pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
@@ -587,6 +582,11 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, sLabelLoop, ePrevStencil_v2);
     }
     // add the op sketch to the stencil
+    vAppend(pOpSketch);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // sketch EOS handler function
+    pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
     vAppend(pOpSketch);
   }
 

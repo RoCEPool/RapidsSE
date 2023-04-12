@@ -83,13 +83,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
-
-  bool bEmptyEosHandler = false;
-
-  OpSketch* pEOSSketch = nullptr;
-
-  eSK eDrivingStencil = SK_NONE;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Open the code fragment files
   bool bOpen = bOpenCodeFiles();
@@ -99,14 +92,27 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
   vAppendFileHeaders();
 
+  eHK ePreviousHandler = HK_NONE;
+  eHK eCurrentHandler = HK_NONE;
+
   for (i8 iOpSketch = 0; iOpSketch < pStencil->nItems(); iOpSketch++) {
 
     OpSketch* pOpSketch = pStencil->pGet(iOpSketch);
 
+    ePreviousHandler = eCurrentHandler;
+    eCurrentHandler = pOpSketch->m_eHandlerKind;
+
     switch(pOpSketch->eSketchKind()) {
 
       case SK_EOS:
-        pEOSSketch = pOpSketch;
+        if (ePreviousHandler == HK_CRWBUFFER) {
+          vAppendFunctionFooter(pOpSketch, "vInflateCrwEnd"_Stz);
+        }
+        else {
+          //RASSERT(ePreviousHandler == HK_ROWBUFFER || ePreviousHandler == HK_INDEXBUFFER);
+          RASSERT(0);
+        }
+        vAppendFunctionHeader(pOpSketch, "__FUNCTION_EOS__"_Stz, 3, pStencil->szStageNm());
         break;
 
       case SK_AGGREG:
@@ -143,8 +149,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         break;
 
       case SK_INFLATE_CRW:
-        eDrivingStencil = SK_INFLATE_CRW;
-
         vAppendFunctionHeader(pOpSketch, "__FUNCTION_CRW__"_Stz, 0, pStencil->szStageNm());
 
         vAppendStencilTo(pOpSketch);
@@ -154,29 +158,15 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         break;
 
       case SK_TUB:
+
+        vAppendStencilTo(pOpSketch);
+
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
-          switch (eDrivingStencil) {
-
-            case SK_INFLATE_CRW:
-              vAppendFunctionFooter(pOpSketch, "vInflateCrwEnd"_Stz);
-              break;
-
-            default:
-              NEVER_REACH;
-          }
-
-          vAppendFunctionHeader(pOpSketch, "__FUNCTION_EOS__"_Stz, 3, pStencil->szStageNm());
-
-          vAppendStencilTo(pOpSketch);
-
           vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
           vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
 
         }
         else {
-          bEmptyEosHandler = true;
-
-          vAppendStencilTo(pOpSketch);
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
         }
 
@@ -188,27 +178,12 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         NEVER_REACH
     }
 
+    eCurrentHandler = pOpSketch->m_eHandlerKind;
   }
 
-  if ( ! bEmptyEosHandler) {
-    vAppendFunctionFooter(nullptr, "iEosEnd"_Stz);
-  }
-
-  if (bEmptyEosHandler) {
-
-    switch (eDrivingStencil) {
-
-      case SK_INFLATE_CRW:
-        vAppendFunctionFooter(nullptr, "vInflateCrwEnd"_Stz);
-        break;
-
-      default:
-        NEVER_REACH;
-    }
-
-    // generate the code for the EOS handler
-    vAppendFunctionHeader(nullptr, "__FUNCTION_EOS_EMPTY__"_Stz, 3, pStencil->szStageNm());
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // EOS footer
+  vAppendFunctionFooter(nullptr, "iEosEnd"_Stz);
 
   vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
 
