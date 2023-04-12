@@ -86,7 +86,6 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,   LR_AGGTYPESTACK)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
-,      m_xpBktMapGet(this,RF_REPAIR_DELETE,     BktMapGet::vRepair,         LR_BKTMAP)
 ,      m_xpBucketGet(this,RF_REPAIR_DELETE,     BucketGet::vRepair,      LR_BUCKETGET)
 
 ,       m_xpCombined(this,RF_REPAIR_DELETE,      Combined::vRepair,       LR_COMBINED)
@@ -292,7 +291,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   // registers should have been repaired
   RASSERT(m_xpAggTimer.bIsNull());
-  RASSERT(m_xpBktMapGet.bIsNull());
   RASSERT(m_xpBucketGet.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());

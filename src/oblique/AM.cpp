@@ -3702,11 +3702,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
-    case CN_BKTMAPGET: {
-      BktMapGet* pBktMapGet = _pBktMapGet(pOperand);
-      delete pBktMapGet;
-      break;
-    }
 /*
     case CN_PARCEL: {
       Parcel* pParcel = _pParcel(pOperand);
@@ -4372,7 +4367,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;
     case CN_GRID:         eOperand = EV_D_GRID;           break;
-    case CN_BKTMAPGET:       eOperand = EV_D_BKTMAPGET;      break;
     case CN_BUCKETGET:       eOperand = EV_D_BUCKETGET;      break;
     case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
 

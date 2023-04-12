@@ -22,7 +22,6 @@
 #include "RluDiary.hpp"
 #include "PtnDef.hpp"
 #include "MetaGet.hpp"
-#include "BktMapGet.hpp"
 #include "BucketGet.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
@@ -90,7 +89,6 @@ namespace STORE
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
 
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
-    REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
