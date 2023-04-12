@@ -2,15 +2,10 @@
 /* _scanFile_join                                                             */
 /*============================================================================*/
 
-_lineitem;
-//create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
-//load lineitem             "../TPCH/SF_0001/lineitem.csv"   ;
-
-_orders;
-create        index IxO_ORDERKEY    on Orders   (O_ORDERKEY);
-load orders             "../TPCH/SF_0001/orders.csv"   ;
+__TPCH_SCHEMA
 
 //select * from lineitem, orders where l_orderkey = o_orderkey;
+
 
 pipeline scanFile
 
@@ -20,8 +15,8 @@ pipeline scanFile
         start
       | pulse once
       | checkTable lineitem
-      | chunk      "../TPCH/SF_0001/lineitem.csv"   // read chunks of file => (seekOffset)
-      | rdCsvChunk "../TPCH/SF_0001/lineitem.csv"   // (seekOffset) => (csvBuffer)
+      | chunk      "<tpch_dir>/lineitem.<suffix>"   // read chunks of file => (seekOffset)
+      | rdCsvChunk "<tpch_dir>/lineitem.<suffix>"   // (seekOffset) => (csvBuffer)
       | next localrobin
 
     stage S01 on all partitions on origin :
@@ -29,7 +24,7 @@ pipeline scanFile
       //| toLglPtnRow lineitem // (rowBuffer) => (rowBuffer x logical partitions)
       //| toLglPtnNst          // (rowBuffer) => (rowBuffer w normalised strings)
       //| toLglPtnCrw          // (rowBuffer) => (crwBuffer x logical partitions)
-      | next
+      | next broadcast
 
    stage S02 on all partitions :
        indexJoin Orders IxO_ORDERKEY " BOUND $I1 $1 == "
