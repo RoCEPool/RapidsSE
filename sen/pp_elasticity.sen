@@ -167,36 +167,6 @@
   procedure::add
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dump bucket info
-
-  STD_PATH_TAG
-  "
-  procedure dumpBucket
-    parameters $TableNm
-  begin
-    stage stageA on origin :
-      start | pulse once | dumpBktInfo $TableNm | output | sink | stageA
-
-  end ;
-  "
-  procedure::add
-
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- //  dump table bucket map
-
-  STD_PATH_TAG
-  "
-  procedure dumpBucketMap
-    parameters $TableNm
-  begin
-    stage stageA on origin :
-      start | pulse once | dumpBktMap $TableNm  | output | sink | stageA
-
-  end ;
-  "
-  procedure::add
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get meta object
   
   STD_PATH_TAG
@@ -251,37 +221,6 @@
     "
     procedure::add
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get all bucketmap for user tables
-
-  STD_PATH_TAG
-    "
-    procedure getAllBktMaps
-    begin
-
-      stage stageStart on origin :
-        start
-        | pulse once
-        | next
-
-      stage stageA on next node :
-        metaTables
-        | next
-
-      stage stageA on origin :
-        callProc \"getbktmap\"
-        | next
-
-      stage stageLast on origin :
-        output
-        | sink
-        | stageStart
-
-    end ;
-    "
-    procedure::add
-
-  ;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
