@@ -83,6 +83,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
+  eHK ePreviousHandler = HK_NONE;
+  eHK eCurrentHandler  = HK_NONE;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Open the code fragment files
   bool bOpen = bOpenCodeFiles();
@@ -90,22 +93,28 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the file headers
   vAppendFileHeaders();
 
-  eHK ePreviousHandler = HK_NONE;
-  eHK eCurrentHandler = HK_NONE;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sketch code for each operator
   for (i8 iOpSketch = 0; iOpSketch < pStencil->nItems(); iOpSketch++) {
 
     OpSketch* pOpSketch = pStencil->pGet(iOpSketch);
 
-    ePreviousHandler = eCurrentHandler;
     eCurrentHandler = pOpSketch->m_eHandlerKind;
 
     switch(pOpSketch->eSketchKind()) {
 
       case SK_EOS:
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // end previous handler
         vAppendFunctionFooter(ePreviousHandler);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // begin new EOS handler
         vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
         break;
 
@@ -140,6 +149,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         break;
 
       case SK_INFLATE_CRW:
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // new CRWBUFFER handler
         vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
 
         vAppendStencilTo(pOpSketch);
@@ -151,27 +162,34 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         vAppendStencilTo(pOpSketch);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
           vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
           vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
+          vAppendCodeTubCols(pOpSketch);
         }
         else {
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // TUB in CRW/ROW/INDEX handler
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
+          vAppendCodeTubCols(pOpSketch);
         }
 
-        vAppendCodeTubCols(pOpSketch);
         break;
 
       default:
         NEVER_REACH
     }
 
-    eCurrentHandler = pOpSketch->m_eHandlerKind;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // save previous handler
+    ePreviousHandler = eCurrentHandler;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // EOS footer
+  // end EOS handler
   RASSERT(eCurrentHandler == HK_EOS);
   vAppendFunctionFooter(eCurrentHandler);
 
@@ -393,18 +411,10 @@ void CombinedSrc::vAppendCodeTubCols(OpSketch* pOpSketch)
 
       case CT_VARCHAR:
         vAppendCodeFragment(pOpSketch, "vTubVchCol"_Stz, pColumn);
-//        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubVchCol"_Stz, "marker-start"_Stz,
-//                                              "marker-end"_Stz, sCode, pColumn);
-//        RASSERT(bExtracted);
-//        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
         break;
 
       default:
         vAppendCodeFragment(pOpSketch, "vTubCol"_Stz, pColumn);
-//        bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, "vTubCol"_Stz, "marker-start"_Stz,
-//                                              "marker-end"_Stz, sCode, pColumn);
-//        RASSERT(bExtracted);
-//        StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
         break;
     }
   }
