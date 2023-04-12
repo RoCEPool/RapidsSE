@@ -194,9 +194,6 @@ public:
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);
 
-  // bkt map
-  void vBktMapSee(void);
-
   // bp
   void vBpReadBufferPool(void);
   void vBpWriteBufferPool(void);
@@ -205,26 +202,6 @@ public:
   void vBpFreeSpace(void);
   void vBpInUseSpace(void);
   void vBpTotalSpace(void);
-
-  // bucket
-  void vBucketRecvPutParts(void);
-
-  // BktMapGet
-  void vBktMapDelete(void);
-  void vBktMapGet(void);
-  void vBktMapGetAndClear(void);
-  void vBktMapIsNotNull(void);
-  void vBktMapIsNull(void);
-  void vBktMapSet(void);
-  void vBktMapGetGetBktMapdata(void);
-  void vBktMapGetGetTableName(void);
-
-  // BktMapSend
-  void vBktMapSendGetParts(void);
-  void vBktMapSendGetPartsByName(void);
-
-  // BktMapRecv
-  void vBktMapRecvPutParts(void);
 
   // build
   void vBuildBranch(void);

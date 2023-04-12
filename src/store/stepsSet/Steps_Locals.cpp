@@ -121,11 +121,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("BktMap[]"_Stz)) {
-    pCurrentWord->vEncodeCall("BktMap[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("BucketGet[]"_Stz)) {
     pCurrentWord->vEncodeCall("BucketGet[].set"_Stz);
     EXIT();
