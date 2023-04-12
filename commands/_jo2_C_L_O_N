@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* _jo2_C_L_O_N -- join order test                                            */
+/*============================================================================*/
+
+/jobMetrics
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+/filterPred
+/pipelineName = "_jo2_C_L_O_N"
+select
+       count(*)
+  from
+       Customer, //  29
+       Lineitem, // 630
+       Orders,   // 181
+       Nation    // R 1
+ where
+       C_CUSTKEY   = O_CUSTKEY
+   and O_ORDERKEY  = L_ORDERKEY
+   and C_NATIONKEY = N_NATIONKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

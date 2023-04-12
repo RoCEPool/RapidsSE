@@ -2,11 +2,9 @@
 /* _jo1_C_L_O_P_S -- join order: Customer, Supplier, Orders, Lineitem, Part  */
 /*============================================================================*/
 
-// --initial _jo1_C_L_O_P_S
-
-__TPCH_SCHEMA
-
 /jobMetrics
+/joWrite
+/filterPred
 /glean_interactive
 /transliterated
 /weaved

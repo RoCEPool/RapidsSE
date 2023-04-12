@@ -2,11 +2,9 @@
 /* _jo1_P_PS_S -- join order test                                             */
 /*============================================================================*/
 
-// --initial _jo1_P_PS_S
-
-__TPCH_SCHEMA
-
 /jobMetrics
+/joWrite
+/filterPred
 /glean_interactive
 /transliterated
 /weaved

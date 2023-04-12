@@ -2,11 +2,9 @@
 /* _jo1_L_O_P_PS_S -- join order: Supplier, Orders, Lineitem, Part, PartSupp */
 /*============================================================================*/
 
-// --initial _jo1_L_O_P_PS_S
-
-__TPCH_SCHEMA
-
 /jobMetrics
+/joWrite
+/filterPred
 /glean_interactive
 /transliterated
 /weaved

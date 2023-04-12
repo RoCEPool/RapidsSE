@@ -2,17 +2,12 @@
 /* _jo1_C_L_O -- join order test                                              */
 /*============================================================================*/
 
-// --initial _jo1_C_L_O
-
-tag default <tpch_dir> = "../tpch/sf_0001";
-tag default <suffix>   = "csv";
-
-__TPCH_SCHEMA
-
-// /jobMetrics
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
+/filterPred
 /pipelineName = "_jo1_C_L_O"
 select
        count(*)

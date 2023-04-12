@@ -2,14 +2,12 @@
 /* _jo1_C_L_O_S -- join order: Customer, Supplier, Orders ,Lineitem          */
 /*============================================================================*/
 
-// --initial _jo1_C_L_O_S
-
-__TPCH_SCHEMA
-
 /jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
+/filterPred
 /pipelineName = "_jo1_C_L_O_S"
 select
        count(*)

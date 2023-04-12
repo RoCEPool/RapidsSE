@@ -22,7 +22,8 @@ namespace STORE
                         Card_FiltPredList* p_filtPredList);
 
      eXK eLocusCast(Card_TableList* p_tableList,
-                    Card_JoinLocus* p_joinLocus);
+                    Card_JoinLocus* p_joinLocus,
+                    Card_JoinLocus* p_joinLocus_prev);
 
      i8 iOnePermutedJoin(Card_TableList*    p_tableList,
                            Card_JoinPredList* p_joinPredList,
@@ -36,7 +37,9 @@ namespace STORE
 
      bool bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg);
 
-     bool bUnicastPermitted(char cTblSyn_l, char cTblSyn_r);
+     bool bUnicastPermitted(char cTblSyn_prior,
+                            char cTblSyn_prev,
+                            char cTblSyn_locus);
    };
 
   Card_JoinPermSeq* _pCard_JoinPermSeq(void* aAddr);

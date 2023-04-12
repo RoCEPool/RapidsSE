@@ -74,6 +74,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 
   i8 nFilterPred_prior = 0;
 
+  Card_JoinLocus* p_joinLocus_prev = nullptr;
+
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
@@ -102,7 +104,11 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 
     // get info for locus of join sequence
     char cTblSyn_locus = xCI.G.p_joinLocus->cValue();
-    eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus);
+
+    if (! p_joinLocus_prev)
+      p_joinLocus_prev = xCI.G.p_joinLocus;
+
+    eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus,p_joinLocus_prev);
     i8 nBuff_joining_with = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
 
 
@@ -134,6 +140,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
       }
     }
 
+    p_joinLocus_prev = xCI.G.p_joinLocus;
   }
 
   // record the sum network and unicast costs
@@ -154,7 +161,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 /* compute the cast of given join                                             */
 /*----------------------------------------------------------------------------*/
 eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
-                                 Card_JoinLocus* p_joinLocus)
+                                 Card_JoinLocus* p_joinLocus,
+                                 Card_JoinLocus* p_joinLocus_prev)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -162,32 +170,33 @@ eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
   Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
   Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 
-  char cTblSyn_r = p_joinLocus->cValue();
-  char cTblSyn_l = p_cmpPred->cOtherTable(cTblSyn_r);
+  char cTblSyn_locus = p_joinLocus->cValue();
+  char cTblSyn_prev  = p_joinLocus_prev? p_joinLocus_prev->cValue() : '?';
+  char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_locus);
 
-  Card_TablePtn* p_tablePtn_l = p_tableList->pGetTablePtn(cTblSyn_l);
-  Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
+  Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
+  Card_TablePtn* p_tablePtn_locus = p_tableList->pGetTablePtn(cTblSyn_locus);
 
   // l_ptn == t:$x.1 && r_ptn == t:$y.1
-//  if ( (p_tablePtn_l->bSameValue(p_term_0_cmp) && p_tablePtn_r->bSameValue(p_term_1_cmp)) ||
-//       (p_tablePtn_l->bSameValue(p_term_1_cmp) && p_tablePtn_r->bSameValue(p_term_0_cmp)) )
+//  if ( (p_tablePtn_prior->bSameValue(p_term_0_cmp) && p_tablePtn_locus->bSameValue(p_term_1_cmp)) ||
+//       (p_tablePtn_prior->bSameValue(p_term_1_cmp) && p_tablePtn_locus->bSameValue(p_term_0_cmp)) )
 
-  if ( (cTblSyn_r >= 'A' && cTblSyn_r <= 'Z') ||
-       (cTblSyn_l >= 'A' && cTblSyn_l <= 'Z') )
+  if ((cTblSyn_locus >= 'A' && cTblSyn_locus <= 'Z') ||
+      (cTblSyn_prior >= 'A' && cTblSyn_prior <= 'Z') )
     return XK_UNICAST;
 
   // t:$x.1 == l_ptn && t:$y.1 == r_ptn
-  if ( ((p_term_0_cmp->bSameValue(p_tablePtn_l) && p_term_1_cmp->bSameValue(p_tablePtn_r)) ||
-        (p_term_0_cmp->bSameValue(p_tablePtn_r) && p_term_1_cmp->bSameValue(p_tablePtn_l)) )
-      //&& bUnicastPermitted(cTblSyn_l, cTblSyn_r)
+  if ( ((p_term_0_cmp->bSameValue(p_tablePtn_prior) && p_term_1_cmp->bSameValue(p_tablePtn_locus)) ||
+        (p_term_0_cmp->bSameValue(p_tablePtn_locus) && p_term_1_cmp->bSameValue(p_tablePtn_prior)) )
+      && bUnicastPermitted(cTblSyn_prior, cTblSyn_prev, cTblSyn_locus)
       )
     return XK_UNICAST;
 
   // r_ptn == t:$x.1
-//  if (p_tablePtn_r->bSameValue(p_term_0_cmp) || p_tablePtn_r->bSameValue(p_term_1_cmp))
+//  if (p_tablePtn_locus->bSameValue(p_term_0_cmp) || p_tablePtn_locus->bSameValue(p_term_1_cmp))
 
   // t:$x.1 == r_ptn
-  if (p_term_0_cmp->bSameValue(p_tablePtn_r) || p_term_1_cmp->bSameValue(p_tablePtn_r))
+  if (p_term_0_cmp->bSameValue(p_tablePtn_locus) || p_term_1_cmp->bSameValue(p_tablePtn_locus))
     return XK_HASHCAST;
 
   return XK_BROADCAST;
@@ -427,37 +436,106 @@ bool Card_JoinPermSeq::bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg)
 /*----------------------------------------------------------------------------*/
 /* is a possible unicast permitted at table r ?                               */
 /*----------------------------------------------------------------------------*/
-bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_l, char cTblSyn_r)
+bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
+                                         char cTblSyn_prev,
+                                         char cTblSyn_locus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
+
   while (xCI.G_bEachMain()) {
     ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
-    if (xCI.G.p_MainCard->cValue() == cTblSyn_l)
+    if (xCI.G.p_MainCard->cValue() == cTblSyn_prior)
       break;
 
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
+    if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+      continue;
 
-      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
-      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
-        return false;
-    }
-  }
+ }
 
   while (xCI.G_bEachMain()) {
     ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
-    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
-      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
-      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
-        return false;
-    }
+    if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+      continue;
+
+    xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
+    if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
+      return false;
+
+    if (xCI.G.p_MainCard->cValue() == cTblSyn_prev)
+      break;
   }
 
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_l,
+//                                         char cTblSyn_prev, char cTblSyn_r)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  CardIter xCI(this);
+//  while (xCI.G_bEachMain()) {
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//
+//    if (xCI.G.p_MainCard->cValue() == cTblSyn_l)
+//      break;
+//
+//    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
+//
+//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
+//      if (xCI.G.p_locusCast && xCI.G.p_locusCast->bIsValue("XK_BROADCAST"_Stz))
+//        return false;
+//    }
+//  }
+//
+//  while (xCI.G_bEachMain()) {
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//
+//    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
+//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
+//      if (xCI.G.p_locusCast && xCI.G.p_locusCast->bIsValue("XK_BROADCAST"_Stz))
+//        return false;
+//    }
+//  }
+//
+//  return true;
+//}
+/*----------------------------------------------------------------------------*/
+//bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_l, char cTblSyn_r)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  CardIter xCI(this);
+//  while (xCI.G_bEachMain()) {
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//
+//    if (xCI.G.p_MainCard->cValue() == cTblSyn_l)
+//      break;
+//
+//    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
+//
+//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
+//      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
+//        return false;
+//    }
+//  }
+//
+//  while (xCI.G_bEachMain()) {
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//
+//    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
+//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
+//      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
+//        return false;
+//    }
+//  }
+//
+//  return true;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -119,7 +119,8 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 i_JO,
       vTrace("BROADCAST joining with %lld "_Stz, nBuff_joining_with);
       if (nBuff_joining_with > nBuff_sent_over_network) {
         nBuff_produced_byLocus =
-            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF;
+            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF
+              * ((nLocus - 1) ? (nLocus-1) * C_JOIN_LONGER : 1.0);
       }
       else {
         nBuff_produced_byLocus =
@@ -157,11 +158,12 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 i_JO,
       // c) how much produced by this join locus
       if (nBuff_joining_with > nBuff_sent_over_network) {
         nBuff_produced_byLocus =
-            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF;
+            C_JOIN_COEFF * (d8)nBuff_joining_with * C_EXPANSION_COEFF
+              * ((nLocus - 1) ? (nLocus-1) * C_JOIN_LONGER : 1.0);
       }
       else {
         nBuff_produced_byLocus =
-            C_JOIN_COEFF * nBuff_sent_over_network* C_EXPANSION_COEFF;
+            C_JOIN_COEFF * nBuff_sent_over_network * C_EXPANSION_COEFF;
       }
 
 
@@ -170,6 +172,12 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 i_JO,
     case XK_UNICAST:
       // no buffers arriving to this locus because of network
       nBuff_sent_over_network = 0;
+
+      // special first case
+      if (1 == nLocus && !nFiltPred_prior) {
+        nBuff_prior = nBuff_prior / C_EXPANSION_COEFF;
+        dBuff_perNode = nBuff_prior / dNodes;
+      }
 
       // a) calculate buffers arriving to this locus because of a unicast
       nBuff_queued_by_unicast = (i8)(1.0 * (nBuff_prior));
@@ -185,11 +193,13 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 i_JO,
       // b) how much produced by this join locus
       if (nBuff_joining_with > nBuff_queued_by_unicast) {
         nBuff_produced_byLocus =
-            C_JOIN_COEFF * nBuff_joining_with;
+            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF
+              * ((nLocus - 1) ? (nLocus-1) * C_JOIN_LONGER : 1.0);
+
       }
       else {
         nBuff_produced_byLocus =
-            C_JOIN_COEFF * nBuff_queued_by_unicast;
+            C_JOIN_COEFF * nBuff_queued_by_unicast * C_EXPANSION_COEFF;
       }
 
       vTrace("UNICAST produces %lld\n"_Stz, nBuff_produced_byLocus);

@@ -129,9 +129,10 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
     s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
 
     if (bNumbers)
-      pString->vCatSprint("NetCost %5s UniCost %5s : %8s"_Stz,p_costNetwork->szValue(),
-                                                              p_costUnicast->szValue(),
-                                                              sHeadTable.szStz());
+      pString->vCatSprint("NetCost %5s UniCost %5s : %8s"_Stz,
+                          p_costNetwork->szValue(),
+                          p_costUnicast->szValue(),
+                          sHeadTable.szStz());
     else
       pString->vSprint("%s"_Stz,sHeadTable.szStz());
   }
@@ -143,15 +144,18 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
     xCI.G.p_locusCast = xCI.G.p_costLocus->pSub_locusCast();
     xCI.G.p_costUnicast = xCI.G.p_costLocus->pSub_costUnicast();
     xCI.G.p_costNetwork = xCI.G.p_costLocus->pSub_costNetwork();
+    xCI.G.p_costJoining = xCI.G.p_costLocus->pSub_costJoining();
     s32 sCast = xCI.G.p_locusCast->szValue();
     StrLib::vShuffleLeft(sCast.azChar(),3);
 
     if (bNumbers)
-      pString->vCatSprint(" %5s %9s %8s"_Stz,  sCast.bSame("UNICAST"_Stz)
-                                              ? xCI.G.p_costUnicast->szValue()
-                                              : xCI.G.p_costNetwork->szValue(),
-                                            sCast.szStz(),
-                                            sNextTable.szStz());
+      pString->vCatSprint(" %5s %9s %8s (%5s)"_Stz,
+                          sCast.bSame("UNICAST"_Stz)
+                            ? xCI.G.p_costUnicast->szValue()
+                            : xCI.G.p_costNetwork->szValue(),
+                          sCast.szStz(),
+                          sNextTable.szStz(),
+                          xCI.G.p_costJoining->szValue());
     else
       pString->vCatSprint(" %s %s"_Stz,sCast.szStz(),
                           sNextTable.szStz());

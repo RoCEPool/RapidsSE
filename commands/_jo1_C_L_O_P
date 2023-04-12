@@ -2,11 +2,10 @@
 /* _jo1_C_L_O_P -- join order test                                            */
 /*============================================================================*/
 
-// --initial _jo1_C_L_O_P
-
-__TPCH_SCHEMA
-
 /jobMetrics
+/joWrite
+/jo=12
+/filterPred
 /glean_interactive
 /transliterated
 /weaved
