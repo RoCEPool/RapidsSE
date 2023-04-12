@@ -36,7 +36,7 @@ namespace STORE
 
      bool bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg);
 
-     bool bUnicastSeqFollows(char cTblSyn);
+     bool bUnicastPermitted(char cTblSyn_l, char cTblSyn_r);
    };
 
   Card_JoinPermSeq* _pCard_JoinPermSeq(void* aAddr);

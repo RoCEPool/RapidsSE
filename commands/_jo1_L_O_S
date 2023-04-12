@@ -19,7 +19,7 @@ select
        O_ORDERKEY = L_ORDERKEY
    and L_SUPPKEY  = S_SUPPKEY
 
-   and l_shipdate between '1995-01-01' and '1996-12-31'
+   //and l_shipdate between '1995-01-01' and '1996-12-31'
 
 ;
 

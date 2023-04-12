@@ -59,9 +59,9 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iPermutation = pSymbol()->Y_iGet(P_Permutation);
+  i8 i_JO = pSymbol()->Y_iGet(P_Permutation);
 
-  if (686 == iPermutation)
+  if (686 == i_JO)
     vDebugPoint();
 
   i8 nBuff_emitted_prior  = 0;
@@ -72,6 +72,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 
   i8 nLocus = 0;
 
+  i8 nFilterPred_prior = 0;
+
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
@@ -81,6 +83,15 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
     if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
       char cTblSyn_head = xCI.G.p_dataStart->cValue();
       nBuff_produced_locus = p_tableList->pGetTableSize(cTblSyn_head)->iValue() * C_EXPANSION_COEFF;
+
+      CardIter xCI_filtPred(p_filtPredList);
+      while (xCI_filtPred.G_bEachMain()) {
+        if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn_head) {
+          nFilterPred_prior = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
+          break;
+        }
+      }
+
       continue;
     }
 
@@ -94,25 +105,18 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
     eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus);
     i8 nBuff_joining_with = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
 
-    i8 nFiltPred = 0;
-    CardIter xCI_filtPred(p_filtPredList);
-    while (xCI_filtPred.G_bEachMain()) {
-      if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn_locus) {
-        nFiltPred = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
-        break;
-      }
-    }
 
     // calculate the various costs for locus of join sequence
 //    nBuff_produced_locus =
 //        xCI.G.p_joinLocus->nEstLocusCosts(nLocus, nBuff_emitted_prior, eLocusCast, nBuff_joining_with, nFiltPred);
 
     nBuff_produced_locus =
-        xCI.G.p_joinLocus->nEstLocusCosts(nLocus,
+        xCI.G.p_joinLocus->nEstLocusCosts(i_JO,
+                                          nLocus,
                                           nBuff_emitted_prior,
                                           eLocusCast,
                                           nBuff_joining_with,
-                                          nFiltPred);
+                                          nFilterPred_prior);
 
     // running sum of the network and unicast costs
     Card_CostLocus* p_costLocus = xCI.G.p_joinLocus->pSub_costLocus();
@@ -120,6 +124,16 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
     nSumNetworkCost += p_costNetwork->iValue();
     Card_CostUnicast* p_costUnicast = p_costLocus->pSub_costUnicast();
     nSumUnicastCost += p_costUnicast->iValue();
+
+    nFilterPred_prior = 0;
+    CardIter xCI_filtPred(p_filtPredList);
+    while (xCI_filtPred.G_bEachMain()) {
+      if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn_locus) {
+        nFilterPred_prior = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
+        break;
+      }
+    }
+
   }
 
   // record the sum network and unicast costs
@@ -145,8 +159,8 @@ eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CmpPred* p_cmpPred = p_joinLocus->pSub_cmpPred();
-  Card_Term* p_term_0 = p_cmpPred->pGetTerm_0();
-  Card_Term* p_term_1 = p_cmpPred->pGetTerm_1();
+  Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
+  Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 
   char cTblSyn_r = p_joinLocus->cValue();
   char cTblSyn_l = p_cmpPred->cOtherTable(cTblSyn_r);
@@ -155,24 +169,25 @@ eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
   Card_TablePtn* p_tablePtn_r = p_tableList->pGetTablePtn(cTblSyn_r);
 
   // l_ptn == t:$x.1 && r_ptn == t:$y.1
-//  if ( (p_tablePtn_l->bSameValue(p_term_0) && p_tablePtn_r->bSameValue(p_term_1)) ||
-//       (p_tablePtn_l->bSameValue(p_term_1) && p_tablePtn_r->bSameValue(p_term_0)) )
+//  if ( (p_tablePtn_l->bSameValue(p_term_0_cmp) && p_tablePtn_r->bSameValue(p_term_1_cmp)) ||
+//       (p_tablePtn_l->bSameValue(p_term_1_cmp) && p_tablePtn_r->bSameValue(p_term_0_cmp)) )
 
   if ( (cTblSyn_r >= 'A' && cTblSyn_r <= 'Z') ||
        (cTblSyn_l >= 'A' && cTblSyn_l <= 'Z') )
     return XK_UNICAST;
 
   // t:$x.1 == l_ptn && t:$y.1 == r_ptn
-  if ( ( (p_term_0->bSameValue(p_tablePtn_l) && p_term_1->bSameValue(p_tablePtn_r)) ||
-         (p_term_0->bSameValue(p_tablePtn_r) && p_term_1->bSameValue(p_tablePtn_l)) )
-      && bUnicastSeqFollows(cTblSyn_l))
+  if ( ((p_term_0_cmp->bSameValue(p_tablePtn_l) && p_term_1_cmp->bSameValue(p_tablePtn_r)) ||
+        (p_term_0_cmp->bSameValue(p_tablePtn_r) && p_term_1_cmp->bSameValue(p_tablePtn_l)) )
+      //&& bUnicastPermitted(cTblSyn_l, cTblSyn_r)
+      )
     return XK_UNICAST;
 
   // r_ptn == t:$x.1
-//  if (p_tablePtn_r->bSameValue(p_term_0) || p_tablePtn_r->bSameValue(p_term_1))
+//  if (p_tablePtn_r->bSameValue(p_term_0_cmp) || p_tablePtn_r->bSameValue(p_term_1_cmp))
 
   // t:$x.1 == r_ptn
-  if (p_term_0->bSameValue(p_tablePtn_r) || p_term_1->bSameValue(p_tablePtn_r))
+  if (p_term_0_cmp->bSameValue(p_tablePtn_r) || p_term_1_cmp->bSameValue(p_tablePtn_r))
     return XK_HASHCAST;
 
   return XK_BROADCAST;
@@ -410,9 +425,9 @@ bool Card_JoinPermSeq::bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does a possible unicast sequence follow after given table?                 */
+/* is a possible unicast permitted at table r ?                               */
 /*----------------------------------------------------------------------------*/
-bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
+bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_l, char cTblSyn_r)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -420,7 +435,7 @@ bool Card_JoinPermSeq::bUnicastSeqFollows(char cTblSyn)
   while (xCI.G_bEachMain()) {
     ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
-    if (xCI.G.p_MainCard->cValue() == cTblSyn)
+    if (xCI.G.p_MainCard->cValue() == cTblSyn_l)
       break;
 
     if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {

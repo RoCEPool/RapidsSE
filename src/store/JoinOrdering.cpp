@@ -134,6 +134,7 @@ void JoinOrdering::vReorderTables(void)
     StrLib::vPad(sBar.azChar(),120,'-');
     pFile->vPrint("%s\n"_Stz,sBar.azChar());
     pFile->vPrint("Query %s"_Stz,pOptimiser->szQueryNm());
+    pFile->vPrint(" (Ec %.2f Fc %.2f Jc %.2f)"_Stz,C_EXPANSION_COEFF,C_FILTER_COEFF,C_JOIN_COEFF);
     if (AM::JOB::bHasTag(C_FILTERPRED))
       pFile->vPrint(" /filterPred"_Stz);
     pFile->vPrint("\n"_Stz,pOptimiser->szQueryNm());

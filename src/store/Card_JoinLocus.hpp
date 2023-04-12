@@ -16,11 +16,12 @@ namespace STORE
     Card_JoinLocus(void);
    ~Card_JoinLocus(void) noexcept(false);
 
-    i8 nEstLocusCosts(i8 nLocus,
+    i8 nEstLocusCosts(i8 i_JO,
+                      i8 nLocus,
                       i8 nBuff_prior,
                       eXK eLocusCast,
                       i8 nBuff_joining_with,
-                      i8 nFiltPred);
+                      i8 nFiltPred_prior);
   };
 
   Card_JoinLocus* _pCard_JoinLocus(void* aAddr);

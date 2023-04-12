@@ -181,8 +181,9 @@ static Stz* C_FILTERPRED = "<filterPred>"_Stz;
 static Stz* C_JOWRITE    = "<joWrite>"_Stz;
 static Stz* C_EARLY_PROJECTIONS = "<ep>"_Stz;
 
-static d8 C_EXPANSION_COEFF = 1.5;
-static d8 C_FILTER_COEFF    = 0.4;
+static d8 C_EXPANSION_COEFF = 1.88;  // crw -> row buffer
+static d8 C_FILTER_COEFF    = 0.30;
+static d8 C_JOIN_COEFF      = 2.00;  // double the larger
 
 static char MARK_AT         = '@';
 static char MARK_BLANK      = ' ';

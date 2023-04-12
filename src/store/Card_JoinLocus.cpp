@@ -54,13 +54,17 @@ Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the various costs for this join locus                             */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
+i8 Card_JoinLocus::nEstLocusCosts(i8 i_JO,
+                                  i8 nLocus,
                                   i8 nBuff_prior,
                                   eXK eLocusCast,
                                   i8 nBuff_joining_with,
-                                  i8 nFiltPred)
+                                  i8 nFiltPred_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (274 == i_JO)
+    vDebugPoint();
 
   i8 nNodes = AM::PTNMAP::nKnownNodes();
 
@@ -86,7 +90,7 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
       // a) calculate network buffers sent by broadcast to this locus
 
       // special first case
-      if (1 == nLocus) {
+      if (1 == nLocus && !nFiltPred_prior) {
         nBuff_prior = nBuff_prior / C_EXPANSION_COEFF;
         dBuff_perNode = nBuff_prior / dNodes;
       }
@@ -103,23 +107,25 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
             nNodes * (dBuff_perNode * dRatio_toBeSent * nSend_toOtherNodes);
       }
 
-      // b) how much produced by this join locus
+      // b) send is reduced by filter
+      if (AM::JOB::bHasTag(C_FILTERPRED)) {
+        vTrace("FILTERPRED: BROADCAST %lld "_Stz, nBuff_sent_over_network);
+        while (nFiltPred_prior--)
+          nBuff_sent_over_network = C_FILTER_COEFF * nBuff_sent_over_network;
+        vTrace("  down to %lld \n"_Stz, nBuff_sent_over_network);
+      }
+
+      // c) how much produced by this join locus
+      vTrace("BROADCAST joining with %lld "_Stz, nBuff_joining_with);
       if (nBuff_joining_with > nBuff_sent_over_network) {
         nBuff_produced_byLocus =
-            2 * nBuff_joining_with * C_EXPANSION_COEFF;
+            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF;
       }
       else {
         nBuff_produced_byLocus =
-            2 * nBuff_sent_over_network * C_EXPANSION_COEFF;
+            C_JOIN_COEFF * nBuff_sent_over_network * C_EXPANSION_COEFF;
       }
 
-      // c) produced is then reduced by filter
-      if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        vTrace("FILTERPRED: BROADCAST %lld "_Stz, nBuff_produced_byLocus);
-        while (nFiltPred--)
-          nBuff_produced_byLocus = C_FILTER_COEFF * nBuff_produced_byLocus;
-        vTrace("  down to %lld \n"_Stz, nBuff_produced_byLocus);
-      }
 
       break;
 
@@ -137,25 +143,27 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
             (dNodes - 1.0) / (dNodes);
         nBuff_sent_over_network = //
             nNodes * (dBuff_perNode * dRatio_toBeSent * nSend_toOtherNodes);
+
       }
 
-      // b) how much produced by this join locus
+      // b) send is reduced by filter
+      if (AM::JOB::bHasTag(C_FILTERPRED)) {
+        vTrace("FILTERPRED: HASHCAST %lld "_Stz, nBuff_sent_over_network);
+        while (nFiltPred_prior--)
+          nBuff_sent_over_network = C_FILTER_COEFF * nBuff_sent_over_network;
+        vTrace("  down to %lld \n"_Stz, nBuff_sent_over_network);
+      }
+
+      // c) how much produced by this join locus
       if (nBuff_joining_with > nBuff_sent_over_network) {
         nBuff_produced_byLocus =
-            2 * nBuff_joining_with * C_EXPANSION_COEFF;
+            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF;
       }
       else {
         nBuff_produced_byLocus =
-            2 * nBuff_sent_over_network* C_EXPANSION_COEFF;
+            C_JOIN_COEFF * nBuff_sent_over_network* C_EXPANSION_COEFF;
       }
 
-      // c) produced is then reduced by filter
-      if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        vTrace("FILTERPRED: HASHCAST %lld "_Stz, nBuff_produced_byLocus);
-        while (nFiltPred--)
-          nBuff_produced_byLocus = C_FILTER_COEFF * nBuff_produced_byLocus;
-        vTrace("  down to %lld \n"_Stz, nBuff_produced_byLocus);
-      }
 
       break;
 
@@ -166,27 +174,33 @@ i8 Card_JoinLocus::nEstLocusCosts(i8 nLocus,
       // a) calculate buffers arriving to this locus because of a unicast
       nBuff_queued_by_unicast = (i8)(1.0 * (nBuff_prior));
 
+      // b) send is reduced by filter
+      if (AM::JOB::bHasTag(C_FILTERPRED)) {
+        vTrace("FILTERPRED: UNICAST %lld "_Stz, nBuff_queued_by_unicast);
+        while (nFiltPred_prior--)
+          nBuff_queued_by_unicast = C_FILTER_COEFF * nBuff_queued_by_unicast;
+        vTrace("  down to %lld \n"_Stz, nBuff_queued_by_unicast);
+      }
+
       // b) how much produced by this join locus
       if (nBuff_joining_with > nBuff_queued_by_unicast) {
         nBuff_produced_byLocus =
-            2 * nBuff_joining_with;
+            C_JOIN_COEFF * nBuff_joining_with;
       }
       else {
         nBuff_produced_byLocus =
-            2 * nBuff_queued_by_unicast;
+            C_JOIN_COEFF * nBuff_queued_by_unicast;
       }
 
-      // c) produced is then reduced by filter
-      if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        if (nFiltPred)
-          nBuff_produced_byLocus = 0.2 * nBuff_produced_byLocus;
-      }
+      vTrace("UNICAST produces %lld\n"_Stz, nBuff_produced_byLocus);
 
       break;
 
     default:
       NEVER_REACH
   }
+
+  vTrace("PRODUCED: %lld\n"_Stz, nBuff_produced_byLocus);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
