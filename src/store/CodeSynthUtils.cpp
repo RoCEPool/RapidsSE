@@ -132,6 +132,14 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, S
           RASSERT(bResult);
         }
 
+        if (StrLib::bContains(sLine.azChar(), "__PAYLOADBYTES__")) {
+          RASSERT( pOpSketch->m_nPayloadBytes );
+          s256 sPayLoadBytes;
+          StrLib::wToString(pOpSketch->m_nPayloadBytes, sPayLoadBytes.azChar());
+          bool bResult = StrLib::bReplace(sLine.azChar(), "__PAYLOADBYTES__", sPayLoadBytes.azChar());
+          RASSERT(bResult);
+        }
+
         // copy line into sCode
         StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
       }

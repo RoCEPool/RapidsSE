@@ -346,13 +346,13 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp
-    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg_v2"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupGbyAgg(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchAggreg(pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      pOpSketch = pSketchGbyAgg(pCombined, pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       ePrevStencil_v2 = SR_AT;
@@ -1894,15 +1894,19 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pO
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
-  // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
-
   // create a new shape for this OP
-  OpSketch *pOpSketch = new OpSketch(sGbyAggExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, pStreamDefLft, pStreamDefOut);
-
+  OpSketch *pOpSketch = new OpSketch(sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+
+  // set the indexDef
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  pOpSketch->vIndexDef(pIndexDef);
+
+  // set the payLoad bytes
+  i8 nPayloadBytes = (pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
+  pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
@@ -2116,7 +2120,7 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // aggregate Op
-    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg_v2"_Stz)) {
 
       m_xStageOps.m_iAggregOp++;
 

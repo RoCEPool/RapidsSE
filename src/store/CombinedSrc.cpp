@@ -141,8 +141,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
       case SK_GBYAGG:
 
-//        vAppendStencilTo(pOpSketch);
-//        vAppendCodeFragment(pOpSketch, "iAggregBegin"_Stz);
+        vAppendStencilTo(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz);
+        vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+        if (pOpSketch->m_nPayloadBytes)
+          vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
+        vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz);
 //
 //        vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz);
 //        vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);

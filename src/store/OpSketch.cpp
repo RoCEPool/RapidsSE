@@ -84,6 +84,7 @@ OpSketch::OpSketch(void)
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;
 
+  m_nPayloadBytes = 0;
   m_iLimitRows = 0;
 
   _checkInitialised_(CN_OPSKETCH);
@@ -122,11 +123,18 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   // expression stacks
   m_pExprStack   = new TypedStack(KK_DATA_STACK);
   m_pNullStack   = nullptr;
-  m_pGbyStack    = nullptr;
-  m_pOrdAggStack = nullptr;
   m_pLowerStack  = nullptr;
   m_pUpperStack  = nullptr;
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
+
+  if (eSketchKind == SK_GBYAGG) {
+    m_pGbyStack = new TypedStack(KK_DATA_STACK);
+    m_pOrdAggStack = new TypedStack(KK_DATA_STACK);    // ALKA COME BACK TO THIS
+  }
+  else {
+    m_pGbyStack = nullptr;
+    m_pOrdAggStack = nullptr;
+  }
 
   // duplicate the init stack
   if (pInitStack) {
@@ -141,6 +149,7 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   m_sLowerPosition = ""_Stz;
   m_sUpperPosition = ""_Stz;
 
+  m_nPayloadBytes = 0;
   m_iLimitRows = 0;
 
   _checkInitialised_(CN_OPSKETCH);
@@ -157,6 +166,8 @@ OpSketch::~OpSketch(void) noexcept(false)
 
   delete m_pExprStack;
   delete m_pInitStack;
+  delete m_pGbyStack;
+  delete m_pOrdAggStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,6 +236,26 @@ void OpSketch::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_Du
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set indexdef                                                               */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vIndexDef(IndexDef* pIndexef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_pIndexDef = pIndexef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payloadBytes                                                           */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vPayloadBytes(i8 nPayloadBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_nPayloadBytes = nPayloadBytes;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get OpSketch kind                                                          */
@@ -1221,29 +1252,29 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
   sStructColumn.vSprint("p%s->%s"_Stz,
                         xStencilRow[m_eStencilTo], sColumn.azChar());
 
-  if (m_eSketchKind == EK_GBYAGG) {
+  if (m_eSketchKind == SK_GBYAGG) {
     vInitAgg(ePreExp);
     sOperation.vSprint("_ASSIGN(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
     m_pInitStack->vPushStr(sOperation);
   } else {
     vInitAgg(ePreExp);
 
-    RASSERT(m_eSketchKind == EK_AGGREG ||
-                m_eSketchKind == EK_AGGORD)
+    RASSERT(m_eSketchKind == SK_AGGREG ||
+            m_eSketchKind == SK_AGGORD)
     sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
     m_pInitStack->vPushStr(sOperation);
   }
 
   switch (ePreExp) {
     case PE_ALL:
-      if (m_eSketchKind == EK_GBYAGG) {
+      if (m_eSketchKind == SK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
       }
       else {
-        RASSERT(m_eSketchKind == EK_AGGREG ||
-                    m_eSketchKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == SK_AGGREG ||
+                m_eSketchKind == SK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -1254,14 +1285,14 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_CNT:
-      if (m_eSketchKind == EK_GBYAGG) {
+      if (m_eSketchKind == SK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
       }
       else {
-        RASSERT(m_eSketchKind == EK_AGGREG ||
-                m_eSketchKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == SK_AGGREG ||
+                m_eSketchKind == SK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -1272,7 +1303,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_MIN:
-      if (m_eSketchKind == EK_GBYAGG) {
+      if (m_eSketchKind == SK_GBYAGG) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1296,8 +1327,8 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         }
       }
       else {
-        RASSERT(m_eSketchKind == EK_AGGREG ||
-                m_eSketchKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == SK_AGGREG ||
+                m_eSketchKind == SK_AGGORD);
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
         sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
@@ -1315,7 +1346,7 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_MAX:
-      if (m_eSketchKind == EK_GBYAGG) {
+      if (m_eSketchKind == SK_GBYAGG) {
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1339,8 +1370,8 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
         }
       }
       else {
-        RASSERT(m_eSketchKind == EK_AGGREG ||
-                m_eSketchKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == SK_AGGREG ||
+                m_eSketchKind == SK_AGGORD);
 
         // duplicate column on stack
         sOperation = aFM[eMacro_Dup[eExprType]];
@@ -1359,14 +1390,14 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
       break;
 
     case PE_SUM:
-      if (m_eSketchKind == EK_GBYAGG) {
+      if (m_eSketchKind == SK_GBYAGG) {
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(aCombinedT->m_aiPayload[%lld])"_Stz, i_ColPL);
         pExprStack->vPushStr(sOperation);
       }
       else {
-        RASSERT(m_eSketchKind == EK_AGGREG ||
-                m_eSketchKind == EK_AGGORD);
+        RASSERT(m_eSketchKind == SK_AGGREG ||
+                m_eSketchKind == SK_AGGORD);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
