@@ -29,7 +29,7 @@ namespace STORE
 
   private:
 
-    void vAddNextCasts(void);
+    void vAddStageCasts(void);
     void vCullNonusedBounds(void);
     void vCullUsedBoundsFromFilter(void);
     void vIndividuateFilter(void);

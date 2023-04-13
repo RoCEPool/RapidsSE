@@ -20,13 +20,14 @@ namespace STORE
     i8 i_Fold(void);
     Card_Fold* p_fold(void);
 
-    void vAddNextCasts(CardIter* pCI);
+    void vAddStageCasts(CardIter* pCI);
 
-    void vAddCast_toPrev_nextCard(CardIter*     pCI,
-                                  Card_OP*       p_main_prior,
-                                  Card_Project*  p_project_prior,
+    void vAddCastKind_toPrev_cast(CardIter*     pCI,
+                                  Card_OP*       p_main_curr,
+                                  Card_OP*       p_main_prev,
+                                  Card_Cast*     p_cast_prior,
                                   Card_Combined* p_combined_prior,
-                                  Card_Cast*     p_next_prior);
+                                  Card_Project*  p_project_prior);
 
     void vProjectionUpdate(CardIter* pCI);
 

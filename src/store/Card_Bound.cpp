@@ -150,12 +150,12 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine the cast for the prior p_next                                    */
+/* determine the cast for the prev p_cast                                     */
 /*----------------------------------------------------------------------------*/
-eXK Card_Bound::eNextCast(Card_TablePtn* p_tablePtn_prior,
-                          Card_TablePtn* p_tablePtn_later,
-                          Card_Index*    p_index_later,
-                          Card_Term*&    rp_term_tblCol_to_be_hashed)
+eXK Card_Bound::eStageCast(Card_TablePtn* p_tablePtn_prior,
+                           Card_TablePtn* p_tablePtn_later,
+                           Card_Index*    p_index_later,
+                           Card_Term*&    rp_term_tblCol_to_be_hashed)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

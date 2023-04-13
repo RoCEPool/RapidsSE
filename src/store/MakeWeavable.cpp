@@ -65,7 +65,7 @@ void MakeWeavable::vMakeWeavable(void)
 
   vReinstateStages();
 
-  vAddNextCasts();
+  vAddStageCasts();
 
   vTblColToStmCol();
   vStmColToColNmOfKeyExists();
@@ -79,15 +79,15 @@ void MakeWeavable::vMakeWeavable(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add next casts                                                             */
+/* add stage next casts                                                       */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vAddNextCasts(void)
+void MakeWeavable::vAddStageCasts(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "add next casts"_Stz);
+  m_pCI->vTransform(__func__, "add stage casts"_Stz);
 
-  m_pCI->G.pDeck->vAddNextCasts(m_pCI);
+  m_pCI->G.pDeck->vAddStageCasts(m_pCI);
 
   m_pCI->vEndTransform();
 }
