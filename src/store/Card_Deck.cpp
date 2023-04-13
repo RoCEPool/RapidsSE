@@ -103,59 +103,56 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
-                                         Card_OP*       p_main_curr,
-                                         Card_OP*       p_main_prev,
-                                         Card_Cast*     p_cast_prior,
-                                         Card_Combined* p_combined_prior,
-                                         Card_Project*  p_project_prior)
+                                         Card_OP*       p_OP_curr,
+                                         Card_OP*       p_OP_prev,
+                                         Card_Cast*     p_cast_prev,
+                                         Card_Combined* p_combined_prev,
+                                         Card_Project*  p_project_prev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (p_project_prior)
+  if (p_project_prev)
     vDebugPoint();
 
-  Card_Table*     p_table_prior     = p_main_prev->pSub_table();
-  Card_TablePtn*  p_tablePtn_prior  = p_table_prior->pSub_tablePtn();
+  Card_Table*     p_table_prev     = p_OP_prev->pSub_table();
+  Card_TablePtn*  p_tablePtn_prev  = p_table_prev->pSub_tablePtn();
 
-  Card_Table*     p_table_later     = p_main_curr->pSub_table();
-  Card_TablePtn*  p_tablePtn_later  = p_table_later->pSub_tablePtn();
-  Card_IndexList* p_indexList_later = p_main_curr->pSub_indexList();
-  Card_Index*     p_index_later     = p_indexList_later->pFindChosenIndex();
-  Card_Bounds*    p_bounds_later    = p_index_later->pSub_bounds();
+  Card_Table*     p_table_curr     = p_OP_curr->pSub_table();
+  Card_TablePtn*  p_tablePtn_curr  = p_table_curr->pSub_tablePtn();
+  Card_IndexList* p_indexList_curr = p_OP_curr->pSub_indexList();
+  Card_Index*     p_index_curr     = p_indexList_curr->pFindChosenIndex();
+  Card_Bounds*    p_bounds_curr    = p_index_curr->pSub_bounds();
 
   Card_Hash* p_hash_prior_new;
   Card_Term* p_term_tblCol_to_be_hashed;
 
-  eXK eStageCast = p_bounds_later->pSub_bound()->eStageCast(p_tablePtn_prior,
-                                                            p_tablePtn_later,
-                                                            p_index_later,
+  eXK eStageCast = p_bounds_curr->pSub_bound()->eStageCast(p_tablePtn_prev,
+                                                           p_tablePtn_curr,
+                                                           p_index_curr,
                                                             /*&*/p_term_tblCol_to_be_hashed);
   switch (eStageCast) {
     case XK_BROADCAST:
-      p_cast_prior->vValue("broadcast"_Stz);
+      p_cast_prev->vValue("broadcast"_Stz);
 
-      if (! p_project_prior)
-        return;
-
-      if (! p_combined_prior) {
+      if (p_project_prev && ! p_combined_prev) {
         Card_Combined *p_combined = new Card_Combined;
-        pCI->G_vInsertBefore(p_combined, p_cast_prior);
+        pCI->G_vInsertBefore(p_combined, p_cast_prev);
       }
       return;
 
     case XK_HASHCAST:
-      p_cast_prior->vValue("hashcast"_Stz);
+      p_cast_prev->vValue("hashcast"_Stz);
 
       pCI->G.p_expr = p_term_tblCol_to_be_hashed->pExpr_For_col(pCI, pCI->G.i_MainCard);
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr);
 
-      if (p_combined_prior) {
-        pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prior);
+      if (p_combined_prev) {
+        pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prev);
       }
       else {
-        pCI->G_vInsertBefore(p_hash_prior_new, p_cast_prior);
+        pCI->G_vInsertBefore(p_hash_prior_new, p_cast_prev);
         Card_Combined* p_combined = new Card_Combined;
-        pCI->G_vInsertBefore(p_combined, p_cast_prior);
+        pCI->G_vInsertBefore(p_combined, p_cast_prev);
       }
       return;
 

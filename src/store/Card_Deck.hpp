@@ -23,11 +23,11 @@ namespace STORE
     void vAddStageCasts(CardIter* pCI);
 
     void vAddCastKind_toPrev_cast(CardIter*     pCI,
-                                  Card_OP*       p_main_curr,
-                                  Card_OP*       p_main_prev,
-                                  Card_Cast*     p_cast_prior,
-                                  Card_Combined* p_combined_prior,
-                                  Card_Project*  p_project_prior);
+                                  Card_OP*       p_OP_curr,
+                                  Card_OP*       p_OP_prev,
+                                  Card_Cast*     p_cast_prev,
+                                  Card_Combined* p_combined_prev,
+                                  Card_Project*  p_project_prev);
 
     void vProjectionUpdate(CardIter* pCI);
 

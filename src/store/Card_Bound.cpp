@@ -152,43 +152,43 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 /*----------------------------------------------------------------------------*/
 /* determine the cast for the prev p_cast                                     */
 /*----------------------------------------------------------------------------*/
-eXK Card_Bound::eStageCast(Card_TablePtn* p_tablePtn_prior,
-                           Card_TablePtn* p_tablePtn_later,
-                           Card_Index*    p_index_later,
+eXK Card_Bound::eStageCast(Card_TablePtn* p_tablePtn_prev,
+                           Card_TablePtn* p_tablePtn_curr,
+                           Card_Index*    p_index_curr,
                            Card_Term*&    rp_term_tblCol_to_be_hashed)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_IdxColList* p_idxColList_later = p_index_later->pSub_idxColList();
-  Card_Term*       p_term_later_idxColOdn = pGet_idxColOdn();
-  Card_IdxCol *    p_idxCol_later =
-                       p_idxColList_later->pGetIdxCol_byIdxColOdn(p_term_later_idxColOdn->szValue());
+  Card_IdxColList* p_idxColList_curr = p_index_curr->pSub_idxColList();
+  Card_Term*       p_term_curr_idxColOdn = pGet_idxColOdn();
+  Card_IdxCol *    p_idxCol_curr =
+                       p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_curr_idxColOdn->szValue());
 
-  if (p_tablePtn_prior->pSymbol()->bIsReplicated())
+  if (p_tablePtn_prev->pSymbol()->bIsReplicated())
     return XK_UNICAST;
 
-  if (p_idxCol_later && p_idxCol_later->pSymbol()->bIsReplicated()) {
+  if (p_idxCol_curr && p_idxCol_curr->pSymbol()->bIsReplicated()) {
     // + later table is replicated so always unicast
-    //p_idxCol_later->vDump();
+    //p_idxCol_curr->vDump();
     vDebugPoint();
     return XK_UNICAST;
   }
 
-  Card_Term* p_term_prior_tblColOdn = pGet_tblColOdn();
-  if (! p_term_prior_tblColOdn)
+  Card_Term* p_term_prev_tblColOdn = pGet_tblColOdn();
+  if (! p_term_prev_tblColOdn)
     // - no prior table column (referenced in this bound) -- probably cross join
     return XK_BROADCAST;
 
-  if (p_idxCol_later->bSameValue(p_tablePtn_later)) {
+  if (p_idxCol_curr->bSameValue(p_tablePtn_curr)) {
     // + later indexed column (referenced in this bound) is later table ptn
-    if (p_term_prior_tblColOdn->bSameValue(p_tablePtn_prior)) {
+    if (p_term_prev_tblColOdn->bSameValue(p_tablePtn_prev)) {
       // + prior table column (referenced in this bound) is prior table ptn
       return XK_UNICAST;
     }
     else {
       // - prior table column (referenced in this bound) is not prior table ptn
       //     but the prior table column can be used for hash cast
-      rp_term_tblCol_to_be_hashed = p_term_prior_tblColOdn;
+      rp_term_tblCol_to_be_hashed = p_term_prev_tblColOdn;
       return XK_HASHCAST;
     }
   }
