@@ -273,33 +273,98 @@ void Board::vValidate_SubQuery(CardIter *pCI)
   if (! pCI->G.pBoard->bPrepareSubQueries())
     return;
 
-  CardIter xCI(pCI);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // main cards
 
-  xCI.G_vRestart();
+  CardIter xCI(pCI);
   while (xCI.G_bEachMain()) {
 
     switch (xCI.G.e_MainCard) {
 
       case CK_AGGREG:
+        break;
       case CK_CALL:
+        break;
       case CK_FILTER:
+        if ((xCI.G.p_boolCalc = xCI.G.p_MainCard->pSub_boolCalc())) {
+
+        }
+        break;
       case CK_GBYAGG:
+        break;
       case CK_HAVING:
+        break;
       case CK_INDEXJOIN:
+        break;
       case CK_INDEXSCAN:
+        break;
       case CK_LIMIT:
+        break;
       case CK_ORDAGG:
+        break;
       case CK_PROJECT:
+        break;
       case CK_SCAN:
+        break;
       case CK_SORT:
+        break;
       case CK_TABLE:
+        break;
       case CK_TOP:
+        break;
       case CK_WHERE:
         break;
 
       default:
-        vTrace("Missing Case: %lld %s\n"_Stz,(i8)xCI.G.e_MainCard,aCK[xCI.G.e_MainCard]);
+        vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
         NEVER_REACH
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // sub lists
+
+    if ((xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList())) {
+      CardIter xCI_indexList(&xCI);
+      while (xCI_indexList.G_bEachMain()) {
+        switch (xCI_indexList.G.e_MainCard) {
+          default:
+            vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
+            NEVER_REACH
+        }
+      }
+    }
+
+    if ((xCI.G.p_key = xCI.G.p_MainCard->pSub_key())) {
+      CardIter xCI_key(&xCI);
+      while (xCI_key.G_bEachMain()) {
+        switch (xCI_key.G.e_MainCard) {
+          default:
+            vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
+            NEVER_REACH
+        }
+      }
+    }
+
+    if ((xCI.G.p_projection = xCI.G.p_MainCard->pSub_projection())) {
+      CardIter xCI_projection(&xCI);
+      while (xCI_projection.G_bEachMain()) {
+        switch (xCI_projection.G.e_MainCard) {
+          default:
+            vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
+            NEVER_REACH
+        }
+      }
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // specific
+
+    if ((xCI.G.p_level = xCI.G.p_MainCard->pSub_level())) {
+
+    }
+
+    if ((xCI.G.p_table = xCI.G.p_MainCard->pSub_table())) {
+
     }
 
   }
