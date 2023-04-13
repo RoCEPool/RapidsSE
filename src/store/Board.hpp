@@ -151,6 +151,11 @@ namespace STORE
     i8          m_iXform;
     s256        m_sXdesc;
 
+    bool        m_bPrepareSubQueries;
+    bool        m_bFlattenSubQueries;
+    bool        m_bApplyOptimisations;
+    bool        m_bMakeWeavable;
+
   private:
     // must be last
     Footer m_xFooter;
@@ -171,6 +176,9 @@ namespace STORE
 
     static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
     static void vIndividuate_crossJoin_filter(CardIter* pCI);
+
+    static void vValidate(CardIter* pCI);
+    static void vValidate_SubQuery(CardIter* pCI);
 
     i8  i_Board(void);
     void vBoardNo(i8 i_Board);
@@ -193,6 +201,7 @@ namespace STORE
 
     SubQuery* pSubQuery(void);
 
+
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);
     i8   iXform(void);
@@ -201,6 +210,16 @@ namespace STORE
     void vXform(Stz* szTransformation);
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
+
+
+    bool bPrepareSubQueries(void);
+    void vPrepareSubQueries(bool bPrepareSubQueries);
+    bool bFlattenSubQueries(void);
+    void vFlattenSubQueries(bool bFlattenSubQueries);
+    bool bApplyOptimisations(void);
+    void vApplyOptimisations(bool bApplyOptimisations);
+    bool bMakeWeavable(void);
+    void vMakeWeavable(bool bMakeWeavable);
 
   private:
     Footer* aFooter(void);

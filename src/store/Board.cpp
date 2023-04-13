@@ -46,6 +46,11 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 
   m_pSubQuery = new SubQuery(this);
 
+  m_bPrepareSubQueries  = false;
+  m_bFlattenSubQueries  = false;
+  m_bApplyOptimisations = false;
+  m_bMakeWeavable       = false;
+
   _checkInitialised_(CN_BOARD);
 
   pBench->vAddBoard(this);
@@ -243,6 +248,62 @@ void Board::vIndividuate_crossJoin_filter(CardIter* pCI)
   if (! pCI->G.p_filter->pSub_level()) {
     pCI->G.p_filter->vPush(pCI->G.p_crossJoin->pSub_level()->pDupCardRecursive());
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vValidate(CardIter* pCI)
+{
+  _static_
+
+  pCI->vUsingBoard(BK_SUBQUERY, 0);
+
+  if (pCI->G.pBoard->eBoardKind() == BK_SUBQUERY)
+    vValidate_SubQuery(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vValidate_SubQuery(CardIter *pCI)
+{
+  _static_
+
+  if (! pCI->G.pBoard->bPrepareSubQueries())
+    return;
+
+  CardIter xCI(pCI);
+
+  xCI.G_vRestart();
+  while (xCI.G_bEachMain()) {
+
+    switch (xCI.G.e_MainCard) {
+
+      case CK_AGGREG:
+      case CK_CALL:
+      case CK_FILTER:
+      case CK_GBYAGG:
+      case CK_HAVING:
+      case CK_INDEXJOIN:
+      case CK_INDEXSCAN:
+      case CK_LIMIT:
+      case CK_ORDAGG:
+      case CK_PROJECT:
+      case CK_SCAN:
+      case CK_SORT:
+      case CK_TABLE:
+      case CK_TOP:
+      case CK_WHERE:
+        break;
+
+      default:
+        vTrace("Missing Case: %lld %s\n"_Stz,(i8)xCI.G.e_MainCard,aCK[xCI.G.e_MainCard]);
+        NEVER_REACH
+    }
+
+  }
+
 }
 
 
@@ -603,6 +664,86 @@ void Board::vXhand(const char* asXhand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_sXhand = asXhand;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bPrepareSubQueries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_bPrepareSubQueries;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPrepareSubQueries(bool bPrepareSubQueries)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_bPrepareSubQueries = bPrepareSubQueries;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bFlattenSubQueries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_bFlattenSubQueries;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vFlattenSubQueries(bool bFlattenSubQueries)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_bFlattenSubQueries = bFlattenSubQueries;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bApplyOptimisations(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_bApplyOptimisations;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vApplyOptimisations(bool bApplyOptimisations)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_bApplyOptimisations = bApplyOptimisations;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bMakeWeavable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_bMakeWeavable;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vMakeWeavable(bool bMakeWeavable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_bMakeWeavable = bMakeWeavable;
 }
 
 /*============================================================================*/

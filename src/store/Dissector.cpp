@@ -83,7 +83,7 @@ void Dissector::vDissectSpec(VertexSpec* pPipeSpec)
     vDebugPoint();
   }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pDeckSpec  = nullptr;
   m_pStageSpec = nullptr;
