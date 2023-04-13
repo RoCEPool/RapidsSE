@@ -164,12 +164,10 @@ eXK Card_Bound::eNextCast(Card_TablePtn* p_tablePtn_prior,
   Card_IdxCol *    p_idxCol_later =
                        p_idxColList_later->pGetIdxCol_byIdxColOdn(p_term_later_idxColOdn->szValue());
 
-  if (p_tablePtn_prior->pSymbol()->cGetTableSyn() >= 'A' &&
-      p_tablePtn_prior->pSymbol()->cGetTableSyn() <= 'Z')
+  if (p_tablePtn_prior->pSymbol()->bIsReplicated())
     return XK_UNICAST;
 
-
-  if (p_idxCol_later && p_idxCol_later->bIsReplicated()) {
+  if (p_idxCol_later && p_idxCol_later->pSymbol()->bIsReplicated()) {
     // + later table is replicated so always unicast
     //p_idxCol_later->vDump();
     vDebugPoint();

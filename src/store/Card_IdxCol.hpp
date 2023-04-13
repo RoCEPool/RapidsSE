@@ -15,8 +15,6 @@ namespace STORE
 
     Card_IdxCol(void);
    ~Card_IdxCol(void) noexcept(false);
-
-    bool bIsReplicated(void);
   };
 
   Card_IdxCol* _pCard_IdxCol(void* aAddr);

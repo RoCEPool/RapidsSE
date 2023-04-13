@@ -225,6 +225,7 @@ namespace STORE
     bool bIsColumn(void);         // $n or $c.n
     bool bIsCorrParam(void);      // %n
     bool bIsRelnOp(void);         // <, <=, ... >
+    bool bIsReplicated(void);     // $c.n and c >= 'A' and c <= 'Z'
     bool bIsResult(void);         // #n
     bool bIsStreamColumn(void);   // $n
     bool bIsSubQueryOp(void);     // exists, in, notExists, notIn

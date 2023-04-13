@@ -2602,6 +2602,21 @@ bool Symbol::bIsCorrParam(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a replicated $c.n ?                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsReplicated(void)
+{
+  if (! bIsTableColumn())
+    return false;
+
+  char cTblSyn = cGetTableSyn();
+  if (cTblSyn >= 'A' && cTblSyn <= 'Z')
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a relational-operator?                                      */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsRelnOp(void)
