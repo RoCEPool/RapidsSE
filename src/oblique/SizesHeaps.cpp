@@ -124,7 +124,6 @@
 
 #include "Metadata.hpp"
 #include "MetaGet.hpp"
-#include "BucketGet.hpp"
 
 #include "Parcel.hpp"
 #include "Numbering.hpp"
@@ -292,7 +291,6 @@ SizeHeap gxaSizeHeap[]
   { CN_BIRTH,                    sizeof(Birth),              HT_INVALID   ,FILL },
   { CN_BOARD,                    sizeof(Board),              HT_T_SMALL   ,FILL },
   { CN_BOLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
-  { CN_BUCKETGET,                sizeof(BucketGet),          HT_T_TINY    ,FILL },
   { CN_BUCKETMAP,                sizeof(BucketMap),          HT_T_SMALL   ,FILL },
   { CN_BUFFERMAP,                sizeof(BufferMap),          HT_INVALID   ,FILL },
   { CN_BUFFERPOOL,               sizeof(BufferPool),         HT_INVALID   ,FILL },

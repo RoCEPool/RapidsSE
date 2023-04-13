@@ -22,7 +22,6 @@
 #include "RluDiary.hpp"
 #include "PtnDef.hpp"
 #include "MetaGet.hpp"
-#include "BucketGet.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
 #include "Stencil.hpp"
@@ -87,8 +86,6 @@ namespace STORE
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
     REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
-
-    REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
