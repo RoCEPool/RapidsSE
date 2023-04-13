@@ -63,13 +63,13 @@ void Card_Deck::vAddNextCasts(CardIter* pCI)
         CK_KEYEXISTS == pCI->G.e_MainCard ||
         CK_KEYNOTEXISTS == pCI->G.e_MainCard ||
         CK_SCAN == pCI->G.e_MainCard) {
+
       if (p_main_prior) {
-        i8 nSkip;
-        eXK eCast = pCI->G.pDeck->eAddNextCast(pCI,
-                                               p_main_prior, p_project_prior, p_combined_prior, p_next_prior,
-                                              /*&*/nSkip);
-//        while (nSkip--)
-//          pCI->G_vSkipNextMain();
+        pCI->G.pDeck->vAddCast_toPrev_nextCard(pCI,
+                                               p_main_prior,
+                                               p_project_prior,
+                                               p_combined_prior,
+                                               p_next_prior);
         pCI->G_vMainResynch();
         pCI->vPrintBoard(__LINE__);
         vDebugPoint();
@@ -79,14 +79,12 @@ void Card_Deck::vAddNextCasts(CardIter* pCI)
       p_combined_prior = nullptr;
       p_next_prior     = nullptr;
     }
-    else
-    if (CK_PROJECT == pCI->G.e_MainCard) {
+    else if (CK_PROJECT == pCI->G.e_MainCard) {
       p_project_prior = pCI->G.p_project;
       p_combined_prior = nullptr;
       p_next_prior     = nullptr;
     }
-    else
-    if (CK_COMBINED == pCI->G.e_MainCard) {
+    else if (CK_COMBINED == pCI->G.e_MainCard) {
       p_combined_prior = pCI->G.p_combined;
       p_next_prior     = nullptr;
     }
@@ -104,12 +102,11 @@ void Card_Deck::vAddNextCasts(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eXK Card_Deck::eAddNextCast(CardIter*      pCI,
-                            Card_OP*       p_main_prior,
-                            Card_Project*  p_project_prior,
-                            Card_Combined* p_combined_prior,
-                            Card_Next*     p_next_prior,
-                            i8&            rnSkip)
+void Card_Deck::vAddCast_toPrev_nextCard(CardIter*      pCI,
+                                         Card_OP*       p_main_prior,
+                                         Card_Project*  p_project_prior,
+                                         Card_Combined* p_combined_prior,
+                                         Card_Next*     p_next_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -137,8 +134,7 @@ eXK Card_Deck::eAddNextCast(CardIter*      pCI,
       p_next_prior->vValue("broadcast"_Stz);
 
       if (! p_project_prior) {
-        rnSkip = 0;
-        return XK_BROADCAST;
+         return;
       }
 
       if (p_next_prior) {
@@ -146,8 +142,7 @@ eXK Card_Deck::eAddNextCast(CardIter*      pCI,
           Card_Combined *p_combined = new Card_Combined;
           pCI->G_vInsertBefore(p_combined, p_next_prior);
         }
-        rnSkip = 1;
-        return XK_BROADCAST;
+        return;
       }
       else
         NEVER_REACH
@@ -160,23 +155,21 @@ eXK Card_Deck::eAddNextCast(CardIter*      pCI,
 
       if (p_combined_prior) {
         pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prior);
-        rnSkip = 1;
-        return XK_HASHCAST;
+        return;
       }
       else
       if (p_next_prior) {
         pCI->G_vInsertBefore(p_hash_prior_new, p_next_prior);
         Card_Combined* p_combined = new Card_Combined;
         pCI->G_vInsertBefore(p_combined, p_next_prior);
-        rnSkip = 2;
-        return XK_HASHCAST;
+        return;
       }
       else
         NEVER_REACH
 
     case XK_UNICAST:
-      rnSkip = 0;
-      return XK_UNICAST;
+      // no change to next card; default is unicast
+      return;
 
     default:
       NEVER_REACH
@@ -184,8 +177,6 @@ eXK Card_Deck::eAddNextCast(CardIter*      pCI,
 
   NEVER_REACH
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* find i_fold (reverse)                                                      */

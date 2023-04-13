@@ -22,12 +22,11 @@ namespace STORE
 
     void vAddNextCasts(CardIter* pCI);
 
-    eXK eAddNextCast(CardIter*      pCI,
-                     Card_OP*       p_main_prior,
-                     Card_Project*  p_project_prior,
-                     Card_Combined* p_combined_prior,
-                     Card_Next*     p_next_prior,
-                     i8&            rnSkip);
+    void vAddCast_toPrev_nextCard(CardIter*     pCI,
+                                 Card_OP*       p_main_prior,
+                                 Card_Project*  p_project_prior,
+                                 Card_Combined* p_combined_prior,
+                                 Card_Next*     p_next_prior);
 
     void vProjectionUpdate(CardIter* pCI);
 
