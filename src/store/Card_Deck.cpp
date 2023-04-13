@@ -51,7 +51,7 @@ void Card_Deck::vAddNextCasts(CardIter* pCI)
 
   Card_OP*       p_main_prior     = nullptr;
   Card_Project*  p_project_prior  = nullptr;
-  Card_Next*     p_next_prior     = nullptr;
+  Card_Cast*     p_next_prior     = nullptr;
   Card_Combined* p_combined_prior = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,7 +89,7 @@ void Card_Deck::vAddNextCasts(CardIter* pCI)
       p_next_prior     = nullptr;
     }
     else
-    if (CK_NEXT == pCI->G.e_MainCard) {
+    if (CK_CAST == pCI->G.e_MainCard) {
       p_next_prior = pCI->G.p_next;
     }
 
@@ -106,7 +106,7 @@ void Card_Deck::vAddCast_toPrev_nextCard(CardIter*      pCI,
                                          Card_OP*       p_main_prior,
                                          Card_Project*  p_project_prior,
                                          Card_Combined* p_combined_prior,
-                                         Card_Next*     p_next_prior)
+                                         Card_Cast*     p_next_prior)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

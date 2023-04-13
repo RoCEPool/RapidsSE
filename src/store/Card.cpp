@@ -2028,13 +2028,13 @@ Card_Needed* Card::pSub_needed(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_Next.hpp"
-Card_Next* Card::pSub_next(void)
+#include "Card_Cast.hpp"
+Card_Cast* Card::pSub_next(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Next* p_next =
-      _pCard_Next(pFindSubCard(CK_NEXT));
+  Card_Cast* p_next =
+      _pCard_Cast(pFindSubCard(CK_CAST));
   return p_next;
 }
 

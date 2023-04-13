@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Next.hpp -- Next                                                      */
+/* Card_Cast.hpp -- Stage Cast (aka Next)                                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_Next : public Card
+  class Card_Cast : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Next(void);
-   ~Card_Next(void) noexcept(false);
+    Card_Cast(void);
+   ~Card_Cast(void) noexcept(false);
   };
 
-  Card_Next* _pCard_Next(void* aAddr);
+  Card_Cast* _pCard_Cast(void* aAddr);
 }
 
 /*============================================================================*/

@@ -208,52 +208,45 @@ void Weaver::vOp(Card* pCard)
   
   switch (eCard) {
 
-    case CK_ABSJOIN:       vArgAbsJoin     (sOpArgs,_pCard_AbsJoin(pCard));      break;
-    case CK_AGGREG:        vArgAggreg      (sOpArgs,_pCard_Aggreg(pCard));       break;
-    case CK_COMBINED:      vArgCombined    (sOpArgs,_pCard_Combined(pCard));     break;
-    case CK_CROSSJOIN:     vArgCrossJoin   (sOpArgs,_pCard_CrossJoin(pCard));    break;
-    case CK_FILTER:        vArgFilter      (sOpArgs,_pCard_Filter(pCard));       break;
-    case CK_GBYAGG:        vArgGbyAgg      (sOpArgs,_pCard_GbyAgg(pCard));       break;
-    case CK_HASH:          vArgHash        (sOpArgs,_pCard_Hash(pCard));         break;
-    case CK_HAVING:        vArgHaving      (sOpArgs,_pCard_Having(pCard));       break;
-    case CK_INDEXJOIN:     vArgIndexJoin   (sOpArgs,_pCard_IndexJoin(pCard));    break;
-    case CK_INDEXSCAN:     vArgIndexScan   (sOpArgs,_pCard_IndexScan(pCard));    break;
-    case CK_KEYEXISTS:     vArgKeyExists   (sOpArgs,_pCard_KeyExists(pCard));    break;
-    case CK_KEYNOTEXISTS:  vArgKeyNotExists(sOpArgs,_pCard_KeyNotExists(pCard)); break;
-    case CK_LIMIT:         vArgLimit       (sOpArgs,_pCard_Limit(pCard));        break;
-    case CK_NEXT:          vArgNext        (sOpArgs,_pCard_Next(pCard));         break;
-    case CK_ORDAGG:        vArgOrdAgg      (sOpArgs,_pCard_OrdAgg(pCard));       break;
-    case CK_PROJECT:       vArgProject     (sOpArgs,_pCard_Project(pCard));      break;
-    case CK_SCAN:          vArgScan        (sOpArgs,_pCard_Scan(pCard));         break;
-    case CK_SORT:          vArgSort        (sOpArgs,_pCard_Sort(pCard));         break;
-    case CK_WHERE:         vArgWhere       (sOpArgs,_pCard_Where(pCard));        break;
+    case CK_ABSJOIN:      vArgAbsJoin      (sOpArgs,_pCard_AbsJoin(pCard));      break;
+    case CK_AGGREG:       vArgAggreg       (sOpArgs,_pCard_Aggreg(pCard));       break;
+    case CK_CAST:         vArgCast         (sOpArgs, _pCard_Cast(pCard));        break;
+    case CK_COMBINED:     vArgCombined     (sOpArgs,_pCard_Combined(pCard));     break;
+    case CK_CROSSJOIN:    vArgCrossJoin    (sOpArgs,_pCard_CrossJoin(pCard));    break;
+    case CK_FILTER:       vArgFilter       (sOpArgs,_pCard_Filter(pCard));       break;
+    case CK_GBYAGG:       vArgGbyAgg       (sOpArgs,_pCard_GbyAgg(pCard));       break;
+    case CK_HASH:         vArgHash         (sOpArgs,_pCard_Hash(pCard));         break;
+    case CK_HAVING:       vArgHaving       (sOpArgs,_pCard_Having(pCard));       break;
+    case CK_INDEXJOIN:    vArgIndexJoin    (sOpArgs,_pCard_IndexJoin(pCard));    break;
+    case CK_INDEXSCAN:    vArgIndexScan    (sOpArgs,_pCard_IndexScan(pCard));    break;
+    case CK_KEYEXISTS:    vArgKeyExists    (sOpArgs,_pCard_KeyExists(pCard));    break;
+    case CK_KEYNOTEXISTS: vArgKeyNotExists (sOpArgs,_pCard_KeyNotExists(pCard)); break;
+    case CK_LIMIT:        vArgLimit        (sOpArgs,_pCard_Limit(pCard));        break;
+    case CK_ORDAGG:       vArgOrdAgg       (sOpArgs,_pCard_OrdAgg(pCard));       break;
+    case CK_PROJECT:      vArgProject      (sOpArgs,_pCard_Project(pCard));      break;
+    case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
+    case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
+    case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
-      vTrace("  FÏskipping %s\n"_Stz,aCK[eCard]);
-      return;
+      vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
+             __FILE__, (i8)__LINE__,(i8) eCard, aCK[eCard]);
+      NEVER_REACH;
   }
 
   s32 sOpNm;
-
-//  if (CK_AGGREG == eCard)
-//    sOpNm = "project"_Stz;
-//  else
-//  if (CK_GBYAGG == eCard)
-//    sOpNm = "aggreg"_Stz;
-//  else
-  if (CK_CROSSJOIN == eCard)
-    sOpNm = "indexJoin"_Stz;
-  else
-  if (CK_HAVING == eCard || CK_WHERE == eCard)
-    sOpNm = "filter"_Stz;
-  else
-    sOpNm = aCK_short[eCard];
+       if (CK_CAST == eCard)       sOpNm = "next"_Stz;
+  else if (CK_CROSSJOIN == eCard)  sOpNm = "indexJoin"_Stz;
+  else if (CK_HAVING == eCard)     sOpNm = "filter"_Stz;
+  else if (CK_WHERE == eCard)      sOpNm = "filter"_Stz;
+  else                             sOpNm = aCK_short[eCard];
 
   vTabOp();
   vConcat("%-9s %s"_Stz,
           sOpNm.azChar(),
           sOpArgs.szStz());
   vEolOp();
+
   m_i_Op_stage++;
 }
 
@@ -282,6 +275,16 @@ void Weaver::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
   vRpnAggreg(sRpnExpr,pCard_Aggreg);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave :next ?                                                              */
+/*----------------------------------------------------------------------------*/
+void Weaver::vArgCast(Stz* szOpArgs, Card_Cast* pCard_Next)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+
+  szOpArgs->vCatSprint("%s"_Stz,pCard_Next->szValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -515,16 +518,6 @@ void Weaver::vArgLimit(Stz* szOpArgs, Card_Limit* pCard_Limit)
   vRpnLimit(sRpnExpr,pCard_Limit);
 
   szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* weave :next ?                                                              */
-/*----------------------------------------------------------------------------*/
-void Weaver::vArgNext(Stz* szOpArgs, Card_Next* pCard_Next)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
-
-  szOpArgs->vCatSprint("%s"_Stz,pCard_Next->szValue());
 }
 
 

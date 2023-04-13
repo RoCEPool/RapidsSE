@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_Next.cpp -- Next                                                      */
+/* Card_Cast.cpp -- Next                                                      */
 /*============================================================================*/
 
-#include "Card_Next.hpp"
+#include "Card_Cast.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_Next, CK_NEXT)
-__aNewFunction(Card_Next, CN_CARD)
-__vDeleteFunction(Card_Next, CN_CARD)
+__pCastFunction_Card(STORE, Card_Cast, CK_CAST)
+__aNewFunction(Card_Cast, CN_CARD)
+__vDeleteFunction(Card_Cast, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Next::Card_Next(void)
-: Card(CK_NEXT)
+Card_Cast::Card_Cast(void)
+: Card(CK_CAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_Next::Card_Next(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Next::~Card_Next(void) noexcept(false)
+Card_Cast::~Card_Cast(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

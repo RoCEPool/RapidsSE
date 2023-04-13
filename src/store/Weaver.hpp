@@ -58,7 +58,7 @@ namespace STORE
     void vArgKeyExists   (Stz* szOpArgs,  Card_KeyExists* pCard_KeyExists);
     void vArgKeyNotExists(Stz* szOpArgs,  Card_KeyNotExists* pCard_KeyNotExists);
     void vArgLimit       (Stz* szOpArgs,  Card_Limit*     pCard_Limit);
-    void vArgNext        (Stz* szOpArgs,  Card_Next*      pCard_Next);
+    void vArgCast        (Stz* szOpArgs, Card_Cast*      pCard_Next);
     void vArgOrdAgg      (Stz* szOpArgs,  Card_OrdAgg*    pCard_OrdAgg);
     void vArgProject     (Stz* szOpArgs,  Card_Project*   pCard_Project);
     void vArgScan        (Stz* szOpArgs,  Card_Scan*      pCard_Scan);

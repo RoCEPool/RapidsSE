@@ -87,7 +87,7 @@ namespace STORE
 
   class Card_NCorrCols;
   class Card_Needed;
-  class Card_Next;
+  class Card_Cast;
   class Card_Note;
   class Card_NotPred;
 
@@ -441,7 +441,7 @@ namespace STORE
     Card_CostUnicast*   pSub_costUnicast(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);
-    Card_Next*          pSub_next(void);
+    Card_Cast*          pSub_next(void);
     Card_Note*          pSub_note(void);
     Card_NotPred*       pSub_notPred(void);
     Card_On*            pSub_on(void);

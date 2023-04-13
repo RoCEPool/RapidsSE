@@ -1116,7 +1116,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COSTUNICAST:      return G.p_costUnicast;
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
-    case CK_NEXT:             return G.p_next;
+    case CK_CAST:             return G.p_next;
     case CK_NOTE:             return G.p_note;
     case CK_NOTPRED:          return G.p_notPred;
     case CK_ON:               return G.p_on;
@@ -1300,7 +1300,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COSTUNICAST:      return "G.p_costUnicast"_Stz;
     case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
     case CK_NEEDED:           return "G.p_needed"_Stz;
-    case CK_NEXT:             return "G.p_next"_Stz;
+    case CK_CAST:             return "G.p_next"_Stz;
     case CK_NOTE:             return "G.p_note"_Stz;
     case CK_NOTPRED:          return "G.p_notPred"_Stz;
     case CK_ON:               return "G.p_on"_Stz;
@@ -2175,7 +2175,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COSTUNICAST: *((Card**)&G.p_costUnicast)      = pCard; break;
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;
-    case CK_NEXT:             *((Card**)&G.p_next)             = pCard;
+    case CK_CAST: *((Card**)&G.p_next)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard;
