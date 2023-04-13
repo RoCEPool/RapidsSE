@@ -86,15 +86,6 @@ OpSketch::OpSketch(void)
 
   m_iLimitRows = 0;
 
-  /////////////////////////////////
-  // TO GO
-  m_pStructSynthA = nullptr;
-  m_pStructSynthB = nullptr;
-  m_pCodeSynthA   = nullptr;
-  m_pCodeSynthB   = nullptr;
-  m_pCodeSynthC   = nullptr;
-  /////////////////////////////////
-
   _checkInitialised_(CN_OPSKETCH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
@@ -137,11 +128,13 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   m_pUpperStack  = nullptr;
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
+  // duplicate the init stack
   if (pInitStack) {
-    s256 sOperation;
-    for (i8 i=0; i< pInitStack->nValues(); i++) {
-      pInitStack->vPopStz(sOperation, __func__);
-      m_pInitStack->vPushStz(sOperation);
+    TypeValueArea xTypeValueArea;
+
+    for (i8 i = pInitStack->nValues() - 1; i >= 0; i--) {
+      pInitStack->vPeekTypeValueArea(i, &xTypeValueArea);
+      m_pInitStack->vPushStz(xTypeValueArea.szStz());
     }
   }
 
@@ -149,15 +142,6 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   m_sUpperPosition = ""_Stz;
 
   m_iLimitRows = 0;
-
-  /////////////////////////////////
-  // TO GO
-  m_pStructSynthA = nullptr;
-  m_pStructSynthB = nullptr;
-  m_pCodeSynthA   = nullptr;
-  m_pCodeSynthB   = nullptr;
-  m_pCodeSynthC   = nullptr;
-  /////////////////////////////////
 
   _checkInitialised_(CN_OPSKETCH);
 
@@ -173,12 +157,6 @@ OpSketch::~OpSketch(void) noexcept(false)
 
   delete m_pExprStack;
   delete m_pInitStack;
-
-  delete m_pStructSynthA;
-  delete m_pStructSynthB;
-  delete m_pCodeSynthA;
-  delete m_pCodeSynthB;
-  delete m_pCodeSynthC;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,106 +234,6 @@ eSK OpSketch::eSketchKind(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   return m_eSketchKind;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get structA synthesiser                                                    */
-/*----------------------------------------------------------------------------*/
-CodeSynth_v2* OpSketch::pStructSynthA(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  return m_pStructSynthA;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set structA synthesiser                                                    */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vStructSynthA(CodeSynth_v2* pStructSynth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  m_pStructSynthA = pStructSynth;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get structB synthesiser                                                    */
-/*----------------------------------------------------------------------------*/
-CodeSynth_v2* OpSketch::pStructSynthB(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  return m_pStructSynthB;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set structB synthesiser                                                    */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vStructSynthB(CodeSynth_v2* pStructSynth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  m_pStructSynthB = pStructSynth;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get code synthesiser A                                                     */
-/*----------------------------------------------------------------------------*/
-CodeSynth_v2* OpSketch::pCodeSynthA(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  return m_pCodeSynthA;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set code synthesiser A                                                     */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vCodeSynthA(CodeSynth_v2* pCodeSynthA)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  m_pCodeSynthA = pCodeSynthA;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get code synthesiser B                                                     */
-/*----------------------------------------------------------------------------*/
-CodeSynth_v2* OpSketch::pCodeSynthB(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  return m_pCodeSynthB;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set code synthesiser B                                                     */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vCodeSynthB(CodeSynth_v2* pCodeSynthB)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  m_pCodeSynthB = pCodeSynthB;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get code synthesiser C                                                     */
-/*----------------------------------------------------------------------------*/
-CodeSynth_v2* OpSketch::pCodeSynthC(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  return m_pCodeSynthC;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set code synthesiser C                                                     */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vCodeSynthC(CodeSynth_v2* pCodeSynthC)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  m_pCodeSynthC = pCodeSynthC;
 }
 
 /*----------------------------------------------------------------------------*/

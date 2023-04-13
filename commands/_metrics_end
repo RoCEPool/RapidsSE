@@ -80,6 +80,21 @@ select thisNodeName    as thisNode,
               by thisNodeName, otherNodeName;
 
 print "-------------------------------------------";
+print "CRWBUFFERS received by stage ..............";
+
+select thisNodeName, stageName , sum(operand) from se__jobOperands where operandName = 'EV_D_CRWBUFFER' and opName = 'consumeOp' group by stageName, thisNodeName;
+
+print "-------------------------------------------";
+print "ROWBUFFERS received by stage ..............";
+
+select thisNodeName, stageName , sum(operand) from se__jobOperands where operandName = 'EV_D_ROWBUFFER' and opName = 'consumeOp' group by stageName, thisNodeName;
+
+print "-------------------------------------------";
+print "BUFFERS received by stage ....";
+
+select thisNodeName, stageName , sum(operands), sum(buffIn) from se__jobOperators where opName = 'consumeOp' group by stageName, thisNodeName;
+
+print "-------------------------------------------";
 
 sleep 2;
 

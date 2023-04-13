@@ -2,6 +2,8 @@
 /* _scanFile_Q1                                                               */
 /*============================================================================*/
 
+__TPCH_SCHEMA
+
 /*
 explain stage transliterate
        select l_returnflag, l_linestatus,
@@ -20,8 +22,6 @@ explain stage transliterate
 
 */
 
-_lineitem
-
 pipeline scanFile
 
   begin
@@ -30,8 +30,8 @@ pipeline scanFile
         start
       | pulse once
       | checkTable lineitem
-      | chunk      "../TPCH/SF_0001/lineitem.csv"   // read chunks of file => (seekOffset)
-      | rdCsvChunk "../TPCH/SF_0001/lineitem.csv"   // (seekOffset) => (csvBuffer)
+      | chunk      "<tpch_dir>/lineitem.<suffix>"   // read chunks of file => (seekOffset)
+      | rdCsvChunk "<tpch_dir>/lineitem.<suffix>"   // (seekOffset) => (csvBuffer)
       | next localrobin
 
     stage S01 on all partitions on origin :
