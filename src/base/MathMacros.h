@@ -1654,6 +1654,7 @@
       xDateTime.tm_mday = xTsp1.m_uDay;                                    \
       xDateTime.tm_hour = xTsp1.m_uHour;                                   \
       xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
+      xDateTime.tm_isdst  = 0;                                             \
                                                                            \
       i8 iSecs = iArg2/_C_1M;                                              \
       i8 iMicroSecs = iArg2%_C_1M + xTsp1.m_uMicro;                        \
@@ -1702,6 +1703,7 @@
       xDateTime.tm_mday = xTsp2.m_uDay;                                    \
       xDateTime.tm_hour = xTsp2.m_uHour;                                   \
       xDateTime.tm_min  = xTsp2.m_uMinute;                                 \
+      xDateTime.tm_isdst  = 0;                                             \
                                                                            \
       i8 iSecs = iArg1/_C_1M;                                              \
       i8 iMicroSecs = iArg1%_C_1M + xTsp2.m_uMicro;                        \
@@ -1848,6 +1850,7 @@
       xDateTime.tm_mday = xTsp1.m_uDay;                                    \
       xDateTime.tm_hour = xTsp1.m_uHour;                                   \
       xDateTime.tm_min  = xTsp1.m_uMinute;                                 \
+      xDateTime.tm_isdst  = 0;                                             \
                                                                            \
       i8 iSecs = iArg2/_C_1M;                                              \
       i8 iMicroSecs = iArg2%_C_1M + xTsp1.m_uMicro;                        \
