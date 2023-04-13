@@ -64,6 +64,8 @@ namespace STORE
     s256 m_sLowerPosition;
     s256 m_sUpperPosition;
 
+    i8 m_nPayloadBytes;
+
     i8 m_iLimitRows;
 
     // must be last
@@ -87,9 +89,11 @@ namespace STORE
     void vGenerateStencilFromStruct(void);
     void vGenerateStencilToStruct(void);
 
-    eSK eSketchKind(void);
 
+    void vIndexDef(IndexDef* pIndexDEf);
+    void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
+    eSK eSketchKind(void);
 
   private:
 

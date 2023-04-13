@@ -4,7 +4,12 @@
 
 #include "BASE.h"
 #include "Combined.hpp"
+#include "IndexDef.hpp"
 #include "TccStuff.h"
+#include "Pay.hpp"
+#include "Key.hpp"
+#include "Ent.hpp"
+#include "Ent_int.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Code Fragments ----------------------------------------------------------*/
@@ -32,10 +37,6 @@ i8 iAggregBegin(Combined_T* aCombinedT) {
   __L_LABEL__:
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
-
-  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
-    return 0;
-  }
 
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayAgg;
   szStrArea = aCombinedT->m_racStrAreaAgg;
@@ -171,6 +172,81 @@ i8 iFilterEnd(Combined_T* aCombinedT, bool bFilterResult) {
     aCombinedT->m_iProcessRow = 0;
   }
   // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggBegin ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggBegin
+i8 iGbyAggBegin(Combined_T* aCombinedT) {
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  char* szStrArea;
+
+  __L_LABEL_LOOP__:
+
+  L_AdvanceNextRow:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // AGGREG-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  __L_LABEL__:
+
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
+  szStrArea = aCombinedT->m_racStrAreaT;
+
+  if (!aCombinedT->m_iProcessRow) {
+    aCombinedT->m_iProcessRow = 1;
+    goto L_AdvanceNextRow;
+  }
+
+  // - - - - - - - - - - - - - -
+  // populate the payload key
+  aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;
+  // marker-end
+
+  return 0;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vGbyAggCreatePayLoad ----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vGbyAggCreatePayLoad
+void vGbyAggCreatePayLoad(Combined_T* aCombinedT) {
+
+    // marker-start
+    // - - - - - - - - - - - - - -
+    // create the payload
+#ifdef WITH_TINYC
+    vEnt_payloadCreate(aCombinedT->m_aEntIntPL, __PAYLOADBYTES__);
+#endif
+    // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vGbyAggFindKey ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vGbyAggFindKey
+void vGbyAggFindKey(Combined_T* aCombinedT) {
+
+  void* aEntFound;
+
+  // marker-start
+
+  // - - - - - - - - - - - - - -
+  // find key in payload index
+  aEntFound = aIndexTree_findEntry(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntKeyPL);
+
+  if ( !aEntFound ) {
+    // marker-end
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

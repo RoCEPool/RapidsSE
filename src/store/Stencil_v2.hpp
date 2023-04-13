@@ -83,12 +83,12 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
 
-    void vSetupAggreg(Combined* pCombined, Op* pOp);
+    void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupProject(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -98,6 +98,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     OpSketch* pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKind);
     OpSketch* pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
@@ -122,8 +123,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop);
     OpSketch* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
-                             eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
 
 
