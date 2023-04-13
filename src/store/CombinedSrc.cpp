@@ -139,6 +139,20 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz);
         break;
 
+      case SK_GBYAGG:
+
+//        vAppendStencilTo(pOpSketch);
+//        vAppendCodeFragment(pOpSketch, "iAggregBegin"_Stz);
+//
+//        vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz);
+//        vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+//        vAppendCodeFragment(pOpSketch, "iAggregInitEnd"_Stz);
+//
+//        vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz);
+//        vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
+//        vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz);
+        break;
+
       case SK_PROJECT:
 
         vAppendStencilTo(pOpSketch);

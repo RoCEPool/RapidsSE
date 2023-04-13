@@ -117,6 +117,7 @@ assert::stack_0
 "g" .verbose
 
   "OP_gbyAgg.sen"               include
+  "OP_gbyAgg_v2.sen"            include
   "OP_grid.sen"                 include
   "OP_gridGet.sen"              include
   "OP_gridRecv.sen"             include
