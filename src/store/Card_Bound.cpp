@@ -164,6 +164,7 @@ eXK Card_Bound::eStageCast(Card_TablePtn* p_tablePtn_prev,
   Card_IdxCol *    p_idxCol_curr =
                        p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_curr_idxColOdn->szValue());
 
+  //! this is naive
   if (p_tablePtn_prev->pSymbol()->bIsReplicated())
     return XK_UNICAST;
 

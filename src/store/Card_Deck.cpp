@@ -66,12 +66,12 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
       if (p_main_prev) {
         pCI->G.pDeck->vAddCastKind_toPrev_cast(pCI,
-                                               pCI->G.p_OP,
                                                p_main_prev,
-                                               p_cast_prior,
+                                               p_project_prior,
                                                p_combined_prior,
-                                               p_project_prior);
-        pCI->G_vMainResynch();
+                                               p_cast_prior,
+                                               pCI->G.p_OP);
+            pCI->G_vMainResynch();
         pCI->vPrintBoard(__LINE__);
         vDebugPoint();
       }
@@ -103,11 +103,11 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
-                                         Card_OP*       p_OP_curr,
                                          Card_OP*       p_OP_prev,
-                                         Card_Cast*     p_cast_prev,
+                                         Card_Project*  p_project_prev,
                                          Card_Combined* p_combined_prev,
-                                         Card_Project*  p_project_prev)
+                                         Card_Cast*     p_cast_prev,
+                                         Card_OP*       p_OP_curr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
