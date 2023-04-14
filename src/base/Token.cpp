@@ -225,8 +225,24 @@ eTN Token::eCollectSenCode(char** aazCrs, Stz* szString)
   char *azChars = StrLib::azNullTerminator(szString->azChar());
   char *z = azChars;
 
-  // collect the characters of the name
+  // collect the characters of the code
   while ( **aazCrs ) {
+
+    if (StrLib::bBeginsWith(*aazCrs,"__codeEnd__")) {
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('c' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('o' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('d' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('e' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('E' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('n' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('d' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+      break;
+    }
+
     *z++ = **aazCrs;
     (*aazCrs)++;
   }

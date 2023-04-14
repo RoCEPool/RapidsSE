@@ -68,6 +68,7 @@ namespace STORE
     bool bCollectTag(void);
     bool bCollectParams(void);
     bool bCollectBeginEnd(void);
+    bool bCollectCode(void);
     bool bCollectSubPipeline(void);
     bool bCollectStage(void);
     bool bCollectTopology(StageSpec* p_StageSpec);

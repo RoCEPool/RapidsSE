@@ -165,6 +165,7 @@ bool Dynamo::bCompile(void)
     return false;
   }
 
+
   return true;
 }
 
@@ -195,10 +196,13 @@ bool Dynamo::bPass1_collect(void)
     if (! bCollectParams())
       return false;
 
-
   if (! bCollectBeginEnd())
     return false;
 
+  bool bSawCode= bCollectCode();
+  if (bSawCode) {
+    vTrace("SawCode:\n %s\n"_Stz,szCode());
+  }
   return true;
 }
 
@@ -297,6 +301,28 @@ bool Dynamo::bCollectBeginEnd(void)
 
   if (! pTkn()->bSame("END"_Stz))
     return false;
+  vTokenAccept();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect a __code__ ... __endCode__ sequence                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectCode(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  if (! pTkn()->bSame("__cpp_code__"_Stz))
+    return false;
+
+  vTokenAccept();
+
+  if (pTkn()->eToken() != TN_STRING)
+    return false;
+
+  vCode(pTkn()->szChars());
+
   vTokenAccept();
 
   return true;

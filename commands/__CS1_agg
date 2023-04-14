@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __CS2: Code Synthesizer V2                                                 */
+/* __CS1_agg: Code Synthesizer V2                                             */
 /*============================================================================*/
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
@@ -31,4 +31,10 @@ begin
     output
     | sink
     | first
-end ;
+end
+
+__cpp_code__
+... any c/c++ code...
+__codeEnd__
+
+;

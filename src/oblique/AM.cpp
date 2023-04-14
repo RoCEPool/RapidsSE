@@ -3228,9 +3228,16 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
     
     pTknVec->vAppendToken(sToken,eToken);
 
-    if (TN_NAME == eToken && sToken.bSame("__code__"_Stz)) {
+    if (TN_NAME == eToken && sToken.bSame("__cpp_code__"_Stz)) {
+      sToken.vReset();
       eToken = Token::eCollectSenCode(&azCrs,sToken);
       pTknVec->vAppendToken(sToken,eToken);
+      sToken.vReset();
+      eToken = Token::eCollectSenName(&azCrs,sToken);
+      RASSERT(sToken.bSame("__codeEnd__"_Stz));
+      pTknVec->vAppendToken(sToken,eToken);
+
+      break;
     }
   }
 }
