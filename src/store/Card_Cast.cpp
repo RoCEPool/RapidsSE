@@ -44,15 +44,15 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* determine the stage cast for the previous p_cast                           */
 /*----------------------------------------------------------------------------*/
-eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
-                          Symbol*        p_Y_tablePtn_curr,
-                          Symbol*        p_Y_idxCol_curr,
-                          Symbol*        p_Y_tblCol_tbh)
+eXK Card_Cast::eStageCast(Symbol* p_Y_tablePtn_prev,
+                          Symbol* p_Y_tablePtn_curr,
+                          Symbol* p_Y_idxCol_curr,
+                          Symbol* p_Y_tblCol_tbh)
 {
   _static_
 
   //! this is naive
-  if (p_tablePtn_prev->pSymbol()->bIsReplicated())
+  if (p_Y_tablePtn_prev->bIsReplicated())
     return XK_UNICAST;
 
   if (p_Y_idxCol_curr && p_Y_idxCol_curr->bIsReplicated()) {
@@ -70,7 +70,7 @@ eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
 
   if (p_Y_idxCol_curr->bSameValue(p_Y_tablePtn_curr)) {
     // + later indexed column (referenced in this bound) is later table ptn
-    if (p_Y_tblCol_tbh->bSameValue(p_tablePtn_prev->pSymbol())) {
+    if (p_Y_tblCol_tbh->bSameValue(p_Y_tablePtn_prev)) {
       // + prior table column (referenced in this bound) is prior table ptn
       return XK_UNICAST;
     }
@@ -85,8 +85,6 @@ eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
     return XK_BROADCAST;
   }
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */

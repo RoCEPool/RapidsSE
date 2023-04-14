@@ -140,9 +140,10 @@ void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
                                       : nullptr;
 
 
+  Symbol* p_Y_tablePtn_prev = p_tablePtn_prev->pSymbol();
   Symbol* p_Y_tablePtn_curr = p_tablePtn_curr->pSymbol();
 
-  eXK eStageCast = Card_Cast::eStageCast(p_tablePtn_prev,
+  eXK eStageCast = Card_Cast::eStageCast(p_Y_tablePtn_prev,
                                          p_Y_tablePtn_curr,
                                          p_Y_idxCol_curr,
                                          p_Y_tblCol_tbh);
