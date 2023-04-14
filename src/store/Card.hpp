@@ -235,9 +235,6 @@ namespace STORE
 
     bool bNeedsBrace(void);       // between, case, ... matchTrailing
 
-    bool bSameValue(Stz* szArg);
-    bool bSameValue(Symbol* pArg);
-
     void vSet(Symbol* pSymbol);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
