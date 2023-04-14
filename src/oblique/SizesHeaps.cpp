@@ -360,7 +360,7 @@ SizeHeap gxaSizeHeap[]
   { CN_DIR,                      sizeof(Dir),                    HT_T_TINY    , FILL },
   { CN_DISSECTOR,                sizeof(Dissector),              HT_T_TINY    , FILL },
   { CN_DTEVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
-  { CN_DYNAMO,                   sizeof(Dynamo),                 HT_T_TINY    , FILL },
+  { CN_DYNAMO,                   sizeof(Dynamo),                 HT_T_LARGE   , FILL },
 
   { CN__E__,                     'E' - ('A' - 1),                HT_INVALID   , FILL },
   { CN_EDTVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },

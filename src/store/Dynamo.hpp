@@ -28,6 +28,9 @@ namespace STORE
     VertexSpec*  m_pCurrVertexSpec;  // current/working spec
 
     ParamsSpec*  m_pParamsSpec;      // set of parameters
+
+    bool         m_bHasCode;
+    s48K         m_sCode;
     
     // must be last
     Footer m_xFooter;
@@ -131,6 +134,15 @@ namespace STORE
     TokenVec*  pTknVec(void);
 
     void vTokenAccept(void);
+
+
+
+    bool bHasCode(void);
+    void vHasCode(bool bHasCode);
+
+    Stz* szCode(void);
+    void vCode(Stz* szCode);
+
 
   };
 

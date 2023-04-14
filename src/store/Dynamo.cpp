@@ -45,6 +45,8 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   m_pCurrVertexSpec = nullptr;
 
   m_pParamsSpec = nullptr;
+
+  m_bHasCode = false;
   
   _checkInitialised_(CN_DYNAMO);
   
@@ -1211,6 +1213,52 @@ void Dynamo::vTokenAccept(void)
 
   m_pScanner->vTokenAccept();
 }
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bHasCode(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  return m_bHasCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vHasCode(bool bHasCode)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  m_bHasCode = bHasCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Dynamo::szCode(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  return m_sCode.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vCode(Stz* szCode)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  m_sCode = szCode;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */
