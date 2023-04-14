@@ -1667,6 +1667,8 @@
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
       time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
                                                                            \
+      xTsp2.m_iAsI8 = 0;                                                   \
+                                                                           \
       xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
       xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
       xTsp2.m_uDay       = xDateTime.tm_mday;                                \
@@ -1717,6 +1719,8 @@
                                                                            \
       time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
                                                                            \
+      xTsp1.m_iAsI8 = 0;                                                   \
+                                                                           \
       xTsp1.m_uYearDelta = xDateTime.tm_year;                                \
       xTsp1.m_uMonth     = xDateTime.tm_mon + 1;                             \
       xTsp1.m_uDay       = xDateTime.tm_mday;                                \
@@ -1765,6 +1769,8 @@
       else {                                                               \
         _CONVERT_TO_VALID_DATE                                             \
                                                                            \
+      xTsp2.m_iAsI8 = 0;                                                   \
+                                                                           \
       xTsp2.m_uYearDelta = iYearDelta;                                     \
       xTsp2.m_uMonth     = iMonth;                                         \
       xTsp2.m_uDay       = iDay;                                           \
@@ -1812,6 +1818,8 @@
       }                                                                    \
       else {                                                               \
         _CONVERT_TO_VALID_DATE                                             \
+                                                                           \
+      xTsp1.m_iAsI8 = 0;                                                   \
                                                                            \
       xTsp1.m_uYearDelta = iYearDelta;                                     \
       xTsp1.m_uMonth     = iMonth;                                         \
@@ -1863,6 +1871,8 @@
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
       time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                 \
                                                                            \
+      xTsp2.m_iAsI8 = 0;                                                   \
+                                                                           \
       xTsp2.m_uYearDelta = xDateTime.tm_year;                              \
       xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                           \
       xTsp2.m_uDay       = xDateTime.tm_mday;                              \
@@ -1870,6 +1880,7 @@
       xTsp2.m_uMinute    = xDateTime.tm_min;                               \
       xTsp2.m_uSecond    = xDateTime.tm_sec;                               \
       xTsp2.m_uMicro     = iMicroSecs;                                     \
+      xTsp2.m_uLocal     = _C_TSP_LOCAL;                                   \
                                                                            \
       *paW++ = xTsp2.m_iAsI8;                                              \
   }                                                                        \
@@ -1909,6 +1920,8 @@
       }                                                                    \
       else {                                                               \
         _CONVERT_TO_VALID_DATE                                             \
+                                                                           \
+      xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
       xTsp2.m_uYearDelta = iYearDelta;                                     \
       xTsp2.m_uMonth     = iMonth;                                         \
