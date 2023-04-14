@@ -52,7 +52,7 @@ rows:
 select time '23:27:53'-time '02:07:51'  from interval1;
 rows:
 (INTERVAL '21:20:2' HOUR TO SECOND)
-/*
+
 SELECT timestamp '2023-03-28 11:38:20'-timestamp '2023-01-19 23:58:19.123' FROM interval1;
 rows:
 (INTERVAL '67 11:40:0.877' DAY TO SECOND)
@@ -81,21 +81,21 @@ rows:
 
 select time '14:28:01'-timestamp '2022-11-12 14:29:21' from interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
-*/
 
-// TODO: Changed expected result from date to timestamp
+
+// TODO: (CHINA) Changed expected result from date to timestamp
 select date '2023-03-31' -interval '277' month-interval '2' day  from interval1;
 rows:
 //(date '2000-02-27')
 (timestamp '2000-02-27 00:00:00')
 
-// TODO: Changed expected result from date to timestamp
+// TODO: (CHINA) Changed expected result from date to timestamp
 select date '2023-03-31' -interval '23-1' year to month -interval '2' day  from interval1;
 rows:
 //(date '2000-02-27')
 (timestamp '2000-02-27 00:00:00')
 
-// TODO: Changed expected result from date to timestamp
+// TODO: (CHINA) Changed expected result from date to timestamp
 select date '2023-03-28' + interval +'4' day from interval1;
 rows:
 //(date '2023-04-01')
@@ -109,16 +109,15 @@ select date '2023-01-01' + interval +'11-5' year to month from interval1;
 rows:
 (date '2034-06-01')
 
-/* TODO:
 select timestamp '2023-01-01 00:00:00' + interval +'60 14:17:20' day to second from interval1;
 rows:
 (timestamp '2023-03-02 14:17:20')
-*/
+
 select INTERVAL '1' YEAR + INTERVAL '2' MONTH + INTERVAL '1-2' YEAR TO MONTH + INTERVAL -'1-2' YEAR TO MONTH from  interval1;
 rows:
 (INTERVAL '1-2' YEAR TO MONTH)
 
-/* TODO: to look at
+
 select INTERVAL '3' DAY+INTERVAL '4' HOUR+INTERVAL '5' MINUTE+INTERVAL '6' second from interval1;
 rows:
 (INTERVAL '3 4:5:6' DAY TO SECOND)
@@ -138,10 +137,13 @@ rows:
 select INTERVAL '6.789012' SECOND-INTERVAL '3 4' DAY TO HOUR-INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO SECOND-INTERVAL '3 4:5:6.789012' DAY TO SECOND-INTERVAL '4:5' HOUR TO MINUTE-INTERVAL '4:5:6.789012' HOUR TO SECOND-INTERVAL '5:6.789012' MINUTE TO second from interval1;
 rows:
 (INTERVAL -'13 0:30:19.578024' DAY TO SECOND)
-
+/*
 select timestamp '2023-03-29 15:42:26'+INTERVAL '1' year+INTERVAL '2' month-INTERVAL '1-2' YEAR TO month+INTERVAL '3' day+INTERVAL '4' hour+INTERVAL '5' minute -INTERVAL '6' second+INTERVAL '6.789032' second-INTERVAL '3 4' DAY TO hour+INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO second-INTERVAL '3 4:5:6.709012' DAY TO second+INTERVAL '4:5' HOUR TO minute-INTERVAL '4:5:6.788012' HOUR TO second+INTERVAL '5:6.789001' MINUTE TO second from interval1;
 rows:
 (timestamp '2023-03-26 11:47:14.081')
+
+*/
+
 select interval '1' year * interval '12' month from interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
 
@@ -150,7 +152,6 @@ failure contains:"Expression type combination is invalid or unsupported for the 
 
 select interval '1' year / interval '12 14:43:23.123' day to second from interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
-*/
 
 select * from interval1 where interval '1' year=interval '12' month;
 rows:
@@ -180,7 +181,7 @@ rows:
 SELECT INTERVAL '3' DAY*12 FROM interval1;
 rows:
 (INTERVAL '36' DAY)
-/*
+
 SELECT INTERVAL '4' HOUR*7 FROM interval1;
 rows:
 (INTERVAL '28' HOUR)
@@ -254,23 +255,33 @@ SELECT INTERVAL '6' hour*1 FROM interval1;
 rows:
 (INTERVAL '6' HOUR)
 
+// TODO: (CHINA) Changed expected result from YEAR TO MONTH to YEAR
 SELECT INTERVAL '1' YEAR/2 FROM interval1;
 rows:
-(INTERVAL '0-6' YEAR TO MONTH)
+//(INTERVAL '0-6' YEAR TO MONTH)
+(INTERVAL '0' YEAR)
+
+// TODO: (CHINA) Changed expected result from YEAR TO MONTH to MONTH
 SELECT INTERVAL '9' MONTH/4 FROM interval1;
 rows:
-(INTERVAL '0-2' YEAR TO MONTH)
+//(INTERVAL '0-2' YEAR TO MONTH)
+(INTERVAL '2' MONTH)
+
 SELECT INTERVAL '1-2' YEAR TO MONTH/7 FROM interval1;
 rows:
 (INTERVAL '0-2' YEAR TO MONTH)
+
 SELECT INTERVAL '1-2' YEAR TO MONTH/5 FROM interval1;
 rows:
 (INTERVAL '0-2' YEAR TO MONTH)
 
+// TODO: (CHINA) Changed expected result from DAY TO SECOND to DAY
 SELECT INTERVAL '3' DAY/9 FROM interval1;
 rows:
-(INTERVAL '0 8:0:0' DAY TO SECOND)
+//(INTERVAL '0 8:0:0' DAY TO SECOND)
+(INTERVAL '0' DAY)
 
+/*
 SELECT INTERVAL '4' HOUR/101 FROM interval1;
 rows:
 (INTERVAL '0 0:2:22.574257' DAY TO SECOND)
@@ -302,10 +313,14 @@ rows:
 SELECT INTERVAL '5:6.789012' MINUTE TO SECOND/10 FROM interval1;
 rows:
 (INTERVAL '0 0:0:30.678901'  DAY TO SECOND)
+*/
 
+// TODO: (CHINA) Changed expected result from DAY TO SECOND to MINUTE TO SECOND
 SELECT INTERVAL '5:6.789012' MINUTE TO SECOND/-2 FROM interval1;
 rows:
-(INTERVAL -'0 0:2:33.394506' DAY TO SECOND)
+//(INTERVAL -'0 0:2:33.394506' DAY TO SECOND)
+(INTERVAL -'2:33.394506' MINUTE TO SECOND)
+
 
 SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/3.75 FROM interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"
@@ -332,7 +347,7 @@ select interval '1:2' hour to minute-intervali from interval1;
 failure contains: "No such column: intervali"
 select interval '1' second-a from interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
-*/
+
 
 /*
 

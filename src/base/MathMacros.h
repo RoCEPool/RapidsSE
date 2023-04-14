@@ -583,7 +583,7 @@
     }                                                                      \
                                                                            \
     time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
-    xTsp2.m_iAsI8 = 0;                                                     \                                                                     \
+    xTsp2.m_iAsI8 = 0;                                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
     xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
     xTsp2.m_uDay       = xDateTime.tm_mday;                                \
@@ -1991,6 +1991,7 @@
      xDateTime2.tm_hour = xTsp2.m_uHour;                                   \
      xDateTime2.tm_min  = xTsp2.m_uMinute;                                 \
      xDateTime2.tm_sec  = xTsp2.m_uSecond;                                 \
+     xDateTime2.tm_isdst = 0;                                              \
                                                                            \
     time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);                 \
                                                                            \
@@ -1999,14 +2000,15 @@
     wIvlResult.m_xIvl.m_eType = IVL_DS;                                    \
                                                                            \
     if (iSeconds < 0) {                                                    \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  -1 * iSeconds * _C_1M;     \
       wIvlResult.m_xIvl.m_bIsNeg = 1;                                      \
-    }                                                                      \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  (-1)*iSeconds*_C_1M +            \
+      (xTsp2.m_uMicro - xTsp1.m_uMicro);                                   \
+      }                                                                      \
     else {                                                                 \
-      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M;            \
       wIvlResult.m_xIvl.m_bIsNeg = 0;                                      \
-    }                                                                      \
-                                                                           \
+      wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros =  iSeconds*_C_1M +            \
+      (xTsp1.m_uMicro - xTsp2.m_uMicro);                                   \
+      }                                                                      \
     *paW++ = wIvlResult.m_iAsI8;                                           \
   }                                                                        \
 }
