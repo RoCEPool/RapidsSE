@@ -155,6 +155,7 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 eXK Card_Bound::eStageCast(Card_TablePtn* p_tablePtn_prev,
                            Card_TablePtn* p_tablePtn_curr,
                            Card_Index*    p_index_curr,
+                           Card_Bound*    p_bound_curr,
                            Card_Term*&    rp_term_tblCol_to_be_hashed)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
