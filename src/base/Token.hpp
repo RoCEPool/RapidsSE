@@ -44,6 +44,7 @@ namespace BASE
     static bool bEndSenString(char cArg);
 
 
+    static eTN eCollectSenCode(char** aazCrs, Stz* szString);
     static eTN eCollectSenName(char** aazCrs, Stz* szString);
     static eTN eCollectSenNumber(char** aazCrs, Stz* szString);
     static eTN eCollectSenString(char** aazCrs, Stz* szString);

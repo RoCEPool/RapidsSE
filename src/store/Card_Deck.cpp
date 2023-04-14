@@ -127,7 +127,6 @@ void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
   eXK eStageCast = Card_Cast::eStageCast(p_tablePtn_prev,
                                          p_tablePtn_curr,
                                          p_index_curr,
-                                         p_bound_curr,
                                          /*&*/p_term_tblCol_to_be_hashed);
   switch (eStageCast) {
     case XK_BROADCAST:

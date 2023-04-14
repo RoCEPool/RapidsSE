@@ -3211,7 +3211,7 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
   pTknVec->vSoftReset();
   pTknVec->vIntegrityCheck();
 
-  s4K sToken;
+  s48K sToken;
   
   char* azCrs = szString->azChar();
 
@@ -3227,6 +3227,11 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
     //vTrace("  %12s %s\n"_Stz,aTN[eToken],sToken.szStz());
     
     pTknVec->vAppendToken(sToken,eToken);
+
+    if (TN_NAME == eToken && sToken.bSame("__code__"_Stz)) {
+      eToken = Token::eCollectSenCode(&azCrs,sToken);
+      pTknVec->vAppendToken(sToken,eToken);
+    }
   }
 }
 

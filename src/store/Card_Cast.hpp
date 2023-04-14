@@ -19,8 +19,7 @@ namespace STORE
     static eXK eStageCast(Card_TablePtn* p_tablePtn_prev,
                           Card_TablePtn* p_tablePtn_curr,
                           Card_Index*    p_index_curr,
-                          Card_Bound*    p_bound_curr,
-                          Card_Term*&    rp_term_tblCol_to_be_hashed);
+                          Card_Term*&    rp_term_tblCol_tbh);
 
   };
 

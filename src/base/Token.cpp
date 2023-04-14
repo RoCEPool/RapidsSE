@@ -216,6 +216,28 @@ bool Token::bEndSenString(char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect Sen code                                                           */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectSenCode(char** aazCrs, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
+  char *z = azChars;
+
+  // collect the characters of the name
+  while ( **aazCrs ) {
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+  }
+
+  // terminate name
+  *z = '\0';
+
+  return TN_STRING;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect Sen name                                                           */
 /*----------------------------------------------------------------------------*/
 eTN Token::eCollectSenName(char** aazCrs, Stz* szString)
@@ -494,6 +516,7 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
   }
 
   eToken = eCollectSenName(aazCrs,szString);
+
   return eToken;
 }
 

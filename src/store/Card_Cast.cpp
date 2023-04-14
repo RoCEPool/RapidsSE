@@ -42,17 +42,18 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine the cast for the prev p_cast                                     */
+/* determine the stage cast for the previous p_cast                           */
 /*----------------------------------------------------------------------------*/
 eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
                           Card_TablePtn* p_tablePtn_curr,
                           Card_Index*    p_index_curr,
-                          Card_Bound*    p_bound_curr,
-                          Card_Term*&    rp_term_tblCol_to_be_hashed)
+                          Card_Term*&    rp_term_tblCol_tbh)
 {
   _static_
 
   Card_IdxColList* p_idxColList_curr = p_index_curr->pSub_idxColList();
+  Card_Bound*      p_bound_curr      = p_index_curr->pSub_bound();
+
   Card_Term*       p_term_curr_idxColOdn = p_bound_curr->pGet_idxColOdn();
   Card_IdxCol *    p_idxCol_curr =
       p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_curr_idxColOdn->szValue());
@@ -68,21 +69,24 @@ eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
     return XK_UNICAST;
   }
 
-  Card_Term* p_term_prev_tblColOdn = p_bound_curr->pGet_tblColOdn();
-  if (! p_term_prev_tblColOdn)
+  //
+  Card_Term* p_term_tblCol_tbh = p_bound_curr->pGet_tblColOdn();
+
+
+  if (! p_term_tblCol_tbh)
     // - no prior table column (referenced in this bound) -- probably cross join
     return XK_BROADCAST;
 
   if (p_idxCol_curr->bSameValue(p_tablePtn_curr)) {
     // + later indexed column (referenced in this bound) is later table ptn
-    if (p_term_prev_tblColOdn->bSameValue(p_tablePtn_prev)) {
+    if (p_term_tblCol_tbh->bSameValue(p_tablePtn_prev)) {
       // + prior table column (referenced in this bound) is prior table ptn
       return XK_UNICAST;
     }
     else {
       // - prior table column (referenced in this bound) is not prior table ptn
       //     but the prior table column can be used for hash cast
-      rp_term_tblCol_to_be_hashed = p_term_prev_tblColOdn;
+      rp_term_tblCol_tbh = p_term_tblCol_tbh;
       return XK_HASHCAST;
     }
   }
