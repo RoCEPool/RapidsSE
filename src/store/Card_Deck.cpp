@@ -111,9 +111,6 @@ void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (p_project_prev)
-    vDebugPoint();
-
   Card_Table*     p_table_prev     = p_OP_prev->pSub_table();
   Card_TablePtn*  p_tablePtn_prev  = p_table_prev->pSub_tablePtn();
 
@@ -127,11 +124,6 @@ void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
   Card_Hash* p_hash_prior_new;
   Card_Term* p_term_tblCol_to_be_hashed;
 
-//  eXK eStageCast = p_bound_curr->eStageCast(p_tablePtn_prev,
-//                                            p_tablePtn_curr,
-//                                            p_index_curr,
-//                                            p_bound_curr,
-//                                            /*&*/p_term_tblCol_to_be_hashed);
   eXK eStageCast = Card_Cast::eStageCast(p_tablePtn_prev,
                                          p_tablePtn_curr,
                                          p_index_curr,
