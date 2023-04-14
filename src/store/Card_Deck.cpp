@@ -124,9 +124,23 @@ void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
   Card_Hash* p_hash_prior_new;
   Card_Term* p_term_tblCol_to_be_hashed;
 
+
+  Card_IdxColList* p_idxColList_curr = p_index_curr->pSub_idxColList();
+
+  Card_Term*       p_term_tblCol_tbh = p_bound_curr->pGet_tblColOdn();
+
+  Card_Term*       p_term_curr_idxColOdn = p_bound_curr->pGet_idxColOdn();
+  Card_IdxCol *    p_idxCol_curr =
+      p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_curr_idxColOdn->szValue());
+  Symbol* p_Y_idxCol_curr = p_idxCol_curr->pSymbol();
+
+
+
+
   eXK eStageCast = Card_Cast::eStageCast(p_tablePtn_prev,
                                          p_tablePtn_curr,
                                          p_index_curr,
+                                         p_Y_idxCol_curr,
                                          /*&*/p_term_tblCol_to_be_hashed);
   switch (eStageCast) {
     case XK_BROADCAST:

@@ -47,39 +47,44 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
                           Card_TablePtn* p_tablePtn_curr,
                           Card_Index*    p_index_curr,
+                          Symbol*        p_Y_idxCol_curr,
                           Card_Term*&    rp_term_tblCol_tbh)
 {
   _static_
 
-  Card_IdxColList* p_idxColList_curr = p_index_curr->pSub_idxColList();
+//  Card_IdxColList* p_idxColList_curr = p_index_curr->pSub_idxColList();
   Card_Bound*      p_bound_curr      = p_index_curr->pSub_bound();
 
-  Card_Term*       p_term_curr_idxColOdn = p_bound_curr->pGet_idxColOdn();
-  Card_IdxCol *    p_idxCol_curr =
-      p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_curr_idxColOdn->szValue());
+  Card_Term*       p_term_tblCol_tbh = p_bound_curr->pGet_tblColOdn();
+  Symbol*          p_Y_tblCol_tbh = p_bound_curr?
+                                      p_bound_curr->pGet_tblColOdn()->pSymbol()
+                                      : nullptr;
+
+
+//  Card_Term*       p_term_curr_idxColOdn = p_bound_curr->pGet_idxColOdn();
+//  Card_IdxCol *    p_idxCol_curr =
+//      p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_curr_idxColOdn->szValue());
 
   //! this is naive
   if (p_tablePtn_prev->pSymbol()->bIsReplicated())
     return XK_UNICAST;
 
-  if (p_idxCol_curr && p_idxCol_curr->pSymbol()->bIsReplicated()) {
+  if (p_Y_idxCol_curr && p_Y_idxCol_curr->bIsReplicated()) {
     // + later table is replicated so always unicast
     //p_idxCol_curr->vDump();
     vDebugPoint();
     return XK_UNICAST;
   }
 
-  //
-  Card_Term* p_term_tblCol_tbh = p_bound_curr->pGet_tblColOdn();
 
 
-  if (! p_term_tblCol_tbh)
+  if (! p_Y_tblCol_tbh)
     // - no prior table column (referenced in this bound) -- probably cross join
     return XK_BROADCAST;
 
-  if (p_idxCol_curr->bSameValue(p_tablePtn_curr)) {
+  if (p_Y_idxCol_curr->bSameValue(p_tablePtn_curr->pSymbol())) {
     // + later indexed column (referenced in this bound) is later table ptn
-    if (p_term_tblCol_tbh->bSameValue(p_tablePtn_prev)) {
+    if (p_Y_tblCol_tbh->bSameValue(p_tablePtn_prev->pSymbol())) {
       // + prior table column (referenced in this bound) is prior table ptn
       return XK_UNICAST;
     }
