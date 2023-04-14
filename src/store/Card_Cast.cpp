@@ -48,22 +48,17 @@ eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
                           Card_TablePtn* p_tablePtn_curr,
                           Card_Index*    p_index_curr,
                           Symbol*        p_Y_idxCol_curr,
-                          Card_Term*&    rp_term_tblCol_tbh)
+                          Symbol*        p_Y_tblCol_tbh)
 {
   _static_
 
 //  Card_IdxColList* p_idxColList_curr = p_index_curr->pSub_idxColList();
-  Card_Bound*      p_bound_curr      = p_index_curr->pSub_bound();
-
-  Card_Term*       p_term_tblCol_tbh = p_bound_curr->pGet_tblColOdn();
-  Symbol*          p_Y_tblCol_tbh = p_bound_curr?
-                                      p_bound_curr->pGet_tblColOdn()->pSymbol()
-                                      : nullptr;
-
-
-//  Card_Term*       p_term_curr_idxColOdn = p_bound_curr->pGet_idxColOdn();
-//  Card_IdxCol *    p_idxCol_curr =
-//      p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_curr_idxColOdn->szValue());
+//  Card_Bound*      p_bound_curr      = p_index_curr->pSub_bound();
+//
+//  Card_Term*       p_term_tblCol_tbh = p_bound_curr->pGet_tblColOdn();
+//  Symbol*          p_Y_tblCol_tbh = p_bound_curr?
+//                                      p_bound_curr->pGet_tblColOdn()->pSymbol()
+//                                      : nullptr;
 
   //! this is naive
   if (p_tablePtn_prev->pSymbol()->bIsReplicated())
@@ -91,7 +86,6 @@ eXK Card_Cast::eStageCast(Card_TablePtn* p_tablePtn_prev,
     else {
       // - prior table column (referenced in this bound) is not prior table ptn
       //     but the prior table column can be used for hash cast
-      rp_term_tblCol_tbh = p_term_tblCol_tbh;
       return XK_HASHCAST;
     }
   }
