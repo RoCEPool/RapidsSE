@@ -2611,9 +2611,9 @@ bool Symbol::bIsReplicated(void)
 
   char cTblSyn = cGetTableSyn();
   if (cTblSyn >= 'A' && cTblSyn <= 'Z')
-    return false;
+    return true;
 
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
