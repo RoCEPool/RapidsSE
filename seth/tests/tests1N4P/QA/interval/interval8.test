@@ -4,31 +4,26 @@ success
 load interval8 "../DATA/QA/interval/interval8.csv";
 success
 
-// TODO: MICROSECONDS DON'T MATCH : TEST IS WRONG
-/*
 select a,b,c,d from interval8 i where a+interval '21:04:00.123' hour to second=b;
 rows:
 (date '2022-03-07',timestamp '2022-03-07 21:04:00.123',234.56,1)
 (date '2010-10-05',timestamp '2010-10-05 21:04:00.123',3333.98,3)
-*/
 
-/*
+
 select a,b,c,d from interval8 i where k+interval '21:04:00.123' hour to second=b;
 rows:
 (date '2022-03-07',timestamp '2022-03-07 21:04:00.123',234.56,1)
 (date '2010-10-05',timestamp '2010-10-05 21:04:00.123',3333.98,3)
-*/
 
-// TODO: INCONSISTENT RESULTS
-/*
+
 select a,b,c,d from interval8 i where a+interval '2 12:59:00.000' day to second=b;
 rows:
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2)
 (date '2023-01-29',timestamp '2023-01-31 12:59:00.000',1.65,4)
 (date '2022-02-27',timestamp '2022-03-01 12:59:00.000',1551.36,5)
-*/
 
 /*
+// TODO: NOT IMPLEMENTED
 select substring(cast(a-interval '2' day as varchar),1,4),sum(c),count(1) cn from interval8 i 
 group by substring(cast(a-interval '2' day as varchar),1,4)
 having substring(cast(a-interval '2' day as varchar),1,4)>='2020'
@@ -38,6 +33,7 @@ ordered rows:
 ('2021',991.502,1)
 ('2022',7932.033,4)
 ('2023',1.65,1)
+
 
 select i.a,i.b,i.c,i.d,i2.a,i2.b,i2.c,i2.d from interval8 i join interval8 i2 on i.a+interval '2 12:59:00.000' day to second=i2.b;
 rows:
@@ -56,20 +52,21 @@ rows:
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2,date '2023-01-01',timestamp '2023-01-01 21:04:00.121',711.573,8)
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2,date '2023-01-29',timestamp '2023-01-31 12:59:00.000',1.65,4)
 (date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2,date '2022-12-31',timestamp '2023-01-02 12:59:00.000',5434.54,2)
+*/
 
 select i.*,c+interval '1' year from interval8 i;
-failure contains: "Expression type combination is invalid or unsupported for the expression operator: (DECIMAL + INTERVAL YEAR) in expression"
+failure contains: "EC_SEMANTIC_ERROR;"
 select i.*,d+interval '1-2' year to month from interval8 i;
-failure contains: "Expression type combination is invalid or unsupported for the expression operator: (INTEGER + INTERVAL YEAR TO MONTH) in expression"
+failure contains: "EC_SEMANTIC_ERROR;"
 select i.*,e+interval '1' day from interval8 i;
-failure contains: "Expression type combination is invalid or unsupported for the expression operator: (FLOAT + INTERVAL DAY) in expression"
+failure contains: "EC_SEMANTIC_ERROR;"
 select i.*,h+interval '1 2' day to hour from interval8 i;
-failure contains: "Expression type combination is invalid or unsupported for the expression operator: (VARCHAR + INTERVAL DAY TO HOUR) in expression"
+failure contains: "EC_SEMANTIC_ERROR;"
 select i.*,i+interval '1 2:3:4' day to second from interval8 i;
-failure contains: "Expression type combination is invalid or unsupported for the expression operator: (CHAR + INTERVAL DAY TO SECOND) in expression"
+failure contains: "EC_SEMANTIC_ERROR;"
 select i.*,j+interval '1:2:12' hour to second from interval8 i;
-failure contains: "Expression type combination is invalid or unsupported for the expression operator: (BOOLEAN + INTERVAL HOUR TO SECOND) in expression"
-*/
+failure contains: "EC_SEMANTIC_ERROR;"
+
 
 drop table interval8;
 success

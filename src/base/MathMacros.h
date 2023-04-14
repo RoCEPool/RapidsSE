@@ -345,13 +345,21 @@
                                                                            \
     time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
                                                                            \
+    i8 iMicroSeconds = iArg2%_C_1M;                                        \
+                                                                           \
+    if (iMicroSeconds && iArg2 < 0) {                                      \
+      xDateTime.tm_sec--;                                                  \
+      iMicroSeconds = _C_1M - iMicroSeconds;                               \
+    }                                                                      \
+    xTsp2.m_iAsI8 = 0;                                                     \
+                                                                           \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
     xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
     xTsp2.m_uDay       = xDateTime.tm_mday;                                \
     xTsp2.m_uHour      = xDateTime.tm_hour;                                \
     xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
     xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
-    xTsp2.m_uMicro     = 0;                                                \
+    xTsp2.m_uMicro     = iMicroSeconds;                                    \
                                                                            \
     *paW++ = xTsp2.m_iAsI8;                                                \
   }                                                                        \
@@ -426,8 +434,14 @@
     xDateTime.tm_min  = 0;                                                 \
     xDateTime.tm_sec  = iArg1/_C_1M;                                       \
                                                                            \
+      if (iMicroSeconds && iArg2 < 0) {                                    \
+      xDateTime.tm_sec--;                                                  \
+      iMicroSeconds = _C_1M - iMicroSeconds;                               \
+    }                                                                      \
+                                                                           \
     time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
                                                                            \
+    xTsp2.m_iAsI8 = 0;                                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
     xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
     xTsp2.m_uDay       = xDateTime.tm_mday;                                \
@@ -437,6 +451,7 @@
     xTsp2.m_uMicro     = 0;                                                \
                                                                            \
     *paW++ = xTsp2.m_iAsI8;                                                \
+    xTsp2.m_uMicro     = iMicroSeconds;                                    \
   }                                                                        \
 }
 
@@ -560,15 +575,22 @@
     xDateTime.tm_min  = 0;                                                 \
     xDateTime.tm_sec  -= iArg2/_C_1M;                                      \
                                                                            \
-    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+    i8 iMicroSeconds = iArg2%_C_1M;                                        \
                                                                            \
+    if (iMicroSeconds) {                                                   \
+      xDateTime.tm_sec--;                                                  \
+      iMicroSeconds = _C_1M - iMicroSeconds;                               \
+    }                                                                      \
+                                                                           \
+    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+    xTsp2.m_iAsI8 = 0;                                                     \                                                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
     xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
     xTsp2.m_uDay       = xDateTime.tm_mday;                                \
     xTsp2.m_uHour      = xDateTime.tm_hour;                                \
     xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
     xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
-    xTsp2.m_uMicro     = 0;                                                \
+    xTsp2.m_uMicro     = iMicroSeconds;                                    \
                                                                            \
     *paW++ = xTsp2.m_iAsI8;                                                \
   }                                                                        \
