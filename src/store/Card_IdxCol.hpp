@@ -16,7 +16,6 @@ namespace STORE
     Card_IdxCol(void);
    ~Card_IdxCol(void) noexcept(false);
 
-    static bool bMatchingTblSyn(Symbol* pArg_a, Symbol* pArg_b);
   };
 
   Card_IdxCol* _pCard_IdxCol(void* aAddr);

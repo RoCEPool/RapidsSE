@@ -22,8 +22,8 @@ namespace STORE
                         Card_FiltPredList* p_filtPredList);
 
      eXK eLocusCast(Card_TableList* p_tableList,
-                    Card_JoinLocus* p_joinLocus,
-                    Card_JoinLocus* p_joinLocus_prev);
+                    Card_JoinLocus* p_joinLocus_prev,
+                    Card_JoinLocus* p_joinLocus);
 
      i8 iOnePermutedJoin(Card_TableList*    p_tableList,
                            Card_JoinPredList* p_joinPredList,

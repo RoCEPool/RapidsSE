@@ -20,11 +20,16 @@
 #include "Card_Bounds.hpp"
 
 #include "Card_Call.hpp"
-#include "Card_LocusCast.hpp"
 #include "Card_CmpPred.hpp"
+#include "Card_COL.hpp"
 #include "Card_Combined.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_Correlation.hpp"
+#include "Card_CostLocus.hpp"    //
+#include "Card_CostJoining.hpp"  //
+#include "Card_CostNetwork.hpp"  //
+#include "Card_CostQuery.hpp"    //
+#include "Card_CostUnicast.hpp"  //
 #include "Card_CrossJoin.hpp"
 
 #include "Card_Debug.hpp"
@@ -69,11 +74,7 @@
 
 #include "Card_Level.hpp"        //
 #include "Card_Limit.hpp"        //
-#include "Card_CostLocus.hpp"    //
-#include "Card_CostJoining.hpp"  //
-#include "Card_CostNetwork.hpp"  //
-#include "Card_CostQuery.hpp"    //
-#include "Card_CostUnicast.hpp"  //
+#include "Card_LocusCast.hpp"
 
 #include "Card_NCorrCols.hpp"
 #include "Card_Needed.hpp"

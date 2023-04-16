@@ -108,7 +108,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
     if (! p_joinLocus_prev)
       p_joinLocus_prev = xCI.G.p_joinLocus;
 
-    eXK eLocusCast = this->eLocusCast(p_tableList, xCI.G.p_joinLocus,p_joinLocus_prev);
+    eXK eLocusCast = this->eLocusCast(p_tableList, p_joinLocus_prev, xCI.G.p_joinLocus);
     i8 nBuff_joining_with = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
 
 
@@ -158,11 +158,11 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute the castfrom prev join to curr join locus                          */
+/* compute the cast from prev join to curr join locus                         */
 /*----------------------------------------------------------------------------*/
 eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
-                                 Card_JoinLocus* p_joinLocus,
-                                 Card_JoinLocus* p_joinLocus_prev)
+                                 Card_JoinLocus* p_joinLocus_prev,
+                                 Card_JoinLocus* p_joinLocus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -189,7 +189,7 @@ eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
   Symbol* p_Y_tblCol_prev = nullptr;
   Symbol* p_Y_idxCol_curr = nullptr;
 
-  if (Card_IdxCol::bMatchingTblSyn(p_Y_tablePtn_prev,p_Y_term_0_cmp)) {
+  if (Card_COL::bMatchingTblSyn(p_Y_tablePtn_prev,p_Y_term_0_cmp)) {
     p_Y_tblCol_prev = p_Y_term_0_cmp;
     p_Y_idxCol_curr = p_Y_term_1_cmp;
   }
@@ -203,33 +203,7 @@ eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
                                          p_Y_tablePtn_curr,
                                          p_Y_idxCol_curr);
 
-
-
-
-
-  if ((cTblSyn_locus >= 'A' && cTblSyn_locus <= 'Z') ||
-      (cTblSyn_prior >= 'A' && cTblSyn_prior <= 'Z') ) {
-    RASSERT(XK_UNICAST == eStageCast);
-    return XK_UNICAST;
-  }
-
-  // t:$x.1 == l_ptn && t:$y.1 == r_ptn
-  if ( ((p_term_0_cmp->bSameValue(p_tablePtn_prior) && p_term_1_cmp->bSameValue(p_tablePtn_locus)) ||
-        (p_term_0_cmp->bSameValue(p_tablePtn_locus) && p_term_1_cmp->bSameValue(p_tablePtn_prior)) )
-      && bUnicastPermitted(cTblSyn_prior, cTblSyn_prev, cTblSyn_locus)
-      ) {
-    RASSERT(XK_UNICAST == eStageCast);
-    return XK_UNICAST;
-  }
-
-  // t:$x.1 == r_ptn
-  if (p_term_0_cmp->bSameValue(p_tablePtn_locus) || p_term_1_cmp->bSameValue(p_tablePtn_locus)) {
-    //RASSERT(XK_HASHCAST == eStageCast);
-    return XK_HASHCAST;
-  }
-
-  RASSERT(XK_BROADCAST == eStageCast);
-  return XK_BROADCAST;
+  return eStageCast;
 }
 
 /*----------------------------------------------------------------------------*/
