@@ -22,7 +22,7 @@ namespace STORE
 
     void vAddStageCasts(CardIter* pCI);
 
-    void vAddCastKind_toPrev_cast(CardIter*      pCI,
+    eXK eAddStageCast_toPrev_cast(CardIter*      pCI,
                                   Card_OP*       p_OP_prev,
                                   Card_Project*  p_project_prev,
                                   Card_Combined* p_combined_prev,
