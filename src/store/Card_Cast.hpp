@@ -17,7 +17,7 @@ namespace STORE
    ~Card_Cast(void) noexcept(false);
 
     static eXK eStageCast(Symbol* p_Y_tablePtn_prev,
-                          Symbol* p_Y_tablePtn_curr,
+                          Symbol* p_Y_tblCol_prev,
                           Symbol* p_Y_idxCol_curr,
                           Symbol* p_Y_tblCol_tbh);
   };

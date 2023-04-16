@@ -144,9 +144,9 @@ void Card_Deck::vAddCastKind_toPrev_cast(CardIter*      pCI,
   Symbol* p_Y_tablePtn_curr = p_tablePtn_curr->pSymbol();
 
   eXK eStageCast = Card_Cast::eStageCast(p_Y_tablePtn_prev,
+                                         p_Y_tblCol_tbh,
                                          p_Y_tablePtn_curr,
-                                         p_Y_idxCol_curr,
-                                         p_Y_tblCol_tbh);
+                                         p_Y_idxCol_curr);
   switch (eStageCast) {
     case XK_BROADCAST:
       p_cast_prev->vValue("broadcast"_Stz);

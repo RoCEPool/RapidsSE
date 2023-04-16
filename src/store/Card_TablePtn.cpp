@@ -70,6 +70,19 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   return p_tablePtn;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_TablePtn::bColumnMatchesPtn(Symbol* p_Y_tblPtn, Symbol* p_Y_tblCol)
+{
+  _static_
+
+  if (p_Y_tblCol->bSameValue(p_Y_tblPtn))
+    return true;
+
+  return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
