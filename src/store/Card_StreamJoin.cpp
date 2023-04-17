@@ -7,7 +7,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_LocusCast.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_CostLocus.hpp"
+#include "Card_JoinCost.hpp"
 #include "Card_CostJoining.hpp"
 #include "Card_CostNetwork.hpp"
 #include "Card_CostUnicast.hpp"
@@ -218,7 +218,7 @@ i8 Card_StreamJoin::nEstLocusCosts(i8 i_JoinPermSeq,
   Card_LocusCast* p_locusCast = new Card_LocusCast;
   p_locusCast->vValue(aXK[eLocusCast]);
 
-  Card_CostLocus*   p_costLocus   = new Card_CostLocus;
+  Card_JoinCost*   p_costLocus   = new Card_JoinCost;
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
   Card_CostJoining* p_costJoining = new Card_CostJoining;

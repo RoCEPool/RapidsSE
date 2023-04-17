@@ -25,7 +25,7 @@
 #include "Card_Combined.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_Correlation.hpp"
-#include "Card_CostLocus.hpp"    //
+#include "Card_JoinCost.hpp"    //
 #include "Card_CostJoining.hpp"  //
 #include "Card_CostNetwork.hpp"  //
 #include "Card_CostQuery.hpp"    //

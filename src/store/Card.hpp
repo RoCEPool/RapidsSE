@@ -34,7 +34,7 @@ namespace STORE
   class Card_Combined;
   class Card_Constraint;
   class Card_Correlation;
-  class Card_CostLocus;
+  class Card_JoinCost;
   class Card_CostJoining;
   class Card_CostNetwork;
   class Card_CostQuery;
@@ -436,7 +436,7 @@ namespace STORE
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_Level*         pSub_level(void);
-    Card_CostLocus*     pSub_costLocus(void);
+    Card_JoinCost*     pSub_joinCost(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
     Card_CostQuery*     pSub_costQuery(void);
