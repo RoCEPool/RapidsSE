@@ -343,7 +343,7 @@
     xDateTime.tm_min  = 0;                                                 \
     xDateTime.tm_sec  = iArg2/_C_1M;                                       \
                                                                            \
-    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
     i8 iMicroSeconds = iArg2%_C_1M;                                        \
                                                                            \
@@ -439,7 +439,7 @@
       iMicroSeconds = _C_1M - iMicroSeconds;                               \
     }                                                                      \
                                                                            \
-    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
     xTsp2.m_iAsI8 = 0;                                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
@@ -519,7 +519,7 @@
       xDateTime1.tm_min  = 0;                                              \
       xDateTime1.tm_sec  = 0;                                              \
                                                                            \
-      time_t iSecondsSincePosixEpoch1 = mktime(&xDateTime1);               \
+      time_t iSecondsSincePosixEpoch1 = timegm(&xDateTime1);               \
                                                                            \
       struct tm xDateTime2 = {0} ;                                         \
                                                                            \
@@ -530,7 +530,7 @@
       xDateTime2.tm_min  = 0;                                              \
       xDateTime2.tm_sec  = 0;                                              \
                                                                            \
-      time_t iSecondsSincePosixEpoch2 = mktime(&xDateTime2);               \
+      time_t iSecondsSincePosixEpoch2 = timegm(&xDateTime2);               \
                                                                            \
       i8 iSeconds = iSecondsSincePosixEpoch1 - iSecondsSincePosixEpoch2;   \
                                                                            \
@@ -582,7 +582,7 @@
       iMicroSeconds = _C_1M - iMicroSeconds;                               \
     }                                                                      \
                                                                            \
-    time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+    time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
     xTsp2.m_iAsI8 = 0;                                                     \
     xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
     xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
@@ -1687,7 +1687,7 @@
         }                                                                  \
       }                                                                    \
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
-      time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
       xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
@@ -1739,7 +1739,7 @@
       }                                                                    \
       xDateTime.tm_sec  = xTsp2.m_uSecond + iSecs;                         \
                                                                            \
-      time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                   \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
                                                                            \
       xTsp1.m_iAsI8 = 0;                                                   \
                                                                            \
@@ -1891,7 +1891,7 @@
         }                                                                  \
       }                                                                    \
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
-      time_t iSecondsSincePosixEpoch = mktime(&xDateTime);                 \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
                                                                            \
       xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
