@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CostQuery.hpp -- Estimate Cost for Query                              */
+/* Card_CostStream.hpp -- Estimate Cost for Query                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,19 @@
 
 namespace STORE
 {
-  class Card_CostQuery : public Card
+  class Card_CostStream : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CostQuery(void);
-   ~Card_CostQuery(void) noexcept(false);
+    Card_CostStream(void);
+   ~Card_CostStream(void) noexcept(false);
 
-    bool bIsLessCost(Card_CostQuery* p_costQuery_arg);
+    bool bIsLessCost(Card_CostStream* p_costQuery_arg);
   };
 
-  Card_CostQuery* _pCard_CostQuery(void* aAddr);
+  Card_CostStream* _pCard_CostStream(void* aAddr);
 }
 
 /*============================================================================*/

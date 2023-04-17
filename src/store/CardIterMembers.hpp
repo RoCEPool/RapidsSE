@@ -120,7 +120,7 @@ namespace STORE
     Card_Correlation *   p_correlation;
     Card_CostJoining *   p_costJoining;
     Card_CostNetwork *   p_costNetwork;
-    Card_CostQuery *     p_costQuery;
+    Card_CostStream *     p_costQuery;
     Card_CostUnicast *   p_costUnicast;
     Card_CrossJoin *     p_crossJoin;
 

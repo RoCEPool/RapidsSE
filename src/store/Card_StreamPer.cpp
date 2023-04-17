@@ -145,7 +145,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
   p_costUnicast->vValue(nSumUnicastCost);
 
-  Card_CostQuery* p_costQuery = new Card_CostQuery;
+  Card_CostStream* p_costQuery = new Card_CostStream;
   p_costQuery->vAppend(p_costNetwork);
   p_costQuery->vAppend(p_costUnicast);
 
@@ -227,7 +227,7 @@ i8 Card_StreamPer::iCreateJoinSeq(Card_TableList*    p_tableList,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (0 == nChildCards()) {
-      //+ table is head/first of this stream permutation
+      //+ table is the head of this stream permutation
 
       Card_StreamHead *p_streamHead = new Card_StreamHead;
       p_streamHead->vValue(cTblSyn_ith);
@@ -422,8 +422,8 @@ bool Card_StreamPer::bIsLessCost(Card_StreamPer* p_joinPermSeq_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CostQuery* p_costQuery_this = pSub_costQuery();
-  Card_CostQuery* p_costQuery_arg  = p_joinPermSeq_arg->pSub_costQuery();
+  Card_CostStream* p_costQuery_this = pSub_costQuery();
+  Card_CostStream* p_costQuery_arg  = p_joinPermSeq_arg->pSub_costQuery();
 
   if (p_costQuery_this->bIsLessCost(p_costQuery_arg))
     return true;

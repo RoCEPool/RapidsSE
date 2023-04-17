@@ -37,7 +37,7 @@ namespace STORE
   class Card_JoinEstimate;
   class Card_CostJoining;
   class Card_CostNetwork;
-  class Card_CostQuery;
+  class Card_CostStream;
   class Card_CostUnicast;
   class Card_CrossJoin;
 
@@ -439,7 +439,7 @@ namespace STORE
     Card_JoinEstimate*     pSub_joinEstimate(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
-    Card_CostQuery*     pSub_costQuery(void);
+    Card_CostStream*     pSub_costQuery(void);
     Card_CostUnicast*   pSub_costUnicast(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);

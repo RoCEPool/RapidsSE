@@ -114,7 +114,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CostQuery*   p_costQuery   = pSub_costQuery();
+  Card_CostStream*   p_costQuery   = pSub_costQuery();
   Card_CostNetwork* p_costNetwork = p_costQuery->pSub_costNetwork();
   Card_CostUnicast* p_costUnicast = p_costQuery->pSub_costUnicast();
 
@@ -162,7 +162,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   }
 
   // the load
-//  Card_CostQuery* p_costQuery = pSub_costQuery();
+//  Card_CostStream* p_costQuery = pSub_costQuery();
 //  Card_CostNetwork* p_costNetwork = p_costQuery->pSub_costNetwork();
 //  Card_CostUnicast* p_costUnicast = p_costQuery->pSub_costUnicast();
 //

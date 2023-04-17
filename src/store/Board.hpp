@@ -28,7 +28,7 @@
 #include "Card_JoinEstimate.hpp"    //
 #include "Card_CostJoining.hpp"  //
 #include "Card_CostNetwork.hpp"  //
-#include "Card_CostQuery.hpp"    //
+#include "Card_CostStream.hpp"    //
 #include "Card_CostUnicast.hpp"  //
 #include "Card_CrossJoin.hpp"
 

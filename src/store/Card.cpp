@@ -1976,13 +1976,13 @@ Card_CostNetwork* Card::pSub_costNetwork(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CostQuery.hpp"
-Card_CostQuery* Card::pSub_costQuery(void)
+#include "Card_CostStream.hpp"
+Card_CostStream* Card::pSub_costQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CostQuery* p_costQuery =
-      _pCard_CostQuery(pFindSubCard(CK_COSTQUERY));
+  Card_CostStream* p_costQuery =
+      _pCard_CostStream(pFindSubCard(CK_COSTSTREAM));
   return p_costQuery;
 }
 
