@@ -72,7 +72,7 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_StreamPer* p_streamPer)
 /*----------------------------------------------------------------------------*/
 /* pick optimal join ordering from join permutation set                       */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamPrmAll* p_joinPermAll, i8 iJoinOrder)
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll, i8 iJoinOrder)
 {
   _static_
 
@@ -90,7 +90,7 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamPrmAll* p_joinPermAll, i8
 /*----------------------------------------------------------------------------*/
 /* pick optimal join ordering from join permutation set                       */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamPrmAll* p_joinPermAll)
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll)
 {
   _static_
 

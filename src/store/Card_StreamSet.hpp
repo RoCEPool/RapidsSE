@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StreamPrmAll.hpp -- All Join Permutations                              */
+/* Card_StreamSet.hpp -- All Join Permutations                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-   class Card_StreamPrmAll : public Card
+   class Card_StreamSet : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StreamPrmAll(void);
-   ~Card_StreamPrmAll(void) noexcept(false);
+    Card_StreamSet(void);
+   ~Card_StreamSet(void) noexcept(false);
 
-    static Card_StreamPrmAll* pComputeAllPermutations(Card_TableList* p_tableList,
-                                                      Card_JoinPredList* p_joinPredList);
+    static Card_StreamSet* pComputeAllPermutations(Card_TableList* p_tableList,
+                                                   Card_JoinPredList* p_joinPredList);
 
     void vEstCostsForAllPermutations(Card_TableList*    p_tableList,
                                      Card_FiltPredList* p_filtPredList);
@@ -26,7 +26,7 @@ namespace STORE
     void vRemoveInvalid(void);
    };
 
-  Card_StreamPrmAll* _pCard_StreamPrmAll(void* aAddr);
+  Card_StreamSet* _pCard_StreamSet(void* aAddr);
 }
 
 /*============================================================================*/

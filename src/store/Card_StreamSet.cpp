@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_StreamPrmAll.cpp -- Join Permutation Set (of lists)                    */
+/* Card_StreamSet.cpp -- Join Permutation Set (of lists)                    */
 /*============================================================================*/
 
-#include "Card_StreamPrmAll.hpp"
+#include "Card_StreamSet.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -19,16 +19,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_StreamPrmAll, CK_STREAMPRMALL)
-__aNewFunction(Card_StreamPrmAll, CN_CARD)
-__vDeleteFunction(Card_StreamPrmAll, CN_CARD)
+__pCastFunction_Card(STORE, Card_StreamSet, CK_STREAMSET)
+__aNewFunction(Card_StreamSet, CN_CARD)
+__vDeleteFunction(Card_StreamSet, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamPrmAll::Card_StreamPrmAll(void)
-: Card(CK_STREAMPRMALL)
+Card_StreamSet::Card_StreamSet(void)
+: Card(CK_STREAMSET)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -40,7 +40,7 @@ Card_StreamPrmAll::Card_StreamPrmAll(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StreamPrmAll::~Card_StreamPrmAll(void) noexcept(false)
+Card_StreamSet::~Card_StreamSet(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -52,12 +52,12 @@ Card_StreamPrmAll::~Card_StreamPrmAll(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* compute the set of stream join permutations                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamPrmAll* Card_StreamPrmAll::pComputeAllPermutations(Card_TableList* p_tableList,
-                                                              Card_JoinPredList* p_joinPredList)
+Card_StreamSet* Card_StreamSet::pComputeAllPermutations(Card_TableList* p_tableList,
+                                                        Card_JoinPredList* p_joinPredList)
 {
   _static_
 
-  Card_StreamPrmAll* p_streamPrmAll = new Card_StreamPrmAll;
+  Card_StreamSet* p_streamPrmAll = new Card_StreamSet;
 
   i8 nTables = p_tableList->nChildCards();
   PermGen* pPermGen = new PermGen(nTables);
@@ -108,8 +108,8 @@ Card_StreamPrmAll* Card_StreamPrmAll::pComputeAllPermutations(Card_TableList* p_
 /*----------------------------------------------------------------------------*/
 /* compute the load of all permutations                                       */
 /*----------------------------------------------------------------------------*/
-void Card_StreamPrmAll::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
-                                                    Card_FiltPredList* p_filtPredList)
+void Card_StreamSet::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
+                                                 Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -121,7 +121,7 @@ void Card_StreamPrmAll::vEstCostsForAllPermutations(Card_TableList*    p_tableLi
 /*----------------------------------------------------------------------------*/
 /* pick given order                                                           */
 /*----------------------------------------------------------------------------*/
-Card_StreamPer* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
+Card_StreamPer* Card_StreamSet::pJoinOrder(i8 iJoinOrder)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -142,7 +142,7 @@ Card_StreamPer* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
 /*----------------------------------------------------------------------------*/
 /* pick permutation with lowest cost                                          */
 /*----------------------------------------------------------------------------*/
-Card_StreamPer* Card_StreamPrmAll::pLowestCost(void)
+Card_StreamPer* Card_StreamSet::pLowestCost(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -163,7 +163,7 @@ Card_StreamPer* Card_StreamPrmAll::pLowestCost(void)
 /*----------------------------------------------------------------------------*/
 /* compute the set of join permutations                                       */
 /*----------------------------------------------------------------------------*/
-void Card_StreamPrmAll::vRemoveInvalid(void)
+void Card_StreamSet::vRemoveInvalid(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

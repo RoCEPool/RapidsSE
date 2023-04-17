@@ -190,7 +190,7 @@ namespace STORE
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;
     Card_StreamPer *     p_streamPrm;
-    Card_StreamPrmAll *  p_streamPrmAll;
+    Card_StreamSet *  p_streamPrmAll;
     Card_SubSet *        p_subSet;
 
     Card_Table *         p_table;

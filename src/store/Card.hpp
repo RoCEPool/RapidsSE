@@ -74,7 +74,7 @@ namespace STORE
   class Card_StreamJoin;
   class Card_JoinOrder;
   class Card_JoinOrdering;
-  class Card_StreamPrmAll;
+  class Card_StreamSet;
   class Card_StreamPer;
   class Card_JoinPredList;
 
@@ -430,7 +430,7 @@ namespace STORE
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
     Card_StreamJoin*     pSub_joinLocus(void);
-    Card_StreamPrmAll*   pSub_joinPermAll(void);
+    Card_StreamSet*   pSub_joinPermAll(void);
     Card_StreamPer*   pSub_joinPermList(void);
     Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);

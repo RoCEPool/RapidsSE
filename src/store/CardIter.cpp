@@ -1101,7 +1101,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_STREAMJOIN:         return G.p_streamJoin;
     case CK_JOINORDER:        return G.p_joinOrder;
     case CK_JOINORDERING:     return G.p_joinOrdering;
-    case CK_STREAMPRMALL:      return G.p_streamPrmAll;
+    case CK_STREAMSET:      return G.p_streamPrmAll;
     case CK_STREAMPER:      return G.p_streamPrm;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
     case CK_KEY:              return G.p_key;
@@ -1285,7 +1285,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_STREAMJOIN:         return "G.p_streamJoin"_Stz;
     case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
     case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
-    case CK_STREAMPRMALL:      return "G.p_streamPrmAll"_Stz;
+    case CK_STREAMSET:      return "G.p_streamPrmAll"_Stz;
     case CK_STREAMPER:      return "G.p_streamPrm"_Stz;
     case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
     case CK_KEY:              return "G.p_key"_Stz;
@@ -2157,7 +2157,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_STREAMJOIN: *((Card**)&G.p_streamJoin)         = pCard; break;
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
-    case CK_STREAMPRMALL: *((Card**)&G.p_streamPrmAll)      = pCard; break;
+    case CK_STREAMSET: *((Card**)&G.p_streamPrmAll)      = pCard; break;
     case CK_STREAMPER: *((Card**)&G.p_streamPrm)      = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
     case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
