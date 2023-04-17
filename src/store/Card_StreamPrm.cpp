@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinPermSeq.cpp -- Join Permutation Sequence                          */
+/* Card_StreamPrm.cpp -- Join Permutation Sequence                          */
 /*============================================================================*/
 
-#include "Card_JoinPermSeq.hpp"
+#include "Card_StreamPrm.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -21,15 +21,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_JoinPermSeq, CK_JOINPERMSEQ)
-__aNewFunction(Card_JoinPermSeq, CN_CARD)
-__vDeleteFunction(Card_JoinPermSeq, CN_CARD)
+__pCastFunction_Card(STORE, Card_StreamPrm, CK_JOINPERMSEQ)
+__aNewFunction(Card_StreamPrm, CN_CARD)
+__vDeleteFunction(Card_StreamPrm, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermSeq::Card_JoinPermSeq(void)
+Card_StreamPrm::Card_StreamPrm(void)
 : Card(CK_JOINPERMSEQ)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -42,7 +42,7 @@ Card_JoinPermSeq::Card_JoinPermSeq(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermSeq::~Card_JoinPermSeq(void) noexcept(false)
+Card_StreamPrm::~Card_StreamPrm(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -54,8 +54,8 @@ Card_JoinPermSeq::~Card_JoinPermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the query cost of this join permutation sequence                  */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
-                                     Card_FiltPredList* p_filtPredList)
+void Card_StreamPrm::vEstQueryCost(Card_TableList* p_tableList,
+                                   Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -155,9 +155,9 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 /*----------------------------------------------------------------------------*/
 /* compute the cast from prev join to curr join locus                         */
 /*----------------------------------------------------------------------------*/
-eXK Card_JoinPermSeq::eLocusCast(Symbol*         p_Y_streamPtn_running,
-                                 Card_TableList* p_tableList,
-                                 Card_StreamJoin* p_joinLocus)
+eXK Card_StreamPrm::eLocusCast(Symbol*         p_Y_streamPtn_running,
+                               Card_TableList* p_tableList,
+                               Card_StreamJoin* p_joinLocus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -204,9 +204,9 @@ eXK Card_JoinPermSeq::eLocusCast(Symbol*         p_Y_streamPtn_running,
 /*----------------------------------------------------------------------------*/
 /* compute one permuted join sequence                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
-                                      Card_JoinPredList* p_joinPredList,
-                                      PermGen*           pPermGen)
+i8 Card_StreamPrm::iOnePermutedJoin(Card_TableList*    p_tableList,
+                                    Card_JoinPredList* p_joinPredList,
+                                    PermGen*           pPermGen)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -297,9 +297,9 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
 /*----------------------------------------------------------------------------*/
 /* compute one permuted join sequence                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
-                                         Card_JoinPredList* p_joinPredList,
-                                         PermGen*           pPermGen)
+i8 Card_StreamPrm::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
+                                       Card_JoinPredList* p_joinPredList,
+                                       PermGen*           pPermGen)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -402,7 +402,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
 /*----------------------------------------------------------------------------*/
 /* does this join sequence already have a join with given table at this point?*/
 /*----------------------------------------------------------------------------*/
-bool Card_JoinPermSeq::bHasKnownJoin(char cTblSyn)
+bool Card_StreamPrm::bHasKnownJoin(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -419,7 +419,7 @@ bool Card_JoinPermSeq::bHasKnownJoin(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* is load of this permutation sequence less than given arg?                  */
 /*----------------------------------------------------------------------------*/
-bool Card_JoinPermSeq::bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg)
+bool Card_StreamPrm::bIsLessLoad(Card_StreamPrm* p_joinPermSeq_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -435,9 +435,9 @@ bool Card_JoinPermSeq::bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg)
 /*----------------------------------------------------------------------------*/
 /* is a possible unicast permitted at table r ?                               */
 /*----------------------------------------------------------------------------*/
-bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
-                                         char cTblSyn_prev,
-                                         char cTblSyn_locus)
+bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_prior,
+                                       char cTblSyn_prev,
+                                       char cTblSyn_locus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -471,7 +471,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
   return true;
 }
 /*----------------------------------------------------------------------------*/
-//bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_l,
+//bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_l,
 //                                         char cTblSyn_prev, char cTblSyn_r)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -504,7 +504,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
 //  return true;
 //}
 /*----------------------------------------------------------------------------*/
-//bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_l, char cTblSyn_r)
+//bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_l, char cTblSyn_r)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 //

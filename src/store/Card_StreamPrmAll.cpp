@@ -7,7 +7,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_StreamHead.hpp"
-#include "Card_JoinPermSeq.hpp"
+#include "Card_StreamPrm.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"
@@ -67,7 +67,7 @@ Card_StreamPrmAll* Card_StreamPrmAll::pAllPermutedJoins(Card_TableList* p_tableL
 
     pPermGen->vCalcPermutation(i_Permutation);
 
-    Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
+    Card_StreamPrm* p_joinPermSeq = new Card_StreamPrm;
     p_joinPermSeq->pSymbol()->Y_vSet(P_Permutation, i_Permutation);
 
     i8 i_JoinInvalid = p_joinPermSeq->iOnePermutedJoin(p_tableList,
@@ -106,7 +106,7 @@ Card_StreamPrmAll* Card_StreamPrmAll::pAllPermutedJoins(Card_TableList* p_tableL
 //
 //  while (pPermGen->bNextPermutation()) {
 //
-//    Card_JoinPermSeq* p_joinPermSeq = new Card_JoinPermSeq;
+//    Card_StreamPrm* p_joinPermSeq = new Card_StreamPrm;
 //    p_joinPermSeq->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
 //    p_joinPermAll->vAppendMain(p_joinPermSeq);
 //
@@ -140,12 +140,12 @@ void Card_StreamPrmAll::vEstCostsForAllJoinPerm(Card_TableList*    p_tableList,
 /*----------------------------------------------------------------------------*/
 /* pick given order                                                           */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermSeq* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
+Card_StreamPrm* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 iPermutation;
-  Card_JoinPermSeq* p_joinPermSeq = nullptr;
+  Card_StreamPrm* p_joinPermSeq = nullptr;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
@@ -161,11 +161,11 @@ Card_JoinPermSeq* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
 /*----------------------------------------------------------------------------*/
 /* pick join permseq with lowest load                                         */
 /*----------------------------------------------------------------------------*/
-Card_JoinPermSeq* Card_StreamPrmAll::pLowestLoad(void)
+Card_StreamPrm* Card_StreamPrmAll::pLowestLoad(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_JoinPermSeq* pLowest = nullptr;
+  Card_StreamPrm* pLowest = nullptr;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {

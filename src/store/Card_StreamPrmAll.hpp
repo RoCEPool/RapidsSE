@@ -21,8 +21,8 @@ namespace STORE
 
     void vEstCostsForAllJoinPerm(Card_TableList*    p_tableList,
                                  Card_FiltPredList* p_filtPredList);
-    Card_JoinPermSeq* pJoinOrder(i8 iJoinOrder);
-    Card_JoinPermSeq* pLowestLoad(void);
+    Card_StreamPrm* pJoinOrder(i8 iJoinOrder);
+    Card_StreamPrm* pLowestLoad(void);
     void vRemoveInvalid(void);
    };
 

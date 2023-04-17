@@ -65,7 +65,7 @@
 #include "Card_JoinOrder.hpp"
 #include "Card_JoinOrdering.hpp" //
 #include "Card_StreamPrmAll.hpp"  //
-#include "Card_JoinPermSeq.hpp"  //
+#include "Card_StreamPrm.hpp"  //
 #include "Card_JoinPredList.hpp" //
 
 #include "Card_Key.hpp"          //
