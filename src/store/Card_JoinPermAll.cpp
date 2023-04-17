@@ -6,7 +6,7 @@
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
-#include "Card_DataStart.hpp"
+#include "Card_StreamHead.hpp"
 #include "Card_JoinPermSeq.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"

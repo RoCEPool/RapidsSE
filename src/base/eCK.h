@@ -29,7 +29,6 @@ enum eCK // card kind
   /* */ CK_COSTUNICAST,
   /* */ CK_CROSSJOIN,
 
-  /* */ CK_DATASTART,
   /* */ CK_DEBUG,
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
@@ -98,6 +97,7 @@ enum eCK // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SORT,
   /* */ CK_STAGE,
+  /* */ CK_STREAMHEAD,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -146,7 +146,6 @@ static Stz* aCK[]
   /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
 
-  /* */ "CK_DATASTART"_Stz,    // CK_DATASTART
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
@@ -215,6 +214,7 @@ static Stz* aCK[]
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
+  /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -263,7 +263,6 @@ static Stz* aCK_short[]
   /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
-  /* */ "dataStart"_Stz,       // CK_DATASTART
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
@@ -332,6 +331,7 @@ static Stz* aCK_short[]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
+  /* */ "streamHead"_Stz,      // CK_STREAMHEAD
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE

@@ -147,7 +147,7 @@ namespace STORE
     Card_IndexNm *       p_indexNm;
     Card_IndexScan *     p_indexScan;
 
-    Card_DataStart *     p_dataStart;
+    Card_StreamHead *     p_dataStart;
     Card_JoinLocus *     p_joinLocus;
     Card_JoinOrder *     p_joinOrder;
     Card_JoinOrdering *  p_joinOrdering;

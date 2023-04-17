@@ -84,7 +84,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
     // stream start
 
     // calculate the buffers produced at the start of join sequence
-    if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
+    if (xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD)) {
 
       // get info of stream start
       char cTblSyn_head = xCI.G.p_dataStart->cValue();
@@ -229,7 +229,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin(Card_TableList*    p_tableList,
     if (0 == nChildCards()) {
       //+ table is head/first of join sequence
 
-      Card_DataStart *p_dataStart = new Card_DataStart;
+      Card_StreamHead *p_dataStart = new Card_StreamHead;
       p_dataStart->vValue(cTblSyn_ith);
       vAppend(p_dataStart);
 
@@ -363,7 +363,7 @@ i8 Card_JoinPermSeq::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
     char cTblSyn_ith = p_table->cValue();
 
     if (0 == i_Item) {
-      Card_DataStart *p_dataStart = new Card_DataStart;
+      Card_StreamHead *p_dataStart = new Card_StreamHead;
       p_dataStart->vValue(cTblSyn_ith);
       vAppend(p_dataStart);
     }
@@ -408,7 +408,7 @@ bool Card_JoinPermSeq::bHasKnownJoin(char cTblSyn)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
     if (xCI.G.p_MainCard->bIsValue(cTblSyn))
       return true;
   }
@@ -444,7 +444,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
   CardIter xCI(this);
 
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
     if (xCI.G.p_MainCard->cValue() == cTblSyn_prior)
       break;
@@ -455,7 +455,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
  }
 
   while (xCI.G_bEachMain()) {
-    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 
     if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
       continue;
@@ -478,7 +478,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
 //
 //  CardIter xCI(this);
 //  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 //
 //    if (xCI.G.p_MainCard->cValue() == cTblSyn_l)
 //      break;
@@ -492,7 +492,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
 //  }
 //
 //  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
 //      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
@@ -510,7 +510,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
 //
 //  CardIter xCI(this);
 //  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 //
 //    if (xCI.G.p_MainCard->cValue() == cTblSyn_l)
 //      break;
@@ -524,7 +524,7 @@ bool Card_JoinPermSeq::bUnicastPermitted(char cTblSyn_prior,
 //  }
 //
 //  while (xCI.G_bEachMain()) {
-//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_DATASTART) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
+//    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS)) {
 //      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();

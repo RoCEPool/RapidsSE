@@ -41,7 +41,7 @@ namespace STORE
   class Card_CostUnicast;
   class Card_CrossJoin;
 
-  class Card_DataStart;
+  class Card_StreamHead;
   class Card_Debug;
   class Card_Deck;
   class Card_Direction;
@@ -412,7 +412,7 @@ namespace STORE
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
     Card_CrossJoin*     pSub_crossJoin(void);
-    Card_DataStart*     pSub_dataStart(void);
+    Card_StreamHead*     pSub_dataStart(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
