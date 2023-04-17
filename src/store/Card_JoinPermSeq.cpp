@@ -124,7 +124,7 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
                                           );
 
     // running sum of the network and unicast costs
-    Card_JoinCost* p_costLocus = xCI.G.p_joinLocus->pSub_joinCost();
+    Card_JoinEstimate* p_costLocus = xCI.G.p_joinLocus->pSub_joinCost();
     Card_CostNetwork* p_costNetwork = p_costLocus->pSub_costNetwork();
     nSumNetworkCost += p_costNetwork->iValue();
     Card_CostUnicast* p_costUnicast = p_costLocus->pSub_costUnicast();

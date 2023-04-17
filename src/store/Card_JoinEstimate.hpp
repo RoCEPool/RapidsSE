@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinCost.hpp -- Estimate cost for a JoinNext of a Query               */
+/* Card_JoinEstimate.hpp -- Estimate cost for a JoinNext of a Query               */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_JoinCost : public Card
+  class Card_JoinEstimate : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinCost(void);
-   ~Card_JoinCost(void) noexcept(false);
+    Card_JoinEstimate(void);
+   ~Card_JoinEstimate(void) noexcept(false);
   };
 
-  Card_JoinCost* _pCard_JoinCost(void* aAddr);
+  Card_JoinEstimate* _pCard_JoinEstimate(void* aAddr);
 }
 
 /*============================================================================*/

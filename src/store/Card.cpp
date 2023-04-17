@@ -1936,13 +1936,13 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_JoinCost.hpp"
-Card_JoinCost* Card::pSub_joinCost(void)
+#include "Card_JoinEstimate.hpp"
+Card_JoinEstimate* Card::pSub_joinCost(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_JoinCost* p_joinCost =
-      _pCard_JoinCost(pFindSubCard(CK_COSTLOCUS));
+  Card_JoinEstimate* p_joinCost =
+      _pCard_JoinEstimate(pFindSubCard(CK_JOINESTIMATE));
   return p_joinCost;
 }
 

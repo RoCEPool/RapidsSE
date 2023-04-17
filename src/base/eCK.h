@@ -23,7 +23,6 @@ enum eCK // card kind
   /* */ CK_CONSTRAINT,
   /* */ CK_CORRELATION,
   /* */ CK_COSTJOINING,
-  /* */ CK_COSTLOCUS,
   /* */ CK_COSTNETWORK,
   /* */ CK_COSTQUERY,
   /* */ CK_COSTUNICAST,
@@ -57,6 +56,7 @@ enum eCK // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
+  /* */ CK_JOINESTIMATE,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPERMALL,
@@ -140,7 +140,6 @@ static Stz* aCK[]
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
-  /* */ "CK_COSTLOCUS"_Stz,    // CK_COSTLOCUS
   /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
   /* */ "CK_COSTQUERY"_Stz,    // CK_COSTQUERY
   /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
@@ -174,6 +173,7 @@ static Stz* aCK[]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
+  /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
   /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
@@ -257,7 +257,6 @@ static Stz* aCK_short[]
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "costJoining"_Stz,     // CK_COSTJOINING
-  /* */ "costLocus"_Stz,       // CK_COSTLOCUS
   /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
   /* */ "costQuery"_Stz,       // CK_COSTQUERY
   /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
@@ -291,6 +290,7 @@ static Stz* aCK_short[]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
+  /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
