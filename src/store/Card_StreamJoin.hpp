@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinLocus.hpp -- Join Head (head of join sequence)                     */
+/* Card_StreamJoin.hpp -- Stream Join (join in stream sequence)               */
 /*============================================================================*/
 #pragma once
 
@@ -7,14 +7,14 @@
 
 namespace STORE
 {
-  class Card_JoinLocus : public Card
+  class Card_StreamJoin : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinLocus(void);
-   ~Card_JoinLocus(void) noexcept(false);
+    Card_StreamJoin(void);
+   ~Card_StreamJoin(void) noexcept(false);
 
     i8 nEstLocusCosts(i8 i_JoinPermSeq,
                       i8 i_Locus,
@@ -25,7 +25,7 @@ namespace STORE
                       );
   };
 
-  Card_JoinLocus* _pCard_JoinLocus(void* aAddr);
+  Card_StreamJoin* _pCard_StreamJoin(void* aAddr);
 }
 
 /*============================================================================*/

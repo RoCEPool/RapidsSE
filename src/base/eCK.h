@@ -57,7 +57,6 @@ enum eCK // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
-  /* */ CK_JOINLOCUS,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
   /* */ CK_JOINPERMALL,
@@ -98,6 +97,7 @@ enum eCK // card kind
   /* */ CK_SORT,
   /* */ CK_STAGE,
   /* */ CK_STREAMHEAD,
+  /* */ CK_STREAMJOIN,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -174,7 +174,6 @@ static Stz* aCK[]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
-  /* */ "CK_JOINLOCUS"_Stz,    // CK_JOINLOCUS
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
   /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
@@ -215,6 +214,7 @@ static Stz* aCK[]
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
+  /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -291,7 +291,6 @@ static Stz* aCK_short[]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
-  /* */ "joinLocus"_Stz,       // CK_JOINLOCUS
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
   /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
@@ -332,6 +331,7 @@ static Stz* aCK_short[]
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
+  /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE

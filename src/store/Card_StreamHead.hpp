@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StreamHead.hpp -- Join Head (head of join sequence)                     */
+/* Card_StreamHead.hpp -- Stream Head (head of stream sequence)               */
 /*============================================================================*/
 #pragma once
 

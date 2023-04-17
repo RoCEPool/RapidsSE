@@ -23,7 +23,7 @@ namespace STORE
 
      eXK eLocusCast(Symbol*         p_Y_streamPtn_running,
                     Card_TableList* p_tableList,
-                    Card_JoinLocus* p_joinLocus);
+                    Card_StreamJoin* p_joinLocus);
 
      i8 iOnePermutedJoin(Card_TableList*    p_tableList,
                            Card_JoinPredList* p_joinPredList,

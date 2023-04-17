@@ -61,7 +61,7 @@
 #include "Card_IndexScan.hpp"
 
 #include "Card_StreamHead.hpp"
-#include "Card_JoinLocus.hpp"
+#include "Card_StreamJoin.hpp"
 #include "Card_JoinOrder.hpp"
 #include "Card_JoinOrdering.hpp" //
 #include "Card_JoinPermAll.hpp"  //

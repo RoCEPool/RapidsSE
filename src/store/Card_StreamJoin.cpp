@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_JoinLocus.cpp -- Join Head (head of join sequence)                     */
+/* Card_StreamJoin.cpp -- Stream Join (join in stream sequence)               */
 /*============================================================================*/
 
-#include "Card_JoinLocus.hpp"
+#include "Card_StreamJoin.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_LocusCast.hpp"
@@ -21,16 +21,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_JoinLocus, CK_JOINLOCUS)
-__aNewFunction(Card_JoinLocus, CN_CARD)
-__vDeleteFunction(Card_JoinLocus, CN_CARD)
+__pCastFunction_Card(STORE, Card_StreamJoin, CK_STREAMJOIN)
+__aNewFunction(Card_StreamJoin, CN_CARD)
+__vDeleteFunction(Card_StreamJoin, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_JoinLocus::Card_JoinLocus(void)
-: Card(CK_JOINLOCUS)
+Card_StreamJoin::Card_StreamJoin(void)
+: Card(CK_STREAMJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -42,7 +42,7 @@ Card_JoinLocus::Card_JoinLocus(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
+Card_StreamJoin::~Card_StreamJoin(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -54,12 +54,12 @@ Card_JoinLocus::~Card_JoinLocus(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the various costs for this join locus (of join permutation seq)   */
 /*----------------------------------------------------------------------------*/
-i8 Card_JoinLocus::nEstLocusCosts(i8 i_JoinPermSeq,
-                                  i8 i_Locus,
-                                  i8 nBuff_prev_locus,
-                                  i8 nFiltPred_prev,
-                                  eXK eLocusCast,
-                                  i8 nBuff_joining_with
+i8 Card_StreamJoin::nEstLocusCosts(i8 i_JoinPermSeq,
+                                   i8 i_Locus,
+                                   i8 nBuff_prev_locus,
+                                   i8 nFiltPred_prev,
+                                   eXK eLocusCast,
+                                   i8 nBuff_joining_with
                                   )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

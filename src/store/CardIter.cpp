@@ -1098,7 +1098,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
     case CK_STREAMHEAD:         return G.p_dataStart;
-    case CK_JOINLOCUS:         return G.p_joinLocus;
+    case CK_STREAMJOIN:         return G.p_joinLocus;
     case CK_JOINORDER:        return G.p_joinOrder;
     case CK_JOINORDERING:     return G.p_joinOrdering;
     case CK_JOINPERMALL:      return G.p_joinPermAll;
@@ -1282,7 +1282,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_INDEXNM:          return "G.p_indexNm"_Stz;
     case CK_INDEXSCAN:        return "G.p_indexScan"_Stz;
     case CK_STREAMHEAD:         return "G.p_dataStart"_Stz;
-    case CK_JOINLOCUS:         return "G.p_joinLocus"_Stz;
+    case CK_STREAMJOIN:         return "G.p_joinLocus"_Stz;
     case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
     case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
     case CK_JOINPERMALL:      return "G.p_joinPermAll"_Stz;
@@ -2154,7 +2154,7 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_STREAMHEAD: *((Card**)&G.p_dataStart)         = pCard; break;
-    case CK_JOINLOCUS: *((Card**)&G.p_joinLocus)         = pCard; break;
+    case CK_STREAMJOIN: *((Card**)&G.p_joinLocus)         = pCard; break;
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
     case CK_JOINPERMALL:      *((Card**)&G.p_joinPermAll)      = pCard; break;

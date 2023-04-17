@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StreamHead.cpp -- Join Head (head of join sequence)                     */
+/* Card_StreamHead.cpp -- Stream Head (head of stream sequence)               */
 /*============================================================================*/
 
 #include "Card_StreamHead.hpp"
