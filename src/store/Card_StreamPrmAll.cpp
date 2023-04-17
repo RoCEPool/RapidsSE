@@ -148,7 +148,7 @@ Card_StreamPrm* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
   Card_StreamPrm* p_joinPermSeq = nullptr;
 
   CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
+  while (xCI.G_bEachMain(CK_STREAMPRM)) {
     p_joinPermSeq = xCI.G.p_joinPermSeq;
     iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
@@ -168,7 +168,7 @@ Card_StreamPrm* Card_StreamPrmAll::pLowestLoad(void)
   Card_StreamPrm* pLowest = nullptr;
 
   CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
+  while (xCI.G_bEachMain(CK_STREAMPRM)) {
     if (! pLowest)
       pLowest = xCI.G.p_joinPermSeq;
     else
@@ -189,7 +189,7 @@ void Card_StreamPrmAll::vRemoveInvalid(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
     if (xCI.G.p_joinPermSeq->pSymbol()->Y_bHas(P_Invalid))
-      xCI.G_vRemoveDeleteMain(CK_JOINPERMSEQ);
+      xCI.G_vRemoveDeleteMain(CK_STREAMPRM);
   }
 }
 

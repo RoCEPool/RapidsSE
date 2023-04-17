@@ -21,7 +21,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_StreamPrm, CK_JOINPERMSEQ)
+__pCastFunction_Card(STORE, Card_StreamPrm, CK_STREAMPRM)
 __aNewFunction(Card_StreamPrm, CN_CARD)
 __vDeleteFunction(Card_StreamPrm, CN_CARD)
 
@@ -30,7 +30,7 @@ __vDeleteFunction(Card_StreamPrm, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamPrm::Card_StreamPrm(void)
-: Card(CK_JOINPERMSEQ)
+: Card(CK_STREAMPRM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_LocusCast.hpp -- How buffers were cast to a join locus                */
+/* Card_StreamCast.hpp -- How buffers were cast to a join locus                */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_LocusCast : public Card
+  class Card_StreamCast : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_LocusCast(void);
-   ~Card_LocusCast(void) noexcept(false);
+    Card_StreamCast(void);
+   ~Card_StreamCast(void) noexcept(false);
   };
 
-  Card_LocusCast* _pCard_LocusCast(void* aAddr);
+  Card_StreamCast* _pCard_StreamCast(void* aAddr);
 }
 
 /*============================================================================*/

@@ -5,7 +5,7 @@
 #include "Card_StreamJoin.hpp"
 
 #include "Card_BoolCalc.hpp"
-#include "Card_LocusCast.hpp"
+#include "Card_StreamCast.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_JoinEstimate.hpp"
 #include "Card_CostJoining.hpp"
@@ -215,7 +215,7 @@ i8 Card_StreamJoin::nEstLocusCosts(i8 i_JoinPermSeq,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_LocusCast* p_locusCast = new Card_LocusCast;
+  Card_StreamCast* p_locusCast = new Card_StreamCast;
   p_locusCast->vValue(aXK[eLocusCast]);
 
   Card_JoinEstimate*   p_costLocus   = new Card_JoinEstimate;

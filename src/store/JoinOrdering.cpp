@@ -214,7 +214,7 @@ void JoinOrdering::vReorderTables(void)
   // get the join permutations strings
   xCI.vRestart();
   i8 iJoinPermutations = 0;
-  while (xCI.G_bEachMain(CK_JOINPERMSEQ)) {
+  while (xCI.G_bEachMain(CK_STREAMPRM)) {
     Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_joinPermSeq);
     //p_joinOrdering->vDump();
     s256 sJoinOrder;

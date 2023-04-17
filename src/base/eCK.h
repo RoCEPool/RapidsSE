@@ -59,7 +59,6 @@ enum eCK // card kind
   /* */ CK_JOINESTIMATE,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
-  /* */ CK_JOINPERMSEQ,
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEY,
@@ -68,7 +67,6 @@ enum eCK // card kind
 
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
-  /* */ CK_LOCUSCAST,
 
   /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
@@ -95,8 +93,10 @@ enum eCK // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SORT,
   /* */ CK_STAGE,
+  /* */ CK_STREAMCAST,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
+  /* */ CK_STREAMPRM,
   /* */ CK_STREAMPRMALL,
   /* */ CK_SUBSET,
 
@@ -176,7 +176,6 @@ static Stz* aCK[]
   /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
-  /* */ "CK_JOINPERMSEQ"_Stz,  // CK_JOINPERMSEQ
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEY"_Stz,          // CK_KEY
@@ -185,7 +184,6 @@ static Stz* aCK[]
 
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
-  /* */ "CK_LOCUSCAST"_Stz,    // CK_LOCUSCAST
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
@@ -212,8 +210,10 @@ static Stz* aCK[]
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
+  /* */ "CK_STREAMCAST"_Stz,   // CK_STREAMCAST
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
   /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
+  /* */ "CK_STREAMPRM"_Stz,    // CK_STREAMPRM
   /* */ "CK_STREAMPRMALL"_Stz, // CK_STREAMPRMALL
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
@@ -293,7 +293,6 @@ static Stz* aCK_short[]
   /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
-  /* */ "joinPermSeq"_Stz,     // CK_JOINPERMSEQ
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "key"_Stz,             // CK_KEY
@@ -302,7 +301,6 @@ static Stz* aCK_short[]
 
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
-  /* */ "locusCast"_Stz,       // CK_LOCUSCAST
 
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED
@@ -329,8 +327,10 @@ static Stz* aCK_short[]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
+  /* */ "streamCast"_Stz,      // CK_STREAMCAST
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
   /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
+  /* */ "streamPrm"_Stz,       // CK_STREAMPRM
   /* */ "streamPrmAll"_Stz,    // CK_STREAMPRMALL
   /* */ "subSet"_Stz,          // CK_SUBSET
 
