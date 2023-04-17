@@ -7,7 +7,7 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_StreamHead.hpp"
-#include "Card_StreamPrm.hpp"
+#include "Card_StreamPer.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 #include "Card_Term.hpp"
@@ -65,26 +65,33 @@ Card_StreamPrmAll* Card_StreamPrmAll::pComputeAllPermutations(Card_TableList* p_
   i8 i_Permutation = 0;
   while (i_Permutation < pPermGen->nPermutations(nTables)) {
 
+    // calc the join sequence for this stream permutation
     pPermGen->vCalcPermutation(i_Permutation);
 
-    Card_StreamPrm* p_streamPrm = new Card_StreamPrm;
-    p_streamPrm->pSymbol()->Y_vSet(P_Permutation, i_Permutation);
+    Card_StreamPer* p_streamPer = new Card_StreamPer;
+    p_streamPer->pSymbol()->Y_vSet(P_Permutation, i_Permutation);
 
-    i8 i_JoinInvalid = p_streamPrm->iOnePermutedJoin(p_tableList,
+    // create the permuted join sequence for the stream, testing if sequence is valid
+    i8 i_InvalidAtJoin = p_streamPer->iCreateJoinSeq(p_tableList,
                                                      p_joinPredList,
                                                      pPermGen);
+    p_streamPrmAll->vAppend(p_streamPer);
 
-    p_streamPrmAll->vAppend(p_streamPrm);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // valid permutation
 
-    if (C_UNKNOWN == i_JoinInvalid) {
+    if (C_UNKNOWN == i_InvalidAtJoin) {
       //vTrace("VALID PERMUTATION %lld\n"_Stz, i_Permutation);
       i_Permutation++;
       continue;
     }
 
-    //vTrace("PERMUTATION INVALID %lld at %lld\n"_Stz, i_Permutation,i_JoinInvalid);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // invalid permutation
 
-    i_Permutation = pPermGen->iNextValid(i_JoinInvalid,i_Permutation);
+    //vTrace("PERMUTATION INVALID %lld at %lld\n"_Stz, i_Permutation,i_InvalidAtJoin);
+
+    i_Permutation = pPermGen->iNextValid(i_InvalidAtJoin, i_Permutation);
     //vTrace("RESTARTING FROM %lld\n"_Stz, i_Permutation);
     vDebugPoint();
   }
@@ -114,15 +121,15 @@ void Card_StreamPrmAll::vEstCostsForAllPermutations(Card_TableList*    p_tableLi
 /*----------------------------------------------------------------------------*/
 /* pick given order                                                           */
 /*----------------------------------------------------------------------------*/
-Card_StreamPrm* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
+Card_StreamPer* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 iPermutation;
-  Card_StreamPrm* p_joinPermSeq = nullptr;
+  Card_StreamPer* p_joinPermSeq = nullptr;
 
   CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPRM)) {
+  while (xCI.G_bEachMain(CK_STREAMPER)) {
     p_joinPermSeq = xCI.G.p_streamPrm;
     iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
@@ -135,14 +142,14 @@ Card_StreamPrm* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
 /*----------------------------------------------------------------------------*/
 /* pick permutation with lowest cost                                          */
 /*----------------------------------------------------------------------------*/
-Card_StreamPrm* Card_StreamPrmAll::pLowestCost(void)
+Card_StreamPer* Card_StreamPrmAll::pLowestCost(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_StreamPrm* pLowest = nullptr;
+  Card_StreamPer* pLowest = nullptr;
 
   CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_STREAMPRM)) {
+  while (xCI.G_bEachMain(CK_STREAMPER)) {
     if (! pLowest)
       pLowest = xCI.G.p_streamPrm;
     else
@@ -163,7 +170,7 @@ void Card_StreamPrmAll::vRemoveInvalid(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
     if (xCI.G.p_streamPrm->pSymbol()->Y_bHas(P_Invalid))
-      xCI.G_vRemoveDeleteMain(CK_STREAMPRM);
+      xCI.G_vRemoveDeleteMain(CK_STREAMPER);
   }
 }
 

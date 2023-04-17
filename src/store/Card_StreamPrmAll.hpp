@@ -21,8 +21,8 @@ namespace STORE
 
     void vEstCostsForAllPermutations(Card_TableList*    p_tableList,
                                      Card_FiltPredList* p_filtPredList);
-    Card_StreamPrm* pJoinOrder(i8 iJoinOrder);
-    Card_StreamPrm* pLowestCost(void);
+    Card_StreamPer* pJoinOrder(i8 iJoinOrder);
+    Card_StreamPer* pLowestCost(void);
     void vRemoveInvalid(void);
    };
 

@@ -50,14 +50,14 @@ Card_JoinOrdering::~Card_JoinOrdering(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_StreamPrm* p_joinPermSeq)
+Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_StreamPer* p_streamPer)
 {
   _static_
 
   s32 sTableSyn;
 
-  Card_StreamPrm* p_joinPermSeq_dup =
-      _pCard_StreamPrm(p_joinPermSeq->pDupCardRecursive());
+  Card_StreamPer* p_joinPermSeq_dup =
+      _pCard_StreamPer(p_streamPer->pDupCardRecursive());
 
   p_joinPermSeq_dup->vCard(CK_JOINORDERING);
 
@@ -76,7 +76,7 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamPrmAll* p_joinPermAll, i8
 {
   _static_
 
-  Card_StreamPrm* p_joinPermSeq = p_joinPermAll->pJoinOrder(iJoinOrder);
+  Card_StreamPer* p_joinPermSeq = p_joinPermAll->pJoinOrder(iJoinOrder);
 
   // is it a valid join order ?
   if ( ! p_joinPermSeq )
@@ -94,7 +94,7 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamPrmAll* p_joinPermAll)
 {
   _static_
 
-  Card_StreamPrm* p_joinPermSeq_lowest = p_joinPermAll->pLowestCost();
+  Card_StreamPer* p_joinPermSeq_lowest = p_joinPermAll->pLowestCost();
 
   Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq_lowest);
 

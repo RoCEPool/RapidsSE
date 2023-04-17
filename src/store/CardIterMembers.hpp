@@ -186,10 +186,10 @@ namespace STORE
     Card_Send *          p_send;
     Card_Sort *          p_sort;
     Card_Stage *         p_stage;
-    Card_StreamCast *    p_streamCast;
+    Card_JoinCast *    p_streamCast;
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;
-    Card_StreamPrm *     p_streamPrm;
+    Card_StreamPer *     p_streamPrm;
     Card_StreamPrmAll *  p_streamPrmAll;
     Card_SubSet *        p_subSet;
 

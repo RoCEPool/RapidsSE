@@ -65,7 +65,7 @@
 #include "Card_JoinOrder.hpp"
 #include "Card_JoinOrdering.hpp" //
 #include "Card_StreamPrmAll.hpp"  //
-#include "Card_StreamPrm.hpp"  //
+#include "Card_StreamPer.hpp"  //
 #include "Card_JoinPredList.hpp" //
 
 #include "Card_Key.hpp"          //
@@ -74,7 +74,7 @@
 
 #include "Card_Level.hpp"        //
 #include "Card_Limit.hpp"        //
-#include "Card_StreamCast.hpp"
+#include "Card_JoinCast.hpp"
 
 #include "Card_NCorrCols.hpp"
 #include "Card_Needed.hpp"

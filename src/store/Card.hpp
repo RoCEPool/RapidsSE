@@ -29,7 +29,7 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_StreamCast;
+  class Card_JoinCast;
   class Card_CmpPred;
   class Card_Combined;
   class Card_Constraint;
@@ -75,7 +75,7 @@ namespace STORE
   class Card_JoinOrder;
   class Card_JoinOrdering;
   class Card_StreamPrmAll;
-  class Card_StreamPrm;
+  class Card_StreamPer;
   class Card_JoinPredList;
 
   class Card_Key;
@@ -407,7 +407,7 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_StreamCast*     pSub_locusCast(void);
+    Card_JoinCast*     pSub_locusCast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
@@ -431,7 +431,7 @@ namespace STORE
     Card_IndexNm*       pSub_indexNm(void);
     Card_StreamJoin*     pSub_joinLocus(void);
     Card_StreamPrmAll*   pSub_joinPermAll(void);
-    Card_StreamPrm*   pSub_joinPermList(void);
+    Card_StreamPer*   pSub_joinPermList(void);
     Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);

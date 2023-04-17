@@ -56,6 +56,7 @@ enum eCK // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
+  /* */ CK_JOINCAST,
   /* */ CK_JOINESTIMATE,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
@@ -93,10 +94,9 @@ enum eCK // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_STREAMCAST,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
-  /* */ CK_STREAMPRM,
+  /* */ CK_STREAMPER,
   /* */ CK_STREAMPRMALL,
   /* */ CK_SUBSET,
 
@@ -173,6 +173,7 @@ static Stz* aCK[]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
+  /* */ "CK_JOINCAST"_Stz,     // CK_JOINCAST
   /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
@@ -210,10 +211,9 @@ static Stz* aCK[]
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_STREAMCAST"_Stz,   // CK_STREAMCAST
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
   /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
-  /* */ "CK_STREAMPRM"_Stz,    // CK_STREAMPRM
+  /* */ "CK_STREAMPER"_Stz,    // CK_STREAMPER
   /* */ "CK_STREAMPRMALL"_Stz, // CK_STREAMPRMALL
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
@@ -290,6 +290,7 @@ static Stz* aCK_short[]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
+  /* */ "joinCast"_Stz,        // CK_JOINCAST
   /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
@@ -327,10 +328,9 @@ static Stz* aCK_short[]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "streamCast"_Stz,      // CK_STREAMCAST
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
   /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
-  /* */ "streamPrm"_Stz,       // CK_STREAMPRM
+  /* */ "streamPer"_Stz,       // CK_STREAMPER
   /* */ "streamPrmAll"_Stz,    // CK_STREAMPRMALL
   /* */ "subSet"_Stz,          // CK_SUBSET
 

@@ -46,8 +46,8 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 /* determine the stage cast from prev to curr (assuming cmpPred ==)           */
 /*----------------------------------------------------------------------------*/
 eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
-                          Symbol* p_Y_tablePtn_prev,
-                          Symbol* p_Y_tblCol_prev,
+                          Symbol* p_Y_tablePtn_prior,
+                          Symbol* p_Y_tblCol_prior,
                           Symbol* p_Y_tablePtn_curr,
                           Symbol* p_Y_idxCol_curr)
 {
@@ -65,7 +65,7 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
    */
 
 
-  // todo: this is naive, needs to be fixed
+  //
   if (Card_COL::bIsReplicated(p_Y_streamPtn_running))
     return XK_UNICAST;
 
@@ -75,15 +75,15 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
     return XK_UNICAST;
   }
 
-  if (! p_Y_tblCol_prev)
-    // no prev table column (probably cross join)
+  if (! p_Y_tblCol_prior)
+    // no prior table column (probably cross join)
     return XK_BROADCAST;
 
   if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_curr, p_Y_idxCol_curr)) {
     // + curr indexed column is curr table ptn
     //   the curr join-to column is an indexed column of the curr table ptn
     //   so the curr join-to column identifies target key partition
-    if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_prev, p_Y_tblCol_prev)) {
+    if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_prior, p_Y_tblCol_prior)) {
       // + prev table column is prior table ptn
       //   likewise the prev data-from column is an indexed column of prev table ptn
       //   noting the cmpPred is ==, the source matches target, so we can unicast

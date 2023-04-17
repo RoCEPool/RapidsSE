@@ -1624,13 +1624,13 @@ Card_Bounds* Card::pSub_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_StreamCast.hpp"
-Card_StreamCast* Card::pSub_locusCast(void)
+#include "Card_JoinCast.hpp"
+Card_JoinCast* Card::pSub_locusCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_StreamCast* p_castNext =
-      _pCard_StreamCast(pFindSubCard(CK_STREAMCAST));
+  Card_JoinCast* p_castNext =
+      _pCard_JoinCast(pFindSubCard(CK_JOINCAST));
   return p_castNext;
 }
 

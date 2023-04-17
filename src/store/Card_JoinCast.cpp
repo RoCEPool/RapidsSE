@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_StreamCast.cpp -- How buffers were cast to a stream join              */
+/* Card_JoinCast.cpp -- How buffers were cast to a stream join              */
 /*============================================================================*/
 
-#include "Card_StreamCast.hpp"
+#include "Card_JoinCast.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_StreamCast, CK_STREAMCAST)
-__aNewFunction(Card_StreamCast, CN_CARD)
-__vDeleteFunction(Card_StreamCast, CN_CARD)
+__pCastFunction_Card(STORE, Card_JoinCast, CK_JOINCAST)
+__aNewFunction(Card_JoinCast, CN_CARD)
+__vDeleteFunction(Card_JoinCast, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamCast::Card_StreamCast(void)
-: Card(CK_STREAMCAST)
+Card_JoinCast::Card_JoinCast(void)
+: Card(CK_JOINCAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_StreamCast::Card_StreamCast(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_StreamCast::~Card_StreamCast(void) noexcept(false)
+Card_JoinCast::~Card_JoinCast(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
