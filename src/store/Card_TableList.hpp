@@ -23,11 +23,10 @@ namespace STORE
     Card_RowCount*  pGetRowCount(char cTblSyn);
     Card_RowSize*   pGetRowSize(char cTblSyn);
     Card_TablePtn*  pGetTablePtn(char cTblSyn);
+    i8              nGetTableSize(char cTblSyn);
     Card_TableSize* pGetTableSize(char cTblSyn);
 
     Stz* szToTableNm(char cTblSyn);
-
-    bool bIsCmpPredCoPtn(Card_CmpPred* p_cmpPred);
   };
 
   Card_TableList* _pCard_TableList(void* aAddr);

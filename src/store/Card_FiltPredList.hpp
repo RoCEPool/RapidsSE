@@ -21,6 +21,9 @@ namespace STORE
     static Card_FiltPredList* pExtract(Card_Deck* p_deck);
 
     Card_FiltPred* pFindFiltPred(char cTblSyn);
+
+    i8 nFiltersFor(char cTblSyn);
+
   };
 
   Card_FiltPredList* _pCard_FiltPredList(void* aAddr);

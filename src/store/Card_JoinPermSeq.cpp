@@ -52,77 +52,76 @@ Card_JoinPermSeq::~Card_JoinPermSeq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* estimate the query cost of this join permutation                           */
+/* estimate the query cost of this join permutation sequence                  */
 /*----------------------------------------------------------------------------*/
 void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
                                      Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i_JO = pSymbol()->Y_iGet(P_Permutation);
-
-  if (686 == i_JO)
+  i8 i_JoinPermSeq = pSymbol()->Y_iGet(P_Permutation);
+  if (686 == i_JoinPermSeq)
     vDebugPoint();
 
-  i8 nBuff_emitted_prior  = 0;
-  i8 nBuff_produced_locus = 0;
+  i8 nBuff_prev_locus  = 0;
+  i8 nBuff_producedBy_locus = 0;
 
   i8 nSumNetworkCost = 0;
   i8 nSumUnicastCost = 0;
 
-  i8 nLocus = 0;
+  i8 i_Locus = 0;
 
-  i8 nFilterPred_prior = 0;
+  i8 nFilterPred_prev = 0;
 
-  Card_JoinLocus* p_joinLocus_prev = nullptr;
+  Symbol* p_Y_streamPtn_running = nullptr;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
-    nBuff_emitted_prior = nBuff_produced_locus;
+    nBuff_prev_locus = nBuff_producedBy_locus;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // stream start
 
     // calculate the buffers produced at the start of join sequence
     if (xCI.G.p_MainCard->bIsCard(CK_DATASTART)) {
-      char cTblSyn_head = xCI.G.p_dataStart->cValue();
-      nBuff_produced_locus = p_tableList->pGetTableSize(cTblSyn_head)->iValue() * C_EXPANSION_COEFF;
 
-      CardIter xCI_filtPred(p_filtPredList);
-      while (xCI_filtPred.G_bEachMain()) {
-        if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn_head) {
-          nFilterPred_prior = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
-          break;
-        }
-      }
+      // get info of stream start
+      char cTblSyn_head = xCI.G.p_dataStart->cValue();
+
+      nBuff_producedBy_locus = p_tableList->nGetTableSize(cTblSyn_head) * C_EXPANSION_COEFF;
+
+      nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_head);
+
+      p_Y_streamPtn_running = p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol();
 
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // join locus
+
     if (! xCI.G.p_MainCard->bIsCard(CK_JOINLOCUS))
       continue;
-
-    nLocus++;
 
     // get info for locus of join sequence
     char cTblSyn_locus = xCI.G.p_joinLocus->cValue();
 
-    if (! p_joinLocus_prev)
-      p_joinLocus_prev = xCI.G.p_joinLocus;
-
-    eXK eLocusCast = this->eLocusCast(p_tableList, p_joinLocus_prev, xCI.G.p_joinLocus);
-    i8 nBuff_joining_with = p_tableList->pGetTableSize(cTblSyn_locus)->iValue();
-
+    eXK eLocusCast = this->eLocusCast(p_Y_streamPtn_running,
+                                      p_tableList,
+                                      xCI.G.p_joinLocus);
 
     // calculate the various costs for locus of join sequence
-//    nBuff_produced_locus =
-//        xCI.G.p_joinLocus->nEstLocusCosts(nLocus, nBuff_emitted_prior, eLocusCast, nBuff_joining_with, nFiltPred);
+    i8 nBuff_joining_with = p_tableList->nGetTableSize(cTblSyn_locus);
 
-    nBuff_produced_locus =
-        xCI.G.p_joinLocus->nEstLocusCosts(i_JO,
-                                          nLocus,
-                                          nBuff_emitted_prior,
+    nBuff_producedBy_locus =
+        xCI.G.p_joinLocus->nEstLocusCosts(i_JoinPermSeq,
+                                          i_Locus,
+                                          nBuff_prev_locus,
+                                          nFilterPred_prev,
                                           eLocusCast,
-                                          nBuff_joining_with,
-                                          nFilterPred_prior);
+                                          nBuff_joining_with
+                                          );
 
     // running sum of the network and unicast costs
     Card_CostLocus* p_costLocus = xCI.G.p_joinLocus->pSub_costLocus();
@@ -131,16 +130,12 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
     Card_CostUnicast* p_costUnicast = p_costLocus->pSub_costUnicast();
     nSumUnicastCost += p_costUnicast->iValue();
 
-    nFilterPred_prior = 0;
-    CardIter xCI_filtPred(p_filtPredList);
-    while (xCI_filtPred.G_bEachMain()) {
-      if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn_locus) {
-        nFilterPred_prior = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
-        break;
-      }
-    }
+    nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_locus);
 
-    p_joinLocus_prev = xCI.G.p_joinLocus;
+    i_Locus++;
+
+    if (eLocusCast != XK_UNICAST)
+      p_Y_streamPtn_running = p_tableList->pGetTablePtn(cTblSyn_locus)->pSymbol();
   }
 
   // record the sum network and unicast costs
@@ -160,8 +155,8 @@ void Card_JoinPermSeq::vEstQueryCost(Card_TableList* p_tableList,
 /*----------------------------------------------------------------------------*/
 /* compute the cast from prev join to curr join locus                         */
 /*----------------------------------------------------------------------------*/
-eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
-                                 Card_JoinLocus* p_joinLocus_prev,
+eXK Card_JoinPermSeq::eLocusCast(Symbol*         p_Y_streamPtn_running,
+                                 Card_TableList* p_tableList,
                                  Card_JoinLocus* p_joinLocus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -171,7 +166,6 @@ eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
   Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 
   char cTblSyn_locus = p_joinLocus->cValue();
-  char cTblSyn_prev  = p_joinLocus_prev? p_joinLocus_prev->cValue() : '?';
   char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_locus);
 
   Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
@@ -198,7 +192,8 @@ eXK Card_JoinPermSeq::eLocusCast(Card_TableList* p_tableList,
     p_Y_idxCol_curr = p_Y_term_0_cmp;
   }
 
-  eXK eStageCast = Card_Cast::eStageCast(p_Y_tablePtn_prev,
+  eXK eStageCast = Card_Cast::eStageCast(p_Y_streamPtn_running,
+                                         p_Y_tablePtn_prev,
                                          p_Y_tblCol_prev,
                                          p_Y_tablePtn_curr,
                                          p_Y_idxCol_curr);

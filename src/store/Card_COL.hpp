@@ -13,6 +13,7 @@ namespace STORE
     Card_COL(eCK eCard);
    ~Card_COL(void) noexcept(false);
 
+    static bool bIsReplicated (Symbol* aCol);
     static bool bMatchingTblSyn(Symbol* pArg_a, Symbol* pArg_b);
 
   };

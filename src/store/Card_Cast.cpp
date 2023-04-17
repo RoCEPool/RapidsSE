@@ -5,6 +5,7 @@
 #include "Card_Cast.hpp"
 
 #include "Card_Bound.hpp"
+#include "Card_Col.hpp"
 #include "Card_Index.hpp"
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
@@ -44,7 +45,8 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* determine the stage cast from prev to curr (assuming cmpPred ==)           */
 /*----------------------------------------------------------------------------*/
-eXK Card_Cast::eStageCast(Symbol* p_Y_tablePtn_prev,
+eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
+                          Symbol* p_Y_tablePtn_prev,
                           Symbol* p_Y_tblCol_prev,
                           Symbol* p_Y_tablePtn_curr,
                           Symbol* p_Y_idxCol_curr)
@@ -64,11 +66,11 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_tablePtn_prev,
 
 
   // todo: this is naive, needs to be fixed
-  if (p_Y_tablePtn_prev->bIsReplicated())
+  if (Card_COL::bIsReplicated(p_Y_streamPtn_running))
     return XK_UNICAST;
 
 
-  if (p_Y_idxCol_curr->bIsReplicated()) {
+  if (Card_COL::bIsReplicated(p_Y_idxCol_curr)) {
     // curr table is replicated so always unicast
     return XK_UNICAST;
   }

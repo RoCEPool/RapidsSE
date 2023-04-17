@@ -132,44 +132,12 @@ Card_Table* Card_TableList::pFind(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_TableList::bIsCmpPredCoPtn(Card_CmpPred* p_cmpPred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* p_term_0 = _pCard_Term(p_cmpPred->pGetChild(0));
-  char cTableSyn_0 = p_term_0->szValue()->azChar()[1];
-  Card_Term* p_term_1 = _pCard_Term(p_cmpPred->pGetChild(1));
-  char cTableSyn_1 = p_term_1->szValue()->azChar()[1];
-
-  if (StrLib::bIsUpperCase(cTableSyn_0) || StrLib::bIsUpperCase(cTableSyn_1))
-    return true;
-
-  Card_Table* p_table_0 = pFind(cTableSyn_0);
-  Card_TablePtn* p_tablePtn_0 = p_table_0->pSub_tablePtn();
-  Stz* szTablePtn_0 = p_tablePtn_0->szValue();
-
-  Card_Table* p_table_1 = pFind(cTableSyn_1);
-  Card_TablePtn* p_tablePtn_1 = p_table_1->pSub_tablePtn();
-  Stz* szTablePtn_1 = p_tablePtn_1->szValue();
-
-  if (szTablePtn_0->bSame(p_term_0->szValue()) && szTablePtn_1->bSame(p_term_1->szValue()))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_RowCount* Card_TableList::pGetRowCount(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMainWithSub(CK_TABLE, CK_ROWCOUNT)) {
-    if (xCI.G.p_table->bIsValue(cTblSyn))
-      return xCI.G.p_rowCount;
-  }
+  if (Card_Table* p_table = pFind(cTblSyn))
+    return p_table->pSub_rowCount();
 
   return nullptr;
 }
@@ -181,11 +149,8 @@ Card_RowSize* Card_TableList::pGetRowSize(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMainWithSub(CK_TABLE, CK_ROWSIZE)) {
-    if (xCI.G.p_table->bIsValue(cTblSyn))
-      return xCI.G.p_rowSize;
-  }
+  if (Card_Table* p_table = pFind(cTblSyn))
+    return p_table->pSub_rowSize();
 
   return nullptr;
 }
@@ -197,13 +162,23 @@ Card_TablePtn* Card_TableList::pGetTablePtn(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMainWithSub(CK_TABLE,CK_TABLEPTN)) {
-    if (xCI.G.p_table->bIsValue(cTblSyn))
-      return xCI.G.p_tablePtn;
-  }
+  if (Card_Table* p_table = pFind(cTblSyn))
+    return p_table->pSub_tablePtn();
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card_TableList::nGetTableSize(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_TableSize* p_tableSize = pGetTableSize(cTblSyn))
+    return p_tableSize->iValue();
+
+  return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,11 +188,8 @@ Card_TableSize* Card_TableList::pGetTableSize(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMainWithSub(CK_TABLE, CK_TABLESIZE)) {
-    if (xCI.G.p_table->bIsValue(cTblSyn))
-      return xCI.G.p_tableSize;
-  }
+  if (Card_Table* p_table = pFind(cTblSyn))
+    return p_table->pSub_tableSize();
 
   return nullptr;
 }
@@ -229,15 +201,11 @@ Stz* Card_TableList::szToTableNm(char cTblSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMainWithSub(CK_TABLE,CK_TABLENM)) {
-    if (xCI.G.p_table->bIsValue(cTblSyn))
-      return xCI.G.p_tableNm->szValue();
-  }
+  if (Card_Table* p_table = pFind(cTblSyn))
+    return p_table->pSub_tableNm()->szValue();
 
   return nullptr;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

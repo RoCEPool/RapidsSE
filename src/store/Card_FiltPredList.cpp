@@ -106,6 +106,25 @@ Card_FiltPred* Card_FiltPredList::pFindFiltPred(char cTblSyn)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find the first cmpPred which uses given table                              */
+/*----------------------------------------------------------------------------*/
+i8 Card_FiltPredList::nFiltersFor(char cTblSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI_filtPred(this);
+  while (xCI_filtPred.G_bEachMain()) {
+    if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn) {
+      i8 nFilter = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
+      return nFilter;
+    }
+  }
+
+  return 0;
+
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

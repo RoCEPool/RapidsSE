@@ -57,6 +57,9 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eXK eStageCast;
+  Symbol* p_Y_streamPtn_running = nullptr;
+  Symbol* p_Y_streamPtn_curr = nullptr;
+
 
   while (pCI->G_bEachMain()) {
 
@@ -68,18 +71,21 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
       if (p_OP_prev) {
         eStageCast = pCI->G.pDeck->eAddStageCast_toPrev_cast(pCI,
+                                                             p_Y_streamPtn_running,
                                                              p_OP_prev,
                                                              p_project_prior,
                                                              p_combined_prior,
                                                              p_cast_prior,
-                                                             pCI->G.p_OP);
+                                                             pCI->G.p_OP,
+                                                             p_Y_streamPtn_curr/*&*/);
         pCI->G_vMainResynch();
         pCI->vPrintBoard(__LINE__);
         vDebugPoint();
       }
 
-      if (XK_UNICAST != eStageCast)
+      if (XK_UNICAST != eStageCast) {
         p_OP_prev = pCI->G.p_OP;
+      }
       p_project_prior  = nullptr;
       p_combined_prior = nullptr;
       p_cast_prior     = nullptr;
@@ -106,11 +112,13 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
-                                          Card_OP*       p_OP_prev,
-                                          Card_Project*  p_project_prev,
-                                          Card_Combined* p_combined_prev,
-                                          Card_Cast*     p_cast_prev,
-                                          Card_OP*       p_OP_curr)
+                                         Symbol*        p_Y_streamPtn_running,
+                                         Card_OP*       p_OP_prev,
+                                         Card_Project*  p_project_prev,
+                                         Card_Combined* p_combined_prev,
+                                         Card_Cast*     p_cast_prev,
+                                         Card_OP*       p_OP_curr,
+                                         Symbol*&       rp_Y_streamPtn_curr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -143,7 +151,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
   Symbol* p_Y_tablePtn_prev = p_tablePtn_prev->pSymbol();
   Symbol* p_Y_tablePtn_curr = p_tablePtn_curr->pSymbol();
 
-  eXK eStageCast = Card_Cast::eStageCast(p_Y_tablePtn_prev,
+  eXK eStageCast = Card_Cast::eStageCast(p_Y_streamPtn_running,
+                                         p_Y_tablePtn_prev,
                                          p_Y_tblCol_prev,
                                          p_Y_tablePtn_curr,
                                          p_Y_idxCol_curr);
@@ -156,6 +165,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
         Card_Combined *p_combined = new Card_Combined;
         pCI->G_vInsertBefore(p_combined, p_cast_prev);
       }
+
+      rp_Y_streamPtn_curr = p_Y_tablePtn_curr;
       break;
 
     case XK_HASHCAST:
@@ -172,6 +183,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
         Card_Combined* p_combined = new Card_Combined;
         pCI->G_vInsertBefore(p_combined, p_cast_prev);
       }
+
+      rp_Y_streamPtn_curr = p_Y_tablePtn_curr;
       break;
 
     case XK_UNICAST:
