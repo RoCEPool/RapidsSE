@@ -18,7 +18,7 @@ __vDeleteFunction(Card_HshCol, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_HshCol::Card_HshCol(void)
-: Card(CK_HSHCOL)
+: Card_COL(CK_HSHCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
