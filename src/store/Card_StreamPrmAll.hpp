@@ -16,13 +16,13 @@ namespace STORE
     Card_StreamPrmAll(void);
    ~Card_StreamPrmAll(void) noexcept(false);
 
-    static Card_StreamPrmAll* pAllPermutedJoins(Card_TableList* p_tableList,
-                                                Card_JoinPredList* p_joinPredList);
+    static Card_StreamPrmAll* pComputeAllPermutations(Card_TableList* p_tableList,
+                                                      Card_JoinPredList* p_joinPredList);
 
-    void vEstCostsForAllJoinPerm(Card_TableList*    p_tableList,
-                                 Card_FiltPredList* p_filtPredList);
+    void vEstCostsForAllPermutations(Card_TableList*    p_tableList,
+                                     Card_FiltPredList* p_filtPredList);
     Card_StreamPrm* pJoinOrder(i8 iJoinOrder);
-    Card_StreamPrm* pLowestLoad(void);
+    Card_StreamPrm* pLowestCost(void);
     void vRemoveInvalid(void);
    };
 

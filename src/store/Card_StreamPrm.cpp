@@ -54,22 +54,22 @@ Card_StreamPrm::~Card_StreamPrm(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the query cost of this join permutation sequence                  */
 /*----------------------------------------------------------------------------*/
-void Card_StreamPrm::vEstQueryCost(Card_TableList* p_tableList,
-                                   Card_FiltPredList* p_filtPredList)
+void Card_StreamPrm::vEstStreamCost(Card_TableList* p_tableList,
+                                    Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i_JoinPermSeq = pSymbol()->Y_iGet(P_Permutation);
-  if (686 == i_JoinPermSeq)
+  i8 i_Permutation = pSymbol()->Y_iGet(P_Permutation);
+  if (686 == i_Permutation)
     vDebugPoint();
 
-  i8 nBuff_prev_locus  = 0;
-  i8 nBuff_producedBy_locus = 0;
+  i8 nBuff_prev_join  = 0;
+  i8 nBuff_producedBy_join = 0;
 
   i8 nSumNetworkCost = 0;
   i8 nSumUnicastCost = 0;
 
-  i8 i_Locus = 0;
+  i8 i_Join = 0;
 
   i8 nFilterPred_prev = 0;
 
@@ -78,18 +78,18 @@ void Card_StreamPrm::vEstQueryCost(Card_TableList* p_tableList,
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
 
-    nBuff_prev_locus = nBuff_producedBy_locus;
+    nBuff_prev_join = nBuff_producedBy_join;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // stream start
+    // stream head
 
     // calculate the buffers produced at the start of join sequence
     if (xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD)) {
 
       // get info of stream start
-      char cTblSyn_head = xCI.G.p_dataStart->cValue();
+      char cTblSyn_head = xCI.G.p_streamHead->cValue();
 
-      nBuff_producedBy_locus = p_tableList->nGetTableSize(cTblSyn_head) * C_EXPANSION_COEFF;
+      nBuff_producedBy_join = p_tableList->nGetTableSize(cTblSyn_head) * C_EXPANSION_COEFF;
 
       nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_head);
 
@@ -99,42 +99,42 @@ void Card_StreamPrm::vEstQueryCost(Card_TableList* p_tableList,
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // join locus
+    // stream join
 
     if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
       continue;
 
-    // get info for locus of join sequence
-    char cTblSyn_locus = xCI.G.p_joinLocus->cValue();
+    // get info for this join
+    char cTblSyn_locus = xCI.G.p_streamJoin->cValue();
 
-    eXK eLocusCast = this->eLocusCast(p_Y_streamPtn_running,
-                                      p_tableList,
-                                      xCI.G.p_joinLocus);
+    eXK eStreamCast = this->eStreamCast(p_Y_streamPtn_running,
+                                        p_tableList,
+                                        xCI.G.p_streamJoin);
 
-    // calculate the various costs for locus of join sequence
+    // calculate the various costs of join sequence
     i8 nBuff_joining_with = p_tableList->nGetTableSize(cTblSyn_locus);
 
-    nBuff_producedBy_locus =
-        xCI.G.p_joinLocus->nEstLocusCosts(i_JoinPermSeq,
-                                          i_Locus,
-                                          nBuff_prev_locus,
+    nBuff_producedBy_join =
+        xCI.G.p_streamJoin->nEstJoinCosts(i_Permutation,
+                                          i_Join,
+                                          nBuff_prev_join,
                                           nFilterPred_prev,
-                                          eLocusCast,
+                                          eStreamCast,
                                           nBuff_joining_with
-                                          );
+        );
 
     // running sum of the network and unicast costs
-    Card_JoinEstimate* p_costLocus = xCI.G.p_joinLocus->pSub_joinCost();
-    Card_CostNetwork* p_costNetwork = p_costLocus->pSub_costNetwork();
+    Card_JoinEstimate* p_joinEstimate = xCI.G.p_streamJoin->pSub_joinEstimate();
+    Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
     nSumNetworkCost += p_costNetwork->iValue();
-    Card_CostUnicast* p_costUnicast = p_costLocus->pSub_costUnicast();
+    Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
     nSumUnicastCost += p_costUnicast->iValue();
 
     nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_locus);
 
-    i_Locus++;
+    i_Join++;
 
-    if (eLocusCast != XK_UNICAST)
+    if (eStreamCast != XK_UNICAST)
       p_Y_streamPtn_running = p_tableList->pGetTablePtn(cTblSyn_locus)->pSymbol();
   }
 
@@ -155,9 +155,9 @@ void Card_StreamPrm::vEstQueryCost(Card_TableList* p_tableList,
 /*----------------------------------------------------------------------------*/
 /* compute the cast from prev join to curr join locus                         */
 /*----------------------------------------------------------------------------*/
-eXK Card_StreamPrm::eLocusCast(Symbol*         p_Y_streamPtn_running,
-                               Card_TableList* p_tableList,
-                               Card_StreamJoin* p_joinLocus)
+eXK Card_StreamPrm::eStreamCast(Symbol*         p_Y_streamPtn_running,
+                                Card_TableList* p_tableList,
+                                Card_StreamJoin* p_joinLocus)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -224,6 +224,7 @@ i8 Card_StreamPrm::iOnePermutedJoin(Card_TableList*    p_tableList,
 
     if ('F' == cTblSyn_ith)
       vDebugPoint();
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     if (0 == nChildCards()) {
@@ -419,14 +420,14 @@ bool Card_StreamPrm::bHasKnownJoin(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* is load of this permutation sequence less than given arg?                  */
 /*----------------------------------------------------------------------------*/
-bool Card_StreamPrm::bIsLessLoad(Card_StreamPrm* p_joinPermSeq_arg)
+bool Card_StreamPrm::bIsLessCost(Card_StreamPrm* p_joinPermSeq_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CostQuery* p_costQuery_this = pSub_costQuery();
   Card_CostQuery* p_costQuery_arg  = p_joinPermSeq_arg->pSub_costQuery();
 
-  if (p_costQuery_this->bIsLessLoad(p_costQuery_arg))
+  if (p_costQuery_this->bIsLessCost(p_costQuery_arg))
     return true;
   else
     return false;
@@ -460,8 +461,8 @@ bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_prior,
     if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
       continue;
 
-    xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
-    if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
+    xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
+    if (xCI.G.p_streamCast && ! xCI.G.p_streamCast->bIsValue("XK_UNICAST"_Stz))
       return false;
 
     if (xCI.G.p_MainCard->cValue() == cTblSyn_prev)
@@ -485,8 +486,8 @@ bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_prior,
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
 //
-//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
-//      if (xCI.G.p_locusCast && xCI.G.p_locusCast->bIsValue("XK_BROADCAST"_Stz))
+//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_streamCast && xCI.G.p_streamCast->bIsValue("XK_BROADCAST"_Stz))
 //        return false;
 //    }
 //  }
@@ -495,8 +496,8 @@ bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_prior,
 //    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
-//      if (xCI.G.p_locusCast && xCI.G.p_locusCast->bIsValue("XK_BROADCAST"_Stz))
+//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_streamCast && xCI.G.p_streamCast->bIsValue("XK_BROADCAST"_Stz))
 //        return false;
 //    }
 //  }
@@ -517,8 +518,8 @@ bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_prior,
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
 //
-//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
-//      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
+//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_streamCast && ! xCI.G.p_streamCast->bIsValue("XK_UNICAST"_Stz))
 //        return false;
 //    }
 //  }
@@ -527,8 +528,8 @@ bool Card_StreamPrm::bUnicastPermitted(char cTblSyn_prior,
 //    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//      xCI.G.p_locusCast = xCI.G.p_joinLocus->pSub_locusCast();
-//      if (xCI.G.p_locusCast && ! xCI.G.p_locusCast->bIsValue("XK_UNICAST"_Stz))
+//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_streamCast && ! xCI.G.p_streamCast->bIsValue("XK_UNICAST"_Stz))
 //        return false;
 //    }
 //  }

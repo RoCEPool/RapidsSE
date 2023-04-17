@@ -18,12 +18,12 @@ namespace STORE
     Card_StreamPrm(void);
    ~Card_StreamPrm(void) noexcept(false);
 
-     void vEstQueryCost(Card_TableList* p_tableList,
-                        Card_FiltPredList* p_filtPredList);
+     void vEstStreamCost(Card_TableList* p_tableList,
+                         Card_FiltPredList* p_filtPredList);
 
-     eXK eLocusCast(Symbol*         p_Y_streamPtn_running,
-                    Card_TableList* p_tableList,
-                    Card_StreamJoin* p_joinLocus);
+     eXK eStreamCast(Symbol*         p_Y_streamPtn_running,
+                     Card_TableList* p_tableList,
+                     Card_StreamJoin* p_joinLocus);
 
      i8 iOnePermutedJoin(Card_TableList*    p_tableList,
                            Card_JoinPredList* p_joinPredList,
@@ -35,7 +35,7 @@ namespace STORE
 
      bool bHasKnownJoin(char cTblSyn);
 
-     bool bIsLessLoad(Card_StreamPrm* p_joinPermSeq_arg);
+     bool bIsLessCost(Card_StreamPrm* p_joinPermSeq_arg);
 
      bool bUnicastPermitted(char cTblSyn_prior,
                             char cTblSyn_prev,

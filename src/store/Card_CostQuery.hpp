@@ -16,7 +16,7 @@ namespace STORE
     Card_CostQuery(void);
    ~Card_CostQuery(void) noexcept(false);
 
-    bool bIsLessLoad(Card_CostQuery* p_costQuery_arg);
+    bool bIsLessCost(Card_CostQuery* p_costQuery_arg);
   };
 
   Card_CostQuery* _pCard_CostQuery(void* aAddr);

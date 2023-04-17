@@ -50,14 +50,14 @@ Card_StreamPrmAll::~Card_StreamPrmAll(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* compute the set of join permutations                                       */
+/* compute the set of stream join permutations                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamPrmAll* Card_StreamPrmAll::pAllPermutedJoins(Card_TableList* p_tableList,
-                                                        Card_JoinPredList* p_joinPredList)
+Card_StreamPrmAll* Card_StreamPrmAll::pComputeAllPermutations(Card_TableList* p_tableList,
+                                                              Card_JoinPredList* p_joinPredList)
 {
   _static_
 
-  Card_StreamPrmAll* p_joinPermAll = new Card_StreamPrmAll;
+  Card_StreamPrmAll* p_streamPrmAll = new Card_StreamPrmAll;
 
   i8 nTables = p_tableList->nChildCards();
   PermGen* pPermGen = new PermGen(nTables);
@@ -67,14 +67,14 @@ Card_StreamPrmAll* Card_StreamPrmAll::pAllPermutedJoins(Card_TableList* p_tableL
 
     pPermGen->vCalcPermutation(i_Permutation);
 
-    Card_StreamPrm* p_joinPermSeq = new Card_StreamPrm;
-    p_joinPermSeq->pSymbol()->Y_vSet(P_Permutation, i_Permutation);
+    Card_StreamPrm* p_streamPrm = new Card_StreamPrm;
+    p_streamPrm->pSymbol()->Y_vSet(P_Permutation, i_Permutation);
 
-    i8 i_JoinInvalid = p_joinPermSeq->iOnePermutedJoin(p_tableList,
-                                                       p_joinPredList,
-                                                       pPermGen);
+    i8 i_JoinInvalid = p_streamPrm->iOnePermutedJoin(p_tableList,
+                                                     p_joinPredList,
+                                                     pPermGen);
 
-    p_joinPermAll->vAppend(p_joinPermSeq);
+    p_streamPrmAll->vAppend(p_streamPrm);
 
     if (C_UNKNOWN == i_JoinInvalid) {
       //vTrace("VALID PERMUTATION %lld\n"_Stz, i_Permutation);
@@ -91,34 +91,8 @@ Card_StreamPrmAll* Card_StreamPrmAll::pAllPermutedJoins(Card_TableList* p_tableL
 
   delete pPermGen;
 
-  return p_joinPermAll;
+  return p_streamPrmAll;
 }
-/*----------------------------------------------------------------------------*/
-//Card_StreamPrmAll* Card_StreamPrmAll::pAllPermutedJoins(Card_TableList* p_tableList,
-//                                                      Card_JoinPredList* p_joinPredList)
-//{
-//  _static_
-//
-//  Card_StreamPrmAll* p_joinPermAll = new Card_StreamPrmAll;
-//
-//  i8 nTables = p_tableList->nChildCards();
-//  PermGen* pPermGen = new PermGen(nTables);
-//
-//  while (pPermGen->bNextPermutation()) {
-//
-//    Card_StreamPrm* p_joinPermSeq = new Card_StreamPrm;
-//    p_joinPermSeq->Y_vSet(P_Permutation, pPermGen->nPermutations() - 1);
-//    p_joinPermAll->vAppendMain(p_joinPermSeq);
-//
-//    p_joinPermSeq->iOnePermutedJoin(p_tableList,
-//                                    p_joinPredList,
-//                                    pPermGen);
-//  }
-//
-//  delete pPermGen;
-//
-//  return p_joinPermAll;
-//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -127,14 +101,14 @@ Card_StreamPrmAll* Card_StreamPrmAll::pAllPermutedJoins(Card_TableList* p_tableL
 /*----------------------------------------------------------------------------*/
 /* compute the load of all permutations                                       */
 /*----------------------------------------------------------------------------*/
-void Card_StreamPrmAll::vEstCostsForAllJoinPerm(Card_TableList*    p_tableList,
-                                                Card_FiltPredList* p_filtPredList)
+void Card_StreamPrmAll::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
+                                                    Card_FiltPredList* p_filtPredList)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain())
-    xCI.G.p_joinPermSeq->vEstQueryCost(p_tableList,p_filtPredList);
+    xCI.G.p_streamPrm->vEstStreamCost(p_tableList, p_filtPredList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +123,7 @@ Card_StreamPrm* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_STREAMPRM)) {
-    p_joinPermSeq = xCI.G.p_joinPermSeq;
+    p_joinPermSeq = xCI.G.p_streamPrm;
     iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
       return (p_joinPermSeq);
@@ -159,9 +133,9 @@ Card_StreamPrm* Card_StreamPrmAll::pJoinOrder(i8 iJoinOrder)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pick join permseq with lowest load                                         */
+/* pick permutation with lowest cost                                          */
 /*----------------------------------------------------------------------------*/
-Card_StreamPrm* Card_StreamPrmAll::pLowestLoad(void)
+Card_StreamPrm* Card_StreamPrmAll::pLowestCost(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -170,10 +144,10 @@ Card_StreamPrm* Card_StreamPrmAll::pLowestLoad(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_STREAMPRM)) {
     if (! pLowest)
-      pLowest = xCI.G.p_joinPermSeq;
+      pLowest = xCI.G.p_streamPrm;
     else
-    if (xCI.G.p_joinPermSeq->bIsLessLoad(pLowest))
-      pLowest = xCI.G.p_joinPermSeq;
+    if (xCI.G.p_streamPrm->bIsLessCost(pLowest))
+      pLowest = xCI.G.p_streamPrm;
   }
 
   return pLowest;
@@ -188,7 +162,7 @@ void Card_StreamPrmAll::vRemoveInvalid(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    if (xCI.G.p_joinPermSeq->pSymbol()->Y_bHas(P_Invalid))
+    if (xCI.G.p_streamPrm->pSymbol()->Y_bHas(P_Invalid))
       xCI.G_vRemoveDeleteMain(CK_STREAMPRM);
   }
 }

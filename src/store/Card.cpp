@@ -1937,7 +1937,7 @@ Card_Level* Card::pSub_level(void)
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 #include "Card_JoinEstimate.hpp"
-Card_JoinEstimate* Card::pSub_joinCost(void)
+Card_JoinEstimate* Card::pSub_joinEstimate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

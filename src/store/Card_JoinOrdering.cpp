@@ -94,7 +94,7 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamPrmAll* p_joinPermAll)
 {
   _static_
 
-  Card_StreamPrm* p_joinPermSeq_lowest = p_joinPermAll->pLowestLoad();
+  Card_StreamPrm* p_joinPermSeq_lowest = p_joinPermAll->pLowestCost();
 
   Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq_lowest);
 
@@ -140,12 +140,12 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   while (xCI.G_bEachMain(CK_JOINORDER)) {
     char cNextTable = xCI.G.p_joinOrder->cValue();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
-    xCI.G.p_costLocus = xCI.G.p_joinOrder->pSub_joinCost();
-    xCI.G.p_locusCast = xCI.G.p_costLocus->pSub_locusCast();
-    xCI.G.p_costUnicast = xCI.G.p_costLocus->pSub_costUnicast();
-    xCI.G.p_costNetwork = xCI.G.p_costLocus->pSub_costNetwork();
-    xCI.G.p_costJoining = xCI.G.p_costLocus->pSub_costJoining();
-    s32 sCast = xCI.G.p_locusCast->szValue();
+    xCI.G.p_joinEstimate = xCI.G.p_joinOrder->pSub_joinEstimate();
+    xCI.G.p_streamCast = xCI.G.p_joinEstimate->pSub_locusCast();
+    xCI.G.p_costUnicast = xCI.G.p_joinEstimate->pSub_costUnicast();
+    xCI.G.p_costNetwork = xCI.G.p_joinEstimate->pSub_costNetwork();
+    xCI.G.p_costJoining = xCI.G.p_joinEstimate->pSub_costJoining();
+    s32 sCast = xCI.G.p_streamCast->szValue();
     StrLib::vShuffleLeft(sCast.azChar(),3);
 
     if (bNumbers)

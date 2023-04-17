@@ -16,12 +16,12 @@ namespace STORE
     Card_StreamJoin(void);
    ~Card_StreamJoin(void) noexcept(false);
 
-    i8 nEstLocusCosts(i8 i_JoinPermSeq,
-                      i8 i_Locus,
-                      i8 nBuff_prev_locus,
-                      i8 nFiltPred_prev,
-                      eXK eLocusCast,
-                      i8 nBuff_joining_with
+    i8 nEstJoinCosts(i8 i_JoinPermSeq,
+                     i8 i_Locus,
+                     i8 nBuff_prev_locus,
+                     i8 nFiltPred_prev,
+                     eXK eLocusCast,
+                     i8 nBuff_joining_with
                       );
   };
 

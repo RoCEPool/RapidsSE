@@ -159,7 +159,6 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 2) Extract joinPredList from pipeline
 
   m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
@@ -167,8 +166,7 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2b) Extract filtPredList from pipeline
+  // 3) Extract filtPredList from pipeline
 
   m_pCI->G.p_filtPredList = Card_FiltPredList::pExtract(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_filtPredList);
@@ -176,38 +174,37 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 3) Compute all possible join permutations
+  // 4) Compute all possible join permutations
 
-  Card_StreamPrmAll* p_joinPermAll =
-      Card_StreamPrmAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
+  Card_StreamPrmAll* p_streamPrmAll =
+      Card_StreamPrmAll::pComputeAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
   m_pCI->G.pDeck->vAppend(new Card_Section("All Permutations"_Stz));
-  CardIter xCI(p_joinPermAll);
+  CardIter xCI(p_streamPrmAll);
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardRecursive());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPrm->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 4) Remove invalid permutations
+  // 5) Remove invalid permutations
 
-  p_joinPermAll->vRemoveInvalid();
+  p_streamPrmAll->vRemoveInvalid();
   m_pCI->G.pDeck->vAppend(new Card_Section("Valid Permutations"_Stz));
 
   xCI.vRestart();
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardRecursive());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPrm->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5) Calculate join load
 
-  p_joinPermAll->vEstCostsForAllJoinPerm(m_pCI->G.p_tableList,m_pCI->G.p_filtPredList);
+  p_streamPrmAll->vEstCostsForAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_filtPredList);
   m_pCI->G.pDeck->vAppend(new Card_Section("Join Cost Est."_Stz));
   xCI.vRestart();
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_joinPermSeq->pDupCardRecursive());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPrm->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -215,7 +212,7 @@ void JoinOrdering::vReorderTables(void)
   xCI.vRestart();
   i8 iJoinPermutations = 0;
   while (xCI.G_bEachMain(CK_STREAMPRM)) {
-    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_joinPermSeq);
+    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_streamPrm);
     //p_joinOrdering->vDump();
     s256 sJoinOrder;
     if (pFile) {
@@ -243,7 +240,7 @@ void JoinOrdering::vReorderTables(void)
     sJoinOrder= AM::JOB::szTagValue(C_JOIN_ORDER);
     i8 iJoinOrder = StrLib::iToI8((char*)sJoinOrder);
     p_joinOrdering =
-        Card_JoinOrdering::pPick(p_joinPermAll, iJoinOrder);
+        Card_JoinOrdering::pPick(p_streamPrmAll, iJoinOrder);
 
     if ( ! p_joinOrdering ) {
       vTrace("\n\nWARNING: INVALID JOIN ORDER IN /JO, PICKING THE BEST!!!\n\n"_Stz);
@@ -253,7 +250,7 @@ void JoinOrdering::vReorderTables(void)
 
   if ( ! p_joinOrdering ) {
     p_joinOrdering =
-        Card_JoinOrdering::pPick(p_joinPermAll);
+        Card_JoinOrdering::pPick(p_streamPrmAll);
   }
 
   m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
@@ -261,7 +258,9 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
-  // get the final join ordering string
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 7) get the final join ordering string
+
   s256 sJoinOrdering;
   if (pFile) {
     p_joinOrdering->vJoinOrderString(sJoinOrdering, m_pCI->G.p_tableList, true);
@@ -277,9 +276,10 @@ void JoinOrdering::vReorderTables(void)
     delete pFile;
     pFile = nullptr;
   }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  DELETE_CARD(p_joinPermAll);
+  DELETE_CARD(p_streamPrmAll);
 
   pBoard = m_pCI->G.pBoard;
   m_pCI->G_vPopIter();

@@ -436,7 +436,7 @@ namespace STORE
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_Level*         pSub_level(void);
-    Card_JoinEstimate*     pSub_joinCost(void);
+    Card_JoinEstimate*     pSub_joinEstimate(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
     Card_CostQuery*     pSub_costQuery(void);

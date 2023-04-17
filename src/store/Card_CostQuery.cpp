@@ -49,7 +49,7 @@ Card_CostQuery::~Card_CostQuery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is this permutation sequence load less than given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Card_CostQuery::bIsLessLoad(Card_CostQuery* p_costQuery_arg)
+bool Card_CostQuery::bIsLessCost(Card_CostQuery* p_costQuery_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,6 +65,7 @@ bool Card_CostQuery::bIsLessLoad(Card_CostQuery* p_costQuery_arg)
   if (iCostNetwork_this > iCostNetwork_arg)
     return false;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_CostUnicast* p_costUnicast_this = pSub_costUnicast();
   Card_CostUnicast* p_costUnicast_arg  = p_costQuery_arg->pSub_costUnicast();

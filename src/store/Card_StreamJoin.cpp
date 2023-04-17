@@ -54,12 +54,12 @@ Card_StreamJoin::~Card_StreamJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* estimate the various costs for this join locus (of join permutation seq)   */
 /*----------------------------------------------------------------------------*/
-i8 Card_StreamJoin::nEstLocusCosts(i8 i_JoinPermSeq,
-                                   i8 i_Locus,
-                                   i8 nBuff_prev_locus,
-                                   i8 nFiltPred_prev,
-                                   eXK eLocusCast,
-                                   i8 nBuff_joining_with
+i8 Card_StreamJoin::nEstJoinCosts(i8 i_JoinPermSeq,
+                                  i8 i_Locus,
+                                  i8 nBuff_prev_locus,
+                                  i8 nFiltPred_prev,
+                                  eXK eLocusCast,
+                                  i8 nBuff_joining_with
                                   )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
