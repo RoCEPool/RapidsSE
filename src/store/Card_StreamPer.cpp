@@ -199,7 +199,7 @@ eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute one permuted join sequence                                         */
+/* create the join sequence for given stream permutation                      */
 /*----------------------------------------------------------------------------*/
 i8 Card_StreamPer::iCreateJoinSeq(Card_TableList*    p_tableList,
                                   Card_JoinPredList* p_joinPredList,
@@ -209,15 +209,17 @@ i8 Card_StreamPer::iCreateJoinSeq(Card_TableList*    p_tableList,
 
   i8 i_InvalidAtJoin = C_UNKNOWN;
 
-  i8 nTables = p_tableList->nChildCards();
+  i8 nTables   = p_tableList->nChildCards();
+  i8 nElements = pPermGen->nElements();
+  RASSERT(nTables == pPermGen->nElements());
 
   //vTrace("%lld :"_Stz,pPermGen->nPermutations());
-  for (i8 i_ElmOfPerm = 0; i_ElmOfPerm < nTables; i_ElmOfPerm++) {
+  for (i8 i_Elm = 0; i_Elm < nElements; i_Elm++) {
 
     // get the ith table of this permutation
-    i8 i_Table = pPermGen->iElement(i_ElmOfPerm);
-    Card_Table* p_table = _pCard_Table(p_tableList->pGetChild(i_Table));
-    char cTblSyn_ith = p_table->cValue();
+    i8 i_Table = pPermGen->iElement(i_Elm);
+    Card_Table* p_table_ith = _pCard_Table(p_tableList->pGetChild(i_Table));
+    char cTblSyn_ith = p_table_ith->cValue();
 
     if ('F' == cTblSyn_ith)
       vDebugPoint();
@@ -231,12 +233,12 @@ i8 Card_StreamPer::iCreateJoinSeq(Card_TableList*    p_tableList,
       p_streamHead->vValue(cTblSyn_ith);
       vAppend(p_streamHead);
 
-      p_streamHead->vAppend(new Card_TableNm(p_table->pSub_tableNm()->szValue()));
+      p_streamHead->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szValue()));
 
-      if (p_table->pSub_keyExists() || p_table->pSub_keyNotExists()) {
+      if (p_table_ith->pSub_keyExists() || p_table_ith->pSub_keyNotExists()) {
         p_streamHead->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
         pSymbol()->Y_vSet(P_Invalid);
-        i_InvalidAtJoin = i_ElmOfPerm;
+        i_InvalidAtJoin = i_Elm;
         break;
       }
 
@@ -250,7 +252,7 @@ i8 Card_StreamPer::iCreateJoinSeq(Card_TableList*    p_tableList,
     p_streamJoin->vValue(cTblSyn_ith);
     vAppend(p_streamJoin);
 
-    p_streamJoin->vAppend(new Card_TableNm(p_table->pSub_tableNm()->szValue()));
+    p_streamJoin->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szValue()));
 
 
     bool bSupported = false;
@@ -282,7 +284,7 @@ i8 Card_StreamPer::iCreateJoinSeq(Card_TableList*    p_tableList,
     p_streamJoin->vAppend(new Card_Note("**DOESN'T FOLLOW**"_Stz));
     pSymbol()->Y_vSet(P_Invalid);
 
-    i_InvalidAtJoin = i_ElmOfPerm;
+    i_InvalidAtJoin = i_Elm;
     break;
   }
 
