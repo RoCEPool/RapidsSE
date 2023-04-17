@@ -59,7 +59,6 @@ enum eCK // card kind
   /* */ CK_JOINESTIMATE,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
-  /* */ CK_JOINPERMALL,
   /* */ CK_JOINPERMSEQ,
   /* */ CK_JOINPREDLIST,
 
@@ -98,6 +97,7 @@ enum eCK // card kind
   /* */ CK_STAGE,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
+  /* */ CK_STREAMPRMALL,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -176,7 +176,6 @@ static Stz* aCK[]
   /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
-  /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
   /* */ "CK_JOINPERMSEQ"_Stz,  // CK_JOINPERMSEQ
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
@@ -215,6 +214,7 @@ static Stz* aCK[]
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
   /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
+  /* */ "CK_STREAMPRMALL"_Stz, // CK_STREAMPRMALL
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -293,7 +293,6 @@ static Stz* aCK_short[]
   /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
-  /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
   /* */ "joinPermSeq"_Stz,     // CK_JOINPERMSEQ
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
@@ -332,6 +331,7 @@ static Stz* aCK_short[]
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
   /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
+  /* */ "streamPrmAll"_Stz,    // CK_STREAMPRMALL
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE

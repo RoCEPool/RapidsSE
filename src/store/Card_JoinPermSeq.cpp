@@ -9,7 +9,7 @@
 #include "Card_CmpPred.hpp"
 #include "Card_FiltPred.hpp"
 #include "Card_FiltPredList.hpp"
-#include "Card_JoinPermAll.hpp"
+#include "Card_StreamPrmAll.hpp"
 #include "Card_JoinPredList.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"

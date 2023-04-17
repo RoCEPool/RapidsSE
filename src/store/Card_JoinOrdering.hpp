@@ -18,8 +18,8 @@ namespace STORE
 
     static Card_JoinOrdering* pDerive(Card_JoinPermSeq* p_joinPermSeq);
 
-    static Card_JoinOrdering* pPick(Card_JoinPermAll* p_joinPermAll, i8 iJoinOrder);
-    static Card_JoinOrdering* pPick(Card_JoinPermAll* p_joinPermAll);
+    static Card_JoinOrdering* pPick(Card_StreamPrmAll* p_joinPermAll, i8 iJoinOrder);
+    static Card_JoinOrdering* pPick(Card_StreamPrmAll* p_joinPermAll);
 
     void vJoinOrderString(String* pString, Card_TableList* p_tableList,
                           bool bNumbers=false);

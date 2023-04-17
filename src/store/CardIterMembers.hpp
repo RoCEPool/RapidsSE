@@ -151,7 +151,7 @@ namespace STORE
     Card_StreamJoin *     p_joinLocus;
     Card_JoinOrder *     p_joinOrder;
     Card_JoinOrdering *  p_joinOrdering;
-    Card_JoinPermAll *   p_joinPermAll;
+    Card_StreamPrmAll *   p_joinPermAll;
     Card_JoinPermSeq *   p_joinPermSeq;
     Card_JoinPredList *  p_joinPredList;
 

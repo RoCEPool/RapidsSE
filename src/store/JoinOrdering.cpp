@@ -178,8 +178,8 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 3) Compute all possible join permutations
 
-  Card_JoinPermAll* p_joinPermAll =
-      Card_JoinPermAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
+  Card_StreamPrmAll* p_joinPermAll =
+      Card_StreamPrmAll::pAllPermutedJoins(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
   m_pCI->G.pDeck->vAppend(new Card_Section("All Permutations"_Stz));
   CardIter xCI(p_joinPermAll);
