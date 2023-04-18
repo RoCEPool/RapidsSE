@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "PsxThd.hpp"
-#include "SP_Ivl.hpp"
+#include "SP_Ivd.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -830,7 +830,7 @@ void Schedule::vDumpSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
 
-  SP_Ivl spIvl;
+  SP_Ivd spIvd;
   
   m_pSleepingQueue->vGrabLock();
   
@@ -841,7 +841,7 @@ void Schedule::vDumpSleepingQueue(void)
   vTrace("====================================\n"_Stz);
   vTrace("Sleeping Queue: Tasks %lld ; CurIvl %s\n"_Stz
          ,nTasks
-         ,spIvl.sz(wCurIvl.T.m_iAsI8)
+         ,spIvd.sz(wCurIvl.T.m_iAsI8)
          );
   
   if (nTasks) {

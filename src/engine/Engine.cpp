@@ -57,6 +57,8 @@
 #include "Heart.h"
 
 #include "PromptHelper.hpp"
+#include "CompileLib.hpp"
+
 
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
@@ -1353,8 +1355,6 @@ void Engine::vPrintFormats(void)
   vTrace("  F_DTE      = %s\n"_Stz,F_DTE);
   vTrace("  F_FLT      = %s\n"_Stz,F_FLT);
   vTrace("  F_INT      = %s\n"_Stz,F_INT);
-  vTrace("  F_IVL      = %s\n"_Stz,F_IVL);
-  vTrace("  F_IVL_frac = %s\n"_Stz,F_IVL_frac);
   vTrace("  F_TME      = %s\n"_Stz,F_TME);
   vTrace("  F_TME_frac = %s\n"_Stz,F_TME_frac);
   vTrace("  F_TSP      = %s\n"_Stz,F_TSP);
@@ -1685,6 +1685,31 @@ void Engine::vStartSystem(void)
     vTrace("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
     
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
+
+  // Initialise and check for system compilers
+  if (!CompileLib::bInit()) {
+    Process::vExitStartup();
+  }
+
+  // Temporary
+  vTrace("\n\nDefault compiler:\n"_Stz);
+  CompileLib::vTest();
+
+  vTrace("\n\ngcc compiler:\n"_Stz);
+  CompileLib::vTest("gcc"_Stz);
+
+  vTrace("\n\nclang compiler:\n"_Stz);
+  CompileLib::vTest("clang"_Stz);
+
+  vTrace("\n\ndevtoolset-10 compiler:\n"_Stz);
+  CompileLib::vTest("devtoolset-10"_Stz);
+
+  vTrace("\n\nllvm-toolset-7.0 compiler:\n"_Stz);
+  CompileLib::vTest("llvm-toolset-7.0"_Stz);
+
+  vTrace("\n\ntcc compiler:\n"_Stz);
+  CompileLib::vTest("tcc"_Stz);
+
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {

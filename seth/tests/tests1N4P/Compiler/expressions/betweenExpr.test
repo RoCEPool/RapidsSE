@@ -615,6 +615,55 @@ SELECT -1 NOT BETWEEN 0 AND 9 FROM nation LIMIT 1 ;
 rows: (true)
 
 
+-- intervals
+
+-- Mixed YM intervals
+EXPLAIN SELECT n_name FROM NATION WHERE INTERVAL '13' MONTH BETWEEN INTERVAL '1' YEAR AND INTERVAL '14' MONTH;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM NATION WHERE INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH)
+         » ordinal expr: (INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+-- Mixed DT intervals
+EXPLAIN SELECT n_name FROM NATION WHERE INTERVAL '1 2:3:4.5' DAY TO SECOND BETWEEN INTERVAL '2' MINUTE AND INTERVAL '27' HOUR;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM NATION WHERE INTERVAL ''1 2:3:4.5'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (INTERVAL ''1 2:3:4.500000'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR)
+         » ordinal expr: (INTERVAL ''1 2:3:4.500000'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Mixed YM and DT intervals
+EXPLAIN SELECT n_name FROM NATION WHERE INTERVAL '13' MONTH BETWEEN INTERVAL '1 2' DAY TO HOUR AND INTERVAL '1-2' YEAR TO MONTH;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

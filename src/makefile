@@ -65,7 +65,6 @@ CFLAGS_DEBUG = -DWITH_DEBUG_VERSION $(WARNINGS) -Wno-unused -O0 -g3 $(strip $(LI
 LDFLAGS = -O3 $(strip $(LINUX_LDFLAGS) $(DARWIN_LDFLAGS))
 LDFLAGS_DEBUG = -Og -g3 $(strip $(LINUX_LDFLAGS_DEBUG) $(DARWIN_LDFLAGS_DEBUG))
 
-PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
 
 # Target Files
@@ -135,7 +134,7 @@ THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/m
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
-LIBS = -lpthread -ltcc -ldl -lantlr4-runtime $(strip $(LINUX_LIBS) $(DARWIN_LIBS))
+LIBS = -lc -lstdc++ -lpthread -ldl $(strip $(LINUX_LIBS) $(DARWIN_LIBS)) -ltcc -lantlr4-runtime
 LIB_DIRS = -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
@@ -175,6 +174,13 @@ debug : all
 release : all
 
 
+# CentOS 7 builds
+centos7Debug :
+	@source /opt/rh/devtoolset-10/enable && $(MAKE) -e debug
+
+centos7Release :
+	@source /opt/rh/devtoolset-10/enable && $(MAKE) -e release
+
 # RapidsSE executable
 $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 	$(DIR_GUARD)
@@ -190,19 +196,19 @@ $(TARGET_EXE): $(OBJECTS) $(DEPFILES) $(COMPILED_LIBS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile source .c files into object files
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile assembly files into objects
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
 	$(DIR_GUARD)
 	@echo "Compiling file: $@"
-	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
+	$(CPP) -c $(CPPFLAGS_ARCH) $(CPPFLAGS) $(INCLUDES)  $< -o $@
 
 # Include all of the generated dependency rules from all .d files.
 # The '-' means ignore the exit status of the command.

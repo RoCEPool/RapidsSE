@@ -781,7 +781,7 @@ eEC PtnDef::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
   UNUSED(pTknVec);
 
   pCol->vColumnType(CT_INTERVAL_DT);
-  pCol->vDatum(DM_IVL);
+  pCol->vDatum(DM_IVD);
   
   return EC_NONE;
 }

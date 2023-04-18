@@ -945,8 +945,12 @@ void Expr::vSuperAggregate(QueryNode* pExpr, PlanNode* pRootNode)
         pNumerator = pCastExpr;
       }
 
-      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId) {
-        // Denominator needs to be cast
+      // If the denominator is not of the same type as the output
+      // then it needs to be cast. An exception here is an average
+      // of an interval. The denominator is always an integer.
+      if (Expr::xTypeId(pDenominator, pRootNode) != xAvgTypeId &&
+          eAvgType != CT_INTERVAL_DT &&
+          eAvgType != CT_INTERVAL_YM ) {
         QueryNode* pCastExpr = CastExpr::pCoerceTo(xAvgTypeId, pDenominator, pRootNode);
 
         // Denominator was copied above, so clean up
@@ -1072,7 +1076,7 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
   b1 bResult = bCoerceChildrenToCommonType(pExprCopy, pRootNode);
 
   if (bResult) {
-    ASSERT(Expr::xTypeId(pExprCopy, pRootNode).eCTVal() != CT_NONE);
+    ASSERT(Expr::xTypeId(pExprCopy, pRootNode).bIsValid());
 
     // We need to replace the children of pExpr with the children of pExprCopy,
     // then clean up.
@@ -1167,7 +1171,9 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   // a non-CT_NONE type.
 
   // An array with an occurrence count for each coercible data type
-  i8 aiCoercibleTargets[CT_ENUMS] = { 0 };
+  const i8 iArrLen = TypeSystem::iMaxTypeId() + 1;
+  i8 aiCoercibleTargets[iArrLen];
+  for (i8 i=0; i< iArrLen; i++)  aiCoercibleTargets[i] = 0;
 
   b1 bFixed = false;
   PlanNodeIter* pChildIter = pExprCopy->pNewChildrenIter();
@@ -1178,15 +1184,14 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 
     // Increment the aiCoercibleTargets array if this child can be coerced
     // to each of the data types.
-    vIncrementCoercibleTargets(pChild, aiCoercibleTargets, pRootNode);
+    vIncrementCoercibleTargets(pChild, aiCoercibleTargets, iArrLen, pRootNode);
   }
   delete pChildIter;
 
   // Determine the common coercible data type, if any
-  eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pExprCopy->nChildren());
-  TypeId xCoercibleTarget = TypeId::xIdOf(eCoercibleTarget);
+  TypeId xCoercibleTarget = xCommonCoercibleTarget(aiCoercibleTargets, iArrLen, pExprCopy->nChildren());
 
-  if (eCoercibleTarget == CT_NONE) {
+  if (!xCoercibleTarget.bIsValid()) {
     return false;
   }
 
@@ -1196,11 +1201,10 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   while ((pChild = pExprCopy->pPopChild()) != nullptr) {
 
     TypeId xChildTypeId = Expr::xTypeId(pChild, pRootNode);
-    eCT eChildType = xChildTypeId.eCTVal();
 
     QueryNode* pCoercedChild;
 
-    if (eChildType == eCoercibleTarget) {
+    if (xChildTypeId == xCoercibleTarget) {
       // No need to coerce, but we need to duplicate the child expr anyway.
       pCoercedChild = pChild->pDeepCopy(false);
 
@@ -1244,25 +1248,18 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 /* Increments the integer elements of an array if the given expression is     */
 /* coercible to each eCT data type.                                           */
 /*----------------------------------------------------------------------------*/
-void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)[CT_ENUMS], PlanNode* pRootNode)
+void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets, i8 iArrLen, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
 
-   i8 i = 0;
+   i8 i = -1;
 
-  while (++i != CT_ENUMS) {
-    eCT eTarget = (eCT) i;
+  while (++i < iArrLen) {
+    TypeId xTargetId(i);
 
-    // TODO: come back and handle intervals
-    if (eTarget == CT_INTERVAL_YM || eTarget == CT_INTERVAL_DT) {
-      continue;
-    }
-
-    TypeId xTargetTypeId = TypeId::xIdOf(eTarget);
-
-    if (bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pRootNode)) {
-      aiCoercibleTargets[i] += 1;
+    if (bIsImplicitlyCoercibleTo(xTargetId, pExpr, pRootNode)) {
+      paiCoercibleTargets[i] += 1;
     }
   }
 }
@@ -1273,27 +1270,29 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)
 /* choose the data type that should be coerced to, or CT_NONE if none of      */
 /* them reached iMaxCount.                                                    */
 /*----------------------------------------------------------------------------*/
-eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCount)
+TypeId Expr::xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMaxCount)
 {
   i8 iNumAtMaxCount = 0;
-  eCT eCommonTarget = CT_NONE;
+  i8 iCommonTarget;
 
   // First check to see how many data types have a count of iMaxCount.
   // If there is only one then that's our answer.
-  for (i8 i=0; i<CT_ENUMS; i++) {
-    if (aiCoercibleTargets[i] == iMaxCount) {
+  for (i8 i=0; i<iArrLen; i++) {
+    if (paiCoercibleTargets[i] == iMaxCount) {
       ++iNumAtMaxCount;
-      eCommonTarget = (eCT) i;
+      iCommonTarget = i;
     }
   }
 
   if (iNumAtMaxCount == 1) {
-    ASSERT(eCommonTarget != CT_NONE);
-    ASSERT(eCommonTarget != CT_ENUMS);
-    return eCommonTarget;
+    TypeId xCommonTarget{iCommonTarget};
+    ASSERT(xCommonTarget.bIsValid());
+    return xCommonTarget;
 
   } else if (iNumAtMaxCount == 0) {
-    return CT_NONE;
+    TypeId xCommonTarget; // an invalid target
+    ASSERT(!xCommonTarget.bIsValid());
+    return xCommonTarget;
   }
 
   // We have multiple data types that we can coerce to and we have to pick one.
@@ -1304,31 +1303,77 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCoun
   // If there are multiple common coercible targets, this is the order of
   // data types that we will try to coerce to. They are tried from first
   // entry to the last.
-  static eCT aeCoercionOrdering[CT_ENUMS - 1] = {
-      /*  0 */ CT_INTEGER,
-      /*  1 */ CT_DECIMAL,
-      /*  2 */ CT_FLOAT,
-      /*  3 */ CT_BOOLEAN,
-      /*  4 */ CT_DATE,
-      /*  5 */ CT_TIME,
-      /*  6 */ CT_INTERVAL_DT,  // day-time interval
-      /*  7 */ CT_INTERVAL_YM,  // year-month interval
-      /*  8 */ CT_TIMESTAMP,
-      /*  9 */ CT_VARCHAR,
-      /* 10 */ CT_CHAR,
-      /* 11 */ CT_UNKNOWN
+  // (Intervals are listed here, but they are handled independently).
+  static TypeId aeCoercionOrdering[] = {
+      /*  0 */ TypeId::xIdOf(CT_INTEGER),
+      /*  1 */ TypeId::xIdOf(CT_DECIMAL),
+      /*  2 */ TypeId::xIdOf(CT_FLOAT),
+      /*  3 */ TypeId::xIdOf(CT_BOOLEAN),
+      /*  4 */ TypeId::xIdOf(CT_DATE),
+      /*  5 */ TypeId::xIdOf(CT_TIME),
+      /*  6 */ TypeId::xIdOf(IV_YEAR_TO_MONTH),
+      /*  7 */ TypeId::xIdOf(IV_MONTH),
+      /*  8 */ TypeId::xIdOf(IV_YEAR),
+      /*  9 */ TypeId::xIdOf(IV_DAY_TO_SECOND),
+      /* 10 */ TypeId::xIdOf(IV_HOUR_TO_SECOND),
+      /* 11 */ TypeId::xIdOf(IV_MINUTE_TO_SECOND),
+      /* 12 */ TypeId::xIdOf(IV_SECOND),
+      /* 13 */ TypeId::xIdOf(IV_DAY_TO_MINUTE),
+      /* 14 */ TypeId::xIdOf(IV_HOUR_TO_MINUTE),
+      /* 15 */ TypeId::xIdOf(IV_MINUTE),
+      /* 16 */ TypeId::xIdOf(IV_DAY_TO_HOUR),
+      /* 17 */ TypeId::xIdOf(IV_HOUR),
+      /* 18 */ TypeId::xIdOf(IV_DAY),
+      /* 19 */ TypeId::xIdOf(CT_TIMESTAMP),
+      /* 20 */ TypeId::xIdOf(CT_VARCHAR),
+      /* 21 */ TypeId::xIdOf(CT_CHAR),
+      /* 22 */ TypeId::xIdOf(CT_UNKNOWN)
   };
 
   ASSERT(iNumAtMaxCount > 1);
+  TypeId xTargetType;
 
-  for (eCT ePreference : aeCoercionOrdering) {
-    if (aiCoercibleTargets[ePreference] == iMaxCount) {
-      eCommonTarget = ePreference;
-      break;
+  // Walk the ordered list of type preferences and find the first one that
+  // has the maximum count. This is our preferred type.
+  for (i8 i = 0; i < sizeof(aeCoercionOrdering)/sizeof(aeCoercionOrdering[0]); i++) {
+    i8 iIdx = aeCoercionOrdering[i].iIdVal();
+    if (paiCoercibleTargets[iIdx] == iMaxCount) {
+
+      xTargetType = aeCoercionOrdering[i];
+
+      // We will handle intervals independently.
+      if (xTargetType.eIVVal() != IV_NONE) {
+        break;
+      }
+
+      return xTargetType;
     }
   }
 
-  return eCommonTarget;
+  if (xTargetType.eIVVal() != IV_NONE) {
+    // We are coercing to an interval, but there are likely multiple intervals
+    // which are compatible. We will choose the one with the smallest number of
+    // fields. e.g. an HOUR TO MINUTE interval covers 2 fields, but a DAY TO SECOND
+    // interval covers 4 fields.
+
+    eIV eCandidateIvlType = xTargetType.eIVVal();
+    i8  nCandidateFields = iIV_numFields[eCandidateIvlType];
+
+    for (i8 i=0; i<iArrLen; i++) {
+      if (paiCoercibleTargets[i] == iMaxCount) {
+        eIV eIvlType = TypeId(i).eIVVal();
+        if (eIvlType != IV_NONE && iIV_numFields[eIvlType] < nCandidateFields) {
+          nCandidateFields = iIV_numFields[eIvlType];
+          eCandidateIvlType = eIvlType;
+        }
+      }
+    }
+
+    return TypeId::xIdOf(eCandidateIvlType);
+  }
+
+  TypeId xInvalidId;
+  return xInvalidId;
 }
 
 /*----------------------------------------------------------------------------*/

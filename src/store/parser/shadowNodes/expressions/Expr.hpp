@@ -151,12 +151,13 @@ namespace Parser
 
     // Increments the integer elements of an array if the given expression is
     // coercible to each eCT data type.
-    static void vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)[CT_ENUMS], PlanNode* pRootNode);
+    static void
+    vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets, i8 iArrLen, PlanNode* pRootNode);
 
     // Given an array of counts for each data types and a maximum count value,
     // choose the data type that should be coerced to, or CT_NONE if none of
     // them reached iMaxCount.
-    static eCT eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCount);
+    static TypeId xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMaxCount);
 
     // Returns true if an expression can be coerced to a given data type.
     // Currently supported implicit casts include:

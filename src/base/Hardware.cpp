@@ -360,7 +360,7 @@ i8 Hardware::iPhysicalMemory(void)
 /*----------------------------------------------------------------------------*/
 /* read nanoseconds from clock                                                */
 /*----------------------------------------------------------------------------*/
-i8 Hardware::iReadClock(void)
+u8 Hardware::uReadClock(void)
 {
   _static_
 
@@ -373,8 +373,8 @@ i8 Hardware::iReadClock(void)
   int iResult = clock_gettime(S_clockSource, &ts);
   UNUSED(iResult);
 
-  i8 iNanos = (ts.tv_sec * C_1B) + ts.tv_nsec;
-  return iNanos;
+  u8 uNanos = (ts.tv_sec * (u8)C_1B) + ts.tv_nsec;
+  return uNanos;
 }
 
 /*----------------------------------------------------------------------------*/
