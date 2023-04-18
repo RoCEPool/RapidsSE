@@ -116,12 +116,12 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
         vTrace("  down to %lld \n"_Stz, nBuff_recv_over_network);
       }
 
-      // c) how much produced by this join locus
+      // c) how much produced by this join
       vTrace("BROADCAST joining with %lld "_Stz, nBuff_joining_with);
       if (nBuff_joining_with > nBuff_recv_over_network) {
         nUnfiltBuff_produced_by_join =
             C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF
-              * ((i_Join - 1) ? (i_Join - 1) * C_JOIN_LONGER : 1.0);
+              * ((i_Join) ? (i_Join) * C_JOIN_LONGER : 1.0);
       }
       else {
         nUnfiltBuff_produced_by_join =
@@ -145,7 +145,6 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
             (dNodes - 1.0) / (dNodes);
         nBuff_recv_over_network = //
             nNodes * (dBuff_perNode * dRatio_toBeSent * nSend_toOtherNodes);
-
       }
 
       // b) send is reduced by filter
@@ -160,7 +159,7 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       if (nBuff_joining_with > nBuff_recv_over_network) {
         nUnfiltBuff_produced_by_join =
             C_JOIN_COEFF * (d8)nBuff_joining_with * C_EXPANSION_COEFF
-              * ((i_Join - 1) ? (i_Join - 1) * C_JOIN_LONGER : 1.0);
+              * ((i_Join) ? (i_Join ) * C_JOIN_LONGER : 1.0);
       }
       else {
         nUnfiltBuff_produced_by_join =
@@ -195,7 +194,7 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       if (nBuff_joining_with > nBuff_popped_by_unicast) {
         nUnfiltBuff_produced_by_join =
             C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF
-              * ((i_Join - 1) ? (i_Join - 1) * C_JOIN_LONGER : 1.0);
+              * ((i_Join) ? (i_Join) * C_JOIN_LONGER : 1.0);
 
       }
       else {

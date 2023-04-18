@@ -1,17 +1,19 @@
 /*============================================================================*/
-/* _jo_one -- run one query                                                   */
+/* _jo_one -- load and run query once                                         */
 /*============================================================================*/
 
-__TPCH_SCHEMA_LOAD_SF1
+// --initial _jo_one
 
-//tag default <tpch_dir> = "../tpch/sf_0001";
-//tag default <suffix>   = "csv";
-//__TPCH_SCHEMA
+//__TPCH_SCHEMA_LOAD_SF1
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+__TPCH_SCHEM
 
 
 // -- -- -- -- -- --
 _metrics_begin
-_jo2_C_L_O_P_PS_S_N_R
+_jo1_L_O
 _metrics_end
 
 /*============================================================================*/
