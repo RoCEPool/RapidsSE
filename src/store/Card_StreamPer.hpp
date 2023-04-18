@@ -25,9 +25,9 @@ namespace STORE
                    Card_TableList* p_tableList,
                    Card_StreamJoin* p_streamJoin);
 
-     i8 iCreateJoinSeq(Card_TableList*    p_tableList,
-                       Card_JoinPredList* p_joinPredList,
-                       PermGen*           pPermGen);
+     i8 iCreatePerSeq(Card_TableList*    p_tableList,
+                      Card_JoinPredList* p_joinPredList,
+                      PermGen*           pPermGen);
 
      i8 iOnePermutedJoin_v2(Card_TableList*    p_tableList,
                          Card_JoinPredList* p_joinPredList,

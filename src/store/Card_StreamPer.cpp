@@ -201,9 +201,9 @@ eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
 /*----------------------------------------------------------------------------*/
 /* create the join sequence for given stream permutation                      */
 /*----------------------------------------------------------------------------*/
-i8 Card_StreamPer::iCreateJoinSeq(Card_TableList*    p_tableList,
-                                  Card_JoinPredList* p_joinPredList,
-                                  PermGen*           pPermGen)
+i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
+                                 Card_JoinPredList* p_joinPredList,
+                                 PermGen*           pPermGen)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

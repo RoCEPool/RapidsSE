@@ -72,9 +72,9 @@ Card_StreamSet* Card_StreamSet::pComputeAllPermutations(Card_TableList* p_tableL
     p_streamPer->pSymbol()->Y_vSet(P_Permutation, i_Permutation);
 
     // create the permuted join sequence for the stream, testing if sequence is valid
-    i8 i_InvalidAtJoin = p_streamPer->iCreateJoinSeq(p_tableList,
-                                                     p_joinPredList,
-                                                     pPermGen);
+    i8 i_InvalidAtJoin = p_streamPer->iCreatePerSeq(p_tableList,
+                                                    p_joinPredList,
+                                                    pPermGen);
     p_streamPrmAll->vAppend(p_streamPer);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

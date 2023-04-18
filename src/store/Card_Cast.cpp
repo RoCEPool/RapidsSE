@@ -83,7 +83,8 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
     // + curr indexed column is curr table ptn
     //   the curr join-to column is an indexed column of the curr table ptn
     //   so the curr join-to column identifies target key partition
-    if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_prior, p_Y_tblCol_prior)) {
+    //if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_prior, p_Y_tblCol_prior)) {
+    if (Card_TablePtn::bColumnMatchesPtn(p_Y_streamPtn_running, p_Y_tblCol_prior)) {
       // + prev table column is prior table ptn
       //   likewise the prev data-from column is an indexed column of prev table ptn
       //   noting the cmpPred is ==, the source matches target, so we can unicast

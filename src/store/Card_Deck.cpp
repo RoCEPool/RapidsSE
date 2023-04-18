@@ -81,6 +81,12 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
         pCI->G_vMainResynch();
         pCI->vPrintBoard(__LINE__);
         vDebugPoint();
+
+        p_Y_streamPtn_running = p_Y_streamPtn_curr;
+      }
+      else {
+        Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
+        p_Y_streamPtn_running    = p_table_first->pSub_tablePtn()->pSymbol();
       }
 
       if (XK_UNICAST != eStageCast) {
@@ -189,6 +195,9 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
 
     case XK_UNICAST:
       // no change to next card; default is unicast
+
+      rp_Y_streamPtn_curr = p_Y_streamPtn_running;
+
       break;
 
     default:
