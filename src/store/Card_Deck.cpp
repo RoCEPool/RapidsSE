@@ -49,7 +49,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_OP*       p_OP_prev      = nullptr;
+  Card_OP*       p_OP_prev        = nullptr;
   Card_Project*  p_project_prior  = nullptr;
   Card_Cast*     p_cast_prior     = nullptr;
   Card_Combined* p_combined_prior = nullptr;
@@ -60,7 +60,6 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   Symbol* p_Y_streamPtn_running = nullptr;
   Symbol* p_Y_streamPtn_curr = nullptr;
 
-
   while (pCI->G_bEachMain()) {
 
     if (CK_INDEXJOIN    == pCI->G.e_MainCard ||
@@ -69,7 +68,11 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
         CK_KEYNOTEXISTS == pCI->G.e_MainCard ||
         CK_SCAN         == pCI->G.e_MainCard) {
 
-      if (p_OP_prev) {
+      if (! p_OP_prev) {
+        Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
+        p_Y_streamPtn_running     = p_table_first->pSub_tablePtn()->pSymbol();
+      }
+      else {
         eStageCast = pCI->G.pDeck->eAddStageCast_toPrev_cast(pCI,
                                                              p_Y_streamPtn_running,
                                                              p_project_prior,
@@ -83,29 +86,23 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
         p_Y_streamPtn_running = p_Y_streamPtn_curr;
       }
-      else {
-        Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
-        p_Y_streamPtn_running    = p_table_first->pSub_tablePtn()->pSymbol();
-      }
 
-      if (XK_UNICAST != eStageCast) {
-        p_OP_prev = pCI->G.p_OP;
-      }
+      p_OP_prev = pCI->G.p_OP;
       p_project_prior  = nullptr;
       p_combined_prior = nullptr;
-      p_cast_prior     = nullptr;
-    }
-    else if (CK_CAST == pCI->G.e_MainCard) {
-      p_cast_prior = pCI->G.p_next;
-    }
-    else if (CK_COMBINED == pCI->G.e_MainCard) {
-      p_combined_prior = pCI->G.p_combined;
       p_cast_prior     = nullptr;
     }
     else if (CK_PROJECT == pCI->G.e_MainCard) {
       p_project_prior  = pCI->G.p_project;
       p_combined_prior = nullptr;
       p_cast_prior     = nullptr;
+    }
+    else if (CK_COMBINED == pCI->G.e_MainCard) {
+      p_combined_prior = pCI->G.p_combined;
+      p_cast_prior     = nullptr;
+    }
+    else if (CK_CAST == pCI->G.e_MainCard) {
+      p_cast_prior = pCI->G.p_next;
     }
   }
 
