@@ -8,7 +8,7 @@
 
 tag default <tpch_dir> = "../tpch/sf_0001";
 tag default <suffix>   = "csv";
-__TPCH_SCHEM
+__TPCH_SCHEMA
 
 
 // -- -- -- -- -- --

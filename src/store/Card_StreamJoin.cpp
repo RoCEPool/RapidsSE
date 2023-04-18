@@ -59,8 +59,7 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
                                  i8 nUnfiltBuff_prev_join,
                                  i8 nFiltPred_prev,
                                  eXK eJoinCast,
-                                 i8 nBuff_joining_with
-                                  )
+                                 i8 nBuff_joining_with)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -73,17 +72,18 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
   i8 nBuff_popped_by_unicast = 0;
   i8 nUnfiltBuff_produced_by_join  = 0;
 
-  i8 nSend_toOtherNodes      = 0.0;
-  d8 dRatio_toBeSent         = 0.0;
+  i8 nOtherNodes      = 0.0;
+  d8 dRatio_sent         = 0.0;
 
   d8 dNodes = nNodes;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  d8 dBuff_perNode = nUnfiltBuff_prev_join / dNodes;
+  d8 dPrevBuff_perNode = nUnfiltBuff_prev_join / dNodes;
 
   switch (eJoinCast) {
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case XK_BROADCAST:
       // no unicast buffers
       nBuff_popped_by_unicast = 0;
@@ -93,19 +93,17 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       // special first case
       if (0 == i_Join && !nFiltPred_prev) {
         nUnfiltBuff_prev_join = nUnfiltBuff_prev_join / C_EXPANSION_COEFF;
-        dBuff_perNode = nUnfiltBuff_prev_join / dNodes;
+        dPrevBuff_perNode = nUnfiltBuff_prev_join / dNodes;
       }
 
       //
       if (1 == nNodes)
         nBuff_recv_over_network = 0;
       else {
-        nSend_toOtherNodes        =  // 1 2 3
-            nNodes - 1;
-        dRatio_toBeSent    =  // 1
-            1.0;
-        nBuff_recv_over_network =  //
-            nNodes * (dBuff_perNode * dRatio_toBeSent * nSend_toOtherNodes);
+        nOtherNodes = nNodes - 1; // 1 2 3
+        dRatio_sent = 1.0;        // 1
+        nBuff_recv_over_network =
+            nNodes * (dPrevBuff_perNode * dRatio_sent * nOtherNodes);
       }
 
       // b) send is reduced by filter
@@ -128,9 +126,9 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
             C_JOIN_COEFF * nBuff_recv_over_network * C_EXPANSION_COEFF;
       }
 
-
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case XK_HASHCAST:
       // no unicast buffers queued onto this locus
       nBuff_popped_by_unicast = 0;
@@ -139,12 +137,10 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       if (1 == nNodes)
         nBuff_recv_over_network = 0;
      else {
-        nSend_toOtherNodes        = // 1 2 3
-            nNodes - 1;
-        dRatio_toBeSent    = // 1/2 2/3 3/4
-            (dNodes - 1.0) / (dNodes);
-        nBuff_recv_over_network = //
-            nNodes * (dBuff_perNode * dRatio_toBeSent * nSend_toOtherNodes);
+        nOtherNodes = nNodes - 1; // 1 2 3
+        dRatio_sent = (dNodes - 1.0) / (dNodes); // 1/2 2/3 3/4
+        nBuff_recv_over_network =
+            nNodes * (dPrevBuff_perNode * dRatio_sent * nOtherNodes);
       }
 
       // b) send is reduced by filter
@@ -166,9 +162,9 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
             C_JOIN_COEFF * nBuff_recv_over_network * C_EXPANSION_COEFF;
       }
 
-
       break;
 
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case XK_UNICAST:
       // no buffers arriving to this locus because of network
       nBuff_recv_over_network = 0;
@@ -176,7 +172,7 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       // special first case
       if (1 == i_Join && !nFiltPred_prev) {
         nUnfiltBuff_prev_join = nUnfiltBuff_prev_join / C_EXPANSION_COEFF;
-        dBuff_perNode = nUnfiltBuff_prev_join / dNodes;
+        dPrevBuff_perNode = nUnfiltBuff_prev_join / dNodes;
       }
 
       // a) calculate buffers arriving to this locus because of a unicast
