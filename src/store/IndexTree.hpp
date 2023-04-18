@@ -47,7 +47,10 @@ namespace STORE
 
     static char* aAllotPayStr(IndexTree* pIndexTree, Stz* szStz);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
     static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2(IndexTree* aIndexTree, Key* aKey);
+
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode);
     static Ent* aInsertEntTop(IndexTree* aIndexTree, Ent* aEnt, Ent** aaEntBottom, i8 iTopCount, i8* piErrorCode);

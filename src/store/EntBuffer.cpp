@@ -415,6 +415,35 @@ Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
+{
+  _static_
+
+  EntBuffer* pEntBuffer = *ppEntBuffer;
+
+  aEnt = pEntBuffer->aNextEntry(aEnt,0);
+
+  if (aEnt)
+    return aEnt;
+
+  while( ! aEnt) {
+
+    // move to the next buffer
+    *ppEntBuffer = pEntBuffer->pNextEntBuffer();
+
+    if (*ppEntBuffer) {
+      return pMoveToNextEntry((*ppEntBuffer)->aSkipRoots(), ppEntBuffer);
+    }
+    else
+      break;
+  }
+
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
@@ -1206,33 +1235,6 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffe
       if (*ppEntBuffer) {
         return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
       }
-    }
-    else
-      break;
-  }
-  
-  return aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* move to next key entry                                                     */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
-{
-  EntBuffer* pEntBuffer = *ppEntBuffer;
-  
-  aEnt = pEntBuffer->aNextEntry(aEnt,0);
-  
-  if (aEnt)
-    return aEnt;
-  
-  while( ! aEnt) {
-    
-    // move to the next buffer
-    *ppEntBuffer = pEntBuffer->pNextEntBuffer();
-    
-    if (*ppEntBuffer) {
-      return pMoveToNextEntry((*ppEntBuffer)->aSkipRoots(), ppEntBuffer);
     }
     else
       break;
