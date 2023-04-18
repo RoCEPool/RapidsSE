@@ -2643,6 +2643,7 @@ public:
     antlr4::tree::TerminalNode *TRUNCATE();
     antlr4::tree::TerminalNode *TYPE();
     antlr4::tree::TerminalNode *TYPEOF();
+    antlr4::tree::TerminalNode *VALUE();
     antlr4::tree::TerminalNode *WEEK();
     antlr4::tree::TerminalNode *WEEKS();
     antlr4::tree::TerminalNode *WITH_NAMES();

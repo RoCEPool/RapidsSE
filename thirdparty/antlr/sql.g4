@@ -471,6 +471,7 @@ nonReservedWord   :
                   | SCHEMA | SECONDS | SKIPLIST | STAGE | STATS | STATISTICS
                   | STATISTICS |SUBSTR
                   | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
+                  | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
                   | XOR
                   | YEARS
@@ -627,7 +628,7 @@ UNION                 : U N I O N;
 UNIQUE                : U N I Q U E;
 UPDATE                : U P D A T E;
 USING                 : U S I N G;
-VALUE                 : V A L U E;
+VALUE                 : V A L U E;  // Note: SQL says this should be a reserved word, but TPC-H Q11 uses it as a column alias!
 VALUES                : V A L U E S ;
 VARBINARY             : V A R B I N A R Y;
 VARCHAR               : V A R C H A R;
