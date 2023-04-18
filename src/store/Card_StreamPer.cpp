@@ -153,7 +153,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 }
 
 /*----------------------------------------------------------------------------*/
-/* compute the cast from prev join to curr join locus                         */
+/* compute the cast from prev join to curr/given stream join                  */
 /*----------------------------------------------------------------------------*/
 eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
                               Card_TableList*  p_tableList,
@@ -165,14 +165,14 @@ eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
   Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
   Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 
-  char cTblSyn_join  = p_streamJoin->cValue();
-  char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_join);
+  char cTblSyn_curr  = p_streamJoin->cValue();
+  char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_curr);
 
   Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
-  Card_TablePtn* p_tablePtn_join  = p_tableList->pGetTablePtn(cTblSyn_join);
+  Card_TablePtn* p_tablePtn_curr  = p_tableList->pGetTablePtn(cTblSyn_curr);
 
   Symbol* p_Y_tablePtn_prior = p_tablePtn_prior->pSymbol();
-  Symbol* p_Y_tablePtn_curr  = p_tablePtn_join->pSymbol();
+  Symbol* p_Y_tablePtn_curr  = p_tablePtn_curr->pSymbol();
 
   Symbol* p_Y_term_0_cmp = p_term_0_cmp->pSymbol();
   Symbol* p_Y_term_1_cmp = p_term_1_cmp->pSymbol();
@@ -190,11 +190,9 @@ eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
   }
 
   eXK eStageCast = Card_Cast::eStageCast(p_Y_streamPtn_running,
-                                         p_Y_tablePtn_prior,
                                          p_Y_tblCol_prior,
                                          p_Y_tablePtn_curr,
                                          p_Y_idxCol_curr);
-
   return eStageCast;
 }
 
