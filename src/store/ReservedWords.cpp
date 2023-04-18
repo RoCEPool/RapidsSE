@@ -298,7 +298,7 @@ static std::unordered_set<std::string> oReservedWordSet = {
     "UPPER",
     "USER",
     "USING",
-    "VALUE",
+//    "VALUE",  // Note: SQL says this is a reserved word, but it is used in TPC-H Q11 as a column alias!
     "VALUES",
     "VAR_POP",
     "VAR_SAMP",
