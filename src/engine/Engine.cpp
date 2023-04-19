@@ -58,6 +58,9 @@
 
 #include "PromptHelper.hpp"
 
+#include "Test.hpp"
+
+
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
 FnCatalog    gxFnCatalog;
@@ -322,6 +325,23 @@ void Engine::vRunCommandLine(void)
         
       case BO_START_PROMPT:
         vStartSystem();
+
+
+
+
+        if (C_UNKNOWN != gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+          switch (gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+            case 0: vCmdLineTest0(); break;
+            case 1: vCmdLineTest1(); break;
+            case 2: vCmdLineTest2(); break;
+
+          }
+        }
+
+
+
         //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
 #ifdef WITH_APPLE

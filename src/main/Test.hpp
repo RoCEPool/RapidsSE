@@ -84,6 +84,10 @@ void vTest63(void);
 void vTest64(void);
 
 
+void vCmdLineTest0(void);
+void vCmdLineTest1(void);
+void vCmdLineTest2(void);
+
 #if 0
 
 

@@ -181,9 +181,11 @@ Stz* MY::szSchemaNm(void)
 Stz* MY::szTableNm(void)
 {
   _static_
-  
+
+  if (! MY::pDicStack())
+    return ""_Stz;
+
   Dic* pTableDic = MY::pDicStack()->pTop();
-  
   if (! pTableDic)
     return ""_Stz;
   

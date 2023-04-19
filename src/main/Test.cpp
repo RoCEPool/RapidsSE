@@ -2327,6 +2327,72 @@ void vTest64(void)
 {
 }
 
+
+
+
+#include "Index.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test0                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest0(void)
+{
+  printf("vCmdLineTest0\n");
+
+  IndexDef* pIndexDef = new IndexDef;
+  pIndexDef->vAddColumn("Int"_Stz,CT_INTEGER);
+
+  Index* pIndex = new Index("Flat"_Stz);
+  pIndex->vIndexDef(pIndexDef);
+
+  IndexTree* pIndexTree = new IndexTree(pIndex,pIndexDef,0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 iErrorCode;
+
+  Ent xEnt(CN_ENT,sizeof(Ent));
+  xEnt.vKind(KE_INT);
+
+  for (i8 i = 0; i < 100000; i++) {
+
+    xEnt.vIntElm0(i);
+    RASSERT(KE_INT == xEnt.eKind());
+    RASSERT(xEnt.iIntElm0() == i);
+
+    IndexTree::aInsertEnt(pIndexTree,&xEnt,&iErrorCode);
+
+  }
+
+
+  pIndexTree->vDump(false);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  delete pIndexTree;
+  delete pIndex;
+  //delete pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test1                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest1(void)
+{
+  printf("vCmdLineTest1\n");
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test2                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest2(void)
+{
+  printf("vCmdLineTest2\n");
+
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
