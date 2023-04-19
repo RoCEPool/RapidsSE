@@ -20,6 +20,22 @@
 
 #include "EntWrk.hpp"
 
+#define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
+
+#define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
+
+#define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
+
+#define GET_ENTRY(tTicket)  ( &aItemArray[tTicket] )
+
+#define NEXT_TICKET(aEnt_int,i_Lvl) ( aEnt_int->m_taNextEntry[i_Lvl] )
+
+#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
+
+//#define SCAN_IS_AT_PRIOR_POS_DESC(iKeyElm,iNextElm) ( iKeyElm >= iNextElm )
+
+#define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = (Ent*)aEnt )
+
 namespace STORE
 {
   static const bool C_NOT_FINAL    = false;
