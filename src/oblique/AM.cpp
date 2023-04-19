@@ -124,7 +124,6 @@
 #include "HeadsUp.hpp"
 
 #include "LglPtn.hpp"
-#include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
 
@@ -177,32 +176,6 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
   SysMetrics* pSysMetricsChain = gpAttachMap->pSysMetricsChain();
   
   return pSysMetricsChain;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   BKTMAP                                   */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*----------------------------------------------------------------------------*/
-/* convert bucket id to ptn id                                                */
-/*----------------------------------------------------------------------------*/
-LglPtn AM::BKTMAP::tLglPtnOf(KeyBkt tKeyBkt)
-{
-  _static_
-  
-  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tLglPtnOf(tKeyBkt);
-
-  return tLglPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bucket map                                                             */
-/*----------------------------------------------------------------------------*/
-BucketMap* AM::BKTMAP::pBucketMap(void)
-{
-  _static_
-  
-  return gpAttachMap->m_pBucketMap;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3718,10 +3691,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
      break;
     }
 
-    case CN_BUCKETMAP: {
-      break;
-    }
-
     case CN_PTNSTREAM: {
       break;
     }
@@ -4263,7 +4232,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;

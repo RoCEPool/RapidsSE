@@ -230,8 +230,6 @@ namespace STORE
     /*------------------------------------------------------------------------*/
   
     #include "StepsSet.hpp"
-
-    void vBktMapPipeOut(void);
   };
 }
 

@@ -19,7 +19,6 @@
 
 #include "Resources.hpp" //?
 #include "TagConstants.h"
-#include "BucketMap.hpp"
 
 #include "AM.hpp"
 
@@ -87,7 +86,6 @@ AttachMap::AttachMap(bool bNoFree)
 #ifdef WITH_HASHMAP
   m_pHashMap        = new HashMap();
 #endif
-  m_pBucketMap      = nullptr;
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;

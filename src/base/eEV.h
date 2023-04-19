@@ -7,7 +7,6 @@ enum eEV // events
 {
   /*  0 */ EV_NONE=0,
 
-  /*    */ EV_D_BUCKETMAP_dyn,
   /*    */ EV_D_CRWBUFFER,
   /*    */ EV_D_CSVBUFFER,
   /*    */ EV_D_ENTBUFFER,
@@ -90,7 +89,6 @@ enum eEV // events
 static Stz* aEV[]
 {
   /*  0 */ "NONE"_Stz,
-  /*    */ "EV_D_BUCKETMAP_dyn"_Stz,
   /*    */ "EV_D_CRWBUFFER"_Stz,
   /*    */ "EV_D_CSVBUFFER"_Stz,
   /*    */ "EV_D_ENTBUFFER"_Stz,

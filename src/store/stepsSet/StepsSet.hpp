@@ -2055,7 +2055,6 @@ void vDdlLockAssertNone(void);
   void vTableDeleteIndex(void);
   void vTableDump(void);
   void vTableDumpBkt(void);
-  void vTableDumpBktMap(void);
   void vTableDumpMeta(void);
   void vTableFindColumn(void);
   void vTableGet(void);

@@ -70,7 +70,6 @@
 #include "LglPtnMap.hpp"
 
 
-#include "BucketMap.hpp"
 #include "BufferMap.hpp"
 
 #include "ChildExit.hpp"
@@ -291,7 +290,6 @@ SizeHeap gxaSizeHeap[]
   { CN_BIRTH,                    sizeof(Birth),              HT_INVALID   ,FILL },
   { CN_BOARD,                    sizeof(Board),              HT_T_SMALL   ,FILL },
   { CN_BOLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
-  { CN_BUCKETMAP,                sizeof(BucketMap),          HT_T_SMALL   ,FILL },
   { CN_BUFFERMAP,                sizeof(BufferMap),          HT_INVALID   ,FILL },
   { CN_BUFFERPOOL,               sizeof(BufferPool),         HT_INVALID   ,FILL },
   { CN_BYTERATE,                 sizeof(ByteRate),           HT_T_TINY    ,FILL },
