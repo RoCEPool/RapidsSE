@@ -49,7 +49,8 @@ namespace STORE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
-    static Ent* aFindEntry_CS2(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v1(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v2(IndexTree* aIndexTree, Key* aKey);
 
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode);
