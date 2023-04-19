@@ -39,7 +39,6 @@ BucketGet::BucketGet(s32 sTblNm, i8 iBucket)
   m_iBucketNo = iBucket;
 
   m_pTablePtn = nullptr;
-  m_pBucket  = nullptr;
 
   _checkInitialised_(CN_BUCKETGET);
 
@@ -54,26 +53,6 @@ BucketGet::BucketGet(TablePtn* pTablePtn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETGET, _FOOTER_);
 
   m_pTablePtn = pTablePtn;
-
-  m_sTableName = ""_Stz;
-  m_iBucketNo = -1;
-  m_pBucket  = nullptr;
-
-  _checkInitialised_(CN_BUCKETGET);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETGET,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-BucketGet::BucketGet(TablePtn* pTablePtn, Bucket* pBucket)
-: Operand(CN_BUCKETGET) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETGET, _FOOTER_);
-
-  m_pTablePtn = pTablePtn;
-
-  m_pBucket = pBucket;
 
   m_sTableName = ""_Stz;
   m_iBucketNo = -1;

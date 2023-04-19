@@ -77,6 +77,8 @@ public:
   void vAM_MonDemonJobIdStore(void);
   void vAM_NodeMonDemonJobIdStore(void);
   void vAM_NodeMonDemonJobIdFetch(void);
+  void vAM_PageInDemonJobIdFetch(void);
+  void vAM_PageInDemonJobIdStore(void);
   void vAM_PageOutDemonJobIdFetch(void);
   void vAM_PageOutDemonJobIdStore(void);
   void vAM_ReaperDemonJobIdFetch(void);
@@ -1365,11 +1367,10 @@ void vDdlLockAssertNone(void);
   void vPagingMetricsUpdate(void);
 
   // page in
-  void vPageInPoolBuffer(void);
-  void vPageInTestPrint(void);
+  void vPageInPopRequest(void);
 
   // page out
-  void vPageOutPoolBuffer(void);
+  void vPageOutCheckLowMemory(void);
   void vPageOutTestPrint(void);
 
   // path identifier
@@ -2124,6 +2125,7 @@ void vDdlLockAssertNone(void);
   // table partition
   void vTablePtnAttemptGrabRead(void);
   void vTablePtnAttemptGrabWrite(void);
+  void vTablePtnCleanup(void);
   void vTablePtnDropRead(void);
   void vTablePtnDropWrite(void);
 
@@ -2132,6 +2134,7 @@ void vDdlLockAssertNone(void);
   void vTablePtnGet(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnRoot(void);
+  void vTablePtnRootBufferId(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
   void vTablePtnTruncateIndex(void);

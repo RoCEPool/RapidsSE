@@ -91,6 +91,8 @@
 
 //#define WITH_PAGE_FILE EndDefine
 
+//#define WITH_PAGING EndDefine
+
 #define WITH_API_FORK EndDefine       // RAY
 
 
