@@ -1441,7 +1441,142 @@ Ent* IndexTree::aFindEntry_CS2_v15(IndexTree* pIndexTree, Key* aKey)
     return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find an INT entry in the indexTree                                     CS2 */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntry_CS2_v16(IndexTree* pIndexTree, Key* aKey)
+{
 
+  //pIndexTree->vDump(false);
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // find H0 which would contain key
+
+  // root buffer ?
+  if (! pIndexTree->m_pRootEntBuffer)
+    return nullptr;
+
+  ///////////////////////////////////////////////////////////////////////////
+  /// FLATTENING pHeapBuffer->aFirstChunk()
+
+  // position at H0 buffer
+
+  Ent* aEnt;
+  EntBuffer* pEntBuffer;
+
+  pEntBuffer = pIndexTree->m_pRootEntBuffer;
+
+  while (true) {
+
+    if (0 == pEntBuffer->m_iBufferHeight)
+      break;
+
+    aEnt = pEntBuffer->aFindEntryBefore_int(aKey);
+    ASSERT(aEnt);
+
+    aEnt = pEntBuffer->pFindEntryPrevTo_int(aEnt,aKey);
+    ASSERT(aEnt);
+
+    /*-----------------------------------------------------------------------*/
+
+    i8 i_PoolBuffer = aEnt->m_xRef.m_uBuffer;
+
+    HeapBuffer* pHeapBuffer = _pHeapBuffer(FileMap::pToPoolBuffer(i_PoolBuffer));
+
+//    pEntBuffer = _pEntBuffer(pHeapBuffer->aFirstChunk());
+
+    pEntBuffer = (EntBuffer *)aAdd<FreeChunk*>(pHeapBuffer,sizeof(HeapBuffer));
+
+    ASSERT(pEntBuffer);
+    ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // position on entry prior to given key in the found H0 leaf buffer
+
+
+  if (0 == pEntBuffer->m_nItems) {
+    aEnt = & pEntBuffer->m_xSkipRoots;
+    goto L_NEXT_L0_ENTRY;
+  }
+
+  // declare these separately because of goto
+  Ent_int* aItemArray;
+  Ent* aSkipRoots;
+  i8 iGivenIntElm0;
+  Ent_int* aNextEnt_int;
+  i8 iNextEnt_IntElm0;
+  Ent_int* aScanEnt;
+
+  aSkipRoots = & pEntBuffer->m_xSkipRoots;
+  aItemArray = (Ent_int*)pEntBuffer->m_xWsp.m_yaByteArea;
+  iGivenIntElm0 = ELM0_OF_KEY(aKey);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  aScanEnt = (Ent_int*)aSkipRoots;
+  for (i4 i_Level = 2; i_Level >= 0; i_Level--) {
+    for (tET tNextEnt = NEXT_TICKET(aScanEnt,i_Level);
+         ! END_TICKET(tNextEnt);
+         tNextEnt = NEXT_TICKET(aScanEnt,i_Level)) {
+
+      aNextEnt_int = GET_ENTRY(tNextEnt);
+      iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
+
+      //RASSERT( ! pIndexDef()->bHasDescending() );
+      if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
+        break;
+
+      aScanEnt = aNextEnt_int;
+    }
+  }
+  aEnt = (Ent*)aScanEnt;
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  L_NEXT_L0_ENTRY:
+
+  // move to next L0 entry (across buffers if necessary)
+
+  tET tNextEntry = aEnt->m_taNextEntry[0];
+  if (! END_TICKET(tNextEntry)) {
+    // + more entries in buffer
+
+    i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+    aEnt = (Ent *) ((char *) pEntBuffer + 624 + iNextEntryOffset);
+  }
+  else {
+    // - no more entries in buffer
+
+    // move to the next buffer
+    if (! (pEntBuffer = pEntBuffer->pNextEntBuffer()) )
+      return nullptr;
+
+    // move to first entry in that buffer
+
+    tNextEntry = pEntBuffer->m_xSkipRoots.m_taNextEntry[0];
+    if (END_TICKET(tNextEntry))
+      return nullptr;
+
+    i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+    aEnt = (Ent *) ((char *) pEntBuffer + 624 + iNextEntryOffset);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  Key* aEntKey = &aEnt->m_xKey;
+  ASSERT(KE_INT == aEnt->eKind());
+
+  i8 iEntVal = *(i8 *) aEntKey;
+  i8 iWrkVal = *(i8 *) aKey;
+
+  if (iEntVal == iWrkVal)
+    return aEnt;
+  else
+    return nullptr;
+}
 
 /*============================================================================*/
 /* end                                                                        */
