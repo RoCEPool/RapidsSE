@@ -24,12 +24,14 @@ select a+interval '1' month,count(*) from interval6 group by a+interval '1' mont
 rows:
 (date '2000-02-29',2)
 (date '2023-02-28',1)
+
 /*
 select a+interval '1' month,count(*) from interval6 group by a+interval '1' month having extract(month from a+interval '1' month)=2 order by a+interval '1' month desc;
 ordered rows:
 (date '2023-02-28',1)
 (date '2000-02-29',2)
 */
+
 select m.*,case when a+interval '1' month>date '2022-12-31' then 1 else 0 end flag from interval6 m;
 rows:
 (date '2023-01-31',timestamp '2000-02-28 23:00:00',time '00:00:00',1)

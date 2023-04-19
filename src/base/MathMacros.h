@@ -1680,23 +1680,25 @@
                                                                            \
       i8 iSecs = iArg2/_C_1M;                                              \
       i8 iMicroSecs = iArg2%_C_1M + xTsp1.m_uMicro;                        \
-      if (iArg2 < 0) {                                                      \
-        if (iMicroSecs != 0) {                                             \
-           iSecs = iSecs - 1;                                               \
-          iMicroSecs = _C_1M + iMicroSecs;                                 \
+                                                                           \
+      if (iArg2 < 0) {                                                     \
+        if (iMicroSecs < 0) {                                              \
+           iSecs = iSecs - 1;                                              \
+           iMicroSecs = _C_1M + iMicroSecs;                                \
         }                                                                  \
       }                                                                    \
+                                                                           \
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
-      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
                                                                            \
       xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
-      xTsp2.m_uYearDelta = xDateTime.tm_year;                                \
-      xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                             \
-      xTsp2.m_uDay       = xDateTime.tm_mday;                                \
-      xTsp2.m_uHour      = xDateTime.tm_hour;                                \
-      xTsp2.m_uMinute    = xDateTime.tm_min;                                 \
-      xTsp2.m_uSecond    = xDateTime.tm_sec;                                 \
+      xTsp2.m_uYearDelta = xDateTime.tm_year;                              \
+      xTsp2.m_uMonth     = xDateTime.tm_mon + 1;                           \
+      xTsp2.m_uDay       = xDateTime.tm_mday;                              \
+      xTsp2.m_uHour      = xDateTime.tm_hour;                              \
+      xTsp2.m_uMinute    = xDateTime.tm_min;                               \
+      xTsp2.m_uSecond    = xDateTime.tm_sec;                               \
       xTsp2.m_uMicro     = iMicroSecs;                                     \
                                                                            \
       *paW++ = xTsp2.m_iAsI8;                                              \
@@ -1730,25 +1732,26 @@
       xDateTime.tm_isdst  = 0;                                             \
                                                                            \
       i8 iSecs = iArg1/_C_1M;                                              \
-      i8 iMicroSecs = iArg1%_C_1M + xTsp2.m_uMicro;                        \
-      if (iArg1 < 0) {                                                      \
-        if (iMicroSecs != 0) {                                             \
-           iSecs = iSecs - 1;                                               \
+      i8 iMicroSecs = iArg1%_C_1M + xTsp1.m_uMicro;                        \
+                                                                           \
+      if (iArg1 < 0) {                                                     \
+        if (iMicroSecs < 0) {                                              \
+           iSecs = iSecs - 1;                                              \
           iMicroSecs = _C_1M + iMicroSecs;                                 \
         }                                                                  \
       }                                                                    \
-      xDateTime.tm_sec  = xTsp2.m_uSecond + iSecs;                         \
                                                                            \
-      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                   \
+      xDateTime.tm_sec  = xTsp2.m_uSecond + iSecs;                         \
+      time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
                                                                            \
       xTsp1.m_iAsI8 = 0;                                                   \
                                                                            \
-      xTsp1.m_uYearDelta = xDateTime.tm_year;                                \
-      xTsp1.m_uMonth     = xDateTime.tm_mon + 1;                             \
-      xTsp1.m_uDay       = xDateTime.tm_mday;                                \
-      xTsp1.m_uHour      = xDateTime.tm_hour;                                \
-      xTsp1.m_uMinute    = xDateTime.tm_min;                                 \
-      xTsp1.m_uSecond    = xDateTime.tm_sec;                                 \
+      xTsp1.m_uYearDelta = xDateTime.tm_year;                              \
+      xTsp1.m_uMonth     = xDateTime.tm_mon + 1;                           \
+      xTsp1.m_uDay       = xDateTime.tm_mday;                              \
+      xTsp1.m_uHour      = xDateTime.tm_hour;                              \
+      xTsp1.m_uMinute    = xDateTime.tm_min;                               \
+      xTsp1.m_uSecond    = xDateTime.tm_sec;                               \
       xTsp1.m_uMicro     = iMicroSecs;                                     \
                                                                            \
       *paW++ = xTsp1.m_iAsI8;                                              \
@@ -1883,13 +1886,16 @@
       xDateTime.tm_isdst  = 0;                                             \
                                                                            \
       i8 iSecs = iArg2/_C_1M;                                              \
-      i8 iMicroSecs = iArg2%_C_1M + xTsp1.m_uMicro;                        \
+      i8 iMicroSecs = iArg2%_C_1M + xTsp1.m_uMicro;                  \
+                  \
       if (iArg2 < 0) {                                                     \
-        if (iMicroSecs != 0) {                                             \
+                                                                           \
+        if (iMicroSecs < 0) {                                             \
            iSecs = iSecs - 1;                                              \
-          iMicroSecs = _C_1M + iMicroSecs;                                 \
+           iMicroSecs = _C_1M + iMicroSecs;                                 \
         }                                                                  \
       }                                                                    \
+                                                                           \
       xDateTime.tm_sec  = xTsp1.m_uSecond + iSecs;                         \
       time_t iSecondsSincePosixEpoch = timegm(&xDateTime);                 \
                                                                            \
