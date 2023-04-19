@@ -2331,6 +2331,7 @@ void vTest64(void)
 
 
 #include "Index.hpp"
+#include "SP_Ent.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* cmd line test0                                                             */
@@ -2354,19 +2355,26 @@ void vCmdLineTest0(void)
   Ent xEnt(CN_ENT,sizeof(Ent));
   xEnt.vKind(KE_INT);
 
-  for (i8 i = 0; i < 100000; i++) {
+  for (i8 i = 0; i < 1000000; i++) {
 
     xEnt.vIntElm0(i);
     RASSERT(KE_INT == xEnt.eKind());
     RASSERT(xEnt.iIntElm0() == i);
 
     IndexTree::aInsertEnt(pIndexTree,&xEnt,&iErrorCode);
-
   }
 
 
-  pIndexTree->vDump(false);
+  //pIndexTree->vDump(false);
 
+  SP_Ent sp_ent;
+
+  for (i8 i = 3; i < 1000000; i = i*3) {
+    xEnt.vIntElm0(i);
+    Ent *pEnt = IndexTree::aFindEntry_CS2(pIndexTree, xEnt.aKey());
+    if (pEnt)
+      vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
