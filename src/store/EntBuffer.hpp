@@ -24,7 +24,7 @@
 
 #define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
 
-#define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
+#define END_TICKET(tTicket) ( C_ENT_END_TICKET == tTicket )
 
 #define GET_ENTRY(tTicket)  ( &aItemArray[tTicket] )
 
