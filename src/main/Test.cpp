@@ -2371,7 +2371,7 @@ void vCmdLineTest0(void)
 
   for (i8 i = 3; i < 1000000; i = i*3) {
     xEnt.vIntElm0(i);
-    Ent *pEnt = IndexTree::aFindEntry_CS2_v8(pIndexTree, xEnt.aKey());
+    Ent *pEnt = IndexTree::aFindEntry_CS2_v9(pIndexTree, xEnt.aKey());
     if (pEnt)
       vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
   }
