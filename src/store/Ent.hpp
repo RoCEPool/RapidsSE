@@ -18,7 +18,8 @@ namespace STORE
   class Ent
   {
   friend class EntBuffer;
-  
+  friend class IndexTree;
+
   private:
 
     #ifdef __ENT_HEADER
