@@ -326,29 +326,70 @@ Ent* IndexTree::aFindEntry_CS2_v5(IndexTree* pIndexTree, Key* aKey)
 
   ///////////////////////////////////////////////////////////////////////////
 
+  // position on entry prior to given key
+
   EntBuffer *pEntBuffer = nullptr;
   Ent *aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
   if (!aEnt)
     return nullptr;
 
   ///////////////////////////////////////////////////////////////////////////
-  /// FLATTEN EntBuffer::aNextEntry()
 
   // move to next L0 entry (across buffers if necessary)
 
-//  if (! (aEnt = pEntBuffer->aNextEntry(aEnt,0)) ) {
-//    // - no more entries in buffer
-//
-//    // move to the next buffer
-//    if (! (pEntBuffer = pEntBuffer->pNextEntBuffer()) )
-//      return nullptr;
-//
-//    // move to first entry in that buffer
-//    if (! (aEnt = pEntBuffer->aNextEntry(pEntBuffer->aSkipRoots(),0)) )
-//      return nullptr;
-//  }
+  tET tNextEntry = aEnt->m_taNextEntry[0];
+  if (C_ENT_END_TICKET != tNextEntry) {
+    // + more entries in buffer
 
-  /*-----------------------------------------------------------------------*/
+    i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+    aEnt = (Ent *) ((char *) pEntBuffer + 624 + iNextEntryOffset);
+  }
+  else {
+    // - no more entries in buffer
+
+    // move to the next buffer
+    if (! (pEntBuffer = pEntBuffer->pNextEntBuffer()) )
+      return nullptr;
+
+    // move to first entry in that buffer
+    if (! (aEnt = pEntBuffer->aNextEntry(pEntBuffer->aSkipRoots(),0)) )
+      return nullptr;
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  /// FLATTEN Ent::aKey()
+
+//  Key* aEntKey = aEnt->aKey();
+  Key* aEntKey = &aEnt->m_xKey;
+  ASSERT(KE_INT == aEnt->eKind());
+
+  i8 iEntVal = *(i8 *) aEntKey;
+  i8 iWrkVal = *(i8 *) aKey;
+
+  if (iEntVal == iWrkVal)
+    return aEnt;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an INT entry in the indexTree                                     CS2 */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntry_CS2_v6(IndexTree* pIndexTree, Key* aKey)
+{
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // position on entry prior to given key
+
+  EntBuffer *pEntBuffer = nullptr;
+  Ent *aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
+  if (!aEnt)
+    return nullptr;
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // move to next L0 entry (across buffers if necessary)
 
   tET tNextEntry = aEnt->m_taNextEntry[0];
   if (C_ENT_END_TICKET != tNextEntry) {
@@ -371,7 +412,7 @@ Ent* IndexTree::aFindEntry_CS2_v5(IndexTree* pIndexTree, Key* aKey)
 
   ///////////////////////////////////////////////////////////////////////////
 
-  Key* aEntKey = aEnt->aKey();
+  Key* aEntKey = &aEnt->m_xKey;
   ASSERT(KE_INT == aEnt->eKind());
 
   i8 iEntVal = *(i8 *) aEntKey;
