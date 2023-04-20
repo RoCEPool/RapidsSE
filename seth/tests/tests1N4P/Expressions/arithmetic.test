@@ -114,6 +114,22 @@ rows:
 //  Interval + Date
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+select date '2023-02-13' + interval -'1' year from nation where n_nationkey = 2;
+rows:
+ (DATE '2022-02-13')
+
+select date '2023-02-13' + interval -'1-2' year to month from nation where n_nationkey = 2;
+rows:
+  (DATE '2021-12-13')
+
+select date '2023-02-13' + interval '-1' year from nation where n_nationkey = 2;
+rows:
+ (DATE '2022-02-13')
+
+select date '2023-02-13' + interval '-1-2' year to month from nation where n_nationkey = 2;
+rows:
+  (DATE '2021-12-13')
+
 // Interval YM + date
 SELECT INTERVAL '1-2' YEAR TO MONTH + DATE '2000-02-28' FROM nation where n_nationkey = 2;
 rows:
@@ -288,6 +304,10 @@ SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM
 rows:
   (TIMESTAMP '2000-02-29 06:34:00.500000')
 
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+  (TIMESTAMP '2000-02-29 06:34:00.500000')
+
 SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4.4' DAY TO SECOND FROM nation where n_nationkey = 2;
 rows: 
   (TIMESTAMP '2000-02-27 02:27:51.600000')
@@ -377,16 +397,21 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Interval (DAY)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//ALKA: TODO
-/*
 SELECT DATE '2000-03-31' - INTERVAL '3' DAY FROM nation where n_nationkey = 2;
 rows:
- (DATE '2000-03-28')
+ (TIMESTAMP '2000-03-28 00:00:00')
 
 SELECT DATE '2000-02-28' - INTERVAL '3' DAY FROM nation where n_nationkey = 2;
 rows:
- (DATE '2000-02-25')
-*/
+ (TIMESTAMP '2000-02-25 00:00:00')
+
+select DATE '2023-01-01' - INTERVAL '1' MONTH from  nation where n_nationkey = 2;
+rows:
+  (DATE '2022-12-01')
+
+select date '2023-04-13' - interval '1-4' YEAR TO MONTH from nation where n_nationkey = 2;
+rows:
+  (DATE '2021-12-13')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Interval (YEAR MONTH)
@@ -410,6 +435,10 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval * Integer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3  FROM nation where n_nationkey = 2;
+rows:
+ (INTERVAL -'15:20.367036' MINUTE TO SECOND)
 
 // Interval multiplication /1 (integer)
 SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM nation where n_nationkey = 2;

@@ -19,8 +19,9 @@ unordered rows:
 select date '2023-02-13' + interval '0-5' year to month from interval1;
 unordered rows: 
   ( DATE '2023-07-13' )
+
+//TODO: (CHINA) DATE OUT OF RANGE
 select date '2023-02-13' + interval '134-5' year to month from interval1;
-//ALKA
 //unordered rows:
   //( DATE '2157-07-13' )
 failure contains: 'EC_DATE_OUT_OF_RANGE'

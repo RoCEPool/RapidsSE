@@ -1654,11 +1654,9 @@
 
 #define _ADJUST_SECS_MICROS_                                           \
 {                                                                      \
-  if (iArg2 < 0) {                                                     \
-    if (iMicroSecs < 0) {                                              \
-       iSecs = iSecs - 1;                                              \
-       iMicroSecs = _C_1M + iMicroSecs;                                \
-    }                                                                  \
+  if (iMicroSecs < 0) {                                                \
+     iSecs = iSecs - 1;                                                \
+     iMicroSecs = _C_1M + iMicroSecs;                                  \
   }                                                                    \
   if (iMicroSecs > _C_1M) {                                            \
       iMicroSecs -= _C_1M;                                             \
@@ -1741,7 +1739,7 @@
       xDateTime.tm_isdst  = 0;                                             \
                                                                            \
       i8 iSecs = iArg1/_C_1M;                                              \
-      i8 iMicroSecs = iArg1%_C_1M + xTsp1.m_uMicro;                        \
+      i8 iMicroSecs = iArg1%_C_1M + xTsp2.m_uMicro;                        \
                                                                            \
       _ADJUST_SECS_MICROS_                                                 \
                                                                            \
