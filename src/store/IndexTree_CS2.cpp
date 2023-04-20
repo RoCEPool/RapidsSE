@@ -1595,7 +1595,7 @@ Ent* IndexTree::aFindEntry_CS2_v17(IndexTree* pIndexTree, Key* aKey)
     return nullptr;
 
   ///////////////////////////////////////////////////////////////////////////
-  /// FLATTEN FileMap::pToPoolBuffer()
+  /// TIDY UP casting
 
   // position at H0 buffer
 
@@ -1612,19 +1612,9 @@ Ent* IndexTree::aFindEntry_CS2_v17(IndexTree* pIndexTree, Key* aKey)
     aEnt = pEntBuffer->pFindEntryPrevTo_int(aEnt,aKey);
     ASSERT(aEnt);
 
-    i8 i_PoolBuffer = aEnt->m_xRef.m_uBuffer;
-
-    /*-----------------------------------------------------------------------*/
-
-    //HeapBuffer* pHeapBuffer = _pHeapBuffer(FileMap::pToPoolBuffer(i_PoolBuffer));
-
-    i8 iOffset = C_SIZE_POOL_BUFFER * i_PoolBuffer;
-
-    HeapBuffer* pHeapBuffer = static_cast<HeapBuffer*>(MemLib::aAddBytes(gpBufferPool->m_pBase,iOffset));
-
-    /*-----------------------------------------------------------------------*/
-
-    pEntBuffer = (EntBuffer *)aAdd<FreeChunk*>(pHeapBuffer,sizeof(HeapBuffer));
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt->m_xRef.m_uBuffer;
+    HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
+    pEntBuffer = aAdd<EntBuffer*>(pHeapBuffer,sizeof(HeapBuffer));
 
     ASSERT(pEntBuffer);
     ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
