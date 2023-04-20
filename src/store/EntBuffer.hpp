@@ -36,6 +36,31 @@
 
 #define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = (Ent*)aEnt )
 
+#define NEXT_ENTRY(aNext,aCurrent,i_Level,pEntBuffer) \
+{ \
+  tET tNextEntry = aCurrent->m_taNextEntry[i_Level]; \
+  if (C_ENT_END_TICKET == tNextEntry) { \
+    aNext = nullptr; \
+  } \
+  else { \
+    i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA; \
+    aNext = (Ent*) ((char*)pEntBuffer + 624 + iNextEntryOffset); \
+  } \
+}
+
+#define NEXT_BUFFER(aNextBuffer,pEntBuffer) \
+{ \
+  if (C_UNKNOWN == pEntBuffer->m_tNextBuffer.m_iBufferNo) { \
+    aNextBuffer = nullptr; \
+  } \
+  else { \
+    aNextBuffer = _pEntBuffer(BufferNo::pToLinkedBuffer(pEntBuffer->m_tNextBuffer.m_iBufferNo)); \
+  } \
+}
+
+//aNextBuffer = _pEntBuffer(pEntBuffer->m_tNextBuffer.pGetLinkedBuffer());
+
+
 namespace STORE
 {
   static const bool C_NOT_FINAL    = false;

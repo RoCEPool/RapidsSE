@@ -7,6 +7,7 @@ namespace BASE
 {
   class LinkedBuffer : public Operand
   {
+    friend class STORE::IndexTree;
   private:
     BufferNo m_tNextBuffer;   // next buffer
     BufferNo m_tPrevBuffer;   // previous buffer

@@ -70,6 +70,11 @@ namespace STORE
     static Ent* aFindEntry_CS2_v19(IndexTree* aIndexTree, Key* aKey_find);
     static Ent* aFindEntry_CS2_v20(IndexTree* aIndexTree, Key* aKey_find);
     static Ent* aFindEntry_CS2_v21(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v22(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v23(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v24(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v25(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v26(IndexTree* aIndexTree, Key* aKey_find);
 
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode);
