@@ -2028,6 +2028,314 @@ Ent* IndexTree::aFindEntry_CS2_v19(IndexTree* pIndexTree, Key* aKey_find)
     return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find an INT entry in the indexTree                                     CS2 */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntry_CS2_v20(IndexTree* pIndexTree, Key* aKey_find)
+{
+  _static_
+
+  //pIndexTree->vDump(false);
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // find H0 which would contain key
+
+  // root buffer ?
+  if (! pIndexTree->m_pRootEntBuffer)
+    return nullptr;
+
+  ///////////////////////////////////////////////////////////////////////////
+  ///
+
+  i8 iElm0_find = ELM0_OF_KEY(aKey_find);;
+
+  // position at H0 buffer
+
+  Ent* aEnt_Hn;
+  EntBuffer* pEntBuffer_Hn;
+
+  pEntBuffer_Hn = pIndexTree->m_pRootEntBuffer;
+
+  while (pEntBuffer_Hn->m_iBufferHeight) {
+
+    aEnt_Hn = pEntBuffer_Hn->aFindEntryBefore_int(aKey_find);
+    ASSERT(aEnt_Hn);
+
+    /*-----------------------------------------------------------------------*/
+
+    Ent* aEnt_Hn_test;
+    if (aEnt_Hn == & pEntBuffer_Hn->m_xSkipRoots)
+      aEnt_Hn = aEnt_Hn_test = pEntBuffer_Hn->aNextEntry(aEnt_Hn, 0);
+    else
+      aEnt_Hn_test = aEnt_Hn;
+
+    while (aEnt_Hn_test) {
+
+      // have we reached the key in Hn buffer?
+      i8 iElm0_test = aEnt_Hn_test->iIntElm0();
+      if (iElm0_test == iElm0_find)
+        break;
+
+      // have we moved beyond key in Hn buffer?
+      if (iElm0_test > iElm0_find)
+        break;
+
+      // move to next ent in Hn buffer
+      aEnt_Hn = aEnt_Hn_test;
+      aEnt_Hn_test = pEntBuffer_Hn->aNextEntry(aEnt_Hn_test, 0);
+    }
+
+    /*-----------------------------------------------------------------------*/
+
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn->m_xRef.m_uBuffer;
+    HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
+    pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
+
+    ASSERT(pEntBuffer_Hn);
+    ASSERT(pEntBuffer_Hn->eGetClassNo() == CN_ENTBUFFER);
+  }
+
+  // found appropriate H0 ent buffer
+  EntBuffer* pEntBuffer_H0 = pEntBuffer_Hn;
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // position on entry prior to given key in the found H0 leaf buffer
+
+  Ent* aEnt_H0;
+
+  if (0 == pEntBuffer_H0->m_nItems) {
+    aEnt_H0 = & pEntBuffer_H0->m_xSkipRoots;
+    goto L_NEXT_ENTRY_H0L0;
+  }
+
+  // declare these separately because of goto
+  Ent_int* aItemArray;
+  Ent* aSkipRoots_H0;
+  i8 iNextEnt_IntElm0;
+  Ent_int* aEnt_H0_scan;
+
+  aSkipRoots_H0 = & pEntBuffer_H0->m_xSkipRoots;
+  aItemArray = (Ent_int*)pEntBuffer_H0->m_xWsp.m_yaByteArea;
+  iElm0_find = ELM0_OF_KEY(aKey_find);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  aEnt_H0_scan = (Ent_int*)aSkipRoots_H0;
+  for (i4 i_Level = 2; i_Level >= 0; i_Level--) {
+    for (tET tEnt_next = NEXT_TICKET(aEnt_H0_scan, i_Level);
+         ! END_TICKET(tEnt_next);
+         tEnt_next = NEXT_TICKET(aEnt_H0_scan, i_Level)) {
+
+      Ent_int* aEnt_H0_next = GET_ENTRY(tEnt_next);
+      iNextEnt_IntElm0 = ELM0_OF_ENTRY(aEnt_H0_next);
+
+      //RASSERT( ! pIndexDef()->bHasDescending() );
+      if (SCAN_IS_AT_PRIOR_POS(iElm0_find, iNextEnt_IntElm0))
+        break;
+
+      aEnt_H0_scan = aEnt_H0_next;
+    }
+  }
+  aEnt_H0 = (Ent*)aEnt_H0_scan;
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  L_NEXT_ENTRY_H0L0:
+
+  // move to next L0 entry (across buffers if necessary)
+
+  tET tNextEntry = aEnt_H0->m_taNextEntry[0];
+  if (! END_TICKET(tNextEntry)) {
+    // + more entries in buffer
+
+    i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+    aEnt_H0 = (Ent *) ((char *) pEntBuffer_H0 + 624 + iNextEntryOffset);
+  }
+  else {
+    // - no more entries in buffer
+
+    // move to the next buffer
+    if (! (pEntBuffer_H0 = pEntBuffer_H0->pNextEntBuffer()) )
+      return nullptr;
+
+    // move to first entry in that buffer
+
+    tNextEntry = pEntBuffer_H0->m_xSkipRoots.m_taNextEntry[0];
+    if (END_TICKET(tNextEntry))
+      return nullptr;
+
+    i8 iNextEntryOffset = (i8) tNextEntry * C_ENT_QUANTA;
+    aEnt_H0 = (Ent *) ((char *) pEntBuffer_H0 + 624 + iNextEntryOffset);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  Key* aKey_ent_H0 = &aEnt_H0->m_xKey;
+  ASSERT(KE_INT == aEnt_H0->eKind());
+
+  i8 iEntVal = *(i8 *) aKey_ent_H0;
+  //i8 iWrkVal = *(i8 *) aKey_find;
+
+  if (iEntVal == iElm0_find)
+    return aEnt_H0;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an INT entry in the indexTree                                     CS2 */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntry_CS2_v21(IndexTree* pIndexTree, Key* aKey_find)
+{
+  _static_
+
+  //pIndexTree->vDump(false);
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // find H0 which would contain key
+
+  // root buffer ?
+  if (! pIndexTree->m_pRootEntBuffer)
+    return nullptr;
+
+  ///////////////////////////////////////////////////////////////////////////
+  ///
+
+  i8 iElm0_find = ELM0_OF_KEY(aKey_find);
+
+  // position at H0 buffer
+
+  Ent* aEnt_Hn;
+  EntBuffer* pEntBuffer_Hn;
+
+  pEntBuffer_Hn = pIndexTree->m_pRootEntBuffer;
+
+  while (pEntBuffer_Hn->m_iBufferHeight) {
+
+    aEnt_Hn = pEntBuffer_Hn->aFindEntryBefore_int(aKey_find);
+    ASSERT(aEnt_Hn);
+
+    /*-----------------------------------------------------------------------*/
+
+    Ent* aEnt_Hn_test;
+    if (aEnt_Hn == & pEntBuffer_Hn->m_xSkipRoots)
+      aEnt_Hn = aEnt_Hn_test = pEntBuffer_Hn->aNextEntry(aEnt_Hn, 0);
+    else
+      aEnt_Hn_test = aEnt_Hn;
+
+    while (aEnt_Hn_test) {
+
+      // have we reached the key in Hn buffer?
+      i8 iElm0_test = aEnt_Hn_test->iIntElm0();
+      if (iElm0_test == iElm0_find)
+        break;
+
+      // have we moved beyond key in Hn buffer?
+      if (iElm0_test > iElm0_find)
+        break;
+
+      // move to next ent in Hn buffer
+      aEnt_Hn = aEnt_Hn_test;
+      aEnt_Hn_test = pEntBuffer_Hn->aNextEntry(aEnt_Hn_test, 0);
+    }
+
+    /*-----------------------------------------------------------------------*/
+
+    i8 i_BuffOffset = C_SIZE_POOL_BUFFER * (i8)aEnt_Hn->m_xRef.m_uBuffer;
+    HeapBuffer* pHeapBuffer = aAdd<HeapBuffer*>(gpBufferPool->m_pBase, i_BuffOffset);
+    pEntBuffer_Hn = aAdd<EntBuffer*>(pHeapBuffer, sizeof(HeapBuffer));
+
+    ASSERT(pEntBuffer_Hn);
+    ASSERT(pEntBuffer_Hn->eGetClassNo() == CN_ENTBUFFER);
+  }
+
+  // found appropriate H0 ent buffer
+  EntBuffer* pEntBuffer_H0 = pEntBuffer_Hn;
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  // position on entry prior to given key in the found H0 leaf buffer
+
+  Ent* aEnt_H0;
+
+  if (0 == pEntBuffer_H0->m_nItems) {
+    aEnt_H0 = & pEntBuffer_H0->m_xSkipRoots;
+    goto L_NEXT_ENTRY_H0L0;
+  }
+
+  // declare these separately because of goto
+  Ent_int* aItemArray;
+  Ent* aSkipRoots_H0;
+  Ent_int* aEnt_H0_scan;
+
+  aSkipRoots_H0 = & pEntBuffer_H0->m_xSkipRoots;
+  aItemArray = (Ent_int*)pEntBuffer_H0->m_xWsp.m_yaByteArea;
+  iElm0_find = ELM0_OF_KEY(aKey_find);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  aEnt_H0_scan = (Ent_int*)aSkipRoots_H0;
+  for (i4 i_Level = 2; i_Level >= 0; i_Level--) {
+    for (tET tEnt_next = NEXT_TICKET(aEnt_H0_scan, i_Level);
+         ! END_TICKET(tEnt_next);
+         tEnt_next = NEXT_TICKET(aEnt_H0_scan, i_Level)) {
+
+      Ent_int* aEnt_H0_next = GET_ENTRY(tEnt_next);
+      i8 iElm0_H0_next = ELM0_OF_ENTRY(aEnt_H0_next);
+
+      //RASSERT( ! pIndexDef()->bHasDescending() );
+      if (SCAN_IS_AT_PRIOR_POS(iElm0_find, iElm0_H0_next))
+        break;
+
+      aEnt_H0_scan = aEnt_H0_next;
+    }
+  }
+  aEnt_H0 = (Ent*)aEnt_H0_scan;
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  L_NEXT_ENTRY_H0L0:
+
+  // move to next L0 entry (across buffers if necessary)
+
+  tET tEnt_next = aEnt_H0->m_taNextEntry[0];
+  if (! END_TICKET(tEnt_next)) {
+    // + more entries in buffer
+
+    i8 iNextEntryOffset = (i8) tEnt_next * C_ENT_QUANTA;
+    aEnt_H0 = (Ent *) ((char *) pEntBuffer_H0 + 624 + iNextEntryOffset);
+  }
+  else {
+    // - no more entries in H0 buffer
+
+    // move to the next H0 buffer
+    if (! (pEntBuffer_H0 = pEntBuffer_H0->pNextEntBuffer()) )
+      return nullptr;
+
+    // move to first entry in that H0 buffer
+    tEnt_next = pEntBuffer_H0->m_xSkipRoots.m_taNextEntry[0];
+    if (END_TICKET(tEnt_next))
+      return nullptr;
+
+    i8 iNextEntryOffset = (i8) tEnt_next * C_ENT_QUANTA;
+    aEnt_H0 = (Ent *) ((char *) pEntBuffer_H0 + 624 + iNextEntryOffset);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+
+  Key* aKey_found_H0 = &aEnt_H0->m_xKey;
+  ASSERT(KE_INT == aEnt_H0->eKind());
+
+  i8 iElm0_found = ELM0_OF_KEY(aKey_found_H0);
+  if (iElm0_found == iElm0_find)
+    return aEnt_H0;
+  else
+    return nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
