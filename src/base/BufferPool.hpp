@@ -13,6 +13,7 @@ namespace BASE
 
   class BufferPool : public Object
   {
+  friend class STORE::IndexTree;
   friend class BASE::PoolHelper;
   friend class FileMap;
 
