@@ -137,12 +137,11 @@ rows:
 select INTERVAL '6.789012' SECOND-INTERVAL '3 4' DAY TO HOUR-INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO SECOND-INTERVAL '3 4:5:6.789012' DAY TO SECOND-INTERVAL '4:5' HOUR TO MINUTE-INTERVAL '4:5:6.789012' HOUR TO SECOND-INTERVAL '5:6.789012' MINUTE TO second from interval1;
 rows:
 (INTERVAL -'13 0:30:19.578024' DAY TO SECOND)
-/*
+
 select timestamp '2023-03-29 15:42:26'+INTERVAL '1' year+INTERVAL '2' month-INTERVAL '1-2' YEAR TO month+INTERVAL '3' day+INTERVAL '4' hour+INTERVAL '5' minute -INTERVAL '6' second+INTERVAL '6.789032' second-INTERVAL '3 4' DAY TO hour+INTERVAL '3 4:5' DAY TO MINUTE-INTERVAL '3 4:5:6' DAY TO second-INTERVAL '3 4:5:6.709012' DAY TO second+INTERVAL '4:5' HOUR TO minute-INTERVAL '4:5:6.788012' HOUR TO second+INTERVAL '5:6.789001' MINUTE TO second from interval1;
 rows:
 (timestamp '2023-03-26 11:47:14.081')
 
-*/
 
 select interval '1' year * interval '12' month from interval1;
 failure contains:"Expression type combination is invalid or unsupported for the expression operator"

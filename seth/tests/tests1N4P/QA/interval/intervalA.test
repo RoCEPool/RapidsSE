@@ -26,6 +26,7 @@ rows:
 (date '2023-02-28',1)
 
 /*
+// TODO: INTERVAL WITH HAVING
 select a+interval '1' month,count(*) from interval6 group by a+interval '1' month having extract(month from a+interval '1' month)=2 order by a+interval '1' month desc;
 ordered rows:
 (date '2023-02-28',1)
@@ -65,6 +66,9 @@ rows:
 (date '2023-04-30',timestamp '2023-01-31 11:02:00',time '01:23:10',1)
 (date '2000-01-31',timestamp '2022-12-31 01:00:23',time '09:02:23',0)
 (date '2021-11-12',timestamp '2018-07-28 19:38:23',time '13:36:09',1)
+
+
+
 
 select * from interval6 where c+interval '1' hour>cast(b as time);
 rows:
