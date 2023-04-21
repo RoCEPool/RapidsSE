@@ -12,6 +12,7 @@
 #include "StringObject.hpp"
 #include "GraphNav.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap2D.hpp"
 
 using namespace Parser;
 
@@ -23,33 +24,23 @@ static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/comparison/like
 
 
 // What is the resulting type when we combine these inputs?
-// * The left header column represents the type of the first operand (predicand)
-// * The top header row represents the type of the second operand (pattern)
-// * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
-// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
-//   the documentation below marked with this symbol for more information.
-// * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+//  - The first parameter represents the type of the first operand
+//  - The second parameter represents the type of the second operand
+//  - The third parameter represents the type of the result from this operation.
+//  - Any unspecified mappings are unsupported.
+//  - Multiple mappings may be made in one go using the eTM values to represent a set of types.
+static TypeMap2D* S_pTypeMap = (new TypeMap2D())
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),   TM_ALL_STRINGS,                 TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),     TypeId::xIdOf(CT_UNKNOWN), TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),TM_ALL_STRINGS,                 TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),  TypeId::xIdOf(CT_UNKNOWN), TypeId::xIdOf(CT_UNKNOWN))
 
-//                    NONE     BOOLEAN     CHAR        DATE          DECIMAL     FLOAT       INTEGER       INTERVAL_DT  INTERVAL_YM     TIME          TIMESTAMP     VARCHAR     UNKNOWN
-/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  1 BOOLEAN    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_UNKNOWN },
-/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  7 INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  8 INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/*  9 TIME       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
-/* 11 VARCHAR    */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_UNKNOWN },
-/* 12 UNKNOWN    */ { CT_NONE, CT_NONE,    CT_UNKNOWN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_UNKNOWN, CT_UNKNOWN }
-};
+    // All the unknown mappings here
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN),TM_ALL_STRINGS,                TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN),  TypeId::xIdOf(CT_UNKNOWN),TypeId::xIdOf(CT_UNKNOWN))
+;
 
 // References:
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -254,13 +245,12 @@ TypeId LikeExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
     }
   }
 
-  eCT ePredicand = Expr::xTypeId(pPredicandNode, pRootNode).eCTVal();
-  eCT ePattern   = Expr::xTypeId(pPatternNode, pRootNode).eCTVal();
+  TypeId xPredicandType = Expr::xTypeId(pPredicandNode, pRootNode);
+  TypeId xPatternType   = Expr::xTypeId(pPatternNode, pRootNode);
 
   // Lookup the type of the result
-  eCT eResult = aeTypeCalculus[ePredicand][ePattern];
-
-  return TypeId::xIdOf(eResult);
+  TypeId xResult = S_pTypeMap->xLookup(xPredicandType, xPatternType);
+  return xResult;
 }
 
 /*============================================================================*/

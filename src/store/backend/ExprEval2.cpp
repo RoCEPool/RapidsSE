@@ -523,7 +523,11 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip date / time / timestamp
-    if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
+    if (pTkn->bSame("DATE"_Stz) ||
+        pTkn->bSame("INTERVAL_DT"_Stz) ||
+        pTkn->bSame("INTERVAL_YM"_Stz) ||
+        pTkn->bSame("TIME"_Stz) ||
+        pTkn->bSame("TIMESTAMP"_Stz)) {
       pTkn = pTknVec->pNextToken();
       continue;
     }

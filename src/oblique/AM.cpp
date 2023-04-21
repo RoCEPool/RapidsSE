@@ -864,7 +864,7 @@ void AM::JOB::vAckOriginatingJob(JobId tOriginId)
   Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
 
   //may not be able to find the job if node loss
-  vTrace("vAckOriginatingJob: No originating job (node loss ??)\n"_Stz);
+  vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
   if ( ! pJobFound )
     return;
 
@@ -1045,7 +1045,7 @@ void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
   Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
 
   //may not be able to find the job if node loss
-  vTrace("vAckOriginatingJob: No originating job (node loss ??)\n"_Stz);
+  vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
   if ( ! pJobFound )
     return;
 

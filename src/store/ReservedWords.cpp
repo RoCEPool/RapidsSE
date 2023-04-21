@@ -13,6 +13,7 @@
 // With apologies for using std::string and std::unordered_set, however this
 // approach allows fast constant time comparison against a fixed list of
 // reserved words (and we don't have the primitives in place to do this ourselves).
+// Any RapidsSE reserved words are appropriately marked.
 
 static std::unordered_set<std::string> oReservedWordSet = {
     "ABS",
@@ -20,6 +21,7 @@ static std::unordered_set<std::string> oReservedWordSet = {
     "ALLOCATE",
     "ALTER",
     "AND",
+    "ANTI",     // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
     "ANY",
     "ARE",
     "ARRAY",
@@ -246,6 +248,7 @@ static std::unordered_set<std::string> oReservedWordSet = {
     "SEARCH",
     "SECOND",
     "SELECT",
+    "SEMI",       // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
     "SENSITIVE",
     "SESSION_USER",
     "SET",
@@ -295,7 +298,7 @@ static std::unordered_set<std::string> oReservedWordSet = {
     "UPPER",
     "USER",
     "USING",
-    "VALUE",
+//    "VALUE",  // Note: SQL says this is a reserved word, but it is used in TPC-H Q11 as a column alias!
     "VALUES",
     "VAR_POP",
     "VAR_SAMP",

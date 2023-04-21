@@ -36,14 +36,53 @@ static const u8 C_YEAR_RANGE = 255;
 static const u8 C_YEAR_MAX   = C_YEAR_BASE + C_YEAR_RANGE;
 static const u8 C_YEAR_MIN   = C_YEAR_BASE;
 
-static const u8 C_IVL_SEC_MAX    = 999999999;
-static const u8 C_IVL_USEC_MAX   = 999999;
-static const u8 C_IVL_USEC_SHIFT = 1000000;
-
 static const u8 C_TSP_USEC_MIN = 0;
 static const u8 C_TSP_USEC_MAX = 999999;
 
 static const u8 C_VCH_SIZE_MAX = 4000;
+
+// Intervals
+static const u8 C_IVL_USEC_MAX_IN_1_SEC   = 999999;
+static const u8 C_IVL_USEC_SHIFT = 1000000;
+
+  // Single field intervals
+static const u8 C_IVL_YEAR_MAX   =  6004799503160661; // (2^56 -1) / 12
+static const u8 C_IVL_MONTH_MAX  = 72057594037927935; // (2^56 -1)
+static const u8 C_IVL_DAY_MAX    =            833999; // (2^56 -1) / 86,400,000,000
+static const u8 C_IVL_HOUR_MAX   =          20015998; // (2^56 -1) / 3,600,000,000
+static const u8 C_IVL_MINUTE_MAX =        1200959900; // (2^56 -1) / 60,000,000
+static const u8 C_IVL_SEC_MAX    =       72057594037; // (2^56 -1) / 1,000,000
+static const u8 C_IVL_USEC_MAX   = 72057594037927935; // (2^56 -1)
+
+  // Max combined, normalised values for multi-field intervals based on the above.
+  // For error display purposes.
+static const u8 C_IVL_YEARMON_YEAR_MAX  = 6004799503160661;
+static const u8 C_IVL_YEARMON_MONTH_MAX = 3;
+
+static const u8 C_IVL_DAYHOUR_DAY_MAX  = 833999;
+static const u8 C_IVL_DAYHOUR_HOUR_MAX = 22;
+
+static const u8 C_IVL_DAYMIN_DAY_MAX  = 833999;
+static const u8 C_IVL_DAYMIN_HOUR_MAX = 22;
+static const u8 C_IVL_DAYMIN_MIN_MAX  = 20;
+
+static const u8 C_IVL_DAYSEC_DAY_MAX  = 833999;
+static const u8 C_IVL_DAYSEC_HOUR_MAX = 22;
+static const u8 C_IVL_DAYSEC_MIN_MAX  = 20;
+static const u8 C_IVL_DAYSEC_SEC_MAX  = 37;
+static const u8 C_IVL_DAYSEC_USEC_MAX = 927935;
+
+static const u8 C_IVL_HOURMIN_HOUR_MAX = 20015998;
+static const u8 C_IVL_HOURMIN_MIN_MAX  = 20;
+
+static const u8 C_IVL_HOURSEC_HOUR_MAX = 20015998;
+static const u8 C_IVL_HOURSEC_MIN_MAX  = 20;
+static const u8 C_IVL_HOURSEC_SEC_MAX  = 37;
+static const u8 C_IVL_HOURSEC_USEC_MAX = 927935;
+
+static const u8 C_IVL_MINSEC_MIN_MAX  = 1200959900;
+static const u8 C_IVL_MINSEC_SEC_MAX  = 37;
+static const u8 C_IVL_MINSEC_USEC_MAX = 927935;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // bcd / decimal
@@ -259,39 +298,29 @@ public:
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // interval
+enum eIV : i1;  // enum forward declaration for use below
+
 class Ivl
 {
 public:
-//  union {
-//    struct {
-//      u8 m_uMicro     : 20 ; // 0..1M
-//      u8 m_uSecond    : 44 ; // 0..1.7E13
-//      //               ---
-//      //                64
-//      //               ===
-//    };
-//    i8 m_iAsI8;
-//  };
-
   Ivl_T T;
 
-  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.T.m_iAsI8; }
-  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.T.m_iAsI8; }
+  static i8 iMinValue(eIV eIvlType);
+  static i8 iMaxValue(eIV eIvlType);
 
+  Ivl(eIV eIvlType);
   operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
-  
+
   void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)                   { T.m_uSecond = 999999;
-                                         T.m_uMicro = 999999; }  // set max value
-  void vSetMid(void)                   { T.m_uSecond = 999;
-                                         T.m_uMicro = 999; }  // set mid value
-  void vSetMin(void)                   { T.m_uSecond = 0;
-                                         T.m_uMicro = 0; }  // set min value
-  void vSetNull(void)                  { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                                 { }  // set usual value
+  void vSetMax(void);
+  void vSetMin(void);
+  void vSetZero(void);
+  void vSetNull(void)                  { T.m_xIvl.m_bIsNull = true; }  // set to be null
 
-  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
+  bool bIsNull(void)                   { return T.m_xIvl.m_bIsNull; }  // test for null
+  eIV  eIvlType(void)                  { return (eIV) T.m_xIvl.m_eType; }
+  bool bIsNeg(void)                    { return (bool) T.m_xIvl.m_bIsNeg; }
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

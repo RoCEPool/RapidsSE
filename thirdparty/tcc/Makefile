@@ -32,5 +32,6 @@ $(LIBTCC) :
 clean :
 	-cd src && $(MAKE) clean
 	rm -f  $(LIBDIR)/*.a
-	rm -rf $(LIBDIR)/tcc
+	rm -rf $(LIBDIR)/tcc/*.a
+	rm -rf $(LIBDIR)/tcc/include
 	rm -f  $(BINDIR)/tcc

@@ -3,6 +3,52 @@
 /*============================================================================*/
 #pragma once
 
+// NOTE: THis should match eIV enums in eIV.H
+typedef enum eIVL // Interval Type
+{
+  /* 0  */ IVL_NONE=0,
+  /* 1  */ IVL_YM_START,
+  /* 2  */ IVL_YEAR,
+  /* 3  */ IVL_MONTH,
+  /* 4  */ IVL_YM,
+  /* 5  */ IVL_YM_END,
+  /* 6  */ IVL_DT_START,
+  /* 7  */ IVL_DAY,
+  /* 8  */ IVL_HOUR,
+  /* 9  */ IVL_MINUTE,
+  /* 10 */ IVL_SECOND,
+  /* 11 */ IVL_DH,
+  /* 12 */ IVL_DM,
+  /* 13 */ IVL_DS,
+  /* 14 */ IVL_HM,
+  /* 15 */ IVL_HS,
+  /* 16 */ IVL_MS,
+  /* 17 */ IVL_DT_END,
+  /* 18 */ IVL_ENUMS
+} eIVL;
+
+static eIVL eMacro_AddSubResultIVL[IVL_ENUMS][IVL_ENUMS] = {
+                   // IVL_NONE  IVL_YM_START IVL_YEAR  IVL_MONTH   IVL_YM    IVL_YM_END  IVL_DT_START IVL_DAY   IVL_HOUR    IVL_MINUTE  IVL_SECOND   IVL_DH      IVL_DM    IVL_DS      IVL_HM    IVL_HS    IVL_MS    IVL_DT_END
+/* IVL_NONE     */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM_START */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YEAR     */  { IVL_NONE, IVL_NONE,    IVL_YEAR, IVL_YM,     IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_MONTH    */  { IVL_NONE, IVL_NONE,    IVL_YM,   IVL_MONTH,  IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM       */  { IVL_NONE, IVL_NONE,    IVL_YM,   IVL_YM,     IVL_YM,   IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_YM_END   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_DT_START */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    },
+/* IVL_DAY      */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DAY,  IVL_DH,     IVL_DM,     IVL_DS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_DM,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_HOUR     */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DH,   IVL_HOUR,   IVL_HM,     IVL_HS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_MINUTE   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_HM,     IVL_MINUTE, IVL_MS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_SECOND   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_MS,     IVL_SECOND,  IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_DH       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DH,   IVL_DH,     IVL_DM,     IVL_DS,      IVL_DH,     IVL_DM,   IVL_DS,     IVL_DS,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_DM       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_DM,     IVL_DM,     IVL_DS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_DM,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_DS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_DS,     IVL_DS,     IVL_DS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_DS,   IVL_DS,   IVL_DS,   IVL_NONE    },
+/* IVL_HM       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DM,   IVL_HM,     IVL_HM,     IVL_HS,      IVL_DM,     IVL_DM,   IVL_DS,     IVL_HM,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_HS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_HS,     IVL_HS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_HS,   IVL_NONE    },
+/* IVL_MS       */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_DS,   IVL_HS,     IVL_MS,     IVL_MS,      IVL_DS,     IVL_DS,   IVL_DS,     IVL_HS,   IVL_HS,   IVL_MS,   IVL_NONE    },
+/* IVL_DT_END   */  { IVL_NONE, IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE,    IVL_NONE, IVL_NONE,   IVL_NONE,   IVL_NONE,    IVL_NONE,   IVL_NONE, IVL_NONE,   IVL_NONE, IVL_NONE, IVL_NONE, IVL_NONE    }
+};
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BCD
 union Bcd_T
@@ -74,14 +120,71 @@ union Int_T {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // IVL
+// Notes:
+// We use two unioned structures to below to represent the 13 different interval
+// types - one structure represents all of the YEAR-MONTH interval types and one
+// represents all of the DAY-TIME interval types.
+// Each structure only has a single field. This makes comparison and interval
+// arithmetic easy, but care needs to be taken when the interval is being displayed
+// so that only the right fields are shown.
+//
+// e.g. for a YEAR-MONTH interval a value of 15 would be represented as follows
+// for each of the 3 YEAR-MONTH interval subtypes:
+//   INTERVAL '15' MONTH
+//   INTERVAL '1' YEAR
+//   INTERVAL '1-3' YEAR TO MONTH
+//
+// The YM and DT interval classes store their values in a single field representing
+// their smallest denomination - months for YM intervals and microseconds for DT
+// intervals. This still gives a significant range of values for each interval type.
+//
+// The "__attribute__((__packed__))" is required to ensure each of the structures
+// are not padded out to 8 bytes each.
+//
+
 union Ivl_T {
-  struct {
-    u8 m_uMicro     : 20 ; // 0..1M
-    u8 m_uSecond    : 44 ; // 0..1.7E13
-    //               ---
-    //                64
-    //               ===
-  };
+  struct  __attribute__((__packed__)) {
+    u8 m_eType    : 5 ; // 0..31, eIV enum
+    u8 m_bIsNeg   : 1 ;
+    u8 m_bIsNull  : 1 ;
+    u8 m_iSpare   : 1 ;
+
+    union __attribute__((__packed__)) {
+
+      // INTERVAL YEAR, MONTH & YEAR TO MONTH:
+      struct __attribute__((__packed__)) {
+        u8 m_uMonths  : 56; // 0..7.2E16
+      } m_xIvlYM;
+
+      // INTERVAL DAY, HOUR, MINUTE, SECOND,
+      // DAY TO HOUR, DAY TO MINUTE, DAY TO SECOND,
+      // HOUR TO MINUTE, HOUR TO SECOND,
+      // and MINUTE TO SECOND:
+      struct __attribute__((__packed__)) {
+        u8 m_uMicros  : 56; // 0..7.2E16
+      } m_xIvlDT;
+
+      // Maximum displayable ranges for each interval type:
+      //  (for each YM or DT group they are all the same value
+      //   in months or microseconds)
+      // -------------------------------------------------------
+      // INTERVAL YEAR              :  6,004,799,503,160,661 years
+      // INTERVAL MONTH             : 72,057,594,037,927,935 months
+      // INTERVAL YEAR TO MONTH     :  6,004,799,503,160,661 years, 3 months
+      //
+      // INTERVAL DAY               :                833,999 days   (about 2283 years)
+      // INTERVAL HOUR              :             20,015,998 hours
+      // INTERVAL MINUTE            :          1,200,959,900 minutes
+      // INTERVAL SECOND            :         72,057,594,037.927,935 seconds
+      // INTERVAL DAY TO HOUR       :                833,999 days, 22 hours
+      // INTERVAL DAY TO MINUTE     :                833,999 days, 22 hours, 20 minutes
+      // INTERVAL DAY TO SECOND     :                833,999 days, 22 hours, 20 minutes, 37.927,935 seconds
+      // INTERVAL HOUR TO MINUTE    :             20,015,998 hours, 20 minutes
+      // INTERVAL HOUR TO SECOND    :             20,015,998 hours, 20 minutes, 37.927,935 seconds
+      // INTERVAL MINUTE TO SECOND  :          1,200,959,900 minutes, 37.927,935 seconds
+    } u;
+  } m_xIvl;
+
   i8 m_iAsI8;
 };
 
@@ -206,6 +309,18 @@ enum eMC // meta code
 
   /* 16 */ MC_ENUMS,
 };
+
+static const i8 _C_1M = 1000000;
+static const i8 _C_SECS_PER_MIN = 60;
+static const i8 _C_SECS_PER_HR  = 3600;
+static const i8 _C_SECS_PER_DAY = 3600*24;
+static const i8 _C_HOURS_PER_DAY = 24;
+
+static const i8 _C_TSP_LOCAL = 1;
+static const i8 _C_TSP_UTC   = 0;
+
+static const u8 _C_IVL_MONTH_MAX  = 72057594037927935; // (2^56 -1)
+static const u8 _C_IVL_USEC_MAX   = 72057594037927935; // (2^56 -1)
 
 static const i8 C_HEADLINE_OFS_WORDS = 0;
 static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;

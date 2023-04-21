@@ -15,7 +15,7 @@ import pyutils.ssh as ssh
 C_REGION = "us-east-1"
 C_VPC_ID = "vpc-01293432312a06b76"
 
-C_IAM_ROLE_ARN = "arn:aws:iam::076505786432:instance-profile/PerfTest"  # The IAM role to assume
+C_DEFAULT_IAM_ROLE_ARN = "arn:aws:iam::076505786432:instance-profile/PerfTest"  # The default IAM role to assume
 
 C_SUBNET_A = "subnet-041ee117f205bc727"     # us-east-1a ; 192.168.1.0/24
 C_SUBNET_B = "subnet-0e776deff59214e7f"     # us-east-1b ; 192.168.2.0/24
@@ -115,6 +115,7 @@ def get_image_desc(image_id: str, ctx: str = "") -> str:
 def start_instances(instance_type: str,
                     image_id: str,
                     cloudinit_path: str,
+                    iam_role_name: str,
                     count: int,
                     name_prefix: str,
                     timeout_sec: float,
@@ -165,9 +166,7 @@ def start_instances(instance_type: str,
         "SubnetId": C_SUBNET_F,
         "UserData": __get_boot_script(cloudinit_path, ctx),
         "DisableApiTermination": False,
-        "IamInstanceProfile": {
-            "Arn": C_IAM_ROLE_ARN
-        },
+        "IamInstanceProfile": { },
         "TagSpecifications": [{
             "ResourceType": "instance",
             "Tags": [
@@ -176,6 +175,17 @@ def start_instances(instance_type: str,
                     "Value": ""
                 }]
         }]}
+
+    if iam_role_name is not None and len(iam_role_name) != 0:
+        # Use the supplied value
+        kwargs["IamInstanceProfile"]["Name"] = iam_role_name
+
+    elif C_DEFAULT_IAM_ROLE_ARN is not None and len(C_DEFAULT_IAM_ROLE_ARN):
+        # Use the default value
+        kwargs["IamInstanceProfile"]["Arn"] = C_DEFAULT_IAM_ROLE_ARN
+
+    else:
+        del kwargs["IamInstanceProfile"]
 
     if tags is not None:
         for tag_key in tags:

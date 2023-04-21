@@ -753,6 +753,7 @@ void vDdlLockAssertNone(void);
   void vInfoSetChunkFile(void);
   void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
+  void vInfoSetDetectLineEnding(void);
   void vInfoSetFirstRow(void);
   void vInfoSetGet(void);
   void vInfoSetInfoRows(void);

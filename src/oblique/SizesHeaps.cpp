@@ -116,6 +116,7 @@
 #include "JobReport.hpp"
 #include "Jobs.hpp"
 
+#include "LibInfo.hpp"
 #include "Lit.hpp"
 #include "LitRecogniser.hpp"
 #include "Locator.hpp"
@@ -275,6 +276,10 @@
 #include "graphTools/GraphEditor.hpp"
 
 #include "parser/stages/parser/SqlPlanner.hpp"
+#include "parser/common/TypeMap1D.hpp"
+#include "parser/common/TypeMap2D.hpp"
+#include "parser/common/ExtractMap.hpp"
+
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
@@ -372,9 +377,10 @@ SizeHeap gxaSizeHeap[]
   { CN_ENUMFLAGS,                sizeof(ClassFlags),             HT_T_TINY    , FILL },
   { CN_EQUIVALENCE,              sizeof(Equivalence),            HT_T_TINY    , FILL },
   { CN_EVENTHANDLERS,            sizeof(EventHandlers),          HT_T_TINY    , FILL },
-  {CN_EVMGR,                    sizeof(EvMgr),                  HT_T_TINY    , FILL },
-  {CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
-  {CN_EXITOPERAND,              sizeof(ExitOperand),            HT_T_TINY    , FILL },
+  { CN_EVMGR,                    sizeof(EvMgr),                  HT_T_TINY    , FILL },
+  { CN_EXEMPLAR,                 sizeof(Exemplar),               HT_T_TINY    , FILL },
+  { CN_EXITOPERAND,              sizeof(ExitOperand),            HT_T_TINY    , FILL },
+  { CN_EXTRACTMAP,               sizeof(ExtractMap),             HT_T_TINY    , FILL },
 
   {CN__F__,                     'F' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_FIFO,                     sizeof(Fifo),                   HT_T_TINY    , FILL },
@@ -438,6 +444,7 @@ SizeHeap gxaSizeHeap[]
   { CN_LARGEVIRTUAL,             sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
   { CN_LGLBUFSET,                sizeof(LglBufSet),              HT_T_LARGE   , FILL },
   { CN_LGLPTNMAP,                sizeof(LglPtnMap),              HT_T_LARGE   , FILL },
+  { CN_LIBINFO,                  sizeof(LibInfo),                HT_T_SMALL   , FILL },
   { CN_LICENCE,                  sizeof(Licence),            HT_T_TINY    ,FILL },
   { CN_LIMITS,                   sizeof(Limits),             HT_T_TINY    ,FILL },
   { CN_LISTEXONODE_t,            sizeof(ListExoNode_t<Object>), HT_T_TINY ,FILL },
@@ -692,6 +699,8 @@ SizeHeap gxaSizeHeap[]
   { CN_TUB,                      sizeof(Tub),                    HT_T_TINY    , FILL },
   { CN_TX,                       sizeof(Tx),                     HT_T_TINY    , FILL },
   { CN_TXSET,                    sizeof(TxSet),                  HT_T_TINY    , FILL },
+  { CN_TYPEMAP1D,                sizeof(TypeMap1D),              HT_T_TINY    , FILL },
+  { CN_TYPEMAP2D,                sizeof(TypeMap2D),              HT_T_TINY    , FILL },
 
   {CN__U__,                     'U' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_UNITINT,                  sizeof(UnitInt),                HT_T_TINY    , FILL },

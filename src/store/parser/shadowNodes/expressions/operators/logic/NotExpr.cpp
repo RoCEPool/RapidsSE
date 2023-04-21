@@ -10,6 +10,7 @@
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap1D.hpp"
 
 using namespace Parser;
 
@@ -20,16 +21,13 @@ static Stz* C_NOT_NAME_PREFIX = "NotExpr"_Stz;
 static Stz* C_NOT_DEFN = "/__root__/definitions/object/expr/operator/logic/not"_Stz;
 
 // What is the resulting type when we combine these inputs?
-// * The top header row represents the type of the first operand.
-// * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
-// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
-//   the documentation below marked with this symbol for more information.
-// * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS] =
-
-//    NONE     BOOLEAN     CHAR     DATE     DECIMAL  FLOAT    INTEGER  INTERVAL_DT INTERVAL_YM TIME     TIMESTAMP  VARCHAR  UNKNOWN
-    { CT_NONE, CT_BOOLEAN, CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_NONE,    CT_NONE,    CT_NONE, CT_NONE,   CT_NONE, CT_BOOLEAN };
+//  - The first parameter represents the type of the first operand
+//  - The second parameter represents the type of the result from this operation.
+//  - Any unspecified mappings are unsupported.
+static TypeMap1D* S_pTypeMap = (new TypeMap1D())
+    ->pAddSelfMapping( TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping(     TypeId::xIdOf(CT_UNKNOWN),  TypeId::xIdOf(CT_BOOLEAN)  )
+;
 
 // References:
 //  NOT of a NULL literal will produce a NULL value, but the output type will still be a boolean.
@@ -132,12 +130,10 @@ TypeId NotExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   // Get the types of the two operands
   QueryNode* pChild1 = NotExpr::pChild1(pExprNode);
 
-  eCT eOperand1 = Expr::xTypeId(pChild1, pRootNode).eCTVal();
+  TypeId xOperand1TypeId = Expr::xTypeId(pChild1, pRootNode);
 
-  // Lookup the type of the result
-  eCT eResult = aeTypeCalculus[eOperand1];
-
-  return TypeId::xIdOf(eResult);
+  TypeId xResult = S_pTypeMap->xLookup(xOperand1TypeId);
+  return xResult;
 }
 
 /*============================================================================*/

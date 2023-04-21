@@ -3,17 +3,19 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "eIV.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Birth::Birth(void)
-: Object(CN_BIRTH)
+: Object(CN_BIRTH),
+  m_wIvl(IV_SECOND)
 {
   _precondition_(_MAGIC_,CN_BIRTH,_FOOTER_);
   
   m_wTsp.m_iWrd = 0;
-  m_wIvl = 0;
+  m_wIvl.vSetZero();
   
   _checkInitialised_(CN_BIRTH);
   

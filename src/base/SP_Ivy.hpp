@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* SP_Ivl.hpp - Ivl sprint helper                                             */
+/* SP_Ivy.hpp - Ivy sprint helper                                             */
 /*============================================================================*/
 #pragma once
 
 namespace BASE
 {
-  class SP_Ivl : public SPsmall
+  class SP_Ivy : public SPsmall
   {
   public:
   
@@ -13,11 +13,11 @@ namespace BASE
     Footer m_xFooter;
     
   public:
-    SP_Ivl(void);
-    ~SP_Ivl(void) noexcept(false);
+    SP_Ivy(void);
+    ~SP_Ivy(void) noexcept(false);
   
-    Stz* sz(i8 iIvl);
-    Stz* sz(i8 iIvl, i8 iScale);
+    Stz* sz(i8 iIvy);
+    Stz* sz(i8 iIvy, i8 iScale);
 
     Stz* szMax(void);
     Stz* szMid(void);

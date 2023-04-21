@@ -76,6 +76,22 @@ cp "${ROOT_DIR}/bootstrap/collectLogs.sh"        "${LAYOUT_DIR}"
 mkdir -p "${LAYOUT_DIR}/res"
 cp "${ROOT_DIR}/src/store/parser/graph/PlannerDef.json5" "${LAYOUT_DIR}/res"
 
+# Documentation
+if [ -z "${NO_DOCS}" ] || [ "${NO_DOCS}" -ne 1 ]; then
+  mkdir -p "${LAYOUT_DIR}/doc"
+  if [ -d "${ROOT_DIR}/doc/build" ]; then
+    # HTML documentation
+    cp -r "${ROOT_DIR}/doc/build/html" "${LAYOUT_DIR}/doc/html"
+    rm -rf "${LAYOUT_DIR}/doc/html/_sources"
+    rm -f  "${LAYOUT_DIR}/doc/html/.buildinfo"
+    rm -f  "${LAYOUT_DIR}/doc/html/objects.inv"
+
+    # PDF documentation
+    mkdir -p "${LAYOUT_DIR}/doc/pdf"
+    cp "${ROOT_DIR}/doc/build/latex/rapidsse-"*.pdf "${LAYOUT_DIR}/doc/pdf"
+  fi
+fi
+
 # demo files
 mkdir -p "${LAYOUT_DIR}/demo"
 cp "${ROOT_DIR}/demo/drop1_sql"                 "${LAYOUT_DIR}/demo"

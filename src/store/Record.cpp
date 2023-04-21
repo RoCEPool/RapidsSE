@@ -13,7 +13,8 @@
 #include "SP_Dte.hpp"
 #include "SP_Flt.hpp"
 #include "SP_Int.hpp"
-#include "SP_Ivl.hpp"
+#include "SP_Ivd.hpp"
+#include "SP_Ivy.hpp"
 #include "SP_Tme.hpp"
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
@@ -242,17 +243,18 @@ void Record::vAppendCsvVal(eDM eDatum, i8 iScale, i8 iVal)
       break;
     }
       
-    case DM_IVL: {
-      SP_Ivl spIvl;
-      StrLib::vAppendString(&m_azCursor,(char*)spIvl.sz(iVal));
+    case DM_IVD: {
+      SP_Ivd spIvd;
+      StrLib::vAppendString(&m_azCursor,(char*)spIvd.sz(iVal));
       break;
     }
-      
+
     case DM_IVY: {
-      NEVER_REACH;
+      SP_Ivy spIvy;
+      StrLib::vAppendString(&m_azCursor,(char*)spIvy.sz(iVal));
       break;
     }
-      
+
     case DM_TME: {
       SP_Tme spTme;
       StrLib::vAppendString(&m_azCursor,(char*)spTme.sz(iVal));
