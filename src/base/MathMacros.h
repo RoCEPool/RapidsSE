@@ -1031,7 +1031,14 @@
        if (iArg2 < 0)                                                      \
          iArg2 = (-1) * iArg2;                                             \
                                                                            \
-        i8 iMicros = iArg1 / iArg2;                                        \
+       d8 dMicros = (d8)iArg1 / (d8)iArg2;                                 \
+       i8 iMicros = 0;                                                     \
+       i8 iRound = (dMicros * 10);                                         \
+       iRound %= 10;                                                       \
+       if ( iRound >= 5)                                                   \
+         iMicros = dMicros + 1;                                            \
+       else                                                                \
+         iMicros = dMicros;                                                \
                                                                            \
         wIvlResult.m_xIvl.u.m_xIvlDT.m_uMicros = iMicros;                  \
         *paW++ = wIvlResult.m_iAsI8;                                       \

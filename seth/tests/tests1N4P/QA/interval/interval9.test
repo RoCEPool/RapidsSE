@@ -352,18 +352,15 @@ select interval '1' second-a from interval1;
 failure contains: "Expression type combination is invalid or unsupported for the expression operator"
 
 // TODO: (CHINA) Changed expected result
-/*
 SELECT INTERVAL '6.789012' SECOND/37 FROM interval1;
 rows:
 //(INTERVAL '0 0:0:0.183487' DAY TO SECOND)
 (INTERVAL '0.183487' SECOND)
 
-
 SELECT INTERVAL '6' SECOND/20 FROM interval1;
 rows:
 //(INTERVAL '0 0:0:0.3' DAY TO SECOND)
 (INTERVAL '0.3' SECOND)
-
 
 SELECT INTERVAL '1.1' second*1 FROM interval1;
 rows:
@@ -403,7 +400,7 @@ SELECT INTERVAL '6.789012' SECOND*1000 FROM interval1;
 rows:
 (INTERVAL '6789.012000' SECOND)
 //SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM interval1;
-*/
+
 
 drop table interval1;
 success

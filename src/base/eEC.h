@@ -215,7 +215,8 @@ enum eEC : u2 // error codes
   EC_OBJECT_CLASSNO_INVALID,
   EC_OBJECT_FOOTER_INVALID,
   EC_OBJECT_MAGIC_INVALID,
-  EC_ORDERBY_NOT_SUPPORTED,
+  EC_ORDERBY_WITH_AGGREGATES,
+
 
   /* _P_ */
   EC_PIPELINE_PROTOCOL_ERROR,
@@ -482,7 +483,7 @@ static Stz* aEC[] =
   /* EC_OBJECT_CLASSNO_INVALID        */ (Stz*)"EC_OBJECT_CLASSNO_INVALID",
   /* EC_OBJECT_FOOTER_INVALID         */ (Stz*)"EC_OBJECT_FOOTER_INVALID",
   /* EC_OBJECT_MAGIC_INVALID          */ (Stz*)"EC_OBJECT_MAGIC_INVALID",
-  /* EC_ORDERBY_NOT_SUPPORTED         */ (Stz*)"order by currently not supported",
+  /* EC_ORDERBY_WITH_AGGREGATES       */ (Stz*)"order by currently not supported with aggregates",
 
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ (Stz*)"pipeline protocol error",
@@ -744,7 +745,7 @@ static Stz* aEC2[] = // error code
   /* EC_OBJECT_CLASSNO_INVALID        */ (Stz*)"EC_OBJECT_CLASSNO_INVALID",
   /* EC_OBJECT_FOOTER_INVALID         */ (Stz*)"EC_OBJECT_FOOTER_INVALID",
   /* EC_OBJECT_MAGIC_INVALID          */ (Stz*)"EC_OBJECT_MAGIC_INVALID",
-  /* EC_ORDERBY_NOT_SUPPORTED         */ (Stz*)"EC_ORDERBY_NOT_SUPPORTED",
+  /* EC_ORDERBY_WITH_AGGREGATES       */ (Stz*)"EC_ORDERBY_WITH_AGGREGATES",
 
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ (Stz*)"EC_PIPELINE_PROTOCOL_ERROR",
@@ -1016,7 +1017,7 @@ static Stz* aErrorMsg[] =
   /* EC_OBJECT_CLASSNO_INVALID        */ (Stz*)"EC_OBJECT_CLASSNO_INVALID",
   /* EC_OBJECT_FOOTER_INVALID         */ (Stz*)"EC_OBJECT_FOOTER_INVALID",
   /* EC_OBJECT_MAGIC_INVALID          */ (Stz*)"EC_OBJECT_MAGIC_INVALID",
-  /* EC_ORDERBY_NOT_SUPPORTED         */ (Stz*)"order by currently not supported",
+  /* EC_ORDERBY_WITH_AGGREGATES       */ (Stz*)"order by currently not supported with AGGREGATES",
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ (Stz*)"pipeline protocol error",
 
