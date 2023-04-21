@@ -34,25 +34,38 @@
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 {
-  static i8 iSum = 0;
+  static i8 iSum_ns = 0;
+  static i8 iSum_ticks = 0;
 
+  i8 iStart;
+  i8 iEnd;
+  u4 uProc_start;
+  u4 uProc_end;
   IndexDef* pIndexDef = pIndexTree->pIndexDef();
 
-  if (KE_INT == pIndexDef->eKeyKind()) {
-    Timer xTimer;
-    xTimer.vStart();
-
-    Ent* aEnt =  aFindEntry_CS2_v26(pIndexTree, aKey);
-
-    xTimer.vUpdate();
-    iSum += xTimer.iNanoseconds();
-    vTrace("aFindEntry_CS2_v26 %lldns (%lldns)\n"_Stz,xTimer.iNanoseconds(),iSum);
-
-    return aEnt;
-  }
+//  if (KE_INT == pIndexDef->eKeyKind()) {
+//    Timer xTimer;
+//    xTimer.vStart();
+//    iStart = Hardware::iReadTsc(&uProc_start);
+//
+//    Ent* aEnt =  aFindEntry_CS2_v26(pIndexTree, aKey);
+//
+//    xTimer.vUpdate();
+//    iSum_ns += xTimer.iNanoseconds();
+//    vTrace("aFindEntry_CS2_v26 %lldns (%lldns)\n"_Stz, xTimer.iNanoseconds(), iSum_ns);
+//
+//    iEnd = Hardware::iReadTsc(&uProc_end);
+//    if (uProc_end == uProc_start) {
+//      iSum_ticks += (iEnd - iStart);
+//      vTrace("aFindEntry_CS2_v26 %lld (%lld)\n"_Stz, iEnd-iStart, iSum_ticks);
+//    }
+//
+//    return aEnt;
+//  }
 
   Timer xTimer;
   xTimer.vStart();
+  iStart = Hardware::iReadTsc(&uProc_start);
 
   EntBuffer* pEntBuffer = nullptr;
   eKC eCmp;
@@ -87,8 +100,14 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
   }
 
   xTimer.vUpdate();
-  iSum += xTimer.iNanoseconds();
-  vTrace("aFindEntry %lldns (%lldns)\n"_Stz,xTimer.iNanoseconds(),iSum);
+  iSum_ns += xTimer.iNanoseconds();
+  vTrace("aFindEntry %lldns (%lldns)\n"_Stz, xTimer.iNanoseconds(), iSum_ns);
+
+  iEnd = Hardware::iReadTsc(&uProc_end);
+  if (uProc_end == uProc_start) {
+    iSum_ticks += (iEnd - iStart);
+    vTrace("aFindEntry_CS2_v26 %lld (%lld)\n"_Stz, iEnd-iStart, iSum_ticks);
+  }
 
   if (eCmp == KC_SAME)
     return aEnt;
@@ -2857,7 +2876,17 @@ Ent* IndexTree::aFindEntry_CS2_v26(IndexTree* pIndexTree, Key* aKey_find)
 {
   _static_
 
-  //pIndexTree->vDump(false);
+  static i8 iSum_ticks = 0;
+
+  i8 iStart;
+  i8 iSample;
+  u4 uProc_start;
+  u4 uProc_sample;
+
+  iStart = Hardware::iReadTsc(&uProc_start);
+
+
+  pIndexTree->vDump(false);
 
   ///////////////////////////////////////////////////////////////////////////
 
@@ -2865,6 +2894,8 @@ Ent* IndexTree::aFindEntry_CS2_v26(IndexTree* pIndexTree, Key* aKey_find)
   EntBuffer* pEntBuffer_Hn = pIndexTree->m_pRootEntBuffer;
   if (! pEntBuffer_Hn)
     return nullptr;
+
+  i8 nLvlLevels = AM::nLvlLevels();
 
   i8 iElm0_find = ELM0_OF_KEY(aKey_find);
 
@@ -2905,6 +2936,13 @@ Ent* IndexTree::aFindEntry_CS2_v26(IndexTree* pIndexTree, Key* aKey_find)
 
   ///////////////////////////////////////////////////////////////////////////
 
+  iSample = Hardware::iReadTsc(&uProc_sample);
+  if (uProc_sample == uProc_start) {
+    iSum_ticks += (iSample - iStart);
+    vTrace("aFindEntry_CS2_v26 [1] %lld (%lld)\n"_Stz, iSample-iStart, iSum_ticks);
+  }
+  iStart = Hardware::iReadTsc(&uProc_start);
+
   // position on entry prior to given key in the found H0 leaf buffer
 
   Ent* aEnt_H0;
@@ -2924,9 +2962,15 @@ Ent* IndexTree::aFindEntry_CS2_v26(IndexTree* pIndexTree, Key* aKey_find)
   iElm0_find = ELM0_OF_KEY(aKey_find);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  iSample = Hardware::iReadTsc(&uProc_sample);
+  if (uProc_sample == uProc_start) {
+    iSum_ticks += (iSample - iStart);
+    vTrace("aFindEntry_CS2_v26 [2] %lld (%lld)\n"_Stz, iSample-iStart, iSum_ticks);
+  }
+  iStart = Hardware::iReadTsc(&uProc_start);
 
   aEnt_H0_scan = (Ent_int*)aSkipRoots_H0;
-  for (i4 i_Level = 2; i_Level >= 0; i_Level--) {
+  for (i4 i_Level = nLvlLevels - 1; i_Level >= 0; i_Level--) {
     for (tET tEnt_H0_next = NEXT_TICKET(aEnt_H0_scan, i_Level);
          ! END_TICKET(tEnt_H0_next);
          tEnt_H0_next = NEXT_TICKET(aEnt_H0_scan, i_Level)) {
@@ -2942,6 +2986,13 @@ Ent* IndexTree::aFindEntry_CS2_v26(IndexTree* pIndexTree, Key* aKey_find)
     }
   }
   aEnt_H0 = (Ent*)aEnt_H0_scan;
+
+  iSample = Hardware::iReadTsc(&uProc_sample);
+  if (uProc_sample == uProc_start) {
+    iSum_ticks += (iSample - iStart);
+    vTrace("aFindEntry_CS2_v26 [3] %lld (%lld)\n"_Stz, iSample-iStart, iSum_ticks);
+  }
+  iStart = Hardware::iReadTsc(&uProc_start);
 
   ///////////////////////////////////////////////////////////////////////////
 
@@ -2961,6 +3012,13 @@ Ent* IndexTree::aFindEntry_CS2_v26(IndexTree* pIndexTree, Key* aKey_find)
     // move to first entry in that H0 buffer
     NEXT_ENTRY(aEnt_H0,(&pEntBuffer_H0->m_xSkipRoots),0,pEntBuffer_H0);
   }
+
+  iSample = Hardware::iReadTsc(&uProc_sample);
+  if (uProc_sample == uProc_start) {
+    iSum_ticks += (iSample - iStart);
+    vTrace("aFindEntry_CS2_v26 [4] %lld (%lld)\n"_Stz, iSample-iStart, iSum_ticks);
+  }
+  iStart = Hardware::iReadTsc(&uProc_start);
 
   ///////////////////////////////////////////////////////////////////////////
 

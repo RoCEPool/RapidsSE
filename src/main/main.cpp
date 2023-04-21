@@ -76,6 +76,8 @@ int main(int argc, char* argv[])
 //  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
 
 
+  printf("sizeof(Ent) %lld\n",(i8)sizeof(Ent));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //signal(SIGPIPE, SIG_IGN);

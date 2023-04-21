@@ -195,6 +195,13 @@ void SeDeputy::vDeputyLoop(void)
       //pInpTknVec->vDumpVec();
       //pInpTagSet->vDumpSet();
 
+      i8 iStart;
+      i8 iEnd;
+      u4 uProc_start;
+      u4 uProc_end;
+      iStart = Hardware::iReadTsc(&uProc_start);
+
+
       m_eError = Api::eForkJobChild(tChildJobId,
                                     pInpTknVec, pInpTagSet,
                                     tParentId, tOriginId, tDistId,
@@ -218,6 +225,13 @@ void SeDeputy::vDeputyLoop(void)
       // process the output bufferQueue
       if (bIsPipeline)
         m_pRootJob->vProcessOutput();
+
+
+      iEnd = Hardware::iReadTsc(&uProc_end);
+      if (uProc_end == uProc_start) {
+        vTrace("Ticks %lld\n"_Stz, iEnd-iStart);
+     }
+
 
       vReportTime();
 

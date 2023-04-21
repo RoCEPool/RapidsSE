@@ -184,7 +184,8 @@ i8 RndLib::iSkipLevel(i8 nLvlLevels, i8 iLvlRatio)
   
 
   i8 iLevel = 1;
-  for (i8 iGrp = 0; iGrp < iLvlRatio; iGrp++) {
+//for (i8 iGrp = 0; iGrp < iLvlRatio; iGrp++) {
+  for (i8 iGrp = 0; iGrp < nLvlLevels; iGrp++) {
     //vTrace("uPattern: %s\n"_Stz,spBits.sz(uPattern));
     u8 uGrpBits = uPattern & uRatioMask;
     //vTrace("uGrpBits: %s\n"_Stz,spBits.sz(uGrpBits));
@@ -199,6 +200,9 @@ i8 RndLib::iSkipLevel(i8 nLvlLevels, i8 iLvlRatio)
   
   //if (iLevel > 3)
   //  vDebugPoint();
+
+//  if (6 == iLevel)
+//    vDebugPoint();
 
   return iLevel;
 }

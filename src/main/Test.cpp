@@ -2350,18 +2350,34 @@ void vCmdLineTest0(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
+  static i8 iSum_ticks = 0;
+
+  static const i8 n_INSERTS = 10000000;
+  i8 iStart;
+  i8 iEnd;
+  u4 uProc_start;
+  u4 uProc_end;
+
+  iStart = Hardware::iReadTsc(&uProc_start);
+
   i8 iErrorCode;
 
   Ent xEnt(CN_ENT,sizeof(Ent));
   xEnt.vKind(KE_INT);
 
-  for (i8 i = 0; i < 1000000; i++) {
+  for (i8 i = 0; i < n_INSERTS; i++) {
 
     xEnt.vIntElm0(i);
     RASSERT(KE_INT == xEnt.eKind());
     RASSERT(xEnt.iIntElm0() == i);
 
     IndexTree::aInsertEnt(pIndexTree,&xEnt,&iErrorCode);
+  }
+  iEnd = Hardware::iReadTsc(&uProc_end);
+  if (uProc_end == uProc_start) {
+    iSum_ticks += (iEnd - iStart);
+    vTrace("aInsertEntry %lld (%lld)\n"_Stz, iEnd-iStart, iSum_ticks);
   }
 
 
@@ -2375,12 +2391,16 @@ void vCmdLineTest0(void)
   if (pEnt)
     vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
 
-  for (i8 i = 3; i < 1000000; i = i*3) {
+
+  //for (i8 i = 3; i < 1000000; i = i*2) {
+  for (i8 i = 3; i < n_INSERTS; i += 10000) {
     xEnt.vIntElm0(i);
     Ent *pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey());
     if (pEnt)
       vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
   }
+
+
 
   xEnt.vIntElm0(667766);
   pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey());

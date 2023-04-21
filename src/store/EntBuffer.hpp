@@ -246,7 +246,8 @@ namespace STORE
     i8          nSkipLength(i8 i_Level);
     void        vSkipLengths(i8& iL0Length_, i8& iL1Length_,
                              i8& iL2Length_, i8& iL3Length_,
-                             i8& iL4Length_, i8& iL5Length_);
+                             i8& iL4Length_, i8& iL5Length_,
+                             i8& iL6Length_);
     void        vSpliceAfter(EntBuffer* pSplicedBuffer);
     void        vTruncate(void);
     EntBuffer*  pUnlinkSubList(void);
