@@ -34,12 +34,25 @@
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 {
+  static i8 iSum = 0;
 
   IndexDef* pIndexDef = pIndexTree->pIndexDef();
 
-  if (KE_INT == pIndexDef->eKeyKind())
-    return aFindEntry_CS2_v26(pIndexTree,aKey);
+  if (KE_INT == pIndexDef->eKeyKind()) {
+    Timer xTimer;
+    xTimer.vStart();
 
+    Ent* aEnt =  aFindEntry_CS2_v26(pIndexTree, aKey);
+
+    xTimer.vUpdate();
+    iSum += xTimer.iNanoseconds();
+    vTrace("aFindEntry_CS2_v26 %lldns (%lldns)\n"_Stz,xTimer.iNanoseconds(),iSum);
+
+    return aEnt;
+  }
+
+  Timer xTimer;
+  xTimer.vStart();
 
   EntBuffer* pEntBuffer = nullptr;
   eKC eCmp;
@@ -72,6 +85,10 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
     else
       eCmp = KC_AFTER;
   }
+
+  xTimer.vUpdate();
+  iSum += xTimer.iNanoseconds();
+  vTrace("aFindEntry %lldns (%lldns)\n"_Stz,xTimer.iNanoseconds(),iSum);
 
   if (eCmp == KC_SAME)
     return aEnt;
