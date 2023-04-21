@@ -1,44 +1,49 @@
 /*============================================================================*/
-/* Card_HshCol.cpp -- Hash Column                                             */
+/* Card_StreamHead.cpp -- Stream Head (head of stream sequence)               */
 /*============================================================================*/
 
-#include "Card_HshCol.hpp"
-#include "CardIter.hpp"
+#include "Card_StreamHead.hpp"
+
+#include "Card_BoolCalc.hpp"
+#include "Card_CmpPred.hpp"
+#include "Card_Table.hpp"
+#include "Card_Term.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_HshCol, CK_HSHCOL)
-__aNewFunction(Card_HshCol, CN_CARD)
-__vDeleteFunction(Card_HshCol, CN_CARD)
+__pCastFunction_Card(STORE, Card_StreamHead, CK_STREAMHEAD)
+__aNewFunction(Card_StreamHead, CN_CARD)
+__vDeleteFunction(Card_StreamHead, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_HshCol::Card_HshCol(void)
-: Card(CK_HSHCOL)
+Card_StreamHead::Card_StreamHead(void)
+: Card(CK_STREAMHEAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-          
+
   _checkInitialised_(CN_CARD);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_HshCol::~Card_HshCol(void) noexcept(false)
+Card_StreamHead::~Card_StreamHead(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*============================================================================*/
+//*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

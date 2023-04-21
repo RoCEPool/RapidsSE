@@ -33,6 +33,25 @@ Card_COL::~Card_COL(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a replicated $c.n ?                                         */
+/*----------------------------------------------------------------------------*/
+bool Card_COL::bIsReplicated(Symbol* aCol)
+{
+  if (! aCol)
+    return false;
+
+  if (! aCol->bIsTableColumn())
+    return false;
+
+  char cTblSyn = aCol->cGetTableSyn();
+  if (cTblSyn >= 'A' && cTblSyn <= 'Z')
+    return true;
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_COL::bMatchingTblSyn(Symbol *pArg_a, Symbol *pArg_b)

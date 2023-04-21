@@ -2327,6 +2327,94 @@ void vTest64(void)
 {
 }
 
+
+
+
+#include "Index.hpp"
+#include "SP_Ent.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test0                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest0(void)
+{
+  printf("vCmdLineTest0\n");
+
+  IndexDef* pIndexDef = new IndexDef;
+  pIndexDef->vAddColumn("Int"_Stz,CT_INTEGER);
+
+  Index* pIndex = new Index("Flat"_Stz);
+  pIndex->vIndexDef(pIndexDef);
+
+  IndexTree* pIndexTree = new IndexTree(pIndex,pIndexDef,0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 iErrorCode;
+
+  Ent xEnt(CN_ENT,sizeof(Ent));
+  xEnt.vKind(KE_INT);
+
+  for (i8 i = 0; i < 1000000; i++) {
+
+    xEnt.vIntElm0(i);
+    RASSERT(KE_INT == xEnt.eKind());
+    RASSERT(xEnt.iIntElm0() == i);
+
+    IndexTree::aInsertEnt(pIndexTree,&xEnt,&iErrorCode);
+  }
+
+
+  //pIndexTree->vDump(false);
+
+  SP_Ent sp_ent;
+  Ent *pEnt;
+
+  xEnt.vIntElm0(0);
+  pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey());
+  if (pEnt)
+    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+
+  for (i8 i = 3; i < 1000000; i = i*3) {
+    xEnt.vIntElm0(i);
+    Ent *pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey());
+    if (pEnt)
+      vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+  }
+
+  xEnt.vIntElm0(667766);
+  pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey());
+  if (pEnt)
+    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+  xEnt.vIntElm0(667767);
+  pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey());
+  if (pEnt)
+    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  delete pIndexTree;
+  delete pIndex;
+  //delete pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test1                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest1(void)
+{
+  printf("vCmdLineTest1\n");
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test2                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest2(void)
+{
+  printf("vCmdLineTest2\n");
+
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_JoinPermSeq.hpp -- Join Permutation Sequence                          */
+/* Card_StreamPer.hpp -- Stream Permutation Sequence                          */
 /*============================================================================*/
 #pragma once
 
@@ -9,25 +9,25 @@
 
 namespace STORE
 {
-   class Card_JoinPermSeq : public Card
+   class Card_StreamPer : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_JoinPermSeq(void);
-   ~Card_JoinPermSeq(void) noexcept(false);
+    Card_StreamPer(void);
+   ~Card_StreamPer(void) noexcept(false);
 
-     void vEstQueryCost(Card_TableList* p_tableList,
-                        Card_FiltPredList* p_filtPredList);
+     void vEstStreamCost(Card_TableList* p_tableList,
+                         Card_FiltPredList* p_filtPredList);
 
-     eXK eLocusCast(Card_TableList* p_tableList,
-                    Card_JoinLocus* p_joinLocus_prev,
-                    Card_JoinLocus* p_joinLocus);
+     eXK eJoinCast(Symbol*         p_Y_streamPtn_running,
+                   Card_TableList* p_tableList,
+                   Card_StreamJoin* p_streamJoin);
 
-     i8 iOnePermutedJoin(Card_TableList*    p_tableList,
-                           Card_JoinPredList* p_joinPredList,
-                           PermGen*           pPermGen);
+     i8 iCreatePerSeq(Card_TableList*    p_tableList,
+                      Card_JoinPredList* p_joinPredList,
+                      PermGen*           pPermGen);
 
      i8 iOnePermutedJoin_v2(Card_TableList*    p_tableList,
                          Card_JoinPredList* p_joinPredList,
@@ -35,14 +35,14 @@ namespace STORE
 
      bool bHasKnownJoin(char cTblSyn);
 
-     bool bIsLessLoad(Card_JoinPermSeq* p_joinPermSeq_arg);
+     bool bIsLessCost(Card_StreamPer* p_joinPermSeq_arg);
 
      bool bUnicastPermitted(char cTblSyn_prior,
                             char cTblSyn_prev,
                             char cTblSyn_locus);
    };
 
-  Card_JoinPermSeq* _pCard_JoinPermSeq(void* aAddr);
+  Card_StreamPer* _pCard_StreamPer(void* aAddr);
 }
 
 /*============================================================================*/

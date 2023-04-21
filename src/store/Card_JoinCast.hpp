@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CostQuery.hpp -- Estimate Cost for Query                              */
+/* Card_JoinCast.hpp -- How buffers were cast to a join locus                */
 /*============================================================================*/
 #pragma once
 
@@ -7,19 +7,17 @@
 
 namespace STORE
 {
-  class Card_CostQuery : public Card
+  class Card_JoinCast : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CostQuery(void);
-   ~Card_CostQuery(void) noexcept(false);
-
-    bool bIsLessLoad(Card_CostQuery* p_costQuery_arg);
+    Card_JoinCast(void);
+   ~Card_JoinCast(void) noexcept(false);
   };
 
-  Card_CostQuery* _pCard_CostQuery(void* aAddr);
+  Card_JoinCast* _pCard_JoinCast(void* aAddr);
 }
 
 /*============================================================================*/

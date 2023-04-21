@@ -114,11 +114,14 @@ namespace STORE
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
-    Card_LocusCast *     p_locusCast;
     Card_CmpPred *       p_cmpPred;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
     Card_Correlation *   p_correlation;
+    Card_CostJoining *   p_costJoining;
+    Card_CostNetwork *   p_costNetwork;
+    Card_CostStream *     p_costQuery;
+    Card_CostUnicast *   p_costUnicast;
     Card_CrossJoin *     p_crossJoin;
 
     Card_Direction *     p_direction;
@@ -147,12 +150,9 @@ namespace STORE
     Card_IndexNm *       p_indexNm;
     Card_IndexScan *     p_indexScan;
 
-    Card_DataStart *     p_dataStart;
-    Card_JoinLocus *     p_joinLocus;
+    Card_JoinEstimate *  p_joinEstimate;
     Card_JoinOrder *     p_joinOrder;
     Card_JoinOrdering *  p_joinOrdering;
-    Card_JoinPermAll *   p_joinPermAll;
-    Card_JoinPermSeq *   p_joinPermSeq;
     Card_JoinPredList *  p_joinPredList;
 
     Card_Key *           p_key;
@@ -161,11 +161,6 @@ namespace STORE
 
     Card_Level *         p_level;
     Card_Limit *         p_limit;
-    Card_CostLocus *     p_costLocus;
-    Card_CostJoining *   p_costJoining;
-    Card_CostNetwork *   p_costNetwork;
-    Card_CostQuery *     p_costQuery;
-    Card_CostUnicast *   p_costUnicast;
 
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
@@ -189,15 +184,20 @@ namespace STORE
     Card_Scan *          p_scan;
     Card_Section *       p_section;
     Card_Send *          p_send;
-    Card_TableSize *     p_tableSize;
     Card_Sort *          p_sort;
     Card_Stage *         p_stage;
+    Card_JoinCast *    p_streamCast;
+    Card_StreamHead *    p_streamHead;
+    Card_StreamJoin *    p_streamJoin;
+    Card_StreamPer *     p_streamPrm;
+    Card_StreamSet *  p_streamPrmAll;
     Card_SubSet *        p_subSet;
 
     Card_Table *         p_table;
     Card_TableList *     p_tableList;
     Card_TableNm *       p_tableNm;
     Card_TablePtn *      p_tablePtn;
+    Card_TableSize *     p_tableSize;
     Card_Term *          p_term;
     Card_Top *           p_top;
     Card_Topology *      p_topology;

@@ -50,21 +50,21 @@ Card_JoinOrdering::~Card_JoinOrdering(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
+Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_StreamPer* p_streamPer)
 {
   _static_
 
   s32 sTableSyn;
 
-  Card_JoinPermSeq* p_joinPermSeq_dup =
-      _pCard_JoinPermSeq(p_joinPermSeq->pDupCardRecursive());
+  Card_StreamPer* p_joinPermSeq_dup =
+      _pCard_StreamPer(p_streamPer->pDupCardRecursive());
 
   p_joinPermSeq_dup->vCard(CK_JOINORDERING);
 
   Card_JoinOrdering* p_joinOrdering = _pCard_JoinOrdering(p_joinPermSeq_dup);
 
-  p_joinOrdering->vMorphChildrenTo(CK_DATASTART, CK_JOINORDER);
-  p_joinOrdering->vMorphChildrenTo(CK_JOINLOCUS, CK_JOINORDER);
+  p_joinOrdering->vMorphChildrenTo(CK_STREAMHEAD, CK_JOINORDER);
+  p_joinOrdering->vMorphChildrenTo(CK_STREAMJOIN, CK_JOINORDER);
 
   return p_joinOrdering;
 }
@@ -72,11 +72,11 @@ Card_JoinOrdering* Card_JoinOrdering::pDerive(Card_JoinPermSeq* p_joinPermSeq)
 /*----------------------------------------------------------------------------*/
 /* pick optimal join ordering from join permutation set                       */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll, i8 iJoinOrder)
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll, i8 iJoinOrder)
 {
   _static_
 
-  Card_JoinPermSeq* p_joinPermSeq = p_joinPermAll->pJoinOrder(iJoinOrder);
+  Card_StreamPer* p_joinPermSeq = p_joinPermAll->pJoinOrder(iJoinOrder);
 
   // is it a valid join order ?
   if ( ! p_joinPermSeq )
@@ -90,11 +90,11 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll, i8 
 /*----------------------------------------------------------------------------*/
 /* pick optimal join ordering from join permutation set                       */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pPick(Card_JoinPermAll* p_joinPermAll)
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll)
 {
   _static_
 
-  Card_JoinPermSeq* p_joinPermSeq_lowest = p_joinPermAll->pLowestLoad();
+  Card_StreamPer* p_joinPermSeq_lowest = p_joinPermAll->pLowestCost();
 
   Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq_lowest);
 
@@ -114,7 +114,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_CostQuery*   p_costQuery   = pSub_costQuery();
+  Card_CostStream*   p_costQuery   = pSub_costQuery();
   Card_CostNetwork* p_costNetwork = p_costQuery->pSub_costNetwork();
   Card_CostUnicast* p_costUnicast = p_costQuery->pSub_costUnicast();
 
@@ -140,12 +140,12 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   while (xCI.G_bEachMain(CK_JOINORDER)) {
     char cNextTable = xCI.G.p_joinOrder->cValue();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
-    xCI.G.p_costLocus = xCI.G.p_joinOrder->pSub_costLocus();
-    xCI.G.p_locusCast = xCI.G.p_costLocus->pSub_locusCast();
-    xCI.G.p_costUnicast = xCI.G.p_costLocus->pSub_costUnicast();
-    xCI.G.p_costNetwork = xCI.G.p_costLocus->pSub_costNetwork();
-    xCI.G.p_costJoining = xCI.G.p_costLocus->pSub_costJoining();
-    s32 sCast = xCI.G.p_locusCast->szValue();
+    xCI.G.p_joinEstimate = xCI.G.p_joinOrder->pSub_joinEstimate();
+    xCI.G.p_streamCast = xCI.G.p_joinEstimate->pSub_locusCast();
+    xCI.G.p_costUnicast = xCI.G.p_joinEstimate->pSub_costUnicast();
+    xCI.G.p_costNetwork = xCI.G.p_joinEstimate->pSub_costNetwork();
+    xCI.G.p_costJoining = xCI.G.p_joinEstimate->pSub_costJoining();
+    s32 sCast = xCI.G.p_streamCast->szValue();
     StrLib::vShuffleLeft(sCast.azChar(),3);
 
     if (bNumbers)
@@ -162,7 +162,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   }
 
   // the load
-//  Card_CostQuery* p_costQuery = pSub_costQuery();
+//  Card_CostStream* p_costQuery = pSub_costQuery();
 //  Card_CostNetwork* p_costNetwork = p_costQuery->pSub_costNetwork();
 //  Card_CostUnicast* p_costUnicast = p_costQuery->pSub_costUnicast();
 //

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_LocusCast.hpp -- How buffers were cast to a join locus                */
+/* Card_StreamHead.hpp -- Stream Head (head of stream sequence)               */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_LocusCast : public Card
+   class Card_StreamHead : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_LocusCast(void);
-   ~Card_LocusCast(void) noexcept(false);
-  };
+    Card_StreamHead(void);
+   ~Card_StreamHead(void) noexcept(false);
+   };
 
-  Card_LocusCast* _pCard_LocusCast(void* aAddr);
+  Card_StreamHead* _pCard_StreamHead(void* aAddr);
 }
 
 /*============================================================================*/

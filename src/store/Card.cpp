@@ -1624,13 +1624,13 @@ Card_Bounds* Card::pSub_bounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_LocusCast.hpp"
-Card_LocusCast* Card::pSub_locusCast(void)
+#include "Card_JoinCast.hpp"
+Card_JoinCast* Card::pSub_locusCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_LocusCast* p_castNext =
-      _pCard_LocusCast(pFindSubCard(CK_LOCUSCAST));
+  Card_JoinCast* p_castNext =
+      _pCard_JoinCast(pFindSubCard(CK_JOINCAST));
   return p_castNext;
 }
 
@@ -1936,14 +1936,14 @@ Card_Level* Card::pSub_level(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CostLocus.hpp"
-Card_CostLocus* Card::pSub_costLocus(void)
+#include "Card_JoinEstimate.hpp"
+Card_JoinEstimate* Card::pSub_joinEstimate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CostLocus* p_costLocus =
-      _pCard_CostLocus(pFindSubCard(CK_COSTLOCUS));
-  return p_costLocus;
+  Card_JoinEstimate* p_joinCost =
+      _pCard_JoinEstimate(pFindSubCard(CK_JOINESTIMATE));
+  return p_joinCost;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1976,13 +1976,13 @@ Card_CostNetwork* Card::pSub_costNetwork(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-#include "Card_CostQuery.hpp"
-Card_CostQuery* Card::pSub_costQuery(void)
+#include "Card_CostStream.hpp"
+Card_CostStream* Card::pSub_costQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_CostQuery* p_costQuery =
-      _pCard_CostQuery(pFindSubCard(CK_COSTQUERY));
+  Card_CostStream* p_costQuery =
+      _pCard_CostStream(pFindSubCard(CK_COSTSTREAM));
   return p_costQuery;
 }
 
@@ -2599,21 +2599,6 @@ bool Symbol::bIsCorrParam(void)
   else
     return false;
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a replicated $c.n ?                                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsReplicated(void)
-{
-  if (! bIsTableColumn())
-    return false;
-
-  char cTblSyn = cGetTableSyn();
-  if (cTblSyn >= 'A' && cTblSyn <= 'Z')
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

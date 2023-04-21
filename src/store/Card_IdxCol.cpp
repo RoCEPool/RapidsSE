@@ -4,7 +4,6 @@
 
 #include "Card_IdxCol.hpp"
 #include "Card_Term.hpp"
-#include "Column.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -19,7 +18,7 @@ __vDeleteFunction(Card_IdxCol, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IdxCol::Card_IdxCol(void)
-    : Card(CK_IDXCOL)
+    : Card_COL(CK_IDXCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

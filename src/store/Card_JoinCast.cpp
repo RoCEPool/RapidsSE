@@ -1,23 +1,23 @@
 /*============================================================================*/
-/* Card_LocusCast.cpp -- How buffers were cast to a join locus                 */
+/* Card_JoinCast.cpp -- How buffers were cast to a stream join              */
 /*============================================================================*/
 
-#include "Card_LocusCast.hpp"
+#include "Card_JoinCast.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_LocusCast, CK_LOCUSCAST)
-__aNewFunction(Card_LocusCast, CN_CARD)
-__vDeleteFunction(Card_LocusCast, CN_CARD)
+__pCastFunction_Card(STORE, Card_JoinCast, CK_JOINCAST)
+__aNewFunction(Card_JoinCast, CN_CARD)
+__vDeleteFunction(Card_JoinCast, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_LocusCast::Card_LocusCast(void)
-: Card(CK_LOCUSCAST)
+Card_JoinCast::Card_JoinCast(void)
+: Card(CK_JOINCAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -29,7 +29,7 @@ Card_LocusCast::Card_LocusCast(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_LocusCast::~Card_LocusCast(void) noexcept(false)
+Card_JoinCast::~Card_JoinCast(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

@@ -1,51 +1,43 @@
 /*============================================================================*/
-/* Card_CostLocus.cpp -- Estimate cost for a JoinNext of a Query               */
+/* Card_HshCol.cpp -- Hash Column                                             */
 /*============================================================================*/
 
-#include "Card_CostLocus.hpp"
-
-#include "Card_BoolCalc.hpp"
-#include "Card_CmpPred.hpp"
-#include "Card_CostNetwork.hpp"
-#include "Card_CostUnicast.hpp"
-#include "Card_Table.hpp"
-#include "Card_Term.hpp"
-
+#include "Card_HshCol.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_CostLocus, CK_COSTLOCUS)
-__aNewFunction(Card_CostLocus, CN_CARD)
-__vDeleteFunction(Card_CostLocus, CN_CARD)
+__pCastFunction_Card(STORE, Card_HshCol, CK_HSHCOL)
+__aNewFunction(Card_HshCol, CN_CARD)
+__vDeleteFunction(Card_HshCol, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CostLocus::Card_CostLocus(void)
-: Card(CK_COSTLOCUS)
+Card_HshCol::Card_HshCol(void)
+: Card_COL(CK_HSHCOL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
+          
   _checkInitialised_(CN_CARD);
-
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-/*-----------------------Ï-----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CostLocus::~Card_CostLocus(void) noexcept(false)
+Card_HshCol::~Card_HshCol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*============================================================================*/
 /* end                                                                        */

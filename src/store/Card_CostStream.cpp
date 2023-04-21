@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_CostQuery.cpp -- JLoad of join Permutation Sequence                 */
+/* Card_CostStream.cpp -- JLoad of join Permutation Sequence                 */
 /*============================================================================*/
 
-#include "Card_CostQuery.hpp"
+#include "Card_CostStream.hpp"
 
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
@@ -16,16 +16,16 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE, Card_CostQuery, CK_COSTQUERY)
-__aNewFunction(Card_CostQuery, CN_CARD)
-__vDeleteFunction(Card_CostQuery, CN_CARD)
+__pCastFunction_Card(STORE, Card_CostStream, CK_COSTSTREAM)
+__aNewFunction(Card_CostStream, CN_CARD)
+__vDeleteFunction(Card_CostStream, CN_CARD)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CostQuery::Card_CostQuery(void)
-: Card(CK_COSTQUERY)
+Card_CostStream::Card_CostStream(void)
+: Card(CK_COSTSTREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -37,7 +37,7 @@ Card_CostQuery::Card_CostQuery(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_CostQuery::~Card_CostQuery(void) noexcept(false)
+Card_CostStream::~Card_CostStream(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -49,7 +49,7 @@ Card_CostQuery::~Card_CostQuery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is this permutation sequence load less than given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Card_CostQuery::bIsLessLoad(Card_CostQuery* p_costQuery_arg)
+bool Card_CostStream::bIsLessCost(Card_CostStream* p_costQuery_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -65,6 +65,7 @@ bool Card_CostQuery::bIsLessLoad(Card_CostQuery* p_costQuery_arg)
   if (iCostNetwork_this > iCostNetwork_arg)
     return false;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_CostUnicast* p_costUnicast_this = pSub_costUnicast();
   Card_CostUnicast* p_costUnicast_arg  = p_costQuery_arg->pSub_costUnicast();

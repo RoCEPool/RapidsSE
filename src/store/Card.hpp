@@ -29,19 +29,19 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_LocusCast;
+  class Card_JoinCast;
   class Card_CmpPred;
   class Card_Combined;
   class Card_Constraint;
   class Card_Correlation;
-  class Card_CostLocus;
+  class Card_JoinEstimate;
   class Card_CostJoining;
   class Card_CostNetwork;
-  class Card_CostQuery;
+  class Card_CostStream;
   class Card_CostUnicast;
   class Card_CrossJoin;
 
-  class Card_DataStart;
+  class Card_StreamHead;
   class Card_Debug;
   class Card_Deck;
   class Card_Direction;
@@ -71,11 +71,11 @@ namespace STORE
   class Card_IndexNm;
   class Card_IndexScan;
 
-  class Card_JoinLocus;
+  class Card_StreamJoin;
   class Card_JoinOrder;
   class Card_JoinOrdering;
-  class Card_JoinPermAll;
-  class Card_JoinPermSeq;
+  class Card_StreamSet;
+  class Card_StreamPer;
   class Card_JoinPredList;
 
   class Card_Key;
@@ -225,7 +225,6 @@ namespace STORE
     bool bIsColumn(void);         // $n or $c.n
     bool bIsCorrParam(void);      // %n
     bool bIsRelnOp(void);         // <, <=, ... >
-    bool bIsReplicated(void);     // $c.n and c >= 'A' and c <= 'Z'
     bool bIsResult(void);         // #n
     bool bIsStreamColumn(void);   // $n
     bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
@@ -408,12 +407,12 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_LocusCast*     pSub_locusCast(void);
+    Card_JoinCast*     pSub_locusCast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
     Card_CrossJoin*     pSub_crossJoin(void);
-    Card_DataStart*     pSub_dataStart(void);
+    Card_StreamHead*     pSub_dataStart(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
@@ -430,17 +429,17 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
-    Card_JoinLocus*     pSub_joinLocus(void);
-    Card_JoinPermAll*   pSub_joinPermAll(void);
-    Card_JoinPermSeq*   pSub_joinPermList(void);
+    Card_StreamJoin*     pSub_joinLocus(void);
+    Card_StreamSet*   pSub_joinPermAll(void);
+    Card_StreamPer*   pSub_joinPermList(void);
     Card_Key*           pSub_key(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_Level*         pSub_level(void);
-    Card_CostLocus*     pSub_costLocus(void);
+    Card_JoinEstimate*     pSub_joinEstimate(void);
     Card_CostJoining*   pSub_costJoining(void);
     Card_CostNetwork*   pSub_costNetwork(void);
-    Card_CostQuery*     pSub_costQuery(void);
+    Card_CostStream*     pSub_costQuery(void);
     Card_CostUnicast*   pSub_costUnicast(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);

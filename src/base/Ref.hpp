@@ -9,6 +9,8 @@ namespace BASE
 {
   class Rrf : public NonProper
   {
+    friend class STORE::IndexTree;
+
   private:
     union {
       struct {

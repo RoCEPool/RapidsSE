@@ -23,13 +23,11 @@ enum eCK // card kind
   /* */ CK_CONSTRAINT,
   /* */ CK_CORRELATION,
   /* */ CK_COSTJOINING,
-  /* */ CK_COSTLOCUS,
   /* */ CK_COSTNETWORK,
-  /* */ CK_COSTQUERY,
+  /* */ CK_COSTSTREAM,
   /* */ CK_COSTUNICAST,
   /* */ CK_CROSSJOIN,
 
-  /* */ CK_DATASTART,
   /* */ CK_DEBUG,
   /* */ CK_DECK,
   /* */ CK_DIRECTION,
@@ -58,11 +56,10 @@ enum eCK // card kind
   /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
-  /* */ CK_JOINLOCUS,
+  /* */ CK_JOINCAST,
+  /* */ CK_JOINESTIMATE,
   /* */ CK_JOINORDER,
   /* */ CK_JOINORDERING,
-  /* */ CK_JOINPERMALL,
-  /* */ CK_JOINPERMSEQ,
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEY,
@@ -71,7 +68,6 @@ enum eCK // card kind
 
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
-  /* */ CK_LOCUSCAST,
 
   /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
@@ -98,6 +94,10 @@ enum eCK // card kind
   /* */ CK_SENDKIND,
   /* */ CK_SORT,
   /* */ CK_STAGE,
+  /* */ CK_STREAMHEAD,
+  /* */ CK_STREAMJOIN,
+  /* */ CK_STREAMPER,
+  /* */ CK_STREAMSET,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
@@ -140,13 +140,11 @@ static Stz* aCK[]
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
-  /* */ "CK_COSTLOCUS"_Stz,    // CK_COSTLOCUS
   /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
-  /* */ "CK_COSTQUERY"_Stz,    // CK_COSTQUERY
+  /* */ "CK_COSTSTREAM"_Stz,    // CK_COSTSTREAM
   /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
 
-  /* */ "CK_DATASTART"_Stz,    // CK_DATASTART
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
   /* */ "CK_DECK"_Stz,         // CK_DECK
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
@@ -175,11 +173,10 @@ static Stz* aCK[]
   /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
-  /* */ "CK_JOINLOCUS"_Stz,    // CK_JOINLOCUS
+  /* */ "CK_JOINCAST"_Stz,     // CK_JOINCAST
+  /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
   /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
   /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
-  /* */ "CK_JOINPERMALL"_Stz,  // CK_JOINPERMALL
-  /* */ "CK_JOINPERMSEQ"_Stz,  // CK_JOINPERMSEQ
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEY"_Stz,          // CK_KEY
@@ -188,7 +185,6 @@ static Stz* aCK[]
 
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
-  /* */ "CK_LOCUSCAST"_Stz,    // CK_LOCUSCAST
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
@@ -215,6 +211,10 @@ static Stz* aCK[]
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
+  /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
+  /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
+  /* */ "CK_STREAMPER"_Stz,    // CK_STREAMPER
+  /* */ "CK_STREAMSET"_Stz, // CK_STREAMSET
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -257,13 +257,11 @@ static Stz* aCK_short[]
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
   /* */ "correlation"_Stz,     // CK_CORRELATION
   /* */ "costJoining"_Stz,     // CK_COSTJOINING
-  /* */ "costLocus"_Stz,       // CK_COSTLOCUS
   /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
-  /* */ "costQuery"_Stz,       // CK_COSTQUERY
+  /* */ "costQuery"_Stz,       // CK_COSTSTREAM
   /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
-  /* */ "dataStart"_Stz,       // CK_DATASTART
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
@@ -292,11 +290,10 @@ static Stz* aCK_short[]
   /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
 
-  /* */ "joinLocus"_Stz,       // CK_JOINLOCUS
+  /* */ "joinCast"_Stz,        // CK_JOINCAST
+  /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE
   /* */ "joinOrder"_Stz,       // CK_JOINORDER
   /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
-  /* */ "joinPermAll"_Stz,     // CK_JOINPERMALL
-  /* */ "joinPermSeq"_Stz,     // CK_JOINPERMSEQ
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "key"_Stz,             // CK_KEY
@@ -305,7 +302,6 @@ static Stz* aCK_short[]
 
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
-  /* */ "locusCast"_Stz,       // CK_LOCUSCAST
 
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED
@@ -332,6 +328,10 @@ static Stz* aCK_short[]
   /* */ "sendKind"_Stz,        // CK_SENDKIND
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
+  /* */ "streamHead"_Stz,      // CK_STREAMHEAD
+  /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
+  /* */ "streamPer"_Stz,       // CK_STREAMPER
+  /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
   /* */ "subSet"_Stz,          // CK_SUBSET
 
   /* */ "table"_Stz,           // CK_TABLE
