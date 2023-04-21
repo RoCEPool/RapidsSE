@@ -100,6 +100,10 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  typedef long                    __darwin_time_t;"
       "\n  typedef __darwin_time_t         time_t;"
       "\n"
+      "\n  time_t mktime(struct tm *timeptr);"
+      "\n  struct tm *gmtime(const time_t *clock);"
+      "\n  time_t timegm(struct tm *timeptr);"
+      "\n"
       "\n  struct tm {"
       "\n  int tm_sec; /* seconds after the minute [0-60] */"
       "\n  int tm_min; /* minutes after the hour [0-59] */"
@@ -332,6 +336,10 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    union Flt_T fltArg1;"
       "\n    union Flt_T fltArg2;"
       "\n    union Flt_T fltArg3;"
+      "\n    union Ivl_T ivlArg1;"
+      "\n    union Ivl_T ivlArg2;"
+      "\n    union Ivl_T ivlArg3;"
+      "\n    union Ivl_T wIvlResult;"
       "\n    union Tsp_T xTsp1;"
       "\n    union Tsp_T xTsp2;"
       "\n    union Tsp_T xTsp3;"
@@ -341,9 +349,11 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-  "\n"
-  "";
+      "\n    void* aCrwJ;"
+      "\n    time_t iSecondsSincePosixEpoch;"
+      "\n    struct tm* pDateTime;"
+      "\n"
+      "";
 
   StrLib::vAppendString(&azStr, azFrag);
 }

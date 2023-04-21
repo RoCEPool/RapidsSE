@@ -153,18 +153,18 @@ TypeId WhenExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // First check that the predicate doesn't need coercing
   QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExprNode);
-  eCT ePredicateType = Expr::xTypeId(pPredicate, pRootNode).eCTVal();
+  TypeId xPredicateType = Expr::xTypeId(pPredicate, pRootNode);
 
-  if (ePredicateType == CT_NONE) {
+  if (xPredicateType == TypeId::xIdOf(CT_NONE)) {
     // This will try a coercion
-    return TypeId::xIdOf(ePredicateType);
+    return xPredicateType;
   }
 
   // Get the types of the result expression
   QueryNode* pResult = WhenExpr::pResultExpr(pExprNode);
-  eCT eResultType = Expr::xTypeId(pResult, pRootNode).eCTVal();
+  TypeId xResultType = Expr::xTypeId(pResult, pRootNode);
 
-  return TypeId::xIdOf(eResultType);
+  return xResultType;
 }
 
 /*----------------------------------------------------------------------------*/

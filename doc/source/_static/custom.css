@@ -1,0 +1,35 @@
+/* A stylesheet for overriding CSS in the default Sphinx template. */
+table#installation-modes tr td:nth-child(2), table#installation-modes tr td:nth-child(3) {
+    text-align: center;
+}
+
+table.docutils {
+    margin-bottom: 25px;
+}
+
+table.centered tr th, table.centered tr td {
+    text-align: center;
+}
+
+/* Make the caption "Table of Contents" look more like a heading */
+div#mastertoc p.caption {
+    margin-top: 50px;
+}
+div#mastertoc p.caption span.caption-text {
+    font-size: 180%;
+    font-family: Georgia, serif;
+    font-weight: normal;
+}
+
+table.widetable tbody {
+    font-size: 85%;
+}
+
+table.widetable td {
+    padding: 0.25em 0.4em;
+}
+
+/* The side bar has "Table of Contents" between "Navigation" and the first link. Hide it. */
+div.sphinxsidebarwrapper p.caption {
+    display: none
+}

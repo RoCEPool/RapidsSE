@@ -3,18 +3,18 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "eIV.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Wakeup::Wakeup(void)
-: Object(CN_WAKEUP)
+: Object(CN_WAKEUP),
+  m_wFrom(IV_SECOND),
+  m_wDuration(IV_SECOND),
+  m_wWakeup(IV_SECOND)
 {
   _precondition_(_MAGIC_,CN_WAKEUP,_FOOTER_);
-  
-  m_wFrom     = 0;
-  m_wDuration = 0;
-  m_wWakeup   = 0;
   
   _checkInitialised_(CN_WAKEUP);
   

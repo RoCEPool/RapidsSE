@@ -29,6 +29,7 @@
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
+#include "TagConstants.h"
 
 static const i8 C_CHUNK_BLOCK        = 2048;
 
@@ -49,6 +50,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
   vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
+  vAddStep("InfoSet[].detectLineEnding"_Stz, &Step::vInfoSetDetectLineEnding);
   vAddStep("InfoSet[].firstRow"_Stz,         &Step::vInfoSetFirstRow);
   vAddStep("InfoSet[].get"_Stz,              &Step::vInfoSetGet);
   vAddStep("InfoSet[].infoRows"_Stz,         &Step::vInfoSetInfoRows);
@@ -539,6 +541,72 @@ void Step::vInfoSetDelete(void)
   
   m_pLogicUnit->m_xpInfoSet = nullptr;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].detectLineEnding -- push line ending of the file onto data stack */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetDetectLineEnding(void)
+{
+  ENTRY();
+
+  Stz* szLineEnding = nullptr;
+
+  File* pFile = _pFile(*m_pLogicUnit->m_xpFile0);
+
+  i8 iBytesToRead = C_CHUNK_BLOCK;
+  i8 iBytesRead;
+
+  bool bGotCr = false;  // '\r'
+
+  // allocate a work area for reading in last block of chunk
+  char* aBlock = (char*)MemLib::aMallocBlock(C_CHUNK_BLOCK);
+
+  pFile->vSeek(0);
+  iBytesRead = pFile->nReadBytes(aBlock, iBytesToRead);
+  char* aEnd = &aBlock[iBytesRead];
+
+  while (iBytesRead > 0) {
+    for (char* aCrs = aBlock ; aCrs != aEnd; aCrs++) {
+
+      if (*aCrs == '\r') {
+        if (aCrs + 1 != aEnd) {
+          // There's at least one more character in the block
+          szLineEnding = (*(aCrs + 1) == '\n') ? "\r\n"_Stz : "\r"_Stz;
+          break;
+
+        } else {
+          // This is the last character in the block. We need to check the next block
+          bGotCr = true;
+        }
+
+      } else if (*aCrs == '\n') {
+        szLineEnding = bGotCr ? "\r\n"_Stz : "\n"_Stz;
+        break;
+
+      } else if (bGotCr) {
+        szLineEnding = "\r"_Stz;
+        break;
+      }
+    }
+
+    if (szLineEnding) {
+      break;
+    }
+
+    iBytesRead = pFile->nReadBytes(aBlock, iBytesToRead);
+  }
+
+  if (szLineEnding == nullptr) {
+    szLineEnding = "\n"_Stz;
+  }
+
+  // free the read block
+  MemLib::vFreeBlock(aBlock, C_CHUNK_BLOCK);
+
+  m_pDataStack->vPushStz(szLineEnding);
+
   EXIT();
 }
 

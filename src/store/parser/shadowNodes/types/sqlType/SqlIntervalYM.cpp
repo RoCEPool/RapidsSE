@@ -27,7 +27,7 @@ static Stz* C_SQLINTERVAL_DEFN = "/__root__/definitions/types/sqlType/intervalYM
 /*----------------------------------------------------------------------------*/
 /* Creates an instance of this type                                           */
 /*----------------------------------------------------------------------------*/
-PlanNode* SqlIntervalYM::pCreate()
+PlanNode* SqlIntervalYM::pCreate(TypeId xTypeId)
 {
   _static_
 
@@ -37,8 +37,8 @@ PlanNode* SqlIntervalYM::pCreate()
   QueryNode* pNode = new QueryNode(sName, C_SQLINTERVAL_DEFN);
 
   // Add in any common properties
-  // TODO: Set the correct typeId below
-  SqlType::vCreateCommon(pNode, TypeId::xIdOf(IV_YEAR_TO_MONTH));
+
+  SqlType::vCreateCommon(pNode, xTypeId);
 
   return pNode;
 }
@@ -52,7 +52,7 @@ void SqlIntervalYM::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   ASSERT(bIsOfType(pNode));
   UNUSED(pNode);
 
-  sBuf.vConcat("INTERVAL YEAR TO MONTH"_Stz);
+  sBuf.vConcat(szTypeName(pNode));
 }
 
 /*----------------------------------------------------------------------------*/

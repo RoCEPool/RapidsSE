@@ -254,7 +254,7 @@ function processArgs() {
     local dir="${OUTPUT_DIRS[$i]}"
 
     if [ "${dir:0:1}" != "/" ]; then
-      OUTPUT_DIRS[$i]="$(readlink -f "./${dir}")"
+      OUTPUT_DIRS[i]="$(readlink -f "./${dir}")"
     fi
   done
 

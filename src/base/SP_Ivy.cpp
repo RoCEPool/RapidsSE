@@ -1,20 +1,18 @@
 /*============================================================================*/
-/* SP_Ivl.cpp - Ivl sprint helper                                             */
+/* SP_Ivy.cpp - Ivy sprint helper                                             */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "SP_Ivl.hpp"
+#include "SP_Ivy.hpp"
+#include "eIV.h"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SP_Ivl::SP_Ivl(void)
+SP_Ivy::SP_Ivy(void)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
-  
-  // set default Ivl format
-  vFormat(F_IVL);
   
   _checkInitialised_(CN_SPSMALL);
   
@@ -24,7 +22,7 @@ SP_Ivl::SP_Ivl(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SP_Ivl::~SP_Ivl(void) noexcept(false)
+SP_Ivy::~SP_Ivy(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SPSMALL,_FOOTER_);
 }
@@ -34,30 +32,81 @@ SP_Ivl::~SP_Ivl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sprint Ivl and return Stz* to result                                       */
+/* sprint Ivy and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::sz(i8 iIvl)
+Stz* SP_Ivy::sz(i8 iIvy)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return sz(iIvl,0);
+  return sz(iIvy,0);
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint Ivl and return Stz* to result                                       */
+/* sprint Ivy and return Stz* to result                                       */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
+Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   UNUSED(iScale);
   
-  Ivl wIvl;
-  wIvl = iIvl;
+  Ivl wIvy{IV_YEAR};
+  wIvy = iIvy;
 
-  StrLib::vSprint(m_caResult,
-                  (Stz*)m_caFormat,
-                  wIvl.T.m_uSecond,
-                  wIvl.T.m_uMicro);
+  u8 uYears;
+  u8 uMonths;
+
+  switch(wIvy.T.m_xIvl.m_eType) {
+    case IV_YEAR:
+      uYears = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
+
+      if (wIvy.bIsNeg() && uYears)
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL -'%lld' %s",
+                        uYears,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      else
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL '%lld' %s",
+                        uYears,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      break;
+
+    case IV_MONTH:
+      uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
+
+      if (wIvy.bIsNeg() && uMonths)
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL -'%lld' %s",
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      else
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL '%lld' %s",
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      break;
+
+    case IV_YEAR_TO_MONTH:
+      uYears = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12;
+      uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
+
+      if (wIvy.bIsNeg() && (uYears || uMonths))
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL -'%lld-%lld' YEAR TO MONTH",
+                        uYears,
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      else
+        StrLib::vSprint(m_caResult,
+                        (Stz *) "INTERVAL '%lld-%lld' YEAR TO MONTH",
+                        uYears,
+                        uMonths,
+                        aIV_field[wIvy.T.m_xIvl.m_eType]);
+      break;
+
+    default:
+      NEVER_REACH;
+  }
 
   return (Stz*) &m_caResult[0];
 }
@@ -70,7 +119,7 @@ Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* max                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::szMax(void)
+Stz* SP_Ivy::szMax(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -80,7 +129,7 @@ Stz* SP_Ivl::szMax(void)
 /*----------------------------------------------------------------------------*/
 /* mid                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::szMid(void)
+Stz* SP_Ivy::szMid(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -90,7 +139,7 @@ Stz* SP_Ivl::szMid(void)
 /*----------------------------------------------------------------------------*/
 /* min                                                                        */
 /*----------------------------------------------------------------------------*/
-Stz* SP_Ivl::szMin(void)
+Stz* SP_Ivy::szMin(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -105,7 +154,7 @@ Stz* SP_Ivl::szMin(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SP_Ivl::aFooter(void)
+Footer* SP_Ivy::aFooter(void)
 {
   _precondition_(_MAGIC_,CN_SPSMALL);
   

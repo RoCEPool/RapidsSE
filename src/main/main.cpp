@@ -111,6 +111,7 @@ int main(int argc, char* argv[])
       //       cluster running on the machine. The --killPrev also ensures that there is
       //       only one instance of this running on the current machine.
       // ********************************************************************************
+      IntLib::vInitGlobals();
       u8 uRndClusterId = RndLib::uInteger(C_I8_MAX);
       sSeArgs.vSprint(
           "--start "
@@ -177,6 +178,7 @@ int main(int argc, char* argv[])
   // Set the default clock type for Hardware::iReadClock().
   // This needs to be done after IntLib::vInitGlobals() above.
   Hardware::vChooseClockType();
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

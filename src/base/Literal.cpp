@@ -9,7 +9,8 @@
 #include "SP_Dte.hpp"
 #include "SP_Flt.hpp"
 #include "SP_Int.hpp"
-#include "SP_Ivl.hpp"
+#include "SP_Ivd.hpp"
+#include "SP_Ivy.hpp"
 #include "SP_Tme.hpp"
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
@@ -44,7 +45,7 @@ bool Literal::bToCell(Dtm* aCell, Column* pCol,
     case DM_DTE: b = bToCellDte(aCell,aazCrs,pFmt); break;
     case DM_FLT: b = bToCellFlt(aCell,aazCrs,pFmt); break;
     case DM_INT: b = bToCellInt(aCell,aazCrs,pFmt); break;
-    case DM_IVL: b = bToCellIvl(aCell,aazCrs,pFmt); break;
+    case DM_IVD: b = bToCellIvl(aCell,aazCrs,pFmt); break;
     case DM_IVY: NEVER_REACH;                       break;
     case DM_TME: b = bToCellTme(aCell,aazCrs,pFmt); break;
     case DM_TSP: b = bToCellTsp(aCell,aazCrs,pFmt); break;
@@ -109,14 +110,15 @@ void Literal::vSprint(Stz *szTgt, Dtm *avSrc, Column *pCol)
       break;
     }
       
-    case DM_IVL: {
-      SP_Ivl spIvl;
-      StrLib::vCopy(az,(char*)spIvl.sz(iValue));
+    case DM_IVD: {
+      SP_Ivd spIvd;
+      StrLib::vCopy(az,(char*)spIvd.sz(iValue));
       break;
     }
       
     case DM_IVY: {
-      NEVER_REACH;
+      SP_Ivy spIvy;
+      StrLib::vCopy(az,(char*)spIvy.sz(iValue));
       break;
     }
       

@@ -1,6 +1,65 @@
 /*============================================================================*/
 /* _alka                                                                      */
 /*============================================================================*/
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+load C "../DATA/Select/select.csv";
+
+
+/joinPermutations
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+
+ /*
+expected rows:
+  ('A UNICAST B UNICAST C')
+  ('B UNICAST A UNICAST C')
+  ('B UNICAST C UNICAST A')
+  ('C UNICAST B UNICAST A')
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 create table datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -82,4 +141,6 @@ Load TABLE9 "../DATA/Load/tbl9data.csv";
 //explain stage transliterate select dec_col6 from datums;
 //explain stage transliterate select min(dec_col6) from datums;
 explain stage transliterate select min(dec_col6) from datums group by int_col0;
+
+*/
 
