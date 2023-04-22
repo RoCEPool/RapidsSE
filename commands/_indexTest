@@ -3,8 +3,8 @@
 /*============================================================================*/
 
 //tag default <tpch_dir> = "../tpch/sf_0001";
-//tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf1";
-tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf10";
+tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf1";
+//tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf10";
 tag default <suffix>   = "csv";
 __TPCH_SCHEMA_INDEX
 
