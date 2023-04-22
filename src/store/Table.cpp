@@ -335,8 +335,10 @@ void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
   UNUSED(pDataBuffer);
   
   TablePtn* pTblPtn = pTablePtn(0);
-  
-  pTblPtn->vAppendBuffer_replicated(pDataBuffer);
+
+  pDataBuffer->vLglPtn((LglPtn)0);
+
+  pTblPtn->vAppendBuffer(pDataBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

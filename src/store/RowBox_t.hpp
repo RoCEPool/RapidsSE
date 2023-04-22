@@ -168,7 +168,7 @@ RowBox_t<AREA>::RowBox_t(StreamDef* pStreamDef, bool bAddPtnHash)
 
   pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
 
-  pStreamDef->vToRowPix(m_pRowPix,bAddPtnHash);
+  pStreamDef->vToRowPix(pRowPix(),bAddPtnHash);
   
   m_nRowSizeProper = Row::nRowProper(pStreamDef->nColumns());
     
@@ -231,9 +231,9 @@ void RowBox_t<AREA>::vResolveRowPix(StreamDef* pStreamDef)
 
   pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
   
-  pStreamDef->vToRowPix(m_pRowPix,false);
+  pStreamDef->vToRowPix(pRowPix(),false);
   
-  m_nRowSizeProper = Row::nRowProper(m_pRowPix->m_nColumns);
+  m_nRowSizeProper = Row::nRowProper(pRowPix()->m_nColumns);
   
 }
 
@@ -248,7 +248,7 @@ Row* RowBox_t<AREA>::pAllotRow(void)
 {
   _poolAddress_(this); _footer_();
 
-  RASSERT(m_pRowPix);
+  RASSERT(pRowPix());
   
   m_nRowStringBytes = 0;
   m_i_ColCrs  = 0;
@@ -261,7 +261,7 @@ Row* RowBox_t<AREA>::pAllotRow(void)
   if (! m_aRowCur)
     return nullptr;
 
-  RASSERT((void*)m_aRowCur != (void*)m_pRowPix);
+  RASSERT((void*)m_aRowCur != (void*)pRowPix());
 
   // zero the row
   //MemLib::vZero(m_aRowCur,m_nRowSizeProper,CN_ROW);
@@ -309,7 +309,7 @@ ColPix* RowBox_t<AREA>::axaColPix(void)
 {
   _poolAddress_(this); _footer_();
   
-  return m_pRowPix->m_xaColPix;
+  return pRowPix()->m_xaColPix;
 }
 
 
@@ -323,7 +323,7 @@ void RowBox_t<AREA>::vCopyRowPix(RowPix* pRowPixSrc)
 
   pAllotRowPix(pRowPixSrc->nDynamicSize());
 
-  MemLib::vCopy(m_pRowPix,pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
+  MemLib::vCopy(pRowPix(),pRowPixSrc,sizeof(RowPix),CN_ROWBUFFER);
 
   m_nRowSizeProper = Row::nRowProper(pRowPixSrc->m_nColumns);
 }
@@ -336,21 +336,21 @@ void RowBox_t<AREA>::vCopyRow(Row* aRowSrc, bool bSrcHasPtnHash, bool bCopyPtnHa
 {
   _poolAddress_(this); _footer_();
   
-  ASSERT(m_pRowPix->m_bInitialised);
-  ASSERT(m_pRowPix->m_nColumns);
+  ASSERT(pRowPix()->m_bInitialised);
+  ASSERT(pRowPix()->m_nColumns);
 
   i8 iVal;
   Stz* szSrcStz;
   
   ASSERT(0 == m_i_ColCrs);
   
-  i8 nCols = m_pRowPix->m_nColumns;
+  i8 nCols = pRowPix()->m_nColumns;
   
   i8 i_Col;
   
   for (i_Col = 0; i_Col < nCols; i_Col++) {
     
-    eDM eDatum = (eDM)m_pRowPix->m_xaColPix[i_Col].m_uDatum;
+    eDM eDatum = (eDM)pRowPix()->m_xaColPix[i_Col].m_uDatum;
     
     if (DM_VCH == eDatum) {
        // vch datum
@@ -389,7 +389,7 @@ i8 RowBox_t<AREA>::iColumn(Row* aRow, i8 i_Col)
   i8 iVal;
   Stz* szSrcStz;
     
-  eDM eDatum = (eDM)m_pRowPix->m_xaColPix[i_Col].m_uDatum;
+  eDM eDatum = (eDM)pRowPix()->m_xaColPix[i_Col].m_uDatum;
     
   if (DM_VCH == eDatum) {
     // vch datum
@@ -424,7 +424,7 @@ i8 RowBox_t<AREA>::nColumns(void)
   _poolAddress_(this); _footer_();
 
 
-  return m_pRowPix->m_nColumns;
+  return pRowPix()->m_nColumns;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -561,7 +561,7 @@ Row* RowBox_t<AREA>::pFirstRow(void)
 {
   _poolAddress_(this); _footer_();
 
-  RASSERT(m_pRowPix);
+  RASSERT(pRowPix());
   
   Row* pRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
   
@@ -576,7 +576,7 @@ Row* RowBox_t<AREA>::pLastRow(void)
 {
   _poolAddress_(this); _footer_();
 
-  RASSERT(m_pRowPix);
+  RASSERT(pRowPix());
 
   Row* pRow = WspConvergent_t<AREA,Stz,Row>::aFirstItem();
   Row* pLastRow = nullptr;
@@ -597,7 +597,7 @@ Row* RowBox_t<AREA>::pNextRow(Row* pPriorRow)
 {
   _poolAddress_(this); _footer_();
 
-  RASSERT(m_pRowPix);
+  RASSERT(pRowPix());
 
   Row* pRow = WspConvergent_t<AREA,Stz,Row>::aAdjacentTail(pPriorRow,
                                                            m_nRowSizeProper);
@@ -816,7 +816,7 @@ i8 RowBox_t<AREA>::nExtraCols(void)
 {
   _poolAddress_(this); _footer_();
 
-  return m_pRowPix->m_nExtraCols;
+  return pRowPix()->m_nExtraCols;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -830,9 +830,9 @@ void RowBox_t<AREA>::vInitPix(StreamDef* pStreamDef, bool bAddKeyHash)
   //pAllotRowPix(sizeof(RowPix));
   pAllotRowPix(pStreamDef->pRowPix()->nDynamicSize());
 
-  pStreamDef->vToRowPix(m_pRowPix,bAddKeyHash);
+  pStreamDef->vToRowPix(pRowPix(),bAddKeyHash);
   
-  m_nRowSizeProper = Row::nRowProper(m_pRowPix->m_nColumns);
+  m_nRowSizeProper = Row::nRowProper(pRowPix()->m_nColumns);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -871,7 +871,7 @@ void RowBox_t<AREA>::vNormaliseStrings(void)
 //for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
   for (i8 i_Col = 13; i_Col < 14; i_Col++) {
 
-    eDM eDatum = (eDM)m_pRowPix->m_xaColPix[i_Col].m_uDatum;
+    eDM eDatum = (eDM)pRowPix()->m_xaColPix[i_Col].m_uDatum;
     
     if (DM_VCH != eDatum)
       continue;
@@ -959,7 +959,7 @@ bool RowBox_t<AREA>::bPtnHash(void)
 {
   _poolAddress_(this); _footer_();
 
-  return m_pRowPix->m_bPtnHash;
+  return pRowPix()->m_bPtnHash;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -970,7 +970,7 @@ i8 RowBox_t<AREA>::iPtnOfRow(Row* aRow)
 {
   _poolAddress_(this); _footer_();
 
-  i8 i_HshCol = m_pRowPix->m_nColumns - 1;
+  i8 i_HshCol = pRowPix()->m_nColumns - 1;
     
   i8 i_Ptn = aRow->iColVal_int(i_HshCol);
   
@@ -1013,7 +1013,7 @@ i8 RowBox_t<AREA>::nRowProperBytes(void)
 {
   _poolAddress_(this); _footer_();
 
-  i8 nBytes = (m_pRowPix->m_nColumns + 1 /* dummy */ ) * C_BYTES_PER_WORD;
+  i8 nBytes = (pRowPix()->m_nColumns + 1 /* dummy */ ) * C_BYTES_PER_WORD;
   
   return nBytes;
 }
@@ -1082,7 +1082,10 @@ RowPix* RowBox_t<AREA>::pRowPix(void)
 {
   _poolAddress_(this); _footer_();
 
-  return m_pRowPix;
+  if( ! m_pRowPix)
+    return nullptr;
+
+  return reinterpret_cast<RowPix*>(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1091,6 +1094,7 @@ RowPix* RowBox_t<AREA>::pRowPix(void)
 template <i8 AREA>
 void RowBox_t<AREA>::vResetRowPix(void)
 {
+  // Arjun: Call this when paging in?
   _poolAddress_(this); _footer_();
 
   m_pRowPix = (RowPix*)WspConvergent_t<AREA,Stz,Row>::ayAux0();
@@ -1104,9 +1108,9 @@ void RowBox_t<AREA>::vZeroRow(Row *aRow)
 {
   _poolAddress_(this); _footer_();
   
-  RASSERT((void*)aRow != (void*)m_pRowPix);
+  RASSERT((void*)aRow != (void*)pRowPix());
 
-  i8 nCellBytes = m_pRowPix->m_nColumns * C_BYTES_PER_WORD;
+  i8 nCellBytes = pRowPix()->m_nColumns * C_BYTES_PER_WORD;
 
   MemLib::vZero(aRow->aCellArray(),nCellBytes,CN_ROWBUFFER);
 }
@@ -1123,7 +1127,7 @@ i8 RowBox_t<AREA>::i_RowBufferCell(i8 i_Row)
 {
   _poolAddress_(this); _footer_();
 
-  i8 i_Cell_slab = (i_Row + 1) * (m_pRowPix->m_nColumns + 1 /* Object */ );
+  i8 i_Cell_slab = (i_Row + 1) * (pRowPix()->m_nColumns + 1 /* Object */ );
   
   i8 i_CellHazard = AREA / C_BYTES_PER_WORD;
   

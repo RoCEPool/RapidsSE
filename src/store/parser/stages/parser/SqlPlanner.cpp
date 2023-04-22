@@ -1885,11 +1885,6 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
   } else if (pCtx->intervalLiteral()) {
     pLiteral = nullptr;
 
-    // Interval literals are disabled in releases for now
-    if (gpAttachMap->bDisablePromptCommands()) {
-      SemanticException::vThrow(EC_DISABLED_STATEMENT, ": INTERVAL literal"_Stz);
-    }
-
     // This is handled in visitYearMonthInterval and visitDayTimeInterval
     if (!pCtx->intervalLiteral()->yearMonthInterval() && !pCtx->intervalLiteral()->dayTimeInterval()) {
       NEVER_REACH

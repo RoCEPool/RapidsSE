@@ -8,7 +8,6 @@ namespace STORE {
     s32 m_sTableName;
     i8  m_iBucketNo;
     TablePtn* m_pTablePtn;
-    Bucket* m_pBucket;
 
     // must be last
     Footer m_xFooter;
@@ -18,7 +17,6 @@ namespace STORE {
 
     BucketGet(s32 sTblNm, i8 iBucket);
     BucketGet(TablePtn* pTablePtn);
-    BucketGet(TablePtn* pTablePtn, Bucket* pBucket);
     BucketGet(void);
     ~BucketGet(void) noexcept(false);
 

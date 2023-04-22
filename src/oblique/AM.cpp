@@ -390,6 +390,21 @@ JobId AM::DEMON::tNodeMonDemonJobId(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set jobId of the pageIn demon in AM                                        */
+/*----------------------------------------------------------------------------*/
+void AM::DEMON::vPageInDemonJobId(JobId tJobId) {
+  _static_
+  gpAttachMap->m_tPageInDemonJobId = tJobId;
+}
+/*----------------------------------------------------------------------------*/
+/* get jobId of the pageIn demon in AM                                        */
+/*----------------------------------------------------------------------------*/
+JobId AM::DEMON::tPageInDemonJobId(void) {
+  _static_
+  return gpAttachMap->m_tPageInDemonJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set jobId of the pageOut demon in AM                                       */
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vPageOutDemonJobId(JobId tJobId) {
@@ -1860,6 +1875,30 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
   return false;
 }
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                 PAGING                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*----------------------------------------------------------------------------*/
+/* pipe page in request to page in demon                                      */
+/*----------------------------------------------------------------------------*/
+InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
+{
+  _static_
+#ifdef WITH_PAGING
+  StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
+  if (! pStreamDef)
+    return nullptr;
+  InfoSet* pInfoSet = new InfoSet(pStreamDef);
+  pInfoSet->vOpInfoSet(OI_PAGEINREQUEST);
+  Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
+      ,pTask
+      ,oBufferId.m_iAsI8
+      ,C_VARGS_END);
+  return pInfoSet;
+#else
+  return nullptr;
+#endif
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PARCEL                                       */
@@ -4373,7 +4412,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_BUCKETGET:       eOperand = EV_D_BUCKETGET;      break;
     case CN_BUCKETINFO:       eOperand = EV_D_BUCKETINFO;      break;
     case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
-    //case CN_BUCKET:     eOperand = EV_D_BUCKET;      break;
 
     default:
       vTrace("iOperandEvKind() what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

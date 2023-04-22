@@ -11,9 +11,9 @@ create table nation (
 replicated
 ;
 
-/time loadReplicated nation "/Users/Shared/tpch/SF1/nation.csv" ;
+/time loadReplicated nation "../TPCH/SF1/nation.tbl" ;
 
-// select * from nation;
+select * from nation;
 
 /*============================================================================*/
 /* end                                                                        */
