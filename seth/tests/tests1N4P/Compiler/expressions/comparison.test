@@ -256,6 +256,68 @@ EXPLAIN SELECT INTERVAL '1' YEAR < INTERVAL '366' DAY FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
+// Single field intervals are automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY < 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY < 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 < 40 ; Ordinal Expr = 30 < 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR < 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' YEAR < 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 < 40 ; Ordinal Expr = 30 < 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND < 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' SECOND < 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 < 40 ; Ordinal Expr = 30 < 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Multiple field intervals cannot be automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH < 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR < 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE < 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND < 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval comparison <=
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -492,7 +554,67 @@ failure contains: 'Expression type combination is invalid or unsupported'
 EXPLAIN SELECT INTERVAL '1' YEAR <= INTERVAL '366' DAY FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
+// Single field intervals are automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY <= 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY <= 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 <= 40 ; Ordinal Expr = 30 <= 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR <= 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' YEAR <= 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 <= 40 ; Ordinal Expr = 30 <= 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND <= 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' SECOND <= 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 <= 40 ; Ordinal Expr = 30 <= 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Multiple field intervals cannot be automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH <= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR <= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE <= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND <= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -732,6 +854,67 @@ EXPLAIN SELECT INTERVAL '1' YEAR > INTERVAL '366' DAY FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
+// Single field intervals are automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY > 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY > 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 > 40 ; Ordinal Expr = 30 > 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR > 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' YEAR > 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 > 40 ; Ordinal Expr = 30 > 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND > 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' SECOND > 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 > 40 ; Ordinal Expr = 30 > 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Multiple field intervals cannot be automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH > 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR > 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE > 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND > 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -971,6 +1154,67 @@ EXPLAIN SELECT INTERVAL '1' YEAR >= INTERVAL '366' DAY FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
+// Single field intervals are automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY >= 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY >= 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 >= 40 ; Ordinal Expr = 30 >= 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR >= 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' YEAR >= 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 >= 40 ; Ordinal Expr = 30 >= 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND >= 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' SECOND >= 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 >= 40 ; Ordinal Expr = 30 >= 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Multiple field intervals cannot be automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH >= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR >= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE >= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND >= 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1210,7 +1454,67 @@ EXPLAIN SELECT INTERVAL '1' YEAR = INTERVAL '366' DAY FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
+// Single field intervals are automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY = 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY = 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 = 40 ; Ordinal Expr = 30 = 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR = 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' YEAR = 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 = 40 ; Ordinal Expr = 30 = 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND = 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' SECOND = 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 = 40 ; Ordinal Expr = 30 = 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Multiple field intervals cannot be automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH = 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR = 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE = 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND = 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval comparison !=
@@ -1449,6 +1753,67 @@ EXPLAIN SELECT INTERVAL '1' YEAR != INTERVAL '366' DAY FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
+// Single field intervals are automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY != 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY != 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 != 40 ; Ordinal Expr = 30 != 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' YEAR != 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' YEAR != 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 != 40 ; Ordinal Expr = 30 != 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' SECOND != 40 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' SECOND != 40 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 30 != 40 ; Ordinal Expr = 30 != 40) ; type: BOOLEAN
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Multiple field intervals cannot be automatically coerced to an integer
+EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH != 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR != 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2' HOUR TO MINUTE != 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND != 40 FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

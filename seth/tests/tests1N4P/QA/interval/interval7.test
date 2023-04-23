@@ -1,0 +1,665 @@
+
+create table interval6(a date,b timestamp,c time);
+success
+load interval6 "../DATA/QA/interval/interval6.csv";
+success
+
+select a,a-interval '1' year from interval6;
+rows:
+(date '2023-01-31',date  '2022-01-31')
+(date '2000-01-29',date  '1999-01-29')
+(date '2000-02-28',date  '1999-02-28')
+(date '2000-02-29',date  '1999-02-28')
+(date '2023-02-28',date  '2022-02-28')
+(date '2023-04-30',date  '2022-04-30')
+(date '2000-01-31',date  '1999-01-31')
+(date '2021-11-12',date  '2020-11-12')
+
+select a,a-interval '2' month from interval6;
+rows:
+(date '2023-01-31',date '2022-11-30')
+(date '2000-01-29',date '1999-11-29')
+(date '2000-02-28',date '1999-12-28')
+(date '2000-02-29',date '1999-12-29')
+(date '2023-02-28',date '2022-12-28')
+(date '2023-04-30',date '2023-02-28')
+(date '2000-01-31',date '1999-11-30')
+(date '2021-11-12',date '2021-09-12')
+
+
+select a,a-interval '13' month from interval6;
+rows:
+(date '2023-01-31',date '2021-12-31')
+(date '2000-01-29',date '1998-12-29')
+(date '2000-02-28',date '1999-01-28')
+(date '2000-02-29',date '1999-01-29')
+(date '2023-02-28',date '2022-01-28')
+(date '2023-04-30',date '2022-03-30')
+(date '2000-01-31',date '1998-12-31')
+(date '2021-11-12',date '2020-10-12')
+
+select a,a-interval '30' day from interval6;
+rows:
+(date '2023-01-31',date '2023-01-01')
+(date '2000-01-29',date '1999-12-30')
+(date '2000-02-28',date '2000-01-29')
+(date '2000-02-29',date '2000-01-30')
+(date '2023-02-28',date '2023-01-29')
+(date '2023-04-30',date '2023-03-31')
+(date '2000-01-31',date '2000-01-01')
+(date '2021-11-12',date '2021-10-13')
+
+
+select a,a-interval '31' hour from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-29 17:00:00')
+(date '2000-01-29',timestamp '2000-01-27 17:00:00')
+(date '2000-02-28',timestamp '2000-02-26 17:00:00')
+(date '2000-02-29',timestamp '2000-02-27 17:00:00')
+(date '2023-02-28',timestamp '2023-02-26 17:00:00')
+(date '2023-04-30',timestamp '2023-04-28 17:00:00')
+(date '2000-01-31',timestamp '2000-01-29 17:00:00')
+(date '2021-11-12',timestamp '2021-11-10 17:00:00')
+
+select a,a-interval '31' minute from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-30 23:29:00')
+(date '2000-01-29',timestamp '2000-01-28 23:29:00')
+(date '2000-02-28',timestamp '2000-02-27 23:29:00')
+(date '2000-02-29',timestamp '2000-02-28 23:29:00')
+(date '2023-02-28',timestamp '2023-02-27 23:29:00')
+(date '2023-04-30',timestamp '2023-04-29 23:29:00')
+(date '2000-01-31',timestamp '2000-01-30 23:29:00')
+(date '2021-11-12',timestamp '2021-11-11 23:29:00')
+
+select a,a-interval '4000' second from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-30 22:53:20')
+(date '2000-01-29',timestamp '2000-01-28 22:53:20')
+(date '2000-02-28',timestamp '2000-02-27 22:53:20')
+(date '2000-02-29',timestamp '2000-02-28 22:53:20')
+(date '2023-02-28',timestamp '2023-02-27 22:53:20')
+(date '2023-04-30',timestamp '2023-04-29 22:53:20')
+(date '2000-01-31',timestamp '2000-01-30 22:53:20')
+(date '2021-11-12',timestamp '2021-11-11 22:53:20')
+
+select a,a-interval '1-2' year to month from interval6;
+rows:
+(date '2023-01-31',date '2021-11-30')
+(date '2000-01-29',date '1998-11-29')
+(date '2000-02-28',date '1998-12-28')
+(date '2000-02-29',date '1998-12-29')
+(date '2023-02-28',date '2021-12-28')
+(date '2023-04-30',date '2022-02-28')
+(date '2000-01-31',date '1998-11-30')
+(date '2021-11-12',date '2020-09-12')
+
+select a,a-interval '1 2' day to hour from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-29 22:00:00')
+(date '2000-01-29',timestamp '2000-01-27 22:00:00')
+(date '2000-02-28',timestamp '2000-02-26 22:00:00')
+(date '2000-02-29',timestamp '2000-02-27 22:00:00')
+(date '2023-02-28',timestamp '2023-02-26 22:00:00')
+(date '2023-04-30',timestamp '2023-04-28 22:00:00')
+(date '2000-01-31',timestamp '2000-01-29 22:00:00')
+(date '2021-11-12',timestamp '2021-11-10 22:00:00')
+
+select a,a-interval '1 23:59' day to minute from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-29 00:01:00')
+(date '2000-01-29',timestamp '2000-01-27 00:01:00')
+(date '2000-02-28',timestamp '2000-02-26 00:01:00')
+(date '2000-02-29',timestamp '2000-02-27 00:01:00')
+(date '2023-02-28',timestamp '2023-02-26 00:01:00')
+(date '2023-04-30',timestamp '2023-04-28 00:01:00')
+(date '2000-01-31',timestamp '2000-01-29 00:01:00')
+(date '2021-11-12',timestamp '2021-11-10 00:01:00')
+
+select a,a-interval '1 23:59:02' day to second from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-29 00:00:58')
+(date '2000-01-29',timestamp '2000-01-27 00:00:58')
+(date '2000-02-28',timestamp '2000-02-26 00:00:58')
+(date '2000-02-29',timestamp '2000-02-27 00:00:58')
+(date '2023-02-28',timestamp '2023-02-26 00:00:58')
+(date '2023-04-30',timestamp '2023-04-28 00:00:58')
+(date '2000-01-31',timestamp '2000-01-29 00:00:58')
+(date '2021-11-12',timestamp '2021-11-10 00:00:58')
+
+
+select a,a-interval '3:59' hour to minute from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-30 20:01:00')
+(date '2000-01-29',timestamp '2000-01-28 20:01:00')
+(date '2000-02-28',timestamp '2000-02-27 20:01:00')
+(date '2000-02-29',timestamp '2000-02-28 20:01:00')
+(date '2023-02-28',timestamp '2023-02-27 20:01:00')
+(date '2023-04-30',timestamp '2023-04-29 20:01:00')
+(date '2000-01-31',timestamp '2000-01-30 20:01:00')
+(date '2021-11-12',timestamp '2021-11-11 20:01:00')
+
+
+select a,a-interval '3:59:08' hour to second from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-30 20:00:52')
+(date '2000-01-29',timestamp '2000-01-28 20:00:52')
+(date '2000-02-28',timestamp '2000-02-27 20:00:52')
+(date '2000-02-29',timestamp '2000-02-28 20:00:52')
+(date '2023-02-28',timestamp '2023-02-27 20:00:52')
+(date '2023-04-30',timestamp '2023-04-29 20:00:52')
+(date '2000-01-31',timestamp '2000-01-30 20:00:52')
+(date '2021-11-12',timestamp '2021-11-11 20:00:52')
+
+select a,a-interval '59:08' minute to second from interval6;
+rows:
+(date '2023-01-31',timestamp '2023-01-30 23:00:52')
+(date '2000-01-29',timestamp '2000-01-28 23:00:52')
+(date '2000-02-28',timestamp '2000-02-27 23:00:52')
+(date '2000-02-29',timestamp '2000-02-28 23:00:52')
+(date '2023-02-28',timestamp '2023-02-27 23:00:52')
+(date '2023-04-30',timestamp '2023-04-29 23:00:52')
+(date '2000-01-31',timestamp '2000-01-30 23:00:52')
+(date '2021-11-12',timestamp '2021-11-11 23:00:52')
+
+select b,b-interval '1' year from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '1999-02-28 23:00:00')
+(timestamp '2000-02-28 23:59:00',timestamp '1999-02-28 23:59:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2022-02-28 23:59:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2019-02-28 23:59:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2022-04-30 21:56:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2022-01-31 11:02:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2021-12-31 01:00:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2017-07-28 19:38:23')
+
+select b,b-interval '13' month from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '1999-01-28 23:00:00')
+(timestamp '2000-02-28 23:59:00',timestamp '1999-01-28 23:59:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2022-01-28 23:59:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2019-01-29 23:59:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2022-03-30 21:56:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2021-12-31 11:02:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2021-11-30 01:00:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2017-06-28 19:38:23')
+
+
+
+select b,b-interval '31' day from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-01-28 23:00:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-01-28 23:59:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-01-28 23:59:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-01-29 23:59:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-03-30 21:56:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2022-12-31 11:02:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-11-30 01:00:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-06-27 19:38:23')
+
+select b,b-interval '31' hour from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 16:00:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 16:59:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 16:59:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 16:59:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-29 14:56:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-30 04:02:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 18:00:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 12:38:23')
+
+select b,b-interval '31' minute from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 22:29:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 23:28:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-28 23:28:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-29 23:28:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-30 21:25:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-31 10:31:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-31 00:29:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 19:07:23')
+
+select b,b-interval '4000' second from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 21:53:20')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 22:52:20')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-28 22:52:20')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-29 22:53:19')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-30 20:50:16')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-31 09:55:20')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-30 23:53:43')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 18:31:43')
+
+
+
+select b,b-interval '1-2' year to month from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '1998-12-28 23:00:00')
+(timestamp '2000-02-28 23:59:00',timestamp '1998-12-28 23:59:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2021-12-28 23:59:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2018-12-29 23:59:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2022-02-28 21:56:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2021-11-30 11:02:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2021-10-31 01:00:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2017-05-28 19:38:23')
+
+
+
+select b,b-interval '1 2' day to hour from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:00:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 21:59:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 21:59:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 21:59:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-29 19:56:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-30 09:02:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:00:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 17:38:23')
+
+
+
+select b,b-interval '1 23:59' day to minute from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 23:01:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 00:00:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 00:00:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 00:00:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-28 21:57:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-29 11:03:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 01:01:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 19:39:23')
+
+select b,b-interval '1 23:59:02' day to second from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 23:00:58')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-26 23:59:58')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-26 23:59:58')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 00:00:57')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-28 21:57:54')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-29 11:02:58')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 01:01:21')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 19:39:21')
+
+
+select b,b-interval '3:59' hour to minute from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 19:01:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 20:00:00')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-28 20:00:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-29 20:00:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-30 17:57:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-31 07:03:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-30 21:01:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 15:39:23')
+
+
+select b,b-interval '3:59:08' hour to second from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 19:00:52')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 19:59:52')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-28 19:59:52')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-29 20:00:51')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-30 17:57:48')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-31 07:02:52')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-30 21:01:15')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 15:39:15')
+
+
+select b,b-interval '59:08' minute to second from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-28 22:00:52')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-28 22:59:52')
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-28 22:59:52')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-29 23:00:51')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-30 20:57:48')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-31 10:02:52')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-31 00:01:15')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-28 18:39:15')
+
+select b,b + interval '3-4' year to month -interval '1 23:59:02' day to second from interval6;
+rows:
+(timestamp '2000-02-28 23:00:00',timestamp '2003-06-26 23:00:58')
+(timestamp '2000-02-28 23:59:00',timestamp '2003-06-26 23:59:58')
+(timestamp '2023-02-28 23:59:00',timestamp '2026-06-26 23:59:58')
+(timestamp '2020-02-29 23:59:59',timestamp '2023-06-28 00:00:57')
+(timestamp '2023-04-30 21:56:56',timestamp '2026-08-28 21:57:54')
+(timestamp '2023-01-31 11:02:00',timestamp '2026-05-29 11:02:58')
+(timestamp '2022-12-31 01:00:23',timestamp '2026-04-28 01:01:21')
+(timestamp '2018-07-28 19:38:23',timestamp '2021-11-26 19:39:21')
+
+
+// TODO: (CHINA) SYNTAX ERROR: test in incorrect
+/*
+select c,c-interval '1' year from interval6;
+rows:
+(time '00:00:00',time '00:00:00')
+(time '20:54:58',time '20:54:58')
+(time '23:59:59',time '23:59:59')
+(time '15:56:02',time '15:56:02')
+(time '01:01:01',time '01:01:01')
+(time '01:23:10',time '01:23:10')
+(time '09:02:23',time '09:02:23')
+(time '13:36:09',time '13:36:09')
+
+
+select c,c-interval '13' month from interval6;
+rows:
+(time '00:00:00',time '00:00:00')
+(time '20:54:58',time '20:54:58')
+(time '23:59:59',time '23:59:59')
+(time '15:56:02',time '15:56:02')
+(time '01:01:01',time '01:01:01')
+(time '01:23:10',time '01:23:10')
+(time '09:02:23',time '09:02:23')
+(time '13:36:09',time '13:36:09')
+
+
+select c,c-interval '31' day from interval6;
+rows:
+(time '00:00:00',time '00:00:00')
+(time '20:54:58',time '20:54:58')
+(time '23:59:59',time '23:59:59')
+(time '15:56:02',time '15:56:02')
+(time '01:01:01',time '01:01:01')
+(time '01:23:10',time '01:23:10')
+(time '09:02:23',time '09:02:23')
+(time '13:36:09',time '13:36:09')
+*/
+
+select c,c-interval '31' hour from interval6;
+rows:
+(time '00:00:00',time '17:00:00')
+(time '20:54:58',time '13:54:58')
+(time '23:59:59',time '16:59:59')
+(time '15:56:02',time '08:56:02')
+(time '01:01:01',time '18:01:01')
+(time '01:23:10',time '18:23:10')
+(time '09:02:23',time '02:02:23')
+(time '13:36:09',time '06:36:09')
+
+
+select c,c-interval '31' minute from interval6;
+rows:
+(time '00:00:00',time '23:29:00')
+(time '20:54:58',time '20:23:58')
+(time '23:59:59',time '23:28:59')
+(time '15:56:02',time '15:25:02')
+(time '01:01:01',time '00:30:01')
+(time '01:23:10',time '00:52:10')
+(time '09:02:23',time '08:31:23')
+(time '13:36:09',time '13:05:09')
+
+
+select c,c-interval '4000' second from interval6;
+rows:
+(time '00:00:00',time '22:53:20')
+(time '20:54:58',time '19:48:18')
+(time '23:59:59',time '22:53:19')
+(time '15:56:02',time '14:49:22')
+(time '01:01:01',time '23:54:21')
+(time '01:23:10',time '00:16:30')
+(time '09:02:23',time '07:55:43')
+(time '13:36:09',time '12:29:29')
+
+// TODO: (CHINA) SYNTAX ERROR: test in incorrect
+/*
+select c,c-interval '1-2' year to month from interval6;
+rows:
+(time '00:00:00',time '00:00:00')
+(time '20:54:58',time '20:54:58')
+(time '23:59:59',time '23:59:59')
+(time '15:56:02',time '15:56:02')
+(time '01:01:01',time '01:01:01')
+(time '01:23:10',time '01:23:10')
+(time '09:02:23',time '09:02:23')
+(time '13:36:09',time '13:36:09')
+
+
+select c,c-interval '1 2' day to hour from interval6;
+rows:
+(time '00:00:00',time '22:00:00')
+(time '20:54:58',time '18:54:58')
+(time '23:59:59',time '21:59:59')
+(time '15:56:02',time '13:56:02')
+(time '01:01:01',time '23:01:01')
+(time '01:23:10',time '23:23:10')
+(time '09:02:23',time '07:02:23')
+(time '13:36:09',time '11:36:09')
+
+
+select c,c-interval '1 23:59' day to minute from interval6;
+rows:
+(time '00:00:00',time '00:01:00')
+(time '20:54:58',time '20:55:58')
+(time '23:59:59',time '00:00:59')
+(time '15:56:02',time '15:57:02')
+(time '01:01:01',time '01:02:01')
+(time '01:23:10',time '01:24:10')
+(time '09:02:23',time '09:03:23')
+(time '13:36:09',time '13:37:09')
+
+
+select c,c-interval '1 23:59:02' day to second from interval6;
+rows:
+(time '00:00:00',time '00:00:58')
+(time '20:54:58',time '20:55:56')
+(time '23:59:59',time '00:00:57')
+(time '15:56:02',time '15:57:00')
+(time '01:01:01',time '01:01:59')
+(time '01:23:10',time '01:24:08')
+(time '09:02:23',time '09:03:21')
+(time '13:36:09',time '13:37:07')
+*/
+
+select c,c-interval '3:59' hour to minute from interval6;
+rows:
+(time '00:00:00',time '20:01:00')
+(time '20:54:58',time '16:55:58')
+(time '23:59:59',time '20:00:59')
+(time '15:56:02',time '11:57:02')
+(time '01:01:01',time '21:02:01')
+(time '01:23:10',time '21:24:10')
+(time '09:02:23',time '05:03:23')
+(time '13:36:09',time '09:37:09')
+
+
+select c,c-interval '3:59:08' hour to second from interval6;
+rows:
+(time '00:00:00',time '20:00:52')
+(time '20:54:58',time '16:55:50')
+(time '23:59:59',time '20:00:51')
+(time '15:56:02',time '11:56:54')
+(time '01:01:01',time '21:01:53')
+(time '01:23:10',time '21:24:02')
+(time '09:02:23',time '05:03:15')
+(time '13:36:09',time '09:37:01')
+
+
+select c,c-interval '59:08' minute to second from interval6;
+rows:
+(time '00:00:00',time '23:00:52')
+(time '20:54:58',time '19:55:50')
+(time '23:59:59',time '23:00:51')
+(time '15:56:02',time '14:56:54')
+(time '01:01:01',time '00:01:53')
+(time '01:23:10',time '00:24:02')
+(time '09:02:23',time '08:03:15')
+(time '13:36:09',time '12:37:01')
+
+
+select a,a-interval '1-12' year to month from interval6;
+unordered rows: 
+  ( DATE '2000-02-28', DATE '1998-02-28' )
+  ( DATE '2000-02-29', DATE '1998-02-28' )
+  ( DATE '2021-11-12', DATE '2019-11-12' )
+  ( DATE '2023-02-28', DATE '2021-02-28' )
+  ( DATE '2000-01-31', DATE '1998-01-31' )
+  ( DATE '2000-01-29', DATE '1998-01-29' )
+  ( DATE '2023-04-30', DATE '2021-04-30' )
+  ( DATE '2023-01-31', DATE '2021-01-31' )
+select a,a-interval '1-13' year to month from interval6;
+unordered rows:
+(date '2000-02-28',date '1998-01-28')
+(date '2023-01-31',date '2020-12-31')
+(date '2000-01-29',date '1997-12-29')
+(date '2000-02-29',date '1998-01-29')
+(date '2023-02-28',date '2021-01-28')
+(date '2023-04-30',date '2021-03-30')
+(date '2000-01-31',date '1997-12-31')
+(date '2021-11-12',date '2019-10-12')
+
+select a,a-interval '-1-11' year to month from interval6;
+unordered rows:
+(date '2000-02-28',date '2002-01-28')
+(date '2023-01-31',date '2024-12-31')
+(date '2000-01-29',date '2001-12-29')
+(date '2000-02-29',date '2002-01-29')
+(date '2023-02-28',date '2025-01-28')
+(date '2023-04-30',date '2025-03-30')
+(date '2000-01-31',date '2001-12-31')
+(date '2021-11-12',date '2023-10-12')
+
+select a,a-interval '1-6.5' year to month from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select a,a-interval 't-6' year to month from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select a,a-interval '1-d' year to month from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+
+select b,b-interval '1 59:08' day to minute from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-25 12:51:00')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-25 11:52:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-25 12:51:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-26 12:51:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-27 10:48:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-27 23:54:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-27 13:52:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-25 08:30:23')
+
+select b,b-interval '-1 59:08:02' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-03-04 11:07:02')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-03-03 10:08:02')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-03-03 11:07:02')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-03-04 11:08:01')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-05-04 09:04:58')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-02-03 22:10:02')
+(timestamp '2022-12-31 01:00:23',timestamp '2023-01-03 12:08:25')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-08-01 06:46:25')
+
+select b,b-interval 't 59:08:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1.5 59:08:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 24:08:02' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-26 23:50:58')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 22:51:58')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-26 23:50:58')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-27 23:51:57')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-28 21:48:54')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-29 10:53:58')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 00:52:21')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 19:30:21')
+
+select b,b-interval '1 25:08:02' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-26 22:50:58')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-26 21:51:58')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-26 22:50:58')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-27 22:51:57')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-28 20:48:54')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-29 09:53:58')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-28 23:52:21')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-26 18:30:21')
+
+select b,b-interval '1 -3:08:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 d:08:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 t:08:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 4.5:08:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:-8:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:60:02' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 21:58:58')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 20:59:58')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 21:58:58')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 21:59:57')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-29 19:56:54')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-30 09:01:58')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:00:21')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 17:38:21')
+
+select b,b-interval '1 1:61:02' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 21:57:58')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 20:58:58')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 21:57:58')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 21:58:57')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-29 19:55:54')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-30 09:00:58')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 22:59:21')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 17:37:21')
+
+select b,b-interval '1 1:d:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:t:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:7.5:02' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:7:-2' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:7:60' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 22:51:00')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:52:00')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 22:51:00')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 22:51:59')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-29 20:48:56')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-30 09:54:00')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:52:23')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 18:30:23')
+
+select b,b-interval '1 1:7:61' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 22:50:59')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:51:59')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 22:50:59')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 22:51:58')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-29 20:48:55')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-30 09:53:59')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:52:22')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 18:30:22')
+
+select b,b-interval '1 1:7:d' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:7:t' day to second from interval6;
+failure contains: "NODE1; EC_SYNTAX_ERROR;"
+select b,b-interval '1 1:7:5.5' day to second from interval6;
+unordered rows: 
+(timestamp '2023-02-28 23:59:00',timestamp '2023-02-27 22:51:54.500')
+(timestamp '2000-02-28 23:00:00',timestamp '2000-02-27 21:52:54.500')
+(timestamp '2000-02-28 23:59:00',timestamp '2000-02-27 22:51:54.500')
+(timestamp '2020-02-29 23:59:59',timestamp '2020-02-28 22:52:53.500')
+(timestamp '2023-04-30 21:56:56',timestamp '2023-04-29 20:49:50.500')
+(timestamp '2023-01-31 11:02:00',timestamp '2023-01-30 09:54:54.500')
+(timestamp '2022-12-31 01:00:23',timestamp '2022-12-29 23:53:17.500')
+(timestamp '2018-07-28 19:38:23',timestamp '2018-07-27 18:31:17.500')
+
+
+drop table interval6;
+success
+
+CLEANUP {
+
+  drop table interval6;
+  mute
+
+  bye;
+  mute
+}

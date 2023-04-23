@@ -38,6 +38,23 @@ QueryNode* DateLiteral::pCreate(Dte xDte)
   return pExpr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Helper function to create expression literal nodes.                        */
+/*----------------------------------------------------------------------------*/
+QueryNode* DateLiteral::pCreateNull()
+{
+  _static_
+
+  // Create a unique name for this object
+  s256 sName;
+  NodeNamer::vGenerateName(C_DATE_LITERAL_DEFN, sName);
+
+  Value xVal{};
+  xVal.vSetNull(Value::VT_DATE);
+
+  QueryNode* pExpr = new QueryNode(sName, C_DATE_LITERAL_DEFN, static_cast<Value&&>(xVal));
+  return pExpr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */

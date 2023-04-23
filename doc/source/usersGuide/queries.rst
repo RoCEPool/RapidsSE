@@ -683,7 +683,7 @@ to get the top 10 employees with the highest salary, one could write:
 
   SELECT name, salary
   FROM employees
-  ORDER BY salary
+  ORDER BY salary DESC
   LIMIT 10 ;
 
 When a ``LIMIT`` clause is used without an ``ORDER BY`` clause it is not
@@ -702,7 +702,7 @@ highest paid employees. We could write this as:
 
     SELECT name, salary
     FROM employees
-    ORDER BY salary
+    ORDER BY salary DESC
     LIMIT 10 OFFSET 10 ;
 
 The ``OFFSET 10`` will skip the first 10 rows in the result set and not

@@ -337,6 +337,7 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
 
   /*  6 */ vAddConstant("EC_DECIMAL_NOT_SUPPORTED"_Stz, EC_DECIMAL_NOT_SUPPORTED);
+  /*  6 */ vAddConstant("EC_DATE_OUT_OF_RANGE"_Stz,       EC_DATE_OUT_OF_RANGE);
   /*  6 */ vAddConstant("EC_DISK_SPACE_CHECK_FAILED"_Stz, EC_DISK_SPACE_CHECK_FAILED);
   /*  6 */ vAddConstant("EC_DIVIDE_BY_ZERO"_Stz,     EC_DIVIDE_BY_ZERO);
   /*  7 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
@@ -407,7 +408,7 @@ void Constants::vAddConstantsCpp(void)
   /* 48 */ vAddConstant("EC_NULL_INTERFACE"_Stz,     EC_NULL_INTERFACE);
   /* 49 */ vAddConstant("EC_NULLPTR"_Stz,            EC_NULLPTR);
 
-  /*    */ vAddConstant("EC_ORDERBY_NOT_SUPPORTED"_Stz,EC_ORDERBY_NOT_SUPPORTED);
+  /*    */ vAddConstant("EC_ORDERBY_WITH_AGGREGATES"_Stz,EC_ORDERBY_WITH_AGGREGATES);
 
   /*    */ vAddConstant("EC_PIPELINE_PROTOCOL_ERROR"_Stz,EC_PIPELINE_PROTOCOL_ERROR);
   
