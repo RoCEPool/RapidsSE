@@ -143,6 +143,7 @@ namespace STORE
   void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr);
   void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
   void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
+  void* aIndexTree_findEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent);
   void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
   void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount);
   void  aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);

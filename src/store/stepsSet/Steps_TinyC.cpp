@@ -174,6 +174,7 @@ DynamicSymbol xaSymbolSet1[]
   { "aIndexTree_allotPayStr"_Stz,      (const void *)IndexTree::aAllotPayStr     },
   { "aIndexTree_begin"_Stz,            (const void *)IndexTree::aIndexBegin      },
   { "aIndexTree_findEntry"_Stz,        (const void *)IndexTree::aFindEntry       },
+  { "aIndexTree_findEntry_hint"_Stz,   (const void *)IndexTree::aFindEntry_hint  },
   { "aIndexTree_insertEnt"_Stz,        (const void *)IndexTree::aInsertEnt       },
   { "aIndexTree_insertEntTop"_Stz,     (const void *)IndexTree::aInsertEntTop    },
   { "aIndexTree_positionGE"_Stz,       (const void *)IndexTree::aPositionGE      },

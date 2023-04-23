@@ -88,16 +88,16 @@ Ent* IndexTree::aFindEntry_hint(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_rece
 
   if (KE_INT == pIndexDef->eKeyKind()) {
 
-    iStart = Hardware::iReadTsc(&uProc_start);
+    //iStart = Hardware::iReadTsc(&uProc_start);
 
-    Ent* aEnt =  aFindEntry_CS2_v27(pIndexTree, aKey, aEnt_recent);
+    Ent* aEnt =  aFindEntry_CS2_v1(pIndexTree, aKey);
 
-    iEnd = Hardware::iReadTsc(&uProc_end);
-    if (uProc_end == uProc_start) {
-      g_iSum_ticks += (iEnd - iStart);
-      g_nFindCalls++;
-      //vTrace("aFindEntry_CS2_v26 %lld (%lld)\n"_Stz, iEnd-iStart, iSum_ticks);
-    }
+//    iEnd = Hardware::iReadTsc(&uProc_end);
+//    if (uProc_end == uProc_start) {
+//      g_iSum_ticks += (iEnd - iStart);
+//      g_nFindCalls++;
+//      //vTrace("aFindEntry_CS2_v26 %lld (%lld)\n"_Stz, iEnd-iStart, iSum_ticks);
+//    }
 
     return aEnt;
   }

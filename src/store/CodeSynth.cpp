@@ -2726,6 +2726,7 @@ void CodeSynth::vGeneratePrjGby(void) {
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // find key in payload index");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    aEntFound = aIndexTree_findEntry_hint(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntKeyPL, (void*)nullptr);");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aEntFound = aIndexTree_findEntry(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntKeyPL);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( !aEntFound ) {");
