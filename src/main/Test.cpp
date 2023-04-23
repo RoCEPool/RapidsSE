@@ -2391,7 +2391,7 @@ void vCmdLineTest0(void)
   Ent *pEnt = nullptr;
 
   xEnt.vIntElm0(0);
-  pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey(),pEnt);
+  pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
 //  if (pEnt)
 //    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
 
@@ -2400,7 +2400,7 @@ void vCmdLineTest0(void)
   //for (i8 i = 3; i < n_INSERTS; i += 10000) {
   for (i8 i = 0; i < n_INSERTS; i++) {
     xEnt.vIntElm0(i);
-    pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey(),pEnt);
+    pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
     RASSERT(pEnt && i == pEnt->iIntElm0());
 //    if (pEnt)
 //      vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
@@ -2409,11 +2409,11 @@ void vCmdLineTest0(void)
 
 
   xEnt.vIntElm0(667766);
-  pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey(),pEnt);
+  pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
 //  if (pEnt)
 //    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
   xEnt.vIntElm0(667767);
-  pEnt = IndexTree::aFindEntry(pIndexTree, xEnt.aKey(),pEnt);
+  pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
 //  if (pEnt)
 //    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
 

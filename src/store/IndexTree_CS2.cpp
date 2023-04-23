@@ -34,7 +34,50 @@ extern i8 g_nFindCalls;
 /*----------------------------------------------------------------------------*/
 /* find an entry in the indexTree                                             */
 /*----------------------------------------------------------------------------*/
-Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_recent)
+Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  eKC eCmp;
+
+  //pIndexTree->vDump(false);
+
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+
+  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  Key* aEntKey = aEnt->aKey();
+
+  if (KE_GENERAL == aEnt->eKind()) {
+    eCmp = Key::eCompare(pIndexDef, aEntKey,aKey);
+  }
+  else {
+    i8 iEntVal = *(i8 *) aEntKey;
+    i8 iWrkVal = *(i8 *) aKey;
+
+    if (iEntVal < iWrkVal)
+      eCmp = KC_BEFORE;
+    else if (iEntVal == iWrkVal)
+      eCmp = KC_SAME;
+    else
+      eCmp = KC_AFTER;
+  }
+
+  if (eCmp == KC_SAME)
+    return aEnt;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find an entry in the indexTree                                             */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aFindEntry_hint(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_recent)
 {
   i8 iStart;
   i8 iEnd;
@@ -66,7 +109,7 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_recent)
 //
 //  //pIndexTree->vDump(false);
 //
-//  //IndexDef* pIndexDef = pIndexTree->pIndexDef();
+//  IndexDef* pIndexDef = pIndexTree->pIndexDef();
 //
 //  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
 //  if ( !aEnt )
@@ -95,8 +138,8 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey, Ent* aEnt_recent)
 //
 //  iEnd = Hardware::iReadTsc(&uProc_end);
 //  if (uProc_end == uProc_start) {
-//    iSum_ticks += (iEnd - iStart);
-//    vTrace("aFindEntry_CS2_v26 %lld (%lld)\n"_Stz, iEnd-iStart, iSum_ticks);
+//    g_iSum_ticks += (iEnd - iStart);
+//    vTrace("aFindEntry_CS2_v26 %lld (%lld)\n"_Stz, iEnd-iStart, g_iSum_ticks);
 //  }
 //
 //  if (eCmp == KC_SAME)
