@@ -21,7 +21,6 @@
 #include "CrwTablePtn.hpp"
 #include "RowTablePtn.hpp"
 #include "RowBuffer.hpp"
-#include "Bucket.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -39,15 +38,14 @@ __aFooterFunction(TablePtn)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
-: Object(CN_TABLEPTN), m_okLock(this)
+    : Object(CN_TABLEPTN), m_okLock(this)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  
+
   m_pTable  = pTable;
   m_tLglPtn = tLglPtn;
   m_tPhyPtn = tPhyPtn;
 
-  m_pBucketVec = new BucketVec;
   m_pIndexTreeVec  = new IndexTreeVec;
 
   eTT eTableKind = m_pTable->eKind();
@@ -56,10 +54,12 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
       NEVER_REACH;
       break;
     case TT_INTERNAL:
-      m_eKind = CN_CRWTABLEPTN; //CN_ROWTABLEPTN;
+      m_eKind = CN_CRWTABLEPTN;
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);
       break;
     case TT_NORMAL:
       m_eKind = CN_CRWTABLEPTN;
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);
       break;
     case TT_REPLICATED:
       NEVER_REACH;
@@ -68,21 +68,11 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
       NEVER_REACH;
   }
 
-
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++)
-  {
-    vAddBucket(pTable, tLglPtn, m_eKind);
-    //vTrace("Bkt:%lld \n"_Stz, i_Bkt);
-  }
-
-//  vAddBucket(pTable, tLglPtn, m_eKind);
-
-
   _checkInitialised_(CN_TABLEPTN);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 }
-
+// TODO: Remove CN_ROWTABLEPTN from this file
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -90,15 +80,16 @@ TablePtn::~TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  // delete the Buckets
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    delete m_pBucketVec->pGet(i_Bucket);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      delete m_pCrwTablePtn;
+      break;
+    case CN_ROWTABLEPTN:
+      delete m_pRowTablePtn;
+      break;
+    default:
+      NEVER_REACH;
   }
-  m_pBucketVec->vClear();
-
-  // delete bucket vector
-  delete m_pBucketVec;
 
   // delete the index data vector
   delete m_pIndexTreeVec;
@@ -107,6 +98,27 @@ TablePtn::~TablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop all paging locks held and clear the current buffer ptr                */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vCleanup(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vDropAllPagingLocks();
+      m_pCrwTablePtn->vCleanup();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vDropAllPagingLocks();
+      m_pRowTablePtn->vCleanup();
+      break;
+    default:
+      NEVER_REACH;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* drop a read lock on the partition                                          */
@@ -193,65 +205,6 @@ Table *TablePtn::pTable(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add bucket                                                                 */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAddBucket(Table *pTable, LglPtn tLglPtn, eCN eKind)
-{
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = new Bucket(pTable, tLglPtn, eKind);
-  m_pBucketVec->vAppend(pBucket);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove bucket                                                              */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vRemoveBucket(i8 i_Bucket)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-
-  if (pBucket) {
-    m_pBucketVec->vRemove(pBucket);
-    delete pBucket;
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* set a bucket by number to be used                                          */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vSetBucket(i8 iBucket)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
-  UNUSED(iBucket);
-  // Set the bucket to be used
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a bucket by number                                                     */
-/*----------------------------------------------------------------------------*/
-Bucket *TablePtn::pGetBucket(i8 i_Bucket)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  //vTrace("TablePtn::pGetBucket from bucketvec %p \n"_Stz, m_pBucketVec);
-  if (i_Bucket >= 0 && i_Bucket < m_pBucketVec->nItems())
-    return m_pBucketVec->pGet(i_Bucket);
-  else
-    return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of bucket                                                       */
-/*----------------------------------------------------------------------------*/
-i8 TablePtn::nBuckets(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  return m_pBucketVec->nItems();
-}
-
-/*----------------------------------------------------------------------------*/
 /* add index                                                                  */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree *pIndexTree)
@@ -272,86 +225,36 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  // append buffer first, then indexes
-  // Get bucket number
-  i8 iBktNo = pDataBuffer->iBucketNo();
-  //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
-  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tLglPtn().iAsI8());
+  // append buffer first, then
+  // insert entries from the buffer into the indexes
 
-  Bucket *pBucket = nullptr;
-  if (iBktNo >= 0 && iBktNo < m_pBucketVec->nItems()) {
-    pBucket = m_pBucketVec->pGet(iBktNo);
-  }
-
-  //RASSERT(iBktNo == m_tLglPtn);
-  
-  if (pBucket) {
-    if ( ! pBucket->bAppendBuffer(pDataBuffer) )
-      return;
-    //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
-  } else {
-    vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket for BktNo:%lld available \n"_Stz, m_pTable->szTableNm()->azChar(),iBktNo);
-  }
-
-
-  // now insert entries from the buffer into the indexes
   switch (m_eKind) {
-    case CN_CRWTABLEPTN:
+    case CN_CRWTABLEPTN: {
+      CrwBuffer *pCrwBuffer = _pCrwBuffer(pDataBuffer);
+      if (pCrwBuffer->nRows() == 0) {
+        delete pCrwBuffer;
+        return;
+      }
+      m_pCrwTablePtn->vAppendBuffer(pCrwBuffer);
+      // TODO: Arjun - Update below for paging and bufferids
       vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
       break;
-    case CN_ROWTABLEPTN:
+    }
+
+    case CN_ROWTABLEPTN: {
+      RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
+      if (pRowBuffer->nRows() == 0) {
+        delete pRowBuffer;
+        return;
+      }
+      m_pRowTablePtn->vAppendBuffer(pRowBuffer);
       //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
       //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
       break;
+    }
 
-    default:
-      NEVER_REACH;
+    default: NEVER_REACH;
   }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a buffer into the TablePtn                                          */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
-  // append buffer first, then indexes
-  // Get bucket number
-  //i8 iBktNo = pDataBuffer->iBucketNo();
-  //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
-  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tLglPtn().iAsI8());
-
-  // reset the logical partition of the buffer
-  pDataBuffer->vLglPtn((LglPtn)0);
-
-  Bucket *pBucket = m_pBucketVec->pGet(0);
-
-
-  if (pBucket) {
-    if ( ! pBucket->bAppendBuffer(pDataBuffer) )
-      return;
-    //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
-  } else {
-    vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket available \n"_Stz, m_pTable->szTableNm()->azChar());
-  }
-
-
-  // now insert entries from the buffer into the indexes
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
-      break;
-    case CN_ROWTABLEPTN:
-      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
-      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
-      break;
-
-    default:
-      NEVER_REACH;
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,12 +264,19 @@ i8 TablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  i8 nBufferCount = 0;
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    nBufferCount += pBucket->nBuffers();
+  i8 nBufferCount;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      nBufferCount = m_pCrwTablePtn->nBuffers();
+      break;
+    case CN_ROWTABLEPTN:
+      nBufferCount = m_pRowTablePtn->nBuffers();
+      break;
+    default:
+      NEVER_REACH;
   }
+
   return nBufferCount;
 }
 
@@ -377,11 +287,16 @@ void TablePtn::vDump(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vDump();
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vDump();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vDump();
+      break;
+    default:
+      NEVER_REACH;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -442,13 +357,20 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->bPopulateIndexTree(pIndexTree);
+  bool b;
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      b = m_pCrwTablePtn->bPopulateIndexTree(pIndexTree);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH;
+      break;
+    default:
+      NEVER_REACH;
   }
 
-  return true;
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,16 +380,18 @@ void TablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  i8 nRowsTotal    = 0;
-  i8 nBuffersTotal = 0;
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vAnalyze(nBuffers, nRows, jSumRowBytes);
+  CrwBuffer* pCrwRootBuffer = nullptr;
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      pCrwRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
+      if(pCrwRootBuffer)
+        pCrwRootBuffer->vAnalyze(nBuffers, nRows, jSumRowBytes);
+      break;
+    case CN_ROWTABLEPTN:
+      NEVER_REACH
+      break;
+    default: NEVER_REACH;
   }
-
-  nRowsTotal += nRows;
-  nBuffersTotal += nBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,6 +405,56 @@ void TablePtn::vRemoveIndex(i8 iIndexNo)
   // remove the index from the IdxDataVec
   m_pIndexTreeVec->vRemove(pIndexTree);
   delete pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove index                                                               */
+/*----------------------------------------------------------------------------*/
+DataBuffer* TablePtn::pRootBuffer(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return m_pCrwTablePtn->pRootCrwBuffer();
+    case CN_ROWTABLEPTN:
+      return m_pRowTablePtn->pRootRowBuffer();
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Root BufferID                                                              */
+/*----------------------------------------------------------------------------*/
+BufferId TablePtn::oRootBufferId(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      return m_pCrwTablePtn->oRootCrwBufferId();
+    case CN_ROWTABLEPTN:
+      return m_pRowTablePtn->oRootRowBufferId();
+    default: NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root crw buffer                                                        */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* TablePtn::pRootCrwBuffer(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  return m_pCrwTablePtn->pRootCrwBuffer();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root row buffer                                                        */
+/*----------------------------------------------------------------------------*/
+RowBuffer* TablePtn::pRootRowBuffer(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  return m_pRowTablePtn->pRootRowBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -513,10 +487,14 @@ void TablePtn::vTruncate(void)
 
 
   // Now, truncate all data
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vTruncate();
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vTruncate();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vTruncate();
+      break;
+    default: NEVER_REACH;
   }
 
 }
@@ -554,15 +532,19 @@ bool TablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  // verify all tables
   bool bVerify = false;
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    bVerify = pBucket->bVerifyTable();
-    if (!bVerify)
+
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      bVerify = m_pCrwTablePtn->bVerifyTable();
       break;
+    case CN_ROWTABLEPTN:
+      bVerify = m_pRowTablePtn->bVerifyTable();
+      break;
+    default:
+      NEVER_REACH;
   }
+
   return bVerify;
 }
 
@@ -573,11 +555,15 @@ void TablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  // visualize all buckets
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vVisualizeTable();
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      m_pCrwTablePtn->vVisualizeTable();
+      break;
+    case CN_ROWTABLEPTN:
+      m_pRowTablePtn->vVisualizeTable();
+
+      break;
+    default: NEVER_REACH;
   }
 }
 
@@ -586,13 +572,15 @@ void TablePtn::vVisualizeTable(void)
 /*----------------------------------------------------------------------------*/
 Stz* TablePtn::szDumpContents(void)
 {
+  i8 nBuffers = m_pCrwTablePtn->nBuffers();
   s4K sDumpBuffer = ""_Stz;
-  i8 nItems = m_pBucketVec->nItems();
-  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    sDumpBuffer.vConcat(pBucket->szDumpContents(i_Bucket));
+  if (nBuffers > 0) {
+    sDumpBuffer.vCatSprint("  PtnId:%lld   nBuffers:%lld\n"_Stz, m_tLglPtn.iAsI8(), nBuffers);
+    for (i8 i_PoolBuffer = 0; i_PoolBuffer < nBuffers; i_PoolBuffer++) {
+      i8 nRows = m_pCrwTablePtn->pRootCrwBuffer()->nRows();
+      sDumpBuffer.vCatSprint("     Buffer:%lld   PtnId:%lld   nRows:%lld\n"_Stz, i_PoolBuffer, m_tLglPtn.iAsI8(), nRows);
+    }
   }
-
   return sDumpBuffer;
 }
 

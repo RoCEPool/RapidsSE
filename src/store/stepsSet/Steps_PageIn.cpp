@@ -18,41 +18,51 @@ extern Stz *gsBuildGitHash;
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PageIn(void) {
-  vAddStep("PageIn::testPrint"_Stz, &Step::vPageInTestPrint);
-  vAddStep("PageIn::PageInPoolBuffer"_Stz, &Step::vPageInPoolBuffer);
+  vAddStep("PageIn::popRequest"_Stz, &Step::vPageInPopRequest);
 }
 
 /*----------------------------------------------------------------------------*/
-/* PageIn::PageInPoolBuffer -- page in pool buffer from page file on disk     */
+/* PageIn::popRequest -- pop request received to page in buffer by task       */
 /*----------------------------------------------------------------------------*/
-void Step::vPageInPoolBuffer(void) {
+void Step::vPageInPopRequest(void) {
   ENTRY();
+#ifdef WITH_PAGING
+  BufferId oBufferId;
+  oBufferId.m_iAsI8 = m_pDataStack->iPopAsInt(__func__ );
+  RASSERT(oBufferId.m_bIdFlag == 1);
 
-  //---------------------------------------------------------------------------
-  // Pop an operand address off the stack. It is actually a Buffer Id
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
+  Task* pReqTask = _pTask(m_pDataStack->iPopAsInt(__func__));
 
+#ifdef WITH_PAGING_DEBUG
+  vTrace("Page In got TaskPtr %p and BufferId %p\n"_Stz, pReqTask, oBufferId.m_pvAsAddress);
+#endif
+
+  FileMap* pFileMap = AM::pFileMap();
+  HashMap* pHashMap = AM::pHashMap();
 
   // Ask the FileMap to get the buffer from disk.
-  RowBuffer* pRowBufferFromDisk = AM::pFileMap()->pFromDisk(pOperand);
+  pFileMap->vStartPageIn();
 
-  vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pRowBufferFromDisk);
+  // Page in the requested BufferId
+  DataBuffer* pDataBufferFromDisk = pFileMap->pDataBufferFromDisk(oBufferId);
 
-  ASSERT(pRowBufferFromDisk != nullptr);
+  // Update hashmap with new address with this bufferId
+  pHashMap->vInsertKeyValue(
+      (void *) pDataBufferFromDisk->oGetBufferId().m_pvAsAddress,
+      (Object *) pDataBufferFromDisk);
 
-  m_pLogicUnit->m_xpRowBuffer = pRowBufferFromDisk;
+  pHashMap->vDropKeyLock(oBufferId.m_pvAsAddress);
 
-  EXIT();
-}
+  pFileMap->vEndPageIn();
 
-/*----------------------------------------------------------------------------*/
-/* PageIn::testPrint -- test print for page out demon                        */
-/*----------------------------------------------------------------------------*/
-void Step::vPageInTestPrint(void) {
-  ENTRY();
-  RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBuffer;
-  vTrace("Page In got address %p\n"_Stz, pRowBuffer);
-  m_pLogicUnit->m_xpRowBuffer = nullptr;
+#ifdef WITH_PAGING_DEBUG
+  vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pDataBufferFromDisk->oGetBufferId().m_pvAsAddress);
+#endif
+
+  // Wake up task
+  AM::vGrabTaskLock(pReqTask,(Stz*)__func__);
+  AM::TASK::vTriggerBidingPageIn(pReqTask, this);
+#endif
   EXIT();
 }
 

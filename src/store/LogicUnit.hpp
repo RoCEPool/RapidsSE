@@ -89,8 +89,7 @@ namespace STORE
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
     REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
-  
-    REG<Bucket,         CN_BUCKET        > m_xpBucket;
+
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
     REG<BucketGet,      CN_BUCKETINFO    > m_xpBucketInfo;
     REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;

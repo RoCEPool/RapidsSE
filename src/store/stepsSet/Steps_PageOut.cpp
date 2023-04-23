@@ -11,31 +11,38 @@
 #include "PageFile.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
-extern Stz *gsBuildGitHash;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PageOut(void) {
+  vAddStep("PageOut::pageOutCheckLowMemory"_Stz, &Step::vPageOutCheckLowMemory);
   vAddStep("PageOut::testPrint"_Stz, &Step::vPageOutTestPrint);
-  vAddStep("PageOut::pageOutPoolBuffer"_Stz, &Step::vPageOutPoolBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
-/* PageOut::pageOutPoolBuffer -- page out pool buffer to page file on disk    */
+/* PageOut::pageOutCheckLowMemory -- page out when memory has exceeded a threshold */
 /*----------------------------------------------------------------------------*/
-void Step::vPageOutPoolBuffer(void) {
+void Step::vPageOutCheckLowMemory(void) {
   ENTRY();
+#ifdef WITH_PAGING
+  d8 dUsedSpacePercent = gpBufferPool->dUsedSpacePercent();
+  if( dUsedSpacePercent < C_MAX_MEMORY_LIMIT) {
+    return;
+  }
+#ifdef WITH_PAGING_DEBUG
+  vTrace("PageOut Demon: Memory usage above %f%%, paging out buffers to free memory\n"_Stz, C_MAX_MEMORY_LIMIT);
+#endif
 
-  //---------------------------------------------------------------------------
-  // Pop an operand address off the stack. It may or may not be a BufferId.
-  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  vTrace("PageOut Demon: Received operand: %p\n"_Stz, pOperand);
+  // Figure out how many buffers to page out, to get down to 50% usage
+  i8 nTotal = gpBufferPool->nBufferCount() * ((C_MAX_MEMORY_LIMIT - 50)/100);
 
-  // Let the FileMap decide where it should be written to.
-  AM::pFileMap()->vToDisk(pOperand);
-
-  AM::vDeleteOperand(pOperand,nullptr);
+  Paging::vRandomAlgo(nTotal);
+#ifdef WITH_PAGING_DEBUG
+  vTrace("PageOut Demon: Freed up %lld buffers\n"_Stz, nTotal);
+  vTrace("PageOut Demon: Current usage is %f%%\n"_Stz, gpBufferPool->dUsedSpacePercent());
+#endif
+#endif
   EXIT();
 }
 
