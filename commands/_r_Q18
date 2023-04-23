@@ -2,19 +2,8 @@
 /* _r_Q18 -- TCPH query 18 test                                               */
 /*============================================================================*/
 
-trackMemory;
-
-_r_schema
-
-create index O_idx0  on orders   (O_ORDERKEY );
-create index C_idx0  on customer (C_CUSTKEY  );
-create index L_idx0  on lineitem (L_ORDERKEY );
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
@@ -53,10 +42,6 @@ group by
 order by
   o_totalprice desc,
   o_orderdate;
-
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*============================================================================*/
 /* end                                                                        */

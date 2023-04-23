@@ -2,47 +2,32 @@
 /* _r_Q1 -- TCPH query 1 test                                                 */
 /*============================================================================*/
 
-trackMemory;
-
-_r_schema
-
-create index C_idx0  on customer (C_CUSTKEY  );
-create index L_idx0  on lineitem (L_ORDERKEY );
-create index N_idx0  on nation   (N_NATIONKEY);
-create index O_idx0  on orders   (O_ORDERKEY );
-create index P_idx0  on part     (P_PARTKEY  );
-create index PS_idx0 on partsupp (PS_PARTKEY );
-create index R_idx0  on region   (R_REGIONKEY);
-create index S_idx0  on supplier (S_SUPPKEY  );
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
-/pipelineName = "_r_Q1"
+/pipelineName = "_tpchQ1_debug"
 select
-         l_returnflag,
-         l_linestatus,
-         sum(l_quantity)                                     as sum_qty,
-         sum(l_extendedprice)                                as sum_base_price,
-         sum(l_extendedprice * (1-l_discount))               as sum_disc_price,
-         sum(l_extendedprice * (1-l_discount) * (1 + l_tax)) as sum_charge,
-         avg(l_quantity)                                     as avg_qty,
-         avg(l_extendedprice)                                as avg_price,
-         avg(l_discount)                                     as avg_disc,
-         count(*)                                            as count_order
-
-  from LineItem
-
- where l_shipdate <= DATE '1998-09-01'
-
- group by l_returnflag, l_linestatus
-
- order by l_returnflag, l_linestatus;
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        l_returnflag,
+        l_linestatus,
+        sum(l_quantity)                                     as sum_qty,
+        sum(l_extendedprice)                                as sum_base_price,
+        sum(l_extendedprice * (1-l_discount))               as sum_disc_price,
+        sum(l_extendedprice * (1-l_discount) * (1 + l_tax)) as sum_charge,
+        avg(l_quantity)                                     as avg_qty,
+        avg(l_extendedprice)                                as avg_price,
+        avg(l_discount)                                     as avg_disc,
+        count(*)                                            as count_order
+   from
+        LineItem
+  where
+        l_shipdate <= DATE '1998-09-01'
+  group
+        by l_returnflag, l_linestatus
+  order
+        by l_returnflag, l_linestatus
+ ;
 
 /*============================================================================*/
 /* end                                                                        */

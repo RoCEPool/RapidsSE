@@ -2,20 +2,8 @@
 /* _r_Q2 -- TCPH query 2 test                                                 */
 /*============================================================================*/
 
-trackMemory;
-
-_r_schema
-
-create index P_idx0  on part     (P_PARTKEY  );
-create index PS_idx0 on partsupp (PS_PARTKEY );
-create index S_idx0  on supplier (S_SUPPKEY  );
-create index N_idx0  on nation   (N_NATIONKEY);
-create index R_idx0  on region   (R_REGIONKEY);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vSeries_10_Make_Runnable"
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
@@ -64,8 +52,6 @@ order by
   n_name,
   s_name,
   p_partkey;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*============================================================================*/
 /* end                                                                        */

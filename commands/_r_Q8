@@ -2,22 +2,8 @@
 /* _r_Q8 -- TCPH query 8 test                                                 */
 /*============================================================================*/
 
-trackMemory;
-
-_r_schema
-
-create index P_idx0  on part     (P_PARTKEY  );
-create index S_idx0  on supplier (S_SUPPKEY  );
-create index L_idx0  on lineitem (L_SUPPKEY  );
-create index O_idx0  on orders   (O_ORDERKEY );
-create index C_idx0  on customer (C_CUSTKEY  );
-create index N_idx0  on nation   (N_NATIONKEY);
-create index R_idx0  on region   (R_REGIONKEY);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
@@ -55,10 +41,6 @@ group by
   o_year
 order
   by o_year;
-
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*============================================================================*/
 /* end                                                                        */

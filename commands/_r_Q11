@@ -2,19 +2,8 @@
 /* _r_Q11 -- TCPH query 11 test                                               */
 /*============================================================================*/
 
-trackMemory;
-
-_r_schema
-
-create index PS_idx0 on partsupp (PS_PARTKEY );
-create index S_idx0  on supplier (S_SUPPKEY  );
-create index N_idx0  on nation   (N_NATIONKEY);
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
@@ -47,10 +36,6 @@ group by
     )
 order by
    value desc;
-
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*============================================================================*/
 /* end                                                                        */

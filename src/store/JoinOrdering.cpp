@@ -214,7 +214,7 @@ void JoinOrdering::vReorderTables(void)
   while (xCI.G_bEachMain(CK_STREAMPER)) {
     Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_streamPrm);
     //p_joinOrdering->vDump();
-    s256 sJoinOrder;
+    s4K sJoinOrder;
     if (pFile) {
       p_joinOrdering->vJoinOrderString(sJoinOrder, m_pCI->G.p_tableList, true);
       //vTrace("JoinOrder %lld :%s\n"_Stz, iJoinPermutations, sJoinOrder.szStz());
@@ -261,7 +261,7 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 7) get the final join ordering string
 
-  s256 sJoinOrdering;
+  s4K sJoinOrdering;
   if (pFile) {
     p_joinOrdering->vJoinOrderString(sJoinOrdering, m_pCI->G.p_tableList, true);
     //vTrace("JoinOrder: %s\n"_Stz,sJoinOrder.szStz());

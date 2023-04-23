@@ -2,18 +2,8 @@
 /* _r_Q16 -- TCPH query 16 test                                               */
 /*============================================================================*/
 
-trackMemory;
-
-_r_schema
-
-create index PS_idx0 on partsupp (PS_PARTKEY );
-create index P_idx0  on part     (P_PARTKEY  );
-create index S_idx0  on supplier (S_SUPPKEY  );
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
@@ -48,9 +38,6 @@ order by
   supplier_cnt desc,
   p_brand, p_type,
   p_size;
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*============================================================================*/
 /* end                                                                        */

@@ -2,17 +2,8 @@
 /* _r_Q17 -- TCPH query 17 test                                               */
 /*============================================================================*/
 
-trackMemory;
-
-_r_schema
-
-create index L_idx0  on lineitem (L_ORDERKEY );
-create index P_idx0  on part     (P_PARTKEY  );
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/optimise
-/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/jobMetrics
+/joWrite
 /glean_interactive
 /transliterated
 /weaved
@@ -35,9 +26,6 @@ where
     where
       l_partkey = p_partkey
     );
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*============================================================================*/
 /* end                                                                        */
