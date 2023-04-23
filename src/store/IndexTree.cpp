@@ -134,6 +134,9 @@ void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
+void* aIndexTree_findEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent) {
+  return (void*)IndexTree::aFindEntry_hint((IndexTree*) aIndexTree, (Key*) aKey, (Ent*) aEnt_recent);
+}
 void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
   return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
 }
