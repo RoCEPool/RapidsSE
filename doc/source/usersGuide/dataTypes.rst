@@ -283,6 +283,25 @@ compared to an integer with any of the comparison operators (``<``, ``<=``, ``=`
 ``INTERVAL HOUR TO MINUTE``) cannot be coerced to an ``INTEGER``. For example,
 ``INTERVAL '1' HOUR = 1`` would evaluate to ``TRUE``.
 
+When intervals are involved with calculations with dates and times, RapidsSE
+tries to be concise with the resulting data type. It tries to honour the data
+types in the original calculation instead of a looser approach where the
+result is often converted to a timestamp. Here are some examples of that:
+
+  #. A ``TIME`` ``+`` or ``-`` a year-month interval is considered by RapidsSE
+     to be an invalid operation.
+
+  #. A ``TIME`` ``+`` or ``-`` a day-time interval is a valid operation and
+     will result in a ``TIME`` value being returned.
+
+  #. A ``DATE`` ``+`` or ``-`` a year-month interval will result in a ``DATE``
+     being returned (rather than a ``TIMESTAMP``). Here RapidsSE is choosing
+     to honour the ``DATE`` input and keep the output data type narrow.
+
+  #. However a ``DATE`` ``+`` or ``-`` a day-time interval will result in a ``TIMESTAMP``
+     being returned as the ``DATE`` can be considered as being at midnight on
+     the given date. The calculation with the interval can then proceed.
+
 
 .. index::
    single: intervals; constraints
