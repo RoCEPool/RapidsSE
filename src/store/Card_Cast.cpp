@@ -46,6 +46,7 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 /* determine the stage cast from prev to curr (assuming cmpPred ==)           */
 /*----------------------------------------------------------------------------*/
 eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
+                          Card_StreamPtn* p_streamPtn,
                           Symbol* p_Y_tblCol_prior,
                           Symbol* p_Y_tablePtn_curr,
                           Symbol* p_Y_idxCol_curr)

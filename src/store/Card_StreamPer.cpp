@@ -74,6 +74,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
   i8 nFilterPred_prev = 0;
 
   Symbol* p_Y_streamPtn_running = nullptr;
+  Card_StreamPtn* p_streamPtn = nullptr;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
@@ -108,6 +109,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     char cTblSyn_join = xCI.G.p_streamJoin->cValue();
 
     eXK eJoinCast = this->eJoinCast(p_Y_streamPtn_running,
+                                    p_streamPtn,
                                     p_tableList,
                                     xCI.G.p_streamJoin);
 
@@ -156,6 +158,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 /* compute the cast from prev join to curr/given stream join                  */
 /*----------------------------------------------------------------------------*/
 eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
+                              Card_StreamPtn*  p_streamPtn,
                               Card_TableList*  p_tableList,
                               Card_StreamJoin* p_streamJoin)
 {
@@ -190,6 +193,7 @@ eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
   }
 
   eXK eStageCast = Card_Cast::eStageCast(p_Y_streamPtn_running,
+                                         p_streamPtn,
                                          p_Y_tblCol_prior,
                                          p_Y_tablePtn_curr,
                                          p_Y_idxCol_curr);

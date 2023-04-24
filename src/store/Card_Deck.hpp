@@ -22,13 +22,14 @@ namespace STORE
 
     void vAddStageCasts(CardIter* pCI);
 
-    eXK eAddStageCast_toPrev_cast(CardIter*      pCI,
-                                  Symbol*        p_Y_streamPtn_running,
-                                  Card_Project*  p_project_prev,
-                                  Card_Combined* p_combined_prev,
-                                  Card_Cast*     p_cast_prev,
-                                  Card_OP*       p_OP_curr,
-                                  Symbol*&       rp_Y_streamPtn_curr);
+    eXK eAddStageCast_toPrev_cast(CardIter*       pCI,
+                                  Symbol*         p_Y_streamPtn_running,
+                                  Card_StreamPtn* p_streamPtn,
+                                  Card_Project*   p_project_prev,
+                                  Card_Combined*  p_combined_prev,
+                                  Card_Cast*      p_cast_prev,
+                                  Card_OP*        p_OP_curr,
+                                  Symbol*&        rp_Y_streamPtn_curr);
 
     void vProjectionUpdate(CardIter* pCI);
 
