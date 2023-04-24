@@ -50,6 +50,8 @@ void Card_StreamPtn::vAddKey(Symbol* p_Y_tblCol)
   Card_StreamKey* p_streamKey = new Card_StreamKey;
 
   p_streamKey->vValue(p_Y_tblCol->szValue());
+
+  vAppend(p_streamKey);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,6 +68,19 @@ bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_StreamPtn::bIsEmpty(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (nChildCards())
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

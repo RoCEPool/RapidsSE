@@ -54,7 +54,7 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
 {
   _static_
 
-  RASSERT(p_streamPtn);
+  RASSERT(p_streamPtn && ! p_streamPtn->bIsEmpty());
   /*
    *           Prev     Curr
    *   tblPtn  $a.1     $b.1
@@ -68,11 +68,11 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
 
   eXK eCast = XK_NONE;
 
-  //
-  if (Card_COL::bIsReplicated(p_Y_streamPtn_running))
-    eCast = XK_UNICAST;
-
-  else
+//  //
+//  if (Card_COL::bIsReplicated(p_Y_streamPtn_running))
+//    eCast = XK_UNICAST;
+//
+//  else
   if (Card_COL::bIsReplicated(p_Y_idxCol_curr)) {
     // curr table is replicated so always unicast
     eCast = XK_UNICAST;
@@ -89,7 +89,9 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
     //   the curr join-to column is an indexed column of the curr table ptn
     //   so the curr join-to column identifies target key partition
     //if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_prior, p_Y_tblCol_prior)) {
-    if (Card_TablePtn::bColumnMatchesPtn(p_Y_streamPtn_running, p_Y_tblCol_prior)) {
+//  if (Card_TablePtn::bColumnMatchesPtn(p_Y_streamPtn_running, p_Y_tblCol_prior)) {
+    //p_streamPtn->vDump();
+    if (p_streamPtn->bContainsKey(p_Y_tblCol_prior)) {
       // + prev table column is prior table ptn
       //   likewise the prev data-from column is an indexed column of prev table ptn
       //   noting the cmpPred is ==, the source matches target, so we can unicast

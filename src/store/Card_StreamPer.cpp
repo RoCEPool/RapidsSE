@@ -96,6 +96,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
       p_Y_streamPtn_running = p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol();
 
+      p_streamPtn->vAddKey(p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
       continue;
     }
 

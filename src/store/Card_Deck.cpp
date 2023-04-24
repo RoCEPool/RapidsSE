@@ -73,6 +73,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
       if (! p_OP_prev) {
         Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
         p_Y_streamPtn_running     = p_table_first->pSub_tablePtn()->pSymbol();
+        p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
         eStageCast = pCI->G.pDeck->eAddStageCast_toPrev_cast(pCI,

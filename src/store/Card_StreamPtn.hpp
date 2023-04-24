@@ -18,6 +18,7 @@ namespace STORE
 
     void vAddKey(Symbol* p_Y_tblCol);
     bool bContainsKey(Symbol* p_Y_tblCol);
+    bool bIsEmpty(void);
     void vResetPtn(void);
   };
 
