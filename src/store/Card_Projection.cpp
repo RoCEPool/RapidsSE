@@ -109,7 +109,7 @@ void Card_Projection::vAs_Review(CardIter* pCI)
     if (p_expr_key->pSub_as()) {
 
       if (p_expr_prj->pSub_as()) {
-        p_expr_key->vRemoveDeleteChild(pCI->G.p_as);
+        p_expr_key->vDeleteChild(pCI->G.p_as);
         p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
       }
       else {
@@ -211,7 +211,7 @@ void Card_Projection::vDelete_key(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_key = pSub_key()))
-    vRemoveDeleteChild(pCI->G.p_key);
+    vDeleteChild(pCI->G.p_key);
 
   pCI->G.p_key = nullptr;
 }

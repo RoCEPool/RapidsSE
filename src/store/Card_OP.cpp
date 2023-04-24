@@ -688,7 +688,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   Card_Projection* p_projection;
 
   if ((p_projection = pSub_projection()))
-    vRemoveDeleteChild(p_projection);
+    vDeleteChild(p_projection);
 
   Card_Projection* p_projection_needed;
   if ((p_projection_needed = pSub_projection()))

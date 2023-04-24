@@ -78,8 +78,8 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  pCI->G.pDeck->vRemoveDeleteChild(pCI->G.p_where);
-  pCI->G.pDeck->vRemoveDeleteChild(pCI->G.p_project);
+//  pCI->G.pDeck->vDeleteChild(pCI->G.p_where);
+  pCI->G.pDeck->vDeleteChild(pCI->G.p_project);
 
   pCI->pBoard()->vPrintBoard();
 

@@ -1,13 +1,10 @@
 /*============================================================================*/
-/* Card_StreamPtn.cpp -- Table Partition Key                                   */
+/* Card_StreamPtn.cpp -- Stream Partition                                     */
 /*============================================================================*/
 
 #include "Card_StreamPtn.hpp"
-#include "Card_Table.hpp"
 
-#include "Table.hpp"
-#include "PtnDef.hpp"
-#include "Card_TableNm.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -43,6 +40,43 @@ Card_StreamPtn::~Card_StreamPtn(void) noexcept(false)
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamPtn::vAddKey(Symbol* p_Y_tblCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamKey* p_streamKey = new Card_StreamKey;
+
+  p_streamKey->vValue(p_Y_tblCol->szValue());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_STREAMKEY)) {
+    if (xCI.G.p_streamKey->pSymbol()->bSameValue(p_Y_tblCol))
+      return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_StreamPtn::vResetPtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vDeleteAllChildren();
+}
 
 /*============================================================================*/
 /* end                                                                        */

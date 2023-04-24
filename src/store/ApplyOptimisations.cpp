@@ -433,7 +433,7 @@ void ApplyOptimisations::vDelete_flat(void)
 
   m_pCI->vRestart();
   while (m_pCI->G_bEachMain(CK_FLAT))
-    m_pCI->G.pDeck->vRemoveDeleteChild(m_pCI->G.p_flat);
+    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_flat);
 }
 
 /*----------------------------------------------------------------------------*/

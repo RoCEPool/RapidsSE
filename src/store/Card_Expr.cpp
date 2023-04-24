@@ -340,7 +340,7 @@ void Card_Expr::vReconstruct(Card_Type*  p_type_arg,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vRemoveDeleteAllChildren();
+  vDeleteAllChildren();
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();

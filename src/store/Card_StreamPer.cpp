@@ -461,8 +461,8 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
     if (! xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
       continue;
 
-    xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
-    if (xCI.G.p_streamCast && ! xCI.G.p_streamCast->bIsValue("XK_UNICAST"_Stz))
+    xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
+    if (xCI.G.p_joinCast && ! xCI.G.p_joinCast->bIsValue("XK_UNICAST"_Stz))
       return false;
 
     if (xCI.G.p_MainCard->cValue() == cTblSyn_prev)
@@ -486,8 +486,8 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
 //
-//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_streamCast && xCI.G.p_streamCast->bIsValue("XK_BROADCAST"_Stz))
+//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_joinCast && xCI.G.p_joinCast->bIsValue("XK_BROADCAST"_Stz))
 //        return false;
 //    }
 //  }
@@ -496,8 +496,8 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
 //    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_streamCast && xCI.G.p_streamCast->bIsValue("XK_BROADCAST"_Stz))
+//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_joinCast && xCI.G.p_joinCast->bIsValue("XK_BROADCAST"_Stz))
 //        return false;
 //    }
 //  }
@@ -518,8 +518,8 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
 //
-//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_streamCast && ! xCI.G.p_streamCast->bIsValue("XK_UNICAST"_Stz))
+//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_joinCast && ! xCI.G.p_joinCast->bIsValue("XK_UNICAST"_Stz))
 //        return false;
 //    }
 //  }
@@ -528,8 +528,8 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
 //    ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
 //
 //    if (xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN)) {
-//      xCI.G.p_streamCast = xCI.G.p_streamJoin->pSub_locusCast();
-//      if (xCI.G.p_streamCast && ! xCI.G.p_streamCast->bIsValue("XK_UNICAST"_Stz))
+//      xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
+//      if (xCI.G.p_joinCast && ! xCI.G.p_joinCast->bIsValue("XK_UNICAST"_Stz))
 //        return false;
 //    }
 //  }

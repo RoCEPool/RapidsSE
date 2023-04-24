@@ -120,7 +120,7 @@ namespace STORE
     Card_Correlation *   p_correlation;
     Card_CostJoining *   p_costJoining;
     Card_CostNetwork *   p_costNetwork;
-    Card_CostStream *     p_costQuery;
+    Card_CostStream *    p_costQuery;
     Card_CostUnicast *   p_costUnicast;
     Card_CrossJoin *     p_crossJoin;
 
@@ -150,6 +150,7 @@ namespace STORE
     Card_IndexNm *       p_indexNm;
     Card_IndexScan *     p_indexScan;
 
+    Card_JoinCast *      p_joinCast;
     Card_JoinEstimate *  p_joinEstimate;
     Card_JoinOrder *     p_joinOrder;
     Card_JoinOrdering *  p_joinOrdering;
@@ -164,7 +165,7 @@ namespace STORE
 
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
-    Card_Cast *          p_next;
+    Card_Cast *          p_cast;
     Card_Note *          p_note;
     Card_NotPred *       p_notPred;
 
@@ -186,11 +187,12 @@ namespace STORE
     Card_Send *          p_send;
     Card_Sort *          p_sort;
     Card_Stage *         p_stage;
-    Card_JoinCast *    p_streamCast;
     Card_StreamHead *    p_streamHead;
     Card_StreamJoin *    p_streamJoin;
-    Card_StreamPer *     p_streamPrm;
-    Card_StreamSet *  p_streamPrmAll;
+    Card_StreamKey *     p_streamKey;
+    Card_StreamPer *     p_streamPer;
+    Card_StreamPtn *     p_streamPtn;
+    Card_StreamSet *     p_streamSet;
     Card_SubSet *        p_subSet;
 
     Card_Table *         p_table;

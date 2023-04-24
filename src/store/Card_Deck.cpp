@@ -105,7 +105,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
       p_cast_prior     = nullptr;
     }
     else if (CK_CAST == pCI->G.e_MainCard) {
-      p_cast_prior = pCI->G.p_next;
+      p_cast_prior = pCI->G.p_cast;
     }
   }
 
@@ -277,7 +277,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
   pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+      pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
   pCI->vRestart();
   pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
@@ -329,7 +329,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+      pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
   bool bSawFold = false;
 

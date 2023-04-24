@@ -16,6 +16,9 @@ namespace STORE
     Card_StreamPtn(void);
    ~Card_StreamPtn(void) noexcept(false);
 
+    void vAddKey(Symbol* p_Y_tblCol);
+    bool bContainsKey(Symbol* p_Y_tblCol);
+    void vResetPtn(void);
   };
 
   Card_StreamPtn* _pCard_StreamPtn(void* aAddr);

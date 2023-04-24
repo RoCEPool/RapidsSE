@@ -25,10 +25,9 @@
 #include "Card_Combined.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_Correlation.hpp"
-#include "Card_JoinEstimate.hpp"    //
 #include "Card_CostJoining.hpp"  //
 #include "Card_CostNetwork.hpp"  //
-#include "Card_CostStream.hpp"    //
+#include "Card_CostStream.hpp"   //
 #include "Card_CostUnicast.hpp"  //
 #include "Card_CrossJoin.hpp"
 
@@ -60,12 +59,10 @@
 #include "Card_IndexNm.hpp"
 #include "Card_IndexScan.hpp"
 
-#include "Card_StreamHead.hpp"
-#include "Card_StreamJoin.hpp"
+#include "Card_JoinCast.hpp"
+#include "Card_JoinEstimate.hpp" //
 #include "Card_JoinOrder.hpp"
 #include "Card_JoinOrdering.hpp" //
-#include "Card_StreamSet.hpp"  //
-#include "Card_StreamPer.hpp"  //
 #include "Card_JoinPredList.hpp" //
 
 #include "Card_Key.hpp"          //
@@ -74,7 +71,6 @@
 
 #include "Card_Level.hpp"        //
 #include "Card_Limit.hpp"        //
-#include "Card_JoinCast.hpp"
 
 #include "Card_NCorrCols.hpp"
 #include "Card_Needed.hpp"
@@ -86,9 +82,9 @@
 #include "Card_OP.hpp"
 #include "Card_OrdAgg.hpp"
 #include "Card_OrPred.hpp"
+#include "Card_OuterColNm.hpp"
 #include "Card_OuterJoin.hpp"
 
-#include "Card_OuterColNm.hpp"
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 
@@ -102,7 +98,12 @@
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
+#include "Card_StreamHead.hpp"
+#include "Card_StreamJoin.hpp"
+#include "Card_StreamKey.hpp"
+#include "Card_StreamPer.hpp"  //
 #include "Card_StreamPtn.hpp"
+#include "Card_StreamSet.hpp"  //
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"
