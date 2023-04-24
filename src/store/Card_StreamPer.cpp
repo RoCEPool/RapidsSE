@@ -73,7 +73,6 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
   i8 nFilterPred_prev = 0;
 
-  Symbol* p_Y_streamPtn_running = nullptr;
   Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
   CardIter xCI(this);
@@ -94,8 +93,6 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
       nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_head);
 
-      p_Y_streamPtn_running = p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol();
-
       p_streamPtn->vAddKey(p_tableList->pGetTablePtn(cTblSyn_head)->pSymbol());
       continue;
     }
@@ -109,8 +106,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // get info for this join
     char cTblSyn_join = xCI.G.p_streamJoin->cValue();
 
-    eXK eJoinCast = this->eJoinCast(p_Y_streamPtn_running,
-                                    p_streamPtn,
+    eXK eJoinCast = this->eJoinCast(p_streamPtn,
                                     p_tableList,
                                     xCI.G.p_streamJoin);
 
@@ -136,9 +132,6 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_join);
 
     i_Join++;
-
-    if (eJoinCast != XK_UNICAST)
-      p_Y_streamPtn_running = p_tableList->pGetTablePtn(cTblSyn_join)->pSymbol();
   }
 
   // record the sum network and unicast costs
@@ -160,8 +153,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 /*----------------------------------------------------------------------------*/
 /* compute the cast from prev join to curr/given stream join                  */
 /*----------------------------------------------------------------------------*/
-eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
-                              Card_StreamPtn*  p_streamPtn,
+eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
                               Card_TableList*  p_tableList,
                               Card_StreamJoin* p_streamJoin)
 {
@@ -195,8 +187,7 @@ eXK Card_StreamPer::eJoinCast(Symbol*          p_Y_streamPtn_running,
     p_Y_idxCol_curr  = p_Y_term_0_cmp;
   }
 
-  eXK eStageCast = Card_Cast::eStageCast(p_Y_streamPtn_running,
-                                         p_streamPtn,
+  eXK eStageCast = Card_Cast::eStageCast(p_streamPtn,
                                          p_Y_tblCol_prior,
                                          p_Y_tablePtn_curr,
                                          p_Y_idxCol_curr);

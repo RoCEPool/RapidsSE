@@ -21,8 +21,7 @@ namespace STORE
      void vEstStreamCost(Card_TableList* p_tableList,
                          Card_FiltPredList* p_filtPredList);
 
-     eXK eJoinCast(Symbol*          p_Y_streamPtn_running,
-                   Card_StreamPtn*  p_streamPtn,
+     eXK eJoinCast(Card_StreamPtn*  p_streamPtn,
                    Card_TableList*  p_tableList,
                    Card_StreamJoin* p_streamJoin);
 
