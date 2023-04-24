@@ -74,7 +74,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
   i8 nFilterPred_prev = 0;
 
   Symbol* p_Y_streamPtn_running = nullptr;
-  Card_StreamPtn* p_streamPtn = nullptr;
+  Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
@@ -152,6 +152,8 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
   p_costQuery->vAppend(p_costUnicast);
 
   vInsert(p_costQuery);
+
+  delete p_streamPtn;
 }
 
 /*----------------------------------------------------------------------------*/

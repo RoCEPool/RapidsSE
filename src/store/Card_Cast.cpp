@@ -53,6 +53,7 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
 {
   _static_
 
+  RASSERT(p_streamPtn);
   /*
    *           Prev     Curr
    *   tblPtn  $a.1     $b.1
@@ -64,21 +65,24 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
    *           $a.2     $B.any: unicast
    */
 
+  eXK eCast = XK_NONE;
 
   //
   if (Card_COL::bIsReplicated(p_Y_streamPtn_running))
-    return XK_UNICAST;
+    eCast = XK_UNICAST;
 
-
+  else
   if (Card_COL::bIsReplicated(p_Y_idxCol_curr)) {
     // curr table is replicated so always unicast
-    return XK_UNICAST;
+    eCast = XK_UNICAST;
   }
 
+  else
   if (! p_Y_tblCol_prior)
     // no prior table column (probably cross join)
-    return XK_BROADCAST;
+    eCast = XK_BROADCAST;
 
+  else
   if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_curr, p_Y_idxCol_curr)) {
     // + curr indexed column is curr table ptn
     //   the curr join-to column is an indexed column of the curr table ptn
@@ -88,23 +92,26 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
       // + prev table column is prior table ptn
       //   likewise the prev data-from column is an indexed column of prev table ptn
       //   noting the cmpPred is ==, the source matches target, so we can unicast
-      return XK_UNICAST;
+      eCast = XK_UNICAST;
     }
     else {
       // - prev table column is not prev table ptn
       //     but the prev table column can be used for hash cast to this stage
       //     because curr join-to column is an indexed column of the curr table ptn
       //     the prev data-from column can be hashed to identify target key partition
-      return XK_HASHCAST;
+      eCast = XK_HASHCAST;
     }
   }
+
   else {
     // - curr indexed column is not curr table ptn
     //     curr join-to column is not an indexed column of the curr table ptn
     //     cannot use the curr/target column to identify partition of target key
     //     so irrespective of prev data-from column we must broadcast
-    return XK_BROADCAST;
+    eCast = XK_BROADCAST;
   }
+
+  return eCast;
 }
 
 /*============================================================================*/

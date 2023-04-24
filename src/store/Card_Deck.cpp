@@ -60,7 +60,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   Symbol* p_Y_streamPtn_running = nullptr;
   Symbol* p_Y_streamPtn_curr = nullptr;
 
-  Card_StreamPtn* p_streamPtn = nullptr;
+  Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
   while (pCI->G_bEachMain()) {
 
@@ -109,6 +109,8 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
     }
   }
 
+  delete p_streamPtn;
+
   pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 }
@@ -126,6 +128,8 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*       pCI,
                                          Symbol*&        rp_Y_streamPtn_curr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(p_streamPtn);
 
   Card_Table*     p_table_curr       = p_OP_curr->pSub_table();
   Card_TablePtn*  p_tablePtn_curr    = p_table_curr->pSub_tablePtn();
