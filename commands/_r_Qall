@@ -4,9 +4,9 @@
 
 // --initial _r_Qall
 
-__TPCH_SCHEMA_LOAD_SF0001
+//__TPCH_SCHEMA_LOAD_SF0001
 
-//__TPCH_SCHEMA_LOAD_SF1
+__TPCH_SCHEMA_LOAD_SF1
 //__TPCH_SCHEMA_LOAD_SF10
 
 // -- -- -- -- -- --

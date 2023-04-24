@@ -102,6 +102,7 @@
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
 #include "Card_Stage.hpp"
+#include "Card_StreamPtn.hpp"
 #include "Card_SubSet.hpp"
 
 #include "Card_Table.hpp"

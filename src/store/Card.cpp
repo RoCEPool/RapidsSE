@@ -2198,6 +2198,19 @@ Card_Section* Card::pSub_section(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_StreamPtn.hpp"
+Card_StreamPtn* Card::pSub_streamPtn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_StreamPtn* p_streamPtn =
+      _pCard_StreamPtn(pFindSubCard(CK_SECTION));
+  return p_streamPtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_TableSize.hpp"
 Card_TableSize* Card::pSub_tableSize(void)
 {

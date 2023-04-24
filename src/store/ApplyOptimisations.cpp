@@ -69,7 +69,7 @@ void ApplyOptimisations::vOptimise(void)
 
   vPromote_gbyAgg_To_ordAgg();
 
-  vEarlyProjections();
+  //vEarlyProjections();
 
   vDebugPoint();
 }

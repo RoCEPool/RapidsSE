@@ -112,6 +112,7 @@ namespace STORE
   class Card_Send;
   class Card_Sort;
   class Card_Stage;
+  class Card_StreamPtn;
   class Card_SubSet;
 
   class Card_Table;
@@ -455,6 +456,7 @@ namespace STORE
     Card_RpnCalc*       pSub_rpnCalc(void);
     Card_Scan*          pSub_scan(void);
     Card_Section*       pSub_section(void);
+    Card_StreamPtn*     pSub_streamPtn(void);
     Card_Table*         pSub_table(void);
     Card_TableNm*       pSub_tableNm(void);
     Card_TablePtn*      pSub_tablePtn(void);
