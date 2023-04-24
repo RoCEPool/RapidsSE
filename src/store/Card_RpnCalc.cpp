@@ -536,8 +536,8 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
   if (p_TermSeries->nItems()) {
     RASSERT(0 == p_boolCalc->nChildCards());
-    p_boolCalc->vDump(0,"boolCalc"_Stz);
-    p_TermSeries->vDump(0,"termSeries"_Stz);
+    //p_boolCalc->vDump(0,"boolCalc"_Stz);
+    //p_TermSeries->vDump(0,"termSeries"_Stz);
 
     p_cmpPred = new Card_CmpPred;
     p_cmpPred->vTransferChildren(p_TermSeries);

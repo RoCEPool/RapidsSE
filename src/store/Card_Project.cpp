@@ -149,7 +149,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
   //pCI->Early.m_pNeeded_later->vDump();
 
   for (Kid x_prior(pCI->Analysis.m_pProjection_prior); x_prior.bEach(CK_EXPR); /**/) {
-    x_prior.p_expr()->vDump();
+    //x_prior.p_expr()->vDump();
 
     if (! pCI->Early.m_pNeeded_later->pContains(x_prior.p_expr()))
       continue;
@@ -177,7 +177,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 
   p_projection_early->vRenumberAll_expr();
 
-  p_projection_early->vDump();
+  //p_projection_early->vDump();
 
   return p_projection_early;
 }
@@ -209,7 +209,7 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -226,7 +226,7 @@ void Card_Project::vEarlyProject_given_leaf(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

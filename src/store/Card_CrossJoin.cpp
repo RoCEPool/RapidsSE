@@ -89,7 +89,7 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

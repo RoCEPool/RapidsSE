@@ -106,7 +106,7 @@ void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

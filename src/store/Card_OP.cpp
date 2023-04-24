@@ -167,7 +167,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pSymbol()->Y_bHas(P_BreakPt)) {
-    vDump();
+    //vDump();
     vDebugPoint();
   }
 
@@ -286,7 +286,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   }
 
   if (pSymbol()->Y_bHas(P_BreakPt)) {
-    vDump();
+    //vDump();
     vDebugPoint();
   }
 

@@ -76,7 +76,7 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -139,11 +139,11 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   pCI->G.p_index     = pCI->G.p_indexList->pFindChosenIndex();
   pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
   pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
-  pCI->G.p_bound->vDump();
+  //pCI->G.p_bound->vDump();
   pCI->G.p_term      = pCI->G.p_bound->pGet_tblColOdn();
 
   RASSERT(pCI->G.p_term);
-  pCI->G.p_term->vDump();
+  //pCI->G.p_term->vDump();
 
   /*
    * todo:
@@ -155,16 +155,16 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   if (! pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(pCI->G.p_term)) {
 
-    pCI->Early.m_pNeeded_later->vDump();
+    //pCI->Early.m_pNeeded_later->vDump();
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(pCI->G.p_term)) {
-      p_expr_defn->vDump();
+      //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
       pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
     }
 
-    pCI->Early.m_pNeeded_later->vDump();
+    //pCI->Early.m_pNeeded_later->vDump();
 
     vDebugPoint();
   }
@@ -182,7 +182,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(p_term)) {
-      p_expr_defn->vDump();
+      //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
       pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();

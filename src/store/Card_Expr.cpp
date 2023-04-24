@@ -151,7 +151,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 {
   _static_
 
-  p_expr->vDump();
+  //p_expr->vDump();
 
   Symbol xSymbol_Dn;
   xSymbol_Dn.vSetStreamColOrdinal(i_Col);
@@ -164,7 +164,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   Card_Term* p_term = p_expr->pSub_term()->pClone(xSymbol_Dn);
   p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
-  p_term->vDump();
+  //p_term->vDump();
 
   p_rpnCalc->vAppend(p_term);
 
@@ -424,7 +424,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
   else {
     vDebugPoint();
   }
-  p_term_0_early->vDump();
+  //p_term_0_early->vDump();
   p_expr_early->vAppend(p_rpnCalc_early);
 
   return p_expr_early;
