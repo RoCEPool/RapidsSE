@@ -462,6 +462,10 @@ TypeId TypeMap2D::xLookup(TypeId xArg1, TypeId xArg2)
 {
   _precondition_(_MAGIC_,CN_TYPEMAP2D,_FOOTER_);
 
+  if (!xArg1.bIsValid() || !xArg2.bIsValid()) {
+    return TypeId{};
+  }
+
   ASSERT(xArg1.iIdVal() >= 0 && xArg1.iIdVal() < m_iDim);
   ASSERT(xArg2.iIdVal() >= 0 && xArg2.iIdVal() < m_iDim);
 

@@ -56,7 +56,7 @@ namespace STORE
     FileMap*      m_pFileMap;
     Format        m_oFormat;
     Grid*         m_pGrid;
-#ifdef WITH_HASHMAP
+#ifdef WITH_PAGING
     HashMap*      m_pHashMap;
 #endif
     Heaps         m_xHeaps;
@@ -100,6 +100,7 @@ namespace STORE
     JobId         m_tMetricsDemonJobId;
     JobId         m_tMonDemonJobId;
     JobId         m_tNodeMonDemonJobId;
+    JobId         m_tPageInDemonJobId;
     JobId         m_tPageOutDemonJobId;
     JobId         m_tReaperDemonJobId;
     JobId         m_tRecurDemonJobId;

@@ -13,7 +13,6 @@
 #include "IndexTree.hpp"
 #include "CrvBuffer.hpp"
 #include "BucketMap.hpp"
-#include "Bucket.hpp"
 #include "TablePtn.hpp"
 #include "PtnStream.hpp"
 #include "Table.hpp"
@@ -102,8 +101,6 @@ void Step::vBucketGetAndClear(void)
 
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpBucketGet);
 
-  m_pLogicUnit->m_xpBucket = nullptr;
-
   EXIT();
 }
 
@@ -188,41 +185,20 @@ void Step::vBucketGetCrw(void)
 
   TablePtn *pTablePtn = pTable->pTablePtn(tLglPtn.iAsI8());
 
-  pTablePtn->vSetBucket(tLglPtn.iAsI8()); //not needed
-
-  Bucket* pBucket = pTablePtn->pGetBucket(pBucketGet->iBucketNo());
-
-  CrwBuffer* pCrwBuffer = pBucket->pRootCrwBuffer();
+  CrwBuffer* pCrwBuffer = pTablePtn->pRootCrwBuffer();
 
   // Experimenting... if we can not find the rows in the bucket, search all buckets for this partition
   if (!pCrwBuffer) {
 
-      // DEBUG search all the buckets
-      for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
-        //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, iBkt, tLglPtn.uPtnNo());
-        pBucket = pTablePtn->pGetBucket(i_Bkt);
-        pCrwBuffer = pBucket->pRootCrwBuffer();
-        if (pCrwBuffer) {
-          vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tLglPtn.iAsI8());
-          break;
-        }
-    }
-    // if we still can not find rows in this partition, search all partitions
+    // if we can not find rows in this partition, search all partitions
     if (!pCrwBuffer) {
       for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsPerNode(); i_Ptn++) {
         pTablePtn = pTable->pTablePtn(i_Ptn);
-        // DEBUG search all the buckets
-        for (i8 i_Bkt = 0; i_Bkt < C_MAX_KEYBUCKETS; i_Bkt++) {
-          //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tLglPtn.uPtnNo());
-          pBucket = pTablePtn->pGetBucket(i_Bkt);
-          pCrwBuffer = pBucket->pRootCrwBuffer();
-          if (pCrwBuffer) {
-            vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld (different ptn than originally looked for)\n"_Stz, i_Bkt, tLglPtn.iAsI8());
-            break;
-          }
+        pCrwBuffer = pTablePtn->pRootCrwBuffer();
+        if (pCrwBuffer) {
+          vTrace("vBucketGetCrw got data parcel ptn:%lld (different ptn than originally looked for)\n"_Stz, tLglPtn.iAsI8());
+          break;
         }
-        if (pCrwBuffer) break;
-
       }
     }
   }
@@ -319,8 +295,6 @@ void Step::vBucketGetGetBucketTable(void)
 
     //pBucket = pTablePtn->pGetBucket(0);
 
-    // We have to tell tablePtn which bucket to use
-    pTablePtn->vSetBucket(iBucket);
     //m_pDataStack->vPushPtr(pTablePtn);
 
     BucketGet *pBucketGet = new BucketGet(pTablePtn);
@@ -360,7 +334,6 @@ void Step::vBucketGetGetBucket(void)
 
   Table* pTable = AM::pTableFind(sTableNm);
 
-  Bucket *pBucket = nullptr;
   if (pTable) {
     // Here we need to map the bucket to the partition
     //pTable->pBucketMap()->vSee();
@@ -369,19 +342,13 @@ void Step::vBucketGetGetBucket(void)
 
     vTrace("C++ gets called: BucketGet::getBucket Found the table:%s ptn:%lld for bucket:%lld\n"_Stz, sTableNm.azChar(), tLglPtn.iAsI8(), iBucket);
 
-    pBucket = pTablePtn->pGetBucket(iBucket);
-    //m_pDataStack->vPushPtr(pBucket);
-
-
-    // We have to tell tablePtn which bucket to use
-    pTablePtn->vSetBucket(iBucket);
     //m_pDataStack->vPushPtr(pTablePtn);
 
     // Update bucket map here
     BucketMap* pBucketMap = pTable->pBucketMap();
     pBucketMap->vUpdateMap();
 
-    BucketGet *pBucketGet = new BucketGet(pTablePtn, pBucket);
+    BucketGet *pBucketGet = new BucketGet(pTablePtn);
 
     m_pDataStack->vPushPtr(pBucketGet);
 

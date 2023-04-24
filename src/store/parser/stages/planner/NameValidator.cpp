@@ -173,6 +173,10 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
   auto fSqlOpVisitor =
       [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
+      UNUSED(sPath);
+      UNUSED(iDepth);
+      UNUSED(pvArg);
+
       Stz* pszDisabledFeature = nullptr;
 
       if      (TableSubquery::bIsOfType(pNode))   { pszDisabledFeature = ": Table subquery"_Stz;      }
@@ -194,6 +198,10 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
   // Visitor lambda to validate expressions only.
   auto fExprVisitor =
       [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+        UNUSED(sPath);
+        UNUSED(iDepth);
+        UNUSED(pvArg);
 
         if (!Expr::bIsOfType(pNode)) {
           // Only interested in expressions here
@@ -537,7 +545,7 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   ASSERT(pSeApi);
 
   // The callback lambda for qualifying columns
-  auto fColumnVisitor = [pSubqueryNode, &sSubqueryPath, pRootNode, pMetadataNode, pSeApi]
+  auto fColumnVisitor = [pSubqueryNode, &sSubqueryPath, pRootNode, pMetadataNode]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);

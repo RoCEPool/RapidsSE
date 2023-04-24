@@ -694,6 +694,9 @@ b1 ProjectOp::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
 
     // Walk the expression tree looking for a distinct aggregate
     auto fVisitor = [&bIsDistinct](PlanNode* pExprNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+      UNUSED(sPath);
+      UNUSED(iDepth);
+      UNUSED(pvArg);
 
       ASSERT(Expr::bIsOfType(pExprNode));
       if (AggregateExpr::bIsOfType(pExprNode) && AggregateExpr::bIsDistinct(pExprNode)) {

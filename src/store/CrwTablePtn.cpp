@@ -15,7 +15,6 @@
 #include "IndexTree.hpp"
 
 #include "CrvBuffer.hpp"
-#include "Bucket.hpp"
 #include "TablePtn.hpp"
 #include "CrwTablePtn.hpp"
 #include "Table.hpp"
@@ -33,17 +32,17 @@ __aFooterFunction(CrwTablePtn)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn, Bucket* pBucket)
+CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
     : Object(CN_CRWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   m_pTable    = pTable;
-  m_pBucket   = pBucket;
   m_tLglPtn    = tLglPtn;
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
+  m_oRootBufferId.m_pvAsAddress = nullptr;
 
   //m_pIndexTreeVec  = new IndexTreeVec;
 
@@ -79,34 +78,52 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 #ifdef WITH_STATISTICS_COUNTERS
   gpAttachMap->m_oStatistics.IndexTree.m_nAppendBuffers++;
 #endif
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if buffer has 0 entries (only head) then should be last buffer
   if (pCrwBuffer->nRows() == 0) {
     delete pCrwBuffer;
     return;
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark crwBuffer as permanent
   pCrwBuffer->vIsPermanent(true);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the buffer
   pCrwBuffer->vTable(m_pTable);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
+#ifdef WITH_PAGING
+    m_oRootBufferId = pCrwBuffer->oGetBufferId();
+#endif
     m_pRootBuffer = pCrwBuffer;
   }
   else {
+#ifdef WITH_PAGING
+    // TODO: Arjun - If we are doing a second insert, currentbuffer is null. Need to fix this.
+    pCrwBuffer->vNextLinkedBufferId(m_pCurrentBuffer->oNextLinkedBufferId());
+    pCrwBuffer->vPrevLinkedBufferId(m_pCurrentBuffer->oGetBufferId());
+    m_pCurrentBuffer->vNextLinkedBufferId(pCrwBuffer->oGetBufferId());
+#else
     pCrwBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
     pCrwBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
     m_pCurrentBuffer->vNextLinkedBuffer(pCrwBuffer);
+#endif
   }
-  
+
+#ifdef WITH_PAGING
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // we are done with the current buffer, allow it to be paged out by dropping
+  // the lock
+
+  if(m_pCurrentBuffer)
+    AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pCrwBuffer;
@@ -120,11 +137,35 @@ i8 CrwTablePtn::nBuffers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   i8 nBufferCount = 0;
-  
+
   if (m_pRootBuffer)
     nBufferCount = m_pRootBuffer->nLinkedBufferCount();
-  
+
   return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the current buffer ptr                                               */
+/*----------------------------------------------------------------------------*/
+void CrwTablePtn::vCleanup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+#ifdef WITH_PAGING
+  m_pCurrentBuffer = nullptr;
+#endif
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* drop all paging locks                                                      */
+/*----------------------------------------------------------------------------*/
+void CrwTablePtn::vDropAllPagingLocks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+#ifdef WITH_PAGING
+  if(m_pCurrentBuffer)
+    AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,21 +174,15 @@ i8 CrwTablePtn::nBuffers(void)
 void CrwTablePtn::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
-    
+
   while (pCrwBuffer) {
     pCrwBuffer->vShow();
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
 
 }
-
-
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
@@ -178,12 +213,22 @@ CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the root row buffer                                                    */
+/*----------------------------------------------------------------------------*/
+BufferId CrwTablePtn::oRootCrwBufferId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  return m_oRootBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get table                                                                  */
 /*----------------------------------------------------------------------------*/
 Table* CrwTablePtn::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   return m_pTable;
 }
 
@@ -195,7 +240,7 @@ Table* CrwTablePtn::pTable(void)
 void CrwTablePtn::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   // first truncate all indexes for this table ptn
   // This code gets moved to TablePtn
   /*
@@ -204,10 +249,10 @@ void CrwTablePtn::vTruncate(void)
     pIndexTree->vTruncate();
   }
   #*/
-  
+
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
-  
+
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
 }
@@ -223,14 +268,14 @@ bool CrwTablePtn::bVerifyTable(void)
 
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
   bool bVerify = true;
-  
+
   while (pCrwBuffer) {
     bVerify = pCrwBuffer->bVerify();
     if (! bVerify )
       break;
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
-  
+
   return bVerify;
 }
 
@@ -242,10 +287,10 @@ void CrwTablePtn::vVisualizeTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
-  
+
   if (! pCrwBuffer)
     return;
-  
+
   while (pCrwBuffer) {
     // print the decile of this buffer
     vTrace("%lld"_Stz, pCrwBuffer->iDecile());

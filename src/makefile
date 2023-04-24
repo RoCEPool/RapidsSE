@@ -54,7 +54,7 @@ endif
 # Variables
 CPP = g++
 
-WARNINGS = -Wall -Wextra $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
+WARNINGS = -Wall -Wextra -Wno-unused-function $(strip $(LINUX_WARNINGS) $(DARWIN_WARNINGS))
 
 CPPFLAGS = -std=c++14 $(WARNINGS) -g -O3 $(strip $(LINUX_CPPFLAGS) $(DARWIN_CPPFLAGS))
 CPPFLAGS_DEBUG = -std=c++14 -DWITH_DEBUG_VERSION $(WARNINGS) -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
