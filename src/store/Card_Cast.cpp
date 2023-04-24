@@ -9,6 +9,7 @@
 #include "Card_Index.hpp"
 #include "Card_IdxCol.hpp"
 #include "Card_IdxColList.hpp"
+#include "Card_StreamPtn.hpp"
 #include "Card_TablePtn.hpp"
 #include "Card_Term.hpp"
 
@@ -111,6 +112,25 @@ eXK Card_Cast::eStageCast(Symbol* p_Y_streamPtn_running,
     eCast = XK_BROADCAST;
   }
 
+  switch (eCast) {
+
+    case XK_BROADCAST:
+      p_streamPtn->vResetPtn();
+      p_streamPtn->vAddKey(p_Y_idxCol_curr);
+      break;
+
+    case XK_HASHCAST:
+      p_streamPtn->vResetPtn();
+      p_streamPtn->vAddKey(p_Y_idxCol_curr);
+      break;
+
+    case XK_UNICAST:
+      p_streamPtn->vAddKey(p_Y_idxCol_curr);
+      break;
+
+    default:
+      NEVER_REACH
+  }
   return eCast;
 }
 
