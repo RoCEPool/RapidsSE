@@ -96,7 +96,9 @@ enum eCK // card kind
   /* */ CK_STAGE,
   /* */ CK_STREAMHEAD,
   /* */ CK_STREAMJOIN,
+  /* */ CK_STREAMKEY,
   /* */ CK_STREAMPER,
+  /* */ CK_STREAMPTN,
   /* */ CK_STREAMSET,
   /* */ CK_SUBSET,
 
@@ -213,8 +215,10 @@ static Stz* aCK[]
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
   /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
   /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
+  /* */ "CK_STREAMKEY"_Stz,    // CK_STREAMKEY
   /* */ "CK_STREAMPER"_Stz,    // CK_STREAMPER
-  /* */ "CK_STREAMSET"_Stz, // CK_STREAMSET
+  /* */ "CK_STREAMPTN"_Stz,    // CK_STREAMPTN
+  /* */ "CK_STREAMSET"_Stz,    // CK_STREAMSET
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
@@ -330,7 +334,9 @@ static Stz* aCK_short[]
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "streamHead"_Stz,      // CK_STREAMHEAD
   /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
+  /* */ "streamKey"_Stz,       // CK_STREAMKEY
   /* */ "streamPer"_Stz,       // CK_STREAMPER
+  /* */ "streamPtn"_Stz,       // CK_STREAMPTN
   /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
   /* */ "subSet"_Stz,          // CK_SUBSET
 

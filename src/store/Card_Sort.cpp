@@ -54,7 +54,7 @@ void Card_Sort::vCut_sort(CardIter* pCI)
   if (! pCI->G.p_key->bIsEqual(pCI->StreamOrder.m_pKey_running))
     return;
 
-  pCI->G.pDeck->vRemoveDeleteChild(this);
+  pCI->G.pDeck->vDeleteChild(this);
 }
 
 /*----------------------------------------------------------------------------*/

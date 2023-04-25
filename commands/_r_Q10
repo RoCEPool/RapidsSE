@@ -2,9 +2,9 @@
 /* _r_Q10 -- TCPH query 10 test                                               */
 /*============================================================================*/
 
+// /glean_interactive
 /jobMetrics
 /joWrite
-/glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_r_Q10"

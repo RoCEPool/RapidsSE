@@ -141,11 +141,11 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
     char cNextTable = xCI.G.p_joinOrder->cValue();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
     xCI.G.p_joinEstimate = xCI.G.p_joinOrder->pSub_joinEstimate();
-    xCI.G.p_streamCast = xCI.G.p_joinEstimate->pSub_locusCast();
+    xCI.G.p_joinCast = xCI.G.p_joinEstimate->pSub_locusCast();
     xCI.G.p_costUnicast = xCI.G.p_joinEstimate->pSub_costUnicast();
     xCI.G.p_costNetwork = xCI.G.p_joinEstimate->pSub_costNetwork();
     xCI.G.p_costJoining = xCI.G.p_joinEstimate->pSub_costJoining();
-    s32 sCast = xCI.G.p_streamCast->szValue();
+    s32 sCast = xCI.G.p_joinCast->szValue();
     StrLib::vShuffleLeft(sCast.azChar(),3);
 
     if (bNumbers)

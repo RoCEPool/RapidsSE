@@ -1398,8 +1398,8 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
             pSubCard->pSymbol()->bIsTableColumn()) {
 
           if (!pSubCard->pSymbol()->Y_bHas(P_Type)) {
-            p_part->vDump();
-            pSubCard->vDump();
+            //p_part->vDump();
+            //pSubCard->vDump();
             RASSERT(pSubCard->pSymbol()->Y_bHas(P_Type));
           }
         }

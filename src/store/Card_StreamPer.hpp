@@ -21,8 +21,8 @@ namespace STORE
      void vEstStreamCost(Card_TableList* p_tableList,
                          Card_FiltPredList* p_filtPredList);
 
-     eXK eJoinCast(Symbol*         p_Y_streamPtn_running,
-                   Card_TableList* p_tableList,
+     eXK eJoinCast(Card_StreamPtn*  p_streamPtn,
+                   Card_TableList*  p_tableList,
                    Card_StreamJoin* p_streamJoin);
 
      i8 iCreatePerSeq(Card_TableList*    p_tableList,

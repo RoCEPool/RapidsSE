@@ -27,7 +27,12 @@ load B "../DATA/Select/select.csv";
 load C "../DATA/Select/select.csv";
 
 
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
 /joinPermutations
+/pipelineName = "_alka"
 select count(*)
   from A
    join B on A.A_COL0 = B.B_COL0

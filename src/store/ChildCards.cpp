@@ -66,6 +66,30 @@ void ChildCards::vConcatChildren(Stz* szTerms, eCK eChild)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove and delete all children (non-recursive)                             */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vDeleteAllChildren(void)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  while(Card* pChild = pPopChild()) {
+    //vDeleteChild(pChild);
+    delete pChild;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove and delete given immediate child card (non-recursive)               */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vDeleteChild(Card* pChild)
+{
+
+  vRemove(pChild);
+
+  delete pChild;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find immediate child-card                                                  */
 /*----------------------------------------------------------------------------*/
 i8 ChildCards::iFindChild(eCK eCard)
@@ -358,29 +382,6 @@ void ChildCards::vRemoveChild(Card* pChildCard)
 {
 
   vRemove(pChildCard);
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove and delete all children (non-recursive)                             */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vRemoveDeleteAllChildren(void)
-{
-  //_precondition_(_ADDRESS_,_FOOTER_);
-
-  while(Card* pChild = pPopChild()) {
-    vRemoveDeleteChild(pChild);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove and delete given immediate child card (non-recursive)               */
-/*----------------------------------------------------------------------------*/
-void ChildCards::vRemoveDeleteChild(Card* pChildCard)
-{
-
-  vRemove(pChildCard);
-
-  delete pChildCard;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -145,7 +145,7 @@ void Card_Index::vDeleteBounds(void)
 
   pSymbol()->Y_vCut(P_ChosenIndex);
   Card_Bounds* p_Bounds = pSub_bounds();
-  vRemoveDeleteChild(p_Bounds);
+  vDeleteChild(p_Bounds);
 }
 
 /*----------------------------------------------------------------------------*/

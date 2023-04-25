@@ -16,10 +16,10 @@ namespace STORE
     Card_Cast(void);
    ~Card_Cast(void) noexcept(false);
 
-    static eXK eStageCast(Symbol* p_Y_streamPtn_running,
+    static eXK eStageCast(Card_StreamPtn* p_streamPtn,
                           Symbol* p_Y_tblCol_prior,
-                          Symbol* p_Y_idxCol_curr,
-                          Symbol* p_Y_tblCol_tbh);
+                          Symbol* p_Y_tablePtn_join,
+                          Symbol* p_Y_idxCol_join);
   };
 
   Card_Cast* _pCard_Cast(void* aAddr);

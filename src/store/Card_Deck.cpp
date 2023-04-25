@@ -57,8 +57,9 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   eXK eStageCast;
-  Symbol* p_Y_streamPtn_running = nullptr;
   Symbol* p_Y_streamPtn_curr = nullptr;
+
+  Card_StreamPtn* p_streamPtn = new Card_StreamPtn;
 
   while (pCI->G_bEachMain()) {
 
@@ -70,21 +71,18 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 
       if (! p_OP_prev) {
         Card_Table* p_table_first = pCI->G.p_OP->pSub_table();
-        p_Y_streamPtn_running     = p_table_first->pSub_tablePtn()->pSymbol();
+        p_streamPtn->vAddKey(p_table_first->pSub_tablePtn()->pSymbol());
       }
       else {
         eStageCast = pCI->G.pDeck->eAddStageCast_toPrev_cast(pCI,
-                                                             p_Y_streamPtn_running,
+                                                             p_streamPtn,
                                                              p_project_prior,
                                                              p_combined_prior,
                                                              p_cast_prior,
-                                                             pCI->G.p_OP,
-                                                             p_Y_streamPtn_curr/*&*/);
+                                                             pCI->G.p_OP);
         pCI->G_vMainResynch();
         pCI->vPrintBoard(__LINE__);
         vDebugPoint();
-
-        p_Y_streamPtn_running = p_Y_streamPtn_curr;
       }
 
       p_OP_prev = pCI->G.p_OP;
@@ -102,9 +100,11 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
       p_cast_prior     = nullptr;
     }
     else if (CK_CAST == pCI->G.e_MainCard) {
-      p_cast_prior = pCI->G.p_next;
+      p_cast_prior = pCI->G.p_cast;
     }
   }
+
+  delete p_streamPtn;
 
   pCI->vPrintBoard(__LINE__);
   vDebugPoint();
@@ -113,41 +113,48 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
-                                         Symbol*        p_Y_streamPtn_running,
-                                         Card_Project*  p_project_prev,
-                                         Card_Combined* p_combined_prev,
-                                         Card_Cast*     p_cast_prev,
-                                         Card_OP*       p_OP_curr,
-                                         Symbol*&       rp_Y_streamPtn_curr)
+eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*       pCI,
+                                         Card_StreamPtn* p_streamPtn,
+                                         Card_Project*   p_project_prev,
+                                         Card_Combined*  p_combined_prev,
+                                         Card_Cast*      p_cast_prev,
+                                         Card_OP*        p_OP_curr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Table*     p_table_curr       = p_OP_curr->pSub_table();
-  Card_TablePtn*  p_tablePtn_curr    = p_table_curr->pSub_tablePtn();
-  Card_IndexList* p_indexList_curr   = p_OP_curr->pSub_indexList();
-  Card_Index*     p_index_curr       = p_indexList_curr->pFindChosenIndex();
-  Card_IdxColList* p_idxColList_curr = p_index_curr->pSub_idxColList();
-  Card_Bounds*    p_bounds_curr      = p_index_curr->pSub_bounds();
-  Card_Bound*     p_bound_curr       = p_bounds_curr->pSub_bound();
+  RASSERT(CK_INDEXJOIN    == p_OP_curr->eCard() ||
+          CK_INDEXSCAN    == p_OP_curr->eCard() ||
+          CK_KEYEXISTS    == p_OP_curr->eCard() ||
+          CK_KEYNOTEXISTS == p_OP_curr->eCard() ||
+          CK_SCAN         == p_OP_curr->eCard());
 
-  Card_Term* p_term_tblCol_tbh     = p_bound_curr->pGet_tblColOdn();
-  Card_Term* p_term_idxColOdn_curr = p_bound_curr->pGet_idxColOdn();
+  RASSERT(p_streamPtn);
 
-  Card_IdxCol* p_idxCol_curr =
-      p_idxColList_curr->pGetIdxCol_byIdxColOdn(p_term_idxColOdn_curr->szValue());
-  Symbol* p_Y_idxCol_curr = p_idxCol_curr->pSymbol();
+  Card_Table*      p_table_join      = p_OP_curr->pSub_table();
+  Card_TablePtn*   p_tablePtn_join   = p_table_join->pSub_tablePtn();
+  Card_IndexList*  p_indexList_join  = p_OP_curr->pSub_indexList();
+  Card_Index*      p_index_join      = p_indexList_join->pFindChosenIndex();
+  Card_IdxColList* p_idxColList_join = p_index_join->pSub_idxColList();
+  Card_Bounds*     p_bounds_join     = p_index_join->pSub_bounds();
+  Card_Bound*      p_bound_join      = p_bounds_join->pSub_bound();
 
-  Symbol* p_Y_tblCol_prior = p_bound_curr->pGet_tblColOdn()
-                               ? p_bound_curr->pGet_tblColOdn()->pSymbol()
+  Card_Term* p_term_tblCol_hash      = p_bound_join->pGet_tblColOdn();
+  Card_Term* p_term_idxColOdn_join   = p_bound_join->pGet_idxColOdn();
+
+  Card_IdxCol* p_idxCol_join =
+      p_idxColList_join->pGetIdxCol_byIdxColOdn(p_term_idxColOdn_join->szValue());
+  Symbol* p_Y_idxCol_join = p_idxCol_join->pSymbol();
+
+  Symbol* p_Y_tblCol_prior = p_bound_join->pGet_tblColOdn()
+                               ? p_bound_join->pGet_tblColOdn()->pSymbol()
                                : nullptr;
 
-  Symbol* p_Y_tablePtn_curr = p_tablePtn_curr->pSymbol();
+  Symbol* p_Y_tablePtn_join = p_tablePtn_join->pSymbol();
 
-  eXK eStageCast = Card_Cast::eStageCast(p_Y_streamPtn_running,
+  eXK eStageCast = Card_Cast::eStageCast(p_streamPtn,
                                          p_Y_tblCol_prior,
-                                         p_Y_tablePtn_curr,
-                                         p_Y_idxCol_curr);
+                                         p_Y_tablePtn_join,
+                                         p_Y_idxCol_join);
   Card_Hash* p_hash_prior_new;
   switch (eStageCast) {
 
@@ -160,14 +167,13 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
         pCI->G_vInsertBefore(p_combined, p_cast_prev);
       }
 
-      rp_Y_streamPtn_curr = p_Y_tablePtn_curr;
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case XK_HASHCAST:
       p_cast_prev->vValue("hashcast"_Stz);
 
-      pCI->G.p_expr = p_term_tblCol_tbh->pExpr_For_col(pCI, pCI->G.i_MainCard);
+      pCI->G.p_expr = p_term_tblCol_hash->pExpr_For_col(pCI, pCI->G.i_MainCard);
       p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr);
 
       if (p_combined_prev) {
@@ -179,15 +185,11 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*      pCI,
         pCI->G_vInsertBefore(p_combined, p_cast_prev);
       }
 
-      rp_Y_streamPtn_curr = p_Y_tablePtn_curr;
       break;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     case XK_UNICAST:
       // no change to next card; default is unicast
-
-      rp_Y_streamPtn_curr = p_Y_streamPtn_running;
-
       break;
 
     default:
@@ -272,7 +274,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
   pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+      pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
   pCI->vRestart();
   pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
@@ -324,7 +326,7 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
   pCI->vRestart();
   while (pCI->G_bEachMain(CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
-      pCI->G.p_table->vRemoveDeleteChild(pCI->G.p_projection);
+      pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
   bool bSawFold = false;
 

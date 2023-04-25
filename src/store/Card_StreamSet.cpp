@@ -115,7 +115,7 @@ void Card_StreamSet::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
 
   CardIter xCI(this);
   while (xCI.G_bEachMain())
-    xCI.G.p_streamPrm->vEstStreamCost(p_tableList, p_filtPredList);
+    xCI.G.p_streamPer->vEstStreamCost(p_tableList, p_filtPredList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ Card_StreamPer* Card_StreamSet::pJoinOrder(i8 iJoinOrder)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_STREAMPER)) {
-    p_joinPermSeq = xCI.G.p_streamPrm;
+    p_joinPermSeq = xCI.G.p_streamPer;
     iPermutation = p_joinPermSeq->pSymbol()->Y_iGet(P_Permutation);
     if (iJoinOrder == iPermutation)
       return (p_joinPermSeq);
@@ -151,10 +151,10 @@ Card_StreamPer* Card_StreamSet::pLowestCost(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_STREAMPER)) {
     if (! pLowest)
-      pLowest = xCI.G.p_streamPrm;
+      pLowest = xCI.G.p_streamPer;
     else
-    if (xCI.G.p_streamPrm->bIsLessCost(pLowest))
-      pLowest = xCI.G.p_streamPrm;
+    if (xCI.G.p_streamPer->bIsLessCost(pLowest))
+      pLowest = xCI.G.p_streamPer;
   }
 
   return pLowest;
@@ -169,7 +169,7 @@ void Card_StreamSet::vRemoveInvalid(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
-    if (xCI.G.p_streamPrm->pSymbol()->Y_bHas(P_Invalid))
+    if (xCI.G.p_streamPer->pSymbol()->Y_bHas(P_Invalid))
       xCI.G_vRemoveDeleteMain(CK_STREAMPER);
   }
 }

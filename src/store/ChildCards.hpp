@@ -45,8 +45,8 @@ namespace STORE
 
     void vRemoveAllChildren(void);
     void vRemoveChild(Card* pChildCard);
-    void vRemoveDeleteAllChildren(void);
-    void vRemoveDeleteChild(Card* pChildCard);
+    void vDeleteAllChildren(void);
+    void vDeleteChild(Card* pChild);
     void vRemoveSub(Card* pSubCard);
     void vReplaceChildWithItsSubs(Card* pChildCard);
     void vReplaceChild(Card* pChildCard, Card* pWithCard);

@@ -182,7 +182,7 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vAppend(new Card_Section("All Permutations"_Stz));
   CardIter xCI(p_streamPrmAll);
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPrm->pDupCardRecursive());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -193,7 +193,7 @@ void JoinOrdering::vReorderTables(void)
 
   xCI.vRestart();
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPrm->pDupCardRecursive());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -204,7 +204,7 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vAppend(new Card_Section("Join Cost Est."_Stz));
   xCI.vRestart();
   while (xCI.G_bEachMain())
-    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPrm->pDupCardRecursive());
+    m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
@@ -212,7 +212,7 @@ void JoinOrdering::vReorderTables(void)
   xCI.vRestart();
   i8 iJoinPermutations = 0;
   while (xCI.G_bEachMain(CK_STREAMPER)) {
-    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_streamPrm);
+    Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_streamPer);
     //p_joinOrdering->vDump();
     s4K sJoinOrder;
     if (pFile) {
