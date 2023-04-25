@@ -20,10 +20,10 @@ int vInflateCrwEnd(struct Combined_T* aCombinedT)
 
     aSubReturnLabel = && L_AdvanceNextRow;
 
-    // marker-start
-    goto L_AdvanceNextRow;
+  // marker-start
+  goto L_AdvanceNextRow;
 
-    L_Return:
+  L_Return:
     goto L_ReturnFinal;
 
 #include "../src/store/vFLAT_InflateColumn.h"
