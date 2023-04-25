@@ -523,11 +523,12 @@ void ApplyOptimisations::vEarlyProjections(void)
     m_pCI->Early.m_pOP_leaf = nullptr;
 
     bool bEarlyRoot = false;
-    while (m_pCI->G_bEachMain_reverse())
+    while (m_pCI->G_bEachMain_reverse()) {
       if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot()) {
         bEarlyRoot = true;
         break;
       }
+    }
     if (! bEarlyRoot)
       break;
 

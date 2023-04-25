@@ -32,6 +32,7 @@ namespace STORE
 
     void vEarlyProject_given_leaf(CardIter* pCI);
     void vEarlyProject_needed_recurse(CardIter* pCI);
+    void vEarlyProject_root(CardIter* pCI);
 
     void vInject_foldExpr(CardIter* pCI);
     void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);

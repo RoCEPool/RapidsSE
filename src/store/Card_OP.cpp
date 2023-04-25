@@ -330,13 +330,16 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
       pCI->G.p_ordAgg->vEarlyProject_root(pCI);
       break;
 
-      // -- -- -- -- -- -- --
+    // -- -- -- -- -- -- --
+    case CK_PROJECT:
+      pCI->G.p_project->vEarlyProject_root(pCI);
+      break;
 
+    // -- -- -- -- -- -- --
     case CK_CROSSJOIN:
     case CK_INDEXJOIN:
     case CK_INDEXSCAN:
     case CK_LIMIT:
-    case CK_PROJECT:
     case CK_SCAN:
     case CK_TOP:
       break;
@@ -507,6 +510,9 @@ bool Card_OP::bIsEarlyRoot(void)
       return false;
 
     case CK_ORDAGG:
+      return true;
+
+    case CK_PROJECT:
       return true;
 
     default:
