@@ -220,9 +220,12 @@ i8 iGbyAggBegin(Combined_T* aCombinedT) {
 // function-vGbyAggCreatePayLoad
 void vGbyAggCreatePayLoad(Combined_T* aCombinedT) {
 
+  i8 __PAYLOADBYTES__;
+
     // marker-start
     // - - - - - - - - - - - - - -
     // create the payload
+
 #ifdef WITH_TINYC
     vEnt_payloadCreate(aCombinedT->m_aEntIntPL, __PAYLOADBYTES__);
 #endif
@@ -238,7 +241,6 @@ void vGbyAggFindKey(Combined_T* aCombinedT) {
   void* aEntFound;
 
   // marker-start
-
   // - - - - - - - - - - - - - -
   // find key in payload index
   aEntFound = aIndexTree_findEntry(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntKeyPL);
@@ -246,6 +248,59 @@ void vGbyAggFindKey(Combined_T* aCombinedT) {
   if ( !aEntFound ) {
     // marker-end
   }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggInsertKey --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggInsertKey
+i8 iGbyAggInsertKey(Combined_T* aCombinedT) {
+
+  void* aEntInserted;
+  void* aEntFound;
+  i8 __PAYLOADBYTES__;
+
+  // marker-start
+
+    // - - - - - - - - - - - - - -
+    // insert key in the payload
+    aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_iErrorCode);
+    if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+      return 0;
+    }
+
+    if (aEntInserted) {
+      aCombinedT->m_iRowsProcessed++;
+      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted
+          + sizeof(struct Ent_int)
+          + __PAYLOADBYTES__);
+     }
+
+     aEntFound = aEntInserted;
+
+// marker-end
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggInsertKeyEnd -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggInsertKeyEnd
+i8 iGbyAggInsertKeyEnd(Combined_T* aCombinedT) {
+
+  {
+  // marker-start
+
+    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+      return 0;
+    }
+  }
+
+  // marker-end
+
+ return 0;
 
 }
 

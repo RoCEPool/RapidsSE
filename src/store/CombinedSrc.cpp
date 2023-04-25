@@ -145,9 +145,15 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz);
         vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+        vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz);
         if (pOpSketch->m_nPayloadBytes)
           vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
-        vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz);
+        vAppendCodeFragment(pOpSketch, "iGbyAggInsertKey"_Stz);
+        vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+        vAppendCodeFragment(pOpSketch, "iGbyAggInsertKeyEnd"_Stz);
+        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
 //
 //        vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz);
 //        vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
