@@ -135,8 +135,7 @@ function startCluster() {
     do
       debugPrint "Starting ${row}"
       remoteNodeArgArr=("${row}")
-      [ -n "${ARG_EXTRA}" ] && remoteNodeArgArr+=("${ARG_EXTRA}")
-      [ -n "${ARG_EXTRA_VALUE}" ] && remoteNodeArgArr+=("${ARG_EXTRA_VALUE}")
+      [ -n "${EXTRA_START_ARGS[@]}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" || errorExit "Could not start node ${row} in the cluster."
     done
 
@@ -145,8 +144,7 @@ function startCluster() {
     for row in "${nodeNames[@]}"
     do
       remoteNodeArgArr=("${row}")
-      [ -n "${ARG_EXTRA}" ] && remoteNodeArgArr+=("${ARG_EXTRA}")
-      [ -n "${ARG_EXTRA_VALUE}" ] && remoteNodeArgArr+=("${ARG_EXTRA_VALUE}")
+      [ -n "${EXTRA_START_ARGS}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" &>/dev/null &
     done
 
@@ -235,7 +233,7 @@ function startRemoteNode() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Starts RapidsSE on the current node only.
-## Params: None
+## Params: (Optional) extra start arguments
 
 function startCurrentNode() {
 
@@ -251,18 +249,9 @@ function startCurrentNode() {
   local mem
   local clusterId
   local diskPaths
-  local argExtra
-  local argExtraValue
   local params
+  local extraStartArgs=($@)
 
-  if [ -n "$1" ]
-  then
-    argExtra=("$1")
-    if [ -n "$2" ]
-    then
-      argExtraValue=("$2")
-    fi
-  fi
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
   internal_port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
@@ -311,6 +300,7 @@ function startCurrentNode() {
   startCmd+=("--heartbeat")
   startCmd+=("${heartbeatAddress}")
   startCmd+=("${heartbeatPort}")
+
   if [ ${#diskpathsArray[@]} -ne 0 ]; then
     for path in "${diskpathsArray[@]}"
     do
@@ -318,15 +308,9 @@ function startCurrentNode() {
       startCmd+=("${path}")
     done
   fi
+
   startCmd+=("${paramsArray[@]}")
-  if [ -n "$argExtra" ]
-  then
-    startCmd+=("$argExtra")
-    if [ -n "$argExtraValue" ]
-    then
-      startCmd+=("$argExtraValue")
-    fi
-  fi
+  startCmd+=("${extraStartArgs[@]}")
 
 
   # SE environment variables

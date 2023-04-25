@@ -34,8 +34,7 @@ CLUSTER_INIT=0
 CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
 NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
 DEBUG=0
-ARG_EXTRA=""
-ARG_EXTRA_VALUE=""
+EXTRA_START_ARGS=()
 
 # Will be set after loading node name file.
 CURRENT_NODE_NAME=""
@@ -78,8 +77,7 @@ function processStartArgs() {
         ;;
 
       --reload)
-        ARG_EXTRA="$1"
-        ARG_EXTRA_VALUE="$2"
+        EXTRA_START_ARGS+=("$1" "$2")
         shift # past argument
         shift # past value
         ;;
@@ -155,8 +153,7 @@ debugPrint "CLUSTER_INIT = ${CLUSTER_INIT}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
 debugPrint "NAME_FILE = ${NAME_FILE}"
 debugPrint "DEBUG = ${DEBUG}"
-debugPrint "ARG_EXTRA = ${ARG_EXTRA}"
-debugPrint "ARG_EXTRA_VALUE = ${ARG_EXTRA_VALUE}"
+debugPrint "EXTRA_START_ARGS = ${EXTRA_START_ARGS[*]}"
 
 # Import the cluster configuration
 loadClusterConfig
@@ -178,5 +175,5 @@ else
     exit
   fi
 
-  startCurrentNode "${ARG_EXTRA}" "${ARG_EXTRA_VALUE}"
+  startCurrentNode "${EXTRA_START_ARGS[@]}"
 fi
