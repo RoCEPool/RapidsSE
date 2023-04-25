@@ -35,6 +35,8 @@ end
 
 __cpp_code__
 ... any c/c++ code...
+line 2
+line 3
 __codeEnd__
 
 ;

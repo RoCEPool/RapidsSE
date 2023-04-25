@@ -692,7 +692,10 @@ void Table::vGetGridEstimates(i8 &jTableSize, i8 &jRowSize, i8& nRowCount)
     else
       jTableSize = nBuffersPerPtn * nPtnsInGrid;
   else
+  if (m_pStreamDef->jTableSize())
     jTableSize = m_pStreamDef->jTableSize();
+  else
+    jTableSize = 1;
 }
 
 /*----------------------------------------------------------------------------*/
