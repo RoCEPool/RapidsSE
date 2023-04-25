@@ -34,6 +34,7 @@ CLUSTER_INIT=0
 CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
 NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
 DEBUG=0
+RELOAD_PATH=""
 EXTRA_START_ARGS=()
 
 # Will be set after loading node name file.
@@ -58,6 +59,7 @@ function processStartArgs() {
   local argCluster=0
   local argNode=0
   local argConfig=0
+  local argReload=0
 
   while [[ $# -gt 0 ]]
   do
@@ -77,6 +79,8 @@ function processStartArgs() {
         ;;
 
       --reload)
+        argReload=1
+        RELOAD_PATH="$2"
         EXTRA_START_ARGS+=("$1" "$2")
         shift # past argument
         shift # past value
@@ -139,6 +143,11 @@ function processStartArgs() {
     printError "Config file does not exist: ${CONFIG_FILE}"
     printStartStopUsageAndExit
   fi
+
+  if [[ ${argReload} -eq 1 && -z "${RELOAD_PATH:-}" ]]; then
+      printError "${errmsg}" "No reload snapshot was specified"
+      printStartStopUsageAndExit
+  fi
 }
 
 ###############################################################################
@@ -153,6 +162,7 @@ debugPrint "CLUSTER_INIT = ${CLUSTER_INIT}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
 debugPrint "NAME_FILE = ${NAME_FILE}"
 debugPrint "DEBUG = ${DEBUG}"
+debugPrint "RELOAD_PATH = ${RELOAD_PATH}"
 debugPrint "EXTRA_START_ARGS = ${EXTRA_START_ARGS[*]}"
 
 # Import the cluster configuration
