@@ -2369,7 +2369,7 @@ void CodeSynth::vPayloadAgg(void) {
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // aggregate the payload");
 
-  if (m_pIndexDef->eKeyKind()) {
+  if (m_pIndexDef->eKeyKind() == KE_INT) {
     StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound");
     StrLib::vAppendString(&m_azCodeCrs, "\n      + sizeof(struct Ent_int)");
     StrLib::vAppendString(&m_azCodeCrs, "\n      + 8);");

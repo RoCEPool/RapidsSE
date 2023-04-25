@@ -17,7 +17,8 @@
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr, String* sCode, Column* pColumn)
+bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, Stz* szStartMkr, Stz* szEndMkr,
+                              String* sCode, Column* pColumn, i8 iPayLoadIndex)
 {
 
   i8 nFileSize = pFile->iSize();
@@ -53,6 +54,13 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, S
         }
       }
 
+      if (StrLib::bContains(sLine.azChar(), "__COLUMN_NO__")) {
+        s256 sColumn;
+        StrLib::vSprint(sColumn,"%lld"_Stz,pColumn->iColumnNo());
+        bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_NO__", sColumn.azChar());
+        RASSERT(bResult);
+      }
+
       // look for end marker
       if (bFoundStart) {
         if (StrLib::bContains(sLine.azChar(), szEndMkr->azChar())) {
@@ -73,18 +81,18 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr, S
           sColNm = pColumn->szColNm();
           StrLib::vToUpper((char*)sColNm.azChar());
 
-          if (StrLib::bContains(sLine.azChar(), "__COLUMN_NO__")) {
-            s256 sColumn;
-            StrLib::vSprint(sColumn,"%lld"_Stz,pColumn->iColumnNo());
-            bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_NO__", sColumn.azChar());
-            RASSERT(bResult);
-          }
           if (StrLib::bContains(sLine.azChar(), "__COLUMN_TO__")) {
             bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_TO__", sColNm.azChar());
             RASSERT(bResult);
           }
           if (StrLib::bContains(sLine.azChar(), "__COLUMN_FROM__")) {
             bool bResult = StrLib::bReplace(sLine.azChar(), "__COLUMN_FROM__", sColNm.azChar());
+            RASSERT(bResult);
+          }
+          if (StrLib::bContains(sLine.azChar(), "__PAYLOAD_INDEX__")) {
+            s256 sPayLoadIndex;
+            StrLib::vSprint(sPayLoadIndex,"%lld"_Stz,iPayLoadIndex);
+            bool bResult = StrLib::bReplace(sLine.azChar(), "__PAYLOAD_INDEX__", sPayLoadIndex.azChar());
             RASSERT(bResult);
           }
 

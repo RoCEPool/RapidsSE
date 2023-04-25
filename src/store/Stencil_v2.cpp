@@ -355,7 +355,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       pOpSketch = pSketchGbyAgg(pCombined, pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
-      ePrevStencil_v2 = SR_AT;
+      ePrevStencil_v2 = SR_PL;
 
       OpSketch* pGbyAggOpSketch = pOpSketch;
       Op *pLastOp = pOp;
@@ -368,6 +368,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchTub(pGbyAggOpSketch, HK_EOS, sLabelLoop, ePrevStencil_v2, pGbyAggOpSketch->m_pInitStack);
+      pOpSketch->vIndexDef(pGbyAggOpSketch->m_pIndexDef);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;

@@ -285,10 +285,12 @@ i8 iGbyAggInsertKey(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iGbyAggInsertKeyEnd -----------------------------------------------------*/
+/*-- iGbyAggIntKeyEnd --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iGbyAggInsertKeyEnd
-i8 iGbyAggInsertKeyEnd(Combined_T* aCombinedT) {
+// function-iGbyAggIntKeyEnd
+i8 iGbyAggIntKeyEnd(Combined_T* aCombinedT) {
+
+  void* aEntFound;
 
   {
   // marker-start
@@ -297,6 +299,41 @@ i8 iGbyAggInsertKeyEnd(Combined_T* aCombinedT) {
       return 0;
     }
   }
+
+  // - - - - - - - - - - - - - -
+  // aggregate the payload
+  aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound
+                  + sizeof(struct Ent_int)
+                  + 8);
+
+  // marker-end
+
+ return 0;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggGenKeyEnd --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggGenKeyEnd
+i8 iGbyAggGenKeyEnd(Combined_T* aCombinedT) {
+
+  void* aEntFound;
+
+  {
+  // marker-start
+
+    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+      return 0;
+    }
+  }
+
+  // - - - - - - - - - - - - - -
+  // aggregate the payload
+  aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound
+                  + sizeof(struct Ent_int)
+                  + ((struct Ent_int*)aEntFound)->m_iIntElm0
+                  + 8);
 
   // marker-end
 
@@ -580,6 +617,112 @@ i8 iEosTubBody(Combined_T* aCombinedT) {
   }
 
 /*----------------------------------------------------------------------------*/
+/*-- iEosPayLoadTub ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosPayLoadTub
+i8 iEosPayLoadTub(Combined_T* aCombinedT) {
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+    if (!aCombinedT->m_iRowsProcessed)
+      goto L_Return;
+
+  // allocate a row from the tub
+#ifdef WITH_TINYC
+    aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+#endif
+    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+      return 0;
+    }
+
+    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aCombinedT->m_aRowTub;
+
+  // marker-end
+  L_Return:
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vEosPayLoadTubEnd -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vEosPayLoadTubEnd
+void vEosPayLoadTubEnd(Combined_T* aCombinedT) {
+
+  {
+
+  // marker-start
+    // - - - - - - - - - - - - - -
+    // move to next entry
+    aCombinedT->m_aEntIntPL = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferPL, aCombinedT->m_aEntIntPL);
+  }
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vEosPayloadTraversal ----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vEosPayloadTraversal
+i8 vEosPayloadTraversal(Combined_T* aCombinedT) {
+
+  i8 iElemSize = 0;
+
+  // marker-start
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  struct __STRUCT_TO__* p__STRUCT_FROM__;
+
+  // - - - - - - - - - - - - - -
+  // payload traversal
+  aCombinedT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreePL, &aCombinedT->m_aEntBufferPL);
+
+  while (aCombinedT->m_aEntIntPL) {
+
+    aCombinedT->m_iProcessRow = 1;
+
+    aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;
+    aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL
+                                      + sizeof(struct Ent_int)
+                                      + 8);
+
+    iElemSize = 0;
+
+    // marker-end
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPayLoadKeyToTub --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPayLoadKeyToTub
+void vPayLoadKeyToTub(Combined_T* aCombinedT) {
+
+  i8 iElemSize;
+
+  struct __STRUCT_FROM__ {
+    union Int_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Int_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // column __COLUMN_NO__
+
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0 + iElemSize;
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vTubCol -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vTubCol
@@ -606,6 +749,9 @@ void vTubCol(Combined_T* aCombinedT) {
   // marker-end
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- vTubVchCol --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 // function-vTubVchCol
 void vTubVchCol(Combined_T* aCombinedT) {
 
@@ -656,6 +802,35 @@ void vTubVchCol(Combined_T* aCombinedT) {
     vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
 #endif
   }
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPayLoadToTubCol --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPayLoadToTubCol
+void vPayLoadToTubCol(Combined_T* aCombinedT) {
+
+  i8 __PAYLOAD_INDEX__;
+
+  struct __STRUCT_FROM__ {
+    union Int_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Int_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // column __COLUMN_NO__
+
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
 
   // marker-end
 }

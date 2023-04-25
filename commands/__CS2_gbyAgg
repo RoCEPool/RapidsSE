@@ -4,7 +4,7 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-explain stage transliterate select sum(n_nationKey) from nation group by n_regionKey;
+explain stage transliterate select n_regionKey, sum(n_nationKey) from nation group by n_regionKey;
 
 /ccode pipeline unamed
 begin
