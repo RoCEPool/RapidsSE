@@ -174,6 +174,11 @@ if [ ${CLUSTER_OP} -eq 1 ]; then
     exit
   fi
 
+  if [ -n "${RELOAD_PATH:-}" ]; then
+    # Validate the reload path exists on all nodes
+    validateReloadPath "${RELOAD_PATH}"
+  fi
+
   #shellcheck disable=SC2119
   startCluster
 
