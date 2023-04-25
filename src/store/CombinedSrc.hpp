@@ -41,8 +41,9 @@ namespace STORE {
     void operator delete(void *);
 
     CombinedSrc(void);
-
     ~CombinedSrc(void) noexcept(false);
+
+    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
     void vSynthesizeCode(Stencil_v2* pStencil);
 
@@ -54,13 +55,17 @@ namespace STORE {
 
 
   private:
-    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn = nullptr);
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn);
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction);
     void vAppendFileHeaders(void);
     void vAppendFunctionFooter(eHK eHandlerKind);
     void vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm);
     void vAppendStencilTo(OpSketch* pOpSketch);
     void vAppendCodeTubCols(OpSketch* pOpSketch);
+    void vAppendCodeKeyToTubCols(OpSketch* pOpSketch);
+    void vAppendCodePayLoadToTubCols(OpSketch* pOpSketch);
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
     bool bOpenCodeFiles(void);

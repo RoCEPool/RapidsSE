@@ -73,6 +73,28 @@ CombinedSrc::~CombinedSrc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* form column name from streamDef for given ordinal column                   */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column)
+{
+  _static_
+
+  s256 sUpper;
+
+  // get the column from the streamDef
+  Column* pColumn = pStreamDef->pGetColumn(i_Column);
+
+  sUpper = pColumn->szColNm();
+  StrLib::vToUpper((char *) sUpper.azChar());
+
+  if (pStreamDef->bIsDuplicateName(pColumn))
+    sColNm.vSprint("%s%lld.m_iAsI8"_Stz, sUpper.azChar(), i_DupCtr++);
+  else
+    sColNm.vSprint("%s.m_iAsI8"_Stz, sUpper.azChar());
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -150,18 +172,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
         vAppendCodeFragment(pOpSketch, "iGbyAggInsertKey"_Stz);
         vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-        vAppendCodeFragment(pOpSketch, "iGbyAggInsertKeyEnd"_Stz);
+        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+          vAppendCodeFragment(pOpSketch, "iGbyAggIntKeyEnd"_Stz);
+        else
+          vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
-//
-//        vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz);
-//        vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-//        vAppendCodeFragment(pOpSketch, "iAggregInitEnd"_Stz);
-//
-//        vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz);
-//        vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
-//        vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz);
         break;
 
       case SK_PROJECT:
@@ -190,10 +207,20 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
-          vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
-          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-          vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
-          vAppendCodeTubCols(pOpSketch);
+          if (pOpSketch->m_eStencilFrom == SR_PL) {
+            vAppendCodeFragment(pOpSketch, "vEosPayloadTraversal"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
+            vAppendCodeKeyToTubCols(pOpSketch);
+            vAppendCodePayLoadToTubCols(pOpSketch);
+            vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
+          }
+          else {
+            vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
+            vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
+            vAppendCodeTubCols(pOpSketch);
+          }
+
         }
         else {
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -259,6 +286,24 @@ void CombinedSrc::vPrint(void) {
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s16KB sCode;
+  bool bExtracted;
+
+  sCode = ""_Stz;
+  m_pFileCode->vSeekStart();
+  bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, szFunction,
+                                        "marker-start"_Stz, "marker-end"_Stz, sCode, nullptr, C_UNKNOWN);
+  RASSERT(bExtracted);
+  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment                                                       */
+/*----------------------------------------------------------------------------*/
 void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
@@ -269,7 +314,25 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Colu
   sCode = ""_Stz;
   m_pFileCode->vSeekStart();
   bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, szFunction,
-                                        "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn);
+                                        "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn, C_UNKNOWN);
+  RASSERT(bExtracted);
+  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment                                                       */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoadIndex)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s16KB sCode;
+  bool bExtracted;
+
+  sCode = ""_Stz;
+  m_pFileCode->vSeekStart();
+  bExtracted = CodeSynthUtils::bExtract(m_pFileCode, pOpSketch, szFunction,
+                                        "marker-start"_Stz, "marker-end"_Stz, sCode, pColumn, iPayLoadIndex);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 }
@@ -351,7 +414,7 @@ void CombinedSrc::vAppendFunctionFooter(eHK eHandlerKind)
 
   sCode = ""_Stz;
   m_pFunctionFooter->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, szFunction, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, szFunction, "marker-start"_Stz, "marker-end"_Stz, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
@@ -393,7 +456,7 @@ void CombinedSrc::vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm)
 
   sCode = ""_Stz;
   m_pFunctionHeader->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, nullptr, szFunction, "marker-start"_Stz, "marker-end"_Stz, sCode);
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, nullptr, szFunction, "marker-start"_Stz, "marker-end"_Stz, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
   sFunSignature.vSprint("iFun%d_%s"_Stz, iFunction,szStageNm);
@@ -447,6 +510,108 @@ void CombinedSrc::vAppendCodeTubCols(OpSketch* pOpSketch)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append code fragment for index key columns to tub                          */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeKeyToTubCols(OpSketch* pOpSketch)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s16KB sCode;
+  bool bExtracted;
+
+  IndexDef* pIndexDef = pOpSketch->m_pIndexDef;
+  StreamDef* pStreamDefOut = pOpSketch->m_pStreamDefOut;
+
+  s256 sColNm;
+  i8 i_DupCtr = 1;
+
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
+
+    sCode = ""_Stz;
+    m_pFileCode->vSeekStart();
+
+    // get the index columns
+    Column* pIndexColumn = pIndexDef->pGetColumn(i_Col);
+
+    // get the steamDef column No maching the indexColumn
+    i8 iStreamDefCol = pIndexDef->iGetStreamDefCol(pIndexColumn->iColumnNo());
+
+    // make the column name
+    vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, iStreamDefCol);
+
+    Column *pColumn = pStreamDefOut->pGetColumn(iStreamDefCol);
+
+    if (pIndexDef->eKeyKind() == KE_GENERAL) {
+      switch (pColumn->eColumnType()) {
+
+        case CT_VARCHAR:
+        case CT_CHAR:
+          RASSERT(0);
+          break;
+
+        default:
+          RASSERT(0);
+          break;
+      }
+    }
+    else {
+      vAppendCodeFragment(pOpSketch, "vPayLoadKeyToTub"_Stz, pColumn);
+    }
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment for payload columns to tub                            */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodePayLoadToTubCols(OpSketch* pOpSketch)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s16KB sCode;
+  bool bExtracted;
+
+  IndexDef* pIndexDef = pOpSketch->m_pIndexDef;
+  StreamDef* pStreamDefOut = pOpSketch->m_pStreamDefOut;
+
+  s256 sColNm;
+  i8 i_DupCtr = 1;
+  i8 iPayLoad = 0;
+  i8 nColumns = pStreamDefOut->nColumns();
+  i8 iIndexColumns = pIndexDef->nColumns();
+
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++, iIndexColumns++) {
+
+    Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is column in the key ?
+    Column* pIndexColumn = pIndexDef->pFindColumn(pColumn->iColumnNo());
+
+    if (pIndexColumn)
+      continue;
+
+    // make the column name
+    vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+    switch (pColumn->eColumnType()) {
+
+      case CT_VARCHAR:
+      case CT_CHAR:
+        vAppendCodeFragment(pOpSketch, "vPayLoadToTubVchCol"_Stz, pColumn);
+        break;
+
+      default:
+        vAppendCodeFragment(pOpSketch, "vPayLoadToTubCol"_Stz, pColumn, iPayLoad);
+        break;
+    }
+    iPayLoad++;
+    }
+
+  }
+
+/*----------------------------------------------------------------------------*/
 /* close the code fragment files                                             */
 /*----------------------------------------------------------------------------*/
 void CombinedSrc::vCloseCodeFiles(void)
@@ -479,6 +644,7 @@ void CombinedSrc::vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent)
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* print the synthesized code                                                 */
