@@ -30,20 +30,8 @@ assert::stack_0
 
 "b" .verbose
 
-  "OP_bktMap.sen"               include
-  "OP_bktMapGet.sen"            include
-  "OP_bktMapRecv.sen"           include
-  "OP_bktMapSend.sen"           include
   "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
-  "OP_bktGet.sen"               include
-  "OP_bktGet0.sen"              include
-  "OP_bktRecv.sen"              include
-  //"OP_bktSend.sen"            include
-
-  "OP_bucketGet.sen"            include
-  "OP_bktSend.sen"              include
-  "OP_bucketSend1.sen"          include
 
 "c" .verbose
 
@@ -81,8 +69,6 @@ assert::stack_0
   "OP_dropTable.sen"            include
   "OP_dropTenant.sen"           include
   "OP_dump.sen"                 include
-  "OP_dumpBktInfo.sen"          include
-  "OP_dumpBktMap.sen"           include
   "OP_dumpGridInfo.sen"         include
   "OP_dumpIndex.sen"            include
   "OP_dumpMetaInfo.sen"         include

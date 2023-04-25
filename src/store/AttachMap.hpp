@@ -44,7 +44,6 @@ namespace STORE
     s256  m_sLogTxtFile;
   
     bool          m_bBootError;
-    BucketMap*    m_pBucketMap;
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     ClassFlags    m_oClassFlags;
