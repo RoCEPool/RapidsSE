@@ -184,9 +184,12 @@ function startCluster() {
 
   else
     if [ "${fullClusterStart}" -eq 1 ]; then
-      echo "Cluster startup failed. Please stop the cluster before restarting it."
+      echo "Cluster startup failed. Please stop any running nodes in the cluster with"
+      echo "./${STOP_SCRIPT} before restarting it. Refer to the se.log file on the failed"
+      echo "nodes for failure details."
     else
-      echo "Added nodes have failed to start up correctly."
+      echo "Added nodes have failed to start up correctly. Refer to the se.log file on"
+      echo "the failed nodes for failure details."
     fi
     false
   fi
