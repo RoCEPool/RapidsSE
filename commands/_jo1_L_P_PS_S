@@ -2,6 +2,8 @@
 /* _jo1_L_P_PS_S -- join order test                                           */
 /*============================================================================*/
 
+/weaved
+/pipelineName = "_jo1_L_P_PS_S"
 select
        count(*)
   from

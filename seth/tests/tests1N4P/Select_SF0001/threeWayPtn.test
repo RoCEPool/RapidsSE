@@ -8,6 +8,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // UNICAST+HASHCAST+HASHCAST
 /weaved
+/glean_interactive
 select count(*)
   from Customer,
        Orders,
@@ -22,6 +23,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST+UNICAST+BROADCAST
 /weaved
+/glean_interactive
 select count(*)
   from Lineitem,
        PartSupp,
@@ -36,6 +38,7 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BROADCAST+BROADCAST+HASHCAST
 /weaved
+/glean_interactive
 select count(*)
   from Part,
        Lineitem,
