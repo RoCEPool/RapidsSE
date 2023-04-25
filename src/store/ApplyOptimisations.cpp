@@ -69,7 +69,7 @@ void ApplyOptimisations::vOptimise(void)
 
   vPromote_gbyAgg_To_ordAgg();
 
-  //vEarlyProjections();
+  vEarlyProjections();
 
   vDebugPoint();
 }
@@ -504,9 +504,8 @@ void ApplyOptimisations::vEarlyProjections(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 
-//  if (! AM::JOB::bHasTag(C_EARLY_PROJECTIONS)) {
-//    return;
-//  }
+  if (AM::JOB::bHasTag(C_EP_DISABLE))
+    return;
 
   m_pCI->vTransform(__func__, "Early projections"_Stz);
 
@@ -549,7 +548,7 @@ void ApplyOptimisations::vEarlyProjections(void)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
 //
-////  if (! AM::JOB::bHasTag(C_EARLY_PROJECTIONS)) {
+////  if (! AM::JOB::bHasTag(C_EP_DISABLE)) {
 ////    return;
 ////  }
 //

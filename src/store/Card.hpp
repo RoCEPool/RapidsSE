@@ -177,10 +177,11 @@ static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
 static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
 static Stz* C_NA                = "n/a"_Stz;
 
-static Stz* C_JOIN_ORDER = "<jo>"_Stz;
+static Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
 static Stz* C_FILTERPRED = "<filterPred>"_Stz;
+static Stz* C_JO_DISABLE = "<jo_disable>"_Stz;
+static Stz* C_JO_PICK    = "<jo_pick>"_Stz;
 static Stz* C_JOWRITE    = "<joWrite>"_Stz;
-static Stz* C_EARLY_PROJECTIONS = "<ep>"_Stz;
 
 static d8 C_EXPANSION_COEFF = 1.60;  // crw -> row buffer
 static d8 C_FILTER_COEFF    = 0.30;

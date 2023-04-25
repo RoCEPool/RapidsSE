@@ -122,6 +122,11 @@ bool Optimiser::bApplyTransformationMatrix(eEC* peErrorCode)
     //CK_KEY, //CK_PROJECTION,
     //CK_RPNCALC,
     //                                          0);
+
+    if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE)) {
+      vTrace("JobTags\n"_Stz);
+      MY::pJob()->pJobTags()->vDumpSet(true);
+    }
     pCardCtl()->vSaveShorter();
     pCardCtl()->vSaveXhand();
 

@@ -89,7 +89,10 @@ void JoinOrdering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
 
-//  m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+  if (AM::JOB::bHasTag(C_JO_DISABLE)) {
+    m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
+    return;
+  }
 
   if (Card_Table::nTables_reverse_foldBreak(m_pCI) < 2)
     return;
@@ -236,8 +239,8 @@ void JoinOrdering::vReorderTables(void)
   Stz* sJoinOrder = ""_Stz;
 
   // Specific join order /jo ?
-  if (AM::JOB::bHasTag(C_JOIN_ORDER)) {
-    sJoinOrder= AM::JOB::szTagValue(C_JOIN_ORDER);
+  if (AM::JOB::bHasTag(C_JO_PICK)) {
+    sJoinOrder= AM::JOB::szTagValue(C_JO_PICK);
     i8 iJoinOrder = StrLib::iToI8((char*)sJoinOrder);
     p_joinOrdering =
         Card_JoinOrdering::pPick(p_streamPrmAll, iJoinOrder);
