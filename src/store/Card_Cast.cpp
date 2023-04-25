@@ -67,56 +67,61 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
 
   eXK eCast = XK_NONE;
 
+  // -- -- -- -- -- -- -- -- -- --
+  // ? stream joining to a replicated table
   if (Card_COL::bIsReplicated(p_Y_idxCol_curr)) {
-    // curr table is replicated so always unicast
+    // + join table is replicated
+    //     stream is unicast mapping to partitions of join table
     eCast = XK_UNICAST;
   }
 
+  // -- -- -- -- -- -- -- -- -- --
+  // ? no prior column
   else
   if (! p_Y_tblCol_prior)
-    // no prior table column (probably cross join)
+    // + no prior column (probably cross join)
+    //     stream requires a broadcast mapping to table partitions
     eCast = XK_BROADCAST;
 
+  // -- -- -- -- -- -- -- -- -- --
+  // ? stream joining to table partition
   else
   if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_curr, p_Y_idxCol_curr)) {
-    // + curr indexed column is curr table ptn
-    //   the curr join-to column is an indexed column of the curr table ptn
-    //   so the curr join-to column identifies target key partition
-    //if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_prior, p_Y_tblCol_prior)) {
-//  if (Card_TablePtn::bColumnMatchesPtn(p_Y_streamPtn_running, p_Y_tblCol_prior)) {
-    //p_streamPtn->vDump();
+    // + stream joining to column which is table partition
+
+    // ? prior column is key in stream ptn
     if (p_streamPtn->bContainsKey(p_Y_tblCol_prior)) {
-      // + prev table column is prior table ptn
-      //   likewise the prev data-from column is an indexed column of prev table ptn
-      //   noting the cmpPred is ==, the source matches target, so we can unicast
+      // + prior column is a key in stream partition
+      //     stream is a unicast mapping to table partitions
       eCast = XK_UNICAST;
     }
     else {
-      // - prev table column is not prev table ptn
-      //     but the prev table column can be used for hash cast to this stage
-      //     because curr join-to column is an indexed column of the curr table ptn
-      //     the prev data-from column can be hashed to identify target key partition
+      // - prior table column is not a key in stream partition
+      //     stream is a hashcast mapping to table partitions
+      //       as prior column can be used to identify table partition
       eCast = XK_HASHCAST;
     }
   }
 
+  // -- -- -- -- -- -- -- -- -- --
+  // not joining to table partition
   else {
-    // - curr indexed column is not curr table ptn
-    //     curr join-to column is not an indexed column of the curr table ptn
-    //     cannot use the curr/target column to identify partition of target key
-    //     so irrespective of prev data-from column we must broadcast
+    // stream requires a broadcast mapping to table partitions
     eCast = XK_BROADCAST;
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // update the key set of running stream partition
 
   switch (eCast) {
 
     case XK_BROADCAST:
-      p_streamPtn->vResetPtn();
+      p_streamPtn->vResetKeys();
       p_streamPtn->vAddKey(p_Y_idxCol_curr);
       break;
 
     case XK_HASHCAST:
-      p_streamPtn->vResetPtn();
+      p_streamPtn->vResetKeys();
       p_streamPtn->vAddKey(p_Y_idxCol_curr);
       break;
 

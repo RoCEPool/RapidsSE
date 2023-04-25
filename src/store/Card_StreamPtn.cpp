@@ -86,7 +86,7 @@ bool Card_StreamPtn::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_StreamPtn::vResetPtn(void)
+void Card_StreamPtn::vResetKeys(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

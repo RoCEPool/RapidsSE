@@ -19,7 +19,7 @@ namespace STORE
     void vAddKey(Symbol* p_Y_tblCol);
     bool bContainsKey(Symbol* p_Y_tblCol);
     bool bIsEmpty(void);
-    void vResetPtn(void);
+    void vResetKeys(void);
   };
 
   Card_StreamPtn* _pCard_StreamPtn(void* aAddr);
