@@ -163,34 +163,34 @@ eXK Card_StreamPer::eJoinCast(Card_StreamPtn*  p_streamPtn,
   Card_Term* p_term_0_cmp = p_cmpPred->pGetTerm_0();
   Card_Term* p_term_1_cmp = p_cmpPred->pGetTerm_1();
 
-  char cTblSyn_curr  = p_streamJoin->cValue();
-  char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_curr);
+  char cTblSyn_join  = p_streamJoin->cValue();
+  char cTblSyn_prior = p_cmpPred->cOtherTable(cTblSyn_join);
 
   Card_TablePtn* p_tablePtn_prior = p_tableList->pGetTablePtn(cTblSyn_prior);
-  Card_TablePtn* p_tablePtn_curr  = p_tableList->pGetTablePtn(cTblSyn_curr);
+  Card_TablePtn* p_tablePtn_join  = p_tableList->pGetTablePtn(cTblSyn_join);
 
   Symbol* p_Y_tablePtn_prior = p_tablePtn_prior->pSymbol();
-  Symbol* p_Y_tablePtn_curr  = p_tablePtn_curr->pSymbol();
+  Symbol* p_Y_tablePtn_join  = p_tablePtn_join->pSymbol();
 
   Symbol* p_Y_term_0_cmp = p_term_0_cmp->pSymbol();
   Symbol* p_Y_term_1_cmp = p_term_1_cmp->pSymbol();
 
   Symbol* p_Y_tblCol_prior = nullptr;
-  Symbol* p_Y_idxCol_curr  = nullptr;
+  Symbol* p_Y_idxCol_join  = nullptr;
 
   if (Card_COL::bMatchingTblSyn(p_Y_tablePtn_prior, p_Y_term_0_cmp)) {
     p_Y_tblCol_prior = p_Y_term_0_cmp;
-    p_Y_idxCol_curr  = p_Y_term_1_cmp;
+    p_Y_idxCol_join  = p_Y_term_1_cmp;
   }
   else {
     p_Y_tblCol_prior = p_Y_term_1_cmp;
-    p_Y_idxCol_curr  = p_Y_term_0_cmp;
+    p_Y_idxCol_join  = p_Y_term_0_cmp;
   }
 
   eXK eStageCast = Card_Cast::eStageCast(p_streamPtn,
                                          p_Y_tblCol_prior,
-                                         p_Y_tablePtn_curr,
-                                         p_Y_idxCol_curr);
+                                         p_Y_tablePtn_join,
+                                         p_Y_idxCol_join);
   return eStageCast;
 }
 

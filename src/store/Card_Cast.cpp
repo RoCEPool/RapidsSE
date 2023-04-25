@@ -48,8 +48,8 @@ Card_Cast::~Card_Cast(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
                           Symbol* p_Y_tblCol_prior,
-                          Symbol* p_Y_tablePtn_curr,
-                          Symbol* p_Y_idxCol_curr)
+                          Symbol* p_Y_tablePtn_join,
+                          Symbol* p_Y_idxCol_join)
 {
   _static_
 
@@ -69,7 +69,7 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
 
   // -- -- -- -- -- -- -- -- -- --
   // ? stream joining to a replicated table
-  if (Card_COL::bIsReplicated(p_Y_idxCol_curr)) {
+  if (Card_COL::bIsReplicated(p_Y_idxCol_join)) {
     // + join table is replicated
     //     stream is unicast mapping to partitions of join table
     eCast = XK_UNICAST;
@@ -86,7 +86,7 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
   // -- -- -- -- -- -- -- -- -- --
   // ? stream joining to table partition
   else
-  if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_curr, p_Y_idxCol_curr)) {
+  if (Card_TablePtn::bColumnMatchesPtn(p_Y_tablePtn_join, p_Y_idxCol_join)) {
     // + stream joining to column which is table partition
 
     // ? prior column is key in stream ptn
@@ -117,16 +117,16 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
 
     case XK_BROADCAST:
       p_streamPtn->vResetKeys();
-      p_streamPtn->vAddKey(p_Y_idxCol_curr);
+      p_streamPtn->vAddKey(p_Y_idxCol_join);
       break;
 
     case XK_HASHCAST:
       p_streamPtn->vResetKeys();
-      p_streamPtn->vAddKey(p_Y_idxCol_curr);
+      p_streamPtn->vAddKey(p_Y_idxCol_join);
       break;
 
     case XK_UNICAST:
-      p_streamPtn->vAddKey(p_Y_idxCol_curr);
+      p_streamPtn->vAddKey(p_Y_idxCol_join);
       break;
 
     default:
