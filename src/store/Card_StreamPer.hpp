@@ -35,7 +35,9 @@ namespace STORE
 
      bool bHasKnownJoin(char cTblSyn);
 
-     bool bIsLessCost(Card_StreamPer* p_joinPermSeq_arg);
+     bool bIsHigherCost(Card_StreamPer* p_joinPermSeq_arg);
+
+     bool bIsLowerCost(Card_StreamPer* p_joinPermSeq_arg);
 
      bool bUnicastPermitted(char cTblSyn_prior,
                             char cTblSyn_prev,

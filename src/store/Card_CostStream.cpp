@@ -47,9 +47,42 @@ Card_CostStream::~Card_CostStream(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* is this permutation sequence load greater than given arg?                  */
+/*----------------------------------------------------------------------------*/
+bool Card_CostStream::bIsHigherCost(Card_CostStream* p_costQuery_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_CostNetwork* p_costNetwork_this = pSub_costNetwork();
+  Card_CostNetwork* p_costNetwork_arg  = p_costQuery_arg->pSub_costNetwork();
+
+  i8 iCostNetwork_this = p_costNetwork_this->iValue();
+  i8 iCostNetwork_arg  = p_costNetwork_arg->iValue();
+
+  if (iCostNetwork_this > iCostNetwork_arg)
+    return true;
+
+  if (iCostNetwork_this < iCostNetwork_arg)
+    return false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_CostUnicast* p_costUnicast_this = pSub_costUnicast();
+  Card_CostUnicast* p_costUnicast_arg  = p_costQuery_arg->pSub_costUnicast();
+
+  i8 iloadUnicast_this = p_costUnicast_this->iValue();
+  i8 iloadUnicast_arg  = p_costUnicast_arg->iValue();
+
+  if (iloadUnicast_this > iloadUnicast_arg)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this permutation sequence load less than given arg?                     */
 /*----------------------------------------------------------------------------*/
-bool Card_CostStream::bIsLessCost(Card_CostStream* p_costQuery_arg)
+bool Card_CostStream::bIsLowerCost(Card_CostStream* p_costQuery_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

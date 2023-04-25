@@ -412,16 +412,32 @@ bool Card_StreamPer::bHasKnownJoin(char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is load of this permutation sequence less than given arg?                  */
+/* is load of this permutation sequence greater than given arg?               */
 /*----------------------------------------------------------------------------*/
-bool Card_StreamPer::bIsLessCost(Card_StreamPer* p_joinPermSeq_arg)
+bool Card_StreamPer::bIsHigherCost(Card_StreamPer* p_joinPermSeq_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_CostStream* p_costQuery_this = pSub_costQuery();
   Card_CostStream* p_costQuery_arg  = p_joinPermSeq_arg->pSub_costQuery();
 
-  if (p_costQuery_this->bIsLessCost(p_costQuery_arg))
+  if (p_costQuery_this->bIsHigherCost(p_costQuery_arg))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is load of this permutation sequence less than given arg?                  */
+/*----------------------------------------------------------------------------*/
+bool Card_StreamPer::bIsLowerCost(Card_StreamPer* p_joinPermSeq_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_CostStream* p_costQuery_this = pSub_costQuery();
+  Card_CostStream* p_costQuery_arg  = p_joinPermSeq_arg->pSub_costQuery();
+
+  if (p_costQuery_this->bIsLowerCost(p_costQuery_arg))
     return true;
   else
     return false;

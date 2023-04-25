@@ -16,7 +16,8 @@ namespace STORE
     Card_CostStream(void);
    ~Card_CostStream(void) noexcept(false);
 
-    bool bIsLessCost(Card_CostStream* p_costQuery_arg);
+    bool bIsHigherCost(Card_CostStream* p_costQuery_arg);
+    bool bIsLowerCost(Card_CostStream* p_costQuery_arg);
   };
 
   Card_CostStream* _pCard_CostStream(void* aAddr);

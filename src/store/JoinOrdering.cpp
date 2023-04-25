@@ -253,7 +253,7 @@ void JoinOrdering::vReorderTables(void)
 
   if ( ! p_joinOrdering ) {
     p_joinOrdering =
-        Card_JoinOrdering::pPick(p_streamPrmAll);
+        Card_JoinOrdering::pPick(p_streamPrmAll,true);
   }
 
   m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));

@@ -90,13 +90,18 @@ Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll, i8 iJ
 /*----------------------------------------------------------------------------*/
 /* pick optimal join ordering from join permutation set                       */
 /*----------------------------------------------------------------------------*/
-Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll)
+Card_JoinOrdering* Card_JoinOrdering::pPick(Card_StreamSet* p_joinPermAll, bool bLowest)
 {
   _static_
 
-  Card_StreamPer* p_joinPermSeq_lowest = p_joinPermAll->pLowestCost();
+  Card_StreamPer* p_joinPermSeq_picked;
 
-  Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq_lowest);
+  if (bLowest)
+    p_joinPermSeq_picked = p_joinPermAll->pLowestCost();
+  else
+    p_joinPermSeq_picked = p_joinPermAll->pHighestCost();
+
+  Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(p_joinPermSeq_picked);
 
   return p_joinOrdering;
 }

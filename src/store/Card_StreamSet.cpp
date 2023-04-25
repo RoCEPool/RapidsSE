@@ -119,6 +119,27 @@ void Card_StreamSet::vEstCostsForAllPermutations(Card_TableList*    p_tableList,
 }
 
 /*----------------------------------------------------------------------------*/
+/* pick permutation with highest cost                                         */
+/*----------------------------------------------------------------------------*/
+Card_StreamPer* Card_StreamSet::pHighestCost(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_StreamPer* pHighest = nullptr;
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_STREAMPER)) {
+    if (! pHighest)
+      pHighest = xCI.G.p_streamPer;
+    else
+    if (xCI.G.p_streamPer->bIsHigherCost(pHighest))
+      pHighest = xCI.G.p_streamPer;
+  }
+
+  return pHighest;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pick given order                                                           */
 /*----------------------------------------------------------------------------*/
 Card_StreamPer* Card_StreamSet::pJoinOrder(i8 iJoinOrder)
@@ -153,7 +174,7 @@ Card_StreamPer* Card_StreamSet::pLowestCost(void)
     if (! pLowest)
       pLowest = xCI.G.p_streamPer;
     else
-    if (xCI.G.p_streamPer->bIsLessCost(pLowest))
+    if (xCI.G.p_streamPer->bIsLowerCost(pLowest))
       pLowest = xCI.G.p_streamPer;
   }
 
