@@ -7,15 +7,15 @@
 select
        count(*)
   from
-       Part,
        Lineitem,
        PartSupp,
+       Part,
        Supplier
  where
-       P_PARTKEY  = L_PARTKEY
+       P_PARTKEY  = PS_PARTKEY
 
    and L_SUPPKEY  = PS_SUPPKEY
-   and PS_SUPPKEY = S_SUPPKEY;
+   and PS_SUPPKEY = S_SUPPKEY
 ;
 
 /*============================================================================*/

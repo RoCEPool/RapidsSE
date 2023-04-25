@@ -117,16 +117,16 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
 
     case XK_BROADCAST:
       p_streamPtn->vResetKeys();
-      p_streamPtn->vAddKey(p_Y_idxCol_join);
+      p_streamPtn->vAddKey(p_Y_tablePtn_join);
       break;
 
     case XK_HASHCAST:
       p_streamPtn->vResetKeys();
-      p_streamPtn->vAddKey(p_Y_idxCol_join);
+      p_streamPtn->vAddKey(p_Y_tablePtn_join);
       break;
 
     case XK_UNICAST:
-      p_streamPtn->vAddKey(p_Y_idxCol_join);
+      p_streamPtn->vAddKey(p_Y_tablePtn_join);
       break;
 
     default:

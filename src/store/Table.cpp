@@ -689,7 +689,7 @@ void Table::vGetGridEstimates(i8 &jTableSize, i8 &jRowSize, i8& nRowCount)
   if (nBuffersPerPtn > 1)
     if (bIsReplicated())
       jTableSize = nBuffersPerPtn;
-  else
+    else
       jTableSize = nBuffersPerPtn * nPtnsInGrid;
   else
     jTableSize = m_pStreamDef->jTableSize();

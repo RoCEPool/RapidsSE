@@ -2,19 +2,24 @@
 /* _jo1_L_P_PS_Sb -- join order test                                          */
 /*============================================================================*/
 
+/glean_interactive
+/transliterated
 /weaved
 /pipelineName = "_jo1_L_P_PS_Sb"
+
 select
        count(*)
   from
+       Part,
        Lineitem,
        PartSupp,
-       Part,
        Supplier
  where
-       P_PARTKEY  = PS_PARTKEY
+       P_PARTKEY  = L_PARTKEY
+
    and L_SUPPKEY  = PS_SUPPKEY
    and PS_SUPPKEY = S_SUPPKEY;
+;
 
 /*============================================================================*/
 /* end                                                                        */
