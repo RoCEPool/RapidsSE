@@ -20,6 +20,7 @@
 #include "eFM.h"
 #include "CodeSynthUtils.hpp"
 
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -208,7 +209,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           if (pOpSketch->m_eStencilFrom == SR_PL) {
-            vAppendCodeFragment(pOpSketch, "vEosPayloadTraversal"_Stz);
+            if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+              vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
+            else
+              vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
             vAppendCodeKeyToTubCols(pOpSketch);
             vAppendCodePayLoadToTubCols(pOpSketch);
@@ -546,7 +550,7 @@ void CombinedSrc::vAppendCodeKeyToTubCols(OpSketch* pOpSketch)
 
         case CT_VARCHAR:
         case CT_CHAR:
-          RASSERT(0);
+          vAppendCodeFragment(pOpSketch, "vPLVchKeyToTub"_Stz, pColumn);
           break;
 
         default:

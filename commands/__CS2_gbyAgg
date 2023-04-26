@@ -6,6 +6,9 @@ _nation
 
 explain stage transliterate select n_regionKey, sum(n_nationKey) from nation group by n_regionKey;
 
+explain stage transliterate select n_name, sum(n_nationKey) from nation group by n_name;
+
+/*
 /ccode pipeline unamed
 begin
  stage S01 on origin :
@@ -17,7 +20,7 @@ begin
    | gbyagg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
    | combined_v2 0
    | next
-/*
+
  stage S03 on all nodes :
    gbyagg_v2 " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
    | combined_v2 0
@@ -31,10 +34,38 @@ begin
    project_v2 " type INTEGER $1 "
    | combined_v2 0
    | next
-  */
+
  stage S06 on origin :
    output
    | sink
    | first
 end ;
 
+*/
+
+/ccode pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0130
+  stage stageMarker0130 on all partitions :
+    scan rapidsse public Nation
+    | gbyAgg_v2 " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+    /*
+  stage stageMarker0133 on all nodes :
+    gbyAgg_v2 " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | combined_v2 0
+    | stageMarker0136
+  stage stageMarker0136 on origin :
+    gbyAgg_v2 " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | combined_v2 0
+    | stageLast
+    */
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;

@@ -661,10 +661,10 @@ void vEosPayLoadTubEnd(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vEosPayloadTraversal ----------------------------------------------------*/
+/*-- vEosPLIntKeyTraversal ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vEosPayloadTraversal
-i8 vEosPayloadTraversal(Combined_T* aCombinedT) {
+// function-vEosPLIntKeyTraversal
+i8 vEosPLIntKeyTraversal(Combined_T* aCombinedT) {
 
   i8 iElemSize = 0;
 
@@ -685,6 +685,40 @@ i8 vEosPayloadTraversal(Combined_T* aCombinedT) {
     aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL
                                       + sizeof(struct Ent_int)
                                       + 8);
+
+    iElemSize = 0;
+
+    // marker-end
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vEosPLGenKeyTraversal ---------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vEosPLGenKeyTraversal
+i8 vEosPLGenKeyTraversal(Combined_T* aCombinedT) {
+
+  i8 iElemSize = 0;
+
+  // marker-start
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  struct __STRUCT_TO__* p__STRUCT_FROM__;
+
+  // - - - - - - - - - - - - - -
+  // payload traversal
+  aCombinedT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreePL, &aCombinedT->m_aEntBufferPL);
+
+  while (aCombinedT->m_aEntIntPL) {
+
+    aCombinedT->m_iProcessRow = 1;
+
+    aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;
+    aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL
+        + sizeof(struct Ent_int)
+        + ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0
+        + 8);
 
     iElemSize = 0;
 
@@ -719,6 +753,69 @@ void vPayLoadKeyToTub(Combined_T* aCombinedT) {
 
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0 + iElemSize;
 
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPLVchKeyToTub ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPLVchKeyToTub
+void vPLVchKeyToTub(Combined_T* aCombinedT) {
+
+  struct __STRUCT_FROM__ {
+    union Vch_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Vch_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  char* szSrcStz;
+  char* szDstStz;
+
+  void* amCellAddress;
+
+  i8 iElemSize;
+  i8 nSrcSize;
+  i8 iOffset;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  szSrcStz = ((char*)(&(((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);
+
+  if ((i8)szSrcStz == C_DATUM_NULL) {
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
+    iElemSize += 8;
+  }
+  else {
+    szDstStz = aCombinedT->m_racTubStrArea;
+
+#ifdef WITH_TINYC
+    nSrcSize = StrLib_iWordFlipBack(szDstStz,szSrcStz);
+    //for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
+    //  printf("%c ", szDstStz[i_Byte]);
+    //printf("\n");
+#endif
+    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
+
+    iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);
+    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
+
+    // update the tub string size
+    i8 iDstLen = strlen(szDstStz) + 1;
+    aCombinedT->m_racTubStrArea += iDstLen;
+#ifdef WITH_TINYC
+    vTub_RowStrSize(aCombinedT->m_pTub,iDstLen);
+#endif
+
+    iElemSize += nSrcSize;
+  }
   // marker-end
 }
 
