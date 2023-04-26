@@ -157,5 +157,14 @@ create table TABLE9 (
 );
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
-explain stage transliterate select cast(dec_col6 as varchar(3)) from datums;
+//SELECT DATE '2023-02-16'+ INTERVAL '30' day + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
+
+//SELECT INTERVAL '30' day + DATE '2023-02-16' from nation where n_nationkey = 2;
+
+//SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
+
+
+
+
+//SELECT INTERVAL '30' day + DATE '2023-02-16' + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
 

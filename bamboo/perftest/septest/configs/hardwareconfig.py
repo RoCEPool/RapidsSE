@@ -10,6 +10,7 @@ class HardwareConfig:
     C_INSTANCETYPE     = "InstanceType"
     C_IMAGEID          = "ImageId"
     C_NUMMACHINES      = "NumMachines"
+    C_IAM_ROLE_NAME    = "IamRoleName"
     C_USESPOTINSTANCES = "UseSpotInstances"
     C_TERMINATEONFIN   = "TerminateOnFinish"
 
@@ -21,6 +22,7 @@ class HardwareConfig:
         # Method for reading multiple keys of the same name but with different values
         # comes from here: https://stackoverflow.com/a/70375875
         self.parser = configparser.ConfigParser(strict=True,
+                                                allow_no_value=True,
                                                 empty_lines_in_values=False)
         self.parser.read_file(open(path))
 
@@ -30,6 +32,7 @@ class HardwareConfig:
         instance_type = self.get_instance_type()
         image_id = self.get_image_id()
         num_machines = self.get_num_machines()
+        iam_role_name = self.get_iam_role_name()
         use_spot_instances = self.get_use_spot_instances()
         terminate_on_finish = self.get_terminate_on_finish()
 
@@ -60,6 +63,7 @@ class HardwareConfig:
             f"  {self.C_INSTANCETYPE} = {self.get_instance_type()}\n" \
             f"  {self.C_IMAGEID} = {self.get_image_id()}\n" \
             f"  {self.C_NUMMACHINES} = {self.get_num_machines()}\n" \
+            f"  {self.C_IAM_ROLE_NAME} = {self.get_iam_role_name()}\n" \
             f"  {self.C_USESPOTINSTANCES} = {self.get_use_spot_instances()}" \
             f"  {self.C_TERMINATEONFIN} = {self.get_terminate_on_finish()}"
         return s
@@ -82,6 +86,9 @@ class HardwareConfig:
 
     def get_num_machines(self) -> int:
         return self.parser.getint(self.C_SECTION, self.C_NUMMACHINES)
+
+    def get_iam_role_name(self) -> str:
+        return self.parser.get(self.C_SECTION, self.C_IAM_ROLE_NAME, fallback="")
 
     def get_use_spot_instances(self) -> bool:
         return self.parser.getboolean(self.C_SECTION, self.C_USESPOTINSTANCES, fallback=False)

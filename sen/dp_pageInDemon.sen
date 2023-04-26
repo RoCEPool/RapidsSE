@@ -4,23 +4,19 @@
 
 " dp_pageInDemon.sen" .verbose
 
-
 /*----------------------------------------------------------------------------*/
 /* page in demon                                                              */
 /*----------------------------------------------------------------------------*/
 : pageInDemonPipeline
-
   "
     pipelineLocal pageInDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
-
       stage stageA on origin :
           start
         | pageIn
         | eatAll
         | stageA
-
     end ;
   "
 ;

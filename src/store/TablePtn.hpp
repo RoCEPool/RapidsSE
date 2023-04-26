@@ -28,13 +28,13 @@ namespace STORE
 
     // must be last
     Footer m_xFooter;
-    
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
     TablePtn(Table* pTable, LglPtn tLglPtn, PhyPtn tPhyPtn);
-   ~TablePtn(void) noexcept(false);
+    ~TablePtn(void) noexcept(false);
 
     void vCleanup(void);
     void vDropRead(void);
@@ -67,11 +67,11 @@ namespace STORE
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     Stz* szDumpContents(void);
-    
+
   private:
     Footer* aFooter(void);
   };
-  
+
   TablePtn* _pTablePtn(void* aAddr);
 
 

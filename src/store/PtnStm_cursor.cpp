@@ -32,10 +32,10 @@ __aFooterFunction(PtnStm_cursor)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PtnStm_cursor::PtnStm_cursor(TablePtn* pTablePtn)
-: Object(CN_PTNSTMCURSOR)
+    : Object(CN_PTNSTMCURSOR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-  
+
   m_pTablePtn    = pTablePtn;
 
   m_iLglBufferNo = -1; // correct
@@ -46,7 +46,7 @@ PtnStm_cursor::PtnStm_cursor(TablePtn* pTablePtn)
 
 
   _checkInitialised_(CN_PTNSTMCURSOR);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
 }
 
@@ -56,7 +56,7 @@ PtnStm_cursor::PtnStm_cursor(TablePtn* pTablePtn)
 PtnStm_cursor::~PtnStm_cursor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-  
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,9 +106,9 @@ void PtnStm_cursor::vClose(void)
 bool PtnStm_cursor::bOpen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-  
+
   vReset();
-    
+
   return true;
 }
 
@@ -157,6 +157,10 @@ DataBuffer* PtnStm_cursor::pRead(void)
 
 
   if (!m_pCurBuffer) {
+    if(m_iLglBufferNo >=0) {
+      m_iLglBufferNo = -1;
+      return nullptr;
+    }
     m_pCurBuffer = m_pTablePtn->pRootBuffer();
 
     if (!m_pCurBuffer) {

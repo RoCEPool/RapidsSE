@@ -221,7 +221,6 @@ void Step::vTablePtnRootBufferId(void)
   ENTRY();
 
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
-
   m_pDataStack->vPushPtr((Object*)pTablePtn->oRootBufferId().m_pvAsAddress);
 
   EXIT();

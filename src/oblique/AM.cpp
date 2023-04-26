@@ -124,7 +124,6 @@
 #include "HeadsUp.hpp"
 
 #include "LglPtn.hpp"
-#include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
 
@@ -177,32 +176,6 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
   SysMetrics* pSysMetricsChain = gpAttachMap->pSysMetricsChain();
   
   return pSysMetricsChain;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   BKTMAP                                   */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*----------------------------------------------------------------------------*/
-/* convert bucket id to ptn id                                                */
-/*----------------------------------------------------------------------------*/
-LglPtn AM::BKTMAP::tLglPtnOf(KeyBkt tKeyBkt)
-{
-  _static_
-  
-  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tLglPtnOf(tKeyBkt);
-
-  return tLglPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bucket map                                                             */
-/*----------------------------------------------------------------------------*/
-BucketMap* AM::BKTMAP::pBucketMap(void)
-{
-  _static_
-  
-  return gpAttachMap->m_pBucketMap;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -883,7 +856,7 @@ void AM::JOB::vAckOriginatingJob(JobId tOriginId)
   Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
 
   //may not be able to find the job if node loss
-  vTrace("vAckOriginatingJob: No originating job (node loss ???)\n"_Stz);
+  vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
   if ( ! pJobFound )
     return;
 
@@ -1045,7 +1018,7 @@ void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
   Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
 
   //may not be able to find the job if node loss
-  vTrace("vAckOriginatingJob: No originating job (node loss ???)\n"_Stz);
+  vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
   if ( ! pJobFound )
     return;
 
@@ -1853,19 +1826,21 @@ InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
 {
   _static_
 
+#ifdef WITH_PAGING
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
   if (! pStreamDef)
     return nullptr;
-
   InfoSet* pInfoSet = new InfoSet(pStreamDef);
   pInfoSet->vOpInfoSet(OI_PAGEINREQUEST);
-
   Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN
       ,pTask
       ,oBufferId.m_iAsI8
       ,C_VARGS_END);
 
   return pInfoSet;
+#else
+  return nullptr;
+#endif
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -3747,11 +3722,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
-    case CN_BKTMAPGET: {
-      BktMapGet* pBktMapGet = _pBktMapGet(pOperand);
-      delete pBktMapGet;
-      break;
-    }
 /*
     case CN_PARCEL: {
       Parcel* pParcel = _pParcel(pOperand);
@@ -3766,20 +3736,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 
     case CN_GRID: {
      break;
-    }
-
-    case CN_BUCKETMAP: {
-      break;
-    }
-
-    case CN_BUCKETGET: {
-      //vTrace(">>>>vDeleteOperand delete bucketget\n"_Stz);
-      break;
-    }
-
-    case CN_BUCKETINFO: {
-      //vTrace(">>>>vDeleteOperand delete bucketinfo\n"_Stz);
-      break;
     }
 
     case CN_PTNSTREAM: {
@@ -4323,7 +4279,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
@@ -4423,11 +4378,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;
     case CN_GRID:         eOperand = EV_D_GRID;           break;
-    case CN_BKTMAPGET:       eOperand = EV_D_BKTMAPGET;      break;
-    case CN_BUCKETGET:       eOperand = EV_D_BUCKETGET;      break;
-    case CN_BUCKETINFO:       eOperand = EV_D_BUCKETINFO;      break;
     case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
-    //case CN_BUCKET:     eOperand = EV_D_BUCKET;      break;
 
     default:
       vTrace("iOperandEvKind() what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

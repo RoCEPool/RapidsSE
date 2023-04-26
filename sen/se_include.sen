@@ -95,7 +95,7 @@ assert::stack_0
   "dp_wakerDemon.sen"       include
   "dp_nodeMonDemon.sen"     include
 
-  "dp_pageInDemon.sen"     include
+  "dp_pageInDemon.sen"      include
   "dp_pageOutDemon.sen"     include
   "se_experiments.sen"      include
   "se_llc.sen"              include

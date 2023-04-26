@@ -13,6 +13,8 @@
 #include "SqlType.hpp"
 #include "GraphNav.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap2D.hpp"
+#include "ComparisonExpr.hpp"
 
 using namespace Parser;
 
@@ -25,30 +27,141 @@ static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/misc/cast"_Stz;
 static Stz* C_TARGETTYPE_PROP = "targetType"_Stz;
 
 // What is the resulting type when we combine these inputs?
-// * The left header column represents the type of the current expression (the 'from' type)
-// * The top header row represents the target type of the cast operation (the 'to' type).
-// * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
-// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
-//   the documentation below marked with this symbol for more information.
-// * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
+//  - The first parameter represents the type of the first operand (the 'from' type)
+//  - The second parameter represents the type of the second operand (the 'to' type).
+//  - The third parameter represents the type of the result from this operation.
+//  - Any unspecified mappings are unsupported.
+//  - Multiple mappings may be made in one go using the eTM values to represent a set of types.
+static TypeMap2D* S_pTypeMap = (new TypeMap2D())
+    // BOOLEAN
+    ->pAddSelfMapping(TypeId::xIdOf(CT_BOOLEAN))
+    ->pAddMapping(TypeId::xIdOf(CT_BOOLEAN), TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_BOOLEAN), TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
 
-                 //               NONE     BOOLEAN            CHAR          DATE        DECIMAL             FLOAT         INTEGER             INTERVAL_DT           INTERVAL_YM           TIME        TIMESTAMP             VARCHAR     UNKNOWN
-/*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_NONE,    CT_NONE    },
-/*  1 BOOLEAN    */ { CT_NONE, CT_BOOLEAN, CT_CHAR, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_INTERVAL_DT,  CT_INTERVAL_YM,  CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_NONE, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_NONE,/*?1*/   CT_NONE,/*?1*/   CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_NONE,         CT_NONE,         CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_NONE,/*?1*/   CT_NONE,/*?1*/   CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  7 INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_NONE/*?2*/,  CT_NONE,  CT_NONE/*?2*/,  CT_INTERVAL_DT,  CT_NONE,         CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  8 INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_NONE/*?2*/,  CT_NONE,  CT_NONE/*?2*/,  CT_NONE,         CT_INTERVAL_YM,  CT_NONE, CT_NONE,      CT_VARCHAR, CT_UNKNOWN },
-/*  9 TIME       */ { CT_NONE, CT_NONE,    CT_CHAR, CT_NONE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_NONE,        CT_NONE,  CT_NONE,        CT_NONE,         CT_NONE,         CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/* 11 VARCHAR    */ { CT_NONE, CT_NONE,    CT_CHAR, CT_DATE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_INTERVAL_DT,  CT_INTERVAL_YM,  CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN },
-/* 12 UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_CHAR, CT_DATE, CT_DECIMAL,     CT_FLOAT, CT_INTEGER,     CT_INTERVAL_DT,  CT_INTERVAL_YM,  CT_TIME, CT_TIMESTAMP, CT_VARCHAR, CT_UNKNOWN }
-};
+    // CHAR
+    ->pAddSelfMapping(TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_DATE),            TypeId::xIdOf(CT_DATE))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_DECIMAL),         TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_FLOAT),           TypeId::xIdOf(CT_FLOAT))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_INTEGER),         TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_TIME),            TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
+    // TODO: We could possibly cast strings to intervals
+
+    // DATE
+    ->pAddSelfMapping(TypeId::xIdOf(CT_DATE))
+    ->pAddMapping(TypeId::xIdOf(CT_DATE),    TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_DATE),    TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TypeId::xIdOf(CT_DATE),    TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
+
+    // DECIMAL
+    // Note: You can convert decimal to single field intervals.
+    //       Apart from seconds (which have a fractional component), other values
+    //       ought to use the non-fractional part of the decimal (integer rounding).
+    ->pAddSelfMapping(TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(CT_FLOAT),           TypeId::xIdOf(CT_FLOAT))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(CT_INTEGER),         TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(IV_YEAR),            TypeId::xIdOf(IV_YEAR))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(IV_MONTH),           TypeId::xIdOf(IV_MONTH))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(IV_DAY),             TypeId::xIdOf(IV_DAY))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(IV_HOUR),            TypeId::xIdOf(IV_HOUR))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(IV_MINUTE),          TypeId::xIdOf(IV_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(CT_DECIMAL), TypeId::xIdOf(IV_SECOND),          TypeId::xIdOf(IV_SECOND))
+
+    // FLOAT
+    // Note: You can convert floats to single field intervals.
+    //       Apart from seconds (which have a fractional component), other values
+    //       ought to use the non-fractional part of the float (integer rounding).
+    ->pAddSelfMapping(TypeId::xIdOf(CT_FLOAT))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(CT_DECIMAL),         TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(CT_INTEGER),         TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(IV_YEAR),            TypeId::xIdOf(IV_YEAR))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(IV_MONTH),           TypeId::xIdOf(IV_MONTH))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(IV_DAY),             TypeId::xIdOf(IV_DAY))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(IV_HOUR),            TypeId::xIdOf(IV_HOUR))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(IV_MINUTE),          TypeId::xIdOf(IV_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(CT_FLOAT),   TypeId::xIdOf(IV_SECOND),          TypeId::xIdOf(IV_SECOND))
+
+    // INTEGER
+    // Note: You can convert integers to single field intervals.
+    ->pAddSelfMapping(TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(CT_DECIMAL),         TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(CT_FLOAT),           TypeId::xIdOf(CT_FLOAT))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(IV_YEAR),            TypeId::xIdOf(IV_YEAR))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(IV_MONTH),           TypeId::xIdOf(IV_MONTH))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(IV_DAY),             TypeId::xIdOf(IV_DAY))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(IV_HOUR),            TypeId::xIdOf(IV_HOUR))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(IV_MINUTE),          TypeId::xIdOf(IV_MINUTE))
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER),   TypeId::xIdOf(IV_SECOND),          TypeId::xIdOf(IV_SECOND))
+
+    // TIME
+    ->pAddSelfMapping(TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),    TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),    TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),    TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
+
+    // TIMESTAMP
+    ->pAddSelfMapping(TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),TypeId::xIdOf(CT_DATE),            TypeId::xIdOf(CT_DATE))
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),TypeId::xIdOf(CT_TIME),            TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),TypeId::xIdOf(CT_VARCHAR),         TypeId::xIdOf(CT_VARCHAR))
+
+    // VARCHAR
+    ->pAddSelfMapping(TypeId::xIdOf(CT_VARCHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),    TypeId::xIdOf(CT_CHAR),            TypeId::xIdOf(CT_CHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),    TypeId::xIdOf(CT_DATE),            TypeId::xIdOf(CT_DATE))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),    TypeId::xIdOf(CT_DECIMAL),         TypeId::xIdOf(CT_DECIMAL))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),    TypeId::xIdOf(CT_FLOAT),           TypeId::xIdOf(CT_FLOAT))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),    TypeId::xIdOf(CT_INTEGER),         TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),    TypeId::xIdOf(CT_TIME),            TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR),    TypeId::xIdOf(CT_TIMESTAMP),       TypeId::xIdOf(CT_TIMESTAMP))
+        // TODO: We could possibly cast strings to intervals
+
+    // INTERVALS
+    // You can cast any DT interval to any other DT interval, or YM interval to any other YM interval.
+    // But you cannot cast a DT interval to a YM interval or vice versa.
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR),            TM_ALL_YM_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_MONTH),           TM_ALL_YM_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR_TO_MONTH),   TM_ALL_YM_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),             TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),            TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),          TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),          TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_HOUR),     TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_MINUTE),   TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_DAY_TO_SECOND),   TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_MINUTE),  TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR_TO_SECOND),  TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE_TO_SECOND),TM_ALL_DT_INTERVALS,           TypeMap2D::SAME_AS_ARG2)
+
+    // Single field intervals can also be cast to integers, decimals and floats.
+    ->pAddMapping(TypeId::xIdOf(IV_YEAR),            TM_ALL_NUMERICS,               TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_MONTH),           TM_ALL_NUMERICS,               TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_DAY),             TM_ALL_NUMERICS,               TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_HOUR),            TM_ALL_NUMERICS,               TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_MINUTE),          TM_ALL_NUMERICS,               TypeMap2D::SAME_AS_ARG2)
+    ->pAddMapping(TypeId::xIdOf(IV_SECOND),          TM_ALL_NUMERICS,               TypeMap2D::SAME_AS_ARG2)
+
+    // All intervals can be cast to a string. They could print something like:
+    // "1 day, 2 hours, 3 minutes, 4.5 seconds"
+//    ->pAddMapping(TM_ALL_DT_INTERVALS,            TypeId::xIdOf(CT_VARCHAR),        TypeMap2D::SAME_AS_ARG2)
+//    ->pAddMapping(TM_ALL_DT_INTERVALS,            TypeId::xIdOf(CT_CHAR),           TypeMap2D::SAME_AS_ARG2)
+//    ->pAddMapping(TM_ALL_YM_INTERVALS,            TypeId::xIdOf(CT_VARCHAR),        TypeMap2D::SAME_AS_ARG2)
+//    ->pAddMapping(TM_ALL_YM_INTERVALS,            TypeId::xIdOf(CT_CHAR),           TypeMap2D::SAME_AS_ARG2)
+
+    // NULL
+    ->pAddMapping(TM_ALL_INC_UNKNOWN,             TypeId::xIdOf(CT_UNKNOWN),        TypeId::xIdOf(CT_UNKNOWN))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN), TM_ALL_NON_UNKNOWN,                    TypeMap2D::SAME_AS_ARG2)
+;
 
 // References:
 //
@@ -192,34 +305,29 @@ TypeId CastExpr::xTypeId(QueryNode* pNode, PlanNode* pRootNode)
   QueryNode* pSqlTypeNode    = CastExpr::pSqlTypeNode(pNode);
 
   TypeId xTargetExprTypeId = Expr::xTypeId(pTargetExprNode, pRootNode);
-  eCT eTargetExprType  = xTargetExprTypeId.eCTVal();
 
-  eCT eSqlType  = SqlType::xTypeId(pSqlTypeNode).eCTVal();
+  TypeId xSqlType = SqlType::xTypeId(pSqlTypeNode);
 
-  eCT eResultSrcType = aeTypeCalculus[eTargetExprType][eSqlType];
+  TypeId xResult = S_pTypeMap->xLookup(xTargetExprTypeId, xSqlType);
 
-  // TODO: Handle intervals
-  return TypeId::xIdOf(eResultSrcType);
+  return xResult;
 }
 
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be coerced to a given data type via a cast     */
 /*----------------------------------------------------------------------------*/
-b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                      QueryNode* pParentExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
 
   TypeId xCurrentType = Expr::xTypeId(pExpr, pRootNode);
-  eCT eCurrentType = xCurrentType.eCTVal();
-
   eCT eTargetTypeId = xTargetTypeId.eCTVal();
-
-  // TODO: Handle intervals
 
   // We can always cast the current type to itself
   if (xCurrentType == xTargetTypeId) {
-    ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
+    ASSERT(S_pTypeMap->xLookup(xCurrentType, xTargetTypeId).bIsValid());
     return true;
   }
 
@@ -229,10 +337,10 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
   //       cannot be converted. So we leave these conversions to be done
   //       explicitly by the user, not implicitly by the planner.
 
-  switch (eCurrentType) {
+  switch (xCurrentType.eCTVal()) {
     case CT_INTEGER:
       if (eTargetTypeId == CT_DECIMAL || eTargetTypeId == CT_FLOAT)   {
-        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
+        ASSERT(S_pTypeMap->xLookup(xCurrentType, xTargetTypeId).bIsValid());
         return true;
       }
       break;
@@ -240,7 +348,7 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
     case CT_DECIMAL:
       if (eTargetTypeId == CT_FLOAT)
       {
-        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
+        ASSERT(S_pTypeMap->xLookup(xCurrentType, xTargetTypeId).bIsValid());
         return true;
       }
       break;
@@ -248,20 +356,71 @@ b1 CastExpr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, Pl
     case CT_DATE:
       if (eTargetTypeId == CT_TIMESTAMP)
       {
-        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
+        ASSERT(S_pTypeMap->xLookup(xCurrentType, xTargetTypeId).bIsValid());
         return true;
       }
       break;
 
     // Note: We don't implicitly cast a time to a timestamp because
-    //       it is ambiguous as to what date should be chosen.
+    //       it may not be clear to the user what date should be chosen.
     //       Should it be TODAY, or 1900-01-01, or something else?
+    //       An explicit cast by the user allows this, and uses the current date.
 
     case CT_BOOLEAN:
       if (eTargetTypeId == CT_VARCHAR || eTargetTypeId == CT_CHAR)
       {
-        ASSERT(aeTypeCalculus[eCurrentType][eTargetTypeId]);
+        ASSERT(S_pTypeMap->xLookup(xCurrentType, xTargetTypeId).bIsValid());
         return true;
+      }
+      break;
+
+    case CT_INTERVAL_YM:
+    case CT_INTERVAL_DT:
+      // We support the casting of a single field interval to an integer.
+      switch (xCurrentType.eIVVal()) {
+        case IV_YEAR:
+        case IV_MONTH:
+        case IV_DAY:
+        case IV_HOUR:
+        case IV_MINUTE:
+        case IV_SECOND:
+          if (eTargetTypeId == CT_INTEGER && pParentExpr && ComparisonExpr::bIsOfType(pParentExpr)) {
+
+            // There must be at least one integer child and any interval children must all be
+            // of the same type. Remember that a BETWEEN expr has more than 2 children.
+            bool bFoundInteger = false;
+            eIV eIvlType = IV_NONE;
+
+            PlanNodeIter* pChildIter = pParentExpr->pNewChildrenIter();
+            while (pChildIter->bHasNext()) {
+              PlanNode* pChild = pChildIter->pNext();
+              TypeId xChildType = Expr::xTypeId(_pQueryNode(pChild), pRootNode);
+
+              if (xChildType.eCTVal() == CT_INTEGER) {
+                bFoundInteger = true;
+                continue;
+              }
+              if (xChildType.eCTVal() == CT_INTERVAL_YM || xChildType.eCTVal() == CT_INTERVAL_DT) {
+                if (eIvlType == IV_NONE) {
+                  eIvlType = xChildType.eIVVal();
+                  continue;
+                }
+
+                if (eIvlType != xChildType.eIVVal()) {
+                  // Found more than 1 interval type. This can occur in a BETWEEN expression.
+                  delete pChildIter;
+                  return false;
+                }
+              }
+
+            }
+            delete pChildIter;
+            return bFoundInteger;
+          }
+          // TODO: Support casting an INTERVAL SECOND to a DECIMAL.
+
+        default:
+          break;
       }
       break;
 
@@ -281,11 +440,7 @@ QueryNode* CastExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode*
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
   ASSERT(Expr::xTypeId(pExpr, pRootNode).bIsValid());
-
-  // TODO: Can we do this in terms of iTypeId?
-  eCT eCurrentType = Expr::xTypeId(pExpr, pRootNode).eCTVal();
-  eCT eTargetType = xTargetTypeId.eCTVal();
-  ASSERT(aeTypeCalculus[eCurrentType][eTargetType]);
+  ASSERT(S_pTypeMap->xLookup(Expr::xTypeId(pExpr, pRootNode), xTargetTypeId).bIsValid());
 
   QueryNode* pExprCopy = pExpr->pDeepCopy(true);
   QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, xTargetTypeId);

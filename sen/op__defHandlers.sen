@@ -43,10 +43,6 @@
 /*                          STANDARD EVENT HANDLERS                           */
 /*----------------------------------------------------------------------------*/
 
-: EV_D_BKTMAPGET_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_BUCKETGET_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_BUCKETINFO_handler       \handler STANDARD_PIPEOUT ;
-: EV_D_BUCKETMAP_dyn_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
@@ -385,9 +381,6 @@
   find: STANDARD_PIPEOUT            locals| defaultHandler |
 
   // ABNORMAL handlers (pipein delete) for DATA Operators
-  abnormalHandler EV_D_BKTMAPGET        [op].handler!
-  abnormalHandler EV_D_BUCKETGET        [op].handler!
-  abnormalHandler EV_D_BUCKETMAP_dyn    [op].handler!
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!

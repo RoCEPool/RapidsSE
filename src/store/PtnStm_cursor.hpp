@@ -17,11 +17,11 @@ namespace STORE
 
     // must be last
     Footer m_xFooter;
-    
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
+
     PtnStm_cursor(TablePtn* pTablePtn);
     ~PtnStm_cursor(void) noexcept(false);
 
@@ -37,7 +37,7 @@ namespace STORE
   private:
     Footer* aFooter(void);
   };
-  
+
   PtnStm_cursor* _pPtnStm_cursor(void* aAddr);
 }
 

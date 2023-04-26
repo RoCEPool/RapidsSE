@@ -30,30 +30,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: pageout_RowBuffer \handler
-
-  Pipein[]\clear PageOut::pageOutPoolBuffer to RowBuffer[]
-
-  RowBuffer[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_CRWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: pageout_CrwBuffer \handler
-
-  Pipein[]\clear PageOut::pageOutCrwBuffer to CrwBuffer[]
-
-  CrwBuffer[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for pageout req                            (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : pageout_op \operator
@@ -67,8 +43,6 @@
   op__topology
 
   find: pageout_StartMarker EV_M_START              [op].handler!
-  find: pageout_RowBuffer   EV_D_ROWBUFFER          [op].handler!
-  find: pageout_CrwBuffer   EV_D_CRWBUFFER          [op].handler!
 
   op__loop
 

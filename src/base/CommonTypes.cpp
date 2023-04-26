@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "eIV.h"
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 static const i8 C_DAYS_IN_MONTH[12]      = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -110,6 +111,118 @@ b1 Tsp::bIsValid(i8 iYear, i8 iMonth, i8 iDay, i8 iHour, i8 iMin, i8 iSec, i8 iM
   return true;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*----------------------------------------------------------------------------*/
+/*-- Interval ----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Interval constructor                                                       */
+/*----------------------------------------------------------------------------*/
+Ivl::Ivl(eIV eIvlType)
+{
+  T.m_iAsI8 = 0;
+  T.m_xIvl.m_eType = eIvlType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the minimum value to the interval                                      */
+/*----------------------------------------------------------------------------*/
+i8 Ivl::iMinValue(eIV eIvlType)
+{
+  Ivl ivl{eIvlType};
+  ivl.vSetMin();
+  return ivl.T.m_iAsI8;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the maximum value to the interval                                      */
+/*----------------------------------------------------------------------------*/
+i8 Ivl::iMaxValue(eIV eIvlType)
+{
+  Ivl ivl{eIvlType};
+  ivl.vSetMax();
+  return ivl.T.m_iAsI8;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Sets the maximum value to the interval                                     */
+/*----------------------------------------------------------------------------*/
+void Ivl::vSetMax()
+{
+  T.m_xIvl.m_bIsNull = false;
+  T.m_xIvl.m_bIsNeg = false;
+  T.m_xIvl.m_iSpare = 0;
+
+  switch(T.m_xIvl.m_eType)    {
+    case IV_YEAR:   // fall through
+    case IV_MONTH:  // fall through
+    case IV_YEAR_TO_MONTH:
+      T.m_xIvl.u.m_xIvlYM.m_uMonths = C_IVL_MONTH_MAX;
+      break;
+
+    case IV_DAY:              // fall through
+    case IV_HOUR:             // fall through
+    case IV_MINUTE:           // fall through
+    case IV_SECOND:           // fall through
+    case IV_DAY_TO_HOUR:      // fall through
+    case IV_DAY_TO_MINUTE:    // fall through
+    case IV_DAY_TO_SECOND:    // fall through
+    case IV_HOUR_TO_MINUTE:   // fall through
+    case IV_HOUR_TO_SECOND:   // fall through
+    case IV_MINUTE_TO_SECOND:
+      T.m_xIvl.u.m_xIvlDT.m_uMicros = C_IVL_USEC_MAX;
+
+    default:
+     NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sets the interval value fields to zero                                     */
+/*----------------------------------------------------------------------------*/
+void Ivl::vSetZero()
+{
+  // Don't change the interval type
+  T.m_xIvl.m_bIsNull = false;
+  T.m_xIvl.m_bIsNeg = false;
+  T.m_xIvl.m_iSpare = 0;
+
+  switch(T.m_xIvl.m_eType)    {
+    case IV_YEAR:           // fall through
+    case IV_MONTH:          // fall through
+    case IV_YEAR_TO_MONTH:  // fall through
+      T.m_xIvl.u.m_xIvlYM.m_uMonths = 0;
+      break;
+
+    case IV_DAY:              // fall through
+    case IV_HOUR:             // fall through
+    case IV_MINUTE:           // fall through
+    case IV_SECOND:           // fall through
+    case IV_DAY_TO_HOUR:      // fall through
+    case IV_DAY_TO_MINUTE:    // fall through
+    case IV_DAY_TO_SECOND:    // fall through
+    case IV_HOUR_TO_MINUTE:   // fall through
+    case IV_HOUR_TO_SECOND:   // fall through
+    case IV_MINUTE_TO_SECOND: // fall through
+      T.m_xIvl.u.m_xIvlDT.m_uMicros = 0;
+      break;
+
+    default:
+      NEVER_REACH
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Sets the maximum value to the interval                                     */
+/*----------------------------------------------------------------------------*/
+void Ivl::vSetMin()
+{
+  vSetMax();
+  T.m_xIvl.m_bIsNeg = true;
+}
 
 /*============================================================================*/
 /* end                                                                        */

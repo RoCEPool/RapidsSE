@@ -40,11 +40,11 @@ void Step::vToLglPtnCrwCompleted(void)
 {
   ENTRY();
   
-  ToLglPtnCrw* pToBktCrw = *m_pLogicUnit->m_xpToLglPtnCrw;
+  ToLglPtnCrw* pToLglPtnCrw = *m_pLogicUnit->m_xpToLglPtnCrw;
   
   i8 i_Ptn = m_pDataStack->iPopInt(__func__);
   
-  CrwBuffer* pCrwBuffer = pToBktCrw->pCompleted(i_Ptn);
+  CrwBuffer* pCrwBuffer = pToLglPtnCrw->pCompleted(i_Ptn);
 
   m_pDataStack->vPushPtr(pCrwBuffer);
 
@@ -58,11 +58,11 @@ void Step::vToLglPtnCrwConvert(void)
 {
   ENTRY();
 
-  ToLglPtnCrw* pToBktCrw = *m_pLogicUnit->m_xpToLglPtnCrw;
+  ToLglPtnCrw* pToLglPtnCrw = *m_pLogicUnit->m_xpToLglPtnCrw;
     
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
-  pToBktCrw->vConvert(pRowBuffer);
+  pToLglPtnCrw->vConvert(pRowBuffer);
   
   EXIT();
 }

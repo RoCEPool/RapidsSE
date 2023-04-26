@@ -37,7 +37,7 @@ __aFooterFunction(RowTablePtn)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowTablePtn::RowTablePtn(Table* pTable, LglPtn tLglPtn)
-: Object(CN_ROWTABLEPTN)
+    : Object(CN_ROWTABLEPTN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
 
@@ -71,35 +71,44 @@ RowTablePtn::~RowTablePtn(void) noexcept(false)
 void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // if buffer has 0 entries (only head) then should be last buffer
   if (pRowBuffer->nRows() == 0) {
     delete pRowBuffer;
     return;
   }
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark rowBuffer as permanent
   pRowBuffer->vIsPermanent(true);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the buffer
   pRowBuffer->vTable_dbuff(m_pTable);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
+#ifdef WITH_PAGING
     m_oRootBufferId = pRowBuffer->oGetBufferId();
+#endif
     m_pRootBuffer = pRowBuffer;
   }
   else {
+#ifdef WITH_PAGING
     pRowBuffer->vNextLinkedBufferId(m_pCurrentBuffer->oNextLinkedBufferId());
     pRowBuffer->vPrevLinkedBufferId(m_pCurrentBuffer->oGetBufferId());
     m_pCurrentBuffer->vNextLinkedBufferId(pRowBuffer->oGetBufferId());
+#else
+    pRowBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
+    pRowBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
+    m_pCurrentBuffer->vNextLinkedBuffer(pRowBuffer);
+#endif
   }
 
+#ifdef WITH_PAGING
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are done with the current buffer, allow it to be paged out by dropping
   // the lock
@@ -107,6 +116,7 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   if(m_pCurrentBuffer)
     AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
 
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pRowBuffer;
@@ -118,12 +128,12 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
 i8 RowTablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   i8 nBufferCount = 0;
-  
+
   if (m_pRootBuffer)
     nBufferCount = m_pRootBuffer->nLinkedBufferCount();
-  
+
   return nBufferCount;
 }
 
@@ -134,7 +144,9 @@ void RowTablePtn::vCleanup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
 
+#ifdef WITH_PAGING
   m_pCurrentBuffer = nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,8 +156,10 @@ void RowTablePtn::vDropAllPagingLocks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
 
+#ifdef WITH_PAGING
   if(m_pCurrentBuffer)
     AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,9 +168,9 @@ void RowTablePtn::vDropAllPagingLocks(void)
 void RowTablePtn::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   RowBuffer* pRowBuffer = m_pRootBuffer;
-    
+
   while (pRowBuffer) {
     pRowBuffer->vShow(m_pTable->pStreamDef());
     pRowBuffer = pRowBuffer->pNextRowBuffer();
@@ -170,7 +184,7 @@ void RowTablePtn::vDump(void)
 LglPtn RowTablePtn::tLglPtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   return m_tLglPtn;
 }
 
@@ -180,7 +194,7 @@ LglPtn RowTablePtn::tLglPtn(void)
 RowBuffer* RowTablePtn::pRootRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   return m_pRootBuffer;
 }
 
@@ -200,7 +214,7 @@ BufferId RowTablePtn::oRootRowBufferId(void)
 Table* RowTablePtn::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   return m_pTable;
 }
 
@@ -211,10 +225,10 @@ Table* RowTablePtn::pTable(void)
 void RowTablePtn::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-    
+
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
-  
+
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
 }
@@ -225,17 +239,17 @@ void RowTablePtn::vTruncate(void)
 bool RowTablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   RowBuffer* pRowBuffer = m_pRootBuffer;
   bool bVerify = true;
-  
+
   while (pRowBuffer) {
     bVerify = pRowBuffer->bVerify();
     if (! bVerify )
       break;
     pRowBuffer = pRowBuffer->pNextRowBuffer();
   }
-  
+
   return bVerify;
 }
 
@@ -245,9 +259,9 @@ bool RowTablePtn::bVerifyTable(void)
 void RowTablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-  
+
   RowBuffer* pRowBuffer = m_pRootBuffer;
-  
+
   while (pRowBuffer) {
     // print the decile of this buffer
     vTrace("%lld"_Stz, pRowBuffer->iDecile());

@@ -9,11 +9,6 @@
 /*----------------------------------------------------------------------------*/
 : pageIn::request \handler
 
-  //PipeIn[] to InfoSet[]
-  //nullptr to PipeIn[]
-
-  //pageIn::testPrint
-
   PipeIn[]\clear to InfoSet[]
 
   C_TDEF_PAGEINREQUEST infoSetRow:getFirstRow
@@ -32,18 +27,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: pageIn_RowBuffer \handler
-
-  PipeIn[]\clear pageIn::PageInPoolBuffer
-
-  RowBuffer[].pipeOut
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute for pageIn req                            (on node where spawned)  */
 /*----------------------------------------------------------------------------*/
 : pageIn_op \operator
@@ -56,7 +39,6 @@
 
   op__topology
 
-  //find: pageIn_RowBuffer   EV_D_ROWBUFFER   [op].handler!
   find: pageIn::request     EV_I_PAGEINREQUEST   [op].handler!
 
   op__loop

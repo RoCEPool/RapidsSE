@@ -39,7 +39,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
-
+#ifdef WITH_PAGING
   if(eClassNo == CN_CRWBUFFER ||
      eClassNo == CN_ROWBUFFER) {
 
@@ -49,8 +49,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   } else {
     m_oBufferId.m_iAsI8 = 0;
   }
-
-  m_iBucketNo  = C_UNKNOWN;
+#endif
   m_tLglPtn     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
@@ -242,27 +241,6 @@ i8 DataBuffer::iAgeSec(void)
   
   return iAge;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get bucket no                                                              */
-/*----------------------------------------------------------------------------*/
-i8 DataBuffer::iBucketNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iBucketNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set bucket no                                                              */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vBucketNo(i8 iBucketNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iBucketNo = iBucketNo;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* set buffer level                                                           */

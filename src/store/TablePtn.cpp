@@ -38,10 +38,10 @@ __aFooterFunction(TablePtn)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
-: Object(CN_TABLEPTN), m_okLock(this)
+    : Object(CN_TABLEPTN), m_okLock(this)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  
+
   m_pTable  = pTable;
   m_tLglPtn = tLglPtn;
   m_tPhyPtn = tPhyPtn;

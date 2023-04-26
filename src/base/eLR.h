@@ -13,8 +13,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_ANSWERWL,
   
   /*  */ LR_BKTMAP,
-  /*  */ LR_BUCKETGET,
-  /*  */ LR_BUCKETINFO,
 
   /*  */ LR_CHILDEXIT,
   /*  */ LR_COMBINED,
@@ -128,8 +126,6 @@ static Stz* aLR[]
   /*  */ "LR_ANSWERWL"_Stz,
 
   /*  */ "LR_BKTMAP"_Stz,
-  /*  */ "LR_BUCKETGET"_Stz,
-  /*  */ "LR_BUCKETINFO"_Stz,
   
   /*  */ "LR_CHILDEXIT"_Stz,
   /*  */ "LR_COMBINED"_Stz,

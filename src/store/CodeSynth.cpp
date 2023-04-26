@@ -18,6 +18,7 @@
 #include "SN_Flt.hpp"
 #include "SN_Bcd.hpp"
 #include "eFM.h"
+#include "eIV.h"
 
 RowRef xRowRef[]
 {
@@ -2596,12 +2597,12 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
           iInitValue = Int::iMaxValue();
           sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVL:
-          iInitValue = Ivl::iMaxValue();
+        case DM_IVD:
+          iInitValue = Ivl::iMaxValue(IV_SECOND); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
           break;
         case DM_IVY:
-          iInitValue = Ivl::iMaxValue();
+          iInitValue = Ivl::iMaxValue(IV_MONTH);
           sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
           break;
         case DM_TME:
@@ -2642,10 +2643,10 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
         case DM_INT: iInitValue = Int::iMinValue();
           sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVL: iInitValue = Ivl::iMinValue();
+        case DM_IVD: iInitValue = Ivl::iMinValue(IV_SECOND); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
           break;
-        case DM_IVY: iInitValue = Ivl::iMinValue();
+        case DM_IVY: iInitValue = Ivl::iMinValue(IV_MONTH); // TODO: which interval subtype?
           sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
           break;
         case DM_TME: iInitValue = Tme::iMinValue();
@@ -2682,7 +2683,7 @@ void CodeSynth::vInitAgg(ePE ePreExp, eDM eExprType)
           break;
         case DM_BOL:
         case DM_DTE:
-        case DM_IVL:
+        case DM_IVD:
         case DM_IVY:
         case DM_TME:
         case DM_TSP:
@@ -3199,6 +3200,20 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
       vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_DTE);
+      continue;
+    }
+
+    if (pTkn->bSame("INTERVAL_DT"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_IVD);
+      continue;
+    }
+
+    if (pTkn->bSame("INTERVAL_YM"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_IVY);
       continue;
     }
 
@@ -4002,6 +4017,14 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       pExprStack->vPushStz(sOperation);
       break;
     case DM_INT:
+      sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
+      break;
+    case DM_IVD:
+      sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
+      break;
+    case DM_IVY:
       sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
       pExprStack->vPushStz(sOperation);
       break;

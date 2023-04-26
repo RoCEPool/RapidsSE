@@ -15,17 +15,17 @@ namespace STORE
     RowBuffer* m_pCurrentBuffer; // the data current buffer for insert
 
     BufferId m_oRootBufferId;
-          
+
     // must be last
     Footer m_xFooter;
-    
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
     RowTablePtn(Table* pTable, LglPtn tLglPtn);
    ~RowTablePtn(void) noexcept(false);
-  
+
     void vAppendBuffer(RowBuffer* pRowBuffer);
     i8   nBuffers(void);
     void vCleanup(void);
@@ -40,11 +40,11 @@ namespace STORE
     void vTruncate(void);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
-    
+
   private:
     Footer* aFooter(void);
   };
-  
+
   RowTablePtn* _pRowTablePtn(void* aAddr);
 }
 

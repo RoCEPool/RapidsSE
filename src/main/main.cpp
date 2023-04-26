@@ -66,7 +66,6 @@ int main(int argc, char* argv[])
 //  printf("sizeof(Table) %lld\n",(i8)sizeof(Table));
 //  printf("sizeof(StreamDef) %lld\n",(i8)sizeof(StreamDef));
 //  printf("sizeof(IndexDef) %lld\n",(i8)sizeof(IndexDef));
-//  printf("sizeof(BucketMap) %lld\n",(i8)sizeof(BucketMap));
 //  printf("sizeof(Object) %lld\n",(i8)sizeof(Object));
 //  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
 //  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
@@ -108,6 +107,7 @@ int main(int argc, char* argv[])
       //       cluster running on the machine. The --killPrev also ensures that there is
       //       only one instance of this running on the current machine.
       // ********************************************************************************
+      IntLib::vInitGlobals();
       u8 uRndClusterId = RndLib::uInteger(C_I8_MAX);
       sSeArgs.vSprint(
           "--start "

@@ -127,6 +127,7 @@ QueryNode* Parser::Hashcast::pOrdinalHashExprList(QueryNode* pNode, PlanNode* pR
   s2K sPathBuf;
   i8 iDepth = 0;
   b1 bFound = GraphNav::bGetPathAndDepth(pNode, pRootNode, sPathBuf, iDepth, true, true);
+  UNUSED(bFound);
 
   // Now search up this path for the first PlanObject instance
   QueryNode* pPlanObj = nullptr;

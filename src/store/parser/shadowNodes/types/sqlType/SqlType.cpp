@@ -105,11 +105,11 @@ QueryNode* SqlType::pCreate(TypeId xTypeId)
       break;
 
     case CT_INTERVAL_DT:
-      pNode = _pQueryNode(SqlIntervalDT::pCreate());
+      pNode = _pQueryNode(SqlIntervalDT::pCreate(xTypeId));
       break;
 
     case CT_INTERVAL_YM:
-      pNode = _pQueryNode(SqlIntervalYM::pCreate());
+      pNode = _pQueryNode(SqlIntervalYM::pCreate(xTypeId));
       break;
 
     case CT_TIME:

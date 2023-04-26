@@ -20,6 +20,7 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(b1 bVal);
+    static QueryNode* pCreateNull();
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
     static b1         bValue(PlanNode* pNode);
 

@@ -19,47 +19,6 @@ extern Stz *gsBuildGitHash;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PageIn(void) {
   vAddStep("PageIn::popRequest"_Stz, &Step::vPageInPopRequest);
-  vAddStep("PageIn::PageInPoolBuffer"_Stz, &Step::vPageInPoolBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* PageIn::PageInPoolBuffer -- page in pool buffer from page file on disk     */
-/*----------------------------------------------------------------------------*/
-void Step::vPageInPoolBuffer(void) {
-  ENTRY();
-
-//  //---------------------------------------------------------------------------
-//  // Pop an operand address off the stack. It is actually a Buffer Id
-//  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-//
-//  //---------------------------------------------------------------------------
-//  // Temporary for testing
-//  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-//
-//  BufferId oBufferId = pRowBuffer->oGetBufferId();
-////  oBufferId.m_iAsI8=0;
-//  AM::vDeleteOperand(pOperand,nullptr);
-//
-//  RASSERT(pOperand->eGetClassNo() == BASE::CN_FREECHUNK);
-//  //---------------------------------------------------------------------------
-//
-//
-//  // Ask the FileMap to get the buffer from disk.
-//  DataBuffer* pDataBufferFromDisk = AM::pFileMap()->pDataBufferFromDisk(oBufferId);
-//  RASSERT(pDataBufferFromDisk->eGetClassNo() == BASE::CN_ROWBUFFER);
-//
-//  vTrace("PageIn Operator: Read buffer from disk %p\n"_Stz, pDataBufferFromDisk);
-//
-//  ASSERT(pDataBufferFromDisk != nullptr);
-//
-//  if(pDataBufferFromDisk->eGetClassNo() == BASE::CN_ROWBUFFER) {
-//    m_pLogicUnit->m_xpRowBuffer = _pRowBuffer(pDataBufferFromDisk);
-//  } else if(pDataBufferFromDisk->eGetClassNo() == BASE::CN_ROWBUFFER) {
-//    m_pLogicUnit->m_xpCrwBuffer = _pCrwBuffer(pDataBufferFromDisk);
-//  } else
-//    NEVER_REACH;
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +26,7 @@ void Step::vPageInPoolBuffer(void) {
 /*----------------------------------------------------------------------------*/
 void Step::vPageInPopRequest(void) {
   ENTRY();
-
+#ifdef WITH_PAGING
   BufferId oBufferId;
   oBufferId.m_iAsI8 = m_pDataStack->iPopAsInt(__func__ );
   RASSERT(oBufferId.m_bIdFlag == 1);
@@ -103,6 +62,7 @@ void Step::vPageInPopRequest(void) {
   // Wake up task
   AM::vGrabTaskLock(pReqTask,(Stz*)__func__);
   AM::TASK::vTriggerBidingPageIn(pReqTask, this);
+#endif
 
   EXIT();
 }

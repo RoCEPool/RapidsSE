@@ -19,17 +19,16 @@ namespace STORE
 
     // Note that the IndexTreeVec gets moved upto TablePtn
     //IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
-      
+
     // must be last
     Footer m_xFooter;
-    
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
     CrwTablePtn(Table *pTable, LglPtn tLglPtn);
-   ~CrwTablePtn(void) noexcept(false);
-  
+    ~CrwTablePtn(void) noexcept(false);
 
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     i8   nBuffers(void);
@@ -49,11 +48,11 @@ namespace STORE
 
     bool bVerifyTable(void);
     void vVisualizeTable(void);
-    
+
   private:
     Footer* aFooter(void);
   };
-  
+
   CrwTablePtn* _pCrwTablePtn(void* aAddr);
 }
 

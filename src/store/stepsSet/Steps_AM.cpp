@@ -309,9 +309,7 @@ void Step::vAM_PageInDemonJobIdFetch(void)
   ENTRY();
 
   JobId tJobId = AM::DEMON::tPageInDemonJobId();
-
   m_pDataStack->vPushInt(tJobId.iAsI8());
-
   EXIT();
 }
 

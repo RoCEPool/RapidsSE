@@ -23,7 +23,7 @@ enum eDM : u1 // Dtm Kind
   /*  3 */ DM_DTE,
   /*  4 */ DM_FLT,
   /*  5 */ DM_INT,
-  /*  6 */ DM_IVL,
+  /*  6 */ DM_IVD,
   /*  7 */ DM_IVY,
   /*  8 */ DM_TME,
   /*  9 */ DM_TSP,

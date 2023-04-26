@@ -11,60 +11,13 @@
 #include "PageFile.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
-extern Stz *gsBuildGitHash;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PageOut(void) {
-  vAddStep("PageOut::pageOutPoolBuffer"_Stz, &Step::vPageOutPoolBuffer);
-  vAddStep("PageOut::pageOutCrwBuffer"_Stz, &Step::vPageOutCrwBuffer);
   vAddStep("PageOut::pageOutCheckLowMemory"_Stz, &Step::vPageOutCheckLowMemory);
   vAddStep("PageOut::testPrint"_Stz, &Step::vPageOutTestPrint);
-}
-
-/*----------------------------------------------------------------------------*/
-/* PageOut::pageOutPoolBuffer -- page out pool buffer to page file on disk    */
-/*----------------------------------------------------------------------------*/
-void Step::vPageOutPoolBuffer(void) {
-  ENTRY();
-
-  //---------------------------------------------------------------------------
-  // Pop an operand address off the stack. It may or may not be a BufferId.
-//  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-//  vTrace("PageOut Demon: Received RowBuffer: %p\n"_Stz, pOperand);
-//  RASSERT(pOperand->eGetClassNo() == BASE::CN_ROWBUFFER);
-//
-//  RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-//
-//  // Let the FileMap decide where it should be written to.
-//  AM::pFileMap()->vToDisk((Operand*) pRowBuffer->oGetBufferId().m_pvAsAddress);
-//
-//  m_pDataStack->vPushPtr((Object*)pRowBuffer->oGetBufferId().m_pvAsAddress);
-//  AM::vDeleteOperand(pOperand,nullptr);
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* PageOut::pageOutCrwBuffer -- page out crw buffer to page file on disk      */
-/*----------------------------------------------------------------------------*/
-void Step::vPageOutCrwBuffer(void) {
-  ENTRY();
-
-  //---------------------------------------------------------------------------
-  // Pop an operand address off the stack. It may or may not be a BufferId.
-//  Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-//  vTrace("PageOut Demon: Received CrwBuffer: %p\n"_Stz, pOperand);
-//  RASSERT(pOperand->eGetClassNo() == BASE::CN_CRWBUFFER);
-//
-//  CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-//
-//  // Let the FileMap decide where it should be written to.
-//  AM::pFileMap()->vToDisk((Operand*) pCrwBuffer->oGetBufferId().m_pvAsAddress);
-//
-//  m_pDataStack->vPushPtr((Object*)pCrwBuffer->oGetBufferId().m_pvAsAddress);
-//  AM::vDeleteOperand(pOperand,nullptr);
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +25,8 @@ void Step::vPageOutCrwBuffer(void) {
 /*----------------------------------------------------------------------------*/
 void Step::vPageOutCheckLowMemory(void) {
   ENTRY();
+
+#ifdef WITH_PAGING
 
   d8 dUsedSpacePercent = gpBufferPool->dUsedSpacePercent();
   if( dUsedSpacePercent < C_MAX_MEMORY_LIMIT) {
@@ -88,6 +43,7 @@ void Step::vPageOutCheckLowMemory(void) {
 #ifdef WITH_PAGING_DEBUG
   vTrace("PageOut Demon: Freed up %lld buffers\n"_Stz, nTotal);
   vTrace("PageOut Demon: Current usage is %f%%\n"_Stz, gpBufferPool->dUsedSpacePercent());
+#endif
 #endif
   EXIT();
 }

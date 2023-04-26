@@ -15,7 +15,8 @@
 #include "SP_Dte.hpp"
 #include "SP_Flt.hpp"
 #include "SP_Int.hpp"
-#include "SP_Ivl.hpp"
+#include "SP_Ivd.hpp"
+#include "SP_Ivy.hpp"
 #include "SP_Tme.hpp"
 #include "SP_Tsp.hpp"
 #include "SP_Vch.hpp"
@@ -174,15 +175,17 @@ void SP_Encoding::vEncoding(Encoding* pEncoding)
           break;
         }
           
-        case DM_IVL: {
-          SP_Ivl spIvl;
+        case DM_IVD: {
+          SP_Ivd spIvd;
           StrLib::vAppendString(&szCrs,
-                                (char*)spIvl.sz(aColEnc->m_wDataCode));
+                                (char*)spIvd.sz(aColEnc->m_wDataCode));
           break;
         }
           
         case DM_IVY: {
-          NEVER_REACH;
+          SP_Ivy spIvy;
+          StrLib::vAppendString(&szCrs,
+                                (char*)spIvy.sz(aColEnc->m_wDataCode));
           break;
         }
 

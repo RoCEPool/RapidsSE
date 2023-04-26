@@ -4,6 +4,9 @@
 #pragma once
 
 #include "SP_Bcd.hpp"
+#include "SP_Ivd.hpp"
+#include "SP_Ivy.hpp"
+#include "eIV.h"
 
 namespace Parser
 {
@@ -290,7 +293,8 @@ namespace Parser
             break;
 
           case VT_INTERVAL:
-            NOT_IMPLEMENTED_YET
+            if (m_xIvl.T.m_iAsI8 != xOther.m_xIvl.T.m_iAsI8)  return false;
+            break;
 
         default:
           NEVER_REACH
@@ -518,6 +522,8 @@ namespace Parser
       }
 
       SP_Bcd oSpBcd;
+      SP_Ivd oSpIvd;
+      SP_Ivy oSpIvy;
 
       switch (m_eType) {
 
@@ -564,7 +570,15 @@ namespace Parser
           break;
 
         case VT_INTERVAL:
-          NOT_IMPLEMENTED_YET
+          if (bIsYearMonthInterval((eIV) m_xIvl.T.m_xIvl.m_eType)) {
+            sBuf.vCopy(oSpIvy.sz(m_xIvl.T.m_iAsI8));
+
+          } else if (bIsDayTimeInterval((eIV) m_xIvl.T.m_xIvl.m_eType)) {
+            sBuf.vCopy(oSpIvd.sz(m_xIvl.T.m_iAsI8));
+
+          } else {
+            NEVER_REACH
+          }
 
         default:
           NEVER_REACH

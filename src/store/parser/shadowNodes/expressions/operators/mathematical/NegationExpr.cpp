@@ -10,6 +10,7 @@
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap1D.hpp"
 
 using namespace Parser;
 
@@ -20,21 +21,31 @@ static Stz* C_NEGATION_NAME_PREFIX = "NegationExpr"_Stz;
 static Stz* C_NEGATION_DEFN = "/__root__/definitions/object/expr/operator/mathematical/negation"_Stz;
 
 // What is the resulting type when we combine these inputs?
-// * The left header column represents the type of the first operand.
-// * The top header row represents the type of the second operand.
-// * The corresponding cell in the matrix represents the type of the resultant from this operation.
-// * Invalid/unsupported combinations are represented with CT_NONE.
-// * Fields marked with /*?*/ are not currently supported but could be.  Refer to
-//   the documentation below marked with this symbol for more information.
-// * Fields marked with /*X*/ are not currently supported but should be.
-static eCT aeTypeCalculus[CT_ENUMS] =
-
-//   NONE     BOOLEAN  CHAR     DATE     DECIMAL     FLOAT     INTEGER     INTERVAL_DT     INTERVAL_YM     TIME          TIMESTAMP VARCHAR  UNKNOWN
-   { CT_NONE, CT_NONE, CT_NONE, CT_NONE, CT_DECIMAL, CT_FLOAT, CT_INTEGER, CT_INTERVAL_DT, CT_INTERVAL_YM, CT_NONE/*?*/, CT_NONE,  CT_NONE, CT_UNKNOWN };
+//  - The first parameter represents the type of the first operand
+//  - The second parameter represents the type of the result from this operation.
+//  - Any unspecified mappings are unsupported.
+static TypeMap1D* S_pTypeMap = (new TypeMap1D())
+    ->pAddSelfMapping( TypeId::xIdOf(CT_DECIMAL))
+    ->pAddSelfMapping( TypeId::xIdOf(CT_FLOAT))
+    ->pAddSelfMapping( TypeId::xIdOf(CT_INTEGER))
+    ->pAddSelfMapping( TypeId::xIdOf(IV_YEAR) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_MONTH) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_YEAR_TO_MONTH) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_DAY) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_HOUR) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_MINUTE) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_SECOND) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_DAY_TO_HOUR) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_DAY_TO_MINUTE) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_DAY_TO_SECOND) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_HOUR_TO_MINUTE) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_HOUR_TO_SECOND) )
+    ->pAddSelfMapping( TypeId::xIdOf(IV_MINUTE_TO_SECOND) )
+    ->pAddSelfMapping( TypeId::xIdOf(CT_UNKNOWN))
+;
 
 // References:
-//  /*?*/
-//  Postgres seems to support other enhancements, marked as /*?*/ in the table above:
+//  Postgres seems to support other enhancements:
 //    negation of Time
 
 /*----------------------------------------------------------------------------*/
@@ -132,12 +143,11 @@ TypeId NegationExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   // Get the types of the two operands
   QueryNode* pChild1 = NegationExpr::pChild1(pExprNode);
 
-  eCT eOperand1 = Expr::xTypeId(pChild1, pRootNode).eCTVal();
+  TypeId xType1 = Expr::xTypeId(pChild1, pRootNode);
 
   // Lookup the type of the result
-  eCT eResult = aeTypeCalculus[eOperand1];
-
-  return TypeId::xIdOf(eResult);
+  TypeId xResult = S_pTypeMap->xLookup(xType1);
+  return xResult;
 }
 
 /*============================================================================*/

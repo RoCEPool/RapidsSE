@@ -688,6 +688,270 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DATE-TIME INTERVAL
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _EQ_IVDIVD(eErrorCode)                                             \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros == ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                                             \
+    }                                                                      \
+  }
+
+#define _GE_IVDIVD(eErrorCode)                                             \
+  {                                                                        \
+  ivlArg1.m_iAsI8 = *(--paW);                                            \
+  ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                         \
+  if (eErrorCode != EC_NONE ||                                           \
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros >= ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                                             \
+  }                                                                      \
+}
+
+#define _GT_IVDIVD(eErrorCode)                                           \
+{                                                                        \
+  ivlArg1.m_iAsI8 = *(--paW);                                            \
+  ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                         \
+  if (eErrorCode != EC_NONE ||                                           \
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros > ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;  \
+  }                                                                      \
+}
+
+#define _GTA_IVDIVD(eErrorCode) \
+ {                                                                        \
+   ivlArg1.m_iAsI8 = *(--paW);                                            \
+   ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                          \
+    if (eErrorCode != EC_NONE) {                                          \
+      *paW++ = C_DATUM_NULL;                                              \
+    }                                                                     \
+    else if (ivlArg1.m_iAsI8 == C_DATUM_NULL) {                           \
+      *paW++ = 1;                                                         \
+    }                                                                     \
+    else if (ivlArg2.m_iAsI8 == C_DATUM_NULL) {                           \
+      *paW++ = 0;                                                         \
+    }                                                                     \
+    else {                                                                \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros > ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros ? 1 : 0; \
+    }                                                                      \
+  }
+
+#define _LE_IVDIVD(eErrorCode)                                             \
+  {                                                                        \
+  ivlArg1.m_iAsI8 = *(--paW);                                            \
+  ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                         \
+  if (eErrorCode != EC_NONE ||                                           \
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+    *paW++ = C_DATUM_NULL;                                               \
+  }                                                                      \
+  else {                                                                 \
+    *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros <= ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;  \
+  }                                                                      \
+  }
+
+#define _LT_IVDIVD(eErrorCode)                                             \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros < ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;  \
+    }                                                                      \
+ }
+
+#define _LTA_IVDIVD(eErrorCode)                                            \
+  {                                                                        \
+   ivlArg1.m_iAsI8 = *(--paW);                                             \
+   ivlArg2.m_iAsI8 = *(--paW);                                             \
+                                                                           \
+    if (eErrorCode != EC_NONE) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else if (ivlArg1.m_iAsI8 == C_DATUM_NULL) {                            \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else if (ivlArg2.m_iAsI8 == C_DATUM_NULL) {                            \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros < ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros ? 1 : 0; \
+    }                                                                     \
+  }
+
+#define _NE_IVDIVD(eErrorCode)                                             \
+  {                                                                        \
+  ivlArg1.m_iAsI8 = *(--paW);                                              \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros != ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros ? 1 : 0;  \
+    }                                                                      \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// YEAR-MONTH INTERVAL
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _EQ_IVYIVY(eErrorCode)                                             \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths == ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                                             \
+    }                                                                      \
+  }
+
+#define _GE_IVYIVY(eErrorCode)                                             \
+  {                                                                        \
+  ivlArg1.m_iAsI8 = *(--paW);                                              \
+  ivlArg2.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+  if (eErrorCode != EC_NONE ||                                             \
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }                                                                        \
+  else {                                                                   \
+    *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths >= ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                                             \
+  }                                                                        \
+}
+
+#define _GT_IVYIVY(eErrorCode)                                             \
+{                                                                          \
+  ivlArg1.m_iAsI8 = *(--paW);                                              \
+  ivlArg2.m_iAsI8 = *(--paW);                                              \
+                                                                           \
+  if (eErrorCode != EC_NONE ||                                             \
+      ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                   \
+      ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                   \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }                                                                        \
+  else {                                                                   \
+    *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths > ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;  \
+  }                                                                        \
+}
+
+#define _GTA_IVYIVY(eErrorCode) \
+ {                                                                        \
+   ivlArg1.m_iAsI8 = *(--paW);                                            \
+   ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                          \
+    if (eErrorCode != EC_NONE) {                                          \
+      *paW++ = C_DATUM_NULL;                                              \
+    }                                                                     \
+    else if (ivlArg1.m_iAsI8 == C_DATUM_NULL) {                           \
+      *paW++ = 1;                                                         \
+    }                                                                     \
+    else if (ivlArg2.m_iAsI8 == C_DATUM_NULL) {                           \
+      *paW++ = 0;                                                         \
+    }                                                                     \
+    else {                                                                \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths > ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths ? 1 : 0; \
+    }                                                                     \
+  }
+
+#define _LE_IVYIVY(eErrorCode)                                             \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths <= ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;  \
+    }                                                                      \
+  }
+
+#define _LT_IVYIVY(eErrorCode)                                             \
+  {                                                                        \
+    ivlArg1.m_iAsI8 = *(--paW);                                            \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths < ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;  \
+    }                                                                      \
+ }
+
+#define _LTA_IVYIVY(eErrorCode)                                            \
+  {                                                                        \
+   ivlArg1.m_iAsI8 = *(--paW);                                             \
+   ivlArg2.m_iAsI8 = *(--paW);                                             \
+                                                                           \
+    if (eErrorCode != EC_NONE) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else if (ivlArg1.m_iAsI8 == C_DATUM_NULL) {                            \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else if (ivlArg2.m_iAsI8 == C_DATUM_NULL) {                            \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths < ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths ? 1 : 0; \
+    }                                                                     \
+  }
+
+#define _NE_IVYIVY(eErrorCode)                                             \
+  {                                                                        \
+  ivlArg1.m_iAsI8 = *(--paW);                                              \
+    ivlArg2.m_iAsI8 = *(--paW);                                            \
+                                                                           \
+    if (eErrorCode != EC_NONE ||                                           \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths != ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths ? 1 : 0;  \
+    }                                                                      \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TIME
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

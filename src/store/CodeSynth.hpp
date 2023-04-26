@@ -9,6 +9,7 @@
 #include "ePL.h"
 #include "eEK.h"
 #include "eFM.h"
+#include "eIV.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
 
