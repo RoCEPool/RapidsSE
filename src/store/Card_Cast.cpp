@@ -106,8 +106,11 @@ eXK Card_Cast::eStageCast(Card_StreamPtn* p_streamPtn,
   // -- -- -- -- -- -- -- -- -- --
   // not joining to table partition
   else {
+    if (Card_COL::bIsReplicated(p_Y_tblCol_prior))
+      eCast = XK_UNICAST;
+    else
     // stream requires a broadcast mapping to table partitions
-    eCast = XK_BROADCAST;
+      eCast = XK_BROADCAST;
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

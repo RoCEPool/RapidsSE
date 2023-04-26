@@ -2,7 +2,10 @@
 /* _r_Q11 -- TCPH query 11 test                                               */
 /*============================================================================*/
 
-// /glean_interactive
+// /jo_disable
+// /ep_disable
+/glean_interactive
+/filterPred
 /jobMetrics
 /joWrite
 /transliterated

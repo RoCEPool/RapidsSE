@@ -16,7 +16,6 @@ trackMemory;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /glean_interactive
-/transliterated
 /weaved
 /pipelineName = "_tpchQ5_debug"
 select
@@ -44,8 +43,8 @@ select
  group
        by n_name
  order
-       by revenue desc;
-;
+       by revenue desc
+       ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,6 +53,8 @@ MemoryLeaks;
 /*
 Expected Result:
 
+  Expected   : ('PERU'     , -14237.80)
+               ('ARGENTINA',  -8058.15)
 
 */
 

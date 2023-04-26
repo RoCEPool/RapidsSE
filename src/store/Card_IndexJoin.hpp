@@ -25,6 +25,7 @@ namespace STORE
     void vEarlyProject_add_transients(CardIter* pCI);
 
     void vEarlyProject_recurse_add(CardIter* pCI);
+    void vEarlyProject_root(CardIter* pCI);
 
   };
 

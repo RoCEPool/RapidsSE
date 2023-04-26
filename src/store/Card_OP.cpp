@@ -335,9 +335,13 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
       pCI->G.p_project->vEarlyProject_root(pCI);
       break;
 
-    // -- -- -- -- -- -- --
-    case CK_CROSSJOIN:
     case CK_INDEXJOIN:
+      pCI->G.p_indexJoin->vEarlyProject_root(pCI);
+      break;
+
+
+      // -- -- -- -- -- -- --
+    case CK_CROSSJOIN:
     case CK_INDEXSCAN:
     case CK_LIMIT:
     case CK_SCAN:
@@ -513,8 +517,14 @@ bool Card_OP::bIsEarlyRoot(void)
       return true;
 
     case CK_PROJECT:
+      if (bIsPartitionLevel())
+        return true;
+      return false;
+
+    case CK_INDEXJOIN:
       return true;
 
+      // -- -- -- -- -- --
     default:
       return false;
   }

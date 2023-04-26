@@ -178,6 +178,7 @@ static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
 static Stz* C_NA                = "n/a"_Stz;
 
 static Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
+static Stz* C_EP_ENABLE  = "<ep_enable>"_Stz;
 static Stz* C_FILTERPRED = "<filterPred>"_Stz;
 static Stz* C_JO_DISABLE = "<jo_disable>"_Stz;
 static Stz* C_JO_PICK    = "<jo_pick>"_Stz;

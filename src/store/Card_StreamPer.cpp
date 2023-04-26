@@ -60,7 +60,7 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 i_Permutation = pSymbol()->Y_iGet(P_Permutation);
-  if (686 == i_Permutation)
+  if (571 == i_Permutation)
     vDebugPoint();
 
   i8 nUnfiltBuff_prev_join  = 0;
