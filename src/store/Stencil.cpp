@@ -2913,11 +2913,11 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE PAYLOAD OP's
       if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top)"
-            "in the same stage (%s)!!!\n"_Stz,
-            m_szStageNm.azChar());
+        //vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top)"
+        //    "in the same stage (%s)!!!\n"_Stz,
+        //    m_szStageNm.azChar());
 
-        return EC_INVALID_PIPELINE;
+        return EC_ORDERBY_WITH_AGGREGATES;
       }
 
       m_xStageOps.m_bPayloadOp = true;
@@ -3095,10 +3095,10 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // MULTIPLE PAYLOAD OP's
         if (m_xStageOps.m_bPayloadOp) {
-          vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-                 m_szStageNm.azChar());
+          //vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+          //       m_szStageNm.azChar());
 
-          return EC_INVALID_PIPELINE;
+          return EC_ORDERBY_WITH_AGGREGATES;
         }
 
         m_xStageOps.m_bPayloadOp = true;
@@ -3126,10 +3126,10 @@ eEC Stencil::eCollectStage(Combined* pCombined, Stream* pStream) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE PAYLOAD OP's
       if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
+        //vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+        //       m_szStageNm.azChar());
 
-        return EC_INVALID_PIPELINE;
+        return EC_ORDERBY_WITH_AGGREGATES;
       }
 
       m_xStageOps.m_bPayloadOp = true;

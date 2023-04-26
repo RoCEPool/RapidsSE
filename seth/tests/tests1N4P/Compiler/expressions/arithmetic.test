@@ -144,6 +144,27 @@ EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + INTERVAL '2' MONTH F
 failure contains: 'Expression type combination is invalid or unsupported'
 
 
+// Can mix YM and DT intervals if there is a valid intermediate result
+EXPLAIN WITH_TYPES SELECT INTERVAL '30' DAY + DATE '2023-02-16' + INTERVAL '10-11' YEAR TO MONTH FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''30'' DAY + DATE ''2023-02-16'' + INTERVAL ''10-11'' YEAR TO MONTH FROM nation"
+
+-> -> projectOp
+      » column: (Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH ; Ordinal Expr = (INTERVAL ''30'' DAY + DATE ''2023-02-16'') + INTERVAL ''10-11'' YEAR TO MONTH) ; type: TIMESTAMP
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Cannot mix YM and DT intervals if the intermediate result is in the wrong order.
+EXPLAIN SELECT INTERVAL '30' DAY + INTERVAL '10-11' YEAR TO MONTH + DATE '2023-02-16' FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported'
+
+
 // Interval multiplication /1 (integer)
 EXPLAIN WITH_TYPES SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM nation;
 rows: (*,'explainPlan','
@@ -342,7 +363,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT INTERVAL ''1'' DAY + DATE ''2000-02-28'' FROM nation"
 
 -> -> projectOp
-      » column: (Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'') ; type: DATE
+      » column: (Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1'' DAY + DATE ''2000-02-28'') ; type: TIMESTAMP
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -358,18 +379,42 @@ rows: (*,'explainPlan','
    » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1'' DAY FROM nation"
 
 -> -> projectOp
-      » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY) ; type: DATE
+      » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1'' DAY) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
          
-// Interval DT + date (invalid)
+// Interval DT (with h/m/s) + date
 EXPLAIN WITH_TYPES SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + DATE '2000-02-28' FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
-// Date + Interval DT (invalid)
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 2:3:4.5'' DAY TO SECOND + DATE ''2000-02-28'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + DATE ''2000-02-28'' ; Ordinal Expr = INTERVAL ''1 2:3:4.500000'' DAY TO SECOND + DATE ''2000-02-28'') ; type: TIMESTAMP
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Date + Interval DT (with h/m/s)
 EXPLAIN WITH_TYPES SELECT DATE '2000-02-28' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.5'' DAY TO SECOND FROM nation"
+
+-> -> projectOp
+      » column: (Expr = DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND ; Ordinal Expr = DATE ''2000-02-28'' + INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; type: TIMESTAMP
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 
@@ -381,14 +426,37 @@ failure contains: 'Expression type combination is invalid or unsupported'
 EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1-2' YEAR TO MONTH FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported'
 
-// Interval Day + time (invalid)
+// Interval Day + time
 EXPLAIN WITH_TYPES SELECT INTERVAL '1 2' DAY TO HOUR + TIME '04:30:56' FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
-// Time + Interval Day (invalid)
+-> statementMarker: select
+   » queryText: "SELECT INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'' ; Ordinal Expr = INTERVAL ''1 2'' DAY TO HOUR + TIME ''04:30:56'') ; type: TIME
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Time + Interval Day
 EXPLAIN WITH_TYPES SELECT TIME '04:30:56' + INTERVAL '1 2' DAY TO HOUR FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR FROM nation"
+
+-> -> projectOp
+      » column: (Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR ; Ordinal Expr = TIME ''04:30:56'' + INTERVAL ''1 2'' DAY TO HOUR) ; type: TIME
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 // Interval HMS + time
 EXPLAIN WITH_TYPES SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation;

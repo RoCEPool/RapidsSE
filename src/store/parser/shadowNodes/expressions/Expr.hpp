@@ -152,7 +152,8 @@ namespace Parser
     // Increments the integer elements of an array if the given expression is
     // coercible to each eCT data type.
     static void
-    vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets, i8 iArrLen, PlanNode* pRootNode);
+    vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets, i8 iArrLen,
+                               QueryNode* pParentExpr, PlanNode* pRootNode);
 
     // Given an array of counts for each data types and a maximum count value,
     // choose the data type that should be coerced to, or CT_NONE if none of
@@ -177,7 +178,9 @@ namespace Parser
     //   string (timestamp) -> timestamp   (from a literal only)
     //   date               -> timestamp
     //   boolean            -> string
-    static b1 bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);
+    //   single field ivl   -> integer (only in a comparison operation with an integer)
+    static b1 bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                       QueryNode* pParentExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
     static QueryNode* pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode);

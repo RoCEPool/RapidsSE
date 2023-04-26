@@ -337,6 +337,7 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
 
   /*  6 */ vAddConstant("EC_DECIMAL_NOT_SUPPORTED"_Stz, EC_DECIMAL_NOT_SUPPORTED);
+  /*  6 */ vAddConstant("EC_DATE_OUT_OF_RANGE"_Stz,       EC_DATE_OUT_OF_RANGE);
   /*  6 */ vAddConstant("EC_DISK_SPACE_CHECK_FAILED"_Stz, EC_DISK_SPACE_CHECK_FAILED);
   /*  6 */ vAddConstant("EC_DIVIDE_BY_ZERO"_Stz,     EC_DIVIDE_BY_ZERO);
   /*  7 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
@@ -407,7 +408,7 @@ void Constants::vAddConstantsCpp(void)
   /* 48 */ vAddConstant("EC_NULL_INTERFACE"_Stz,     EC_NULL_INTERFACE);
   /* 49 */ vAddConstant("EC_NULLPTR"_Stz,            EC_NULLPTR);
 
-  /*    */ vAddConstant("EC_ORDERBY_NOT_SUPPORTED"_Stz,EC_ORDERBY_NOT_SUPPORTED);
+  /*    */ vAddConstant("EC_ORDERBY_WITH_AGGREGATES"_Stz,EC_ORDERBY_WITH_AGGREGATES);
 
   /*    */ vAddConstant("EC_PIPELINE_PROTOCOL_ERROR"_Stz,EC_PIPELINE_PROTOCOL_ERROR);
   
@@ -684,10 +685,6 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("EV_NONE"_Stz,              EV_NONE);
-  /*  0 */ vAddConstant("EV_D_BKTMAPGET"_Stz,       EV_D_BKTMAPGET);
-  /*  0 */ vAddConstant("EV_D_BUCKETGET"_Stz,       EV_D_BUCKETGET);
-  /*  0 */ vAddConstant("EV_D_BUCKETINFO"_Stz,      EV_D_BUCKETINFO);
-  /*  0 */ vAddConstant("EV_D_BUCKETMAP_dyn"_Stz,   EV_D_BUCKETMAP_dyn);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
   /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
@@ -721,6 +718,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
   /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
   /*  0 */ vAddConstant("EV_I_NODEINFO"_Stz,        EV_I_NODEINFO);
+  /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
   /*  0 */ vAddConstant("EV_I_PROGRESSUNITS"_Stz,   EV_I_PROGRESSUNITS);
   /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);

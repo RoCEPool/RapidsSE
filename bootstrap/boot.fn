@@ -66,21 +66,94 @@ function printStartStopUsageAndExit() {
   echo "                    [--config <file>]"
   echo "                    [--debug]"
   echo "Details:"
-  echo "  --cluster         [Default] Starts all nodes in the cluster."
-  echo "  --node            Starts the current node only."
+  echo "  --cluster            [Default] Starts all nodes in the cluster."
+  echo "  --node               Starts the current node only."
   echo ""
-  echo "  --config <file>   Uses a given cluster configuration file."
-  echo "                    Default is: ${CONFIG_FILE}"
+  echo "  --config <file>      Uses a given cluster configuration file."
+  echo "                       Default is: ${CONFIG_FILE}"
   echo ""
-  echo "  --debug           Displays additional debugging messages during execution."
+  echo "  --debug              Displays additional debugging messages during execution."
   echo ""
-  echo "  --reload <dir>    Starts SE in reload mode."
-  echo "                    <dir> is the relative directory path from root disk paths."
+  echo "  --reload <snapshot>  Starts SE in reload mode."
+  echo "                       <snapshot> is the name of the snapshot directory relative"
+  echo "                       to the cluster data directory."
   echo ""
-  echo "  --clusterinit     Internal use only."
+  echo "  --clusterinit        Internal use only."
   echo ""
-  echo "  --help            Displays this message."
+  echo "  --help               Displays this message."
   exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Validate that the reload path exists on all nodes in the cluster.
+## Params:
+##  $1 - The name of the reload snapshot
+##  $@ - (optional) the array of node names to be started. If not supplied then
+##       all nodes will be started.
+
+function validateReloadPath() {
+
+  if [ "$#" -eq 0 ]; then
+    errorExit "At least 1 parameter must be specified for function validateReloadPath()"
+  fi
+
+  local snapshot="$1"
+  shift
+
+  local -a nodeNames
+
+  if [ "$#" -eq 0 ]; then
+    fullClusterStart=1
+    nodeNames=( "${NODE_LIST[@]}" )
+  else
+    fullClusterStart=0
+    nodeNames=( "$@" )
+  fi
+
+  echo "Checking that snapshot \"${snapshot}\" exists on all nodes."
+
+  # Check each node in the cluster
+  local host
+  local diskPathsStr
+  local -a diskPathsArray
+  local diskPath
+  local snapshotPath
+  local remoteCmd
+
+  for nodeName in "${nodeNames[@]}"
+  do
+    host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
+    diskPathsStr="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DISK_KEY}")"
+
+    # diskPathsStr above is a string. Let's turn it into an array based on : delimiter
+    IFS=: read -r -d '' -a diskPathsArray < <(printf '%s:\0' "$diskPathsStr")
+
+    if [ ${#diskPathsArray[@]} -ne 0 ]; then
+      for diskPath in "${diskPathsArray[@]}"; do
+
+        if [ "${diskPath:0-1}" != "/" ]; then
+          diskPath+="/"
+        fi
+
+        snapshotPath="${diskPath}${snapshot}"
+
+        if [ -n "${remoteCmd}" ]; then
+          remoteCmd+=" && "
+        fi
+
+        remoteCmd+="ls ${snapshotPath}"
+      done
+
+      remoteCmd+=" &>/dev/null"
+    fi
+
+    debugPrint "Checking that snapshot \"${snapshot}\" exists on node ${nodeName} with command: ${remoteCmd}"
+
+    # We will do this sequentially since reload is not a common operation.
+    if ! ssh "${SSH_COMMON_OPTIONS[@]}" "${host}" "bash" "-c" "'${remoteCmd}'"; then
+      errorExit "Could not find one or more of the snapshot directories named \"${snapshot}\" on node ${nodeName} [host: ${host}]"
+    fi
+  done
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,8 +208,7 @@ function startCluster() {
     do
       debugPrint "Starting ${row}"
       remoteNodeArgArr=("${row}")
-      [ -n "${ARG_EXTRA}" ] && remoteNodeArgArr+=("${ARG_EXTRA}")
-      [ -n "${ARG_EXTRA_VALUE}" ] && remoteNodeArgArr+=("${ARG_EXTRA_VALUE}")
+      [ -n "${EXTRA_START_ARGS[@]}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" || errorExit "Could not start node ${row} in the cluster."
     done
 
@@ -145,8 +217,7 @@ function startCluster() {
     for row in "${nodeNames[@]}"
     do
       remoteNodeArgArr=("${row}")
-      [ -n "${ARG_EXTRA}" ] && remoteNodeArgArr+=("${ARG_EXTRA}")
-      [ -n "${ARG_EXTRA_VALUE}" ] && remoteNodeArgArr+=("${ARG_EXTRA_VALUE}")
+      [ -n "${EXTRA_START_ARGS}" ] && remoteNodeArgArr+=("${EXTRA_START_ARGS[@]}")
       startRemoteNode "${remoteNodeArgArr[@]}" &>/dev/null &
     done
 
@@ -184,9 +255,12 @@ function startCluster() {
 
   else
     if [ "${fullClusterStart}" -eq 1 ]; then
-      echo "Cluster startup failed. Please stop the cluster before restarting it."
+      echo "Cluster startup failed. Please stop any running nodes in the cluster with"
+      echo "./${STOP_SCRIPT} before restarting it. Refer to the se.log file on the failed"
+      echo "nodes for failure details."
     else
-      echo "Added nodes have failed to start up correctly."
+      echo "Added nodes have failed to start up correctly. Refer to the se.log file on"
+      echo "the failed nodes for failure details."
     fi
     false
   fi
@@ -232,7 +306,7 @@ function startRemoteNode() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Starts RapidsSE on the current node only.
-## Params: None
+## Params: (Optional) extra start arguments
 
 function startCurrentNode() {
 
@@ -247,19 +321,10 @@ function startCurrentNode() {
   local threads
   local mem
   local clusterId
-  local diskPaths
-  local argExtra
-  local argExtraValue
+  local diskPathsStr
   local params
+  local extraStartArgs=($@)
 
-  if [ -n "$1" ]
-  then
-    argExtra=("$1")
-    if [ -n "$2" ]
-    then
-      argExtraValue=("$2")
-    fi
-  fi
 
   host="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
   internal_port="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_INTERNAL_PORT_KEY}")"
@@ -270,7 +335,7 @@ function startCurrentNode() {
   partitions="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARTITIONS_KEY}")"
   threads="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_THREADS_KEY}")"
   mem="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_MEM_KEY}")"
-  diskPaths="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DISK_KEY}")"
+  diskPathsStr="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_DISK_KEY}")"
   clusterId="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_CLUSTERID_KEY}")"
 
   params="$(nodeCfgGetValue "${CURRENT_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
@@ -279,8 +344,8 @@ function startCurrentNode() {
   declare -a paramsArray=()
   IFS=' ' read -r -a paramsArray <<< "${params}"
 
-  # diskPaths above is a string. Let's turn it into an array based on : delimiter
-  IFS=: read -r -d '' -a diskpathsArray < <(printf '%s:\0' "$diskPaths")
+  # diskPathsStr above is a string. Let's turn it into an array based on : delimiter
+  IFS=: read -r -d '' -a diskPathsArray < <(printf '%s:\0' "$diskPathsStr")
 
   declare -a startCmd=()
   startCmd+=("nohup")
@@ -308,22 +373,17 @@ function startCurrentNode() {
   startCmd+=("--heartbeat")
   startCmd+=("${heartbeatAddress}")
   startCmd+=("${heartbeatPort}")
-  if [ ${#diskpathsArray[@]} -ne 0 ]; then
-    for path in "${diskpathsArray[@]}"
+
+  if [ ${#diskPathsArray[@]} -ne 0 ]; then
+    for path in "${diskPathsArray[@]}"
     do
       startCmd+=("--disk")
       startCmd+=("${path}")
     done
   fi
+
   startCmd+=("${paramsArray[@]}")
-  if [ -n "$argExtra" ]
-  then
-    startCmd+=("$argExtra")
-    if [ -n "$argExtraValue" ]
-    then
-      startCmd+=("$argExtraValue")
-    fi
-  fi
+  startCmd+=("${extraStartArgs[@]}")
 
 
   # SE environment variables

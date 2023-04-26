@@ -7,10 +7,6 @@ enum eEV // events
 {
   /*  0 */ EV_NONE=0,
 
-  /*    */ EV_D_BKTMAPGET,
-  /*    */ EV_D_BUCKETGET,
-  /*    */ EV_D_BUCKETINFO,
-  /*    */ EV_D_BUCKETMAP_dyn,
   /*    */ EV_D_CRWBUFFER,
   /*    */ EV_D_CSVBUFFER,
   /*    */ EV_D_ENTBUFFER,
@@ -44,6 +40,7 @@ enum eEV // events
   /*    */ EV_I_LOADRESULT,
   /*    */ EV_I_LOCKSTATS,
   /*    */ EV_I_NODEINFO,
+  /*    */ EV_I_PAGEINREQUEST,
   /*    */ EV_I_PATH,
   /*    */ EV_I_PROGRESSUNITS,
   /*    */ EV_I_PROMPTOUT,
@@ -92,10 +89,6 @@ enum eEV // events
 static Stz* aEV[]
 {
   /*  0 */ "NONE"_Stz,
-  /*    */ "EV_D_BKTMAPGET"_Stz,
-  /*    */ "EV_D_BUCKETGET"_Stz,
-  /*    */ "EV_D_BUCKETINFO"_Stz,
-  /*    */ "EV_D_BUCKETMAP_dyn"_Stz,
   /*    */ "EV_D_CRWBUFFER"_Stz,
   /*    */ "EV_D_CSVBUFFER"_Stz,
   /*    */ "EV_D_ENTBUFFER"_Stz,
@@ -129,6 +122,7 @@ static Stz* aEV[]
   /*    */ "EV_I_LOADRESULT"_Stz,
   /*    */ "EV_I_LOCKSTATS"_Stz,
   /*    */ "EV_I_NODEINFO"_Stz,
+  /*    */ "EV_I_PAGEINREQUEST"_Stz,
   /*    */ "EV_I_PATH"_Stz,
   /*    */ "EV_I_PROGRESSUNITS"_Stz,
   /*    */ "EV_I_PROMPTOUT"_Stz,

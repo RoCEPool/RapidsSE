@@ -43,10 +43,6 @@
 /*                          STANDARD EVENT HANDLERS                           */
 /*----------------------------------------------------------------------------*/
 
-: EV_D_BKTMAPGET_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_BUCKETGET_handler        \handler STANDARD_PIPEOUT ;
-: EV_D_BUCKETINFO_handler       \handler STANDARD_PIPEOUT ;
-: EV_D_BUCKETMAP_dyn_handler    \handler STANDARD_PIPEOUT ;
 : EV_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : EV_D_ENTBUFFER_handler        \handler STANDARD_PIPEOUT ;
@@ -81,6 +77,7 @@
 : EV_I_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
 : EV_I_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
+: EV_I_PAGEINREQUEST_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PATH_handler             \handler STANDARD_PIPEOUT ;
 : EV_I_PROGRESSUNITS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_PROMPTOUT_handler        \handler STANDARD_PIPEOUT ;
@@ -384,9 +381,6 @@
   find: STANDARD_PIPEOUT            locals| defaultHandler |
 
   // ABNORMAL handlers (pipein delete) for DATA Operators
-  abnormalHandler EV_D_BKTMAPGET        [op].handler!
-  abnormalHandler EV_D_BUCKETGET        [op].handler!
-  abnormalHandler EV_D_BUCKETMAP_dyn    [op].handler!
   abnormalHandler EV_D_CRWBUFFER        [op].handler!
   abnormalHandler EV_D_CSVBUFFER        [op].handler!
   abnormalHandler EV_D_ENTBUFFER        [op].handler!
@@ -462,6 +456,7 @@
   abnormalHandler EV_I_LOADRESULT       [op].handler!
   abnormalHandler EV_I_LOCKSTATS        [op].handler!
   abnormalHandler EV_I_NODEINFO         [op].handler!
+  abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
   abnormalHandler EV_I_PATH             [op].handler!
   abnormalHandler EV_I_PROGRESSUNITS    [op].handler!
   abnormalHandler EV_I_PROMPTOUT        [op].handler!
