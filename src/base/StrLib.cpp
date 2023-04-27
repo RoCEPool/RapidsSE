@@ -1090,6 +1090,22 @@ bool StrLib::bEqualTo(const char* s1, const char* s2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bEqualTo: test if the two args match                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bEqualTo(const char* s1, i8 nLen2, const char* s2)
+{
+  _static_
+
+  i8 iDiff = strncmp(s1,s2,nLen2);
+
+  if (0 == iDiff)
+    return true;
+  else
+    return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* bEqualTo: are two arguments equal (case or no case)                        */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bEqualTo(const char* pArg1, const char* pArg2, i8 iCase)
@@ -4627,6 +4643,23 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
 /*----------------------------------------------------------------------------*/
 /* T                                  T                                     T */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bTailIs(const char *z, char *ss)
+{
+  _static_
+
+  i8 nSS_len  = nLength(ss);
+
+  const char* y = z - nSS_len;
+
+  if (bEqualTo(y,nSS_len,ss))
+    return true;
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find tab location in given arg                                             */

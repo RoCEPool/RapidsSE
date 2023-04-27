@@ -67,6 +67,7 @@ namespace BASE
   
     static bool  bEachLine(char** ps, char* caLine);
     static bool  bEqualTo(const char* s1, const char* s2);
+    static bool  bEqualTo(const char* s1, i8 nLen2, const char* s2);
     static bool  bEqualTo(const char* s1, const char* s2, i8 iCase);
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(char* sArg, char* sEnd);
@@ -264,6 +265,7 @@ namespace BASE
     static void  vStrip(char* s, char cTrailing);
     static void  vSubPath(char* azDst, char* azSrc);
 
+    static bool  bTailIs(const char* z, char* ss);
     static char* aczTabLoc(char* azArg, i8 i_Tab, char cPad);
     static i8    iToBcd(const char* s);
     static bool  bToBool(const char* s);

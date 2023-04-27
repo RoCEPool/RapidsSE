@@ -40,6 +40,7 @@ Input::Input(Input* pNext)
   m_pCharser_spares = nullptr;
 
   m_bRevertToCpp = false;
+   m_bCollectCodeBlock = false;
 
   // debugging aids
   d_iDebugMode               = false;
@@ -1565,7 +1566,12 @@ void Input::vCollectSen(void)
   if (bHitEOF()) {
     m_pCurrTkn->vSetNull();
   }
-  
+
+  // collect code block
+  else
+  if (bCollectingCodeBlock()) {
+    vCollectCodeBlock();
+  }
   // collect integer literal?
   else
   if (bStartSenInteger()) {
@@ -1621,6 +1627,9 @@ void Input::vCollectSen(void)
       NEVER_REACH;
   }
 
+//  if (bIsCodeBlockBegin()) {
+//    m_bCollectCodeBlock = true;
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1885,6 +1894,66 @@ void Input::vCollectSenTag(void)
   m_pCurrTkn->vToken(TN_TAG);
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect code block as a string                                             */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectCodeBlock(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
+
+  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
+  char *z = azChars;
+
+  // collect code block
+  while (! m_xAnnChar.bIsEOF()) {
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnChar();
+
+    if (bIsCodeBlockEnd(z))
+      break;
+  }
+  *z = '\0';
+
+  m_pCurrTkn->vToken(TN_STRING);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collecting code block ?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Input::bCollectingCodeBlock(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
+
+  return m_bCollectCodeBlock;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* is this token the beginning of a code block  ?                             */
+/*----------------------------------------------------------------------------*/
+bool Input::bIsCodeBlockBegin(void)
+{
+  _precondition_(_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (m_pCurrTkn->bSame("__cpp_code__"_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have we reached end of code block  ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Input::bIsCodeBlockEnd(char* z)
+{
+  _precondition_(_MAGIC_,CN_INPUT,_FOOTER_);
+
+  if (StrLib::bTailIs(z,(char*)"__codeEnd__"))
+    return true;
+
+  return false;
+}
+
 
 //
 // character processing ////////////////////////////////////////////////////////
@@ -1896,7 +1965,7 @@ void Input::vCollectSenTag(void)
 void Input::vSkipWhitespace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+
   while (bHaveWhitespace())
     vGetAnnCharStripped();
 }
@@ -1907,7 +1976,7 @@ void Input::vSkipWhitespace(void)
 bool Input::bHaveWhitespace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
+
   // do we have a current parsed character, which is a white char?
   if (m_xAnnChar.m_cChar) {
     if (StrLib::bIsWhite(m_xAnnChar.m_cChar))
