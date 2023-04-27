@@ -1049,7 +1049,7 @@ void OpSketch::vGenerateStencilFromStruct(void) {
 /*----------------------------------------------------------------------------*/
 /* generate the streamDef into a struct as the stencil structure              */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vGenerateStencilToStruct(void) {
+void OpSketch::vGenerateStencilToStruct(u8 uSelectColumns) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -1086,10 +1086,10 @@ void OpSketch::vGenerateStencilToStruct(void) {
   s256 sColNm;
   for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
-//    if (uSelectColumns) {
-//      if (!BitLib::bIsOn(uSelectColumns, i_Col))
-//        continue;
-//    }
+    if (uSelectColumns) {
+      if (!BitLib::bIsOn(uSelectColumns, i_Col))
+        continue;
+    }
     vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
     Column* pColumn = m_pStreamDefOut->pGetColumn(i_Col);
@@ -1793,13 +1793,13 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
 
   // if column nullable generate null check expressions
-  if (pColumn->bIsNullable()) {
-    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
-    m_pNullStack->vPushStz(sPush);
-    sPush.vSprint("_ISNULL(aCombinedT->m_iErrorCode)"_Stz);
-    m_pNullStack->vPushStz(sPush);
-    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
-  }
+//  if (pColumn->bIsNullable()) {
+//    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+//    m_pNullStack->vPushStz(sPush);
+//    sPush.vSprint("_ISNULL(aCombinedT->m_iErrorCode)"_Stz);
+//    m_pNullStack->vPushStz(sPush);
+//    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1469,7 +1469,8 @@ OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKin
   pOpSketch->vGenerateExprStacks(nullptr);
 
   // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
+  //pOpSketch->vGenerateStencilToStruct(uSelectColumns);
+  pOpSketch->vGenerateStencilToStruct(0);
 
   return pOpSketch;
 }

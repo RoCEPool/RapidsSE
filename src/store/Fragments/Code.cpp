@@ -436,30 +436,96 @@ void vInflateCrwReturn(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vInflateIndexScanReturn -------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vInflateIndexScanReturn
+void vInflateIndexScanReturn(Combined_T* aCombinedT) {
+
+  void* aHeadLine;
+  void* aHeadLineSav;
+  void* aSubReturnLabel;
+
+  // marker-start
+  goto L_InflateIndexScanRet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INFLATE-CRW-RET
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  L_InflateIndexScanRet:
+
+  aHeadLine = aHeadLineSav;
+
+  goto __L_LABEL_NEXT__;
+
+  __L_LABEL_LOOP__:
+
+  // move to next entry
+  aCombinedT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferT, aCombinedT->m_aEntIntT);
+  goto L_IndexScanDeref;
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+  L_IndexScanDeref:
+
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexScanBegin ---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexScanBegin
+void vIndexScanBegin(Combined_T* aCombinedT) {
+
+  i8 i_CurrentRow;
+  i8*   paW;
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INDEXSCAN-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayT;
+
+  __L_LABEL__:
+
+  paW = &aCombinedT->m_aW[0];
+
+  i_CurrentRow = -1;
+
+  // position at beginning of the index
+  aCombinedT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT);
+
+  if ( ! aCombinedT->m_aEntIntT )
+    goto L_Return;
+
+  // populate EntKeyT with upper bound value
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexScanContinue ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexScanContinue
 void vIndexScanContinue(Combined_T* aCombinedT) {
 
-  #include "vFLAT_Parameters.h"
+#include "vFLAT_Parameters.h"
 
   i8 iIndexScanBuffer;
   i8 iIndexScanItem;
   i8 i_BaseOffsetDataT;
-
-//
-  //u1 uMetaCode;
-  //u1 uHigh;
-  //u1 uLow;
-  //u1* auMetaCode;
-  //byte* ayDstByte;
-  //byte* ayDataByte;
-  //char* acStrArea;
-  //char* racStrArea;
   char* aIndexScanCrw;
-  //struct HeadLine_T * aHeadLine;
-  //enum eSI   eStrInflateRule  ;
-  //void* aSubReturnLabel;
 
   static const void* C_ADR_REGION = (void*)0x204800000000;
   static const i8 C_CRW_HEADBYTES = 32;
@@ -469,7 +535,7 @@ void vIndexScanContinue(Combined_T* aCombinedT) {
 
   // marker-start
 
-  // print upper bound entry
+  // position at upper bound
   aCombinedT->m_aEntUpperT =  (struct Ent_int *)aIndexTree_positionLT(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);
 
   L_IndexScanDeref:
@@ -497,67 +563,9 @@ void vIndexScanContinue(Combined_T* aCombinedT) {
   i_BaseOffsetDataT = C_1B  + C_8B  + 4;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);
 
-  // - - - - - - - - - - - -
-  i_Col = 0;
-  uMetaCode = *auMetaCode++;
-
-  uHigh = uMetaCode >> 4;
-  uLow  = uMetaCode & 0x0F;
-
-  aSubReturnLabel = && L_RetT_ColIS1;
-  goto L_InflateAColumn;
-
-  L_RetT_ColIS1:
-  aHeadLine = aHeadLineSav;
-  goto __L_LABEL_NEXT__;
-
-  __L_LABEL_LOOP__:
-
-   // move to next entry
-   aCombinedT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferT, aCombinedT->m_aEntIntT);
-   goto L_IndexScanDeref;
-
   // marker-end
 
   __L_LABEL_NEXT__:
-
-  L_Return:
-    return;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexScanBegin -----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexScanBegin
-void vIndexScanBegin(Combined_T* aCombinedT) {
-
-  i8 i_CurrentRow;
-
-  __L_LABEL_LOOP__:
-
-  // marker-start
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INDEXSCAN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-
-  __L_LABEL__:
-
-  i_CurrentRow = -1;
-
-  // position at beginning of the index
-  aCombinedT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT);
-
-  if ( ! aCombinedT->m_aEntIntT )
-    goto L_Return;
-
-  // populate EntKeyT with upper bound value
-  // marker-end
 
   L_Return:
   return;
@@ -569,6 +577,10 @@ void vIndexScanBegin(Combined_T* aCombinedT) {
 /*----------------------------------------------------------------------------*/
 // function-vProjectBegin
 void vProjectBegin(Combined_T* aCombinedT) {
+
+  struct __STRUCT_FROM__ {
+    i8 N_NATIONKEY;
+  };
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
@@ -596,7 +608,6 @@ void vProjectBegin(Combined_T* aCombinedT) {
   aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayP;
   szStrArea = aCombinedT->m_racStrAreaP;
-
   // marker-end
 
   return;

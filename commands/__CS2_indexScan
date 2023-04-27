@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __CS1_prj : Code Synthesizer V1                                            */
+/* __CS2_indexScan : Code Synthesizer V2                                      */
 /*============================================================================*/
 
 _nation
@@ -18,7 +18,7 @@ begin
 
   stage S01 on all partitions :
     indexScan_v2 Nation idx "UBOUND $I1 2 < "
-    | project_v2   "   type INTEGER as n_nationkey $1 "
+    | project_v2   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
     | combined_v2  0
     | next
 

@@ -201,6 +201,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexScanContinue"_Stz);
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
+        vAppendCodeFragment(pOpSketch, "vInflateIndexScanReturn"_Stz);
         break;
 
       case SK_INFLATE_CRW:
@@ -210,7 +212,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz);
-        vAppendCodeInflateCols(pOpSketch, "vInflateCrwCol"_Stz);
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColT"_Stz, "vInflateCrwCol"_Stz);
+        vAppendCodeFragment(pOpSketch, "vInflateCrwReturn"_Stz);
         break;
 
       case SK_TUB:
@@ -356,7 +359,7 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Colu
 /*----------------------------------------------------------------------------*/
 /* append code fragment for inflate columns                                   */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction)
+void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix, Stz* szFunction)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -368,7 +371,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction)
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
     StrLib::vSprint(sColumn, "%lld"_Stz, i_Col);
-    StrLib::vSprint(sReturnToColumn, "L_RetT_Col%lld"_Stz, i_Col);
+    StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
     sCode = ""_Stz;
     m_pFileCode->vSeekStart();
@@ -378,8 +381,6 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szFunction)
     RASSERT(bExtracted);
     StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
-
-  vAppendCodeFragment(pOpSketch, "vInflateCrwReturn"_Stz);
 
 }
 

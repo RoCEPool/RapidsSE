@@ -87,7 +87,7 @@ namespace STORE
 
     void vGenerateExprStacks(IntStack* pPreExpStack);
     void vGenerateStencilFromStruct(void);
-    void vGenerateStencilToStruct(void);
+    void vGenerateStencilToStruct(u8 uSelectColumns = 0);
 
 
     void vIndexDef(IndexDef* pIndexDEf);
