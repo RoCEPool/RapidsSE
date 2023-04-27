@@ -31,7 +31,7 @@ namespace BASE
     tXN m_tTxnNo; // transaction number
 
 #ifdef WITH_PAGING
-    PadWord m__PadToCacheLine[18];
+    PadWord m__PadToCacheLine[17];
 #else
     PadWord m__PadToCacheLine[19];
 #endif

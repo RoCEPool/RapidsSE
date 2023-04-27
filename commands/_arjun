@@ -76,6 +76,16 @@ select c, cast(c, date) from cast_time;
 /*
 tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
+_paging
+load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem1 "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem2 "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem3 "<tpch_dir>/lineitem.<suffix>" ;
+load LineItem4 "<tpch_dir>/lineitem.<suffix>" ;
+
+select * from lineitem;
+
+
 
 _customer
 _lineitem
