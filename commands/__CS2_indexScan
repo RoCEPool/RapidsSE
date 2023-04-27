@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* __CS1_prj : Code Synthesizer V1                                            */
+/*============================================================================*/
+
+_nation
+create index idx on nation (n_nationkey);
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+///weaved select n_nationkey from nation where n_nationkey < 2;
+
+/ccode pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexScan_v2 Nation idx "UBOUND $I1 2 < "
+    | project_v2   "   type INTEGER as n_nationkey $1 "
+    | combined_v2  0
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
