@@ -241,17 +241,14 @@ void JoinOrdering::vReorderTables(void)
   // Specific join order /jo ?
   if (AM::JOB::bHasTag(C_JO_PICK)) {
     sJoinOrder= AM::JOB::szTagValue(C_JO_PICK);
+    i8 iJoinOrder = StrLib::iToI8((char*)sJoinOrder);
+    p_joinOrdering =
+        Card_JoinOrdering::pPick(p_streamPrmAll, iJoinOrder);
 
-    if (sJoinOrder->bIsInteger()) {
-      i8 iJoinOrder = StrLib::iToI8((char *) sJoinOrder);
-      p_joinOrdering =
-          Card_JoinOrdering::pPick(p_streamPrmAll, iJoinOrder);
+    if ( ! p_joinOrdering ) {
+      vTrace("\n\nWARNING: INVALID JOIN ORDER IN /JO, PICKING THE BEST!!!\n\n"_Stz);
     }
-    else
-    if (sJoinOrder->bSame("worst"_Stz)) {
-      p_joinOrdering =
-          Card_JoinOrdering::pPick(p_streamPrmAll, false);
-    }
+
   }
 
   if ( ! p_joinOrdering ) {

@@ -2,10 +2,9 @@
 /* _r_Q8 -- TCPH query 8 test                                                 */
 /*============================================================================*/
 
-// /glean_interactive
-// /ep_enable
+// /ep_disable
 // /jo_disable
-/jo_pick=worst
+/glean_interactive
 /filterPred
 /jobMetrics
 /joWrite

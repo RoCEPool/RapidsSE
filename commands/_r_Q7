@@ -5,7 +5,6 @@
 // /glean_interactive
 // /ep_enable
 // /jo_disable
-/jo_pick=worst
 /filterPred
 /jobMetrics
 /joWrite

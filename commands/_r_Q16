@@ -3,9 +3,6 @@
 /*============================================================================*/
 
 // /glean_interactive
-// /ep_enable
-// /jo_disable
-/filterPred
 /jobMetrics
 /joWrite
 /transliterated

@@ -3,10 +3,9 @@
 /*============================================================================*/
 
 
-// /glean_interactive
-// /ep_enable
 // /jo_disable
-/jo_pick=worst
+/glean_interactive
+/ep_disable
 /filterPred
 /jobMetrics
 /joWrite
