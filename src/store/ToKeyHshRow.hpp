@@ -12,8 +12,6 @@ namespace STORE
 
     StreamDef* m_pStreamDef;
 
-    BucketMap* m_pBucketMap;
-
     i8         m_nPtnsInGrid;
 
     i8         m_nErrors;
@@ -50,7 +48,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ToKeyHshRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt);
+    ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt);
 
 
    ~ToKeyHshRow(void) noexcept(false);

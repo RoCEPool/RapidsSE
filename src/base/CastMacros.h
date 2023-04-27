@@ -400,11 +400,16 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      xTsp1.m_iAsI8 = 0;                                                   \
+      xTsp2.m_iAsI8 = 0;                                                   \
                                                                            \
       xTsp1.m_uDay = xDte1.m_uDay;                                         \
       xTsp1.m_uMonth = xDte1.m_uMonth;                                     \
       xTsp1.m_uYearDelta = xDte1.m_uYearDelta;                             \
+      xTsp2.m_uHour      = 0;                                              \
+      xTsp2.m_uMinute    = 0;                                              \
+      xTsp2.m_uSecond    = 0;                                              \
+      xTsp2.m_uMicro     = 0;                                              \
+      xTsp2.m_uLocal     = _C_TSP_LOCAL;                                   \
       *paW++ = xTsp1.m_iAsI8;                                              \
     }                                                                      \
   }
@@ -420,6 +425,8 @@
       time_t iSecondsSincePosixEpoch = time(0);                            \
       struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);     \
                                                                            \
+      xTsp1.m_iAsI8 = 0;                                                   \
+                                                                           \
       xTsp1.m_uYearDelta = aLocalDateTime->tm_year;                        \
       xTsp1.m_uMonth = aLocalDateTime->tm_mon + 1;                         \
       xTsp1.m_uDay = aLocalDateTime->tm_mday;                              \
@@ -428,6 +435,7 @@
       xTsp1.m_uSecond = xTme1.m_uSecond;                                   \
       xTsp1.m_uMinute = xTme1.m_uMinute;                                   \
       xTsp1.m_uHour = xTme1.m_uHour;                                       \
+      xTsp1.m_uLocal = _C_TSP_LOCAL;                                       \
                                                                            \
       *paW++ = xTsp1.m_iAsI8;                                              \
     }                                                                      \

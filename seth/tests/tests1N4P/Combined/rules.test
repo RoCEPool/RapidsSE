@@ -593,7 +593,7 @@ begin
      | first
 end ;
 
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_ORDERBY_WITH_AGGREGATES'
 
 // gbyAgg and top
 pipeline Q

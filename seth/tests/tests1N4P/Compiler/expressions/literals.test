@@ -954,10 +954,10 @@ EXPLAIN SELECT INTERVAL '' YEAR TO MONTH FROM nation;       // invalid
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' YEAR TO MONTH FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing ''-'' separator'
+failure contains: 'Invalid interval format: expected ''-'' separator'
 
 EXPLAIN SELECT INTERVAL '1 2' YEAR TO MONTH FROM nation;    // invalid
-failure contains: 'Invalid interval format: missing ''-'' separator'
+failure contains: 'Invalid interval format: expected ''-'' separator'
 
 EXPLAIN SELECT INTERVAL '1-2' YEAR TO MONTH FROM nation;
 rows: (*,'explainPlan','
@@ -1068,7 +1068,7 @@ EXPLAIN SELECT INTERVAL '1- 2' YEAR TO MONTH FROM nation;   // invalid
 failure contains: 'Invalid interval format: non-digit value '' '' encountered'
 
 EXPLAIN SELECT INTERVAL '1 -2' YEAR TO MONTH FROM nation;   // invalid
-failure contains: 'Invalid interval format: missing ''-'' separator'
+failure contains: 'Invalid interval format: expected ''-'' separator'
 
 EXPLAIN SELECT INTERVAL '-1--2' YEAR TO MONTH FROM nation;  // invalid
 failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
@@ -1161,10 +1161,10 @@ EXPLAIN SELECT INTERVAL '' DAY TO HOUR FROM nation;       // invalid
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' DAY TO HOUR FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1-2' DAY TO HOUR FROM nation;    // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator between day and hour digits'
 
 EXPLAIN SELECT INTERVAL '1 2' DAY TO HOUR FROM nation;    // ok
 rows: (*,'explainPlan','
@@ -1287,13 +1287,13 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 EXPLAIN SELECT INTERVAL '1- 2' DAY TO HOUR FROM nation;   // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator between day and hour digits'
 
 EXPLAIN SELECT INTERVAL '1 -2' DAY TO HOUR FROM nation;   // invalid
 failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
 
 EXPLAIN SELECT INTERVAL '-1--2' DAY TO HOUR FROM nation;  // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator between day and hour digits'
 
 EXPLAIN SELECT INTERVAL '1 23' DAY TO HOUR FROM nation;   // ok
 rows: (*,'explainPlan','
@@ -1383,16 +1383,16 @@ EXPLAIN SELECT INTERVAL '' DAY TO MINUTE FROM nation;         // invalid
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' DAY TO MINUTE FROM nation;        // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1-2' DAY TO MINUTE FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator between day and hour digits'
 
 EXPLAIN SELECT INTERVAL '1 2' DAY TO MINUTE FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1 2-3' DAY TO MINUTE FROM nation;    // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1 02:03' DAY TO MINUTE FROM nation;    // ok
 rows: (*,'explainPlan','
@@ -1425,7 +1425,7 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 EXPLAIN SELECT INTERVAL '1   2 : 3' DAY TO MINUTE FROM nation;  // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '0 0:0' DAY TO MINUTE FROM nation;      // ok
 rows: (*,'explainPlan','
@@ -1530,7 +1530,7 @@ EXPLAIN SELECT INTERVAL '1 2:-3' DAY TO MINUTE FROM nation;   // invalid
 failure contains: 'Invalid interval format: non-digit value ''-'' encountered'
 
 EXPLAIN SELECT INTERVAL '1:2:3' DAY TO MINUTE FROM nation;    // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator between day and hour digits'
 
 EXPLAIN SELECT INTERVAL '1 2:3:' DAY TO MINUTE FROM nation;   // invalid
 failure contains: 'Invalid interval format: unexpected character '':'' encountered'
@@ -1670,19 +1670,19 @@ EXPLAIN SELECT INTERVAL '   ' DAY TO SECOND FROM nation;                   // in
 failure contains: 'Invalid interval format: interval string is incomplete or invalid'
 
 EXPLAIN SELECT INTERVAL '1' DAY TO SECOND FROM nation;                  // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1-2' DAY TO SECOND FROM nation;                // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator between day and hour digits'
 
 EXPLAIN SELECT INTERVAL '1 2' DAY TO SECOND FROM nation;                // invalid, incomplete
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1 2-3' DAY TO SECOND FROM nation;              // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1 02:03' DAY TO SECOND FROM nation;            // invalid, incomplete
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1 02:03:04' DAY TO SECOND FROM nation;         // ok
 rows: (*,'explainPlan','
@@ -1763,7 +1763,7 @@ EXPLAIN SELECT INTERVAL '1 2:3:4.5678910001' DAY TO SECOND FROM nation; // inval
 failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
 
 EXPLAIN SELECT INTERVAL '1   2 : 3 : 4' DAY TO SECOND FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '0 0:0:0' DAY TO SECOND FROM nation;            // ok
 rows: (*,'explainPlan','
@@ -1889,7 +1889,7 @@ EXPLAIN SELECT INTERVAL '1 2:3:4.-5' DAY TO SECOND FROM nation;         // inval
 failure contains: 'Invalid interval format: unexpected character ''-'' encountered'
 
 EXPLAIN SELECT INTERVAL '1:2:3.4' DAY TO SECOND FROM nation;            // invalid
-failure contains: 'Invalid interval format: missing '' '' separator between day and hour digits'
+failure contains: 'Invalid interval format: expected '' '' separator between day and hour digits'
 
 EXPLAIN SELECT INTERVAL '1 2:3:4:' DAY TO SECOND FROM nation;           // invalid
 failure contains: 'Invalid interval format: unexpected character '':'' encountered'
@@ -1955,7 +1955,7 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 EXPLAIN SELECT INTERVAL '1 2:3.4:5' DAY TO SECOND FROM nation;          // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator between minute and second digits'
 
 EXPLAIN SELECT INTERVAL 'a 2:3:4.5' DAY TO SECOND FROM nation;          // invalid
 failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
@@ -2060,10 +2060,10 @@ EXPLAIN SELECT INTERVAL '' HOUR TO MINUTE FROM nation;              // invalid
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' HOUR TO MINUTE FROM nation;             // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1-2' HOUR TO MINUTE FROM nation;           // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1:2' HOUR TO MINUTE FROM nation;           // ok
 rows: (*,'explainPlan','
@@ -2228,7 +2228,7 @@ EXPLAIN SELECT INTERVAL '1:2:3' HOUR TO MINUTE FROM nation;         // invalid
 failure contains: 'Invalid interval format: unexpected character '':'' encountered'
 
 EXPLAIN SELECT INTERVAL '1 2:' HOUR TO MINUTE FROM nation;          // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1:60' HOUR TO MINUTE FROM nation;          // ok
 rows: (*,'explainPlan','
@@ -2316,19 +2316,19 @@ EXPLAIN SELECT INTERVAL '' HOUR TO SECOND FROM nation;                   // inva
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' HOUR TO SECOND FROM nation;                  // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1-2' HOUR TO SECOND FROM nation;                // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1 2' HOUR TO SECOND FROM nation;                // invalid, incomplete
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '1 2-3' HOUR TO SECOND FROM nation;              // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '02:03' HOUR TO SECOND FROM nation;            // invalid, incomplete
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '02:03:04' HOUR TO SECOND FROM nation;         // ok
 rows: (*,'explainPlan','
@@ -2409,7 +2409,7 @@ EXPLAIN SELECT INTERVAL '2:3:4.5678910001' HOUR TO SECOND FROM nation; // invali
 failure contains: 'Invalid interval format: absolute interval microseconds value exceeds range of 0-999999'
 
 EXPLAIN SELECT INTERVAL '  2 : 3 : 4' HOUR TO SECOND FROM nation;      // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between hour and minute digits'
+failure contains: 'Invalid interval format: expected '':'' separator between hour and minute digits'
 
 EXPLAIN SELECT INTERVAL '0:0:0' HOUR TO SECOND FROM nation;            // ok
 rows: (*,'explainPlan','
@@ -2535,7 +2535,7 @@ EXPLAIN SELECT INTERVAL '1:2:3.-4' HOUR TO SECOND FROM nation;         // invali
 failure contains: 'Invalid interval format: unexpected character ''-'' encountered'
 
 EXPLAIN SELECT INTERVAL '2:3.4' HOUR TO SECOND FROM nation;            // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator between minute and second digits'
 
 EXPLAIN SELECT INTERVAL '1:2:3:' HOUR TO SECOND FROM nation;           // invalid
 failure contains: 'Invalid interval format: unexpected character '':'' encountered'
@@ -2601,7 +2601,7 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 EXPLAIN SELECT INTERVAL '1:2.3:4' HOUR TO SECOND FROM nation;          // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator between minute and second digits'
 
 EXPLAIN SELECT INTERVAL 'a:2:3.4' HOUR TO SECOND FROM nation;          // invalid
 failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
@@ -2684,10 +2684,10 @@ EXPLAIN SELECT INTERVAL '' MINUTE TO SECOND FROM nation;              // invalid
 failure contains: 'Invalid interval format: interval string is empty'
 
 EXPLAIN SELECT INTERVAL '1' MINUTE TO SECOND FROM nation;             // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator, got end of string instead'
 
 EXPLAIN SELECT INTERVAL '1-2' MINUTE TO SECOND FROM nation;           // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator between minute and second digits'
 
 EXPLAIN SELECT INTERVAL '1:2' MINUTE TO SECOND FROM nation;           // ok
 rows: (*,'explainPlan','
@@ -2963,7 +2963,7 @@ EXPLAIN SELECT INTERVAL '1:2:3' MINUTE TO SECOND FROM nation;         // invalid
 failure contains: 'Invalid interval format: unexpected character '':'' encountered'
 
 EXPLAIN SELECT INTERVAL '1 2' MINUTE TO SECOND FROM nation;           // invalid
-failure contains: 'Invalid interval format: missing '':'' separator between minute and second digits'
+failure contains: 'Invalid interval format: expected '':'' separator between minute and second digits'
 
 EXPLAIN SELECT INTERVAL '1:60' MINUTE TO SECOND FROM nation;          // ok
 rows: (*,'explainPlan','

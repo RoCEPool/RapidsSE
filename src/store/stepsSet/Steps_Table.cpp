@@ -56,7 +56,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("Table[].dumpbkt"_Stz,          &Step::vTableDumpBkt);
-  vAddStep("Table[].dumpbktmap"_Stz,       &Step::vTableDumpBktMap);
   vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -255,27 +254,6 @@ void Step::vTableDumpBkt(void)
   EXIT();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* Table[].dumpbktmap                                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vTableDumpBktMap(void)
-{
-  ENTRY();
-
-  s4K sDumpBuffer = "\n\n\n==== DumpBucketMap Table: ====================================\n"_Stz;
-  Table* pTable = _pTable(*m_pLogicUnit->m_xpTable);
-
-  i8 nPtns = AM::PTNMAP::nPtnsPerNode();
-
-  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_KEYBUCKETS);
-
-  sDumpBuffer.vConcat(pTable->szDumpBucketMap());
-
-  m_pDataStack->vPushStr(sDumpBuffer);
-
-  EXIT();
-}
 /*----------------------------------------------------------------------------*/
 /* Table[].dumpmeta                                                           */
 /*----------------------------------------------------------------------------*/

@@ -1130,21 +1130,22 @@ void Expr::vCoerceCastLiteral(Parser::QueryNode* pExpr, Parser::PlanNode* pRootN
 
   QueryNode* pLiteralExpr = pTargetExpr;
 
-  if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pRootNode)) {
-    // There are some casts that are not implicitly coercible but yet are still supported.
-    // e.g Implicit coercion will not cast a float to a decimal, but yet this is still a
-    // valid thing to do with an explicit cast. So don't give an error if we can't do this
-    // coercion implicitly.
-    return;
-  }
+//  if (!bIsImplicitlyCoercibleTo(xTargetType, pLiteralExpr, pExpr, pRootNode)) {
+//    // There are some casts that are not implicitly coercible but yet are still supported.
+//    // e.g Implicit coercion will not cast a float to a decimal, but yet this is still a
+//    // valid thing to do with an explicit cast. So don't give an error if we can't do this
+//    // coercion implicitly.
+//    return;
+//  }
 
   // It still might not be coercible because it overflows the target types bounds.
   // This next call could also generate an exception.
   QueryNode* pCoercedLiteral = Expr::pCoerceTo(xTargetType, pLiteralExpr, pRootNode);
-  ASSERT(pCoercedLiteral);
 
   // Convert the pExpr from a CastExpr to the coerced literal
-  pExpr->vTransmogrifyTo(pCoercedLiteral, true);
+  if (pCoercedLiteral) {
+    pExpr->vTransmogrifyTo(pCoercedLiteral, true);
+  }
 
   delete pCoercedLiteral;
 }
@@ -1170,6 +1171,12 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   // try to coerce the necessary children and see if that allows the parent expr to return
   // a non-CT_NONE type.
 
+  // Notes:
+  // If there is no common type then we need to try changing individual children as there
+  // are some expressions where the children are different types (e.g. date + interval).
+  // In that case, we want to make as minimal a change as possible and see if it works.
+  // i.e. change one child at a time before considering combinations.
+
   // An array with an occurrence count for each coercible data type
   const i8 iArrLen = TypeSystem::iMaxTypeId() + 1;
   i8 aiCoercibleTargets[iArrLen];
@@ -1184,7 +1191,7 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 
     // Increment the aiCoercibleTargets array if this child can be coerced
     // to each of the data types.
-    vIncrementCoercibleTargets(pChild, aiCoercibleTargets, iArrLen, pRootNode);
+    vIncrementCoercibleTargets(pChild, aiCoercibleTargets, iArrLen, pExprCopy, pRootNode);
   }
   delete pChildIter;
 
@@ -1248,7 +1255,8 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 /* Increments the integer elements of an array if the given expression is     */
 /* coercible to each eCT data type.                                           */
 /*----------------------------------------------------------------------------*/
-void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets, i8 iArrLen, PlanNode* pRootNode)
+void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets, i8 iArrLen,
+                                      QueryNode* pParentExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
@@ -1258,7 +1266,7 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8* paiCoercibleTargets,
   while (++i < iArrLen) {
     TypeId xTargetId(i);
 
-    if (bIsImplicitlyCoercibleTo(xTargetId, pExpr, pRootNode)) {
+    if (bIsImplicitlyCoercibleTo(xTargetId, pExpr, pParentExpr, pRootNode)) {
       paiCoercibleTargets[i] += 1;
     }
   }
@@ -1335,7 +1343,7 @@ TypeId Expr::xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMax
 
   // Walk the ordered list of type preferences and find the first one that
   // has the maximum count. This is our preferred type.
-  for (i8 i = 0; i < sizeof(aeCoercionOrdering)/sizeof(aeCoercionOrdering[0]); i++) {
+  for (u8 i = 0; i < sizeof(aeCoercionOrdering)/sizeof(aeCoercionOrdering[0]); i++) {
     i8 iIdx = aeCoercionOrdering[i].iIdVal();
     if (paiCoercibleTargets[iIdx] == iMaxCount) {
 
@@ -1381,7 +1389,8 @@ TypeId Expr::xCommonCoercibleTarget(i8* paiCoercibleTargets, i8 iArrLen, i8 iMax
 /* Note that the system may support additional explicit casts, but only the   */
 /* implicit ones are done automatically.                                      */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNode* pRootNode)
+b1 Expr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr,
+                                  QueryNode* pParentExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
@@ -1391,11 +1400,11 @@ b1 Expr::bIsImplicitlyCoercibleTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
   // e.g. we can convert '2000-01-01' to a CT_DATE, but not '2000_01_01'.
 
   if (LiteralExpr::bIsOfType(pExpr)) {
-    return LiteralExpr::bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pRootNode);
+    return LiteralExpr::bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pParentExpr, pRootNode);
   }
 
   // Otherwise we need to cast the expression, so let's ask it whether it can be coerced.
-  return CastExpr::bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pRootNode);
+  return CastExpr::bIsImplicitlyCoercibleTo(xTargetTypeId, pExpr, pParentExpr, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

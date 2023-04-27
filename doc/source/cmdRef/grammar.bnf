@@ -234,7 +234,7 @@ sql92TimeIntervalLiteral
                       ( 'DAY'  ( 'TO' ( 'HOUR' | 'MINUTE' | 'SECOND' ) )?
                       | 'HOUR'  ( 'TO' ( 'MINUTE' | 'SECOND' ) )?
                       | 'MINUTE'  ( 'TO' 'SECOND' )?
-                      | 'SECOND' ')' )
+                      | 'SECOND' )
 
 
 /*---------------------------------------------------------------------------*/

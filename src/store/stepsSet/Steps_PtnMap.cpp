@@ -9,7 +9,6 @@
 #include "Steps.hpp"
 
 #include "LglPtnMap.hpp"
-#include "BucketMap.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -22,7 +21,7 @@ void Step::vAddSteps_PtnMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ptnStream::bufferNumber                                                    */
+/* ptnStream::adjust                                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vPtnMapAdjust(void)
 {
@@ -31,9 +30,6 @@ void Step::vPtnMapAdjust(void)
   LglPtnMap* pPtnMap = AM::pLglPtnMap();
   
   pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
-
-  BucketMap* pBktMap = AM::BKTMAP::pBucketMap();
-  pBktMap->vAdjustMap(pPtnMap->nPtnsInGrid());
 
   EXIT();
 }

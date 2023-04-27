@@ -34,8 +34,8 @@ CLUSTER_INIT=0
 CONFIG_FILE="${DIR}/${DEFAULT_CONFIG_PATH}"
 NAME_FILE="${DIR}/${DEFAULT_NAME_FILE}"
 DEBUG=0
-ARG_EXTRA=""
-ARG_EXTRA_VALUE=""
+RELOAD_PATH=""
+EXTRA_START_ARGS=()
 
 # Will be set after loading node name file.
 CURRENT_NODE_NAME=""
@@ -59,6 +59,7 @@ function processStartArgs() {
   local argCluster=0
   local argNode=0
   local argConfig=0
+  local argReload=0
 
   while [[ $# -gt 0 ]]
   do
@@ -78,8 +79,9 @@ function processStartArgs() {
         ;;
 
       --reload)
-        ARG_EXTRA="$1"
-        ARG_EXTRA_VALUE="$2"
+        argReload=1
+        RELOAD_PATH="$2"
+        EXTRA_START_ARGS+=("$1" "$2")
         shift # past argument
         shift # past value
         ;;
@@ -141,6 +143,11 @@ function processStartArgs() {
     printError "Config file does not exist: ${CONFIG_FILE}"
     printStartStopUsageAndExit
   fi
+
+  if [[ ${argReload} -eq 1 && -z "${RELOAD_PATH:-}" ]]; then
+      printError "${errmsg}" "No reload snapshot was specified"
+      printStartStopUsageAndExit
+  fi
 }
 
 ###############################################################################
@@ -155,8 +162,8 @@ debugPrint "CLUSTER_INIT = ${CLUSTER_INIT}"
 debugPrint "CONFIG_FILE = ${CONFIG_FILE}"
 debugPrint "NAME_FILE = ${NAME_FILE}"
 debugPrint "DEBUG = ${DEBUG}"
-debugPrint "ARG_EXTRA = ${ARG_EXTRA}"
-debugPrint "ARG_EXTRA_VALUE = ${ARG_EXTRA_VALUE}"
+debugPrint "RELOAD_PATH = ${RELOAD_PATH}"
+debugPrint "EXTRA_START_ARGS = ${EXTRA_START_ARGS[*]}"
 
 # Import the cluster configuration
 loadClusterConfig
@@ -165,6 +172,11 @@ if [ ${CLUSTER_OP} -eq 1 ]; then
   if [ "${CLUSTER_INIT}" -eq 1 ]; then
     remoteClusterXConnect
     exit
+  fi
+
+  if [ -n "${RELOAD_PATH:-}" ]; then
+    # Validate the reload path exists on all nodes
+    validateReloadPath "${RELOAD_PATH}"
   fi
 
   #shellcheck disable=SC2119
@@ -178,5 +190,5 @@ else
     exit
   fi
 
-  startCurrentNode "${ARG_EXTRA}" "${ARG_EXTRA_VALUE}"
+  startCurrentNode "${EXTRA_START_ARGS[@]}"
 fi

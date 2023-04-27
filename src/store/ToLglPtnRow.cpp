@@ -6,13 +6,12 @@
 
 #include "RowBuffer.hpp"
 #include "ToLglPtnRow.hpp"
-
+#include "LglPtnMap.hpp"
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
-#include "BucketMap.hpp"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -102,20 +101,20 @@ void ToLglPtnRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
   i8 i_KeyHshCol = pRowPix->i_KeyHsh();
 
   i8 nRows = pRowBuffer->nRows();
+  LglPtnMap* pPtnMap = AM::pLglPtnMap();
+
   //vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
     KeyHsh tKeyHsh = aRowSrc->tKeyHsh(i_KeyHshCol);
-    
-    KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(tKeyHsh);
 
-    // determine which lglPtn the keyBkt is currently mapped to
-    LglPtn tLglPtn = pTable->tLglPtnOf(tKeyBkt);
+    // determine which lglPtn the KeyHsh is currently mapped to
+    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(tKeyHsh);
 
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tLglPtn.iAsI8());
-    vCopyRow(tLglPtn,tKeyBkt,aRowSrc);
+    vCopyRow(tLglPtn, aRowSrc);
 
   }
 }
@@ -152,12 +151,12 @@ RowBuffer* ToLglPtnRow::pDangling(LglPtn tLglPtn)
 /*----------------------------------------------------------------------------*/
 /* copy source row into target partition row slab                             */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, KeyBkt tKeyBkt, Row* aRowSrc)
+void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
   // new a destination row in target partition row slab
-  vNewDstRow(tLglPtn, tKeyBkt);
+  vNewDstRow(tLglPtn);
 
   // copy that
   bool bSrcHasPtnHash = true;
@@ -168,7 +167,7 @@ void ToLglPtnRow::vCopyRow(LglPtn tLglPtn, KeyBkt tKeyBkt, Row* aRowSrc)
 /*----------------------------------------------------------------------------*/
 /* new a destination row in row buffer in lgl ptn set                         */
 /*----------------------------------------------------------------------------*/
-void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
+void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNROW,_FOOTER_);
 
@@ -202,7 +201,6 @@ void ToLglPtnRow::vNewDstRow(LglPtn tLglPtn, KeyBkt tKeyBkt)
 
   if (bNewBuffer) {
     pDstRowBuffer->vLglPtn(tLglPtn);
-    pDstRowBuffer->vBucketNo(tKeyBkt);
   }
   
   m_pIntoRowBuffer = pDstRowBuffer;
