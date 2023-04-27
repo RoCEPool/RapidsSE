@@ -1531,9 +1531,14 @@ function validateCompilerOnHost() {
 
   sampleProgram="$(cat <<-EOF
 #include <stdio.h>
+#include <dlfcn.h>
 
 int main(int argc, char** argv)
 {
+  // Test that basic dlopen functionality is available
+  void* pvHandle = dlopen(NULL, RTLD_LAZY);
+  dlclose(pvHandle);
+
   printf("Hello World!\n");
   return 0;
 }
@@ -1569,14 +1574,15 @@ EOF
       if isVersionGreaterThanOrEqualTo "${output}" "${compilerMinVer}" ; then
 
         # So far so good. Now compile a simple program
-        remoteCmd="${compiler} -x c -o /tmp/compilerTest -"
+        remoteCmd="${compiler} -x c -ldl -o /tmp/compilerTest - 2>&1"
         sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
         if output="$(ssh "${sshArgs[@]}" <<< "${sampleProgram}")" ; then
           true
           return
         else
-          lastError="${lastError} Compilation of a sample program with ${compiler} failed"
+          debugPrint "\nCompilation of sample program with ${compiler} failed:\n${output}\n\n"
+          lastError="${lastError} Compilation of a sample program with ${compiler} failed. Rerun with --debug to see details."
         fi
       else
         lastError="${lastError} Version of ${compiler} is too old - found: ${output}, required: ${compilerMinVer}"
