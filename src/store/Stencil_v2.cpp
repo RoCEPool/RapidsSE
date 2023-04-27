@@ -276,21 +276,24 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     // skip scan OP
     if (pOp->szOpNm()->bSame("scan"_Stz))
       continue;
-/*
+
     // generate code for indexScan OP
-    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
+    if (pOp->szOpNm()->bSame("indexScan_v2"_Stz)) {
+
+      eHandlerKind = HK_INDEXBUFFER;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupIndexScan(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp);
+      pOpSketch = pSketchIndexScan(pStream, pOp, eHandlerKind);
+      vAppend(pOpSketch);
 
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
       continue;
     }
-*/
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (driving code) if not already inflated
     if (!bInflateGenerated) {
@@ -1420,26 +1423,27 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op*
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
+OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-/*
-  OpSketch* pShape;
-  CodeSynth_v2 *pCodeSynth;
+
+  OpSketch* pOpSketch;
 
   s256 sLabel;
   s256 sLabelNext;
   s256 sOrdAggLabel;
-
-  sOrdAggLabel = ""_Stz;
 
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  // get the index from the combinedT
-  Index* pIndexScan = _pIndex(pCombined->aCombinedT()->m_aIndexT);
+  // get the index
+  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+
+  // get the aggregate type stack
+  //IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // get the tags
   TagSet* pOpTags = pOp->pOpTags();
@@ -1447,33 +1451,27 @@ OpSketch* Stencil_v2::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op*
   // get indexScan expr from OP
   Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
 
-  // create a new shape for this OP
-  pShape = new OpSketch;
+  // create a new opSketch for this OP
+  pOpSketch = new OpSketch(sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, pStreamDefLft, pStreamDefOut);
 
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for struct for streamDefOut (J)
-  pCodeSynth = new CodeSynth_v2(pStreamDefOut, SR_IT);
-  pCodeSynth->vSynthStruct(uSelectColumns);
-  pShape->vStructSynthA(pCodeSynth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the index scan
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, pStreamDefOut, pIndexScan->pIndexDef(), nullptr, SR_IT, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
-  Op *pNextOp = pStream->pGet(pOp->i_Op()+1);
-  if ( pNextOp->szOpNm()->bSame("ordAgg"_Stz) )
-    sOrdAggLabel = sLabelNext;
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRow"_Stz);
 
-  pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, sOrdAggLabel, uSelectColumns);
-  pShape->vCodeSynthA(pCodeSynth);
+  // set the indexDef
+  pOpSketch->vIndexDef(pIndexDef);
 
-  return pShape;
-  */
-  return nullptr;
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks(nullptr);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1484,7 +1482,6 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKi
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   OpSketch* pOpSketch;
-  CodeSynth_v2 *pCodeSynth;
 
   s256 sLabel;
   s256 sLabelNext;

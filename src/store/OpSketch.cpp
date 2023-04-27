@@ -124,7 +124,7 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   m_pExprStack   = new TypedStack(KK_DATA_STACK);
   m_pNullStack   = nullptr;
   m_pLowerStack  = nullptr;
-  m_pUpperStack  = nullptr;
+  m_pUpperStack  = new TypedStack(KK_DATA_STACK);
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
   if (eSketchKind == SK_GBYAGG) {
@@ -167,6 +167,7 @@ OpSketch::~OpSketch(void) noexcept(false)
   delete m_pExprStack;
   delete m_pInitStack;
   delete m_pGbyStack;
+  delete m_pUpperStack;
   delete m_pOrdAggStack;
 }
 
@@ -943,7 +944,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
   //nExpr = pExprType->nItems();
   //RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
-  pExprStack = m_pExprStack;
+  //pExprStack = m_pExprStack;
 
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
     vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);

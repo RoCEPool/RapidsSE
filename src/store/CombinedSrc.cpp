@@ -191,6 +191,18 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "iProjectEnd"_Stz);
         break;
 
+      case SK_INDEXSCAN:
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // new INDEXBUFFER handler
+        vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
+
+        vAppendStencilTo(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz);
+        vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+        vAppendCodeFragment(pOpSketch, "vIndexScanContinue"_Stz);
+        break;
+
       case SK_INFLATE_CRW:
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new CRWBUFFER handler
@@ -405,7 +417,7 @@ void CombinedSrc::vAppendFunctionFooter(eHK eHandlerKind)
       szFunction = "iEosEnd";
       break;
     case HK_INDEXBUFFER:
-      RASSERT(0);
+      szFunction = "vIndexScanEnd";
       break;
     case HK_ROWBUFFER:
       RASSERT(0);
@@ -449,7 +461,8 @@ void CombinedSrc::vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm)
       iFunction = 3;
       break;
     case HK_INDEXBUFFER:
-      RASSERT(0);
+      szFunction = "__FUNCTION_INDEX__";
+      iFunction = 2;
       break;
     case HK_ROWBUFFER:
       RASSERT(0);

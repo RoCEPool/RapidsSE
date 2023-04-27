@@ -8,6 +8,8 @@ explain stage transliterate select n_regionKey, sum(n_nationKey) from nation gro
 
 explain stage transliterate select n_name, sum(n_nationKey) from nation group by n_name;
 
+explain stage transliterate select n_regionKey, max(n_name) from nation group by n_regionKey;
+
 /*
 /ccode pipeline unamed
 begin
@@ -41,6 +43,42 @@ begin
    | first
 end ;
 
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0541
+  stage stageMarker0541 on all partitions :
+    scan rapidsse public Nation
+    | gbyAgg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+    | combined_v2 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/ccode pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0541
+  stage stageMarker0541 on all partitions :
+    scan rapidsse public Nation
+    | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 */
 
 /ccode pipeline unamed

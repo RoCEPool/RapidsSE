@@ -436,6 +436,135 @@ void vInflateCrwReturn(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexScanContinue ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexScanContinue
+void vIndexScanContinue(Combined_T* aCombinedT) {
+
+  #include "vFLAT_Parameters.h"
+
+  i8 iIndexScanBuffer;
+  i8 iIndexScanItem;
+  i8 i_BaseOffsetDataT;
+
+//
+  //u1 uMetaCode;
+  //u1 uHigh;
+  //u1 uLow;
+  //u1* auMetaCode;
+  //byte* ayDstByte;
+  //byte* ayDataByte;
+  //char* acStrArea;
+  //char* racStrArea;
+  char* aIndexScanCrw;
+  //struct HeadLine_T * aHeadLine;
+  //enum eSI   eStrInflateRule  ;
+  //void* aSubReturnLabel;
+
+  static const void* C_ADR_REGION = (void*)0x204800000000;
+  static const i8 C_CRW_HEADBYTES = 32;
+  static const i8 C_CRW_FIRSTHEAD = 640;
+
+  L_InflateAColumn:
+
+  // marker-start
+
+  // print upper bound entry
+  aCombinedT->m_aEntUpperT =  (struct Ent_int *)aIndexTree_positionLT(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);
+
+  L_IndexScanDeref:
+
+  // reached upper bound ?
+  if (aCombinedT->m_aEntIntT == aCombinedT->m_aEntUpperT) {
+    goto L_Return;
+  }
+
+  // process the row
+  aCombinedT->m_iProcessRow = 1;
+
+  // dereference the entry
+  iIndexScanBuffer = aCombinedT->m_aEntIntT->Rrf.m_uBuffer;
+  iIndexScanItem   = aCombinedT->m_aEntIntT->Rrf.m_uItem;
+  aIndexScanCrw  = ( (char*)C_ADR_REGION + iIndexScanBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexScanItem * C_CRW_HEADBYTES );
+
+  // inflate the derefenced entry
+  aHeadLine = (struct HeadLine_T *)aIndexScanCrw;
+  auMetaCode = META_AREA(aHeadLine);
+  ayDstByte = (byte*)aCombinedT->m_aRowCellArrayT;
+  acStrArea = (char*)aCombinedT->m_racStrAreaT;
+  racStrArea = (char*)aCombinedT->m_racStrAreaT;
+  eStrInflateRule = SI_STRAREA_ADR;
+  i_BaseOffsetDataT = C_1B  + C_8B  + 4;
+  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);
+
+  // - - - - - - - - - - - -
+  i_Col = 0;
+  uMetaCode = *auMetaCode++;
+
+  uHigh = uMetaCode >> 4;
+  uLow  = uMetaCode & 0x0F;
+
+  aSubReturnLabel = && L_RetT_ColIS1;
+  goto L_InflateAColumn;
+
+  L_RetT_ColIS1:
+  aHeadLine = aHeadLineSav;
+  goto __L_LABEL_NEXT__;
+
+  __L_LABEL_LOOP__:
+
+   // move to next entry
+   aCombinedT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferT, aCombinedT->m_aEntIntT);
+   goto L_IndexScanDeref;
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+
+  L_Return:
+    return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexScanBegin -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexScanBegin
+void vIndexScanBegin(Combined_T* aCombinedT) {
+
+  i8 i_CurrentRow;
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INDEXSCAN-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  __L_LABEL__:
+
+  i_CurrentRow = -1;
+
+  // position at beginning of the index
+  aCombinedT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT);
+
+  if ( ! aCombinedT->m_aEntIntT )
+    goto L_Return;
+
+  // populate EntKeyT with upper bound value
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vProjectBegin -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vProjectBegin
@@ -928,6 +1057,35 @@ void vPayLoadToTubCol(Combined_T* aCombinedT) {
     // column __COLUMN_NO__
 
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPayLoadToTubCol --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPayLoadToTubVchCol
+void vPayLoadToTubVchCol(Combined_T* aCombinedT) {
+
+  i8 __PAYLOAD_INDEX__;
+
+  struct __STRUCT_FROM__ {
+    union Int_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Int_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
 
   // marker-end
 }

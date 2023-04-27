@@ -133,6 +133,7 @@ assert::stack_0
   "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
+  "OP_indexScan_v2.sen"         include
   "OP_insDel.sen"               include
   "OP_inflate.sen"              include
   "OP_inflateDynamic.sen"       include
