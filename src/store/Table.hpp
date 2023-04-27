@@ -25,8 +25,6 @@ namespace STORE
     StreamDef* m_pStreamDef;  // table stream def
     PtnDef*    m_pPtnDef;     // partition/sharding key def
 
-    BucketMap* m_pBucketMap;  // bucket (to partition) map
-
     IdxVec*    m_pIdxVec;     // index vector
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
@@ -60,9 +58,6 @@ namespace STORE
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize);
     void    vAppendBuffer_replicated(DataBuffer* pDataBuffer);
 
-    BucketMap *pBucketMap(void);
-    void vBucketMap(BucketMap *pBucketMap);
-
     i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);
     void    vCreatePtnDef(void);
@@ -88,11 +83,6 @@ namespace STORE
     void       vStreamDef(StreamDef* pStreamDef);
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
-
-    LglPtn   tLglPtnOf(KeyBkt tKeyBkt);
-
-    i8      iPtnToBktNext(LglPtn tLglPtn, i8 iBktNo);
-
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRowBuffer);
@@ -104,7 +94,6 @@ namespace STORE
 
     i8   iPrepareParcel(void);
     void vGetMetaParts(Parcel* pParcel);
-    void vGetBktMap(Parcel* pParcel);
 
     Parcel* pParcel(void);
     void vDumpLocation(void);
@@ -116,10 +105,8 @@ namespace STORE
     i8   iBuildParcel(Parcel* pParcel);
     i8   iReassembleObj(void);
     i8   iReassembleFromParcel(Parcel* pParcel);
-    bool bUpdateBktMap(Parcel* pParcel);
     bool bUpdateBucket(Parcel* pParcel);
     Stz* szDumpTablePtn(void);
-    Stz* szDumpBucketMap(void);
 
   private:
     Footer* aFooter(void);

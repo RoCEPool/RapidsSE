@@ -72,7 +72,7 @@ Stz* SP_Ivy::sz(i8 iIvy, i8 iScale)
       break;
 
     case IV_MONTH:
-      uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12;
+      uMonths = wIvy.T.m_xIvl.u.m_xIvlYM.m_uMonths;
 
       if (wIvy.bIsNeg() && uMonths)
         StrLib::vSprint(m_caResult,

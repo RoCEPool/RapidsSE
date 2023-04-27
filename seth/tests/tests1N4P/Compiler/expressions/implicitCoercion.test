@@ -1297,7 +1297,7 @@ rows: (*,'explainPlan','
    » queryText: "select cast(''123.0'' as integer) from nation"
 
 -> -> projectOp
-      » column: (Expr = CAST(''123.0'' AS INTEGER) ; Ordinal Expr = CAST(''123.0'' AS INTEGER))
+      » column: (Expr = 123 ; Ordinal Expr = 123)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')

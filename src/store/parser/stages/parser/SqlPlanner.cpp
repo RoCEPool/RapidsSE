@@ -4119,10 +4119,17 @@ Ivl SqlPlanner::xCleanYearMonthInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // We should have a dash next
   if (*psChar != '-') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected '-' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing '-' separator"_Stz,
+                            ": expected '-' separator, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4266,10 +4273,17 @@ Ivl SqlPlanner::xCleanDayHourInterval(Stz* szVal, sqlParser::StringLiteralContex
 
   // We should have a space next
   if (*psChar != ' ') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ' ' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ' ' separator between day and hour digits"_Stz,
+                            ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4414,10 +4428,17 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // We should have a space next
   if (*psChar != ' ') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ' ' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ' ' separator between day and hour digits"_Stz,
+                            ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4454,10 +4475,17 @@ Ivl SqlPlanner::xCleanDayMinuteInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // We should have a colon next
   if (*psChar != ':') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ':' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -4606,10 +4634,17 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // We should have a space next
   if (*psChar != ' ') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ' ' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ' ' separator between day and hour digits"_Stz,
+                            ": expected ' ' separator between day and hour digits, got '%c' instead"_Stz,
                             *psChar);
   }
 
@@ -4646,10 +4681,17 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // We should have a colon next
   if (*psChar != ':') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ':' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -4684,10 +4726,17 @@ Ivl SqlPlanner::xCleanDaySecondInterval(Stz* szVal, sqlParser::StringLiteralCont
 
   // We should have a colon next
   if (*psChar != ':') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ':' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between minute and second digits"_Stz,
+                            ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -4880,10 +4929,17 @@ Ivl SqlPlanner::xCleanHourMinuteInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // We should have a colon next
   if (*psChar != ':') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ':' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -5029,10 +5085,17 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // We should have a colon next
   if (*psChar != ':') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ':' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between hour and minute digits"_Stz,
+                            ": expected ':' separator between hour and minute digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -5067,10 +5130,17 @@ Ivl SqlPlanner::xCleanHourSecondInterval(Stz* szVal, sqlParser::StringLiteralCon
 
   // We should have a colon next
   if (*psChar != ':') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ':' separator, got end of string instead"_Stz);
+    }
+
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between minute and second digits"_Stz,
+                            ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;
@@ -5270,10 +5340,17 @@ Ivl SqlPlanner::xCleanMinuteSecondInterval(Stz* szVal, sqlParser::StringLiteralC
 
   // We should have a colon next
   if (*psChar != ':') {
+    if (*psChar == 0) {
+      SyntaxException::vThrow(pCtx->start->getLine(),
+                              pCtx->start->getCharPositionInLine(),
+                              EC_INVALID_INTERVAL_FORMAT,
+                              ": expected ':' separator, got end of string instead"_Stz);
+    }
+    
     SyntaxException::vThrow(pCtx->start->getLine(),
                             pCtx->start->getCharPositionInLine(),
                             EC_INVALID_INTERVAL_FORMAT,
-                            ": missing ':' separator between minute and second digits"_Stz,
+                            ": expected ':' separator between minute and second digits, got '%c' instead"_Stz,
                             *psChar);
   }
   ++psChar;

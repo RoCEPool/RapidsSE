@@ -4793,16 +4793,29 @@ i8 StrLib::iToI8(const char* s)
 /*----------------------------------------------------------------------------*/
 /* convert arg to i8 with overflow checking                                   */
 /*----------------------------------------------------------------------------*/
-i8 StrLib::iToI8(const char* s, bool* bOverflowed)
+i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
 {
   _static_
 
   i8 i = 0;
   bool bNegative = false;
 
+  *bInvalidValue = false;
+  *bOverflowed = false;
+
+  if (!*s) {
+    *bInvalidValue = true;
+    return -1;
+  }
+
   if (*s && '-' == *s) {
     bNegative = true;
     s++;
+  }
+
+  if (!*s || (!bIsDigit(*s) && *s != 'x' && *s != 'X')) {
+    *bInvalidValue = true;
+    return -1;
   }
 
   // skip leading 0's
@@ -4824,8 +4837,8 @@ i8 StrLib::iToI8(const char* s, bool* bOverflowed)
 
       i = i * 16 + j;
     }
-  }
-  else {
+
+  } else {
     const i8 iLimit = C_I8_MAX / 10;
     const i8 iModulus = bNegative ? -(C_I8_MIN % 10) : C_I8_MAX % 10;
 
@@ -4844,7 +4857,6 @@ i8 StrLib::iToI8(const char* s, bool* bOverflowed)
   if (bNegative)
     i *= -1;
 
-  *bOverflowed = false;
   return i;
 }
 

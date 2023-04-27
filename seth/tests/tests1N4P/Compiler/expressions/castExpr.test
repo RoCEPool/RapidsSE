@@ -1212,19 +1212,8 @@ EXPLAIN with_types SELECT CAST(INTERVAL '2' YEAR AS BOOLEAN)      FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS CHAR(10))         FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT CAST(interval ''2'' year AS CHAR(10))         FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' YEAR AS CHAR) ; Ordinal Expr = CAST(INTERVAL ''2'' YEAR AS CHAR)) ; type: CHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS DATE)         FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -1239,7 +1228,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' year AS DECIMAL)      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' YEAR AS DECIMAL) ; Ordinal Expr = CAST(INTERVAL ''2'' YEAR AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = 2. ; Ordinal Expr = 2.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1254,7 +1243,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' year AS FLOAT)        FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' YEAR AS FLOAT) ; Ordinal Expr = CAST(INTERVAL ''2'' YEAR AS FLOAT)) ; type: FLOAT
+      » column: (Expr = 2.0000000000e+00 ; Ordinal Expr = 2.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1269,7 +1258,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' year AS INTEGER)      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' YEAR AS INTEGER) ; Ordinal Expr = CAST(INTERVAL ''2'' YEAR AS INTEGER)) ; type: INTEGER
+      » column: (Expr = 2 ; Ordinal Expr = 2) ; type: INTEGER
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1299,7 +1288,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' year AS INTERVAL MONTH)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' YEAR AS INTERVAL MONTH) ; Ordinal Expr = CAST(INTERVAL ''2'' YEAR AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = INTERVAL ''24'' MONTH ; Ordinal Expr = INTERVAL ''24'' MONTH) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1356,19 +1345,7 @@ EXPLAIN with_types SELECT CAST(interval '2' year AS TIMESTAMP)    FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS VARCHAR)      FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
-
--> statementMarker: select
-   » queryText: "SELECT CAST(interval ''2'' year AS VARCHAR)      FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' YEAR AS VARCHAR) ; Ordinal Expr = CAST(INTERVAL ''2'' YEAR AS VARCHAR)) ; type: VARCHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 
 
@@ -1377,19 +1354,7 @@ EXPLAIN with_types SELECT CAST(interval '2' day AS BOOLEAN)      FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS CHAR(10))         FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
-
--> statementMarker: select
-   » queryText: "SELECT CAST(interval ''2'' day AS CHAR(10))         FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS CHAR) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS CHAR)) ; type: CHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS DATE)         FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -1404,10 +1369,11 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS DECIMAL)      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS DECIMAL) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = 2. ; Ordinal Expr = 2.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
+
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS FLOAT)        FROM castTest;
 rows: (*,'explainPlan','
@@ -1419,10 +1385,11 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS FLOAT)        FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS FLOAT) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS FLOAT)) ; type: FLOAT
+      » column: (Expr = 2.0000000000e+00 ; Ordinal Expr = 2.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
+
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTEGER)      FROM castTest;
 rows: (*,'explainPlan','
@@ -1434,7 +1401,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTEGER)      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTEGER) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTEGER)) ; type: INTEGER
+      » column: (Expr = 2 ; Ordinal Expr = 2) ; type: INTEGER
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1473,7 +1440,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL HOUR)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL HOUR) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL HOUR)) ; type: INTERVAL HOUR
+      » column: (Expr = INTERVAL ''48'' HOUR ; Ordinal Expr = INTERVAL ''48'' HOUR) ; type: INTERVAL HOUR
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1488,7 +1455,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL MINUTE)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL MINUTE) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
+      » column: (Expr = INTERVAL ''2880'' MINUTE ; Ordinal Expr = INTERVAL ''2880'' MINUTE) ; type: INTERVAL MINUTE
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1503,10 +1470,11 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL SECOND)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL SECOND) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = INTERVAL ''172800'' SECOND ; Ordinal Expr = INTERVAL ''172800'' SECOND) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
+
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL DAY TO HOUR)  FROM castTest;
 rows: (*,'explainPlan','
@@ -1563,7 +1531,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL HOUR TO MINUTE)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL HOUR TO MINUTE) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL HOUR TO MINUTE)) ; type: INTERVAL HOUR TO MINUTE
+      » column: (Expr = INTERVAL ''48:0'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''48:0'' HOUR TO MINUTE) ; type: INTERVAL HOUR TO MINUTE
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1578,7 +1546,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL HOUR TO SECOND)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL HOUR TO SECOND) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL HOUR TO SECOND)) ; type: INTERVAL HOUR TO SECOND
+      » column: (Expr = INTERVAL ''48:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''48:0:0'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1593,7 +1561,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT CAST(interval ''2'' day AS INTERVAL MINUTE TO SECOND)  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL MINUTE TO SECOND) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS INTERVAL MINUTE TO SECOND)) ; type: INTERVAL MINUTE TO SECOND
+      » column: (Expr = INTERVAL ''2880:0'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''2880:0'' MINUTE TO SECOND) ; type: INTERVAL MINUTE TO SECOND
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -1606,19 +1574,7 @@ EXPLAIN with_types SELECT CAST(interval '2' day AS TIMESTAMP)    FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS VARCHAR)      FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
-
--> statementMarker: select
-   » queryText: "SELECT CAST(interval ''2'' day AS VARCHAR)      FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''2'' DAY AS VARCHAR) ; Ordinal Expr = CAST(INTERVAL ''2'' DAY AS VARCHAR)) ; type: VARCHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 
 // *** Cast NULL literals ***
@@ -3353,34 +3309,11 @@ EXPLAIN with_types SELECT (BOOLEAN) INTERVAL '1' YEAR      FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT (CHAR(10)) INTERVAL '1-2' YEAR TO MONTH         FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
-
--> statementMarker: select
-   » queryText: "SELECT (CHAR(10)) INTERVAL ''1-2'' YEAR TO MONTH         FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1-2'' YEAR TO MONTH AS CHAR) ; Ordinal Expr = CAST(INTERVAL ''1-2'' YEAR TO MONTH AS CHAR)) ; type: CHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT (CHAR(10)) INTERVAL '1' YEAR         FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT (CHAR(10)) INTERVAL ''1'' YEAR         FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' YEAR AS CHAR) ; Ordinal Expr = CAST(INTERVAL ''1'' YEAR AS CHAR)) ; type: CHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DATE) INTERVAL '1-2' YEAR TO MONTH         FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3401,7 +3334,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DECIMAL) INTERVAL ''1'' YEAR      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' YEAR AS DECIMAL) ; Ordinal Expr = CAST(INTERVAL ''1'' YEAR AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3419,7 +3352,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (FLOAT) INTERVAL ''1'' YEAR        FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' YEAR AS FLOAT) ; Ordinal Expr = CAST(INTERVAL ''1'' YEAR AS FLOAT)) ; type: FLOAT
+      » column: (Expr = 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3437,7 +3370,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTEGER) INTERVAL ''1'' YEAR      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' YEAR AS INTEGER) ; Ordinal Expr = CAST(INTERVAL ''1'' YEAR AS INTEGER)) ; type: INTEGER
+      » column: (Expr = 1 ; Ordinal Expr = 1) ; type: INTEGER
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3452,7 +3385,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL MONTH) INTERVAL ''1-2'' YEAR TO MONTH  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1-2'' YEAR TO MONTH AS INTERVAL MONTH) ; Ordinal Expr = CAST(INTERVAL ''1-2'' YEAR TO MONTH AS INTERVAL MONTH)) ; type: INTERVAL MONTH
+      » column: (Expr = INTERVAL ''14'' MONTH ; Ordinal Expr = INTERVAL ''14'' MONTH) ; type: INTERVAL MONTH
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3491,34 +3424,12 @@ EXPLAIN with_types SELECT (TIMESTAMP) INTERVAL '1' YEAR    FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT (VARCHAR) INTERVAL '1-2' YEAR TO MONTH      FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT (VARCHAR) INTERVAL ''1-2'' YEAR TO MONTH      FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1-2'' YEAR TO MONTH AS VARCHAR) ; Ordinal Expr = CAST(INTERVAL ''1-2'' YEAR TO MONTH AS VARCHAR)) ; type: VARCHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (VARCHAR) INTERVAL '1' YEAR      FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT (VARCHAR) INTERVAL ''1'' YEAR      FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' YEAR AS VARCHAR) ; Ordinal Expr = CAST(INTERVAL ''1'' YEAR AS VARCHAR)) ; type: VARCHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
 
 
 // *** Cast an INTERVAL_DT column ***
@@ -3529,34 +3440,12 @@ EXPLAIN with_types SELECT (BOOLEAN) INTERVAL '1' DAY      FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT (CHAR(10)) INTERVAL '1 2' DAY TO HOUR         FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT (CHAR(10)) INTERVAL ''1 2'' DAY TO HOUR         FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1 2'' DAY TO HOUR AS CHAR) ; Ordinal Expr = CAST(INTERVAL ''1 2'' DAY TO HOUR AS CHAR)) ; type: CHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (CHAR(10)) INTERVAL '1' DAY      FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT (CHAR(10)) INTERVAL ''1'' DAY      FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' DAY AS CHAR) ; Ordinal Expr = CAST(INTERVAL ''1'' DAY AS CHAR)) ; type: CHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DATE) INTERVAL '1 2' DAY TO HOUR         FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -3577,7 +3466,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (DECIMAL) INTERVAL ''1'' DAY      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' DAY AS DECIMAL) ; Ordinal Expr = CAST(INTERVAL ''1'' DAY AS DECIMAL)) ; type: DECIMAL
+      » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3595,7 +3484,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (FLOAT) INTERVAL ''1'' DAY      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' DAY AS FLOAT) ; Ordinal Expr = CAST(INTERVAL ''1'' DAY AS FLOAT)) ; type: FLOAT
+      » column: (Expr = 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e+00) ; type: FLOAT
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3613,7 +3502,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTEGER) INTERVAL ''1'' DAY      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' DAY AS INTEGER) ; Ordinal Expr = CAST(INTERVAL ''1'' DAY AS INTEGER)) ; type: INTEGER
+      » column: (Expr = 1 ; Ordinal Expr = 1) ; type: INTEGER
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3634,7 +3523,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL SECOND) INTERVAL ''1 2'' DAY TO HOUR  FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1 2'' DAY TO HOUR AS INTERVAL SECOND) ; Ordinal Expr = CAST(INTERVAL ''1 2'' DAY TO HOUR AS INTERVAL SECOND)) ; type: INTERVAL SECOND
+      » column: (Expr = INTERVAL ''93600'' SECOND ; Ordinal Expr = INTERVAL ''93600'' SECOND) ; type: INTERVAL SECOND
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3649,7 +3538,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT (INTERVAL HOUR TO SECOND) INTERVAL ''1'' DAY      FROM castTest"
 
 -> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' DAY AS INTERVAL HOUR TO SECOND) ; Ordinal Expr = CAST(INTERVAL ''1'' DAY AS INTERVAL HOUR TO SECOND)) ; type: INTERVAL HOUR TO SECOND
+      » column: (Expr = INTERVAL ''24:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''24:0:0'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
@@ -3667,34 +3556,12 @@ EXPLAIN with_types SELECT (TIMESTAMP) INTERVAL '1' DAY      FROM castTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN with_types SELECT (VARCHAR) INTERVAL '1 2' DAY TO HOUR      FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT (VARCHAR) INTERVAL ''1 2'' DAY TO HOUR      FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1 2'' DAY TO HOUR AS VARCHAR) ; Ordinal Expr = CAST(INTERVAL ''1 2'' DAY TO HOUR AS VARCHAR)) ; type: VARCHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (VARCHAR) INTERVAL '1' DAY      FROM castTest;
-rows: (*,'explainPlan','
-∆ mainSubquery
-  » table alias: __subquery0002
-  » correlated columns: (none)
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--> statementMarker: select
-   » queryText: "SELECT (VARCHAR) INTERVAL ''1'' DAY      FROM castTest"
-
--> -> projectOp
-      » column: (Expr = CAST(INTERVAL ''1'' DAY AS VARCHAR) ; Ordinal Expr = CAST(INTERVAL ''1'' DAY AS VARCHAR)) ; type: VARCHAR
-
--> -> -> tableScanOp
-         » table: (rapidsse.public.castTest)')
 
 
 // *** Cast NULL literals ***

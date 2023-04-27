@@ -295,7 +295,7 @@ void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
 
     // Increment the aiCoercibleTargets array if this child can be coerced
     // to each of the data types.
-    vIncrementCoercibleTargets(pValueExpr, aiCoercibleTargets, iArrLen, pRootNode);
+    vIncrementCoercibleTargets(pValueExpr, aiCoercibleTargets, iArrLen, pWhenOrElseExpr, pRootNode);
   }
 
   // Determine the common coercible data type, if any

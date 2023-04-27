@@ -270,7 +270,7 @@ namespace BASE
     static d8    dToFlt(const char* s);
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);
-    static i8    iToI8(const char* s, bool* bOverflowed);
+    static i8    iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed);
     static char  cToLower(char c);
     static void  vToLower(char* s);
     static char  cToUpper(char c);

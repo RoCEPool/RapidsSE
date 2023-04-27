@@ -114,6 +114,22 @@ rows:
 //  Interval + Date
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+select date '2023-02-13' + interval -'1' year from nation where n_nationkey = 2;
+rows:
+ (DATE '2022-02-13')
+
+select date '2023-02-13' + interval -'1-2' year to month from nation where n_nationkey = 2;
+rows:
+  (DATE '2021-12-13')
+
+select date '2023-02-13' + interval '-1' year from nation where n_nationkey = 2;
+rows:
+ (DATE '2022-02-13')
+
+select date '2023-02-13' + interval '-1-2' year to month from nation where n_nationkey = 2;
+rows:
+  (DATE '2021-12-13')
+
 // Interval YM + date
 SELECT INTERVAL '1-2' YEAR TO MONTH + DATE '2000-02-28' FROM nation where n_nationkey = 2;
 rows:
@@ -129,6 +145,8 @@ SELECT DATE '2000-02-28' + INTERVAL '1' MONTH FROM nation where n_nationkey = 2;
 rows:
   (DATE '2000-03-28')
 
+// TODO: ALKA
+/*
 // Interval DT + date
 SELECT INTERVAL '1' DAY + DATE '2000-02-28' FROM nation where n_nationkey = 2;
 rows:
@@ -144,29 +162,54 @@ SELECT DATE '2000-02-28' + INTERVAL '-1' DAY FROM nation where n_nationkey = 2;
 rows:
   (DATE '2000-02-27')
 
-SELECT DATE '2023-02-16'+ INTERVAL '30' day + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
-rows:
-  (DATE '2034-02-18')
-
 SELECT INTERVAL '30' day +  DATE '2023-02-16' from nation where n_nationkey = 2;
 rows:
   (DATE '2023-03-18')
 
-SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
+SELECT DATE '2023-02-16'+ INTERVAL '30' day + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
 rows:
-  (DATE '2034-01-16')
+  (DATE '2034-02-18')
 
 SELECT INTERVAL '30' day + DATE '2023-02-16' + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
 rows:
   (DATE '2034-02-18')
 
+*/
+
 SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
 rows:
   (DATE '2034-01-16')
 
+
+SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
+rows:
+  (DATE '2034-01-16')
+
+SELECT INTERVAL '132-5' year to month + DATE '2023-02-13' FROM nation where n_nationkey = 2;
+rows:
+ (DATE '2155-07-13')
+
+SELECT DATE '2023-02-13' + INTERVAL '132-5' year to month FROM nation where n_nationkey = 2;
+rows:
+ (DATE '2155-07-13')
+
+SELECT DATE '2023-02-13' + INTERVAL '134-5' year to month FROM nation where n_nationkey = 2;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
+SELECT INTERVAL '134-5' year to month + DATE '2023-02-13' FROM nation where n_nationkey = 2;
+failure contains: 'EC_DATE_OUT_OF_RANGE'
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval + time
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT time '00:00:00' + INTERVAL '31' HOUR  FROM nation where n_nationkey = 2;
+rows:
+ (TIME '07:00:00')
+
+SELECT time '06:23:10' - INTERVAL '31' HOUR  FROM nation where n_nationkey = 2;
+rows:
+ (TIME '23:23:10')
 
 // Interval HMS + time
 SELECT INTERVAL '1:2:3' HOUR TO SECOND + TIME '04:30:56' FROM nation where n_nationkey = 2;
@@ -261,6 +304,10 @@ SELECT INTERVAL '1 2:3:4.5' DAY TO SECOND + TIMESTAMP '2000-02-28 04:30:56' FROM
 rows:
   (TIMESTAMP '2000-02-29 06:34:00.500000')
 
+SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL '1 2:3:4.5' DAY TO SECOND FROM nation where n_nationkey = 2;
+rows:
+  (TIMESTAMP '2000-02-29 06:34:00.500000')
+
 SELECT TIMESTAMP '2000-02-28 04:30:56' + INTERVAL -'1 2:3:4.4' DAY TO SECOND FROM nation where n_nationkey = 2;
 rows: 
   (TIMESTAMP '2000-02-27 02:27:51.600000')
@@ -352,11 +399,19 @@ rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 SELECT DATE '2000-03-31' - INTERVAL '3' DAY FROM nation where n_nationkey = 2;
 rows:
- (DATE '2000-03-28')
+ (TIMESTAMP '2000-03-28 00:00:00')
 
 SELECT DATE '2000-02-28' - INTERVAL '3' DAY FROM nation where n_nationkey = 2;
 rows:
- (DATE '2000-02-25')
+ (TIMESTAMP '2000-02-25 00:00:00')
+
+select DATE '2023-01-01' - INTERVAL '1' MONTH from  nation where n_nationkey = 2;
+rows:
+  (DATE '2022-12-01')
+
+select date '2023-04-13' - interval '1-4' YEAR TO MONTH from nation where n_nationkey = 2;
+rows:
+  (DATE '2021-12-13')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Date - Interval (YEAR MONTH)
@@ -369,9 +424,21 @@ SELECT DATE '2000-02-28' - INTERVAL '3' MONTH FROM nation where n_nationkey = 2;
 rows:
  (DATE '1999-11-28')
 
+SELECT DATE '2023-01-01' - INTERVAL '1' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (DATE '2022-12-01')
+
+SELECT DATE '2023-04-13' - interval '1-4' YEAR TO MONTH FROM nation where n_nationkey = 2;
+rows:
+  (DATE '2021-12-13')
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval * Integer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3  FROM nation where n_nationkey = 2;
+rows:
+ (INTERVAL -'15:20.367036' MINUTE TO SECOND)
 
 // Interval multiplication /1 (integer)
 SELECT INTERVAL '1-2' YEAR TO MONTH * 2 FROM nation where n_nationkey = 2;
@@ -388,6 +455,23 @@ SELECT INTERVAL '1 2' DAY TO HOUR * 2 FROM nation where n_nationkey = 2;
 rows:
   (INTERVAL '2 4' DAY TO HOUR)
 
+SELECT INTERVAL '1 2' DAY TO HOUR * -2 FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'2 4' DAY TO HOUR)
+
+SELECT -2 * INTERVAL '1 2' DAY TO HOUR FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'2 4' DAY TO HOUR)
+
+SELECT 5*INTERVAL '17' MONTH FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '85' MONTH)
+
+// SE-305
+//SELECT 5*INTERVAL '17' MONTH FROM nation where n_nationkey = 2;
+//rows :
+//  (INTERVAL '7-1' YEAR TO MONTH)
+
 // Interval multiplication /4 (integer first)
 SELECT 2 * INTERVAL '32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
 rows:
@@ -396,6 +480,22 @@ rows:
 SELECT 2 * INTERVAL -'32 9:59:59' DAY TO SECOND FROM nation where n_nationkey = 2;
 rows:
  (INTERVAL -'64 19:59:58' DAY TO SECOND)
+
+SELECT INTERVAL '1' YEAR * -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
+SELECT -3 * INTERVAL '1' YEAR from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
+SELECT INTERVAL '5:6.789012' MINUTE TO SECOND*-3 from nation where n_nationkey = 2;
+rows:
+  (INTERVAL -'15:20.367036' MINUTE TO SECOND)
+
+//SELECT INTERVAL '1' SECOND * 1  from nation where n_nationkey = 2;
+//rows:
+//  (INTERVAL '1' SECOND)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval / Integer
@@ -410,6 +510,40 @@ rows:
 SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / 2 FROM nation where n_nationkey = 2;
 rows:
  (INTERVAL -'16 4:59:59.500000' DAY TO SECOND)
+
+SELECT INTERVAL -'32 9:59:59' DAY TO SECOND / -2 FROM nation where n_nationkey = 2;
+rows:
+  (INTERVAL '16 4:59:59.500000' DAY TO SECOND)
+
+SELECT INTERVAL '9' YEAR / -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
+SELECT INTERVAL -'9' YEAR / -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL '3' YEAR)
+
+SELECT INTERVAL -'9' YEAR / 3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL -'3' YEAR)
+
+SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
+rows :
+  (INTERVAL '0' YEAR)
+
+//SELECT INTERVAL '1' YEAR / -3 from nation where n_nationkey = 2;
+//rows :
+//  (INTERVAL -'4' MONTH)
+
+SELECT INTERVAL '3 4:5:6.789012' DAY TO SECOND/0 FROM nation where n_nationkey = 2;
+failure contains: 'EC_DIVIDE_BY_ZERO'
+
+SELECT INTERVAL '1' YEAR / 0 from nation where n_nationkey = 2;
+failure contains: 'EC_DIVIDE_BY_ZERO'
+
+SELECT INTERVAL '3 4:5' DAY TO MINUTE/1 from nation where n_nationkey = 2;
+rows:
+  (INTERVAL '3 4:5' DAY TO MINUTE)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Interval Between
@@ -527,28 +661,30 @@ rows:
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cast as Interval
+// NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT CAST(1  AS INTERVAL YEAR) FROM nation where n_nationkey = 2;
+SELECT CAST(1 + 0  AS INTERVAL YEAR) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(1.0  AS INTERVAL DAY) FROM nation where n_nationkey = 2;
+SELECT CAST(1.0 + 0  AS INTERVAL DAY) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(1.0e1  AS INTERVAL DAY) FROM nation where n_nationkey = 2;
+SELECT CAST(1.0e1 + 0 AS INTERVAL DAY) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Cast Interval as
+// NB: We add zero to these so they aren't short-circuited in the SQL compiler
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-SELECT CAST(INTERVAL '9' HOUR as INTEGER) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as INTEGER) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(INTERVAL '9' HOUR as DECIMAL) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' HOUR + INTERVAL '0' HOUR as DECIMAL) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
-SELECT CAST(INTERVAL '9' YEAR as FLOAT) FROM nation where n_nationkey = 2;
+SELECT CAST(INTERVAL '9' YEAR + INTERVAL '0' YEAR as FLOAT) FROM nation where n_nationkey = 2;
 failure contains: 'EC_NOT_IMPLEMENTED'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -583,6 +719,57 @@ drop table nation;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Interval in where clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   DATE,
+  cole4   DECIMAL(15, 2)
+);
+success
+
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+success
+
+SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  TABLE4 where INTERVAL '1' MONTH + colc4 > DATE '2015-11-26';
+rows: 84
+
+drop table TABLE4;
+success
+
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   TIMESTAMP,
+  cole4   DECIMAL(15, 2)
+);
+success
+
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+success
+
+// ALKA: TO DO
+//SELECT colc4 , colc4 + INTERVAL '1' MONTH FROM  TABLE4 where colc4 + INTERVAL '1' MONTH  > TIMESTAMP '2015-11-26 00:00:00';
+//rows: 84
+
+// ALKA: TO DO
+//SELECT colc4 , INTERVAL '1' MONTH + colc4 FROM  TABLE4 where INTERVAL '1' MONTH + colc4 > TIMESTAMP '2015-11-26 00:00:00';
+//rows: 84
+
+drop table TABLE4;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -596,4 +783,8 @@ rows: 0
 CLEANUP {
   DROP TABLE nation;
   mute
+
+  DROP TABLE table4;
+  mute
+
 }

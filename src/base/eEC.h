@@ -81,6 +81,7 @@ enum eEC : u2 // error codes
   EC_CSV_YEAR_TOO_LARGE,
 
   /* _D_ */
+  EC_DATE_OUT_OF_RANGE,
   EC_DECIMAL_NOT_SUPPORTED,
   EC_DISABLED_STATEMENT,
   EC_DISK_SPACE_CHECK_FAILED,
@@ -133,6 +134,7 @@ enum eEC : u2 // error codes
   EC_INTERNAL_ERROR,
   EC_INTERVAL_NOT_SUPPORTED,
   EC_INTERVAL_OUT_OF_RANGE,
+  EC_INVALID_CAST,
   EC_INVALID_CLASS,
   EC_INVALID_COLUMN,
   EC_INVALID_COLUMNS_UNIQUE_INDEX,
@@ -218,7 +220,8 @@ enum eEC : u2 // error codes
   EC_OBJECT_CLASSNO_INVALID,
   EC_OBJECT_FOOTER_INVALID,
   EC_OBJECT_MAGIC_INVALID,
-  EC_ORDERBY_NOT_SUPPORTED,
+  EC_ORDERBY_WITH_AGGREGATES,
+
 
   /* _P_ */
   EC_PIPELINE_PROTOCOL_ERROR,
@@ -352,6 +355,7 @@ static Stz* aEC[] =
   /* EC_CSV_YEAR_TOO_LARGE            */ (Stz*)"EC_CSV_YEAR_TOO_LARGE",
 
   /* _D_ */
+  /* EC_DATE_OUT_OF_RANGE             */ (Stz*)"date out of range",
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
   /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DISK_SPACE_CHECK_FAILED       */ (Stz*)"disk space check failed",
@@ -404,6 +408,7 @@ static Stz* aEC[] =
   /* EC_INTERNAL_ERROR                */ (Stz*)"EC_INTERNAL_ERROR",
   /* EC_INTERVAL_NOT_SUPPORTED        */ (Stz*)"interval currently not supported",
   /* EC_INTERVAL_OUT_OF_RANGE         */ (Stz*)"interval out of range",
+  /* EC_INVALID_CAST                  */ (Stz*)"invalid cast",
   /* EC_INVALID_CLASS                 */ (Stz*)"invalid class",
   /* EC_INVALID_COLUMN                */ (Stz*)"invalid column",
   /* EC_INVALID_COLUMNS_UNIQUE_INDEX  */ (Stz*)"invalid columns for unique index (include all partitioning columns)",
@@ -488,7 +493,7 @@ static Stz* aEC[] =
   /* EC_OBJECT_CLASSNO_INVALID        */ (Stz*)"EC_OBJECT_CLASSNO_INVALID",
   /* EC_OBJECT_FOOTER_INVALID         */ (Stz*)"EC_OBJECT_FOOTER_INVALID",
   /* EC_OBJECT_MAGIC_INVALID          */ (Stz*)"EC_OBJECT_MAGIC_INVALID",
-  /* EC_ORDERBY_NOT_SUPPORTED         */ (Stz*)"order by currently not supported",
+  /* EC_ORDERBY_WITH_AGGREGATES       */ (Stz*)"order by currently not supported with aggregates",
 
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ (Stz*)"pipeline protocol error",
@@ -617,6 +622,7 @@ static Stz* aEC2[] = // error code
   /* EC_CSV_YEAR_TOO_LARGE            */ (Stz*)"EC_CSV_YEAR_TOO_LARGE",
 
   /* _D_ */
+  /* EC_DATE_OUT_OF_RANGE             */ (Stz*)"EC_DATE_OUT_OF_RANGE",
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"EC_DECIMAL_NOT_SUPPORTED",
   /* EC_DISABLED_STATEMENT            */ (Stz*)"EC_DISABLED_STATEMENT",
   /* EC_DISK_SPACE_CHECK_FAILED       */ (Stz*)"EC_DISK_SPACE_CHECK_FAILED",
@@ -669,6 +675,7 @@ static Stz* aEC2[] = // error code
   /* EC_INTERNAL_ERROR                */ (Stz*)"EC_INTERNAL_ERROR",
   /* EC_INTERVAL_NOT_SUPPORTED        */ (Stz*)"EC_INTERVAL_NOT_SUPPORTED",
   /* EC_INTERVAL_OUT_OF_RANGE         */ (Stz*)"EC_INTERVAL_OUT_OF_RANGE",
+  /* EC_INVALID_CAST                  */ (Stz*)"EC_INVALID_CAST",
   /* EC_INVALID_CLASS                 */ (Stz*)"EC_INVALID_CLASS",
   /* EC_INVALID_COLUMN                */ (Stz*)"EC_INVALID_COLUMN",
   /* EC_INVALID_COLUMNS_UNIQUE_IND    */ (Stz*)"EC_INVALID_COLUMNS_UNIQUE_INDEX",
@@ -753,7 +760,7 @@ static Stz* aEC2[] = // error code
   /* EC_OBJECT_CLASSNO_INVALID        */ (Stz*)"EC_OBJECT_CLASSNO_INVALID",
   /* EC_OBJECT_FOOTER_INVALID         */ (Stz*)"EC_OBJECT_FOOTER_INVALID",
   /* EC_OBJECT_MAGIC_INVALID          */ (Stz*)"EC_OBJECT_MAGIC_INVALID",
-  /* EC_ORDERBY_NOT_SUPPORTED         */ (Stz*)"EC_ORDERBY_NOT_SUPPORTED",
+  /* EC_ORDERBY_WITH_AGGREGATES       */ (Stz*)"EC_ORDERBY_WITH_AGGREGATES",
 
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ (Stz*)"EC_PIPELINE_PROTOCOL_ERROR",
@@ -892,6 +899,7 @@ static Stz* aErrorMsg[] =
   /* EC_CSV_YEAR_TOO_LARGE            */ (Stz*)"EC_CSV_YEAR_TOO_LARGE",
 
   /* _D_ */
+  /* EC_DATE_OUT_OF_RANGE             */ (Stz*)"date out of range",
   /* EC_DECIMAL_NOT_SUPPORTED         */ (Stz*)"decimal only with scale 2 currently supported",
   /* EC_DISABLED_STATEMENT            */ (Stz*)"statement is temporarily disabled",
   /* EC_DISK_SPACE_CHECK_FAILED       */ (Stz*)"failed to check disk space",
@@ -944,6 +952,7 @@ static Stz* aErrorMsg[] =
   /* EC_INTERNAL_ERROR                */ (Stz*)"internal error",
   /* EC_INTERVAL_NOT_SUPPORTED        */ (Stz*)"interval currently not supported",
   /* EC_INTERVAL_OUT_OF_RANGE         */ (Stz*)"interval out of range",
+  /* EC_INVALID_CAST                  */ (Stz*)"invalid cast",
   /* EC_INVALID_CLASS                 */ (Stz*)"invalid class",
   /* EC_INVALID_COLUMN                */ (Stz*)"invalid column",
   /* EC_INVALID_COLUMNS_UNIQUE_IND    */ (Stz*)"invalid columns for unique index (include all partitioning columns)",
@@ -1028,7 +1037,7 @@ static Stz* aErrorMsg[] =
   /* EC_OBJECT_CLASSNO_INVALID        */ (Stz*)"EC_OBJECT_CLASSNO_INVALID",
   /* EC_OBJECT_FOOTER_INVALID         */ (Stz*)"EC_OBJECT_FOOTER_INVALID",
   /* EC_OBJECT_MAGIC_INVALID          */ (Stz*)"EC_OBJECT_MAGIC_INVALID",
-  /* EC_ORDERBY_NOT_SUPPORTED         */ (Stz*)"order by currently not supported",
+  /* EC_ORDERBY_WITH_AGGREGATES       */ (Stz*)"order by currently not supported with AGGREGATES",
   /* _P_ */
   /* EC_PIPELINE_PROTOCOL_ERROR       */ (Stz*)"pipeline protocol error",
 

@@ -144,9 +144,6 @@ using namespace BASE;
 namespace STORE {
   class AttachMap;
 
-  //class BucketMap;
-  class BucketMap;
-
   class Crv;
   class Crw;
   class CrwBuffer;
@@ -257,14 +254,6 @@ namespace OBLIQUE
       static i8 iCmdNoNext(void);
       static void vSysMetricsAdd(SysMetrics* pSysMetrics);
       static SysMetrics* pSysMetricsChain(void);
-    };
-  
-    class BKTMAP
-    {
-    public:
-      static LglPtn tLglPtnOf(KeyBkt tKeyBkt);
-
-      static BucketMap* pBucketMap(void);
     };
 
     class DIC
@@ -883,7 +872,6 @@ namespace OBLIQUE
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);
     static LglPtnMap* pLglPtnMap(void);
-    static BucketMap* pBucketMap(void);
 
     static i8 iQueryNoInc(void);
 
