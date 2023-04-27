@@ -2,9 +2,13 @@
 /* _r_Q19 -- TCPH query 19 test                                               */
 /*============================================================================*/
 
+// /glean_interactive
+// /ep_enable
+// /jo_disable
+/jo_pick=worst
+/filterPred
 /jobMetrics
 /joWrite
-/glean_interactive
 /transliterated
 /weaved
 /pipelineName = "_r_Q19"

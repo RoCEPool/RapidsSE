@@ -72,6 +72,7 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
   i8 nBuff_popped_by_unicast = 0;
   i8 nUnfiltBuff_produced_by_join  = 0;
 
+  d8 dFilterReduction = 1.0;
   i8 nOtherNodes      = 0.0;
   d8 dRatio_sent         = 0.0;
 
@@ -107,19 +108,20 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       }
 
       // b) send is reduced by filter
+      dFilterReduction = 1.0;
       if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        vTrace("FILTERPRED: BROADCAST %lld "_Stz, nBuff_recv_over_network);
         while (nFiltPred_prev--)
-          nBuff_recv_over_network = C_FILTER_COEFF * nBuff_recv_over_network;
-        vTrace("  down to %lld \n"_Stz, nBuff_recv_over_network);
+          dFilterReduction *= C_FILTER_COEFF;
       }
+      nBuff_recv_over_network *= dFilterReduction;
 
       // c) how much produced by this join
-      vTrace("BROADCAST joining with %lld "_Stz, nBuff_joining_with);
       if (nBuff_joining_with > nBuff_recv_over_network) {
         nUnfiltBuff_produced_by_join =
-            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF
-              * ((i_Join) ? (i_Join) * C_JOIN_LONGER : 1.0);
+              nBuff_joining_with * C_JOIN_COEFF
+                                 * C_EXPANSION_COEFF
+                                 * dFilterReduction
+                                 * ((i_Join) ? (i_Join) * C_JOIN_LONGER : 1.0);
       }
       else {
         nUnfiltBuff_produced_by_join =
@@ -144,18 +146,20 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       }
 
       // b) send is reduced by filter
+      dFilterReduction = 1.0;
       if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        vTrace("FILTERPRED: HASHCAST %lld "_Stz, nBuff_recv_over_network);
         while (nFiltPred_prev--)
-          nBuff_recv_over_network = C_FILTER_COEFF * nBuff_recv_over_network;
-        vTrace("  down to %lld \n"_Stz, nBuff_recv_over_network);
+          dFilterReduction *= C_FILTER_COEFF;
       }
+      nBuff_recv_over_network *= dFilterReduction;
 
       // c) how much produced by this join locus
       if (nBuff_joining_with > nBuff_recv_over_network) {
         nUnfiltBuff_produced_by_join =
-            C_JOIN_COEFF * (d8)nBuff_joining_with * C_EXPANSION_COEFF
-              * ((i_Join) ? (i_Join ) * C_JOIN_LONGER : 1.0);
+            nBuff_joining_with * C_JOIN_COEFF
+                               * C_EXPANSION_COEFF
+                               * dFilterReduction
+                               * ((i_Join) ? (i_Join) * C_JOIN_LONGER : 1.0);
       }
       else {
         nUnfiltBuff_produced_by_join =
@@ -179,18 +183,20 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
       nBuff_popped_by_unicast = (i8)(1.0 * (nUnfiltBuff_prev_join));
 
       // b) send is reduced by filter
+      dFilterReduction = 1.0;
       if (AM::JOB::bHasTag(C_FILTERPRED)) {
-        vTrace("FILTERPRED: UNICAST %lld "_Stz, nBuff_popped_by_unicast);
         while (nFiltPred_prev--)
-          nBuff_popped_by_unicast = C_FILTER_COEFF * nBuff_popped_by_unicast;
-        vTrace("  down to %lld \n"_Stz, nBuff_popped_by_unicast);
+          dFilterReduction *= C_FILTER_COEFF;
       }
+      nBuff_popped_by_unicast *= dFilterReduction;
 
       // b) how much produced by this join locus
       if (nBuff_joining_with > nBuff_popped_by_unicast) {
         nUnfiltBuff_produced_by_join =
-            C_JOIN_COEFF * nBuff_joining_with * C_EXPANSION_COEFF
-              * ((i_Join) ? (i_Join) * C_JOIN_LONGER : 1.0);
+            nBuff_joining_with * C_JOIN_COEFF
+                               * C_EXPANSION_COEFF
+                               * dFilterReduction
+                               * ((i_Join) ? (i_Join) * C_JOIN_LONGER : 1.0);
 
       }
       else {
@@ -198,15 +204,11 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
             C_JOIN_COEFF * nBuff_popped_by_unicast * C_EXPANSION_COEFF;
       }
 
-      vTrace("UNICAST produces %lld\n"_Stz, nUnfiltBuff_produced_by_join);
-
       break;
 
     default:
       NEVER_REACH
   }
-
-  vTrace("PRODUCED: %lld\n"_Stz, nUnfiltBuff_produced_by_join);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
