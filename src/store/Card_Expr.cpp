@@ -94,7 +94,7 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
 
-  RASSERT(pExpr_corr->pSub_rpnCalc()->pSymbol()->Y_bHas(P_Type));
+  RASSERT(pExpr_corr->szP_Type());
 
   Card_Expr*    p_gbyExpr = new Card_Expr;
   Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
@@ -105,10 +105,8 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   p_gbyExpr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
-  if (p_type) {
-    p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
-    p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
-  }
+  p_rpnCalc->pSymbol()->Y_vSet(P_Type, pExpr_corr->szP_Type());
+  p_term->pSymbol()->Y_vSet(P_Type, pExpr_corr->szP_Type());
 
   return p_gbyExpr;
 }
@@ -119,6 +117,8 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 {
   _static_
+
+  RASSERT(p_expr_gby->szP_Type());
 
   Symbol xSymbol_Kn;
   xSymbol_Kn.vSetKeyOrdinal(p_expr_gby->i_Child() + 1);
@@ -135,10 +135,8 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   p_expr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
-  if (p_type) {
-    p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
-    p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_type->szValue())]);
-  }
+  p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr_gby->szP_Type());
+  p_term->pSymbol()->Y_vSet(P_Type, p_expr_gby->szP_Type());
 
   return p_expr;
 }
