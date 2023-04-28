@@ -961,7 +961,14 @@ void Input::vCollectCpp(void)
   if (bHitEOF()) {
     m_pCurrTkn->vSetNull();
   }
-  
+
+  // collect code block
+  else
+  if (bCollectingCodeBlock()) {
+    vCollectCodeBlock();
+    vCollectingCodeBlock(false);
+  }
+
   // collect integer literal?
   else
   if (bStartCppNumber()) {
@@ -1021,6 +1028,10 @@ void Input::vCollectCpp(void)
 
    // test for collecting a pipeline and switch to sen tokens
   vTestSwitchToSen();
+
+  if (bIsCodeBlockBegin()) {
+    m_bCollectCodeBlock = true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1567,11 +1578,6 @@ void Input::vCollectSen(void)
     m_pCurrTkn->vSetNull();
   }
 
-  // collect code block
-  else
-  if (bCollectingCodeBlock()) {
-    vCollectCodeBlock();
-  }
   // collect integer literal?
   else
   if (bStartSenInteger()) {
@@ -1627,9 +1633,6 @@ void Input::vCollectSen(void)
       NEVER_REACH;
   }
 
-//  if (bIsCodeBlockBegin()) {
-//    m_bCollectCodeBlock = true;
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1914,6 +1917,8 @@ void Input::vCollectCodeBlock(void)
   }
   *z = '\0';
 
+  StrLib::vRemoveTail(azChars,"__codeEnd__");
+
   m_pCurrTkn->vToken(TN_STRING);
 }
 
@@ -1927,6 +1932,16 @@ bool Input::bCollectingCodeBlock(void)
   return m_bCollectCodeBlock;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set collecting code block                                                  */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectingCodeBlock(bool bCollectingCodeBlock)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
+
+  m_bCollectCodeBlock = bCollectingCodeBlock;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* is this token the beginning of a code block  ?                             */
@@ -1935,6 +1950,7 @@ bool Input::bIsCodeBlockBegin(void)
 {
   _precondition_(_MAGIC_,CN_INPUT,_FOOTER_);
 
+  //vTrace("TKN: %s \n"_Stz,m_pCurrTkn->azChars());
   if (m_pCurrTkn->bSame("__cpp_code__"_Stz))
     return true;
   else

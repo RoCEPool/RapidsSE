@@ -3952,6 +3952,32 @@ void StrLib::vRemoveSuffix(char *azArg, char cIntro)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove tail from arg                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTail(char* azArg, const char* pTail)
+{
+  _static_
+
+  i8 nChars = nLength(pTail);
+
+  vRemoveTailBy(azArg,nChars);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove tail by nChars                                                      */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTailBy(char* azArg, i8 nChars)
+{
+  _static_
+
+  char* z = azNullTerminator(azArg);
+  char* y = z - nChars;
+
+  *y = '\0';
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* remove tail int digits from arg                                            */
 /*----------------------------------------------------------------------------*/
 void StrLib::vRemoveTailInt(char *azArg)
@@ -4654,6 +4680,8 @@ bool StrLib::bTailIs(const char *z, char *ss)
   i8 nSS_len  = nLength(ss);
 
   const char* y = z - nSS_len;
+
+  vTrace("%s %lld ]%s[\n"_Stz,ss,nSS_len,y);
 
   if (bEqualTo(y,nSS_len,ss))
     return true;

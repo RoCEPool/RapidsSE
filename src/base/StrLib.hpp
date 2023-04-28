@@ -226,6 +226,8 @@ namespace BASE
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
+    static void  vRemoveTail(char* azArg, const char* pTail);
+    static void  vRemoveTailBy(char* azArg, i8 nChars);
     static void  vRemoveTailInt(char* azArg);
     static void  vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill=false);
     static void  vRemoveToken(char* azArg);

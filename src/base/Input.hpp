@@ -112,6 +112,7 @@ namespace BASE
 
     void vCollectCodeBlock(void);
     bool bCollectingCodeBlock(void);
+    void vCollectingCodeBlock(bool bCollectingCodeBlock);
     bool bIsCodeBlockBegin(void);
     bool bIsCodeBlockEnd(char* z);
 
