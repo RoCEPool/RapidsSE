@@ -904,8 +904,8 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   Stz* szP_Type = szCT_char[Card::eTo_eCT(pCard_Type->szValue())];
 
   pCard_Expr->vAppend(pCard_Type);
-  //delete pCard_Type;
-  //pCard_Type = nullptr;
+//  delete pCard_Type;
+//  pCard_Type = nullptr;
 
 
 
