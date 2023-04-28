@@ -128,7 +128,10 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
-    pCI->G.p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+
+    RASSERT(p_expr_found->szP_Type());
+
+    pCI->G.p_term->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
     DELETE_CARD(p_term_1);
 
