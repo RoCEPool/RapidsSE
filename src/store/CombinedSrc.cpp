@@ -171,12 +171,17 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz);
         if (pOpSketch->m_nPayloadBytes)
           vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
-        vAppendCodeFragment(pOpSketch, "iGbyAggInsertKey"_Stz);
-        vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+
+        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+          vAppendCodeFragment(pOpSketch, "iGbyAggInsertIntKey"_Stz);
+          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
           vAppendCodeFragment(pOpSketch, "iGbyAggIntKeyEnd"_Stz);
-        else
+        }
+        else {
+          vAppendCodeFragment(pOpSketch, "iGbyAggInsertVchKey"_Stz);
+          vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
           vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz);
+        }
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
@@ -657,7 +662,7 @@ void CombinedSrc::vAppendCodePayLoadToTubCols(OpSketch* pOpSketch)
 
       case CT_VARCHAR:
       case CT_CHAR:
-        vAppendCodeFragment(pOpSketch, "vPayLoadToTubVchCol"_Stz, pColumn);
+        vAppendCodeFragment(pOpSketch, "vPayLoadToTubVchCol"_Stz, pColumn, iPayLoad);
         break;
 
       default:
