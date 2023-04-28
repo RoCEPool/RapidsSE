@@ -252,7 +252,7 @@ namespace STORE
     eCT  eType(void);
     Stz* szType(void);
 
-    Stz* szValue(void);
+    Stz* szSymbol(void);
 
     void Y_vAll(Card* pCard_arg);
     void Y_vAll(TagSet* pProperties);

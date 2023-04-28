@@ -2742,7 +2742,7 @@ bool Symbol::bNeedsBrace(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSameValue(Stz* szArg)
 {
-  if (this->szValue()->bSame(szArg))
+  if (this->szSymbol()->bSame(szArg))
     return true;
 
   return false;
@@ -2753,7 +2753,7 @@ bool Symbol::bSameValue(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSameValue(Symbol* pArg)
 {
-  if (this->szValue()->bSame(pArg->szValue()))
+  if (this->szSymbol()->bSame(pArg->szSymbol()))
     return true;
 
   return false;
@@ -2875,7 +2875,7 @@ Stz* Symbol::szType(void)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szValue(void)
+Stz* Symbol::szSymbol(void)
 {
   return m_sSymbol.szStz();
 }
