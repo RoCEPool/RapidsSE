@@ -153,6 +153,8 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   //p_expr->vDump();
 
+  RASSERT(p_expr->szP_Type());
+
   Symbol xSymbol_Dn;
   xSymbol_Dn.vSetStreamColOrdinal(i_Col);
 
@@ -160,10 +162,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardRecursive());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+  p_rpnCalc->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
 
   Card_Term* p_term = p_expr->pSub_term()->pClone(xSymbol_Dn);
-  p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+  p_term->pSymbol()->Y_vSet(P_Type, p_expr->szP_Type());
   //p_term->vDump();
 
   p_rpnCalc->vAppend(p_term);
