@@ -112,9 +112,9 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   Card_Expr* p_expr_found =
       pCI->Analysis.m_pProjection_prior->pGetExpr(0);
 
-  pCI->G.p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+  pCI->G.p_term->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
-  pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
+  pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
 }
 
