@@ -58,7 +58,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
 
   Card_Expr* p_expr_new = new Card_Expr;
   p_expr_new->vRenumber(i_Key, true);
-  
+
   if (Card_As* p_as = p_expr->pSub_as())
     p_expr_new->vAppend(p_as->pDupCardRecursive());
 
@@ -67,7 +67,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
     p_rpnCalc->vAppend(p_expr->pSub_rpnCalc()->pGetTerm(0)->pDupCardRecursive());
   p_expr_new->vAppend(p_rpnCalc);
 
-  p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr->pSub_type()->szValue())]);
+  p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr->szP_Type());
 
   if (p_expr->pSub_direction()) {
     Card_Direction *p_direction = new Card_Direction(p_expr->pSub_direction()->szValue());
