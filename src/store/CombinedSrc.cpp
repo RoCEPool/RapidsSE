@@ -216,6 +216,16 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "vInflateCrwReturn"_Stz);
         break;
 
+      case SK_INFLATE_ROW:
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // new ROWBUFFER handler
+        vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
+
+        vAppendStencilTo(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz);
+        vAppendCodeInflateRowCols(pOpSketch, "vInflateRowCol"_Stz);
+        break;
+
       case SK_TUB:
 
         vAppendStencilTo(pOpSketch);
@@ -381,7 +391,36 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
     RASSERT(bExtracted);
     StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
+}
 
+/*----------------------------------------------------------------------------*/
+/* append code fragment for inflate columns                                   */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s256 sColumn;
+  s256 sReturnToColumn;
+  s16KB sCode;
+  bool bExtracted;
+
+  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
+
+    Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
+
+    StrLib::vSprint(sColumn, "%lld"_Stz, i_Col);
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
+      sCode = ""_Stz;
+      m_pFileCode->vSeekStart();
+
+      bExtracted = CodeSynthUtils::bExtractInflate(m_pFileCode, sColumn, ""_Stz, szFunction,
+                                                   "marker-start"_Stz, "marker-end"_Stz, sCode);
+      RASSERT(bExtracted);
+      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -421,7 +460,7 @@ void CombinedSrc::vAppendFunctionFooter(eHK eHandlerKind)
       szFunction = "vIndexScanEnd";
       break;
     case HK_ROWBUFFER:
-      RASSERT(0);
+      szFunction = "vInflateRowEnd";
       break;
     default:
       NEVER_REACH;
@@ -457,16 +496,17 @@ void CombinedSrc::vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm)
       szFunction = "__FUNCTION_CRW__";
       iFunction = 0;
       break;
-    case HK_EOS:
-      szFunction = "__FUNCTION_EOS__";
-      iFunction = 3;
+    case HK_ROWBUFFER:
+      szFunction = "__FUNCTION_ROW__";
+      iFunction = 1;
       break;
     case HK_INDEXBUFFER:
       szFunction = "__FUNCTION_INDEX__";
       iFunction = 2;
       break;
-    case HK_ROWBUFFER:
-      RASSERT(0);
+    case HK_EOS:
+      szFunction = "__FUNCTION_EOS__";
+      iFunction = 3;
       break;
     default:
       NEVER_REACH;

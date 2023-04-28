@@ -101,6 +101,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKind);
     OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKind);
+    OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKind);
     OpSketch* pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, Stz* sLabelLoop, eSR ePrevStencil_v2, TypedStack* pInitStack = nullptr);
@@ -117,7 +118,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     OpSketch* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabel);
 
-    OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp);
     OpSketch* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists);
     OpSketch* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop);

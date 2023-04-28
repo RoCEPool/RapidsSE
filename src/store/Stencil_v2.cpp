@@ -238,6 +238,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
   s4K sLabelOrdAgg;
 
   bool bInflateGenerated = false;
+  bool bInflateCrw = false;
   bool bGeneratePotTub = true;
 
   OpSketch *pOpSketch;
@@ -274,11 +275,16 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // skip scan OP
-    if (pOp->szOpNm()->bSame("scan"_Stz))
+    if (pOp->szOpNm()->bSame("scan"_Stz)) {
+      bInflateCrw = true;
       continue;
+    }
 
     // generate code for indexScan OP
     if (pOp->szOpNm()->bSame("indexScan_v2"_Stz)) {
+
+      // either scan / indexScan should be there
+      RASSERT( ! bInflateCrw );
 
       eHandlerKind = HK_INDEXBUFFER;
 
@@ -295,8 +301,8 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for inflate (driving code) if not already inflated
-    if (!bInflateGenerated) {
+    // generate the code for inflateCrw before handling the current operator
+    if (bInflateCrw) {
 
       RASSERT(!m_xStageOps.m_bIndexScan);
 
@@ -309,11 +315,30 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       pOpSketch = pSketchInflateCrw(pStream, pOp, eHandlerKind);
       vAppend(pOpSketch);
 
-      m_bRowBuffer = true;
+      bInflateCrw = false;
+      bInflateGenerated = true;
+      ePrevStencil_v2 = SR_IT;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for inflateRow before handling the current operator
+    if ( ! bInflateGenerated) {
+
+      RASSERT(!m_xStageOps.m_bIndexScan);
+
+      eHandlerKind = HK_ROWBUFFER;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //vSetupScan(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchInflateRow(pStream, pOp, eHandlerKind);
+      vAppend(pOpSketch);
 
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
     }
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOP
@@ -1492,15 +1517,13 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKi
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  // create a new shape for this OP
-  pOpSketch = new OpSketch;
-
   // get the columns to be selected
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
 
+  // make the labels
   sLabel.vSprint("L_InflateT"_Stz);
   sLabelNext.vSprint("L_InflateCrwRet"_Stz);
   sLabelLoop.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
@@ -1517,39 +1540,35 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKi
 /*----------------------------------------------------------------------------*/
 /* sketch inflate of row from rowBuffer                                       */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp) {
+OpSketch* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKind) {
 
-  /*
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
-  OpSketch *pShape;
-  CodeSynth_v2 *pCodeSynth;
+  OpSketch *pOpSketch;
 
   s256 sLabel;
+  s256 sLabelNext;
+  s256 sLabelLoop;
 
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  // create a new shape for this OP
-  pShape = new OpSketch;
+  // create a new opSketch for this OP
+  pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the streamDefLft
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, SR_IT);
-  pCodeSynth->vSynthStruct(0);
-  pShape->vStructSynthA(pCodeSynth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the row inflate
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
+  // make the labels
   sLabel.vSprint("L_InflateT"_Stz);
-  pCodeSynth->vSynthInflateRow(sLabel, m_xStageOps.m_sLabelOrdAgg);
-  pShape->vCodeSynthA(pCodeSynth);
+  sLabelNext.vSprint(""_Stz);
+  sLabelLoop.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
 
-  return pShape;
-   */
-  return nullptr;
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
