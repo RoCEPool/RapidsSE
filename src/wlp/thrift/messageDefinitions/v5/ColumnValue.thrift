@@ -37,20 +37,32 @@ struct Time {
 
 // The class of interval.
 enum IntervalType {
-  YEAR_MONTH,
-  DAY_TIME
+  YEAR,
+  MONTH,
+  YEAR_TO_MONTH,
+  DAY,
+  HOUR,
+  MINUTE,
+  SECOND,
+  DAY_TO_HOUR,
+  DAY_TO_MINUTE,
+  DAY_TO_SECOND,
+  HOUR_TO_MINUTE,
+  HOUR_TO_SECOND,
+  MINUTE_TO_SECOND
 }
 
 // Definition of an interval, used below.
 struct Interval {
   1: required IntervalType type
-  2: optional i64 year
-  3: optional i64 month
-  4: optional i64 day
-  5: optional i64 hour
-  6: optional i64 minute
-  7: optional i64 second
-  8: optional i64 nanoseconds
+  2: optional bool isNegative
+  3: optional i64  year
+  4: optional i64  month
+  5: optional i64  day
+  6: optional i64  hour
+  7: optional i64  minute
+  8: optional i64  second
+  9: optional i64  nanoseconds
 }
 
 // Definition of a column value, used below.

@@ -23,8 +23,19 @@ namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace me
 
 struct IntervalType {
   enum type {
-    YEAR_MONTH = 0,
-    DAY_TIME = 1
+    YEAR = 0,
+    MONTH = 1,
+    YEAR_TO_MONTH = 2,
+    DAY = 3,
+    HOUR = 4,
+    MINUTE = 5,
+    SECOND = 6,
+    DAY_TO_HOUR = 7,
+    DAY_TO_MINUTE = 8,
+    DAY_TO_SECOND = 9,
+    HOUR_TO_MINUTE = 10,
+    HOUR_TO_SECOND = 11,
+    MINUTE_TO_SECOND = 12
   };
 };
 
@@ -318,7 +329,8 @@ void swap(Time &a, Time &b);
 std::ostream& operator<<(std::ostream& out, const Time& obj);
 
 typedef struct _Interval__isset {
-  _Interval__isset() : year(false), month(false), day(false), hour(false), minute(false), second(false), nanoseconds(false) {}
+  _Interval__isset() : isNegative(false), year(false), month(false), day(false), hour(false), minute(false), second(false), nanoseconds(false) {}
+  bool isNegative :1;
   bool year :1;
   bool month :1;
   bool day :1;
@@ -335,6 +347,7 @@ class Interval : public virtual ::apache::thrift::TBase {
   Interval& operator=(const Interval&) noexcept;
   Interval() noexcept
            : type(static_cast<IntervalType::type>(0)),
+             isNegative(0),
              year(0),
              month(0),
              day(0),
@@ -350,6 +363,7 @@ class Interval : public virtual ::apache::thrift::TBase {
    * @see IntervalType
    */
   IntervalType::type type;
+  bool isNegative;
   int64_t year;
   int64_t month;
   int64_t day;
@@ -361,6 +375,8 @@ class Interval : public virtual ::apache::thrift::TBase {
   _Interval__isset __isset;
 
   void __set_type(const IntervalType::type val);
+
+  void __set_isNegative(const bool val);
 
   void __set_year(const int64_t val);
 
@@ -379,6 +395,10 @@ class Interval : public virtual ::apache::thrift::TBase {
   bool operator == (const Interval & rhs) const
   {
     if (!(type == rhs.type))
+      return false;
+    if (__isset.isNegative != rhs.__isset.isNegative)
+      return false;
+    else if (__isset.isNegative && !(isNegative == rhs.isNegative))
       return false;
     if (__isset.year != rhs.__isset.year)
       return false;

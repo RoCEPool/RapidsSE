@@ -1696,8 +1696,8 @@ i8 AdaptorWL::eToWLType(eCT eColType)
     case CT_DECIMAL:      return DataType::DECIMAL;
     case CT_FLOAT:        return DataType::FLOAT;
     case CT_INTEGER:      return DataType::BIGINT;
-    case CT_INTERVAL_DT:  return DataType::INTERVAL;  // TODO: Needs to change
-    case CT_INTERVAL_YM:  return DataType::INTERVAL;  // TODO: Needs to change
+    case CT_INTERVAL_DT:  return DataType::INTERVAL_DAY_TO_SECOND;  // TODO: Needs to change and be a specific interval type
+    case CT_INTERVAL_YM:  return DataType::INTERVAL_YEAR_TO_MONTH;  // TODO: Needs to change and be a specific interval type
     case CT_TIME:         return DataType::TIME;
     case CT_TIMESTAMP:    return DataType::TIMESTAMP;
     case CT_VARCHAR:      return DataType::VARCHAR;
@@ -1816,22 +1816,24 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         break;
 
       case DM_IVD:  // day-time
-        // TODO: Needs the interval branch completed first
+        // TODO: We actually need to set the specific interval type and then only set the fields that matter.
         wDtm = iVal;
-        xIntervalWL.__set_type(IntervalType::type::DAY_TIME);
-        xIntervalWL.__set_day(0);
-        xIntervalWL.__set_hour(0);
-        xIntervalWL.__set_minute(0);
-        xIntervalWL.__set_second(0);
-        xIntervalWL.__set_nanoseconds(0);
+        xIntervalWL.__set_type(IntervalType::type::DAY_TO_SECOND);
+        xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
+        xIntervalWL.__set_day(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros / (C_SECS_PER_DAY * C_1M));
+        xIntervalWL.__set_hour(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros   % (C_SECS_PER_DAY * C_1M) / (C_SECS_PER_HR * C_1M));
+        xIntervalWL.__set_minute(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
+        xIntervalWL.__set_second(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
+        xIntervalWL.__set_nanoseconds((wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
         break;
 
       case DM_IVY:  // year-month
-        // TODO: Needs the interval branch completed first
+        // TODO: We actually need to set the specific interval type and then only set the fields that matter.
         wDtm = iVal;
-        xIntervalWL.__set_type(IntervalType::type::YEAR_MONTH);
-        xIntervalWL.__set_year(0);
-        xIntervalWL.__set_month(0);
+        xIntervalWL.__set_type(IntervalType::type::YEAR_TO_MONTH);
+        xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
+        xIntervalWL.__set_year(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
+        xIntervalWL.__set_month(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
         break;
 
       case DM_TME:

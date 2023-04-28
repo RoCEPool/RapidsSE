@@ -14,8 +14,14 @@ LATEST_THRIFT_DIR="$(find -E "${DIR}" -type d -regex ".*/v[0-9]+" -maxdepth 1 | 
 echo "Latest thrift dir is: ${LATEST_THRIFT_DIR}"
 COMPAT_THRIFT_DIR="${DIR}/compatibility"
 
-THRIFT_FILES=$(find "${LATEST_THRIFT_DIR}" -type f -name "*.thrift" -print0  | xargs -0)
-THRIFT_FILES+=$(find "${COMPAT_THRIFT_DIR}" -type f -name "*.thrift" -print0  | xargs -0)
+# Make a list of all the thrift files.
+# This includes all those in the latest version and all those in the compatibility dialog too.
+THRIFT_FILES=()
+while IFS= read -r line; do THRIFT_FILES+=("${line}"); done < <(find "${COMPAT_THRIFT_DIR}" -type f -name "*.thrift")
+while IFS= read -r line; do THRIFT_FILES+=("${line}"); done < <(find "${LATEST_THRIFT_DIR}" -type f -name "*.thrift")
+
+
+
 OUTPUT_DIR="${DIR}/../generated"
 
 # Check for thrift support
@@ -35,7 +41,7 @@ mkdir -p "${OUTPUT_DIR}"
 
 COUNTER=0
 
-for f in ${THRIFT_FILES}
+for f in "${THRIFT_FILES[@]}"
 do
   echo -n "Compiling ${f}... "
   thrift -r --out "${OUTPUT_DIR}" --gen cpp "${f}"

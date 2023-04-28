@@ -14,14 +14,36 @@
 namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace messages { namespace v5 {
 
 int _kIntervalTypeValues[] = {
-  IntervalType::YEAR_MONTH,
-  IntervalType::DAY_TIME
+  IntervalType::YEAR,
+  IntervalType::MONTH,
+  IntervalType::YEAR_TO_MONTH,
+  IntervalType::DAY,
+  IntervalType::HOUR,
+  IntervalType::MINUTE,
+  IntervalType::SECOND,
+  IntervalType::DAY_TO_HOUR,
+  IntervalType::DAY_TO_MINUTE,
+  IntervalType::DAY_TO_SECOND,
+  IntervalType::HOUR_TO_MINUTE,
+  IntervalType::HOUR_TO_SECOND,
+  IntervalType::MINUTE_TO_SECOND
 };
 const char* _kIntervalTypeNames[] = {
-  "YEAR_MONTH",
-  "DAY_TIME"
+  "YEAR",
+  "MONTH",
+  "YEAR_TO_MONTH",
+  "DAY",
+  "HOUR",
+  "MINUTE",
+  "SECOND",
+  "DAY_TO_HOUR",
+  "DAY_TO_MINUTE",
+  "DAY_TO_SECOND",
+  "HOUR_TO_MINUTE",
+  "HOUR_TO_SECOND",
+  "MINUTE_TO_SECOND"
 };
-const std::map<int, const char*> _IntervalType_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(2, _kIntervalTypeValues, _kIntervalTypeNames), ::apache::thrift::TEnumIterator(-1, nullptr, nullptr));
+const std::map<int, const char*> _IntervalType_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(13, _kIntervalTypeValues, _kIntervalTypeNames), ::apache::thrift::TEnumIterator(-1, nullptr, nullptr));
 
 std::ostream& operator<<(std::ostream& out, const IntervalType::type& val) {
   std::map<int, const char*>::const_iterator it = _IntervalType_VALUES_TO_NAMES.find(val);
@@ -787,6 +809,11 @@ void Interval::__set_type(const IntervalType::type val) {
   this->type = val;
 }
 
+void Interval::__set_isNegative(const bool val) {
+  this->isNegative = val;
+__isset.isNegative = true;
+}
+
 void Interval::__set_year(const int64_t val) {
   this->year = val;
 __isset.year = true;
@@ -861,6 +888,14 @@ uint32_t Interval::read(::apache::thrift::protocol::TProtocol* iprot) {
         }
         break;
       case 2:
+        if (ftype == ::apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->isNegative);
+          this->__isset.isNegative = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->year);
           this->__isset.year = true;
@@ -868,7 +903,7 @@ uint32_t Interval::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
+      case 4:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->month);
           this->__isset.month = true;
@@ -876,7 +911,7 @@ uint32_t Interval::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
+      case 5:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->day);
           this->__isset.day = true;
@@ -884,7 +919,7 @@ uint32_t Interval::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 5:
+      case 6:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->hour);
           this->__isset.hour = true;
@@ -892,7 +927,7 @@ uint32_t Interval::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 6:
+      case 7:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->minute);
           this->__isset.minute = true;
@@ -900,7 +935,7 @@ uint32_t Interval::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 7:
+      case 8:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->second);
           this->__isset.second = true;
@@ -908,7 +943,7 @@ uint32_t Interval::read(::apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 8:
+      case 9:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->nanoseconds);
           this->__isset.nanoseconds = true;
@@ -939,38 +974,43 @@ uint32_t Interval::write(::apache::thrift::protocol::TProtocol* oprot) const {
   xfer += oprot->writeI32(static_cast<int32_t>(this->type));
   xfer += oprot->writeFieldEnd();
 
+  if (this->__isset.isNegative) {
+    xfer += oprot->writeFieldBegin("isNegative", ::apache::thrift::protocol::T_BOOL, 2);
+    xfer += oprot->writeBool(this->isNegative);
+    xfer += oprot->writeFieldEnd();
+  }
   if (this->__isset.year) {
-    xfer += oprot->writeFieldBegin("year", ::apache::thrift::protocol::T_I64, 2);
+    xfer += oprot->writeFieldBegin("year", ::apache::thrift::protocol::T_I64, 3);
     xfer += oprot->writeI64(this->year);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.month) {
-    xfer += oprot->writeFieldBegin("month", ::apache::thrift::protocol::T_I64, 3);
+    xfer += oprot->writeFieldBegin("month", ::apache::thrift::protocol::T_I64, 4);
     xfer += oprot->writeI64(this->month);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.day) {
-    xfer += oprot->writeFieldBegin("day", ::apache::thrift::protocol::T_I64, 4);
+    xfer += oprot->writeFieldBegin("day", ::apache::thrift::protocol::T_I64, 5);
     xfer += oprot->writeI64(this->day);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.hour) {
-    xfer += oprot->writeFieldBegin("hour", ::apache::thrift::protocol::T_I64, 5);
+    xfer += oprot->writeFieldBegin("hour", ::apache::thrift::protocol::T_I64, 6);
     xfer += oprot->writeI64(this->hour);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.minute) {
-    xfer += oprot->writeFieldBegin("minute", ::apache::thrift::protocol::T_I64, 6);
+    xfer += oprot->writeFieldBegin("minute", ::apache::thrift::protocol::T_I64, 7);
     xfer += oprot->writeI64(this->minute);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.second) {
-    xfer += oprot->writeFieldBegin("second", ::apache::thrift::protocol::T_I64, 7);
+    xfer += oprot->writeFieldBegin("second", ::apache::thrift::protocol::T_I64, 8);
     xfer += oprot->writeI64(this->second);
     xfer += oprot->writeFieldEnd();
   }
   if (this->__isset.nanoseconds) {
-    xfer += oprot->writeFieldBegin("nanoseconds", ::apache::thrift::protocol::T_I64, 8);
+    xfer += oprot->writeFieldBegin("nanoseconds", ::apache::thrift::protocol::T_I64, 9);
     xfer += oprot->writeI64(this->nanoseconds);
     xfer += oprot->writeFieldEnd();
   }
@@ -982,6 +1022,7 @@ uint32_t Interval::write(::apache::thrift::protocol::TProtocol* oprot) const {
 void swap(Interval &a, Interval &b) {
   using ::std::swap;
   swap(a.type, b.type);
+  swap(a.isNegative, b.isNegative);
   swap(a.year, b.year);
   swap(a.month, b.month);
   swap(a.day, b.day);
@@ -994,6 +1035,7 @@ void swap(Interval &a, Interval &b) {
 
 Interval::Interval(const Interval& other7) noexcept {
   type = other7.type;
+  isNegative = other7.isNegative;
   year = other7.year;
   month = other7.month;
   day = other7.day;
@@ -1005,6 +1047,7 @@ Interval::Interval(const Interval& other7) noexcept {
 }
 Interval& Interval::operator=(const Interval& other8) noexcept {
   type = other8.type;
+  isNegative = other8.isNegative;
   year = other8.year;
   month = other8.month;
   day = other8.day;
@@ -1019,6 +1062,7 @@ void Interval::printTo(std::ostream& out) const {
   using ::apache::thrift::to_string;
   out << "Interval(";
   out << "type=" << to_string(type);
+  out << ", " << "isNegative="; (__isset.isNegative ? (out << to_string(isNegative)) : (out << "<null>"));
   out << ", " << "year="; (__isset.year ? (out << to_string(year)) : (out << "<null>"));
   out << ", " << "month="; (__isset.month ? (out << to_string(month)) : (out << "<null>"));
   out << ", " << "day="; (__isset.day ? (out << to_string(day)) : (out << "<null>"));

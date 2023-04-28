@@ -27,7 +27,19 @@ int _kDataTypeValues[] = {
   DataType::DATE,
   DataType::TIME,
   DataType::TIMESTAMP,
-  DataType::INTERVAL,
+  DataType::INTERVAL_YEAR,
+  DataType::INTERVAL_MONTH,
+  DataType::INTERVAL_YEAR_TO_MONTH,
+  DataType::INTERVAL_DAY,
+  DataType::INTERVAL_HOUR,
+  DataType::INTERVAL_MINUTE,
+  DataType::INTERVAL_SECOND,
+  DataType::INTERVAL_DAY_TO_HOUR,
+  DataType::INTERVAL_DAY_TO_MINUTE,
+  DataType::INTERVAL_DAY_TO_SECOND,
+  DataType::INTERVAL_HOUR_TO_MINUTE,
+  DataType::INTERVAL_HOUR_TO_SECOND,
+  DataType::INTERVAL_MINUTE_TO_SECOND,
   DataType::VARCHAR,
   DataType::VARBINARY
 };
@@ -43,11 +55,23 @@ const char* _kDataTypeNames[] = {
   "DATE",
   "TIME",
   "TIMESTAMP",
-  "INTERVAL",
+  "INTERVAL_YEAR",
+  "INTERVAL_MONTH",
+  "INTERVAL_YEAR_TO_MONTH",
+  "INTERVAL_DAY",
+  "INTERVAL_HOUR",
+  "INTERVAL_MINUTE",
+  "INTERVAL_SECOND",
+  "INTERVAL_DAY_TO_HOUR",
+  "INTERVAL_DAY_TO_MINUTE",
+  "INTERVAL_DAY_TO_SECOND",
+  "INTERVAL_HOUR_TO_MINUTE",
+  "INTERVAL_HOUR_TO_SECOND",
+  "INTERVAL_MINUTE_TO_SECOND",
   "VARCHAR",
   "VARBINARY"
 };
-const std::map<int, const char*> _DataType_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(14, _kDataTypeValues, _kDataTypeNames), ::apache::thrift::TEnumIterator(-1, nullptr, nullptr));
+const std::map<int, const char*> _DataType_VALUES_TO_NAMES(::apache::thrift::TEnumIterator(26, _kDataTypeValues, _kDataTypeNames), ::apache::thrift::TEnumIterator(-1, nullptr, nullptr));
 
 std::ostream& operator<<(std::ostream& out, const DataType::type& val) {
   std::map<int, const char*>::const_iterator it = _DataType_VALUES_TO_NAMES.find(val);
