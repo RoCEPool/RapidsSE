@@ -67,6 +67,8 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
 
   //pCI->G_vNewMember(CK_EXPR);
 
+  RASSERT(p_expr_fold->szP_Type());
+
   Card_Expr* p_expr_new = new Card_Expr;
 
   p_expr_new->pSymbol()->Y_vSet(P_Injected);
@@ -82,8 +84,7 @@ void Card_FoldElist::vPush_foldExpr_Into_gbyAgg_projection(CardIter* pCI, Card_E
   xSymbol_keyOdn.vSetKeyOrdinal(1);
 
   Card_Term* p_term_new = p_expr_fold->pSub_term()->pClone(xSymbol_keyOdn);
-  if (p_expr_fold->pSub_type())
-    p_rpnCalc_new->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_fold->pSub_type()->szValue())]);
+  p_rpnCalc_new->pSymbol()->Y_vSet(P_Type, p_expr_fold->szP_Type());
 
   p_rpnCalc_new->vAppend(p_term_new);
 
