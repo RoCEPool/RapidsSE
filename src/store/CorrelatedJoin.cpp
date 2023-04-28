@@ -482,7 +482,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           Card_Expr* p_expr_found =
               pCI->Analysis.m_pProjection_prior->pGetExpr(0);
 
-          xCI.G.p_MainCard->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+          xCI.G.p_MainCard->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
         }
         else

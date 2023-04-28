@@ -386,7 +386,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
 
-    p_term_one->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+    p_term_one->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
     pCI->vPrintBoard(__LINE__);
     return;
@@ -413,7 +413,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
 
-    p_term_head->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(p_expr_found->pSub_type()->szValue())]);
+    p_term_head->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
     pCI->vPrintBoard(__LINE__);
 
