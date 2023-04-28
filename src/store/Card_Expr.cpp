@@ -294,9 +294,8 @@ bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Type* p_type_this = this->pSub_type();
-  Card_Type* p_type_arg  = p_expr_arg->pSub_type();
-  if (!p_type_this->bIsSame(p_type_arg))
+
+  if (! szP_Type()->bSame(p_expr_arg->szP_Type()))
     return false;
 
   Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();

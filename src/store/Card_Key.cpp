@@ -90,7 +90,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 
   RASSERT(this->szP_Type());
   RASSERT(p_key_arg->szP_Type());
-  
+
   if (! szP_Type()->bSame(p_key_arg->szP_Type()))
     return false;
 
