@@ -35,6 +35,28 @@ int vInflateCrwEnd(struct Combined_T* aCombinedT)
  // marker-end
 }
 
+// function-vInflateRowEnd
+/*--------------------------------------------------------------------*/
+/* vInflateRowEnd                                                     */
+/*--------------------------------------------------------------------*/
+int vInflateRowEnd(struct Combined_T* aCombinedT)
+{
+  {
+
+    L_AdvanceNextRow:
+
+    // marker-start
+    goto L_AdvanceNextRow;
+
+    L_Return:
+    goto L_ReturnFinal;
+
+    L_ReturnFinal:
+    return 1;
+  }
+  // marker-end
+}
+
 // function-vIndexScanEnd
 /*--------------------------------------------------------------------*/
 /* vIndexScanEnd                                                      */

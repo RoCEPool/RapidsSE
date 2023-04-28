@@ -104,7 +104,6 @@ void* Tub::aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode)
     }
 
     *aazStrArea = pRowBuffer->azDepositString_begin();
-
     return pRow->aCellArray();
   }
   catch (LowMemory xLowMemory) {

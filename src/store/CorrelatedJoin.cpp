@@ -331,10 +331,9 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->Sqy.m_pExpr_corr->pSymbol()->Y_szGet(P_Type));
       pCI->G.p_key->vAppend(pCI->G.p_expr);
 
-      if (pCI->G.p_expr->pSub_type()) {
-        pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
-        pCI->G.p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
-      }
+      pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, pCI->G.p_expr->szP_Type());
+      pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->G.p_expr->szP_Type());
+
     }
     // TODO: hack...
     pCI->G.p_expr->v_Child(0);
@@ -356,10 +355,9 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,"__SQCRLKEY"_Stz);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, xSymbol_keyOdn);
-      if (pCI->G.p_expr->pSub_type()) {
-        pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
-        pCI->G.p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_expr->pSub_type()->szValue())]);
-      }
+
+      pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, pCI->G.p_expr->szP_Type());
+      pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->G.p_expr->szP_Type());
     }
 
     pCI->G.p_expr->pSymbol()->Y_vSet(P_InjCrlKey);

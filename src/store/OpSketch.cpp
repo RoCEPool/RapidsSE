@@ -946,6 +946,9 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
   //RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
   //pExprStack = m_pExprStack;
 
+  if (pExprStack == m_pInitStack)
+    pExprStack = m_pExprStack;
+
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
     vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
 

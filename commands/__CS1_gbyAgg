@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __CS2: Code Synthesizer V2                                                 */
+/* __CS1_gbyAgg: Code Synthesizer V2                                          */
 /*============================================================================*/
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
@@ -8,33 +8,19 @@ explain stage transliterate select sum(n_nationKey) from nation group by n_regio
 
 /ccode pipeline unamed
 begin
- stage S01 on origin :
+ stage stageStart on origin :
    start
    | pulse once
-   | next
- stage S02 on all partitions :
+   | stageMarker0541
+
+ stage stageMarker0541 on all partitions :
    scan rapidsse public Nation
-   | gbyagg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | combined 0
-   | next
-/*
- stage S03 on all nodes :
-   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
    | combined 0
    | next
 
- stage S04 on origin :
-   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | combined 0
-   | next
- stage S05 on origin :
-   project " type INTEGER $1 "
-   | combined 0
-   | next
-  */
- stage S06 on origin :
+ stage stageLast on origin :
    output
    | sink
-   | first
+   | stageStart
 end ;
-

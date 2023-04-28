@@ -252,10 +252,10 @@ void vGbyAggFindKey(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iGbyAggInsertKey --------------------------------------------------------*/
+/*-- iGbyAggInsertIntKey -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iGbyAggInsertKey
-i8 iGbyAggInsertKey(Combined_T* aCombinedT) {
+// function-iGbyAggInsertIntKey
+i8 iGbyAggInsertIntKey(Combined_T* aCombinedT) {
 
   void* aEntInserted;
   void* aEntFound;
@@ -312,6 +312,39 @@ i8 iGbyAggIntKeyEnd(Combined_T* aCombinedT) {
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggInsertVchKey -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggInsertVchKey
+i8 iGbyAggInsertVchKey(Combined_T* aCombinedT) {
+
+  void* aEntInserted;
+  void* aEntFound;
+  i8 __PAYLOADBYTES__;
+
+  // marker-start
+
+  // - - - - - - - - - - - - - -
+  // insert key in the payload
+  aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_iErrorCode);
+  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  if (aEntInserted) {
+    aCombinedT->m_iRowsProcessed++;
+    aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted
+        + sizeof(struct Ent_int)
+        + ((struct Ent_int*)aEntInserted)->m_iIntElm0
+        + __PAYLOADBYTES__);
+  }
+
+  aEntFound = aEntInserted;
+
+// marker-end
+
+
+}
 /*----------------------------------------------------------------------------*/
 /*-- iGbyAggGenKeyEnd --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -473,6 +506,83 @@ void vInflateIndexScanReturn(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vInflateRowBegin --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vInflateRowBegin
+void vInflateRowBegin(Combined_T* aCombinedT) {
+
+  i8* paW;
+  i8 i_CurrentRow;
+  i8* piColumn;
+
+  // marker-start
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INFLATE-ROW
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  L_InflateRowT:
+
+
+  paW = &aCombinedT->m_aW[0];
+
+  i_CurrentRow = -1;
+
+  L_AdvanceNextRow:
+
+   aCombinedT->m_iJoinedRows = 0;
+
+   // process the row
+   aCombinedT->m_iProcessRow = 1;
+
+   i_CurrentRow++;
+   if (i_CurrentRow  >= aCombinedT->m_nRows) {
+     goto L_Return;
+   }
+
+   // get the next row (should be able to add rowsize)
+#ifdef WITH_TINYC
+   aCombinedT->m_aRowCellArrayT = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_CurrentRow);
+#endif
+
+   aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;
+
+   piColumn = (i8*)aCombinedT->m_aRowCellArrayT;
+
+  // marker-end
+  L_Return:
+    return;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vInflateRowCol ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vInflateRowCol
+void vInflateRowCol(Combined_T* aCombinedT) {
+
+  m8* amCellAddress;
+  i8* piColumn;
+  i8 iOffset;
+  i8 i_Col;
+  i8 __COLUMN__;
+
+  // marker-start
+  // - - - - - - - - - - - -
+  i_Col = __COLUMN__;
+
+  iOffset = piColumn[i_Col];
+  if (iOffset != C_DATUM_NULL) {
+    amCellAddress = (m8*)&piColumn[i_Col];
+    piColumn[i_Col] = ADDR_ADD(i8, amCellAddress, iOffset);
+  }
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexScanBegin ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexScanBegin
@@ -513,6 +623,7 @@ void vIndexScanBegin(Combined_T* aCombinedT) {
   return;
 
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- vIndexScanContinue ------------------------------------------------------*/
@@ -596,6 +707,7 @@ void vProjectBegin(Combined_T* aCombinedT) {
   // PROJECT-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  struct __STRUCT_FROM__* __STRUCT_FROM__;
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
@@ -604,6 +716,8 @@ void vProjectBegin(Combined_T* aCombinedT) {
     aCombinedT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
+
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
 
   aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayP;
@@ -1079,24 +1193,53 @@ void vPayLoadToTubCol(Combined_T* aCombinedT) {
 void vPayLoadToTubVchCol(Combined_T* aCombinedT) {
 
   i8 __PAYLOAD_INDEX__;
+  i8 nSrcSize;
+
+  i8 iOffset;
+
+  char* szSrcStz;
+  char* szDstStz;
+  m8* amCellAddress;
 
   struct __STRUCT_FROM__ {
-    union Int_T __COLUMN_FROM__;
+    union Vch_T __COLUMN_FROM__;
   };
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
   struct __STRUCT_TO__ {
-    union Int_T __COLUMN_TO__;
+    union Vch_T __COLUMN_TO__;
   };
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
-  // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // column __COLUMN_NO__
+   // marker-start
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // column __COLUMN_NO__
 
-  p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
+   szSrcStz = (char*)(char*)aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
+   if (szSrcStz == (char*)C_DATUM_NULL) {
+     // copy the source to the destination
+     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = C_DATUM_NULL;
+   }
+   else {
+     nSrcSize = strlen(szSrcStz) + 1;
+
+     // get the destination string
+     szDstStz = aCombinedT->m_racTubStrArea;
+     strncpy(szDstStz, szSrcStz, nSrcSize);
+
+     // copy the source to the destination
+     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
+     iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);
+     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
+
+     // update the tub string size
+     aCombinedT->m_racTubStrArea += nSrcSize;
+#ifdef WITH_TINYC
+     vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
+#endif
+  }
 
   // marker-end
 }
