@@ -395,6 +395,8 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 
   RASSERT (pCI->G.p_MainCard->bIsCard(CK_PROJECT));
 
+  RASSERT(pCI->G.p_key->szP_Type());
+
   pCI->G.p_type = pCI->G.p_key->pGetChild(0)->pSub_type();
 
   pCI->G.p_projection = pCI->G.p_project->pSub_projection();
@@ -412,10 +414,8 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   Symbol x_Symbol_stmCol1;
   x_Symbol_stmCol1.vSetStreamColOrdinal(1);
 
-  if (pCI->G.p_type) {
-    pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
-    pCI->G.p_term->pSymbol()->Y_vSet(P_Type, szCT_char[Card::eTo_eCT(pCI->G.p_type->szValue())]);
-  }
+  pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, pCI->G.p_key->szP_Type());
+  pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->G.p_key->szP_Type());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace <project>/<stream> now that __SQ1IGBKY1 has been added

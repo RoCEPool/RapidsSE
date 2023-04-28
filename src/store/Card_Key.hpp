@@ -21,6 +21,8 @@ namespace STORE
     bool bIsEqual(Card_Key* p_key_arg);
 
     void vTypes_For_stmColOdn(CardIter *pCI);
+
+    Stz* szP_Type(void);
   };
 
   Card_Key* _pCard_Key(void* aAddr);

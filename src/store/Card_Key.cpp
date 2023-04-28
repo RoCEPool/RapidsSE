@@ -88,22 +88,11 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Type* p_type_this = pSub_type();
-  Card_Type* p_type_arg  = p_key_arg->pSub_type();
-
-  if (p_type_this) {
-    if (p_type_arg) {
-      if (!p_type_this->bIsSame(p_type_arg))
-        return false;
-    }
-    else {
-      return false;
-    }
-  }
-  else
-  if (p_type_arg) {
+  RASSERT(this->szP_Type());
+  RASSERT(p_key_arg->szP_Type());
+  
+  if (! szP_Type()->bSame(p_key_arg->szP_Type()))
     return false;
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -159,6 +148,20 @@ void Card_Key::vTypes_For_stmColOdn(CardIter *pCI)
     xKid.p_expr()->vTypes_For_stmColOdn(pCI);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Key::szP_Type(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szP_Type = nullptr;
+
+  if (Card_Expr* p_expr = pSub_expr())
+    szP_Type = p_expr->szP_Type();
+
+  return szP_Type;
+}
 
 /*============================================================================*/
 /* end                                                                        */
