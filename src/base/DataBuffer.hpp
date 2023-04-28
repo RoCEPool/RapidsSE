@@ -16,7 +16,6 @@ namespace BASE
 #endif
 
     LglPtn m_tLglPtn;
-    i8     m_iBucketNo;     // this DataBuffer's bucket number
 
     i8     m_iBufferHeight; // buffer height in the tree
     Birth  m_oWhenNewed;    // when was this buffer created?
@@ -28,9 +27,9 @@ namespace BASE
     tXN m_tTxnNo; // transaction number
 
 #ifdef WITH_BUFFER_ID
-    PadWord m__PadToCacheLine[17];
-#else
     PadWord m__PadToCacheLine[18];
+#else
+    PadWord m__PadToCacheLine[19];
 #endif
 
 
@@ -62,10 +61,6 @@ namespace BASE
     void vTxnNo(tXN tTxnNo);
 
     i8 iAgeSec(void);
-
-    i8 iBucketNo(void);
-
-    void vBucketNo(i8 iBucketNo);
 
     i8 iBufferHeight(void);
 

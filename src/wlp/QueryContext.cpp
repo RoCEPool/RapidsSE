@@ -81,7 +81,7 @@ void QueryContext::vInit(com::rapidsdata::wirelineprotocol::messages::v5::QueryE
   m_nStmtParsed        = 0;
   m_nStmtSucceeded     = 0;
   m_nStmtFailed        = 0;
-  m_iQueryStartNanos   = Timer::iGetTimeOfDay();
+  m_iQueryStartNanos   = Hardware::iReadClock();
   //m_pStmtCtxList
 
   // Parse out each statement in the batch from the query and create a StatementContext

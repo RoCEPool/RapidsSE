@@ -23,7 +23,10 @@ LOG = logging.getLogger(__name__)
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
-C_EC2_BOOT_TIMEOUT_SEC = 300
+C_EC2_BOOT_TIMEOUT_SEC = 600
+
+# The file that contains the list of running instance IDs
+C_EC2_INSTANCE_FILE = pathlib.Path("runningInstances.txt")
 
 # The format specification for the artifact directory for each test result
 C_TEST_ARTIFACT_FMT = "tid{:02d}-{}"
@@ -170,6 +173,7 @@ class JobRunner:
                         errmsg = "" if job_timed_out else ""
                         self.current_test_runner.result.set_test_ended(False, False, stderr=errmsg)
                         self.current_test_runner.copy_jmeter_logs()
+                        self.current_test_runner.copy_cloud_init_output()
                         self.test_results.append(self.current_test_runner.result)
 
         except errors.Ec2InstanceTimeoutError as e:
@@ -245,6 +249,7 @@ class JobRunner:
             ec2.start_instances(self.all_configs.get_hardware().get_instance_type(),
                                 self.all_configs.get_hardware().get_image_id(),
                                 C_CLOUD_INIT_SCRIPT,
+                                self.all_configs.get_hardware().get_iam_role_name(),
                                 self.all_configs.get_hardware().get_num_machines(),
                                 C_INSTANCE_NAME_PREFIX,
                                 C_EC2_BOOT_TIMEOUT_SEC,
@@ -255,6 +260,10 @@ class JobRunner:
 
         assert len(self.instance_ids) > 0
         assert len(self.ip_addresses) > 0
+
+        # Record the started instances to file so that they can always be terminated by
+        # a cleanup script
+        ec2.record_started_instances(self.instance_ids, C_EC2_INSTANCE_FILE)
 
         # Copy and modify the cluster config file for the AWS hosts that were started.
         orig_cluster_cfg = pathlib.Path(self.all_configs.get_job().get_resolved_cluster_config_path())
@@ -379,7 +388,7 @@ class JobRunner:
         artifact_name = C_TEST_ARTIFACT_FMT.format(test_id, TestRunner.get_test_name_from_path(test_path))
         artifact_dir = pathlib.Path(self.result_path) / artifact_name
 
-        LOG.debug(f"Making artifact dir: {str(artifact_dir)}")
+        LOG.info(f"Making artifact dir: {str(artifact_dir)}")
         os.makedirs(str(artifact_dir), exist_ok=True)
         return str(artifact_dir)
 
@@ -453,7 +462,9 @@ class JobRunner:
                   f"{str(self.instance_ids)}"
             LOG.warning(msg)
 
-        pass
+        # Remove the file that contains the list of instances that were started
+        if os.path.exists(C_EC2_INSTANCE_FILE):
+            os.remove(C_EC2_INSTANCE_FILE)
 
     def __record_results(self, abnormal_exit: bool):
         """Record the results of the test into the database and prepare the result files for Bamboo"""
@@ -479,6 +490,9 @@ class JobRunner:
         current_time = datetime.datetime.now()
         end_time = current_time + datetime.timedelta(seconds=timeout)
 
+        minutes_left = int((end_time - current_time).total_seconds() / 60)
+        last_minutes_left = minutes_left
+
         while current_time < end_time:
 
             if not test_thread.is_alive():
@@ -491,6 +505,12 @@ class JobRunner:
                 self.abnormal_exit = True
                 return timed_out, se_crashed
 
+            # Print how long the job has left, in minutes.
+            minutes_left = int((end_time - current_time).total_seconds() / 60)
+            if minutes_left != last_minutes_left:
+                last_minutes_left = minutes_left
+                LOG.info(f"Job has approximately {minutes_left} minutes left to finish.")
+
             # Test thread still running and SE not crashed. Try again in a little bit.
             time.sleep(C_TEST_MONITORING_SLEEP_IVL)
             current_time = datetime.datetime.now()
@@ -499,3 +519,13 @@ class JobRunner:
         timed_out = True
         self.abnormal_exit = True
         return timed_out, se_crashed
+
+
+def terminate_instances_from_file():
+    """If an instance file exists, then terminate the instances running in it."""
+    try:
+        ec2.terminate_instances_from_file(C_EC2_INSTANCE_FILE)
+
+    finally:
+        if os.path.exists(C_EC2_INSTANCE_FILE):
+            os.remove(C_EC2_INSTANCE_FILE)

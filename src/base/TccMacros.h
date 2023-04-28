@@ -27,7 +27,7 @@
 #define _PSH_INT(iArg) \
   *paW++ = iArg;
 
-#define _PSH_IVL(iArg)  \
+#define _PSH_IVD(iArg)  \
   *paW++ = iArg;
 
 #define _PSH_IVY(iArg)  \
@@ -198,6 +198,80 @@
       *(paW++) = C_DATUM_NULL;                                              \
     }                                                                       \
     else {                                                                  \
+      if (iArg1 > iArg2) {                                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (iArg1 < iArg3)                                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
+#define _BET_IVDIVD(eErrorCode)                                             \
+  {                                                                         \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
+    ivlArg2.m_iAsI8 = *(--paW);                                             \
+    ivlArg3.m_iAsI8 = *(--paW);                                             \
+                                                                            \
+    if (eErrorCode != EC_NONE ||                                            \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *paW++ = C_DATUM_NULL;                                                \
+    }                                                                       \
+    else {                                                                  \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
+      iArg3 = ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
+                                                                            \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+                                                                            \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+                                                                            \
+      if (ivlArg3.m_xIvl.m_bIsNeg)                                          \
+        iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+                                                                            \
+      if (iArg1 > iArg2) {                                                  \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (iArg1 < iArg3)                                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
+#define _BET_IVYIVY(eErrorCode)                                             \
+  {                                                                         \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
+    ivlArg2.m_iAsI8 = *(--paW);                                             \
+    ivlArg3.m_iAsI8 = *(--paW);                                             \
+                                                                            \
+    if (eErrorCode != EC_NONE ||                                            \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL ||                                  \
+        ivlArg2.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *paW++ = C_DATUM_NULL;                                                \
+    }                                                                       \
+    else {                                                                  \
+      iArg1 = ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
+      iArg2 = ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
+      iArg3 = ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
+                                                                            \
+      if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
+        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+                                                                            \
+      if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
+        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+                                                                            \
+     if (ivlArg3.m_xIvl.m_bIsNeg)                                           \
+       iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                  \
+                                                                            \
       if (iArg1 > iArg2) {                                                  \
         *(paW++) = 0;                                                       \
       }                                                                     \
@@ -402,38 +476,56 @@
     }                                                                       \
   }
 
-#define _INX_INTINT(eErrorCode)                                             \
+#define _INX_IVDIVD(eErrorCode)                                             \
   {                                                                         \
     bFilterResult = 0;                                                      \
-    iArg1 = *(--paW);                                                       \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
     if (eErrorCode != EC_NONE ||                                            \
-        iArg1 == C_DATUM_NULL) {                                            \
+      ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                    \
       *(paW++) = 0;                                                         \
     }                                                                       \
     else {                                                                  \
       iInCount = *(--paW);                                                  \
       while(iInCount--) {                                                   \
-        iArg2 = *(--paW);                                                   \
-        if (iArg1 == iArg2) {                                               \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
+        if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&        \
+             (ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros == ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros) ) \
+        {                                                                   \
            bFilterResult = 1;                                               \
            break;                                                           \
         }                                                                   \
       }                                                                     \
       while(iInCount-- > 0) {                                               \
-        iArg2 = *(--paW);                                                   \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
       }                                                                     \
       *(paW++) = bFilterResult;                                             \
     }                                                                       \
   }
 
-#define _INX_IVLIVL(eErrorCode)                                             \
-  {                                                                         \
-    iErrorCode = EC_NOT_IMPLEMENTED;                                        \
-  }
-
 #define _INX_IVYIVY(eErrorCode)                                             \
   {                                                                         \
-    iErrorCode = EC_NOT_IMPLEMENTED;                                        \
+    bFilterResult = 0;                                                      \
+    ivlArg1.m_iAsI8 = *(--paW);                                             \
+    if (eErrorCode != EC_NONE ||                                            \
+        ivlArg1.m_iAsI8 == C_DATUM_NULL) {                                  \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      iInCount = *(--paW);                                                  \
+      while(iInCount--) {                                                   \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
+        if ( (ivlArg1.m_xIvl.m_bIsNeg == ivlArg2.m_xIvl.m_bIsNeg) &&        \
+             (ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths == ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths) ) \
+        {                                                                   \
+           bFilterResult = 1;                                               \
+           break;                                                           \
+        }                                                                   \
+      }                                                                     \
+      while(iInCount-- > 0) {                                               \
+        ivlArg2.m_iAsI8 = *(--paW);                                         \
+      }                                                                     \
+      *(paW++) = bFilterResult;                                             \
+    }                                                                       \
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -483,6 +575,16 @@
   *(paW++) = iArg1;
 
 #define _DUP_INT(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_IVD(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_IVY(eErrorCode)                                                \
   iArg1 = *(--paW);                                                         \
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
@@ -981,6 +1083,24 @@
       *(paW++) = (i8)szDstArea;                                             \
       szDstArea += (i8)(nDstSize) + 1;                                      \
     }                                                                       \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  NOT SUPPORTED
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _OPR_NOTNOT(eErrorCode)                                            \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
+    eErrorCode = EC_NOT_IMPLEMENTED;                                       \
+    *paW++ = C_DATUM_NULL;                                                 \
+  }
+
+#define _OPR_NOT(eErrorCode)                                               \
+  {                                                                        \
+    iArg2 = *(--paW);                                                      \
+    eErrorCode = EC_NOT_IMPLEMENTED;                                       \
+    *paW++ = C_DATUM_NULL;                                                 \
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

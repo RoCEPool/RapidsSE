@@ -70,7 +70,6 @@
 #include "LglPtnMap.hpp"
 
 
-#include "BucketMap.hpp"
 #include "BufferMap.hpp"
 
 #include "ChildExit.hpp"
@@ -89,7 +88,6 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "CrwTablePtn.hpp"
-#include "Bucket.hpp"
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "PtnStm_cursor.hpp"
@@ -125,8 +123,6 @@
 
 #include "Metadata.hpp"
 #include "MetaGet.hpp"
-#include "BucketGet.hpp"
-#include "BucketInfo.hpp"
 
 #include "Parcel.hpp"
 #include "Numbering.hpp"
@@ -258,6 +254,10 @@
 #include "graphTools/GraphEditor.hpp"
 
 #include "parser/stages/parser/SqlPlanner.hpp"
+#include "parser/common/TypeMap1D.hpp"
+#include "parser/common/TypeMap2D.hpp"
+#include "parser/common/ExtractMap.hpp"
+
 using namespace Parser;
 
 #include "PayloadObj.hpp"
@@ -294,12 +294,6 @@ SizeHeap gxaSizeHeap[]
   { CN_BIRTH,                    sizeof(Birth),              HT_INVALID   ,FILL },
   { CN_BOARD,                    sizeof(Board),              HT_T_SMALL   ,FILL },
   { CN_BOLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
-  { CN_BUCKET,                   sizeof(Bucket),             HT_T_TINY    ,FILL },
-  { CN_BUCKETGET,                sizeof(BucketGet),          HT_T_TINY    ,FILL },
-  { CN_BUCKETINFO,               sizeof(BucketInfo),         HT_T_TINY    ,FILL },
-  { CN_BUCKETMAP,                sizeof(BucketMap),          HT_T_SMALL   ,FILL },
-  { CN_BKTMAPGET,                sizeof(BktMapGet),          HT_T_TINY    ,FILL },
-  { CN_BUCKETVEC,                sizeof(BucketVec),          HT_T_TINY    ,FILL },
   { CN_BUFFERMAP,                sizeof(BufferMap),          HT_INVALID   ,FILL },
   { CN_BUFFERPOOL,               sizeof(BufferPool),         HT_INVALID   ,FILL },
   { CN_BYTERATE,                 sizeof(ByteRate),           HT_T_TINY    ,FILL },
@@ -356,6 +350,7 @@ SizeHeap gxaSizeHeap[]
   { CN_EVMGR,                    sizeof(EvMgr),              HT_T_TINY    ,FILL },
   { CN_EXEMPLAR,                 sizeof(Exemplar),           HT_T_TINY    ,FILL },
   { CN_EXITOPERAND,              sizeof(ExitOperand),        HT_T_TINY    ,FILL },
+  { CN_EXTRACTMAP,               sizeof(ExtractMap),         HT_T_TINY    ,FILL },
 
   { CN__F__,                     'F' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_FIFO,                     sizeof(Fifo),               HT_T_TINY    ,FILL },
@@ -662,6 +657,8 @@ SizeHeap gxaSizeHeap[]
   { CN_TUB,                      sizeof(Tub),                HT_T_TINY    ,FILL },
   { CN_TX,                       sizeof(Tx),                 HT_T_TINY    ,FILL },
   { CN_TXSET,                    sizeof(TxSet),              HT_T_TINY    ,FILL },
+  { CN_TYPEMAP1D,                sizeof(TypeMap1D),          HT_T_TINY    ,FILL },
+  { CN_TYPEMAP2D,                sizeof(TypeMap2D),          HT_T_TINY    ,FILL },
 
   { CN__U__,                     'U' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_UNITINT,                  sizeof(UnitInt),            HT_T_TINY    ,FILL },

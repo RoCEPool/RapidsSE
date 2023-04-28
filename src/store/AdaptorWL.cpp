@@ -1665,7 +1665,7 @@ void AdaptorWL::vFinishQueryDialog()
 {
   vNextState(QUERY_COMPLETED);
 
-  i8 iQueryEndNanos = Timer::iGetTimeOfDay();
+  i8 iQueryEndNanos = Hardware::iReadClock();
   double dQueryTime = (double) (iQueryEndNanos - m_oQueryCtx.iQueryStartNanos()) / C_1B;
 
   QueryExecuteResponse xResponse;
@@ -1815,7 +1815,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         xColumnWL.__set_bigintVal(iVal);
         break;
 
-      case DM_IVL:  // day-time
+      case DM_IVD:  // day-time
         // TODO: Needs the interval branch completed first
         wDtm = iVal;
         xIntervalWL.__set_type(IntervalType::type::DAY_TIME);

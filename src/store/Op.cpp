@@ -119,16 +119,27 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
 Op::~Op(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
+
+  bool bAssert = false;
   if (m_pPipeIn->pQueueLeft()->nItems() != 0) {
-    vTrace("Operand Queue not empty\n"_Stz);
+    //vTrace("Operand Queue not empty\n"_Stz)
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
-      vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+      if (pOperand->bIsMarker()) {
+        if ((_pMarker(pOperand))->eOpMarker() == EV_X_CHILDEXIT)
+          AM::vDeleteOperand(pOperand, nullptr);
+        }
+        else {
+        bAssert = true;
+        vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+        }
+
       pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     }
-    RASSERT(0);
+    if (bAssert)
+      RASSERT(0);
   }
+
   if (m_pPipeIn->pQueueRight()->nItems() != 0) {
     vTrace("Operand Queue not empty\n"_Stz);
     Operand *pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
@@ -137,6 +148,17 @@ Op::~Op(void) noexcept(false)
       pOperand = m_pPipeIn->pQueueRight()->pPopQueue();
     }
     RASSERT(0);
+  }
+
+  // drain the OOO queue
+  if (m_pPipeIn->pQueueOoO()->nItems() != 0) {
+    vTrace("Operand OOO Queue not empty\n"_Stz);
+    Operand *pOperand = m_pPipeIn->pQueueOoO()->pPopQueue();
+    while (pOperand) {
+      //vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+      AM::vDeleteOperand(pOperand, nullptr);
+      pOperand = m_pPipeIn->pQueueOoO()->pPopQueue();
+    }
   }
 
   delete m_pEvMgr;
@@ -494,8 +516,9 @@ void Op::vEventCountInc(eEV eEvent)
   m_pEvMgr->m_eCurEvent = eEvent;
 
   m_pEvMgr->m_naEventCount[m_pEvMgr->m_eCurEvent]++;
-  
-  i8 iTscp = BASE::iRdtscp();
+
+  u4 uProcId;
+  i8 iTscp = Hardware::iReadTsc(&uProcId);
   m_pEvMgr->m_pOperandWatch->vSaw(m_pEvMgr->m_eCurEvent,iTscp);
 }
 

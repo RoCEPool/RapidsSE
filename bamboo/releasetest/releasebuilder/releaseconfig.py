@@ -12,8 +12,20 @@ from pyutils.clusterconfig import ClusterConfig
 # to have multiple non-unique keys and get the values for this key
 # as a list.
 # Source: https://stackoverflow.com/a/70375875
+# Note: Modified to support values that are None or empty strings.
+#       These were being truncated otherwise.
+
 class ConfigParserMultiValues(OrderedDict):
+
     def __setitem__(self, key, value):
+        if key == "iamrolename":
+            # print(f"in __setitem__ : key = {key} ; value = {str(value)}")
+            # if key in self:
+            #     print(f"self[key] = {str(self[key])}")
+
+            if value == [''] or value == [None]:
+                value = ["xxxNonexxx"]
+
         if key in self and isinstance(value, list):
             self[key].extend(value)
         else:
@@ -21,7 +33,15 @@ class ConfigParserMultiValues(OrderedDict):
 
     @staticmethod
     def getlist(value):
-        return value.splitlines()
+        # print(f"Raw value = {str(value)}")
+
+        retval = []
+        for val in value.splitlines():
+            if val == "xxxNonexxx":
+                retval.append(None)
+            else:
+                retval.append(val)
+        return retval
 
 
 class ReleaseConfig:
@@ -34,6 +54,7 @@ class ReleaseConfig:
     C_TEST_NAME = "TestName"
     C_IMAGE_ID = "ImageId"
     C_CLOUD_INIT = "CloudInit"
+    C_IAM_ROLE_NAME = "IamRoleName"
     C_CLUSTER_CONFIG = "ClusterConfig"
     C_TERMINATE = "Terminate"
     C_TERMINATE_DEFAULT_VAL = True
@@ -45,6 +66,7 @@ class ReleaseConfig:
         # comes from here: https://stackoverflow.com/a/70375875
         self.parser = configparser.ConfigParser(strict=False,
                                                 empty_lines_in_values=False,
+                                                allow_no_value=True,
                                                 dict_type=ConfigParserMultiValues,
                                                 converters={"list": ConfigParserMultiValues.getlist})
         self.parser.read_file(open(path))
@@ -57,11 +79,13 @@ class ReleaseConfig:
         build_instance = self.get_build_instance()
         build_image = self.get_build_image()
         build_cloudinit = self.get_build_cloudinit()
+        build_iam_role = self.get_build_iam_role_name()
 
         test_instance = self.get_test_instance()
         test_name_list = self.get_test_names()
         test_image_list = self.get_test_images()
         test_cloudinit_list = self.get_test_cloudinits_paths()
+        test_iam_role_list = self.get_test_iam_role_names()
         test_cluster_config_list = self.get_test_cluster_configs()
 
         if build_name is None or len(build_name) == 0:
@@ -181,6 +205,11 @@ class ReleaseConfig:
         cloudinit = self.__resolve_path(cloudinit)
         return cloudinit
 
+    def get_build_iam_role_name(self) -> str:
+        """Returns the name of the IAM role to be used for building SE,
+           or an empty string if not set."""
+        return self.parser.get(self.C_BUILD_SECTION, self.C_IAM_ROLE_NAME, fallback="")
+
     def get_build_terminate(self) -> bool:
         """Do we shutdown the instance at the end of the build phase?"""
         return self.parser.getboolean(self.C_BUILD_SECTION, self.C_TERMINATE, fallback=self.C_TERMINATE_DEFAULT_VAL)
@@ -233,6 +262,11 @@ class ReleaseConfig:
             cloudinits[i] = pathlib.Path(self.__resolve_path(s))
 
         return cloudinits
+
+    def get_test_iam_role_names(self) -> [str]:
+        """Returns a list of IAM role names to be used for testing SE"""
+        iam_role_names: [str] = self.parser.getlist(self.C_TEST_SECTION, self.C_IAM_ROLE_NAME)
+        return iam_role_names
 
     def get_test_cluster_configs(self) -> [ClusterConfig]:
         """Returns a list of ClusterConfig objects which have extracted out

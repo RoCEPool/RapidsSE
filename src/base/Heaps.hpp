@@ -74,7 +74,9 @@ namespace BASE
     Footer* aFooter(void);
   };
 }
-[[noreturn]] void *vLoadHeapBuffers(void *pFuncObj);
+
+void *pLoadHeapBuffers(void *pFuncObj);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

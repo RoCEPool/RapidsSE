@@ -13,6 +13,7 @@
 #include "ShadowRoot.hpp"
 #include "GraphEditor.hpp"
 #include "TypeSystem.hpp"
+#include "TypeMap1D.hpp"
 
 using namespace Parser;
 
@@ -23,55 +24,23 @@ static Stz* C_NAME_PREFIX = "SubstringExpr"_Stz;
 static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/stringFunction/substring"_Stz;
 
 // What is the resulting type when the source expression is of a given type?
-static eCT aeSrcExprTypeCalculus[CT_ENUMS] = {
-/*  0 NONE       */  CT_NONE,
-/*  1 BOOLEAN    */  CT_NONE,
-/*  2 CHAR       */  CT_VARCHAR,
-/*  3 DATE       */  CT_NONE,
-/*  4 DECIMAL    */  CT_NONE,
-/*  5 FLOAT      */  CT_NONE,
-/*  6 INTEGER    */  CT_NONE,
-/*  7 INTERVAL_DT*/  CT_NONE,
-/*  8 INTERVAL_YM*/  CT_NONE,
-/*  9 TIME       */  CT_NONE,
-/* 10 TIMESTAMP  */  CT_NONE,
-/* 11 VARCHAR    */  CT_VARCHAR,
-/* 12 UNKNOWN    */  CT_UNKNOWN 
-};
+static TypeMap1D* S_pSrcExprTypeCalculus = (new TypeMap1D())
+    ->pAddMapping(TypeId::xIdOf(CT_CHAR),    TypeId::xIdOf(CT_VARCHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_VARCHAR), TypeId::xIdOf(CT_VARCHAR))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN), TypeId::xIdOf(CT_UNKNOWN))
+;
 
 // What is the resulting type when the FROM expression is of a given type?
-static eCT aeFromExprTypeCalculus[CT_ENUMS] = {
-/*  0 NONE       */  CT_NONE,
-/*  1 BOOLEAN    */  CT_NONE,
-/*  2 CHAR       */  CT_NONE,
-/*  3 DATE       */  CT_NONE,
-/*  4 DECIMAL    */  CT_NONE,
-/*  5 FLOAT      */  CT_NONE,
-/*  6 INTEGER    */  CT_INTEGER,
-/*  7 INTERVAL_DT*/  CT_NONE,
-/*  8 INTERVAL_YM*/  CT_NONE,
-/*  9 TIME       */  CT_NONE,
-/* 10 TIMESTAMP  */  CT_NONE,
-/* 11 VARCHAR    */  CT_NONE,
-/* 12 UNKNOWN    */  CT_UNKNOWN
-};
+static TypeMap1D* S_pFromExprTypeCalculus = (new TypeMap1D())
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER), TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN), TypeId::xIdOf(CT_UNKNOWN))
+;
 
 // What is the resulting type when the LENGTH expression is of a given type?
-static eCT aeLengthExprTypeCalculus[CT_ENUMS] = {
-/*  0 NONE       */  CT_NONE,
-/*  1 BOOLEAN    */  CT_NONE,
-/*  2 CHAR       */  CT_NONE,
-/*  3 DATE       */  CT_NONE,
-/*  4 DECIMAL    */  CT_NONE,
-/*  5 FLOAT      */  CT_NONE,
-/*  6 INTEGER    */  CT_INTEGER,
-/*  7 INTERVAL_DT*/  CT_NONE,
-/*  8 INTERVAL_YM*/  CT_NONE,
-/*  9 TIME       */  CT_NONE,
-/* 10 TIMESTAMP  */  CT_NONE,
-/* 11 VARCHAR    */  CT_NONE,
-/* 12 UNKNOWN    */  CT_UNKNOWN
-};
+static TypeMap1D* S_pLengthExprTypeCalculus = (new TypeMap1D())
+    ->pAddMapping(TypeId::xIdOf(CT_INTEGER), TypeId::xIdOf(CT_INTEGER))
+    ->pAddMapping(TypeId::xIdOf(CT_UNKNOWN), TypeId::xIdOf(CT_UNKNOWN))
+;
 
 
 /*----------------------------------------------------------------------------*/
@@ -256,27 +225,29 @@ TypeId SubstringExpr::xTypeId(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pFromExprNode   = SubstringExpr::pFromExpr(pExprNode);
   QueryNode* pLengthExprNode = SubstringExpr::pLengthExpr(pExprNode);
 
-  eCT eSrcType    = Expr::xTypeId(pSrcExprNode, pRootNode).eCTVal();
-  eCT eFromType   = Expr::xTypeId(pFromExprNode, pRootNode).eCTVal();
-  eCT eLengthType = (pLengthExprNode ? Expr::xTypeId(pLengthExprNode, pRootNode).eCTVal() : CT_INTEGER);
+  TypeId xSrcType    = Expr::xTypeId(pSrcExprNode, pRootNode);
+  TypeId xFromType   = Expr::xTypeId(pFromExprNode, pRootNode);
+  TypeId xLengthType = (pLengthExprNode ? Expr::xTypeId(pLengthExprNode, pRootNode) : TypeId::xIdOf(CT_INTEGER));
 
-  eCT eResultSrcType    = aeSrcExprTypeCalculus[eSrcType];
-  eCT eResultFromType   = aeFromExprTypeCalculus[eFromType];
-  eCT eResultLengthType = aeLengthExprTypeCalculus[eLengthType];
+  TypeId xResultSrcType    = S_pSrcExprTypeCalculus->xLookup(xSrcType);
+  TypeId xResultFromType   = S_pFromExprTypeCalculus->xLookup(xFromType);
+  TypeId xResultLengthType = S_pLengthExprTypeCalculus->xLookup(xLengthType);
   
-  if (eResultSrcType    == CT_NONE ||
-      eResultFromType   == CT_NONE ||
-      eResultLengthType == CT_NONE) {
+  if ( !xResultSrcType.bIsValid()  ||
+       !xResultFromType.bIsValid() ||
+       !xResultLengthType.bIsValid() ) {
     return TypeId::xIdOf(CT_NONE);
   }
 
-  if (eResultSrcType    == CT_UNKNOWN ||
-      eResultFromType   == CT_UNKNOWN ||
-      eResultLengthType == CT_UNKNOWN) {
-    return TypeId::xIdOf(CT_UNKNOWN);
+  TypeId xUnknown = TypeId::xIdOf(CT_UNKNOWN);
+
+  if (xResultSrcType    == xUnknown ||
+      xResultFromType   == xUnknown ||
+      xResultLengthType == xUnknown) {
+    return xUnknown;
   }
 
-  return TypeId::xIdOf(eResultSrcType);
+  return xResultSrcType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,7 +288,7 @@ void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNo
   if (eStrSrcType != CT_CHAR &&
       eStrSrcType != CT_VARCHAR &&
       eStrSrcType != CT_UNKNOWN &&
-      Expr::bIsImplicitlyCoercibleTo(TypeId::xIdOf(CT_VARCHAR), pStrSrc, pRootNode)) {
+      Expr::bIsImplicitlyCoercibleTo(TypeId::xIdOf(CT_VARCHAR), pStrSrc, pSubstringExpr, pRootNode)) {
 
     // We don't need to worry about pStrSrc being a compound expression where a
     // lower branch of it requires coercion because we walk the expression graphs

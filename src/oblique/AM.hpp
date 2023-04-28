@@ -7,6 +7,7 @@
 #include <list>
 #include <iterator>
 
+#include "BufferId.hpp"
 #include "Heartbeat.hpp"
 #include "eAA.h"
 #include "eDA.h"
@@ -143,10 +144,6 @@ using namespace BASE;
 namespace STORE {
   class AttachMap;
 
-  class Bucket;
-  //class BucketMap;
-  class BucketMap;
-
   class Crv;
   class Crw;
   class CrwBuffer;
@@ -257,14 +254,6 @@ namespace OBLIQUE
       static void vSysMetricsAdd(SysMetrics* pSysMetrics);
       static SysMetrics* pSysMetricsChain(void);
     };
-  
-    class BKTMAP
-    {
-    public:
-      static LglPtn tLglPtnOf(KeyBkt tKeyBkt);
-
-      static BucketMap* pBucketMap(void);
-    };
 
     class DIC
     {
@@ -303,6 +292,9 @@ namespace OBLIQUE
 
       static void  vNodeMonDemonJobId(JobId tJobId);
       static JobId tNodeMonDemonJobId(void);
+
+      static void  vPageInDemonJobId(JobId tJobId);
+      static JobId tPageInDemonJobId(void);
 
       static void  vPageOutDemonJobId(JobId tJobId);
       static JobId tPageOutDemonJobId(void);
@@ -500,6 +492,12 @@ namespace OBLIQUE
     {
     public:
       static Job* pFindJob(JobId tJobId, bool bLockJob=false);
+    };
+
+    class PAGING
+    {
+    public:
+      static InfoSet* pToPageIn(Task* pTask, BufferId oBufferId);
     };
   
     class PARCEL
@@ -754,7 +752,7 @@ namespace OBLIQUE
 
     static JobList* pDemonJobs(void);
     static JobList* pExitedJobs(void);
-#ifdef WITH_HASHMAP
+#ifdef WITH_PAGING
     static HashMap* pHashMap(void);
 #endif
     static Heaps* pHeaps(void);
@@ -878,7 +876,6 @@ namespace OBLIQUE
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);
     static LglPtnMap* pLglPtnMap(void);
-    static BucketMap* pBucketMap(void);
 
     static i8 iQueryNoInc(void);
 

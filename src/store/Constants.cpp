@@ -319,7 +319,7 @@ void Constants::vAddConstantsCpp(void)
   /*  3 */ vAddConstant("DM_DTE"_Stz, DM_DTE);
   /*  4 */ vAddConstant("DM_FLT"_Stz, DM_FLT);
   /*  5 */ vAddConstant("DM_INT"_Stz, DM_INT);
-  /*  6 */ vAddConstant("DM_IVL"_Stz, DM_IVL);
+  /*  6 */ vAddConstant("DM_IVD"_Stz, DM_IVD);
   /*  7 */ vAddConstant("DM_IVY"_Stz, DM_IVY);
   /*  8 */ vAddConstant("DM_TME"_Stz, DM_TME);
   /*  9 */ vAddConstant("DM_TSP"_Stz, DM_TSP);
@@ -338,6 +338,8 @@ void Constants::vAddConstantsCpp(void)
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
 
   /*  6 */ vAddConstant("EC_DECIMAL_NOT_SUPPORTED"_Stz, EC_DECIMAL_NOT_SUPPORTED);
+  /*  6 */ vAddConstant("EC_DATE_OUT_OF_RANGE"_Stz,       EC_DATE_OUT_OF_RANGE);
+  /*  6 */ vAddConstant("EC_DISK_SPACE_CHECK_FAILED"_Stz, EC_DISK_SPACE_CHECK_FAILED);
   /*  6 */ vAddConstant("EC_DIVIDE_BY_ZERO"_Stz,     EC_DIVIDE_BY_ZERO);
   /*  7 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
   /*  8 */ vAddConstant("EC_DUPLICATE_KEY"_Stz,      EC_DUPLICATE_KEY);
@@ -345,7 +347,8 @@ void Constants::vAddConstantsCpp(void)
   /* 10 */ vAddConstant("EC_FOLDER_NOT_EMPTY"_Stz,   EC_FOLDER_NOT_EMPTY);
   /* 11 */ vAddConstant("EC_INDEX_EXISTS"_Stz,       EC_INDEX_EXISTS);
   /* 11 */ vAddConstant("EC_INTERNAL_ERROR"_Stz,             EC_INTERNAL_ERROR);
-  /* 11 */ vAddConstant("EC_INTERVAL_NOT_SUPPORTED"_Stz,          EC_INTERVAL_NOT_SUPPORTED);
+  /* 11 */ vAddConstant("EC_INTERVAL_NOT_SUPPORTED"_Stz,      EC_INTERVAL_NOT_SUPPORTED);
+  /* 11 */ vAddConstant("EC_INTERVAL_OUT_OF_RANGE"_Stz,       EC_INTERVAL_OUT_OF_RANGE);
 
   /* 12 */ vAddConstant("EC_INVALID_CLASS"_Stz,      EC_INVALID_CLASS);
   /* 13 */ vAddConstant("EC_INVALID_COLUMN"_Stz,     EC_INVALID_COLUMN);
@@ -363,7 +366,8 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("EC_INVALID_SIZE"_Stz,       EC_INVALID_SIZE);
   /* 21 */ vAddConstant("EC_INVALID_SYNTAX"_Stz,     EC_INVALID_SYNTAX);
   /* 22 */ vAddConstant("EC_INVALID_VALUE"_Stz,      EC_INVALID_VALUE);
-                        
+
+  /* 23 */ vAddConstant("EC_LOW_DISK_SPACE"_Stz,     EC_LOW_DISK_SPACE);
   /* 23 */ vAddConstant("EC_LOW_MEMORY"_Stz,         EC_LOW_MEMORY);
 
   /*    */ vAddConstant("EC_MAX_INDEX_NAME_LENGTH"_Stz,EC_MAX_INDEX_NAME_LENGTH);
@@ -405,7 +409,7 @@ void Constants::vAddConstantsCpp(void)
   /* 48 */ vAddConstant("EC_NULL_INTERFACE"_Stz,     EC_NULL_INTERFACE);
   /* 49 */ vAddConstant("EC_NULLPTR"_Stz,            EC_NULLPTR);
 
-  /*    */ vAddConstant("EC_ORDERBY_NOT_SUPPORTED"_Stz,EC_ORDERBY_NOT_SUPPORTED);
+  /*    */ vAddConstant("EC_ORDERBY_WITH_AGGREGATES"_Stz,EC_ORDERBY_WITH_AGGREGATES);
 
   /*    */ vAddConstant("EC_PIPELINE_PROTOCOL_ERROR"_Stz,EC_PIPELINE_PROTOCOL_ERROR);
   
@@ -684,10 +688,6 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("EV_NONE"_Stz,              EV_NONE);
-  /*  0 */ vAddConstant("EV_D_BKTMAPGET"_Stz,       EV_D_BKTMAPGET);
-  /*  0 */ vAddConstant("EV_D_BUCKETGET"_Stz,       EV_D_BUCKETGET);
-  /*  0 */ vAddConstant("EV_D_BUCKETINFO"_Stz,      EV_D_BUCKETINFO);
-  /*  0 */ vAddConstant("EV_D_BUCKETMAP_dyn"_Stz,   EV_D_BUCKETMAP_dyn);
   /*  0 */ vAddConstant("EV_D_CRWBUFFER"_Stz,       EV_D_CRWBUFFER);
   /*  0 */ vAddConstant("EV_D_CSVBUFFER"_Stz,       EV_D_CSVBUFFER);
   /*  0 */ vAddConstant("EV_D_ENTBUFFER"_Stz,       EV_D_ENTBUFFER);
@@ -722,6 +722,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_LOADRESULT"_Stz,      EV_I_LOADRESULT);
   /*  0 */ vAddConstant("EV_I_LOCKSTATS"_Stz,       EV_I_LOCKSTATS);
   /*  0 */ vAddConstant("EV_I_NODEINFO"_Stz,        EV_I_NODEINFO);
+  /*  0 */ vAddConstant("EV_I_PAGEINREQUEST"_Stz,   EV_I_PAGEINREQUEST);
   /*  0 */ vAddConstant("EV_I_PATH"_Stz,            EV_I_PATH);
   /*  0 */ vAddConstant("EV_I_PROGRESSUNITS"_Stz,   EV_I_PROGRESSUNITS);
   /*  0 */ vAddConstant("EV_I_PROMPTOUT"_Stz,       EV_I_PROMPTOUT);

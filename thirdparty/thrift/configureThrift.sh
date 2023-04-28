@@ -56,7 +56,7 @@ function checkDependenciesMacOs() {
   # of the PATH so the thrift configure script will find it.
   # Note that the bison check seems to only be needed for the configure script
   # and not the actual compilation.
-  if brew list --versions bison &>dev/null; then
+  if brew list --versions bison &>/dev/null; then
     PATH="$(brew --prefix bison)/bin:${PATH}"
   fi
 
@@ -199,7 +199,7 @@ function runConfigure() {
 
   ) || exit 1
 
-  echo "Configuring Thrift successfully!"
+  echo "Configured Thrift successfully!"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

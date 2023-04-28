@@ -20,7 +20,6 @@ C_INSTALLER_FILESPEC = "rapidsse-*.run"
 
 # How long should we wait for all of the EC2 instances to be started
 # and be ready to use?
-C_EC2_BOOT_TIMEOUT_SEC = 300
 C_SE_BUILD_TIMEOUT_SEC = 1200
 
 OP_CTX = f"{C_TEST_NAME}: "
@@ -108,6 +107,7 @@ class BuildRunner:
         instance_ids, ip_addrs = ec2.start_instances(self.config.get_build_instance(),
                                                      self.config.get_build_image(),
                                                      self.config.get_build_cloudinit(),
+                                                     self.config.get_build_iam_role_name(),
                                                      1,
                                                      name_tag,
                                                      C_INSTANCE_START_TIMEOUT,
@@ -212,6 +212,7 @@ class BuildRunner:
 
             # Write build log to the artifact path
             self.__write_build_log_as_artifact(result.stdout, result.stderr)
+            self.__collect_cloud_init_output()
 
         except errors.SshError as e:
             LOG.error(f"Error while trying to build RapidsSE on host {self.ip_addr}: {command}. "
@@ -219,6 +220,12 @@ class BuildRunner:
 
             # Write build log to the artifact path
             self.__write_build_log_as_artifact(e.stdout, e.stderr)
+
+            # Get the cloud-init output
+            try:
+                self.__collect_cloud_init_output()
+            except errors.SshError:
+                pass
 
             # Don't display a giant output message
             e.stdout = None
@@ -228,6 +235,12 @@ class BuildRunner:
         except subprocess.TimeoutExpired as e:
             # Write build log to the artifact path
             self.__write_build_log_as_artifact(e.stdout, e.stderr)
+
+            # Get the cloud-init output
+            try:
+                self.__collect_cloud_init_output()
+            except errors.SshError:
+                pass
 
             msg = f"Building RapidsSE timed out after {e.timeout} seconds: " \
                   f"{command}. Refer to the build log artifacts."
@@ -248,6 +261,55 @@ class BuildRunner:
             stderr_path = self.artifact_path / "build_stderr.txt"
             with open(stderr_path, "w") as f:
                 f.write(stderr)
+
+    def __collect_cloud_init_output(self) -> None:
+        """Copy the /cloud-init-output.log file to the artifacts directory."""
+
+        command_timeout = 60  # seconds
+
+        remote_filespec = "/cloud-init-output.log"
+        src = f"{self.ip_addr}:{remote_filespec}"
+        dest = f"{str(self.artifact_path)}"
+
+        LOG.debug(f"About to copy the cloud-init-log from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+
+        except errors.SshError:
+            LOG.error(f"Error while copying the cloud-init-log from {src} to {dest}.")
+            raise
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying the cloud-init-log from {src} to {dest} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.info(f"Successfully copied the cloud-init-log from {src} to {dest}")
+
+        # Copy the tex-live output too
+
+        remote_filespec = "/cloud-init-texlive.log"
+        src = f"{self.ip_addr}:{remote_filespec}"
+        dest = f"{str(self.artifact_path)}"
+
+        LOG.debug(f"About to copy the texlive log from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+
+        except errors.SshError:
+            LOG.error(f"Error while copying the texlive log from {src} to {dest}.")
+            raise
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying the texlive-log from {src} to {dest} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.info(f"Successfully copied the texlive log from {src} to {dest}")
 
     def __collect_installer(self) -> None:
         """Copy the installer from the remote machine to the artifacts directory
@@ -280,7 +342,7 @@ class BuildRunner:
         for root, dirs, files in os.walk(str(self.artifact_path)):
             if self.installer_path is not None:
                 break
-                
+
             for name in files:
                 if fnmatch.fnmatch(name, C_INSTALLER_FILESPEC):
                     self.installer_path = pathlib.Path(root) / name
@@ -312,6 +374,28 @@ class BuildRunner:
             raise errors.SshError(msg, e.stdout, e.stderr) from e
 
         LOG.debug(f"Successfully copied the installer checksums from {src} to {dest}")
+
+        # Finally copy the documentation as artifacts too
+        remote_filespec = str(self.remote_repo_dir / "installer" / "output" / "*.zip")
+        src = f"{self.ip_addr}:{remote_filespec}"
+        dest = f"{str(self.artifact_path)}"
+
+        LOG.debug(f"About to copy the documentation from {src} to {dest}")
+
+        try:
+            ssh.run_scp(src, dest, command_timeout, ctx=OP_CTX)
+
+        except errors.SshError:
+            LOG.error(f"Error while copying the documentation from {src} to {dest}.")
+            raise
+
+        except subprocess.TimeoutExpired as e:
+            msg = f"Copying the documentation from {src} to {dest} timed out after {e.timeout} seconds." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.SshError(msg, e.stdout, e.stderr) from e
+
+        LOG.debug(f"Successfully copied the documentation from {src} to {dest}")
 
     def get_installer_path(self) -> pathlib.Path:
         """Returns the path of the local installer file"""

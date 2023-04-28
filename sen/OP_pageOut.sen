@@ -11,8 +11,7 @@
 
   //"Page Out Activity" .
 
-  // update node status based on heartbeat related info
-  PageOut::testPrint
+  PageOut::pageOutCheckLowMemory
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,21 +24,9 @@
   begin
 
     pageout::activity
-    60 thread::sleepSsec
+    2 thread::sleepSsec
 
   again
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_ROWBUFFER ...                                             */
-/*----------------------------------------------------------------------------*/
-: pageout_RowBuffer \handler
-
-  Pipein[]\clear to RowBuffer[]
-
-  RowBuffer[]\clear PageOut::pageOutPoolBuffer
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,8 +42,7 @@
 
   op__topology
 
-  //find: pageout_StartMarker ZK_M_START [op].handler!
-  find: pageout_RowBuffer   EV_D_ROWBUFFER   [op].handler!
+  find: pageout_StartMarker EV_M_START              [op].handler!
 
   op__loop
 

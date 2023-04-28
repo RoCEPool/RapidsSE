@@ -178,9 +178,9 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
         if (ExplainOp::bWithTypes(pExplainNode)) {
           QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjColumn);
           ASSERT(Expr::bIsOfType(pProjectedExpr));
-          eCT eColType = Expr::xTypeId(pProjectedExpr, pRootNode).eCTVal();
+          TypeId xColType = Expr::xTypeId(pProjectedExpr, pRootNode);
 
-          sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
+          sBuf.vCatSprint(" ; type: %s"_Stz, xColType.szTypeName());
         }
       }
 
@@ -694,6 +694,9 @@ b1 ProjectOp::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
 
     // Walk the expression tree looking for a distinct aggregate
     auto fVisitor = [&bIsDistinct](PlanNode* pExprNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+      UNUSED(sPath);
+      UNUSED(iDepth);
+      UNUSED(pvArg);
 
       ASSERT(Expr::bIsOfType(pExprNode));
       if (AggregateExpr::bIsOfType(pExprNode) && AggregateExpr::bIsDistinct(pExprNode)) {

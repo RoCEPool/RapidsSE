@@ -1,7 +1,8 @@
 #!/bin/bash
 
-readonly DIR="$(dirname "$0")"
+readonly DIR="$(dirname "${BASH_SOURCE[0]}")"
 readonly VERSION_FILE="${DIR}/Version.h"
+readonly BASH_VERSION_FILE="${DIR}/version.sh"
 readonly GIT_DESCRIBE_CMD=("git" "describe" "--long" "--match=v*")
 
 BUILD_GIT_HASH="$(git rev-parse --short=16 HEAD)"
@@ -10,24 +11,23 @@ BUILD_HOSTNAME="$(hostname -f)"
 BUILD_USERNAME="$(whoami)"
 BUILD_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
-function updateVersionFile() {
-  rm -f "${VERSION_FILE}"
-
+# Note: This function sets a number of variables to be used by the caller.
+function parseBuildInfo() {
   # Extract out the version number information
   local regex
   local git_version_str
 
   regex="^v([0-9]+)\.([0-9]+)\.([0-9]+)(-[^-]+)?-([0-9]+)-([[:alnum:]]+)$"
-  git_version_str="$(${GIT_DESCRIBE_CMD[*]})"
+  git_version_str="$("${GIT_DESCRIBE_CMD[@]}")"
 
   if [[ "${git_version_str}" =~ ${regex} ]]
   then
-    local SE_MAJOR_VER="${BASH_REMATCH[1]}"
-    local SE_MINOR_VER="${BASH_REMATCH[2]}"
-    local SE_PATCH_VER="${BASH_REMATCH[3]}"
-    local SE_VER_LABEL="${BASH_REMATCH[4]}"
-    local SE_BUILD_NUM="${BASH_REMATCH[5]}"
-    local SE_COMMIT_HASH="${BASH_REMATCH[6]}"
+    SE_MAJOR_VER="${BASH_REMATCH[1]}"
+    SE_MINOR_VER="${BASH_REMATCH[2]}"
+    SE_PATCH_VER="${BASH_REMATCH[3]}"
+    SE_VER_LABEL="${BASH_REMATCH[4]}"
+    SE_BUILD_NUM="${BASH_REMATCH[5]}"
+    SE_COMMIT_HASH="${BASH_REMATCH[6]}"
 
   else
     >&2 echo "Could not parse the SE version string: ${git_version_str}"
@@ -43,10 +43,15 @@ function updateVersionFile() {
   SE_VERSION_STR="${SE_MAJOR_VER}.${SE_MINOR_VER}.${SE_PATCH_VER}${SE_VER_LABEL}"
 
   # If the version label is not null then strip off the leading '-'
-  if [ -n "${SE_VER_LABEL}" ]
-  then
+  if [ -n "${SE_VER_LABEL}" ]; then
     SE_VER_LABEL="${SE_VER_LABEL:1}"
   fi
+}
+
+function updateVersionFile() {
+  rm -f "${VERSION_FILE}"
+
+  parseBuildInfo
 
   {
     echo "/*============================================================================*/"
@@ -111,6 +116,32 @@ function isVersionFileUpToDate() {
   echo "Could not extract out old git hash from version file (doesn't match regex). Creating new version file with git hash ${BUILD_GIT_HASH}."
   false
 }
+
+# Writes out a bash script that can be sourced to get access to the version information.
+function writeBashOutput() {
+  parseBuildInfo
+  
+  {
+    echo "#!/bin/bash"
+    echo ""
+    echo "BUILD_GIT_HASH=\"${BUILD_GIT_HASH}\""
+    echo "BUILD_DATE=\"${BUILD_DATE}\""
+    echo "BUILD_HOSTNAME=\"${BUILD_HOSTNAME}\""
+    echo "BUILD_USERNAME=\"${BUILD_USERNAME}\""
+    echo "BUILD_BRANCH=\"${BUILD_BRANCH}\""
+    echo "VERSION_STRING=\"${SE_VERSION_STR}\""
+    echo "MAJOR_VERSION=${SE_MAJOR_VER}"
+    echo "MINOR_VERSION=${SE_MINOR_VER}"
+    echo "PATCH_VERSION=${SE_PATCH_VER}"
+    echo "VERSION_NUMBER=$(printf "0x%02x%02x%02x" "${SE_MAJOR_VER}" "${SE_MINOR_VER}" "${SE_PATCH_VER}")"
+    echo "VERSION_LABEL=\"${SE_VER_LABEL}\""
+  } > "${BASH_VERSION_FILE}"
+}
+
+if [[ $# -eq 1 && $1 == "--bash" ]]; then
+  writeBashOutput
+  exit 0
+fi
 
 if ! isVersionFileUpToDate; then
   updateVersionFile

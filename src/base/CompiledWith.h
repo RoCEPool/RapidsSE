@@ -91,12 +91,12 @@
 
 //#define WITH_PAGE_FILE EndDefine
 
+//#define WITH_PAGING EndDefine
+
 #define WITH_API_FORK EndDefine       // RAY
 
 
 #define WITH_LOCALS_OOM EndDefine     // RAY
-
-#define WITH_TSCP_TIMER EndDefine    // Arjun: Use tscp as a timer instead of the GetTimeOfDay() for unload/reload timing
 
 /*============================================================================*/
 /* end                                                                        */

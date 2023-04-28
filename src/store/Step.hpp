@@ -36,14 +36,7 @@ namespace STORE
     static void vAddSteps_AttachMap(void);
   
     static void vAddSteps_Bp(void);
-    static void vAddSteps_BktMap(void);
-    static void vAddSteps_BktMapGet(void);
-    static void vAddSteps_BktMapSend(void);
-    static void vAddSteps_BktMapRecv(void);
     static void vAddSteps_Build(void);
-    static void vAddSteps_BucketGet(void);
-    static void vAddSteps_BucketRecv(void);
-    static void vAddSteps_BucketSend(void);
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
@@ -238,8 +231,6 @@ namespace STORE
     /*------------------------------------------------------------------------*/
   
     #include "StepsSet.hpp"
-
-    void vBktMapPipeOut(void);
   };
 }
 

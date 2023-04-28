@@ -607,7 +607,7 @@ bool BufferPool::bReloadSanityCheckAddr(void* aAddress)
 
   FreePoolBuffer* pFreePoolBuffer = reinterpret_cast<FreePoolBuffer*>(aAddress);
 
-  if ( ! pFreePoolBuffer->eGetClassNo() == CN_FREEPOOLBUFFER ) {
+  if ( ! (pFreePoolBuffer->eGetClassNo() == CN_FREEPOOLBUFFER) ) {
     vTrace("BufferPool::bReloadSanityCheckAddr: Heap Buffer address in Buffer Pool free chain was not free\n"_Stz);
     return false;
   }

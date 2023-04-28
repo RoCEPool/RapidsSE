@@ -7,7 +7,6 @@
 #include <signal.h>
 
 #include "CmdLineArgs.hpp"
-#include "BucketMap.hpp"
 #include "LglPtnMap.hpp"
 
 #include "RowOnce.hpp"
@@ -105,7 +104,9 @@ pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
 /*----------------------------------------------------------------------------*/
 void Engine::vMainEntry(void)
 {
-  vHeartInit();
+  if (!gxCmdLineArgs.bUserPrompt()) {
+    vHeartInit();
+  }
 
   if (gxCmdLineArgs.m_xSysArgs.m_iDelay > 0) {
     vTrace("Delayed %lld seconds\n"_Stz, gxCmdLineArgs.m_xSysArgs.m_iDelay);
@@ -483,7 +484,7 @@ void Engine::vChangeDirectory(void)
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
       fprintf(stderr,"RapidsSE Unrecoverable Error\n");
       fprintf(stderr,"  Unable to change to command dir\n");
-      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.szStz());
+      fprintf(stderr,"  %s\n",gxCmdLineArgs.m_xSysArgs.m_sCommandsDir.azChar());
       fprintf(stderr,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
       vThreadCallStackDump();
@@ -1221,7 +1222,6 @@ void Engine::vOpenTrace(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 void Engine::vPostRecvFns(void)
 {
-  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
   gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
   gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
   gxaSizeHeap[CN_INDEX].m_fpPostRecvFn     = (fpPOSTFN*)Index::vPostRecv;
@@ -1357,8 +1357,6 @@ void Engine::vPrintFormats(void)
   vTrace("  F_DTE      = %s\n"_Stz,F_DTE);
   vTrace("  F_FLT      = %s\n"_Stz,F_FLT);
   vTrace("  F_INT      = %s\n"_Stz,F_INT);
-  vTrace("  F_IVL      = %s\n"_Stz,F_IVL);
-  vTrace("  F_IVL_frac = %s\n"_Stz,F_IVL_frac);
   vTrace("  F_TME      = %s\n"_Stz,F_TME);
   vTrace("  F_TME_frac = %s\n"_Stz,F_TME_frac);
   vTrace("  F_TSP      = %s\n"_Stz,F_TSP);
@@ -1552,7 +1550,7 @@ void Engine::vPrintWelcome(void)
   vGetCopyright(sCopyright);
 
   if (gxCmdLineArgs.m_xSysArgs.m_bWelcome && ! gxCmdLineArgs.m_xSysArgs.m_bStatus) {
-    vTrace("%s\n"_Stz,sWelcome.szStz());
+    vTrace("\n%s\n"_Stz,sWelcome.szStz());
     vTrace("%s\n"_Stz,sCopyright.szStz());
   }
 }
@@ -1744,8 +1742,6 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pLglPtnMap =
       new LglPtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
-
-  gpAttachMap->m_pBucketMap = new BucketMap(TT_NORMAL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

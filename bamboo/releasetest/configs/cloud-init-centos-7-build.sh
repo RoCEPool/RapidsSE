@@ -7,6 +7,7 @@
 # We wrap everything in a subshell to redirect all output through the tee command
 # and to a file of our choosing.
 CLOUD_INIT_OUTPUT="/cloud-init-output.log"
+TEXLIVE_OUTPUT="/cloud-init-texlive.log"
 TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
 
 {
@@ -18,6 +19,9 @@ TEE_CMD=("tee" "-ia" "${CLOUD_INIT_OUTPUT}")
   fi
 } > "${CLOUD_INIT_OUTPUT}"
 chmod a+r "${CLOUD_INIT_OUTPUT}"
+
+touch "${TEXLIVE_OUTPUT}"
+chmod a+r "${TEXLIVE_OUTPUT}"
 
 {
 echo
@@ -74,7 +78,6 @@ SUDO_FILE="/etc/sudoers.d/ec2-user"
 } >"${SUDO_FILE}"
 
 chmod 0400 "${SUDO_FILE}"
-
 
 # Set up SSH. We do this early so that we can still login if something goes wrong later on.
 echo
@@ -295,6 +298,55 @@ echo
 chown root:wheel /opt
 chmod g+w /opt
 
+# Set up any pre-requisites
+# Note that we retry any network operations as these can fail or timeout for
+# various reasons. A timeout means that we ultimately cannot connect to this
+# machine.
+
+if ! which aws; then
+  # AWS CLI needs curl and unzip
+  while ! yum install -y curl wget unzip; do
+    sleep 1
+  done
+
+  while ! curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; do
+    sleep 1
+  done
+
+  unzip awscliv2.zip
+  ./aws/install
+fi
+
+# Install Tex Live in parallel in the background to /usr/local/texlive.
+# This is for generating PDF documentation.
+# Needs perl first.
+yum install -y perl
+
+(
+  echo
+  echo "*** Installing TexLive ***"
+  echo
+  cd /usr/local
+  aws s3 cp "s3://rapidsse-build-support/texlive/texlive.2022.${OS_DIST}.tar.gz" - | tar xz
+  chown -R root:root /usr/local/texlive
+  chmod -R g-w /usr/local/texlive
+
+  echo
+  echo "Setting up TexLive environment variables"
+  {
+    echo
+    echo 'TEXLIVEDIR="/usr/local/texlive"'
+    echo 'PATH="${PATH}:${TEXLIVEDIR}/bin/x86_64-linux"'
+    echo 'MANPATH="${MANPATH}:${TEXLIVEDIR}/texmf-dist/doc/man"'
+    echo 'INFOPATH="${INFOPATH}:${TEXLIVEDIR}/texmf-dist/doc/info"'
+    echo
+    echo 'export PATH MANPATH INFOPATH'
+    echo
+  } >>/etc/profile.d/sh.local
+
+  echo
+  echo "TexLive installation complete"
+) &> "${TEXLIVE_OUTPUT}" &
 
 # Apply any package updates
 echo
@@ -309,15 +361,31 @@ if [ "${OS_DIST}" = "${CENTOS7}" ]; then
 fi
 
 # Need to have
-yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip openssl-devel
+yum install -y gcc-c++ git git-lfs cmake libuuid-devel unzip openssl-devel python3 perl-Digest-MD5 gawk vim-enhanced perl-Digest-MD5 perl-Env java-11-openjdk zip
 yum install -y centos-release-scl
 yum install -y devtoolset-11-gcc devtoolset-11-gcc-c++ devtoolset-11-libatomic-devel
+
+# ShellCheck
+echo
+echo "*** Shellcheck ***"
+(
+  cd /usr/local/bin
+  while ! curl -L "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz" -o "shellcheck-stable.linux.x86_64.tar.xz"; do
+    sleep 1
+  done
+  tar xvJf shellcheck-stable.linux.x86_64.tar.xz --strip-components=1 shellcheck-stable/shellcheck
+  chown root:root shellcheck
+  rm -f shellcheck-stable.linux.x86_64.tar.xz
+)
+
+# Documentation generator
+sudo -H -u "${OS_USER}" python3 -m pip install -U --user sphinx
 
 # Runtimes
 # yum install -y libatomic nmap-netcat iproute
 
 # Nice to have
-# yum install -y java-11-openjdk-headless iperf3 iotop telnet vim nload nethogs bmon iftop jq
+# yum install -y java-11-openjdk iperf3 iotop telnet vim nload nethogs bmon iftop jq
 
 sudo -H -u "${OS_USER}" git lfs install
 
@@ -359,7 +427,6 @@ bash_profile="${OS_HOME_DIR}/.bash_profile"
 } >>"${bash_profile}"
 
 chown "${OS_USER}:${OS_USER}" "${bash_profile}"
-
 
 # Indicate cloud-init has completed by dropping a file in /tmp
 echo "$(date) Completed cloud-init script" >/tmp/cloud-init-complete

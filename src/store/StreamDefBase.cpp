@@ -133,7 +133,7 @@ eDM StreamDefBase::eDatum(Stz* szType)
   }
 
   if (szType->bSame("interval"_Stz))
-    return DM_IVL;
+    return DM_IVD;
 
   return (eDM)DM_UNK;
 }
@@ -1061,7 +1061,7 @@ eEC StreamDefBase::eParseColumnInteger(TokenVec* pTknVec, Column* pCol)
 
 /*----------------------------------------------------------------------------*/
 /* parse interval column                                                      */
-/*----------------------------------------------------------------------------*/
+/**/
 eEC StreamDefBase::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -1071,7 +1071,7 @@ eEC StreamDefBase::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
   return EC_INTERVAL_NOT_SUPPORTED;
 
   //pCol->vColumnType(CT_INTERVAL_DT);
-  //pCol->vDatum(DM_IVL);
+  //pCol->vDatum(DM_IVD);
   
   //return EC_NONE;
 }

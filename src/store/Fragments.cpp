@@ -79,8 +79,13 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;"
       "\n  static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;"
       "\n  static const u8 C_YEAR_BASE  = 1900;"
+      "\n  static const u8 C_YEAR_RANGE = 255;"
+      "\n  static const u8 C_YEAR_MAX   = 2155;"
       "\n  static const i8 TMP_TBLCOL_SCALE  = 2;"//ALKA: replace TMP_TBLCOL_SCALE with scale decimal value in table column definition
       "\n"
+      "\n  static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};"
+      "\n  static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};"
+
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
       "\n"
@@ -99,6 +104,10 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  /* time.h */"
       "\n  typedef long                    __darwin_time_t;"
       "\n  typedef __darwin_time_t         time_t;"
+      "\n"
+      "\n  time_t mktime(struct tm *timeptr);"
+      "\n  struct tm *gmtime(const time_t *clock);"
+      "\n  time_t timegm(struct tm *timeptr);"
       "\n"
       "\n  struct tm {"
       "\n  int tm_sec; /* seconds after the minute [0-60] */"
@@ -330,6 +339,10 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    union Flt_T fltArg1;"
       "\n    union Flt_T fltArg2;"
       "\n    union Flt_T fltArg3;"
+      "\n    union Ivl_T ivlArg1;"
+      "\n    union Ivl_T ivlArg2;"
+      "\n    union Ivl_T ivlArg3;"
+      "\n    union Ivl_T wIvlResult;"
       "\n    union Tsp_T xTsp1;"
       "\n    union Tsp_T xTsp2;"
       "\n    union Tsp_T xTsp3;"
@@ -339,9 +352,11 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-  "\n"
-  "";
+      "\n    void* aCrwJ;"
+      "\n    time_t iSecondsSincePosixEpoch;"
+      "\n    struct tm* pDateTime;"
+      "\n"
+      "";
 
   StrLib::vAppendString(&azStr, azFrag);
 }

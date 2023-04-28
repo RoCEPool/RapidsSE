@@ -67,6 +67,7 @@
   start::it_memoryLog
   start::it_nodeInfo
   start::it_operandLog
+  start::it_pageInRequest
   start::it_partitionKey
   start::it_path
   start::it_pingInfo
@@ -125,6 +126,12 @@
   else
     AM::DEMON::tMonDemonJobId!
   then
+  // spawn page in demon
+  //STD_DEMONFORK_TAG pageInDemonPipeline api::forkDemon not if
+  //  "Error Code %v" .printf
+  //else
+  //  AM::DEMON::tPageInDemonJobId!
+  //then
 
   // spawn page out demon
   //STD_DEMONFORK_TAG pageOutDemonPipeline api::forkDemon not if

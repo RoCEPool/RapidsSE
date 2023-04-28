@@ -728,7 +728,7 @@ bool RowCompactor::bAddRowAsCrw_2(Row* pRow)
         break;
         
       //  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-      case DM_IVL:
+      case DM_IVD:
         rxColEnc.m_wDataCode.m_wIvl.T.m_iAsI8 = rxColEnc.m_wDatum.m_wIvl.T.m_iAsI8;
       
         // general case -- encode as: MC_IVL_1..8B : {D}

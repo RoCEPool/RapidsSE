@@ -56,8 +56,6 @@ function processStopArgs() {
   local argCluster=0
   local argNode=0
   local argConfig=0
-  local argReload=0
-  #local argClusterInit=0
 
   while [[ $# -gt 0 ]]
   do

@@ -39,6 +39,23 @@ QueryNode* TimeLiteral::pCreate(Tme xTme)
   return pExpr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Helper function to create expression literal nodes.                        */
+/*----------------------------------------------------------------------------*/
+QueryNode* TimeLiteral::pCreateNull()
+{
+  _static_
+
+  // Create a unique name for this object
+  s256 sName;
+  NodeNamer::vGenerateName(C_TIME_LITERAL_DEFN, sName);
+
+  Value xVal{};
+  xVal.vSetNull(Value::VT_TIME);
+
+  QueryNode* pExpr = new QueryNode(sName, C_TIME_LITERAL_DEFN, static_cast<Value&&>(xVal));
+  return pExpr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */

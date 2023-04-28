@@ -27,7 +27,7 @@ static Stz* C_SQLINTERVAL_DEFN = "/__root__/definitions/types/sqlType/intervalDT
 /*----------------------------------------------------------------------------*/
 /* Creates an instance of this type                                           */
 /*----------------------------------------------------------------------------*/
-PlanNode* SqlIntervalDT::pCreate()
+PlanNode* SqlIntervalDT::pCreate(TypeId xTypeId)
 {
   _static_
 
@@ -37,8 +37,7 @@ PlanNode* SqlIntervalDT::pCreate()
   QueryNode* pNode = new QueryNode(sName, C_SQLINTERVAL_DEFN);
 
   // Add in any common properties
-  // TODO: Set the correct type below
-  SqlType::vCreateCommon(pNode, TypeId::xIdOf(IV_DAY_TO_SECOND));
+  SqlType::vCreateCommon(pNode, xTypeId);
 
   return pNode;
 }
@@ -53,7 +52,7 @@ void SqlIntervalDT::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   UNUSED(pNode);
   UNUSED(pRootNode);
 
-  sBuf.vConcat("INTERVAL DAY TO SECOND"_Stz);
+  sBuf.vConcat(szTypeName(pNode));
 }
 
 /*----------------------------------------------------------------------------*/
