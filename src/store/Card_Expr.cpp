@@ -293,7 +293,7 @@ bool Card_Expr::bHasProjectedCol(Card_Term* p_term_arg)
 bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  
+
   if (! szP_Type()->bSame(p_expr_arg->szP_Type()))
     return false;
 

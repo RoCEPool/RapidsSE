@@ -371,10 +371,11 @@ void Weaver::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  Card_Type* p_type = pCard_Hash->pSub_type();
   Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
 
-  szOpArgs->vCatSprint("\"type %s %s\""_Stz,p_type->szValue(),p_hshCol->szValue());
+  szOpArgs->vCatSprint("\"type %s %s\""_Stz,
+                       aCT[Card::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))],
+                       p_hshCol->szValue());
 }
 
 /*----------------------------------------------------------------------------*/
