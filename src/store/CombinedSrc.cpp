@@ -231,6 +231,26 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeInflateRowCols(pOpSketch, "vInflateRowCol"_Stz);
         break;
 
+      case SK_SORT:
+
+        //vAppendStencilTo(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "iSortBegin"_Stz);
+        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
+        if (pOpSketch->m_nPayloadBytes)
+          vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
+
+        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+          vAppendCodeFragment(pOpSketch, "iGbyAggInsertIntKey"_Stz);
+        }
+        else {
+          vAppendCodeFragment(pOpSketch, "iGbyAggInsertVchKey"_Stz);
+        }
+        vAppendCodePopulatePayloadCols(pOpSketch);
+
+        break;
+
       case SK_TUB:
 
         vAppendStencilTo(pOpSketch);
@@ -429,6 +449,52 @@ void CombinedSrc::vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction
 }
 
 /*----------------------------------------------------------------------------*/
+/* append code fragment for populating payload columns                        */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s16KB sCode;
+  s256 sColumn;
+  i8 i_DupCtr = 1;
+  i8 iPayLoad = 0;
+
+  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefOut->nColumns(); i_Col++) {
+
+    Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
+
+    // is the column part of the aggregate group by key ?
+    Column* pIndexColumn = pOpSketch->m_pIndexDef->pFindColumn(i_Col);
+
+    if (pIndexColumn) {
+      continue;
+    }
+
+    // make the column name
+    vMakeColumnNmStruct(pOpSketch->m_pStreamDefOut, sColumn, i_DupCtr, i_Col);
+
+    if ( pColumn->eColumnType() == CT_VARCHAR ||
+         pColumn->eColumnType() == CT_CHAR ) {
+
+      sCode = ""_Stz;
+      m_pFileCode->vSeekStart();
+
+      vAppendCodeFragment(pOpSketch, "vPopulateVchPL"_Stz, pColumn, iPayLoad);
+      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    }
+    else {
+      sCode = ""_Stz;
+      m_pFileCode->vSeekStart();
+
+      vAppendCodeFragment(pOpSketch, "vPopulateIntPL"_Stz, pColumn, iPayLoad);
+      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+    }
+    iPayLoad++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* append file headers                                                        */
 /*----------------------------------------------------------------------------*/
 void CombinedSrc::vAppendFileHeaders(void) {
@@ -585,8 +651,8 @@ void CombinedSrc::vAppendCodeKeyToTubCols(OpSketch* pOpSketch)
   IndexDef* pIndexDef = pOpSketch->m_pIndexDef;
   StreamDef* pStreamDefOut = pOpSketch->m_pStreamDefOut;
 
-  s256 sColNm;
-  i8 i_DupCtr = 1;
+  //s256 sColNm;
+  //i8 i_DupCtr = 1;
 
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
 
@@ -600,7 +666,7 @@ void CombinedSrc::vAppendCodeKeyToTubCols(OpSketch* pOpSketch)
     i8 iStreamDefCol = pIndexDef->iGetStreamDefCol(pIndexColumn->iColumnNo());
 
     // make the column name
-    vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, iStreamDefCol);
+    //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, iStreamDefCol);
 
     Column *pColumn = pStreamDefOut->pGetColumn(iStreamDefCol);
 
@@ -670,7 +736,7 @@ void CombinedSrc::vAppendCodePayLoadToTubCols(OpSketch* pOpSketch)
         break;
     }
     iPayLoad++;
-    }
+  }
 
   }
 

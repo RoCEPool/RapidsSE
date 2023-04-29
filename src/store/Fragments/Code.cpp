@@ -754,6 +754,42 @@ i8 iProjectEnd(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iSortBegin --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iSortBegin
+i8 iSortBegin(Combined_T* aCombinedT) {
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  char* szStrArea;
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SORT-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  __L_LABEL__:
+
+  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
+  //szStrArea = aCombinedT->m_racStrAreaT;
+
+  if (!aCombinedT->m_iProcessRow) {
+    aCombinedT->m_iProcessRow = 1;
+    goto __L_LABEL_LOOP__;
+  }
+
+  // - - - - - - - - - - - - - -
+  // populate the payload key
+  aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;
+  // marker-end
+
+  return 0;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vTubBegin ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iTubBegin
@@ -1241,6 +1277,68 @@ void vPayLoadToTubVchCol(Combined_T* aCombinedT) {
 #endif
   }
 
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPopulateIntPL ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPopulateIntPL
+void vPopulateIntPL(Combined_T* aCombinedT) {
+
+  i8 __PAYLOAD_INDEX__;
+  struct __STRUCT_FROM__ {
+    union Int_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  char* szSrcStz;
+  char* szDstStz;
+
+  i8 nSrcSize;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  aCombinedT->m_aiPayload[__PAYLOAD_INDEX__] = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPopulateVchPL ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPopulateVchPL
+void vPopulateVchPL(Combined_T* aCombinedT) {
+
+  i8 __PAYLOAD_INDEX__;
+  struct __STRUCT_FROM__ {
+    union Vch_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  char* szSrcStz;
+  char* szDstStz;
+
+  i8 nSrcSize;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+  if ((i8)szSrcStz == C_DATUM_NULL) {
+    aCombinedT->m_aiPayload[__PAYLOAD_INDEX__] = C_DATUM_NULL;
+  }
+  else {
+    nSrcSize = strlen(szSrcStz);
+    aCombinedT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aIndexTree_allotPayStr(aCombinedT->m_aIndexTreePL, szSrcStz);
+    szDstStz = (char*)aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
+    strncpy(szDstStz, szSrcStz, nSrcSize);
+  }
   // marker-end
 }
 

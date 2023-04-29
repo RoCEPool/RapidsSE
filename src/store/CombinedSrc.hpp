@@ -66,6 +66,7 @@ namespace STORE {
     void vAppendStencilTo(OpSketch* pOpSketch);
     void vAppendCodeTubCols(OpSketch* pOpSketch);
     void vAppendCodeKeyToTubCols(OpSketch* pOpSketch);
+    void vAppendCodePopulatePayloadCols(OpSketch* pOpSketch);
     void vAppendCodePayLoadToTubCols(OpSketch* pOpSketch);
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);

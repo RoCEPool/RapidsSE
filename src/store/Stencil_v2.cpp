@@ -274,10 +274,42 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       break;
     }
 
-    // skip scan OP
+    // skip scan OP for now (sketch later)
     if (pOp->szOpNm()->bSame("scan"_Stz)) {
       bInflateCrw = true;
       continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the sort OP
+    if (pOp->szOpNm()->bSame("sort_v2"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupSort(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchSort(pCombined, pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      ePrevStencil_v2 = SR_PL;
+
+      OpSketch* pSortOpSketch = pOpSketch;
+      Op *pLastOp = pOp;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
+      vAppend(pOpSketch);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupTub(pCombined, pLastOp, HK_EOS);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchTub(pSortOpSketch, HK_EOS, sLabelLoop, ePrevStencil_v2);
+      pOpSketch->vIndexDef(pSortOpSketch->m_pIndexDef);
+
+      vAppend(pOpSketch);
+
+      bGeneratePotTub = false;
     }
 
     // generate code for indexScan OP
@@ -1494,7 +1526,6 @@ OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKin
   pOpSketch->vGenerateExprStacks(nullptr);
 
   // generate the stencil structure for this OP
-  //pOpSketch->vGenerateStencilToStruct(uSelectColumns);
   pOpSketch->vGenerateStencilToStruct(0);
 
   return pOpSketch;
@@ -1941,8 +1972,9 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch sort                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* szLabelLoop) {
-/*
+OpSketch* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
+{
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   s4K sLabel;
@@ -1950,45 +1982,42 @@ OpSketch* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp,
   s4K sLabelPrev;
 
   i8 i_Op = pOp->i_Op();
-  CodeSynth_v2 *pCodeSynth;
 
-  // get filter expr from OP
+  // get sort expr from OP
   TagSet* pOpTags = pOp->pOpTags();
-  Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+  Stz* sSortExpr = pOpTags->szValue(C_TAG_EXPR);
 
   // get the streamDefs
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-
-  // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // get the sort type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
-  // create a new shape for this OP
-  OpSketch *pShape = new OpSketch;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the streamDef
-//  pCodeSynth = new CodeSynth_v2(pStreamDefOut, ePrevStencil_v2);
-//  pCodeSynth->vSynthStruct(0);
-//  pShape->vStructSynthA(pCodeSynth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the row projection
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, pStreamDefOut, pIndexDef, pPreExpStack, ePrevStencil_v2, ePrevStencil_v2);
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(sSortExpr, eHandlerKind, SK_SORT, ePrevStencil_v2, ePrevStencil_v2, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  pCodeSynth->vSynthSort( sProjectExpr,
-                            sLabel,
-                            szLabelLoop);
-  pShape->vCodeSynthA(pCodeSynth);
 
-  return pShape;
-  */
-  return nullptr;
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, ""_Stz, szLabelLoop);
+
+  // set the indexDef
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  pOpSketch->vIndexDef(pIndexDef);
+
+  // set the payLoad bytes
+  i8 nPayloadBytes = (pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
+  pOpSketch->vPayloadBytes(nPayloadBytes);
+
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks(nullptr);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct(0);
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
