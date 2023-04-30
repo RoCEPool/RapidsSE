@@ -71,6 +71,7 @@ namespace STORE
     void            vAsEnsure    (Card_Expr* p_expr);
     Card_Direction* pDirection   (Card_RpnTerms* pCard_RpnTerms);
     Card_Type*      pType        (Card_RpnTerms* pCard_RpnTerms);
+    Stz*            szType        (Card_RpnTerms* pCard_RpnTerms);
 
     Card_RpnTerms* pToRpnTerms   (Stz* szRpnExpr);
   

@@ -899,13 +899,14 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   }
 
   // TYPE <type>
-  Card_Type* pCard_Type = pType(pCard_RpnTerms);
+  //Card_Type* pCard_Type = pType(pCard_RpnTerms);
+  Stz* szP_Type = this->szType(pCard_RpnTerms);
 
-  Stz* szP_Type = szCT_char[Card::eTo_eCT(pCard_Type->szValue())];
+//  Stz* szP_Type = szCT_char[Card::eTo_eCT(pCard_Type->szValue())];
 
 //  if (AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
-    delete pCard_Type;
-    pCard_Type = nullptr;
+//    delete pCard_Type;
+//    pCard_Type = nullptr;
 //  }
 //  else {
 //    pCard_Expr->vAppend(pCard_Type);
@@ -1082,6 +1083,32 @@ Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
 
   return pCard_Type;
 }
+
+/*----------------------------------------------------------------------------*/
+/* collect <type> terms : TYPE <columnType>                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  // TYPE
+  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
+  Stz* szTerm = pCard_Term->szValue();
+  RASSERT(szTerm->bSame("TYPE"_Stz));
+
+  delete pCard_Term;
+  pCard_Term = nullptr;
+
+  // column type (e.g. BOOLEAN)
+  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
+
+  Stz* szType = szCT_char[Card::eTo_eCT(pCard_Term_type->szValue())];
+
+  delete pCard_Term_type;
+
+  return szType;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
