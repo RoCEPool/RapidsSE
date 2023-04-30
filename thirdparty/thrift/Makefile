@@ -12,7 +12,7 @@ BOOSTDIR := $(CURRENT_PATH)/boost_1_80_0
 
 LIBTHRIFT := $(LIBDIR)/libthrift.a
 
-THRIFT_VER := thrift-0.17.0
+THRIFT_VER := thrift-0.18.1
 SRCTARBALL := $(CURRENT_PATH)/$(THRIFT_VER).tar.gz
 SRCDIR     := $(THRIFT_VER)
 
@@ -23,7 +23,7 @@ $(LIBTHRIFT) : $(BOOSTDIR)
 	@echo "Compiling 3rd-party library: Thrift"
 	@echo ""
 	@echo "Extracting Thrift"
-	@tar xvzf thrift-0.17.0.tar.gz &>/dev/null
+	@tar xvzf $(THRIFT_VER).tar.gz &>/dev/null
 	@./configureThrift.sh $(SRCDIR)
 	@echo "Compiling Thrift"
 	+cd $(SRCDIR) && $(MAKE) && $(MAKE) install
