@@ -116,6 +116,8 @@ void ListExo2_t<ITEM>::vAppend(ITEM* pItem)
 {
   // ?validate item is a sound object
 
+  RASSERT(pItem);
+
   ListExoNode_t<ITEM>* pAppendingNode = pNewNode(pItem);
   ASSERT(! pAppendingNode->pNextNode());
   ASSERT(! pAppendingNode->pPrevNode());

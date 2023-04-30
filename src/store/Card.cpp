@@ -3099,14 +3099,18 @@ void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
 void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 {
 
-  s256 sPpyValue;
+  s256 sPpy;
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sPpyValue.azChar(),xArgs,(char*)szFormat);
+  StrLib::vSprint(sPpy.azChar(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  Y_vSet(szPpyNm,sPpyValue);
+  Y_vSet(szPpyNm, sPpy);
+
+
+  if (szPpyNm->bSame(P_Type))
+    RASSERT(! sPpy.bSame("!"_Stz));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3118,5 +3122,10 @@ void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
     m_pProperties = new TagSet;
 
   m_pProperties->vReplace(szPpyNm, szPpy);
+
+  if (szPpyNm->bSame(P_Type)) {
+    RASSERT(!szPpy->bSame(""_Stz));
+    RASSERT(!szPpy->bSame("!"_Stz));
+  }
 }
 

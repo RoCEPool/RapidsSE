@@ -1317,6 +1317,7 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
     }
     vRpnCalc(szRpnExpr, p_rpnCalc);
 
+    return;
   }
 
 

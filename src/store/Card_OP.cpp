@@ -748,9 +748,11 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_projection->vAppend(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();
-    Stz *szType = aCT[eColumnType];
-    Card_Type *pCard_Type = new Card_Type(szType);
-    p_expr->vAppend(pCard_Type);
+    if (! AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
+      Stz *szType = aCT[eColumnType];
+      Card_Type *pCard_Type = new Card_Type(szType);
+      p_expr->vAppend(pCard_Type);
+    }
 
     Card_As *p_as = new Card_As(pColumn->szColNm());
     p_expr->vAppend(p_as);

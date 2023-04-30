@@ -63,13 +63,17 @@ Card_Expr::Card_Expr(Card_Type*    p_type_arg,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Type*    p_type    = new Card_Type(p_type_arg);
   Card_As  *    p_as      = new Card_As(p_as_arg);
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 
-  vAppend(p_type);
   vAppend(p_as);
+
+  if (! AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
+    Card_Type *p_type = new Card_Type(p_type_arg);
+    vAppend(p_type);
+  }
+
   vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 }

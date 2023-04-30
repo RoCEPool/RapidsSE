@@ -4,7 +4,7 @@
 
 
 // /jo_disable
-// /no_card_type
+/no_card_type
 /ep_disable
 /glean_interactive
 /filterPred
