@@ -4,6 +4,7 @@
 
 
 // /jo_disable
+// /no_card_type
 /ep_disable
 /glean_interactive
 /filterPred
@@ -11,7 +12,6 @@
 /joWrite
 /transliterated
 /weaved
-/no_card_type
 /pipelineName = "_r_Q2"
 select
   s_acctbal,
