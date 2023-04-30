@@ -11,6 +11,7 @@
 /joWrite
 /transliterated
 /weaved
+/no_card_type
 /pipelineName = "_r_Q2"
 select
   s_acctbal,
