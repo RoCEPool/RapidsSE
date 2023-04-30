@@ -93,16 +93,19 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
     return;
 
 
-  pCI->G.p_type = pCI->G.p_projection->pSub_type();
-
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
-  if (pCI->G.p_type) {
-    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardRecursive());
+  if (pCI->G.p_projection->pSub_type()) {
+    pCI->G.p_type = pCI->G.p_projection->pSub_type();
+
+    if (pCI->G.p_type) {
+      pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardRecursive());
+    }
+    else {
+      pCI->G_vAppendNewChild(pCI->G.p_expr, CK_TYPE, "((type missing))"_Stz);
+    }
   }
-  else {
-    pCI->G_vAppendNewChild(pCI->G.p_expr, CK_TYPE, "((type missing))"_Stz);
-  }
+
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   Symbol x_Symbol_stmCol1;

@@ -97,11 +97,14 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   RASSERT(pExpr_corr->szP_Type());
 
   Card_Expr*    p_gbyExpr = new Card_Expr;
-  Card_Type*    p_type    = new Card_Type(pExpr_corr->pSub_type()->szValue());
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
 
-  p_gbyExpr->vAppend(p_type);
+  if (pExpr_corr->pSub_type()) {
+    Card_Type *p_type = new Card_Type(pExpr_corr->pSub_type()->szValue());
+    p_gbyExpr->vAppend(p_type);
+  }
+
   p_gbyExpr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
@@ -124,12 +127,15 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   xSymbol_Kn.vSetKeyOrdinal(p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
-  Card_Type*    p_type    = new Card_Type(p_expr_gby->pSub_type()->szValue());
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(xSymbol_Kn);
 
-  p_expr->vAppend(p_type);
+  if (p_expr_gby->pSub_type()) {
+    Card_Type *p_type = new Card_Type(p_expr_gby->pSub_type()->szValue());
+    p_expr->vAppend(p_type);
+  }
+
   if (p_as)
     p_expr->vAppend(p_as);
   p_expr->vAppend(p_rpnCalc);
@@ -157,7 +163,10 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   xSymbol_Dn.vSetStreamColOrdinal(i_Col);
 
   Card_Expr* p_expr_simple = new Card_Expr;
-  p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardRecursive());
+
+  if (p_expr->pSub_type()) {
+    p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardRecursive());
+  }
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
@@ -233,7 +242,11 @@ void Card_Expr::vDeconstruct(Card_Type*&    rp_type,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  rp_type = pSub_type();
+  if (pSub_type())
+    rp_type = pSub_type();
+  else
+    rp_type = nullptr;
+
   rp_as   = pSub_as();
   Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
   rp_term_0  = p_rpnCalc ? p_rpnCalc->pSub_term() : nullptr;

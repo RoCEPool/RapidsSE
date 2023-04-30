@@ -52,8 +52,10 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
 
   Card_Hash* p_hash = new Card_Hash;
 
-  Card_Type* p_type = p_expr->pSub_type();
-  p_hash->vAppend(p_type->pDupCardRecursive());
+  if (p_expr->pSub_type()) {
+    Card_Type *p_type = p_expr->pSub_type();
+    p_hash->vAppend(p_type->pDupCardRecursive());
+  }
 
   Card_HshCol* p_hshCol = new Card_HshCol;
   p_hshCol->vValueSprint(p_expr->szProjectedCol());

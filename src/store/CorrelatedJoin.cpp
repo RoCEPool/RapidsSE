@@ -321,9 +321,11 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G.p_key->vAppend(pCI->G.p_expr);
     }
     else {
-      pCI->G.p_type = pCI->Sqy.m_pExpr_corr->pSub_type();
       pCI->G_vNewMember(CK_EXPR);
-      pCI->G_vAppendChild(CK_EXPR, pCI->G.p_type->pDupCardRecursive());
+      if (pCI->Sqy.m_pExpr_corr->pSub_type()) {
+        pCI->G.p_type = pCI->Sqy.m_pExpr_corr->pSub_type();
+        pCI->G_vAppendChild(CK_EXPR, pCI->G.p_type->pDupCardRecursive());
+      }
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       Symbol x_Symbol_stmCol1;
       x_Symbol_stmCol1.vSetStreamColOrdinal(1);
@@ -345,7 +347,9 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
     }
     else {
       pCI->G.p_key->pSymbol()->Y_vSet(P_ProjBump, (i8)1);
-      pCI->G.p_type = _pCard_Type(pCI->G.p_expr->pSub_type()->pDupCardRecursive());
+
+      if (pCI->G.p_expr->pSub_type())
+        pCI->G.p_type = _pCard_Type(pCI->G.p_expr->pSub_type()->pDupCardRecursive());
 
       Symbol xSymbol_keyOdn;
       xSymbol_keyOdn.vSetKeyOrdinal(1);
@@ -397,7 +401,6 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 
   RASSERT(pCI->G.p_key->szP_Type());
 
-  pCI->G.p_type = pCI->G.p_key->pGetChild(0)->pSub_type();
 
   pCI->G.p_projection = pCI->G.p_project->pSub_projection();
 
@@ -407,7 +410,10 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
 
   // push <project>/__SQCRLKEY
   pCI->G_vPushNewChild(pCI->G.p_projection, CK_EXPR);
-  pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardRecursive());
+  if (pCI->G.p_key->pGetChild(0)->pSub_type()) {
+    pCI->G.p_type = pCI->G.p_key->pGetChild(0)->pSub_type();
+    pCI->G.p_expr->vAppend(pCI->G.p_type->pDupCardRecursive());
+  }
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS,szAs);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
