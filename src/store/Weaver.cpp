@@ -1278,7 +1278,7 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  if (AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
+//  if (AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
     Card_As*      p_as      = nullptr;
     Card_RpnCalc* p_rpnCalc = nullptr;
     Card_Type*    p_type    = nullptr;
@@ -1318,47 +1318,47 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
     vRpnCalc(szRpnExpr, p_rpnCalc);
 
     return;
-  }
+ // }
 
 
   /// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_RpnCalc* p_rpnCalc;
-
-  i8 nSubCards = pCard_Expr->nItems();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card* pCard = pCard_Expr->pGet(i_Child);
-    
-    eCK eCard = pCard->eCard();
-    
-    switch (eCard) {
-
-      case CK_AS:
-        vAs(szRpnExpr, _pCard_As(pCard));
-        break;
-        
-      case CK_RPNCALC:
-        p_rpnCalc = _pCard_RpnCalc(pCard);
-
-        //szRpnExpr->vCatSprint(" type %s"_Stz,p_rpnCalc->szP_Type());
-
-        if (p_rpnCalc->bIsBraced()) {
-          szRpnExpr->vConcat(" }"_Stz);
-        }
-        vRpnCalc(szRpnExpr, _pCard_RpnCalc(pCard));
-        break;
-
-      case CK_TYPE:
-        vType(szRpnExpr, _pCard_Type(pCard));
-        break;
-        
-      default:
-        //{;}
-        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
-        break;
-    }
-    
-  }
+//  Card_RpnCalc* p_rpnCalc;
+//
+//  i8 nSubCards = pCard_Expr->nItems();
+//  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+//    Card* pCard = pCard_Expr->pGet(i_Child);
+//
+//    eCK eCard = pCard->eCard();
+//
+//    switch (eCard) {
+//
+//      case CK_AS:
+//        vAs(szRpnExpr, _pCard_As(pCard));
+//        break;
+//
+//      case CK_RPNCALC:
+//        p_rpnCalc = _pCard_RpnCalc(pCard);
+//
+//        //szRpnExpr->vCatSprint(" type %s"_Stz,p_rpnCalc->szP_Type());
+//
+//        if (p_rpnCalc->bIsBraced()) {
+//          szRpnExpr->vConcat(" }"_Stz);
+//        }
+//        vRpnCalc(szRpnExpr, _pCard_RpnCalc(pCard));
+//        break;
+//
+//      case CK_TYPE:
+//        vType(szRpnExpr, _pCard_Type(pCard));
+//        break;
+//
+//      default:
+//        //{;}
+//        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+//        break;
+//    }
+//
+//  }
 
 }
 

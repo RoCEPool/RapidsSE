@@ -903,13 +903,13 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
 
   Stz* szP_Type = szCT_char[Card::eTo_eCT(pCard_Type->szValue())];
 
-  if (AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
+//  if (AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
     delete pCard_Type;
     pCard_Type = nullptr;
-  }
-  else {
-    pCard_Expr->vAppend(pCard_Type);
-  }
+//  }
+//  else {
+//    pCard_Expr->vAppend(pCard_Type);
+//  }
 
 
   // [ AS <as> ]
