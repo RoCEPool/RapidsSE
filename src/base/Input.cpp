@@ -1941,7 +1941,7 @@ void Input::vCollectCodeEnd(void)
 
   m_pCurrTkn->szChars()->vCopy("__codeEnd__"_Stz);
 
-  m_pCurrTkn->vToken(TN_STRING);
+  m_pCurrTkn->vToken(TN_NAME);
 
   m_bCodeEnd = false;
 

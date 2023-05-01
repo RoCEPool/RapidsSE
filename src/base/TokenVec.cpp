@@ -1179,7 +1179,9 @@ void TokenVec::vToTknString(Stz* szDstStr)
 void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
-  
+
+  bool bNoQuotes = false;
+
   StrLib::vCopy(szDstStr->azChar(),"");
   
   i8 nTokens = this->nTokens();
@@ -1220,6 +1222,8 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
 
       case TN_NAME:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        if (pToken->bSame("__cpp_code__"_Stz))
+          bNoQuotes = true;
         break;
         
       case TN_NULL:
@@ -1230,9 +1234,12 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
         break;
         
       case TN_STRING:
-        StrLib::vConcat(szDstStr->azChar(),"\"");
+        if (! bNoQuotes)
+          StrLib::vConcat(szDstStr->azChar(),"\"");
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
-        StrLib::vConcat(szDstStr->azChar(),"\"");
+        if (! bNoQuotes)
+          StrLib::vConcat(szDstStr->azChar(),"\"");
+        bNoQuotes = false;
         break;
         
       case TN_TAG:

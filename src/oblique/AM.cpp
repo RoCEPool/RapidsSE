@@ -3241,6 +3241,7 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
     pTknVec->vAppendToken(sToken,eToken);
 
     if (TN_NAME == eToken && sToken.bSame("__cpp_code__"_Stz)) {
+
       sToken.vReset();
       eToken = Token::eCollectCodeBlock(&azCrs,sToken);
       pTknVec->vAppendToken(sToken,eToken);
