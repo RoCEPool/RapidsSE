@@ -143,6 +143,19 @@ bool Token::bEndCppString(char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for start of code block                                               */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCodeBlock(char *azArg)
+{
+  _static_
+
+  if (StrLib::bBeginsWith(azArg,"__cpp_code__"))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for start of Sen integer                                              */
 /*----------------------------------------------------------------------------*/
 bool Token::bStartSenInteger(char cArg)
@@ -218,7 +231,7 @@ bool Token::bEndSenString(char cArg)
 /*----------------------------------------------------------------------------*/
 /* collect Sen code                                                           */
 /*----------------------------------------------------------------------------*/
-eTN Token::eCollectSenCode(char** aazCrs, Stz* szString)
+eTN Token::eCollectCodeBlock(char** aazCrs, Stz* szString)
 {
   _static_
 
@@ -515,7 +528,12 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
     return TN_NONE;
   
   eTN eToken = TN_NONE;
-  
+
+  if (bStartCodeBlock(*aazCrs)) {
+    eToken = eCollectCodeBlock(aazCrs,szString);
+    return eToken;
+  }
+
   if (bStartSenInteger(**aazCrs)) {
     eToken = eCollectSenNumber(aazCrs,szString);
     return eToken;
