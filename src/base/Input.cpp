@@ -1030,7 +1030,7 @@ void Input::vCollectCpp(void)
   vTestSwitchToSen();
 
   if (bIsCodeBlockBegin()) {
-    m_bCollectCodeBlock = true;
+    vCollectingCodeBlock(true);
   }
 }
 
