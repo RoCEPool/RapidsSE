@@ -313,17 +313,21 @@ bool Dynamo::bCollectCode(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  if (! pTkn()->bSame("__cpp_code__"_Stz))
+  Token* pToken = pTkn();
+
+  if (! pToken->bSame("__cpp_code__"_Stz))
     return false;
 
   vTokenAccept();
+  pToken = pTkn();
 
-  if (pTkn()->eToken() != TN_STRING)
+  if (pToken->eToken() != TN_STRING)
     return false;
 
-  vCode(pTkn()->szChars());
+  vCode(pToken->szChars());
 
   vTokenAccept();
+  pToken = pTkn();
 
   return true;
 }

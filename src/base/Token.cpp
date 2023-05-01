@@ -529,10 +529,10 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
   
   eTN eToken = TN_NONE;
 
-  if (bStartCodeBlock(*aazCrs)) {
-    eToken = eCollectCodeBlock(aazCrs,szString);
-    return eToken;
-  }
+//  if (bStartCodeBlock(*aazCrs)) {
+//    eToken = eCollectCodeBlock(aazCrs,szString);
+//    return eToken;
+//  }
 
   if (bStartSenInteger(**aazCrs)) {
     eToken = eCollectSenNumber(aazCrs,szString);

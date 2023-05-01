@@ -15,7 +15,7 @@ begin
     | stageMarker0559
   stage stageMarker0559 on all partitions :
     scan rapidsse public Nation
-    | dynamic
+    //| dynamic
     | stageLast
   stage stageLast on origin :
     output
