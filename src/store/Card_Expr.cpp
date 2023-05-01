@@ -69,10 +69,6 @@ Card_Expr::Card_Expr(Card_Type*    p_type_arg,
 
   vAppend(p_as);
 
-//  if (! AM::JOB::bHasTag(C_NO_CARD_TYPE)) {
-//    Card_Type *p_type = new Card_Type(p_type_arg);
-//    vAppend(p_type);
-//  }
 
   vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
@@ -104,11 +100,6 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
 
-//  if (pExpr_corr->pSub_type()) {
-//    Card_Type *p_type = new Card_Type(pExpr_corr->pSub_type()->szValue());
-//    p_gbyExpr->vAppend(p_type);
-//  }
-
   p_gbyExpr->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
@@ -134,11 +125,6 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(xSymbol_Kn);
-
-//  if (p_expr_gby->pSub_type()) {
-//    Card_Type *p_type = new Card_Type(p_expr_gby->pSub_type()->szValue());
-//    p_expr->vAppend(p_type);
-//  }
 
   if (p_as)
     p_expr->vAppend(p_as);

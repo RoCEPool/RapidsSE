@@ -2320,9 +2320,11 @@ Card_Type* Card::pSub_type(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Type* p_type =
-      _pCard_Type(pFindSubCard(CK_TYPE));
-  return p_type;
+  return nullptr;
+
+//  Card_Type* p_type =
+//      _pCard_Type(pFindSubCard(CK_TYPE));
+//  return p_type;
 }
 
 /*----------------------------------------------------------------------------*/

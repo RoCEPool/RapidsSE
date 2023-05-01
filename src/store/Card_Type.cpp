@@ -20,7 +20,8 @@ Card_Type::Card_Type(Stz* szType)
 : Card(CK_TYPE,szType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
+  NEVER_REACH
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -34,6 +35,7 @@ Card_Type::Card_Type(Card_Type* p_type_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  NEVER_REACH
   _checkInitialised_(CN_CARD);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

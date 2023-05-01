@@ -1061,32 +1061,6 @@ Card_Direction* Dissector::pDirection(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <type> terms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
-Card_Type* Dissector::pType(Card_RpnTerms* pCard_RpnTerms)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  
-  // TYPE
-  Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szTerm = pCard_Term->szValue();
-  RASSERT(szTerm->bSame("TYPE"_Stz));
-
-  delete pCard_Term;
-  pCard_Term = nullptr;
-
-  // column type (e.g. BOOLEAN)
-  Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
-
-  Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szValue());
-
-  delete pCard_Term_type;
-  pCard_Term_type = nullptr;
-
-  return pCard_Type;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect <type> terms : TYPE <columnType>                                   */
-/*----------------------------------------------------------------------------*/
 Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
