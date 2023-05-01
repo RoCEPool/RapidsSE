@@ -40,7 +40,8 @@ Input::Input(Input* pNext)
   m_pCharser_spares = nullptr;
 
   m_bRevertToCpp = false;
-   m_bCollectCodeBlock = false;
+  m_bCodeBlock = false;
+  m_bCodeEnd = false;
 
   // debugging aids
   d_iDebugMode               = false;
@@ -793,11 +794,20 @@ void Input::vCollectOneToken(void)
   if (d_iDebugMode) {
     vJot2('>',(Stz*)__func__,""_Stz);
   }
-  
+
+  if (m_bCodeBlock)
+    vCollectCodeBlock();
+  else
+  if (m_bCodeEnd)
+    vCollectCodeEnd();
+  else
   if (bFormCppTokens())
     vCollectCpp();
   else
     vCollectSen();
+
+  if (bIsCodeBlockBegin())
+    m_bCodeBlock = true;
   
   if (d_iDebugMode) {
     SP_Token spTkn;
@@ -962,13 +972,6 @@ void Input::vCollectCpp(void)
     m_pCurrTkn->vSetNull();
   }
 
-  // collect code block
-  else
-  if (bCollectingCodeBlock()) {
-    vCollectCodeBlock();
-    vCollectingCodeBlock(false);
-  }
-
   // collect integer literal?
   else
   if (bStartCppNumber()) {
@@ -1029,9 +1032,6 @@ void Input::vCollectCpp(void)
    // test for collecting a pipeline and switch to sen tokens
   vTestSwitchToSen();
 
-  if (bIsCodeBlockBegin()) {
-    vCollectingCodeBlock(true);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1904,6 +1904,8 @@ void Input::vCollectCodeBlock(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
 
+  vTokenCollectBegin();
+
   char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
@@ -1920,28 +1922,32 @@ void Input::vCollectCodeBlock(void)
   StrLib::vRemoveTail(azChars,"__codeEnd__");
 
   m_pCurrTkn->vToken(TN_STRING);
+
+  m_bCodeBlock = false;
+  m_bCodeEnd = true;
+
+  vTokenCollectEnd();
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* collecting code block ?                                                    */
+/* collect code block as a string                                             */
 /*----------------------------------------------------------------------------*/
-bool Input::bCollectingCodeBlock(void)
+void Input::vCollectCodeEnd(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
 
-  return m_bCollectCodeBlock;
+  vTokenCollectBegin();
+
+  m_pCurrTkn->szChars()->vCopy("__codeEnd__"_Stz);
+
+  m_pCurrTkn->vToken(TN_STRING);
+
+  m_bCodeEnd = false;
+
+  vTokenCollectEnd();
+
 }
-
-/*----------------------------------------------------------------------------*/
-/* set collecting code block                                                  */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectingCodeBlock(bool bCollectingCodeBlock)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
-
-  m_bCollectCodeBlock = bCollectingCodeBlock;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* is this token the beginning of a code block  ?                             */
