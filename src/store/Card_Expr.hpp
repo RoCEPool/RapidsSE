@@ -26,8 +26,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(bool bstmCol_flip);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    void vDeconstruct(Card_Type*& rp_type,
-                      Card_As*&   rp_as,
+    void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
 
     bool bIsColOrdinal(void);
@@ -36,8 +35,7 @@ namespace STORE
     bool bIsSame(Card_Expr* pExpr_arg);
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
-    void vReconstruct(Card_Type*  p_type,
-                      Card_As*    p_as,
+    void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
     void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
     void vRenumberAsKeyOdn(i8 i_Expr);

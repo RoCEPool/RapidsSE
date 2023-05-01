@@ -202,13 +202,10 @@ void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vDeconstruct(Card_Type*&    rp_type,
-                             Card_As*&      rp_as,
+void Card_Expr::vDeconstruct(Card_As*&      rp_as,
                              Card_Term*&    rp_term_0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  rp_type = nullptr;
 
   rp_as   = pSub_as();
   Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
@@ -308,8 +305,7 @@ Card_Term* Card_Expr::pProjectedTerm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vReconstruct(Card_Type*  p_type_arg,
-                             Card_As*    p_as_arg,
+void Card_Expr::vReconstruct(Card_As*    p_as_arg,
                              Card_Term*  p_term_0_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -319,7 +315,6 @@ void Card_Expr::vReconstruct(Card_Type*  p_type_arg,
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = p_term_0_arg->pClone();
 
-  vAppend(p_type_arg);
   vAppend(p_as_arg);
   vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
@@ -376,17 +371,16 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
    */
 
   Stz* szExpr_this_stmcol = szValue();
-  Card_Type*    p_type;
   Card_As*      p_as;
   Card_RpnCalc* p_rpnCalc;
   Card_Term*    p_term_0;
 
-  vDeconstruct(p_type,p_as,p_term_0);
-    p_rpnCalc = pSub_rpnCalc();
+  vDeconstruct(p_as,p_term_0);
+
+  p_rpnCalc = pSub_rpnCalc();
 
   Card_Expr* p_expr_early = new Card_Expr;
 
-  p_expr_early->vAppend(p_type->pClone());
   if (p_as)
     p_expr_early->vAppend(p_as->pClone());
 
