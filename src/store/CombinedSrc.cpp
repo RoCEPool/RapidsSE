@@ -147,7 +147,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
       case SK_AGGREG:
 
-        // open the indexScan code fragments file
+        // open the aggregate code fragments file
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Aggreg.cpp"_Stz);
         RASSERT ( bOpened );
 
@@ -162,16 +162,23 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
         vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz, pCodeFile);
 
-        // close the indexScan code fragments file
+        // close the aggregate code fragments file
         pCodeFile->vClose();
 
         break;
 
       case SK_FILTER:
-        vAppendCodeFragment(pOpSketch, "vFilterBegin"_Stz);
+        // open the filter code fragments file
+        bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        vAppendCodeFragment(pOpSketch, "vFilterBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-        vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz);
+        vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pCodeFile);
+
+        // close the filter code fragments file
+        pCodeFile->vClose();
         break;
 
       case SK_GBYAGG:
@@ -201,11 +208,19 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
       case SK_PROJECT:
 
+        // open the project code fragments file
+        bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Project.cpp"_Stz);
+        RASSERT ( bOpened );
+
         vAppendStencilTo(pOpSketch);
 
-        vAppendCodeFragment(pOpSketch, "vProjectBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "vProjectBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "iProjectEnd"_Stz);
+        vAppendCodeFragment(pOpSketch, "iProjectEnd"_Stz, pCodeFile);
+
+        // close the project code fragments file
+        pCodeFile->vClose();
+
         break;
 
       case SK_INDEXSCAN:
