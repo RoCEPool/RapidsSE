@@ -27,7 +27,7 @@ namespace STORE {
     File* m_pFileHeader;
     File* m_pFunctionHeader;
     File* m_pFunctionFooter;
-    File* m_pFileCode;
+    File* m_pCommonCode;
 
     char m_caCode[C_FLATTEN_SOURCE_V2];
     char *m_azCodeCrs;
@@ -55,11 +55,11 @@ namespace STORE {
 
 
   private:
-    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile = nullptr);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, Stz* szFunction);
-    void vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction);
+    void vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile);
     void vAppendFileHeaders(void);
     void vAppendFunctionFooter(eHK eHandlerKind);
     void vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm);
