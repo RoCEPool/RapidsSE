@@ -468,7 +468,6 @@ namespace STORE
     Card_Term*          pSub_term(void);
     Card_Top*           pSub_top(void);
     Card_Topology*      pSub_topology(void);
-    Card_Type*          pSub_type(void);
     Card_Unique*        pSub_unique(void);
     Card_Where*         pSub_where(void);
 

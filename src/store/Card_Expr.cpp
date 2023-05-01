@@ -154,10 +154,6 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
-  if (p_expr->pSub_type()) {
-    p_expr_simple->vAppend(p_expr->pSub_type()->pDupCardRecursive());
-  }
-
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
 
@@ -232,10 +228,7 @@ void Card_Expr::vDeconstruct(Card_Type*&    rp_type,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSub_type())
-    rp_type = pSub_type();
-  else
-    rp_type = nullptr;
+  rp_type = nullptr;
 
   rp_as   = pSub_as();
   Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
