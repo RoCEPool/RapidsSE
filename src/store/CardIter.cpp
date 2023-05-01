@@ -314,7 +314,6 @@ void CardIter::G_vClearMembers(void)
   G.p_term             = nullptr;
   G.p_top              = nullptr;
   G.p_topology         = nullptr;
-  G.p_type             = nullptr;
   G.p_unique           = nullptr;
   G.p_where            = nullptr;
 
@@ -1147,7 +1146,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TERM:             return G.p_term;
     case CK_TOP:              return G.p_top;
     case CK_TOPOLOGY:         return G.p_topology;
-    case CK_TYPE:             return G.p_type;
     case CK_UNIQUE:           return G.p_unique;
     case CK_WHERE:            return G.p_where;
 
@@ -2221,7 +2219,6 @@ void CardIter::G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TOP:              *((Card**)&G.p_top)              = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
-    case CK_TYPE:             *((Card**)&G.p_type)             = pCard; break;
     case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;

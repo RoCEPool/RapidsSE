@@ -115,7 +115,6 @@
 #include "Card_Term.hpp"
 #include "Card_Top.hpp"
 #include "Card_Topology.hpp"
-#include "Card_Type.hpp"
 
 #include "Card_Unique.hpp"
 

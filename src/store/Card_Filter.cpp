@@ -9,7 +9,6 @@
 #include "Card_BoolCalc.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
-#include "Card_Type.hpp"
 #include "Card_SubSet.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_OrPred.hpp"

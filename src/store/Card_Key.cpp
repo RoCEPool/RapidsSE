@@ -10,7 +10,6 @@
 #include "Card_RpnCalc.hpp"
 #include "Card_HshCol.hpp"
 #include "Card_Term.hpp"
-#include "Card_Type.hpp"
 #include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/

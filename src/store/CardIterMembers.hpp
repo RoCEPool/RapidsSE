@@ -203,7 +203,6 @@ namespace STORE
     Card_Term *          p_term;
     Card_Top *           p_top;
     Card_Topology *      p_topology;
-    Card_Type *          p_type;
 
     Card_Unique *        p_unique;
 

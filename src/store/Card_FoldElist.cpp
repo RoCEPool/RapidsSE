@@ -4,7 +4,6 @@
 
 #include "Card_FoldElist.hpp"
 
-#include "Card_Type.hpp"
 #include "Card_As.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_BoolCalc.hpp"

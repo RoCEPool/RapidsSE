@@ -9,7 +9,6 @@
 #include "Card_Projection.hpp"
 #include "Card_RpnCalc.hpp"
 #include "Card_Term.hpp"
-#include "Card_Type.hpp"
 
 #include "CardIter.hpp"
 
