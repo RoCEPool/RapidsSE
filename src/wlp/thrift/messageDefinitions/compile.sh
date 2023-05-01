@@ -24,6 +24,10 @@ while IFS= read -r line; do THRIFT_FILES+=("${line}"); done < <(find "${LATEST_T
 
 OUTPUT_DIR="${DIR}/../generated"
 
+if which realpath &>/dev/null; then
+  OUTPUT_DIR="$(realpath "${OUTPUT_DIR}")"
+fi
+
 # Check for thrift support
 if ! which thrift >/dev/null 2>&1
 then
