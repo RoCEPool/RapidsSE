@@ -232,6 +232,21 @@ Stz* Card_Bound::szGet_idxColOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get $n or $t.c of ebound                                                   */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Bound::pGet_colOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (! xKid.p_term()->pSymbol()->bIsIndexColumn())
+      return xKid.p_term();
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get $t.c of ebound                                                         */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Bound::pGet_tblColOdn(void)

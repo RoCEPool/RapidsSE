@@ -166,12 +166,13 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) make a copy of the key as start of needed projection
 
-  if ( (pCI->G.p_key = pSub_key()) ) {
-    // + projection has a key
-    RASSERT(pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG));
-    for (Kid x_expr(pCI->G.p_key); x_expr.bEach(CK_EXPR); /**/) {
-      Card_Expr *p_expr_needed = x_expr.p_expr()->pClone(true);
-      p_needed->vAppend(p_expr_needed);
+  if (pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG)) {
+    if ((pCI->G.p_key = pSub_key())) {
+      // + projection has a key
+      for (Kid x_expr(pCI->G.p_key); x_expr.bEach(CK_EXPR); /**/) {
+        Card_Expr *p_expr_needed = x_expr.p_expr()->pClone(true);
+        p_needed->vAppend(p_expr_needed);
+      }
     }
   }
 

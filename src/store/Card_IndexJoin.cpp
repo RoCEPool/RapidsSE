@@ -140,23 +140,24 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   pCI->G.p_bounds    = pCI->G.p_index->pSub_bounds();
   pCI->G.p_bound     = pCI->G.p_bounds->pFindChosenBound();
   //pCI->G.p_bound->vDump();
-  pCI->G.p_term      = pCI->G.p_bound->pGet_tblColOdn();
+  pCI->G.p_term      = pCI->G.p_bound->pGet_colOdn();
 
   RASSERT(pCI->G.p_term);
   //pCI->G.p_term->vDump();
 
-  /*
-   * todo:
-   *
-   * i) is the bound $t.c in the needed projection?
-   *    n: find defn expr for $t.c
-   *       add expr (defn expr for $t.c) into needed projection
-   */
 
   if (! pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(pCI->G.p_term)) {
 
-    //pCI->Early.m_pNeeded_later->vDump();
-
+    if (pCI->G.p_term->bIsStmColOdn()) {
+      Card_Expr* p_expr_stmCol = new Card_Expr;
+      Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+      p_rpnCalc->pSymbol()->Y_vSet(P_Type,pCI->G.p_term->pSymbol()->Y_szGet(P_Type));
+      p_expr_stmCol->vAppend(p_rpnCalc);
+      p_rpnCalc->vAppend(pCI->G.p_term->pDupCardRecursive());
+      pCI->Early.m_pNeeded_later->vAppend(p_expr_stmCol);
+      pCI->Early.m_pNeeded_later->vRenumberAll_expr();
+    }
+    else
     if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(pCI->G.p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
