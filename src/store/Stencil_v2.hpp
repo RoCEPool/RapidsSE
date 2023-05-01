@@ -55,7 +55,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     stageOps_V2 m_xStageOps;
 
     CombinedSrc* m_pOpSource;
-    CodeSynth_v2* m_pOpHeader;
 
     // must be last
     Footer m_xFooter;
@@ -99,21 +98,20 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKind);
-    OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKind);
-    OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKind);
+    OpSketch* pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
+    OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
+    OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
     OpSketch* pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
-    OpSketch* pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, Stz* sLabelLoop, eSR ePrevStencil_v2, TypedStack* pInitStack = nullptr);
+    OpSketch* pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop, TypedStack* pInitStack = nullptr);
 
 
 
 
 
 
-    void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, TypedStack* pInitStack);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
+
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 

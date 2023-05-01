@@ -2021,7 +2021,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row inflate
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
-  sLabel.vSprint("L_InflateT"_Stz);
+  sLabel.vSprint("L_InflateCrwT"_Stz);
   sReturnLabel.vSprint("L_InflateCrwRet"_Stz);
   pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, m_xStageOps.m_sLabelOrdAgg, sReturnLabel, &uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
@@ -2065,7 +2065,7 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row inflate
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
-  sLabel.vSprint("L_InflateT"_Stz);
+  sLabel.vSprint("L_InflateCrwT"_Stz);
   pCodeSynth->vSynthInflateRow(sLabel, m_xStageOps.m_sLabelOrdAgg);
   pShape->vCodeSynthA(pCodeSynth);
 

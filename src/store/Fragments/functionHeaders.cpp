@@ -87,7 +87,7 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
 
   // marker-end
 
-  L_InflateT:
+  L_InflateCrwT:
   L_Return:
     return 0;
 }

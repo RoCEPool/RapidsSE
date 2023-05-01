@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* __CS2_sort : Code Synthesizer V2                                           */
+/*============================================================================*/
+
+_nation
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+explain stage transliterate select n_nationkey, n_name from nation order by n_nationkey;
+
+
+/ccode pipeline unamed
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+ stage S01 on all partitions :
+   scan rapidsse public Nation
+   | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort_v2 " type VARCHAR as n_name $2 ASC  "
+   | combined_v2 0
+   | next
+ stage S02 on origin :
+   output
+   | sink
+   | first
+end ;
+

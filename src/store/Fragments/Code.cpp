@@ -392,8 +392,7 @@ void vInflateCrwBegin(Combined_T* aCombinedT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
- L_InflateT:
-
+  __L_LABEL__:
 
   paW = &aCombinedT->m_aW[0];
 
