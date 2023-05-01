@@ -32,32 +32,12 @@ Card_Expr::Card_Expr(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Expr::Card_Expr(Card_Expr* p_expr_arg)
-: Card(CK_EXPR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Type*  p_type    = nullptr;
-  Card_As  *  p_as      = nullptr;
-  Card_Term*  p_term_0  = nullptr;
-
-  vDeconstruct(p_type,p_as,p_term_0);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
 
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr::Card_Expr(Card_Type*    p_type_arg,
-                     Card_As*      p_as_arg,
+Card_Expr::Card_Expr(Card_As*      p_as_arg,
                      Card_Term*    p_term_0_arg)
 : Card(CK_EXPR)
 {

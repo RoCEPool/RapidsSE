@@ -91,7 +91,6 @@ namespace STORE
 
     void vAs          (Stz* szRpnExpr, Card_As*        pCard_As);
     void vTerm        (Stz* szRpnExpr, Card_Term*      pCard_Term);
-    void vType        (Stz* szRpnExpr, Card_Type*      pCard_Type);
 
     void vConcat(Stz* aFormat, ...);
     void vConcat_vargs(Stz* aFormat, va_list xArgs);
