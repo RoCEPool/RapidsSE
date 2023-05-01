@@ -4681,7 +4681,7 @@ bool StrLib::bTailIs(const char *z, char *ss)
 
   const char* y = z - nSS_len;
 
-  vTrace("%s %lld ]%s[\n"_Stz,ss,nSS_len,y);
+  //vTrace("%s %lld ]%s[\n"_Stz,ss,nSS_len,y);
 
   if (bEqualTo(y,nSS_len,ss))
     return true;
