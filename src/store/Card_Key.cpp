@@ -89,7 +89,6 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(this->szP_Type());
-  RASSERT(p_key_arg->szP_Type());
 
   if (! szP_Type()->bSame(p_key_arg->szP_Type()))
     return false;

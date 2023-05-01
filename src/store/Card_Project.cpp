@@ -197,6 +197,12 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
   // derive new <project>/<projection>/<key>
   pCI->G.p_key = new Card_Key;
   pCI->G.p_projection->vKeyProjection(pCI);
+
+  if (! pCI->G.p_key->nChildCards()) {
+    delete pCI->G.p_key;
+    pCI->StreamOrder.m_pKey_running = nullptr;
+    return;
+  }
   pCI->G.p_projection->vAppend(pCI->G.p_key);
 
   // set running projection for use by next op

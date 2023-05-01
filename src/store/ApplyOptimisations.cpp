@@ -490,6 +490,9 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
       }
 
       m_pCI->vPrintBoard(__LINE__);
+
+      if (! m_pCI->StreamOrder.m_pKey_running)
+        break;
     }
   }
 
