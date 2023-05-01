@@ -59,8 +59,8 @@
 #include "wlp/thrift/generated/TunnelSupportedResponse_types.h"
 #include "wlp/thrift/generated/WarningResponse_types.h"
 
-const i8 C_MIN_SUPPORT_PROTOCOL_VER = 4;
-const i8 C_MAX_SUPPORT_PROTOCOL_VER = 4;
+const i8 C_MIN_SUPPORT_PROTOCOL_VER = 5;
+const i8 C_MAX_SUPPORT_PROTOCOL_VER = 5;
 
 // If the RowDataResponse message is too big to fit into the payload then we scale
 // the number of rows in it by this amount until it does fit.
@@ -1805,6 +1805,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         xDateWL.__set_year(wDtm.m_wDte.iYear());
         xDateWL.__set_month(wDtm.m_wDte.iMonth());
         xDateWL.__set_day(wDtm.m_wDte.iDay());
+        xColumnWL.__set_dateVal(xDateWL);
         break;
 
       case DM_FLT:
@@ -1825,6 +1826,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         xIntervalWL.__set_minute(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_HR * C_1M)  / (C_SECS_PER_MIN * C_1M));
         xIntervalWL.__set_second(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % (C_SECS_PER_MIN * C_1M) / C_1M);
         xIntervalWL.__set_nanoseconds((wDtm.m_wIvl.T.m_xIvl.u.m_xIvlDT.m_uMicros % C_1M) * C_1K);
+        xColumnWL.__set_intervalVal(xIntervalWL);
         break;
 
       case DM_IVY:  // year-month
@@ -1834,6 +1836,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         xIntervalWL.__set_isNegative(wDtm.m_wIvl.T.m_xIvl.m_bIsNeg);
         xIntervalWL.__set_year(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths / 12);
         xIntervalWL.__set_month(wDtm.m_wIvl.T.m_xIvl.u.m_xIvlYM.m_uMonths % 12);
+        xColumnWL.__set_intervalVal(xIntervalWL);
         break;
 
       case DM_TME:
@@ -1842,6 +1845,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         xTimeWL.__set_minute(wDtm.m_wTme.iMin());
         xTimeWL.__set_second(wDtm.m_wTme.iSec());
         xTimeWL.__set_nanoseconds(wDtm.m_wTme.m_uMicro * C_1K);
+        xColumnWL.__set_timeVal(xTimeWL);
         break;
 
       case DM_TSP:
@@ -1853,6 +1857,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
         xTimestampWL.__set_minute(wDtm.m_wTsp.iMin());
         xTimestampWL.__set_second(wDtm.m_wTsp.iSec());
         xTimestampWL.__set_nanoseconds(wDtm.m_wTsp.iMicro() * C_1K);
+        xColumnWL.__set_timestampVal(xTimestampWL);
         break;
 
       case DM_VCH:
