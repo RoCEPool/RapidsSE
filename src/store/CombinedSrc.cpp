@@ -147,16 +147,24 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
       case SK_AGGREG:
 
+        // open the indexScan code fragments file
+        bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Aggreg.cpp"_Stz);
+        RASSERT ( bOpened );
+
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "iAggregBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "iAggregBegin"_Stz, pCodeFile);
 
-        vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-        vAppendCodeFragment(pOpSketch, "iAggregInitEnd"_Stz);
+        vAppendCodeFragment(pOpSketch, "iAggregInitEnd"_Stz, pCodeFile);
 
-        vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "vAggregColsBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pExprStack, "    "_Stz);
-        vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz);
+        vAppendCodeFragment(pOpSketch, "iAggregColsEnd"_Stz, pCodeFile);
+
+        // close the indexScan code fragments file
+        pCodeFile->vClose();
+
         break;
 
       case SK_FILTER:
