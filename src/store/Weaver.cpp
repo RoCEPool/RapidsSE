@@ -1296,9 +1296,6 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
         p_rpnCalc = _pCard_RpnCalc(pCard);
         break;
 
-      case CK_TYPE:
-        break;
-
       default:
         break;
     }

@@ -1331,7 +1331,6 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_TERM:             return "G.p_term"_Stz;
     case CK_TOP:              return "G.p_top"_Stz;
     case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_TYPE:             return "G.p_type"_Stz;
     case CK_UNIQUE:           return "G.p_unique"_Stz;
     case CK_WHERE:            return "G.p_where"_Stz;
 

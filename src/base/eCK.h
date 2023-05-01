@@ -111,7 +111,6 @@ enum eCK // card kind
   /* */ CK_TERM,
   /* */ CK_TOP,
   /* */ CK_TOPOLOGY,
-  /* */ CK_TYPE,
 
   /* */ CK_UNIQUE,
 
@@ -230,7 +229,6 @@ static Stz* aCK[]
   /* */ "CK_TERM"_Stz,         // CK_TERM
   /* */ "CK_TOP"_Stz,          // CK_TOP
   /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
-  /* */ "CK_TYPE"_Stz,         // CK_TYPE
 
   /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
 
@@ -349,7 +347,6 @@ static Stz* aCK_short[]
   /* */ "term"_Stz,            // CK_TERM
   /* */ "top"_Stz,             // CK_TOP
   /* */ "topology"_Stz,        // CK_TOPOLOGY
-  /* */ "type"_Stz,            // CK_TYPE
 
   /* */ "unique"_Stz,          // CK_UNIQUE
 
