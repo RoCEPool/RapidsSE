@@ -67,7 +67,11 @@ def summarise_to_junit(results: [TestResult], dest: pathlib.Path):
 
     test_cases = []
     for result in results:
-        duration: datetime.timedelta = result.end_time - result.start_time
+        duration: datetime.timedelta = datetime.timedelta(seconds=0)
+
+        if result.end_time is not None and result.start_time is not None:
+            duration = result.end_time - result.start_time
+
         test_case = TestCase(result.test_name,
                              result.test_name,
                              duration.total_seconds(),
