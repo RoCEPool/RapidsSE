@@ -1,0 +1,440 @@
+--------------------------------------------------------------------------------
+-- Scan --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table Nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+)
+success
+
+create index IxN_NATIONKEY on nation (n_nationkey);
+success
+
+load nation "../DATA/TPCH/nation.tbl";
+success
+
+//------------------------------------------------------------------------------
+// PROJECT
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0559
+  stage stageMarker0559 on all partitions :
+    scan rapidsse public Nation
+    | filter_v2 " type BOOLEAN  $1 2  <  "
+    | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | combined_v2 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+
+//------------------------------------------------------------------------------
+// INDEXSCAN -
+//------------------------------------------------------------------------------
+/*
+pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexScan_v2 Nation IxN_NATIONKEY "UBOUND $I1 2 < "
+    | project_v2   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | combined_v2  0
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+rows:
+  (0,'ALGERIA',0,' haggle. carefully final deposits detect slyly agai')
+  (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
+*/
+
+//------------------------------------------------------------------------------
+// AGGREGATE - INTEGER
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | filter_v2 " type BOOLEAN  $1 5  <  "
+    | aggreg_v2 " type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+  stage S02 on all nodes :
+    aggreg_v2 " type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+  stage S03 on origin :
+    aggreg_v2 " type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ (10)
+
+//------------------------------------------------------------------------------
+// AGGREGATE - VARCHAR
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+ stage S01 on all partitions :
+   scan rapidsse public Nation
+   | aggreg_v2 " type VARCHAR )  $2 max  "
+   | combined_v2 0
+   | next
+ stage S02 on all nodes :
+   aggreg_v2 " type VARCHAR )  $1 max  "
+   | combined_v2 0
+   | next
+ stage S03 on origin :
+   aggreg_v2 " type VARCHAR )  $1 max  "
+   | combined_v2 0
+   | next
+ stage S04 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  ('VIETNAM')
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - INTEGER
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S01 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S02 on all partitions :
+   scan rapidsse public Nation
+   | gbyagg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | combined_v2 0
+   | next
+
+ stage S03 on all nodes :
+   gbyagg_v2 " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | combined_v2 0
+   | next
+
+ stage S04 on origin :
+   gbyagg_v2 " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | combined_v2 0
+   | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  (50,0)
+  (47,1)
+  (68,2)
+  (77,3)
+  (58,4)
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - VARCHAR
+//------------------------------------------------------------------------------
+ pipeline unamed
+ begin
+   stage S01 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S02 on all partitions :
+     scan rapidsse public Nation
+     | gbyAgg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | combined_v2 0
+     | next
+
+   stage S03 on all nodes :
+     gbyagg_v2 " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | combined_v2 0
+     | next
+
+   stage S04 on origin :
+     gbyagg_v2 " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | combined_v2 0
+     | next
+
+   stage S05 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+rows:
+  (0,'MOZAMBIQUE')
+  (1,'UNITED STATES')
+  (2,'VIETNAM')
+  (3,'UNITED KINGDOM')
+  (4,'SAUDI ARABIA')
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - KEY VARCHAR
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | gbyAgg_v2 " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | combined_v2 0
+    | next
+
+  stage S02 on all nodes :
+    gbyAgg_v2 " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | combined_v2 0
+    | next
+
+  stage S03 on origin :
+    gbyAgg_v2 " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | combined_v2 0
+    | next
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
+rows:
+  ('ALGERIA',0)
+  ('ARGENTINA',1)
+  ('BRAZIL',2)
+  ('CANADA',3)
+  ('CHINA',18)
+  ('EGYPT',4)
+  ('ETHIOPIA',5)
+  ('FRANCE',6)
+  ('GERMANY',7)
+  ('INDIA',8)
+  ('INDONESIA',9)
+  ('IRAN',10)
+  ('IRAQ',11)
+  ('JAPAN',12)
+  ('JORDAN',13)
+  ('KENYA',14)
+  ('MOROCCO',15)
+  ('MOZAMBIQUE',16)
+  ('PERU',17)
+  ('ROMANIA',19)
+  ('RUSSIA',22)
+  ('SAUDI ARABIA',20)
+  ('UNITED KINGDOM',23)
+  ('UNITED STATES',24)
+  ('VIETNAM',21)
+
+//------------------------------------------------------------------------------
+// PROJECT - ROW BUFFER
+//------------------------------------------------------------------------------
+
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | combined_v2 0
+    | next
+
+  stage S02 on all partitions :
+    project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | combined_v2 0
+    | next
+
+  stage S03 on origin :
+    output
+    | sink
+    | first
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+  (2,'BRAZIL')
+  (3,'CANADA')
+  (4,'EGYPT')
+  (5,'ETHIOPIA')
+  (6,'FRANCE')
+  (7,'GERMANY')
+  (8,'INDIA')
+  (9,'INDONESIA')
+  (10,'IRAN')
+  (11,'IRAQ')
+  (12,'JAPAN')
+  (13,'JORDAN')
+  (14,'KENYA')
+  (15,'MOROCCO')
+  (16,'MOZAMBIQUE')
+  (17,'PERU')
+  (18,'CHINA')
+  (19,'ROMANIA')
+  (20,'SAUDI ARABIA')
+  (21,'VIETNAM')
+  (22,'RUSSIA')
+  (23,'UNITED KINGDOM')
+  (24,'UNITED STATES')
+
+//------------------------------------------------------------------------------
+// SORT - INTEGER
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public Nation
+   | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort_v2 " type INTEGER as n_nationkey $1 ASC  "
+   | combined_v2 0
+   | next
+
+ stage S02 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+  (2,'BRAZIL')
+  (3,'CANADA')
+  (4,'EGYPT')
+  (5,'ETHIOPIA')
+  (6,'FRANCE')
+  (7,'GERMANY')
+  (8,'INDIA')
+  (9,'INDONESIA')
+  (10,'IRAN')
+  (11,'IRAQ')
+  (12,'JAPAN')
+  (13,'JORDAN')
+  (14,'KENYA')
+  (15,'MOROCCO')
+  (16,'MOZAMBIQUE')
+  (17,'PERU')
+  (18,'CHINA')
+  (19,'ROMANIA')
+  (20,'SAUDI ARABIA')
+  (21,'VIETNAM')
+  (22,'RUSSIA')
+  (23,'UNITED KINGDOM')
+  (24,'UNITED STATES')
+
+//------------------------------------------------------------------------------
+// SORT - VARCHAR
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public Nation
+   | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort_v2 " type VARCHAR as n_name $2 ASC  "
+   | combined_v2 0
+   | next
+
+ stage S02 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+  (2,'BRAZIL')
+  (3,'CANADA')
+  (18,'CHINA')
+  (4,'EGYPT')
+  (5,'ETHIOPIA')
+  (6,'FRANCE')
+  (7,'GERMANY')
+  (8,'INDIA')
+  (9,'INDONESIA')
+  (10,'IRAN')
+  (11,'IRAQ')
+  (12,'JAPAN')
+  (13,'JORDAN')
+  (14,'KENYA')
+  (15,'MOROCCO')
+  (16,'MOZAMBIQUE')
+  (17,'PERU')
+  (19,'ROMANIA')
+  (22,'RUSSIA')
+  (20,'SAUDI ARABIA')
+  (23,'UNITED KINGDOM')
+  (24,'UNITED STATES')
+  (21,'VIETNAM')
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table nation;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table lineitem;
+  mute
+
+  bye;
+  mute
+}

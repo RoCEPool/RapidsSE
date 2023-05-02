@@ -67,6 +67,24 @@ CombinedSrc::~CombinedSrc(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
+  // close the files
+
+  if (m_pFileHeader->bIsOpen())
+    m_pFileHeader->vClose();
+
+  if (m_pFunctionHeader->bIsOpen())
+    m_pFunctionHeader->vClose();
+
+  if (m_pFunctionFooter->bIsOpen())
+    m_pFunctionFooter->vClose();
+
+  if (m_pCommonCode->bIsOpen())
+    m_pCommonCode->vClose();
+
+  delete(m_pFileHeader);
+  delete(m_pFunctionHeader);
+  delete(m_pFunctionFooter);
+  delete(m_pCommonCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,7 +276,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
       case SK_INFLATE_ROW:
         // open the inflateRow code fragments file
-        pCodeFile = new File(this);
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateRow.cpp"_Stz);
         RASSERT ( bOpened );
 

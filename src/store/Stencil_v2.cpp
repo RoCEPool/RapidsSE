@@ -1462,9 +1462,6 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, 
 
   i8 i_Op = pOp->i_Op();
 
-  // create a new shape for this OP
-  OpSketch *pShape = new OpSketch;
-
   // get filter expr from OP
   TagSet* pOpTags = pOp->pOpTags();
   Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);

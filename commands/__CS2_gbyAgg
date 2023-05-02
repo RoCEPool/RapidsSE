@@ -41,7 +41,7 @@ end ;
 
 
 
-explain stage transliterate select n_name, sum(n_nationKey) from nation group by n_name;
+explain stage transliterate select n_regionkey, max(n_name) from nation group by n_regionkey;
 /ccode pipeline unamed
 begin
   stage stageStart on origin :
@@ -78,3 +78,5 @@ begin
     | sink
     | stageStart
 end ;
+
+explain stage transliterate select n_name, sum(n_nationKey) from nation group by n_name;
