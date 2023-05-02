@@ -341,6 +341,35 @@ eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append clone of given card                                                 */
+/*----------------------------------------------------------------------------*/
+Card* Card::pAppendClone(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_card)
+    return nullptr;
+
+  Card* p_card_clone = p_card->pDupCardRecursive();
+
+  vAppend(p_card_clone);
+
+  return p_card_clone;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append clone of given card                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendClone(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* p_card_clone = pAppendClone(p_card);
+
+  UNUSED(p_card_clone);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
 void Card::vAppendNewCard(eCK eCard, Stz* szValue)

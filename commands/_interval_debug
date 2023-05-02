@@ -6,9 +6,19 @@ create table interval6(a date,b timestamp,c time);
 
 load interval6 "../DATA/QA/interval/interval6.csv";
 
+/ep_disable
+/glean_interactive
 /transliterated
 /weaved
-select a+interval '1' month,count(*) from interval6 group by a+interval '1' month;
+/pipelineName = "_interval_debug"
+select
+       a+interval '1' month,
+       count(*)
+  from
+       interval6
+ group
+       by a+interval '1' month
+;
 
 
 

@@ -330,6 +330,8 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+    Card* pAppendClone(Card* p_card);
+    void vAppendClone(Card* p_card);
     Card* pAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     void vAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
