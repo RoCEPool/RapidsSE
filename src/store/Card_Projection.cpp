@@ -152,7 +152,7 @@ Card_Expr* Card_Projection::pContains(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft factored form of this projection needed for early projects           */
+/* craft factored-column-set this projection needs for early-projects         */
 /*----------------------------------------------------------------------------*/
 Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 {
@@ -164,15 +164,11 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   Card_Needed* p_needed = new Card_Needed;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) make a copy of the key as start of needed projection
+  // 1) get factored columns of key as start of needed projection
 
   if (pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG)) {
     if ((pCI->G.p_key = pSub_key())) {
       // + projection of gbyAgg/ordAgg has a key
-//      for (Kid x_expr(pCI->G.p_key); x_expr.bEach(CK_EXPR); /**/) {
-//        Card_Expr *p_expr_needed = x_expr.p_expr()->pClone(true);
-//        p_needed->vAppend(p_expr_needed);
-//      }
 
       pCI->G.p_key->vFactorAll_col_IntoDistinct_expr(pCI);
       p_needed->vTransferChildren(pCI->G.p_subSet);
