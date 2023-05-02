@@ -517,7 +517,20 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
       continue;
     }
 
+    //------------------------------------------------
+    // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
+    //------------------------------------------------
+
+    /*
+    //---------------------------------------------------------
+    // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
+    //---------------------------------------------------------
     // break when we reach the combined OP
+    if (pOp->szOpNm()->bSame("dynamic"_Stz)) {
+      break;
+    }
+    */
+
     if (pOp->szOpNm()->bSame("combined_v2"_Stz)) {
       break;
     }
@@ -1977,7 +1990,28 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
       continue;
     }
 
+    /*
+    //---------------------------------------------------------
+    // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
+    //---------------------------------------------------------
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // dynamic OP
+    if (pOp->szOpNm()->bSame("dynamic"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // MULTIPLE COMBINED OP's
+      if (m_xStageOps.m_iCombinedOp) {
+        vTrace("Error: Cannot have multiple combinedOp's (%s)!!!\n"_Stz,
+               m_szStageNm.azChar());
+        return EC_INVALID_PIPELINE;
+      }
+
+      m_xStageOps.m_iCombinedOp++;
+      m_xStageOps.m_pCombinedOp = pOp;
+      continue;
+    }
+  */
+
     // combined OP
     if (pOp->szOpNm()->bSame("combined_v2"_Stz)) {
 

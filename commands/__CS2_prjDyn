@@ -15,7 +15,9 @@ begin
     | stageMarker0559
   stage stageMarker0559 on all partitions :
     scan rapidsse public Nation
-    //| dynamic
+    | filter_v2 " type BOOLEAN  $1 2  <  "
+    | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | dynamic
     | stageLast
   stage stageLast on origin :
     output
@@ -204,7 +206,7 @@ __cpp_code__
 /* 0177 */     // INFLATE-CRW
 /* 0178 */     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /* 0179 */
-/* 0180 */   L_InflateT:
+/* 0180 */   L_InflateCrwT:
 /* 0181 */
 /* 0182 */     paW = &aCombinedT->m_aW[0];
 /* 0183 */     iaPow10[0] = 1;

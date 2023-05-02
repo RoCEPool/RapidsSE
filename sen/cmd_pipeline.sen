@@ -135,6 +135,7 @@
 /* org_ org */
 
 /* org_ org */  Dynamo[].new
+
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
 /* org_ org */    // + clean compile
@@ -517,6 +518,27 @@
 /* _ptp beg */  <cmd> Dynamo[].compile
 /* _ptp beg */    EC_NONE == assert
 /* _ptp beg */    to PipeSpec[]
+
+/****************************************************************************/
+
+                  //---------------------------------------------------------
+                  // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
+                  //---------------------------------------------------------
+
+                  Dynamo[].hasCode if
+                    TinyC[].new
+                    Dynamo[].code@ TinyC[].compile_dynamoCode
+                    1 TinyC[].symbols
+                    TinyC[].relocate assert
+                    "iFun0_stageMarker0324" TinyC[].find to Fun0[]
+                    "iFun1_stageMarker0324" TinyC[].find to Fun1[]
+                    "iFun2_stageMarker0324" TinyC[].find to Fun2[]
+                    "iFun3_stageMarker0324" TinyC[].find to Fun3[]
+                    TinyC[].delete
+                  then
+
+/**************************************************************************/
+
 /* _ptp beg */  Dynamo[].delete
 /* _ptp beg */
 /* _ptp beg */
@@ -646,7 +668,6 @@
 /* _ptp exd */
 /* _ptp exd */
 //4 thread::sleepSsec
-
 /* _ptp exd */  // - - - - - - - - - - - - - - -
 /* _ptp exd */  // reply executed to originator
 /* _ptp exd */  // - - - - - - - - - - - - - - -

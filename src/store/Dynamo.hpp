@@ -46,6 +46,7 @@ namespace STORE
     static VertexSpec* pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
     VertexSpec* pCompile(Stz* szPipelineStmt);
+    Stz* szCode(void);
 
   private:
     Footer* aFooter(void);
@@ -141,7 +142,6 @@ namespace STORE
     bool bHasCode(void);
     void vHasCode(bool bHasCode);
 
-    Stz* szCode(void);
     void vCode(Stz* szCode);
 
 

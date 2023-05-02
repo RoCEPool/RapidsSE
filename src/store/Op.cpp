@@ -1742,7 +1742,31 @@ void Op::vSpawnTask(void)
   pJob->vActiveOpsInc();
 
   Task* pTask = this->pTask();
-  
+
+
+/*
+ //---------------------------------------------------------
+ // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
+ //---------------------------------------------------------
+
+  if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
+    bool (*afFun0)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
+    if (afFun0)
+      pTask->m_pLogicUnit->m_afFun0 = afFun0;
+    bool (*afFun1)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
+    if (afFun1)
+      pTask->m_pLogicUnit->m_afFun1 = afFun1;
+    bool (*afFun2)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
+    if (afFun2)
+      pTask->m_pLogicUnit->m_afFun2 = afFun2;
+    bool (*afFun3)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun3;
+    if (afFun3)
+      pTask->m_pLogicUnit->m_afFun3 = afFun3;
+  }
+
+*/
+
+
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
     pTask->vDedicatedThread(true);
         

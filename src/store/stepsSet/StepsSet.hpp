@@ -458,9 +458,11 @@ void vDdlLockAssertNone(void);
   void vDstackSwap(void);
   void vDstackTuck(void);
 
+  void vDynamoCodeFetch(void);
   void vDynamoCompile(void);
   void vDynamoDelete(void);
   void vDynamoGet(void);
+  void vDynamoHasCode(void);
   void vDynamoNew(void);
 
   // encode
@@ -2294,11 +2296,14 @@ void vDdlLockAssertNone(void);
   void vTinyCCompile(void);
   void vTinyCDelete(void);
   void vTinyCFind(void);
+  void vTinyCGet(void);
+  void vTinyCIsNotNull(void);
   void vTinyCNew(void);
   void vTinyCRelocate(void);
   void vTinyCSymbols(void);
 
   void vTinyCCompile_v2(void);
+  void vTinyCCompiledynamoCode(void);
 
   // to
   void vToBcd(void);

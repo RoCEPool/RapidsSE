@@ -26,11 +26,14 @@ void Step::vAddSteps_TinyC(void)
   vAddStep("TinyC[].compile"_Stz,      &Step::vTinyCCompile);
   vAddStep("TinyC[].delete"_Stz,       &Step::vTinyCDelete);
   vAddStep("TinyC[].find"_Stz,         &Step::vTinyCFind);
+  vAddStep("TinyC[].get"_Stz,          &Step::vTinyCGet);
+  vAddStep("TinyC[].isNotNull"_Stz,    &Step::vTinyCIsNotNull);
   vAddStep("TinyC[].new"_Stz,          &Step::vTinyCNew);
   vAddStep("TinyC[].relocate"_Stz,     &Step::vTinyCRelocate);
   vAddStep("TinyC[].symbols"_Stz,      &Step::vTinyCSymbols);
 
-  vAddStep("TinyC[].compile_v2"_Stz,   &Step::vTinyCCompile_v2);
+  vAddStep("TinyC[].compile_dynamoCode"_Stz, &Step::vTinyCCompiledynamoCode);
+  vAddStep("TinyC[].compile_v2"_Stz,         &Step::vTinyCCompile_v2);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,6 +79,27 @@ void Step::vTinyCCompile_v2(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* TinyC[].compile_dynamoCode -- compile given source using TinyC             */
+/*----------------------------------------------------------------------------*/
+void Step::vTinyCCompiledynamoCode(void)
+{
+  ENTRY();
+
+  s48K szCode;
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
+
+  m_pDataStack->vPopStr(szCode,__func__);
+
+  bool bClean = pTinyC->bCompile(szCode.azChar());
+  if (bClean)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* TinyC[].delete -- delete TinyC                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTinyCDelete(void)
@@ -88,6 +112,12 @@ void Step::vTinyCDelete(void)
   pTinyC->vEnd();
 
   delete pTinyC;
+
+  void* aTinyFunc = m_pLogicUnit->m_aTinyFunc;
+  if (aTinyFunc) {
+    free(aTinyFunc);
+    m_pLogicUnit->m_aTinyFunc = nullptr;
+  }
 
   EXIT();
 }
@@ -108,6 +138,31 @@ void Step::vTinyCFind(void)
   afFun = (bool (*)(void*)) pTinyC->pFindSymbol(sFunNm.azChar());
 
   m_pDataStack->vPushInt((i8)afFun);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TinyC[].get -- get TinyC                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTinyCGet(void)
+{
+  ENTRY();
+
+  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
+  m_pDataStack->vPushPtr(pTinyC);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TinyC[].isNotNull -- get TinyC                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTinyCIsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_pLogicUnit->m_xpTinyC.bIsNull() ? 0 : 1);
 
   EXIT();
 }
