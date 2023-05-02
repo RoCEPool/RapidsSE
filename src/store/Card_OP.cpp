@@ -503,10 +503,10 @@ bool Card_OP::bIsEarlyRoot(void)
 
   switch (eCard) {
 
-//    case CK_AGGREG:
-//      if (bIsPartitionLevel())
-//        return true;
-//      return false;
+    case CK_AGGREG:
+      if (bIsPartitionLevel())
+        return true;
+      return false;
 
     case CK_GBYAGG:
       if (bIsPartitionLevel())

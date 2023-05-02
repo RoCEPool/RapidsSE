@@ -289,8 +289,6 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_Project::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(bIsPartitionLevel());

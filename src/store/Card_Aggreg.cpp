@@ -87,8 +87,6 @@ void Card_Aggreg::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(bIsPartitionLevel());
@@ -101,6 +99,12 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
   pCI->Early.m_pOP_root = (Card_OP*)this;
   pCI->G.p_projection = pSub_projection();
   pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
+
+  if (0 == pCI->Early.m_pNeeded_later->nChildCards()) {
+    DELETE_CARD(pCI->Early.m_pNeeded_later);
+    pCI->Early.m_pOP_leaf = this;
+    return;
+  }
 
   // insert empty early projection (has only needed) before this ordAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);

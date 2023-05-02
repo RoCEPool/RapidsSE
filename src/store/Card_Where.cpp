@@ -204,20 +204,62 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Where::vEarlyProject_add_transients(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambda = [pCI] (Card_Term* p_term) {
+
+    if (! p_term->bIsColOdn())
+      return C_CONTINUE_RECURSION;
+
+    if (pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(p_term))
+      return C_CONTINUE_RECURSION;
+
+    if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(p_term)) {
+      //p_expr_defn->vDump();
+      Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
+      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
+      pCI->Early.m_pNeeded_later->vRenumberAll_expr();
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  pCI->G.p_boolCalc = pSub_boolCalc();
+
+  pCI->G.p_boolCalc->bApplyRecursive_term(bLambda);
+
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_Where::vEarlyProject_recurse_passthru(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->vPrintBoard();
+
+  // save the current projection needed
+  //   we can restore to this save if projection needed get extended
+  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
+
+  // check for additional/temporary transients
+  vEarlyProject_add_transients(pCI);
 
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+  // restore needed
+  delete pCI->Early.m_pNeeded_later;
+  pCI->Early.m_pNeeded_later = p_needed_save;
 
   pCI->vPrintBoard();
 

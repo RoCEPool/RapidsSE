@@ -78,8 +78,6 @@ void Card_KeyNotExists::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {

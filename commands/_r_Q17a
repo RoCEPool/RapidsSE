@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* _r_Q17a -- TCPH query 17 test (standalone)                                 */
+/*============================================================================*/
+
+__TPCH_SCHEMA_LOAD_SF0001
+//__TPCH_SCHEMA_LOAD_SF1
+//__TPCH_SCHEMA_LOAD_SF10
+
+/ep_enable
+/glean_interactive
+/joWrite
+/transliterated
+/weaved
+/pipelineName = "_r_Q17a"
+select
+  sum(l_extendedprice) / 7.0 as avg_yearly
+from
+  lineitem,
+  part
+where
+      p_partkey = l_partkey
+  and p_brand = 'Brand#23'
+  and p_container = 'MED BOX'
+  and l_quantity <
+    (
+    select
+      0.2 * avg(l_quantity)
+    from
+      lineitem
+    where
+      l_partkey = p_partkey
+    );
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
