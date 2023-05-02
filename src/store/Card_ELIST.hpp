@@ -24,7 +24,6 @@ namespace STORE
     Card_Expr* pGetExpr(i8 i_Expr);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vRenumberAll_expr(void);
-    void vFlipTerms(Card_Projection* p_projection_reduced);
   };
 
   Card_ELIST* _pCard_ELIST(void* aAddr);

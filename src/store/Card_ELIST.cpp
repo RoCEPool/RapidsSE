@@ -236,29 +236,6 @@ void Card_ELIST::vRenumberAll_expr(void)
     xCI.G.p_expr->vRenumber(i_Expr++, bIsKeyExpr);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_ELIST::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-
-  CardIter xCI_expr(this);
-  while (xCI_expr.G_bEachMain(CK_EXPR)) {
-    Card_RpnCalc *p_rpnCalc = xCI_expr.G.p_expr->pSub_rpnCalc();
-    if (!p_rpnCalc)
-      continue;
-    p_rpnCalc->vFlipTerms(p_projection_reduced);
-  }
-
-  CardIter xCI_key(this);
-  while (xCI_key.G_bEachMain(CK_KEY)) {
-    xCI_key.G.p_key->vFlipTerms(p_projection_reduced);
-  }
-
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

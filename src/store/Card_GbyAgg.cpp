@@ -161,41 +161,6 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   vDebugPoint();
 }
-/*----------------------------------------------------------------------------*/
-//void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  RASSERT(bIsPartitionLevel());
-//
-//  RASSERT(! pCI->Early.m_pProjection_needed);
-//
-//  pCI->Early.m_pOP_root = (Card_OP*)this;
-//
-//  pCI->G.p_key = pSub_key();
-//
-//  // get the needed form of ordAgg's projection
-//  pCI->Early.m_pProjection_needed =
-//      pSub_projection()->pCraftRoot_needed(pCI);
-//
-//  Card_OP::vEarlyProject_backstep(pCI);
-//
-//  // todo: arrived back ...
-//  pCI->vPrintBoard();
-//
-//  pCI->G.p_key = pSub_key();
-//  pCI->G.p_key->vFlipTerms(pCI->Early.m_pProjection_needed);
-//
-//  pCI->vPrintBoard();
-//
-//  pCI->G.p_projection = pSub_projection();
-//  pCI->G.p_projection->vFlipTerms(pCI->Early.m_pProjection_needed);
-//
-//  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
-//
-//  pCI->vPrintBoard();
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */

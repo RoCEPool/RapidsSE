@@ -304,18 +304,6 @@ Card_Term* Card_RpnCalc::pProjectedTerm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vFlipTerms(Card_Projection* p_projection_needed)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_TERM))
-    xCI_this.G.p_term->vFlip(p_projection_needed);
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert <rpnCalc> to <boolCalc>                                            */
 /*----------------------------------------------------------------------------*/
 Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)

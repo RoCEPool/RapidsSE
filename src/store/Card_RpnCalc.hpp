@@ -29,7 +29,6 @@ namespace STORE
     void vOntoStzList(StzList* pStzList);
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
-    void vFlipTerms(Card_Projection* p_projection_needed);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
     i8 nTrimTerm(Stz* szValue);
     void vTypes_For_stmColOdn(CardIter* pCI);

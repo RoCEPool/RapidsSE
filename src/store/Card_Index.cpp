@@ -178,20 +178,6 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Index::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Bounds* p_bounds = pSub_bounds();
-
-  if (p_bounds)
-    p_bounds->vFlipTerms(p_projection_reduced);
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

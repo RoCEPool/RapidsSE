@@ -87,18 +87,6 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Bounds::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_BOUND))
-    xCI.G.p_bound->vFlipTerms(p_projection_reduced);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

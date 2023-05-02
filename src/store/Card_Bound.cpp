@@ -276,19 +276,6 @@ Stz* Card_Bound::szGet_tblColOdn(void)
   return nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Bound::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM))
-    xCI.G.p_term->vFlip(p_projection_reduced);
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
