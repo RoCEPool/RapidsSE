@@ -360,6 +360,8 @@ namespace STORE
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
+    Stz* szGetType(void);
+
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubWithValueRecursive(eCK eCard, Stz* szValue);
     bool bHasValue(void);
@@ -392,6 +394,9 @@ namespace STORE
     bool bSameValue(Card* pCard);
     bool bSameValueRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     bool bSameValuePpyRecursive(Card* pCard_OTHER); // not needed??
+
+    void vSetType(Card* p_card_arg);
+    void vSetType(Stz* szType_arg);
 
     Symbol* pSymbol(void);
 

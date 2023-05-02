@@ -43,6 +43,30 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc_For_col(Card_Term* p_term_colOdn)
+{
+  _static_
+
+  RASSERT(p_term_colOdn->bIsColOdn());
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+
+  Card_Term* p_term = p_term_colOdn->pClone();
+  p_rpnCalc->vAppend(p_term);
+
+  // rpn is a calculation resulting in a typed value
+  p_rpnCalc->vSetType(p_term);
+
+  return p_rpnCalc;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vAppendRpnCalc(STORE::Card_RpnCalc *p_rpnCalc)
@@ -135,6 +159,33 @@ void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   while (xCI.G_bEachMain(CK_TERM)) {
     xCI.G.p_term->vConvert_stmColOdn_To_tblColOdn(pCI);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(! pCI->G.p_subSet);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  // an rpnCalc is a linear sequence of terms, some of which are columns
+  for (Kid x_term(this); x_term.bEach(CK_TERM); /**/) {
+
+     if (! x_term.p_term()->bIsColOdn())
+      continue;
+
+    Card_Term* p_term_colOdn = x_term.p_term();
+
+    Card_Expr* p_expr_col = Card_Expr::pDistinct_expr_For_col(p_term_colOdn);
+
+    p_subSet->vAppend(p_expr_col);
+  }
+
+  pCI->G.p_subSet = p_subSet;
 }
 
 /*----------------------------------------------------------------------------*/

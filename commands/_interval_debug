@@ -6,7 +6,7 @@ create table interval6(a date,b timestamp,c time);
 
 load interval6 "../DATA/QA/interval/interval6.csv";
 
-/ep_disable
+/ep_enable
 /glean_interactive
 /transliterated
 /weaved

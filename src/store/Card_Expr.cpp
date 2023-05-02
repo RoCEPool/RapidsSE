@@ -69,6 +69,23 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pDistinct_expr_For_col(Card_Term* p_term_colOdn)
+{
+  _static_
+
+  RASSERT(p_term_colOdn->bIsColOdn());
+
+  Card_Expr* p_expr = new Card_Expr;
+
+  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc_For_col(p_term_colOdn);
+  p_expr->vAppend(p_rpnCalc);
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
@@ -209,6 +226,29 @@ void Card_Expr::vDeconstruct(Card_As*&      rp_as,
   rp_as   = pSub_as();
   Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
   rp_term_0  = p_rpnCalc ? p_rpnCalc->pSub_term() : nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(! pCI->G.p_subSet);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  // an expr is an rpnCalc (shouldn't be boolCalc)
+  if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
+
+    pCI->G.p_rpnCalc->vFactorAll_col_IntoDistinct_expr(pCI);
+    p_subSet->vTransferChildren(pCI->G.p_subSet);
+
+    DELETE_CARD(pCI->G.p_subSet);
+  }
+
+  pCI->G.p_subSet = p_subSet;
 }
 
 /*----------------------------------------------------------------------------*/

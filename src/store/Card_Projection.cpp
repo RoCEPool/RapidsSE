@@ -152,7 +152,7 @@ Card_Expr* Card_Projection::pContains(Card_Expr* p_expr_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft reduced form of this projection needed for early projects            */
+/* craft factored form of this projection needed for early projects           */
 /*----------------------------------------------------------------------------*/
 Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 {
@@ -168,11 +168,15 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 
   if (pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG)) {
     if ((pCI->G.p_key = pSub_key())) {
-      // + projection has a key
-      for (Kid x_expr(pCI->G.p_key); x_expr.bEach(CK_EXPR); /**/) {
-        Card_Expr *p_expr_needed = x_expr.p_expr()->pClone(true);
-        p_needed->vAppend(p_expr_needed);
-      }
+      // + projection of gbyAgg/ordAgg has a key
+//      for (Kid x_expr(pCI->G.p_key); x_expr.bEach(CK_EXPR); /**/) {
+//        Card_Expr *p_expr_needed = x_expr.p_expr()->pClone(true);
+//        p_needed->vAppend(p_expr_needed);
+//      }
+
+      pCI->G.p_key->vFactorAll_col_IntoDistinct_expr(pCI);
+      p_needed->vTransferChildren(pCI->G.p_subSet);
+      DELETE_CARD(pCI->G.p_subSet);
     }
   }
 

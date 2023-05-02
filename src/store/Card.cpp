@@ -818,6 +818,16 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szGetType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szType = m_xSymbol.Y_szGet((P_Type));
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasSubRecursive(Card* pSubCard)
@@ -1455,7 +1465,27 @@ bool Card::bSameValuePpyRecursive(Card* pCard_OTHER)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get val                                                                    */
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vSetType(Card* p_card_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.Y_vSet(P_Type,p_card_arg->m_xSymbol.Y_szGet(P_Type));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vSetType(Stz* szType_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.Y_vSet(P_Type,szType_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
 Symbol* Card::pSymbol(void)
 {
@@ -2860,6 +2890,7 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 {
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* find eCT by name                                                           */

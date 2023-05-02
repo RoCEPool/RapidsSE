@@ -149,6 +149,29 @@ void Card_Key::vTypes_For_stmColOdn(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Key::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(! pCI->G.p_subSet);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  // key is a set of expr
+  for (Kid x_expr(this); x_expr.bEach(CK_EXPR); /**/) {
+
+    x_expr.p_expr()->vFactorAll_col_IntoDistinct_expr(pCI);
+    p_subSet->vTransferChildren(pCI->G.p_subSet);
+
+    DELETE_CARD(pCI->G.p_subSet);
+  }
+
+  pCI->G.p_subSet = p_subSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* Card_Key::szP_Type(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
