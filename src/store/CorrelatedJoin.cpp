@@ -284,7 +284,7 @@ void CorrelatedJoin::vIdentify_Expr_Of_Correlation_Key_Column(CardIter* pCI)
   // find the <table>/<stream>/<stmColList>/<stmCol>
   //  corresponding to the correlated predicate
 
-  pCI->Sqy.m_pExpr_corr = pCI->Sqy.m_pTerm_corrCol->pExpr_For_col(pCI,pCI->G.i_MainCard+1);
+  pCI->Sqy.m_pExpr_corr = pCI->Sqy.m_pTerm_corrCol->pExpr_For_col(pCI->Sqy.m_pTerm_corrCol,pCI,pCI->G.i_MainCard+1);
 
   pCI->Sqy.m_pExpr_corr->vMark1(MARK_AT);
   pCI->Sqy.m_pExpr_corr->pSymbol()->Y_vSet(P_CrlKeyExpr);
@@ -489,7 +489,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           p_card->vCard(CK_TERM);
           Card_Term* p_term = _pCard_Term(p_card);
 
-          Card_Expr* p_expr_otr = p_term->pExpr_For_colNm(pCI);
+          Card_Expr* p_expr_otr = p_term->pExpr_For_colNm(p_term,pCI);
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->szProjectedCol();
           xCI.G.p_MainCard->vSymbol(szProjectedCol);  // TODO: hack!!

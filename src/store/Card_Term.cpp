@@ -218,9 +218,11 @@ eTE Card_Term::eEvalTerm(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
+Card_Expr* Card_Term::pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Before)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(this == p_term);
 
   if (C_UNKNOWN == i_Before)
     i_Before = pCI->i_Child();
@@ -258,9 +260,11 @@ Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Term::pExpr_For_colNm(CardIter* pCI, i8 i_Before)
+Card_Expr* Card_Term::pExpr_For_colNm(Card_Term* p_term, CardIter* pCI, i8 i_Before)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(this == p_term);
 
   if (C_UNKNOWN == i_Before)
     i_Before = pCI->i_Child();
