@@ -824,6 +824,8 @@ Stz* Card::szGetType(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Stz* szType = m_xSymbol.Y_szGet((P_Type));
+
+  return szType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2931,33 +2933,24 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
-/*----------------------------------------------------------------------------*/
-eCT Symbol::eType(void)
-{
-
-  Stz* szP_Type = Y_szGet(P_Type);
-
-  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (szCT_char[i_Type]->bSame(szP_Type))
-      return (eCT)i_Type;
-
-  return CT_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
+/* get type                                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szType(void)
 {
-  _static_
+  Stz* sz = Y_szGet(P_Type);
 
-  eCT eType = this->eType();
-
-  return aCT[eType];
+  return sz;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get type                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol:: vType(Stz* szType)
+{
+  Y_vSet(P_Type,szType);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get symbol                                                                 */

@@ -249,8 +249,8 @@ namespace STORE
     void vSetTableColSyn(char cTblSyn);
     void vSprint(Stz* szFormat, ...);
 
-    eCT  eType(void);
     Stz* szType(void);
+    void vType(Stz* szType);
 
     Stz* szSymbol(void);
 
