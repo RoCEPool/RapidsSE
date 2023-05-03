@@ -27,22 +27,19 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(bool bstmCol_flip);
     void vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI);
+    Card_Expr* pCraft_expr_early(CardIter* pCI);
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
-
     void vFactorAll_colOdn_IntoDistinct_expr(CardIter* pCI);
-    Stz* szGetSingleTermIf_odn(void);
+    Stz* szGetOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
-    bool bIsSingle_odn(Stz* szOdn_single);
+    bool bIsOdn(Stz* szOdn_arg);
     bool bIsSame(Card_Expr* pExpr_arg);
     bool bOf_colOdn(Card_Term* p_term_colOdn);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
-    void vRenumber_keyOdn(i8 i_Expr);
-    void vRenumber_stmColOdn(i8 i_Expr);
-    Card_Expr* pCraft_expr_early(CardIter* pCI);
-
-    i8 iRpnCalc_WhichGbyKey(void);
+    void vRenumberForm_keyOdn(i8 i_Expr);
+    void vRenumberForm_stmOdn(i8 i_Expr);
 
     void vTypes_For_stmColOdn(CardIter* pCI);
 

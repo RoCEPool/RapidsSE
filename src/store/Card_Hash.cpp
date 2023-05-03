@@ -52,7 +52,7 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
   Card_Hash* p_hash = new Card_Hash;
 
   Card_HshCol* p_hshCol = new Card_HshCol;
-  p_hshCol->vSymbolSprint(p_expr->szGetSingleTermIf_odn());
+  p_hshCol->vSymbolSprint(p_expr->szGetOdn());
 
   RASSERT(p_expr->szP_Type());
   p_hshCol->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());

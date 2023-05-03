@@ -167,7 +167,7 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
     if (! pGetChild(xKid.i_Child())->bIsCard(CK_EXPR))
       break;
     if (Card_Expr *p_expr = pGetExpr(xKid.i_Child()))
-      if (p_expr->bIsSingle_odn(szPrjCol))
+      if (p_expr->bIsOdn(szPrjCol))
         return p_expr;
   }
 
@@ -186,7 +186,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsSingle_odn(szCol))
+    if (p_expr->bIsOdn(szCol))
       return p_expr;
   }
 
@@ -288,9 +288,9 @@ void Card_ELIST::vRenumberAll_expr(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
     if (bIsKeyExpr)
-      xCI.G.p_expr->vRenumber_keyOdn(i_Expr++);
+      xCI.G.p_expr->vRenumberForm_keyOdn(i_Expr++);
     else
-      xCI.G.p_expr->vRenumber_stmColOdn(i_Expr++);
+      xCI.G.p_expr->vRenumberForm_stmOdn(i_Expr++);
 }
 
 /*============================================================================*/

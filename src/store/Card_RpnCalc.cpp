@@ -227,7 +227,7 @@ void Card_RpnCalc::vFactorAll_colOdn_IntoDistinct_expr(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* get the one (and only) ordinal from rpnCalc                                */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnCalc::pGetSingleTermIf_odn(void)
+Card_Term* Card_RpnCalc::pGetOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -247,17 +247,17 @@ Card_Term* Card_RpnCalc::pGetSingleTermIf_odn(void)
 /*----------------------------------------------------------------------------*/
 /* get the one (and only) ordinal symbol-value from rpnCalc                   */
 /*----------------------------------------------------------------------------*/
-Stz* Card_RpnCalc::szGetSingleTermIf_odn(void)
+Stz* Card_RpnCalc::szGetOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Term* p_term_0 = this->pGetSingleTermIf_odn();
-  if (! p_term_0)
+  Card_Term* p_term_odn = this->pGetOdn();
+  if (! p_term_odn)
     return nullptr;
 
-  Stz* szVal = p_term_0->szSymbol();
+  Stz* szSym = p_term_odn->szSymbol();
 
-  return szVal;
+  return szSym;
 }
 
 /*----------------------------------------------------------------------------*/

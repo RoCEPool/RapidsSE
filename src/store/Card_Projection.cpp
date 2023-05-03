@@ -92,7 +92,7 @@ void Card_Projection::vAs_Review(CardIter* pCI)
     // get <gbyAgg>/<projection>/<expr>
     Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
 
-    //Stz* szPrjCol_prj = p_expr_prj->szGetSingleTermIf_odn();
+    //Stz* szPrjCol_prj = p_expr_prj->szGetOdn();
     Card_Term* p_term_prj = p_expr_prj->pGetTerm(0);
     if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKeyOrdinal())) )
       continue;
@@ -218,7 +218,7 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pKey_running->pGetExpr(i_RunKeyExpr);
 
-    Stz* szPrjCol_runkey = p_expr_runkey->szGetSingleTermIf_odn();
+    Stz* szPrjCol_runkey = p_expr_runkey->szGetOdn();
 
     Card_Expr* p_expr_prjCol = pFindExpr(szPrjCol_runkey);
     if (p_expr_prjCol) {

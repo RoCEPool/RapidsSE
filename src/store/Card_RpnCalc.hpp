@@ -24,8 +24,8 @@ namespace STORE
     void vConvert_stmOdn_terms_To_colOdn(CardIter* pCI);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_colOdn_IntoDistinct_expr(CardIter* pCI);
-    Card_Term* pGetSingleTermIf_odn(void);
-    Stz* szGetSingleTermIf_odn(void);
+    Card_Term* pGetOdn(void);
+    Stz* szGetOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Stz* szSymbol);
     bool bNeedsBrace(void);

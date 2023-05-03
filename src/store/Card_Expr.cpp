@@ -196,7 +196,7 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
   Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
 
 //  if (bStmCol_flip)
-//    p_clone->pGetSingleTermIf_odn()->vEnsure_tblCol_flip();
+//    p_clone->pGetOdn()->vEnsure_tblCol_flip();
 
   return p_clone;
 }
@@ -213,6 +213,45 @@ void Card_Expr::vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI)
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
     p_rpnCalc->vConvert_stmOdn_terms_To_colOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  /*
+   * produce the projection of this expression
+   */
+
+  Stz* szExpr_this_stmcol = szSymbol();
+  Card_As*      p_as;
+  Card_RpnCalc* p_rpnCalc;
+  Card_Term*    p_term_0;
+
+  vDeconstruct(p_as,p_term_0);
+
+  p_rpnCalc = pSub_rpnCalc();
+
+  Card_Expr* p_expr_early = new Card_Expr;
+
+  if (p_as)
+    p_expr_early->vAppend(p_as->pClone());
+
+  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
+  Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
+  if (p_term_0_early->pSymbol()->Y_bHas(P_TblCol)) {
+    p_term_0_early->vSymbol(p_term_0_early->pSymbol()->Y_szGet(P_TblCol));
+  }
+  else {
+    vDebugPoint();
+  }
+  //p_term_0_early->vDump();
+  p_expr_early->vAppend(p_rpnCalc_early);
+
+  return p_expr_early;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,13 +293,13 @@ void Card_Expr::vFactorAll_colOdn_IntoDistinct_expr(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card_Expr::szGetSingleTermIf_odn(void)
+Stz* Card_Expr::szGetOdn(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szPrjCol = pSub_rpnCalc()->szGetSingleTermIf_odn();
+  Stz* szOdn = pSub_rpnCalc()->szGetOdn();
 
-  return szPrjCol;
+  return szOdn;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,23 +309,23 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* szPrjTerm = pSub_rpnCalc()->pGetTerm(i_Term);
+  Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
 
-  return szPrjTerm;
+  return p_term_i;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsSingle_odn(Stz* szOdn_single)
+bool Card_Expr::bIsOdn(Stz* szOdn_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szOdn = this->szGetSingleTermIf_odn();
+  Stz* szOdn = this->szGetOdn();
   if (! szOdn)
     return false;
 
-  if (szOdn->bSame(szOdn_single))
+  if (szOdn_arg->bSame(szOdn))
     return true;
 
   return false;
@@ -348,7 +387,7 @@ void Card_Expr::vReconstruct(Card_As*    p_as_arg,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumber_keyOdn(BASE::i8 i_Expr)
+void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -361,7 +400,7 @@ void Card_Expr::vRenumber_keyOdn(BASE::i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumber_stmColOdn(BASE::i8 i_Expr)
+void Card_Expr::vRenumberForm_stmOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -369,70 +408,6 @@ void Card_Expr::vRenumber_stmColOdn(BASE::i8 i_Expr)
   xSymbol.vSetStreamOrdinal(i_Expr);
 
   vSymbol(xSymbol);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  /*
-   * produce the projection of this expression
-   */
-
-  Stz* szExpr_this_stmcol = szSymbol();
-  Card_As*      p_as;
-  Card_RpnCalc* p_rpnCalc;
-  Card_Term*    p_term_0;
-
-  vDeconstruct(p_as,p_term_0);
-
-  p_rpnCalc = pSub_rpnCalc();
-
-  Card_Expr* p_expr_early = new Card_Expr;
-
-  if (p_as)
-    p_expr_early->vAppend(p_as->pClone());
-
-  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
-  Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
-  if (p_term_0_early->pSymbol()->Y_bHas(P_TblCol)) {
-    p_term_0_early->vSymbol(p_term_0_early->pSymbol()->Y_szGet(P_TblCol));
-  }
-  else {
-    vDebugPoint();
-  }
-  //p_term_0_early->vDump();
-  p_expr_early->vAppend(p_rpnCalc_early);
-
-  return p_expr_early;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc = this->pSub_rpnCalc();
-  if (! p_rpnCalc)
-    return C_UNKNOWN;
-
-  if (p_rpnCalc->nChildCards() > 1)
-    return C_UNKNOWN;
-
-  CardIter xCI(p_rpnCalc);
-  while (xCI.G_bEachMain())  {
-    if (xCI.G.p_term->pSymbol()->bIsKeyOrdinal()) {
-      i8 i_Key = xCI.G.p_term->pSymbol()->iGetOrdinal();
-      return i_Key;
-    }
-  }
-
-  return C_UNKNOWN;
 }
 
 /*----------------------------------------------------------------------------*/
