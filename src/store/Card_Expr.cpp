@@ -318,7 +318,7 @@ bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
 
   Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
   Card_RpnCalc* p_rpnCalc_arg  = p_expr_arg->pSub_rpnCalc();
-  if (!p_rpnCalc_this->bIsSame(p_rpnCalc_arg))
+  if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
     return false;
 
   return true;

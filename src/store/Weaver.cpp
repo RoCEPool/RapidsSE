@@ -1307,7 +1307,7 @@ void Weaver::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
   if (p_as)
     vAs(szRpnExpr, p_as);
 
-  if (p_rpnCalc->bIsBraced()) {
+  if (p_rpnCalc->bNeedsBrace()) {
     szRpnExpr->vConcat(" }"_Stz);
   }
   vRpnCalc(szRpnExpr, p_rpnCalc);

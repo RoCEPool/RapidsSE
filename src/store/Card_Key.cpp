@@ -99,7 +99,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 
   if (p_rpnCalc_this) {
     if (p_rpnCalc_arg) {
-      if (!p_rpnCalc_this->bIsSame(p_rpnCalc_arg))
+      if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
         return false;
     }
     else {
