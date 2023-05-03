@@ -93,14 +93,14 @@ void Card_Projection::vAs_Review(CardIter* pCI)
     Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
 
     //Stz* szPrjCol_prj = p_expr_prj->szGetSingleTermIf_odn();
-    Card_Term* p_term_prj = p_expr_prj->pProjectedTerm();
+    Card_Term* p_term_prj = p_expr_prj->pGetTerm();
     if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKey())) )
       continue;
 
     // the <gbyAgg>/<projection>/<expr> is a single projected column
 
     // get corresponding <gbyAgg>/<key>/<expr>
-    Card_Term* pTerm_prj = p_expr_prj->pProjectedTerm();
+    Card_Term* pTerm_prj = p_expr_prj->pGetTerm();
     Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj);
 
     if (! p_expr_key)
@@ -218,7 +218,7 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pKey_running->pGetExpr(i_RunKeyExpr);
 
-    Stz* szPrjCol_runkey = p_expr_runkey->szProjectedCol();
+    Stz* szPrjCol_runkey = p_expr_runkey->szGetSingleTermIf_odn();
 
     Card_Expr* p_expr_prjCol = pFindExpr(szPrjCol_runkey);
     if (p_expr_prjCol) {

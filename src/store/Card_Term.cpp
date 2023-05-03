@@ -113,7 +113,7 @@ void Card_Term::vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this))
-    if (Stz* szPrjCol = p_expr_prior->szProjectedCol())
+    if (Stz* szPrjCol = p_expr_prior->szGetSingleTermIf_odn())
       vSymbolMark1(szPrjCol, MARK_CHANGED);
 }
 

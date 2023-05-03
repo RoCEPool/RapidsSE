@@ -254,6 +254,30 @@ void Card_Expr::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Stz* Card_Expr::szGetSingleTermIf_odn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szPrjCol = pSub_rpnCalc()->szGetSingleTermIf_odn();
+
+  return szPrjCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Expr::pGetTerm(i8 i_Term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* szPrjTerm = pSub_rpnCalc()->pGetTerm(i_Term);
+
+  return szPrjTerm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsColOrdinal(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -268,15 +292,15 @@ bool Card_Expr::bIsColOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsProjectedCol(Stz* szProjectedCol)
+bool Card_Expr::bIsSingle_odn(Stz* szOdn_single)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szPrjCol = this->szProjectedCol();
-  if (! szPrjCol)
+  Stz* szOdn = this->szGetSingleTermIf_odn();
+  if (! szOdn)
     return false;
 
-  if (szPrjCol->bSame(szProjectedCol))
+  if (szOdn->bSame(szOdn_single))
     return true;
 
   return false;
@@ -289,7 +313,7 @@ bool Card_Expr::bHasProjectedCol(Card_Term* p_term_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
- Card_Term* p_term_prj = this->pProjectedTerm();
+ Card_Term* p_term_prj = this->pGetTerm();
   if (! p_term_prj)
     return false;
 
@@ -315,30 +339,6 @@ bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
     return false;
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Expr::szProjectedCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szPrjCol = pSub_rpnCalc()->szGetSingleTermIf_odn();
-
-  return szPrjCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_Expr::pProjectedTerm(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Term* szPrjTerm = pSub_rpnCalc()->pGetTerm(0);
-
-  return szPrjTerm;
 }
 
 /*----------------------------------------------------------------------------*/

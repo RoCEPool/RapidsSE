@@ -167,7 +167,7 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
     if (! pGetChild(xKid.i_Child())->bIsCard(CK_EXPR))
       break;
     if (Card_Expr *p_expr = pGetExpr(xKid.i_Child()))
-      if (p_expr->bIsProjectedCol(szPrjCol))
+      if (p_expr->bIsSingle_odn(szPrjCol))
         return p_expr;
   }
 
@@ -186,7 +186,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsProjectedCol(szCol))
+    if (p_expr->bIsSingle_odn(szCol))
       return p_expr;
   }
 

@@ -165,7 +165,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
-    if (! x_needed.p_expr()->pProjectedTerm()->bIsStmColOdn())
+    if (!x_needed.p_expr()->pGetTerm()->bIsStmColOdn())
       continue;
     if (p_projection_early->pContains(x_needed.p_expr()))
       continue;
