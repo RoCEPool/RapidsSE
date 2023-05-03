@@ -2067,7 +2067,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
     return p_expr_prior;
   }
   else
-  if (p_term->pSymbol()->bIsTableColumn()) {
+  if (p_term->pSymbol()->bIsColumnOrdinal()) {
     Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(szPrjCol);
     return p_expr_prior;
   }

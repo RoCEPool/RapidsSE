@@ -212,7 +212,7 @@ void Card_Expr::vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI)
     p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    p_rpnCalc->vConvert_stmOdn_terms_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,7 +458,7 @@ void Card_Expr::vTypes_For_stmColOdn(CardIter* pCI)
 
   pCI->G.p_rpnCalc = pSub_rpnCalc();
 
-  pCI->G.p_rpnCalc->vEnsureTypesFor_stmColOdn(pCI);
+  pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -2676,17 +2676,6 @@ bool Symbol::bIsKeyOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsColumn(void)
-{
-  if (bIsStreamOrdinal() || bIsTableColumn())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsParameterOrdinal(void)
@@ -2713,23 +2702,6 @@ bool Symbol::bIsRelnOp(void)
     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-result?  (i.e. #n)                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsResult(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-
-  if ('#' == acFirst
-      && StrLib::bIsDigit(acSecond)
-      && ! acThird)
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2761,14 +2733,6 @@ bool Symbol::bIsSubQueryOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-name?                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryName(void)
-{
-  return b_IsSubQueryName(m_sSymbol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a subQuery-column?  (i.e. __n)                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryColumn(void)
@@ -2795,7 +2759,7 @@ bool Symbol::bIsSubQueryColumn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsTableColumn(void)
+bool Symbol::bIsColumnOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
@@ -2809,6 +2773,17 @@ bool Symbol::bIsTableColumn(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsValueOrdinal(void)
+{
+  if (bIsStreamOrdinal() || bIsColumnOrdinal())
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -238,7 +238,7 @@ bool Card_Term::bIsColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->bIsTableColumn())
+  if (pSymbol()->bIsColumnOrdinal())
     return true;
 
   return false;
@@ -278,19 +278,6 @@ bool Card_Term::bIsStmOdn(void)
   bool b = pSymbol()->bIsStreamOrdinal();
 
   return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term same as given symbol                                          */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsSymbol(Stz* szSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (Card::bIsSymbol(szSymbol))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/

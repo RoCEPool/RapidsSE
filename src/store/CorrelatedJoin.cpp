@@ -481,7 +481,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
         }
         else
-        if (xCI.G.p_MainCard->bIsCard(CK_TERM) && xCI.G.p_MainCard->pSymbol()->bIsTableColumn()) {
+        if (xCI.G.p_MainCard->bIsCard(CK_TERM) && xCI.G.p_MainCard->pSymbol()->bIsColumnOrdinal()) {
           Card_OuterColNm* p_outerColNm = pCI->Sqy.m_pCorrelation->pSub_outerColNm();
 
           // todo: hack

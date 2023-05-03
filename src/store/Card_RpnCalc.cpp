@@ -151,7 +151,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+void Card_RpnCalc::vConvert_stmOdn_terms_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -164,7 +164,7 @@ void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vEnsureTypesFor_stmColOdn(CardIter* pCI)
+void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -349,7 +349,7 @@ bool Card_RpnCalc::bIsSingle_colOdn(void)
   Card* pChild = pGetChild(0);
   Stz* szVal = pChild->szSymbol();
 
-  if (pChild->pSymbol()->bIsColumn())
+  if (pChild->pSymbol()->bIsValueOrdinal())
     return true;
 
   return true;

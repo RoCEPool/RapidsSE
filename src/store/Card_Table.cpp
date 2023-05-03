@@ -482,7 +482,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
     return true;
 
   // literals are considered within scope
-  if (!p_term->pSymbol()->bIsTableColumn()) {
+  if (!p_term->pSymbol()->bIsColumnOrdinal()) {
     return true;
   }
 
