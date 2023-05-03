@@ -73,7 +73,7 @@ Card_Expr* Card_Expr::pDistinct_expr_For_col(Card_Term* p_term_colOdn)
 {
   _static_
 
-  RASSERT(p_term_colOdn->bIsColOdn());
+  RASSERT(p_term_colOdn->bIsValOdn());
 
   Card_Expr* p_expr = new Card_Expr;
 

@@ -170,7 +170,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
     CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
     while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
       // only interested in columns
-      if (! xCI_rpnCalc.G.p_term->bIsColOdn())
+      if (!xCI_rpnCalc.G.p_term->bIsValOdn())
         continue;
       // which we havent already added
       if (p_needed->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szSymbol()))

@@ -232,34 +232,6 @@ Card_Term* Card_Term::pClone(Stz* szDiffSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a col ordinal? $n or $c.n                                     */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsStmColOdn())
-    return true;
-  else
-  if (bIsTblColOdn())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a parameter ordinal? %n                                       */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsCorPrmOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = pSymbol()->bIsCorrParam();
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this term a key ordinal? $Kn                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsKeyOdn(void)
@@ -267,6 +239,18 @@ bool Card_Term::bIsKeyOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   bool b = pSymbol()->bIsKey();
+
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a parameter ordinal? %n                                       */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsPrmOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = pSymbol()->bIsCorrParam();
 
   return b;
 }
@@ -316,6 +300,22 @@ bool Card_Term::bIsTblColOdn(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (pSymbol()->bIsTableColumn())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term a value ordinal? $n or $c.n                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsValOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsStmColOdn())
+    return true;
+  else
+  if (bIsTblColOdn())
     return true;
 
   return false;

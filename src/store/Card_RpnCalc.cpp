@@ -53,7 +53,7 @@ Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_colOdn)
 {
   _static_
 
-  RASSERT(p_term_colOdn->bIsColOdn());
+  RASSERT(p_term_colOdn->bIsValOdn());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
 
@@ -205,7 +205,7 @@ void Card_RpnCalc::vFactorAll_colOdn_IntoDistinct_expr(CardIter *pCI)
   // an rpnCalc is a linear sequence of terms, some of which are columns
   for (Kid x_term(this); x_term.bEach(CK_TERM); /**/) {
 
-     if (! x_term.p_term()->bIsColOdn())
+     if (!x_term.p_term()->bIsValOdn())
       continue;
 
     Card_Term* p_term_colOdn = x_term.p_term();

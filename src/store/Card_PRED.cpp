@@ -206,8 +206,8 @@ bool Card_PRED::bIsCorrPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsCorPrmOdn() && (p_term_1->bIsStmColOdn() || p_term_1->bIsTblColOdn())) ||
-      (p_term_1->bIsCorPrmOdn() && (p_term_0->bIsStmColOdn() || p_term_0->bIsTblColOdn())))
+  if ((p_term_0->bIsPrmOdn() && (p_term_1->bIsStmColOdn() || p_term_1->bIsTblColOdn())) ||
+      (p_term_1->bIsPrmOdn() && (p_term_0->bIsStmColOdn() || p_term_0->bIsTblColOdn())))
     return true;
 
   return false;

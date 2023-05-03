@@ -30,13 +30,13 @@ namespace STORE
     eTE  eEvalTerm(void);
     i8   iGetOdn(void);
     char cGetTableSyn(void);
-    bool bIsColOdn(void);    // $n or $c.n
-    bool bIsCorPrmOdn(void); // %n
     bool bIsKeyOdn(void);    // $Kn
+    bool bIsPrmOdn(void); // %n
     bool bIsSame(Card_Term* p_term_arg);
     bool bIsStmColOdn(void); // $n
     bool bIsSymbol(Stz* szSymbol);
     bool bIsTblColOdn(void); // $c.n
+    bool bIsValOdn(void);    // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
   };
 

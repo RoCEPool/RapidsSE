@@ -176,7 +176,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   auto bLambda = [pCI] (Card_Term* p_term) {
 
-    if (! p_term->bIsColOdn())
+    if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
     if (pCI->Early.m_pNeeded_later->pFind_expr_Of_colOdn(p_term))

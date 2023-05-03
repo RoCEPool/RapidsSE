@@ -200,7 +200,7 @@ Card_Expr* Card_ELIST::pFind_expr_Of_colOdn(Card_Term* p_term_colOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(p_term_colOdn->bIsColOdn());
+  RASSERT(p_term_colOdn->bIsValOdn());
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     Card_Expr* p_expr = xKid.p_expr();
