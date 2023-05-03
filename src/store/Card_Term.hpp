@@ -17,19 +17,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    //Card_Term(Card_Term* p_term_arg);
-    Card_Term(Stz* szTerm, Stz* szStem=nullptr);
+    Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
 
-    static bool bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
-                                   Stz* szValue, Stz* szWith);
     static bool bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
                                    Stz* szValue, Card_Term* p_term_stamp);
 
     void vBump_KeyOrdinal(i8 nBy=1);
     void vBump_StreamColOrdinal(i8 nBy=1);
     Card_Term* pClone(void);
-    Card_Term* pClone(Stz* szDiffValue);
+    Card_Term* pClone(Stz* szDiffSymbol);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);

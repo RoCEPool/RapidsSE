@@ -19,31 +19,13 @@ __vDeleteFunction(Card_Term,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-//Card_Term::Card_Term(Card_Term* p_term_arg)
-//: Card(CK_TERM,p_term_arg->szSymbol())
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  _checkInitialised_(CN_CARD);
-//
-//  Y_vAll(p_term_arg);
-//
-//  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Term::Card_Term(Stz* szTerm, Stz* szStem)
+Card_Term::Card_Term(Stz* szTerm)
 : Card(CK_TERM,szTerm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   _checkInitialised_(CN_CARD);
 
-  if (szStem)
-    pSymbol()->Y_vSet(P_TblCol, szStem);
-  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -58,38 +40,6 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* find sub card with given value and replace                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
-                              Stz* szValue, Stz* szWith)
-{
-  _static_
-
-  bool bReplaced = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI, szValue, szWith, &bReplaced](Card *pCard)
-  {
-    pCI->G.p_term = _pCard_Term(pCard);
-
-    if (! pCI->G.p_term->bIsValue(szValue))
-      return C_CONTINUE_RECURSION;
-
-    pCI->G.p_term->vSymbol(szWith);
-    bReplaced = true;
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCard->bApplyRecursive(eSub, bLambdaFn);
-
-  return bReplaced;
-}
 
 /*----------------------------------------------------------------------------*/
 /* find sub card with given value and replace                                 */
@@ -372,13 +322,13 @@ Card_Term* Card_Term::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Term::pClone(Stz* szDiffValue)
+Card_Term* Card_Term::pClone(Stz* szDiffSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->vSymbol(szDiffValue);
+  p_term_clone->vSymbol(szDiffSymbol);
 
   return p_term_clone;
 }
