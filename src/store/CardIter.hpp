@@ -114,6 +114,9 @@ namespace STORE
 
     void vEndTransform(void);
 
+    Card_Expr* pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Before=C_UNKNOWN);
+    Card_Expr* pExpr_For_colNm(Card_Term* p_term, CardIter* pCI, i8 i_Before=C_UNKNOWN);
+
     void vFocusOnMain(void);
     void vForward(void);
 

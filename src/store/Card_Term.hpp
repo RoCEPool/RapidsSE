@@ -31,8 +31,6 @@ namespace STORE
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
-    static Card_Expr* pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Before=C_UNKNOWN);
-    static Card_Expr* pExpr_For_colNm(Card_Term* p_term, CardIter* pCI, i8 i_Before=C_UNKNOWN);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
     bool bIsBoardNm(CardIter* pCI);
