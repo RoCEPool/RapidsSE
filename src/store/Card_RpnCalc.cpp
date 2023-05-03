@@ -623,25 +623,6 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove any term with matching symbol                                       */
-/*----------------------------------------------------------------------------*/
-i8 Card_RpnCalc::nTrimTerm(Stz* szSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  i8 nTermsTrimmed = 0;
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_MainCard->bIsSymbol(szSymbol)) {
-      xCI.G_vRemoveDeleteMain(CK_TERM);
-      nTermsTrimmed++;
-    }
-  }
-
-  return nTermsTrimmed;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Card_RpnCalc::szP_Type(void)

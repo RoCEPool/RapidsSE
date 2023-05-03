@@ -62,6 +62,9 @@ namespace STORE
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
 
+    i8 nTrimChildren(eCK eCard, Stz* szSymbol);
+
+
 
   };
 }

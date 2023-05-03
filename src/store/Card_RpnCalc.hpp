@@ -34,7 +34,6 @@ namespace STORE
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
-    i8 nTrimTerm(Stz* szSymbol);
 
     Stz* szP_Type(void);
   };
