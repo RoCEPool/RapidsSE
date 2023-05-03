@@ -63,7 +63,7 @@ Card::Card(eCK eCard, Stz* szValue)
 
   vInit(eCard);
 
-  vValue(szValue);
+  vSymbol(szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpy)
 
   vInit(eCard);
 
-  vValue(szValue);
+  vSymbol(szValue);
 
   pSymbol()->Y_vSet(szPpyNm, iPpy);
 }
@@ -91,7 +91,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpy)
 
   vInit(eCard);
 
-  vValue(szValue);
+  vSymbol(szValue);
 
   pSymbol()->Y_vSet(szPpyNm, szPpy);
 }
@@ -192,7 +192,7 @@ void Card::vCardLeaks(void)
 //    if (gapCard[i_Card]) {
 //      Card *pLeaked = gapCard[i_Card];
 //      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szValue());
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSymbol());
 //      vDebugPoint();
 //    }
 //  }
@@ -235,7 +235,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //         i_Card,
 //         p_cardInQuestion,
 //         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->szValue());
+//         p_cardInQuestion->szSymbol());
 //    vDebugPoint();
 //  }
 //
@@ -339,6 +339,35 @@ eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append clone of given card                                                 */
+/*----------------------------------------------------------------------------*/
+Card* Card::pAppendClone(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_card)
+    return nullptr;
+
+  Card* p_card_clone = p_card->pDupCardRecursive();
+
+  vAppend(p_card_clone);
+
+  return p_card_clone;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append clone of given card                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vAppendClone(Card* p_card)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card* p_card_clone = pAppendClone(p_card);
+
+  UNUSED(p_card_clone);
+}
 
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
@@ -561,11 +590,11 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 //         ,sProperties.szStz()
 //         );
 
-  if (*szValue()->azChar()) {
+  if (*szSymbol()->azChar()) {
     vTrace("%s%s %s { %s }"_Stz
         , Stz::szTab(iDepth)
         , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
-        , szValue()
+        , szSymbol()
         , sProperties.szStz()
     );
   }
@@ -597,7 +626,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vValue(szValue());
+  pCard_dup->vSymbol(szSymbol());
   if (m_xSymbol.m_pProperties)
     pCard_dup->pSymbol()->Y_vAll(this);
 
@@ -612,7 +641,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vValue(szValue());
+  pCard_dup->vSymbol(szSymbol());
   if (m_xSymbol.m_pProperties)
     pCard_dup->pSymbol()->Y_vAll(this);
 
@@ -703,7 +732,7 @@ Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParen
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsValue(szValue)) {
+  if (bIsSymbol(szValue)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -725,9 +754,9 @@ Card* Card::pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Car
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szValue(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szSymbol(),md_Bearing);
 
-  if (eCard == m_eCard && cValue() == cWithValue) {
+  if (eCard == m_eCard && cSymbol() == cWithValue) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -749,9 +778,9 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szValue(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szValue(),md_Bearing);
 
-  if (eCard == m_eCard && bIsValue(szValue)) {
+  if (eCard == m_eCard && bIsSymbol(szValue)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -789,6 +818,16 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szGetType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szType = m_xSymbol.Y_szGet((P_Type));
+}
+
+/*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasSubRecursive(Card* pSubCard)
@@ -812,18 +851,18 @@ bool Card::bHasSubRecursive(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasSubWithValueRecursive(eCK eCard, Stz* szValue)
+bool Card::bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(eCard) && bIsValue(szValue))
+  if (bIsCard(eCard) && bIsSymbol(szSymbol))
     return true;
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *p_sub = pGetChild(i_Child);
 
-    if (p_sub->bHasSubWithValueRecursive(eCard, szValue))
+    if (p_sub->bHasSubWithSymbolRecursive(eCard, szSymbol))
       return true;
   }
 
@@ -831,9 +870,9 @@ bool Card::bHasSubWithValueRecursive(eCK eCard, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does the card have a value?                                                */
+/* does the card have a symbolic value?                                       */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasValue(void)
+bool Card::bHasSymbolic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -857,26 +896,26 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this card have same value as argument?                                */
+/* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsValue(char cValue)
+bool Card::bIsSymbol(char cSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (this->cValue() == cValue)
+  if (m_xSymbol.bSameAs(cSymbol))
     return true;
   else
     return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this card have same value as argument?                                */
+/* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsValue(Stz* szValue)
+bool Card::bIsSymbol(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (this->szValue()->bSame(szValue))
+  if (m_xSymbol.bSameAs(szSymbol))
     return true;
   else
     return false;
@@ -998,7 +1037,7 @@ void Card::vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm)
   if (pCardCtl->bPrintName(m_eCard))
     vPrintName(pRibbon, iDepth, szCustomNm);
   if (pCardCtl->bPrintValue(m_eCard))
-    vPrintValue(pRibbon, iDepth);
+    vPrintSymbol(pRibbon, iDepth);
 
   if (pCardCtl->bPrintProperties(m_eCard))
     vPrintProperties(pRibbon, iDepth);
@@ -1048,14 +1087,14 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
-    vPrintNameValue(pRibbon, iDepth);
+    vPrintNameSymbol(pRibbon, iDepth);
   }
   else {
     bool bPrintName = pCardCtl->bPrintName(m_eCard);
     if (bPrintName)
       vPrintName(pRibbon, iDepth);
     if (pCardCtl->bPrintValue(m_eCard))
-      vPrintValue(pRibbon, iDepth, !bPrintName);
+      vPrintSymbol(pRibbon, iDepth, !bPrintName);
   }
 
   if (pCardCtl->bPrintProperties(m_eCard))
@@ -1083,12 +1122,12 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
     else
     if (nSubs == 1) {
       Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintRight("%s"_Stz, pSub_0->szValue());
+      pRibbon->vSprintRight("%s"_Stz, pSub_0->szSymbol());
     }
     else {
       Card *pSub_0 = pChild->pGetChild(0);
       Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintRight("%s == %s"_Stz, pSub_0->szValue(), pSub_1->szValue());
+      pRibbon->vSprintRight("%s == %s"_Stz, pSub_0->szSymbol(), pSub_1->szSymbol());
     }
 
   }
@@ -1159,9 +1198,9 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print card name and value on single line if possible                       */
+/* print card name and its symbolic value on single line if possible          */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1175,44 +1214,44 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  s256 sNameValue;
+  s256 sNameSymbol;
 
   if (0 == iDepth) {
-    if (bHasValue())
-      sNameValue.vSprint("%s%s %s *%lld"_Stz,
-                         sName.szStz(),
-                         sHiddenChildren.szStz(),
-                         szValue(),
-                         nItems());
+    if (bHasSymbolic())
+      sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
+                          sName.szStz(),
+                          sHiddenChildren.szStz(),
+                          szSymbol(),
+                          nItems());
     else
-      sNameValue.vSprint("%s%s *%lld"_Stz,
-                         sName.szStz(),
-                         sHiddenChildren.szStz(),
-                         nItems());
+      sNameSymbol.vSprint("%s%s *%lld"_Stz,
+                          sName.szStz(),
+                          sHiddenChildren.szStz(),
+                          nItems());
 
   }
   else {
     if (pCardCtl->bPrintNo(m_eCard))
-      sNameValue.vSprint("%s%lld]"_Stz,
-                         Stz::szDots(iDepth - 1),
-                         m_i_Child);
-    if (bHasValue())
-      sNameValue.vSprintCat("%s%s %s"_Stz,
-                       sName.szStz(),
-                       sHiddenChildren.szStz(),
-                       szValue());
+      sNameSymbol.vSprint("%s%lld]"_Stz,
+                          Stz::szDots(iDepth - 1),
+                          m_i_Child);
+    if (bHasSymbolic())
+      sNameSymbol.vSprintCat("%s%s %s"_Stz,
+                             sName.szStz(),
+                             sHiddenChildren.szStz(),
+                             szSymbol());
     else
-      sNameValue.vSprintCat("%s%s"_Stz,
-                         sName.szStz(),
-                         sHiddenChildren.szStz());
+      sNameSymbol.vSprintCat("%s%s"_Stz,
+                             sName.szStz(),
+                             sHiddenChildren.szStz());
   }
 
-  if (sNameValue.nLength() <= 18) {
-    pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameValue.szStz());
+  if (sNameSymbol.nLength() <= 18) {
+    pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameSymbol.szStz());
   }
   else {
     vPrintName(pRibbon, iDepth);
-    vPrintValue(pRibbon, iDepth);
+    vPrintSymbol(pRibbon, iDepth);
   }
 }
 
@@ -1271,21 +1310,21 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print value of card                                                        */
+/* print symbolic value of card                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
+void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! bHasValue())
+  if (!bHasSymbolic())
     return;
 
   if (bPrintMarks) {
-    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szValue());
+    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szSymbol());
 
   }
   else {
-    pRibbon->vSprintRight("  %s"_Stz, szValue());
+    pRibbon->vSprintRight("  %s"_Stz, szSymbol());
   }
 }
 
@@ -1327,13 +1366,13 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card's value the same as given arg?                                */
+/* is this card's symbolic value the same as given arg?                       */
 /*----------------------------------------------------------------------------*/
-bool Card::bSameValue(Card* pArg)
+bool Card::bSameSymbol(Card* pArg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (szValue()->bSame(pArg->szValue()))
+  if (szSymbol()->bSame(pArg->szSymbol()))
     return true;
 
   return false;
@@ -1342,7 +1381,7 @@ bool Card::bSameValue(Card* pArg)
 /*----------------------------------------------------------------------------*/
 /* are the two cards recursively the same                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
+bool Card::bSameSymbolRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
 {
   _static_
 
@@ -1355,7 +1394,7 @@ bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
       return false;
 
     //if (CK_TERM == eCard_a)
-    if (!this->szValue()->bSame(pCard_b->szValue()))
+    if (!this->szSymbol()->bSame(pCard_b->szSymbol()))
       return false;
   }
 
@@ -1367,7 +1406,7 @@ bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
   for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
     Card* pChild_a = this->pGetChild(i_Child);
     Card* pChild_b = pCard_b->pGetChild(i_Child);
-    if (!pChild_a->bSameValueRecursive(pChild_b, iDepth + 1, bTestL0))
+    if (!pChild_a->bSameSymbolRecursive(pChild_b, iDepth + 1, bTestL0))
       return false;
   }
 
@@ -1426,7 +1465,27 @@ bool Card::bSameValuePpyRecursive(Card* pCard_OTHER)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get val                                                                    */
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vSetType(Card* p_card_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.Y_vSet(P_Type,p_card_arg->m_xSymbol.Y_szGet(P_Type));
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vSetType(Stz* szType_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.Y_vSet(P_Type,szType_arg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
 Symbol* Card::pSymbol(void)
 {
@@ -1438,7 +1497,7 @@ Symbol* Card::pSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
-char Card::cValue(void)
+char Card::cSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1450,7 +1509,7 @@ char Card::cValue(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Card::iValue(void)
+i8 Card::iSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1462,7 +1521,7 @@ i8 Card::iValue(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szValue(void)
+Stz* Card::szSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1472,61 +1531,61 @@ Stz* Card::szValue(void)
 /*----------------------------------------------------------------------------*/
 /* set card value                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vValue(char cValue)
+void Card::vSymbol(char cSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValueSprint("%c"_Stz,cValue);
+  vSymbolSprint("%c"_Stz, cSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set card value                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vValue(i8 iValue)
+void Card::vSymbol(i8 iSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValueSprint("%lld"_Stz,iValue);
+  vSymbolSprint("%lld"_Stz, iSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set card value                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vValue(Stz* szValue)
+void Card::vSymbol(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.m_sSymbol = szValue;
+  m_xSymbol.m_sSymbol = szSymbol;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set card value and Mark1                                                   */
 /*----------------------------------------------------------------------------*/
-void Card::vValueMark1(Stz* szValue, char cMark1)
+void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValue(szValue);
+  vSymbol(szSymbol);
   vMark1(cMark1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* sprint card value                                                          */
 /*----------------------------------------------------------------------------*/
-void Card::vValueSprint(Stz* szFormat, ...)
+void Card::vSymbolSprint(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s256 sValue;
+  s256 sSymbol;
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
+  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  vValue(sValue);
+  vSymbol(sSymbol);
 }
 
 
@@ -2725,9 +2784,20 @@ bool Symbol::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this card have same symbol as given argument?                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSameAs(char cArg)
+{
+  if (*this->szSymbol()->azChar() == cArg)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSameValue(Stz* szArg)
+bool Symbol::bSameAs(Stz* szArg)
 {
   if (this->szSymbol()->bSame(szArg))
     return true;
@@ -2738,7 +2808,7 @@ bool Symbol::bSameValue(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSameValue(Symbol* pArg)
+bool Symbol::bSameAs(Symbol* pArg)
 {
   if (this->szSymbol()->bSame(pArg->szSymbol()))
     return true;
@@ -2832,6 +2902,7 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* find eCT by name                                                           */
 /*----------------------------------------------------------------------------*/
@@ -2921,10 +2992,10 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 //  if (! m_pProperties)
 //    return 0;
 //
-//  Stz* szValue = m_pProperties->szValue(szPptNm);
+//  Stz* szValue = m_pProperties->szSymbol(szPptNm);
 //
-//  if (szValue)
-//    return * szValue->azChar();
+//  if (szSymbol)
+//    return * szSymbol->azChar();
 //  else
 //    return 0;
 //}
@@ -2938,10 +3009,10 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 //  if (! m_pProperties)
 //    return 0;
 //
-//  Stz* szValue = m_pProperties->szValue(i_Ppy);
+//  Stz* szSymbol = m_pProperties->szValue(i_Ppy);
 //
-//  if (szValue)
-//    return * szValue->azChar();
+//  if (szSymbol)
+//    return * szSymbol->azChar();
 //  else
 //    return 0;
 //}

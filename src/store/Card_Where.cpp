@@ -138,7 +138,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
-    if (p_term_0->bIsValue("CROSS"_Stz))
+    if (p_term_0->bIsSymbol("CROSS"_Stz))
       continue;
 
     if (! pCI->G.p_where) {
@@ -177,7 +177,7 @@ Card_Where* Card_Where::pNewWhereConstruct(void)
   Symbol x_Symbol_stmCol1;
   x_Symbol_stmCol1.vSetStreamColOrdinal(1);
 
-  p_expr->vValue(x_Symbol_stmCol1);
+  p_expr->vSymbol(x_Symbol_stmCol1);
   p_constraint->vAppend(p_expr);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
@@ -285,7 +285,8 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     Symbol x_Symbol_stmCol1;
     x_Symbol_stmCol1.vSetStreamColOrdinal(1);
 
-    pCI->Sqy.m_pTerm_sqCall->vReplace_sqCall_With_sqResult(x_Symbol_stmCol1); // todo: sq result no
+    // replace sqCall with sqResult
+    pCI->Sqy.m_pTerm_sqCall->vSymbol(x_Symbol_stmCol1);
   }
 
   pCI->G.pDeck->vRenumberRecursive();

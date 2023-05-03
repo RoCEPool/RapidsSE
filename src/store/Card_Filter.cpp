@@ -195,20 +195,6 @@ bool Card_Filter::bIsEmpty(void)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_BoolCalc* p_calcBool =
-      _pCard_BoolCalc(this->pFindSubCard(CK_BOOLCALC));
-
-  p_calcBool->vFlipTerms(p_projection_reduced);
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

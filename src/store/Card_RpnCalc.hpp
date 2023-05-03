@@ -16,10 +16,13 @@ namespace STORE
     Card_RpnCalc(void);
    ~Card_RpnCalc(void) noexcept(false);
 
+    static Card_RpnCalc* pDistinct_rpnCalc_For_col(Card_Term* p_term_colOdn);
+
     void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConvert_sqyOp_not_To_notSqyOp(void);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
     Card_Term* pGetSingle_stmColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasWhen(void);
@@ -29,7 +32,6 @@ namespace STORE
     void vOntoStzList(StzList* pStzList);
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
-    void vFlipTerms(Card_Projection* p_projection_needed);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
     i8 nTrimTerm(Stz* szValue);
     void vTypes_For_stmColOdn(CardIter* pCI);

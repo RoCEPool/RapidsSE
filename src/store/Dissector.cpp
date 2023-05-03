@@ -145,7 +145,7 @@ void Dissector::vStage(i8 i_StageSpec)
     
 
   Card_Stage* pCard_Stage = new Card_Stage;
-  pCard_Stage->vValueSprint("S%02lld"_Stz,i_StageSpec);
+  pCard_Stage->vSymbolSprint("S%02lld"_Stz, i_StageSpec);
 
   Card_Topology* pCard_StageTopo = new Card_Topology(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
@@ -161,7 +161,7 @@ void Dissector::vStage(i8 i_StageSpec)
       m_pBoard->pDeck()->vAppend(p_paramList);
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
-      p_param->vValue(pParamsSpec->pGet(0)->szParamNm());
+      p_param->vSymbol(pParamsSpec->pGet(0)->szParamNm());
       p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppend(p_param);
     }
@@ -300,7 +300,7 @@ Card* Dissector::pOp_Call(TagSet* pArgTags)
   StrLib::vStrip(szSubPipeNm->azChar(),' ');
 
   Card_Call* pCard_Call = new Card_Call;
-  pCard_Call->vValue(szSubPipeNm);
+  pCard_Call->vSymbol(szSubPipeNm);
 
   return pCard_Call;
 }
@@ -487,7 +487,7 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vValue(pIndex->szIndexNm());
+  p_indexNm->vSymbol(pIndex->szIndexNm());
 
 
 
@@ -540,7 +540,7 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vValue(pIndex->szIndexNm());
+  p_indexNm->vSymbol(pIndex->szIndexNm());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
@@ -786,7 +786,7 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
 
   // GROUPBY
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
-  if (pCard_Term_head->bIsValue("GROUPBY"_Stz)) {
+  if (pCard_Term_head->bIsSymbol("GROUPBY"_Stz)) {
     pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
     delete pCard_Term_head;
     pCard_Term_head = nullptr;
@@ -797,7 +797,7 @@ Card_Key* Dissector::pKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
 
     // AGGREGATES
-    if (pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
+    if (pCard_Term_head->bIsSymbol("AGGREGATES"_Stz)) {
       break;
     }
 
@@ -840,7 +840,7 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
   i8 iCardNo = 0;
 
   Card_Term* pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPeek(0));
-  if (pCard_Term_head->bIsValue("AGGREGATES"_Stz)) {
+  if (pCard_Term_head->bIsSymbol("AGGREGATES"_Stz)) {
     pCard_Term_head = _pCard_Term(pCard_RpnTerms->pPop());
     delete pCard_Term_head;
 
@@ -852,7 +852,7 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_head = _pCard_Term(pCard_RpnTerms->pHead())) ) {
 
     // GROUPBY
-    if (pCard_Term_head->bIsValue("GROUPBY"_Stz)) {
+    if (pCard_Term_head->bIsSymbol("GROUPBY"_Stz)) {
       break;
     }
 
@@ -890,12 +890,12 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetKeyOrdinal(ri_Expr);
-    pCard_Expr->vValue(xSymbol_stmColOdn);
+    pCard_Expr->vSymbol(xSymbol_stmColOdn);
   }
   else {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamColOrdinal(ri_Expr);
-    pCard_Expr->vValue(xSymbol_stmColOdn);
+    pCard_Expr->vSymbol(xSymbol_stmColOdn);
   }
 
    Stz* szP_Type = this->szType(pCard_RpnTerms);
@@ -904,7 +904,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   // [ AS <as> ]
   Card* pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bIsValue("AS"_Stz)) {
+      && pCard_Term_head->bIsSymbol("AS"_Stz)) {
 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -921,7 +921,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   // [ AS <as> ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && pCard_Term_head->bIsValue("AS"_Stz)) {
+      && pCard_Term_head->bIsSymbol("AS"_Stz)) {
 
     Card_As* pCard_As = pAs(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_As);
@@ -931,8 +931,8 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   // [ ASC | DESC ]
   pCard_Term_head = pCard_RpnTerms->pHead();
   if (pCard_Term_head
-      && (pCard_Term_head->bIsValue("ASC"_Stz) ||
-          pCard_Term_head->bIsValue("DESC"_Stz))) {
+      && (pCard_Term_head->bIsSymbol("ASC"_Stz) ||
+          pCard_Term_head->bIsSymbol("DESC"_Stz))) {
 
     Card_Direction* pCard_SortDirn = pDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_SortDirn);
@@ -956,11 +956,11 @@ Card_RpnCalc* Dissector::pCalc(Card_RpnTerms* pCard_RpnTerms)
   while ( (pCard_Term_popped = _pCard_Term(pCard_RpnTerms->pPop())) ) {
 
     if (
-           pCard_Term_popped->bIsValue("AGGREGATES"_Stz)
-        || pCard_Term_popped->bIsValue("AS"_Stz)
-        || pCard_Term_popped->bIsValue("ASC"_Stz)
-        || pCard_Term_popped->bIsValue("DESC"_Stz)
-        || pCard_Term_popped->bIsValue("GROUPBY"_Stz)
+        pCard_Term_popped->bIsSymbol("AGGREGATES"_Stz)
+        || pCard_Term_popped->bIsSymbol("AS"_Stz)
+        || pCard_Term_popped->bIsSymbol("ASC"_Stz)
+        || pCard_Term_popped->bIsSymbol("DESC"_Stz)
+        || pCard_Term_popped->bIsSymbol("GROUPBY"_Stz)
         || pCard_Term_popped->pSymbol()->bIsComma()
         ) {
       pCard_RpnTerms->vPush(pCard_Term_popped);
@@ -989,13 +989,13 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
   
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  RASSERT(pCard_Term->bIsValue("AS"_Stz));
+  RASSERT(pCard_Term->bIsSymbol("AS"_Stz));
   delete pCard_Term;
   pCard_Term = nullptr;
 
   // <name>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szAsNm = pCard_Term->szValue();
+  Stz* szAsNm = pCard_Term->szSymbol();
 
   Card_As* pCard_As = new Card_As(szAsNm);
   delete pCard_Term;
@@ -1035,7 +1035,7 @@ Card_Direction* Dissector::pDirection(Card_RpnTerms* pCard_RpnTerms)
 
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szDirn = pCard_Term->szValue();
+  Stz* szDirn = pCard_Term->szSymbol();
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* pCard_SortDirn = new Card_Direction(szDirn);
@@ -1055,7 +1055,7 @@ Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
 
   // TYPE
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szTerm = pCard_Term->szValue();
+  Stz* szTerm = pCard_Term->szSymbol();
   RASSERT(szTerm->bSame("TYPE"_Stz));
 
   delete pCard_Term;
@@ -1064,7 +1064,7 @@ Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
 
-  Stz* szType = szCT_char[Card::eTo_eCT(pCard_Term_type->szValue())];
+  Stz* szType = szCT_char[Card::eTo_eCT(pCard_Term_type->szSymbol())];
 
   delete pCard_Term_type;
 

@@ -62,7 +62,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   i8 nStages = 0;
 
   Card_Stage* p_stage = new Card_Stage;
-  p_stage->vValueSprint("S%02lld"_Stz,++nStages);
+  p_stage->vSymbolSprint("S%02lld"_Stz, ++nStages);
   Card_Topology* p_topology = new Card_Topology(YG_ALL_PARTITIONS);
   p_stage->vAppend(p_topology);
   pCI->G.pDeck->vPush(p_stage);
@@ -331,7 +331,7 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
   _static_
 
   Card_Cast* p_next = new Card_Cast;
-  p_next->vValue(szNextValue);
+  p_next->vSymbol(szNextValue);
   if (C_UNKNOWN == ri_main) {
     pCI->G.pDeck->vAppend(p_next);
     return;
@@ -360,7 +360,7 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
   _static_
 
   Card_Stage *p_stage = new Card_Stage;
-  p_stage->vValueSprint("S%02lld"_Stz,++nStages);
+  p_stage->vSymbolSprint("S%02lld"_Stz, ++nStages);
   eYG eStageTopo = Card::eAggrLevelToStageTopology(e_level_running);
   Card_Topology *p_topology = new Card_Topology(eStageTopo);
   p_stage->vAppend(p_topology);

@@ -52,8 +52,8 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   _static_
 
   Card_TableNm* p_tableNm = p_table->pSub_tableNm();
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
-  char cTableSyn = p_table->cValue();
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
+  char cTableSyn = p_table->cSymbol();
 
   PtnDef* pPtnDef = pTable->pPtnDef();
   Column* pPtnColumn = pPtnDef->pGetColumn(0);
@@ -65,7 +65,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   Card_TablePtn* p_tablePtn = new Card_TablePtn;
   Symbol xSymbol_tablePtn;
   xSymbol_tablePtn.vSetTableColOrdinal(cTableSyn, iStmColNo + 1);
-  p_tablePtn->vValue(xSymbol_tablePtn);
+  p_tablePtn->vSymbol(xSymbol_tablePtn);
 
   return p_tablePtn;
 }
@@ -77,7 +77,7 @@ bool Card_TablePtn::bColumnMatchesPtn(Symbol* p_Y_tblPtn, Symbol* p_Y_tblCol)
 {
   _static_
 
-  if (p_Y_tblCol->bSameValue(p_Y_tblPtn))
+  if (p_Y_tblCol->bSameAs(p_Y_tblPtn))
     return true;
 
   return false;

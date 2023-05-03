@@ -65,7 +65,7 @@ Card_TableSize* Card_TableSize::pDerive(Table* pTable)
 
   Card_TableSize* p_size = new Card_TableSize;
   s32 sSize(jTableSize);
-  p_size->vValue(sSize);
+  p_size->vSymbol(sSize);
 
   return p_size;
 }

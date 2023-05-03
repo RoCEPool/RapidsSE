@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Card_Needed : public Card_Projection
+  class Card_Needed : public Card_ELIST
   {
   public:
     void* operator new(size_t);

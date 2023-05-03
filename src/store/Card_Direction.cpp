@@ -21,7 +21,7 @@ Card_Direction::Card_Direction(Stz* szDirn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vValue(szDirn);
+  //vSymbol(szDirn);
 
   _checkInitialised_(CN_CARD);
   
@@ -48,7 +48,7 @@ bool Card_Direction::bIsEqual(Card_Direction* p_direction_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! this->bIsValue(p_direction_arg->szValue()))
+  if (!this->bIsSymbol(p_direction_arg->szSymbol()))
     return false;
 
   return true;

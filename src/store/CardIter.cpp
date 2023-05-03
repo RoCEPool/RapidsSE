@@ -806,7 +806,7 @@ bool CardIter::G_bEachMainWithSub(eCK eOfMainKind, eCK eAndSubKind, Stz* szSubVa
   _precondition_( _MAGIC_, _FOOTER_);
 
   while (G_bEachMainWithSub(eOfMainKind, eAndSubKind)) {
-    if (G.p_SubOfMain->szValue()->bSame(szSubValue))
+    if (G.p_SubOfMain->szSymbol()->bSame(szSubValue))
       return true;
   }
 
@@ -1435,7 +1435,7 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vValue(szValue);
+  G.p_NEW->vSymbol(szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1448,7 +1448,7 @@ void CardIter::G_vNewMemberBefore(eCK eMember, Stz* szValue,
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vValue(szValue);
+  G.p_NEW->vSymbol(szValue);
 
   Card* p_before = G_pGetMember(eBefore);
 
@@ -1465,7 +1465,7 @@ void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vValue(szValue);
+  G.p_NEW->vSymbol(szValue);
 
   G_vAppendChild(eOf,eMember);
 }
@@ -2315,7 +2315,7 @@ Card_Expr* CardIter::pResolvePriorExpr_With_ProjectedCol(Card_Term* p_term)
   if (! p_projection_prior)
     return nullptr;
 
-  Stz* szPrjCol = p_term->szValue();
+  Stz* szPrjCol = p_term->szSymbol();
   if (p_term->pSymbol()->bIsStreamColumn()) {
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term);
     return p_expr_prior;

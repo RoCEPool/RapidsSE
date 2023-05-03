@@ -49,7 +49,7 @@ Card_Table::Card_Table(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(szTableNm);
+  vSymbol(szTableNm);
 
   _checkInitialised_(CN_CARD);
 
@@ -128,7 +128,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
 
   while (pCI->G_bEachMain(CK_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szValue());
+    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol());
 
     pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
 
@@ -165,7 +165,7 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
 
     Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = AM::pTableFind(p_tableNm->szValue());
+    Table* pTable = AM::pTableFind(p_tableNm->szSymbol());
 
     i8 jTableSize;
     i8 jRowSize;
@@ -174,15 +174,15 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
     pCI->G.p_tableSize = new Card_TableSize;
-    pCI->G.p_tableSize->vValue(jTableSize);
+    pCI->G.p_tableSize->vSymbol(jTableSize);
     pCI->G.p_table->vAppend(pCI->G.p_tableSize);
 
     pCI->G.p_rowSize = new Card_RowSize;
-    pCI->G.p_rowSize->vValue(jRowSize);
+    pCI->G.p_rowSize->vSymbol(jRowSize);
     pCI->G.p_table->vAppend(pCI->G.p_rowSize);
 
     pCI->G.p_rowCount = new Card_RowCount;
-    pCI->G.p_rowCount->vValue(nRowCount);
+    pCI->G.p_rowCount->vSymbol(nRowCount);
     pCI->G.p_table->vAppend(pCI->G.p_rowCount);
 
   }
@@ -205,7 +205,7 @@ Card_Table* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before
     Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
     if (pMain->bIsCard(CK_TABLE)) {
       Card_Table* p_table_test = _pCard_Table(pMain);
-      if (cTblSyn == p_table_test->cValue()) {
+      if (cTblSyn == p_table_test->cSymbol()) {
         p_table = p_table_test;
         break;
       }
@@ -299,7 +299,7 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char cTblSyn = this->cValue();
+  char cTblSyn = this->cSymbol();
 
   Card_Bound* p_bound;
   Card_PRED* p_childPRED;
@@ -357,7 +357,7 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
         p_index->vAppend(p_bounds);
       }
 
-      char cTblSyn = this->cValue();
+      char cTblSyn = this->cSymbol();
       Card_Bound *p_bound = Card_Bound::pCreateFrom_PRED(p_pred_Of_filter, cTblSyn);
       p_bounds->vAppend(p_bound);
 
@@ -384,7 +384,7 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 
   Card_TableNm* p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -445,8 +445,8 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  if (bHasValue())
-    sName.vCatSprint(" %c"_Stz, cValue());
+  if (bHasSymbolic())
+    sName.vCatSprint(" %c"_Stz, cSymbol());
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
 }
@@ -503,7 +503,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 
   Card_TableNm* p_tableNm = this->pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
 
   char cTableSyn_actual = *cTableSyn;
   if (pTable->bIsReplicated())
@@ -512,7 +512,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
   Symbol xSymbol_tblSyn;
   xSymbol_tblSyn.vSetTableColSyn(cTableSyn_actual);
 
-  this->vValueMark1(xSymbol_tblSyn,MARK_CHANGED);
+  this->vSymbolMark1(xSymbol_tblSyn, MARK_CHANGED);
 
   (*cTableSyn)++;
 }

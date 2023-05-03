@@ -43,6 +43,30 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc_For_col(Card_Term* p_term_colOdn)
+{
+  _static_
+
+  RASSERT(p_term_colOdn->bIsColOdn());
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+
+  Card_Term* p_term = p_term_colOdn->pClone();
+  p_rpnCalc->vAppend(p_term);
+
+  // rpn is a calculation resulting in a typed value
+  p_rpnCalc->vSetType(p_term);
+
+  return p_rpnCalc;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vAppendRpnCalc(STORE::Card_RpnCalc *p_rpnCalc)
@@ -93,27 +117,27 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
     if (! xCI.bMore())
       break;
 
-    if (xCI.G.p_term->bIsValue("exists"_Stz)) {
+    if (xCI.G.p_term->bIsSymbol("exists"_Stz)) {
 
       RASSERT(xCI.G_bEachMain(CK_TERM));
       Card_Term* p_term_next = xCI.G.p_term;
-      if (p_term_next->bIsValue("not"_Stz)) {
+      if (p_term_next->bIsSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->vValue("notExists"_Stz);
+        p_term->vSymbol("notExists"_Stz);
         continue;
       }
       continue;
     }
 
-    if (xCI.G.p_term->bIsValue("in"_Stz)) {
+    if (xCI.G.p_term->bIsSymbol("in"_Stz)) {
 
       RASSERT(xCI.G_bEachMain(CK_TERM));
       Card_Term* p_term_next = xCI.G.p_term;
-      if (p_term_next->bIsValue("not"_Stz)) {
+      if (p_term_next->bIsSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->vValue("notIn"_Stz);
+        p_term->vSymbol("notIn"_Stz);
         DELETE_CARD(p_term_next);
         continue;
       }
@@ -138,6 +162,33 @@ void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(! pCI->G.p_subSet);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  // an rpnCalc is a linear sequence of terms, some of which are columns
+  for (Kid x_term(this); x_term.bEach(CK_TERM); /**/) {
+
+     if (! x_term.p_term()->bIsColOdn())
+      continue;
+
+    Card_Term* p_term_colOdn = x_term.p_term();
+
+    Card_Expr* p_expr_col = Card_Expr::pDistinct_expr_For_col(p_term_colOdn);
+
+    p_subSet->vAppend(p_expr_col);
+  }
+
+  pCI->G.p_subSet = p_subSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the one (and only) stmColOdn from rpnCalc                              */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_RpnCalc::pGetSingle_stmColOdn(void)
@@ -148,7 +199,7 @@ Card_Term* Card_RpnCalc::pGetSingle_stmColOdn(void)
     return nullptr;
 
   Card_Term* p_term = this->pSub_term();
-  Stz* szTerm = p_term->szValue();
+  Stz* szTerm = p_term->szSymbol();
   if (!p_term->pSymbol()->bIsStreamColumn())
     return nullptr;
 
@@ -201,9 +252,9 @@ bool Card_RpnCalc::bIsSame(Card_RpnCalc* p_rpnCalc_arg)
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
     Card_Term* p_term_this = this->pGetTerm(i_Child);
-    Stz* szThis = p_term_this->szValue();
+    Stz* szThis = p_term_this->szSymbol();
     Card_Term* p_term_arg = p_rpnCalc_arg->pGetTerm(i_Child);
-    Stz* szArg = p_term_arg->szValue();
+    Stz* szArg = p_term_arg->szSymbol();
 
     if (szThis->bSame(szArg))
       continue;
@@ -230,7 +281,7 @@ bool Card_RpnCalc::bIsSingleCol(void)
     return false;
 
   Card* pChild = pGetChild(0);
-  Stz* szVal = pChild->szValue();
+  Stz* szVal = pChild->szSymbol();
 
   if (pChild->pSymbol()->bIsColumn())
     return true;
@@ -248,7 +299,7 @@ bool Card_RpnCalc::bHasWhen(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bIsValue("WHEN"_Stz))
+    if (xCI.G.p_term->bIsSymbol("WHEN"_Stz))
       return true;
   }
 
@@ -278,7 +329,7 @@ Stz* Card_RpnCalc::szProjectedCol(void)
   if (! p_term_0)
     return nullptr;
 
-  Stz* szVal = p_term_0->szValue();
+  Stz* szVal = p_term_0->szSymbol();
 
   return szVal;
 }
@@ -301,18 +352,6 @@ Card_Term* Card_RpnCalc::pProjectedTerm(void)
     return p_term_0;
 
   return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vFlipTerms(Card_Projection* p_projection_needed)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_TERM))
-    xCI_this.G.p_term->vFlip(p_projection_needed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,9 +396,9 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
   while (this->nChildCards()) {
     Card_Term* p_term_next = _pCard_Term(this->pPop());
 
-    eTE eTerm_next = p_term_next->eTermEval();
+    eTE eTerm_next = p_term_next->eEvalTerm();
 
-    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
+    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szSymbol());
 
     switch (eTerm_next) {
 
@@ -414,7 +453,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->szValue());
+        p_cmpPred->vSymbol(p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
@@ -423,7 +462,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         else
-        if (! p_cmpPred->bIsValue("=="_Stz)) { // todo: more work
+        if (!p_cmpPred->bIsSymbol("=="_Stz)) { // todo: more work
           p_cmpPred->vCard(CK_CMPPRED);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
@@ -439,7 +478,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->szValue());
+        p_cmpPred->vSymbol(p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsSubQueryOp())
         p_boolCalc->vAppend(p_cmpPred);
@@ -452,7 +491,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term_next->szValue());
+          p_cmpPred->vSymbol(p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_cmpPred);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -462,7 +501,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue("in"_Stz);
+          p_cmpPred->vSymbol("in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -476,7 +515,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue("in"_Stz);
+          p_cmpPred->vSymbol("in"_Stz);
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsBoolFn())
           p_boolCalc->vAppend(p_cmpPred);
@@ -493,7 +532,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term_next->szValue());
+          p_cmpPred->vSymbol(p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -505,7 +544,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
       case TE_BOOLFN:
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->szValue());
+        p_cmpPred->vSymbol(p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
         p_boolCalc->vAppend(p_cmpPred);
@@ -522,7 +561,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         break;
 
       case TE_OTHER:
-        if (StrLib::bBeginsWith(p_term_next->szValue()->azChar(), "__"))
+        if (StrLib::bBeginsWith(p_term_next->szSymbol()->azChar(), "__"))
           bSawSqy = true;
         p_TermSeries->vAppend(p_term_next);
         //p_TermSeries->vDump(0,"TERM_SERIES"_Stz);
@@ -563,7 +602,7 @@ i8 Card_RpnCalc::nTrimTerm(Stz* szValue)
   i8 nTerms = 0;
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_MainCard->bIsValue(szValue)) {
+    if (xCI.G.p_MainCard->bIsSymbol(szValue)) {
       xCI.G_vRemoveDeleteMain(CK_TERM);
       nTerms++;
     }

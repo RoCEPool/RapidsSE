@@ -178,7 +178,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     Card_Term* p_term = _pCard_Term(pCard);
 
 //    vTrace("CONVERT %s %s (%s %s)\n"_Stz,
-//           p_term->szValue(),p_term->szBearing(),
+//           p_term->szSymbol(),p_term->szBearing(),
 //           szCardNm(),szBearing());
 
     if (pSymbol()->Y_bHas(P_BreakPt)) {
@@ -190,9 +190,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     if (pCI->Analysis.m_pProjection_prior) {
       if (Card_Expr* p_expr_col =
-          pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_term->szValue())) {
-        p_term->vValueMark1(p_expr_col->szValue(), MARK_CHANGED);
-        //vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
+          pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_term->szSymbol())) {
+        p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
+        //vTrace("  TO %s\n"_Stz,p_expr_col->szSymbol());
         return C_CONTINUE_RECURSION;
       }
     }
@@ -210,9 +210,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamColOrdinal(nExpr_prior+i_Col);
-    p_term->vValueMark1(xSymbol_stmColOdn, MARK_CHANGED);
+    p_term->vSymbolMark1(xSymbol_stmColOdn, MARK_CHANGED);
 
-    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szValue());
+    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSymbol());
     return C_CONTINUE_RECURSION;
   };
 
@@ -249,8 +249,8 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   if (bIsCard(CK_HASH)) {
     Card_HshCol *p_hshCol = pSub_hshCol();
     if (Card_Expr *p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_hshCol->szValue())) {
-      p_hshCol->vValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+        pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_hshCol->szSymbol())) {
+      p_hshCol->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
     }
   }
 
@@ -318,7 +318,6 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
 
     // -- -- -- -- -- -- --
     case CK_AGGREG:
-      // todo: temp...
       pCI->G.p_aggreg->vEarlyProject_root(pCI);
       break;
 
@@ -339,8 +338,7 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
       pCI->G.p_indexJoin->vEarlyProject_root(pCI);
       break;
 
-
-      // -- -- -- -- -- -- --
+    // -- -- -- -- -- -- --
     case CK_CROSSJOIN:
     case CK_INDEXSCAN:
     case CK_LIMIT:
@@ -372,6 +370,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
   while (pCI->G_bEachMain_reverse()) {
 
+    // which card did we arrive at?
     switch (pCI->G.e_MainCard) {
 
       // -- -- -- -- -- -- --
@@ -440,8 +439,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         pCI->G.p_where->vEarlyProject_recurse_passthru(pCI);
         return;
 
-
-        // -- -- -- -- -- -- --
+      // -- -- -- -- -- -- --
       // missing??
 
       default:
@@ -723,7 +721,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   pCI->G.p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szValue());
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Analysis.m_pProjection_prior)
@@ -733,7 +731,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  char cTblSyn = bIsCard(CK_TABLE) ? cValue() : pSub_table()->cValue();
+  char cTblSyn = bIsCard(CK_TABLE) ? cSymbol() : pSub_table()->cSymbol();
 
   i8 i_Expr = p_projection->nExpr() + 1;
 
@@ -744,7 +742,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol;
     xSymbol.vSetStreamColOrdinal(i_Expr++);
-    p_expr->vValue(xSymbol);
+    p_expr->vSymbol(xSymbol);
     p_projection->vAppend(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();

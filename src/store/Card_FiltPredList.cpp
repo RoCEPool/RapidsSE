@@ -75,7 +75,7 @@ Card_FiltPredList* Card_FiltPredList::pExtract(Card_Deck* p_deck)
 
     if (nFilters) {
       Card_FiltPred* p_filtPred = new Card_FiltPred;
-      p_filtPred->vValue(xCI.G.p_table->szValue());
+      p_filtPred->vSymbol(xCI.G.p_table->szSymbol());
       p_filtPred->pSymbol()->Y_vSet(P_Count,nFilters);
       p_filtPredList->vAppend(p_filtPred);
     }
@@ -115,7 +115,7 @@ i8 Card_FiltPredList::nFiltersFor(char cTblSyn)
 
   CardIter xCI_filtPred(this);
   while (xCI_filtPred.G_bEachMain()) {
-    if (xCI_filtPred.G.p_filtPred->cValue() == cTblSyn) {
+    if (xCI_filtPred.G.p_filtPred->cSymbol() == cTblSyn) {
       i8 nFilter = xCI_filtPred.G.p_filtPred->pSymbol()->Y_iGet(P_Count);
       return nFilter;
     }

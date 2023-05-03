@@ -69,6 +69,23 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pDistinct_expr_For_col(Card_Term* p_term_colOdn)
+{
+  _static_
+
+  RASSERT(p_term_colOdn->bIsColOdn());
+
+  Card_Expr* p_expr = new Card_Expr;
+
+  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc_For_col(p_term_colOdn);
+  p_expr->vAppend(p_rpnCalc);
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
@@ -214,6 +231,29 @@ void Card_Expr::vDeconstruct(Card_As*&      rp_as,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Expr::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(! pCI->G.p_subSet);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  // an expr is an rpnCalc (shouldn't be boolCalc)
+  if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
+
+    pCI->G.p_rpnCalc->vFactorAll_col_IntoDistinct_expr(pCI);
+    p_subSet->vTransferChildren(pCI->G.p_subSet);
+
+    DELETE_CARD(pCI->G.p_subSet);
+  }
+
+  pCI->G.p_subSet = p_subSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsColOrdinal(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -342,7 +382,7 @@ void Card_Expr::vRenumberAsKeyOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetKeyOrdinal(i_Expr);
 
-  vValue(xSymbol);
+  vSymbol(xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,7 +395,7 @@ void Card_Expr::vRenumberAsStmColOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetStreamColOrdinal(i_Expr);
 
-  vValue(xSymbol);
+  vSymbol(xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -369,7 +409,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
    * produce the projection of this expression
    */
 
-  Stz* szExpr_this_stmcol = szValue();
+  Stz* szExpr_this_stmcol = szSymbol();
   Card_As*      p_as;
   Card_RpnCalc* p_rpnCalc;
   Card_Term*    p_term_0;
@@ -386,7 +426,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
   Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
   if (p_term_0_early->pSymbol()->Y_bHas(P_TblCol)) {
-    p_term_0_early->vValue(p_term_0_early->pSymbol()->Y_szGet(P_TblCol));
+    p_term_0_early->vSymbol(p_term_0_early->pSymbol()->Y_szGet(P_TblCol));
   }
   else {
     vDebugPoint();

@@ -19,6 +19,7 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------
+    static Card_Expr* pDistinct_expr_For_col(Card_Term* p_term_colOdn);
     static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
@@ -29,6 +30,7 @@ namespace STORE
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
 
+    void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
     bool bIsColOrdinal(void);
     bool bIsProjectedCol(Stz* szProjectedCol);
     bool bHasProjectedCol(Card_Term* p_term_arg);

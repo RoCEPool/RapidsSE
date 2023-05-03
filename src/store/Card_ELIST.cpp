@@ -50,7 +50,7 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 
     CardIter xCI2(xCI.G.p_rpnCalc);
     while ((xCI2.G_bEachMain(CK_TERM))) {
-      Stz *szTerm = xCI2.G.p_term->szValue();
+      Stz *szTerm = xCI2.G.p_term->szSymbol();
 
       if (xCI2.G.p_term->pSymbol()->bIsKey()) {
         xCI2.G.p_term->vBump_KeyOrdinal();
@@ -78,7 +78,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 
     CardIter xCI2(xCI.G.p_rpnCalc);
     while (xCI2.G_bEachMain(CK_TERM)) {
-      Stz *szTerm = xCI2.G.p_term->szValue();
+      Stz *szTerm = xCI2.G.p_term->szSymbol();
 
       if (xCI2.G.p_term->pSymbol()->bIsStreamColumn()) {
         xCI2.G.p_term->vBump_StreamColOrdinal();
@@ -101,6 +101,22 @@ void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
   while (xCI.G_bEachMain(CK_EXPR))
     xCI.G.p_expr->vBump_Rightwards(nBumpBy);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR))
+    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
+      return xCI_this.G.p_expr;
+
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
@@ -159,6 +175,45 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nExpr = nChildCards();
+  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
+    if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
+      break;
+    Card_Expr* p_expr = pGetExpr(i_Expr);
+    if (p_expr->bIsProjectedCol(szCol))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFind_expr_With_projectedCol(Card_Term* p_term_col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(p_term_col->bIsColOdn());
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card_Expr* p_expr = xKid.p_expr();
+    if (p_expr->bHasProjectedCol(p_term_col))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)
@@ -182,7 +237,7 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
   while (xCI.G_bEachMain(CK_EXPR)) {
     StzList* pStzList = new StzList;
 
-    pStzList->vAppend(xCI.G.p_expr->szValue());
+    pStzList->vAppend(xCI.G.p_expr->szSymbol());
 
     CardIter xCI_expr(xCI.G.p_expr);
     xCI_expr.G.p_as        = nullptr;
@@ -201,7 +256,7 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
     }
 
     if (xCI_expr.G.p_as) {
-      pStzList->vAppend(xCI_expr.G.p_as->szValue());
+      pStzList->vAppend(xCI_expr.G.p_as->szSymbol());
     }
     pRibbon->vSprintList(pStzList, 20);
     pStzList->vRemoveAll();
@@ -234,29 +289,6 @@ void Card_ELIST::vRenumberAll_expr(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
     xCI.G.p_expr->vRenumber(i_Expr++, bIsKeyExpr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_ELIST::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-
-  CardIter xCI_expr(this);
-  while (xCI_expr.G_bEachMain(CK_EXPR)) {
-    Card_RpnCalc *p_rpnCalc = xCI_expr.G.p_expr->pSub_rpnCalc();
-    if (!p_rpnCalc)
-      continue;
-    p_rpnCalc->vFlipTerms(p_projection_reduced);
-  }
-
-  CardIter xCI_key(this);
-  while (xCI_key.G_bEachMain(CK_KEY)) {
-    xCI_key.G.p_key->vFlipTerms(p_projection_reduced);
-  }
-
 }
 
 /*============================================================================*/

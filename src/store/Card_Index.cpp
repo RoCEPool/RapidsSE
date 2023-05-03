@@ -91,7 +91,7 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
   IndexDef* pIndexDef = pIndex->pIndexDef();
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->vValue(pIndex->szIndexNm());
+  p_indexNm->vSymbol(pIndex->szIndexNm());
   p_index->vAppend(p_indexNm);
 
   if (pIndexDef->bIsUnique()) {
@@ -107,12 +107,12 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     Card_IdxCol* p_idxCol = new Card_IdxCol;
-    p_idxCol->vValue(pColumn->szColNm());
+    p_idxCol->vSymbol(pColumn->szColNm());
 
     p_idxColList->vAppend(p_idxCol);
 
 //    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
-//    p_idxColNm->vValue(pColumn->szColNm());
+//    p_idxColNm->vSymbol(pColumn->szColNm());
 //    p_idxCol->vAppend(p_idxColNm);
   }
 
@@ -171,26 +171,12 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   while (xCI.G_bEachMain(CK_IDXCOL)) {
 
     // ? does n]idxCol:$c.n match given:$c.n
-    if (xCI.G.p_idxCol->bIsValue(szTblColOdn))
+    if (xCI.G.p_idxCol->bIsSymbol(szTblColOdn))
       return true;
   }
 
   return false;
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Index::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Bounds* p_bounds = pSub_bounds();
-
-  if (p_bounds)
-    p_bounds->vFlipTerms(p_projection_reduced);
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

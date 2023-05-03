@@ -114,6 +114,10 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(! pCI->Early.m_pNeeded_later);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // if the immediate previous card is a project then rely on that project
+  //   to have determined what projections are needed
+
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
@@ -123,16 +127,18 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
     return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   pSymbol()->Y_vSet(P_BreakPt);
 
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
 
-  // get the root needed form of ordAgg's projection
+  // get the root needed form of gbyAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
   pCI->Early.m_pNeeded_later  = pCI->G.p_projection->pCraftRoot_needed(pCI);
 
-  // insert empty early projection (has only needed) before this ordAgg
+  // insert empty early projection (has only needed) before this gbyAgg
   Card_Project* p_project_early = pCI->Early.m_pNeeded_later->pNew_project_early(pCI);
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
@@ -161,41 +167,6 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   vDebugPoint();
 }
-/*----------------------------------------------------------------------------*/
-//void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  RASSERT(bIsPartitionLevel());
-//
-//  RASSERT(! pCI->Early.m_pProjection_needed);
-//
-//  pCI->Early.m_pOP_root = (Card_OP*)this;
-//
-//  pCI->G.p_key = pSub_key();
-//
-//  // get the needed form of ordAgg's projection
-//  pCI->Early.m_pProjection_needed =
-//      pSub_projection()->pCraftRoot_needed(pCI);
-//
-//  Card_OP::vEarlyProject_backstep(pCI);
-//
-//  // todo: arrived back ...
-//  pCI->vPrintBoard();
-//
-//  pCI->G.p_key = pSub_key();
-//  pCI->G.p_key->vFlipTerms(pCI->Early.m_pProjection_needed);
-//
-//  pCI->vPrintBoard();
-//
-//  pCI->G.p_projection = pSub_projection();
-//  pCI->G.p_projection->vFlipTerms(pCI->Early.m_pProjection_needed);
-//
-//  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
-//
-//  pCI->vPrintBoard();
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* inject sub-query result into this gbyAgg                                   */

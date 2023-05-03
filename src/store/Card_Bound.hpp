@@ -34,7 +34,6 @@ namespace STORE
     Card_Term* pGet_tblColOdn(void);
     Stz* szGet_tblColOdn(void);
 
-    void vFlipTerms(Card_Projection* p_projection_reduced);
   };
 
   Card_Bound* _pCard_Bound(void* aAddr);

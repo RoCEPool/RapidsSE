@@ -22,6 +22,8 @@ namespace STORE
 
     void vTypes_For_stmColOdn(CardIter *pCI);
 
+    void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
+
     Stz* szP_Type(void);
   };
 

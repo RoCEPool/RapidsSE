@@ -36,7 +36,7 @@ Card_Bound::Card_Bound(Stz* szRelnOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(szRelnOp);
+  vSymbol(szRelnOp);
 
   _checkInitialised_(CN_CARD);
 
@@ -70,7 +70,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   Card_Term* pTerm_0 = _pCard_Term(p_PRED->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_PRED->pGetChild(1));
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szValue());
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szSymbol());
 
   Symbol xSymbol_idxColOdn;
   xSymbol_idxColOdn.vSetIndexColOrdinal(1);
@@ -127,21 +127,21 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 
   if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
     Card_Bound* p_lBound =  new Card_Bound(szRelnOp);
-    p_lBound->vValue(szRelnOp);
+    p_lBound->vSymbol(szRelnOp);
     //p_lBound->vAppend(p_term_bound);
     return p_lBound;
   }
 
   if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz)) {
     Card_Bound* p_uBound =  new Card_Bound(szRelnOp);
-    p_uBound->vValue(szRelnOp);
+    p_uBound->vSymbol(szRelnOp);
     //p_uBound->vAppend(p_term_bound);
     return p_uBound;
   }
 
   if (szRelnOp->bSame("=="_Stz)) {
     Card_Bound* p_eBound =  new Card_Bound(szRelnOp);
-    p_eBound->vValue(szRelnOp);
+    p_eBound->vSymbol(szRelnOp);
     //p_eBound->vAppend(p_term_bound);
     return p_eBound;
   }
@@ -168,7 +168,7 @@ bool Card_Bound::bIsEBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsValue("=="_Stz))
+  if (bIsSymbol("=="_Stz))
     return true;
 
   return false;
@@ -181,7 +181,7 @@ bool Card_Bound::bIsLBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsValue(">"_Stz) || bIsValue(">="_Stz))
+  if (bIsSymbol(">"_Stz) || bIsSymbol(">="_Stz))
     return true;
 
   return false;
@@ -194,7 +194,7 @@ bool Card_Bound::bIsUBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsValue("<"_Stz) || bIsValue("<="_Stz))
+  if (bIsSymbol("<"_Stz) || bIsSymbol("<="_Stz))
     return true;
 
   return false;
@@ -226,7 +226,7 @@ Stz* Card_Bound::szGet_idxColOdn(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
     if (xCI.G.p_term->pSymbol()->bIsIndexColumn())
-      return xCI.G.p_term->szValue();
+      return xCI.G.p_term->szSymbol();
 
   return nullptr;
 }
@@ -271,23 +271,10 @@ Stz* Card_Bound::szGet_tblColOdn(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
     if (xCI.G.p_term->pSymbol()->bIsTableColumn())
-      return xCI.G.p_term->szValue();
+      return xCI.G.p_term->szSymbol();
 
   return nullptr;
 }
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Bound::vFlipTerms(Card_Projection* p_projection_reduced)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM))
-    xCI.G.p_term->vFlip(p_projection_reduced);
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

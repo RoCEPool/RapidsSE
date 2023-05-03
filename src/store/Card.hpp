@@ -236,8 +236,9 @@ namespace STORE
 
     bool bNeedsBrace(void);       // between, case, ... matchTrailing
 
-    bool bSameValue(Stz* szArg);
-    bool bSameValue(Symbol* pArg);
+    bool bSameAs(char cArg);
+    bool bSameAs(Stz* szArg);
+    bool bSameAs(Symbol* pArg);
 
     void vSet(Symbol* pSymbol);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
@@ -330,6 +331,8 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+    Card* pAppendClone(Card* p_card);
+    void vAppendClone(Card* p_card);
     Card* pAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     void vAppendNewCard(eCK eCard, Stz* szValue=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
@@ -358,13 +361,15 @@ namespace STORE
     Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
+    Stz* szGetType(void);
+
     bool bHasSubRecursive(Card* pSubCard);
-    bool bHasSubWithValueRecursive(eCK eCard, Stz* szValue);
-    bool bHasValue(void);
+    bool bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol);
+    bool bHasSymbolic(void);
 
     bool bIsCard(eCK eCard);
-    bool bIsValue(char cValue);
-    bool bIsValue(Stz* szValue);
+    bool bIsSymbol(char cSymbol);
+    bool bIsSymbol(Stz* szSymbol);
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -380,27 +385,30 @@ namespace STORE
     void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
-    void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
+    void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
 
     void vRenumberRecursive(Card* pParent=nullptr);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSameValue(Card* pCard);
-    bool bSameValueRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
+    bool bSameSymbol(Card* pArg);
+    bool bSameSymbolRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     bool bSameValuePpyRecursive(Card* pCard_OTHER); // not needed??
+
+    void vSetType(Card* p_card_arg);
+    void vSetType(Stz* szType_arg);
 
     Symbol* pSymbol(void);
 
-    char cValue(void);
-    i8   iValue(void);
-    Stz* szValue(void);
-    void vValue(char cValue);
-    void vValue(i8 iValue);
-    void vValue(Stz* szValue);
-    void vValueMark1(Stz* szValue, char cMark1);
-    void vValueSprint(Stz* szFormat, ...);
+    char cSymbol(void);
+    i8   iSymbol(void);
+    Stz* szSymbol(void);
+    void vSymbol(char cSymbol);
+    void vSymbol(i8 iSymbol);
+    void vSymbol(Stz* szSymbol);
+    void vSymbolMark1(Stz* szSymbol, char cMark1);
+    void vSymbolSprint(Stz* szFormat, ...);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

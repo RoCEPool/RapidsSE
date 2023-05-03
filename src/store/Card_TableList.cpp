@@ -121,7 +121,7 @@ Card_Table* Card_TableList::pFind(char cTblSyn)
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);
-    char cTableSyn = p_table->cValue();
+    char cTableSyn = p_table->cSymbol();
     if (cTableSyn == cTblSyn)
       return p_table;
   }
@@ -176,7 +176,7 @@ i8 Card_TableList::nGetTableSize(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_TableSize* p_tableSize = pGetTableSize(cTblSyn))
-    return p_tableSize->iValue();
+    return p_tableSize->iSymbol();
 
   return 0;
 }
@@ -202,7 +202,7 @@ Stz* Card_TableList::szToTableNm(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Table* p_table = pFind(cTblSyn))
-    return p_table->pSub_tableNm()->szValue();
+    return p_table->pSub_tableNm()->szSymbol();
 
   return nullptr;
 }

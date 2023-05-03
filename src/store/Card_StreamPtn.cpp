@@ -49,7 +49,7 @@ void Card_StreamPtn::vAddKey(Symbol* p_Y_tblCol)
 
   Card_StreamKey* p_streamKey = new Card_StreamKey;
 
-  p_streamKey->vValue(p_Y_tblCol->szSymbol());
+  p_streamKey->vSymbol(p_Y_tblCol->szSymbol());
 
   vAppend(p_streamKey);
 }
@@ -63,7 +63,7 @@ bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_STREAMKEY)) {
-    if (xCI.G.p_streamKey->pSymbol()->bSameValue(p_Y_tblCol))
+    if (xCI.G.p_streamKey->pSymbol()->bSameAs(p_Y_tblCol))
       return true;
   }
 

@@ -21,7 +21,7 @@ Card_Limit::Card_Limit(Stz* szRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vValue(szRows);
+  vSymbol(szRows);
 
   _checkInitialised_(CN_CARD);
   

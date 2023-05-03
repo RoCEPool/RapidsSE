@@ -152,22 +152,22 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     if (! (pCI->Sqy.m_pTerm_sqCall = p_pred->pGetTerm_boardNm(pCI)))
       return C_CONTINUE_RECURSION;
 
-    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqCall->szValue();
+    pCI->Sqy.m_sSqyNm  = pCI->Sqy.m_pTerm_sqCall->szSymbol();
     p_pred->vMark1(MARK_AT);
     bFoundCall = true;
 
-    if (p_pred->bIsValue("exists"_Stz) || p_pred->bIsValue("notExists"_Stz)) {
+    if (p_pred->bIsSymbol("exists"_Stz) || p_pred->bIsSymbol("notExists"_Stz)) {
 
       RASSERT(p_pred->bIsSubQueryOp());
 
-      pCI->Sqy.m_sSqyArg =  p_pred->pGetTerm(0)->szValue();
-      pCI->Sqy.m_sSqyNm  = p_pred->pGetTerm(1)->szValue();
+      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(0)->szSymbol();
+      pCI->Sqy.m_sSqyNm  = p_pred->pGetTerm(1)->szSymbol();
       return C_TERMINATE_RECURSION;
     }
 
-    if (p_pred->bIsValue("in"_Stz) || p_pred->bIsValue("notIn"_Stz)) {
+    if (p_pred->bIsSymbol("in"_Stz) || p_pred->bIsSymbol("notIn"_Stz)) {
       RASSERT(p_pred->bIsSubQueryOp());
-      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(2)->szValue();
+      pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(2)->szSymbol();
       return C_TERMINATE_RECURSION;
     }
 
@@ -198,7 +198,7 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
   while (pCI->G_bEachMain(CK_TABLE)) {
 
 //    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
-//           pCI->G.p_table, pCI->G.p_table->i_Child(), aCK[pCI->G.p_table->eCard()], pCI->G.p_table->szValue());
+//           pCI->G.p_table, pCI->G.p_table->i_Child(), aCK[pCI->G.p_table->eCard()], pCI->G.p_table->szSymbol());
 
     pCI->G.p_table->vMorph_table_To_EEop(pCI);
   }

@@ -304,7 +304,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   // 1) find W_A_C_ro subquery call in mq:<where>/<boolCalc>
 
   RASSERT(pCI->G_bEachMain(CK_CALL));
-  vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szValue());
+  vTrace(">>>>>>>>> Found From CALl: %s\n"_Stz, pCI->G.p_call->szSymbol());
   pCI->vPrintBoard(__LINE__);
 
 
@@ -318,8 +318,8 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   // get copy of sq and push before mq
 
   // x) push to sq
-  if (! pCI->G_bPushBoard(pCI->G.p_call->szValue())) {
-    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szValue());
+  if (! pCI->G_bPushBoard(pCI->G.p_call->szSymbol())) {
+    vTrace("DID NOT FIND Board %s\n"_Stz, pCI->G.p_call->szSymbol());
     NEVER_REACH
   }
 
