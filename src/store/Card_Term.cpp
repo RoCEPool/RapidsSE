@@ -57,7 +57,7 @@ bool Card_Term::bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
   {
     pCI->G.p_term = _pCard_Term(pCard);
 
-    if (! pCI->G.p_term->bIsValue(szValue))
+    if (!pCI->G.p_term->bIsSymbol(szValue))
       return C_CONTINUE_RECURSION;
 
     pCI->G.p_term->vSymbol(p_term_stamp->szSymbol());
@@ -200,14 +200,14 @@ eTE Card_Term::eEvalTerm(void)
 
   Stz* szValue = this->szSymbol();
 
-       if (bIsValue("and"_Stz))        return TE_AND;
-  else if (bIsValue("or"_Stz))         return TE_OR;
-  else if (bIsValue("not"_Stz))        return TE_NOT;
-  else if (bIsValue("}"_Stz))          return TE_EXECUTE;
-  else if (bIsValue("exists"_Stz))     return TE_EXISTS;
-  else if (bIsValue("in"_Stz))         return TE_IN;
-  else if (bIsValue("notExists"_Stz))  return TE_NOTEXISTS;
-  else if (bIsValue("notIn"_Stz))      return TE_NOTIN;
+       if (bIsSymbol("and"_Stz))        return TE_AND;
+  else if (bIsSymbol("or"_Stz))         return TE_OR;
+  else if (bIsSymbol("not"_Stz))        return TE_NOT;
+  else if (bIsSymbol("}"_Stz))          return TE_EXECUTE;
+  else if (bIsSymbol("exists"_Stz))     return TE_EXISTS;
+  else if (bIsSymbol("in"_Stz))         return TE_IN;
+  else if (bIsSymbol("notExists"_Stz))  return TE_NOTEXISTS;
+  else if (bIsSymbol("notIn"_Stz))      return TE_NOTIN;
 
   else if (pSymbol()->bIsRelnOp())     return TE_RELNOP;
   else if (pSymbol()->bIsBoolFn())     return TE_BOOLFN;
@@ -278,7 +278,7 @@ Card_Expr* Card_Term::pExpr_For_colNm(CardIter* pCI, i8 i_Before)
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
             //p_as->vDump();
-            if (p_as->bIsValue(this->szSymbol())) {
+            if (p_as->bIsSymbol(this->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }
@@ -404,7 +404,7 @@ bool Card_Term::bIsSame(Card_Term* p_term_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = bIsValue(p_term_arg->szSymbol());
+  bool b = bIsSymbol(p_term_arg->szSymbol());
 
   return b;
 }
@@ -428,7 +428,7 @@ bool Card_Term::bIsSymbol(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsValue(szSymbol))
+  if (Card::bIsSymbol(szSymbol))
     return true;
   else
     return false;

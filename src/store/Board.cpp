@@ -156,7 +156,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
     p_pred->vMark1(MARK_AT);
     bFoundCall = true;
 
-    if (p_pred->bIsValue("exists"_Stz) || p_pred->bIsValue("notExists"_Stz)) {
+    if (p_pred->bIsSymbol("exists"_Stz) || p_pred->bIsSymbol("notExists"_Stz)) {
 
       RASSERT(p_pred->bIsSubQueryOp());
 
@@ -165,7 +165,7 @@ bool Board::bFindAndMarkSubQryCall(CardIter* pCI)
       return C_TERMINATE_RECURSION;
     }
 
-    if (p_pred->bIsValue("in"_Stz) || p_pred->bIsValue("notIn"_Stz)) {
+    if (p_pred->bIsSymbol("in"_Stz) || p_pred->bIsSymbol("notIn"_Stz)) {
       RASSERT(p_pred->bIsSubQueryOp());
       pCI->Sqy.m_sSqyArg = p_pred->pGetTerm(2)->szSymbol();
       return C_TERMINATE_RECURSION;

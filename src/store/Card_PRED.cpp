@@ -196,7 +196,7 @@ bool Card_PRED::bIsCorrPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! bIsValue("=="_Stz))
+  if (!bIsSymbol("=="_Stz))
     return false;
 
   i8 nChildren = nChildCards();
@@ -275,7 +275,7 @@ bool Card_PRED::bIsJoinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! bIsValue("=="_Stz))
+  if (!bIsSymbol("=="_Stz))
     return false;
 
   i8 nChildren = nChildCards();
@@ -341,7 +341,7 @@ bool Card_PRED::bMaybeJoinPred(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! bIsValue("=="_Stz))
+  if (!bIsSymbol("=="_Stz))
     return false;
 
   i8 nChildren = nChildCards();
@@ -367,7 +367,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsValue("exists"_Stz)) {
+  if (bIsSymbol("exists"_Stz)) {
 
     pCI->vPrintBoard(__LINE__);
 
@@ -392,7 +392,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     return;
   }
 
-  if (bIsValue("in"_Stz)) {
+  if (bIsSymbol("in"_Stz)) {
 
     vSymbol("=="_Stz);
 
@@ -401,7 +401,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
-    ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
+    ASSERT(p_term_head->bIsSymbol("#1"_Stz)); //temp
 
     Symbol x_Symbol_stmCol1;
     if (p_term)
@@ -420,7 +420,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     return;
   }
 
-  if (bIsValue("notIn"_Stz)) {
+  if (bIsSymbol("notIn"_Stz)) {
 
     vSymbol("=="_Stz);
 
@@ -429,7 +429,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     DELETE_CARD(p_term_popped);
 
     Card_Term* p_term_head = _pCard_Term(pGetChild(0));
-    ASSERT(p_term_head->bIsValue("#1"_Stz)); //temp
+    ASSERT(p_term_head->bIsSymbol("#1"_Stz)); //temp
 
     Symbol x_Symbol_stmCol1;
     x_Symbol_stmCol1.vSetStreamColOrdinal(1);

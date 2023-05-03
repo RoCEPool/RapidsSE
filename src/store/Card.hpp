@@ -236,8 +236,9 @@ namespace STORE
 
     bool bNeedsBrace(void);       // between, case, ... matchTrailing
 
-    bool bSameValue(Stz* szArg);
-    bool bSameValue(Symbol* pArg);
+    bool bSameAs(char cArg);
+    bool bSameAs(Stz* szArg);
+    bool bSameAs(Symbol* pArg);
 
     void vSet(Symbol* pSymbol);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
@@ -364,11 +365,11 @@ namespace STORE
 
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubWithValueRecursive(eCK eCard, Stz* szValue);
-    bool bHasValue(void);
+    bool bHasSymbolic(void);
 
     bool bIsCard(eCK eCard);
-    bool bIsValue(char cValue);
-    bool bIsValue(Stz* szValue);
+    bool bIsSymbol(char cSymbol);
+    bool bIsSymbol(Stz* szSymbol);
 
     char cMark1(void);
     void vMark1(char cMark1);

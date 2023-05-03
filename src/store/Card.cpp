@@ -732,7 +732,7 @@ Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParen
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsValue(szValue)) {
+  if (bIsSymbol(szValue)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -780,7 +780,7 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
 
   //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szValue(),md_Bearing);
 
-  if (eCard == m_eCard && bIsValue(szValue)) {
+  if (eCard == m_eCard && bIsSymbol(szValue)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -855,7 +855,7 @@ bool Card::bHasSubWithValueRecursive(eCK eCard, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(eCard) && bIsValue(szValue))
+  if (bIsCard(eCard) && bIsSymbol(szValue))
     return true;
 
   i8 nSubCards = this->nChildCards();
@@ -870,9 +870,9 @@ bool Card::bHasSubWithValueRecursive(eCK eCard, Stz* szValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does the card have a value?                                                */
+/* does the card have a symbolic value?                                       */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasValue(void)
+bool Card::bHasSymbolic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -896,26 +896,26 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this card have same value as argument?                                */
+/* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsValue(char cValue)
+bool Card::bIsSymbol(char cSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (this->cSymbol() == cValue)
+  if (m_xSymbol.bSameAs(cSymbol))
     return true;
   else
     return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this card have same value as argument?                                */
+/* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
-bool Card::bIsValue(Stz* szValue)
+bool Card::bIsSymbol(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (this->szSymbol()->bSame(szValue))
+  if (m_xSymbol.bSameAs(szSymbol))
     return true;
   else
     return false;
@@ -1217,7 +1217,7 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   s256 sNameValue;
 
   if (0 == iDepth) {
-    if (bHasValue())
+    if (bHasSymbolic())
       sNameValue.vSprint("%s%s %s *%lld"_Stz,
                          sName.szStz(),
                          sHiddenChildren.szStz(),
@@ -1235,7 +1235,7 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
       sNameValue.vSprint("%s%lld]"_Stz,
                          Stz::szDots(iDepth - 1),
                          m_i_Child);
-    if (bHasValue())
+    if (bHasSymbolic())
       sNameValue.vSprintCat("%s%s %s"_Stz,
                             sName.szStz(),
                             sHiddenChildren.szStz(),
@@ -1316,7 +1316,7 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (! bHasValue())
+  if (!bHasSymbolic())
     return;
 
   if (bPrintMarks) {
@@ -2784,9 +2784,20 @@ bool Symbol::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this card have same symbol as given argument?                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bSameAs(char cArg)
+{
+  if (*this->szSymbol()->azChar() == cArg)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSameValue(Stz* szArg)
+bool Symbol::bSameAs(Stz* szArg)
 {
   if (this->szSymbol()->bSame(szArg))
     return true;
@@ -2797,7 +2808,7 @@ bool Symbol::bSameValue(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSameValue(Symbol* pArg)
+bool Symbol::bSameAs(Symbol* pArg)
 {
   if (this->szSymbol()->bSame(pArg->szSymbol()))
     return true;

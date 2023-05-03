@@ -445,7 +445,7 @@ void Card_Table::vPrint(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  if (bHasValue())
+  if (bHasSymbolic())
     sName.vCatSprint(" %c"_Stz, cSymbol());
 
   vPrintCard_byCustomNm(pRibbon, iDepth, sName);
