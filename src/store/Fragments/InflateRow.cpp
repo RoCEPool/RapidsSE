@@ -77,11 +77,11 @@ void vInflateRowCol(Combined_T* aCombinedT) {
   i8* piColumn;
   i8 iOffset;
   i8 i_Col;
-  i8 __COLUMN__;
+  i8 __COLUMN_NO__;
 
   // marker-start
   // - - - - - - - - - - - -
-  i_Col = __COLUMN__;
+  i_Col = __COLUMN_NO__;
 
   iOffset = piColumn[i_Col];
   if (iOffset != C_DATUM_NULL) {
