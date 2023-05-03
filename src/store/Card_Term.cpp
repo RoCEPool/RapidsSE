@@ -41,41 +41,6 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* find sub card with given value and replace                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
-                                   Stz* szValue, Card_Term* p_term_stamp)
-{
-  _static_
-
-  bool bReplaced = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI, szValue, p_term_stamp, &bReplaced](Card *pCard)
-  {
-    pCI->G.p_term = _pCard_Term(pCard);
-
-    if (!pCI->G.p_term->bIsSymbol(szValue))
-      return C_CONTINUE_RECURSION;
-
-    pCI->G.p_term->vSymbol(p_term_stamp->szSymbol());
-
-    pCI->G.p_term->pSymbol()->Y_vAll(p_term_stamp);
-
-    bReplaced = true;
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCard->bApplyRecursive(eSub, bLambdaFn);
-
-  return bReplaced;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

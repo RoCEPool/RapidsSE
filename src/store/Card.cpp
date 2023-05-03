@@ -1587,6 +1587,36 @@ void Card::vSymbolSprint(Stz* szFormat, ...)
   vSymbol(sSymbol);
 }
 
+/*----------------------------------------------------------------------------*/
+/* find sub card with given symbol and replace                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bReplaced = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [szSymbol, p_term_with, &bReplaced](Card *pCard)
+  {
+    if (! pCard->bIsSymbol(szSymbol))
+      return C_CONTINUE_RECURSION;
+
+    pCard->m_xSymbol.vSet(p_term_with->pSymbol());
+
+    bReplaced = true;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bApplyRecursive(eSub, bLambdaFn);
+
+  return bReplaced;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -2936,7 +2966,6 @@ Stz* Symbol::szSymbol(void)
 {
   return m_sSymbol.szStz();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */

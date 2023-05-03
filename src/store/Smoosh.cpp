@@ -132,15 +132,15 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   //p_expr_found->vDump();
   Card_Term* p_term_found = p_expr_found->pProjectedTerm();
 
-  Card_Term* p_term_stamp = new Card_Term(pCI->Sqy.m_sSqyArg);
-  p_term_stamp->pSymbol()->Y_vSet(P_Type, p_term_found->pSymbol()->Y_szGet(P_Type));
-  //p_term_stamp->vDump();
+  Card_Term* p_term_sqarg = new Card_Term(pCI->Sqy.m_sSqyArg);
+  p_term_sqarg->pSymbol()->Y_vSet(P_Type, p_term_found->pSymbol()->Y_szGet(P_Type));
+  //p_term_sqarg->vDump();
 
 
   //Card_Term::bReplaceValueOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,pCI->Sqy.m_sSqyArg);
-  Card_Term::bUpdateTermOfSub(pCI, p_table_exists,CK_TERM,"%1"_Stz,p_term_stamp);
+  p_table_exists->bUpdateSymbolRecursive(CK_TERM, "%1"_Stz, p_term_sqarg);
 
-  delete p_term_stamp;
+  delete p_term_sqarg;
 
   pCI->vPrintBoard();
 
