@@ -125,9 +125,9 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
     // running sum of the network and unicast costs
     Card_JoinEstimate* p_joinEstimate = xCI.G.p_streamJoin->pSub_joinEstimate();
     Card_CostNetwork* p_costNetwork = p_joinEstimate->pSub_costNetwork();
-    nSumNetworkCost += p_costNetwork->iValue();
+    nSumNetworkCost += p_costNetwork->iSymbol();
     Card_CostUnicast* p_costUnicast = p_joinEstimate->pSub_costUnicast();
-    nSumUnicastCost += p_costUnicast->iValue();
+    nSumUnicastCost += p_costUnicast->iSymbol();
 
     nFilterPred_prev = p_filtPredList->nFiltersFor(cTblSyn_join);
 
@@ -136,10 +136,10 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
   // record the sum network and unicast costs
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
-  p_costNetwork->vValue(nSumNetworkCost);
+  p_costNetwork->vSymbol(nSumNetworkCost);
 
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
-  p_costUnicast->vValue(nSumUnicastCost);
+  p_costUnicast->vSymbol(nSumUnicastCost);
 
   Card_CostStream* p_costQuery = new Card_CostStream;
   p_costQuery->vAppend(p_costNetwork);
@@ -226,7 +226,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       //+ table is the head of this stream permutation
 
       Card_StreamHead *p_streamHead = new Card_StreamHead;
-      p_streamHead->vValue(cTblSyn_ith);
+      p_streamHead->vSymbol(cTblSyn_ith);
       vAppend(p_streamHead);
 
       p_streamHead->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
@@ -245,7 +245,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // table is a join in this stream permutation
 
     Card_StreamJoin *p_streamJoin = new Card_StreamJoin;
-    p_streamJoin->vValue(cTblSyn_ith);
+    p_streamJoin->vSymbol(cTblSyn_ith);
     vAppend(p_streamJoin);
 
     p_streamJoin->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
@@ -359,12 +359,12 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
 
     if (0 == i_Item) {
       Card_StreamHead *p_dataStart = new Card_StreamHead;
-      p_dataStart->vValue(cTblSyn_ith);
+      p_dataStart->vSymbol(cTblSyn_ith);
       vAppend(p_dataStart);
     }
     else {
       Card_StreamJoin *p_joinLocus = new Card_StreamJoin;
-      p_joinLocus->vValue(cTblSyn_ith);
+      p_joinLocus->vSymbol(cTblSyn_ith);
       vAppend(p_joinLocus);
 
       if (i_NotValid == i_Item) {

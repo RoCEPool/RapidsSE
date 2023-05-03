@@ -112,7 +112,7 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
     p_idxColList->vAppend(p_idxCol);
 
 //    Card_IdxColNm* p_idxColNm = new Card_IdxColNm;
-//    p_idxColNm->vValue(pColumn->szColNm());
+//    p_idxColNm->vSymbol(pColumn->szColNm());
 //    p_idxCol->vAppend(p_idxColNm);
   }
 

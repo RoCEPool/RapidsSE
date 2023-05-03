@@ -21,7 +21,7 @@ Card_As::Card_As(Stz* szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vValue(szAs);
+  //vSymbol(szAs);
     
   _checkInitialised_(CN_CARD);
   

@@ -34,7 +34,7 @@ Card_Section::Card_Section(Stz* szComment)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vValue(szComment);
+  //vSymbol(szComment);
     
   _checkInitialised_(CN_CARD);
   

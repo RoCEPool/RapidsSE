@@ -1509,7 +1509,7 @@ char Card::cSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Card::iValue(void)
+i8 Card::iSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1531,21 +1531,21 @@ Stz* Card::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* set card value                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vValue(char cValue)
+void Card::vSymbol(char cSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vSymbolSprint("%c"_Stz, cValue);
+  vSymbolSprint("%c"_Stz, cSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set card value                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vValue(i8 iValue)
+void Card::vSymbol(i8 iSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vSymbolSprint("%lld"_Stz, iValue);
+  vSymbolSprint("%lld"_Stz, iSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

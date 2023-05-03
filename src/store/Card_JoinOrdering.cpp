@@ -171,7 +171,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
 //  Card_CostNetwork* p_costNetwork = p_costQuery->pSub_costNetwork();
 //  Card_CostUnicast* p_costUnicast = p_costQuery->pSub_costUnicast();
 //
-//  pString->vCatSprint(", %lld, %lld"_Stz, p_costNetwork->iValue(), p_costUnicast->iValue());
+//  pString->vCatSprint(", %lld, %lld"_Stz, p_costNetwork->iValue(), p_costUnicast->iSymbol());
 }
 
 /*----------------------------------------------------------------------------*/

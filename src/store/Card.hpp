@@ -401,10 +401,10 @@ namespace STORE
     Symbol* pSymbol(void);
 
     char cSymbol(void);
-    i8   iValue(void);
+    i8   iSymbol(void);
     Stz* szSymbol(void);
-    void vValue(char cValue);
-    void vValue(i8 iValue);
+    void vSymbol(char cSymbol);
+    void vSymbol(i8 iSymbol);
     void vValue(Stz* szValue);
     void vSymbolMark1(Stz* szSymbol, char cMark1);
     void vSymbolSprint(Stz* szFormat, ...);

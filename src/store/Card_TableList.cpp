@@ -176,7 +176,7 @@ i8 Card_TableList::nGetTableSize(char cTblSyn)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_TableSize* p_tableSize = pGetTableSize(cTblSyn))
-    return p_tableSize->iValue();
+    return p_tableSize->iSymbol();
 
   return 0;
 }

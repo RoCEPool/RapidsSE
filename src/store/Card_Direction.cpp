@@ -21,7 +21,7 @@ Card_Direction::Card_Direction(Stz* szDirn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vValue(szDirn);
+  //vSymbol(szDirn);
 
   _checkInitialised_(CN_CARD);
   
