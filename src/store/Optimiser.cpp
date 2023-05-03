@@ -13,10 +13,10 @@
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Fold.hpp"
-#include "FlattenSubQueries.hpp"
-#include "ApplyOptimisations.hpp"
+#include "MakeFlat.hpp"
+#include "MakeOptimal.hpp"
 #include "MakeWeavable.hpp"
-#include "PrepareSubQueries.hpp"
+#include "MakeSimpler.hpp"
 #include "CardIter.hpp"
 
 #include "CarryForward.hpp"
@@ -158,25 +158,24 @@ void Optimiser::vApplyTransformationMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
 
-  PrepareSubQueries* pPrepareSubQueries = new PrepareSubQueries(m_pCI);
-  pPrepareSubQueries->vPrepareSubQueries();
-  delete pPrepareSubQueries;
+  MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
+  pMakeSimpler->vSimplify();
+  delete pMakeSimpler;
 
   Board::vValidate(m_pCI);
 
-  FlattenSubQueries* pFlattenSubQueries = new FlattenSubQueries(m_pCI);
-  pFlattenSubQueries->vFlatten();
-  delete pFlattenSubQueries;
+  MakeFlat* pMakeFlat = new MakeFlat(m_pCI);
+  pMakeFlat->vFlatten();
+  delete pMakeFlat;
 
-  ApplyOptimisations* pApplyOptimisations = new ApplyOptimisations(m_pCI);
-  pApplyOptimisations->vOptimise();
-  delete pApplyOptimisations;
+  MakeOptimal* pMakeOptimal = new MakeOptimal(m_pCI);
+  pMakeOptimal->vOptimise();
+  delete pMakeOptimal;
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
-  pMakeWeavable->vMakeWeavable();
+  pMakeWeavable->vWeavable();
   delete pMakeWeavable;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get bench                                                                  */

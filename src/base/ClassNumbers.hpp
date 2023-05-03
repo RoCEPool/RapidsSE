@@ -23,7 +23,6 @@ enum eCN : u2 // Class Number
   /* */ CN_AM,
   /* */ CN_ANSWERWL,
   /* */ CN_API,
-  /* */ CN_APPLYOPTIMISATIONS,
   /* */ CN_ARG,
   /* */ CN_ARRANGE,
   /* */ CN_ATOMIC,
@@ -106,7 +105,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
-  /* */ CN_FLATTENSUBQUERIES,
   /* */ CN_FLTVAL,
   /* */ CN_FOLD,
   /* */ CN_FORMAT,
@@ -183,6 +181,9 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
+  /* */ CN_MAKEFLAT,
+  /* */ CN_MAKEOPTIMAL,
+  /* */ CN_MAKESIMPLER,
   /* */ CN_MAKEWEAVABLE,
   /* */ CN_MARKER,
   /* */ CN_MARKERCHAIN,
@@ -248,9 +249,8 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANOPERAND,
   /* */ CN_POT,
   /* */ CN_PORT,
- /* */ CN_PREDICATE,
+  /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
-  /* */ CN_PREPARESUBQUERIES,
   /* */ CN_PRIMITIVENODE,
   /* */ CN_PROCEDURE,
   /* */ CN_PROFILE,
@@ -460,7 +460,6 @@ static Stz* aCN[]
   /* */ "AM"_Stz,                   // CN_AM
   /* */ "ANSWERWL"_Stz,             // CN_ANSWERWL
   /* */ "API"_Stz,                  // CN_API
-  /* */ "APPLYOPTIMISATIONS"_Stz,   // CN_APPLYOPTIMISATIONS
   /* */ "ARG"_Stz,                  // CN_ARG
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
   /* */ "ATOMIC"_Stz,               // CN_ATOMIC
@@ -543,7 +542,6 @@ static Stz* aCN[]
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
-  /* */ "FLATTENSUBQUERIES"_Stz,    // CN_FLATTENSUBQUERIES
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FOLD"_Stz,                 // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
@@ -620,6 +618,9 @@ static Stz* aCN[]
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__
+  /* */ "MAKEFLAT"_Stz,             // CN_MAKEFLAT
+  /* */ "MAKEOPTIMAL"_Stz,          // CN_MAKEOPTIMAL
+  /* */ "MAKESIMPLER"_Stz,          // CN_MAKESIMPLER
   /* */ "MAKEWEAVABLE"_Stz,         // CN_MAKEWEAVABLE
   /* */ "MARKER"_Stz,               // CN_MARKER
   /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
@@ -687,7 +688,6 @@ static Stz* aCN[]
   /* */ "PORT"_Stz,                 // CN_PORT
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
-  /* */ "PREPARESUBQUERIES"_Stz,    // CN_PREPARESUBQUERIES
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
   /* */ "PROCEDURE"_Stz,            // CN_PROCEDURE
   /* */ "PROFILE"_Stz,              // CN_PROFILE

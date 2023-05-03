@@ -52,7 +52,7 @@ MakeWeavable::~MakeWeavable(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeWeavable::vMakeWeavable(void)
+void MakeWeavable::vWeavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 

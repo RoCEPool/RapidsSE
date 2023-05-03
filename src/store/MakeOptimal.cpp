@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* ApplyOptimisations.cpp -- ApplyOptimisations                                           */
+/* MakeOptimal.cpp -- MakeOptimal                                           */
 /*============================================================================*/
 
-#include "ApplyOptimisations.hpp"
+#include "MakeOptimal.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
@@ -15,34 +15,34 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, ApplyOptimisations, CN_APPLYOPTIMISATIONS)
-__aNewFunction(ApplyOptimisations, CN_APPLYOPTIMISATIONS)
-__vDeleteFunction(ApplyOptimisations, CN_APPLYOPTIMISATIONS)
-__aFooterFunction(ApplyOptimisations)
+__pCastFunction(STORE, MakeOptimal, CN_MAKEOPTIMAL)
+__aNewFunction(MakeOptimal, CN_MAKEOPTIMAL)
+__vDeleteFunction(MakeOptimal, CN_MAKEOPTIMAL)
+__aFooterFunction(MakeOptimal)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ApplyOptimisations::ApplyOptimisations(CardIter* pCI)
-: Object(CN_APPLYOPTIMISATIONS)
+MakeOptimal::MakeOptimal(CardIter* pCI)
+: Object(CN_MAKEOPTIMAL)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI = pCI;
   m_pCI->vUsingBoard(BK_SUBQUERY, 0);
 
 
-  _checkInitialised_(CN_APPLYOPTIMISATIONS);
+  _checkInitialised_(CN_MAKEOPTIMAL);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ApplyOptimisations::~ApplyOptimisations(void) noexcept(false)
+MakeOptimal::~MakeOptimal(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 }
 
 
@@ -53,9 +53,9 @@ ApplyOptimisations::~ApplyOptimisations(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vOptimise(void)
+void MakeOptimal::vOptimise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   vDelete_flat();
 
@@ -76,14 +76,14 @@ void ApplyOptimisations::vOptimise(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- ApplyOptimisations ------------------------------------------------------*/
+/*-- MakeOptimal ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vOptimiseLoop(void) {
+void MakeOptimal::vOptimiseLoop(void) {
 
   bool bOpts;
   i8 iOpts = 0;
@@ -119,7 +119,7 @@ void ApplyOptimisations::vOptimiseLoop(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_CutSort(void) {
+bool MakeOptimal::bOptimise_CutSort(void) {
 
   NEVER_REACH
 
@@ -141,7 +141,7 @@ bool ApplyOptimisations::bOptimise_CutSort(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_DupFilter(void) {
+bool MakeOptimal::bOptimise_DupFilter(void) {
 
   // Query7, Query19
 
@@ -159,7 +159,7 @@ bool ApplyOptimisations::bOptimise_DupFilter(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_ElyFilters(void) {
+bool MakeOptimal::bOptimise_ElyFilters(void) {
 
   // Query2, Query3, Query4, Query5, Query7, Query8,
   //   Query9, Query10, Query11, Query12, Query16, Query17 Query19
@@ -175,7 +175,7 @@ bool ApplyOptimisations::bOptimise_ElyFilters(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_ElyProjections(void) {
+bool MakeOptimal::bOptimise_ElyProjections(void) {
 
   // Query2, Query3, Query4, Query5, Query7, Query8,
   //   Query9, Query10, Query11, Query12, Query14,
@@ -199,7 +199,7 @@ bool ApplyOptimisations::bOptimise_ElyProjections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_MinGroupby(void) {
+bool MakeOptimal::bOptimise_MinGroupby(void) {
 
   //
   // Query3, Query10, Query18
@@ -219,7 +219,7 @@ bool ApplyOptimisations::bOptimise_MinGroupby(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_OtmCalculations(void) {
+bool MakeOptimal::bOptimise_OtmCalculations(void) {
 
   // Query1, Query4, Query5, Query6, Query10, Query12, Query14, Query15,
   //   Query19, Query20
@@ -237,7 +237,7 @@ bool ApplyOptimisations::bOptimise_OtmCalculations(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_PpnProjections(void) {
+bool MakeOptimal::bOptimise_PpnProjections(void) {
 
   // Query2, Query10
 
@@ -255,7 +255,7 @@ bool ApplyOptimisations::bOptimise_PpnProjections(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_RplAggregByOrdAgg(void)
+bool MakeOptimal::bOptimise_RplAggregByOrdAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -283,7 +283,7 @@ bool ApplyOptimisations::bOptimise_RplAggregByOrdAgg(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_RplAggregBySortOrdAgg(void) {
+bool MakeOptimal::bOptimise_RplAggregBySortOrdAgg(void) {
 
   // Query 3
   return false;
@@ -292,7 +292,7 @@ bool ApplyOptimisations::bOptimise_RplAggregBySortOrdAgg(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_RplMaxByTop(void) {
+bool MakeOptimal::bOptimise_RplMaxByTop(void) {
 
   // Query15
 
@@ -311,7 +311,7 @@ bool ApplyOptimisations::bOptimise_RplMaxByTop(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_RplScanByIndexScan(void) {
+bool MakeOptimal::bOptimise_RplScanByIndexScan(void) {
 
   // Query6, Query10, Query14 and Query15
 
@@ -350,7 +350,7 @@ bool ApplyOptimisations::bOptimise_RplScanByIndexScan(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_RplSortDescLimitByTop(void) {
+bool MakeOptimal::bOptimise_RplSortDescLimitByTop(void) {
 
   // Query10
 
@@ -365,7 +365,7 @@ bool ApplyOptimisations::bOptimise_RplSortDescLimitByTop(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool ApplyOptimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
+bool MakeOptimal::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 
   // Query3
 
@@ -390,9 +390,9 @@ bool ApplyOptimisations::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vCut_sort(void)
+void MakeOptimal::vCut_sort(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI->vTransform(__func__, "Cut sort"_Stz);
 
@@ -427,9 +427,9 @@ void ApplyOptimisations::vCut_sort(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vDelete_flat(void)
+void MakeOptimal::vDelete_flat(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI->vRestart();
   while (m_pCI->G_bEachMain(CK_FLAT))
@@ -439,9 +439,9 @@ void ApplyOptimisations::vDelete_flat(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vDerive_Projection_Keys(void)
+void MakeOptimal::vDerive_Projection_Keys(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI->vTransform(__func__, "Derive projection keys"_Stz);
 
@@ -503,9 +503,9 @@ void ApplyOptimisations::vDerive_Projection_Keys(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vEarlyProjections(void)
+void MakeOptimal::vEarlyProjections(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
 //  if (! AM::JOB::bHasTag(C_EP_ENABLE))
 //    return;
@@ -552,9 +552,9 @@ void ApplyOptimisations::vEarlyProjections(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vMorph_scan_To_indexScan(void)
+void MakeOptimal::vMorph_scan_To_indexScan(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
 
@@ -577,9 +577,9 @@ void ApplyOptimisations::vMorph_scan_To_indexScan(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vMorph_table_To_EEop(void)
+void MakeOptimal::vMorph_table_To_EEop(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
@@ -591,9 +591,9 @@ void ApplyOptimisations::vMorph_table_To_EEop(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ApplyOptimisations::vPromote_gbyAgg_To_ordAgg(void)
+void MakeOptimal::vPromote_gbyAgg_To_ordAgg(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_APPLYOPTIMISATIONS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI->vTransform(__func__, "Promote gbyAgg to ordAgg"_Stz);
 
