@@ -192,6 +192,30 @@ eRO Card_Term::eEvalRelOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate term                                                              */
+/*----------------------------------------------------------------------------*/
+eTE Card_Term::eEvalTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szValue = this->szSymbol();
+
+       if (bIsValue("and"_Stz))        return TE_AND;
+  else if (bIsValue("or"_Stz))         return TE_OR;
+  else if (bIsValue("not"_Stz))        return TE_NOT;
+  else if (bIsValue("}"_Stz))          return TE_EXECUTE;
+  else if (bIsValue("exists"_Stz))     return TE_EXISTS;
+  else if (bIsValue("in"_Stz))         return TE_IN;
+  else if (bIsValue("notExists"_Stz))  return TE_NOTEXISTS;
+  else if (bIsValue("notIn"_Stz))      return TE_NOTIN;
+
+  else if (pSymbol()->bIsRelnOp())     return TE_RELNOP;
+  else if (pSymbol()->bIsBoolFn())     return TE_BOOLFN;
+
+  else return TE_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
@@ -362,19 +386,6 @@ bool Card_Term::bIsCorPrmOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term the fold expr?                                                */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsFoldExpr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsValue("$1"_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this term a key ordinal? $Kn                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsKeyOdn(void)
@@ -398,7 +409,6 @@ bool Card_Term::bIsSame(Card_Term* p_term_arg)
   return b;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* is this term a stream-column? $n                                           */
 /*----------------------------------------------------------------------------*/
@@ -409,6 +419,19 @@ bool Card_Term::bIsStmColOdn(void)
   bool b = pSymbol()->bIsStreamColumn();
 
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this term same as given symbol                                          */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsSymbol(Stz* szSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bIsValue(szSymbol))
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,58 +467,6 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSprintRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
   //vPrintCard_bySettings(pRibbon, iDepth);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vReplace_sqCall_With_sqResult(Stz* szStmColOdn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vSymbol(szStmColOdn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vFlip(Card_Projection* p_projection_needed)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Expr* p_expr_needed = p_projection_needed->pFind_expr_By_projectedCol(szSymbol());
-  if (p_expr_needed) {
-    Stz* szStem = szSymbol();
-    Stz* szBecomes = p_expr_needed->szSymbol();
-
-    pSymbol()->Y_vSet(P_TblCol, szStem);
-    vSymbol(szBecomes);
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* evaluate term                                                              */
-/*----------------------------------------------------------------------------*/
-eTE Card_Term::eTermEval(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szValue = this->szSymbol();
-
-       if (bIsValue("and"_Stz))        return TE_AND;
-  else if (bIsValue("or"_Stz))         return TE_OR;
-  else if (bIsValue("not"_Stz))        return TE_NOT;
-  else if (bIsValue("}"_Stz))          return TE_EXECUTE;
-  else if (bIsValue("exists"_Stz))     return TE_EXISTS;
-  else if (bIsValue("in"_Stz))         return TE_IN;
-  else if (bIsValue("notExists"_Stz))  return TE_NOTEXISTS;
-  else if (bIsValue("notIn"_Stz))      return TE_NOTIN;
-
-  else if (pSymbol()->bIsRelnOp())     return TE_RELNOP;
-  else if (pSymbol()->bIsBoolFn())     return TE_BOOLFN;
-
-  else return TE_OTHER;
 }
 
 /*============================================================================*/

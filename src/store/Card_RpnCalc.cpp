@@ -396,7 +396,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
   while (this->nChildCards()) {
     Card_Term* p_term_next = _pCard_Term(this->pPop());
 
-    eTE eTerm_next = p_term_next->eTermEval();
+    eTE eTerm_next = p_term_next->eEvalTerm();
 
     //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szSymbol());
 

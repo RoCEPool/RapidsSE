@@ -30,22 +30,20 @@ namespace STORE
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
+    eTE  eEvalTerm(void);
     Card_Expr* pExpr_For_col(CardIter* pCI, i8 i_Before=C_UNKNOWN);
     Card_Expr* pExpr_For_colNm(CardIter* pCI, i8 i_Before=C_UNKNOWN);
-    void vFlip(Card_Projection* p_projection_needed);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
     bool bIsBoardNm(CardIter* pCI);
     bool bIsColOdn(void);    // $n or $c.n
     bool bIsCorPrmOdn(void); // %n
-    bool bIsFoldExpr(void);
     bool bIsKeyOdn(void);    // $Kn
     bool bIsSame(Card_Term* p_term_arg);
     bool bIsStmColOdn(void); // $n
+    bool bIsSymbol(Stz* szSymbol);
     bool bIsTblColOdn(void); // $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
-    void vReplace_sqCall_With_sqResult(Stz* szStmColOdn);
-    eTE  eTermEval(void);
   };
 
   Card_Term* _pCard_Term(void* aAddr);
