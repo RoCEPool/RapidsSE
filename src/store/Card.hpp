@@ -364,7 +364,7 @@ namespace STORE
     Stz* szGetType(void);
 
     bool bHasSubRecursive(Card* pSubCard);
-    bool bHasSubWithValueRecursive(eCK eCard, Stz* szValue);
+    bool bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol);
     bool bHasSymbolic(void);
 
     bool bIsCard(eCK eCard);
@@ -385,15 +385,15 @@ namespace STORE
     void vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth);
     void vPrintHeader(Ribbon* pRibbon, eAL eLevel=AL_NONE);
     void vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName=nullptr);
-    void vPrintNameValue(Ribbon* pRibbon, i8 iDepth);
+    void vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
-    void vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
+    void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
 
     void vRenumberRecursive(Card* pParent=nullptr);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
-    bool bSameValue(Card* pCard);
-    bool bSameValueRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
+    bool bSameSymbol(Card* pArg);
+    bool bSameSymbolRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     bool bSameValuePpyRecursive(Card* pCard_OTHER); // not needed??
 
     void vSetType(Card* p_card_arg);

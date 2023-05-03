@@ -851,18 +851,18 @@ bool Card::bHasSubRecursive(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bHasSubWithValueRecursive(eCK eCard, Stz* szValue)
+bool Card::bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(eCard) && bIsSymbol(szValue))
+  if (bIsCard(eCard) && bIsSymbol(szSymbol))
     return true;
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
     Card *p_sub = pGetChild(i_Child);
 
-    if (p_sub->bHasSubWithValueRecursive(eCard, szValue))
+    if (p_sub->bHasSubWithSymbolRecursive(eCard, szSymbol))
       return true;
   }
 
@@ -1037,7 +1037,7 @@ void Card::vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm)
   if (pCardCtl->bPrintName(m_eCard))
     vPrintName(pRibbon, iDepth, szCustomNm);
   if (pCardCtl->bPrintValue(m_eCard))
-    vPrintValue(pRibbon, iDepth);
+    vPrintSymbol(pRibbon, iDepth);
 
   if (pCardCtl->bPrintProperties(m_eCard))
     vPrintProperties(pRibbon, iDepth);
@@ -1087,14 +1087,14 @@ void Card::vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth)
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCtl());
 
   if (pCardCtl->bPrintName(m_eCard) && pCardCtl->bPrintValue(m_eCard)) {
-    vPrintNameValue(pRibbon, iDepth);
+    vPrintNameSymbol(pRibbon, iDepth);
   }
   else {
     bool bPrintName = pCardCtl->bPrintName(m_eCard);
     if (bPrintName)
       vPrintName(pRibbon, iDepth);
     if (pCardCtl->bPrintValue(m_eCard))
-      vPrintValue(pRibbon, iDepth, !bPrintName);
+      vPrintSymbol(pRibbon, iDepth, !bPrintName);
   }
 
   if (pCardCtl->bPrintProperties(m_eCard))
@@ -1198,9 +1198,9 @@ void Card::vPrintName(Ribbon* pRibbon, i8 iDepth, Stz* szCustomName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print card name and value on single line if possible                       */
+/* print card name and its symbolic value on single line if possible          */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
+void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1214,44 +1214,44 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
   if (0 == iDepth)
     sName.vToUpper();
 
-  s256 sNameValue;
+  s256 sNameSymbol;
 
   if (0 == iDepth) {
     if (bHasSymbolic())
-      sNameValue.vSprint("%s%s %s *%lld"_Stz,
-                         sName.szStz(),
-                         sHiddenChildren.szStz(),
-                         szSymbol(),
-                         nItems());
+      sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
+                          sName.szStz(),
+                          sHiddenChildren.szStz(),
+                          szSymbol(),
+                          nItems());
     else
-      sNameValue.vSprint("%s%s *%lld"_Stz,
-                         sName.szStz(),
-                         sHiddenChildren.szStz(),
-                         nItems());
+      sNameSymbol.vSprint("%s%s *%lld"_Stz,
+                          sName.szStz(),
+                          sHiddenChildren.szStz(),
+                          nItems());
 
   }
   else {
     if (pCardCtl->bPrintNo(m_eCard))
-      sNameValue.vSprint("%s%lld]"_Stz,
-                         Stz::szDots(iDepth - 1),
-                         m_i_Child);
+      sNameSymbol.vSprint("%s%lld]"_Stz,
+                          Stz::szDots(iDepth - 1),
+                          m_i_Child);
     if (bHasSymbolic())
-      sNameValue.vSprintCat("%s%s %s"_Stz,
-                            sName.szStz(),
-                            sHiddenChildren.szStz(),
-                            szSymbol());
+      sNameSymbol.vSprintCat("%s%s %s"_Stz,
+                             sName.szStz(),
+                             sHiddenChildren.szStz(),
+                             szSymbol());
     else
-      sNameValue.vSprintCat("%s%s"_Stz,
-                         sName.szStz(),
-                         sHiddenChildren.szStz());
+      sNameSymbol.vSprintCat("%s%s"_Stz,
+                             sName.szStz(),
+                             sHiddenChildren.szStz());
   }
 
-  if (sNameValue.nLength() <= 18) {
-    pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameValue.szStz());
+  if (sNameSymbol.nLength() <= 18) {
+    pRibbon->vSprint("%c%c%-18s"_Stz, m_cMark1, m_cMark2, sNameSymbol.szStz());
   }
   else {
     vPrintName(pRibbon, iDepth);
-    vPrintValue(pRibbon, iDepth);
+    vPrintSymbol(pRibbon, iDepth);
   }
 }
 
@@ -1310,9 +1310,9 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print value of card                                                        */
+/* print symbolic value of card                                               */
 /*----------------------------------------------------------------------------*/
-void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
+void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1366,9 +1366,9 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this card's value the same as given arg?                                */
+/* is this card's symbolic value the same as given arg?                       */
 /*----------------------------------------------------------------------------*/
-bool Card::bSameValue(Card* pArg)
+bool Card::bSameSymbol(Card* pArg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1381,7 +1381,7 @@ bool Card::bSameValue(Card* pArg)
 /*----------------------------------------------------------------------------*/
 /* are the two cards recursively the same                                     */
 /*----------------------------------------------------------------------------*/
-bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
+bool Card::bSameSymbolRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
 {
   _static_
 
@@ -1406,7 +1406,7 @@ bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
   for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
     Card* pChild_a = this->pGetChild(i_Child);
     Card* pChild_b = pCard_b->pGetChild(i_Child);
-    if (!pChild_a->bSameValueRecursive(pChild_b, iDepth + 1, bTestL0))
+    if (!pChild_a->bSameSymbolRecursive(pChild_b, iDepth + 1, bTestL0))
       return false;
   }
 
