@@ -176,7 +176,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
       if (p_needed->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szSymbol()))
         continue;
 
-      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term,pCI))
+      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
         p_needed->vAppend(p_expr_col->pClone(true));
     }
   }

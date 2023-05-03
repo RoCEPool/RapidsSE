@@ -1021,19 +1021,18 @@ void CardIter::vEndTransform(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Before)
+Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(pCI == this);
 
   if (C_UNKNOWN == i_Before)
-    i_Before = pCI->i_Child();
+    i_Before = this->i_Child();
 
   Card_Expr* p_expr_col = nullptr;
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
+    Card *pMain = this->G.pDeck->pGetChild(i_Main);
 
     //pMain->vDump();
 
@@ -1063,19 +1062,17 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Before
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, CardIter* pCI, i8 i_Before)
+Card_Expr* CardIter::pExpr_For_colNm(Card_Term* p_term, i8 i_Before)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  RASSERT(pCI == this);
-
   if (C_UNKNOWN == i_Before)
-    i_Before = pCI->i_Child();
+    i_Before = this->i_Child();
 
   Card_Expr* p_expr_col = nullptr;
 
   for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
+    Card *pMain = this->G.pDeck->pGetChild(i_Main);
 
     if (Card_Projection* p_projection = pMain->pSub_projection()) {
       i8 nChildren_prj = p_projection->nChildCards();
