@@ -20,17 +20,32 @@ enum eSR // stencil row
 
 static Stz* aSR[]
 {
+    /*  0 */ "NONE"_Stz,
+
+    /*    */ "SR_AT"_Stz,
+    /*    */ "SR_IJ"_Stz,
+    /*    */ "SR_IT"_Stz,
+    /*    */ "SR_PL"_Stz,
+    /*    */ "SR_PT"_Stz,
+    /*    */ "SR_TB"_Stz,
+    /*    */ "SR_TJ"_Stz,
+
+    /*    */ "ENUMS"_Stz
+};
+
+static Stz* aSRArea[]
+{
   /*  0 */ "NONE"_Stz,
 
-  /*    */ "SR_AT"_Stz,
-  /*    */ "SR_IJ"_Stz,
-  /*    */ "SR_IT"_Stz,
-  /*    */ "SR_PL"_Stz,
-  /*    */ "SR_PT"_Stz,
-  /*    */ "SR_TB"_Stz,
-  /*    */ "SR_TJ"_Stz,
+      /*    */ "SR_AT"_Stz,
+      /*    */ "SR_IJ"_Stz,
+      /*    */ "SR_IT"_Stz,
+      /*    */ "SR_PL"_Stz,
+      /*    */ "SR_PT"_Stz,
+      /*    */ "aCombinedT->m_racTubStrArea"_Stz,
+      /*    */ "aCombinedT->m_racStrAreaTJ"_Stz,
 
-  /*    */ "ENUMS"_Stz
+      /*    */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

@@ -681,10 +681,10 @@ void vPLVchKeyToTub(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vTubCol -----------------------------------------------------------------*/
+/*-- vCopyCol -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vTubCol
-void vTubCol(Combined_T* aCombinedT) {
+// function-vCopyCol
+void vCopyCol(Combined_T* aCombinedT) {
 
   struct __STRUCT_FROM__ {
     union Int_T __COLUMN_FROM__;
@@ -708,10 +708,10 @@ void vTubCol(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vTubVchCol --------------------------------------------------------------*/
+/*-- vCopyVchCol -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vTubVchCol
-void vTubVchCol(Combined_T* aCombinedT) {
+// function-vCopyVchCol
+void vCopyVchCol(Combined_T* aCombinedT) {
 
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
@@ -731,6 +731,7 @@ void vTubVchCol(Combined_T* aCombinedT) {
   i8  nSrcSize;
   i8  iOffset;
   m8* amCellAddress;
+  char* __STRING_AREA__;
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -746,20 +747,31 @@ void vTubVchCol(Combined_T* aCombinedT) {
     nSrcSize = strlen(szSrcStz) + 1;
 
     // get the destination string
-    szDstStz = aCombinedT->m_racTubStrArea;
+    szDstStz = __STRING_AREA__;
     strncpy(szDstStz, szSrcStz, nSrcSize);
 
     // copy the source to the destination
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
-    iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);
+    iOffset = - nDifference(__STRING_AREA__,amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
     // update the tub string size
-    aCombinedT->m_racTubStrArea += nSrcSize;
-#ifdef WITH_TINYC
-    vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
-#endif
+    __STRING_AREA__ += nSrcSize;
   }
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vTubRowStr --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vTubRowStr
+void vTubRowStr(Combined_T* aCombinedT) {
+
+  // marker-start
+#ifdef WITH_TINYC
+  vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
+#endif
 
   // marker-end
 }

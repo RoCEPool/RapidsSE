@@ -20,6 +20,7 @@
 bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
                                 String* sCode, Column* pColumn, i8 iPayLoadIndex)
 {
+  _static_
 
   i8 nFileSize = pFile->iSize();
   i8 nStringSize = sCode->nArea();
@@ -89,6 +90,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
+        vReplaceStringArea(sLine, pOpSketch);
 
         // copy line into sCode
         StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
@@ -105,6 +107,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 /*----------------------------------------------------------------------------*/
 bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnToLabel, Stz* szFunMkr, String* sCode)
 {
+
+  _static_
 
   i8 nFileSize = pFile->iSize();
   i8 nStringSize = sCode->nArea();
@@ -172,6 +176,8 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
 /*----------------------------------------------------------------------------*/
 void CodeSynthUtils::vReplaceColumnNo(Stz* sLine, Column* pColumn) {
 
+  _static_
+
   if (StrLib::bContains(sLine->azChar(), "__COLUMN_NO__")) {
     s256 sColumn;
     StrLib::vSprint(sColumn, "%lld"_Stz, pColumn->iColumnNo());
@@ -184,6 +190,8 @@ void CodeSynthUtils::vReplaceColumnNo(Stz* sLine, Column* pColumn) {
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
 void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
+
+  _static_
 
   s256 sColNm;
   sColNm = pColumn->szColNm();
@@ -202,7 +210,9 @@ void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "__KEY_KIND__")) {
     s256 sKey;
@@ -215,7 +225,9 @@ void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplacePayloadIndex(Stz* sLine, i8 iPayLoadIndex) {
+void CodeSynthUtils::vReplacePayloadIndex(Stz* sLine, i8 iPayLoadIndex)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "__PAYLOAD_INDEX__")) {
     s256 sPayLoadIndex;
@@ -229,7 +241,9 @@ void CodeSynthUtils::vReplacePayloadIndex(Stz* sLine, i8 iPayLoadIndex) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "__PAYLOADBYTES__")) {
     RASSERT( pOpSketch->m_nPayloadBytes );
@@ -243,7 +257,9 @@ void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceReturnToLabel(Stz* sLine, Stz* sReturnToLabel) {
+void CodeSynthUtils::vReplaceReturnToLabel(Stz* sLine, Stz* sReturnToLabel)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "__L_RETURN_TO_LABEL__")) {
     RASSERT(!sReturnToLabel->bSame(""_Stz));
@@ -255,7 +271,9 @@ void CodeSynthUtils::vReplaceReturnToLabel(Stz* sLine, Stz* sReturnToLabel) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceStructTo(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceStructTo(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "p__STRUCT_TO__")) {
     RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
@@ -273,7 +291,9 @@ void CodeSynthUtils::vReplaceStructTo(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceStructFrom(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceStructFrom(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "p__STRUCT_FROM__")) {
     RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
@@ -292,7 +312,9 @@ void CodeSynthUtils::vReplaceStructFrom(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLabel(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceLabel(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "__L_LABEL__")) {
     RASSERT( ! pOpSketch->m_sLabel.bSame(""_Stz) );
@@ -304,7 +326,9 @@ void CodeSynthUtils::vReplaceLabel(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLabelNext(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceLabelNext(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "__L_LABEL_NEXT__")) {
     RASSERT( ! pOpSketch->m_sLabelNext.bSame(""_Stz) );
@@ -316,11 +340,27 @@ void CodeSynthUtils::vReplaceLabelNext(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch) {
+void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
 
   if (StrLib::bContains(sLine->azChar(), "__L_LABEL_LOOP__")) {
     RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
     bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_LOOP__", pOpSketch->m_sLabelLoop.azChar());
+    RASSERT(bResult);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceStringArea(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  if (StrLib::bContains(sLine->azChar(), "__STRING_AREA__")) {
+    RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__STRING_AREA__", (char*)aSRArea[pOpSketch->m_eStencilTo]);
     RASSERT(bResult);
   }
 }
