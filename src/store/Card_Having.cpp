@@ -102,7 +102,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   auto bLambdaFn_cmp = [](Card_Term *p_term)
   {
 
-    if (p_term->bIsStmColOdn())
+    if (p_term->bIsStmOdn())
       p_term->vBump_StreamColOrdinal();
 
     return true;

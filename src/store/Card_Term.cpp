@@ -107,7 +107,7 @@ void Card_Term::vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI)
     ASSERT(pCI->G.p_level && AL_PARTITION == pCI->G.p_level->pSymbol()->Y_iGet(P_Level));
   }
 
-  if (!pSymbol()->bIsStreamColumn())
+  if (!pSymbol()->bIsStreamOrdinal())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -238,7 +238,7 @@ bool Card_Term::bIsKeyOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsKey();
+  bool b = pSymbol()->bIsKeyOrdinal();
 
   return b;
 }
@@ -250,7 +250,7 @@ bool Card_Term::bIsPrmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsCorrParam();
+  bool b = pSymbol()->bIsParameterOrdinal();
 
   return b;
 }
@@ -268,13 +268,13 @@ bool Card_Term::bIsSame(Card_Term* p_term_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a stream-column? $n                                           */
+/* is this term a stream-ordinal? $n                                          */
 /*----------------------------------------------------------------------------*/
-bool Card_Term::bIsStmColOdn(void)
+bool Card_Term::bIsStmOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = pSymbol()->bIsStreamColumn();
+  bool b = pSymbol()->bIsStreamOrdinal();
 
   return b;
 }
@@ -312,7 +312,7 @@ bool Card_Term::bIsValOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsStmColOdn())
+  if (bIsStmOdn())
     return true;
   else
   if (bIsTblColOdn())

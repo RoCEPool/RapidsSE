@@ -33,7 +33,7 @@ namespace STORE
     bool bIsKeyOdn(void);    // $Kn
     bool bIsPrmOdn(void); // %n
     bool bIsSame(Card_Term* p_term_arg);
-    bool bIsStmColOdn(void); // $n
+    bool bIsStmOdn(void); // $n
     bool bIsSymbol(Stz* szSymbol);
     bool bIsTblColOdn(void); // $c.n
     bool bIsValOdn(void);    // $n or $c.n

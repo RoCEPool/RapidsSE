@@ -2062,7 +2062,7 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
     return nullptr;
 
   Stz* szPrjCol = p_term->szSymbol();
-  if (p_term->pSymbol()->bIsStreamColumn()) {
+  if (p_term->pSymbol()->bIsStreamOrdinal()) {
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term);
     return p_expr_prior;
   }

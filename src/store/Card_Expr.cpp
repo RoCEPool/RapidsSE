@@ -440,7 +440,7 @@ i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
 
   CardIter xCI(p_rpnCalc);
   while (xCI.G_bEachMain())  {
-    if (xCI.G.p_term->pSymbol()->bIsKey()) {
+    if (xCI.G.p_term->pSymbol()->bIsKeyOrdinal()) {
       i8 i_Key = xCI.G.p_term->pSymbol()->iGetOrdinal();
       return i_Key;
     }

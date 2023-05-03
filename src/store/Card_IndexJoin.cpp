@@ -148,7 +148,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_colOdn(pCI->G.p_term)) {
 
-    if (pCI->G.p_term->bIsStmColOdn()) {
+    if (pCI->G.p_term->bIsStmOdn()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
       p_rpnCalc->pSymbol()->Y_vSet(P_Type,pCI->G.p_term->pSymbol()->Y_szGet(P_Type));

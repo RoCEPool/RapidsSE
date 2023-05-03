@@ -468,7 +468,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
       while (xCI.G_bEachMain()) {
         // TODO: test for: == $d.2 %1 => == $1 [TRANSLATE PARAM %1]
 
-        if (xCI.G.p_MainCard->pSymbol()->bIsCorrParam()) {
+        if (xCI.G.p_MainCard->pSymbol()->bIsParameterOrdinal()) {
 
           Symbol x_Symbol_stmCol1;
           x_Symbol_stmCol1.vSetStreamColOrdinal(1);

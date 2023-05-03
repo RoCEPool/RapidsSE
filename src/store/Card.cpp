@@ -2659,7 +2659,7 @@ bool Symbol::bIsIndexColumn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsKey(void)
+bool Symbol::bIsKeyOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
@@ -2680,7 +2680,7 @@ bool Symbol::bIsKey(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsColumn(void)
 {
-  if (bIsStreamColumn() || bIsTableColumn())
+  if (bIsStreamOrdinal() || bIsTableColumn())
     return true;
 
   return false;
@@ -2689,7 +2689,7 @@ bool Symbol::bIsColumn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsCorrParam(void)
+bool Symbol::bIsParameterOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
@@ -2735,7 +2735,7 @@ bool Symbol::bIsResult(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsStreamColumn(void)
+bool Symbol::bIsStreamOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];

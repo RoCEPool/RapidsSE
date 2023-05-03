@@ -95,7 +95,7 @@ void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
 
-    if (xCI.G.p_term- pSymbol()->bIsStreamColumn()) {
+    if (xCI.G.p_term- pSymbol()->bIsStreamOrdinal()) {
       xCI.G.p_term->vBump_StreamColOrdinal(nBumpBy);
       xCI.G.p_term->vMark1(MARK_CHANGED);
     }
@@ -180,7 +180,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmColOdn(CardIter* pCI)
     if (xTerm.p_term()->bIsKeyOdn())
       p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
     else
-    if (xTerm.p_term()->bIsStmColOdn())
+    if (xTerm.p_term()->bIsStmOdn())
       p_expr_found = pCI->Analysis.m_pProjection_prior->pGetExpr(iOdn - 1);
     else
       continue;
@@ -230,8 +230,8 @@ Card_Term* Card_RpnCalc::pGetSingleTermIf_odn(void)
 
   Card_Term* p_term_0 = this->pGetTerm(0);
 
-  if (p_term_0->bIsKeyOdn()    ||
-      p_term_0->bIsStmColOdn() ||
+  if (p_term_0->bIsKeyOdn() ||
+      p_term_0->bIsStmOdn() ||
       p_term_0->bIsTblColOdn())
     return p_term_0;
 
@@ -266,7 +266,7 @@ Card_Term* Card_RpnCalc::pGetSingleTermIf_stmColOdn(void)
 
   Card_Term* p_term = this->pSub_term();
   Stz* szTerm = p_term->szSymbol();
-  if (!p_term->pSymbol()->bIsStreamColumn())
+  if (!p_term->pSymbol()->bIsStreamOrdinal())
     return nullptr;
 
   return p_term;

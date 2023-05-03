@@ -223,12 +223,12 @@ namespace STORE
     bool bIsBoolFn(void);         // between, case ... matchTrailing
     bool bIsComma(void);          // ,
     bool bIsIndexColumn(void);    // $In
-    bool bIsKey(void);            // $Kn
+    bool bIsKeyOrdinal(void);            // $Kn
     bool bIsColumn(void);         // $n or $c.n
-    bool bIsCorrParam(void);      // %n
+    bool bIsParameterOrdinal(void);      // %n
     bool bIsRelnOp(void);         // <, <=, ... >
     bool bIsResult(void);         // #n
-    bool bIsStreamColumn(void);   // $n
+    bool bIsStreamOrdinal(void);   // $n
     bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
     bool bIsSubQueryName(void);   // __subqueryN
     bool bIsSubQueryColumn(void); // __n
