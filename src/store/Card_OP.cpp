@@ -191,7 +191,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (pCI->Analysis.m_pProjection_prior) {
       if (Card_Expr* p_expr_col =
           pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_term->szSymbol())) {
-        p_term->vValueMark1(p_expr_col->szSymbol(), MARK_CHANGED);
+        p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
         //vTrace("  TO %s\n"_Stz,p_expr_col->szSymbol());
         return C_CONTINUE_RECURSION;
       }
@@ -210,7 +210,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamColOrdinal(nExpr_prior+i_Col);
-    p_term->vValueMark1(xSymbol_stmColOdn, MARK_CHANGED);
+    p_term->vSymbolMark1(xSymbol_stmColOdn, MARK_CHANGED);
 
     //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSymbol());
     return C_CONTINUE_RECURSION;
@@ -250,7 +250,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     Card_HshCol *p_hshCol = pSub_hshCol();
     if (Card_Expr *p_expr_col =
         pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_hshCol->szSymbol())) {
-      p_hshCol->vValueMark1(p_expr_col->szSymbol(), MARK_CHANGED);
+      p_hshCol->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
     }
   }
 
@@ -731,7 +731,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-  char cTblSyn = bIsCard(CK_TABLE) ? cValue() : pSub_table()->cValue();
+  char cTblSyn = bIsCard(CK_TABLE) ? cSymbol() : pSub_table()->cSymbol();
 
   i8 i_Expr = p_projection->nExpr() + 1;
 

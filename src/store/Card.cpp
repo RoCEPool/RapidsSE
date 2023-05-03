@@ -756,7 +756,7 @@ Card* Card::pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Car
 
   //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szSymbol(),md_Bearing);
 
-  if (eCard == m_eCard && cValue() == cWithValue) {
+  if (eCard == m_eCard && cSymbol() == cWithValue) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -902,7 +902,7 @@ bool Card::bIsValue(char cValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (this->cValue() == cValue)
+  if (this->cSymbol() == cValue)
     return true;
   else
     return false;
@@ -1497,7 +1497,7 @@ Symbol* Card::pSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
-char Card::cValue(void)
+char Card::cSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1535,7 +1535,7 @@ void Card::vValue(char cValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValueSprint("%c"_Stz,cValue);
+  vSymbolSprint("%c"_Stz, cValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1545,7 +1545,7 @@ void Card::vValue(i8 iValue)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValueSprint("%lld"_Stz,iValue);
+  vSymbolSprint("%lld"_Stz, iValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1563,29 +1563,29 @@ void Card::vValue(Stz* szValue)
 /*----------------------------------------------------------------------------*/
 /* set card value and Mark1                                                   */
 /*----------------------------------------------------------------------------*/
-void Card::vValueMark1(Stz* szValue, char cMark1)
+void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValue(szValue);
+  vValue(szSymbol);
   vMark1(cMark1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* sprint card value                                                          */
 /*----------------------------------------------------------------------------*/
-void Card::vValueSprint(Stz* szFormat, ...)
+void Card::vSymbolSprint(Stz* szFormat, ...)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  s256 sValue;
+  s256 sSymbol;
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
+  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  vValue(sValue);
+  vValue(sSymbol);
 }
 
 

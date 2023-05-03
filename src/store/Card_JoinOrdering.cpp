@@ -130,7 +130,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   // the join sequence
   CardIter xCI(this);
   if (xCI.G_bEachMain(CK_JOINORDER)) {
-    char cHeadTable = xCI.G.p_joinOrder->cValue();
+    char cHeadTable = xCI.G.p_joinOrder->cSymbol();
     s256 sHeadTable = p_tableList->szToTableNm(cHeadTable);
 
     if (bNumbers)
@@ -143,7 +143,7 @@ void Card_JoinOrdering::vJoinOrderString(String* pString,
   }
 
   while (xCI.G_bEachMain(CK_JOINORDER)) {
-    char cNextTable = xCI.G.p_joinOrder->cValue();
+    char cNextTable = xCI.G.p_joinOrder->cSymbol();
     s256 sNextTable = p_tableList->szToTableNm(cNextTable);
     xCI.G.p_joinEstimate = xCI.G.p_joinOrder->pSub_joinEstimate();
     xCI.G.p_joinCast = xCI.G.p_joinEstimate->pSub_locusCast();

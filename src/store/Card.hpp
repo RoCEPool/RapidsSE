@@ -400,14 +400,14 @@ namespace STORE
 
     Symbol* pSymbol(void);
 
-    char cValue(void);
+    char cSymbol(void);
     i8   iValue(void);
     Stz* szSymbol(void);
     void vValue(char cValue);
     void vValue(i8 iValue);
     void vValue(Stz* szValue);
-    void vValueMark1(Stz* szValue, char cMark1);
-    void vValueSprint(Stz* szFormat, ...);
+    void vSymbolMark1(Stz* szSymbol, char cMark1);
+    void vSymbolSprint(Stz* szFormat, ...);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

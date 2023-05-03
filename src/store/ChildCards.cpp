@@ -263,7 +263,7 @@ Card_Table* ChildCards::pFindTableCard(char cTableSyn, Card*& rpMainCard)
     if (! p_table)
       continue;
 
-    if (cTableSyn == p_table->cValue())
+    if (cTableSyn == p_table->cSymbol())
       return p_table;
   }
 

@@ -121,7 +121,7 @@ Card_Table* Card_TableList::pFind(char cTblSyn)
       continue;
 
     Card_Table* p_table = _pCard_Table(pChildCard);
-    char cTableSyn = p_table->cValue();
+    char cTableSyn = p_table->cSymbol();
     if (cTableSyn == cTblSyn)
       return p_table;
   }
