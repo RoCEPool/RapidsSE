@@ -24,7 +24,7 @@ namespace STORE
     void vBump_StreamColOrdinal(i8 nBy=1);
     Card_Term* pClone(void);
     Card_Term* pClone(Stz* szDiffSymbol);
-    void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
+    void vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);

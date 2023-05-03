@@ -89,7 +89,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Card_Term::vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

@@ -132,7 +132,7 @@ void Card_BoolCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    p_term->vConvert_stmColOdn_To_tblColOdn(pCI);
+    p_term->vConvertIf_stmColOdn_To_tblColOdn(pCI);
 
     return C_CONTINUE_RECURSION;
   };
