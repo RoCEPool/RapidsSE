@@ -220,9 +220,7 @@ eTE Card_Term::eEvalTerm(void)
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Term::pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Before)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(this == p_term);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (C_UNKNOWN == i_Before)
     i_Before = pCI->i_Child();
@@ -243,7 +241,7 @@ Card_Expr* Card_Term::pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Befor
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
             //p_rpnCalc->vDump();
             if (1 == p_rpnCalc->nChildCards() &&
-                p_rpnCalc->szProjectedCol()->bSame(this->szSymbol())) {
+                p_rpnCalc->szProjectedCol()->bSame(p_term->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }
@@ -262,9 +260,8 @@ Card_Expr* Card_Term::pExpr_For_col(Card_Term* p_term, CardIter* pCI, i8 i_Befor
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_Term::pExpr_For_colNm(Card_Term* p_term, CardIter* pCI, i8 i_Before)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(this == p_term);
 
   if (C_UNKNOWN == i_Before)
     i_Before = pCI->i_Child();
@@ -282,7 +279,7 @@ Card_Expr* Card_Term::pExpr_For_colNm(Card_Term* p_term, CardIter* pCI, i8 i_Bef
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
             //p_as->vDump();
-            if (p_as->bIsSymbol(this->szSymbol())) {
+            if (p_as->bIsSymbol(p_term->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }
