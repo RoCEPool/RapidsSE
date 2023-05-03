@@ -92,7 +92,7 @@ void Card_Projection::vAs_Review(CardIter* pCI)
     // get <gbyAgg>/<projection>/<expr>
     Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
 
-    //Stz* szPrjCol_prj = p_expr_prj->szProjectedCol();
+    //Stz* szPrjCol_prj = p_expr_prj->szGetSingleTermIf_odn();
     Card_Term* p_term_prj = p_expr_prj->pProjectedTerm();
     if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKey())) )
       continue;

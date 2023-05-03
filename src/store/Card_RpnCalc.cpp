@@ -49,7 +49,7 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc_For_col(Card_Term* p_term_colOdn)
+Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_colOdn)
 {
   _static_
 
@@ -194,7 +194,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
+void Card_RpnCalc::vFactorAll_colOdn_IntoDistinct_expr(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -219,9 +219,45 @@ void Card_RpnCalc::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the one (and only) ordinal from rpnCalc                                */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_RpnCalc::pGetSingleTermIf_odn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (1 != this->nChildCards())
+    return nullptr;
+
+  Card_Term* p_term_0 = this->pGetTerm(0);
+
+  if (p_term_0->bIsKeyOdn()    ||
+      p_term_0->bIsStmColOdn() ||
+      p_term_0->bIsTblColOdn())
+    return p_term_0;
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the one (and only) ordinal symbol-value from rpnCalc                   */
+/*----------------------------------------------------------------------------*/
+Stz* Card_RpnCalc::szGetSingleTermIf_odn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term_0 = this->pGetSingleTermIf_odn();
+  if (! p_term_0)
+    return nullptr;
+
+  Stz* szVal = p_term_0->szSymbol();
+
+  return szVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the one (and only) stmColOdn from rpnCalc                              */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnCalc::pGetSingle_stmColOdn(void)
+Card_Term* Card_RpnCalc::pGetSingleTermIf_stmColOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -302,7 +338,7 @@ bool Card_RpnCalc::bIsSame(Card_RpnCalc* p_rpnCalc_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsSingleCol(void)
+bool Card_RpnCalc::bIsSingle_colOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -346,42 +382,6 @@ void Card_RpnCalc::vOntoStzList(StzList* pStzList)
   pStzList->vAppend(":"_Stz);
 
   ChildCards::vOntoStzList(pStzList);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the one (and only) projected column from rpnCalc                       */
-/*----------------------------------------------------------------------------*/
-Stz* Card_RpnCalc::szProjectedCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* p_term_0 = this->pProjectedTerm();
-  if (! p_term_0)
-    return nullptr;
-
-  Stz* szVal = p_term_0->szSymbol();
-
-  return szVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the one (and only) projected column from rpnCalc                       */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnCalc::pProjectedTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (1 != this->nChildCards())
-    return nullptr;
-
-  Card_Term* p_term_0 = this->pGetTerm(0);
-
-  if (p_term_0->bIsKeyOdn()    ||
-      p_term_0->bIsStmColOdn() ||
-      p_term_0->bIsTblColOdn())
-    return p_term_0;
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

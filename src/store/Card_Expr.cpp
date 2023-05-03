@@ -77,7 +77,7 @@ Card_Expr* Card_Expr::pDistinct_expr_For_col(Card_Term* p_term_colOdn)
 
   Card_Expr* p_expr = new Card_Expr;
 
-  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc_For_col(p_term_colOdn);
+  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc(p_term_colOdn);
   p_expr->vAppend(p_rpnCalc);
 
   return p_expr;
@@ -196,7 +196,7 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
   Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
 
 //  if (bStmCol_flip)
-//    p_clone->pProjectedTerm()->vEnsure_tblCol_flip();
+//    p_clone->pGetSingleTermIf_odn()->vEnsure_tblCol_flip();
 
   return p_clone;
 }
@@ -242,7 +242,7 @@ void Card_Expr::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
   // an expr is an rpnCalc (shouldn't be boolCalc)
   if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
 
-    pCI->G.p_rpnCalc->vFactorAll_col_IntoDistinct_expr(pCI);
+    pCI->G.p_rpnCalc->vFactorAll_colOdn_IntoDistinct_expr(pCI);
     p_subSet->vTransferChildren(pCI->G.p_subSet);
 
     DELETE_CARD(pCI->G.p_subSet);
@@ -260,7 +260,7 @@ bool Card_Expr::bIsColOrdinal(void)
 
   Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
 
-  bool b = p_rpnCalc->bIsSingleCol();
+  bool b = p_rpnCalc->bIsSingle_colOdn();
 
   return b;
 }
@@ -324,7 +324,7 @@ Stz* Card_Expr::szProjectedCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szPrjCol = pSub_rpnCalc()->szProjectedCol();
+  Stz* szPrjCol = pSub_rpnCalc()->szGetSingleTermIf_odn();
 
   return szPrjCol;
 }

@@ -366,6 +366,7 @@ namespace STORE
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol);
     bool bHasSymbolic(void);
+    bool bHasType(void);
 
     bool bIsCard(eCK eCard);
     bool bIsSymbol(char cSymbol);
