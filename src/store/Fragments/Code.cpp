@@ -275,20 +275,20 @@ void vInflateCrwCol(Combined_T* aCombinedT) {
   u8 uHigh;
   u8 uLow;
   i8 i_Col;
-  i8 __COLUMN__;
+  i8 __COLUMN_NO__;
 
   // marker-start
   // - - - - - - - - - - - -
-  i_Col = __COLUMN__;
+  i_Col = __COLUMN_NO__;
   uMetaCode = *auMetaCode++;
 
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
 
-  aSubReturnLabel = && __L_ReturnToColumn__;
+  aSubReturnLabel = && __L_RETURN_TO_LABEL__;
   goto L_InflateAColumn;
 
-  __L_ReturnToColumn__:
+  __L_RETURN_TO_LABEL__:
 
   // marker-end
   L_InflateAColumn:

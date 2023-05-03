@@ -51,7 +51,7 @@ CombinedSrc::CombinedSrc(void)
   m_pFunctionFooter = nullptr;
   m_pCommonCode     = nullptr;
 
-  m_caCode[0]   = '\0';
+  MemLib::vZero(m_caCode,sizeof(m_caCode),CN_COMBINEDSRC);
   m_azCodeCrs   = m_caCode;
 
   _checkInitialised_(CN_COMBINEDSRC);
@@ -69,16 +69,16 @@ CombinedSrc::~CombinedSrc(void) noexcept(false)
 
   // close the files
 
-  if (m_pFileHeader->bIsOpen())
+  if (m_pFileHeader && m_pFileHeader->bIsOpen())
     m_pFileHeader->vClose();
 
-  if (m_pFunctionHeader->bIsOpen())
+  if (m_pFunctionHeader && m_pFunctionHeader->bIsOpen())
     m_pFunctionHeader->vClose();
 
-  if (m_pFunctionFooter->bIsOpen())
+  if (m_pFunctionFooter && m_pFunctionFooter->bIsOpen())
     m_pFunctionFooter->vClose();
 
-  if (m_pCommonCode->bIsOpen())
+  if (m_pCommonCode && m_pCommonCode->bIsOpen())
     m_pCommonCode->vClose();
 
   delete(m_pFileHeader);
@@ -444,7 +444,7 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File
     pCodeFile = m_pCommonCode;
 
   pCodeFile->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtractPL(pCodeFile, pOpSketch, szFunction, sCode, nullptr, C_UNKNOWN);
+  bExtracted = CodeSynthUtils::bExtract(pCodeFile, pOpSketch, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 }
@@ -461,7 +461,7 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Colu
 
   sCode = ""_Stz;
   m_pCommonCode->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtractPL(m_pCommonCode, pOpSketch, szFunction, sCode, pColumn, C_UNKNOWN);
+  bExtracted = CodeSynthUtils::bExtract(m_pCommonCode, pOpSketch, szFunction, sCode, pColumn, C_UNKNOWN);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 }
@@ -479,7 +479,7 @@ void CombinedSrc::vAppendCodeFragmentPL(OpSketch* pOpSketch, Stz* szFunction, Co
 
   sCode = ""_Stz;
   m_pCommonCode->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtractPL(m_pCommonCode, pOpSketch, szFunction, sCode, pColumn,
+  bExtracted = CodeSynthUtils::bExtract(m_pCommonCode, pOpSketch, szFunction, sCode, pColumn,
                                         iPayLoadIndex);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
@@ -497,8 +497,7 @@ void CombinedSrc::vAppendCodeFragmentKey(OpSketch* pOpSketch, Stz* szFunction, F
 
   sCode = ""_Stz;
   pCodeFile->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtractKey(pCodeFile, pOpSketch, szFunction,sCode,
-                                        iKeyType);
+  bExtracted = CodeSynthUtils::bExtract(pCodeFile, pOpSketch, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 }
@@ -510,20 +509,19 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
-  s256 sColumn;
   s256 sReturnToColumn;
   s16KB sCode;
   bool bExtracted;
 
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
-    StrLib::vSprint(sColumn, "%lld"_Stz, i_Col);
+    Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
     StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
     sCode = ""_Stz;
     m_pCommonCode->vSeekStart();
 
-    bExtracted = CodeSynthUtils::bExtractInflate(m_pCommonCode, sColumn, sReturnToColumn, szFunction, sCode);
+    bExtracted = CodeSynthUtils::bExtractInflate(m_pCommonCode, pColumn, sReturnToColumn, szFunction, sCode);
     RASSERT(bExtracted);
     StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
@@ -583,7 +581,6 @@ void CombinedSrc::vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
-  s256 sColumn;
   s256 sReturnToColumn;
   s16KB sCode;
   bool bExtracted;
@@ -592,13 +589,12 @@ void CombinedSrc::vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction
 
     Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
 
-    StrLib::vSprint(sColumn, "%lld"_Stz, i_Col);
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
       sCode = ""_Stz;
       pCodeFile->vSeekStart();
 
-      bExtracted = CodeSynthUtils::bExtractInflate(pCodeFile, sColumn, ""_Stz, szFunction, sCode);
+      bExtracted = CodeSynthUtils::bExtractInflate(pCodeFile, pColumn, ""_Stz, szFunction, sCode);
       RASSERT(bExtracted);
       StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
     }
@@ -663,6 +659,7 @@ void CombinedSrc::vAppendFileHeaders(void) {
   StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TINYC");
 
   // read the file header in
+  sCode = ""_Stz;
   nFileSize = m_pFileHeader->iSize();
   m_pFileHeader->nReadBytes((void *) sCode.azChar(), nFileSize);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
@@ -698,7 +695,7 @@ void CombinedSrc::vAppendFunctionFooter(eHK eHandlerKind)
 
   sCode = ""_Stz;
   m_pFunctionFooter->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtractPL(m_pFunctionFooter, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
@@ -742,7 +739,7 @@ void CombinedSrc::vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm)
 
   sCode = ""_Stz;
   m_pFunctionHeader->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtractPL(m_pFunctionHeader, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
   sFunSignature.vSprint("iFun%d_%s"_Stz, iFunction,szStageNm);
