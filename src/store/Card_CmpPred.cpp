@@ -92,7 +92,7 @@ Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)
     return nullptr;
 
   Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->szValue();
+  Stz* szTerm0 = pTerm0->szSymbol();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return nullptr;
@@ -114,7 +114,7 @@ bool Card_CmpPred::bCmpPredHasBounds(Index* pIndex)
     return false;
 
   Card_Term* pTerm0 = _pCard_Term(this->pGet(0));
-  Stz* szTerm0 = pTerm0->szValue();
+  Stz* szTerm0 = pTerm0->szSymbol();
   Column* pCol0 = pIndex->pGetColumn(0);
   if (! pCol0->szColNm()->bSame(szTerm0))
     return false;
@@ -130,14 +130,14 @@ bool Card_CmpPred::bCoPtnWith(Card_CmpPred* p_cmpPred_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szSymbol()->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szSymbol()->azChar()[1];
 
   Card_Term* p_term_arg_0 = _pCard_Term(p_cmpPred_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szValue()->azChar()[1];
+  char cTableSyn_arg_0 = p_term_arg_0->szSymbol()->azChar()[1];
   Card_Term* p_term_arg_1 = _pCard_Term(p_cmpPred_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szValue()->azChar()[1];
+  char cTableSyn_arg_1 = p_term_arg_1->szSymbol()->azChar()[1];
 
   bool bAreCoPtn = false;
 
@@ -216,7 +216,7 @@ char Card_CmpPred::cGetTable_a(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_a = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_a = p_term_this_a->szValue()->azChar()[1];
+  char cTableSyn_this_a = p_term_this_a->szSymbol()->azChar()[1];
 
   return cTableSyn_this_a;
 }
@@ -229,7 +229,7 @@ char Card_CmpPred::cGetTable_b(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_b = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_b = p_term_this_b->szValue()->azChar()[1];
+  char cTableSyn_this_b = p_term_this_b->szSymbol()->azChar()[1];
 
   return cTableSyn_this_b;
 }
@@ -277,14 +277,14 @@ bool Card_CmpPred::bIsEq(Card_CmpPred* p_cmpPred_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szSymbol()->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szSymbol()->azChar()[1];
 
   Card_Term* p_term_arg_0 = _pCard_Term(p_cmpPred_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szValue()->azChar()[1];
+  char cTableSyn_arg_0 = p_term_arg_0->szSymbol()->azChar()[1];
   Card_Term* p_term_arg_1 = _pCard_Term(p_cmpPred_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szValue()->azChar()[1];
+  char cTableSyn_arg_1 = p_term_arg_1->szSymbol()->azChar()[1];
 
   if (cTableSyn_this_0 == cTableSyn_arg_0 &&
       cTableSyn_this_1 == cTableSyn_arg_1)
@@ -314,9 +314,9 @@ char Card_CmpPred::cOtherTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szSymbol()->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szSymbol()->azChar()[1];
 
   if (cTableSyn_this_0 == cTblSyn)
     return cTableSyn_this_1;
@@ -332,14 +332,14 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szSymbol()->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szSymbol()->azChar()[1];
 
   Card_Term* p_term_arg_0 = _pCard_Term(p_PredCmp_arg->pGetChild(0));
-  char cTableSyn_arg_0 = p_term_arg_0->szValue()->azChar()[1];
+  char cTableSyn_arg_0 = p_term_arg_0->szSymbol()->azChar()[1];
   Card_Term* p_term_arg_1 = _pCard_Term(p_PredCmp_arg->pGetChild(1));
-  char cTableSyn_arg_1 = p_term_arg_1->szValue()->azChar()[1];
+  char cTableSyn_arg_1 = p_term_arg_1->szSymbol()->azChar()[1];
 
   if (   cTableSyn_this_0 == cTableSyn_arg_0
       || cTableSyn_this_0 == cTableSyn_arg_1
@@ -361,13 +361,13 @@ bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
   CardIter xCI(p_bounds);
   while (xCI.G_bEachMain(CK_BOUND)) {
 
-    Stz* sz_bnd_idxColOdn = xCI.G.p_bound->pGetChild(0)->szValue();
-    Stz* sz_bnd_stmColOdn = xCI.G.p_bound->pGetChild(1)->szValue();
-    Stz* sz_bnd_rlnOpr    = xCI.G.p_bound->szValue();
+    Stz* sz_bnd_idxColOdn = xCI.G.p_bound->pGetChild(0)->szSymbol();
+    Stz* sz_bnd_stmColOdn = xCI.G.p_bound->pGetChild(1)->szSymbol();
+    Stz* sz_bnd_rlnOpr    = xCI.G.p_bound->szSymbol();
 
-    Stz* sz_cmp_rlnOpr    = this->szValue();
-    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szValue();
-    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szValue();
+    Stz* sz_cmp_rlnOpr    = this->szSymbol();
+    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szSymbol();
+    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szSymbol();
 
     if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
       continue;
@@ -393,9 +393,9 @@ bool Card_CmpPred::bUsesTable(char cTblSyn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Term* p_term_this_0 = _pCard_Term(pGetChild(0));
-  char cTableSyn_this_0 = p_term_this_0->szValue()->azChar()[1];
+  char cTableSyn_this_0 = p_term_this_0->szSymbol()->azChar()[1];
   Card_Term* p_term_this_1 = _pCard_Term(pGetChild(1));
-  char cTableSyn_this_1 = p_term_this_1->szValue()->azChar()[1];
+  char cTableSyn_this_1 = p_term_this_1->szSymbol()->azChar()[1];
 
   if (cTableSyn_this_0 == cTblSyn || cTableSyn_this_1 == cTblSyn)
     return true;

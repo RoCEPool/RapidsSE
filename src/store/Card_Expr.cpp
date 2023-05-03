@@ -409,7 +409,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
    * produce the projection of this expression
    */
 
-  Stz* szExpr_this_stmcol = szValue();
+  Stz* szExpr_this_stmcol = szSymbol();
   Card_As*      p_as;
   Card_RpnCalc* p_rpnCalc;
   Card_Term*    p_term_0;

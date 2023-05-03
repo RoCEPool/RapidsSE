@@ -229,7 +229,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       p_streamHead->vValue(cTblSyn_ith);
       vAppend(p_streamHead);
 
-      p_streamHead->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szValue()));
+      p_streamHead->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
 
       if (p_table_ith->pSub_keyExists() || p_table_ith->pSub_keyNotExists()) {
         p_streamHead->vAppend(new Card_Note("**CAN'T BE FIRST**"_Stz));
@@ -248,7 +248,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     p_streamJoin->vValue(cTblSyn_ith);
     vAppend(p_streamJoin);
 
-    p_streamJoin->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szValue()));
+    p_streamJoin->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
 
 
     bool bSupported = false;

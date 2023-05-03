@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Term,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 //Card_Term::Card_Term(Card_Term* p_term_arg)
-//: Card(CK_TERM,p_term_arg->szValue())
+//: Card(CK_TERM,p_term_arg->szSymbol())
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 //
@@ -110,7 +110,7 @@ bool Card_Term::bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
     if (! pCI->G.p_term->bIsValue(szValue))
       return C_CONTINUE_RECURSION;
 
-    pCI->G.p_term->vValue(p_term_stamp->szValue());
+    pCI->G.p_term->vValue(p_term_stamp->szSymbol());
 
     pCI->G.p_term->pSymbol()->Y_vAll(p_term_stamp);
 
@@ -267,7 +267,7 @@ Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
             //p_rpnCalc->vDump();
             if (1 == p_rpnCalc->nChildCards() &&
-                p_rpnCalc->szProjectedCol()->bSame(this->szValue())) {
+                p_rpnCalc->szProjectedCol()->bSame(this->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }
@@ -304,7 +304,7 @@ Card_Expr* Card_Term::pExpr_For_colNm(CardIter* pCI, i8 i_Before)
           Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
           if (Card_As* p_as = p_expr_prj->pSub_as()) {
             //p_as->vDump();
-            if (p_as->bIsValue(this->szValue())) {
+            if (p_as->bIsValue(this->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }
@@ -326,7 +326,7 @@ i8 Card_Term::iGetOdnNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 i_Ord = StrLib::iGleanInt(this->szValue()->azChar());
+  i8 i_Ord = StrLib::iGleanInt(this->szSymbol()->azChar());
 
   return i_Ord;
 }
@@ -338,7 +338,7 @@ char Card_Term::cGetTableSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->szValue();
+  Stz* szTerm = this->szSymbol();
 
   char cSyn = szTerm->azChar()[1];
 
@@ -352,7 +352,7 @@ bool Card_Term::bIsBoardNm(STORE::CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szValue_term = szValue();
+  Stz* szValue_term = szSymbol();
   if (pCI->G_bIsBoard(szValue_term))
     return true;
 
@@ -443,7 +443,7 @@ bool Card_Term::bIsSame(Card_Term* p_term_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = bIsValue(p_term_arg->szValue());
+  bool b = bIsValue(p_term_arg->szSymbol());
 
   return b;
 }
@@ -488,7 +488,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  s256 sTerm = szValue();
+  s256 sTerm = szSymbol();
   s32 sType_short = pSymbol()->Y_szGet(P_Type);
 
   pRibbon->vSprintRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
@@ -513,10 +513,10 @@ void Card_Term::vFlip(Card_Projection* p_projection_needed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Expr* p_expr_needed = p_projection_needed->pFind_expr_By_projectedCol(szValue());
+  Card_Expr* p_expr_needed = p_projection_needed->pFind_expr_By_projectedCol(szSymbol());
   if (p_expr_needed) {
-    Stz* szStem = szValue();
-    Stz* szBecomes = p_expr_needed->szValue();
+    Stz* szStem = szSymbol();
+    Stz* szBecomes = p_expr_needed->szSymbol();
 
     pSymbol()->Y_vSet(P_TblCol, szStem);
     vValue(szBecomes);
@@ -531,7 +531,7 @@ eTE Card_Term::eTermEval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szValue = this->szValue();
+  Stz* szValue = this->szSymbol();
 
        if (bIsValue("and"_Stz))        return TE_AND;
   else if (bIsValue("or"_Stz))         return TE_OR;

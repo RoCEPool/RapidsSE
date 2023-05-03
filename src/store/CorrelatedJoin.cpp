@@ -563,7 +563,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
         }
         // TODO: test for: < $a.5 $b.1 __subquery2 => < $a.5 $2
 
-        if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_MainCard->szValue())) {
+        if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_MainCard->szSymbol())) {
           Card* p_arg = xCI.pPrevChild();
 
           Card_Term* p_term_new = new Card_Term("$2"_Stz);

@@ -199,7 +199,7 @@ Card_Term* Card_RpnCalc::pGetSingle_stmColOdn(void)
     return nullptr;
 
   Card_Term* p_term = this->pSub_term();
-  Stz* szTerm = p_term->szValue();
+  Stz* szTerm = p_term->szSymbol();
   if (!p_term->pSymbol()->bIsStreamColumn())
     return nullptr;
 
@@ -252,9 +252,9 @@ bool Card_RpnCalc::bIsSame(Card_RpnCalc* p_rpnCalc_arg)
 
   for (i8 i_Child = 0; i_Child != nChildren; i_Child++) {
     Card_Term* p_term_this = this->pGetTerm(i_Child);
-    Stz* szThis = p_term_this->szValue();
+    Stz* szThis = p_term_this->szSymbol();
     Card_Term* p_term_arg = p_rpnCalc_arg->pGetTerm(i_Child);
-    Stz* szArg = p_term_arg->szValue();
+    Stz* szArg = p_term_arg->szSymbol();
 
     if (szThis->bSame(szArg))
       continue;
@@ -281,7 +281,7 @@ bool Card_RpnCalc::bIsSingleCol(void)
     return false;
 
   Card* pChild = pGetChild(0);
-  Stz* szVal = pChild->szValue();
+  Stz* szVal = pChild->szSymbol();
 
   if (pChild->pSymbol()->bIsColumn())
     return true;
@@ -329,7 +329,7 @@ Stz* Card_RpnCalc::szProjectedCol(void)
   if (! p_term_0)
     return nullptr;
 
-  Stz* szVal = p_term_0->szValue();
+  Stz* szVal = p_term_0->szSymbol();
 
   return szVal;
 }
@@ -398,7 +398,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
     eTE eTerm_next = p_term_next->eTermEval();
 
-    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szValue());
+    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szSymbol());
 
     switch (eTerm_next) {
 
@@ -453,7 +453,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->szValue());
+        p_cmpPred->vValue(p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
@@ -478,7 +478,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->szValue());
+        p_cmpPred->vValue(p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsSubQueryOp())
         p_boolCalc->vAppend(p_cmpPred);
@@ -491,7 +491,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term_next->szValue());
+          p_cmpPred->vValue(p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_cmpPred);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -532,7 +532,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vValue(p_term_next->szValue());
+          p_cmpPred->vValue(p_term_next->szSymbol());
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -544,7 +544,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
       case TE_BOOLFN:
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vValue(p_term_next->szValue());
+        p_cmpPred->vValue(p_term_next->szSymbol());
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
         p_boolCalc->vAppend(p_cmpPred);
@@ -561,7 +561,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         break;
 
       case TE_OTHER:
-        if (StrLib::bBeginsWith(p_term_next->szValue()->azChar(), "__"))
+        if (StrLib::bBeginsWith(p_term_next->szSymbol()->azChar(), "__"))
           bSawSqy = true;
         p_TermSeries->vAppend(p_term_next);
         //p_TermSeries->vDump(0,"TERM_SERIES"_Stz);

@@ -178,7 +178,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     Card_Term* p_term = _pCard_Term(pCard);
 
 //    vTrace("CONVERT %s %s (%s %s)\n"_Stz,
-//           p_term->szValue(),p_term->szBearing(),
+//           p_term->szSymbol(),p_term->szBearing(),
 //           szCardNm(),szBearing());
 
     if (pSymbol()->Y_bHas(P_BreakPt)) {
@@ -190,9 +190,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     if (pCI->Analysis.m_pProjection_prior) {
       if (Card_Expr* p_expr_col =
-          pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_term->szValue())) {
-        p_term->vValueMark1(p_expr_col->szValue(), MARK_CHANGED);
-        //vTrace("  TO %s\n"_Stz,p_expr_col->szValue());
+          pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_term->szSymbol())) {
+        p_term->vValueMark1(p_expr_col->szSymbol(), MARK_CHANGED);
+        //vTrace("  TO %s\n"_Stz,p_expr_col->szSymbol());
         return C_CONTINUE_RECURSION;
       }
     }
@@ -212,7 +212,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     xSymbol_stmColOdn.vSetStreamColOrdinal(nExpr_prior+i_Col);
     p_term->vValueMark1(xSymbol_stmColOdn, MARK_CHANGED);
 
-    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szValue());
+    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSymbol());
     return C_CONTINUE_RECURSION;
   };
 
@@ -249,8 +249,8 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   if (bIsCard(CK_HASH)) {
     Card_HshCol *p_hshCol = pSub_hshCol();
     if (Card_Expr *p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_hshCol->szValue())) {
-      p_hshCol->vValueMark1(p_expr_col->szValue(), MARK_CHANGED);
+        pCI->Analysis.m_pProjection_prior->pFind_expr_By_projectedCol(p_hshCol->szSymbol())) {
+      p_hshCol->vValueMark1(p_expr_col->szSymbol(), MARK_CHANGED);
     }
   }
 
@@ -721,7 +721,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   pCI->G.p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szValue());
+  Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Analysis.m_pProjection_prior)

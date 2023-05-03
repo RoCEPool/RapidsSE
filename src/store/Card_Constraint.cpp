@@ -135,7 +135,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     Card_Expr* p_expr_col = p_term->pExpr_For_col(pCI,i_Main + 1);
     if (p_expr_col) {
       Card_As* p_as = p_expr_col->pSub_as();
-      szColNm = p_as->szValue();
+      szColNm = p_as->szSymbol();
     }
     else {
 

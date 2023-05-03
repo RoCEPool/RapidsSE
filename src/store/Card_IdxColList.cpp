@@ -55,7 +55,7 @@ void Card_IdxColList::vAdd_key_exprs(CardIter* pCI)
 
     pCI->G.p_idxCol = _pCard_IdxCol(pGetChild(i_idxCol));
 
-     pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_projectedCol(pCI->G.p_idxCol->szValue());
+     pCI->G.p_expr = pCI->G.p_projection->pFind_expr_By_projectedCol(pCI->G.p_idxCol->szSymbol());
     if (!pCI->G.p_expr)
       continue;
 
@@ -76,7 +76,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_IDXCOL)) {
-    Stz* szColNm = xCI.G.p_idxCol->szValue();
+    Stz* szColNm = xCI.G.p_idxCol->szSymbol();
 
     CardIter xCI_p(p_projection);
     while (xCI_p.G_bEachMain_reverse(CK_EXPR)) {

@@ -125,7 +125,7 @@ void OuterQuery::vAnalysis_Of_from_call(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OUTERQUERY, _FOOTER_);
 
-  Stz* szBoardNm = pCI->G.p_call->szValue();
+  Stz* szBoardNm = pCI->G.p_call->szSymbol();
   Board* pBoard = pCI->m_pBench->pGetBoard(szBoardNm);
   SubQuery *pSubQuery = pBoard->pSubQuery();
   pSubQuery->vCaller(pCI->G.i_Board);
@@ -152,7 +152,7 @@ void OuterQuery::vAnalysis_Of_having_boolCalc(CardIter* pCI)
     if (p_pred->bIsCard(CK_TERM))
       return C_CONTINUE_RECURSION;
 
-    Stz* szValue_term = p_pred->szValue();
+    Stz* szValue_term = p_pred->szSymbol();
     eRO eRelnOp = RelOp::eDecode(szValue_term);
 
     if (RO_NONE == eRelnOp)
@@ -213,7 +213,7 @@ void OuterQuery::vAnalysis_Of_where_boolCalc(CardIter* pCI)
 
     p_pred->pSymbol()->Y_vSet(P_SubQryCall);
 
-    Stz* szValue_pred = p_pred->szValue();
+    Stz* szValue_pred = p_pred->szSymbol();
 
     if (p_pred->bIsRelnOp()) {
 

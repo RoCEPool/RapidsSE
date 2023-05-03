@@ -50,7 +50,7 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
 
     CardIter xCI2(xCI.G.p_rpnCalc);
     while ((xCI2.G_bEachMain(CK_TERM))) {
-      Stz *szTerm = xCI2.G.p_term->szValue();
+      Stz *szTerm = xCI2.G.p_term->szSymbol();
 
       if (xCI2.G.p_term->pSymbol()->bIsKey()) {
         xCI2.G.p_term->vBump_KeyOrdinal();
@@ -78,7 +78,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
 
     CardIter xCI2(xCI.G.p_rpnCalc);
     while (xCI2.G_bEachMain(CK_TERM)) {
-      Stz *szTerm = xCI2.G.p_term->szValue();
+      Stz *szTerm = xCI2.G.p_term->szSymbol();
 
       if (xCI2.G.p_term->pSymbol()->bIsStreamColumn()) {
         xCI2.G.p_term->vBump_StreamColOrdinal();
@@ -237,7 +237,7 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
   while (xCI.G_bEachMain(CK_EXPR)) {
     StzList* pStzList = new StzList;
 
-    pStzList->vAppend(xCI.G.p_expr->szValue());
+    pStzList->vAppend(xCI.G.p_expr->szSymbol());
 
     CardIter xCI_expr(xCI.G.p_expr);
     xCI_expr.G.p_as        = nullptr;
@@ -256,7 +256,7 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
     }
 
     if (xCI_expr.G.p_as) {
-      pStzList->vAppend(xCI_expr.G.p_as->szValue());
+      pStzList->vAppend(xCI_expr.G.p_as->szSymbol());
     }
     pRibbon->vSprintList(pStzList, 20);
     pStzList->vRemoveAll();

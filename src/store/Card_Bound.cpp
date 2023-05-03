@@ -70,7 +70,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   Card_Term* pTerm_0 = _pCard_Term(p_PRED->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(p_PRED->pGetChild(1));
 
-  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szValue());
+  Card_Bound* p_bound = Card_Bound::pBound_New(p_PRED->szSymbol());
 
   Symbol xSymbol_idxColOdn;
   xSymbol_idxColOdn.vSetIndexColOrdinal(1);
@@ -226,7 +226,7 @@ Stz* Card_Bound::szGet_idxColOdn(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
     if (xCI.G.p_term->pSymbol()->bIsIndexColumn())
-      return xCI.G.p_term->szValue();
+      return xCI.G.p_term->szSymbol();
 
   return nullptr;
 }
@@ -271,7 +271,7 @@ Stz* Card_Bound::szGet_tblColOdn(void)
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
     if (xCI.G.p_term->pSymbol()->bIsTableColumn())
-      return xCI.G.p_term->szValue();
+      return xCI.G.p_term->szSymbol();
 
   return nullptr;
 }

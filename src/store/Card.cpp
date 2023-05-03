@@ -192,7 +192,7 @@ void Card::vCardLeaks(void)
 //    if (gapCard[i_Card]) {
 //      Card *pLeaked = gapCard[i_Card];
 //      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szValue());
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSymbol());
 //      vDebugPoint();
 //    }
 //  }
@@ -235,7 +235,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //         i_Card,
 //         p_cardInQuestion,
 //         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->szValue());
+//         p_cardInQuestion->szSymbol());
 //    vDebugPoint();
 //  }
 //
@@ -590,11 +590,11 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 //         ,sProperties.szStz()
 //         );
 
-  if (*szValue()->azChar()) {
+  if (*szSymbol()->azChar()) {
     vTrace("%s%s %s { %s }"_Stz
         , Stz::szTab(iDepth)
         , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
-        , szValue()
+        , szSymbol()
         , sProperties.szStz()
     );
   }
@@ -626,7 +626,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vValue(szValue());
+  pCard_dup->vValue(szSymbol());
   if (m_xSymbol.m_pProperties)
     pCard_dup->pSymbol()->Y_vAll(this);
 
@@ -641,7 +641,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vValue(szValue());
+  pCard_dup->vValue(szSymbol());
   if (m_xSymbol.m_pProperties)
     pCard_dup->pSymbol()->Y_vAll(this);
 
@@ -754,7 +754,7 @@ Card* Card::pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Car
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szValue(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szSymbol(),md_Bearing);
 
   if (eCard == m_eCard && cValue() == cWithValue) {
     rpParent = _pWalkParent_;
@@ -778,7 +778,7 @@ Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szValue(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szValue(),md_Bearing);
 
   if (eCard == m_eCard && bIsValue(szValue)) {
     rpParent = _pWalkParent_;
@@ -915,7 +915,7 @@ bool Card::bIsValue(Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (this->szValue()->bSame(szValue))
+  if (this->szSymbol()->bSame(szValue))
     return true;
   else
     return false;
@@ -1122,12 +1122,12 @@ void Card::vPrintChildrenShort(Ribbon* pRibbon, i8 iDepth)
     else
     if (nSubs == 1) {
       Card *pSub_0 = pChild->pGetChild(0);
-      pRibbon->vSprintRight("%s"_Stz, pSub_0->szValue());
+      pRibbon->vSprintRight("%s"_Stz, pSub_0->szSymbol());
     }
     else {
       Card *pSub_0 = pChild->pGetChild(0);
       Card *pSub_1 = pChild->pGetChild(1);
-      pRibbon->vSprintRight("%s == %s"_Stz, pSub_0->szValue(), pSub_1->szValue());
+      pRibbon->vSprintRight("%s == %s"_Stz, pSub_0->szSymbol(), pSub_1->szSymbol());
     }
 
   }
@@ -1221,7 +1221,7 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
       sNameValue.vSprint("%s%s %s *%lld"_Stz,
                          sName.szStz(),
                          sHiddenChildren.szStz(),
-                         szValue(),
+                         szSymbol(),
                          nItems());
     else
       sNameValue.vSprint("%s%s *%lld"_Stz,
@@ -1237,9 +1237,9 @@ void Card::vPrintNameValue(Ribbon* pRibbon, i8 iDepth)
                          m_i_Child);
     if (bHasValue())
       sNameValue.vSprintCat("%s%s %s"_Stz,
-                       sName.szStz(),
-                       sHiddenChildren.szStz(),
-                       szValue());
+                            sName.szStz(),
+                            sHiddenChildren.szStz(),
+                            szSymbol());
     else
       sNameValue.vSprintCat("%s%s"_Stz,
                          sName.szStz(),
@@ -1320,11 +1320,11 @@ void Card::vPrintValue(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
     return;
 
   if (bPrintMarks) {
-    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szValue());
+    pRibbon->vSprintRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szSymbol());
 
   }
   else {
-    pRibbon->vSprintRight("  %s"_Stz, szValue());
+    pRibbon->vSprintRight("  %s"_Stz, szSymbol());
   }
 }
 
@@ -1372,7 +1372,7 @@ bool Card::bSameValue(Card* pArg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (szValue()->bSame(pArg->szValue()))
+  if (szSymbol()->bSame(pArg->szSymbol()))
     return true;
 
   return false;
@@ -1394,7 +1394,7 @@ bool Card::bSameValueRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
       return false;
 
     //if (CK_TERM == eCard_a)
-    if (!this->szValue()->bSame(pCard_b->szValue()))
+    if (!this->szSymbol()->bSame(pCard_b->szSymbol()))
       return false;
   }
 
@@ -1521,7 +1521,7 @@ i8 Card::iValue(void)
 /*----------------------------------------------------------------------------*/
 /* get card value                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szValue(void)
+Stz* Card::szSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -2981,10 +2981,10 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 //  if (! m_pProperties)
 //    return 0;
 //
-//  Stz* szValue = m_pProperties->szValue(szPptNm);
+//  Stz* szValue = m_pProperties->szSymbol(szPptNm);
 //
-//  if (szValue)
-//    return * szValue->azChar();
+//  if (szSymbol)
+//    return * szSymbol->azChar();
 //  else
 //    return 0;
 //}
@@ -2998,10 +2998,10 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 //  if (! m_pProperties)
 //    return 0;
 //
-//  Stz* szValue = m_pProperties->szValue(i_Ppy);
+//  Stz* szSymbol = m_pProperties->szValue(i_Ppy);
 //
-//  if (szValue)
-//    return * szValue->azChar();
+//  if (szSymbol)
+//    return * szSymbol->azChar();
 //  else
 //    return 0;
 //}

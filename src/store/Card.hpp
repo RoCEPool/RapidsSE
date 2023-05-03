@@ -402,7 +402,7 @@ namespace STORE
 
     char cValue(void);
     i8   iValue(void);
-    Stz* szValue(void);
+    Stz* szSymbol(void);
     void vValue(char cValue);
     void vValue(i8 iValue);
     void vValue(Stz* szValue);

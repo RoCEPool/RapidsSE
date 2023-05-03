@@ -55,7 +55,7 @@ bool Card_RpnTerms::bIsInList(void)
   if (! p_term_2ndLast)
     return false;
 
-  char* azTerm = p_term_2ndLast->szValue()->azChar();
+  char* azTerm = p_term_2ndLast->szSymbol()->azChar();
   if ('#' == azTerm[0])
     return false;
 

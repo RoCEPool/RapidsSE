@@ -142,7 +142,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*       pCI,
   Card_Term* p_term_idxColOdn_join   = p_bound_join->pGet_idxColOdn();
 
   Card_IdxCol* p_idxCol_join =
-      p_idxColList_join->pGetIdxCol_byIdxColOdn(p_term_idxColOdn_join->szValue());
+      p_idxColList_join->pGetIdxCol_byIdxColOdn(p_term_idxColOdn_join->szSymbol());
   Symbol* p_Y_idxCol_join = p_idxCol_join->pSymbol();
 
   Symbol* p_Y_tblCol_prior = p_bound_join->pGet_tblColOdn()

@@ -128,7 +128,7 @@ void Card_Table::vAppendIndexList(CardIter* pCI) {
 
   while (pCI->G_bEachMain(CK_TABLE)) {
     pCI->G.p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szValue());
+    Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol());
 
     pCI->G.p_indexList = Card_IndexList::pDerive(pTable);
 
@@ -165,7 +165,7 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
 
     Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = AM::pTableFind(p_tableNm->szValue());
+    Table* pTable = AM::pTableFind(p_tableNm->szSymbol());
 
     i8 jTableSize;
     i8 jRowSize;
@@ -384,7 +384,7 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 
   Card_TableNm* p_tableNm = pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
 
   StreamDef* pStreamDef = pTable->pStreamDef();
 
@@ -503,7 +503,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 
   Card_TableNm* p_tableNm = this->pSub_tableNm();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szValue());
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
 
   char cTableSyn_actual = *cTableSyn;
   if (pTable->bIsReplicated())

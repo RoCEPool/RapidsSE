@@ -61,7 +61,7 @@ void ChildCards::vConcatChildren(Stz* szTerms, eCK eChild)
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card* pChildCard = pGetChild(i_Child);
     if (CK_NONE == eChild || eChild == pChildCard->eCard())
-      szTerms->vCatSprint(" %s"_Stz, pChildCard->szValue());
+      szTerms->vCatSprint(" %s"_Stz, pChildCard->szSymbol());
   }
 }
 
@@ -318,8 +318,8 @@ void ChildCards::vOntoStzList(StzList* pStzList)
   i8 nSubCards = nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
     Card* p_child = pGetChild(i_Sub);
-    if (p_child->szValue())
-      pStzList->vAppend(p_child->szValue());
+    if (p_child->szSymbol())
+      pStzList->vAppend(p_child->szSymbol());
   }
 }
 
@@ -457,8 +457,8 @@ StzList* ChildCards::pToStzList(void)
 //  i8 nSubCards = nChildCards();
 //  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
 //    Card* p_child = pGetChild(i_Sub);
-//    if (p_child->szValue())
-//      pStzList->vAppend(p_child->szValue());
+//    if (p_child->szSymbol())
+//      pStzList->vAppend(p_child->szSymbol());
 //  }
 
   vOntoStzList(pStzList);

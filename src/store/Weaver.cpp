@@ -162,7 +162,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
   vPreStage();
   vTabStage();
   vConcat("stage %s on %s : "_Stz
-          ,pCard_Stage->szValue()
+          , pCard_Stage->szSymbol()
           ,aYG_weave[eStageTopo]);
   vEolStage();
 
@@ -284,7 +284,7 @@ void Weaver::vArgCast(Stz* szOpArgs, Card_Cast* pCard_Next)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  szOpArgs->vCatSprint("%s"_Stz,pCard_Next->szValue());
+  szOpArgs->vCatSprint("%s"_Stz, pCard_Next->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,8 +320,8 @@ void Weaver::vArgCrossJoin(Stz* szOpArgs, Card_CrossJoin* pCard_CrossJoin)
   vRpnCrossJoin(sRpnExpr,pCard_CrossJoin);
 
   szOpArgs->vCatSprint("%s %s \"%s \""_Stz
-      ,p_tableNm->szValue()
-      ,p_indexNm->szValue()
+      , p_tableNm->szSymbol()
+      , p_indexNm->szSymbol()
       ,sRpnExpr.szStz());
 
 }
@@ -375,7 +375,7 @@ void Weaver::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
 
   szOpArgs->vCatSprint("\"type %s %s\""_Stz,
                        aCT[Card::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))],
-                       p_hshCol->szValue());
+                       p_hshCol->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -418,11 +418,11 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
   if (Card_OuterJoin* p_outerJoin = pCard_IndexJoin->pSub_outerJoin()) {
     if (p_outerJoin->bIsValue("left"_Stz))
       szOpArgs->vCatSprint("%s %s \"LEFT_OUTER %s \""_Stz,
-                           p_tableNm->szValue(), p_indexNm->szValue(), sRpnExpr.szStz());
+                           p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
   }
   else {
     szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
-                         p_tableNm->szValue(), p_indexNm->szValue(), sRpnExpr.szStz());
+                         p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
   }
 }
 
@@ -448,7 +448,7 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
 
   vRpnIndexScan(sRpnExpr, p_index);
   
-  szOpArgs->vCatSprint("%s %s\n"_Stz,p_tableNm->szValue(),p_indexNm->szValue());
+  szOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szSymbol(), p_indexNm->szSymbol());
   szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
 
 }
@@ -473,8 +473,8 @@ void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
   szOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      ,p_tableNm->szValue()
-      ,p_indexNm->szValue()
+      , p_tableNm->szSymbol()
+      , p_indexNm->szSymbol()
       ,sRpnExpr.szStz()
       ,sRpnConstraint.szStz());
 }
@@ -499,8 +499,8 @@ void Weaver::vArgKeyNotExists(Stz* szOpArgs, Card_KeyNotExists* p_keyNotExists)
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
   szOpArgs->vCatSprint("%s %s \"%s \" \"%s \""_Stz
-      ,p_tableNm->szValue()
-      ,p_indexNm->szValue()
+      , p_tableNm->szSymbol()
+      , p_indexNm->szSymbol()
       ,sRpnExpr.szStz()
       ,sRpnConstraint.szStz());
 }
@@ -569,7 +569,7 @@ void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
 
   Card_TableNm* p_tableNm = pCard_Scan->pSub_tableNm();
   
-  Stz* szTableNm = p_tableNm->szValue();
+  Stz* szTableNm = p_tableNm->szSymbol();
   //m_i_Op_stage++;
   
   szOpArgs->vCatSprint("%s"_Stz,szTableNm);
@@ -656,7 +656,7 @@ void Weaver::vRpnCombined(Stz* szRpnExpr, Card_Combined* pCard_Combined)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  szRpnExpr->vCatSprint("%s"_Stz,pCard_Combined->szValue());
+  szRpnExpr->vCatSprint("%s"_Stz, pCard_Combined->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -692,7 +692,7 @@ void Weaver::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
       }
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz,p_term->szValue());
+    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
   }
 }
 
@@ -847,10 +847,10 @@ void Weaver::vRpnIndexJoin(Stz* szRpnExpr,
         }
       }
 
-      szRpnExpr->vCatSprint(" %s"_Stz,p_term->szValue());
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz,p_bound->szValue());
+    szRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol());
 
     return;
   }
@@ -905,12 +905,12 @@ void Weaver::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
           }
         }
 
-        szRpnExpr->vCatSprint(" %s"_Stz,p_term->szValue());
+        szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
       }
 
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz,xCI.G.p_bound->szValue());
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
   }
 }
 
@@ -961,10 +961,10 @@ void Weaver::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
         }
       }
 
-      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szValue());
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz,xCI.G.p_bound->szValue());
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
 
   }
 }
@@ -1050,10 +1050,10 @@ void Weaver::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
         }
       }
 
-      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szValue());
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
     }
 
-    szRpnExpr->vCatSprint(" %s"_Stz,xCI.G.p_bound->szValue());
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
   }
 
 }
@@ -1099,7 +1099,7 @@ void Weaver::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
-  szRpnExpr->vCatSprint(" %s"_Stz,pCard_Limit->szValue());
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Limit->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1241,7 +1241,7 @@ void Weaver::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 
     Card* p_direction = pCard_Expr->pSub_direction();
 
-    szRpnExpr->vCatSprint(" %s"_Stz,p_direction->szValue());
+    szRpnExpr->vCatSprint(" %s"_Stz, p_direction->szSymbol());
 
   }
 
@@ -1380,7 +1380,7 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
         break;
       case CK_CMPPRED:
         vBoolPart(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
-        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szValue());
+        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol());
         break;
       case CK_NOTPRED:
         vBoolPart(szRpnExpr, _pCard_NotPred(pSubCard), 0);
@@ -1400,7 +1400,7 @@ void Weaver::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
             RASSERT(pSubCard->pSymbol()->Y_bHas(P_Type));
           }
         }
-        szRpnExpr->vCatSprint(" %s"_Stz,pSubCard->szValue());
+        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol());
         break;
       default:
         NEVER_REACH
@@ -1424,7 +1424,7 @@ void Weaver::vAs(Stz* szRpnExpr, Card_As* pCard_As)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
     
-  szRpnExpr->vCatSprint(" as %s"_Stz,pCard_As->szValue());
+  szRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1443,7 +1443,7 @@ void Weaver::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
     }
 }
 
-  szRpnExpr->vCatSprint(" %s"_Stz,pCard_Term->szValue());
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szSymbol());
 }
 
 

@@ -995,7 +995,7 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
 
   // <name>
   pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szAsNm = pCard_Term->szValue();
+  Stz* szAsNm = pCard_Term->szSymbol();
 
   Card_As* pCard_As = new Card_As(szAsNm);
   delete pCard_Term;
@@ -1035,7 +1035,7 @@ Card_Direction* Dissector::pDirection(Card_RpnTerms* pCard_RpnTerms)
 
   // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szDirn = pCard_Term->szValue();
+  Stz* szDirn = pCard_Term->szSymbol();
   RASSERT(szDirn->bSame("ASC"_Stz) || szDirn->bSame("DESC"_Stz));
 
   Card_Direction* pCard_SortDirn = new Card_Direction(szDirn);
@@ -1055,7 +1055,7 @@ Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
 
   // TYPE
   Card_Term* pCard_Term = _pCard_Term(pCard_RpnTerms->pPop());
-  Stz* szTerm = pCard_Term->szValue();
+  Stz* szTerm = pCard_Term->szSymbol();
   RASSERT(szTerm->bSame("TYPE"_Stz));
 
   delete pCard_Term;
@@ -1064,7 +1064,7 @@ Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
 
-  Stz* szType = szCT_char[Card::eTo_eCT(pCard_Term_type->szValue())];
+  Stz* szType = szCT_char[Card::eTo_eCT(pCard_Term_type->szSymbol())];
 
   delete pCard_Term_type;
 

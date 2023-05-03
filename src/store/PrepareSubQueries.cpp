@@ -308,10 +308,10 @@ void PrepareSubQueries::vShortenQueryNames(void)
   CardIter* pCI = m_pCI;
 
   auto bLambdaFn = [pCI](Card* p_card) {
-    if (!Symbol::b_IsSubQueryName(p_card->szValue()))
+    if (!Symbol::b_IsSubQueryName(p_card->szSymbol()))
       return C_CONTINUE_RECURSION;
 
-    i8 iSqNo = StrLib::iGleanInt(p_card->szValue()->azChar());
+    i8 iSqNo = StrLib::iGleanInt(p_card->szSymbol()->azChar());
 
     Symbol xSymbol_sqNo;
     xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);

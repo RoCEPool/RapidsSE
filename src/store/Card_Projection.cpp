@@ -173,7 +173,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
       if (! xCI_rpnCalc.G.p_term->bIsColOdn())
         continue;
       // which we havent already added
-      if (p_needed->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szValue()))
+      if (p_needed->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szSymbol()))
         continue;
 
       if (Card_Expr *p_expr_col = xCI_rpnCalc.G.p_term->pExpr_For_col(pCI))

@@ -90,7 +90,7 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
     if (! m_pCI->G_bEachMain(CK_CALL))
       break;
 
-    s256 sSubQueryNm = m_pCI->G.p_call->szValue();
+    s256 sSubQueryNm = m_pCI->G.p_call->szSymbol();
 
     Board *pOuterBoard_save = m_pCI->G.pBoard;
     m_pCI->Sqy.m_pSubQuery = m_pCI->m_pBench->pGetSubQuery(sSubQueryNm);
@@ -126,7 +126,7 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
        if (! p_term->bIsBoardNm(pCI))
          return C_CONTINUE_RECURSION;
 
-      s256 sSubQueryNm = p_term->szValue();
+      s256 sSubQueryNm = p_term->szSymbol();
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
@@ -170,7 +170,7 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
       if (! p_term->bIsBoardNm(pCI))
         return C_CONTINUE_RECURSION;
 
-      s256 sSubQueryNm = p_term->szValue();
+      s256 sSubQueryNm = p_term->szSymbol();
 
       Board* pOuterBoard_save = pCI->G.pBoard;
       pCI->Sqy.m_pSubQuery = pCI->m_pBench->pGetSubQuery(sSubQueryNm);
