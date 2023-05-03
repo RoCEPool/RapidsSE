@@ -1255,7 +1255,7 @@ void CardIter::G_vInsertBefore(Card* pCard, Card* pBefore)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardIter::G_bIsBoard(Stz* szBoardNm)
+bool CardIter::G_bIsBoardNm(Stz* szBoardNm)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 

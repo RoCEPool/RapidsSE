@@ -169,7 +169,7 @@ Card_Term* Card_PRED::pGetTerm_boardNm(CardIter* pCI)
   while (xCI.G_bEachMain(CK_TERM)) {
 
     Stz* szValue_term = xCI.G.p_term->szSymbol();
-    if (pCI->G_bIsBoard(szValue_term))
+    if (pCI->G_bIsBoardNm(szValue_term))
       return xCI.G.p_term;
   }
 

@@ -30,7 +30,6 @@ namespace STORE
     eTE  eEvalTerm(void);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
-    bool bIsBoardNm(CardIter* pCI);
     bool bIsColOdn(void);    // $n or $c.n
     bool bIsCorPrmOdn(void); // %n
     bool bIsKeyOdn(void);    // $Kn

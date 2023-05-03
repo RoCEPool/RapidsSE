@@ -208,20 +208,6 @@ char Card_Term::cGetTableSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is board name                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsBoardNm(STORE::CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szValue_term = szSymbol();
-  if (pCI->G_bIsBoard(szValue_term))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Term::pClone(void)
