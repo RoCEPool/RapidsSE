@@ -9,6 +9,7 @@
 #include "ePL.h"
 #include "eEK.h"
 #include "eFM.h"
+#include "eKE.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
 #include "OpSketch.hpp"
@@ -57,7 +58,8 @@ namespace STORE {
   private:
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile = nullptr);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn);
-    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
+    void vAppendCodeFragmentPL(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
+    void vAppendCodeFragmentKey(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyType);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, Stz* szFunction);
     void vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile);
     void vAppendFileHeaders(void);

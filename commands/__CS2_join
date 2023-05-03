@@ -28,13 +28,11 @@ select * from nation, region where n_regionkey = r_regionkey;
 
          stage S01 on all partitions :
              scan      Nation
-           | hash      "type INTEGER $3"
-           | combined  0
-           | next      hashcast
+           | next
 
          stage S02 on all partitions :
-             indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
-           | combined  0
+             indexJoin_v2 Region IxR_REGIONKEY " BOUND $I1 $3 == "
+           | combined_v2  0
            | next
 
 
