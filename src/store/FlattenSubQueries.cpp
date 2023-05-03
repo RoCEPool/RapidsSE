@@ -123,7 +123,7 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-       if (! p_term->bIsBoardNm(pCI))
+       if (!pCI->G_bIsBoardNm(p_term->szSymbol()))
          return C_CONTINUE_RECURSION;
 
       s256 sSubQueryNm = p_term->szSymbol();
@@ -167,7 +167,7 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
 
     auto bLambdaFn = [&bFound,this,pCI, iDepth](Card_Term* p_term)
     {
-      if (! p_term->bIsBoardNm(pCI))
+      if (!pCI->G_bIsBoardNm(p_term->szSymbol()))
         return C_CONTINUE_RECURSION;
 
       s256 sSubQueryNm = p_term->szSymbol();

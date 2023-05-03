@@ -157,7 +157,7 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
 
     //pCI->Early.m_pNeeded_later->vDump();
 
-    if (Card_Expr* p_expr_defn = pCI->pResolvePriorExpr_With_ProjectedCol(pCI->G.p_term)) {
+    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(pCI->G.p_term)) {
       //p_expr_defn->vDump();
       Card_Expr* p_expr_clone = p_expr_defn->pClone(true);
       pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);

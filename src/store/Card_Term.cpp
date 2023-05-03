@@ -41,41 +41,6 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* find sub card with given value and replace                                 */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
-                                   Stz* szValue, Card_Term* p_term_stamp)
-{
-  _static_
-
-  bool bReplaced = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  auto bLambdaFn = [pCI, szValue, p_term_stamp, &bReplaced](Card *pCard)
-  {
-    pCI->G.p_term = _pCard_Term(pCard);
-
-    if (!pCI->G.p_term->bIsSymbol(szValue))
-      return C_CONTINUE_RECURSION;
-
-    pCI->G.p_term->vSymbol(p_term_stamp->szSymbol());
-
-    pCI->G.p_term->pSymbol()->Y_vAll(p_term_stamp);
-
-    bReplaced = true;
-
-    return C_CONTINUE_RECURSION;
-  };
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pCard->bApplyRecursive(eSub, bLambdaFn);
-
-  return bReplaced;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -124,7 +89,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Card_Term::vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -147,7 +112,7 @@ void Card_Term::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (Card_Expr* p_expr_prior = pCI->pResolvePriorExpr_With_ProjectedCol(this))
+  if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this))
     if (Stz* szPrjCol = p_expr_prior->szProjectedCol())
       vSymbolMark1(szPrjCol, MARK_CHANGED);
 }
@@ -215,83 +180,6 @@ eTE Card_Term::eEvalTerm(void)
   else return TE_OTHER;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Term::pExpr_For_col(CardIter* pCI, i8 i_Before)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (C_UNKNOWN == i_Before)
-    i_Before = pCI->i_Child();
-
-  Card_Expr* p_expr_col = nullptr;
-
-  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-
-    //pMain->vDump();
-
-    if (Card_Projection* p_projection = pMain->pSub_projection()) {
-      i8 nChildren_prj = p_projection->nChildCards();
-      for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
-        Card *pChild_prj = p_projection->pGetChild(i_Child);
-        if (pChild_prj->bIsCard(CK_EXPR)) {
-          Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-          if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
-            //p_rpnCalc->vDump();
-            if (1 == p_rpnCalc->nChildCards() &&
-                p_rpnCalc->szProjectedCol()->bSame(this->szSymbol())) {
-              p_expr_col = p_expr_prj;
-              break;
-            }
-          }
-        }
-      }
-
-    }
-  }
-
-  return p_expr_col;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Term::pExpr_For_colNm(CardIter* pCI, i8 i_Before)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (C_UNKNOWN == i_Before)
-    i_Before = pCI->i_Child();
-
-  Card_Expr* p_expr_col = nullptr;
-
-  for (i8 i_Main = i_Before - 1; i_Main >= 0; i_Main--) {
-    Card *pMain = pCI->G.pDeck->pGetChild(i_Main);
-
-    if (Card_Projection* p_projection = pMain->pSub_projection()) {
-      i8 nChildren_prj = p_projection->nChildCards();
-      for (i8 i_Child = 0; i_Child < nChildren_prj; i_Child++) {
-        Card *pChild_prj = p_projection->pGetChild(i_Child);
-        if (pChild_prj->bIsCard(CK_EXPR)) {
-          Card_Expr* p_expr_prj = _pCard_Expr(pChild_prj);
-          if (Card_As* p_as = p_expr_prj->pSub_as()) {
-            //p_as->vDump();
-            if (p_as->bIsSymbol(this->szSymbol())) {
-              p_expr_col = p_expr_prj;
-              break;
-            }
-          }
-        }
-      }
-
-    }
-  }
-
-  return p_expr_col;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get ordinal number                                                         */
@@ -317,20 +205,6 @@ char Card_Term::cGetTableSyn(void)
   char cSyn = szTerm->azChar()[1];
 
   return cSyn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is board name                                                              */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsBoardNm(STORE::CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Stz* szValue_term = szSymbol();
-  if (pCI->G_bIsBoard(szValue_term))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

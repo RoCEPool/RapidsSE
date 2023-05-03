@@ -159,7 +159,7 @@ void OuterQuery::vAnalysis_Of_having_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Stz* szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-    if ( ! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
+    if ( ! szSubBoardNm || !pCI->G_bIsBoardNm(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
     p_pred->pSymbol()->Y_vSet(P_SubQryCall);
@@ -200,7 +200,7 @@ void OuterQuery::vAnalysis_Of_where_boolCalc(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Stz *szSubBoardNm = p_pred->szGetBoardNmInTerm(pCI);
-    if (! szSubBoardNm || ! pCI->G_bIsBoard(szSubBoardNm))
+    if (! szSubBoardNm || !pCI->G_bIsBoardNm(szSubBoardNm))
       return C_CONTINUE_RECURSION;
 
     // todo: pCI->pGetBoard(szSubBoardNm); pCI->pGetSubQuery(szSubBoardNm);

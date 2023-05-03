@@ -56,27 +56,27 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue)
+Card::Card(eCK eCard, Stz* szSymbol)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vInit(eCard);
 
-  vSymbol(szValue);
+  vSymbol(szSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpy)
+Card::Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, i8 iPpy)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vInit(eCard);
 
-  vSymbol(szValue);
+  vSymbol(szSymbol);
 
   pSymbol()->Y_vSet(szPpyNm, iPpy);
 }
@@ -84,14 +84,14 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpy)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpy)
+Card::Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, Stz* szPpy)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vInit(eCard);
 
-  vSymbol(szValue);
+  vSymbol(szSymbol);
 
   pSymbol()->Y_vSet(szPpyNm, szPpy);
 }
@@ -372,22 +372,23 @@ void Card::vAppendClone(Card* p_card)
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vAppendNewCard(eCK eCard, Stz* szValue)
+void Card::vAppendNewCard(eCK eCard, Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard = pAppendNewCard(eCard, szValue);
+  Card* pCard = pAppendNewCard(eCard, szSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
-Card* Card::pAppendNewCard(eCK eCard, Stz* szValue)
+Card* Card::pAppendNewCard(eCK eCard, Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   Card* pCard;
-  if ( szValue != nullptr )
-    pCard = new Card(eCard, szValue);
+  if (szSymbol)
+    pCard = new Card(eCard, szSymbol);
   else
     pCard = new Card(eCard);
 
@@ -619,7 +620,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* duplicate this card, its value and properties                              */
+/* duplicate this card, along with its symbolic value and properties          */
 /*----------------------------------------------------------------------------*/
 Card* Card::pDupCard(void)
 {
@@ -726,20 +727,20 @@ Card* Card::pFindCardRecursive(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt find of value in this pile                                         */
+/* attempt find of value                                                      */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParent_)
+Card* Card::pFindSymbolRecursive(Stz* szSymbol, Card*& rpParent, Card* _pWalkParent_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsSymbol(szValue)) {
+  if (bIsSymbol(szSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    if (Card *pFoundCard = pGetChild(i_Child)->pFindValueRecursive(szValue, rpParent, this))
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(szSymbol, rpParent, this))
       return pFoundCard;
   }
 
@@ -748,22 +749,20 @@ Card* Card::pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _pWalkParen
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt find of value in this pile                                         */
+/* attempt find of symbolic value                                             */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Card* _pWalkParent_)
+Card* Card::pFindSymbolRecursive(eCK eCard, char cSymbol, Card*& rpParent, Card* _pWalkParent_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szValue,szSymbol(),md_Bearing);
-
-  if (eCard == m_eCard && cSymbol() == cWithValue) {
+  if (eCard == m_eCard && this->cSymbol() == cSymbol) {
     rpParent = _pWalkParent_;
     return this;
   }
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    if (Card *pFoundCard = pGetChild(i_Child)->pFindValueRecursive(eCard,cWithValue, rpParent, this))
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(eCard, cSymbol, rpParent, this))
       return pFoundCard;
   }
 
@@ -772,22 +771,22 @@ Card* Card::pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Car
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt find of value in this pile                                         */
+/* attempt find of symbolic value                                             */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _pWalkParent_)
+Card* Card::pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _pWalkParent_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szValue(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSymbol(),md_Bearing);
 
-  if (eCard == m_eCard && bIsSymbol(szValue)) {
+  if (eCard == m_eCard && bIsSymbol(szSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    if (Card *pFoundCard = pGetChild(i_Child)->pFindValueRecursive(eCard,szValue, rpParent, this))
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(eCard, szSymbol, rpParent, this))
       return pFoundCard;
   }
 
@@ -1279,26 +1278,26 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 
       case TN_INTEGER: {
         Stz* szName = pSymbol()->Y_szPpyNm(i_Property);
-        i8   iValue = pSymbol()->Y_iGet(i_Property);
+        i8   iPpy = pSymbol()->Y_iGet(i_Property);
 
-        Stz* szDecode = szDecodeEnum(szName,iValue);
+        Stz* szDecode = szDecodeEnum(szName, iPpy);
         if (szDecode)
           pRibbon->vSprintRight("%s"_Stz,szDecode);
         else
         if (bPrintPptName)
-          pRibbon->vSprintRight("%s=%lld"_Stz,szName,iValue);
+          pRibbon->vSprintRight("%s=%lld"_Stz, szName, iPpy);
         else
-          pRibbon->vSprintRight("%lld"_Stz,iValue);
+          pRibbon->vSprintRight("%lld"_Stz, iPpy);
         break;
       }
 
       case TN_STRING: {
         Stz* szName  = pSymbol()->Y_szPpyNm(i_Property);
-        Stz* szValue = pSymbol()->Y_szGet(i_Property);
+        Stz* szPpy = pSymbol()->Y_szGet(i_Property);
         if (bPrintPptName)
-          pRibbon->vSprintRight("%s=%s"_Stz,szName,szValue);
+          pRibbon->vSprintRight("%s=%s"_Stz, szName, szPpy);
         else
-          pRibbon->vSprintRight("%s"_Stz,szValue);
+          pRibbon->vSprintRight("%s"_Stz, szPpy);
         break;
       }
 
@@ -1416,7 +1415,7 @@ bool Card::bSameSymbolRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
 /*----------------------------------------------------------------------------*/
 /* is this card equivalent to some other card?                                */
 /*----------------------------------------------------------------------------*/
-bool Card::bSameValuePpyRecursive(Card* pCard_OTHER)
+bool Card::bSameSymbolPpyRecursive(Card* pCard_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -1457,7 +1456,7 @@ bool Card::bSameValuePpyRecursive(Card* pCard_OTHER)
     if (! pChild_OTHERCARD)
       return false;
 
-    if (!pChild_THISCARD->bSameValuePpyRecursive(pChild_OTHERCARD))
+    if (!pChild_THISCARD->bSameSymbolPpyRecursive(pChild_OTHERCARD))
       return false;
   }
 
@@ -1495,7 +1494,7 @@ Symbol* Card::pSymbol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card value                                                             */
+/* get card symbol                                                            */
 /*----------------------------------------------------------------------------*/
 char Card::cSymbol(void)
 {
@@ -1507,7 +1506,7 @@ char Card::cSymbol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card value                                                             */
+/* get card symbol                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Card::iSymbol(void)
 {
@@ -1519,7 +1518,7 @@ i8 Card::iSymbol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card value                                                             */
+/* get card symbol                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szSymbol(void)
 {
@@ -1529,7 +1528,7 @@ Stz* Card::szSymbol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set card value                                                             */
+/* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vSymbol(char cSymbol)
 {
@@ -1539,7 +1538,7 @@ void Card::vSymbol(char cSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set card value                                                             */
+/* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vSymbol(i8 iSymbol)
 {
@@ -1549,7 +1548,7 @@ void Card::vSymbol(i8 iSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set card value                                                             */
+/* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vSymbol(Stz* szSymbol)
 {
@@ -1561,7 +1560,7 @@ void Card::vSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set card value and Mark1                                                   */
+/* set card symbol and Mark1                                                  */
 /*----------------------------------------------------------------------------*/
 void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
 {
@@ -1572,7 +1571,7 @@ void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint card value                                                          */
+/* sprint card symbol                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vSymbolSprint(Stz* szFormat, ...)
 {
@@ -1586,6 +1585,36 @@ void Card::vSymbolSprint(Stz* szFormat, ...)
   va_end(xArgs);
 
   vSymbol(sSymbol);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find sub card with given symbol and replace                                */
+/*----------------------------------------------------------------------------*/
+bool Card::bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bReplaced = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [szSymbol, p_term_with, &bReplaced](Card *pCard)
+  {
+    if (! pCard->bIsSymbol(szSymbol))
+      return C_CONTINUE_RECURSION;
+
+    pCard->m_xSymbol.vSet(p_term_with->pSymbol());
+
+    bReplaced = true;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bApplyRecursive(eSub, bLambdaFn);
+
+  return bReplaced;
 }
 
 
@@ -2474,12 +2503,12 @@ Symbol::operator Stz*(void)
 /*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::b_IsSubQueryName(BASE::Stz *szValue)
+bool Symbol::b_IsSubQueryName(BASE::Stz *szStz)
 {
   _static_
 
-  if (StrLib::bBeginsWith(szValue->azChar(),"__subquery") ||
-      StrLib::bBeginsWith(szValue->azChar(),"__sq"))
+  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
+      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
     return true;
 
   return false;
@@ -2838,18 +2867,18 @@ void Symbol::vSet(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint value                                                               */
+/* sprint symbol                                                              */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSprint(Stz* szFormat, ...)
 {
-  s256 sValue;
+  s256 sSymbol;
 
   va_list xArgs;
   va_start(xArgs,szFormat);
-  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
+  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  m_sSymbol = sValue;
+  m_sSymbol = sSymbol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2931,13 +2960,12 @@ Stz* Symbol::szType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get value                                                                  */
+/* get symbol                                                                 */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szSymbol(void)
 {
   return m_sSymbol.szStz();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
@@ -2986,49 +3014,15 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-//char Symbol::Y_cGet(Stz* szPptNm)
-//{
-//
-//  if (! m_pProperties)
-//    return 0;
-//
-//  Stz* szValue = m_pProperties->szSymbol(szPptNm);
-//
-//  if (szSymbol)
-//    return * szSymbol->azChar();
-//  else
-//    return 0;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-//char Symbol::Y_cGet(i8 i_Ppy)
-//{
-//
-//  if (! m_pProperties)
-//    return 0;
-//
-//  Stz* szSymbol = m_pProperties->szValue(i_Ppy);
-//
-//  if (szSymbol)
-//    return * szSymbol->azChar();
-//  else
-//    return 0;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
 i8 Symbol::Y_iGet(Stz* szPpyNm)
 {
 
   if (! m_pProperties)
     return C_UNKNOWN;
 
-  i8 iValue = m_pProperties->iValue(szPpyNm);
+  i8 iPpy = m_pProperties->iValue(szPpyNm);
 
-  return iValue;
+  return iPpy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3040,9 +3034,9 @@ i8 Symbol::Y_iGet(i8 i_Ppy)
   if (! m_pProperties)
     return C_UNKNOWN;
 
-  i8 iValue = m_pProperties->iValue(i_Ppy);
+  i8 iPpy = m_pProperties->iValue(i_Ppy);
 
-  return iValue;
+  return iPpy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3054,9 +3048,9 @@ Stz* Symbol::Y_szGet(Stz* szPptNm)
   if (! m_pProperties)
     return nullptr;
 
-  Stz* szValue = m_pProperties->szValue(szPptNm);
+  Stz* szPpy = m_pProperties->szValue(szPptNm);
 
-  return szValue;
+  return szPpy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3068,9 +3062,9 @@ Stz* Symbol::Y_szGet(i8 i_Ppy)
   if (! m_pProperties)
     return nullptr;
 
-  Stz* szValue = m_pProperties->szValue(i_Ppy);
+  Stz* szPpy = m_pProperties->szValue(i_Ppy);
 
-  return szValue;
+  return szPpy;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3152,7 +3146,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint card property value                                                 */
+/* sprint card property                                                       */
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 {

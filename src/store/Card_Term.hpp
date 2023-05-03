@@ -20,22 +20,16 @@ namespace STORE
     Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
 
-    static bool bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
-                                   Stz* szValue, Card_Term* p_term_stamp);
-
     void vBump_KeyOrdinal(i8 nBy=1);
     void vBump_StreamColOrdinal(i8 nBy=1);
     Card_Term* pClone(void);
     Card_Term* pClone(Stz* szDiffSymbol);
-    void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
+    void vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
-    Card_Expr* pExpr_For_col(CardIter* pCI, i8 i_Before=C_UNKNOWN);
-    Card_Expr* pExpr_For_colNm(CardIter* pCI, i8 i_Before=C_UNKNOWN);
     i8   iGetOdnNo(void);
     char cGetTableSyn(void);
-    bool bIsBoardNm(CardIter* pCI);
     bool bIsColOdn(void);    // $n or $c.n
     bool bIsCorPrmOdn(void); // %n
     bool bIsKeyOdn(void);    // $Kn

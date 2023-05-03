@@ -211,7 +211,7 @@ namespace STORE
     // auto conversion
     operator Stz*(void);
 
-    static bool b_IsSubQueryName(Stz* szValue);  // __subqueryN
+    static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
 
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
@@ -304,9 +304,9 @@ namespace STORE
   
     Card(eCK eCard);
     Card(eCK eCard, Symbol* pSymbol);
-    Card(eCK eCard, Stz* szValue);
-    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpy);
-    Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpy);
+    Card(eCK eCard, Stz* szSymbol);
+    Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, i8 iPpy);
+    Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, Stz* szPpy);
     void vInit(eCK eCard);
 
    ~Card(void) noexcept(false);
@@ -333,8 +333,8 @@ namespace STORE
 
     Card* pAppendClone(Card* p_card);
     void vAppendClone(Card* p_card);
-    Card* pAppendNewCard(eCK eCard, Stz* szValue=nullptr);
-    void vAppendNewCard(eCK eCard, Stz* szValue=nullptr);
+    Card* pAppendNewCard(eCK eCard, Stz* szSymbol=nullptr);
+    void vAppendNewCard(eCK eCard, Stz* szSymbol=nullptr);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
@@ -356,9 +356,9 @@ namespace STORE
 
     Card* pFindCardRecursive(eCK eCard);
     Card* pFindParentRecursive(Card* pSubCard);
-    Card* pFindValueRecursive(Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
-    Card* pFindValueRecursive(eCK eCard, char cWithValue, Card*& rpParent, Card* _opaque_=nullptr);
-    Card* pFindValueRecursive(eCK eCard, Stz* szValue, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindSymbolRecursive(Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindSymbolRecursive(eCK eCard, char cSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
     Stz* szGetType(void);
@@ -394,7 +394,7 @@ namespace STORE
 
     bool bSameSymbol(Card* pArg);
     bool bSameSymbolRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
-    bool bSameValuePpyRecursive(Card* pCard_OTHER); // not needed??
+    bool bSameSymbolPpyRecursive(Card* pCard_OTHER); // not needed??
 
     void vSetType(Card* p_card_arg);
     void vSetType(Stz* szType_arg);
@@ -410,6 +410,9 @@ namespace STORE
     void vSymbolMark1(Stz* szSymbol, char cMark1);
     void vSymbolSprint(Stz* szFormat, ...);
 
+    bool bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with);
+
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card_Aggreg*        pSub_aggreg(void);
@@ -417,7 +420,7 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_JoinCast*     pSub_locusCast(void);
+    Card_JoinCast*      pSub_locusCast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);

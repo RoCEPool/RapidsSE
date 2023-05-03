@@ -114,6 +114,9 @@ namespace STORE
 
     void vEndTransform(void);
 
+    Card_Expr* pExpr_For_col(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
+    Card_Expr* pExpr_For_colNm(Card_Term* p_term, i8 i_Before=C_UNKNOWN);
+
     void vFocusOnMain(void);
     void vForward(void);
 
@@ -122,7 +125,7 @@ namespace STORE
 
     void G_vInsertAfter(Card* pCard, Card* pAfter);
     void G_vInsertBefore(Card* pCard, Card* pBefore);
-    bool G_bIsBoard(Stz* szBoardNm);
+    bool G_bIsBoardNm(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
     bool bIsTracing(void);
 
@@ -130,6 +133,7 @@ namespace STORE
 
     void G_vMainResynch(void);
     void G_vMainResynch(Card* pCard);
+    void G_vMember(eCK eMember, Card* pCard, const char* asFuncNm);
     Stz* szMemberNm(eCK eMember);
     bool bMore(void);
     bool G_bMoreMain(void);
@@ -164,6 +168,8 @@ namespace STORE
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
     void G_vRemoveMain(eCK eCrossCheck);
+    Card_Expr* pResolvePrior_expr(Card_Term* p_term);
+    Card_Projection* pResolvePrior_projection(void);
     void vRestart(void);
     void G_vRestart(void);
     void vRestore(void);
@@ -184,7 +190,6 @@ namespace STORE
     void vTransform(const char* azFunc, Stz* szXdesc);
     i8   iTransformDepth(void);
 
-    void G_vUpdateMember(eCK eMember, Card* pCard, const char* asFuncNm);
     void vUsingBoard(eBK eBoard, i8 i_Board);
 
     Stz* szXdesc(void);
@@ -193,11 +198,6 @@ namespace STORE
     void vXform(Stz* szTransformation);
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
-
-
-    Card_Expr* pResolvePriorExpr_With_ProjectedCol(Card_Term* p_term);
-    Card_Projection* pResolvePriorProjection(void);
-
 
   protected:
 
