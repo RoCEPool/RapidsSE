@@ -471,7 +471,7 @@ void Card_Expr::vTypes_For_stmColOdn(CardIter* pCI)
 
   pCI->G.p_rpnCalc = pSub_rpnCalc();
 
-  pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
+  pCI->G.p_rpnCalc->vEnsureTypesFor_stmColOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

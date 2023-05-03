@@ -162,6 +162,36 @@ void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure all terms have a type                                               */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vEnsureTypesFor_stmColOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr *p_expr_found;
+
+  // rpnCalc is a set of terms
+  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
+    if (xTerm.p_term()->pSymbol()->Y_bHas(P_Type))
+      continue;
+
+    i8 iOdn = xTerm.iGetOdn();
+
+    if (xTerm.p_term()->bIsKeyOdn())
+      p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
+    else
+    if (xTerm.p_term()->bIsStmColOdn())
+      p_expr_found = pCI->Analysis.m_pProjection_prior->pGetExpr(iOdn - 1);
+    else
+      continue;
+
+    Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
+
+    xTerm.p_term()->vSetType(p_rpnCalc_found->szGetType());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
@@ -593,66 +623,22 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove any term with matching value                                        */
+/* remove any term with matching symbol                                       */
 /*----------------------------------------------------------------------------*/
-i8 Card_RpnCalc::nTrimTerm(Stz* szValue)
+i8 Card_RpnCalc::nTrimTerm(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 nTerms = 0;
+  i8 nTermsTrimmed = 0;
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_MainCard->bIsSymbol(szValue)) {
+    if (xCI.G.p_MainCard->bIsSymbol(szSymbol)) {
       xCI.G_vRemoveDeleteMain(CK_TERM);
-      nTerms++;
+      nTermsTrimmed++;
     }
   }
 
-  return nTerms;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  // rpnCalc is a set of terms
-  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
-
-    if (xTerm.p_term()->pSymbol()->Y_bHas(P_Type))
-      continue;
-
-    if (xTerm.p_term()->bIsKeyOdn()) {
-
-      i8 iOdn = xTerm.iGetOdn();
-
-      Card_Expr *p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
-
-      Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
-
-      //xTerm.p_term()->pSymbol()->Y_vSet(P_Type, p_rpnCalc_found->pSymbol()->Y_szGet(P_Type));
-      xTerm.p_term()->vSetType(p_rpnCalc_found->szGetType());
-
-      continue;
-    }
-
-    if (xTerm.p_term()->bIsStmColOdn()) {
-
-      i8 iOdn = xTerm.iGetOdn();
-
-      Card_Expr *p_expr_found = pCI->Analysis.m_pProjection_prior->pGetExpr(iOdn - 1);
-
-      Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
-
-      //xTerm.p_term()->pSymbol()->Y_vSet(P_Type, p_rpnCalc_found->pSymbol()->Y_szGet(P_Type));
-      xTerm.p_term()->vSetType(p_rpnCalc_found->szGetType());
-
-      continue;
-    }
-  }
-
+  return nTermsTrimmed;
 }
 
 /*----------------------------------------------------------------------------*/

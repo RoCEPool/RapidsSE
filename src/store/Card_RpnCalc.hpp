@@ -22,6 +22,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConvert_sqyOp_not_To_notSqyOp(void);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vEnsureTypesFor_stmColOdn(CardIter* pCI);
     void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
     Card_Term* pGetSingle_stmColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
@@ -33,11 +34,9 @@ namespace STORE
     Stz* szProjectedCol(void);
     Card_Term* pProjectedTerm(void);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
-    i8 nTrimTerm(Stz* szValue);
-    void vTypes_For_stmColOdn(CardIter* pCI);
+    i8 nTrimTerm(Stz* szSymbol);
 
     Stz* szP_Type(void);
-
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);
