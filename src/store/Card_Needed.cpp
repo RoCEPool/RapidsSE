@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_Needed.hpp"
+
+#include "Card_ELIST.hpp"
 #include "Card_Project.hpp"
 #include "Card_Level.hpp"
 #include "CardIter.hpp"
@@ -21,7 +23,7 @@ __vDeleteFunction(Card_Needed, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Needed::Card_Needed(void)
-: Card_Projection(CK_NEEDED)
+: Card_ELIST(CK_NEEDED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

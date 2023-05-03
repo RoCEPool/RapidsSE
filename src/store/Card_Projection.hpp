@@ -24,9 +24,6 @@ namespace STORE
     Card_Projection* pClone(void);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDelete_key(CardIter* pCI);
-    Card_Expr* pFind_expr_By_projectedCol(Stz* szCol);
-    Card_Expr* pFind_expr_With_projectedCol(Card_Term* p_term_col);
-    Card_Expr* pContains(Card_Expr* p_expr_arg);
     void vKeyProjection(CardIter* pCI);
     void vTypes_For_stmColOdn(CardIter* pCI);
 

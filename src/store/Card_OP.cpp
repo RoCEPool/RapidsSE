@@ -318,7 +318,6 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
 
     // -- -- -- -- -- -- --
     case CK_AGGREG:
-      // todo: temp...
       pCI->G.p_aggreg->vEarlyProject_root(pCI);
       break;
 
@@ -339,8 +338,7 @@ void Card_OP::vEarlyProject_root(CardIter* pCI)
       pCI->G.p_indexJoin->vEarlyProject_root(pCI);
       break;
 
-
-      // -- -- -- -- -- -- --
+    // -- -- -- -- -- -- --
     case CK_CROSSJOIN:
     case CK_INDEXSCAN:
     case CK_LIMIT:
@@ -372,6 +370,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 
   while (pCI->G_bEachMain_reverse()) {
 
+    // which card did we arrive at?
     switch (pCI->G.e_MainCard) {
 
       // -- -- -- -- -- -- --
@@ -440,8 +439,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         pCI->G.p_where->vEarlyProject_recurse_passthru(pCI);
         return;
 
-
-        // -- -- -- -- -- -- --
+      // -- -- -- -- -- -- --
       // missing??
 
       default:

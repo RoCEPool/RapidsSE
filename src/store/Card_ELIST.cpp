@@ -103,6 +103,22 @@ void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI_this(this);
+  while (xCI_this.G_bEachMain(CK_EXPR))
+    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
+      return xCI_this.G.p_expr;
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
 void Card_ELIST::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
@@ -157,6 +173,45 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
 
   return nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nExpr = nChildCards();
+  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
+    if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
+      break;
+    Card_Expr* p_expr = pGetExpr(i_Expr);
+    if (p_expr->bIsProjectedCol(szCol))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFind_expr_With_projectedCol(Card_Term* p_term_col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(p_term_col->bIsColOdn());
+
+  for (Kid xKid(this); xKid.bEach(); /**/) {
+    Card_Expr* p_expr = xKid.p_expr();
+    if (p_expr->bHasProjectedCol(p_term_col))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */

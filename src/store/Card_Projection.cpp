@@ -137,21 +137,6 @@ Card_Projection* Card_Projection::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pContains(Card_Expr* p_expr_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  CardIter xCI_this(this);
-  while (xCI_this.G_bEachMain(CK_EXPR))
-    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
-      return xCI_this.G.p_expr;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* craft factored-column-set this projection needs for early-projects         */
 /*----------------------------------------------------------------------------*/
 Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
@@ -217,44 +202,7 @@ void Card_Projection::vDelete_key(CardIter* pCI)
   pCI->G.p_key = nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pFind_expr_By_projectedCol(Stz* szCol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nExpr = nChildCards();
-  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
-    if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
-      break;
-    Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsProjectedCol(szCol))
-      return p_expr;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Projection::pFind_expr_With_projectedCol(Card_Term* p_term_col)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(p_term_col->bIsColOdn());
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card_Expr* p_expr = xKid.p_expr();
-    if (p_expr->bHasProjectedCol(p_term_col))
-      return p_expr;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
+//*----------------------------------------------------------------------------*/
 /* derive the key projection of this projection (of running key)              */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vKeyProjection(CardIter *pCI)
