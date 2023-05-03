@@ -1435,7 +1435,7 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vValue(szValue);
+  G.p_NEW->vSymbol(szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1448,7 +1448,7 @@ void CardIter::G_vNewMemberBefore(eCK eMember, Stz* szValue,
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vValue(szValue);
+  G.p_NEW->vSymbol(szValue);
 
   Card* p_before = G_pGetMember(eBefore);
 
@@ -1465,7 +1465,7 @@ void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vValue(szValue);
+  G.p_NEW->vSymbol(szValue);
 
   G_vAppendChild(eOf,eMember);
 }

@@ -161,7 +161,7 @@ void Dissector::vStage(i8 i_StageSpec)
       m_pBoard->pDeck()->vAppend(p_paramList);
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
-      p_param->vValue(pParamsSpec->pGet(0)->szParamNm());
+      p_param->vSymbol(pParamsSpec->pGet(0)->szParamNm());
       p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppend(p_param);
     }
@@ -300,7 +300,7 @@ Card* Dissector::pOp_Call(TagSet* pArgTags)
   StrLib::vStrip(szSubPipeNm->azChar(),' ');
 
   Card_Call* pCard_Call = new Card_Call;
-  pCard_Call->vValue(szSubPipeNm);
+  pCard_Call->vSymbol(szSubPipeNm);
 
   return pCard_Call;
 }
@@ -487,7 +487,7 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vValue(pIndex->szIndexNm());
+  p_indexNm->vSymbol(pIndex->szIndexNm());
 
 
 
@@ -540,7 +540,7 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vValue(pIndex->szIndexNm());
+  p_indexNm->vSymbol(pIndex->szIndexNm());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
@@ -890,12 +890,12 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetKeyOrdinal(ri_Expr);
-    pCard_Expr->vValue(xSymbol_stmColOdn);
+    pCard_Expr->vSymbol(xSymbol_stmColOdn);
   }
   else {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamColOrdinal(ri_Expr);
-    pCard_Expr->vValue(xSymbol_stmColOdn);
+    pCard_Expr->vSymbol(xSymbol_stmColOdn);
   }
 
    Stz* szP_Type = this->szType(pCard_RpnTerms);

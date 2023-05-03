@@ -63,7 +63,7 @@ Card::Card(eCK eCard, Stz* szValue)
 
   vInit(eCard);
 
-  vValue(szValue);
+  vSymbol(szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +76,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, i8 iPpy)
 
   vInit(eCard);
 
-  vValue(szValue);
+  vSymbol(szValue);
 
   pSymbol()->Y_vSet(szPpyNm, iPpy);
 }
@@ -91,7 +91,7 @@ Card::Card(eCK eCard, Stz* szValue, Stz* szPpyNm, Stz* szPpy)
 
   vInit(eCard);
 
-  vValue(szValue);
+  vSymbol(szValue);
 
   pSymbol()->Y_vSet(szPpyNm, szPpy);
 }
@@ -626,7 +626,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vValue(szSymbol());
+  pCard_dup->vSymbol(szSymbol());
   if (m_xSymbol.m_pProperties)
     pCard_dup->pSymbol()->Y_vAll(this);
 
@@ -641,7 +641,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vValue(szSymbol());
+  pCard_dup->vSymbol(szSymbol());
   if (m_xSymbol.m_pProperties)
     pCard_dup->pSymbol()->Y_vAll(this);
 
@@ -1551,13 +1551,13 @@ void Card::vSymbol(i8 iSymbol)
 /*----------------------------------------------------------------------------*/
 /* set card value                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vValue(Stz* szValue)
+void Card::vSymbol(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.m_sSymbol = szValue;
+  m_xSymbol.m_sSymbol = szSymbol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1567,7 +1567,7 @@ void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValue(szSymbol);
+  vSymbol(szSymbol);
   vMark1(cMark1);
 }
 
@@ -1585,7 +1585,7 @@ void Card::vSymbolSprint(Stz* szFormat, ...)
   StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  vValue(sSymbol);
+  vSymbol(sSymbol);
 }
 
 

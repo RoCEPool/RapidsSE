@@ -177,7 +177,7 @@ Card_Where* Card_Where::pNewWhereConstruct(void)
   Symbol x_Symbol_stmCol1;
   x_Symbol_stmCol1.vSetStreamColOrdinal(1);
 
-  p_expr->vValue(x_Symbol_stmCol1);
+  p_expr->vSymbol(x_Symbol_stmCol1);
   p_constraint->vAppend(p_expr);
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;

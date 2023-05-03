@@ -315,7 +315,7 @@ void PrepareSubQueries::vShortenQueryNames(void)
 
     Symbol xSymbol_sqNo;
     xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);
-    p_card->vValue(xSymbol_sqNo);
+    p_card->vSymbol(xSymbol_sqNo);
 
     return C_CONTINUE_RECURSION;
   };

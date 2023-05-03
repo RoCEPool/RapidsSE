@@ -78,7 +78,7 @@ bool Card_Term::bReplaceValueOfSub(CardIter* pCI, Card* pCard, eCK eSub,
     if (! pCI->G.p_term->bIsValue(szValue))
       return C_CONTINUE_RECURSION;
 
-    pCI->G.p_term->vValue(szWith);
+    pCI->G.p_term->vSymbol(szWith);
     bReplaced = true;
 
     return C_CONTINUE_RECURSION;
@@ -110,7 +110,7 @@ bool Card_Term::bUpdateTermOfSub(CardIter* pCI, Card* pCard, eCK eSub,
     if (! pCI->G.p_term->bIsValue(szValue))
       return C_CONTINUE_RECURSION;
 
-    pCI->G.p_term->vValue(p_term_stamp->szSymbol());
+    pCI->G.p_term->vSymbol(p_term_stamp->szSymbol());
 
     pCI->G.p_term->pSymbol()->Y_vAll(p_term_stamp);
 
@@ -378,7 +378,7 @@ Card_Term* Card_Term::pClone(Stz* szDiffValue)
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->vValue(szDiffValue);
+  p_term_clone->vSymbol(szDiffValue);
 
   return p_term_clone;
 }
@@ -503,7 +503,7 @@ void Card_Term::vReplace_sqCall_With_sqResult(Stz* szStmColOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValue(szStmColOdn);
+  vSymbol(szStmColOdn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -519,7 +519,7 @@ void Card_Term::vFlip(Card_Projection* p_projection_needed)
     Stz* szBecomes = p_expr_needed->szSymbol();
 
     pSymbol()->Y_vSet(P_TblCol, szStem);
-    vValue(szBecomes);
+    vSymbol(szBecomes);
   }
 }
 

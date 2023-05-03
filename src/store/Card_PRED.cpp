@@ -371,7 +371,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     pCI->vPrintBoard(__LINE__);
 
-    vValue("=="_Stz);
+    vSymbol("=="_Stz);
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szSymbol())); //temp
@@ -381,7 +381,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
       x_Symbol_stmCol1.vSetStreamColOrdinal(1);
-    p_term_one->vValue(x_Symbol_stmCol1);
+    p_term_one->vSymbol(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
@@ -394,7 +394,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bIsValue("in"_Stz)) {
 
-    vValue("=="_Stz);
+    vSymbol("=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
@@ -408,7 +408,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
       x_Symbol_stmCol1.vSetStreamColOrdinal(1);
-    p_term_head->vValue(x_Symbol_stmCol1);
+    p_term_head->vSymbol(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
         pCI->Analysis.m_pProjection_prior->pGetExpr(0);
@@ -422,7 +422,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bIsValue("notIn"_Stz)) {
 
-    vValue("=="_Stz);
+    vSymbol("=="_Stz);
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
@@ -437,7 +437,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
       x_Symbol_stmCol1.vSetStreamColOrdinal(1);
-    p_term_head->vValue(x_Symbol_stmCol1);
+    p_term_head->vSymbol(x_Symbol_stmCol1);
     return;
   }
 

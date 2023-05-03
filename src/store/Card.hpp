@@ -405,7 +405,7 @@ namespace STORE
     Stz* szSymbol(void);
     void vSymbol(char cSymbol);
     void vSymbol(i8 iSymbol);
-    void vValue(Stz* szValue);
+    void vSymbol(Stz* szSymbol);
     void vSymbolMark1(Stz* szSymbol, char cMark1);
     void vSymbolSprint(Stz* szFormat, ...);
 

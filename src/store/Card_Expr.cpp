@@ -382,7 +382,7 @@ void Card_Expr::vRenumberAsKeyOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetKeyOrdinal(i_Expr);
 
-  vValue(xSymbol);
+  vSymbol(xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,7 +395,7 @@ void Card_Expr::vRenumberAsStmColOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetStreamColOrdinal(i_Expr);
 
-  vValue(xSymbol);
+  vSymbol(xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,7 +426,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
   Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
   if (p_term_0_early->pSymbol()->Y_bHas(P_TblCol)) {
-    p_term_0_early->vValue(p_term_0_early->pSymbol()->Y_szGet(P_TblCol));
+    p_term_0_early->vSymbol(p_term_0_early->pSymbol()->Y_szGet(P_TblCol));
   }
   else {
     vDebugPoint();
