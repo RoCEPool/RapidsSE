@@ -58,6 +58,34 @@ void vIndexScanBegin(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexUpperCheck ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexUpperCheck
+void vIndexUpperCheck(Combined_T* aCombinedT) {
+
+  // marker-start
+
+  /// position at upper bound
+  aCombinedT->m_aEntUpperT =  (struct Ent_int *)aIndexTree_positionLT(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);
+
+  L_IndexScanDeref:
+
+  // reached upper bound ?
+  if (aCombinedT->m_aEntIntT == aCombinedT->m_aEntUpperT) {
+    goto L_Return;
+  }
+
+  // process the row
+  aCombinedT->m_iProcessRow = 1;
+
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexScanContinue ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexScanContinue
@@ -77,19 +105,6 @@ void vIndexScanContinue(Combined_T* aCombinedT) {
   L_InflateAColumn:
 
   // marker-start
-
-  // position at upper bound
-  aCombinedT->m_aEntUpperT =  (struct Ent_int *)aIndexTree_positionLT(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);
-
-  L_IndexScanDeref:
-
-  // reached upper bound ?
-  if (aCombinedT->m_aEntIntT == aCombinedT->m_aEntUpperT) {
-    goto L_Return;
-  }
-
-  // process the row
-  aCombinedT->m_iProcessRow = 1;
 
   // dereference the entry
   iIndexScanBuffer = aCombinedT->m_aEntIntT->Rrf.m_uBuffer;

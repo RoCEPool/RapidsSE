@@ -66,7 +66,7 @@ namespace STORE {
     void vAppendFunctionFooter(eHK eHandlerKind);
     void vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm);
     void vAppendStencilTo(OpSketch* pOpSketch);
-    void vAppendCodeTubCols(OpSketch* pOpSketch);
+    void vAppendCodeCopyCols(OpSketch* pOpSketch);
     void vAppendCodeKeyToTubCols(OpSketch* pOpSketch);
     void vAppendCodePopulatePayloadCols(OpSketch* pOpSketch);
     void vAppendCodePayLoadToTubCols(OpSketch* pOpSketch);

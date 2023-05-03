@@ -254,6 +254,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+        vAppendCodeFragment(pOpSketch, "vIndexUpperCheck"_Stz, pCodeFile);
         vAppendCodeFragment(pOpSketch, "vIndexScanContinue"_Stz, pCodeFile);
         vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexScanReturn"_Stz, pCodeFile);
@@ -276,14 +277,15 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         if (pOpSketch->m_pExprStack->nValues()) {
+          vAppendCodeFragment(pOpSketch, "vIndexJoinPositionLower"_Stz, pCodeFile);
+        }
+        else {
           // cross join
           vAppendCodeFragment(pOpSketch, "vIndexJoinPositionBegin"_Stz, pCodeFile);
         }
-        else {
-          vAppendCodeFragment(pOpSketch, "vIndexJoinPositionEqual"_Stz, pCodeFile);
-        }
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
-//       vAppendCodeTubCols(pOpSketch);
+        //vAppendCodeFragment(pOpSketch, "vIndexUpperCheck"_Stz, pCodeFile);
+        vAppendCodeCopyCols(pOpSketch);
 //        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
 //        vAppendCodeFragment(pOpSketch, "vIndexScanReturn"_Stz, pCodeFile);
 
@@ -362,7 +364,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
-            vAppendCodeTubCols(pOpSketch);
+            vAppendCodeCopyCols(pOpSketch);
           }
 
         }
@@ -370,7 +372,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // TUB in CRW/ROW/INDEX handler
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-          vAppendCodeTubCols(pOpSketch);
+          vAppendCodeCopyCols(pOpSketch);
         }
 
         break;
@@ -527,53 +529,6 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* append code fragment for copying left columns                              */
-/*----------------------------------------------------------------------------*/
-/*
-void CombinedSrc::vAppendCodeCopyLeftCols(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
-
-  s256 sColNm;
-  s256 sJoinColNm;
-  i8 i_DupCtr = 1;
-  i8 i_DupCtrJoin = 1;
-
-  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
-
-    // make the column name
-    vMakeColumnNmStruct(m_pStreamDefLft, sColNm, i_DupCtr, i_Col);
-
-    // make the join column name
-    vMakeColumnNmStruct(m_pStreamDefLft, sJoinColNm, i_DupCtrJoin, i_Col);
-
-    // get the left column
-    Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
-
-    StrLib::vSprint(sColumn, "%lld"_Stz, i_Col);
-    if (pColumn->eColumnType() == CT_VARCHAR ||
-        pColumn->eColumnType() == CT_CHAR) {
-      sCode = ""_Stz;
-      pCodeFile->vSeekStart();
-
-      bExtracted = CodeSynthUtils::bExtractInflate(pCodeFile, sColumn, ""_Stz, "vCopyVchCol",
-                                                   "marker-start"_Stz, "marker-end"_Stz, sCode);
-      RASSERT(bExtracted);
-      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-    }
-    else {
-      sCode = ""_Stz;
-      pCodeFile->vSeekStart();
-
-      bExtracted = CodeSynthUtils::bExtractInflate(pCodeFile, sColumn, ""_Stz, "vCopyIntCol,
-                                                   "marker-start"_Stz, "marker-end"_Stz, sCode);
-      RASSERT(bExtracted);
-      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-    }
-  }
-}
-*/
 /*----------------------------------------------------------------------------*/
 /* append code fragment for inflate columns                                   */
 /*----------------------------------------------------------------------------*/
@@ -762,9 +717,9 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* append code fragment for tub columns                                       */
+/* append code fragment for copying columns                                   */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeTubCols(OpSketch* pOpSketch)
+void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -781,11 +736,13 @@ void CombinedSrc::vAppendCodeTubCols(OpSketch* pOpSketch)
     switch (pColumn->eColumnType()) {
 
       case CT_VARCHAR:
-        vAppendCodeFragment(pOpSketch, "vTubVchCol"_Stz, pColumn);
+        vAppendCodeFragment(pOpSketch, "vCopyVchCol"_Stz, pColumn);
+        if (pOpSketch->m_eStencilTo == SR_TB)
+          vAppendCodeFragment(pOpSketch, "vTubRowStr"_Stz, pColumn);
         break;
 
       default:
-        vAppendCodeFragment(pOpSketch, "vTubCol"_Stz, pColumn);
+        vAppendCodeFragment(pOpSketch, "vCopyCol"_Stz, pColumn);
         break;
     }
   }
