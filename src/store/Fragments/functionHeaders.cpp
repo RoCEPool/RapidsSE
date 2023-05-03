@@ -251,6 +251,8 @@ int __FUNCTION_INDEX__(struct Combined_T* aCombinedT) {
 int __FUNCTION_ROW__(struct Combined_T* aCombinedT)
 {
 
+  #include "../src/store/vFLAT_Parameters.h"
+
   char *szSrcStz;
   char *szDstStz;
   char *szStrArea;
@@ -258,7 +260,6 @@ int __FUNCTION_ROW__(struct Combined_T* aCombinedT)
   char *szArg2;
   char *szArg3;
   m8 *amCellAddress;
-  i8 i_Col;
   i8 bFilterResult;
   i8 bKeyMatch;
   i8 bNullResult;
