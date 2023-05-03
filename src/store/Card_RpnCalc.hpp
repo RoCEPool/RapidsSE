@@ -26,11 +26,9 @@ namespace STORE
     void vFactorAll_colOdn_IntoDistinct_expr(CardIter* pCI);
     Card_Term* pGetSingleTermIf_odn(void);
     Stz* szGetSingleTermIf_odn(void);
-    Card_Term* pGetSingleTermIf_stmColOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Stz* szSymbol);
     bool bNeedsBrace(void);
-    bool bIsSingle_colOdn(void);
     void vOntoStzList(StzList* pStzList);
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);

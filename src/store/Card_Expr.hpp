@@ -32,8 +32,7 @@ namespace STORE
 
     void vFactorAll_colOdn_IntoDistinct_expr(CardIter* pCI);
     Stz* szGetSingleTermIf_odn(void);
-    Card_Term* pGetTerm(i8 i_Term=0);
-    bool bIsColOrdinal(void);
+    Card_Term* pGetTerm(i8 i_Term);
     bool bIsSingle_odn(Stz* szOdn_single);
     bool bIsSame(Card_Expr* pExpr_arg);
     bool bOf_colOdn(Card_Term* p_term_colOdn);

@@ -93,14 +93,14 @@ void Card_Projection::vAs_Review(CardIter* pCI)
     Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
 
     //Stz* szPrjCol_prj = p_expr_prj->szGetSingleTermIf_odn();
-    Card_Term* p_term_prj = p_expr_prj->pGetTerm();
+    Card_Term* p_term_prj = p_expr_prj->pGetTerm(0);
     if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKeyOrdinal())) )
       continue;
 
     // the <gbyAgg>/<projection>/<expr> is a single projected column
 
     // get corresponding <gbyAgg>/<key>/<expr>
-    Card_Term* pTerm_prj = p_expr_prj->pGetTerm();
+    Card_Term* pTerm_prj = p_expr_prj->pGetTerm(0);
     Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj);
 
     if (! p_expr_key)

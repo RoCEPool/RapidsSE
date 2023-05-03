@@ -261,24 +261,6 @@ Stz* Card_RpnCalc::szGetSingleTermIf_odn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the one (and only) stmColOdn from rpnCalc                              */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnCalc::pGetSingleTermIf_stmColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (1 != this->nChildCards())
-    return nullptr;
-
-  Card_Term* p_term = this->pSub_term();
-  Stz* szTerm = p_term->szSymbol();
-  if (!p_term->pSymbol()->bIsStreamOrdinal())
-    return nullptr;
-
-  return p_term;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
@@ -291,26 +273,6 @@ Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
   Card_Term* p_term = _pCard_Term(pGetChild(i_Term));
 
   return p_term;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsSingle_colOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nChildren = nChildCards();
-  if (1 != nChildren)
-    return false;
-
-  Card* pChild = pGetChild(0);
-  Stz* szVal = pChild->szSymbol();
-
-  if (pChild->pSymbol()->bIsValueOrdinal())
-    return true;
-
-  return true;
 }
 
 

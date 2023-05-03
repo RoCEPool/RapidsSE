@@ -278,20 +278,6 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsColOrdinal(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
-
-  bool b = p_rpnCalc->bIsSingle_colOdn();
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsSingle_odn(Stz* szOdn_single)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -331,7 +317,7 @@ bool Card_Expr::bOf_colOdn(Card_Term* p_term_colOdn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Term* p_term_0 = this->pGetTerm();
+  Card_Term* p_term_0 = this->pGetTerm(0);
   if (! p_term_0)
     return false;
 
