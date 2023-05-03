@@ -618,33 +618,37 @@ void Card_RpnCalc::vTypes_For_stmColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+  for (Kid xTerm(this); xTerm.bEach(CK_TERM); /**/) {
 
-    if (xKid.p_term()->pSymbol()->Y_bHas(P_Type))
+    if (xTerm.p_term()->pSymbol()->Y_bHas(P_Type))
       continue;
 
-    if (xKid.p_term()->pSymbol()->bIsKey()) {
+    if (xTerm.p_term()->bIsKeyOdn()) {
 
-      Card_Expr *p_expr_found =
-          pCI->G.p_key->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
+      i8 iOdn = xTerm.iGetOdn();
+
+      Card_Expr *p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
 
       Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-       xKid.p_term()->pSymbol()->Y_vSet(P_Type, p_rpnCalc_found->pSymbol()->Y_szGet(P_Type));
+      xTerm.p_term()->pSymbol()->Y_vSet(P_Type, p_rpnCalc_found->pSymbol()->Y_szGet(P_Type));
+      //xTerm.p_term()->vSetType(p_rpnCalc_found->pSymbol()->szType());
 
       continue;
     }
 
-    if (xKid.p_term()->pSymbol()->bIsStreamColumn()) {
+    if (xTerm.p_term()->bIsStmColOdn()) {
 
-      Card_Expr *p_expr_found =
-          pCI->Analysis.m_pProjection_prior->pGetExpr(xKid.p_term()->iGetOdnNo() - 1);
+      i8 iOdn = xTerm.iGetOdn();
+
+      Card_Expr *p_expr_found = pCI->Analysis.m_pProjection_prior->pGetExpr(iOdn - 1);
 
       //p_expr_found->vDump();
 
       Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-      xKid.p_term()->pSymbol()->Y_vSet(P_Type, p_rpnCalc_found->pSymbol()->Y_szGet(P_Type));
+      xTerm.p_term()->pSymbol()->Y_vSet(P_Type, p_rpnCalc_found->pSymbol()->Y_szGet(P_Type));
+      //xTerm.p_term()->vSetType(p_rpnCalc_found->pSymbol()->szType());
 
       continue;
     }

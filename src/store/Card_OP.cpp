@@ -206,7 +206,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
     i8 nExpr_prior = pCI->G.p_projection->nChildCards();
-    i8 i_Col = p_term->iGetOdnNo();
+    i8 i_Col = p_term->iGetOdn();
 
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamColOrdinal(nExpr_prior+i_Col);

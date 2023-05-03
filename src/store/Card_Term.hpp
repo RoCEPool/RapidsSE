@@ -28,7 +28,7 @@ namespace STORE
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
-    i8   iGetOdnNo(void);
+    i8   iGetOdn(void);
     char cGetTableSyn(void);
     bool bIsColOdn(void);    // $n or $c.n
     bool bIsCorPrmOdn(void); // %n

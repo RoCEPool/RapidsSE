@@ -50,6 +50,8 @@ namespace STORE
     Card_Expr* p_expr(void);
     Card_Term* p_term(void);
 
+    i8 iGetOdn(void);
+
     Card* pFirstChild(void);
     Card* pNextChild(void);
     Card* pPrevChild(void);

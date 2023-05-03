@@ -137,7 +137,7 @@ Card_Expr* Card_ELIST::pDecodeExpr(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i_Expr  = p_term->iGetOdnNo() - 1;
+  i8 i_Expr  = p_term->iGetOdn() - 1;
 
   Card_Expr* p_expr = pGetExpr(i_Expr);
 

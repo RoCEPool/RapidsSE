@@ -184,7 +184,7 @@ eTE Card_Term::eEvalTerm(void)
 /*----------------------------------------------------------------------------*/
 /* get ordinal number                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Card_Term::iGetOdnNo(void)
+i8 Card_Term::iGetOdn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

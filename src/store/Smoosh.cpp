@@ -127,7 +127,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   Card_Term* p_term_sqyarg = _pCard_Term(p_table_exists->pFindSymbolRecursive(CK_TERM,"%1"_Stz,p_parent));
 
   Card_Expr* p_expr_found =
-      p_projection_table->pGetExpr(p_term_sqyarg->iGetOdnNo() - 1);
+      p_projection_table->pGetExpr(p_term_sqyarg->iGetOdn() - 1);
 
   //p_expr_found->vDump();
   Card_Term* p_term_found = p_expr_found->pProjectedTerm();
