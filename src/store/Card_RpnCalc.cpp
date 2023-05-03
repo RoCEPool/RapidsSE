@@ -75,25 +75,6 @@ Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_colOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vAppendRpnCalc(STORE::Card_RpnCalc *p_rpnCalc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool bAddAnd = false;
-  if (nChildCards())
-    bAddAnd = true;
-
-  vTransferChildren(p_rpnCalc);
-
-  if (bAddAnd) {
-    Card_Term *p_term_and = new Card_Term("and"_Stz);
-    vAppend(p_term_and);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -105,6 +86,25 @@ void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
       xCI.G.p_term->vBumpStmOdn(nBumpBy);
       xCI.G.p_term->vMark1(MARK_CHANGED);
     }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vConcat(STORE::Card_RpnCalc *p_rpnCalc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bAppendAnd = false;
+  if (nChildCards())
+    bAppendAnd = true;
+
+  vTransferChildren(p_rpnCalc);
+
+  if (bAppendAnd) {
+    Card_Term *p_term_and = new Card_Term("and"_Stz);
+    vAppend(p_term_and);
   }
 }
 

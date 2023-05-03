@@ -153,7 +153,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     }
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
-    pCI->G.p_rpnCalc->vAppendRpnCalc(p_rpnCalc_on);
+    pCI->G.p_rpnCalc->vConcat(p_rpnCalc_on);
 
     // remove and delete <absJoin>/<on>
     pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);

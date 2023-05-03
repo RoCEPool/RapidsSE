@@ -18,8 +18,8 @@ namespace STORE
 
     static Card_RpnCalc* pDistinct_rpnCalc(Card_Term* p_term_colOdn);
 
-    void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vConcat(Card_RpnCalc* p_rpnCalc);
     void vConvert_sqyOp_not_To_notSqyOp(void);
     void vConvert_stmOdn_terms_To_colOdn(CardIter* pCI);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
