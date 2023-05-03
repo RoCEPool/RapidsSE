@@ -156,7 +156,7 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (! pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(pCI->G.p_term)) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_colOdn(pCI->G.p_term)) {
 
     //pCI->Early.m_pNeeded_later->vDump();
 
@@ -181,7 +181,7 @@ void Card_KeyExists::vEarlyProject_add_transients(CardIter* pCI)
 //    if (! p_term->bIsColOdn())
 //      return C_CONTINUE_RECURSION;
 //
-//    if (pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(p_term))
+//    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_colOdn(p_term))
 //      return C_CONTINUE_RECURSION;
 //
 //    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {

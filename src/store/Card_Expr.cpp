@@ -231,7 +231,7 @@ void Card_Expr::vDeconstruct(Card_As*&      rp_as,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
+void Card_Expr::vFactorAll_colOdn_IntoDistinct_expr(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -309,23 +309,6 @@ bool Card_Expr::bIsSingle_odn(Stz* szOdn_single)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasProjectedCol(Card_Term* p_term_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
- Card_Term* p_term_prj = this->pGetTerm();
-  if (! p_term_prj)
-    return false;
-
-  if (p_term_prj->bIsSame(p_term_arg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -339,6 +322,23 @@ bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
     return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bOf_colOdn(Card_Term* p_term_colOdn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* p_term_0 = this->pGetTerm();
+  if (! p_term_0)
+    return false;
+
+  if (p_term_0->bIsSame(p_term_colOdn))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

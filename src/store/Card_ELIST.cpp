@@ -196,21 +196,20 @@ Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_With_projectedCol(Card_Term* p_term_col)
+Card_Expr* Card_ELIST::pFind_expr_Of_colOdn(Card_Term* p_term_colOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(p_term_col->bIsColOdn());
+  RASSERT(p_term_colOdn->bIsColOdn());
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     Card_Expr* p_expr = xKid.p_expr();
-    if (p_expr->bHasProjectedCol(p_term_col))
+    if (p_expr->bOf_colOdn(p_term_colOdn))
       return p_expr;
   }
 
   return nullptr;
 }
-
 
 
 /*----------------------------------------------------------------------------*/

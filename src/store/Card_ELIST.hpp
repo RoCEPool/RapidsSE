@@ -26,7 +26,7 @@ namespace STORE
     Card_Expr* pFindExpr(Stz* szPrjCol);
 
     Card_Expr* pFind_expr_By_projectedCol(Stz* szCol);
-    Card_Expr* pFind_expr_With_projectedCol(Card_Term* p_term_col);
+    Card_Expr* pFind_expr_Of_colOdn(Card_Term* p_term_colOdn);
 
     Card_Expr* pGetExpr(i8 i_Expr);
     void vPrint(Ribbon* pRibbon, i8 iDepth);

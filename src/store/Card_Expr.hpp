@@ -30,13 +30,13 @@ namespace STORE
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
 
-    void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
+    void vFactorAll_colOdn_IntoDistinct_expr(CardIter* pCI);
     Stz* szGetSingleTermIf_odn(void);
     Card_Term* pGetTerm(i8 i_Term=0);
     bool bIsColOrdinal(void);
     bool bIsSingle_odn(Stz* szOdn_single);
-    bool bHasProjectedCol(Card_Term* p_term_arg);
     bool bIsSame(Card_Expr* pExpr_arg);
+    bool bOf_colOdn(Card_Term* p_term_colOdn);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
     void vRenumber_keyOdn(i8 i_Expr);
