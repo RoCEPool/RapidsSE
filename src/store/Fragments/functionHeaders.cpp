@@ -50,8 +50,8 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
   i8 iJoinedRows;
   i8 i_BaseOffsetDataJ;
   i8 i_BaseOffsetDataT;
-  i8 iIndexScanBuffer;
-  i8 iIndexScanItem;
+  i8 iIndexBuffer;
+  i8 iIndexItem;
   i8 i_CurrentRow;
   i8 iElemSize;
   i8 iArg1;
@@ -80,7 +80,7 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
   union Tme_T xTme1;
   union Tme_T xTme2;
   union Tme_T xTme3;
-  void *aIndexScanCrw;
+  void *aIndexCrw;
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
@@ -125,8 +125,8 @@ int __FUNCTION_EOS__(struct Combined_T* aCombinedT) {
   i8 iJoinedRows;
   i8 i_BaseOffsetDataJ;
   i8 i_BaseOffsetDataT;
-  i8 iIndexScanBuffer;
-  i8 iIndexScanItem;
+  i8 iIndexBuffer;
+  i8 iIndexItem;
   i8 i_CurrentRow;
   i8 iElemSize;
   i8 iArg1;
@@ -155,7 +155,7 @@ int __FUNCTION_EOS__(struct Combined_T* aCombinedT) {
   union Tme_T xTme1;
   union Tme_T xTme2;
   union Tme_T xTme3;
-  void *aIndexScanCrw;
+  void *aIndexCrw;
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
@@ -198,8 +198,8 @@ int __FUNCTION_INDEX__(struct Combined_T* aCombinedT) {
    i8    iJoinedRows;
    i8    i_BaseOffsetDataJ;
    i8    i_BaseOffsetDataT;
-   i8    iIndexScanBuffer;
-   i8    iIndexScanItem;
+   i8    iIndexBuffer;
+   i8    iIndexItem;
    i8    i_CurrentRow;
    i8    iElemSize;
    i8    iArg1;
@@ -232,7 +232,7 @@ int __FUNCTION_INDEX__(struct Combined_T* aCombinedT) {
    union Tme_T xTme1;
    union Tme_T xTme2;
    union Tme_T xTme3;
-   void* aIndexScanCrw;
+   void* aIndexCrw;
    void* aEntInserted;
    void* aEntFound;
    void* aCrwJ;
@@ -276,8 +276,8 @@ int __FUNCTION_ROW__(struct Combined_T* aCombinedT)
   i8 iJoinedRows;
   i8 i_BaseOffsetDataJ;
   i8 i_BaseOffsetDataT;
-  i8 iIndexScanBuffer;
-  i8 iIndexScanItem;
+  i8 iIndexBuffer;
+  i8 iIndexItem;
   i8 i_CurrentRow;
   i8 iElemSize;
   i8 iArg1;
@@ -306,7 +306,7 @@ int __FUNCTION_ROW__(struct Combined_T* aCombinedT)
   union Tme_T xTme1;
   union Tme_T xTme2;
   union Tme_T xTme3;
-  void *aIndexScanCrw;
+  void *aIndexCrw;
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;

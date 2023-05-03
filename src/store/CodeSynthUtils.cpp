@@ -57,7 +57,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         }
       }
 
-      vReplaceColumnNo(sLine, pColumn);
+      if (pColumn)
+        vReplaceColumnNo(sLine, pColumn);
 
       // look for end marker
       if (bFoundStart) {
@@ -74,9 +75,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
     else {
       if (bFoundStart) {
 
-        if (pColumn) {
+        if (pColumn)
           vReplaceColumnName(sLine, pColumn);
-        }
 
         if (iPayLoadIndex != C_UNKNOWN)
           vReplacePayloadIndex(sLine, iPayLoadIndex);
