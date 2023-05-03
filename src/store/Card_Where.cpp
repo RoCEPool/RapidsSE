@@ -198,7 +198,7 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  if (Card_Constraint* p_constraint = pSub_constraint())
-//    p_constraint->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+//    p_constraint->vConvertAll_stmColOdn_To_tblColOdn(pCI);
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
     p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }

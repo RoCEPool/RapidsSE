@@ -127,7 +127,7 @@ void Card_ELIST::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    xCI.G.p_expr->vConvertAll_stmColOdn_To_tblColOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,7 +288,10 @@ void Card_ELIST::vRenumberAll_expr(void)
   i8 i_Expr = 1;
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vRenumber(i_Expr++, bIsKeyExpr);
+    if (bIsKeyExpr)
+      xCI.G.p_expr->vRenumber_keyOdn(i_Expr++);
+    else
+      xCI.G.p_expr->vRenumber_stmColOdn(i_Expr++);
 }
 
 /*============================================================================*/

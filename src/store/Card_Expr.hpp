@@ -26,7 +26,7 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(bool bstmCol_flip);
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
 
@@ -39,9 +39,8 @@ namespace STORE
     bool bIsSame(Card_Expr* pExpr_arg);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
-    void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
-    void vRenumberAsKeyOdn(i8 i_Expr);
-    void vRenumberAsStmColOdn(i8 i_Expr);
+    void vRenumber_keyOdn(i8 i_Expr);
+    void vRenumber_stmColOdn(i8 i_Expr);
     Card_Expr* pCraft_expr_early(CardIter* pCI);
 
     i8 iRpnCalc_WhichGbyKey(void);

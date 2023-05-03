@@ -56,7 +56,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   i8 i_Key = nChildCards() + 1;
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumber(i_Key, true);
+  p_expr_new->vRenumber_keyOdn(i_Key);
 
   if (Card_As* p_as = p_expr->pSub_as())
     p_expr_new->vAppend(p_as->pDupCardRecursive());

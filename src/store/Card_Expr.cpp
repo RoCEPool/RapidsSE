@@ -204,7 +204,7 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+void Card_Expr::vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -362,20 +362,7 @@ void Card_Expr::vReconstruct(Card_As*    p_as_arg,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (bIsKeyExpr)
-    vRenumberAsKeyOdn(i_Expr);
-  else
-    vRenumberAsStmColOdn(i_Expr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberAsKeyOdn(BASE::i8 i_Expr)
+void Card_Expr::vRenumber_keyOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -388,7 +375,7 @@ void Card_Expr::vRenumberAsKeyOdn(BASE::i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberAsStmColOdn(BASE::i8 i_Expr)
+void Card_Expr::vRenumber_stmColOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
