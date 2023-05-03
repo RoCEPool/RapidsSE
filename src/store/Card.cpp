@@ -2915,7 +2915,7 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetStreamColOrdinal(i8 iStmColOdn)
+void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 {
   vSprint("$%lld"_Stz, iStmColOdn);
 }

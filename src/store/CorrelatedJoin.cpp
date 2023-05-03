@@ -324,7 +324,7 @@ void CorrelatedJoin::vEnrich_sq_aggreg_ToBe_gbyAgg_Gby_Correlation_Key(CardIter*
       pCI->G_vNewMember(CK_EXPR);
       pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
       Symbol x_Symbol_stmCol1;
-      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+      x_Symbol_stmCol1.vSetStreamOrdinal(1);
       pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
       pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->Sqy.m_pExpr_corr->szP_Type());
       pCI->G.p_key->vAppend(pCI->G.p_expr);
@@ -407,7 +407,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz);
   Symbol x_Symbol_stmCol1;
-  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+  x_Symbol_stmCol1.vSetStreamOrdinal(1);
 
   pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, pCI->G.p_key->szP_Type());
   pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->G.p_key->szP_Type());
@@ -471,7 +471,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
         if (xCI.G.p_MainCard->pSymbol()->bIsParameterOrdinal()) {
 
           Symbol x_Symbol_stmCol1;
-          x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+          x_Symbol_stmCol1.vSetStreamOrdinal(1);
           xCI.G.p_MainCard->vSymbol(x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
@@ -622,7 +622,7 @@ void CorrelatedJoin::vMove_corrPred_To_table_filter(CardIter* pCI, Card_BoolCalc
   //p_pred_corr->vDump();
 
   Card_Term* p_term_tblColOdn = p_pred_corr->pGetFirstTerm_tblColOdn();
-  char cTblSyn = p_term_tblColOdn->cGetTableSyn();
+  char cTblSyn = p_term_tblColOdn->cGetTblSyn();
   Card_Table* p_table = Card_Table::pFind_By_tblSyn(pCI, cTblSyn, pCI->G.i_MainCard);
 
   p_table->vAdd_Pred_Under_filter(p_pred_corr);

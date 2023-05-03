@@ -146,7 +146,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   RASSERT(p_expr->szP_Type());
 
   Symbol xSymbol_Dn;
-  xSymbol_Dn.vSetStreamColOrdinal(i_Col);
+  xSymbol_Dn.vSetStreamOrdinal(i_Col);
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
@@ -335,7 +335,7 @@ bool Card_Expr::bOf_colOdn(Card_Term* p_term_colOdn)
   if (! p_term_0)
     return false;
 
-  if (p_term_0->bIsSame(p_term_colOdn))
+  if (p_term_0->bSameAs(p_term_colOdn))
     return true;
 
   return false;
@@ -380,7 +380,7 @@ void Card_Expr::vRenumber_stmColOdn(BASE::i8 i_Expr)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol xSymbol;
-  xSymbol.vSetStreamColOrdinal(i_Expr);
+  xSymbol.vSetStreamOrdinal(i_Expr);
 
   vSymbol(xSymbol);
 }

@@ -136,7 +136,7 @@ Card_Term* Card_PRED::pGetFirstTerm_tblColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (xCI.G.p_term->bIsTblColOdn())
+    if (xCI.G.p_term->bIsColOdn())
       return xCI.G.p_term;
 
   return nullptr;
@@ -206,8 +206,8 @@ bool Card_PRED::bIsCorrPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsPrmOdn() && (p_term_1->bIsStmOdn() || p_term_1->bIsTblColOdn())) ||
-      (p_term_1->bIsPrmOdn() && (p_term_0->bIsStmOdn() || p_term_0->bIsTblColOdn())))
+  if ((p_term_0->bIsPrmOdn() && (p_term_1->bIsStmOdn() || p_term_1->bIsColOdn())) ||
+      (p_term_1->bIsPrmOdn() && (p_term_0->bIsStmOdn() || p_term_0->bIsColOdn())))
     return true;
 
   return false;
@@ -285,8 +285,8 @@ bool Card_PRED::bIsJoinPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsStmOdn() || p_term_0->bIsTblColOdn()) &&
-      (p_term_1->bIsStmOdn() || p_term_1->bIsTblColOdn()))
+  if ((p_term_0->bIsStmOdn() || p_term_0->bIsColOdn()) &&
+      (p_term_1->bIsStmOdn() || p_term_1->bIsColOdn()))
     return true;
 
   return false;
@@ -380,7 +380,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     if (p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
-      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+      x_Symbol_stmCol1.vSetStreamOrdinal(1);
     p_term_one->vSymbol(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
@@ -407,7 +407,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     if (p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
-      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+      x_Symbol_stmCol1.vSetStreamOrdinal(1);
     p_term_head->vSymbol(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
@@ -432,11 +432,11 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     ASSERT(p_term_head->bIsSymbol("#1"_Stz)); //temp
 
     Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    x_Symbol_stmCol1.vSetStreamOrdinal(1);
     if (p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
-      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+      x_Symbol_stmCol1.vSetStreamOrdinal(1);
     p_term_head->vSymbol(x_Symbol_stmCol1);
     return;
   }

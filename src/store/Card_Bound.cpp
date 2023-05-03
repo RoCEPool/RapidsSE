@@ -254,7 +254,7 @@ Card_Term* Card_Bound::pGet_tblColOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsTblColOdn())
+    if (xKid.p_term()->bIsColOdn())
       return xKid.p_term();
 
   return nullptr;

@@ -96,7 +96,7 @@ void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   while (xCI.G_bEachMain(CK_TERM)) {
 
     if (xCI.G.p_term- pSymbol()->bIsStreamOrdinal()) {
-      xCI.G.p_term->vBump_StreamColOrdinal(nBumpBy);
+      xCI.G.p_term->vBumpStmOdn(nBumpBy);
       xCI.G.p_term->vMark1(MARK_CHANGED);
     }
   }
@@ -157,7 +157,7 @@ void Card_RpnCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    xCI.G.p_term->vConvertIf_stmColOdn_To_tblColOdn(pCI);
+    xCI.G.p_term->vConvertIf_stmOdn_To_colOdn(pCI);
   }
 }
 
@@ -232,7 +232,7 @@ Card_Term* Card_RpnCalc::pGetSingleTermIf_odn(void)
 
   if (p_term_0->bIsKeyOdn() ||
       p_term_0->bIsStmOdn() ||
-      p_term_0->bIsTblColOdn())
+      p_term_0->bIsColOdn())
     return p_term_0;
 
   return nullptr;

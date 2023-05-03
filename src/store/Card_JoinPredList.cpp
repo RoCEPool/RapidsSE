@@ -97,7 +97,7 @@ void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc,
     Card_Term* p_term_0 = p_cmpPred->pGetTerm(0);
     Card_Term* p_term_1 = p_cmpPred->pGetTerm(1);
 
-    if ( ! (p_term_0->bIsTblColOdn() && p_term_1->bIsTblColOdn()))
+    if ( ! (p_term_0->bIsColOdn() && p_term_1->bIsColOdn()))
       return C_CONTINUE_RECURSION;
 
     Card_CmpPred* p_cmpPred_new = _pCard_CmpPred(p_cmpPred->pDupCardRecursive());

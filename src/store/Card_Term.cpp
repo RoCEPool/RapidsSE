@@ -49,7 +49,7 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vBump_KeyOrdinal(i8 nBy)
+void Card_Term::vBumpKeyOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -69,13 +69,13 @@ void Card_Term::vBump_KeyOrdinal(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vBump_StreamColOrdinal(i8 nBy)
+void Card_Term::vBumpStmOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   i8 iStmColOdn = pSymbol()->iGetOrdinal();
 
-  this->pSymbol()->vSetStreamColOrdinal(iStmColOdn + nBy);
+  this->pSymbol()->vSetStreamOrdinal(iStmColOdn + nBy);
 
   if (this->pSymbol()->Y_bHas(P_BumpedBy)) {
     i8 nBumpedBy = this->pSymbol()->Y_iGet(P_BumpedBy);
@@ -89,7 +89,7 @@ void Card_Term::vBump_StreamColOrdinal(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /* convert term (if stream-column) to table-column                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -194,9 +194,9 @@ i8 Card_Term::iGetOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table synonym c (i.e. $$c.n)                                           */
+/* get table synonym c (i.e. $c.n)                                            */
 /*----------------------------------------------------------------------------*/
-char Card_Term::cGetTableSyn(void)
+char Card_Term::cGetTblSyn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -232,6 +232,19 @@ Card_Term* Card_Term::pClone(Stz* szDiffSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this term a column-value ordinal? $n.c                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsColOdn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->bIsTableColumn())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term a key ordinal? $Kn                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsKeyOdn(void)
@@ -256,19 +269,7 @@ bool Card_Term::bIsPrmOdn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is                                                                         */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsSame(Card_Term* p_term_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  bool b = bIsSymbol(p_term_arg->szSymbol());
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this term a stream-ordinal? $n                                          */
+/* is this term a stream-value ordinal? $n                                    */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsStmOdn(void)
 {
@@ -293,19 +294,6 @@ bool Card_Term::bIsSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this term a table-column? $n.c                                          */
-/*----------------------------------------------------------------------------*/
-bool Card_Term::bIsTblColOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (pSymbol()->bIsTableColumn())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this term a value ordinal? $n or $c.n                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsValOdn(void)
@@ -315,7 +303,7 @@ bool Card_Term::bIsValOdn(void)
   if (bIsStmOdn())
     return true;
   else
-  if (bIsTblColOdn())
+  if (bIsColOdn())
     return true;
 
   return false;
@@ -341,6 +329,18 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSprintRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
   //vPrintCard_bySettings(pRibbon, iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is                                                                         */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bSameAs(Card_Term* p_term_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool b = bIsSymbol(p_term_arg->szSymbol());
+
+  return b;
 }
 
 /*============================================================================*/

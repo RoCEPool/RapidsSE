@@ -98,7 +98,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "__SQ1RESULT"_Stz);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   Symbol x_Symbol_stmCol1;
-  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+  x_Symbol_stmCol1.vSetStreamOrdinal(1);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$1"_Stz);
 
   Card_Expr* p_expr_found =

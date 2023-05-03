@@ -185,7 +185,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       vDebugPoint();
     }
 
-    if (! p_term->bIsTblColOdn())
+    if (!p_term->bIsColOdn())
       return C_CONTINUE_RECURSION;
 
     if (pCI->Analysis.m_pProjection_prior) {
@@ -209,7 +209,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     i8 i_Col = p_term->iGetOdn();
 
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSetStreamColOrdinal(nExpr_prior+i_Col);
+    xSymbol_stmColOdn.vSetStreamOrdinal(nExpr_prior + i_Col);
     p_term->vSymbolMark1(xSymbol_stmColOdn, MARK_CHANGED);
 
     //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSymbol());
@@ -741,7 +741,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol;
-    xSymbol.vSetStreamColOrdinal(i_Expr++);
+    xSymbol.vSetStreamOrdinal(i_Expr++);
     p_expr->vSymbol(xSymbol);
     p_projection->vAppend(p_expr);
 

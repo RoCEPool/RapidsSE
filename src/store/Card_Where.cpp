@@ -175,7 +175,7 @@ Card_Where* Card_Where::pNewWhereConstruct(void)
 
   Card_Expr* p_expr = new Card_Expr;
   Symbol x_Symbol_stmCol1;
-  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+  x_Symbol_stmCol1.vSetStreamOrdinal(1);
 
   p_expr->vSymbol(x_Symbol_stmCol1);
   p_constraint->vAppend(p_expr);
@@ -283,7 +283,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
     Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    x_Symbol_stmCol1.vSetStreamOrdinal(1);
 
     // replace sqCall with sqResult
     pCI->Sqy.m_pTerm_sqCall->vSymbol(x_Symbol_stmCol1);
