@@ -190,7 +190,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     if (pCI->Analysis.m_pProjection_prior) {
       if (Card_Expr* p_expr_col =
-          pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->szSymbol())) {
+          pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
         p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
         //vTrace("  TO %s\n"_Stz,p_expr_col->szSymbol());
         return C_CONTINUE_RECURSION;
@@ -249,7 +249,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   if (bIsCard(CK_HASH)) {
     Card_HshCol *p_hshCol = pSub_hshCol();
     if (Card_Expr *p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFindExpr(p_hshCol->szSymbol())) {
+        pCI->Analysis.m_pProjection_prior->pFindExpr(p_hshCol->pSymbol())) {
       p_hshCol->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
     }
   }
