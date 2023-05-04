@@ -233,13 +233,13 @@ Card_Term* Card_Term::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Term::pClone(Stz* szDiffSymbol)
+Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->vSymbol(szDiffSymbol);
+  p_term_clone->vSymbol(pDiffSymbol->szSymbol());
 
   return p_term_clone;
 }

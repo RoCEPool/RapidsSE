@@ -118,7 +118,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Card_Expr*    p_expr    = new Card_Expr;
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(xSymbol_Kn);
+  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
   if (p_as)
     p_expr->vAppend(p_as);
@@ -151,7 +151,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
 
-  Card_Term* p_term = p_expr->pSub_term()->pClone(xSymbol_Dn);
+  Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
   p_term->pSymbol()->Y_vSet(P_Type, p_expr->szP_Type());
   //p_term->vDump();
 
