@@ -225,42 +225,6 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the one (and only) ordinal from rpnCalc                                */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnCalc::pGetOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (1 != this->nChildCards())
-    return nullptr;
-
-  Card_Term* p_term_0 = this->pGetTerm(0);
-
-  if (p_term_0->bIsKeyOdn() ||
-      p_term_0->bIsStmOdn() ||
-      p_term_0->bIsColOdn())
-    return p_term_0;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the one (and only) ordinal symbol-value from rpnCalc                   */
-/*----------------------------------------------------------------------------*/
-Stz* Card_RpnCalc::szGetOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* p_term_odn = this->pGetOdn();
-  if (! p_term_odn)
-    return nullptr;
-
-  Stz* szSym = p_term_odn->szSymbol();
-
-  return szSym;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
@@ -274,7 +238,6 @@ Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
 
   return p_term;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

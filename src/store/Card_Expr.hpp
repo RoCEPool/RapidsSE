@@ -32,7 +32,6 @@ namespace STORE
                       Card_Term*& rp_term_0);
     void vEnsureTypes_For_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
-    Stz* szGetOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsOdn(Stz* szOdn_arg);
     void vReconstruct(Card_As*    p_as,

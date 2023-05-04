@@ -1045,7 +1045,7 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
             //p_rpnCalc->vDump();
             if (1 == p_rpnCalc->nChildCards() &&
-                p_rpnCalc->szGetOdn()->bSame(p_term->szSymbol())) {
+                p_rpnCalc->pGetTerm(0)->szSymbol()->bSame(p_term->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }

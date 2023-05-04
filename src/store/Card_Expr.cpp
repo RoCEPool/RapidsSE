@@ -305,14 +305,14 @@ void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card_Expr::szGetOdn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szOdn = pSub_rpnCalc()->szGetOdn();
-
-  return szOdn;
-}
+//Stz* Card_Expr::szGetOdn(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  Stz* szOdn = pSub_rpnCalc()->szGetOdn();
+//
+//  return szOdn;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -333,7 +333,7 @@ bool Card_Expr::bIsOdn(Stz* szOdn_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szOdn = this->szGetOdn();
+  Stz* szOdn = this->pGetTerm(0)->szSymbol();
   if (! szOdn)
     return false;
 
