@@ -53,7 +53,7 @@ void Card_Term::vBumpKeyOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = pSymbol()->iGetOrdinal();
+  i8 iKeyOdn = pSymbol()->iExtractOrdinal();
 
   this->pSymbol()->vSetKeyOrdinal(iKeyOdn + nBy);
 
@@ -73,7 +73,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = pSymbol()->iGetOrdinal();
+  i8 iStmColOdn = pSymbol()->iExtractOrdinal();
 
   this->pSymbol()->vSetStreamOrdinal(iStmColOdn + nBy);
 

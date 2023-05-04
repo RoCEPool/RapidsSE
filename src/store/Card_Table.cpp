@@ -487,7 +487,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
   }
 
   // is the table column within scope?
-  char cTblSyn_term = p_term->pSymbol()->cGetTableSyn();
+  char cTblSyn_term = p_term->pSymbol()->cExtractTableSynonym();
   if (pScope->bInScope(cTblSyn_term))
     return true;
 

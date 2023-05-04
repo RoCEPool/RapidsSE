@@ -216,8 +216,8 @@ namespace STORE
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
-    i8   iGetOrdinal(void);
-    char cGetTableSyn(void);
+    i8   iExtractOrdinal(void);
+    char cExtractTableSynonym(void);
 
     bool bIsAggOp(void);          // avg, count, ... sum
     bool bIsBoolFn(void);         // between, case ... matchTrailing

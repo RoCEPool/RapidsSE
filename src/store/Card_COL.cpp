@@ -43,7 +43,7 @@ bool Card_COL::bIsReplicated(Symbol* aCol)
   if (!aCol->bIsColumnOrdinal())
     return false;
 
-  char cTblSyn = aCol->cGetTableSyn();
+  char cTblSyn = aCol->cExtractTableSynonym();
   if (cTblSyn >= 'A' && cTblSyn <= 'Z')
     return true;
 
@@ -58,7 +58,7 @@ bool Card_COL::bMatchingTblSyn(Symbol *pArg_a, Symbol *pArg_b)
 {
   _static_
 
-  if (pArg_a->cGetTableSyn() == pArg_b->cGetTableSyn())
+  if (pArg_a->cExtractTableSynonym() == pArg_b->cExtractTableSynonym())
     return true;
 
   return false;

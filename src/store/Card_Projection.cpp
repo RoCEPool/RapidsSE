@@ -220,7 +220,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 
     // get corresponding <gbyAgg>/<key>/<expr>
     Card_Term* pTerm_prj = p_expr_prj->pGetTerm(0);
-    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj);
+    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj->pSymbol());
 
     if (! p_expr_key)
       continue;

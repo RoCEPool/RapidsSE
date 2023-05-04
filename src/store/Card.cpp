@@ -2566,7 +2566,7 @@ eQO Symbol::eEvalSubQryOp(void)
 /*----------------------------------------------------------------------------*/
 /* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
 /*----------------------------------------------------------------------------*/
-i8 Symbol::iGetOrdinal(void)
+i8 Symbol::iExtractOrdinal(void)
 {
   i8 i_Col = StrLib::iGleanInt(m_sSymbol.azChar());
 
@@ -2576,7 +2576,7 @@ i8 Symbol::iGetOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* get table synonym from $c.n                                                */
 /*----------------------------------------------------------------------------*/
-char Symbol::cGetTableSyn(void)
+char Symbol::cExtractTableSynonym(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
