@@ -191,11 +191,11 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 
   // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vDelete_key(pCI);
+  pCI->G.p_projection->vDeletePrjKey(pCI);
 
   // derive new <project>/<projection>/<key>
   pCI->G.p_key = new Card_Key;
-  pCI->G.p_projection->vKeyProjection(pCI);
+  pCI->G.p_projection->vDerivePrjKey(pCI);
 
   if (! pCI->G.p_key->nChildCards()) {
     delete pCI->G.p_key;

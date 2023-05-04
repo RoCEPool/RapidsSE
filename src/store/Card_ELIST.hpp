@@ -25,7 +25,7 @@ namespace STORE
     i8 nExpr(void);
     Card_Expr* pFindExpr(Stz* szPrjCol);
 
-    Card_Expr* pFind_expr_By_projectedCol(Stz* szCol);
+    Card_Expr* pFind_expr_Of_odn(Stz* szOdn);
     Card_Expr* pFind_expr_Of_colOdn(Card_Term* p_term_colOdn);
 
     Card_Expr* pGetExpr(i8 i_Expr);

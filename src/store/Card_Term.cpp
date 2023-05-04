@@ -69,7 +69,7 @@ void Card_Term::vBumpKeyOdn(i8 nBy)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vBumpStmOdn(i8 nBy)
+void Card_Term::vBump_stmOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

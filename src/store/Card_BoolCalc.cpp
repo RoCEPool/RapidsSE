@@ -79,7 +79,7 @@ Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -100,7 +100,7 @@ void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
       return C_CONTINUE_RECURSION;
 
     if (p_term->pSymbol()->bIsStreamOrdinal()) {
-      p_term->vBumpStmOdn(nBumpBy);
+      p_term->vBump_stmOdn(nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }
 

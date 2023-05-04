@@ -81,7 +81,7 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
       Stz *szTerm = xCI2.G.p_term->szSymbol();
 
       if (xCI2.G.p_term->pSymbol()->bIsStreamOrdinal()) {
-        xCI2.G.p_term->vBumpStmOdn();
+        xCI2.G.p_term->vBump_stmOdn();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
       }
@@ -99,7 +99,7 @@ void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vBump_Rightwards(nBumpBy);
+    xCI.G.p_expr->vBump_stmOdn(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +111,7 @@ Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_EXPR))
-    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
+    if (xCI_this.G.p_expr->bSameAs(p_expr_arg))
       return xCI_this.G.p_expr;
 
   return nullptr;
@@ -177,7 +177,7 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
+Card_Expr* Card_ELIST::pFind_expr_Of_odn(Stz* szOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -186,7 +186,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsOdn(szCol))
+    if (p_expr->bIsOdn(szOdn))
       return p_expr;
   }
 
@@ -204,7 +204,8 @@ Card_Expr* Card_ELIST::pFind_expr_Of_colOdn(Card_Term* p_term_colOdn)
 
   for (Kid xKid(this); xKid.bEach(); /**/) {
     Card_Expr* p_expr = xKid.p_expr();
-    if (p_expr->bOf_colOdn(p_term_colOdn))
+  //if (p_expr->bOf_colOdn(p_term_colOdn))
+    if (p_expr->bIsOdn(p_term_colOdn->szSymbol()))
       return p_expr;
   }
 

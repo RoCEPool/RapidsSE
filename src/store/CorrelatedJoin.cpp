@@ -183,7 +183,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   RASSERT(pCI->G_bEachMain(CK_FOLD));
 
   RASSERT(pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC));
-  pCI->G.p_boolCalc->vBump_Rightwards(2);
+  pCI->G.p_boolCalc->vBump_stmOdn(2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push correlated cmpPred into the OQ:<where>/<constraint>/<boolCalc>

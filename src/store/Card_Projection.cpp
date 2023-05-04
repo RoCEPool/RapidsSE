@@ -80,53 +80,6 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* as review                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_Projection::vAs_Review(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  i8 nPrjExpr = nChildCards();
-  for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
-
-    // get <gbyAgg>/<projection>/<expr>
-    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
-
-    //Stz* szPrjCol_prj = p_expr_prj->szGetOdn();
-    Card_Term* p_term_prj = p_expr_prj->pGetTerm(0);
-    if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKeyOrdinal())) )
-      continue;
-
-    // the <gbyAgg>/<projection>/<expr> is a single projected column
-
-    // get corresponding <gbyAgg>/<key>/<expr>
-    Card_Term* pTerm_prj = p_expr_prj->pGetTerm(0);
-    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj);
-
-    if (! p_expr_key)
-      continue;
-    else
-    if (p_expr_key->pSub_as()) {
-
-      if (p_expr_prj->pSub_as()) {
-        p_expr_key->vDeleteChild(pCI->G.p_as);
-        p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
-      }
-      else {
-        p_expr_prj->vAppend(p_expr_key->pSub_as()->pDupCardRecursive());
-      }
-    }
-    else
-    if (p_expr_prj->pSub_as()) {
-      p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
-    }
-
-    vDebugPoint();
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pClone(void)
@@ -173,7 +126,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
       if (!xCI_rpnCalc.G.p_term->bIsValOdn())
         continue;
       // which we havent already added
-      if (p_needed->pFind_expr_By_projectedCol(xCI_rpnCalc.G.p_term->szSymbol()))
+      if (p_needed->pFind_expr_Of_odn(xCI_rpnCalc.G.p_term->szSymbol()))
         continue;
 
       if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
@@ -192,7 +145,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vDelete_key(CardIter* pCI)
+void Card_Projection::vDeletePrjKey(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -202,10 +155,10 @@ void Card_Projection::vDelete_key(CardIter* pCI)
   pCI->G.p_key = nullptr;
 }
 
-//*----------------------------------------------------------------------------*/
-/* derive the key projection of this projection (of running key)              */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vKeyProjection(CardIter *pCI)
+/* derive the key of this projection (of running key)                         */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vDerivePrjKey(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -237,12 +190,59 @@ void Card_Projection::vKeyProjection(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vTypes_For_stmColOdn(CardIter *pCI)
+void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vTypes_For_stmColOdn(pCI);
+    xKid.p_expr()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* as review                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vReviewAs(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nPrjExpr = nChildCards();
+  for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
+
+    // get <gbyAgg>/<projection>/<expr>
+    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
+
+    //Stz* szPrjCol_prj = p_expr_prj->szGetOdn();
+    Card_Term* p_term_prj = p_expr_prj->pGetTerm(0);
+    if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKeyOrdinal())) )
+      continue;
+
+    // the <gbyAgg>/<projection>/<expr> is a single projected column
+
+    // get corresponding <gbyAgg>/<key>/<expr>
+    Card_Term* pTerm_prj = p_expr_prj->pGetTerm(0);
+    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj);
+
+    if (! p_expr_key)
+      continue;
+    else
+    if (p_expr_key->pSub_as()) {
+
+      if (p_expr_prj->pSub_as()) {
+        p_expr_key->vDeleteChild(pCI->G.p_as);
+        p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
+      }
+      else {
+        p_expr_prj->vAppend(p_expr_key->pSub_as()->pDupCardRecursive());
+      }
+    }
+    else
+    if (p_expr_prj->pSub_as()) {
+      p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
+    }
+
+    vDebugPoint();
+  }
+
 }
 
 /*============================================================================*/

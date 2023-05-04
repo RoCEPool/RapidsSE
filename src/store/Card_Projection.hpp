@@ -20,13 +20,12 @@ namespace STORE
 
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
-    void vAs_Review(CardIter* pCI);
     Card_Projection* pClone(void);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
-    void vDelete_key(CardIter* pCI);
-    void vKeyProjection(CardIter* pCI);
-    void vTypes_For_stmColOdn(CardIter* pCI);
-
+    void vDeletePrjKey(CardIter* pCI);
+    void vDerivePrjKey(CardIter* pCI);
+    void vEnsureTypes_For_stmColOdn(CardIter* pCI);
+    void vReviewAs(CardIter* pCI);
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

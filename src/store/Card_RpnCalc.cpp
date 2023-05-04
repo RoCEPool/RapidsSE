@@ -50,15 +50,15 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_colOdn)
+Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_valOdn)
 {
   _static_
 
-  RASSERT(p_term_colOdn->bIsValOdn());
+  RASSERT(p_term_valOdn->bIsValOdn());
 
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
 
-  Card_Term* p_term = p_term_colOdn->pClone();
+  Card_Term* p_term = p_term_valOdn->pClone();
   p_rpnCalc->vAppend(p_term);
 
   // rpn is a calculation resulting in a typed value
@@ -75,7 +75,7 @@ Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_colOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -83,7 +83,7 @@ void Card_RpnCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   while (xCI.G_bEachMain(CK_TERM)) {
 
     if (xCI.G.p_term- pSymbol()->bIsStreamOrdinal()) {
-      xCI.G.p_term->vBumpStmOdn(nBumpBy);
+      xCI.G.p_term->vBump_stmOdn(nBumpBy);
       xCI.G.p_term->vMark1(MARK_CHANGED);
     }
   }
@@ -200,7 +200,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vFactorAll_colOdn_IntoDistinct_expr(CardIter *pCI)
+void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -214,11 +214,11 @@ void Card_RpnCalc::vFactorAll_colOdn_IntoDistinct_expr(CardIter *pCI)
      if (!x_term.p_term()->bIsValOdn())
       continue;
 
-    Card_Term* p_term_colOdn = x_term.p_term();
+    Card_Term* p_term_valOdn = x_term.p_term();
 
-    Card_Expr* p_expr_col = Card_Expr::pDistinct_expr_For_col(p_term_colOdn);
+    Card_Expr* p_expr_valOdn = Card_Expr::pDistinct_expr_For_valOdn(p_term_valOdn);
 
-    p_subSet->vAppend(p_expr_col);
+    p_subSet->vAppend(p_expr_valOdn);
   }
 
   pCI->G.p_subSet = p_subSet;

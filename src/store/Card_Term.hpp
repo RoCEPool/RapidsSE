@@ -21,7 +21,7 @@ namespace STORE
    ~Card_Term(void) noexcept(false);
 
     void vBumpKeyOdn(i8 nBy=1);
-    void vBumpStmOdn(i8 nBy=1);
+    void vBump_stmOdn(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Stz* szDiffSymbol);
     void vConvertIf_stmOdn_To_colOdn(CardIter* pCI);

@@ -54,7 +54,7 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 
   // snap onto <indexJoin>/<projection>, delete existing <indexJoin>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vDelete_key(pCI);
+  pCI->G.p_projection->vDeletePrjKey(pCI);
 
   if (pCI->StreamOrder.m_pKey_running) {
     pCI->G.p_key = _pCard_Key(pCI->StreamOrder.m_pKey_running->pDupCardRecursive());

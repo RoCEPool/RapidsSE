@@ -50,7 +50,7 @@ void Card_GbyAgg::vAs_Review(CardIter* pCI)
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
 
-  pCI->G.p_projection->vAs_Review(pCI);
+  pCI->G.p_projection->vReviewAs(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ void Card_GbyAgg::vDerive_Projection_Key(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   RASSERT(bPeg_Projection(pCI));
-  pCI->G.p_projection->vDelete_key(pCI);
+  pCI->G.p_projection->vDeletePrjKey(pCI);
 
   RASSERT(bPeg_Key(pCI));
 
@@ -282,7 +282,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
     if (pCI->Analysis.m_pProjection_prior) {
-      pCI->G.p_projection->vTypes_For_stmColOdn(pCI);
+      pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
       pCI->G.p_projection->vRenumberAll_expr();
     }
 

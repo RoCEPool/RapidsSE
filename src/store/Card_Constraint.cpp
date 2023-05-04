@@ -86,7 +86,7 @@ void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_Rightwards(nBumpBy,bSkipFoldExpr);
+    p_expr->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
 
 }
 

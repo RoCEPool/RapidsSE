@@ -103,7 +103,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
   {
 
     if (p_term->bIsStmOdn())
-      p_term->vBumpStmOdn();
+      p_term->vBump_stmOdn();
 
     return true;
   };
