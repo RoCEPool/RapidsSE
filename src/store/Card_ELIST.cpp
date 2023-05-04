@@ -168,7 +168,8 @@ Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsOdn(pSymbol->szSymbol()))
+//    if (p_expr->bIsOdn(pSymbol->szSymbol()))
+    if (p_expr->bOf(pSymbol))
       return p_expr;
   }
 
