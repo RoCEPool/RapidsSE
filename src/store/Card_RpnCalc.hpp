@@ -14,6 +14,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_RpnCalc(void);
+    Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
     static Card_RpnCalc* pDistinct_rpnCalc(Card_Term* p_term_valOdn);

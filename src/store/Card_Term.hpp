@@ -18,6 +18,7 @@ namespace STORE
     void  operator delete(void*);
 
     Card_Term(Stz* szTerm);
+    Card_Term(Symbol* pSymbol);
    ~Card_Term(void) noexcept(false);
 
     void vBumpKeyOdn(i8 nBy=1);
