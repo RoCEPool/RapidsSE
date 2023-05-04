@@ -146,7 +146,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   //pCI->G.p_term->vDump();
 
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_colOdn(pCI->G.p_term)) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(pCI->G.p_term)) {
 
     if (pCI->G.p_term->bIsStmOdn()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
@@ -179,7 +179,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_colOdn(p_term))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(p_term))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {

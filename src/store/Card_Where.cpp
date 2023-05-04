@@ -217,7 +217,7 @@ void Card_Where::vEarlyProject_add_transients(CardIter* pCI)
     if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_colOdn(p_term))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(p_term))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {

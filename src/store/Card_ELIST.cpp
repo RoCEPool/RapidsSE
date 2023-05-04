@@ -196,11 +196,11 @@ Card_Expr* Card_ELIST::pFind_expr_Of_odn(Stz* szOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_Of_colOdn(Card_Term* p_term_colOdn)
+Card_Expr* Card_ELIST::pFind_expr_Of_odn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return pFind_expr_Of_odn(p_term_colOdn->szSymbol());
+  return pFind_expr_Of_odn(p_term->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/
