@@ -10,7 +10,7 @@ create table Nation (
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
 	 N_COMMENT         VARCHAR(152)
-)
+);
 success
 
 create index IxN_NATIONKEY on nation (n_nationkey);
@@ -46,7 +46,6 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXSCAN -
 //------------------------------------------------------------------------------
-/*
 pipeline _unnamed_
 begin
 
@@ -71,7 +70,6 @@ end ;
 rows:
   (0,'ALGERIA',0,' haggle. carefully final deposits detect slyly agai')
   (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
-*/
 
 //------------------------------------------------------------------------------
 // AGGREGATE - INTEGER
@@ -432,7 +430,7 @@ rows: 0
 
 CLEANUP {
 
-  drop table lineitem;
+  drop table nation;
   mute
 
   bye;

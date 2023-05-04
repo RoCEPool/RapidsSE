@@ -255,7 +255,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexUpperCheck"_Stz, pCodeFile);
-        vAppendCodeFragment(pOpSketch, "vIndexScanContinue"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz);
         vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexScanReturn"_Stz, pCodeFile);
 
@@ -286,6 +286,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
         //vAppendCodeFragment(pOpSketch, "vIndexUpperCheck"_Stz, pCodeFile);
         vAppendCodeCopyCols(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz);
 //        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
 //        vAppendCodeFragment(pOpSketch, "vIndexScanReturn"_Stz, pCodeFile);
 

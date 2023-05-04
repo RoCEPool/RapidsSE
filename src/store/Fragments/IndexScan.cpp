@@ -86,51 +86,6 @@ void vIndexUpperCheck(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexScanContinue ------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexScanContinue
-void vIndexScanContinue(Combined_T* aCombinedT) {
-
-#include "vFLAT_Parameters.h"
-
-  i8 iIndexScanBuffer;
-  i8 iIndexScanItem;
-  i8 i_BaseOffsetDataT;
-  char* aIndexScanCrw;
-
-  static const void* C_ADR_REGION = (void*)0x204800000000;
-  static const i8 C_CRW_HEADBYTES = 32;
-  static const i8 C_CRW_FIRSTHEAD = 640;
-
-  L_InflateAColumn:
-
-  // marker-start
-
-  // dereference the entry
-  iIndexScanBuffer = aCombinedT->m_aEntIntT->Rrf.m_uBuffer;
-  iIndexScanItem   = aCombinedT->m_aEntIntT->Rrf.m_uItem;
-  aIndexScanCrw  = ( (char*)C_ADR_REGION + iIndexScanBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexScanItem * C_CRW_HEADBYTES );
-
-  // inflate the derefenced entry
-  aHeadLine = (struct HeadLine_T *)aIndexScanCrw;
-  auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)aCombinedT->m_aRowCellArrayT;
-  acStrArea = (char*)aCombinedT->m_racStrAreaT;
-  racStrArea = (char*)aCombinedT->m_racStrAreaT;
-  eStrInflateRule = SI_STRAREA_ADR;
-  i_BaseOffsetDataT = C_1B  + C_8B  + 4;
-  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);
-
-  // marker-end
-
-  __L_LABEL_NEXT__:
-
-  L_Return:
-  return;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vIndexScanReturn --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexScanReturn

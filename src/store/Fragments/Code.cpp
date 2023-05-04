@@ -763,6 +763,51 @@ void vCopyVchCol(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexDereference -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexDereference
+void vIndexDereference(Combined_T* aCombinedT) {
+
+#include "vFLAT_Parameters.h"
+
+  i8 iIndexBuffer;
+  i8 iIndexItem;
+  i8 i_BaseOffsetDataT;
+  char* aIndexCrw;
+
+  static const void* C_ADR_REGION = (void*)0x204800000000;
+  static const i8 C_CRW_HEADBYTES = 32;
+  static const i8 C_CRW_FIRSTHEAD = 640;
+
+  L_InflateAColumn:
+
+  // marker-start
+
+  // dereference the entry
+  iIndexBuffer = aCombinedT->m_aEntIntT->Rrf.m_uBuffer;
+  iIndexItem   = aCombinedT->m_aEntIntT->Rrf.m_uItem;
+  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
+
+  // inflate the derefenced entry
+  aHeadLine = (struct HeadLine_T *)aIndexCrw;
+  auMetaCode = META_AREA(aHeadLine);
+  ayDstByte = (byte*)aCombinedT->m_aRowCellArrayT;
+  acStrArea = (char*)aCombinedT->m_racStrAreaT;
+  racStrArea = (char*)aCombinedT->m_racStrAreaT;
+  eStrInflateRule = SI_STRAREA_ADR;
+  i_BaseOffsetDataT = C_1B  + C_8B  + 4;
+  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vTubRowStr --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vTubRowStr
