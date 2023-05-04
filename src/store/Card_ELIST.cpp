@@ -159,6 +159,26 @@ i8 Card_ELIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nExpr = nChildCards();
+  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
+    if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
+      break;
+    Card_Expr* p_expr = pGetExpr(i_Expr);
+    if (p_expr->bIsOdn(pSymbol->szSymbol()))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_ELIST::pFindExpr(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

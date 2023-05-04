@@ -20,6 +20,7 @@ namespace STORE
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     Card_Expr* pDecodeExpr(Card_Term* p_term);
     i8 nExpr(void);
+    Card_Expr* pFindExpr(Symbol* pSymbol);
     Card_Expr* pFindExpr(Stz* szSymbol);
     Card_Expr* pFindExpr(Card_Term* p_term);
     Card_Expr* pGetExpr(i8 i_Expr);

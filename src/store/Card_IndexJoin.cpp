@@ -146,7 +146,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   //pCI->G.p_term->vDump();
 
 
-  if (!pCI->Early.m_pNeeded_later->pFindExpr(pCI->G.p_term)) {
+  if (!pCI->Early.m_pNeeded_later->pFindExpr(pCI->G.p_term->pSymbol())) {
 
     if (pCI->G.p_term->bIsStmOdn()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
