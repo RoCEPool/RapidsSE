@@ -204,6 +204,9 @@ namespace STORE
     TagSet* m_pProperties;
 
   public:
+    Symbol(void);
+    Symbol(Stz* szSymbol);
+
     void operator =(Stz* szArg);
     void operator =(Symbol* pSymbol);
     void operator =(Symbol& rxSymbol);

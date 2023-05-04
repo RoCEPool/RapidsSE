@@ -25,7 +25,7 @@ namespace STORE
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Card_Term* pGetTerm(i8 i_Term);
-    bool bHasTerm(Stz* szSymbol);
+    bool bHasTerm(Symbol* pSymbol);
     bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);

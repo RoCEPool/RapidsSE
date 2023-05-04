@@ -242,13 +242,13 @@ Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bHasTerm(Stz* szSymbol)
+bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bIsSymbol(szSymbol))
+    if (xCI.G.p_term->bIsSymbol(pSymbol->szSymbol()))
       return true;
   }
 
@@ -321,12 +321,14 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Symbol xWhen("WHEN"_Stz);
+
   Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the rpn calc have a when in it?
 
-  if (this->bHasTerm("WHEN"_Stz)) {
+  if (this->bHasTerm(&xWhen)) {
 
     Card_CmpPred* p_cmpPred = new Card_CmpPred;
     p_cmpPred->vTransferChildren(this);
