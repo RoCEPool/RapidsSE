@@ -46,6 +46,8 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 
   vInit(eCard);
 
+  m_xSymbol.m_sSymbol = pSymbol->szSymbol();
+
   if (pSymbol->m_pProperties)
     m_xSymbol.Y_vAll(pSymbol->m_pProperties);
 

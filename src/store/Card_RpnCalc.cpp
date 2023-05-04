@@ -45,6 +45,8 @@ Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
   Card_Term* p_term = new Card_Term(pSymbol);
   vAppend(p_term);
 
+  vSetType(p_term);
+
   _checkInitialised_(CN_CARD);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -72,13 +74,15 @@ Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_valOdn)
 
   RASSERT(p_term_valOdn->bIsValOdn());
 
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+//  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+//
+//  Card_Term* p_term = p_term_valOdn->pClone();
+//  p_rpnCalc->vAppend(p_term);
+//
+//  // rpn is a calculation resulting in a typed value
+//  p_rpnCalc->vSetType(p_term);
 
-  Card_Term* p_term = p_term_valOdn->pClone();
-  p_rpnCalc->vAppend(p_term);
-
-  // rpn is a calculation resulting in a typed value
-  p_rpnCalc->vSetType(p_term);
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(p_term_valOdn->pSymbol());
 
   return p_rpnCalc;
 }
