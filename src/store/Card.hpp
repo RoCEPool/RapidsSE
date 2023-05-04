@@ -309,10 +309,6 @@ namespace STORE
 
    ~Card(void) noexcept(false);
 
-    // auto conversion
-    operator Symbol*(void);
-
-
     static Stz* szBound(Stz* szRelnOp);
 
     static void vCardLeaks(void);
