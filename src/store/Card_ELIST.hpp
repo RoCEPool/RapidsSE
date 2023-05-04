@@ -22,7 +22,6 @@ namespace STORE
     i8 nExpr(void);
     Card_Expr* pFindExpr(Symbol* pSymbol);
     Card_Expr* pFindExpr(Stz* szSymbol);
-    Card_Expr* pFindExpr(Card_Term* p_term);
     Card_Expr* pGetExpr(i8 i_Expr);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vRenumberAll_expr(void);

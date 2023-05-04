@@ -196,16 +196,6 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFindExpr(Card_Term* p_term)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return pFindExpr(p_term->szSymbol());
-}
-
-/*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_ELIST::pGetExpr(i8 i_Expr)
