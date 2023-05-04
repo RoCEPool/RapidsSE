@@ -31,6 +31,21 @@ Card_Expr::Card_Expr(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Expr::Card_Expr(Symbol* pSymbol)
+: Card(CK_EXPR)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(pSymbol);
+  vAppend(p_rpnCalc);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -65,24 +80,6 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pDistinct_expr_For_valOdn(Card_Term* p_term_valOdn)
-{
-  _static_
-
-  RASSERT(p_term_valOdn->bIsValOdn());
-
-  Card_Expr* p_expr = new Card_Expr;
-
-  //Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc(p_term_valOdn);
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(p_term_valOdn->pSymbol());
-  p_expr->vAppend(p_rpnCalc);
-
-  return p_expr;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

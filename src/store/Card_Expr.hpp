@@ -14,13 +14,13 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Expr(void);
+    Card_Expr(Symbol* pSymbol);
     Card_Expr(Card_As*   p_as_arg,
               Card_Term* p_term_0_arg);
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------
-    static Card_Expr* pDistinct_expr_For_valOdn(Card_Term* p_term_valOdn);
-    static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
+   static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 

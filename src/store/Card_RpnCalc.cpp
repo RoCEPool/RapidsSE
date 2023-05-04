@@ -214,7 +214,7 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 
     Card_Term* p_term_valOdn = x_term.p_term();
 
-    Card_Expr* p_expr_valOdn = Card_Expr::pDistinct_expr_For_valOdn(p_term_valOdn);
+    Card_Expr* p_expr_valOdn = new Card_Expr(p_term_valOdn->pSymbol());
 
     p_subSet->vAppend(p_expr_valOdn);
   }
