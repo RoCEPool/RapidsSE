@@ -285,10 +285,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         }
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
         //vAppendCodeFragment(pOpSketch, "vIndexUpperCheck"_Stz, pCodeFile);
-        vAppendCodeCopyCols(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz);
-//        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
-//        vAppendCodeFragment(pOpSketch, "vIndexScanReturn"_Stz, pCodeFile);
+        vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+        vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
+        vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pCodeFile);
 
         // close the indexJoin code fragments file
         pCodeFile->vClose();
@@ -365,7 +365,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
-            vAppendCodeCopyCols(pOpSketch);
+            vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
           }
 
         }
@@ -373,7 +373,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // TUB in CRW/ROW/INDEX handler
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-          vAppendCodeCopyCols(pOpSketch);
+          vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
 
         break;
@@ -720,16 +720,13 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* append code fragment for copying columns                                   */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch)
+void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
-  s16KB sCode;
-  bool bExtracted;
 
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
-    sCode = ""_Stz;
     m_pCommonCode->vSeekStart();
 
     Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
@@ -737,7 +734,7 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch)
     switch (pColumn->eColumnType()) {
 
       case CT_VARCHAR:
-        vAppendCodeFragment(pOpSketch, "vCopyVchCol"_Stz, pColumn);
+        vAppendCodeFragment(pOpSketch, szFunction, pColumn);
         if (pOpSketch->m_eStencilTo == SR_TB)
           vAppendCodeFragment(pOpSketch, "vTubRowStr"_Stz, pColumn);
         break;

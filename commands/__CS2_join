@@ -6,17 +6,12 @@ _region
 tag default <tpch_dir> = "../tpch/sf_0001";
 tag default <suffix>   = "csv";
 
-/time load nation   "<tpch_dir>/nation.<suffix>";
-/time load region   "<tpch_dir>/region.<suffix>";
+load nation "../DATA/TPCH/nation.tbl";
+load Region "../DATA/TPCH/region.tbl";
 
 CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
-
-/transliterated
-/glean_interactive
-/weaved
-select * from nation, region where n_regionkey = r_regionkey;
 
 /ccode pipeline _unnamed_
        begin
@@ -28,6 +23,8 @@ select * from nation, region where n_regionkey = r_regionkey;
 
          stage S01 on all partitions :
              scan      Nation
+           | project_v2 "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+           | combined_v2  0
            | next
 
          stage S02 on all partitions :
@@ -42,4 +39,3 @@ select * from nation, region where n_regionkey = r_regionkey;
            | first
 
        end ;
-

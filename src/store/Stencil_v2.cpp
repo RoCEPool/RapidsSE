@@ -409,6 +409,8 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     // generate code for indexScan OP
     if (pOp->szOpNm()->bSame("indexJoin_v2"_Stz)) {
 
+      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupIndexJoin(pCombined, pStream, pOp);
 
@@ -416,7 +418,6 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       pOpSketch = pSketchIndexJoin(pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
-      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
       ePrevStencil_v2 = SR_TJ;
       continue;
     }
@@ -1310,6 +1311,9 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // set the streamDefRht
+  pOpSketch->vStreamDefRht(pStreamDefRht);
 
   // set the indexDef
   pOpSketch->vIndexDef(pIndex->pIndexDef());

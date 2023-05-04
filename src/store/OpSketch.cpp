@@ -61,6 +61,7 @@ OpSketch::OpSketch(void)
   // definitions
   m_pStreamDefLft = nullptr;
   m_pStreamDefOut= nullptr;
+  m_pStreamDefRht = nullptr;
   m_pIndexDef= nullptr;
 
   // labels
@@ -109,6 +110,7 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   // definitions
   m_pStreamDefLft = pStreamDefIn;
   m_pStreamDefOut = pStreamDefOut;
+  m_pStreamDefRht = nullptr;
   m_pIndexDef     = nullptr;
 
   // labels
@@ -1141,7 +1143,7 @@ void OpSketch::vGenerateStencilToStruct(u8 uSelectColumns) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* push aggregate column on the exprStack                                     */
+/* set the labels                                                             */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
 
@@ -1150,6 +1152,16 @@ void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
   m_sLabel     = sLabel;
   m_sLabelNext = sLabelNext;
   m_sLabelLoop = sLabelLoop;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the streamRht                                                          */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vStreamDefRht(StreamDef* pStreamDefRht) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
+
+  m_pStreamDefRht     = pStreamDefRht;
 }
 
 /*----------------------------------------------------------------------------*/

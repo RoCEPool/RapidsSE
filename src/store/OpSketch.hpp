@@ -36,6 +36,7 @@ namespace STORE
 
     // definitions
     StreamDef* m_pStreamDefLft;
+    StreamDef* m_pStreamDefRht;
     StreamDef* m_pStreamDefOut;
     IndexDef*  m_pIndexDef;
 
@@ -93,6 +94,7 @@ namespace STORE
     void vIndexDef(IndexDef* pIndexDEf);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
+    void vStreamDefRht(StreamDef* pStreamDefRht);
     eSK eSketchKind(void);
 
   private:
