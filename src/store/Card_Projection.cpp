@@ -171,9 +171,9 @@ void Card_Projection::vDerivePrjKey(CardIter *pCI)
   for (i8 i_RunKeyExpr = 0; i_RunKeyExpr < nKeyExpr; i_RunKeyExpr++) {
     Card_Expr* p_expr_runkey = pCI->StreamOrder.m_pKey_running->pGetExpr(i_RunKeyExpr);
 
-    Stz* szPrjCol_runkey = p_expr_runkey->szGetOdn();
+    Card_Term* p_term_runkey = p_expr_runkey->pGetTerm(0);
+    Card_Expr* p_expr_prjCol = pFindExpr(p_term_runkey->pSymbol());
 
-    Card_Expr* p_expr_prjCol = pFindExpr(szPrjCol_runkey);
     if (p_expr_prjCol) {
 
       // annotation or direction in passing
