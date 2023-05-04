@@ -35,7 +35,7 @@ void vIndexScanBegin(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayT;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
 
   __L_LABEL__:
 

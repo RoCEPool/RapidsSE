@@ -866,11 +866,11 @@ void Stencil_v2::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) 
   pCombined->aCombinedT()->m_aIndexT = pIndexScan;
 
   // create RowSingleT
-  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
-  pCombined->aCombinedT()->m_aRowCellArrayT =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
-  &pCombined->aCombinedT()->m_racStrAreaT);
-  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
+  pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_xRowInfoT.m_aRowCellArray =
+  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle,
+  &pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea);
+  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea;
 
   // get the index tree for the index
   Table* pTable = pIndexScan->pTable();
@@ -1101,11 +1101,11 @@ void Stencil_v2::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
-  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
-  pCombined->aCombinedT()->m_aRowCellArrayT =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
-                                      &pCombined->aCombinedT()->m_racStrAreaT);
-  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
+  pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_xRowInfoT.m_aRowCellArray =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle,
+                                      &pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea);
+  pCombined->aCombinedT()->m_xRowInfoT.m_racStrAreaSav = pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea;
 
 }
 

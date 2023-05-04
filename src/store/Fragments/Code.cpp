@@ -54,8 +54,8 @@ i8 iGbyAggBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
-  szStrArea = aCombinedT->m_racStrAreaT;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
+  szStrArea = aCombinedT->m_xRowInfoT.m_racStrArea;
 
   if (!aCombinedT->m_iProcessRow) {
     aCombinedT->m_iProcessRow = 1;
@@ -258,7 +258,7 @@ void vInflateCrwBegin(Combined_T* aCombinedT) {
   // process the row
   aCombinedT->m_iProcessRow = 1;
 
-  aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;
+  aCombinedT->m_xRowInfoT.m_racStrArea = aCombinedT->m_xRowInfoT.m_racStrAreaSav;
 
   // marker-end
 }
@@ -315,9 +315,9 @@ void vInflateCrwReturn(Combined_T* aCombinedT) {
 
   L_InflateCrwRet:
 
-  aCombinedT->m_racStrAreaT = acStrArea;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayT;
-  szStrArea = aCombinedT->m_racStrAreaT;
+  aCombinedT->m_xRowInfoT.m_racStrArea = acStrArea;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
+  szStrArea = aCombinedT->m_xRowInfoT.m_racStrArea;
 
   // marker-end
 
@@ -343,7 +343,7 @@ i8 iSortBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
+  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
   //szStrArea = aCombinedT->m_racStrAreaT;
 
   if (!aCombinedT->m_iProcessRow) {
@@ -843,9 +843,9 @@ void vIndexDereference(Combined_T* aCombinedT) {
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)aCombinedT->m_aRowCellArrayT;
-  acStrArea = (char*)aCombinedT->m_racStrAreaT;
-  racStrArea = (char*)aCombinedT->m_racStrAreaT;
+  ayDstByte = (byte*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
+  acStrArea = (char*)aCombinedT->m_xRowInfoT.m_racStrArea;
+  racStrArea = (char*)aCombinedT->m_xRowInfoT.m_racStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataT = C_1B  + C_8B  + 4;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);

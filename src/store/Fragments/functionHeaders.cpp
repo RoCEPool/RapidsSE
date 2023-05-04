@@ -24,7 +24,7 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
 {
 
   #include "../src/store/vFLAT_Parameters.h"
-  #include "../src/store/vFLAT_PreliminaryCrw.h"
+  #include "../src/store/vFLAT_PreliminaryCrw_v2.h"
 
 
   char *szSrcStz;

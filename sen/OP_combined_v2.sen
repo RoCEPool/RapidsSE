@@ -58,7 +58,7 @@
   //"OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Fun0[] 0 Combined[].execute not if
+  CrwBuffer[] Fun0[] 0 Combined[].execute_v2 not if
     to errorCode
 
     // cleanup
@@ -121,10 +121,10 @@
   Index[].isNull not if
 
     // execute the indexScan and combinedOp's
-    nullptr Fun2[] 0 Combined[].execute assert
+    nullptr Fun2[] 0 Combined[].execute_v2 assert
 
     // execute EOS handling
-    nullptr Fun3[] 1 Combined[].execute assert
+    nullptr Fun3[] 1 Combined[].execute_v2 assert
 
     // pipeout all Tub[]/Pot[]
     Combined[].hashRows@ if
@@ -149,7 +149,7 @@
 
  0 locals| errorCode |
 
-  nullptr Fun3[] 0 Combined[].execute not if
+  nullptr Fun3[] 0 Combined[].execute_v2 not if
     to errorCode
     Pipein[].delete
     Tub[].deleteAllBuffers
@@ -197,7 +197,7 @@
   //"OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Fun1[] 0 Combined[].execute not if
+  RowBuffer[] Fun1[] 0 Combined[].execute_v2 not if
     to errorCode
 
     // cleanup

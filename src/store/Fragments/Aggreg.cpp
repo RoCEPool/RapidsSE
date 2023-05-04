@@ -36,7 +36,7 @@ i8 iAggregBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
 
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayAgg;
   szStrArea = aCombinedT->m_racStrAreaAgg;

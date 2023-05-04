@@ -49,7 +49,7 @@ void vProjectBegin(Combined_T* aCombinedT) {
     goto __L_LABEL_LOOP__;
   }
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_aRowCellArrayT;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
 
   aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayP;

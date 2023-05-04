@@ -35,7 +35,7 @@ void vIndexJoinIntKey(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //struct __STRUCT_FROM__ *p__STRUCT_FROM__;
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) aCombinedT->m_aRowCellArrayT;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) aCombinedT->m_xRowInfoT.m_aRowCellArray;
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
   p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aCombinedT->m_aRowCellArrayTJ;

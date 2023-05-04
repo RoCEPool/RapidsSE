@@ -55,12 +55,12 @@ void vInflateRowBegin(Combined_T* aCombinedT) {
 
    // get the next row (should be able to add rowsize)
 #ifdef WITH_TINYC
-   aCombinedT->m_aRowCellArrayT = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_CurrentRow);
+   aCombinedT->m_xRowInfoT.m_aRowCellArray = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_CurrentRow);
 #endif
 
-   aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;
+   aCombinedT->m_xRowInfoT.m_racStrArea = aCombinedT->m_xRowInfoT.m_racStrAreaSav;
 
-   piColumn = (i8*)aCombinedT->m_aRowCellArrayT;
+   piColumn = (i8*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
 
   // marker-end
   L_Return:

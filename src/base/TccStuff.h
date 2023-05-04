@@ -384,8 +384,35 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
 
+struct RowInfo {
+  void* m_pRowSingle;
+  void* m_aRowCellArray;
+  char* m_racStrArea;
+  char* m_racStrAreaSav;
+};
+
+struct IndexInfo {
+  void *m_aIndex;
+  void *m_aIndexTree;
+  void *m_aIndexDef;
+  void *m_aEntKey;
+  void *m_aEntWrk;
+  void *m_aEntUpper;
+  void *m_aEntBuffer;
+  struct Ent_int* m_aEntInt;
+};
+
 struct Combined_T
 {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CODE SYNTH V2
+
+  // inflate T
+  struct RowInfo m_xRowInfoT;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CODE SYNTH V1
+
   void*   m_pTub;
   void*   m_pPot;
   i8      m_bTrace;
@@ -404,6 +431,14 @@ struct Combined_T
   // rowBuffer T
   void*   m_aRowBuffer;
 
+  // common inflate
+  void*   m_pRowSingleT;
+  void*   m_aRowCellArrayT;
+  char*   m_racStrAreaT;
+  char*   m_racStrAreaTSav;
+  i8      m_nRows;
+  i8      m_nCols;
+
   // index scan T
   i8      m_iIndexScan;
   void*   m_aIndexT;
@@ -414,14 +449,6 @@ struct Combined_T
   void*   m_aEntUpperT;
   void*   m_aEntBufferT;
   struct Ent_int* m_aEntIntT;
-
-  // common inflate
-  void*   m_pRowSingleT;
-  void*   m_aRowCellArrayT;
-  char*   m_racStrAreaT;
-  char*   m_racStrAreaTSav;
-  i8      m_nRows;
-  i8      m_nCols;
 
   // index join with J
   i8      m_iIndexJoinInit;
