@@ -200,18 +200,8 @@ Card_Expr* Card_ELIST::pFind_expr_Of_colOdn(Card_Term* p_term_colOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(p_term_colOdn->bIsValOdn());
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card_Expr* p_expr = xKid.p_expr();
-  //if (p_expr->bOf_colOdn(p_term_colOdn))
-    if (p_expr->bIsOdn(p_term_colOdn->szSymbol()))
-      return p_expr;
-  }
-
-  return nullptr;
+  return pFind_expr_Of_odn(p_term_colOdn->szSymbol());
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
