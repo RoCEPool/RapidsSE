@@ -84,6 +84,9 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceStructTo(sLine, pOpSketch);
         vReplaceStructFrom(sLine, pOpSketch);
 
+        vReplaceLeftColumns(sLine, pOpSketch);
+        vReplaceRightColumns(sLine, pOpSketch);
+
         vReplaceLabel(sLine, pOpSketch);
         vReplaceLabelNext(sLine, pOpSketch);
         vReplaceLabelLoop(sLine, pOpSketch);
@@ -347,6 +350,38 @@ void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azChar(), "__L_LABEL_LOOP__")) {
     RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
     bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_LOOP__", pOpSketch->m_sLabelLoop.azChar());
+    RASSERT(bResult);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceLeftColumns(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  if (StrLib::bContains(sLine->azChar(), "__LEFT_COLUMNS__")) {
+    RASSERT( pOpSketch->m_pStreamDefLft );
+    s256 sLeftColumns;
+    StrLib::vSprint(sLeftColumns,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__LEFT_COLUMNS__", sLeftColumns.azChar());
+    RASSERT(bResult);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceRightColumns(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  if (StrLib::bContains(sLine->azChar(), "__RIGHT_COLUMNS__")) {
+    RASSERT( pOpSketch->m_pStreamDefRht );
+    s256 sRightColumns;
+    StrLib::vSprint(sRightColumns,"%lld"_Stz,pOpSketch->m_pStreamDefRht->nColumns());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__RIGHT_COLUMNS__", sRightColumns.azChar());
     RASSERT(bResult);
   }
 }

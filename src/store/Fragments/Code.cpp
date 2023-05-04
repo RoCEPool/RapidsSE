@@ -708,10 +708,10 @@ void vCopyCol(Combined_T* aCombinedT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vCopyVchCol -------------------------------------------------------------*/
+/*-- vTubVchCol --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vCopyVchCol
-void vCopyVchCol(Combined_T* aCombinedT) {
+// function-vTubVchCol
+void vTubVchCol(Combined_T* aCombinedT) {
 
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
@@ -754,6 +754,58 @@ void vCopyVchCol(Combined_T* aCombinedT) {
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
     iOffset = - nDifference(__STRING_AREA__,amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
+
+    // update the tub string size
+    __STRING_AREA__ += nSrcSize;
+  }
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vCopyVchCol -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vCopyVchCol
+void vCopyVchCol(Combined_T* aCombinedT) {
+
+  struct __STRUCT_FROM__ {
+    union Vch_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Vch_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  char* szSrcStz;
+  char* szDstStz;
+
+  i8  nSrcSize;
+  char* __STRING_AREA__;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+  printf("COLUMN FROM: __COLUMN_FROM__\n");
+
+  // get the source string
+  szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iOffset;
+  if (szSrcStz == (char*)C_DATUM_NULL) {
+    // copy the source to the destination
+    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = C_DATUM_NULL;
+  }
+  else {
+    nSrcSize = strlen(szSrcStz) + 1;
+
+    // get the destination string
+    szDstStz = __STRING_AREA__;
+    strncpy(szDstStz, szSrcStz, nSrcSize);
+
+    // copy the source to the destination
+    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = (i8)szDstStz;
 
     // update the tub string size
     __STRING_AREA__ += nSrcSize;
