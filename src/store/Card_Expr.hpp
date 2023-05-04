@@ -25,7 +25,7 @@ namespace STORE
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
-    Card_Expr* pClone(bool bstmCol_flip);
+    Card_Expr* pClone(void);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     Card_Expr* pCraft_expr_early(CardIter* pCI);
     void vDeconstruct(Card_As*&   rp_as,

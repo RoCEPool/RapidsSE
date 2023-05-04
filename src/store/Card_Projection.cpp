@@ -130,7 +130,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
         continue;
 
       if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
-        p_needed->vAppend(p_expr_col->pClone(true));
+        p_needed->vAppend(p_expr_col->pClone());
     }
   }
 

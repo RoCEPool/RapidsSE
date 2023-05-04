@@ -170,7 +170,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
     if (p_projection_early->pContains(x_needed.p_expr()))
       continue;
 
-    Card_Expr* p_expr_early = x_needed.p_expr()->pClone(false);
+    Card_Expr* p_expr_early = x_needed.p_expr()->pClone();
     p_projection_early->vInsert(p_expr_early);
   }
 

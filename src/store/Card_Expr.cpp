@@ -187,14 +187,11 @@ void Card_Expr::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
+Card_Expr* Card_Expr::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
-
-//  if (bStmCol_flip)
-//    p_clone->pGetOdn()->vEnsure_tblCol_flip();
 
   return p_clone;
 }
