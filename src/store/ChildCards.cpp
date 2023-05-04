@@ -569,6 +569,25 @@ void ChildCards::vTransferTill(Card* pCards, Card* pTill,
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* remove any child with matching symbol                                      */
+/*----------------------------------------------------------------------------*/
+i8 ChildCards::nTrimChildren(eCK eCard, Stz* szSymbol)
+{
+  //_precondition_(_ADDRESS_,_FOOTER_);
+
+  i8 nTrimmed = 0;
+
+  i8 i_Child;
+
+  while (Card* pChild = pFindChild(eCard,szSymbol,i_Child))  {
+    vDeleteChild(pChild);
+    nTrimmed++;
+  }
+
+  return nTrimmed;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

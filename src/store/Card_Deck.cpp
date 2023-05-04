@@ -289,7 +289,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
-        pCI->G.p_rpnCalc->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_rpnCalc->vEnsureTypesFor_stmColOdn(pCI);
       continue;
     }
 

@@ -823,7 +823,7 @@ Stz* Card::szGetType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szType = m_xSymbol.Y_szGet((P_Type));
+  Stz* szType = m_xSymbol.Y_szGet(P_Type);
 
   return szType;
 }
@@ -878,6 +878,19 @@ bool Card::bHasSymbolic(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (*m_xSymbol.m_sSymbol.azChar())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (m_xSymbol.Y_szGet(P_Type))
     return true;
 
   return false;
