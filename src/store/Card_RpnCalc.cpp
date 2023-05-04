@@ -65,28 +65,6 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_valOdn)
-{
-  _static_
-
-  RASSERT(p_term_valOdn->bIsValOdn());
-
-//  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-//
-//  Card_Term* p_term = p_term_valOdn->pClone();
-//  p_rpnCalc->vAppend(p_term);
-//
-//  // rpn is a calculation resulting in a typed value
-//  p_rpnCalc->vSetType(p_term);
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(p_term_valOdn->pSymbol());
-
-  return p_rpnCalc;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/

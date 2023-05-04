@@ -77,7 +77,8 @@ Card_Expr* Card_Expr::pDistinct_expr_For_valOdn(Card_Term* p_term_valOdn)
 
   Card_Expr* p_expr = new Card_Expr;
 
-  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc(p_term_valOdn);
+  //Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc(p_term_valOdn);
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(p_term_valOdn->pSymbol());
   p_expr->vAppend(p_rpnCalc);
 
   return p_expr;

@@ -17,8 +17,6 @@ namespace STORE
     Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
 
-    static Card_RpnCalc* pDistinct_rpnCalc(Card_Term* p_term_valOdn);
-
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConcat(Card_RpnCalc* p_rpnCalc);
     void vConvert_sqyOp_not_To_notSqyOp(void);
