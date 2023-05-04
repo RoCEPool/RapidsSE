@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ApplyOptimisations.hpp -- Join Ordering                                          */
+/* MakeOptimal.hpp -- Join Ordering                                          */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class ApplyOptimisations : public Object
+  class MakeOptimal : public Object
   {
   private:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    ApplyOptimisations(CardIter* pCI);
-   ~ApplyOptimisations(void) noexcept(false);
+    MakeOptimal(CardIter* pCI);
+   ~MakeOptimal(void) noexcept(false);
 
     void vOptimise(void);
 
@@ -56,7 +56,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  ApplyOptimisations* _pApplyOptimisations(void* aAddr);
+  MakeOptimal* _pMakeOptimal(void* aAddr);
 }
 
 /*============================================================================*/

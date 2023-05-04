@@ -1045,7 +1045,7 @@ Card_Expr* CardIter::pExpr_For_col(Card_Term* p_term, i8 i_Before)
           if (Card_RpnCalc* p_rpnCalc = p_expr_prj->pSub_rpnCalc()) {
             //p_rpnCalc->vDump();
             if (1 == p_rpnCalc->nChildCards() &&
-                p_rpnCalc->szGetSingleTermIf_odn()->bSame(p_term->szSymbol())) {
+                p_rpnCalc->szGetOdn()->bSame(p_term->szSymbol())) {
               p_expr_col = p_expr_prj;
               break;
             }
@@ -2062,12 +2062,12 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
     return nullptr;
 
   Stz* szPrjCol = p_term->szSymbol();
-  if (p_term->pSymbol()->bIsStreamColumn()) {
+  if (p_term->pSymbol()->bIsStreamOrdinal()) {
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term);
     return p_expr_prior;
   }
   else
-  if (p_term->pSymbol()->bIsTableColumn()) {
+  if (p_term->pSymbol()->bIsColumnOrdinal()) {
     Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(szPrjCol);
     return p_expr_prior;
   }

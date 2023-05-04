@@ -16,23 +16,21 @@ namespace STORE
     Card_RpnCalc(void);
    ~Card_RpnCalc(void) noexcept(false);
 
-    static Card_RpnCalc* pDistinct_rpnCalc(Card_Term* p_term_colOdn);
+    static Card_RpnCalc* pDistinct_rpnCalc(Card_Term* p_term_valOdn);
 
-    void vAppendRpnCalc(Card_RpnCalc* p_rpnCalc);
-    void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vConcat(Card_RpnCalc* p_rpnCalc);
     void vConvert_sqyOp_not_To_notSqyOp(void);
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
-    void vEnsureTypesFor_stmColOdn(CardIter* pCI);
-    void vFactorAll_colOdn_IntoDistinct_expr(CardIter* pCI);
-    Card_Term* pGetSingleTermIf_odn(void);
-    Stz* szGetSingleTermIf_odn(void);
-    Card_Term* pGetSingleTermIf_stmColOdn(void);
+    void vConvert_stmOdn_terms_To_colOdn(CardIter* pCI);
+    void vEnsureTypesFor_stmOdn(CardIter* pCI);
+    void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
+    Card_Term* pGetOdn(void);
+    Stz* szGetOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
-    bool bHasWhen(void);
-    bool bIsBraced(void);
-    bool bIsSame(Card_RpnCalc* p_rpnCalc_arg);
-    bool bIsSingle_colOdn(void);
+    bool bHasTerm(Stz* szSymbol);
+    bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
+    bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
 
     Stz* szP_Type(void);

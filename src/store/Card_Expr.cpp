@@ -69,15 +69,15 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pDistinct_expr_For_col(Card_Term* p_term_colOdn)
+Card_Expr* Card_Expr::pDistinct_expr_For_valOdn(Card_Term* p_term_valOdn)
 {
   _static_
 
-  RASSERT(p_term_colOdn->bIsColOdn());
+  RASSERT(p_term_valOdn->bIsValOdn());
 
   Card_Expr* p_expr = new Card_Expr;
 
-  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc(p_term_colOdn);
+  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc(p_term_valOdn);
   p_expr->vAppend(p_rpnCalc);
 
   return p_expr;
@@ -146,7 +146,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   RASSERT(p_expr->szP_Type());
 
   Symbol xSymbol_Dn;
-  xSymbol_Dn.vSetStreamColOrdinal(i_Col);
+  xSymbol_Dn.vSetStreamOrdinal(i_Col);
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
@@ -174,15 +174,15 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_Expr::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vBump_Rightwards(nBumpBy,bSkipFoldExpr);
+    p_boolCalc->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vBump_Rightwards(nBumpBy,bSkipFoldExpr);
+    p_rpnCalc->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
 
 }
 
@@ -196,7 +196,7 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
   Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
 
 //  if (bStmCol_flip)
-//    p_clone->pGetSingleTermIf_odn()->vEnsure_tblCol_flip();
+//    p_clone->pGetOdn()->vEnsure_tblCol_flip();
 
   return p_clone;
 }
@@ -204,7 +204,7 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+void Card_Expr::vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -212,190 +212,7 @@ void Card_Expr::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
     p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vDeconstruct(Card_As*&      rp_as,
-                             Card_Term*&    rp_term_0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  rp_as   = pSub_as();
-  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
-  rp_term_0  = p_rpnCalc ? p_rpnCalc->pSub_term() : nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  RASSERT(! pCI->G.p_subSet);
-
-  Card_SubSet* p_subSet = new Card_SubSet;
-
-  // an expr is an rpnCalc (shouldn't be boolCalc)
-  if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
-
-    pCI->G.p_rpnCalc->vFactorAll_colOdn_IntoDistinct_expr(pCI);
-    p_subSet->vTransferChildren(pCI->G.p_subSet);
-
-    DELETE_CARD(pCI->G.p_subSet);
-  }
-
-  pCI->G.p_subSet = p_subSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsColOrdinal(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
-
-  bool b = p_rpnCalc->bIsSingle_colOdn();
-
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsProjectedCol(Stz* szProjectedCol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szPrjCol = this->szProjectedCol();
-  if (! szPrjCol)
-    return false;
-
-  if (szPrjCol->bSame(szProjectedCol))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasProjectedCol(Card_Term* p_term_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
- Card_Term* p_term_prj = this->pProjectedTerm();
-  if (! p_term_prj)
-    return false;
-
-  if (p_term_prj->bIsSame(p_term_arg))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsSame(Card_Expr* p_expr_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (! szP_Type()->bSame(p_expr_arg->szP_Type()))
-    return false;
-
-  Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
-  Card_RpnCalc* p_rpnCalc_arg  = p_expr_arg->pSub_rpnCalc();
-  if (!p_rpnCalc_this->bIsSame(p_rpnCalc_arg))
-    return false;
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Expr::szProjectedCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szPrjCol = pSub_rpnCalc()->szGetSingleTermIf_odn();
-
-  return szPrjCol;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_Expr::pProjectedTerm(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_Term* szPrjTerm = pSub_rpnCalc()->pGetTerm(0);
-
-  return szPrjTerm;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vReconstruct(Card_As*    p_as_arg,
-                             Card_Term*  p_term_0_arg)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDeleteAllChildren();
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_term_0_arg->pClone();
-
-  vAppend(p_as_arg);
-  vAppend(p_rpnCalc);
-  p_rpnCalc->vAppend(p_term);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumber(BASE::i8 i_Expr, bool bIsKeyExpr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (bIsKeyExpr)
-    vRenumberAsKeyOdn(i_Expr);
-  else
-    vRenumberAsStmColOdn(i_Expr);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberAsKeyOdn(BASE::i8 i_Expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol xSymbol;
-  xSymbol.vSetKeyOrdinal(i_Expr);
-
-  vSymbol(xSymbol);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vRenumberAsStmColOdn(BASE::i8 i_Expr)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol xSymbol;
-  xSymbol.vSetStreamColOrdinal(i_Expr);
-
-  vSymbol(xSymbol);
+    p_rpnCalc->vConvert_stmOdn_terms_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -440,38 +257,152 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 Card_Expr::iRpnCalc_WhichGbyKey(void)
+void Card_Expr::vDeconstruct(Card_As*&      rp_as,
+                             Card_Term*&    rp_term_0)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_RpnCalc* p_rpnCalc = this->pSub_rpnCalc();
-  if (! p_rpnCalc)
-    return C_UNKNOWN;
-
-  if (p_rpnCalc->nChildCards() > 1)
-    return C_UNKNOWN;
-
-  CardIter xCI(p_rpnCalc);
-  while (xCI.G_bEachMain())  {
-    if (xCI.G.p_term->pSymbol()->bIsKey()) {
-      i8 i_Key = xCI.G.p_term->pSymbol()->iGetOrdinal();
-      return i_Key;
-    }
-  }
-
-  return C_UNKNOWN;
+  rp_as   = pSub_as();
+  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
+  rp_term_0  = p_rpnCalc ? p_rpnCalc->pSub_term() : nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vTypes_For_stmColOdn(CardIter* pCI)
+void Card_Expr::vEnsureTypes_For_stmOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   pCI->G.p_rpnCalc = pSub_rpnCalc();
 
-  pCI->G.p_rpnCalc->vEnsureTypesFor_stmColOdn(pCI);
+  pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  RASSERT(! pCI->G.p_subSet);
+
+  Card_SubSet* p_subSet = new Card_SubSet;
+
+  // an expr is an rpnCalc (shouldn't be boolCalc)
+  if ( (pCI->G.p_rpnCalc = pSub_rpnCalc()) ) {
+
+    pCI->G.p_rpnCalc->vFactorAll_valOdn_IntoDistinct_expr(pCI);
+    p_subSet->vTransferChildren(pCI->G.p_subSet);
+
+    DELETE_CARD(pCI->G.p_subSet);
+  }
+
+  pCI->G.p_subSet = p_subSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Expr::szGetOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szOdn = pSub_rpnCalc()->szGetOdn();
+
+  return szOdn;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Expr::pGetTerm(i8 i_Term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
+
+  return p_term_i;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsOdn(Stz* szOdn_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szOdn = this->szGetOdn();
+  if (! szOdn)
+    return false;
+
+  if (szOdn_arg->bSame(szOdn))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vReconstruct(Card_As*    p_as_arg,
+                             Card_Term*  p_term_0_arg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vDeleteAllChildren();
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
+  Card_Term*    p_term    = p_term_0_arg->pClone();
+
+  vAppend(p_as_arg);
+  vAppend(p_rpnCalc);
+  p_rpnCalc->vAppend(p_term);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol xSymbol;
+  xSymbol.vSetKeyOrdinal(i_Expr);
+
+  vSymbol(xSymbol);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vRenumberForm_stmOdn(BASE::i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol xSymbol;
+  xSymbol.vSetStreamOrdinal(i_Expr);
+
+  vSymbol(xSymbol);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bSameAs(Card_Expr* p_expr_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! szP_Type()->bSame(p_expr_arg->szP_Type()))
+    return false;
+
+  Card_RpnCalc* p_rpnCalc_this = this->pSub_rpnCalc();
+  Card_RpnCalc* p_rpnCalc_arg  = p_expr_arg->pSub_rpnCalc();
+  if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

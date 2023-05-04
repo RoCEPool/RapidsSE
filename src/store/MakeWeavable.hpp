@@ -25,7 +25,7 @@ namespace STORE
     MakeWeavable(CardIter* pCI);
    ~MakeWeavable(void) noexcept(false);
 
-    void vMakeWeavable(void);
+    void vWeavable(void);
 
   private:
 

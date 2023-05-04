@@ -153,7 +153,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     }
 
     // append the <absJoin>/<on>/<rpnCalc> to the <where>/<rpnCalc>
-    pCI->G.p_rpnCalc->vAppendRpnCalc(p_rpnCalc_on);
+    pCI->G.p_rpnCalc->vConcat(p_rpnCalc_on);
 
     // remove and delete <absJoin>/<on>
     pCI->G.p_absJoin->vRemoveChild(pCI->G.p_on);
@@ -175,7 +175,7 @@ Card_Where* Card_Where::pNewWhereConstruct(void)
 
   Card_Expr* p_expr = new Card_Expr;
   Symbol x_Symbol_stmCol1;
-  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+  x_Symbol_stmCol1.vSetStreamOrdinal(1);
 
   p_expr->vSymbol(x_Symbol_stmCol1);
   p_constraint->vAppend(p_expr);
@@ -198,7 +198,7 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  if (Card_Constraint* p_constraint = pSub_constraint())
-//    p_constraint->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+//    p_constraint->vConvertAll_stmColOdn_To_tblColOdn(pCI);
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
     p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
 }
@@ -214,10 +214,10 @@ void Card_Where::vEarlyProject_add_transients(CardIter* pCI)
 
   auto bLambda = [pCI] (Card_Term* p_term) {
 
-    if (! p_term->bIsColOdn())
+    if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(p_term))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(p_term))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
@@ -283,7 +283,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
     Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    x_Symbol_stmCol1.vSetStreamOrdinal(1);
 
     // replace sqCall with sqResult
     pCI->Sqy.m_pTerm_sqCall->vSymbol(x_Symbol_stmCol1);

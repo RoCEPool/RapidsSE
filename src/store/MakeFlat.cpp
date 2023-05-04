@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* FlattenSubQueries.cpp -- Flatten SubQueries                                */
+/* MakeFlat.cpp -- Flatten SubQueries                                */
 /*============================================================================*/
 
-#include "FlattenSubQueries.hpp"
+#include "MakeFlat.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
@@ -17,36 +17,36 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, FlattenSubQueries, CN_FLATTENSUBQUERIES)
-__aNewFunction(FlattenSubQueries, CN_FLATTENSUBQUERIES)
-__vDeleteFunction(FlattenSubQueries, CN_FLATTENSUBQUERIES)
-__aFooterFunction(FlattenSubQueries)
+__pCastFunction(STORE, MakeFlat, CN_MAKEFLAT)
+__aNewFunction(MakeFlat, CN_MAKEFLAT)
+__vDeleteFunction(MakeFlat, CN_MAKEFLAT)
+__aFooterFunction(MakeFlat)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FlattenSubQueries::FlattenSubQueries(CardIter* pCI)
-: Object(CN_FLATTENSUBQUERIES)
+MakeFlat::MakeFlat(CardIter* pCI)
+: Object(CN_MAKEFLAT)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI = pCI;
 
-  _checkInitialised_(CN_FLATTENSUBQUERIES);
+  _checkInitialised_(CN_MAKEFLAT);
 
   m_pCI->vUsingBoard(BK_SUBQUERY, 0);
   m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-FlattenSubQueries::~FlattenSubQueries(void) noexcept(false)
+MakeFlat::~MakeFlat(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 }
 
 
@@ -57,9 +57,9 @@ FlattenSubQueries::~FlattenSubQueries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten(void)
+void MakeFlat::vFlatten(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->G.pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
   m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
@@ -71,9 +71,9 @@ void FlattenSubQueries::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
+void MakeFlat::vFlatten_recurse(i8 iDepth)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   // things before sub-queries
 
@@ -220,9 +220,9 @@ void FlattenSubQueries::vFlatten_recurse(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlattenByDecisionTree(void)
+void MakeFlat::vFlattenByDecisionTree(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vTransform(__func__, "Flatten by decision tree (recursive model)"_Stz);
 
@@ -303,9 +303,9 @@ void FlattenSubQueries::vFlattenByDecisionTree(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_10_F(void)
+void MakeFlat::vFlatten_10_F(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -370,9 +370,9 @@ void FlattenSubQueries::vFlatten_10_F(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_24_W_A_C_ro(void)
+void MakeFlat::vFlatten_24_W_A_C_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -413,9 +413,9 @@ void FlattenSubQueries::vFlatten_24_W_A_C_ro(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_32_W_A_NC_I(void)
+void MakeFlat::vFlatten_32_W_A_NC_I(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -465,9 +465,9 @@ void FlattenSubQueries::vFlatten_32_W_A_NC_I(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_34_W_A_NC_ro(void)
+void MakeFlat::vFlatten_34_W_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -520,9 +520,9 @@ void FlattenSubQueries::vFlatten_34_W_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_40_W_L_C_E(void)
+void MakeFlat::vFlatten_40_W_L_C_E(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -557,9 +557,9 @@ void FlattenSubQueries::vFlatten_40_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_52_W_L_NC_I_exists(void)
+void MakeFlat::vFlatten_52_W_L_NC_I_exists(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   vFlatten_53_W_L_NC_NI_exists();
 }
@@ -567,9 +567,9 @@ void FlattenSubQueries::vFlatten_52_W_L_NC_I_exists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_52_W_L_NC_I_join(void)
+void MakeFlat::vFlatten_52_W_L_NC_I_join(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   i8 nTables = pFold->nTables_In_SubQuery(m_pCI,"52_W_L_NC_I_join"_Stz,CK_WHERE);
@@ -586,9 +586,9 @@ void FlattenSubQueries::vFlatten_52_W_L_NC_I_join(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_53_W_L_NC_NI_exists(void)
+void MakeFlat::vFlatten_53_W_L_NC_NI_exists(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -662,9 +662,9 @@ void FlattenSubQueries::vFlatten_53_W_L_NC_NI_exists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_53_W_L_NC_NI_join(void)
+void MakeFlat::vFlatten_53_W_L_NC_NI_join(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -729,9 +729,9 @@ void FlattenSubQueries::vFlatten_53_W_L_NC_NI_join(void)
 /*----------------------------------------------------------------------------*/
 /* Folding a non-correlated aggregate subquery (via having clause)            */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vFlatten_74_H_A_NC_ro(void)
+void MakeFlat::vFlatten_74_H_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -779,9 +779,9 @@ void FlattenSubQueries::vFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void FlattenSubQueries::vStmColToTblCol(void)
+void MakeFlat::vStmColToTblCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_FLATTENSUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
   m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
 

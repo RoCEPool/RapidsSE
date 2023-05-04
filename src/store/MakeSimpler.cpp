@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* PrepareSubQueries.cpp -- PrepareSubQueries                                 */
+/* MakeSimpler.cpp -- Make Simpler                                            */
 /*============================================================================*/
 
-#include "PrepareSubQueries.hpp"
+#include "MakeSimpler.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
@@ -16,33 +16,33 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, PrepareSubQueries, CN_PREPARESUBQUERIES)
-__aNewFunction(PrepareSubQueries, CN_PREPARESUBQUERIES)
-__vDeleteFunction(PrepareSubQueries, CN_PREPARESUBQUERIES)
-__aFooterFunction(PrepareSubQueries)
+__pCastFunction(STORE, MakeSimpler, CN_MAKESIMPLER)
+__aNewFunction(MakeSimpler, CN_MAKESIMPLER)
+__vDeleteFunction(MakeSimpler, CN_MAKESIMPLER)
+__aFooterFunction(MakeSimpler)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PrepareSubQueries::PrepareSubQueries(CardIter* pCI)
-: Object(CN_PREPARESUBQUERIES)
+MakeSimpler::MakeSimpler(CardIter* pCI)
+: Object(CN_MAKESIMPLER)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI = pCI;
   m_cTableSyn = 'a';
 
-  _checkInitialised_(CN_PREPARESUBQUERIES);
+  _checkInitialised_(CN_MAKESIMPLER);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PrepareSubQueries::~PrepareSubQueries(void) noexcept(false)
+MakeSimpler::~MakeSimpler(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 }
 
 
@@ -53,9 +53,9 @@ PrepareSubQueries::~PrepareSubQueries(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* apply the reducePipeline set of transformations to all subPipe boards      */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vPrepareSubQueries(void)
+void MakeSimpler::vSimplify(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
@@ -100,9 +100,9 @@ void PrepareSubQueries::vPrepareSubQueries(void)
 /*----------------------------------------------------------------------------*/
 /* Add Levels                                                                 */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vAddLevel(void)
+void MakeSimpler::vAddLevel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
@@ -116,9 +116,9 @@ void PrepareSubQueries::vAddLevel(void)
 /*----------------------------------------------------------------------------*/
 /* As review                                                                  */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vAsReview(void)
+void MakeSimpler::vAsReview(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "as review"_Stz);
 
@@ -158,9 +158,9 @@ void PrepareSubQueries::vAsReview(void)
 /*----------------------------------------------------------------------------*/
 /* Condense Info                                                              */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vDeleteUnneeded(void)
+void MakeSimpler::vDeleteUnneeded(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
@@ -189,9 +189,9 @@ void PrepareSubQueries::vDeleteUnneeded(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vIndexAnalysis(void)
+void MakeSimpler::vIndexAnalysis(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "index analysis"_Stz);
 
@@ -213,9 +213,9 @@ void PrepareSubQueries::vIndexAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /* move all <absJoin>/<on> to <where>                                         */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vMoveOn(void)
+void MakeSimpler::vMoveOn(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "move <on> in <absJoin>'s to <where>"_Stz);
 
@@ -227,9 +227,9 @@ void PrepareSubQueries::vMoveOn(void)
 /*----------------------------------------------------------------------------*/
 /* Not Ops                                                                    */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vNotOps(void)
+void MakeSimpler::vNotOps(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PREPARESUBQUERIES, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
@@ -239,9 +239,9 @@ void PrepareSubQueries::vNotOps(void)
 /*----------------------------------------------------------------------------*/
 /* Projection Analysis                                                        */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vProjectionAnalysis(void)
+void MakeSimpler::vProjectionAnalysis(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "((desc))"_Stz);
 
@@ -253,9 +253,9 @@ void PrepareSubQueries::vProjectionAnalysis(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vRpnCalcToBoolCalc(void)
+void MakeSimpler::vRpnCalcToBoolCalc(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
 
@@ -273,9 +273,9 @@ void PrepareSubQueries::vRpnCalcToBoolCalc(void)
 /*----------------------------------------------------------------------------*/
 /* Condense Info                                                              */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vScanBecomesTable(void)
+void MakeSimpler::vScanBecomesTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
 
@@ -289,9 +289,9 @@ void PrepareSubQueries::vScanBecomesTable(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vShortenQueryNames(void)
+void MakeSimpler::vShortenQueryNames(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "vShortenQueryNames"_Stz);
 
@@ -331,9 +331,9 @@ void PrepareSubQueries::vShortenQueryNames(void)
 /*----------------------------------------------------------------------------*/
 /* Table Analysis                                                             */
 /*----------------------------------------------------------------------------*/
-void PrepareSubQueries::vTableAnalysis(char* acTableSyn)
+void MakeSimpler::vTableAnalysis(char* acTableSyn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PREPARESUBQUERIES,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
   m_pCI->vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
 

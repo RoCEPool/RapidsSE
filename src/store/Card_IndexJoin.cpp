@@ -54,7 +54,7 @@ void Card_IndexJoin::vDerive_Projection_Key(CardIter* pCI)
 
   // snap onto <indexJoin>/<projection>, delete existing <indexJoin>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vDelete_key(pCI);
+  pCI->G.p_projection->vDeletePrjKey(pCI);
 
   if (pCI->StreamOrder.m_pKey_running) {
     pCI->G.p_key = _pCard_Key(pCI->StreamOrder.m_pKey_running->pDupCardRecursive());
@@ -146,9 +146,9 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
   //pCI->G.p_term->vDump();
 
 
-  if (! pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(pCI->G.p_term)) {
+  if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(pCI->G.p_term)) {
 
-    if (pCI->G.p_term->bIsStmColOdn()) {
+    if (pCI->G.p_term->bIsStmOdn()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
       p_rpnCalc->pSymbol()->Y_vSet(P_Type,pCI->G.p_term->pSymbol()->Y_szGet(P_Type));
@@ -176,10 +176,10 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   auto bLambda = [pCI] (Card_Term* p_term) {
 
-    if (! p_term->bIsColOdn())
+    if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_With_projectedCol(p_term))
+    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(p_term))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {

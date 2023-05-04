@@ -19,34 +19,29 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------
-    static Card_Expr* pDistinct_expr_For_col(Card_Term* p_term_colOdn);
+    static Card_Expr* pDistinct_expr_For_valOdn(Card_Term* p_term_valOdn);
     static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
-    void vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr=false);
+    void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(bool bstmCol_flip);
-    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI);
+    Card_Expr* pCraft_expr_early(CardIter* pCI);
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);
-
-    void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
-    bool bIsColOrdinal(void);
-    bool bIsProjectedCol(Stz* szProjectedCol);
-    bool bHasProjectedCol(Card_Term* p_term_arg);
-    bool bIsSame(Card_Expr* pExpr_arg);
-    Stz* szProjectedCol(void);
-    Card_Term* pProjectedTerm(void);
+    void vEnsureTypes_For_stmOdn(CardIter* pCI);
+    void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
+    Stz* szGetOdn(void);
+    Card_Term* pGetTerm(i8 i_Term);
+    bool bIsOdn(Stz* szOdn_arg);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
-    void vRenumber(i8 i_Expr, bool bIsKeyExpr=false);
-    void vRenumberAsKeyOdn(i8 i_Expr);
-    void vRenumberAsStmColOdn(i8 i_Expr);
-    Card_Expr* pCraft_expr_early(CardIter* pCI);
+    void vRenumberForm_keyOdn(i8 i_Expr);
+    void vRenumberForm_stmOdn(i8 i_Expr);
 
-    i8 iRpnCalc_WhichGbyKey(void);
+    bool bSameAs(Card_Expr* pExpr_arg);
 
-    void vTypes_For_stmColOdn(CardIter* pCI);
 
     Stz* szP_Type(void);
 

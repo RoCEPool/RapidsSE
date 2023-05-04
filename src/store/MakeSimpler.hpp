@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* PrepareSubQueries.hpp -- Prepare SubQueries                                */
+/* MakeSimpler.hpp -- Prepare SubQueries                                      */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class PrepareSubQueries : public Object
+  class MakeSimpler : public Object
   {
   private:
 
@@ -24,10 +24,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    PrepareSubQueries(CardIter* pCI);
-   ~PrepareSubQueries(void) noexcept(false);
+    MakeSimpler(CardIter* pCI);
+   ~MakeSimpler(void) noexcept(false);
 
-    void vPrepareSubQueries(void);
+    void vSimplify(void);
 
   private:
     void vAddLevel(void);
@@ -46,7 +46,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  PrepareSubQueries* _pPrepareSubQueries(void* aAddr);
+  MakeSimpler* _pMakeSimpler(void* aAddr);
 }
 
 /*============================================================================*/

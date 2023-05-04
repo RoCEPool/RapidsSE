@@ -894,7 +894,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   }
   else {
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSetStreamColOrdinal(ri_Expr);
+    xSymbol_stmColOdn.vSetStreamOrdinal(ri_Expr);
     pCard_Expr->vSymbol(xSymbol_stmColOdn);
   }
 

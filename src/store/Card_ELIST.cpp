@@ -52,8 +52,8 @@ void Card_ELIST::vBump_keyOdn_In_rpnCalc(CardIter* pCI)
     while ((xCI2.G_bEachMain(CK_TERM))) {
       Stz *szTerm = xCI2.G.p_term->szSymbol();
 
-      if (xCI2.G.p_term->pSymbol()->bIsKey()) {
-        xCI2.G.p_term->vBump_KeyOrdinal();
+      if (xCI2.G.p_term->pSymbol()->bIsKeyOrdinal()) {
+        xCI2.G.p_term->vBumpKeyOdn();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
       }
@@ -80,8 +80,8 @@ void Card_ELIST::vBump_stmOdn_In_rpnCalc(CardIter* )
     while (xCI2.G_bEachMain(CK_TERM)) {
       Stz *szTerm = xCI2.G.p_term->szSymbol();
 
-      if (xCI2.G.p_term->pSymbol()->bIsStreamColumn()) {
-        xCI2.G.p_term->vBump_StreamColOrdinal();
+      if (xCI2.G.p_term->pSymbol()->bIsStreamOrdinal()) {
+        xCI2.G.p_term->vBump_stmOdn();
         xCI2.G.p_term->vMark1(MARK_CHANGED);
         continue;
       }
@@ -99,7 +99,7 @@ void Card_ELIST::vBump_Rightwards(i8 nBumpBy)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vBump_Rightwards(nBumpBy);
+    xCI.G.p_expr->vBump_stmOdn(nBumpBy);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +111,7 @@ Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
 
   CardIter xCI_this(this);
   while (xCI_this.G_bEachMain(CK_EXPR))
-    if (xCI_this.G.p_expr->bIsSame(p_expr_arg))
+    if (xCI_this.G.p_expr->bSameAs(p_expr_arg))
       return xCI_this.G.p_expr;
 
   return nullptr;
@@ -127,7 +127,7 @@ void Card_ELIST::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    xCI.G.p_expr->vConvertAll_stmColOdn_To_tblColOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +167,7 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
     if (! pGetChild(xKid.i_Child())->bIsCard(CK_EXPR))
       break;
     if (Card_Expr *p_expr = pGetExpr(xKid.i_Child()))
-      if (p_expr->bIsProjectedCol(szPrjCol))
+      if (p_expr->bIsOdn(szPrjCol))
         return p_expr;
   }
 
@@ -177,7 +177,7 @@ Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
+Card_Expr* Card_ELIST::pFind_expr_Of_odn(Stz* szOdn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -186,7 +186,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsProjectedCol(szCol))
+    if (p_expr->bIsOdn(szOdn))
       return p_expr;
   }
 
@@ -196,22 +196,12 @@ Card_Expr* Card_ELIST::pFind_expr_By_projectedCol(Stz* szCol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_With_projectedCol(Card_Term* p_term_col)
+Card_Expr* Card_ELIST::pFind_expr_Of_odn(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  RASSERT(p_term_col->bIsColOdn());
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    Card_Expr* p_expr = xKid.p_expr();
-    if (p_expr->bHasProjectedCol(p_term_col))
-      return p_expr;
-  }
-
-  return nullptr;
+  return pFind_expr_Of_odn(p_term->szSymbol());
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get a particular expr                                                      */
@@ -288,7 +278,10 @@ void Card_ELIST::vRenumberAll_expr(void)
   i8 i_Expr = 1;
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vRenumber(i_Expr++, bIsKeyExpr);
+    if (bIsKeyExpr)
+      xCI.G.p_expr->vRenumberForm_keyOdn(i_Expr++);
+    else
+      xCI.G.p_expr->vRenumberForm_stmOdn(i_Expr++);
 }
 
 /*============================================================================*/

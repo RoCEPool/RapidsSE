@@ -68,7 +68,7 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 
   // snap onto <indexScan>/<projection>, delete existing <indexScan>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vDelete_key(pCI);
+  pCI->G.p_projection->vDeletePrjKey(pCI);
 
   // derive new <indexScan>/<projection>/<key>
   pCI->G.p_key = new Card_Key;

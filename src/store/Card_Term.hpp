@@ -20,24 +20,23 @@ namespace STORE
     Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
 
-    void vBump_KeyOrdinal(i8 nBy=1);
-    void vBump_StreamColOrdinal(i8 nBy=1);
+    void vBumpKeyOdn(i8 nBy=1);
+    void vBump_stmOdn(i8 nBy= 1);
     Card_Term* pClone(void);
     Card_Term* pClone(Stz* szDiffSymbol);
-    void vConvertIf_stmColOdn_To_tblColOdn(CardIter* pCI);
+    void vConvertIf_stmOdn_To_colOdn(CardIter* pCI);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);
     i8   iGetOdn(void);
-    char cGetTableSyn(void);
-    bool bIsColOdn(void);    // $n or $c.n
-    bool bIsCorPrmOdn(void); // %n
-    bool bIsKeyOdn(void);    // $Kn
-    bool bIsSame(Card_Term* p_term_arg);
-    bool bIsStmColOdn(void); // $n
-    bool bIsSymbol(Stz* szSymbol);
-    bool bIsTblColOdn(void); // $c.n
+    char cGetTblSyn(void);
+    bool bIsColOdn(void);   // $c.n
+    bool bIsKeyOdn(void);   // $Kn
+    bool bIsPrmOdn(void);   // %n
+    bool bIsStmOdn(void);   // $n
+    bool bIsValOdn(void);   // $n or $c.n
     void vPrint(Ribbon* pRibbon, i8 iDepth);
+    bool bSameAs(Card_Term* p_term_arg);
   };
 
   Card_Term* _pCard_Term(void* aAddr);

@@ -2659,7 +2659,7 @@ bool Symbol::bIsIndexColumn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a key symbol? (i.e. $Kn)                              */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsKey(void)
+bool Symbol::bIsKeyOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
@@ -2676,20 +2676,9 @@ bool Symbol::bIsKey(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsColumn(void)
-{
-  if (bIsStreamColumn() || bIsTableColumn())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsCorrParam(void)
+bool Symbol::bIsParameterOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
@@ -2716,26 +2705,9 @@ bool Symbol::bIsRelnOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-result?  (i.e. #n)                         */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsResult(void)
-{
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-
-  if ('#' == acFirst
-      && StrLib::bIsDigit(acSecond)
-      && ! acThird)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this a symbol for a stream-column?  (i.e. $n)                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsStreamColumn(void)
+bool Symbol::bIsStreamOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
@@ -2758,14 +2730,6 @@ bool Symbol::bIsSubQueryOp(void)
   else if (m_sSymbol.bSame("notIn"_Stz))     return true;
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this a symbol for a subQuery-name?                                      */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsSubQueryName(void)
-{
-  return b_IsSubQueryName(m_sSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2795,7 +2759,7 @@ bool Symbol::bIsSubQueryColumn(void)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsTableColumn(void)
+bool Symbol::bIsColumnOrdinal(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
@@ -2809,6 +2773,17 @@ bool Symbol::bIsTableColumn(void)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsValueOrdinal(void)
+{
+  if (bIsStreamOrdinal() || bIsColumnOrdinal())
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2915,7 +2890,7 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetStreamColOrdinal(i8 iStmColOdn)
+void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 {
   vSprint("$%lld"_Stz, iStmColOdn);
 }

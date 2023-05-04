@@ -56,7 +56,7 @@ void Card_Key::vAdd_key_expr_BasedOn_expr(Card_Expr* p_expr, bool bAsc)
   i8 i_Key = nChildCards() + 1;
 
   Card_Expr* p_expr_new = new Card_Expr;
-  p_expr_new->vRenumber(i_Key, true);
+  p_expr_new->vRenumberForm_keyOdn(i_Key);
 
   if (Card_As* p_as = p_expr->pSub_as())
     p_expr_new->vAppend(p_as->pDupCardRecursive());
@@ -99,7 +99,7 @@ bool Card_Key::bIsEqual(Card_Key* p_key_arg)
 
   if (p_rpnCalc_this) {
     if (p_rpnCalc_arg) {
-      if (!p_rpnCalc_this->bIsSame(p_rpnCalc_arg))
+      if (!p_rpnCalc_this->bSameAs(p_rpnCalc_arg))
         return false;
     }
     else {
@@ -143,7 +143,7 @@ void Card_Key::vTypes_For_stmColOdn(CardIter *pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
-    xKid.p_expr()->vTypes_For_stmColOdn(pCI);
+    xKid.p_expr()->vEnsureTypes_For_stmOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@ void Card_Key::vFactorAll_col_IntoDistinct_expr(CardIter *pCI)
   // key is a set of expr
   for (Kid x_expr(this); x_expr.bEach(CK_EXPR); /**/) {
 
-    x_expr.p_expr()->vFactorAll_col_IntoDistinct_expr(pCI);
+    x_expr.p_expr()->vFactorAll_valOdn_IntoDistinct_expr(pCI);
     p_subSet->vTransferChildren(pCI->G.p_subSet);
 
     DELETE_CARD(pCI->G.p_subSet);

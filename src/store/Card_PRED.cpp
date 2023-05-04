@@ -136,7 +136,7 @@ Card_Term* Card_PRED::pGetFirstTerm_tblColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (xCI.G.p_term->bIsTblColOdn())
+    if (xCI.G.p_term->bIsColOdn())
       return xCI.G.p_term;
 
   return nullptr;
@@ -206,8 +206,8 @@ bool Card_PRED::bIsCorrPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ((p_term_0->bIsCorPrmOdn() && (p_term_1->bIsStmColOdn() || p_term_1->bIsTblColOdn())) ||
-      (p_term_1->bIsCorPrmOdn() && (p_term_0->bIsStmColOdn() || p_term_0->bIsTblColOdn())))
+  if ((p_term_0->bIsPrmOdn() && (p_term_1->bIsStmOdn() || p_term_1->bIsColOdn())) ||
+      (p_term_1->bIsPrmOdn() && (p_term_0->bIsStmOdn() || p_term_0->bIsColOdn())))
     return true;
 
   return false;
@@ -230,10 +230,10 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
   Card_Term* pTerm_0 = _pCard_Term(this->pGetChild(0));
   Card_Term* pTerm_1 = _pCard_Term(this->pGetChild(1));
 
-  if (pTerm_0->pSymbol()->bIsTableColumn()) {
+  if (pTerm_0->pSymbol()->bIsColumnOrdinal()) {
     // + term_0 is $c.n
 
-    if (pTerm_1->pSymbol()->bIsTableColumn()) {
+    if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
       // + both are term:$c.n
 
       // ? is either term_0:$c.n or term_1:$c.n an index column
@@ -254,7 +254,7 @@ bool Card_PRED::bIsIndexBounds_v3(Card_Index* p_index)
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIsTableColumn()) {
+  if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
     // + only term_1 is $c.n
 
     // ? is term_0:$c.n an index column
@@ -285,8 +285,8 @@ bool Card_PRED::bIsJoinPred(void)
   Card_Term* p_term_0 = pGetTerm(0);
   Card_Term* p_term_1 = pGetTerm(1);
 
-  if ( (p_term_0->bIsStmColOdn() || p_term_0->bIsTblColOdn()) &&
-       (p_term_1->bIsStmColOdn() || p_term_1->bIsTblColOdn()))
+  if ((p_term_0->bIsStmOdn() || p_term_0->bIsColOdn()) &&
+      (p_term_1->bIsStmOdn() || p_term_1->bIsColOdn()))
     return true;
 
   return false;
@@ -351,8 +351,8 @@ bool Card_PRED::bMaybeJoinPred(void)
   Card_Term* pTerm_0 = pGetTerm(0);
   Card_Term* pTerm_1 = pGetTerm(1);
 
-  if (pTerm_0->pSymbol()->bIsTableColumn() &&
-      pTerm_1->pSymbol()->bIsTableColumn())
+  if (pTerm_0->pSymbol()->bIsColumnOrdinal() &&
+      pTerm_1->pSymbol()->bIsColumnOrdinal())
     // + term_0 and term_1 are $c.n
     return true;
 
@@ -380,7 +380,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     if (p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
-      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+      x_Symbol_stmCol1.vSetStreamOrdinal(1);
     p_term_one->vSymbol(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
@@ -407,7 +407,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     if (p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
-      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+      x_Symbol_stmCol1.vSetStreamOrdinal(1);
     p_term_head->vSymbol(x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
@@ -432,11 +432,11 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     ASSERT(p_term_head->bIsSymbol("#1"_Stz)); //temp
 
     Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+    x_Symbol_stmCol1.vSetStreamOrdinal(1);
     if (p_term)
       x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
     else
-      x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+      x_Symbol_stmCol1.vSetStreamOrdinal(1);
     p_term_head->vSymbol(x_Symbol_stmCol1);
     return;
   }

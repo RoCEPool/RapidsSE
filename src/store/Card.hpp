@@ -223,16 +223,14 @@ namespace STORE
     bool bIsBoolFn(void);         // between, case ... matchTrailing
     bool bIsComma(void);          // ,
     bool bIsIndexColumn(void);    // $In
-    bool bIsKey(void);            // $Kn
-    bool bIsColumn(void);         // $n or $c.n
-    bool bIsCorrParam(void);      // %n
+    bool bIsKeyOrdinal(void);            // $Kn
+    bool bIsParameterOrdinal(void);      // %n
     bool bIsRelnOp(void);         // <, <=, ... >
-    bool bIsResult(void);         // #n
-    bool bIsStreamColumn(void);   // $n
+    bool bIsStreamOrdinal(void);   // $n
     bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
-    bool bIsSubQueryName(void);   // __subqueryN
     bool bIsSubQueryColumn(void); // __n
-    bool bIsTableColumn(void);    // $c.n
+    bool bIsColumnOrdinal(void);    // $c.n
+    bool bIsValueOrdinal(void);         // $n or $c.n
 
     bool bNeedsBrace(void);       // between, case, ... matchTrailing
 
@@ -243,7 +241,7 @@ namespace STORE
     void vSet(Symbol* pSymbol);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
-    void vSetStreamColOrdinal(i8 iStmColOdn);
+    void vSetStreamOrdinal(i8 iStmColOdn);
     void vSetSubQueryOrdinal(i8 iSqNo);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);

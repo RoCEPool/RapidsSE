@@ -86,7 +86,7 @@ void Card_Constraint::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_Expr* p_expr = pSub_expr())
-    p_expr->vBump_Rightwards(nBumpBy,bSkipFoldExpr);
+    p_expr->vBump_stmOdn(nBumpBy, bSkipFoldExpr);
 
 }
 
@@ -98,7 +98,7 @@ void Card_Constraint::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_expr = pSub_expr()))
-    pCI->G.p_expr->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    pCI->G.p_expr->vConvertAll_stmColOdn_To_tblColOdn(pCI);
 }
 
 
@@ -127,7 +127,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    if (!p_term->pSymbol()->bIsStreamColumn())
+    if (!p_term->pSymbol()->bIsStreamOrdinal())
       return C_CONTINUE_RECURSION;
 
     Stz* szColNm = nullptr;

@@ -75,7 +75,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   Symbol xSymbol_idxColOdn;
   xSymbol_idxColOdn.vSetIndexColOrdinal(1);
 
-  if (pTerm_0->pSymbol()->bIsTableColumn()) {
+  if (pTerm_0->pSymbol()->bIsColumnOrdinal()) {
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cGetTableSyn();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
       p_term = new Card_Term(xSymbol_idxColOdn);
@@ -84,7 +84,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
       p_bound->vAppend(p_term);
     }
     else
-    if (pTerm_1->pSymbol()->bIsTableColumn()) {
+    if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
       char cTblSyn_term_1 = pTerm_1->pSymbol()->cGetTableSyn();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
         p_term = new Card_Term(xSymbol_idxColOdn);
@@ -97,7 +97,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     }
   }
   else
-  if (pTerm_1->pSymbol()->bIsTableColumn()) {
+  if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
     char cTblSyn_term_1 = pTerm_1->pSymbol()->cGetTableSyn();
     if (cTblSyn_term_1 == cTblSyn_boundedTo) {
       p_term = new Card_Term(xSymbol_idxColOdn);
@@ -254,7 +254,7 @@ Card_Term* Card_Bound::pGet_tblColOdn(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
-    if (xKid.p_term()->bIsTblColOdn())
+    if (xKid.p_term()->bIsColOdn())
       return xKid.p_term();
 
   return nullptr;
@@ -270,7 +270,7 @@ Stz* Card_Bound::szGet_tblColOdn(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM))
-    if (xCI.G.p_term->pSymbol()->bIsTableColumn())
+    if (xCI.G.p_term->pSymbol()->bIsColumnOrdinal())
       return xCI.G.p_term->szSymbol();
 
   return nullptr;

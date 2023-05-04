@@ -165,7 +165,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
-    if (! x_needed.p_expr()->pProjectedTerm()->bIsStmColOdn())
+    if (!x_needed.p_expr()->pGetTerm(0)->bIsStmOdn())
       continue;
     if (p_projection_early->pContains(x_needed.p_expr()))
       continue;
@@ -191,11 +191,11 @@ void Card_Project::vDerive_Projection_Key(CardIter* pCI)
 
   // snap onto <project>/<projection>, delete existing <project>/<projection>/<key>
   pCI->G.p_projection = pSub_projection();
-  pCI->G.p_projection->vDelete_key(pCI);
+  pCI->G.p_projection->vDeletePrjKey(pCI);
 
   // derive new <project>/<projection>/<key>
   pCI->G.p_key = new Card_Key;
-  pCI->G.p_projection->vKeyProjection(pCI);
+  pCI->G.p_projection->vDerivePrjKey(pCI);
 
   if (! pCI->G.p_key->nChildCards()) {
     delete pCI->G.p_key;
@@ -272,7 +272,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
   pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);
 
   Symbol x_Symbol_stmCol1;
-  x_Symbol_stmCol1.vSetStreamColOrdinal(1);
+  x_Symbol_stmCol1.vSetStreamOrdinal(1);
   pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(x_Symbol_stmCol1);
 
   pCI->G.p_rpnCalc->vAppend(pCI->G.p_term);

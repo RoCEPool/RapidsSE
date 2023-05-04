@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class FlattenSubQueries;
+  class MakeFlat;
   class Fold;
 
   class Bench : public Object

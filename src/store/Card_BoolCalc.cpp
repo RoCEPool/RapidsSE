@@ -79,7 +79,7 @@ Card_CmpPred* Card_BoolCalc::pCmpPred_whichCallsSubQuery(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
+void Card_BoolCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -99,8 +99,8 @@ void Card_BoolCalc::vBump_Rightwards(i8 nBumpBy, bool bSkipFoldExpr)
     if (bSkipFoldExpr && p_term->bIsSymbol("$1"_Stz))
       return C_CONTINUE_RECURSION;
 
-    if (p_term->pSymbol()->bIsStreamColumn()) {
-      p_term->vBump_StreamColOrdinal(nBumpBy);
+    if (p_term->pSymbol()->bIsStreamOrdinal()) {
+      p_term->vBump_stmOdn(nBumpBy);
       p_term->vMark1(MARK_CHANGED);
     }
 
@@ -132,7 +132,7 @@ void Card_BoolCalc::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
       return C_CONTINUE_RECURSION;
 
     Card_Term* p_term = _pCard_Term(p_pred);
-    p_term->vConvertIf_stmColOdn_To_tblColOdn(pCI);
+    p_term->vConvertIf_stmOdn_To_colOdn(pCI);
 
     return C_CONTINUE_RECURSION;
   };
