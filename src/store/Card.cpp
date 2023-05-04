@@ -1577,6 +1577,16 @@ void Card::vSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set card symbol                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.vSet(pSymbol);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set card symbol and Mark1                                                  */
 /*----------------------------------------------------------------------------*/
 void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
@@ -2462,6 +2472,7 @@ Card_Where* Card::pSub_where(void)
 /*----------------------------------------------------------------------------*/
 Symbol::Symbol(void)
 {
+  m_pProperties = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2470,6 +2481,7 @@ Symbol::Symbol(void)
 Symbol::Symbol(Stz* szArg)
 {
   m_sSymbol = szArg;
+  m_pProperties = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

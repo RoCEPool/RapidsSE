@@ -239,7 +239,7 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->vSymbol(pDiffSymbol->szSymbol());
+  p_term_clone->vSymbol(pDiffSymbol);
 
   return p_term_clone;
 }
