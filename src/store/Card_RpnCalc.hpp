@@ -21,7 +21,7 @@ namespace STORE
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConcat(Card_RpnCalc* p_rpnCalc);
     void vConvert_sqyOp_not_To_notSqyOp(void);
-    void vConvert_stmOdn_terms_To_colOdn(CardIter* pCI);
+    void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Card_Term* pGetOdn(void);

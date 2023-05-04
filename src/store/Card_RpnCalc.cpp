@@ -157,7 +157,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_RpnCalc::vConvert_stmOdn_terms_To_colOdn(CardIter* pCI)
+void Card_RpnCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

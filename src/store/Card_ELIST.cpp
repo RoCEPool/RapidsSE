@@ -121,13 +121,13 @@ Card_Expr* Card_ELIST::pContains(Card_Expr* p_expr_arg)
 /*----------------------------------------------------------------------------*/
 /* apply stream                                                               */
 /*----------------------------------------------------------------------------*/
-void Card_ELIST::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
+void Card_ELIST::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_EXPR))
-    xCI.G.p_expr->vConvertAll_stmColOdn_To_tblColOdn(pCI);
+    xCI.G.p_expr->vConvertAll_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,25 +159,7 @@ i8 Card_ELIST::nExpr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFindExpr(Stz* szPrjCol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  for (Kid xKid(this); xKid.bEach(); /**/) {
-    if (! pGetChild(xKid.i_Child())->bIsCard(CK_EXPR))
-      break;
-    if (Card_Expr *p_expr = pGetExpr(xKid.i_Child()))
-      if (p_expr->bIsOdn(szPrjCol))
-        return p_expr;
-  }
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_Of_odn(Stz* szOdn)
+Card_Expr* Card_ELIST::pFindExpr(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -186,7 +168,7 @@ Card_Expr* Card_ELIST::pFind_expr_Of_odn(Stz* szOdn)
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsOdn(szOdn))
+    if (p_expr->bIsOdn(szSymbol))
       return p_expr;
   }
 
@@ -196,11 +178,11 @@ Card_Expr* Card_ELIST::pFind_expr_Of_odn(Stz* szOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pFind_expr_Of_odn(Card_Term* p_term)
+Card_Expr* Card_ELIST::pFindExpr(Card_Term* p_term)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return pFind_expr_Of_odn(p_term->szSymbol());
+  return pFindExpr(p_term->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/

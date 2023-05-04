@@ -198,9 +198,9 @@ void Card_Where::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
 //  if (Card_Constraint* p_constraint = pSub_constraint())
-//    p_constraint->vConvertAll_stmColOdn_To_tblColOdn(pCI);
+//    p_constraint->vConvertAll_stmOdn_To_colOdn(pCI);
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,7 +217,7 @@ void Card_Where::vEarlyProject_add_transients(CardIter* pCI)
     if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(p_term))
+    if (pCI->Early.m_pNeeded_later->pFindExpr(p_term))
       return C_CONTINUE_RECURSION;
 
     if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {

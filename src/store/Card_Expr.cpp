@@ -204,15 +204,15 @@ Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Expr::vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Card_Expr::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
-    p_rpnCalc->vConvert_stmOdn_terms_To_colOdn(pCI);
+    p_rpnCalc->vConvertAll_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -126,7 +126,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
       if (!xCI_rpnCalc.G.p_term->bIsValOdn())
         continue;
       // which we havent already added
-      if (p_needed->pFind_expr_Of_odn(xCI_rpnCalc.G.p_term->szSymbol()))
+      if (p_needed->pFindExpr(xCI_rpnCalc.G.p_term->szSymbol()))
         continue;
 
       if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))

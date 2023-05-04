@@ -26,7 +26,7 @@ namespace STORE
 
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     Card_Expr* pClone(bool bstmCol_flip);
-    void vConvertAll_stmColOdn_To_tblColOdn(CardIter* pCI);
+    void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     Card_Expr* pCraft_expr_early(CardIter* pCI);
     void vDeconstruct(Card_As*&   rp_as,
                       Card_Term*& rp_term_0);

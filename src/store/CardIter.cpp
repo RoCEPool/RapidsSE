@@ -2061,14 +2061,13 @@ Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)
   if (! p_projection_prior)
     return nullptr;
 
-  Stz* szPrjCol = p_term->szSymbol();
-  if (p_term->pSymbol()->bIsStreamOrdinal()) {
+   if (p_term->pSymbol()->bIsStreamOrdinal()) {
     Card_Expr *p_expr_prior = p_projection_prior->pDecodeExpr(p_term);
     return p_expr_prior;
   }
   else
   if (p_term->pSymbol()->bIsColumnOrdinal()) {
-    Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(szPrjCol);
+    Card_Expr *p_expr_prior = p_projection_prior->pFindExpr(p_term);
     return p_expr_prior;
   }
 

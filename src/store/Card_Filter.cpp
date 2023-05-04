@@ -146,12 +146,12 @@ void Card_Filter::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_projection = pSub_projection()))
-    pCI->G.p_projection->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
 
 //  if ((pCI->G.p_constraint = pSub_constraint()))
-//    pCI->G.p_constraint->vConvertAll_stmColOdn_To_tblColOdn(pCI);
+//    pCI->G.p_constraint->vConvertAll_stmOdn_To_colOdn(pCI);
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
-    p_boolCalc->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    p_boolCalc->vConvertAll_stmOdn_To_colOdn(pCI);
 
 }
 

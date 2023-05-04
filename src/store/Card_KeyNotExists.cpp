@@ -153,7 +153,7 @@ void Card_KeyNotExists::vEarlyProject_add_transients(CardIter* pCI)
    *       add expr (defn expr for $t.c) into needed projection
    */
 
-  if (!pCI->Early.m_pNeeded_later->pFind_expr_Of_odn(pCI->G.p_term)) {
+  if (!pCI->Early.m_pNeeded_later->pFindExpr(pCI->G.p_term)) {
 
     //pCI->Early.m_pNeeded_later->vDump();
 

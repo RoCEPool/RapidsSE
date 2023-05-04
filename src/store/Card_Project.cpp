@@ -133,7 +133,7 @@ void Card_Project::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if ((pCI->G.p_projection = pSub_projection()))
-    pCI->G.p_projection->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+    pCI->G.p_projection->vConvertAll_stmOdn_To_colOdn(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
