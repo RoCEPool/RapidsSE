@@ -419,7 +419,12 @@ struct Dynamic_T
   // aggregate T (SR_AT)
   struct RowInfo m_xRowInfoAT;
 
+  // Tub (SR_TB)
   void*   m_pTub;
+  i8      m_iTubRowSize;
+  struct RowInfo m_xRowInfoTB;
+
+
   void*   m_pPot;
   i8      m_bTrace;
   i8      m_iErrorCode;
@@ -503,12 +508,6 @@ struct Dynamic_T
 
   // limit
   i8     m_iLimitRows;
-
-  // final tub
-  void*   m_aRowTub;
-  void*   m_aRowTubCellArray;
-  char*   m_racTubStrArea;
-  i8      m_iTubRowSize;
 
   // final pot
   void*   m_aRowPot;
