@@ -52,14 +52,20 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoAT.m_racStrAreaSav  = nullptr;
 
   // tub
-  m_xDynamicT.m_iTubRowSize      = 0;
+  m_xDynamicT.m_pTub        = nullptr;
+  m_xDynamicT.m_iTubRowSize = 0;
   m_xDynamicT.m_xRowInfoTB.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoTB.m_aRowCellArray = nullptr;
   m_xDynamicT.m_xRowInfoTB.m_racStrArea    = nullptr;
   m_xDynamicT.m_xRowInfoTB.m_racStrAreaSav  = nullptr;
 
-  m_xDynamicT.m_pTub        = nullptr;
+  // pot
   m_xDynamicT.m_pPot        = nullptr;
+  m_xDynamicT.m_xRowInfoPO.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoPO.m_racStrArea    = nullptr;
+  m_xDynamicT.m_xRowInfoPO.m_racStrAreaSav = nullptr;
+
   m_xDynamicT.m_bTrace      = false;
   m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
   m_xDynamicT.m_iHashRows   = 0;
@@ -140,11 +146,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // limit
   m_xDynamicT.m_iLimitRows       = 0;
-
-  // pot
-  m_xDynamicT.m_aRowPot          = nullptr;
-  m_xDynamicT.m_aRowPotCellArray = nullptr;
-  m_xDynamicT.m_racPotStrArea    = nullptr;
 
   _checkInitialised_(CN_DYNAMIC);
   

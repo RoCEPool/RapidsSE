@@ -11,6 +11,7 @@ enum eSR // stencil row
   /*    */ SR_IJ,   // inflate J
   /*    */ SR_IT,   // inflate T
   /*    */ SR_PL,   // project PayLoad
+  /*    */ SR_PO,   // pot output
   /*    */ SR_PT,   // project T
   /*    */ SR_TB,   // Tub
   /*    */ SR_TJ,   // join T with J
@@ -26,6 +27,7 @@ static Stz* aSR[]
     /*    */ "SR_IJ"_Stz,
     /*    */ "SR_IT"_Stz,
     /*    */ "SR_PL"_Stz,
+    /*    */ "SR_PO"_Stz,
     /*    */ "SR_PT"_Stz,
     /*    */ "SR_TB"_Stz,
     /*    */ "SR_TJ"_Stz,
@@ -42,6 +44,7 @@ static Stz* aSRArea[]
       /*    */ "SR_IJ"_Stz,
       /*    */ "SR_IT"_Stz,
       /*    */ "SR_PL"_Stz,
+      /*    */ "SR_PO"_Stz,
       /*    */ "SR_PT"_Stz,
       /*    */ "aDynamicT->m_xRowInfoTB.m_racStrArea"_Stz,
       /*    */ "aDynamicT->m_xRowInfoTJ.m_racStrArea"_Stz,

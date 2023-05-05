@@ -424,11 +424,13 @@ struct Dynamic_T
   i8      m_iTubRowSize;
   struct RowInfo m_xRowInfoTB;
 
-
+  // Pot Ouput (SR_PO)
   void*   m_pPot;
+  struct RowInfo m_xRowInfoPO;
+
+
   i8      m_bTrace;
   i8      m_iErrorCode;
-
   i8      m_iHashRows;
 
   // table T scan inflate (crwBuffer)
@@ -509,10 +511,6 @@ struct Dynamic_T
   // limit
   i8     m_iLimitRows;
 
-  // final pot
-  void*   m_aRowPot;
-  void*   m_aRowPotCellArray;
-  char*   m_racPotStrArea;
 };
 
 struct Combined_T
