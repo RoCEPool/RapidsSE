@@ -54,8 +54,8 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoT.m_racStrArea;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoIT.m_racStrArea;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -258,7 +258,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   // process the row
   aDynamicT->m_iProcessRow = 1;
 
-  aDynamicT->m_xRowInfoT.m_racStrArea = aDynamicT->m_xRowInfoT.m_racStrAreaSav;
+  aDynamicT->m_xRowInfoIT.m_racStrArea = aDynamicT->m_xRowInfoIT.m_racStrAreaSav;
 
   // marker-end
 }
@@ -315,9 +315,9 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
 
   L_InflateCrwRet:
 
-  aDynamicT->m_xRowInfoT.m_racStrArea = acStrArea;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoT.m_racStrArea;
+  aDynamicT->m_xRowInfoIT.m_racStrArea = acStrArea;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoIT.m_racStrArea;
 
   // marker-end
 
@@ -343,7 +343,7 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   //szStrArea = aDynamicT->m_racStrAreaT;
 
   if (!aDynamicT->m_iProcessRow) {
@@ -842,9 +842,9 @@ void vIndexDereference(Dynamic_T* aDynamicT) {
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
-  acStrArea = (char*)aDynamicT->m_xRowInfoT.m_racStrArea;
-  racStrArea = (char*)aDynamicT->m_xRowInfoT.m_racStrArea;
+  ayDstByte = (byte*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  acStrArea = (char*)aDynamicT->m_xRowInfoIT.m_racStrArea;
+  racStrArea = (char*)aDynamicT->m_xRowInfoIT.m_racStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataT = C_1B  + C_8B  + 4;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);

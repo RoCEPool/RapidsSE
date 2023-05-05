@@ -12,10 +12,10 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i_Col = -1;
 
-  ayDstByte = (byte*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+  ayDstByte = (byte*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   //aDynamicT->m_xRowInfoT.m_aRowCellArray = ayDstByte;
-  acStrArea = (char*)aDynamicT->m_xRowInfoT.m_racStrAreaSav;
-  racStrArea = (char*)aDynamicT->m_xRowInfoT.m_racStrAreaSav;
+  acStrArea = (char*)aDynamicT->m_xRowInfoIT.m_racStrAreaSav;
+  racStrArea = (char*)aDynamicT->m_xRowInfoIT.m_racStrAreaSav;
   eStrInflateRule = SI_STRAREA_ADR;
 
   if (aDynamicT->m_bTrace) {

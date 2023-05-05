@@ -55,12 +55,12 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
 
    // get the next row (should be able to add rowsize)
 #ifdef WITH_TINYC
-   aDynamicT->m_xRowInfoT.m_aRowCellArray = aRowBuffer_GetCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
+   aDynamicT->m_xRowInfoIT.m_aRowCellArray = aRowBuffer_GetCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
 #endif
 
-   aDynamicT->m_xRowInfoT.m_racStrArea = aDynamicT->m_xRowInfoT.m_racStrAreaSav;
+   aDynamicT->m_xRowInfoIT.m_racStrArea = aDynamicT->m_xRowInfoIT.m_racStrAreaSav;
 
-   piColumn = (i8*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+   piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   // marker-end
   L_Return:

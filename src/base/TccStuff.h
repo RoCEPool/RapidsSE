@@ -408,7 +408,7 @@ struct Dynamic_T
 {
 
   // inflate T (SR_IT)
-  struct RowInfo m_xRowInfoT;
+  struct RowInfo m_xRowInfoIT;
 
   // project T (SR_PT)
   struct RowInfo m_xRowInfoP;

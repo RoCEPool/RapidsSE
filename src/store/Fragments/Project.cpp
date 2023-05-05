@@ -49,7 +49,7 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
     goto __L_LABEL_LOOP__;
   }
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   aDynamicT->m_xRowInfoP.m_racStrArea = aDynamicT->m_xRowInfoP.m_racStrAreaSav;
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoP.m_aRowCellArray;

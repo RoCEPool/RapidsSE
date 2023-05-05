@@ -28,10 +28,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
 
   // inflate T (SR_IT)
-  m_xDynamicT.m_xRowInfoT.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoT.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoT.m_racStrArea = nullptr;
-  m_xDynamicT.m_xRowInfoT.m_racStrAreaSav = nullptr;
+  m_xDynamicT.m_xRowInfoIT.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoIT.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoIT.m_racStrArea = nullptr;
+  m_xDynamicT.m_xRowInfoIT.m_racStrAreaSav = nullptr;
 
   // project T (SR_PT)
   m_xDynamicT.m_xRowInfoP.m_aRowSingle    = nullptr;
@@ -177,7 +177,7 @@ Dynamic::~Dynamic(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoP.m_aRowSingle);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoT.m_aRowSingle);
+  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIT.m_aRowSingle);
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoAT.m_aRowSingle);
