@@ -82,6 +82,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DIR,
   /* */ CN_DISSECTOR,
   /* */ CN_DTEVAL,
+  /* */ CN_DYNAMIC,
   /* */ CN_DYNAMO,
 
   /* */ CN__E__,
@@ -519,6 +520,7 @@ static Stz* aCN[]
   /* */ "DIR"_Stz,                  // CN_DIR
   /* */ "DISSECTER"_Stz,            // CN_DISSECTOR
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
+  /* */ "DYNAMIC"_Stz,              // CN_DYNAMIC
   /* */ "DYNAMO"_Stz,               // CN_DYNAMO
 
   /* */ "_E__"_Stz,                 // CN__E__

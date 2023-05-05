@@ -385,7 +385,7 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 
 struct RowInfo {
-  void* m_pRowSingle;
+  void* m_aRowSingle;
   void* m_aRowCellArray;
   char* m_racStrArea;
   char* m_racStrAreaSav;
@@ -400,6 +400,124 @@ struct IndexInfo {
   void *m_aEntUpper;
   void *m_aEntBuffer;
   struct Ent_int* m_aEntInt;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// CODE SYNTH V2
+struct Dynamic_T
+{
+
+  // inflate T
+  struct RowInfo m_xRowInfoT;
+
+  void*   m_pTub;
+  void*   m_pPot;
+  i8      m_bTrace;
+  i8      m_iErrorCode;
+
+  i8      m_iHashRows;
+
+  // table T scan inflate (crwBuffer)
+  struct  HeadLine_T* m_aHeadLine0;
+  i8        m_iHeadSize;
+  enum eSI  m_eStrInflateRule;
+
+  // expression stack
+  i8      m_aW[256];
+
+  // rowBuffer T
+  void*   m_aRowBuffer;
+
+  // common inflate
+  i8      m_nRows;
+  i8      m_nCols;
+
+  // index scan T
+  i8      m_iIndexScan;
+  void*   m_aIndexT;
+  void*   m_aIndexTreeT;
+  void*   m_aIndexDefT;
+  void*   m_aEntKeyT;
+  void*   m_aEntWrkT;
+  void*   m_aEntUpperT;
+  void*   m_aEntBufferT;
+  struct Ent_int* m_aEntIntT;
+
+  // index join with J
+  i8      m_iIndexJoinInit;
+  i8      m_iJoinedRows;
+  void*   m_aRowSingleJ;
+  void*   m_aRowCellArrayJ;
+  char*   m_racStrAreaJ;
+  char*   m_racStrAreaJSav;
+  void*   m_aIndexJ;
+  void*   m_aIndexTreeJ;
+  void*   m_aIndexDefJ;
+  void*   m_aEntKeyJ;
+  void*   m_aEntWrkJ;
+  void*   m_aEntUpperJ;
+  void*   m_aEntBufferJ;
+  struct Ent_int* m_aEntIntJ;
+
+  // join rows T and J
+  void*   m_aRowSingleTJ;
+  void*   m_aRowCellArrayTJ;
+  char*   m_racStrAreaTJ;
+  char*   m_racStrAreaTJSav;
+
+  // project (col/exp)
+  i8      m_iProjectInit;
+  void*   m_aRowSingleP;
+  void*   m_aRowCellArrayP;
+  char*   m_racStrAreaP;
+  char*   m_racStrAreaPSav;
+
+  // project (agg)
+  i8      m_iRowsProcessed;
+  void*   m_aRowSingleAgg;
+  void*   m_aRowCellArrayAgg;
+  char*   m_racStrAreaAgg;
+  char*   m_racStrAreaAggSav;
+
+  // ordered aggregates
+  i8      m_iHasOrdAggRow;
+  i8      m_iOrdAggDone;
+
+  // project (gby)
+  i8      m_nAggRows;
+  i8      m_iProcessRow;
+
+  // payload (gby/srt/top)
+  i8*     m_aiPayload;
+  void*   m_aPayloadRow;
+  void*   m_aPayloadCellArray;
+  char*   m_racPayloadArea;
+  char*   m_racPayloadAreaSav;
+  void*   m_aIndexTreePL;
+  void*   m_aIndexDefPL;
+  void*   m_aEntBufferPL;
+  void*   m_aEntWrkPL;
+  void*   m_aEntKeyPL;
+  void*   m_aEntBottomPL;
+  struct Ent_int* m_aEntIntPL;
+
+  // top
+  i8      m_iTopInit;
+  i8      m_iInsertCntTOP;
+
+  // limit
+  i8     m_iLimitRows;
+
+  // final tub
+  void*   m_aRowTub;
+  void*   m_aRowTubCellArray;
+  char*   m_racTubStrArea;
+  i8      m_iTubRowSize;
+
+  // final pot
+  void*   m_aRowPot;
+  void*   m_aRowPotCellArray;
+  char*   m_racPotStrArea;
 };
 
 struct Combined_T

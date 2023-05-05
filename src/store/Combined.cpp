@@ -26,7 +26,12 @@ Combined::Combined(LogicUnit* pLogicUnit)
 : Object(CN_COMBINED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
-  
+
+  m_xCombinedT.m_xRowInfoT.m_aRowSingle    = nullptr;
+  m_xCombinedT.m_xRowInfoT.m_aRowCellArray = nullptr;
+  m_xCombinedT.m_xRowInfoT.m_racStrArea = nullptr;
+  m_xCombinedT.m_xRowInfoT.m_racStrAreaSav = nullptr;
+
   m_xCombinedT.m_pTub        = nullptr;
   m_xCombinedT.m_pPot        = nullptr;
   m_xCombinedT.m_bTrace      = false;

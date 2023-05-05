@@ -15,6 +15,7 @@
 #include "Pot.hpp"
 #include "Tub.hpp"
 #include "Combined.hpp"
+#include "Dynamic.hpp"
 
 #include "EntWrk.hpp"
 
@@ -96,6 +97,7 @@ namespace STORE
     REG<Deck,           CN_DECK          > m_xpDeck;
     REG<Dir,            CN_DIR           > m_xpDir0;
     REG<Dir,            CN_DIR           > m_xpDir1;
+    REG<Dynamic,        CN_DYNAMIC       > m_xpDynamic;
     REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
 
     REG<Operand,        CN_NONE          > m_xpErrorMarker;

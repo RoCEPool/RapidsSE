@@ -866,9 +866,9 @@ void Stencil_v2::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) 
   pCombined->aCombinedT()->m_aIndexT = pIndexScan;
 
   // create RowSingleT
-  pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle = new RowSingle(pStreamDefLft);
   pCombined->aCombinedT()->m_xRowInfoT.m_aRowCellArray =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle,
+  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle,
   &pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea);
   pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea;
 
@@ -1101,9 +1101,9 @@ void Stencil_v2::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
-  pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle = new RowSingle(pStreamDefLft);
   pCombined->aCombinedT()->m_xRowInfoT.m_aRowCellArray =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_pRowSingle,
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle,
                                       &pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea);
   pCombined->aCombinedT()->m_xRowInfoT.m_racStrAreaSav = pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea;
 

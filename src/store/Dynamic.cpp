@@ -1,0 +1,215 @@
+/*============================================================================*/
+/* Dynamic.cpp -- Dynamic Code                                                */
+/*============================================================================*/
+
+#include "BASE.h"
+
+#include "Dynamic.hpp"
+#include "LogicUnit.hpp"
+
+//#include "IndexDef.hpp"
+//#include "IndexTree.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE,Dynamic,CN_DYNAMIC)
+__aNewFunction(Dynamic,CN_DYNAMIC)
+__vDeleteFunction(Dynamic,CN_DYNAMIC)
+__aFooterFunction(Dynamic)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Dynamic::Dynamic(LogicUnit* pLogicUnit)
+: Object(CN_DYNAMIC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
+  
+  m_xDynamicT.m_pTub        = nullptr;
+  m_xDynamicT.m_pPot        = nullptr;
+  m_xDynamicT.m_bTrace      = false;
+  m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
+  m_xDynamicT.m_iHashRows   = 0;
+
+  // table scan T inflate (crwBuffer)
+  m_xDynamicT.m_aHeadLine0  = nullptr;
+  m_xDynamicT.m_iHeadSize   = 0;
+  m_xDynamicT.m_eStrInflateRule = SI_NONE;
+
+  for (i8 i_Stack = 0; i_Stack < 256; i_Stack++)
+    m_xDynamicT.m_aW[i_Stack] = 0;
+
+  // rowbuffer
+  m_xDynamicT.m_aRowBuffer    = nullptr;
+
+  // index scan T
+  m_xDynamicT.m_iIndexScan  = 0;
+  m_xDynamicT.m_aIndexT     = nullptr;
+  m_xDynamicT.m_aIndexTreeT = nullptr;
+  m_xDynamicT.m_aIndexDefT  = nullptr;
+  m_xDynamicT.m_aEntWrkT    = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
+  m_xDynamicT.m_aEntKeyT    = ((EntWrk*)m_xDynamicT.m_aEntWrkT)->aKey();
+
+  m_xDynamicT.m_aEntUpperT  = nullptr;
+  m_xDynamicT.m_aEntBufferT = nullptr;
+  m_xDynamicT.m_aEntIntT    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
+
+  // common inflate
+  m_xDynamicT.m_xRowInfoT.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoT.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoT.m_racStrArea = nullptr;
+  m_xDynamicT.m_xRowInfoT.m_racStrAreaSav = nullptr;
+  m_xDynamicT.m_nRows       = 0;
+  m_xDynamicT.m_nCols       = 0;
+
+  // index join with J
+  m_xDynamicT.m_iIndexJoinInit = 0;
+  m_xDynamicT.m_iJoinedRows = 0;
+  m_xDynamicT.m_aRowSingleJ = nullptr;
+  m_xDynamicT.m_aRowCellArrayJ = nullptr;
+  m_xDynamicT.m_racStrAreaJ    = nullptr;
+  m_xDynamicT.m_racStrAreaJSav = nullptr;
+  m_xDynamicT.m_aIndexJ     = nullptr;
+  m_xDynamicT.m_aIndexTreeJ = nullptr;
+  m_xDynamicT.m_aIndexDefJ  = nullptr;
+  m_xDynamicT.m_aEntWrkJ    = (void*)&pLogicUnit->m_oEntWrkJ;
+  m_xDynamicT.m_aEntKeyJ    = ((EntWrk*)m_xDynamicT.m_aEntWrkJ)->aKey();
+  m_xDynamicT.m_aEntUpperJ  = nullptr;
+  m_xDynamicT.m_aEntBufferJ = nullptr;
+  m_xDynamicT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
+
+  // join row T and J
+  m_xDynamicT.m_aRowSingleTJ = nullptr;
+  m_xDynamicT.m_aRowCellArrayTJ = nullptr;
+  m_xDynamicT.m_racStrAreaTJ    = nullptr;
+  m_xDynamicT.m_racStrAreaTJSav = nullptr;
+
+  // project (col/exp)
+  m_xDynamicT.m_iProjectInit = 0;
+  m_xDynamicT.m_aRowSingleP    = nullptr;
+  m_xDynamicT.m_aRowCellArrayP = nullptr;
+  m_xDynamicT.m_racStrAreaP    = nullptr;
+  m_xDynamicT.m_racStrAreaPSav = nullptr;
+
+  // project (agg)
+  m_xDynamicT.m_iRowsProcessed = 0;
+  m_xDynamicT.m_aRowSingleAgg  = nullptr;
+  m_xDynamicT.m_aRowCellArrayAgg = nullptr;
+  m_xDynamicT.m_racStrAreaAgg  = nullptr;
+  m_xDynamicT.m_racStrAreaAggSav  = nullptr;
+
+  // project (gby/payload)
+  m_xDynamicT.m_nAggRows = 0;
+  m_xDynamicT.m_iProcessRow    = 1;
+
+  // project (ordAgg)
+  m_xDynamicT.m_iHasOrdAggRow = 0;
+  m_xDynamicT.m_iOrdAggDone = 0;
+
+  // payload (gby/srt/top)
+  m_xDynamicT.m_aiPayload      = nullptr;
+  m_xDynamicT.m_aPayloadRow    = nullptr;
+  m_xDynamicT.m_aPayloadCellArray = nullptr;
+  m_xDynamicT.m_racPayloadArea = nullptr;
+  m_xDynamicT.m_racPayloadAreaSav = nullptr;
+  m_xDynamicT.m_aIndexTreePL   = nullptr;
+  m_xDynamicT.m_aIndexDefPL    = nullptr;
+  m_xDynamicT.m_aEntBufferPL   = nullptr;
+  m_xDynamicT.m_aEntWrkPL      = (void*)&pLogicUnit->m_oEntWrkPL;
+  m_xDynamicT.m_aEntKeyPL      = ((EntWrk*)m_xDynamicT.m_aEntWrkPL)->aKey();
+  m_xDynamicT.m_aEntBottomPL     = nullptr;
+  m_xDynamicT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();
+
+  // top
+  m_xDynamicT.m_iTopInit         = 0;
+  m_xDynamicT.m_iInsertCntTOP    = 0;
+
+  // limit
+  m_xDynamicT.m_iLimitRows       = 0;
+
+  // tub
+  m_xDynamicT.m_aRowTub          = nullptr;
+  m_xDynamicT.m_aRowTubCellArray = nullptr;
+  m_xDynamicT.m_racTubStrArea    = nullptr;
+  m_xDynamicT.m_iTubRowSize      = 0;
+
+  // pot
+  m_xDynamicT.m_aRowPot          = nullptr;
+  m_xDynamicT.m_aRowPotCellArray = nullptr;
+  m_xDynamicT.m_racPotStrArea    = nullptr;
+
+  _checkInitialised_(CN_DYNAMIC);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Dynamic::~Dynamic(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
+
+  RowSingle* pRowSingle;
+
+  if (m_xDynamicT.m_aIndexTreePL) {
+    IndexTree* pIndexTree = _pIndexTree(m_xDynamicT.m_aIndexTreePL);
+    delete pIndexTree;
+  }
+  if (m_xDynamicT.m_aIndexDefPL) {
+    IndexDef* pIndexDef = _pIndexDef(m_xDynamicT.m_aIndexDefPL);
+    delete pIndexDef;
+  }
+
+  pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleJ);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleTJ);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleP);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoT.m_aRowSingle);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleAgg);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xDynamicT.m_aPayloadRow);
+  delete pRowSingle;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repair tubby                                                               */
+/*----------------------------------------------------------------------------*/
+void Dynamic::vRepair(Object* pObject)
+{
+  _static_
+  
+  UNUSED(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Member Functions --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get m_xDynamicT                                                             */
+/*----------------------------------------------------------------------------*/
+Dynamic_T* Dynamic::aDynamicT(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
+
+  return &m_xDynamicT;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

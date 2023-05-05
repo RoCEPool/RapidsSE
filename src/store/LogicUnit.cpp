@@ -93,8 +93,9 @@ LogicUnit::LogicUnit(void)
 
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,    DataBuffer::vRepair,     LR_DATABUFFER)
 ,           m_xpDeck(this,RF_REPAIR_DELETE,          Deck::vRepair,     LR_DATABUFFER)
-,           m_xpDir0(this,RF_REPAIR_DELETE,           Dir::vRepair,           LR_DIR0)
-,           m_xpDir1(this,RF_REPAIR_DELETE,           Dir::vRepair,           LR_DIR1)
+,           m_xpDir0(this,RF_REPAIR_DELETE,           Dir::vRepair,         LR_DIR0)
+,           m_xpDir1(this,RF_REPAIR_DELETE,           Dir::vRepair,         LR_DIR1)
+,         m_xpDynamic(this,RF_REPAIR_DELETE,        Dynamic::vRepair,       LR_DYNAMO)
 ,         m_xpDynamo(this,RF_REPAIR_DELETE,        Dynamo::vRepair,         LR_DYNAMO)
 
 ,    m_xpErrorMarker(this,RF_REPAIR_DELETE,       Operand::vRepair,    LR_ERRORMARKER)
