@@ -26,7 +26,25 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 : Object(CN_DYNAMIC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
-  
+
+  // inflate T (SR_IT)
+  m_xDynamicT.m_xRowInfoT.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoT.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoT.m_racStrArea = nullptr;
+  m_xDynamicT.m_xRowInfoT.m_racStrAreaSav = nullptr;
+
+  // project T (SR_PT)
+  m_xDynamicT.m_xRowInfoP.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoP.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoP.m_racStrArea    = nullptr;
+  m_xDynamicT.m_xRowInfoP.m_racStrAreaSav = nullptr;
+
+  // join T & J (SR_TJ)
+  m_xDynamicT.m_xRowInfoTJ.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoTJ.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoTJ.m_racStrArea    = nullptr;
+  m_xDynamicT.m_xRowInfoTJ.m_racStrAreaSav = nullptr;
+
   m_xDynamicT.m_pTub        = nullptr;
   m_xDynamicT.m_pPot        = nullptr;
   m_xDynamicT.m_bTrace      = false;
@@ -56,18 +74,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_aEntBufferT = nullptr;
   m_xDynamicT.m_aEntIntT    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
 
-  // inflate T (SR_IT)
-  m_xDynamicT.m_xRowInfoT.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoT.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoT.m_racStrArea = nullptr;
-  m_xDynamicT.m_xRowInfoT.m_racStrAreaSav = nullptr;
-
-  // join T & J (SR_TJ)
-  m_xDynamicT.m_xRowInfoTJ.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoTJ.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoTJ.m_racStrArea    = nullptr;
-  m_xDynamicT.m_xRowInfoTJ.m_racStrAreaSav = nullptr;
-
   m_xDynamicT.m_nRows       = 0;
   m_xDynamicT.m_nCols       = 0;
 
@@ -89,10 +95,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // project (col/exp)
   m_xDynamicT.m_iProjectInit = 0;
-  m_xDynamicT.m_aRowSingleP    = nullptr;
-  m_xDynamicT.m_aRowCellArrayP = nullptr;
-  m_xDynamicT.m_racStrAreaP    = nullptr;
-  m_xDynamicT.m_racStrAreaPSav = nullptr;
 
   // project (agg)
   m_xDynamicT.m_iRowsProcessed = 0;
@@ -170,7 +172,7 @@ Dynamic::~Dynamic(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoTJ.m_aRowSingle);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleP);
+  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoP.m_aRowSingle);
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoT.m_aRowSingle);

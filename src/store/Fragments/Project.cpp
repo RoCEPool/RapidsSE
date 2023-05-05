@@ -51,9 +51,9 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
 
-  aDynamicT->m_racStrAreaP = aDynamicT->m_racStrAreaPSav;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayP;
-  szStrArea = aDynamicT->m_racStrAreaP;
+  aDynamicT->m_xRowInfoP.m_racStrArea = aDynamicT->m_xRowInfoP.m_racStrAreaSav;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoP.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoP.m_racStrArea;
   // marker-end
 
   return;
@@ -76,8 +76,8 @@ i8 iProjectEnd(Dynamic_T* aDynamicT) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayP;
-  szStrArea = aDynamicT->m_racStrAreaP;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoP.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoP.m_racStrArea;
 
   // marker-end
 

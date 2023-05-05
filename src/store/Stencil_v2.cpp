@@ -1023,11 +1023,11 @@ void Stencil_v2::vSetupProject(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleP
-  pDynamic->aDynamicT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
-  pDynamic->aDynamicT()->m_aRowCellArrayP =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aRowSingleP,
-                                      &pDynamic->aDynamicT()->m_racStrAreaP);
-  pDynamic->aDynamicT()->m_racStrAreaPSav = pDynamic->aDynamicT()->m_racStrAreaP;
+  pDynamic->aDynamicT()->m_xRowInfoP.m_aRowSingle = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_xRowInfoP.m_aRowCellArray =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoP.m_aRowSingle,
+                                      &pDynamic->aDynamicT()->m_xRowInfoP.m_racStrArea);
+  pDynamic->aDynamicT()->m_xRowInfoP.m_racStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoP.m_racStrArea;
 }
 
 /*----------------------------------------------------------------------------*/

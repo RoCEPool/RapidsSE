@@ -410,6 +410,9 @@ struct Dynamic_T
   // inflate T (SR_IT)
   struct RowInfo m_xRowInfoT;
 
+  // project T (SR_PT)
+  struct RowInfo m_xRowInfoP;
+
   // join T & J (SR_TJ)
   struct RowInfo m_xRowInfoTJ;
 
@@ -465,10 +468,6 @@ struct Dynamic_T
 
   // project (col/exp)
   i8      m_iProjectInit;
-  void*   m_aRowSingleP;
-  void*   m_aRowCellArrayP;
-  char*   m_racStrAreaP;
-  char*   m_racStrAreaPSav;
 
   // project (agg)
   i8      m_iRowsProcessed;
