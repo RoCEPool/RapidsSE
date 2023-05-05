@@ -77,6 +77,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Discern();
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
+  Step::vAddSteps_Dynamic();
   Step::vAddSteps_Dynamo();
 
   Step::vAddSteps_Encode();

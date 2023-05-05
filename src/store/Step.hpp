@@ -58,6 +58,7 @@ namespace STORE
     static void vAddSteps_Discern(void);
     static void vAddSteps_Dot(void);
     static void vAddSteps_Dstack(void);
+    static void vAddSteps_Dynamic(void);
     static void vAddSteps_Dynamo(void);
 
     static void vAddSteps_Encode(void);

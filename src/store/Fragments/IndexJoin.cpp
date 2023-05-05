@@ -66,7 +66,7 @@ void vIndexJoinGenKey(Combined_T* aCombinedT) {
   i8 iLeftOuterRow;
   i8 __KEY_KIND__;
 
-  __L_LABEL_LOOP__:
+  L_AdvanceNextRow:
 
   // marker-start
 
@@ -91,7 +91,7 @@ void vIndexJoinGenKey(Combined_T* aCombinedT) {
 
   if (!aCombinedT->m_iProcessRow) {
     aCombinedT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
+    goto L_AdvanceNextRow;
   }
 // marker-end
 }
@@ -147,14 +147,15 @@ void vIndexJoinContinue(Combined_T* aCombinedT) {
   static const i8 C_CRW_HEADBYTES = 32;
   static const i8 C_CRW_FIRSTHEAD = 640;
 
-  __L_LABEL_LOOP__:
+  L_AdvanceNextRow:
 
   // marker-start
 
+  printf("M1\n");
   // did we find the entry ?
   if ( ! aCombinedT->m_aEntIntJ ) {
     aCombinedT->m_iProcessRow = 0;
-    goto __L_LABEL_LOOP__;
+    goto L_AdvanceNextRow;
   }
 
   // find the upper bound entry
@@ -163,19 +164,21 @@ void vIndexJoinContinue(Combined_T* aCombinedT) {
   L_IndexJoinDeref:
   aCombinedT->m_iProcessRow = 1;
 
+  printf("M5\n");
   if (aCombinedT->m_aEntIntJ == aCombinedT->m_aEntUpperJ) {
 
     aCombinedT->m_iProcessRow = 0;
-    goto __L_LABEL_LOOP__;
+    printf("M6\n");
+    goto L_AdvanceNextRow;              //
   }
-
+  printf("M7\n");
   aHeadLineSav = aHeadLine;
 
   // dereference the entry
   iBufferJ = aCombinedT->m_aEntIntJ->Rrf.m_uBuffer;
   iItemJ   = aCombinedT->m_aEntIntJ->Rrf.m_uItem;
   aCrwJ  = ( (char*)C_ADR_REGION + iBufferJ * C_1MB+ C_CRW_FIRSTHEAD+ iItemJ * C_CRW_HEADBYTES );
-
+  printf("M2\n");
   // marker-end
 
   L_Return:
@@ -200,7 +203,7 @@ void vIndexJoinReturn(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L__IndexScanRet:
-
+  printf("M3\n");
   aHeadLine = aHeadLineSav;
   aCombinedT->m_iJoinedRows++;
   goto __L_LABEL_NEXT__;
@@ -213,7 +216,7 @@ void vIndexJoinReturn(Combined_T* aCombinedT) {
    aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);
    goto L_IndexJoinDeref;
 
-
+  printf("M4\n");
   // marker-end
 
   __L_LABEL_NEXT__:

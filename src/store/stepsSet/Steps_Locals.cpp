@@ -186,6 +186,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Dynamic[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Dynamic[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("ErrorCode[]"_Stz)) {
     pCurrentWord->vEncodeCall("ErrorCode[].set"_Stz);
     EXIT();

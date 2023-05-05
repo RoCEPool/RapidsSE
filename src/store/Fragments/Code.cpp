@@ -789,7 +789,6 @@ void vCopyVchCol(Combined_T* aCombinedT) {
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column __COLUMN_NO__
-  printf("COLUMN FROM: __COLUMN_FROM__\n");
 
   // get the source string
   szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iOffset;

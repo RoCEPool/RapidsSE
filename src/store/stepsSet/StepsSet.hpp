@@ -459,6 +459,14 @@ void vDdlLockAssertNone(void);
   void vDstackSwap(void);
   void vDstackTuck(void);
 
+  // Dynamic
+  void vDynamicDelete(void);
+  void vDynamicExecute(void);
+  void vDynamicHashRowsFetch(void);
+  void vDynamicGet(void);
+  void vDynamicIndexT(void);
+  void vDynamicNew(void);
+
   void vDynamoCodeFetch(void);
   void vDynamoCompile(void);
   void vDynamoDelete(void);
