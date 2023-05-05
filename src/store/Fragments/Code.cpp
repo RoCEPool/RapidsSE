@@ -392,13 +392,13 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTB.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTB.m_racStrArea,&aDynamicT->m_iErrorCode);
+  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_racStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoTB.m_aRowSingle;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoTO.m_aRowSingle;
 
   // marker-end
 
@@ -464,13 +464,13 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTB.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTB.m_racStrArea,&aDynamicT->m_iErrorCode);
+  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_racStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTB.m_aRowSingle;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowSingle;
 
   // marker-end
   L_Return:
@@ -491,13 +491,13 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-    aDynamicT->m_xRowInfoTB.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTB.m_racStrArea,&aDynamicT->m_iErrorCode);
+    aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_racStrArea,&aDynamicT->m_iErrorCode);
 #endif
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
 
-    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTB.m_aRowSingle;
+    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowSingle;
 
   // marker-end
   L_Return:
@@ -655,7 +655,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     iElemSize += 8;
   }
   else {
-    szDstStz = aDynamicT->m_xRowInfoTB.m_racStrArea;
+    szDstStz = aDynamicT->m_xRowInfoTO.m_racStrArea;
 
 #ifdef WITH_TINYC
     nSrcSize = StrLib_iWordFlipBack(szDstStz,szSrcStz);
@@ -665,12 +665,12 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 #endif
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
 
-    iOffset = - nDifference(aDynamicT->m_xRowInfoTB.m_racStrArea,amCellAddress);
+    iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_racStrArea,amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
     // update the tub string size
     i8 iDstLen = strlen(szDstStz) + 1;
-    aDynamicT->m_xRowInfoTB.m_racStrArea += iDstLen;
+    aDynamicT->m_xRowInfoTO.m_racStrArea += iDstLen;
 #ifdef WITH_TINYC
     vTub_RowStrSize(aDynamicT->m_pTub,iDstLen);
 #endif
@@ -941,16 +941,16 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
-     szDstStz = aDynamicT->m_xRowInfoTB.m_racStrArea;
+     szDstStz = aDynamicT->m_xRowInfoTO.m_racStrArea;
      strncpy(szDstStz, szSrcStz, nSrcSize);
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
-     iOffset = - nDifference(aDynamicT->m_xRowInfoTB.m_racStrArea,amCellAddress);
+     iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_racStrArea,amCellAddress);
      p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
      // update the tub string size
-     aDynamicT->m_xRowInfoTB.m_racStrArea += nSrcSize;
+     aDynamicT->m_xRowInfoTO.m_racStrArea += nSrcSize;
 #ifdef WITH_TINYC
      vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif

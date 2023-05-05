@@ -54,10 +54,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // tub
   m_xDynamicT.m_pTub        = nullptr;
   m_xDynamicT.m_iTubRowSize = 0;
-  m_xDynamicT.m_xRowInfoTB.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoTB.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoTB.m_racStrArea    = nullptr;
-  m_xDynamicT.m_xRowInfoTB.m_racStrAreaSav  = nullptr;
+  m_xDynamicT.m_xRowInfoTO.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoTO.m_racStrArea    = nullptr;
+  m_xDynamicT.m_xRowInfoTO.m_racStrAreaSav  = nullptr;
 
   // pot
   m_xDynamicT.m_pPot        = nullptr;

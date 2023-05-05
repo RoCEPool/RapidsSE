@@ -419,10 +419,10 @@ struct Dynamic_T
   // aggregate T (SR_AT)
   struct RowInfo m_xRowInfoAT;
 
-  // Tub (SR_TB)
+  // Tub Output (SR_TO)
   void*   m_pTub;
   i8      m_iTubRowSize;
-  struct RowInfo m_xRowInfoTB;
+  struct RowInfo m_xRowInfoTO;
 
   // Pot Ouput (SR_PO)
   void*   m_pPot;

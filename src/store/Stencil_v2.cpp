@@ -1923,7 +1923,7 @@ OpSketch* Stencil_v2::pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevS
   RASSERT(pStreamDefOut);
 
   // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_TUB, ePrevStencil_v2, SR_TB, pStreamDefOut, pStreamDefOut, pInitStack);
+  OpSketch* pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_TUB, ePrevStencil_v2, SR_TO, pStreamDefOut, pStreamDefOut, pInitStack);
 
   // set the labels in the opSketch
   sLabel = "L_AddRowToTubPot"_Stz;

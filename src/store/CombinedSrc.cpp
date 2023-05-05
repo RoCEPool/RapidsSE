@@ -735,7 +735,7 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 
       case CT_VARCHAR:
         vAppendCodeFragment(pOpSketch, szFunction, pColumn);
-        if (pOpSketch->m_eStencilTo == SR_TB)
+        if (pOpSketch->m_eStencilTo == SR_TO)
           vAppendCodeFragment(pOpSketch, "vTubRowStr"_Stz, pColumn);
         break;
 

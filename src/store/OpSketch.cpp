@@ -31,7 +31,7 @@ StencilRow xStencilRow[]
   {"SR_PL"_Stz},    // SR_PL
   {"SR_PO"_Stz},    // SR_PO
   {"SR_PT"_Stz},    // SR_PT
-  {"SR_TB"_Stz},    // SR_TB
+  {"SR_TO"_Stz},    // SR_TO
   {"SR_TJ"_Stz},    // SR_TJ
 
   {nullptr}
@@ -1077,7 +1077,7 @@ void OpSketch::vGenerateStencilToStruct(u8 uSelectColumns) {
     case SR_PT:
       StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // Project T-Table"_Stz);
       break;
-    case SR_TB:
+    case SR_TO:
       StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // TUB"_Stz);
       break;
     case SR_TJ:
