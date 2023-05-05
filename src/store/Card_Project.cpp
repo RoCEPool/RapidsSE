@@ -170,7 +170,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
     if (p_projection_early->pContains(x_needed.p_expr()))
       continue;
 
-    Card_Expr* p_expr_early = x_needed.p_expr()->pClone(false);
+    Card_Expr* p_expr_early = x_needed.p_expr()->pClone();
     p_projection_early->vInsert(p_expr_early);
   }
 
@@ -273,7 +273,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   Symbol x_Symbol_stmCol1;
   x_Symbol_stmCol1.vSetStreamOrdinal(1);
-  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(x_Symbol_stmCol1);
+  pCI->G.p_term = pCI->Sqy.m_pExpr_fold->pSub_term()->pClone(&x_Symbol_stmCol1);
 
   pCI->G.p_rpnCalc->vAppend(pCI->G.p_term);
 

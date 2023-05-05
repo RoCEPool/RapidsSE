@@ -18,7 +18,7 @@ namespace STORE
     void vBump_Rightwards(i8 nBumpBy);
     Card_Expr* pContains(Card_Expr* p_expr_arg);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
-    Card_Expr* pDecodeExpr(Card_Term* p_term);
+    Card_Expr* pDecodeExpr(Symbol* pSymbol);
     i8 nExpr(void);
     Card_Expr* pFindExpr(Symbol* pSymbol);
     Card_Expr* pGetExpr(i8 i_Expr);

@@ -81,7 +81,7 @@ void Card_IdxColList::vAffix_tblColOdn(Card_Projection* p_projection)
     CardIter xCI_p(p_projection);
     while (xCI_p.G_bEachMain_reverse(CK_EXPR)) {
       if (xCI_p.G.p_expr->pSub_as()->bIsSymbol(szColNm)) {
-        Stz* szPrjCol = xCI_p.G.p_expr->szGetOdn();
+        Stz* szPrjCol = xCI_p.G.p_expr->pGetTerm(0)->szSymbol();
 
         xCI.G.p_idxCol->vSymbolMark1(szPrjCol, MARK_CHANGED);
       }

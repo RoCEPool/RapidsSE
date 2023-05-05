@@ -46,6 +46,8 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 
   vInit(eCard);
 
+  m_xSymbol.m_sSymbol = pSymbol->szSymbol();
+
   if (pSymbol->m_pProperties)
     m_xSymbol.Y_vAll(pSymbol->m_pProperties);
 
@@ -1575,6 +1577,16 @@ void Card::vSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set card symbol                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.vSet(pSymbol);
+}
+
+/*----------------------------------------------------------------------------*/
 /* set card symbol and Mark1                                                  */
 /*----------------------------------------------------------------------------*/
 void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
@@ -2458,6 +2470,23 @@ Card_Where* Card::pSub_where(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol::Symbol(void)
+{
+  m_pProperties = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Symbol::Symbol(Stz* szArg)
+{
+  m_sSymbol = szArg;
+  m_pProperties = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Symbol::operator =(Stz* szArg)
 {
   m_sSymbol = szArg;
@@ -2566,7 +2595,7 @@ eQO Symbol::eEvalSubQryOp(void)
 /*----------------------------------------------------------------------------*/
 /* get ordinal n  (i.e. $n or $In or $Kn or $c.n)                             */
 /*----------------------------------------------------------------------------*/
-i8 Symbol::iGetOrdinal(void)
+i8 Symbol::iExtractOrdinal(void)
 {
   i8 i_Col = StrLib::iGleanInt(m_sSymbol.azChar());
 
@@ -2576,7 +2605,7 @@ i8 Symbol::iGetOrdinal(void)
 /*----------------------------------------------------------------------------*/
 /* get table synonym from $c.n                                                */
 /*----------------------------------------------------------------------------*/
-char Symbol::cGetTableSyn(void)
+char Symbol::cExtractTableSynonym(void)
 {
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];

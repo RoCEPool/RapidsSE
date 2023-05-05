@@ -31,6 +31,21 @@ Card_Expr::Card_Expr(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Expr::Card_Expr(Symbol* pSymbol)
+: Card(CK_EXPR)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc(pSymbol);
+  vAppend(p_rpnCalc);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -69,23 +84,6 @@ Card_Expr::~Card_Expr(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pDistinct_expr_For_valOdn(Card_Term* p_term_valOdn)
-{
-  _static_
-
-  RASSERT(p_term_valOdn->bIsValOdn());
-
-  Card_Expr* p_expr = new Card_Expr;
-
-  Card_RpnCalc* p_rpnCalc = Card_RpnCalc::pDistinct_rpnCalc(p_term_valOdn);
-  p_expr->vAppend(p_rpnCalc);
-
-  return p_expr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 {
   _static_
@@ -120,7 +118,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   Card_Expr*    p_expr    = new Card_Expr;
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(xSymbol_Kn);
+  Card_Term*    p_term    = p_expr_gby->pSub_term()->pClone(&xSymbol_Kn);
 
   if (p_as)
     p_expr->vAppend(p_as);
@@ -153,7 +151,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   p_rpnCalc->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
 
-  Card_Term* p_term = p_expr->pSub_term()->pClone(xSymbol_Dn);
+  Card_Term* p_term = p_expr->pSub_term()->pClone(&xSymbol_Dn);
   p_term->pSymbol()->Y_vSet(P_Type, p_expr->szP_Type());
   //p_term->vDump();
 
@@ -189,14 +187,11 @@ void Card_Expr::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pClone(bool bStmCol_flip)
+Card_Expr* Card_Expr::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Expr* p_clone = _pCard_Expr(pDupCardRecursive());
-
-//  if (bStmCol_flip)
-//    p_clone->pGetOdn()->vEnsure_tblCol_flip();
 
   return p_clone;
 }
@@ -305,18 +300,6 @@ void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Card_Expr::szGetOdn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szOdn = pSub_rpnCalc()->szGetOdn();
-
-  return szOdn;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -329,15 +312,13 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsOdn(Stz* szOdn_arg)
+bool Card_Expr::bOf(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* szOdn = this->szGetOdn();
-  if (! szOdn)
-    return false;
+  Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
 
-  if (szOdn_arg->bSame(szOdn))
+  if (pSymbol_0->bSameAs(pSymbol))
     return true;
 
   return false;

@@ -30,6 +30,19 @@ Card_Term::Card_Term(Stz* szTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Term::Card_Term(Symbol* pSymbol)
+: Card(CK_TERM,pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Term::~Card_Term(void) noexcept(false)
@@ -53,7 +66,7 @@ void Card_Term::vBumpKeyOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iKeyOdn = pSymbol()->iGetOrdinal();
+  i8 iKeyOdn = pSymbol()->iExtractOrdinal();
 
   this->pSymbol()->vSetKeyOrdinal(iKeyOdn + nBy);
 
@@ -73,7 +86,7 @@ void Card_Term::vBump_stmOdn(i8 nBy)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 iStmColOdn = pSymbol()->iGetOrdinal();
+  i8 iStmColOdn = pSymbol()->iExtractOrdinal();
 
   this->pSymbol()->vSetStreamOrdinal(iStmColOdn + nBy);
 
@@ -113,7 +126,7 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (Card_Expr* p_expr_prior = pCI->pResolvePrior_expr(this))
-    if (Stz* szPrjCol = p_expr_prior->szGetOdn())
+    if (Stz* szPrjCol = p_expr_prior->pGetTerm(0)->szSymbol())
       vSymbolMark1(szPrjCol, MARK_CHANGED);
 }
 
@@ -220,13 +233,13 @@ Card_Term* Card_Term::pClone(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Term* Card_Term::pClone(Stz* szDiffSymbol)
+Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->vSymbol(szDiffSymbol);
+  p_term_clone->vSymbol(pDiffSymbol);
 
   return p_term_clone;
 }

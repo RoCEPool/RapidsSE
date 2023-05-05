@@ -35,6 +35,24 @@ Card_RpnCalc::Card_RpnCalc(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
+: Card(CK_RPNCALC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Term* p_term = new Card_Term(pSymbol);
+  vAppend(p_term);
+
+  vSetType(p_term);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
@@ -46,26 +64,6 @@ Card_RpnCalc::~Card_RpnCalc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Card_RpnCalc* Card_RpnCalc::pDistinct_rpnCalc(Card_Term* p_term_valOdn)
-{
-  _static_
-
-  RASSERT(p_term_valOdn->bIsValOdn());
-
-  Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-
-  Card_Term* p_term = p_term_valOdn->pClone();
-  p_rpnCalc->vAppend(p_term);
-
-  // rpn is a calculation resulting in a typed value
-  p_rpnCalc->vSetType(p_term);
-
-  return p_rpnCalc;
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -216,48 +214,12 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 
     Card_Term* p_term_valOdn = x_term.p_term();
 
-    Card_Expr* p_expr_valOdn = Card_Expr::pDistinct_expr_For_valOdn(p_term_valOdn);
+    Card_Expr* p_expr_valOdn = new Card_Expr(p_term_valOdn->pSymbol());
 
     p_subSet->vAppend(p_expr_valOdn);
   }
 
   pCI->G.p_subSet = p_subSet;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the one (and only) ordinal from rpnCalc                                */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_RpnCalc::pGetOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (1 != this->nChildCards())
-    return nullptr;
-
-  Card_Term* p_term_0 = this->pGetTerm(0);
-
-  if (p_term_0->bIsKeyOdn() ||
-      p_term_0->bIsStmOdn() ||
-      p_term_0->bIsColOdn())
-    return p_term_0;
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the one (and only) ordinal symbol-value from rpnCalc                   */
-/*----------------------------------------------------------------------------*/
-Stz* Card_RpnCalc::szGetOdn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Term* p_term_odn = this->pGetOdn();
-  if (! p_term_odn)
-    return nullptr;
-
-  Stz* szSym = p_term_odn->szSymbol();
-
-  return szSym;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,17 +237,16 @@ Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
   return p_term;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bHasTerm(Stz* szSymbol)
+bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bIsSymbol(szSymbol))
+    if (xCI.G.p_term->bIsSymbol(pSymbol->szSymbol()))
       return true;
   }
 
@@ -358,12 +319,14 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  Symbol xWhen("WHEN"_Stz);
+
   Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // does the rpn calc have a when in it?
 
-  if (this->bHasTerm("WHEN"_Stz)) {
+  if (this->bHasTerm(&xWhen)) {
 
     Card_CmpPred* p_cmpPred = new Card_CmpPred;
     p_cmpPred->vTransferChildren(this);

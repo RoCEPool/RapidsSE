@@ -130,7 +130,7 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
         continue;
 
       if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
-        p_needed->vAppend(p_expr_col->pClone(true));
+        p_needed->vAppend(p_expr_col->pClone());
     }
   }
 
@@ -220,7 +220,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 
     // get corresponding <gbyAgg>/<key>/<expr>
     Card_Term* pTerm_prj = p_expr_prj->pGetTerm(0);
-    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj);
+    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj->pSymbol());
 
     if (! p_expr_key)
       continue;

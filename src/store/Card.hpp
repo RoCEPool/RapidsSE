@@ -204,6 +204,9 @@ namespace STORE
     TagSet* m_pProperties;
 
   public:
+    Symbol(void);
+    Symbol(Stz* szSymbol);
+
     void operator =(Stz* szArg);
     void operator =(Symbol* pSymbol);
     void operator =(Symbol& rxSymbol);
@@ -216,8 +219,8 @@ namespace STORE
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 
-    i8   iGetOrdinal(void);
-    char cGetTableSyn(void);
+    i8   iExtractOrdinal(void);
+    char cExtractTableSynonym(void);
 
     bool bIsAggOp(void);          // avg, count, ... sum
     bool bIsBoolFn(void);         // between, case ... matchTrailing
@@ -406,6 +409,7 @@ namespace STORE
     void vSymbol(char cSymbol);
     void vSymbol(i8 iSymbol);
     void vSymbol(Stz* szSymbol);
+    void vSymbol(Symbol* pSymbol);
     void vSymbolMark1(Stz* szSymbol, char cMark1);
     void vSymbolSprint(Stz* szFormat, ...);
 

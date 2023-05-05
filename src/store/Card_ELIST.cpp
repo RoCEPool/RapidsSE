@@ -133,11 +133,11 @@ void Card_ELIST::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* get expr relating to term                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_ELIST::pDecodeExpr(Card_Term* p_term)
+Card_Expr* Card_ELIST::pDecodeExpr(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i_Expr  = p_term->iGetOdn() - 1;
+  i8 i_Expr  = pSymbol->iExtractOrdinal() - 1;
 
   Card_Expr* p_expr = pGetExpr(i_Expr);
 
@@ -168,7 +168,8 @@ Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
     if (!pGetChild(i_Expr)->bIsCard(CK_EXPR))
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
-    if (p_expr->bIsOdn(pSymbol->szSymbol()))
+//    if (p_expr->bIsOdn(pSymbol->szSymbol()))
+    if (p_expr->bOf(pSymbol))
       return p_expr;
   }
 

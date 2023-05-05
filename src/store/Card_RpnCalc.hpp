@@ -14,9 +14,8 @@ namespace STORE
     void  operator delete(void*);
   
     Card_RpnCalc(void);
+    Card_RpnCalc(Symbol* pSymbol);
    ~Card_RpnCalc(void) noexcept(false);
-
-    static Card_RpnCalc* pDistinct_rpnCalc(Card_Term* p_term_valOdn);
 
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     void vConcat(Card_RpnCalc* p_rpnCalc);
@@ -24,10 +23,8 @@ namespace STORE
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
-    Card_Term* pGetOdn(void);
-    Stz* szGetOdn(void);
     Card_Term* pGetTerm(i8 i_Term);
-    bool bHasTerm(Stz* szSymbol);
+    bool bHasTerm(Symbol* pSymbol);
     bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
