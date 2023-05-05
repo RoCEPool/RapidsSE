@@ -7,7 +7,7 @@
 #include "CodeSynth_v2.hpp"
 #include "CombinedSrc.hpp"
 #include "OpSketch.hpp"
-#include "Combined.hpp"
+#include "Dynamic.hpp"
 
 // information about the stage being combined and its Operators
 // this will help in adding in the rules
@@ -32,7 +32,7 @@ struct stageOps_V2 {
   bool m_bPayloadOp;
   bool m_bGeneratePotTub;
 
-  Op* m_pCombinedOp;
+  Op* m_pDynamicOp;
   Op* m_pHavingFilterOp;
   Op* m_pLimitOp;
 
@@ -71,40 +71,40 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vCombine(bool bGenerateCCode);
     Stz* szOpSource(void);
     void vPrint(void);
-    void vSetup(Combined* pCombined, Stream* pStream);
-    eEC  eSketch(Combined* pCombined, Stream* pStream);
+    void vSetup(Dynamic* pDynamic, Stream* pStream);
+    eEC  eSketch(Dynamic* pDynamic, Stream* pStream);
     Stz* szStageNm(void);
 
   private:
 
-    eEC eCollectStage(Combined* pCombined, Stream* pStream);
+    eEC eCollectStage(Dynamic* pDynamic, Stream* pStream);
 
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
 
-    void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupProject(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupTub(Combined* pCombined, Op* pOp, eHK eHandlerKind);
+    void vSetupAggreg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupProject(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupScan(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind);
 
 
     OpSketch* pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
     OpSketch* pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
     OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
     OpSketch* pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
+    OpSketch* pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
     OpSketch* pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop, TypedStack* pInitStack = nullptr);
 
 
@@ -113,15 +113,15 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
 
 
-    void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSketchEosSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
+    void vSketchEosTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
 
 
-    OpSketch* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists);
-    OpSketch* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
+    OpSketch* pSketchKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists);
+    OpSketch* pSketchLimit(Dynamic* pDynamic, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchTop(Dynamic* pDynamic, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop);
 
 
     Footer* aFooter(void);

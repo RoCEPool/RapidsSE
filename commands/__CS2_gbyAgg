@@ -20,17 +20,17 @@ begin
  stage S02 on all partitions :
    scan rapidsse public Nation
    | gbyagg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | combined_v2 0
+   | dynamic_v2 0
    | next
 
  stage S03 on all nodes :
    gbyagg_v2 " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | combined_v2 0
+   | dynamic_v2 0
    | next
 
  stage S04 on origin :
    gbyagg_v2 " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
-   | combined_v2 0
+   | dynamic_v2 0
    | next
 
  stage S06 on origin :
@@ -70,7 +70,7 @@ begin
   stage stageMarker0541 on all partitions :
     scan rapidsse public Nation
     | gbyAgg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
-    | combined_v2 0
+    | dynamic_v2 0
     | next
 
   stage stageLast on origin :

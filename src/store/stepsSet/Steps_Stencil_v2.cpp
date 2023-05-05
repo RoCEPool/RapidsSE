@@ -81,15 +81,15 @@ void Step::vStencilSetup_v2(void)
 
   Stencil_v2* pStencil   = * m_pLogicUnit->m_xpStencil_v2;
 
-  Combined* pCombined = _pCombined(m_pDataStack->pPopPtr(__func__));
+  Dynamic* pDynamic = _pDynamic(m_pDataStack->pPopPtr(__func__));
 
   // get the current stream
   Stream* pStream = _pStream(m_pOp->pStream());
 
-  pCombined->aCombinedT()->m_pTub        = *m_pLogicUnit->m_xpTub;
-  pCombined->aCombinedT()->m_pPot        = *m_pLogicUnit->m_xpPot;
+  pDynamic->aDynamicT()->m_pTub        = *m_pLogicUnit->m_xpTub;
+  pDynamic->aDynamicT()->m_pPot        = *m_pLogicUnit->m_xpPot;
 
-  pStencil->vSetup(pCombined, pStream);
+  pStencil->vSetup(pDynamic, pStream);
 
   EXIT();
 }
@@ -103,15 +103,15 @@ void Step::vStencilSketch_v2(void)
 
   Stencil_v2* pStencil   = * m_pLogicUnit->m_xpStencil_v2;
 
-  Combined* pCombined = _pCombined(m_pDataStack->pPopPtr(__func__));
+  Dynamic* pDynamic = _pDynamic(m_pDataStack->pPopPtr(__func__));
 
   // get the current stream
   Stream* pStream = _pStream(m_pOp->pStream());
 
-  pCombined->aCombinedT()->m_pTub        = *m_pLogicUnit->m_xpTub;
-  pCombined->aCombinedT()->m_pPot        = *m_pLogicUnit->m_xpPot;
+  pDynamic->aDynamicT()->m_pTub        = *m_pLogicUnit->m_xpTub;
+  pDynamic->aDynamicT()->m_pPot        = *m_pLogicUnit->m_xpPot;
 
-  eEC eError = pStencil->eSketch(pCombined, pStream);
+  eEC eError = pStencil->eSketch(pDynamic, pStream);
 
   if (eError == EC_NONE) {
 

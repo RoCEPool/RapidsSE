@@ -57,8 +57,8 @@ static Stz* aSRArea[]
       /*    */ "SR_IT"_Stz,
       /*    */ "SR_PL"_Stz,
       /*    */ "SR_PT"_Stz,
-      /*    */ "aCombinedT->m_racTubStrArea"_Stz,
-      /*    */ "aCombinedT->m_racStrAreaTJ"_Stz,
+      /*    */ "aDynamicT->m_racTubStrArea"_Stz,
+      /*    */ "aDynamicT->m_racStrAreaTJ"_Stz,
 
       /*    */ "ENUMS"_Stz
 };

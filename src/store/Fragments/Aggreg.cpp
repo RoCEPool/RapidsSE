@@ -19,7 +19,7 @@
 /*-- vAggregBegin -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iAggregBegin
-i8 iAggregBegin(Combined_T* aCombinedT) {
+i8 iAggregBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   char* szStrArea;
@@ -36,10 +36,10 @@ i8 iAggregBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayAgg;
-  szStrArea = aCombinedT->m_racStrAreaAgg;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayAgg;
+  szStrArea = aDynamicT->m_racStrAreaAgg;
 
   // marker-end
 
@@ -51,10 +51,10 @@ i8 iAggregBegin(Combined_T* aCombinedT) {
 /*-- vAggregInit -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vAggregInitBegin
-void vAggregInitBegin(Combined_T* aCombinedT) {
+void vAggregInitBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
-  if ( aCombinedT->m_iProjectInit == 0 ) {
+  if ( aDynamicT->m_iProjectInit == 0 ) {
   // marker-end
   }
 
@@ -64,16 +64,16 @@ void vAggregInitBegin(Combined_T* aCombinedT) {
 /*-- iAggregInitEnd ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iAggregInitEnd
-i8 iAggregInitEnd(Combined_T* aCombinedT) {
+i8 iAggregInitEnd(Dynamic_T* aDynamicT) {
 
   {
   // marker-start
 
-    if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+    if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
       return 0;
     }
 
-    aCombinedT->m_iProjectInit = 1;
+    aDynamicT->m_iProjectInit = 1;
   }
 
   // marker-end
@@ -86,12 +86,12 @@ i8 iAggregInitEnd(Combined_T* aCombinedT) {
 /*-- vAggregColsBegin --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vAggregColsBegin
-i8 vAggregColsBegin(Combined_T* aCombinedT) {
+i8 vAggregColsBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  if (aCombinedT->m_iProcessRow) {
-    aCombinedT->m_iRowsProcessed++;
+  if (aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iRowsProcessed++;
     // marker-end
   }
 
@@ -101,12 +101,12 @@ i8 vAggregColsBegin(Combined_T* aCombinedT) {
 /*-- iAggregColsEnd ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iAggregColsEnd
-i8 iAggregColsEnd(Combined_T* aCombinedT) {
+i8 iAggregColsEnd(Dynamic_T* aDynamicT) {
 
   {
   // marker-start
 
-    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
 

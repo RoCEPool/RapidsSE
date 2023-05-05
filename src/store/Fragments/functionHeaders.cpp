@@ -20,10 +20,10 @@
 /*--------------------------------------------------------------------*/
 /* flattened function -- CRWBUFFER HANDLER                            */
 /*--------------------------------------------------------------------*/
-int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
+int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT)
 {
 
-  #include "../src/store/vFLAT_Parameters.h"
+  #include "../src/store/vFLAT_Parameters_v2.h"
   #include "../src/store/vFLAT_PreliminaryCrw_v2.h"
 
 
@@ -100,7 +100,7 @@ int __FUNCTION_CRW__(struct Combined_T* aCombinedT)
 /*--------------------------------------------------------------------*/
 /* flattened function -- EOS Handler                                  */
 /*--------------------------------------------------------------------*/
-int __FUNCTION_EOS__(struct Combined_T* aCombinedT) {
+int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 
   char *szSrcStz;
   char *szDstStz;
@@ -170,9 +170,9 @@ int __FUNCTION_EOS__(struct Combined_T* aCombinedT) {
 /*--------------------------------------------------------------------*/
 /* flattened function -- INDEXBUFFER HANDLER                          */
 /*--------------------------------------------------------------------*/
-int __FUNCTION_INDEX__(struct Combined_T* aCombinedT) {
+int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 
-   #include "../src/store/vFLAT_Parameters.h"
+   #include "../src/store/vFLAT_Parameters_v2.h"
 
 
    char* szSrcStz;
@@ -248,10 +248,10 @@ int __FUNCTION_INDEX__(struct Combined_T* aCombinedT) {
 /*--------------------------------------------------------------------*/
 /* flattened function -- ROWBUFFER HANDLER                            */
 /*--------------------------------------------------------------------*/
-int __FUNCTION_ROW__(struct Combined_T* aCombinedT)
+int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
 {
 
-  #include "../src/store/vFLAT_Parameters.h"
+  #include "../src/store/vFLAT_Parameters_v2.h"
 
   char *szSrcStz;
   char *szDstStz;

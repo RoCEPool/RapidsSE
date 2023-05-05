@@ -10,11 +10,11 @@
 /*--------------------------------------------------------------------*/
 /* vInflateCrwEnd                                                     */
 /*--------------------------------------------------------------------*/
-int vInflateCrwEnd(struct Combined_T* aCombinedT)
+int vInflateCrwEnd(struct Dynamic_T* aDynamicT)
 {
   {
 
-    #include "vFLAT_Parameters.h"
+    #include "vFLAT_Parameters_v2.h"
 
     L_AdvanceNextRow:
 
@@ -39,11 +39,11 @@ int vInflateCrwEnd(struct Combined_T* aCombinedT)
 /*--------------------------------------------------------------------*/
 /* vInflateRowEnd                                                     */
 /*--------------------------------------------------------------------*/
-int vInflateRowEnd(struct Combined_T* aCombinedT)
+int vInflateRowEnd(struct Dynamic_T* aDynamicT)
 {
   {
 
-    #include "vFLAT_Parameters.h"
+    #include "vFLAT_Parameters_v2.h"
 
     L_AdvanceNextRow:
 
@@ -68,11 +68,11 @@ int vInflateRowEnd(struct Combined_T* aCombinedT)
 /*--------------------------------------------------------------------*/
 /* vIndexScanEnd                                                      */
 /*--------------------------------------------------------------------*/
-int vIndexScanEnd(struct Combined_T* aCombinedT)
+int vIndexScanEnd(struct Dynamic_T* aDynamicT)
 {
   {
 
-#include "vFLAT_Parameters.h"
+#include "vFLAT_Parameters_v2.h"
 
     L_AdvanceNextRow:
 
@@ -97,7 +97,7 @@ int vIndexScanEnd(struct Combined_T* aCombinedT)
 /*--------------------------------------------------------------------*/
 /* iEosEnd                                                            */
 /*--------------------------------------------------------------------*/
-int iEosEnd(struct Combined_T* aCombinedT)
+int iEosEnd(struct Dynamic_T* aDynamicT)
 {
   // marker-start
   L_Return:

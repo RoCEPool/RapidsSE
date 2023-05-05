@@ -16,12 +16,12 @@ begin
   stage S01 on all partitions :
     scan rapidsse public Nation
     | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | combined_v2 0
+    | dynamic_v2 0
     | next
 
   stage S02 on all partitions :
     project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | combined_v2 0
+    | dynamic_v2 0
     | next
 
   stage S03 on origin :

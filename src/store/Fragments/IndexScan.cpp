@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+#include "Dynamic.hpp"
 #include "IndexDef.hpp"
 #include "TccStuff.h"
 #include "Pay.hpp"
@@ -19,7 +19,7 @@
 /*-- vIndexScanBegin ---------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexScanBegin
-void vIndexScanBegin(Combined_T* aCombinedT) {
+void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
   i8 i_CurrentRow;
   i8*   paW;
@@ -35,18 +35,18 @@ void vIndexScanBegin(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
 
   __L_LABEL__:
 
-  paW = &aCombinedT->m_aW[0];
+  paW = &aDynamicT->m_aW[0];
 
   i_CurrentRow = -1;
 
   // position at beginning of the index
-  aCombinedT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT);
+  aDynamicT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aDynamicT->m_aIndexTreeT, &aDynamicT->m_aEntBufferT);
 
-  if ( ! aCombinedT->m_aEntIntT )
+  if ( ! aDynamicT->m_aEntIntT )
     goto L_Return;
 
   // populate EntKeyT with upper bound value
@@ -61,22 +61,22 @@ void vIndexScanBegin(Combined_T* aCombinedT) {
 /*-- vIndexUpperCheck ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexUpperCheck
-void vIndexUpperCheck(Combined_T* aCombinedT) {
+void vIndexUpperCheck(Dynamic_T* aDynamicT) {
 
   // marker-start
 
   /// position at upper bound
-  aCombinedT->m_aEntUpperT =  (struct Ent_int *)aIndexTree_positionLT(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);
+  aDynamicT->m_aEntUpperT =  (struct Ent_int *)aIndexTree_positionLT(aDynamicT->m_aIndexTreeT, aDynamicT->m_aEntKeyT);
 
   L_IndexScanDeref:
 
   // reached upper bound ?
-  if (aCombinedT->m_aEntIntT == aCombinedT->m_aEntUpperT) {
+  if (aDynamicT->m_aEntIntT == aDynamicT->m_aEntUpperT) {
     goto L_Return;
   }
 
   // process the row
-  aCombinedT->m_iProcessRow = 1;
+  aDynamicT->m_iProcessRow = 1;
 
   // marker-end
 
@@ -89,7 +89,7 @@ void vIndexUpperCheck(Combined_T* aCombinedT) {
 /*-- vIndexScanReturn --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexScanReturn
-void vIndexScanReturn(Combined_T* aCombinedT) {
+void vIndexScanReturn(Dynamic_T* aDynamicT) {
 
   void* aHeadLine;
   void* aHeadLineSav;
@@ -111,7 +111,7 @@ void vIndexScanReturn(Combined_T* aCombinedT) {
   __L_LABEL_LOOP__:
 
   // move to next entry
-  aCombinedT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferT, aCombinedT->m_aEntIntT);
+  aDynamicT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aDynamicT->m_aEntBufferT, aDynamicT->m_aEntIntT);
   goto L_IndexScanDeref;
 
   // marker-end

@@ -34,15 +34,15 @@
   union Edt_T* aEdt;
   union Dte_T* aDte;
 
-  i8 iHeadSize = aCombinedT->m_xDyn.m_iHeadSize;
+  i8 iHeadSize = aDynamicT->m_iHeadSize;
 
-  struct HeadLine_T* aHeadLine = aCombinedT->m_xDyn.m_aHeadLine0;
+  struct HeadLine_T* aHeadLine = aDynamicT->m_aHeadLine0;
   struct HeadLine_T* aHeadLineSav = aHeadLine;
-  enum eSI eStrInflateRule = aCombinedT->m_xDyn.m_eStrInflateRule ;
+  enum eSI eStrInflateRule = aDynamicT->m_eStrInflateRule ;
 
   i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
                       + C_8B   // (ControlDate) 8 bytes for the perspective
-                      + aCombinedT->m_xDyn.m_nCols; // metaSize
+                      + aDynamicT->m_nCols; // metaSize
 
 
   i8 i_Col;

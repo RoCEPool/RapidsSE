@@ -18,7 +18,7 @@ begin
    scan rapidsse public Nation
    | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
    | sort_v2 " type VARCHAR as n_name $2 ASC  "
-   | combined_v2 0
+   | dynamic_v2 0
    | next
  stage S02 on origin :
    output

@@ -19,7 +19,7 @@
 /*-- vProjectBegin -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vProjectBegin
-void vProjectBegin(Combined_T* aCombinedT) {
+void vProjectBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__ {
     i8 N_NATIONKEY;
@@ -44,16 +44,16 @@ void vProjectBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  if (!aCombinedT->m_iProcessRow) {
-    aCombinedT->m_iProcessRow = 1;
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
 
-  aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaPSav;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayP;
-  szStrArea = aCombinedT->m_racStrAreaP;
+  aDynamicT->m_racStrAreaP = aDynamicT->m_racStrAreaPSav;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayP;
+  szStrArea = aDynamicT->m_racStrAreaP;
   // marker-end
 
   return;
@@ -64,7 +64,7 @@ void vProjectBegin(Combined_T* aCombinedT) {
 /*-- iProjectEnd -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iProjectEnd
-i8 iProjectEnd(Combined_T* aCombinedT) {
+i8 iProjectEnd(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__*   p__STRUCT_TO__;
 
@@ -72,12 +72,12 @@ i8 iProjectEnd(Combined_T* aCombinedT) {
 
   // marker-start
 
-  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayP;
-  szStrArea = aCombinedT->m_racStrAreaP;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayP;
+  szStrArea = aDynamicT->m_racStrAreaP;
 
   // marker-end
 

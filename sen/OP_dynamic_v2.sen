@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_combined_v2.sen -- Operator combined                                    */
+/* OP_dynamic_v2.sen -- Operator combined                                    */
 /*============================================================================*/
 
-" OP_combined_v2.sen" .verbose
+" OP_dynamic_v2.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_CANCELLINGMARKER ...                                        */
 /*----------------------------------------------------------------------------*/
-: combined_v2_CancellingMarker \handler
+: dynamic_v2_CancellingMarker \handler
 
   Pipein[]\clear to Marker[]
 
@@ -32,14 +32,14 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: combined_v2_Cleaning \handler
+: dynamic_v2_Cleaning \handler
 
   0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   Tub[].delete
   Pot[].delete
   Stencil_v2[].delete
-  Combined[].delete
+  Dynamic[].delete
 
   EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_D_CRWBUFFER ...                                            CRWBUFFER */
 /*----------------------------------------------------------------------------*/
-: combined_v2_CrwBuffer \handler
+: dynamic_v2_CrwBuffer \handler
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
@@ -58,7 +58,7 @@
   //"OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Fun0[] 0 Combined[].execute_v2 not if
+  CrwBuffer[] Fun0[] 0 Dynamic[].execute not if
     to errorCode
 
     // cleanup
@@ -96,7 +96,7 @@
   CrwBuffer[].delete
 
   // pipeout all completed Tub[]/Pot[]
-  Combined[].hashRows@ if
+  Dynamic[].hashRows@ if
     Pot[].pipeOutCompletedPtns
   else
     Tub[].pipeOutCompleted
@@ -108,7 +108,7 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_M_DATAPULSE ...                                            DATAPULSE */
 /*----------------------------------------------------------------------------*/
-: combined_v2_DataPulse \handler
+: dynamic_v2_DataPulse \handler
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
@@ -117,17 +117,17 @@
   Pipein[].pipeout
 
   // if index is set then must be an indexScan OP
-  Combined[].IndexT to Index[]
+  Dynamic[].IndexT to Index[]
   Index[].isNull not if
 
     // execute the indexScan and combinedOp's
-    nullptr Fun2[] 0 Combined[].execute_v2 assert
+    nullptr Fun2[] 0 Dynamic[].execute assert
 
     // execute EOS handling
-    nullptr Fun3[] 1 Combined[].execute_v2 assert
+    nullptr Fun3[] 1 Dynamic[].execute assert
 
     // pipeout all Tub[]/Pot[]
-    Combined[].hashRows@ if
+    Dynamic[].hashRows@ if
       Pot[].pipeOutRemainderPtns
     else
       Tub[].pipeOutRemainder
@@ -143,13 +143,13 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
-: combined_v2_EosMarker \handler
+: dynamic_v2_EosMarker \handler
 
   0 EV_M_EOS EG_ZK LogicUnit[].diaryNote
 
  0 locals| errorCode |
 
-  nullptr Fun3[] 0 Combined[].execute_v2 not if
+  nullptr Fun3[] 0 Dynamic[].execute not if
     to errorCode
     Pipein[].delete
     Tub[].deleteAllBuffers
@@ -160,7 +160,7 @@
   then
 
   // pipeout all Tub[]/Pot[]
-  Combined[].hashRows@ if
+  Dynamic[].hashRows@ if
     Pot[].pipeOutRemainderPtns
   else
     Tub[].pipeOutRemainder
@@ -174,7 +174,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_ERRORING ...                                              */
 /*----------------------------------------------------------------------------*/
-: combined_v2_ErroringMarker \handler
+: dynamic_v2_ErroringMarker \handler
 
   Pipein[]\clear to Marker[]
 
@@ -188,7 +188,7 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_D_ROWBUFFER ...                                            ROWBUFFER */
 /*----------------------------------------------------------------------------*/
-: combined_v2_RowBuffer \handler
+: dynamic_v2_RowBuffer \handler
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
@@ -197,7 +197,7 @@
   //"OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Fun1[] 0 Combined[].execute_v2 not if
+  RowBuffer[] Fun1[] 0 Dynamic[].execute not if
     to errorCode
 
     // cleanup
@@ -235,7 +235,7 @@
   RowBuffer[].delete
 
   // pipeout all completed Tub[]/Pot[]
-  Combined[].hashRows@ if
+  Dynamic[].hashRows@ if
     Pot[].pipeOutCompletedPtns
   else
     Tub[].pipeOutCompleted
@@ -247,14 +247,14 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_M_START ...                                                    START */
 /*----------------------------------------------------------------------------*/
-: combined_v2_StartMarker \handler
+: dynamic_v2_StartMarker \handler
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
   Tub[].new
   Pot[].new
   Stencil_v2[].new
-  Combined[].new
+  Dynamic[].new
 
   // pipeout the start marker
   Pipein[].pipeout
@@ -265,12 +265,12 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: combined_v2_StreamDef \handler
+: dynamic_v2_StreamDef \handler
 
   0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // synthesize the code for the combined OP's
-  Combined[] Stencil_v2[].setup
+  Dynamic[] Stencil_v2[].setup
 
   // set up the function pointers
   Fun0[].setup not if
@@ -311,14 +311,14 @@
 /*----------------------------------------------------------------------------*/
 /* on EV_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: combined_v2_StreamDefGen \handler
+: dynamic_v2_StreamDefGen \handler
 
   0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |
 
   // synthesize the code for the combined OP's
-  Combined[] Stencil_v2[].sketch to eError
+  Dynamic[] Stencil_v2[].sketch to eError
   EC_NONE eError == not if
     eError op__execErr
     Pipein[].delete
@@ -343,7 +343,7 @@
 /*----------------------------------------------------------------------------*/
 /* execute for combined req                                                   */
 /*----------------------------------------------------------------------------*/
- : combined_v2_op \operator
+ : dynamic_v2_op \operator
 
   _lu_initialise_
 
@@ -352,19 +352,19 @@
 
   op__topology
 
-  find: combined_v2_CancellingMarker  EV_M_CANCELLING [op].handler!
-  find: combined_v2_Cleaning      EV_M_CLEANING      [op].handler!
-  find: combined_v2_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
-  find: combined_v2_DataPulse     EV_M_DATAPULSE     [op].handler!
-  find: combined_v2_EosMarker     EV_M_EOS           [op].handler!
-  find: combined_v2_ErroringMarker EV_M_ERRORING     [op].handler!
-  find: combined_v2_RowBuffer     EV_D_ROWBUFFER     [op].handler!
-  find: combined_v2_StartMarker   EV_M_START         [op].handler!
+  find: dynamic_v2_CancellingMarker  EV_M_CANCELLING [op].handler!
+  find: dynamic_v2_Cleaning      EV_M_CLEANING      [op].handler!
+  find: dynamic_v2_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
+  find: dynamic_v2_DataPulse     EV_M_DATAPULSE     [op].handler!
+  find: dynamic_v2_EosMarker     EV_M_EOS           [op].handler!
+  find: dynamic_v2_ErroringMarker EV_M_ERRORING     [op].handler!
+  find: dynamic_v2_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: dynamic_v2_StartMarker   EV_M_START         [op].handler!
 
   Counter0[] 0 == if
-    find: combined_v2_StreamDefGen  EV_D_STREAMDEF     [op].handler!
+    find: dynamic_v2_StreamDefGen  EV_D_STREAMDEF     [op].handler!
   else
-    find: combined_v2_StreamDef     EV_D_STREAMDEF     [op].handler!
+    find: dynamic_v2_StreamDef     EV_D_STREAMDEF     [op].handler!
   then
 
   op__loop
@@ -379,13 +379,13 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: combined_v2 :: combined_v2 <generate> ;
+cmdSyntax: dynamic_v2 :: dynamic_v2 <generate> ;
 
-: combined_v2_cmdTags _cmdTags tagCopy: Op_tags
+: dynamic_v2_cmdTags _cmdTags tagCopy: Op_tags
   tags{
     <cmdDesc> = "--desc for op--"
  
-    <opEntry> = "combined_v2_op"
+    <opEntry> = "dynamic_v2_op"
   }
 ;
     

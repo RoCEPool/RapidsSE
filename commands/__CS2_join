@@ -24,12 +24,12 @@ CREATE INDEX IxR_NAME      on REGION (R_NAME);
          stage S01 on all partitions :
              scan      Nation
            | project_v2 "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-           | combined_v2  0
+           | dynamic_v2  0
            | next
 
          stage S02 on all partitions :
              indexJoin_v2 Region IxR_REGIONKEY " BOUND $I1 $3 == "
-           | combined_v2  0
+           | dynamic_v2  0
            | next
 
 

@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+#include "Dynamic.hpp"
 #include "IndexDef.hpp"
 #include "TccStuff.h"
 #include "Pay.hpp"
@@ -19,7 +19,7 @@
 /*-- vFilterBegin ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vFilterBegin
-void vFilterBegin(Combined_T* aCombinedT) {
+void vFilterBegin(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
@@ -34,8 +34,8 @@ void vFilterBegin(Combined_T* aCombinedT) {
 
 __L_LABEL__:
 
-  if (!aCombinedT->m_iProcessRow) {
-    aCombinedT->m_iProcessRow = 1;
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
   // marker-end
@@ -45,13 +45,13 @@ __L_LABEL__:
 /*-- iFilterEnd --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iFilterEnd
-i8 iFilterEnd(Combined_T* aCombinedT, bool bFilterResult) {
+i8 iFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
 
   // marker-start
   if (bFilterResult && bFilterResult != C_DATUM_NULL) {
-    aCombinedT->m_iProcessRow = 1;
+    aDynamicT->m_iProcessRow = 1;
   } else {
-    aCombinedT->m_iProcessRow = 0;
+    aDynamicT->m_iProcessRow = 0;
   }
   // marker-end
 }

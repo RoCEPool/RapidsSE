@@ -69,7 +69,7 @@ Stencil_v2::Stencil_v2(void)
 
   m_xStageOps.m_bGeneratePotTub = true;
 
-  m_xStageOps.m_pCombinedOp     = nullptr;
+  m_xStageOps.m_pDynamicOp     = nullptr;
   m_xStageOps.m_pHavingFilterOp = nullptr;
   m_xStageOps.m_pLimitOp        = nullptr;
 
@@ -218,7 +218,7 @@ void Stencil_v2::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
-eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
+eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
@@ -243,15 +243,15 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
   i8 iStage = pStream->pStage()->i_Stage();
 
-  Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
-  Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
+  Tub* pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
+  Pot* pPot = _pPot(pDynamic->aDynamicT()->m_pPot);
 
   sReturnLabel = ""_Stz;
   sLabelLoop = "L_AdvanceNextRow"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the op information from the stage
-  eEC eError = eCollectStage(pCombined, pStream);
+  eEC eError = eCollectStage(pDynamic, pStream);
   if (eError != EC_NONE)
     return eError;
 
@@ -263,7 +263,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     Op *pOp = pStream->pGet(i_Op);
 
     // break when we reach the combined OP
-    if (pOp->szOpNm()->bSame("combined_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("dynamic_v2"_Stz)) {
       break;
     }
 
@@ -282,7 +282,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       eHandlerKind = HK_INDEXBUFFER;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupIndexScan(pCombined, pStream, pOp);
+      vSetupIndexScan(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchIndexScan(pStream, pOp, eHandlerKind, sLabelLoop);
@@ -302,7 +302,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       eHandlerKind = HK_CRWBUFFER;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupScan(pCombined, pStream, pOp);
+      vSetupScan(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchInflateCrw(pStream, pOp, eHandlerKind, sLabelLoop);
@@ -322,7 +322,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       eHandlerKind = HK_ROWBUFFER;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupScan(pCombined, pStream, pOp);
+      //vSetupScan(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchInflateRow(pStream, pOp, eHandlerKind, sLabelLoop);
@@ -338,7 +338,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("aggreg_v2"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupAggreg(pCombined, pStream, pOp);
+      vSetupAggreg(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchAggreg(pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
@@ -350,13 +350,13 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       Op *pLastOp = pOp;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupEos(pCombined, pOp, HK_EOS);
+      //vSetupEos(pDynamic, pOp, HK_EOS);
 
       pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pLastOp, HK_EOS);
+      vSetupTub(pDynamic, pLastOp, HK_EOS);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchTub(pAggOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop, pAggOpSketch->m_pInitStack);
@@ -381,10 +381,10 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("gbyAgg_v2"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupGbyAgg(pCombined, pStream, pOp);
+      vSetupGbyAgg(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchGbyAgg(pCombined, pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      pOpSketch = pSketchGbyAgg(pDynamic, pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       ePrevStencil_v2 = SR_PL;
@@ -396,7 +396,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pLastOp, HK_EOS);
+      vSetupTub(pDynamic, pLastOp, HK_EOS);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchTub(pGbyAggOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop, pGbyAggOpSketch->m_pInitStack);
@@ -412,7 +412,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       sLabelLoop = "L_AdvanceNextRowJ"_Stz;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupIndexJoin(pCombined, pStream, pOp);
+      vSetupIndexJoin(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchIndexJoin(pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
@@ -427,7 +427,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupProject(pCombined, pStream, pOp);
+      vSetupProject(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchProject(pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
@@ -441,10 +441,10 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort_v2"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupSort(pCombined, pStream, pOp);
+      vSetupSort(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchSort(pCombined, pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      pOpSketch = pSketchSort(pDynamic, pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       ePrevStencil_v2 = SR_PL;
@@ -457,7 +457,7 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pLastOp, HK_EOS);
+      vSetupTub(pDynamic, pLastOp, HK_EOS);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchTub(pSortOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop);
@@ -475,15 +475,15 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 
     OpSketch* pLastOpSketch = pOpSketch;
 
-    if (pCombined->aCombinedT()->m_iHashRows) {
+    if (pDynamic->aDynamicT()->m_iHashRows) {
       RASSERT(0);
       //pOpSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
     } else {
 
-      Op *pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
+      Op *pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pLastOp, eHandlerKind);
+      vSetupTub(pDynamic, pLastOp, eHandlerKind);
 
       pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, ePrevStencil_v2, sLabelLoop);
     }
@@ -503,18 +503,18 @@ eEC Stencil_v2::eSketch(Combined* pCombined, Stream* pStream)
 /*----------------------------------------------------------------------------*/
 /* setup the combinedOp                                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
+void Stencil_v2::vSetup(Dynamic* pDynamic, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
   bool bInflateGenerated = false;
   eEK  eExprKind = EK_NONE;
 
-  Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
-  Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
+  Tub* pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
+  Pot* pPot = _pPot(pDynamic->aDynamicT()->m_pPot);
 
   // collect the op information from the stage
-  eEC eError = eCollectStage(pCombined, pStream);
+  eEC eError = eCollectStage(pDynamic, pStream);
   RASSERT(eError == EC_NONE);
 
   // for each operator in the stream
@@ -546,7 +546,7 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
     }
     */
 
-    if (pOp->szOpNm()->bSame("combined_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("dynamic_v2"_Stz)) {
       break;
     }
 
@@ -556,7 +556,7 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
     if ( m_xStageOps.m_bScan && ! bInflateGenerated && ! m_xStageOps.m_bIndexScan) {
-      vSetupScan(pCombined, pStream, pOp);
+      vSetupScan(pDynamic, pStream, pOp);
       bInflateGenerated = true;
     }
 
@@ -565,7 +565,7 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
       m_bRowBuffer = true;
     }
     else {
-      vSetupScan(pCombined, pStream, pOp);
+      vSetupScan(pDynamic, pStream, pOp);
       bInflateGenerated = true;
     }
 
@@ -579,10 +579,10 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
     // generate the code for the aggregOp / projectOP
     if (pOp->szOpNm()->bSame("gbyAgg_v2"_Stz)) {
 
-      vSetupGbyAgg(pCombined, pStream, pOp);
+      vSetupGbyAgg(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pOp, HK_EOS);
+      vSetupTub(pDynamic, pOp, HK_EOS);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -593,24 +593,24 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
       eExprKind = pLogicUnit->m_eExprKind;
 
       //if (eExprKind == EK_PROJECT) {
-        vSetupProject(pCombined, pStream, pOp);
+        vSetupProject(pDynamic, pStream, pOp);
       //}
       //else {
       //  RASSERT(eExprKind == EK_AGGREG);
-      //  vSetupProjectAgg(pCombined, pStream, pOp);
+      //  vSetupProjectAgg(pDynamic, pStream, pOp);
       //}
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the ordAgg
     if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
-      vSetupOrdAgg(pCombined, pStream, pOp);
+      vSetupOrdAgg(pDynamic, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the indexJoinOp
     if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-      vSetupIndexJoin(pCombined, pStream, pOp);
+      vSetupIndexJoin(pDynamic, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -627,19 +627,19 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
       // indexScan should be the second op after consume
       RASSERT(i_Op == 1);
 
-      vSetupIndexScan(pCombined, pStream, pOp);
+      vSetupIndexScan(pDynamic, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the keyExistsOp
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
-      vSetupKeyExists(pCombined, pStream, pOp);
+      vSetupKeyExists(pDynamic, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the keyNotExistsOP
     if (pOp->szOpNm()->bSame("keyNotExists"_Stz)) {
-      vSetupKeyExists(pCombined, pStream, pOp);
+      vSetupKeyExists(pDynamic, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -647,10 +647,10 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupSort(pCombined, pStream, pOp);
+      vSetupSort(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pOp, HK_EOS);
+      vSetupTub(pDynamic, pOp, HK_EOS);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -658,16 +658,16 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("top"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTop(pCombined, pStream, pOp);
+      vSetupTop(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pCombined, pOp, HK_EOS);
+      vSetupTub(pDynamic, pOp, HK_EOS);
     }
 
   }
 
   // get the lastOp
-  Op* pLastOp = pStream->pGet(m_xStageOps.m_pCombinedOp->i_Op() - 1);
+  Op* pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
   LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
@@ -675,12 +675,12 @@ void Stencil_v2::vSetup(Combined* pCombined, Stream* pStream)
 
   // get the row
   RowPix* pRowPix = pStreamDefOut->pRowPix();
-  if (pCombined->aCombinedT()->m_iHashRows) {
+  if (pDynamic->aDynamicT()->m_iHashRows) {
     pPot->vRowPix(pRowPix);
   }
   else {
     pTub->vRowPix(pRowPix);
-    pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
+    pDynamic->aDynamicT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 }
 
@@ -707,7 +707,7 @@ void Stencil_v2::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* s
   i8 iNextOp = i_Op + 1;
   Op *pOpNext = pStream->pGet(iNextOp);
 
-  if (pOpNext->szOpNm()->bSame("combined_v2"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
+  if (pOpNext->szOpNm()->bSame("dynamic_v2"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
     // if nextOp is combined/hash, then next label is sDefault
     sLabelNext->vCopy(sDefault);
   }
@@ -755,7 +755,7 @@ u8 Stencil_v2::uGetSelectColumns(Stream* pStream) {
     uSelectColumns |= pLogicUnit->m_uSelectColumns;
 
     // break when we reach the combined OP
-    if (pOp->szOpNm()->bSame("combined_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("dynamic_v2"_Stz)) {
       break;
     }
 
@@ -772,7 +772,7 @@ u8 Stencil_v2::uGetSelectColumns(Stream* pStream) {
 /*----------------------------------------------------------------------------*/
 /* set up for indexJoin                                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -785,14 +785,14 @@ void Stencil_v2::vSetupGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-  pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
-  pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
 
   // do we have a payload ?
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
     bPayload = false;
 
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -803,7 +803,7 @@ void Stencil_v2::vSetupGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* set up for indexJoin                                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -812,7 +812,7 @@ void Stencil_v2::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) 
 
   // get the joinIndex from the indexJoinOp
   Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pCombined->aCombinedT()->m_aIndexJ = pIndex;
+  pDynamic->aDynamicT()->m_aIndexJ = pIndex;
 
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
@@ -838,21 +838,21 @@ void Stencil_v2::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) 
   i8 iIndexNo = pIndex->iIndexNo();
 
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
-  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+  pDynamic->aDynamicT()->m_aIndexTreeJ = pIndexTree;
+  pDynamic->aDynamicT()->m_aIndexDefJ  = pIndex->pIndexDef();
 
   // create join RowSingleTJ
-  pCombined->aCombinedT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayTJ =
-      (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleTJ,
-                                        &pCombined->aCombinedT()->m_racStrAreaTJ);
-  pCombined->aCombinedT()->m_racStrAreaTJSav = pCombined->aCombinedT()->m_racStrAreaTJ;
+  pDynamic->aDynamicT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_aRowCellArrayTJ =
+      (byte *) RowSingle::aGetCellArray((RowSingle *) pDynamic->aDynamicT()->m_aRowSingleTJ,
+                                        &pDynamic->aDynamicT()->m_racStrAreaTJ);
+  pDynamic->aDynamicT()->m_racStrAreaTJSav = pDynamic->aDynamicT()->m_racStrAreaTJ;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for indexScan                                                       */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -863,14 +863,14 @@ void Stencil_v2::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) 
 
   // get the scanIndex from the indexScanOp
   Index* pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
-  pCombined->aCombinedT()->m_aIndexT = pIndexScan;
+  pDynamic->aDynamicT()->m_aIndexT = pIndexScan;
 
   // create RowSingleT
-  pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle = new RowSingle(pStreamDefLft);
-  pCombined->aCombinedT()->m_xRowInfoT.m_aRowCellArray =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle,
-  &pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea);
-  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea;
+  pDynamic->aDynamicT()->m_xRowInfoT.m_aRowSingle = new RowSingle(pStreamDefLft);
+  pDynamic->aDynamicT()->m_xRowInfoT.m_aRowCellArray =
+  (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoT.m_aRowSingle,
+  &pDynamic->aDynamicT()->m_xRowInfoT.m_racStrArea);
+  pDynamic->aDynamicT()->m_xRowInfoT.m_racStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoT.m_racStrArea;
 
   // get the index tree for the index
   Table* pTable = pIndexScan->pTable();
@@ -893,22 +893,22 @@ void Stencil_v2::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) 
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
-  pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
+  pDynamic->aDynamicT()->m_nCols = pTable->pStreamDef()->nColumns();
 
   i8 iIndexNo = pIndexScan->iIndexNo();
 
   // COME BACK TO THIS
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
   IndexDef* pIndexDef = pIndexTree->pIndexDef();
-  pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
-  pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
-  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
+  pDynamic->aDynamicT()->m_aIndexTreeT = pIndexTree;
+  pDynamic->aDynamicT()->m_aIndexDefT  = pIndexDef;
+  EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for key exists                                                      */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -916,15 +916,15 @@ void Stencil_v2::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) 
   StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
   // create RowSingleJ
-  pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
-  pCombined->aCombinedT()->m_aRowCellArrayJ =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJ,
-                                      &pCombined->aCombinedT()->m_racStrAreaJ);
-  pCombined->aCombinedT()->m_racStrAreaJSav = pCombined->aCombinedT()->m_racStrAreaJ;
+  pDynamic->aDynamicT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
+  pDynamic->aDynamicT()->m_aRowCellArrayJ =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aRowSingleJ,
+                                      &pDynamic->aDynamicT()->m_racStrAreaJ);
+  pDynamic->aDynamicT()->m_racStrAreaJSav = pDynamic->aDynamicT()->m_racStrAreaJ;
 
   // get the joinIndex from the indexJoinOp
   Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pCombined->aCombinedT()->m_aIndexJ = pIndex;
+  pDynamic->aDynamicT()->m_aIndexJ = pIndex;
 
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
@@ -949,14 +949,14 @@ void Stencil_v2::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) 
   i8 iIndexNo = pIndex->iIndexNo();
 
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
-  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+  pDynamic->aDynamicT()->m_aIndexTreeJ = pIndexTree;
+  pDynamic->aDynamicT()->m_aIndexDefJ  = pIndex->pIndexDef();
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for ordered aggregate                                               */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -967,11 +967,11 @@ void Stencil_v2::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleAgg
-  pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayAgg =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-                                      &pCombined->aCombinedT()->m_racStrAreaAgg);
-  pCombined->aCombinedT()->m_racStrAreaAggSav = pCombined->aCombinedT()->m_racStrAreaAgg;
+  pDynamic->aDynamicT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_aRowCellArrayAgg =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aRowSingleAgg,
+                                      &pDynamic->aDynamicT()->m_racStrAreaAgg);
+  pDynamic->aDynamicT()->m_racStrAreaAggSav = pDynamic->aDynamicT()->m_racStrAreaAgg;
 
   // get the indexDef
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -982,9 +982,9 @@ void Stencil_v2::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   // create the groupby index
   eKE eKind;
-  pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
-  pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -995,7 +995,7 @@ void Stencil_v2::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* set up for project aggregate                                               */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupAggreg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1004,17 +1004,17 @@ void Stencil_v2::vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleAgg
-  pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayAgg =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-                                      &pCombined->aCombinedT()->m_racStrAreaAgg);
-  pCombined->aCombinedT()->m_racStrAreaAggSav = pCombined->aCombinedT()->m_racStrAreaAgg;
+  pDynamic->aDynamicT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_aRowCellArrayAgg =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aRowSingleAgg,
+                                      &pDynamic->aDynamicT()->m_racStrAreaAgg);
+  pDynamic->aDynamicT()->m_racStrAreaAggSav = pDynamic->aDynamicT()->m_racStrAreaAgg;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for project expression                                              */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupProject(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupProject(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1023,17 +1023,17 @@ void Stencil_v2::vSetupProject(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleP
-  pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayP =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
-                                      &pCombined->aCombinedT()->m_racStrAreaP);
-  pCombined->aCombinedT()->m_racStrAreaPSav = pCombined->aCombinedT()->m_racStrAreaP;
+  pDynamic->aDynamicT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_aRowCellArrayP =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aRowSingleP,
+                                      &pDynamic->aDynamicT()->m_racStrAreaP);
+  pDynamic->aDynamicT()->m_racStrAreaPSav = pDynamic->aDynamicT()->m_racStrAreaP;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for project expression                                              */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupTub(Combined* pCombined, Op* pOp, eHK eHandlerKind) {
+void Stencil_v2::vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1042,27 +1042,27 @@ void Stencil_v2::vSetupTub(Combined* pCombined, Op* pOp, eHK eHandlerKind) {
 
   RASSERT(pStreamDefOut);
 
-  Tub *pTub = _pTub(pCombined->aCombinedT()->m_pTub);
+  Tub *pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
 
   if (eHandlerKind == HK_EOS) {
-    pCombined->aCombinedT()->m_aPayloadRow = new RowSingle(pStreamDefOut);
-    pCombined->aCombinedT()->m_aPayloadCellArray =
-        (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aPayloadRow,
-                                        &pCombined->aCombinedT()->m_racPayloadArea);
-    pCombined->aCombinedT()->m_racPayloadAreaSav = pCombined->aCombinedT()->m_racPayloadArea;
+    pDynamic->aDynamicT()->m_aPayloadRow = new RowSingle(pStreamDefOut);
+    pDynamic->aDynamicT()->m_aPayloadCellArray =
+        (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aPayloadRow,
+                                        &pDynamic->aDynamicT()->m_racPayloadArea);
+    pDynamic->aDynamicT()->m_racPayloadAreaSav = pDynamic->aDynamicT()->m_racPayloadArea;
   }
 
   // get the rowPix
   RowPix *pRowPix = pStreamDefOut->pRowPix();
   pTub->vRowPix(pRowPix);
-  pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
+  pDynamic->aDynamicT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for sort                                                            */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1078,10 +1078,10 @@ void Stencil_v2::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
     bPayload = false;
 
-  pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
-  pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
-  EntWrk::vEntDesc((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL,pIndexDef);
+  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  EntWrk::vEntDesc((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL,pIndexDef);
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1092,7 +1092,7 @@ void Stencil_v2::vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* set up for scan                                                            */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1100,19 +1100,19 @@ void Stencil_v2::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
-  pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle = new RowSingle(pStreamDefLft);
-  pCombined->aCombinedT()->m_xRowInfoT.m_aRowCellArray =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_xRowInfoT.m_aRowSingle,
-                                      &pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea);
-  pCombined->aCombinedT()->m_xRowInfoT.m_racStrAreaSav = pCombined->aCombinedT()->m_xRowInfoT.m_racStrArea;
+  pDynamic->aDynamicT()->m_nCols = pStreamDefLft->nColumns();
+  pDynamic->aDynamicT()->m_xRowInfoT.m_aRowSingle = new RowSingle(pStreamDefLft);
+  pDynamic->aDynamicT()->m_xRowInfoT.m_aRowCellArray =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoT.m_aRowSingle,
+                                      &pDynamic->aDynamicT()->m_xRowInfoT.m_racStrArea);
+  pDynamic->aDynamicT()->m_xRowInfoT.m_racStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoT.m_racStrArea;
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* set up for top                                                             */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1125,7 +1125,7 @@ void Stencil_v2::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   // get the IndexDef from the TopOp
   IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-  pCombined->aCombinedT()->m_aIndexDefPL = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
 
   // do we have a payload ?
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
@@ -1133,8 +1133,8 @@ void Stencil_v2::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   // create the indexTree
   eKE eKind;
-  pCombined->aCombinedT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1146,7 +1146,7 @@ void Stencil_v2::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 /* sketch code for Eos fun3 for sort OP                                       */
 /*----------------------------------------------------------------------------*/
 /*
-void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSketchEosSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1161,7 +1161,7 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1203,7 +1203,7 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
     pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_ReturnFinal"_Stz);
   }
 
-  if (pCombined->aCombinedT()->m_iHashRows)
+  if (pDynamic->aDynamicT()->m_iHashRows)
    pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(nullptr, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
@@ -1220,7 +1220,7 @@ void Stencil_v2::vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp) {
 /* sketch code for Eos fun3 for top OP                                        */
 /*----------------------------------------------------------------------------*/
 /*
-void Stencil_v2::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
+void Stencil_v2::vSketchEosTop(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1232,7 +1232,7 @@ void Stencil_v2::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // get the IndexDef from the TopOp
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1260,7 +1260,7 @@ void Stencil_v2::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   // payloadRow to Tub/Pot
   pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
 
-  if (pCombined->aCombinedT()->m_iHashRows)
+  if (pDynamic->aDynamicT()->m_iHashRows)
     pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(nullptr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
@@ -1517,7 +1517,7 @@ OpSketch* Stencil_v2::pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevSte
 /*----------------------------------------------------------------------------*/
 /* sketch keyExists                                                           */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists) {
+OpSketch* Stencil_v2::pSketchKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists) {
 /*
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1550,7 +1550,7 @@ OpSketch* Stencil_v2::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op*
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // get the index
-  Index *pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexJ);
+  Index *pIndex = _pIndex(pDynamic->aDynamicT()->m_aIndexJ);
 
   u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
 
@@ -1576,7 +1576,7 @@ OpSketch* Stencil_v2::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op*
 /*----------------------------------------------------------------------------*/
 /* sketch limit                                                               */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+OpSketch* Stencil_v2::pSketchLimit(Dynamic* pDynamic, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
 /*
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1618,7 +1618,7 @@ OpSketch* Stencil_v2::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch ordered aggregate                                                   */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
+OpSketch* Stencil_v2::pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
                               eSR ePrevStencil_v2, Stz* sLabelLoop) {
 /*
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1640,7 +1640,7 @@ OpSketch* Stencil_v2::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pO
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1762,7 +1762,7 @@ OpSketch* Stencil_v2::pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind,
 /*----------------------------------------------------------------------------*/
 /* sketch project group by expressions                                        */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind,
+OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp, eHK eHandlerKind,
                                     eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
 
@@ -1790,7 +1790,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pO
   OpSketch *pOpSketch = new OpSketch(sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, pStreamDefLft, pStreamDefOut);
 
   // set the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
   pOpSketch->vIndexDef(pIndexDef);
 
   // set the payLoad bytes
@@ -1814,7 +1814,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Combined* pCombined, Stream* pStream, Op* pO
 /*----------------------------------------------------------------------------*/
 /* sketch sort                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
+OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
 {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1846,7 +1846,7 @@ OpSketch* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp,
   pOpSketch->vSetLabels(sLabel, ""_Stz, szLabelLoop);
 
   // set the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
   pOpSketch->vIndexDef(pIndexDef);
 
   // set the payLoad bytes
@@ -1865,7 +1865,7 @@ OpSketch* Stencil_v2::pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch top                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+OpSketch* Stencil_v2::pSketchTop(Dynamic* pDynamic, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
 /*
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1889,7 +1889,7 @@ OpSketch* Stencil_v2::pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil_
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // get the IndexDef from the TopOp
-  IndexDef* pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefPL);
+  IndexDef* pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1939,7 +1939,7 @@ OpSketch* Stencil_v2::pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevS
 /*----------------------------------------------------------------------------*/
 /* collect and validate the stage information of stage being combined         */
 /*----------------------------------------------------------------------------*/
-eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
+eEC Stencil_v2::eCollectStage(Dynamic* pDynamic, Stream* pStream) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2002,13 +2002,13 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
       }
 
       m_xStageOps.m_iCombinedOp++;
-      m_xStageOps.m_pCombinedOp = pOp;
+      m_xStageOps.m_pDynamicOp = pOp;
       continue;
     }
   */
 
     // combined OP
-    if (pOp->szOpNm()->bSame("combined_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("dynamic_v2"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE COMBINED OP's
@@ -2019,7 +2019,7 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
       }
 
       m_xStageOps.m_iCombinedOp++;
-      m_xStageOps.m_pCombinedOp = pOp;
+      m_xStageOps.m_pDynamicOp = pOp;
       continue;
     }
 
@@ -2078,7 +2078,7 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
       m_xStageOps.m_iHashOp++;
 
       // set hashRows in combined (needed at runtime)
-      pCombined->aCombinedT()->m_iHashRows = 1;
+      pDynamic->aDynamicT()->m_iHashRows = 1;
 
       // get hash expr from OP
       TagSet *pOpTags = pOp->pOpTags();
@@ -2129,7 +2129,7 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
       }
 
       // set indexScan in combined (needed at runtime)
-      pCombined->aCombinedT()->m_iIndexScan = 1;
+      pDynamic->aDynamicT()->m_iIndexScan = 1;
 
       m_xStageOps.m_bIndexScan = true;
       m_xStageOps.m_iIndexScanOp++;
@@ -2307,7 +2307,7 @@ eEC Stencil_v2::eCollectStage(Combined* pCombined, Stream* pStream) {
   }
 
   // we should have seen a combinedOP ?
-  if ( !m_xStageOps.m_pCombinedOp ) {
+  if ( !m_xStageOps.m_pDynamicOp ) {
     vTrace("Error: Missing combinedOp (%s)!!!\n"_Stz,
            m_szStageNm.azChar());
     return EC_INVALID_PIPELINE;

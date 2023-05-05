@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
+#include "Dynamic.hpp"
 #include "IndexDef.hpp"
 #include "TccStuff.h"
 #include "Pay.hpp"
@@ -19,11 +19,11 @@
 /*-- vExprCheck---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vExprCheck
-i8 vExprCheck(Combined_T* aCombinedT) {
+i8 vExprCheck(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
@@ -35,7 +35,7 @@ i8 vExprCheck(Combined_T* aCombinedT) {
 /*-- iGbyAggBegin ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iGbyAggBegin
-i8 iGbyAggBegin(Combined_T* aCombinedT) {
+i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   char* szStrArea;
@@ -54,17 +54,17 @@ i8 iGbyAggBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
-  szStrArea = aCombinedT->m_xRowInfoT.m_racStrArea;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoT.m_racStrArea;
 
-  if (!aCombinedT->m_iProcessRow) {
-    aCombinedT->m_iProcessRow = 1;
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
     goto L_AdvanceNextRow;
   }
 
   // - - - - - - - - - - - - - -
   // populate the payload key
-  aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;
+  aDynamicT->m_aEntIntPL->m_iIntElm0 = 0;
   // marker-end
 
   return 0;
@@ -75,7 +75,7 @@ i8 iGbyAggBegin(Combined_T* aCombinedT) {
 /*-- vGbyAggCreatePayLoad ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vGbyAggCreatePayLoad
-void vGbyAggCreatePayLoad(Combined_T* aCombinedT) {
+void vGbyAggCreatePayLoad(Dynamic_T* aDynamicT) {
 
   i8 __PAYLOADBYTES__;
 
@@ -84,7 +84,7 @@ void vGbyAggCreatePayLoad(Combined_T* aCombinedT) {
     // create the payload
 
 #ifdef WITH_TINYC
-    vEnt_payloadCreate(aCombinedT->m_aEntIntPL, __PAYLOADBYTES__);
+    vEnt_payloadCreate(aDynamicT->m_aEntIntPL, __PAYLOADBYTES__);
 #endif
     // marker-end
 }
@@ -93,14 +93,14 @@ void vGbyAggCreatePayLoad(Combined_T* aCombinedT) {
 /*-- vGbyAggFindKey ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vGbyAggFindKey
-void vGbyAggFindKey(Combined_T* aCombinedT) {
+void vGbyAggFindKey(Dynamic_T* aDynamicT) {
 
   void* aEntFound;
 
   // marker-start
   // - - - - - - - - - - - - - -
   // find key in payload index
-  aEntFound = aIndexTree_findEntry(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntKeyPL);
+  aEntFound = aIndexTree_findEntry(aDynamicT->m_aIndexTreePL, aDynamicT->m_aEntKeyPL);
 
   if ( !aEntFound ) {
     // marker-end
@@ -112,7 +112,7 @@ void vGbyAggFindKey(Combined_T* aCombinedT) {
 /*-- iGbyAggInsertIntKey -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iGbyAggInsertIntKey
-i8 iGbyAggInsertIntKey(Combined_T* aCombinedT) {
+i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
 
   void* aEntInserted;
   void* aEntFound;
@@ -122,14 +122,14 @@ i8 iGbyAggInsertIntKey(Combined_T* aCombinedT) {
 
     // - - - - - - - - - - - - - -
     // insert key in the payload
-    aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_iErrorCode);
-    if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+    aEntInserted = aIndexTree_insertEnt(aDynamicT->m_aIndexTreePL, aDynamicT->m_aEntIntPL, &aDynamicT->m_iErrorCode);
+    if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
       return 0;
     }
 
     if (aEntInserted) {
-      aCombinedT->m_iRowsProcessed++;
-      aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted
+      aDynamicT->m_iRowsProcessed++;
+      aDynamicT->m_aiPayload = (i8 *) ((char *) aEntInserted
           + sizeof(struct Ent_int)
           + __PAYLOADBYTES__);
      }
@@ -145,21 +145,21 @@ i8 iGbyAggInsertIntKey(Combined_T* aCombinedT) {
 /*-- iGbyAggIntKeyEnd --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iGbyAggIntKeyEnd
-i8 iGbyAggIntKeyEnd(Combined_T* aCombinedT) {
+i8 iGbyAggIntKeyEnd(Dynamic_T* aDynamicT) {
 
   void* aEntFound;
 
   {
   // marker-start
 
-    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
   }
 
   // - - - - - - - - - - - - - -
   // aggregate the payload
-  aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound
+  aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
                   + sizeof(struct Ent_int)
                   + 8);
 
@@ -173,7 +173,7 @@ i8 iGbyAggIntKeyEnd(Combined_T* aCombinedT) {
 /*-- iGbyAggInsertVchKey -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iGbyAggInsertVchKey
-i8 iGbyAggInsertVchKey(Combined_T* aCombinedT) {
+i8 iGbyAggInsertVchKey(Dynamic_T* aDynamicT) {
 
   void* aEntInserted;
   void* aEntFound;
@@ -183,14 +183,14 @@ i8 iGbyAggInsertVchKey(Combined_T* aCombinedT) {
 
   // - - - - - - - - - - - - - -
   // insert key in the payload
-  aEntInserted = aIndexTree_insertEnt(aCombinedT->m_aIndexTreePL, aCombinedT->m_aEntIntPL, &aCombinedT->m_iErrorCode);
-  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+  aEntInserted = aIndexTree_insertEnt(aDynamicT->m_aIndexTreePL, aDynamicT->m_aEntIntPL, &aDynamicT->m_iErrorCode);
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
   if (aEntInserted) {
-    aCombinedT->m_iRowsProcessed++;
-    aCombinedT->m_aiPayload = (i8 *) ((char *) aEntInserted
+    aDynamicT->m_iRowsProcessed++;
+    aDynamicT->m_aiPayload = (i8 *) ((char *) aEntInserted
         + sizeof(struct Ent_int)
         + ((struct Ent_int*)aEntInserted)->m_iIntElm0
         + __PAYLOADBYTES__);
@@ -206,21 +206,21 @@ i8 iGbyAggInsertVchKey(Combined_T* aCombinedT) {
 /*-- iGbyAggGenKeyEnd --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iGbyAggGenKeyEnd
-i8 iGbyAggGenKeyEnd(Combined_T* aCombinedT) {
+i8 iGbyAggGenKeyEnd(Dynamic_T* aDynamicT) {
 
   void* aEntFound;
 
   {
   // marker-start
 
-    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
   }
 
   // - - - - - - - - - - - - - -
   // aggregate the payload
-  aCombinedT->m_aiPayload = (i8 *) ((char *) aEntFound
+  aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
                   + sizeof(struct Ent_int)
                   + ((struct Ent_int*)aEntFound)->m_iIntElm0
                   + 8);
@@ -235,7 +235,7 @@ i8 iGbyAggGenKeyEnd(Combined_T* aCombinedT) {
 /*-- vInflateCrwBegin --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vInflateCrwBegin
-void vInflateCrwBegin(Combined_T* aCombinedT) {
+void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   i8* paW;
   i8 i_CurrentRow;
@@ -251,14 +251,14 @@ void vInflateCrwBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  paW = &aCombinedT->m_aW[0];
+  paW = &aDynamicT->m_aW[0];
 
   i_CurrentRow = -1;
 
   // process the row
-  aCombinedT->m_iProcessRow = 1;
+  aDynamicT->m_iProcessRow = 1;
 
-  aCombinedT->m_xRowInfoT.m_racStrArea = aCombinedT->m_xRowInfoT.m_racStrAreaSav;
+  aDynamicT->m_xRowInfoT.m_racStrArea = aDynamicT->m_xRowInfoT.m_racStrAreaSav;
 
   // marker-end
 }
@@ -267,7 +267,7 @@ void vInflateCrwBegin(Combined_T* aCombinedT) {
 /*-- vInflateCrwCol ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vInflateCrwCol
-void vInflateCrwCol(Combined_T* aCombinedT) {
+void vInflateCrwCol(Dynamic_T* aDynamicT) {
 
   void* aSubReturnLabel;
   u8 uMetaCode;
@@ -299,7 +299,7 @@ void vInflateCrwCol(Combined_T* aCombinedT) {
 /*-- vInflateCrwReturn -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vInflateCrwReturn
-void vInflateCrwReturn(Combined_T* aCombinedT) {
+void vInflateCrwReturn(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   char* acStrArea;
@@ -315,9 +315,9 @@ void vInflateCrwReturn(Combined_T* aCombinedT) {
 
   L_InflateCrwRet:
 
-  aCombinedT->m_xRowInfoT.m_racStrArea = acStrArea;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
-  szStrArea = aCombinedT->m_xRowInfoT.m_racStrArea;
+  aDynamicT->m_xRowInfoT.m_racStrArea = acStrArea;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoT.m_racStrArea;
 
   // marker-end
 
@@ -328,7 +328,7 @@ void vInflateCrwReturn(Combined_T* aCombinedT) {
 /*-- iSortBegin --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iSortBegin
-i8 iSortBegin(Combined_T* aCombinedT) {
+i8 iSortBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   char* szStrArea;
@@ -343,17 +343,17 @@ i8 iSortBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
-  //szStrArea = aCombinedT->m_racStrAreaT;
+  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+  //szStrArea = aDynamicT->m_racStrAreaT;
 
-  if (!aCombinedT->m_iProcessRow) {
-    aCombinedT->m_iProcessRow = 1;
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
   // - - - - - - - - - - - - - -
   // populate the payload key
-  aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;
+  aDynamicT->m_aEntIntPL->m_iIntElm0 = 0;
   // marker-end
 
   return 0;
@@ -364,7 +364,7 @@ i8 iSortBegin(Combined_T* aCombinedT) {
 /*-- vTubBegin ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iTubBegin
-i8 iTubBegin(Combined_T* aCombinedT) {
+i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__ {
     i8 iDummy;
@@ -385,20 +385,20 @@ i8 iTubBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  if (!aCombinedT->m_iProcessRow) {
-    aCombinedT->m_iProcessRow = 1;
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+  aDynamicT->m_aRowTub = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_racTubStrArea,&aDynamicT->m_iErrorCode);
 #endif
-  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowTub;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowTub;
 
   // marker-end
 
@@ -409,7 +409,7 @@ i8 iTubBegin(Combined_T* aCombinedT) {
 /*-- iEosTubBegin ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosTubBegin
-i8 iEosTubBegin(Combined_T* aCombinedT) {
+i8 iEosTubBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__ {
     i8 iDummy;
@@ -431,9 +431,9 @@ i8 iEosTubBegin(Combined_T* aCombinedT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aCombinedT->m_aRowCellArrayAgg;
-  szStrArea = aCombinedT->m_racStrAreaAgg;
-  if ( aCombinedT->m_iProjectInit == 0 ) {
+  p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayAgg;
+  szStrArea = aDynamicT->m_racStrAreaAgg;
+  if ( aDynamicT->m_iProjectInit == 0 ) {
     // marker-end
   }
 
@@ -444,33 +444,33 @@ i8 iEosTubBegin(Combined_T* aCombinedT) {
 /*-- iEosTubBody -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosTubBody
-i8 iEosTubBody(Combined_T* aCombinedT) {
+i8 iEosTubBody(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   {
     // marker-start
 
-    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
 
-    aCombinedT->m_iRowsProcessed = 1;
-    aCombinedT->m_iProjectInit = 1;
+    aDynamicT->m_iRowsProcessed = 1;
+    aDynamicT->m_iProjectInit = 1;
   }
 
-  if (!aCombinedT->m_iRowsProcessed)
+  if (!aDynamicT->m_iRowsProcessed)
     goto L_Return;
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+  aDynamicT->m_aRowTub = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_racTubStrArea,&aDynamicT->m_iErrorCode);
 #endif
-  if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+  if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aCombinedT->m_aRowTub;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_aRowTub;
 
   // marker-end
   L_Return:
@@ -481,23 +481,23 @@ i8 iEosTubBody(Combined_T* aCombinedT) {
 /*-- iEosPayLoadTub ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosPayLoadTub
-i8 iEosPayLoadTub(Combined_T* aCombinedT) {
+i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   // marker-start
-    if (!aCombinedT->m_iRowsProcessed)
+    if (!aDynamicT->m_iRowsProcessed)
       goto L_Return;
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-    aCombinedT->m_aRowTub = (byte*)aTub_AllotRow((void*)aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea,&aCombinedT->m_iErrorCode);
+    aDynamicT->m_aRowTub = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_racTubStrArea,&aDynamicT->m_iErrorCode);
 #endif
-    if (aCombinedT->m_iErrorCode != (i8) EC_NONE) {
+    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
 
-    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aCombinedT->m_aRowTub;
+    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_aRowTub;
 
   // marker-end
   L_Return:
@@ -508,14 +508,14 @@ i8 iEosPayLoadTub(Combined_T* aCombinedT) {
 /*-- vEosPayLoadTubEnd -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vEosPayLoadTubEnd
-void vEosPayLoadTubEnd(Combined_T* aCombinedT) {
+void vEosPayLoadTubEnd(Dynamic_T* aDynamicT) {
 
   {
 
   // marker-start
     // - - - - - - - - - - - - - -
     // move to next entry
-    aCombinedT->m_aEntIntPL = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferPL, aCombinedT->m_aEntIntPL);
+    aDynamicT->m_aEntIntPL = (struct Ent_int*)aEntBuffer_nextEntry(&aDynamicT->m_aEntBufferPL, aDynamicT->m_aEntIntPL);
   }
 
   // marker-end
@@ -525,7 +525,7 @@ void vEosPayLoadTubEnd(Combined_T* aCombinedT) {
 /*-- vEosPLIntKeyTraversal ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vEosPLIntKeyTraversal
-i8 vEosPLIntKeyTraversal(Combined_T* aCombinedT) {
+i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
 
   i8 iElemSize = 0;
 
@@ -536,14 +536,14 @@ i8 vEosPLIntKeyTraversal(Combined_T* aCombinedT) {
 
   // - - - - - - - - - - - - - -
   // payload traversal
-  aCombinedT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreePL, &aCombinedT->m_aEntBufferPL);
+  aDynamicT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aDynamicT->m_aIndexTreePL, &aDynamicT->m_aEntBufferPL);
 
-  while (aCombinedT->m_aEntIntPL) {
+  while (aDynamicT->m_aEntIntPL) {
 
-    aCombinedT->m_iProcessRow = 1;
+    aDynamicT->m_iProcessRow = 1;
 
-    aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;
-    aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL
+    aDynamicT->m_racPayloadArea = aDynamicT->m_racPayloadAreaSav;
+    aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_aEntIntPL
                                       + sizeof(struct Ent_int)
                                       + 8);
 
@@ -558,7 +558,7 @@ i8 vEosPLIntKeyTraversal(Combined_T* aCombinedT) {
 /*-- vEosPLGenKeyTraversal ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vEosPLGenKeyTraversal
-i8 vEosPLGenKeyTraversal(Combined_T* aCombinedT) {
+i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
 
   i8 iElemSize = 0;
 
@@ -569,16 +569,16 @@ i8 vEosPLGenKeyTraversal(Combined_T* aCombinedT) {
 
   // - - - - - - - - - - - - - -
   // payload traversal
-  aCombinedT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreePL, &aCombinedT->m_aEntBufferPL);
+  aDynamicT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aDynamicT->m_aIndexTreePL, &aDynamicT->m_aEntBufferPL);
 
-  while (aCombinedT->m_aEntIntPL) {
+  while (aDynamicT->m_aEntIntPL) {
 
-    aCombinedT->m_iProcessRow = 1;
+    aDynamicT->m_iProcessRow = 1;
 
-    aCombinedT->m_racPayloadArea = aCombinedT->m_racPayloadAreaSav;
-    aCombinedT->m_aiPayload = (i8 *) ((char *) aCombinedT->m_aEntIntPL
+    aDynamicT->m_racPayloadArea = aDynamicT->m_racPayloadAreaSav;
+    aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_aEntIntPL
         + sizeof(struct Ent_int)
-        + ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0
+        + ((struct Ent_int*)aDynamicT->m_aEntIntPL)->m_iIntElm0
         + 8);
 
     iElemSize = 0;
@@ -592,7 +592,7 @@ i8 vEosPLGenKeyTraversal(Combined_T* aCombinedT) {
 /*-- vPayLoadKeyToTub --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPayLoadKeyToTub
-void vPayLoadKeyToTub(Combined_T* aCombinedT) {
+void vPayLoadKeyToTub(Dynamic_T* aDynamicT) {
 
   i8 iElemSize;
 
@@ -612,7 +612,7 @@ void vPayLoadKeyToTub(Combined_T* aCombinedT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // column __COLUMN_NO__
 
-    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = ((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0 + iElemSize;
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = ((struct Ent_int*)aDynamicT->m_aEntIntPL)->m_iIntElm0 + iElemSize;
 
   // marker-end
 }
@@ -621,7 +621,7 @@ void vPayLoadKeyToTub(Combined_T* aCombinedT) {
 /*-- vPLVchKeyToTub ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPLVchKeyToTub
-void vPLVchKeyToTub(Combined_T* aCombinedT) {
+void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
@@ -648,14 +648,14 @@ void vPLVchKeyToTub(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column __COLUMN_NO__
 
-  szSrcStz = ((char*)(&(((struct Ent_int*)aCombinedT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);
+  szSrcStz = ((char*)(&(((struct Ent_int*)aDynamicT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);
 
   if ((i8)szSrcStz == C_DATUM_NULL) {
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
     iElemSize += 8;
   }
   else {
-    szDstStz = aCombinedT->m_racTubStrArea;
+    szDstStz = aDynamicT->m_racTubStrArea;
 
 #ifdef WITH_TINYC
     nSrcSize = StrLib_iWordFlipBack(szDstStz,szSrcStz);
@@ -665,14 +665,14 @@ void vPLVchKeyToTub(Combined_T* aCombinedT) {
 #endif
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
 
-    iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);
+    iOffset = - nDifference(aDynamicT->m_racTubStrArea,amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
     // update the tub string size
     i8 iDstLen = strlen(szDstStz) + 1;
-    aCombinedT->m_racTubStrArea += iDstLen;
+    aDynamicT->m_racTubStrArea += iDstLen;
 #ifdef WITH_TINYC
-    vTub_RowStrSize(aCombinedT->m_pTub,iDstLen);
+    vTub_RowStrSize(aDynamicT->m_pTub,iDstLen);
 #endif
 
     iElemSize += nSrcSize;
@@ -684,7 +684,7 @@ void vPLVchKeyToTub(Combined_T* aCombinedT) {
 /*-- vCopyCol -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vCopyCol
-void vCopyCol(Combined_T* aCombinedT) {
+void vCopyCol(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__ {
     union Int_T __COLUMN_FROM__;
@@ -711,7 +711,7 @@ void vCopyCol(Combined_T* aCombinedT) {
 /*-- vTubVchCol --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vTubVchCol
-void vTubVchCol(Combined_T* aCombinedT) {
+void vTubVchCol(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
@@ -766,7 +766,7 @@ void vTubVchCol(Combined_T* aCombinedT) {
 /*-- vCopyVchCol -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vCopyVchCol
-void vCopyVchCol(Combined_T* aCombinedT) {
+void vCopyVchCol(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
@@ -817,9 +817,9 @@ void vCopyVchCol(Combined_T* aCombinedT) {
 /*-- vIndexDereference -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexDereference
-void vIndexDereference(Combined_T* aCombinedT) {
+void vIndexDereference(Dynamic_T* aDynamicT) {
 
-#include "vFLAT_Parameters.h"
+#include "vFLAT_Parameters_v2.h"
 
   i8 iIndexBuffer;
   i8 iIndexItem;
@@ -835,16 +835,16 @@ void vIndexDereference(Combined_T* aCombinedT) {
   // marker-start
 
   // dereference the entry
-  iIndexBuffer = aCombinedT->m_aEntIntT->Rrf.m_uBuffer;
-  iIndexItem   = aCombinedT->m_aEntIntT->Rrf.m_uItem;
+  iIndexBuffer = aDynamicT->m_aEntIntT->Rrf.m_uBuffer;
+  iIndexItem   = aDynamicT->m_aEntIntT->Rrf.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)aCombinedT->m_xRowInfoT.m_aRowCellArray;
-  acStrArea = (char*)aCombinedT->m_xRowInfoT.m_racStrArea;
-  racStrArea = (char*)aCombinedT->m_xRowInfoT.m_racStrArea;
+  ayDstByte = (byte*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
+  acStrArea = (char*)aDynamicT->m_xRowInfoT.m_racStrArea;
+  racStrArea = (char*)aDynamicT->m_xRowInfoT.m_racStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataT = C_1B  + C_8B  + 4;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);
@@ -862,11 +862,11 @@ void vIndexDereference(Combined_T* aCombinedT) {
 /*-- vTubRowStr --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vTubRowStr
-void vTubRowStr(Combined_T* aCombinedT) {
+void vTubRowStr(Dynamic_T* aDynamicT) {
 
   // marker-start
 #ifdef WITH_TINYC
-  vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
+  vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif
 
   // marker-end
@@ -876,7 +876,7 @@ void vTubRowStr(Combined_T* aCombinedT) {
 /*-- vPayLoadToTubCol --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPayLoadToTubCol
-void vPayLoadToTubCol(Combined_T* aCombinedT) {
+void vPayLoadToTubCol(Dynamic_T* aDynamicT) {
 
   i8 __PAYLOAD_INDEX__;
 
@@ -896,7 +896,7 @@ void vPayLoadToTubCol(Combined_T* aCombinedT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // column __COLUMN_NO__
 
-    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
 
   // marker-end
 }
@@ -905,7 +905,7 @@ void vPayLoadToTubCol(Combined_T* aCombinedT) {
 /*-- vPayLoadToTubCol --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPayLoadToTubVchCol
-void vPayLoadToTubVchCol(Combined_T* aCombinedT) {
+void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
   i8 __PAYLOAD_INDEX__;
   i8 nSrcSize;
@@ -932,7 +932,7 @@ void vPayLoadToTubVchCol(Combined_T* aCombinedT) {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // column __COLUMN_NO__
 
-   szSrcStz = (char*)(char*)aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
+   szSrcStz = (char*)(char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
    if (szSrcStz == (char*)C_DATUM_NULL) {
      // copy the source to the destination
      p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = C_DATUM_NULL;
@@ -941,18 +941,18 @@ void vPayLoadToTubVchCol(Combined_T* aCombinedT) {
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
-     szDstStz = aCombinedT->m_racTubStrArea;
+     szDstStz = aDynamicT->m_racTubStrArea;
      strncpy(szDstStz, szSrcStz, nSrcSize);
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
-     iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);
+     iOffset = - nDifference(aDynamicT->m_racTubStrArea,amCellAddress);
      p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
      // update the tub string size
-     aCombinedT->m_racTubStrArea += nSrcSize;
+     aDynamicT->m_racTubStrArea += nSrcSize;
 #ifdef WITH_TINYC
-     vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);
+     vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif
   }
 
@@ -963,7 +963,7 @@ void vPayLoadToTubVchCol(Combined_T* aCombinedT) {
 /*-- vPopulateIntPL ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPopulateIntPL
-void vPopulateIntPL(Combined_T* aCombinedT) {
+void vPopulateIntPL(Dynamic_T* aDynamicT) {
 
   i8 __PAYLOAD_INDEX__;
   struct __STRUCT_FROM__ {
@@ -981,7 +981,7 @@ void vPopulateIntPL(Combined_T* aCombinedT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column __COLUMN_NO__
 
-  aCombinedT->m_aiPayload[__PAYLOAD_INDEX__] = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+  aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
 
   // marker-end
 }
@@ -990,7 +990,7 @@ void vPopulateIntPL(Combined_T* aCombinedT) {
 /*-- vPopulateVchPL ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPopulateVchPL
-void vPopulateVchPL(Combined_T* aCombinedT) {
+void vPopulateVchPL(Dynamic_T* aDynamicT) {
 
   i8 __PAYLOAD_INDEX__;
   struct __STRUCT_FROM__ {
@@ -1010,12 +1010,12 @@ void vPopulateVchPL(Combined_T* aCombinedT) {
 
   szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
   if ((i8)szSrcStz == C_DATUM_NULL) {
-    aCombinedT->m_aiPayload[__PAYLOAD_INDEX__] = C_DATUM_NULL;
+    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = C_DATUM_NULL;
   }
   else {
     nSrcSize = strlen(szSrcStz);
-    aCombinedT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aIndexTree_allotPayStr(aCombinedT->m_aIndexTreePL, szSrcStz);
-    szDstStz = (char*)aCombinedT->m_aiPayload[__PAYLOAD_INDEX__];
+    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aIndexTree_allotPayStr(aDynamicT->m_aIndexTreePL, szSrcStz);
+    szDstStz = (char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
     strncpy(szDstStz, szSrcStz, nSrcSize);
   }
   // marker-end
