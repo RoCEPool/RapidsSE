@@ -241,6 +241,31 @@
   true
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_D_STREAMSET                                                 */
+/* Called when a StreamSet is received.                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_StreamSet \handler
+
+  "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .
+
+  PipeIn[] AdaptorWL[].streamSet
+  Pipein[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
+  then
+
+  true
+;
+
 /*----------------------------------------------------------------------------*/
 /* handler for EV_X_CHILDEXIT ...                                             */
 /* Called when the submitted statement has finished being executed.           */
@@ -342,6 +367,7 @@
   find: adaptorWL_CompileErrors EV_I_COMPILEERRORS  [op].handler!
   find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
   find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
+  find: adaptorWL_StreamSet     EV_D_STREAMSET      [op].handler!
   find: adaptorWL_StreamDef     EV_D_STREAMDEF      [op].handler!
   find: adaptorWL_ChildExit     EV_X_CHILDEXIT      [op].handler!
   find: adaptorWL_Error         EV_M_ERROR          [op].handler!

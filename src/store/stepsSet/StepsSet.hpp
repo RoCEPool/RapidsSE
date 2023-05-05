@@ -45,6 +45,7 @@ public:
   void vAdaptorWLStatementFetch(void);
   void vAdaptorWLStatementSubmitted(void);
   void vAdaptorWLStatementSubmittedError(void);
+  void vAdaptorWLStreamSet(void);
 
   // AnswerWL
   void vAnswerProcessEventA(void);
