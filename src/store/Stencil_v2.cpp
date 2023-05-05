@@ -842,11 +842,11 @@ void Stencil_v2::vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   pDynamic->aDynamicT()->m_aIndexDefJ  = pIndex->pIndexDef();
 
   // create join RowSingleTJ
-  pDynamic->aDynamicT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
-  pDynamic->aDynamicT()->m_aRowCellArrayTJ =
-      (byte *) RowSingle::aGetCellArray((RowSingle *) pDynamic->aDynamicT()->m_aRowSingleTJ,
-                                        &pDynamic->aDynamicT()->m_racStrAreaTJ);
-  pDynamic->aDynamicT()->m_racStrAreaTJSav = pDynamic->aDynamicT()->m_racStrAreaTJ;
+  pDynamic->aDynamicT()->m_xRowInfoTJ.m_aRowSingle = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_xRowInfoTJ.m_aRowCellArray =
+      (byte *) RowSingle::aGetCellArray((RowSingle *) pDynamic->aDynamicT()->m_xRowInfoTJ.m_aRowSingle,
+                                        &pDynamic->aDynamicT()->m_xRowInfoTJ.m_racStrArea);
+  pDynamic->aDynamicT()->m_xRowInfoTJ.m_racStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoTJ.m_racStrArea;
 }
 
 /*----------------------------------------------------------------------------*/

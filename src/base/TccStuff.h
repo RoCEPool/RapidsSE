@@ -407,8 +407,11 @@ struct IndexInfo {
 struct Dynamic_T
 {
 
-  // inflate T
+  // inflate T (SR_IT)
   struct RowInfo m_xRowInfoT;
+
+  // join T & J (SR_TJ)
+  struct RowInfo m_xRowInfoTJ;
 
   void*   m_pTub;
   void*   m_pPot;
@@ -459,11 +462,6 @@ struct Dynamic_T
   void*   m_aEntBufferJ;
   struct Ent_int* m_aEntIntJ;
 
-  // join rows T and J
-  void*   m_aRowSingleTJ;
-  void*   m_aRowCellArrayTJ;
-  char*   m_racStrAreaTJ;
-  char*   m_racStrAreaTJSav;
 
   // project (col/exp)
   i8      m_iProjectInit;

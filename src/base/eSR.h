@@ -58,7 +58,7 @@ static Stz* aSRArea[]
       /*    */ "SR_PL"_Stz,
       /*    */ "SR_PT"_Stz,
       /*    */ "aDynamicT->m_racTubStrArea"_Stz,
-      /*    */ "aDynamicT->m_racStrAreaTJ"_Stz,
+      /*    */ "aDynamicT->m_xRowInfoTJ.m_racStrArea"_Stz,
 
       /*    */ "ENUMS"_Stz
 };

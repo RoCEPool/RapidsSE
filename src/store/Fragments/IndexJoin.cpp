@@ -38,7 +38,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) aDynamicT->m_xRowInfoT.m_aRowCellArray;
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_aRowCellArrayTJ;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;
 
   __L_LABEL__:
 
@@ -75,7 +75,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_aRowCellArrayTJ;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;
 
   __L_LABEL__:
 
@@ -210,7 +210,7 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
 
   __L_LABEL_LOOP__:
 
-   aDynamicT->m_racStrAreaTJ = aDynamicT->m_racStrAreaTJSav;
+   aDynamicT->m_xRowInfoTJ.m_racStrArea = aDynamicT->m_xRowInfoTJ.m_racStrAreaSav;
 
    // move to next entry
    aDynamicT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aDynamicT->m_aEntBufferJ, aDynamicT->m_aEntIntJ);
@@ -257,9 +257,9 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   // inflate the derefenced entry
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)aDynamicT->m_aRowCellArrayTJ + 8*__LEFT_COLUMNS__;
-  acStrArea = (char*)aDynamicT->m_racStrAreaTJ;
-  racStrArea = (char*)aDynamicT->m_racStrAreaTJ;
+  ayDstByte = (byte*)aDynamicT->m_xRowInfoTJ.m_aRowCellArray + 8*__LEFT_COLUMNS__;
+  acStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_racStrArea;
+  racStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_racStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataJ = C_1B  + C_8B + __RIGHT_COLUMNS__;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataJ);

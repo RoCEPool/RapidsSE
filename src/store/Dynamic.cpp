@@ -56,11 +56,18 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_aEntBufferT = nullptr;
   m_xDynamicT.m_aEntIntT    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
 
-  // common inflate
+  // inflate T (SR_IT)
   m_xDynamicT.m_xRowInfoT.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoT.m_aRowCellArray = nullptr;
   m_xDynamicT.m_xRowInfoT.m_racStrArea = nullptr;
   m_xDynamicT.m_xRowInfoT.m_racStrAreaSav = nullptr;
+
+  // join T & J (SR_TJ)
+  m_xDynamicT.m_xRowInfoTJ.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoTJ.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoTJ.m_racStrArea    = nullptr;
+  m_xDynamicT.m_xRowInfoTJ.m_racStrAreaSav = nullptr;
+
   m_xDynamicT.m_nRows       = 0;
   m_xDynamicT.m_nCols       = 0;
 
@@ -79,12 +86,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_aEntUpperJ  = nullptr;
   m_xDynamicT.m_aEntBufferJ = nullptr;
   m_xDynamicT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
-
-  // join row T and J
-  m_xDynamicT.m_aRowSingleTJ = nullptr;
-  m_xDynamicT.m_aRowCellArrayTJ = nullptr;
-  m_xDynamicT.m_racStrAreaTJ    = nullptr;
-  m_xDynamicT.m_racStrAreaTJSav = nullptr;
 
   // project (col/exp)
   m_xDynamicT.m_iProjectInit = 0;
@@ -166,7 +167,7 @@ Dynamic::~Dynamic(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleJ);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleTJ);
+  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoTJ.m_aRowSingle);
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleP);
