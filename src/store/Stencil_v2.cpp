@@ -967,11 +967,11 @@ void Stencil_v2::vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleAgg
-  pDynamic->aDynamicT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-  pDynamic->aDynamicT()->m_aRowCellArrayAgg =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aRowSingleAgg,
-                                      &pDynamic->aDynamicT()->m_racStrAreaAgg);
-  pDynamic->aDynamicT()->m_racStrAreaAggSav = pDynamic->aDynamicT()->m_racStrAreaAgg;
+  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowCellArray =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle,
+                                      &pDynamic->aDynamicT()->m_xRowInfoAT.m_racStrArea);
+  pDynamic->aDynamicT()->m_xRowInfoAT.m_racStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoAT.m_racStrArea;
 
   // get the indexDef
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -1004,11 +1004,11 @@ void Stencil_v2::vSetupAggreg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleAgg
-  pDynamic->aDynamicT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-  pDynamic->aDynamicT()->m_aRowCellArrayAgg =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aRowSingleAgg,
-                                      &pDynamic->aDynamicT()->m_racStrAreaAgg);
-  pDynamic->aDynamicT()->m_racStrAreaAggSav = pDynamic->aDynamicT()->m_racStrAreaAgg;
+  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle = new RowSingle(pStreamDefOut);
+  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowCellArray =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle,
+                                      &pDynamic->aDynamicT()->m_xRowInfoAT.m_racStrArea);
+  pDynamic->aDynamicT()->m_xRowInfoAT.m_racStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoAT.m_racStrArea;
 }
 
 /*----------------------------------------------------------------------------*/

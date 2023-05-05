@@ -431,8 +431,8 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-  p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayAgg;
-  szStrArea = aDynamicT->m_racStrAreaAgg;
+  p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoAT.m_racStrArea;
   if ( aDynamicT->m_iProjectInit == 0 ) {
     // marker-end
   }

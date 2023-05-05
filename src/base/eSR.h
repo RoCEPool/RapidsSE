@@ -33,20 +33,6 @@ static Stz* aSR[]
     /*    */ "ENUMS"_Stz
 };
 
-static Stz* aSRInfo[]
-{
-    /*  0 */ "NONE"_Stz,
-
-    /*    */ "SR_AT"_Stz,
-    /*    */ "SR_IJ"_Stz,
-    /*    */ "m_xRowInfoT"_Stz,
-    /*    */ "SR_PL"_Stz,
-    /*    */ "SR_PT"_Stz,
-    /*    */ "SR_TB"_Stz,
-    /*    */ "SR_TJ"_Stz,
-
-    /*    */ "ENUMS"_Stz
-};
 
 static Stz* aSRArea[]
 {

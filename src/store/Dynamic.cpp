@@ -45,6 +45,12 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoTJ.m_racStrArea    = nullptr;
   m_xDynamicT.m_xRowInfoTJ.m_racStrAreaSav = nullptr;
 
+  // aggregate T (SR_AT)
+  m_xDynamicT.m_xRowInfoAT.m_aRowSingle  = nullptr;
+  m_xDynamicT.m_xRowInfoAT.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoAT.m_racStrArea  = nullptr;
+  m_xDynamicT.m_xRowInfoAT.m_racStrAreaSav  = nullptr;
+
   m_xDynamicT.m_pTub        = nullptr;
   m_xDynamicT.m_pPot        = nullptr;
   m_xDynamicT.m_bTrace      = false;
@@ -98,10 +104,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // project (agg)
   m_xDynamicT.m_iRowsProcessed = 0;
-  m_xDynamicT.m_aRowSingleAgg  = nullptr;
-  m_xDynamicT.m_aRowCellArrayAgg = nullptr;
-  m_xDynamicT.m_racStrAreaAgg  = nullptr;
-  m_xDynamicT.m_racStrAreaAggSav  = nullptr;
 
   // project (gby/payload)
   m_xDynamicT.m_nAggRows = 0;
@@ -178,7 +180,7 @@ Dynamic::~Dynamic(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoT.m_aRowSingle);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_aRowSingleAgg);
+  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoAT.m_aRowSingle);
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xDynamicT.m_aPayloadRow);

@@ -38,8 +38,8 @@ i8 iAggregBegin(Dynamic_T* aDynamicT) {
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoT.m_aRowCellArray;
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_aRowCellArrayAgg;
-  szStrArea = aDynamicT->m_racStrAreaAgg;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoAT.m_racStrArea;
 
   // marker-end
 

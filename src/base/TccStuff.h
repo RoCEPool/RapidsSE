@@ -416,6 +416,9 @@ struct Dynamic_T
   // join T & J (SR_TJ)
   struct RowInfo m_xRowInfoTJ;
 
+  // aggregate T (SR_AT)
+  struct RowInfo m_xRowInfoAT;
+
   void*   m_pTub;
   void*   m_pPot;
   i8      m_bTrace;
@@ -471,10 +474,6 @@ struct Dynamic_T
 
   // project (agg)
   i8      m_iRowsProcessed;
-  void*   m_aRowSingleAgg;
-  void*   m_aRowCellArrayAgg;
-  char*   m_racStrAreaAgg;
-  char*   m_racStrAreaAggSav;
 
   // ordered aggregates
   i8      m_iHasOrdAggRow;
