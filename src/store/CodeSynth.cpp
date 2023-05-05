@@ -28,7 +28,9 @@ RowRef xRowRef[]
   {"SR_IJ"_Stz},    // SR_IJ
   {"SR_IT"_Stz},    // SR_IT
   {"SR_PL"_Stz},    // SR_PL
+  {"SR_PO"_Stz},    // SR_PO
   {"SR_PT"_Stz},    // SR_PT
+  {"SR_TO"_Stz},    // SR_TO
   {"SR_TJ"_Stz},    // SR_TJ
   {"SR_H"_Stz},     // SR_H
 
