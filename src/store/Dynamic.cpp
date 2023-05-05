@@ -34,10 +34,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIT.m_racStrAreaSav = nullptr;
 
   // project T (SR_PT)
-  m_xDynamicT.m_xRowInfoP.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoP.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoP.m_racStrArea    = nullptr;
-  m_xDynamicT.m_xRowInfoP.m_racStrAreaSav = nullptr;
+  m_xDynamicT.m_xRowInfoPT.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoPT.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoPT.m_racStrArea    = nullptr;
+  m_xDynamicT.m_xRowInfoPT.m_racStrAreaSav = nullptr;
 
   // join T & J (SR_TJ)
   m_xDynamicT.m_xRowInfoTJ.m_aRowSingle    = nullptr;
@@ -174,7 +174,7 @@ Dynamic::~Dynamic(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoTJ.m_aRowSingle);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoP.m_aRowSingle);
+  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPT.m_aRowSingle);
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIT.m_aRowSingle);
