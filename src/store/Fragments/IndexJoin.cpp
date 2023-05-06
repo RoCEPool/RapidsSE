@@ -44,7 +44,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
   // init indexJoin
   if (aDynamicT->m_iIndexJoinInit == 0) {
-    vEntWrk_entKind(aDynamicT->m_aEntWrkJ, 0, __KEY_KIND__);
+    vEntWrk_entKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
     iLeftOuterRow = 0;
     aDynamicT->m_iIndexJoinInit = 1;
   }
@@ -81,12 +81,12 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 
   // init indexJoin
   if (aDynamicT->m_iIndexJoinInit == 0) {
-    vEntWrk_entKind(aDynamicT->m_aEntWrkJ, 0, __KEY_KIND__);
+    vEntWrk_entKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
     iLeftOuterRow = 0;
     aDynamicT->m_iIndexJoinInit = 1;
   }
   else {
-    vEntWrk_reset(aDynamicT->m_aEntWrkJ);
+    vEntWrk_reset(aDynamicT->m_xIndexInfoJ.m_aEntWrk);
   }
 
   if (!aDynamicT->m_iProcessRow) {
@@ -105,7 +105,8 @@ void vIndexJoinPositionLower(Dynamic_T* aDynamicT) {
   // marker-start
 
   // position at entry >= join key (lbound)
-  aDynamicT->m_aEntIntJ = (struct Ent_int *)aIndexTree_positionGE(aDynamicT->m_aIndexTreeJ, &aDynamicT->m_aEntBufferJ, aDynamicT->m_aEntKeyJ);
+  aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int *)aIndexTree_positionGE(
+      aDynamicT->m_xIndexInfoJ.m_aIndexTree, &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 
   // marker-end
 
@@ -122,7 +123,8 @@ void vIndexJoinPositionBegin(Dynamic_T* aDynamicT) {
   // marker-start
 
   // cross join - position at beginning of the index
-  aDynamicT->m_aEntIntJ =  (struct Ent_int*)aIndexTree_begin(aDynamicT->m_aIndexTreeJ, &aDynamicT->m_aEntBufferJ);
+  aDynamicT->m_xIndexInfoJ.m_aEntInt =  (struct Ent_int*)aIndexTree_begin(
+      aDynamicT->m_xIndexInfoJ.m_aIndexTree, &aDynamicT->m_xIndexInfoJ.m_aEntBuffer);
 
   // marker-end
 
@@ -153,19 +155,20 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 
   printf("M1\n");
   // did we find the entry ?
-  if ( ! aDynamicT->m_aEntIntJ ) {
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
     aDynamicT->m_iProcessRow = 0;
     goto L_AdvanceNextRow;
   }
 
   // find the upper bound entry
-  aDynamicT->m_aEntUpperJ = aIndexTree_positionLE(aDynamicT->m_aIndexTreeJ, aDynamicT->m_aEntKeyJ);
+  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aIndexTree_positionLE(
+      aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 
   L_IndexJoinDeref:
   aDynamicT->m_iProcessRow = 1;
 
   printf("M5\n");
-  if (aDynamicT->m_aEntIntJ == aDynamicT->m_aEntUpperJ) {
+  if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
 
     aDynamicT->m_iProcessRow = 0;
     printf("M6\n");
@@ -175,8 +178,8 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   aHeadLineSav = aHeadLine;
 
   // dereference the entry
-  iBufferJ = aDynamicT->m_aEntIntJ->Rrf.m_uBuffer;
-  iItemJ   = aDynamicT->m_aEntIntJ->Rrf.m_uItem;
+  iBufferJ = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;
+  iItemJ   = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uItem;
   aCrwJ  = ( (char*)C_ADR_REGION + iBufferJ * C_1MB+ C_CRW_FIRSTHEAD+ iItemJ * C_CRW_HEADBYTES );
   printf("M2\n");
   // marker-end
@@ -213,7 +216,8 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
    aDynamicT->m_xRowInfoTJ.m_racStrArea = aDynamicT->m_xRowInfoTJ.m_racStrAreaSav;
 
    // move to next entry
-   aDynamicT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aDynamicT->m_aEntBufferJ, aDynamicT->m_aEntIntJ);
+   aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+       &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
    goto L_IndexJoinDeref;
 
   printf("M4\n");
@@ -250,8 +254,8 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   // marker-start
 
   // dereference the entry
-  iIndexBuffer = aDynamicT->m_aEntIntJ->Rrf.m_uBuffer;
-  iIndexItem   = aDynamicT->m_aEntIntJ->Rrf.m_uItem;
+  iIndexBuffer = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;
+  iIndexItem   = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry

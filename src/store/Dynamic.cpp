@@ -32,7 +32,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_nCols       = 0;
   m_xDynamicT.m_xRowInfoIT.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoIT.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoIT.m_racStrArea = nullptr;
+  m_xDynamicT.m_xRowInfoIT.m_racStrArea    = nullptr;
   m_xDynamicT.m_xRowInfoIT.m_racStrAreaSav = nullptr;
 
   // inflate J (SR_IJ)
@@ -109,14 +109,14 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // index join with J
   m_xDynamicT.m_iIndexJoinInit = 0;
   m_xDynamicT.m_iJoinedRows = 0;
-  m_xDynamicT.m_aIndexJ     = nullptr;
-  m_xDynamicT.m_aIndexTreeJ = nullptr;
-  m_xDynamicT.m_aIndexDefJ  = nullptr;
-  m_xDynamicT.m_aEntWrkJ    = (void*)&pLogicUnit->m_oEntWrkJ;
-  m_xDynamicT.m_aEntKeyJ    = ((EntWrk*)m_xDynamicT.m_aEntWrkJ)->aKey();
-  m_xDynamicT.m_aEntUpperJ  = nullptr;
-  m_xDynamicT.m_aEntBufferJ = nullptr;
-  m_xDynamicT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
+  m_xDynamicT.m_xIndexInfoJ.m_aIndex     = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aIndexTree = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aIndexDef  = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntWrk    = (void*)&pLogicUnit->m_oEntWrkJ;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntKey    = ((EntWrk*)m_xDynamicT.m_xIndexInfoJ.m_aEntWrk)->aKey();
+  m_xDynamicT.m_xIndexInfoJ.m_aEntUpper  = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntBuffer = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
 
   // project (col/exp)
   m_xDynamicT.m_iProjectInit = 0;

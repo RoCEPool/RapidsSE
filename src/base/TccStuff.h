@@ -464,14 +464,15 @@ struct Dynamic_T
   // index join with J
   i8      m_iIndexJoinInit;
   i8      m_iJoinedRows;
-  void*   m_aIndexJ;
-  void*   m_aIndexTreeJ;
-  void*   m_aIndexDefJ;
-  void*   m_aEntKeyJ;
-  void*   m_aEntWrkJ;
-  void*   m_aEntUpperJ;
-  void*   m_aEntBufferJ;
-  struct Ent_int* m_aEntIntJ;
+  struct IndexInfo m_xIndexInfoJ;
+//  void*   m_aIndexJ;
+//  void*   m_aIndexTreeJ;
+//  void*   m_aIndexDefJ;
+//  void*   m_aEntKeyJ;
+//  void*   m_aEntWrkJ;
+//  void*   m_aEntUpperJ;
+//  void*   m_aEntBufferJ;
+//  struct Ent_int* m_aEntIntJ;
 
 
   // project (col/exp)

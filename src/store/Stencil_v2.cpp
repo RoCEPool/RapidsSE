@@ -812,7 +812,7 @@ void Stencil_v2::vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   // get the joinIndex from the indexJoinOp
   Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pDynamic->aDynamicT()->m_aIndexJ = pIndex;
+  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndex = pIndex;
 
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
@@ -838,8 +838,8 @@ void Stencil_v2::vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   i8 iIndexNo = pIndex->iIndexNo();
 
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pDynamic->aDynamicT()->m_aIndexTreeJ = pIndexTree;
-  pDynamic->aDynamicT()->m_aIndexDefJ  = pIndex->pIndexDef();
+  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexTree = pIndexTree;
+  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexDef = pIndex->pIndexDef();
 
   // create join RowSingleTJ
   pDynamic->aDynamicT()->m_xRowInfoTJ.m_aRowSingle = new RowSingle(pStreamDefOut);
@@ -924,7 +924,7 @@ void Stencil_v2::vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   // get the joinIndex from the indexJoinOp
   Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pDynamic->aDynamicT()->m_aIndexJ = pIndex;
+  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndex = pIndex;
 
   // get the index tree for the index
   Table* pTable = pIndex->pTable();
@@ -949,8 +949,8 @@ void Stencil_v2::vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   i8 iIndexNo = pIndex->iIndexNo();
 
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pDynamic->aDynamicT()->m_aIndexTreeJ = pIndexTree;
-  pDynamic->aDynamicT()->m_aIndexDefJ  = pIndex->pIndexDef();
+  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexTree = pIndexTree;
+  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexDef  = pIndex->pIndexDef();
 }
 
 /*----------------------------------------------------------------------------*/
