@@ -408,7 +408,17 @@ struct Dynamic_T
 {
 
   // inflate T (SR_IT)
+  i8      m_nRows;
+  i8      m_nCols;
   struct RowInfo m_xRowInfoIT;
+
+  // inflate J (SR_IJ)
+  struct RowInfo m_xRowInfoIJ;
+
+//  void*   m_aRowSingleJ;
+//  void*   m_aRowCellArrayJ;
+//  char*   m_racStrAreaJ;
+//  char*   m_racStrAreaJSav;
 
   // project T (SR_PT)
   struct RowInfo m_xRowInfoPT;
@@ -444,10 +454,6 @@ struct Dynamic_T
   // rowBuffer T
   void*   m_aRowBuffer;
 
-  // common inflate
-  i8      m_nRows;
-  i8      m_nCols;
-
   // index scan T
   i8      m_iIndexScan;
   void*   m_aIndexT;
@@ -462,10 +468,10 @@ struct Dynamic_T
   // index join with J
   i8      m_iIndexJoinInit;
   i8      m_iJoinedRows;
-  void*   m_aRowSingleJ;
-  void*   m_aRowCellArrayJ;
-  char*   m_racStrAreaJ;
-  char*   m_racStrAreaJSav;
+//  void*   m_aRowSingleJ;
+//  void*   m_aRowCellArrayJ;
+//  char*   m_racStrAreaJ;
+//  char*   m_racStrAreaJSav;
   void*   m_aIndexJ;
   void*   m_aIndexTreeJ;
   void*   m_aIndexDefJ;
