@@ -416,12 +416,12 @@ struct Dynamic_T
   struct RowInfo m_xRowInfoIJ;
 
   // Project payload (SR_PL)
-  //struct RowInfo m_xRowInfoPL;
+  struct RowInfo m_xRowInfoPL;
 
-  void*   m_aPayloadRow;
-  void*   m_aPayloadCellArray;
-  char*   m_racPayloadArea;
-  char*   m_racPayloadAreaSav;
+//  void*   m_aPayloadRow;
+//  void*   m_aPayloadCellArray;
+//  char*   m_racPayloadArea;
+//  char*   m_racPayloadAreaSav;
 
   // project T (SR_PT)
   struct RowInfo m_xRowInfoPT;
@@ -460,15 +460,6 @@ struct Dynamic_T
   // index scan T
   i8      m_iIndexScan;
   struct IndexInfo m_xIndexInfoT;
-
-//  void*   m_aIndexT;
-//  void*   m_aIndexTreeT;
-//  void*   m_aIndexDefT;
-//  void*   m_aEntKeyT;
-//  void*   m_aEntWrkT;
-//  void*   m_aEntUpperT;
-//  void*   m_aEntBufferT;
-//  struct Ent_int* m_aEntIntT;
 
   // index join with J
   i8      m_iIndexJoinInit;

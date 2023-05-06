@@ -1045,11 +1045,11 @@ void Stencil_v2::vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind) {
   Tub *pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
 
   if (eHandlerKind == HK_EOS) {
-    pDynamic->aDynamicT()->m_aPayloadRow = new RowSingle(pStreamDefOut);
-    pDynamic->aDynamicT()->m_aPayloadCellArray =
-        (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_aPayloadRow,
-                                        &pDynamic->aDynamicT()->m_racPayloadArea);
-    pDynamic->aDynamicT()->m_racPayloadAreaSav = pDynamic->aDynamicT()->m_racPayloadArea;
+    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle = new RowSingle(pStreamDefOut);
+    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowCellArray =
+        (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle,
+                                        &pDynamic->aDynamicT()->m_xRowInfoPL.m_racStrArea);
+    pDynamic->aDynamicT()->m_xRowInfoPL.m_racStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoPL.m_racStrArea;
   }
 
   // get the rowPix

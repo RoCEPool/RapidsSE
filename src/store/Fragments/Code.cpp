@@ -542,7 +542,7 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
 
     aDynamicT->m_iProcessRow = 1;
 
-    aDynamicT->m_racPayloadArea = aDynamicT->m_racPayloadAreaSav;
+    aDynamicT->m_xRowInfoPT.m_racStrArea = aDynamicT->m_xRowInfoPT.m_racStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_aEntIntPL
                                       + sizeof(struct Ent_int)
                                       + 8);
@@ -575,7 +575,7 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
 
     aDynamicT->m_iProcessRow = 1;
 
-    aDynamicT->m_racPayloadArea = aDynamicT->m_racPayloadAreaSav;
+    aDynamicT->m_xRowInfoPT.m_racStrArea = aDynamicT->m_xRowInfoPT.m_racStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_aEntIntPL
         + sizeof(struct Ent_int)
         + ((struct Ent_int*)aDynamicT->m_aEntIntPL)->m_iIntElm0

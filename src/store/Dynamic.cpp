@@ -42,10 +42,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIJ.m_racStrAreaSav = nullptr;
 
   // project PL (SR_PL)
-  m_xDynamicT.m_aPayloadRow    = nullptr;
-  m_xDynamicT.m_aPayloadCellArray = nullptr;
-  m_xDynamicT.m_racPayloadArea = nullptr;
-  m_xDynamicT.m_racPayloadAreaSav = nullptr;
+  m_xDynamicT.m_xRowInfoPL.m_aRowSingle    = nullptr;
+  m_xDynamicT.m_xRowInfoPL.m_aRowCellArray = nullptr;
+  m_xDynamicT.m_xRowInfoPL.m_racStrArea    = nullptr;
+  m_xDynamicT.m_xRowInfoPL.m_racStrAreaSav = nullptr;
 
   // project T (SR_PT)
   m_xDynamicT.m_xRowInfoPT.m_aRowSingle    = nullptr;
@@ -167,6 +167,7 @@ Dynamic::~Dynamic(void) noexcept(false)
     IndexTree* pIndexTree = _pIndexTree(m_xDynamicT.m_aIndexTreePL);
     delete pIndexTree;
   }
+
   if (m_xDynamicT.m_aIndexDefPL) {
     IndexDef* pIndexDef = _pIndexDef(m_xDynamicT.m_aIndexDefPL);
     delete pIndexDef;
@@ -187,7 +188,7 @@ Dynamic::~Dynamic(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoAT.m_aRowSingle);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_aPayloadRow);
+  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPL.m_aRowSingle);
   delete pRowSingle;
 }
 
