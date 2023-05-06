@@ -2014,17 +2014,17 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
     case SK_INDEXSCAN:
       if (m_pIndexDef->eKeyKind()) {
-        sPush.vSprint("_ASSIGN(*(i8*)aDynamicT->m_aEntKeyT)\n"_Stz);
+        sPush.vSprint("_ASSIGN(*(i8*)aDynamicT->m_xIndexInfoT.m_aEntKey)\n"_Stz);
         pExprStack->vPushStz(sPush);
       }
       else {
         pColumn = m_pIndexDef->pGetColumn(i_Col);
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_aEntWrkT)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
         }
         else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_aEntWrkT)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
         }
         pExprStack->vPushStz(sPush);
       }

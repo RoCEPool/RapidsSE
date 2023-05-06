@@ -169,7 +169,7 @@ void Step::vDynamicIndexT(void)
   ENTRY();
 
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
-  Index* pIndex = _pIndex(pDynamic->aDynamicT()->m_aIndexT);
+  Index* pIndex = _pIndex(pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndex);
 
   m_pDataStack->vPushPtr(pIndex);
 

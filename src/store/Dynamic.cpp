@@ -41,6 +41,12 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIJ.m_racStrArea    = nullptr;
   m_xDynamicT.m_xRowInfoIJ.m_racStrAreaSav = nullptr;
 
+  // project PL (SR_PL)
+  m_xDynamicT.m_aPayloadRow    = nullptr;
+  m_xDynamicT.m_aPayloadCellArray = nullptr;
+  m_xDynamicT.m_racPayloadArea = nullptr;
+  m_xDynamicT.m_racPayloadAreaSav = nullptr;
+
   // project T (SR_PT)
   m_xDynamicT.m_xRowInfoPT.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoPT.m_aRowCellArray = nullptr;
@@ -59,7 +65,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoAT.m_racStrArea  = nullptr;
   m_xDynamicT.m_xRowInfoAT.m_racStrAreaSav  = nullptr;
 
-  // tub
+  // tub output (SR_TO)
   m_xDynamicT.m_pTub        = nullptr;
   m_xDynamicT.m_iTubRowSize = 0;
   m_xDynamicT.m_xRowInfoTO.m_aRowSingle    = nullptr;
@@ -67,7 +73,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoTO.m_racStrArea    = nullptr;
   m_xDynamicT.m_xRowInfoTO.m_racStrAreaSav  = nullptr;
 
-  // pot
+  // pot output (SR_PO)
   m_xDynamicT.m_pPot        = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = nullptr;
@@ -91,15 +97,14 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // index scan T
   m_xDynamicT.m_iIndexScan  = 0;
-  m_xDynamicT.m_aIndexT     = nullptr;
-  m_xDynamicT.m_aIndexTreeT = nullptr;
-  m_xDynamicT.m_aIndexDefT  = nullptr;
-  m_xDynamicT.m_aEntWrkT    = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
-  m_xDynamicT.m_aEntKeyT    = ((EntWrk*)m_xDynamicT.m_aEntWrkT)->aKey();
-
-  m_xDynamicT.m_aEntUpperT  = nullptr;
-  m_xDynamicT.m_aEntBufferT = nullptr;
-  m_xDynamicT.m_aEntIntT    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
+  m_xDynamicT.m_xIndexInfoT.m_aIndex     = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aIndexTree = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aIndexDef  = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aEntWrk    = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
+  m_xDynamicT.m_xIndexInfoT.m_aEntKey    = ((EntWrk*)m_xDynamicT.m_xIndexInfoT.m_aEntWrk)->aKey();
+  m_xDynamicT.m_xIndexInfoT.m_aEntUpper  = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aEntBuffer = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
 
   // index join with J
   m_xDynamicT.m_iIndexJoinInit = 0;
@@ -129,10 +134,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // payload (gby/srt/top)
   m_xDynamicT.m_aiPayload      = nullptr;
-  m_xDynamicT.m_aPayloadRow    = nullptr;
-  m_xDynamicT.m_aPayloadCellArray = nullptr;
-  m_xDynamicT.m_racPayloadArea = nullptr;
-  m_xDynamicT.m_racPayloadAreaSav = nullptr;
   m_xDynamicT.m_aIndexTreePL   = nullptr;
   m_xDynamicT.m_aIndexDefPL    = nullptr;
   m_xDynamicT.m_aEntBufferPL   = nullptr;

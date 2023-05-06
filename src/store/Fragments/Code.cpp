@@ -835,8 +835,8 @@ void vIndexDereference(Dynamic_T* aDynamicT) {
   // marker-start
 
   // dereference the entry
-  iIndexBuffer = aDynamicT->m_aEntIntT->Rrf.m_uBuffer;
-  iIndexItem   = aDynamicT->m_aEntIntT->Rrf.m_uItem;
+  iIndexBuffer = aDynamicT->m_xIndexInfoT.m_aEntInt->Rrf.m_uBuffer;
+  iIndexItem   = aDynamicT->m_xIndexInfoT.m_aEntInt->Rrf.m_uItem;
   aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
 
   // inflate the derefenced entry

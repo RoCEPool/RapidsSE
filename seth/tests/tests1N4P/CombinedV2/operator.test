@@ -497,12 +497,18 @@ rows:
 drop table nation;
 success
 
+drop table region;
+success
+
 MemoryLeaks;
 rows: 0
 
 CLEANUP {
 
   drop table nation;
+  mute
+
+  drop table region;
   mute
 
   bye;

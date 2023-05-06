@@ -863,7 +863,7 @@ void Stencil_v2::vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   // get the scanIndex from the indexScanOp
   Index* pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
-  pDynamic->aDynamicT()->m_aIndexT = pIndexScan;
+  pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndex = pIndexScan;
 
   // create RowSingleT
   pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
@@ -900,9 +900,9 @@ void Stencil_v2::vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   // COME BACK TO THIS
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
   IndexDef* pIndexDef = pIndexTree->pIndexDef();
-  pDynamic->aDynamicT()->m_aIndexTreeT = pIndexTree;
-  pDynamic->aDynamicT()->m_aIndexDefT  = pIndexDef;
-  EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
+  pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndexTree = pIndexTree;
+  pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndexDef  = pIndexDef;
+  EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_xIndexInfoT.m_aEntWrk, 0, pIndexDef->eKeyKind());
 }
 
 /*----------------------------------------------------------------------------*/

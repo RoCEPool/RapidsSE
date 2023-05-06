@@ -415,10 +415,13 @@ struct Dynamic_T
   // inflate J (SR_IJ)
   struct RowInfo m_xRowInfoIJ;
 
-//  void*   m_aRowSingleJ;
-//  void*   m_aRowCellArrayJ;
-//  char*   m_racStrAreaJ;
-//  char*   m_racStrAreaJSav;
+  // Project payload (SR_PL)
+  //struct RowInfo m_xRowInfoPL;
+
+  void*   m_aPayloadRow;
+  void*   m_aPayloadCellArray;
+  char*   m_racPayloadArea;
+  char*   m_racPayloadAreaSav;
 
   // project T (SR_PT)
   struct RowInfo m_xRowInfoPT;
@@ -456,22 +459,20 @@ struct Dynamic_T
 
   // index scan T
   i8      m_iIndexScan;
-  void*   m_aIndexT;
-  void*   m_aIndexTreeT;
-  void*   m_aIndexDefT;
-  void*   m_aEntKeyT;
-  void*   m_aEntWrkT;
-  void*   m_aEntUpperT;
-  void*   m_aEntBufferT;
-  struct Ent_int* m_aEntIntT;
+  struct IndexInfo m_xIndexInfoT;
+
+//  void*   m_aIndexT;
+//  void*   m_aIndexTreeT;
+//  void*   m_aIndexDefT;
+//  void*   m_aEntKeyT;
+//  void*   m_aEntWrkT;
+//  void*   m_aEntUpperT;
+//  void*   m_aEntBufferT;
+//  struct Ent_int* m_aEntIntT;
 
   // index join with J
   i8      m_iIndexJoinInit;
   i8      m_iJoinedRows;
-//  void*   m_aRowSingleJ;
-//  void*   m_aRowCellArrayJ;
-//  char*   m_racStrAreaJ;
-//  char*   m_racStrAreaJSav;
   void*   m_aIndexJ;
   void*   m_aIndexTreeJ;
   void*   m_aIndexDefJ;
@@ -498,10 +499,6 @@ struct Dynamic_T
 
   // payload (gby/srt/top)
   i8*     m_aiPayload;
-  void*   m_aPayloadRow;
-  void*   m_aPayloadCellArray;
-  char*   m_racPayloadArea;
-  char*   m_racPayloadAreaSav;
   void*   m_aIndexTreePL;
   void*   m_aIndexDefPL;
   void*   m_aEntBufferPL;

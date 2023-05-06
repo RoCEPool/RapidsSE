@@ -44,9 +44,10 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   i_CurrentRow = -1;
 
   // position at beginning of the index
-  aDynamicT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aDynamicT->m_aIndexTreeT, &aDynamicT->m_aEntBufferT);
+  aDynamicT->m_xIndexInfoT.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
+        aDynamicT->m_xIndexInfoT.m_aIndexTree, &aDynamicT->m_xIndexInfoT.m_aEntBuffer);
 
-  if ( ! aDynamicT->m_aEntIntT )
+  if ( ! aDynamicT->m_xIndexInfoT.m_aEntInt )
     goto L_Return;
 
   // populate EntKeyT with upper bound value
@@ -66,12 +67,13 @@ void vIndexUpperCheck(Dynamic_T* aDynamicT) {
   // marker-start
 
   /// position at upper bound
-  aDynamicT->m_aEntUpperT =  (struct Ent_int *)aIndexTree_positionLT(aDynamicT->m_aIndexTreeT, aDynamicT->m_aEntKeyT);
+  aDynamicT->m_xIndexInfoT.m_aEntUpper =  (struct Ent_int *)aIndexTree_positionLT(
+      aDynamicT->m_xIndexInfoT.m_aIndexTree, aDynamicT->m_xIndexInfoT.m_aEntKey);
 
   L_IndexScanDeref:
 
   // reached upper bound ?
-  if (aDynamicT->m_aEntIntT == aDynamicT->m_aEntUpperT) {
+  if (aDynamicT->m_xIndexInfoT.m_aEntInt == aDynamicT->m_xIndexInfoT.m_aEntUpper) {
     goto L_Return;
   }
 
@@ -111,7 +113,8 @@ void vIndexScanReturn(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // move to next entry
-  aDynamicT->m_aEntIntT = (struct Ent_int*)aEntBuffer_nextEntry(&aDynamicT->m_aEntBufferT, aDynamicT->m_aEntIntT);
+  aDynamicT->m_xIndexInfoT.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+      &aDynamicT->m_xIndexInfoT.m_aEntBuffer, aDynamicT->m_xIndexInfoT.m_aEntInt);
   goto L_IndexScanDeref;
 
   // marker-end
