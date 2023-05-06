@@ -102,6 +102,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoT.m_aIndexDef  = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aEntWrk    = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
   m_xDynamicT.m_xIndexInfoT.m_aEntKey    = ((EntWrk*)m_xDynamicT.m_xIndexInfoT.m_aEntWrk)->aKey();
+  m_xDynamicT.m_xIndexInfoT.m_aEntBottom = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aEntUpper  = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aEntBuffer = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
@@ -114,6 +115,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoJ.m_aIndexDef  = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aEntWrk    = (void*)&pLogicUnit->m_oEntWrkJ;
   m_xDynamicT.m_xIndexInfoJ.m_aEntKey    = ((EntWrk*)m_xDynamicT.m_xIndexInfoJ.m_aEntWrk)->aKey();
+  m_xDynamicT.m_xIndexInfoJ.m_aEntBottom = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aEntUpper  = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aEntBuffer = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
@@ -134,13 +136,15 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // payload (gby/srt/top)
   m_xDynamicT.m_aiPayload      = nullptr;
-  m_xDynamicT.m_aIndexTreePL   = nullptr;
-  m_xDynamicT.m_aIndexDefPL    = nullptr;
-  m_xDynamicT.m_aEntBufferPL   = nullptr;
-  m_xDynamicT.m_aEntWrkPL      = (void*)&pLogicUnit->m_oEntWrkPL;
-  m_xDynamicT.m_aEntKeyPL      = ((EntWrk*)m_xDynamicT.m_aEntWrkPL)->aKey();
-  m_xDynamicT.m_aEntBottomPL     = nullptr;
-  m_xDynamicT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();
+  m_xDynamicT.m_xIndexInfoPL.m_aIndex       = nullptr;
+  m_xDynamicT.m_xIndexInfoPL.m_aIndexTree   = nullptr;
+  m_xDynamicT.m_xIndexInfoPL.m_aIndexDef    = nullptr;
+  m_xDynamicT.m_xIndexInfoPL.m_aEntWrk      = (void*)&pLogicUnit->m_oEntWrkPL;
+  m_xDynamicT.m_xIndexInfoPL.m_aEntKey      = ((EntWrk*)m_xDynamicT.m_xIndexInfoPL.m_aEntWrk)->aKey();
+  m_xDynamicT.m_xIndexInfoPL.m_aEntBottom   = nullptr;
+  m_xDynamicT.m_xIndexInfoPL.m_aEntUpper    = nullptr;
+  m_xDynamicT.m_xIndexInfoPL.m_aEntBuffer   = nullptr;
+  m_xDynamicT.m_xIndexInfoPL.m_aEntInt      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();
 
   // top
   m_xDynamicT.m_iTopInit         = 0;
@@ -163,13 +167,13 @@ Dynamic::~Dynamic(void) noexcept(false)
 
   RowSingle* pRowSingle;
 
-  if (m_xDynamicT.m_aIndexTreePL) {
-    IndexTree* pIndexTree = _pIndexTree(m_xDynamicT.m_aIndexTreePL);
+  if (m_xDynamicT.m_xIndexInfoPL.m_aIndexTree) {
+    IndexTree* pIndexTree = _pIndexTree(m_xDynamicT.m_xIndexInfoPL.m_aIndexTree);
     delete pIndexTree;
   }
 
-  if (m_xDynamicT.m_aIndexDefPL) {
-    IndexDef* pIndexDef = _pIndexDef(m_xDynamicT.m_aIndexDefPL);
+  if (m_xDynamicT.m_xIndexInfoPL.m_aIndexDef) {
+    IndexDef* pIndexDef = _pIndexDef(m_xDynamicT.m_xIndexInfoPL.m_aIndexDef);
     delete pIndexDef;
   }
 

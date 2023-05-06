@@ -395,8 +395,9 @@ struct IndexInfo {
   void *m_aIndex;
   void *m_aIndexTree;
   void *m_aIndexDef;
-  void *m_aEntKey;
   void *m_aEntWrk;
+  void *m_aEntKey;
+  void *m_aEntBottom;
   void *m_aEntUpper;
   void *m_aEntBuffer;
   struct Ent_int* m_aEntInt;
@@ -417,11 +418,6 @@ struct Dynamic_T
 
   // Project payload (SR_PL)
   struct RowInfo m_xRowInfoPL;
-
-//  void*   m_aPayloadRow;
-//  void*   m_aPayloadCellArray;
-//  char*   m_racPayloadArea;
-//  char*   m_racPayloadAreaSav;
 
   // project T (SR_PT)
   struct RowInfo m_xRowInfoPT;
@@ -465,14 +461,6 @@ struct Dynamic_T
   i8      m_iIndexJoinInit;
   i8      m_iJoinedRows;
   struct IndexInfo m_xIndexInfoJ;
-//  void*   m_aIndexJ;
-//  void*   m_aIndexTreeJ;
-//  void*   m_aIndexDefJ;
-//  void*   m_aEntKeyJ;
-//  void*   m_aEntWrkJ;
-//  void*   m_aEntUpperJ;
-//  void*   m_aEntBufferJ;
-//  struct Ent_int* m_aEntIntJ;
 
 
   // project (col/exp)
@@ -491,13 +479,14 @@ struct Dynamic_T
 
   // payload (gby/srt/top)
   i8*     m_aiPayload;
-  void*   m_aIndexTreePL;
-  void*   m_aIndexDefPL;
-  void*   m_aEntBufferPL;
-  void*   m_aEntWrkPL;
-  void*   m_aEntKeyPL;
-  void*   m_aEntBottomPL;
-  struct Ent_int* m_aEntIntPL;
+  struct IndexInfo m_xIndexInfoPL;
+//  void*   m_aIndexTreePL;
+//  void*   m_aIndexDefPL;
+//  void*   m_aEntBufferPL;
+//  void*   m_aEntWrkPL;
+//  void*   m_aEntKeyPL;
+//  void*   m_aEntBottomPL;
+//  struct Ent_int* m_aEntIntPL;
 
   // top
   i8      m_iTopInit;

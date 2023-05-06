@@ -37,7 +37,7 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     if (iArg1 != C_DATUM_NULL)    {                                         \
-      iArg2 = (i8)aIndexTree_allotPayStr((void*)aDynamicT->m_aIndexTreePL, (char*)iArg1); \
+      iArg2 = (i8)aIndexTree_allotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg1); \
     }                                                                       \
   }
 
@@ -46,7 +46,7 @@
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
     if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-      iArg3 = (i8)aIndexTree_allotPayStr((void*)aDynamicT->m_aIndexTreePL, (char*)iArg2); \
+      iArg3 = (i8)aIndexTree_allotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg2); \
     }                                                                       \
   }
 

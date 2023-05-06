@@ -64,7 +64,7 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // populate the payload key
-  aDynamicT->m_aEntIntPL->m_iIntElm0 = 0;
+  aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
   // marker-end
 
   return 0;
@@ -84,7 +84,7 @@ void vGbyAggCreatePayLoad(Dynamic_T* aDynamicT) {
     // create the payload
 
 #ifdef WITH_TINYC
-    vEnt_payloadCreate(aDynamicT->m_aEntIntPL, __PAYLOADBYTES__);
+    vEnt_payloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
 #endif
     // marker-end
 }
@@ -100,7 +100,7 @@ void vGbyAggFindKey(Dynamic_T* aDynamicT) {
   // marker-start
   // - - - - - - - - - - - - - -
   // find key in payload index
-  aEntFound = aIndexTree_findEntry(aDynamicT->m_aIndexTreePL, aDynamicT->m_aEntKeyPL);
+  aEntFound = aIndexTree_findEntry(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
 
   if ( !aEntFound ) {
     // marker-end
@@ -122,7 +122,8 @@ i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
 
     // - - - - - - - - - - - - - -
     // insert key in the payload
-    aEntInserted = aIndexTree_insertEnt(aDynamicT->m_aIndexTreePL, aDynamicT->m_aEntIntPL, &aDynamicT->m_iErrorCode);
+    aEntInserted = aIndexTree_insertEnt(
+        aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
     if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
       return 0;
     }
@@ -183,7 +184,8 @@ i8 iGbyAggInsertVchKey(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // insert key in the payload
-  aEntInserted = aIndexTree_insertEnt(aDynamicT->m_aIndexTreePL, aDynamicT->m_aEntIntPL, &aDynamicT->m_iErrorCode);
+  aEntInserted = aIndexTree_insertEnt(
+      aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
@@ -353,7 +355,7 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // populate the payload key
-  aDynamicT->m_aEntIntPL->m_iIntElm0 = 0;
+  aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
   // marker-end
 
   return 0;
@@ -515,7 +517,8 @@ void vEosPayLoadTubEnd(Dynamic_T* aDynamicT) {
   // marker-start
     // - - - - - - - - - - - - - -
     // move to next entry
-    aDynamicT->m_aEntIntPL = (struct Ent_int*)aEntBuffer_nextEntry(&aDynamicT->m_aEntBufferPL, aDynamicT->m_aEntIntPL);
+    aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+        &aDynamicT->m_xIndexInfoPL.m_aEntBuffer, aDynamicT->m_xIndexInfoPL.m_aEntInt);
   }
 
   // marker-end
@@ -536,14 +539,15 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // payload traversal
-  aDynamicT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aDynamicT->m_aIndexTreePL, &aDynamicT->m_aEntBufferPL);
+  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)
+      aIndexTree_begin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 
-  while (aDynamicT->m_aEntIntPL) {
+  while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
     aDynamicT->m_iProcessRow = 1;
 
     aDynamicT->m_xRowInfoPT.m_racStrArea = aDynamicT->m_xRowInfoPT.m_racStrAreaSav;
-    aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_aEntIntPL
+    aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
                                       + sizeof(struct Ent_int)
                                       + 8);
 
@@ -569,16 +573,17 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // payload traversal
-  aDynamicT->m_aEntIntPL = (struct Ent_int*)aIndexTree_begin(aDynamicT->m_aIndexTreePL, &aDynamicT->m_aEntBufferPL);
+  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aIndexTree_begin(
+      aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 
-  while (aDynamicT->m_aEntIntPL) {
+  while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
     aDynamicT->m_iProcessRow = 1;
 
     aDynamicT->m_xRowInfoPT.m_racStrArea = aDynamicT->m_xRowInfoPT.m_racStrAreaSav;
-    aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_aEntIntPL
+    aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
         + sizeof(struct Ent_int)
-        + ((struct Ent_int*)aDynamicT->m_aEntIntPL)->m_iIntElm0
+        + ((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0
         + 8);
 
     iElemSize = 0;
@@ -612,7 +617,7 @@ void vPayLoadKeyToTub(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // column __COLUMN_NO__
 
-    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = ((struct Ent_int*)aDynamicT->m_aEntIntPL)->m_iIntElm0 + iElemSize;
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = ((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0 + iElemSize;
 
   // marker-end
 }
@@ -648,7 +653,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column __COLUMN_NO__
 
-  szSrcStz = ((char*)(&(((struct Ent_int*)aDynamicT->m_aEntIntPL)->m_iIntElm0)) + 8 + iElemSize);
+  szSrcStz = ((char*)(&(((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0)) + 8 + iElemSize);
 
   if ((i8)szSrcStz == C_DATUM_NULL) {
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
@@ -1014,7 +1019,8 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
   }
   else {
     nSrcSize = strlen(szSrcStz);
-    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aIndexTree_allotPayStr(aDynamicT->m_aIndexTreePL, szSrcStz);
+    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aIndexTree_allotPayStr(
+        aDynamicT->m_xIndexInfoPL.m_aIndexTree, szSrcStz);
     szDstStz = (char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
     strncpy(szDstStz, szSrcStz, nSrcSize);
   }

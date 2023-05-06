@@ -107,7 +107,7 @@ void Step::vDynamicExecute(void)
     //EOSMARKER
     // nothing to do
   }
-  //IndexTree* pIndexTree = (IndexTree*)aDynamicT->m_aIndexTreePL;
+  //IndexTree* pIndexTree = (IndexTree*)aDynamicT->m_xIndexInfoPL.m_aIndexTree;
   //pIndexTree->vDump(false);
 
   aDynamicT->m_eStrInflateRule = SI_STRAREA_ADR;
@@ -130,13 +130,13 @@ void Step::vDynamicExecute(void)
 
   // EOS marker handler done ?
   if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
-    IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_aIndexTreePL);
+    IndexTree* pIndexTree = _pIndexTree(aDynamicT->m_xIndexInfoPL.m_aIndexTree);
     delete pIndexTree;
-    aDynamicT->m_aIndexTreePL = nullptr;
+    aDynamicT->m_xIndexInfoPL.m_aIndexTree = nullptr;
 
-    IndexDef* pIndexDef = _pIndexDef(aDynamicT->m_aIndexDefPL);
+    IndexDef* pIndexDef = _pIndexDef(aDynamicT->m_xIndexInfoPL.m_aIndexDef);
     delete pIndexDef;
-    aDynamicT->m_aIndexDefPL = nullptr;
+    aDynamicT->m_xIndexInfoPL.m_aIndexDef = nullptr;
 
   }
 

@@ -785,14 +785,14 @@ void Stencil_v2::vSetupGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
-  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
 
   // do we have a payload ?
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
     bPayload = false;
 
-  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -982,9 +982,9 @@ void Stencil_v2::vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   // create the groupby index
   eKE eKind;
-  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
-  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1078,10 +1078,10 @@ void Stencil_v2::vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
     bPayload = false;
 
-  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
-  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
-  EntWrk::vEntDesc((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL,pIndexDef);
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
+  EntWrk::vEntDesc((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk,pIndexDef);
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1125,7 +1125,7 @@ void Stencil_v2::vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   // get the IndexDef from the TopOp
   IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-  pDynamic->aDynamicT()->m_aIndexDefPL = new IndexDef(pIndexDef);
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
 
   // do we have a payload ?
   if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
@@ -1133,8 +1133,8 @@ void Stencil_v2::vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 
   // create the indexTree
   eKE eKind;
-  pDynamic->aDynamicT()->m_aIndexTreePL = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_aEntWrkPL, bPayload, pIndexDef->eKeyKind());
+  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1161,7 +1161,7 @@ void Stencil_v2::vSketchEosSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
 
   // get the aggregate type stack
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
@@ -1790,7 +1790,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
   OpSketch *pOpSketch = new OpSketch(sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, pStreamDefLft, pStreamDefOut);
 
   // set the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
   pOpSketch->vIndexDef(pIndexDef);
 
   // set the payLoad bytes
@@ -1846,7 +1846,7 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
   pOpSketch->vSetLabels(sLabel, ""_Stz, szLabelLoop);
 
   // set the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
+  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
   pOpSketch->vIndexDef(pIndexDef);
 
   // set the payLoad bytes
