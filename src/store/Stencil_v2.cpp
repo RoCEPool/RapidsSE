@@ -680,7 +680,6 @@ void Stencil_v2::vSetup(Dynamic* pDynamic, Stream* pStream)
   }
   else {
     pTub->vRowPix(pRowPix);
-    pDynamic->aDynamicT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 }
 
@@ -1055,8 +1054,6 @@ void Stencil_v2::vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind) {
   // get the rowPix
   RowPix *pRowPix = pStreamDefOut->pRowPix();
   pTub->vRowPix(pRowPix);
-  pDynamic->aDynamicT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
-
 }
 
 /*----------------------------------------------------------------------------*/

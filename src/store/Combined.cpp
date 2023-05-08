@@ -138,7 +138,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowTub          = nullptr;
   m_xCombinedT.m_aRowTubCellArray = nullptr;
   m_xCombinedT.m_racTubStrArea    = nullptr;
-  m_xCombinedT.m_iTubRowSize      = 0;
+  //m_xCombinedT.m_iTubRowSize      = 0;
 
   // pot
   m_xCombinedT.m_aRowPot          = nullptr;

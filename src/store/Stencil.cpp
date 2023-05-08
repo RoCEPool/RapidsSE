@@ -872,7 +872,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     pPot->vRowPix(pRowPix);
   } else {
     pTub->vRowPix(pRowPix);
-    pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
+    //pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 
   if (m_xStageOps.m_bGeneratePotTub) {
@@ -1082,7 +1082,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
   }
   else {
     pTub->vRowPix(pRowPix);
-    pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
+    //pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 }
 

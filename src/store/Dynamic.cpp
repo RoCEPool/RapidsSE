@@ -27,9 +27,23 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);
 
+  for (i8 i_Stack = 0; i_Stack < 256; i_Stack++)
+    m_xDynamicT.m_aW[i_Stack] = 0;
+
+  m_xDynamicT.m_bTrace      = false;
+  m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
+  m_xDynamicT.m_iProcessRow = 1;
+  m_xDynamicT.m_iHashRows   = 0;
+
+  // rowbuffer T
+  m_xDynamicT.m_aRowBuffer    = nullptr;
+
   // inflate T (SR_IT)
   m_xDynamicT.m_nRows       = 0;
   m_xDynamicT.m_nCols       = 0;
+  m_xDynamicT.m_iHeadSize   = 0;
+  m_xDynamicT.m_eStrInflateRule = SI_NONE;
+  m_xDynamicT.m_aHeadLine0      = nullptr;
   m_xDynamicT.m_xRowInfoIT.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoIT.m_aRowCellArray = nullptr;
   m_xDynamicT.m_xRowInfoIT.m_racStrArea    = nullptr;
@@ -67,7 +81,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // tub output (SR_TO)
   m_xDynamicT.m_pTub        = nullptr;
-  m_xDynamicT.m_iTubRowSize = 0;
   m_xDynamicT.m_xRowInfoTO.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = nullptr;
   m_xDynamicT.m_xRowInfoTO.m_racStrArea    = nullptr;
@@ -79,21 +92,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_racStrArea    = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_racStrAreaSav = nullptr;
-
-  m_xDynamicT.m_bTrace      = false;
-  m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
-  m_xDynamicT.m_iHashRows   = 0;
-
-  // table scan T inflate (crwBuffer)
-  m_xDynamicT.m_aHeadLine0  = nullptr;
-  m_xDynamicT.m_iHeadSize   = 0;
-  m_xDynamicT.m_eStrInflateRule = SI_NONE;
-
-  for (i8 i_Stack = 0; i_Stack < 256; i_Stack++)
-    m_xDynamicT.m_aW[i_Stack] = 0;
-
-  // rowbuffer
-  m_xDynamicT.m_aRowBuffer    = nullptr;
 
   // index scan T
   m_xDynamicT.m_iIndexScan  = 0;
@@ -128,7 +126,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // project (gby/payload)
   m_xDynamicT.m_nAggRows = 0;
-  m_xDynamicT.m_iProcessRow    = 1;
 
   // project (ordAgg)
   m_xDynamicT.m_iHasOrdAggRow = 0;
