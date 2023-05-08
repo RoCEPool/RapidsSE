@@ -9,6 +9,9 @@
 #include "OpSketch.hpp"
 #include "Dynamic.hpp"
 
+#include "PipelineDef.hpp"
+
+
 // information about the stage being combined and its Operators
 // this will help in adding in the rules
 struct stageOps_V2 {
@@ -67,6 +70,8 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
    ~Stencil_v2(void) noexcept(false);
 
     static void vRepair(Object* pObject);
+
+    static eEC eSynthesise(PipelineDef* pPipelineDef);
 
     void vCombine(bool bGenerateCCode);
     Stz* szOpSource(void);

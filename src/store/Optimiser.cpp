@@ -22,7 +22,8 @@
 #include "CarryForward.hpp"
 #include "Error.hpp"
 
-#include "Meta.hpp"
+#include "PipelineDef.hpp"
+#include "Stencil_v2.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -133,6 +134,10 @@ bool Optimiser::bApplyTransformationMatrix(eEC* peErrorCode)
     pCardCtl()->vSaveXhand();
 
     vApplyTransformationMatrix();
+
+    PipelineDef* pPipelineDef = new PipelineDef;
+    eEC eError = Stencil_v2::eSynthesise(pPipelineDef);
+    delete pPipelineDef;
 
     bClean = true;
   }
