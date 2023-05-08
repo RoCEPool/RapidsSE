@@ -10,7 +10,9 @@ namespace STORE
 {
   class OpDef : public ListNL_t<ArgDef>
   {
-  protected:
+  public:
+    i8  m_i_Op;
+    s32 m_sOpNm;
 
   protected:
     // must be last

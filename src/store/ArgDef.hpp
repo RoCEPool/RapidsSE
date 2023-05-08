@@ -9,7 +9,10 @@ namespace STORE
 {
   class ArgDef : public Meta
   {
-  protected:
+  public:
+    i8  m_i_Arg;
+    s32 m_sArgNm;
+    s2K m_sArgVal;
 
   protected:
     // must be last

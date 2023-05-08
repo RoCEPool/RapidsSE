@@ -302,7 +302,7 @@ SizeHeap gxaSizeHeap[]
   {CN_ANSWERWL,                 sizeof(AnswerWL),               HT_T_TINY    , FILL },
   {CN_API,                      sizeof(Api),                    HT_INVALID   , FILL },
   {CN_ARG,                      sizeof(Arg),                    HT_T_TINY    , FILL },
-  {CN_ARGDEF,                   sizeof(ArgDef),                 HT_T_TINY    , FILL },
+  {CN_ARGDEF,                   sizeof(ArgDef),                 HT_T_SMALL   , FILL },
   {CN_ARRANGE,                  sizeof(Arrange),                HT_T_TINY    , FILL },
   {CN_ATOMIC,                   sizeof(Atomic),                 HT_INVALID   , FILL },
   {CN_ATTACHMAP,                sizeof(AttachMap),              HT_INVALID   , FILL },
