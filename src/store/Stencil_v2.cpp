@@ -222,8 +222,6 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
-  CodeSynth_v2 *pCodeSynth;
-
   s4K sLabel;
   s4K sReturnLabel;
   s4K sLabelLoop;

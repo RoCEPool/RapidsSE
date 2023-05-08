@@ -180,7 +180,7 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   // dereference the entry
   iBufferJ = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;
   iItemJ   = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uItem;
-  aCrwJ  = ( (char*)C_ADR_REGION + iBufferJ * C_1MB+ C_CRW_FIRSTHEAD+ iItemJ * C_CRW_HEADBYTES );
+  aCrwJ  = ( (char*)C_ADR_REGION + iBufferJ * C_1MB + C_CRW_FIRSTHEAD+ iItemJ * C_CRW_HEADBYTES );
   printf("M2\n");
   // marker-end
 
