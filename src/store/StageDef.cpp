@@ -18,7 +18,7 @@ __aFooterFunction(StageDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageDef::StageDef(void)
-    : Meta(CN_STAGEDEF)
+    : ListNL_t<OpDef>(CN_STAGEDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 

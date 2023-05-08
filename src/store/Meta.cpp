@@ -16,9 +16,9 @@
 Meta::Meta(eCN eClass)
 : Object(eClass)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, eClass, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, eClass);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +26,7 @@ Meta::Meta(eCN eClass)
 /*----------------------------------------------------------------------------*/
 Meta::~Meta(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 
 }
 

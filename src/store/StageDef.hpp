@@ -1,12 +1,15 @@
 /*============================================================================*/
 /* StageDef.hpp -- Stage Metadata                                            */
 /*============================================================================*/
+#pragma once
 
 #include "Meta.hpp"
+#include "OpDef.hpp"
+
 
 namespace STORE
 {
-  class StageDef : public Meta
+  class StageDef : public ListNL_t<OpDef>
   {
   protected:
 

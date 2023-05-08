@@ -1,6 +1,7 @@
 /*============================================================================*/
-/* ColsReq.hpp -- Columns Required Metadata                               */
+/* ColsReq.hpp -- Columns Required Metadata                                   */
 /*============================================================================*/
+#pragma once
 
 #include "Meta.hpp"
 
