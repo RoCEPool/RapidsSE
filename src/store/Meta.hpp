@@ -14,8 +14,6 @@ namespace STORE
   protected:
 
   protected:
-    // must be last
-    Footer m_xFooter;
 
   public:
 
@@ -26,7 +24,6 @@ namespace STORE
 
   };
 
-  Meta* _pMeta(void* aAddr);
 }
 
 /*============================================================================*/
