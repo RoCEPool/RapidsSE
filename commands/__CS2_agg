@@ -14,16 +14,16 @@ begin
     | next
   stage S01 on all partitions :
     scan rapidsse public Nation
-    | filter_v2 " type BOOLEAN  $1 5  <  "
-    | aggreg_v2 " type INTEGER )  $1 sum  "
+    | filter " type BOOLEAN  $1 5  <  "
+    | aggreg " type INTEGER )  $1 sum  "
     | dynamic_v2 0
     | next
   stage S02 on all nodes :
-    aggreg_v2 " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER )  $1 sum  "
     | dynamic_v2 0
     | next
   stage S03 on origin :
-    aggreg_v2 " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER )  $1 sum  "
     | dynamic_v2 0
     | next
   stage S04 on origin :
@@ -42,17 +42,17 @@ stage S00 on origin :
   | next
 stage S01 on all partitions :
   scan rapidsse public Nation
-  | aggreg_v2 " type VARCHAR )  $2 max  "
+  | aggreg " type VARCHAR )  $2 max  "
   | dynamic_v2 0
   | next
 
 stage S02 on all nodes :
-  aggreg_v2 " type VARCHAR )  $1 max  "
+  aggreg " type VARCHAR )  $1 max  "
   | dynamic_v2 0
   | next
   /*
 stage S03 on origin :
-  aggreg_v2 " type VARCHAR )  $1 max  "
+  aggreg " type VARCHAR )  $1 max  "
   | dynamic_v2 0
   | next
   */

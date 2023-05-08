@@ -17,8 +17,8 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan_v2 Nation IxN_NATIONKEY "UBOUND $I1 2 < "
-    | project_v2   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    indexScan Nation IxN_NATIONKEY "UBOUND $I1 2 < "
+    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
     | dynamic_v2  0
     | next
 

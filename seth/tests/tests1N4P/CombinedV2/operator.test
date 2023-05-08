@@ -46,8 +46,8 @@ begin
     | stageMarker0559
   stage stageMarker0559 on all partitions :
     scan rapidsse public Nation
-    | filter_v2 " type BOOLEAN  $1 2  <  "
-    | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | filter " type BOOLEAN  $1 2  <  "
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
     | dynamic_v2 0
     | stageLast
   stage stageLast on origin :
@@ -71,8 +71,8 @@ begin
     | next
 
   stage S01 on all partitions :
-    indexScan_v2 Nation IxN_NATIONKEY "UBOUND $I1 2 < "
-    | project_v2   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    indexScan Nation IxN_NATIONKEY "UBOUND $I1 2 < "
+    | project   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
     | dynamic_v2  0
     | next
 
@@ -100,12 +100,12 @@ begin
 
   stage S01 on all partitions :
      scan      Nation
-   | project_v2 "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
    | dynamic_v2  0
    | next
 
   stage S02 on all partitions :
-     indexJoin_v2 Region IxR_REGIONKEY " BOUND $I1 $3 == "
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
    | dynamic_v2  0
    | next
 
@@ -154,16 +154,16 @@ begin
     | next
   stage S01 on all partitions :
     scan rapidsse public Nation
-    | filter_v2 " type BOOLEAN  $1 5  <  "
-    | aggreg_v2 " type INTEGER )  $1 sum  "
+    | filter " type BOOLEAN  $1 5  <  "
+    | aggreg " type INTEGER )  $1 sum  "
     | dynamic_v2 0
     | next
   stage S02 on all nodes :
-    aggreg_v2 " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER )  $1 sum  "
     | dynamic_v2 0
     | next
   stage S03 on origin :
-    aggreg_v2 " type INTEGER )  $1 sum  "
+    aggreg " type INTEGER )  $1 sum  "
     | dynamic_v2 0
     | next
   stage S04 on origin :
@@ -186,15 +186,15 @@ begin
    | next
  stage S01 on all partitions :
    scan rapidsse public Nation
-   | aggreg_v2 " type VARCHAR )  $2 max  "
+   | aggreg " type VARCHAR )  $2 max  "
    | dynamic_v2 0
    | next
  stage S02 on all nodes :
-   aggreg_v2 " type VARCHAR )  $1 max  "
+   aggreg " type VARCHAR )  $1 max  "
    | dynamic_v2 0
    | next
  stage S03 on origin :
-   aggreg_v2 " type VARCHAR )  $1 max  "
+   aggreg " type VARCHAR )  $1 max  "
    | dynamic_v2 0
    | next
  stage S04 on origin :
@@ -217,17 +217,17 @@ begin
 
  stage S02 on all partitions :
    scan rapidsse public Nation
-   | gbyagg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | gbyagg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
    | dynamic_v2 0
    | next
 
  stage S03 on all nodes :
-   gbyagg_v2 " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
    | dynamic_v2 0
    | next
 
  stage S04 on origin :
-   gbyagg_v2 " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
    | dynamic_v2 0
    | next
 
@@ -255,17 +255,17 @@ rows:
 
    stage S02 on all partitions :
      scan rapidsse public Nation
-     | gbyAgg_v2 " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
      | dynamic_v2 0
      | next
 
    stage S03 on all nodes :
-     gbyagg_v2 " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
      | dynamic_v2 0
      | next
 
    stage S04 on origin :
-     gbyagg_v2 " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
      | dynamic_v2 0
      | next
 
@@ -294,17 +294,17 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public Nation
-    | gbyAgg_v2 " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
     | dynamic_v2 0
     | next
 
   stage S02 on all nodes :
-    gbyAgg_v2 " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
     | dynamic_v2 0
     | next
 
   stage S03 on origin :
-    gbyAgg_v2 " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
     | dynamic_v2 0
     | next
 
@@ -353,12 +353,12 @@ begin
 
   stage S01 on all partitions :
     scan rapidsse public Nation
-    | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
     | dynamic_v2 0
     | next
 
   stage S02 on all partitions :
-    project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
     | dynamic_v2 0
     | next
 
@@ -406,8 +406,8 @@ begin
 
  stage S01 on all partitions :
    scan rapidsse public Nation
-   | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-   | sort_v2 " type INTEGER as n_nationkey $1 ASC  "
+   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort " type INTEGER as n_nationkey $1 ASC  "
    | dynamic_v2 0
    | next
 
@@ -455,8 +455,8 @@ begin
 
  stage S01 on all partitions :
    scan rapidsse public Nation
-   | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-   | sort_v2 " type VARCHAR as n_name $2 ASC  "
+   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort " type VARCHAR as n_name $2 ASC  "
    | dynamic_v2 0
    | next
 
