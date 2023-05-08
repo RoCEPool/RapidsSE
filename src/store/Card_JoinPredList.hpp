@@ -18,9 +18,7 @@ namespace STORE
 
     static Card_JoinPredList* pExtract(Card_Deck* p_deck);
 
-    void vConcat(Card_BoolCalc* p_boolCalc, Card_IndexList* p_indexList, Card_Bounds* p_bounds);
-
-    Card_CmpPred* pFindCmpPred(char cTblSyn);
+    void vConcat(Card_IndexList* p_indexList, Card_Filter* p_filter);
 
   };
 
