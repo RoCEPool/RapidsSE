@@ -183,6 +183,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
+  /* */ CN_MAKECODE,
   /* */ CN_MAKEFLAT,
   /* */ CN_MAKEOPTIMAL,
   /* */ CN_MAKESIMPLER,
@@ -625,6 +626,7 @@ static Stz* aCN[]
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__
+  /* */ "MAKECODE"_Stz,             // CN_MAKECODE
   /* */ "MAKEFLAT"_Stz,             // CN_MAKEFLAT
   /* */ "MAKEOPTIMAL"_Stz,          // CN_MAKEOPTIMAL
   /* */ "MAKESIMPLER"_Stz,          // CN_MAKESIMPLER

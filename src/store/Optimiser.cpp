@@ -13,6 +13,7 @@
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Fold.hpp"
+#include "MakeCode.hpp"
 #include "MakeFlat.hpp"
 #include "MakeOptimal.hpp"
 #include "MakeWeavable.hpp"
@@ -22,8 +23,6 @@
 #include "CarryForward.hpp"
 #include "Error.hpp"
 
-#include "PipelineDef.hpp"
-#include "Stencil_v2.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -135,9 +134,6 @@ bool Optimiser::bApplyTransformationMatrix(eEC* peErrorCode)
 
     vApplyTransformationMatrix();
 
-    PipelineDef* pPipelineDef = new PipelineDef;
-    eEC eError = Stencil_v2::eSynthesise(pPipelineDef);
-    delete pPipelineDef;
 
     bClean = true;
   }
@@ -182,6 +178,10 @@ void Optimiser::vApplyTransformationMatrix(void)
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
   pMakeWeavable->vWeavable();
   delete pMakeWeavable;
+
+  MakeCode* pMakeCode = new MakeCode(m_pCI);
+  pMakeCode->vSynthesise();
+  delete pMakeCode;
 }
 
 /*----------------------------------------------------------------------------*/

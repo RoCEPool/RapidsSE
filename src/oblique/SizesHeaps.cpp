@@ -262,6 +262,7 @@
 #include "OpDef.hpp"
 #include "PipelineDef.hpp"
 #include "StageDef.hpp"
+#include "MakeCode.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -460,6 +461,7 @@ SizeHeap gxaSizeHeap[]
   { CN_LOGICUNIT,                sizeof(LogicUnit),          HT_T_MEDIUM  ,FILL },
 
   { CN__M__,                     'M' - ('A' - 1),            HT_INVALID   ,FILL },
+  { CN_MAKECODE,                 sizeof(MakeCode),           HT_T_TINY    , FILL },
   { CN_MAKEFLAT,                 sizeof(MakeFlat),           HT_T_TINY    , FILL },
   {CN_MAKEOPTIMAL,              sizeof(MakeOptimal),        HT_T_TINY    , FILL },
   {CN_MAKESIMPLER,              sizeof(MakeSimpler),        HT_T_TINY    , FILL },
