@@ -18,7 +18,7 @@ __aFooterFunction(ArgDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ArgDef::ArgDef(void)
-    : Meta(CN_ARGDEF)
+    : Object(CN_ARGDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
 

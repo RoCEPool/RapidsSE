@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Meta.hpp"
+#include "BASE.h"
 
 namespace STORE
 {
-  class ArgDef : public Meta
+  class ArgDef : public Object
   {
   public:
     i8  m_i_Arg;

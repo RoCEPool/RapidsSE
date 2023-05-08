@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "Meta.hpp"
 #include "StageDef.hpp"
 
 namespace STORE

@@ -18,7 +18,7 @@ __aFooterFunction(ColsReq)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ColsReq::ColsReq(void)
-    : Meta(CN_COLSREQ)
+    : Object(CN_COLSREQ)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
