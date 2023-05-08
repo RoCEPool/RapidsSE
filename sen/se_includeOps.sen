@@ -23,7 +23,6 @@ assert::stack_0
   "OP_addNode.sen"              include
   "OP_adjustPartitions.sen"     include
   "OP_aggreg.sen"               include
-  "OP_aggreg_v2.sen"            include
   "OP_aggregateSplit.sen"       include
   "OP_analyzeIndex.sen"         include
   "OP_analyzeTable.sen"         include
@@ -97,14 +96,12 @@ assert::stack_0
 
   "OP_fetch.sen"                include
   "OP_filter.sen"               include
-  "OP_filter_v2.sen"            include
   "OP_flushDemon.sen"           include
   "OP_forkCommand.sen"          include
 
 "g" .verbose
 
   "OP_gbyAgg.sen"               include
-  "OP_gbyAgg_v2.sen"            include
   "OP_grid.sen"                 include
   "OP_gridGet.sen"              include
   "OP_gridRecv.sen"             include
@@ -119,9 +116,7 @@ assert::stack_0
 
   "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
-  "OP_indexJoin_v2.sen"         include
   "OP_indexScan.sen"            include
-  "OP_indexScan_v2.sen"         include
   "OP_insDel.sen"               include
   "OP_inflate.sen"              include
   "OP_inflateDynamic.sen"       include
@@ -200,7 +195,6 @@ assert::stack_0
   "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
-  "OP_project_v2.sen"           include
   "OP_projValidation.sen"       include
   "OP_ptnMap.sen"               include
   "OP_pulse.sen"                include
@@ -235,7 +229,6 @@ assert::stack_0
   "OP_sizeTable.sen"            include
   "OP_sleep.sen"                include
   "OP_sort.sen"                 include
-  "OP_sort_v2.sen"              include
   "OP_space.sen"                include
   "OP_spawnNode.sen"            include
   "OP_sqlInit.sen"              include
