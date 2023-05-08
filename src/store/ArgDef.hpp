@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ArgsDef.hpp -- Args Metadata                                               */
+/* ArgDef.hpp -- Args Metadata                                               */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class ArgsDef : public Meta
+  class ArgDef : public Meta
   {
   protected:
 
@@ -19,16 +19,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ArgsDef(void);
+    ArgDef(void);
 
-    ~ArgsDef(void) noexcept(false);
+    ~ArgDef(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  ArgsDef* _pArgsDef(void* aAddr);
+  ArgDef* _pArgDef(void* aAddr);
 }
 
 /*============================================================================*/

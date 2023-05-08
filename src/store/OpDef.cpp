@@ -18,7 +18,7 @@ __aFooterFunction(OpDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpDef::OpDef(void)
-    : Meta(CN_OPDEF)
+    : ListNL_t<ArgDef>(CN_OPDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 

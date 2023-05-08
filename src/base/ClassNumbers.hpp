@@ -24,7 +24,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ANSWERWL,
   /* */ CN_API,
   /* */ CN_ARG,
-  /* */ CN_ARGSDEF,
+  /* */ CN_ARGDEF,
   /* */ CN_ARRANGE,
   /* */ CN_ATOMIC,
   /* */ CN_ATTACHMAP,
@@ -466,7 +466,7 @@ static Stz* aCN[]
   /* */ "ANSWERWL"_Stz,             // CN_ANSWERWL
   /* */ "API"_Stz,                  // CN_API
   /* */ "ARG"_Stz,                  // CN_ARG
-  /* */ "ARGSDEF"_Stz,              // CN_ARGSDEF
+  /* */ "ARGDEF"_Stz,               // CN_ARGDEF
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
   /* */ "ATOMIC"_Stz,               // CN_ATOMIC
   /* */ "ATTACHMAP"_Stz,            // CN_ATTACHMAP

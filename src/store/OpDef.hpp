@@ -4,10 +4,11 @@
 #pragma once
 
 #include "Meta.hpp"
+#include "ArgDef.hpp"
 
 namespace STORE
 {
-  class OpDef : public Meta
+  class OpDef : public ListNL_t<ArgDef>
   {
   protected:
 
