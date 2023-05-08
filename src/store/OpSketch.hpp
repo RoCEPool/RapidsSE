@@ -5,7 +5,15 @@
 
 #include "eSK.h"
 #include "eHK.h"
-#include "CodeSynth_v2.hpp"
+#include "TinyC.hpp"
+#include "Tub.hpp"
+#include "ePE.h"
+#include "ePL.h"
+#include "eEK.h"
+#include "eFM.h"
+#include "eIV.h"
+#include "IndexDef.hpp"
+#include "FunMatrix.h"
 
 namespace STORE
 {

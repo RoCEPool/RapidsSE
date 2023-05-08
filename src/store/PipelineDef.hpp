@@ -4,10 +4,11 @@
 #pragma once
 
 #include "Meta.hpp"
+#include "StageDef.hpp"
 
 namespace STORE
 {
-  class PipelineDef : public Meta
+  class PipelineDef : public ListNL_t<StageDef>
   {
   protected:
 

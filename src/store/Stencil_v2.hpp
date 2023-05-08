@@ -4,7 +4,6 @@
 #pragma once
 
 #include "eSK.h"
-#include "CodeSynth_v2.hpp"
 #include "CombinedSrc.hpp"
 #include "OpSketch.hpp"
 #include "Dynamic.hpp"

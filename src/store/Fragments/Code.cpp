@@ -435,7 +435,7 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
 
   p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoAT.m_racStrArea;
-  if ( aDynamicT->m_iProjectInit == 0 ) {
+  if ( aDynamicT->m_iAggregInit == 0 ) {
     // marker-end
   }
 
@@ -458,7 +458,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
     }
 
     aDynamicT->m_iRowsProcessed = 1;
-    aDynamicT->m_iProjectInit = 1;
+    aDynamicT->m_iAggregInit = 1;
   }
 
   if (!aDynamicT->m_iRowsProcessed)

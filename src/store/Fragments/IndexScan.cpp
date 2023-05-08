@@ -50,7 +50,6 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   if ( ! aDynamicT->m_xIndexInfoT.m_aEntInt )
     goto L_Return;
 
-  // populate EntKeyT with upper bound value
   // marker-end
 
   L_Return:

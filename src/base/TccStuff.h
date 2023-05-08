@@ -407,24 +407,25 @@ struct IndexInfo {
 // CODE SYNTH V2
 struct Dynamic_T
 {
-  i8      m_bTrace;
-  i8      m_iErrorCode;
-  i8      m_iProcessRow;
-  i8      m_iHashRows;
+  i8 m_bTrace;
+  i8 m_iErrorCode;
+  i8 m_iProcessRow;
+  i8 m_iRowsProcessed;
+  i8 m_iLimitRows;
 
   // rowBuffer T
-  void*   m_aRowBuffer;
+  void* m_aRowBuffer;
 
   // expression stack
-  i8      m_aW[256];
+  i8 m_aW[256];
 
   // inflate T (SR_IT)
-  i8       m_nRows;
-  i8       m_nCols;
-  i8       m_iHeadSize;
-  enum eSI m_eStrInflateRule;
+  i8 m_nRows;
+  i8 m_nCols;
+  i8 m_iHeadSize;
+  enum eSI           m_eStrInflateRule;
   struct HeadLine_T* m_aHeadLine0;
-  struct RowInfo m_xRowInfoIT;
+  struct RowInfo     m_xRowInfoIT;
 
   // inflate J (SR_IJ)
   struct RowInfo m_xRowInfoIJ;
@@ -439,6 +440,7 @@ struct Dynamic_T
   struct RowInfo m_xRowInfoTJ;
 
   // aggregate T (SR_AT)
+  i8 m_iAggregInit;
   struct RowInfo m_xRowInfoAT;
 
   // Tub Output (SR_TO)
@@ -446,42 +448,26 @@ struct Dynamic_T
   struct RowInfo m_xRowInfoTO;
 
   // Pot Ouput (SR_PO)
-  void*   m_pPot;
+  i8    m_iPot;
+  void* m_pPot;
   struct RowInfo m_xRowInfoPO;
 
   // index scan T
-  i8      m_iIndexScan;
   struct IndexInfo m_xIndexInfoT;
 
   // index join with J
-  i8      m_iIndexJoinInit;
-  i8      m_iJoinedRows;
+  i8 m_iIndexJoinInit;
+  i8 m_iJoinedRows;
   struct IndexInfo m_xIndexInfoJ;
 
-
-  // project (col/exp)
-  i8      m_iProjectInit;
-
-  // project (agg)
-  i8      m_iRowsProcessed;
-
-  // ordered aggregates
-  i8      m_iHasOrdAggRow;
-  i8      m_iOrdAggDone;
-
-  // project (gby)
-  i8      m_nAggRows;
-
   // payload (gby/srt/top)
-  i8*     m_aiPayload;
+  i8* m_aiPayload;
   struct IndexInfo m_xIndexInfoPL;
 
-  // top
-  i8      m_iTopInit;
-  i8      m_iInsertCntTOP;
-
-  // limit
-  i8     m_iLimitRows;
+  // ordered aggregates
+//  i8      m_iIndexScan;
+//  i8      m_iHasOrdAggRow;
+//  i8      m_iOrdAggDone;
 
 };
 

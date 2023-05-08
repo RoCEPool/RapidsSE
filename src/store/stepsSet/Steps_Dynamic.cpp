@@ -67,20 +67,11 @@ void Step::vDynamicExecute(void)
   bool (*afFun)(void*);
   afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
 
-  //Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
-
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
   aDynamicT->m_iErrorCode = (i8)EC_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  //pTub->vInCrwBuffer(pCrwBuffer);
-
-  //RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
-  //pTub->vRowPix(pRowPix);
-
-  //aDynamicT->m_iProcessRow = 1;
 
   if (pDataBuffer) {
 
@@ -91,7 +82,6 @@ void Step::vDynamicExecute(void)
       aDynamicT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
       aDynamicT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aDynamicT->m_nRows      = pCrwBuffer->nRows();
-      //aDynamicT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
     }
     else {
       // ROWBUFFER
@@ -107,12 +97,11 @@ void Step::vDynamicExecute(void)
     //EOSMARKER
     // nothing to do
   }
-  //IndexTree* pIndexTree = (IndexTree*)aDynamicT->m_xIndexInfoPL.m_aIndexTree;
-  //pIndexTree->vDump(false);
 
   aDynamicT->m_eStrInflateRule = SI_STRAREA_ADR;
   aDynamicT->m_bTrace     = iTrace;
 
+  /*
   if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
     // invoke with null databuffer (ordAgg)
     if (aDynamicT->m_iHasOrdAggRow) {
@@ -123,10 +112,9 @@ void Step::vDynamicExecute(void)
         iResult = m_pLogicUnit->m_afFun1(aDynamicT);
     }
   }
+*/
 
   iResult = afFun(aDynamicT);
-
-  //pTub->vInCrwBuffer(nullptr);
 
   // EOS marker handler done ?
   if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
@@ -150,7 +138,7 @@ void Step::vDynamicExecute(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Dynamic[].hashRows@ -- fetch hashRows                                     */
+/* Dynamic[].hashRows@ -- fetch hashRows                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vDynamicHashRowsFetch(void) {
   ENTRY();
@@ -158,7 +146,7 @@ void Step::vDynamicHashRowsFetch(void) {
   Dynamic *pDynamic = *m_pLogicUnit->m_xpDynamic;
   Dynamic_T *aDynamicT = pDynamic->aDynamicT();
 
-  m_pDataStack->vPushInt(aDynamicT->m_iHashRows);
+  m_pDataStack->vPushInt(aDynamicT->m_iPot);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -233,8 +233,6 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
-  CodeSynth_v2 *pCodeSynth;
-
   s4K sLabel;
   s4K sReturnLabel;
   s4K sLabelLoop;
@@ -486,7 +484,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
     OpSketch* pLastOpSketch = pOpSketch;
 
-    if (pDynamic->aDynamicT()->m_iHashRows) {
+    if (pDynamic->aDynamicT()->m_iPot) {
       RASSERT(0);
       //pOpSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
     } else {
@@ -686,7 +684,7 @@ void Stencil_v2::vSetup(Dynamic* pDynamic, Stream* pStream)
 
   // get the row
   RowPix* pRowPix = pStreamDefOut->pRowPix();
-  if (pDynamic->aDynamicT()->m_iHashRows) {
+  if (pDynamic->aDynamicT()->m_iPot) {
     pPot->vRowPix(pRowPix);
   }
   else {
@@ -1211,7 +1209,7 @@ void Stencil_v2::vSketchEosSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
     pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, "L_ReturnFinal"_Stz);
   }
 
-  if (pDynamic->aDynamicT()->m_iHashRows)
+  if (pDynamic->aDynamicT()->m_iPot)
    pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(nullptr, false, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz,""_Stz);
@@ -1268,7 +1266,7 @@ void Stencil_v2::vSketchEosTop(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   // payloadRow to Tub/Pot
   pCodeSynth = new CodeSynth_v2(pStreamDefOut, pStreamDefOut, nullptr, pPreExpStack, SR_PL, SR_NONE);
 
-  if (pDynamic->aDynamicT()->m_iHashRows)
+  if (pDynamic->aDynamicT()->m_iPot)
     pCodeSynth->vSynthAllocPotRow(nullptr, m_xStageOps.m_sHashExpr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
   else
     pCodeSynth->vSynthAllocTubRow(nullptr, true, "L_AddRowToTubPot"_Stz, "L_AdvanceNextRow"_Stz, ""_Stz);
@@ -2086,7 +2084,7 @@ eEC Stencil_v2::eCollectStage(Dynamic* pDynamic, Stream* pStream) {
       m_xStageOps.m_iHashOp++;
 
       // set hashRows in combined (needed at runtime)
-      pDynamic->aDynamicT()->m_iHashRows = 1;
+      pDynamic->aDynamicT()->m_iPot = 1;
 
       // get hash expr from OP
       TagSet *pOpTags = pOp->pOpTags();
@@ -2137,7 +2135,7 @@ eEC Stencil_v2::eCollectStage(Dynamic* pDynamic, Stream* pStream) {
       }
 
       // set indexScan in combined (needed at runtime)
-      pDynamic->aDynamicT()->m_iIndexScan = 1;
+      //pDynamic->aDynamicT()->m_iIndexScan = 1;
 
       m_xStageOps.m_bIndexScan = true;
       m_xStageOps.m_iIndexScanOp++;
