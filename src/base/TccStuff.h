@@ -407,10 +407,23 @@ struct IndexInfo {
 // CODE SYNTH V2
 struct Dynamic_T
 {
+  i8      m_bTrace;
+  i8      m_iErrorCode;
+  i8      m_iProcessRow;
+  i8      m_iHashRows;
+
+  // rowBuffer T
+  void*   m_aRowBuffer;
+
+  // expression stack
+  i8      m_aW[256];
 
   // inflate T (SR_IT)
-  i8      m_nRows;
-  i8      m_nCols;
+  i8       m_nRows;
+  i8       m_nCols;
+  i8       m_iHeadSize;
+  enum eSI m_eStrInflateRule;
+  struct HeadLine_T* m_aHeadLine0;
   struct RowInfo m_xRowInfoIT;
 
   // inflate J (SR_IJ)
@@ -430,28 +443,11 @@ struct Dynamic_T
 
   // Tub Output (SR_TO)
   void*   m_pTub;
-  i8      m_iTubRowSize;
   struct RowInfo m_xRowInfoTO;
 
   // Pot Ouput (SR_PO)
   void*   m_pPot;
   struct RowInfo m_xRowInfoPO;
-
-
-  i8      m_bTrace;
-  i8      m_iErrorCode;
-  i8      m_iHashRows;
-
-  // table T scan inflate (crwBuffer)
-  struct  HeadLine_T* m_aHeadLine0;
-  i8        m_iHeadSize;
-  enum eSI  m_eStrInflateRule;
-
-  // expression stack
-  i8      m_aW[256];
-
-  // rowBuffer T
-  void*   m_aRowBuffer;
 
   // index scan T
   i8      m_iIndexScan;
@@ -475,18 +471,10 @@ struct Dynamic_T
 
   // project (gby)
   i8      m_nAggRows;
-  i8      m_iProcessRow;
 
   // payload (gby/srt/top)
   i8*     m_aiPayload;
   struct IndexInfo m_xIndexInfoPL;
-//  void*   m_aIndexTreePL;
-//  void*   m_aIndexDefPL;
-//  void*   m_aEntBufferPL;
-//  void*   m_aEntWrkPL;
-//  void*   m_aEntKeyPL;
-//  void*   m_aEntBottomPL;
-//  struct Ent_int* m_aEntIntPL;
 
   // top
   i8      m_iTopInit;
@@ -614,7 +602,6 @@ struct Combined_T
   void*   m_aRowTub;
   void*   m_aRowTubCellArray;
   char*   m_racTubStrArea;
-  i8      m_iTubRowSize;
 
   // final pot
   void*   m_aRowPot;
