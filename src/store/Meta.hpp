@@ -18,16 +18,12 @@ namespace STORE
     Footer m_xFooter;
 
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
-  
-    Meta(eCN eMeta);
+
+    Meta(eCN eClass);
 
    ~Meta(void) noexcept(false);
 
 
-  protected:
-    Footer* aFooter(void);
   };
 
   Meta* _pMeta(void* aAddr);
@@ -140,12 +136,12 @@ namespace STORE
 /*============================================================================*/
 
 /*============================================================================*/
-/* MetaArg.hpp -- Arg Metadata                                                */
+/* MetaArgs.hpp -- Args Metadata                                              */
 /*============================================================================*/
 
 namespace STORE
 {
-  class MetaArg : public Meta
+  class MetaArgs : public Meta
   {
   protected:
 
@@ -157,16 +153,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetaArg(void);
+    MetaArgs(void);
 
-    ~MetaArg(void) noexcept(false);
+    ~MetaArgs(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  MetaArg* _pMetaArg(void* aAddr);
+  MetaArgs* _pMetaArgs(void* aAddr);
 }
 
 /*============================================================================*/

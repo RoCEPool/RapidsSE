@@ -193,8 +193,14 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
+  /* */ CN_METAARGS,
+  /* */ CN_METACOLSREQ,
   /* */ CN_METADATA,
+  /* */ CN_METAEXPRSTK,
   /* */ CN_METAGET,
+  /* */ CN_METAOP,
+  /* */ CN_METAPIPELINE,
+  /* */ CN_METASTAGE,
   /* */ CN_METRICSWSP,
   /* */ CN_MUTEX,
 
@@ -631,8 +637,14 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
+  /* */ "METAARGS"_Stz,             // CN_METAARGS
+  /* */ "METACOLSREQ"_Stz,          // CN_METACOLREQ
   /* */ "METADATA"_Stz,             // CN_METADATA
+  /* */ "METAEXPRSTK"_Stz,          // CN_METACEXPRSTK
   /* */ "METAGET"_Stz,              // CN_METAGET
+  /* */ "METAOP"_Stz,               // CN_METAOP
+  /* */ "METAPIPELINE"_Stz,         // CN_METAPIPELINE
+  /* */ "METASTAGE"_Stz,            // CN_METASTAGE
   /* */ "METRICSWSP"_Stz,           // CN_METRICSWSP
   /* */ "MUTEX"_Stz,                // CN_MUTEX
 

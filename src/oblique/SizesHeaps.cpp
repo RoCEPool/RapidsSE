@@ -258,6 +258,8 @@
 #include "OuterQuery.hpp"
 //#include "Kid.hpp"
 
+#include "Meta.hpp"
+
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
 #include "graph/PlanNodeBuilder.hpp"
@@ -457,18 +459,24 @@ SizeHeap gxaSizeHeap[]
   { CN_MAKEFLAT,                 sizeof(MakeFlat),           HT_T_TINY    , FILL },
   { CN_MAKEOPTIMAL,              sizeof(MakeOptimal),        HT_T_TINY    , FILL },
   {CN_MAKESIMPLER,               sizeof(MakeSimpler),        HT_T_TINY    , FILL },
-  { CN_MAKEWEAVABLE,             sizeof(MakeWeavable),       HT_T_TINY    ,FILL },
-  { CN_MARKER,                   sizeof(Marker),             HT_T_TINY    ,FILL },
-  { CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    ,FILL },
-  { CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    ,FILL },
-  { CN_MEDIUMPERSISTENT,         sizeof(Heap), /*correct*/   HT_INVALID   ,FILL },
-  { CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   ,FILL },
-  { CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   ,FILL },
-  { CN_MEMTEST,                  sizeof(MemTest),            HT_T_TINY    ,FILL },
-  { CN_METADATA,                 sizeof(Metadata),           HT_T_TINY    ,FILL },
-  { CN_METAGET,                  sizeof(MetaGet),            HT_T_TINY    ,FILL },
-  { CN_METRICSWSP,               sizeof(MetricsWsp),         HT_INVALID   ,FILL },
-  { CN_MUTEX,                    sizeof(Mutex),              HT_T_TINY    ,FILL },
+  { CN_MAKEWEAVABLE,             sizeof(MakeWeavable),       HT_T_TINY    , FILL },
+  { CN_MARKER,                   sizeof(Marker),             HT_T_TINY    , FILL },
+  { CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    , FILL },
+  { CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    , FILL },
+  { CN_MEDIUMPERSISTENT,         sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
+  { CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
+  { CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
+  { CN_MEMTEST,                  sizeof(MemTest),            HT_T_TINY    , FILL },
+  { CN_METAARGS,                 sizeof(MetaArgs),           HT_T_TINY    , FILL },
+  { CN_METACOLSREQ,              sizeof(MetaColsReq),        HT_T_TINY    , FILL },
+  { CN_METADATA,                 sizeof(Metadata),           HT_T_TINY    , FILL },
+  { CN_METAEXPRSTK,              sizeof(MetaExprStk),        HT_T_TINY    , FILL },
+  { CN_METAGET,                  sizeof(MetaGet),            HT_T_TINY    , FILL },
+  { CN_METAOP,                   sizeof(MetaOp),             HT_T_TINY    , FILL },
+  { CN_METAPIPELINE,             sizeof(MetaPipeline),       HT_T_TINY    , FILL },
+  { CN_METASTAGE,                sizeof(MetaStage),          HT_T_TINY    , FILL },
+  { CN_METRICSWSP,               sizeof(MetricsWsp),         HT_INVALID   , FILL },
+  { CN_MUTEX,                    sizeof(Mutex),              HT_T_TINY    , FILL },
 
   { CN__N__,                     'N' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_NAMEDBUFFER,              sizeof(NamedBuffer),        HT_T_LARGE   ,FILL },

@@ -8,21 +8,17 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Meta,CN_CARD)
-__aNewFunction(Meta,CN_CARD)
-__vDeleteFunction(Meta,CN_CARD)
-__aFooterFunction(Meta)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Meta::Meta(eCN eMeta)
-: Object(eMeta)
+Meta::Meta(eCN eClass)
+: Object(eClass)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, eClass, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +26,7 @@ Meta::Meta(eCN eMeta)
 /*----------------------------------------------------------------------------*/
 Meta::~Meta(void) noexcept(false)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
 }
 
@@ -60,9 +56,9 @@ Meta::~Meta(void) noexcept(false)
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaPipeline,CN_CARD)
-__aNewFunction(MetaPipeline,CN_CARD)
-__vDeleteFunction(MetaPipeline,CN_CARD)
+__pCastFunction(STORE,MetaPipeline,CN_METAPIPELINE)
+__aNewFunction(MetaPipeline,CN_METAPIPELINE)
+__vDeleteFunction(MetaPipeline,CN_METAPIPELINE)
 __aFooterFunction(MetaPipeline)
 
 
@@ -70,11 +66,11 @@ __aFooterFunction(MetaPipeline)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaPipeline::MetaPipeline(void)
-    : Meta(CN_CARD)
+    : Meta(CN_METAPIPELINE)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAPIPELINE, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +78,7 @@ MetaPipeline::MetaPipeline(void)
 /*----------------------------------------------------------------------------*/
 MetaPipeline::~MetaPipeline(void) noexcept(false)
 {
-//_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
 
 }
 
@@ -111,9 +107,9 @@ MetaPipeline::~MetaPipeline(void) noexcept(false)
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaStage,CN_CARD)
-__aNewFunction(MetaStage,CN_CARD)
-__vDeleteFunction(MetaStage,CN_CARD)
+__pCastFunction(STORE,MetaStage,CN_METASTAGE)
+__aNewFunction(MetaStage,CN_METASTAGE)
+__vDeleteFunction(MetaStage,CN_METASTAGE)
 __aFooterFunction(MetaStage)
 
 
@@ -121,11 +117,11 @@ __aFooterFunction(MetaStage)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaStage::MetaStage(void)
-    : Meta(CN_CARD)
+    : Meta(CN_METASTAGE)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METASTAGE, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +129,7 @@ MetaStage::MetaStage(void)
 /*----------------------------------------------------------------------------*/
 MetaStage::~MetaStage(void) noexcept(false)
 {
-//_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
 
 }
 
@@ -162,9 +158,9 @@ MetaStage::~MetaStage(void) noexcept(false)
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaOp,CN_CARD)
-__aNewFunction(MetaOp,CN_CARD)
-__vDeleteFunction(MetaOp,CN_CARD)
+__pCastFunction(STORE,MetaOp,CN_METAOP)
+__aNewFunction(MetaOp,CN_METAOP)
+__vDeleteFunction(MetaOp,CN_METAOP)
 __aFooterFunction(MetaOp)
 
 
@@ -172,11 +168,11 @@ __aFooterFunction(MetaOp)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaOp::MetaOp(void)
-    : Meta(CN_CARD)
+    : Meta(CN_METAOP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAOP, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,7 +180,7 @@ MetaOp::MetaOp(void)
 /*----------------------------------------------------------------------------*/
 MetaOp::~MetaOp(void) noexcept(false)
 {
-//_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METAOP,_FOOTER_);
 
 }
 
@@ -204,7 +200,7 @@ MetaOp::~MetaOp(void) noexcept(false)
 /*============================================================================*/
 
 /*============================================================================*/
-/* MetaArg.cpp -- Arg Metadata                                                */
+/* MetaArg.cpp -- Args Metadata                                               */
 /*============================================================================*/
 
 #include "Meta.hpp"
@@ -213,29 +209,29 @@ MetaOp::~MetaOp(void) noexcept(false)
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaArg,CN_CARD)
-__aNewFunction(MetaArg,CN_CARD)
-__vDeleteFunction(MetaArg,CN_CARD)
-__aFooterFunction(MetaArg)
+__pCastFunction(STORE,MetaArgs,CN_METAARGS)
+__aNewFunction(MetaArgs,CN_METAARGS)
+__vDeleteFunction(MetaArgs,CN_METAARGS)
+__aFooterFunction(MetaArgs)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaArg::MetaArg(void)
-    : Meta(CN_CARD)
+MetaArgs::MetaArgs(void)
+    : Meta(CN_METAARGS)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAARGS, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaArg::~MetaArg(void) noexcept(false)
+MetaArgs::~MetaArgs(void) noexcept(false)
 {
-//_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
 
 }
 
@@ -264,9 +260,9 @@ MetaArg::~MetaArg(void) noexcept(false)
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaColsReq,CN_CARD)
-__aNewFunction(MetaColsReq,CN_CARD)
-__vDeleteFunction(MetaColsReq,CN_CARD)
+__pCastFunction(STORE,MetaColsReq,CN_METACOLSREQ)
+__aNewFunction(MetaColsReq,CN_METACOLSREQ)
+__vDeleteFunction(MetaColsReq,CN_METACOLSREQ)
 __aFooterFunction(MetaColsReq)
 
 
@@ -274,11 +270,11 @@ __aFooterFunction(MetaColsReq)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaColsReq::MetaColsReq(void)
-    : Meta(CN_CARD)
+    : Meta(CN_METACOLSREQ)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METACOLSREQ, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,7 +282,7 @@ MetaColsReq::MetaColsReq(void)
 /*----------------------------------------------------------------------------*/
 MetaColsReq::~MetaColsReq(void) noexcept(false)
 {
-//_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
 
 }
 
@@ -315,9 +311,9 @@ MetaColsReq::~MetaColsReq(void) noexcept(false)
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaExprStk,CN_CARD)
-__aNewFunction(MetaExprStk,CN_CARD)
-__vDeleteFunction(MetaExprStk,CN_CARD)
+__pCastFunction(STORE,MetaExprStk,CN_METAEXPRSTK)
+__aNewFunction(MetaExprStk,CN_METAEXPRSTK)
+__vDeleteFunction(MetaExprStk,CN_METAEXPRSTK)
 __aFooterFunction(MetaExprStk)
 
 
@@ -325,11 +321,11 @@ __aFooterFunction(MetaExprStk)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaExprStk::MetaExprStk(void)
-    : Meta(CN_CARD)
+    : Meta(CN_METAEXPRSTK)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAEXPRSTK, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAEXPRSTK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,7 +333,7 @@ MetaExprStk::MetaExprStk(void)
 /*----------------------------------------------------------------------------*/
 MetaExprStk::~MetaExprStk(void) noexcept(false)
 {
-//_precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METAEXPRSTK,_FOOTER_);
 
 }
 
