@@ -518,7 +518,7 @@ SizeHeap gxaSizeHeap[]
   { CN_PERUSE,                   sizeof(Peruse),             HT_T_MEDIUM  ,FILL },
   { CN_PIPEIN,                   sizeof(PipeIn),             HT_T_TINY    ,FILL },
   { CN_PIPELINE,                 sizeof(Pipeline),           HT_T_TINY    ,FILL },
-  { CN_PIPELINEDEF,              sizeof(PipelineDef),        HT_T_TINY    , FILL },
+  { CN_PIPELINEDEF,              sizeof(PipelineDef),        HT_T_LARGE   , FILL },
   { CN_PIPELINEMETRICS,          sizeof(PipelineMetrics),    HT_T_TINY    ,FILL },
   { CN_PLANDEFINITIONPARSER,     sizeof(PlanDefinitionParser),   HT_V_MEDIUM,   FILL },
   { CN_PLANNERLOCK,              sizeof(PlannerLock),            HT_T_TINY    , FILL },

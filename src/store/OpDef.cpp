@@ -22,6 +22,17 @@ OpDef::OpDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
+  m_i_Op = C_UNKNOWN;
+
+  m_pStreamDef_arriving = nullptr;
+  m_pStreamDef_emitted  = nullptr;
+
+  m_pIndexDef_join      = nullptr;
+  m_pIndexDef_gbyAgg    = nullptr;
+
+  m_pExprStack          = nullptr;
+  m_pColsReq            = nullptr;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 }
 
@@ -32,6 +43,13 @@ OpDef::~OpDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
+  delete m_pStreamDef_arriving;
+  delete m_pStreamDef_emitted;
+
+  delete m_pIndexDef_join;
+  delete m_pIndexDef_gbyAgg;
+
+  delete m_pExprStack;
 }
 
 

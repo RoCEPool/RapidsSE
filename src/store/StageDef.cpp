@@ -22,6 +22,8 @@ StageDef::StageDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 
+  m_i_Stage = C_UNKNOWN;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 }
 

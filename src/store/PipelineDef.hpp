@@ -10,7 +10,9 @@ namespace STORE
   class PipelineDef : public ListNL_t<StageDef>
   {
   public:
-    s32 m_sPipelineNm;
+    s32  m_sPipelineNm;
+
+    s48K m_sCodeBlock;
 
   protected:
     // must be last
