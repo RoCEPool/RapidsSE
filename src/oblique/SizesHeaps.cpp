@@ -259,6 +259,12 @@
 //#include "Kid.hpp"
 
 #include "Meta.hpp"
+#include "MetaArgs.hpp"
+#include "MetaColsReq.hpp"
+#include "MetaExprStk.hpp"
+#include "MetaOp.hpp"
+#include "MetaPipeline.hpp"
+#include "MetaStage.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
