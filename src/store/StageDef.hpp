@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* MetaColsReq.hpp -- Columns Required Metadata                               */
+/* StageDef.hpp -- Stage Metadata                                            */
 /*============================================================================*/
 
 #include "Meta.hpp"
 
 namespace STORE
 {
-  class MetaColsReq : public Meta
+  class StageDef : public Meta
   {
   protected:
 
@@ -18,16 +18,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetaColsReq(void);
+    StageDef(void);
 
-    ~MetaColsReq(void) noexcept(false);
+    ~StageDef(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  MetaColsReq* _pMetaColsReq(void* aAddr);
+  StageDef* _pStageDef(void* aAddr);
 }
 
 /*============================================================================*/

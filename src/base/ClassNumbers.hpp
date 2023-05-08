@@ -196,7 +196,6 @@ enum eCN : u2 // Class Number
   /* */ CN_METAARGS,
   /* */ CN_METACOLSREQ,
   /* */ CN_METADATA,
-  /* */ CN_METAEXPRSTK,
   /* */ CN_METAGET,
   /* */ CN_METAOP,
   /* */ CN_METAPIPELINE,

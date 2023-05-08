@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaColsReq.cpp -- Columns Required Metadata                               */
+/* ArgsDef.cpp -- Args Metadata                                                */
 /*============================================================================*/
 
-#include "MetaColsReq.hpp"
+#include "ArgsDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaColsReq,CN_METACOLSREQ)
-__aNewFunction(MetaColsReq,CN_METACOLSREQ)
-__vDeleteFunction(MetaColsReq,CN_METACOLSREQ)
-__aFooterFunction(MetaColsReq)
+__pCastFunction(STORE,ArgsDef,CN_METAARGS)
+__aNewFunction(ArgsDef,CN_METAARGS)
+__vDeleteFunction(ArgsDef,CN_METAARGS)
+__aFooterFunction(ArgsDef)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaColsReq::MetaColsReq(void)
-    : Meta(CN_METACOLSREQ)
+ArgsDef::ArgsDef(void)
+    : Meta(CN_METAARGS)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METACOLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAARGS, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaColsReq::~MetaColsReq(void) noexcept(false)
+ArgsDef::~ArgsDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
 
 }
 

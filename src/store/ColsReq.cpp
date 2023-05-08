@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaArgs.cpp -- Args Metadata                                              */
+/* ColsReq.cpp -- Columns Required Metadata                               */
 /*============================================================================*/
 
-#include "MetaArgs.hpp"
+#include "ColsReq.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaArgs,CN_METAARGS)
-__aNewFunction(MetaArgs,CN_METAARGS)
-__vDeleteFunction(MetaArgs,CN_METAARGS)
-__aFooterFunction(MetaArgs)
+__pCastFunction(STORE,ColsReq,CN_METACOLSREQ)
+__aNewFunction(ColsReq,CN_METACOLSREQ)
+__vDeleteFunction(ColsReq,CN_METACOLSREQ)
+__aFooterFunction(ColsReq)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaArgs::MetaArgs(void)
-    : Meta(CN_METAARGS)
+ColsReq::ColsReq(void)
+    : Meta(CN_METACOLSREQ)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAARGS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METACOLSREQ, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaArgs::~MetaArgs(void) noexcept(false)
+ColsReq::~ColsReq(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
 
 }
 

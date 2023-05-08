@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaStage.cpp -- Stage Metadata                                            */
+/* OpDef.cpp -- Op Metadata                                                  */
 /*============================================================================*/
 
-#include "MetaStage.hpp"
+#include "OpDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaStage,CN_METASTAGE)
-__aNewFunction(MetaStage,CN_METASTAGE)
-__vDeleteFunction(MetaStage,CN_METASTAGE)
-__aFooterFunction(MetaStage)
+__pCastFunction(STORE,OpDef,CN_METAOP)
+__aNewFunction(OpDef,CN_METAOP)
+__vDeleteFunction(OpDef,CN_METAOP)
+__aFooterFunction(OpDef)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaStage::MetaStage(void)
-    : Meta(CN_METASTAGE)
+OpDef::OpDef(void)
+    : Meta(CN_METAOP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METASTAGE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAOP, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAOP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaStage::~MetaStage(void) noexcept(false)
+OpDef::~OpDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METAOP,_FOOTER_);
 
 }
 

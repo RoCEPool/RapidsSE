@@ -259,12 +259,11 @@
 //#include "Kid.hpp"
 
 #include "Meta.hpp"
-#include "MetaArgs.hpp"
-#include "MetaColsReq.hpp"
-#include "MetaExprStk.hpp"
-#include "MetaOp.hpp"
-#include "MetaPipeline.hpp"
-#include "MetaStage.hpp"
+#include "ArgsDef.hpp"
+#include "ColsReq.hpp"
+#include "OpDef.hpp"
+#include "PipelineDef.hpp"
+#include "StageDef.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -473,24 +472,23 @@ SizeHeap gxaSizeHeap[]
   { CN_MEDIUMTRANSIENT,          sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
   { CN_MEDIUMVIRTUAL,            sizeof(Heap), /*correct*/   HT_INVALID   , FILL },
   { CN_MEMTEST,                  sizeof(MemTest),            HT_T_TINY    , FILL },
-  { CN_METAARGS,                 sizeof(MetaArgs),           HT_T_TINY    , FILL },
-  { CN_METACOLSREQ,              sizeof(MetaColsReq),        HT_T_TINY    , FILL },
+  { CN_METAARGS,                 sizeof(ArgsDef),            HT_T_TINY    , FILL },
+  { CN_METACOLSREQ,              sizeof(ColsReq),            HT_T_TINY    , FILL },
   { CN_METADATA,                 sizeof(Metadata),           HT_T_TINY    , FILL },
-  { CN_METAEXPRSTK,              sizeof(MetaExprStk),        HT_T_TINY    , FILL },
   { CN_METAGET,                  sizeof(MetaGet),            HT_T_TINY    , FILL },
-  { CN_METAOP,                   sizeof(MetaOp),             HT_T_TINY    , FILL },
-  { CN_METAPIPELINE,             sizeof(MetaPipeline),       HT_T_TINY    , FILL },
-  { CN_METASTAGE,                sizeof(MetaStage),          HT_T_TINY    , FILL },
+  { CN_METAOP,                   sizeof(OpDef),              HT_T_TINY    , FILL },
+  { CN_METAPIPELINE,             sizeof(PipelineDef),        HT_T_TINY    , FILL },
+  { CN_METASTAGE,                sizeof(StageDef),           HT_T_TINY    , FILL },
   { CN_METRICSWSP,               sizeof(MetricsWsp),         HT_INVALID   , FILL },
   { CN_MUTEX,                    sizeof(Mutex),              HT_T_TINY    , FILL },
 
-  { CN__N__,                     'N' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_NAMEDBUFFER,              sizeof(NamedBuffer),        HT_T_LARGE   ,FILL },
-  { CN_NEXTGID,                  sizeof(NextGid),            HT_INVALID   ,FILL },
-  { CN_NMLSTR,                   sizeof(NmlStr),             HT_T_MEDIUM  ,FILL },
-  { CN_NODE,                     sizeof(Node),               HT_T_TINY    ,FILL },
-  { CN_NODE_I,                   sizeof(Node_I),             HT_T_TINY    ,FILL },
-  { CN_NOW,                      sizeof(Now),                HT_T_TINY    ,FILL },
+  { CN__N__,                     'N' - ('A' - 1),            HT_INVALID   , FILL },
+  { CN_NAMEDBUFFER,              sizeof(NamedBuffer),        HT_T_LARGE   , FILL },
+  { CN_NEXTGID,                  sizeof(NextGid),            HT_INVALID   , FILL },
+  { CN_NMLSTR,                   sizeof(NmlStr),             HT_T_MEDIUM  , FILL },
+  { CN_NODE,                     sizeof(Node),               HT_T_TINY    , FILL },
+  { CN_NODE_I,                   sizeof(Node_I),             HT_T_TINY    , FILL },
+  { CN_NOW,                      sizeof(Now),                HT_T_TINY    , FILL },
   { CN_NUMBAT,                   sizeof(Numbat),             HT_T_LARGE   ,FILL },
   { CN_NUMBERING,                sizeof(Numbering),          HT_T_MEDIUM  ,FILL },
 

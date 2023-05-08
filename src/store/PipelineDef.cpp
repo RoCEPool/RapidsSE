@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaExprStk.cpp -- Expression Stack Metadata                               */
+/* PipelineDef.cpp -- Pipeline Metadata                                      */
 /*============================================================================*/
 
-#include "MetaExprStk.hpp"
+#include "PipelineDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaExprStk,CN_METAEXPRSTK)
-__aNewFunction(MetaExprStk,CN_METAEXPRSTK)
-__vDeleteFunction(MetaExprStk,CN_METAEXPRSTK)
-__aFooterFunction(MetaExprStk)
+__pCastFunction(STORE,PipelineDef,CN_METAPIPELINE)
+__aNewFunction(PipelineDef,CN_METAPIPELINE)
+__vDeleteFunction(PipelineDef,CN_METAPIPELINE)
+__aFooterFunction(PipelineDef)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaExprStk::MetaExprStk(void)
-    : Meta(CN_METAEXPRSTK)
+PipelineDef::PipelineDef(void)
+    : Meta(CN_METAPIPELINE)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAEXPRSTK, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_METAPIPELINE, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAEXPRSTK,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaExprStk::~MetaExprStk(void) noexcept(false)
+PipelineDef::~PipelineDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAEXPRSTK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
 
 }
 
