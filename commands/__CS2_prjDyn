@@ -15,8 +15,8 @@ begin
     | stageMarker0559
   stage stageMarker0559 on all partitions :
     scan rapidsse public Nation
-    | filter_v2 " type BOOLEAN  $1 2  <  "
-    | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | filter " type BOOLEAN  $1 2  <  "
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
     | dynamic
     | stageLast
   stage stageLast on origin :

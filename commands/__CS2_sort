@@ -16,8 +16,8 @@ begin
    | next
  stage S01 on all partitions :
    scan rapidsse public Nation
-   | project_v2 " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-   | sort_v2 " type VARCHAR as n_name $2 ASC  "
+   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort " type VARCHAR as n_name $2 ASC  "
    | dynamic_v2 0
    | next
  stage S02 on origin :

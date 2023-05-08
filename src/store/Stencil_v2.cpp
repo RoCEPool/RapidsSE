@@ -283,7 +283,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
     }
 
     // generate code for indexScan OP
-    if (pOp->szOpNm()->bSame("indexScan_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
       // either scan / indexScan should be there
       RASSERT(!bInflateCrw);
@@ -344,7 +344,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOP
-    if (pOp->szOpNm()->bSame("aggreg_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupAggreg(pDynamic, pStream, pOp);
@@ -376,7 +376,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
-    if (pOp->szOpNm()->bSame("filter_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("filter"_Stz)) {
 
       Op *pPrevOp = pStream->pGet(i_Op - 1);
 
@@ -387,7 +387,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp
-    if (pOp->szOpNm()->bSame("gbyAgg_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupGbyAgg(pDynamic, pStream, pOp);
@@ -416,7 +416,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
     }
 
     // generate code for indexScan OP
-    if (pOp->szOpNm()->bSame("indexJoin_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
 
       sLabelLoop = "L_AdvanceNextRowJ"_Stz;
 
@@ -433,7 +433,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
-    if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("project"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupProject(pDynamic, pStream, pOp);
@@ -447,7 +447,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the sort OP
-    if (pOp->szOpNm()->bSame("sort_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("sort"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupSort(pDynamic, pStream, pOp);
@@ -595,8 +595,8 @@ void Stencil_v2::vSetup(Dynamic* pDynamic, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggregOp / projectOP
-    if (pOp->szOpNm()->bSame("project_v2"_Stz)) {
+    // generate the code for projectOP
+    if (pOp->szOpNm()->bSame("project"_Stz)) {
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
@@ -750,9 +750,9 @@ u8 Stencil_v2::uGetSelectColumns(Stream* pStream) {
       continue;
     }
 
-    if (pOp->szOpNm()->bSame("aggreg_v2"_Stz) ||
-        pOp->szOpNm()->bSame("project_v2"_Stz) ||
-        pOp->szOpNm()->bSame("ordagg_v2"_Stz)) {
+    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
+        pOp->szOpNm()->bSame("project"_Stz) ||
+        pOp->szOpNm()->bSame("ordagg"_Stz)) {
       LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
       uSelectColumns |= pLogicUnit->m_uSelectColumns;
       bProject = true;
