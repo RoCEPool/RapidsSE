@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaArgs.cpp -- Args Metadata                                              */
+/* ArgsDef.cpp -- Args Metadata                                                */
 /*============================================================================*/
 
-#include "MetaArgs.hpp"
+#include "ArgsDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaArgs,CN_METAARGS)
-__aNewFunction(MetaArgs,CN_METAARGS)
-__vDeleteFunction(MetaArgs,CN_METAARGS)
-__aFooterFunction(MetaArgs)
+__pCastFunction(STORE,ArgsDef,CN_ARGSDEF)
+__aNewFunction(ArgsDef,CN_ARGSDEF)
+__vDeleteFunction(ArgsDef,CN_ARGSDEF)
+__aFooterFunction(ArgsDef)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaArgs::MetaArgs(void)
-    : Meta(CN_METAARGS)
+ArgsDef::ArgsDef(void)
+    : Meta(CN_ARGSDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAARGS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_ARGSDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ARGSDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaArgs::~MetaArgs(void) noexcept(false)
+ArgsDef::~ArgsDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARGSDEF,_FOOTER_);
 
 }
 

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* MetaStage.hpp -- Stage Metadata                                            */
+/* OpDef.hpp -- Op Metadata                                                  */
 /*============================================================================*/
 
 #include "Meta.hpp"
 
 namespace STORE
 {
-  class MetaStage : public Meta
+  class OpDef : public Meta
   {
   protected:
 
@@ -18,16 +18,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetaStage(void);
+    OpDef(void);
 
-    ~MetaStage(void) noexcept(false);
+    ~OpDef(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  MetaStage* _pMetaStage(void* aAddr);
+  OpDef* _pOpDef(void* aAddr);
 }
 
 /*============================================================================*/

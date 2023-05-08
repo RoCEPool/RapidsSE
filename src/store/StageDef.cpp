@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaPipeline.cpp -- Pipeline Metadata                                      */
+/* StageDef.cpp -- Stage Metadata                                            */
 /*============================================================================*/
 
-#include "MetaPipeline.hpp"
+#include "StageDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaPipeline,CN_METAPIPELINE)
-__aNewFunction(MetaPipeline,CN_METAPIPELINE)
-__vDeleteFunction(MetaPipeline,CN_METAPIPELINE)
-__aFooterFunction(MetaPipeline)
+__pCastFunction(STORE,StageDef,CN_STAGEDEF)
+__aNewFunction(StageDef,CN_STAGEDEF)
+__vDeleteFunction(StageDef,CN_STAGEDEF)
+__aFooterFunction(StageDef)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaPipeline::MetaPipeline(void)
-    : Meta(CN_METAPIPELINE)
+StageDef::StageDef(void)
+    : Meta(CN_STAGEDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAPIPELINE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaPipeline::~MetaPipeline(void) noexcept(false)
+StageDef::~StageDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
 }
 

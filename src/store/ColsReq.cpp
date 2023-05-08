@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaColsReq.cpp -- Columns Required Metadata                               */
+/* ColsReq.cpp -- Columns Required Metadata                               */
 /*============================================================================*/
 
-#include "MetaColsReq.hpp"
+#include "ColsReq.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaColsReq,CN_METACOLSREQ)
-__aNewFunction(MetaColsReq,CN_METACOLSREQ)
-__vDeleteFunction(MetaColsReq,CN_METACOLSREQ)
-__aFooterFunction(MetaColsReq)
+__pCastFunction(STORE,ColsReq,CN_COLSREQ)
+__aNewFunction(ColsReq,CN_COLSREQ)
+__vDeleteFunction(ColsReq,CN_COLSREQ)
+__aFooterFunction(ColsReq)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaColsReq::MetaColsReq(void)
-    : Meta(CN_METACOLSREQ)
+ColsReq::ColsReq(void)
+    : Meta(CN_COLSREQ)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METACOLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaColsReq::~MetaColsReq(void) noexcept(false)
+ColsReq::~ColsReq(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
 
 }
 

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* MetaExprStk.hpp -- Expression Stack Metadata                               */
+/* ArgsDef.hpp -- Args Metadata                                               */
 /*============================================================================*/
 
 #include "Meta.hpp"
 
 namespace STORE
 {
-  class MetaExprStk : public Meta
+  class ArgsDef : public Meta
   {
   protected:
 
@@ -18,19 +18,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetaExprStk(void);
+    ArgsDef(void);
 
-    ~MetaExprStk(void) noexcept(false);
+    ~ArgsDef(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  MetaExprStk* _pMetaExprStk(void* aAddr);
+  ArgsDef* _pArgsDef(void* aAddr);
 }
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-

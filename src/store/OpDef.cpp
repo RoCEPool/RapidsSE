@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaExprStk.cpp -- Expression Stack Metadata                               */
+/* OpDef.cpp -- Op Metadata                                                  */
 /*============================================================================*/
 
-#include "MetaExprStk.hpp"
+#include "OpDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaExprStk,CN_METAEXPRSTK)
-__aNewFunction(MetaExprStk,CN_METAEXPRSTK)
-__vDeleteFunction(MetaExprStk,CN_METAEXPRSTK)
-__aFooterFunction(MetaExprStk)
+__pCastFunction(STORE,OpDef,CN_OPDEF)
+__aNewFunction(OpDef,CN_OPDEF)
+__vDeleteFunction(OpDef,CN_OPDEF)
+__aFooterFunction(OpDef)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaExprStk::MetaExprStk(void)
-    : Meta(CN_METAEXPRSTK)
+OpDef::OpDef(void)
+    : Meta(CN_OPDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAEXPRSTK, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAEXPRSTK,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaExprStk::~MetaExprStk(void) noexcept(false)
+OpDef::~OpDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAEXPRSTK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
 }
 

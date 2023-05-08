@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* MetaOp.hpp -- Op Metadata                                                  */
+/* PipelineDef.hpp -- Pipeline Metadata                                      */
 /*============================================================================*/
 
 #include "Meta.hpp"
 
 namespace STORE
 {
-  class MetaOp : public Meta
+  class PipelineDef : public Meta
   {
   protected:
 
@@ -18,16 +18,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetaOp(void);
+    PipelineDef(void);
 
-    ~MetaOp(void) noexcept(false);
+    ~PipelineDef(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  MetaOp* _pMetaOp(void* aAddr);
+  PipelineDef* _pPipelineDef(void* aAddr);
 }
 
 /*============================================================================*/

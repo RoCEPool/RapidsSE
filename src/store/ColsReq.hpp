@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* MetaPipeline.hpp -- Pipeline Metadata                                      */
+/* ColsReq.hpp -- Columns Required Metadata                               */
 /*============================================================================*/
 
 #include "Meta.hpp"
 
 namespace STORE
 {
-  class MetaPipeline : public Meta
+  class ColsReq : public Meta
   {
   protected:
 
@@ -18,16 +18,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    MetaPipeline(void);
+    ColsReq(void);
 
-    ~MetaPipeline(void) noexcept(false);
+    ~ColsReq(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  MetaPipeline* _pMetaPipeline(void* aAddr);
+  ColsReq* _pColsReq(void* aAddr);
 }
 
 /*============================================================================*/

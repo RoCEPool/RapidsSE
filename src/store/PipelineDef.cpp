@@ -1,36 +1,36 @@
 /*============================================================================*/
-/* MetaStage.cpp -- Stage Metadata                                            */
+/* PipelineDef.cpp -- Pipeline Metadata                                      */
 /*============================================================================*/
 
-#include "MetaStage.hpp"
+#include "PipelineDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,MetaStage,CN_METASTAGE)
-__aNewFunction(MetaStage,CN_METASTAGE)
-__vDeleteFunction(MetaStage,CN_METASTAGE)
-__aFooterFunction(MetaStage)
+__pCastFunction(STORE,PipelineDef,CN_PIPELINEDEF)
+__aNewFunction(PipelineDef,CN_PIPELINEDEF)
+__vDeleteFunction(PipelineDef,CN_PIPELINEDEF)
+__aFooterFunction(PipelineDef)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MetaStage::MetaStage(void)
-    : Meta(CN_METASTAGE)
+PipelineDef::PipelineDef(void)
+    : Meta(CN_PIPELINEDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METASTAGE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINEDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MetaStage::~MetaStage(void) noexcept(false)
+PipelineDef::~PipelineDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 
 }
 
