@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,StageDef,CN_METASTAGE)
-__aNewFunction(StageDef,CN_METASTAGE)
-__vDeleteFunction(StageDef,CN_METASTAGE)
+__pCastFunction(STORE,StageDef,CN_STAGEDEF)
+__aNewFunction(StageDef,CN_STAGEDEF)
+__vDeleteFunction(StageDef,CN_STAGEDEF)
 __aFooterFunction(StageDef)
 
 
@@ -18,11 +18,11 @@ __aFooterFunction(StageDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StageDef::StageDef(void)
-    : Meta(CN_METASTAGE)
+    : Meta(CN_STAGEDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METASTAGE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ StageDef::StageDef(void)
 /*----------------------------------------------------------------------------*/
 StageDef::~StageDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METASTAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
 }
 

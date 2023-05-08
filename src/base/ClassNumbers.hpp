@@ -24,6 +24,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ANSWERWL,
   /* */ CN_API,
   /* */ CN_ARG,
+  /* */ CN_ARGSDEF,
   /* */ CN_ARRANGE,
   /* */ CN_ATOMIC,
   /* */ CN_ATTACHMAP,
@@ -55,6 +56,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
   /* */ CN_CODESYNTH_V2,
+  /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
   /* */ CN_COMBINEDSRC,
@@ -193,13 +195,8 @@ enum eCN : u2 // Class Number
   /* */ CN_MEDIUMTRANSIENT,
   /* */ CN_MEDIUMVIRTUAL,
   /* */ CN_MEMTEST,
-  /* */ CN_METAARGS,
-  /* */ CN_METACOLSREQ,
   /* */ CN_METADATA,
   /* */ CN_METAGET,
-  /* */ CN_METAOP,
-  /* */ CN_METAPIPELINE,
-  /* */ CN_METASTAGE,
   /* */ CN_METRICSWSP,
   /* */ CN_MUTEX,
 
@@ -219,6 +216,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OBJTRACKER,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
+  /* */ CN_OPDEF,
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPERANDWATCH,
@@ -244,6 +242,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PERUSE,
   /* */ CN_PIPEIN,
   /* */ CN_PIPELINE,
+  /* */ CN_PIPELINEDEF,
   /* */ CN_PIPELINEMETRICS,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
@@ -354,6 +353,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SQLPLANNER,
   /* */ CN_STACK,
   /* */ CN_STAGE,
+  /* */ CN_STAGEDEF,
   /* */ CN_STAGEMETRICS,
   /* */ CN_STAGESPEC,
   /* */ CN_STARTER,
@@ -467,6 +467,7 @@ static Stz* aCN[]
   /* */ "ANSWERWL"_Stz,             // CN_ANSWERWL
   /* */ "API"_Stz,                  // CN_API
   /* */ "ARG"_Stz,                  // CN_ARG
+  /* */ "ARGSDEF"_Stz,              // CN_ARGSDEF
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
   /* */ "ATOMIC"_Stz,               // CN_ATOMIC
   /* */ "ATTACHMAP"_Stz,            // CN_ATTACHMAP
@@ -498,6 +499,7 @@ static Stz* aCN[]
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "CODESYNTH_V2"_Stz,         // CN_CODESYNTH_V2
+  /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
@@ -636,14 +638,8 @@ static Stz* aCN[]
   /* */ "MEDIUMTRANSIENT"_Stz,      // CN_MEDIUMTRANSIENT
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
-  /* */ "METAARGS"_Stz,             // CN_METAARGS
-  /* */ "METACOLSREQ"_Stz,          // CN_METACOLREQ
   /* */ "METADATA"_Stz,             // CN_METADATA
-  /* */ "METAEXPRSTK"_Stz,          // CN_METACEXPRSTK
   /* */ "METAGET"_Stz,              // CN_METAGET
-  /* */ "METAOP"_Stz,               // CN_METAOP
-  /* */ "METAPIPELINE"_Stz,         // CN_METAPIPELINE
-  /* */ "METASTAGE"_Stz,            // CN_METASTAGE
   /* */ "METRICSWSP"_Stz,           // CN_METRICSWSP
   /* */ "MUTEX"_Stz,                // CN_MUTEX
 
@@ -663,6 +659,7 @@ static Stz* aCN[]
   /* */ "OBJTRACKER"_Stz,           // CN_OBJTRACKER
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
+  /* */ "OPDEF"_Stz,                // CN_OPDEF
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPERANDWATCH"_Stz,         // CN_OPERANDWATCH
@@ -688,6 +685,7 @@ static Stz* aCN[]
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPEIN"_Stz,               // CN_PIPEIN
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
+  /* */ "PIPELINEDEF"_Stz,          // CN_PIPELINEDEF
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
@@ -798,6 +796,7 @@ static Stz* aCN[]
   /* */ "SQLPLANNER"_Stz,           // CN_SQLPLANNER
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
+  /* */ "STAGEDEF"_Stz,             // CN_STAGEDEF
   /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STARTER"_Stz,              // CN_STARTER

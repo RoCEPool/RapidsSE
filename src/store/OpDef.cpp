@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,OpDef,CN_METAOP)
-__aNewFunction(OpDef,CN_METAOP)
-__vDeleteFunction(OpDef,CN_METAOP)
+__pCastFunction(STORE,OpDef,CN_OPDEF)
+__aNewFunction(OpDef,CN_OPDEF)
+__vDeleteFunction(OpDef,CN_OPDEF)
 __aFooterFunction(OpDef)
 
 
@@ -18,11 +18,11 @@ __aFooterFunction(OpDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpDef::OpDef(void)
-    : Meta(CN_METAOP)
+    : Meta(CN_OPDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAOP, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAOP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ OpDef::OpDef(void)
 /*----------------------------------------------------------------------------*/
 OpDef::~OpDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAOP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
 }
 

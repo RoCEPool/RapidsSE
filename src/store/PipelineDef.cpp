@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,PipelineDef,CN_METAPIPELINE)
-__aNewFunction(PipelineDef,CN_METAPIPELINE)
-__vDeleteFunction(PipelineDef,CN_METAPIPELINE)
+__pCastFunction(STORE,PipelineDef,CN_PIPELINEDEF)
+__aNewFunction(PipelineDef,CN_PIPELINEDEF)
+__vDeleteFunction(PipelineDef,CN_PIPELINEDEF)
 __aFooterFunction(PipelineDef)
 
 
@@ -18,11 +18,11 @@ __aFooterFunction(PipelineDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PipelineDef::PipelineDef(void)
-    : Meta(CN_METAPIPELINE)
+    : Meta(CN_PIPELINEDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAPIPELINE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINEDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ PipelineDef::PipelineDef(void)
 /*----------------------------------------------------------------------------*/
 PipelineDef::~PipelineDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAPIPELINE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 
 }
 

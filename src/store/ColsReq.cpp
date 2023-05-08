@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ColsReq,CN_METACOLSREQ)
-__aNewFunction(ColsReq,CN_METACOLSREQ)
-__vDeleteFunction(ColsReq,CN_METACOLSREQ)
+__pCastFunction(STORE,ColsReq,CN_COLSREQ)
+__aNewFunction(ColsReq,CN_COLSREQ)
+__vDeleteFunction(ColsReq,CN_COLSREQ)
 __aFooterFunction(ColsReq)
 
 
@@ -18,11 +18,11 @@ __aFooterFunction(ColsReq)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ColsReq::ColsReq(void)
-    : Meta(CN_METACOLSREQ)
+    : Meta(CN_COLSREQ)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METACOLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ ColsReq::ColsReq(void)
 /*----------------------------------------------------------------------------*/
 ColsReq::~ColsReq(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METACOLSREQ,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
 
 }
 

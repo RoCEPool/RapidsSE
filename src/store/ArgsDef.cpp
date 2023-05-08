@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ArgsDef,CN_METAARGS)
-__aNewFunction(ArgsDef,CN_METAARGS)
-__vDeleteFunction(ArgsDef,CN_METAARGS)
+__pCastFunction(STORE,ArgsDef,CN_ARGSDEF)
+__aNewFunction(ArgsDef,CN_ARGSDEF)
+__vDeleteFunction(ArgsDef,CN_ARGSDEF)
 __aFooterFunction(ArgsDef)
 
 
@@ -18,11 +18,11 @@ __aFooterFunction(ArgsDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ArgsDef::ArgsDef(void)
-    : Meta(CN_METAARGS)
+    : Meta(CN_ARGSDEF)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_METAARGS, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_ARGSDEF, _FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ARGSDEF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ ArgsDef::ArgsDef(void)
 /*----------------------------------------------------------------------------*/
 ArgsDef::~ArgsDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_METAARGS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ARGSDEF,_FOOTER_);
 
 }
 
