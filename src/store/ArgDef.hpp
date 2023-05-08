@@ -1,15 +1,18 @@
 /*============================================================================*/
-/* ArgsDef.hpp -- Args Metadata                                               */
+/* ArgDef.hpp -- Args Metadata                                               */
 /*============================================================================*/
 #pragma once
 
-#include "Meta.hpp"
+#include "BASE.h"
 
 namespace STORE
 {
-  class ArgsDef : public Meta
+  class ArgDef : public Object
   {
-  protected:
+  public:
+    i8  m_i_Arg;
+    s32 m_sArgNm;
+    s2K m_sArgVal;
 
   protected:
     // must be last
@@ -19,16 +22,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ArgsDef(void);
+    ArgDef(void);
 
-    ~ArgsDef(void) noexcept(false);
+    ~ArgDef(void) noexcept(false);
 
 
   protected:
     Footer* aFooter(void);
   };
 
-  ArgsDef* _pArgsDef(void* aAddr);
+  ArgDef* _pArgDef(void* aAddr);
 }
 
 /*============================================================================*/

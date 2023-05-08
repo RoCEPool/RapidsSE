@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Meta.hpp"
+#include "BASE.h"
 
 namespace STORE
 {
-  class ColsReq : public Meta
+  class ColsReq : public Object
   {
   protected:
 

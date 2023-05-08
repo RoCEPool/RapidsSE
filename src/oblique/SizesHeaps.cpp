@@ -257,8 +257,7 @@
 #include "OuterQuery.hpp"
 //#include "Kid.hpp"
 
-#include "Meta.hpp"
-#include "ArgsDef.hpp"
+#include "ArgDef.hpp"
 #include "ColsReq.hpp"
 #include "OpDef.hpp"
 #include "PipelineDef.hpp"
@@ -302,7 +301,7 @@ SizeHeap gxaSizeHeap[]
   {CN_ANSWERWL,                 sizeof(AnswerWL),               HT_T_TINY    , FILL },
   {CN_API,                      sizeof(Api),                    HT_INVALID   , FILL },
   {CN_ARG,                      sizeof(Arg),                    HT_T_TINY    , FILL },
-  {CN_ARGSDEF,                  sizeof(ArgsDef),                HT_T_TINY    , FILL },
+  {CN_ARGDEF,                   sizeof(ArgDef),                 HT_T_SMALL   , FILL },
   {CN_ARRANGE,                  sizeof(Arrange),                HT_T_TINY    , FILL },
   {CN_ATOMIC,                   sizeof(Atomic),                 HT_INVALID   , FILL },
   {CN_ATTACHMAP,                sizeof(AttachMap),              HT_INVALID   , FILL },
@@ -312,7 +311,7 @@ SizeHeap gxaSizeHeap[]
   {CN_BALLOON,                  sizeof(Balloon),                HT_T_TINY    , FILL },
   {CN_BCDVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
   {CN_BENCH,                    sizeof(Bench),                  HT_T_SMALL   , FILL },
-  { CN_BIRTH,                    sizeof(Birth),              HT_INVALID   ,FILL },
+  {CN_BIRTH,                    sizeof(Birth),                  HT_INVALID   , FILL },
   { CN_BOARD,                    sizeof(Board),              HT_T_SMALL   ,FILL },
   { CN_BOLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   ,FILL },
   { CN_BUFFERMAP,                sizeof(BufferMap),          HT_INVALID   ,FILL },

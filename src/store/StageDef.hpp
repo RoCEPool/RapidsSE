@@ -3,15 +3,15 @@
 /*============================================================================*/
 #pragma once
 
-#include "Meta.hpp"
 #include "OpDef.hpp"
-
 
 namespace STORE
 {
   class StageDef : public ListNL_t<OpDef>
   {
-  protected:
+  public:
+    i8  m_i_Stage;
+    s32 m_sStageNm;
 
   protected:
     // must be last
