@@ -18,7 +18,7 @@ namespace STORE
     Card_FiltPredList(void);
    ~Card_FiltPredList(void) noexcept(false);
 
-    static Card_FiltPredList* pExtract(Card_Deck* p_deck);
+    static Card_FiltPredList* pExtractList(Card_Deck* p_deck);
 
     Card_FiltPred* pFindFiltPred(char cTblSyn);
 

@@ -49,7 +49,7 @@ Card_JoinPredList::~Card_JoinPredList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_JoinPredList* Card_JoinPredList::pExtract(Card_Deck* p_deck)
+Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
 {
   _static_
 
@@ -62,7 +62,7 @@ Card_JoinPredList* Card_JoinPredList::pExtract(Card_Deck* p_deck)
     if (! (xCI.G.p_filter = xCI.G.p_MainCard->pSub_filter()) )
       continue;
 
-    p_joinPredList->vConcat(xCI.G.p_indexList,xCI.G.p_filter);
+    p_joinPredList->vBuildList(xCI.G.p_filter,xCI.G.p_indexList);
   }
 
   return p_joinPredList;
@@ -74,30 +74,30 @@ Card_JoinPredList* Card_JoinPredList::pExtract(Card_Deck* p_deck)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* build the join predicate list from given filter & indexList                */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPredList::vConcat(Card_IndexList* p_indexList,
-                                Card_Filter*    p_filter)
+void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
+                                   Card_IndexList* p_indexList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  auto bConcat = [this, p_indexList](Card *pCard) {
-    Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    if (! p_cmpPred->bIsEqOp())
+  auto bfConcat = [this, p_indexList](Card *pCard_cmpPred) {
+    Card_CmpPred* p_cmpPred_tst = _pCard_CmpPred(pCard_cmpPred);
+
+    if (! p_cmpPred_tst->bIsEqOp())
       return C_CONTINUE_RECURSION;
 
-    if (! p_indexList->bHas_cmpPred_In_bounds(p_cmpPred))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term* p_term_0 = p_cmpPred->pGetTerm(0);
-    Card_Term* p_term_1 = p_cmpPred->pGetTerm(1);
-
+    Card_Term* p_term_0 = p_cmpPred_tst->pGetTerm(0);
+    Card_Term* p_term_1 = p_cmpPred_tst->pGetTerm(1);
     if ( ! (p_term_0->bIsColOdn() && p_term_1->bIsColOdn()))
       return C_CONTINUE_RECURSION;
 
-    Card_CmpPred* p_cmpPred_new = _pCard_CmpPred(p_cmpPred->pDupCardRecursive());
+    if (! p_indexList->bHas_cmpPred_In_bounds(p_cmpPred_tst))
+      return C_CONTINUE_RECURSION;
+
+    Card_CmpPred* p_cmpPred_new = p_cmpPred_tst->pClone();
     this->vAppend(p_cmpPred_new);
 
     return C_CONTINUE_RECURSION;
@@ -106,7 +106,7 @@ void Card_JoinPredList::vConcat(Card_IndexList* p_indexList,
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  p_boolCalc->bApplyRecursive(CK_CMPPRED, bConcat);
+  p_boolCalc->bApplyRecursive(CK_CMPPRED, bfConcat);
 }
 
 /*============================================================================*/

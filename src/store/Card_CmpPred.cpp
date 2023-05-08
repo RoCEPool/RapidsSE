@@ -81,6 +81,16 @@ eXK Card_CmpPred::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
 }
 
 /*----------------------------------------------------------------------------*/
+/* clone this compare predicate                                               */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card_CmpPred::pClone(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return _pCard_CmpPred(pDupCardRecursive());
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)

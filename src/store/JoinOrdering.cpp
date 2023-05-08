@@ -157,21 +157,21 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) Extract tableList from pipeline
 
-  m_pCI->G.p_tableList = Card_TableList::pExtract(pPipeline);
+  m_pCI->G.p_tableList = Card_TableList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
   // 2) Extract joinPredList from pipeline
 
-  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
+  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
   // 3) Extract filtPredList from pipeline
 
-  m_pCI->G.p_filtPredList = Card_FiltPredList::pExtract(pPipeline);
+  m_pCI->G.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_filtPredList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
