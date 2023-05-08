@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* _r_JOIN_ORDERING -- join ordering test                                     */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index C_idx0  on Customer (C_CUSTKEY  );
+create index O_idx0  on Orders   (O_CUSTKEY  );
+create index L_idx0  on Lineitem (L_ORDERKEY );
+create index S_idx0  on Supplier (S_SUPPKEY  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// /glean_cue_from = "vTransform_AddPartitioning"
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_JOIN_ORDERING"
+select count(*)
+  from Customer,
+       Orders,
+       Lineitem,
+       Supplier
+ where C_CUSTKEY  = O_CUSTKEY
+   and L_ORDERKEY = O_ORDERKEY
+   and L_SUPPKEY  = S_SUPPKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

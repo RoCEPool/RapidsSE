@@ -3,24 +3,24 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_MAIN.hpp"
+#include "Card_OP.hpp"
 
 namespace STORE
 {
-  class Card_Limit : public Card_MAIN
+  class Card_Limit : public Card_OP
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Limit(void);
+    Card_Limit(Stz* szRows);
    ~Card_Limit(void) noexcept(false);
+
+    void vComputeProjection(CardIter* pCI); // prototype
+
   };
 
   Card_Limit* _pCard_Limit(void* aAddr);
-  bool _bIsCard_Limit(void* aAddr);
 }
 
 /*============================================================================*/

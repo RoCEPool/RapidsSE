@@ -64,6 +64,7 @@ assert::stack_0
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_docol.sen"                include
+  "OP_dynamic_v2.sen"           include
   "OP_dropCatalog.sen"          include
   "OP_dropIndex.sen"            include
   "OP_dropSchema.sen"           include
@@ -75,6 +76,7 @@ assert::stack_0
   "OP_dumpMetaInfo.sen"         include
   "OP_dumpTable.sen"            include
   "OP_dupCrw.sen"               include
+  "OP_dynamic.sen"              include
 
 "e" .verbose
 
@@ -84,6 +86,8 @@ assert::stack_0
   "OP_echo.sen"                 include
   "OP_emptyLoop.sen"            include
   "OP_etcTest.sen"              include
+  "OP_execOnEnd.sen"            include
+  "OP_execOnStart.sen"          include
   "OP_exemplar.sen"             include
   "OP_explainPlan.sen"          include
   "OP_exprPushdown.sen"         include
@@ -98,6 +102,7 @@ assert::stack_0
 
 "g" .verbose
 
+  "OP_gbyAgg.sen"               include
   "OP_grid.sen"                 include
   "OP_gridGet.sen"              include
   "OP_gridRecv.sen"             include
@@ -122,9 +127,7 @@ assert::stack_0
 
 "j" .verbose
   "OP_jobExit.sen"              include
-  "OP_jobOperators.sen"         include
   "OP_joinOptimisation.sen"     include
-  "OP_jobReport.sen"            include
 
 "k" .verbose
   "OP_keyExists.sen"            include
@@ -157,7 +160,6 @@ assert::stack_0
   "OP_metaTables.sen"           include
   "OP_metricsCollect.sen"       include
   "OP_metricsCtl.sen"           include
-  "OP_metricsDistribute.sen"    include
   "OP_metricsFlush.sen"         include
   "OP_metricsUpdate.sen"        include
   "OP_monitor.sen"              include
@@ -206,7 +208,6 @@ assert::stack_0
   "OP_rdCrwFile.sen"            include
   "OP_rdCsvChunk.sen"           include
   "OP_rdCsvCyclic.sen"          include
-  "OP_reapCtl.sen"              include
   "OP_recurring.sen"            include
   "OP_recvSE.sen"               include
   "OP_recvWL.sen"               include
@@ -255,6 +256,7 @@ assert::stack_0
   "OP_testResponse.sen"         include
   "OP_throw.sen"                include
   "OP_toKeyHshRow.sen"          include
+  "OP_toKeyHshRow_sf.sen"       include
   "OP_toLglPtnCrw.sen"          include
   "OP_toLglPtnNst.sen"          include
   "OP_toLglPtnRow.sen"          include

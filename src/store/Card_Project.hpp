@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_MAIN.hpp"
+#include "Card_OP.hpp"
 
 namespace STORE
 {
-  class Card_Project : public Card_MAIN
+  class CarryForward;
+
+  class Card_Project : public Card_OP
   {  
   public:
     void* operator new(size_t);
@@ -17,10 +17,31 @@ namespace STORE
   
     Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
+
+    static void vUnproject_foldExpr(CardIter* pCI,
+                                    CarryForward* pCarryForward);
+    //static Card_Project* pNew_project(Card_Projection* p_prjection);
+
+    void vBump_Rightwards(i8 nBumpBy);
+
+    void vComputeProjection(CardIter* pCI); // prototype
+    void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    Card_Projection* pCraft_projection_early(CardIter* pCI);
+
+    void vDerive_Projection_Key(CardIter* pCI);
+
+    void vEarlyProject_given_leaf(CardIter* pCI);
+    void vEarlyProject_needed_recurse(CardIter* pCI);
+    void vEarlyProject_root(CardIter* pCI);
+
+    void vInject_foldExpr(CardIter* pCI);
+    void vSmooth_postAgg(CardIter* pCI, i8 nBumpBy);
+    void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vUpdate_projection_off_running(CardIter* pCI);
   };
 
   Card_Project* _pCard_Project(void* aAddr);
-  bool _bIsCard_Project(void* aAddr);
 }
 
 /*============================================================================*/

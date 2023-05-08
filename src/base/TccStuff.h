@@ -54,9 +54,8 @@ static eIVL eMacro_AddSubResultIVL[IVL_ENUMS][IVL_ENUMS] = {
 union Bcd_T
 {
   struct {
-    i8 m_iSpare: 8; // usually 0
     i8 m_iScale: 8; //
-    i8 m_iMantissa: 48; // 2's complement
+    i8 m_iMantissa: 56; // 2's complement
   };
   i8 m_iBcd;
   i8 m_iAsI8;
@@ -385,8 +384,104 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
 
+struct RowInfo {
+  void* m_aRowSingle;
+  void* m_aRowCellArray;
+  char* m_racStrArea;
+  char* m_racStrAreaSav;
+};
+
+struct IndexInfo {
+  void *m_aIndex;
+  void *m_aIndexTree;
+  void *m_aIndexDef;
+  void *m_aEntWrk;
+  void *m_aEntKey;
+  void *m_aEntBottom;
+  void *m_aEntUpper;
+  void *m_aEntBuffer;
+  struct Ent_int* m_aEntInt;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// CODE SYNTH V2
+struct Dynamic_T
+{
+  i8 m_bTrace;
+  i8 m_iErrorCode;
+  i8 m_iProcessRow;
+  i8 m_iRowsProcessed;
+  i8 m_iLimitRows;
+
+  // rowBuffer T
+  void* m_aRowBuffer;
+
+  // expression stack
+  i8 m_aW[256];
+
+  // inflate T (SR_IT)
+  i8 m_nRows;
+  i8 m_nCols;
+  i8 m_iHeadSize;
+  enum eSI           m_eStrInflateRule;
+  struct HeadLine_T* m_aHeadLine0;
+  struct RowInfo     m_xRowInfoIT;
+
+  // inflate J (SR_IJ)
+  struct RowInfo m_xRowInfoIJ;
+
+  // Project payload (SR_PL)
+  struct RowInfo m_xRowInfoPL;
+
+  // project T (SR_PT)
+  struct RowInfo m_xRowInfoPT;
+
+  // join T & J (SR_TJ)
+  struct RowInfo m_xRowInfoTJ;
+
+  // aggregate T (SR_AT)
+  i8 m_iAggregInit;
+  struct RowInfo m_xRowInfoAT;
+
+  // Tub Output (SR_TO)
+  void*   m_pTub;
+  struct RowInfo m_xRowInfoTO;
+
+  // Pot Ouput (SR_PO)
+  i8    m_iPot;
+  void* m_pPot;
+  struct RowInfo m_xRowInfoPO;
+
+  // index scan T
+  struct IndexInfo m_xIndexInfoT;
+
+  // index join with J
+  i8 m_iIndexJoinInit;
+  i8 m_iJoinedRows;
+  struct IndexInfo m_xIndexInfoJ;
+
+  // payload (gby/srt/top)
+  i8* m_aiPayload;
+  struct IndexInfo m_xIndexInfoPL;
+
+  // ordered aggregates
+//  i8      m_iIndexScan;
+//  i8      m_iHasOrdAggRow;
+//  i8      m_iOrdAggDone;
+
+};
+
 struct Combined_T
 {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CODE SYNTH V2
+
+  // inflate T
+  struct RowInfo m_xRowInfoT;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // CODE SYNTH V1
+
   void*   m_pTub;
   void*   m_pPot;
   i8      m_bTrace;
@@ -405,6 +500,14 @@ struct Combined_T
   // rowBuffer T
   void*   m_aRowBuffer;
 
+  // common inflate
+  void*   m_pRowSingleT;
+  void*   m_aRowCellArrayT;
+  char*   m_racStrAreaT;
+  char*   m_racStrAreaTSav;
+  i8      m_nRows;
+  i8      m_nCols;
+
   // index scan T
   i8      m_iIndexScan;
   void*   m_aIndexT;
@@ -416,16 +519,9 @@ struct Combined_T
   void*   m_aEntBufferT;
   struct Ent_int* m_aEntIntT;
 
-  // common inflate
-  void*   m_pRowSingleT;
-  void*   m_aRowCellArrayT;
-  char*   m_racStrAreaT;
-  char*   m_racStrAreaTSav;
-  i8      m_nRows;
-  i8      m_nCols;
-
   // index join with J
   i8      m_iIndexJoinInit;
+  i8      m_iJoinedRows;
   void*   m_aRowSingleJ;
   void*   m_aRowCellArrayJ;
   char*   m_racStrAreaJ;
@@ -492,7 +588,6 @@ struct Combined_T
   void*   m_aRowTub;
   void*   m_aRowTubCellArray;
   char*   m_racTubStrArea;
-  i8      m_iTubRowSize;
 
   // final pot
   void*   m_aRowPot;
@@ -509,10 +604,12 @@ void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue);
 void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);
+void vEntWrk_reset(void* pEntWrk);
 
 void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr);
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
+void* aIndexTree_findEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode);
 void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);

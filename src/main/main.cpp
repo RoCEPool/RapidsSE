@@ -79,6 +79,9 @@ int main(int argc, char* argv[])
 //  printf("sizeof(RowBuffer) %lld\n",(i8)sizeof(RowBuffer));
 //  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
 
+
+  printf("sizeof(Ent) %lld\n",(i8)sizeof(Ent));
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   //signal(SIGPIPE, SIG_IGN);
@@ -179,6 +182,7 @@ int main(int argc, char* argv[])
   // Set the default clock type for Hardware::iReadClock().
   // This needs to be done after IntLib::vInitGlobals() above.
   Hardware::vChooseClockType();
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

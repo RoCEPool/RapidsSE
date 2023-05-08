@@ -35,15 +35,15 @@ begin
   stage stageMarker4240 on all partitions :
     scan rapidsse public lineitem
     | filter " type BOOLEAN  $11 TIMESTAMP ''1994-01-01 00:00:00''  >=  $11 TIMESTAMP ''1995-01-01 00:00:00''  <  and  }  0.06  0.01  -  0.06  0.01  +  $7 between  and  $5 24.  <  and  "
-    | project " type DECIMAL )  $6 $7 *  sum  "
+    | aggreg " type DECIMAL )  $6 $7 *  sum  "
     | combined 0
     | stageMarker4243
   stage stageMarker4243 on all nodes :
-    project " type DECIMAL )  $1 sum  "
+    aggreg " type DECIMAL )  $1 sum  "
     | combined 0
     | stageMarker4246
   stage stageMarker4246 on origin :
-    project " type DECIMAL as revenue )  $1 sum  "
+    aggreg " type DECIMAL as revenue )  $1 sum  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -62,32 +62,35 @@ end ;
 // Need multiple threads per partition to improve performance
 //------------------------------------------------------------------------------
 
-pipeline unnamed
+pipeline Query6
  begin
-   stage stageStart on origin :
+   stage S00 on origin :
      start
      | pulse once
      | next
-   stage stageMarker1642 on all partitions :
-     indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >=
-                                      UBOUND $I1 DATE '1995-01-01' <"
-     | filter " type BOOLEAN  }  1.04 1.06 $7 between $5 24. < and"
-     | project " type DECIMAL )  $6 $7 *  sum  "
+
+   stage S01 on all partitions :
+     indexscan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
+     | filter " type BOOLEAN  }  1.04 1.06 L_DISCOUNT between L_QUANTITY 24. < and"
+     | aggreg " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  "
      | combined 0
      | next
-   stage stageMarker1645 on all nodes :
-     project " type DECIMAL )  $1 sum  "
+
+   stage S02 on all nodes :
+     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
      | combined 0
      | next
-   stage stageMarker1648 on origin :
-     project " type DECIMAL as revenue )  $1 sum  "
+
+   stage S03 on origin :
+     aggreg " type DECIMAL as REVENUE ) REVENUE sum  "
      | combined 0
-     | stageLast
-   stage stageLast on origin :
+     | next
+
+   stage S04 on origin :
      output
      | sink
-     | stageStart
- end ;
+     | first
+end ;
 
 row: (2141345.51)
 

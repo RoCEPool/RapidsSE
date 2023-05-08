@@ -14,7 +14,7 @@ class HardwareConfig:
     C_USESPOTINSTANCES = "UseSpotInstances"
     C_TERMINATEONFIN   = "TerminateOnFinish"
 
-    C_MAX_INSTANCES = 4
+    C_MAX_INSTANCES = 8
 
     def __init__(self, path: str):
         self.path = path

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ePJ.h -- project kind                                                      */
+/* ePE.h -- project kind                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -21,8 +21,8 @@ enum ePE // predicate expression
   /*   */ PE_MAX, // max
   /*   */ PE_MIN, // min
   /*   */ PE_MLE, // match leading ABD%
-  /*   */ PE_MMD , // match middle %ABC%
-  /*   */ PE_MM1, // match with one & in the middle %ABC%DEF%
+  /*   */ PE_MMD, // match middle %ABC%
+  /*   */ PE_MM1, // match with one % in the middle %ABC%DEF%
   /*   */ PE_MM2, // match with 2 % in the middle %ABC%DEF%GHI%
   /*   */ PE_MTR, // match trailing %ABC
   /*   */ PE_INX, // in expression list
@@ -42,39 +42,39 @@ enum ePE // predicate expression
 
 static Stz* aPE[]
 {
-  /*   */ "NONE"_Stz,
-  /*   */ "AGG"_Stz,
-  /*   */ "ALL"_Stz,
-  /*   */ "BET"_Stz,
-  /*   */ "CNT"_Stz,
-  /*   */ "CSE"_Stz,
-  /*   */ "CST"_Stz,
-  /*   */ "EXP"_Stz,
-  /*   */ "EXT"_Stz,
-  /*   */ "GBY"_Stz,
-  /*   */ "GKY"_Stz,
-  /*   */ "LK2"_Stz,
-  /*   */ "LK3"_Stz,
-  /*   */ "MAX"_Stz,
-  /*   */ "MIN"_Stz,
-  /*   */ "MLE"_Stz,
-  /*   */ "MMD"_Stz,
-  /*   */ "MM1"_Stz,
-  /*   */ "MM2"_Stz,
-  /*   */ "MTR"_Stz,
-  /*   */ "INX"_Stz,
-  /*   */ "SRT"_Stz,
-  /*   */ "SS2"_Stz,
-  /*   */ "SS3"_Stz,
-  /*   */ "SUM"_Stz,
-  /*   */ "TOP"_Stz,
-  /*   */ "XDY"_Stz,
-  /*   */ "XHR"_Stz,
-  /*   */ "XMN"_Stz,
-  /*   */ "XMT"_Stz,
-  /*   */ "XSC"_Stz,
-  /*   */ "XYR"_Stz,
-  /*   */ "ENUMS"_Stz
+  /*   */ "PE_NONE"_Stz,
+  /*   */ "PE_AGG"_Stz,
+  /*   */ "PE_ALL"_Stz,
+  /*   */ "PE_BET"_Stz,
+  /*   */ "PE_CNT"_Stz,
+  /*   */ "PE_CSE"_Stz,
+  /*   */ "PE_CST"_Stz,
+  /*   */ "PE_EXP"_Stz,
+  /*   */ "PE_EXT"_Stz,
+  /*   */ "PE_GBY"_Stz,
+  /*   */ "PE_GKY"_Stz,
+  /*   */ "PE_LK2"_Stz,
+  /*   */ "PE_LK3"_Stz,
+  /*   */ "PE_MAX"_Stz,
+  /*   */ "PE_MIN"_Stz,
+  /*   */ "PE_MLE"_Stz,
+  /*   */ "PE_MMD"_Stz,
+  /*   */ "PE_MM1"_Stz,
+  /*   */ "PE_MM2"_Stz,
+  /*   */ "PE_MTR"_Stz,
+  /*   */ "PE_INX"_Stz,
+  /*   */ "PE_SRT"_Stz,
+  /*   */ "PE_SS2"_Stz,
+  /*   */ "PE_SS3"_Stz,
+  /*   */ "PE_SUM"_Stz,
+  /*   */ "PE_TOP"_Stz,
+  /*   */ "PE_XDY"_Stz,
+  /*   */ "PE_XHR"_Stz,
+  /*   */ "PE_XMN"_Stz,
+  /*   */ "PE_XMT"_Stz,
+  /*   */ "PE_XSC"_Stz,
+  /*   */ "PE_XYR"_Stz,
+  /*   */ "PE_ENUMS"_Stz
 };
 
 /*============================================================================*/

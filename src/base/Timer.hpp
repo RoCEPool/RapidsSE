@@ -10,8 +10,8 @@ namespace BASE
   public:
   
   private:
-    i8 m_iStart;   // starting nanos
-    i8 m_iUpdate;  // update point
+    u8 m_uStart;   // starting nanos
+    u8 m_uUpdate;  // update point
     
     // must be last
     Footer m_xFooter;
@@ -28,7 +28,7 @@ namespace BASE
     static void vRepair(Object* pObject);
 
     void vReset(void);
-    void vSet(i8 iStart, i8 iUpdate);
+    void vSet(u8 uStart, u8 uUpdate);
     void vStart(void);
     void vUpdate(void);
     

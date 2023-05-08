@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* _tpchQ5_debug                                                              */
+/*============================================================================*/
+
+// --initial _tpchQ5_debug
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+select * from dummy;
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/weaved
+/pipelineName = "_tpchQ5_debug"
+select
+       n_name,
+       sum(l_extendedprice * (1 - l_discount)) as revenue
+  from
+       customer,
+       orders,
+       lineitem,
+       supplier,
+       nation,
+       region
+ where
+       C_CUSTKEY   = O_CUSTKEY
+   and L_ORDERKEY  = O_ORDERKEY
+   and L_SUPPKEY   = S_SUPPKEY
+   and C_NATIONKEY = S_NATIONKEY
+   and S_NATIONKEY = N_NATIONKEY
+   and N_REGIONKEY = R_REGIONKEY
+
+   and r_name = 'AMERICA'
+   and o_orderdate >= DATE '1994-01-01'
+   and o_orderdate <  DATE '1995-01-01'
+
+ group
+       by n_name
+ order
+       by revenue desc
+       ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+  Expected   : ('PERU'     , -14237.80)
+               ('ARGENTINA',  -8058.15)
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

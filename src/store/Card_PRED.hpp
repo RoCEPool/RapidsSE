@@ -3,29 +3,39 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_PredCmp;
-
-  class Card_PRED : public Card_SUB
+  class Card_PRED : public Card
   {  
   public:
     Card_PRED(eCK eCard);
+    Card_PRED(eCK eCard, Stz* szValue);
    ~Card_PRED(void) noexcept(false);
-      
-    void vCullByKids(void);
-    Card_PredCmp* pFindBound_pred(Index* pIndex, eBK eBound);
-    bool bHasBounds_pred (Index* pIndex);
-    
-    bool bReduciblePred(void);
 
+    static bool bIsPRED(Card* p_card);
+
+    bool bContains_callToSubQuery(CardIter* pCI);
+    bool bDescend(std::function<bool(Card_PRED* )> bfLambdaFn);
+    Stz* szGetBoardNmInTerm(CardIter* pCI);
+    Card_Term* pGetFirstTerm_tblColOdn(void);
+    Card_Term* pGetTerm(i8 i_Term);
+    Card_Term* pGetTerm_boardNm(CardIter* pCI);
+    bool bIsBoolFn(void);
+    bool bIsCorrPred(void);
+    bool bIsIndexBounds_v3(Card_Index* p_index);
+    bool bIsJoinPred(void);
+    bool bIsRelnOp(void);
+    bool bIsSubQueryOp(void);
+    bool bMaybeFilterPred(CardIter* pCI);
+    bool bMaybeJoinPred(void);
+    void vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term=nullptr);
+    Card_CmpPred* pPredFindBound(Index* pIndex, ePB eBound);
+    bool bPredHasBounds (Index* pIndex);
+    bool bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwards)> bfApply);
+    char cTable_WhichTableFor_Pred(CardIter* pCI);
   };
-
-  //Card_PRED* _pCard_PRED(void* aAddr);
 }
 
 /*============================================================================*/

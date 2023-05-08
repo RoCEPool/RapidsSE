@@ -17,8 +17,8 @@
     thisNodeId        INTEGER NOT NULL ,
     thisNodeName      VARCHAR NOT NULL ,
     
-    NodeId            INTEGER NOT NULL ,
-    nodeName          VARCHAR NOT NULL ,
+    otherNodeId       INTEGER NOT NULL ,
+    otherNodeName     VARCHAR NOT NULL ,
 
     socket            VARCHAR NOT NULL ,
     kind              VARCHAR NOT NULL ,

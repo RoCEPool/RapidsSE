@@ -1,0 +1,95 @@
+/*============================================================================*/
+/* __JMQ : Query Job Metrics                                                  */
+/*============================================================================*/
+
+print "Job Metrics Query";
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   NETWORK
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+                        sCount,  sBytes,  sBufferSz,  rCount,  rBytes,   rBufferSz
+
+//OLD:
+row: ('NODE1',  'NODE1',  9,     390096,    187948,   18,    390096,    422756)
+row: ('NODE1',  'NODE2',  318,   80287256,  2014764,  654,   79374032,  1831456)
+row: ('NODE2',  'NODE1',  344,   79507368,  1064492,  666,   80420120,  2486816)
+row: ('NODE2',  'NODE2',  0,     0,         269868,   0,     0,         410276)
+
+//NEW :
+row: ('NODE1',  'NODE1',  15,    650160,    245292,   30,    650160,    261412)
+row: ('NODE1',  'NODE2',  293,   26506712,  1556012,  616,   27681160,  1602080)
+row: ('NODE2',  'NODE1',  291,   27547824,  728620,   556,   26373848,  4169652)
+row: ('NODE2',  'NODE2',  0,     0,         171564,   0,     0,         410276)
+
+select thisNodeName as thisNode,
+       otherNodeName as otherNode,
+       sum(sendCount)  as sCount,
+       sum(sendBytes)  as sBytes,
+       sum(sendBuffer) as sBuffer,
+       sum(recvCount)  as rCount,
+       sum(recvBytes)  as rBytes,
+       sum(recvBuffer) as rBuffer
+       from se__jobNetwork group by thisNodeName, otherNodeName;
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+   OPERATORS
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+//NEW
+row: (1,646660)
+row: (2,1102563)
+row: (3,2755031) 2.7/4 = 700ms
+row: (4,2339423)
+row: (5,1959884)
+row: (6,1695355)
+row: (7,232118)
+row: (8,76781)
+row: (9,40534)
+
+row: (1,646660,41)
+row: (2,1102563,4)
+row: (3,2755031,10)
+row: (4,2339423,45)
+row: (5,1959884,11)
+row: (6,1695355,4)
+row: (7,232118,9)
+row: (8,76781,5)
+row: (9,40534,3)
+
+
+// OLD
+row: (1,821419)
+row: (2,1149619)
+row: (3,4946058)  S03: aggreg+ keyNot
+row: (4,2538265)
+row: (5,2776008)
+row: (6,893063)
+row: (7,213792)
+row: (8,91926)
+row: (9,32371)
+
+row: (1,821419,40)
+row: (2,1149619,4)
+row: (3,4946058,16)
+row: (4,2538265,45)
+row: (5,2776008,82)
+row: (6,893063,11)
+row: (7,213792,9)
+row: (8,91926,5)
+row: (9,32371,4)
+
+success: 48 rows fetched
+
+select stageNo, sum(responseUS) as total from se__jobOperators
+  where opName = 'combined' group by stageNo;
+
+
+select stageNo, sum(responseUS), max(maxQs) as total from se__jobOperators
+  where opName = 'combined' group by stageNo;
+
+select stageName, lastTimeUs - firstTimeUs  from se__jobOperands;
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

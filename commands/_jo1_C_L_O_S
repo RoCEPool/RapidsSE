@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* _jo1_C_L_O_S -- join order: Customer, Supplier, Orders ,Lineitem          */
+/*============================================================================*/
+
+/jobMetrics
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+/filterPred
+/pipelineName = "_jo1_C_L_O_S"
+select
+       count(*)
+  from
+       Customer, //  29
+       Lineitem, // 630
+       Orders,   // 181
+       Supplier  //   2
+ where
+       C_CUSTKEY  = O_CUSTKEY
+   and O_ORDERKEY = L_ORDERKEY
+   and L_SUPPKEY  = S_SUPPKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "NamedBuffer.hpp"
+#include "JobMetrics.hpp"
 
 namespace STORE
 {
@@ -41,11 +42,11 @@ namespace STORE
     static Job* pFindParticipantJobNo(i8 iJobNo);
   
     static eEC eAllReport(i8 iJobNo, Tub* pTub);
-    static eEC eMetricsReport(i8 iJobNo, Tub* pTub);
-    static eEC eNetDissectReport(i8 iJobNo, Tub* pTub);
-    static eEC eNetworkReport(i8 iJobNo, Tub* pTub);
-    static eEC eOperandReport(i8 iJobNo, Tub* pTub);
-    static eEC eOperatorReport(i8 iJobNo, Tub* pTub);
+    static eEC eMetricsReport(Job* pJob, Tub* pTub);
+    static eEC eNetDissectReport(Job* pJob, Tub* pTub);
+    static eEC eNetworkReport(Job* pJob, Tub* pTub);
+    static eEC eOperandReport(Job* pJob, Tub* pTub);
+    static eEC eOperatorReport(Job* pJob, Tub* pTub);
 
 
   private:

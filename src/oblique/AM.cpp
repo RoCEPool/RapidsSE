@@ -10,7 +10,6 @@
 #include "eAR.h"
 #include "eBO.h"
 #include "eCC.h"
-#include "eCP.h"
 #include "eCX.h"
 #include "eDL.h"
 #include "eDS.h"
@@ -24,11 +23,11 @@
 #include "eNE.h"
 #include "eOK.h"
 
+#include "eOT.h"
 #include "eOI.h"
 #include "eOR.h"
 #include "ePF.h"
 #include "eYG.h"
-#include "ePY.h"
 #include "eYX.h"
 #include "eRG.h"
 #include "eRO.h"
@@ -888,6 +887,25 @@ void AM::JOB::vAckOriginatingJob(JobId tOriginId)
 /*----------------------------------------------------------------------------*/
 /* has job got given tag?                                                     */
 /*----------------------------------------------------------------------------*/
+bool AM::JOB::bHasTag(Stz* szTagNm)
+{
+  _static_
+
+  Job* pJob = MY::pJob();
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return false;
+
+  if (! pJobTags->bHasName(szTagNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
 bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 {
   _static_
@@ -1074,6 +1092,24 @@ void AM::JOB::vSendReject(RejectJob *pRejectJob)
   pSocket->vGrabWrite();
   bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
   pSocket->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* AM::JOB::szTagValue(Stz* szTagNm)
+{
+  _static_
+
+  Job* pJob = MY::pJob();
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return nullptr;
+
+  Stz* szValue = pJobTags->szValue(szTagNm);
+
+  return szValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2932,29 +2968,6 @@ bool AM::SYSTEM::bPassesOpenSystem(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-bool AM::SYSTEM::bReapEnabled(void)
-{
-  _static_
-  
-  if (! gpAttachMap)
-    return false;
-
-  return gpAttachMap->m_bReapEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-void AM::SYSTEM::vReapEnabled(bool bReapEnabled)
-{
-  _static_
-
-  gpAttachMap->m_bReapEnabled = bReapEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get system started                                                         */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSTEM::bStarted(void)
@@ -3227,7 +3240,7 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
   pTknVec->vSoftReset();
   pTknVec->vIntegrityCheck();
 
-  s4K sToken;
+  s48K sToken;
   
   char* azCrs = szString->azChar();
 
@@ -3243,6 +3256,19 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
     //vTrace("  %12s %s\n"_Stz,aTN[eToken],sToken.szStz());
     
     pTknVec->vAppendToken(sToken,eToken);
+
+    if (TN_NAME == eToken && sToken.bSame("__cpp_code__"_Stz)) {
+
+      sToken.vReset();
+      eToken = Token::eCollectCodeBlock(&azCrs,sToken);
+      pTknVec->vAppendToken(sToken,eToken);
+      sToken.vReset();
+      eToken = Token::eCollectSenName(&azCrs,sToken);
+      RASSERT(sToken.bSame("__codeEnd__"_Stz));
+      pTknVec->vAppendToken(sToken,eToken);
+
+      break;
+    }
   }
 }
 
@@ -3632,7 +3658,13 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       delete pInfoSet;
       break;
     }
-      
+
+    case CN_JOBMETRICS: {
+      JobMetrics* pJobMetrics = _pJobMetrics(pOperand);
+      delete pJobMetrics;
+      break;
+    }
+
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
       AM::MARKER::vFreeMarker(pMarker,pJob);
@@ -4955,7 +4987,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_CC: return aCC[i_Enum];
     case EG_CM: return aCM[i_Enum];
     case EG_CN: return aCN[i_Enum];
-    case EG_CP: return aCP[i_Enum];
     //case EG_CS: return aCS[i_Enum];
     case EG_CT: return aCT[i_Enum];
     case EG_CX: return aCX[i_Enum];
@@ -5012,7 +5043,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
     case EG_PT: return aPT[i_Enum];
-    case EG_PY: return aPY[i_Enum];
 
     case EG_QK: return aQK[i_Enum];
 

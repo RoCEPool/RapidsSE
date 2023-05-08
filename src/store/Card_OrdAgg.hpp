@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Card_Project.hpp"
 
 namespace STORE
@@ -17,10 +15,15 @@ namespace STORE
   
     Card_OrdAgg(void);
    ~Card_OrdAgg(void) noexcept(false);
+
+    void vComputeProjection(CardIter* pCI); // prototype
+
+    void vEarlyProject_root(CardIter* pCI);
+    void vUpdate_projection(CardIter* pCI);
+
   };
 
   Card_OrdAgg* _pCard_OrdAgg(void* aAddr);
-  bool _bIsCard_OrdAgg(void* aAddr);
 }
 
 /*============================================================================*/

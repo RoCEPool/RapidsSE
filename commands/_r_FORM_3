@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* _r_FORM_3 -- sub-query form 3 analysis :                                   */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS26_T10_SubQuery_Analysis_Of_Main_Query"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_FORM_3"
+select count(*)
+  from partsupp, part
+ where P_PARTKEY = PS_PARTKEY
+   and PS_SUPPKEY not in (select S_SUPPKEY
+                            from supplier
+                           where s_comment like '%Customer%Complaints%')
+;
+// mq:
+// where  " type BOOLEAN  $6 $1 ==  }  $2 __subquery0002  #1  $2 in  not  and  "
+
+// sq:
+// params "PS_SUPPKEY "
+// where  " type BOOLEAN  }  $7 '%Customer%Complaints%'  8 10 matchMiddle1  "
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

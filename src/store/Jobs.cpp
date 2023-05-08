@@ -173,27 +173,11 @@ JobList* Jobs::pParticipatingJobs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-void Jobs::vReapAllJobs(bool bForce)
-{
-  _static_
-  
-  if (bForce || AM::SYSTEM::bReapEnabled())
-    while (AM::pExitedJobs()->nJobs())
-      while (bReapJob())
-        {;}
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next reapable job                                                      */
 /*----------------------------------------------------------------------------*/
 Job* Jobs::pReapableJob(void)
 {
   _static_
-
-  if (!AM::SYSTEM::bReapEnabled())
-    return nullptr;
 
   JobList* pExitedJobs = AM::pExitedJobs();
 
@@ -322,18 +306,6 @@ bool Jobs::bReapJob(void)
   delete pReapableJob;
 
   return TRUE(reaped_a_job);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt to reap one job from the retired list                              */
-/*----------------------------------------------------------------------------*/
-void Jobs::vReapJobsOnce(bool bForce)
-{
-  _static_
-  
-  if (bForce || AM::SYSTEM::bReapEnabled())
-    while (bReapJob())
-      {;}
 }
 
 

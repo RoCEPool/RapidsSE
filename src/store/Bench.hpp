@@ -3,17 +3,26 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
 #include "Board.hpp"
+
 
 namespace STORE
 {
+  class MakeFlat;
+  class Fold;
+
   class Bench : public Object
               , public ListExo2_t<Board>
   {
   private:
     Optimiser* m_pOptimiser;
+
+    char m_cPrefix;
+
+    bool m_bIsFlat;
+
+  public:
+    CardIter*    m_pCI;
 
     // must be last
     Footer m_xFooter;
@@ -24,8 +33,29 @@ namespace STORE
   
     Bench(Optimiser* pOptimiser);
    ~Bench(void) noexcept(false);
-  
-    void vPrintBench(void);
+
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    void vAddBoard(Board* pBoard);
+    bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    i8   nBoards(void);
+    CardCtl* pCardCtl(void);
+    void vClearMarks(void);
+    Board* pGetBoard(eBK eBoard, i8 i_Board);
+    Board* pGetBoard(i8 i_Board);
+    Board* pGetBoard(Stz* szBoardNm);
+    SubQuery* pGetSubQuery(Stz* szSubQueryNm);
+    bool bIsFlat(void);
+    void vIsFlat(bool bIsFlat);
+    bool bIsSubQueryNm(Stz* szSubQueryNm);
+    Optimiser* pOptimiser(void);
+    char cPrefix(void);
+    void vPrefix(char cPrefix);
+
+    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
+    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
   private:
     Footer* aFooter(void);

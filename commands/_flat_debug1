@@ -1,0 +1,112 @@
+/*============================================================================*/
+/* _flat_debug1 -- (flattening)                                               */
+/*============================================================================*/
+
+// --initial _flat_debug1
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+
+tag default <suffix> = "csv";
+__TPCH_SCHEMA
+
+
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_cue_trace = "x"
+/glean_interactive
+/transliterated
+/weaved
+  select l_orderkey, avg(l_quantity)
+    from lineitem
+    group by l_orderkey
+    having avg(l_quantity) < (select max(l_quantity)
+                                from lineitem)
+  ;
+
+/*
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Lineitem
+    | project   "   type DECIMAL as COL_1 ) $5 max "
+    | combined  0
+    | next
+
+  stage S02 on all nodes :
+      project   "   type DECIMAL as COL_1 ) $1 max "
+    | combined  0
+    | next
+
+  stage S03 on origin :
+      project   "   type DECIMAL as COL_1 ) $1 max "
+    | combined  0
+    | next      broadcast
+
+  stage S04 on all partitions :
+      indexJoin Lineitem IxL_ORDERKEY " bound $I1 "
+    | aggreg    " groupBy
+                    type DECIMAL $1
+                  , type INTEGER $2
+                  aggregates
+                    type DECIMAL as __SQ1RESULT $K1
+                  , type INTEGER as COL_1 $K2
+                  , type DECIMAL as COL_2 ) $6 sum
+                  , type INTEGER as COL_3 ) $6 count "
+    | combined  0
+    | next
+
+  stage S05 on all nodes :
+      aggreg    " groupBy
+                    type DECIMAL $1
+                  , type INTEGER $2
+                  aggregates
+                    type DECIMAL as __SQ1RESULT $K1
+                  , type INTEGER as COL_1 $K2
+                  , type DECIMAL as COL_2 ) $3 sum
+                  , type INTEGER as COL_3 ) $4 sum "
+    | combined  0
+    | next
+
+  stage S06 on origin :
+      aggreg    " groupBy
+                    type DECIMAL $1
+                  , type INTEGER $2
+                  aggregates
+                    type DECIMAL as __SQ1RESULT $K1
+                  , type INTEGER as COL_1 $K2
+                  , type INTEGER as COL_2 ) $4 sum
+                  , type DECIMAL as COL_3 ) $3 sum "
+    | combined  0
+    | next
+
+  stage S07 on origin :
+      project   "   type INTEGER as l_orderkey $1
+                  , type DECIMAL as COL_2 $3 $2 casttype DECIMAL CAST / "
+    | filter    " type BOOLEAN $3 $1 < "
+    | combined  0
+    | next
+
+  stage S08 on origin :
+      project   "   type INTEGER $2 as COL_1
+                  , type INTEGER $3 as COL_2
+                  , type DECIMAL $4 as COL_3 "
+    | combined  0
+    | next
+
+  stage S09 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

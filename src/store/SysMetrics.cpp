@@ -25,6 +25,7 @@ SysMetrics::SysMetrics(void)
 
   m_iPctFree      = C_UNKNOWN;
   m_nRefTimer     = C_UNKNOWN;
+  m_nSince        = C_UNKNOWN;
   m_nThreadsIdle  = C_UNKNOWN;
 
   m_nDataHeap     = C_UNKNOWN;

@@ -4,6 +4,11 @@
 
 #include "Card_Hash.hpp"
 
+#include "Card_HshCol.hpp"
+#include "Card_Expr.hpp"
+#include "Card_Term.hpp"
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -12,13 +17,12 @@ __pCastFunction_Card(STORE,Card_Hash,CK_HASH)
 __aNewFunction(Card_Hash,CN_CARD)
 __vDeleteFunction(Card_Hash,CN_CARD)
 
-__bIsCard(STORE,Card_Hash,CK_HASH)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Hash::Card_Hash(void)
-: Card_MAIN(CK_HASH)
+: Card_OP(CK_HASH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -33,6 +37,29 @@ Card_Hash::Card_Hash(void)
 Card_Hash::~Card_Hash(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
+{
+  _static_
+
+  Card_Hash* p_hash = new Card_Hash;
+
+  Card_HshCol* p_hshCol = new Card_HshCol;
+  p_hshCol->vSymbolSprint(p_expr->pGetTerm(0)->szSymbol());
+
+  RASSERT(p_expr->szP_Type());
+  p_hshCol->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
+  p_hash->vAppend(p_hshCol);
+
+  return p_hash;
 }
 
 /*============================================================================*/

@@ -25,7 +25,7 @@ RibbonLine::RibbonLine(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBONLINE);
   
   m_caText[0] = '\0';
-  StrLib::vPad(m_caText,C_RIBBON_TEXT-1,' ');
+  StrLib::vPad(m_caText, C_RIBBON_MAX_TEXT - 1, ' ');
 
   _checkInitialised_(CN_RIBBONLINE);
   
@@ -43,6 +43,31 @@ RibbonLine::~RibbonLine(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* insert a single char                                                       */
+/*----------------------------------------------------------------------------*/
+void RibbonLine::vInsert(i8 i_Char, char cChar)
+{
+  _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
+
+  StrLib::vInsertChar(&m_caText[i_Char],cChar);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert some text                                                           */
+/*----------------------------------------------------------------------------*/
+void RibbonLine::vInsert(i8 i_Char, Stz* szStz)
+{
+  _precondition_(_MAGIC_,CN_RIBBONLINE,_FOOTER_);
+
+  i8 nChars = szStz->nLength();
+
+  for (i8 i_Stz = 0; i_Stz < nChars; i_Stz++) {
+    char cChar = szStz->azChar()[i_Stz];
+    StrLib::vInsertChar(&m_caText[i_Char+i_Stz],cChar);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* put a single char                                                          */

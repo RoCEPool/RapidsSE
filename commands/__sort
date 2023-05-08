@@ -1,0 +1,18 @@
+/*============================================================================*/
+/* __sort                                                                     */
+/*============================================================================*/
+
+_part
+/time load part "<tpch_dir>/part.<suffix>"     ;
+
+// Ray: uncomment lines 204-205 in IndexTree.cpp and the following crashes in verify (SF0001)
+// select P_PARTKEY from part order by P_PARTKEY;
+
+
+// I am trying to get the following working and with Verify, verify crashes (SF1)
+// without verify ~indexTree crashes with a FREECHUNK while truncating the Index
+//select P_PARTKEY from part order by P_PARTKEY desc;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

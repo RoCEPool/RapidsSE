@@ -4,6 +4,9 @@
 
 #include "Card_Having.hpp"
 
+#include "CardIter.hpp"
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -12,13 +15,12 @@ __pCastFunction_Card(STORE,Card_Having,CK_HAVING)
 __aNewFunction(Card_Having,CN_CARD)
 __vDeleteFunction(Card_Having,CN_CARD)
 
-__bIsCard(STORE,Card_Having,CK_HAVING)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(void)
-: Card_MAIN(CK_HAVING)
+: Card(CK_HAVING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -33,6 +35,112 @@ Card_Having::Card_Having(void)
 Card_Having::~Card_Having(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* acclimate for injected fold expr                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vAcclimate_foldExpr(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_constraint = pSub_constraint();
+
+  pCI->G.p_constraint->vAcclimate_foldExpr(pCI,pCI->Sqy.m_pExpr_fold);
+}
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_having->pSymbol()->Y_vSet(P_Smoothed);
+
+  bool bBump = ! bSawProject;
+
+  vCorrect_After_Inject(pCI, bBump);
+  pCI->G.pDeck->vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_having->pSymbol()->Y_vSet(P_Smoothed);
+
+  bool bBump = ! pCarryForward->Project_postAgg.m_bSeen;
+
+  if (pCarryForward->Having.m_bCorrect_After_Inject)
+    vCorrect_After_Inject(pCI, bBump);
+
+  pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+  pCI->G.pDeck->vRenumberRecursive();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_boolCalc = pSub_boolCalc();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn_cmp = [](Card_Term *p_term)
+  {
+
+    if (p_term->bIsStmOdn())
+      p_term->vBump_stmOdn();
+
+    return true;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (bBump)
+    pCI->G.p_boolCalc->bApplyRecursive_term(bLambdaFn_cmp);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn_ro = [pCI,bBump](Card *pCard)
+  {
+    if (MARK_AT != pCard->cMark1())
+      return C_CONTINUE_RECURSION;
+
+    Card_Term* p_term_1 = _pCard_Term(pCard->pGet(1));
+    pCard->vRemoveChild(p_term_1);
+    Symbol x_Symbol_stmCol1;
+    x_Symbol_stmCol1.vSetStreamOrdinal(1);
+    pCI->G_vAppendNewChild(pCard, CK_TERM, "$1"_Stz);
+
+    Card_Expr* p_expr_found =
+        pCI->Analysis.m_pProjection_prior->pGetExpr(0);
+
+    RASSERT(p_expr_found->szP_Type());
+
+    pCI->G.p_term->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
+
+    DELETE_CARD(p_term_1);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pCI->G.p_boolCalc->bApplyRecursive(CK_CMPPRED, bLambdaFn_ro);
 }
 
 /*============================================================================*/

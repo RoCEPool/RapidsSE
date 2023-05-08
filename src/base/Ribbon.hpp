@@ -6,11 +6,11 @@
 #include "Object.hpp"
 
 #include "RibbonLine.hpp"
-#include "eFR.h"
+#include "StzList.hpp"
 
 namespace BASE
 {
-  static const i8 C_RIBBON_ACROSS = 10;
+  static const i8 C_RIBBON_ACROSS = 14;
 
   class Ribbon : public ListExo_t<CN_RIBBON,RibbonLine>
   {
@@ -19,22 +19,19 @@ namespace BASE
     Object* m_pCtl;
     Object* m_pSurface;
 
-    i8 m_iArea;  // which subject area is this (sub)ribbon?
-  
-    i8 m_i_Base; // base line for physical columns
-    i8 m_i_Line; // current working line
-    i8 m_i_Char; // current working char
+    i8 m_nMaxLanesAcross;  // maximum number of lanes across
 
-    i8 m_i_Column_logical;  // logical column number
-    i8 m_i_Column_physical; // physical column number
+    i8 m_nTitleLines;      // number of title lines
+    i8 m_jRibbonWidth;     // width of ribbon
 
-    i8 m_nTitleLines;  // number of title lines
-    i8 m_nMaxAcross;   // maximum number of physical columns across
-    IntSet* m_pTabSet; // column tabs
+    i8 m_i_Heat; // current horizontal heat/row
+    i8 m_i_Lane; // current vertical lane/column
+    i8 m_i_Line; // current ribbon line
+    i8 m_i_Char; // current ribbon char
 
-    s32 m_saFmt[FR_ENUMS];
+    IntSet* m_pLaneTabs; // lane tabs
 
-    s32 m_sRightFormat;
+    s32 m_sRightFormat; // format for vSprintRight() based on C_RIBBON_LANE_WIDTH
 
     // must be last
     Footer m_xFooter;    
@@ -43,58 +40,45 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(Object* pCtl, Object* pSurface,
-           i8 iArea, i8 nMaxAcross=C_RIBBON_ACROSS);
+    Ribbon(Object* pCtl, Object* pSurface, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
-    i8   iArea(void);
-  
-    i8   iBase(void);
-    void vBase(i8 iBase);
-
-    i8   iChar(void);
+    i8   i_Char(void);
     Object* pCtl(void);
 
-    void vDrawH(char cChr);
+    void vDrawH(char cChr, bool bTop=false);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
 
-    void vFirstColumn(void);
+    i8   i_Heat(void);
+    void vHeatSet(void);
+    void vHeatNext(void);
 
-    Stz* szFmt(eFR e_Fmt);
-    void vFmt(eFR e_Fmt, Stz* szFmt);
-    void vFmtDefaults(void);
+    void vInsertCharsV(i8 i_Line, i8 i_Char, char cChar=' ');
+    void vInsertCharsV(i8 i_Line, i8 i_Char, Stz* szText="  "_Stz);
 
-    i8   iLine(void);
-    i8   iLogicalColumn(void);
-  
-    void vNextColumn(void);
-    void vNextHorizontal(void);
-    void vNextLine(void);
+    void vLaneFirst(void);
+    void vLaneNext(void);
 
-    void vPinRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
+    void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(void);
+    void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
+    void vPutTextRight(Stz* szText, i8 i_Line, i8 i_Char=C_UNKNOWN);
 
-    void vSetBase(void);
-    void vSetBase(i8 i_Base);
     void vSprint(Stz* szFormat, ...);
+    void vSprintList(StzList* pStzList, i8 nWidth);
     void vSprintRight(Stz* szFormat, ...);
-    void vSput(i8 i_Fmt, ...);
     Object* pSurface(void);
 
-    Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
-    void vTitleLines(i8 nTitleLines);
+    void vTitleLines(void);
     void vTrim(void);
 
-    i8   nWidth(i8 i_FromLine);
+    i8   nRibbonWidth(i8 i_FromLine);
 
   private:
     void vAddLine(void);
-    void vCheckLines(i8 i_Line);
     void vInitTabs(i8 i_Start, i8 nEach);
-    void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
-    void vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText);
-    void vPutTextRight(i8 i_Line, i8 i_Char, Stz* szText);
+    void vSufficientLines(i8 i_Line);
 
     Footer* aFooter(void);
   };

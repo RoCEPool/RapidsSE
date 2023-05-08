@@ -415,6 +415,35 @@ Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* move to next key entry                                                     */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
+{
+  _static_
+
+  EntBuffer* pEntBuffer = *ppEntBuffer;
+
+  aEnt = pEntBuffer->aNextEntry(aEnt,0);
+
+  if (aEnt)
+    return aEnt;
+
+  while( ! aEnt) {
+
+    // move to the next buffer
+    *ppEntBuffer = pEntBuffer->pNextEntBuffer();
+
+    if (*ppEntBuffer) {
+      return pMoveToNextEntry((*ppEntBuffer)->aSkipRoots(), ppEntBuffer);
+    }
+    else
+      break;
+  }
+
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
 EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
@@ -1053,12 +1082,13 @@ Ent* EntBuffer::pMoveToGreaterThanEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** p
 Ent* EntBuffer::pMoveToGreaterThanEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
-  
+  IndexDef* pIndexDef = pEntBuffer->pIndexDef();
+
   if (aEnt == pEntBuffer->aSkipRoots())
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey);
+    eKC eCompare = Key::eCompare(pIndexDef, aEnt->aKey(),aGivenKey);
     
     // have we moved beyond ?
     if (eCompare == KC_AFTER)
@@ -1139,12 +1169,13 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry(Ent* aEnt, Key* aGivenKey, EntBuffer** 
 Ent* EntBuffer::pMoveToGreaterEqualEntry_gen(Ent* aEnt, Key* aGivenKey, EntBuffer** ppEntBuffer)
 {
   EntBuffer* pEntBuffer = *ppEntBuffer;
-  
+  IndexDef *pIndexDef = pEntBuffer->pIndexDef();
+
   if (aEnt == pEntBuffer->aSkipRoots())
     aEnt = pEntBuffer->aNextEntry(aEnt,0);
   
   while (aEnt) {
-    eKC eCompare = Key::eCompare(aEnt->aKey(),aGivenKey);
+    eKC eCompare = Key::eCompare(pIndexDef,aEnt->aKey(),aGivenKey);
     
     // have we reached the key?
     if (eCompare == KC_SAME)
@@ -1204,33 +1235,6 @@ Ent* EntBuffer::pMoveToGreaterEqualEntry_int(Ent* aEnt, Key* aGivenKey, EntBuffe
       if (*ppEntBuffer) {
         return pMoveToGreaterEqualEntry((*ppEntBuffer)->aSkipRoots(), aGivenKey, ppEntBuffer);
       }
-    }
-    else
-      break;
-  }
-  
-  return aEnt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* move to next key entry                                                     */
-/*----------------------------------------------------------------------------*/
-Ent* EntBuffer::pMoveToNextEntry(Ent* aEnt, EntBuffer** ppEntBuffer)
-{
-  EntBuffer* pEntBuffer = *ppEntBuffer;
-  
-  aEnt = pEntBuffer->aNextEntry(aEnt,0);
-  
-  if (aEnt)
-    return aEnt;
-  
-  while( ! aEnt) {
-    
-    // move to the next buffer
-    *ppEntBuffer = pEntBuffer->pNextEntBuffer();
-    
-    if (*ppEntBuffer) {
-      return pMoveToNextEntry((*ppEntBuffer)->aSkipRoots(), ppEntBuffer);
     }
     else
       break;
@@ -1575,8 +1579,9 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
   i8 iL3Length;
   i8 iL4Length;
   i8 iL5Length;
+  i8 iL6Length;
 
-  vSkipLengths(iL0Length,iL1Length,iL2Length,iL3Length,iL4Length,iL5Length);
+  vSkipLengths(iL0Length,iL1Length,iL2Length,iL3Length,iL4Length,iL5Length,iL6Length);
   
   vTrace("\n"_Stz);
   vTrace("--------------------------------------------------"
@@ -1591,23 +1596,24 @@ void EntBuffer::vShow(bool bEntries, Ent* aMarkEntry)
   vTrace("  index: %s partition: %lld height: %lld\n"_Stz,
          m_pIndexTree && m_pIndexTree->pIndex() ? m_pIndexTree->pIndex()->szIndexNm() : C_NULL,m_tLglPtn.iAsI8(),m_iBufferHeight);
   SkipRoots* aSkipRoots = this->aSkipRoots();
-  vTrace("  skipRoots: %p[%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
+  vTrace("  skipRoots: %p[%lld, %lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
          aSkipRoots,
          (i8)aSkipRoots->tNextEntry(0) ,
          (i8)aSkipRoots->tNextEntry(1) ,
          (i8)aSkipRoots->tNextEntry(2) ,
          (i8)aSkipRoots->tNextEntry(3) ,
          (i8)aSkipRoots->tNextEntry(4) ,
-         (i8)aSkipRoots->tNextEntry(5)
+         (i8)aSkipRoots->tNextEntry(5) ,
+         (i8)aSkipRoots->tNextEntry(6)
          );
 
-  vTrace("  listLengths: [%lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
-         iL0Length,iL1Length,iL2Length,iL3Length,iL4Length,iL5Length);
+  vTrace("  listLengths: [%lld, %lld, %lld, %lld, %lld, %lld, %lld]\n"_Stz,
+         iL0Length,iL1Length,iL2Length,iL3Length,iL4Length,iL5Length,iL6Length);
 
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  if (! bEntries)
+  //if (! bEntries)
     return;
   
   vTrace("\n"_Stz);
@@ -1769,7 +1775,8 @@ i8 EntBuffer::nSkipLength(i8 i_Level)
 /*----------------------------------------------------------------------------*/
 void EntBuffer::vSkipLengths(i8& iL0Length_, i8& iL1Length_,
                              i8& iL2Length_, i8& iL3Length_,
-                             i8& iL4Length_, i8& iL5Length_)
+                             i8& iL4Length_, i8& iL5Length_,
+                             i8& iL6Length_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -1779,6 +1786,8 @@ void EntBuffer::vSkipLengths(i8& iL0Length_, i8& iL1Length_,
   iL3Length_ = nSkipLength(3);
   iL4Length_ = nSkipLength(4);
   iL5Length_ = nSkipLength(5);
+  iL6Length_ = nSkipLength(6);
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,0 +1,132 @@
+/*============================================================================*/
+/* __TPCH_SCHEMA_RAY -- create and load TPC-H tables (Ray's version)          */
+/*============================================================================*/
+
+tag default <tpch_dir> = "/users/shared/rapidsse/tpch/sf1";
+tag default <suffix>   = "csv";
+
+//                  -------------------- Scale Factor (SF) ---------------------
+// -TABLE-  -ROWS-  0.001  0.01   0.1 |    1    10   100    1K   10K  100K    1M
+// region   5           5     5     5 |    5     5     5     5     5     5     5
+// nation   25         25    25    25 |   25    25    25    25    25    25    25
+// supplier SF*10K     10   100    1K |  10K  100K    1M   10M  100M    1G   10G
+// customer SF*150K   150  1.5K   15K | 150K  1.5M   15M  150M  1.5G   15G  150G
+// orders   SF*1.5M  1.5K   15K  150K | 1.5M   15M  150M  1.5G   15G  150G  1.5T
+// lineitem SF*6M      6K   60K  600K |   6M   60M  600M    6G   60G  600G    6T
+// partsupp SF*800K   800    8K   80K | 800K    8M   80M  800M    8G   80G  800G
+// part     SF*200K   200    2K   20K | 200K    2M   20M  200M    2G   20G  200G
+//                   ----  ----  ----   ----  ----  ----  ----  ----  ----  ----
+//                   8.6K   86K  860K   8.6M   86M  860M  8.6G   86G  860G  8.6T
+//        inuseSpace  2MB  20MB 200MB    2GB  20GB 200GB   2TB  20TB 200TB   2PB
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+region  : r_regionkey
+
+nation  : n_regionkey n_nationkey
+
+supplier:             s_nationkey
+
+customer:             c_nationkey c_custkey
+
+orders  :                         o_custkey o_orderkey
+
+lineitem:                                   l_orderkey l_partkey  l_suppkey
+
+partsupp:                                              ps_partkey ps_suppkey
+
+part    :                                              p_partkey
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+5          25         10         150         1500           6000           800         200
+R region   N nation   S supplier C customer  O orders       L lineitem     PS partsupp P part
+_REGIONKEY _NATIONKEY _SUPPKEY   _CUSTKEY    _ORDERKEY      _ORDERKEY      _PARTKEY    _PARTKEY
+_NAME      _NAME      _NAME      _NAME       _CUSTKEY       _PARTKEY       _SUPPKEY    _NAME
+_COMMENT   _REGIONKEY _ADDRESS   _ADDRESS    _ORDERSTATUS   _SUPPKEY       _AVAILQTY   _MFGR
+_          _COMMENT   _NATIONKEY _NATIONKEY  _TOTALPRICE    _LINENUMBER    _SUPPLYCOST _BRAND
+_          _          _PHONE     _PHONE      _ORDERDATE     _QUANTITY      _COMMENT    _TYPE
+_          _          _ACCTBAL   _ACCTBAL    _ORDERPRIORITY _EXTENDEDPRICE _           _SIZE
+_          _          _COMMENT   _MKTSEGMENT _CLERK         _DISCOUNT      _           _CONTAINER
+_          _          _          _COMMENT    _SHIPPRIORITY  _TAX           _           _RETAILPRICE
+_          _          _          _           _              _RETURNFLAG    _           _COMMENT
+_          _          _          _           _              _LINESTATUS    _           _
+_          _          _          _           _              _SHIPDATE      _           _
+_          _          _          _           _              _COMMITDATE    _           _
+_          _          _          _           _              _RECEIPTDATE   _           _
+_          _          _          _           _              _SHIPINSTRUCT  _           _
+_          _          _          _           _              _SHIPMODE      _           _
+_          _          _          _           _              _COMMENT       _           _
+_          _          _          _           _              _
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+trackMemory;
+
+_customer
+_lineitem
+_nation_replicated
+_orders_custkey
+_partsupp
+_part
+_region_replicated
+_supplier
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// Customer (partitioned on c_custkey)
+create        index IxC_CUSTKEY     on Customer (C_CUSTKEY);
+
+// Lineitem (partitioned on l_orderkey)
+create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
+create        index IxL_SHIPDATE    on Lineitem (L_SHIPDATE);
+create        index IxL_SUPPKEY     on Lineitem (L_SUPPKEY);
+create        index IxL_PARTKEY     on Lineitem (L_PARTKEY);
+create        index IxL_RECEIPTDATE on Lineitem (L_RECEIPTDATE);
+
+// Nation (replicated)
+create        index IxN_NATIONKEY   on Nation   (N_NATIONKEY);
+//create      index IxN_REGIONKEY   on Nation   (N_REGIONKEY);
+
+// Orders (partitioned on c_custkey)
+create        index IxO_CUSTKEY     on Orders   (O_CUSTKEY);
+create        index IxO_ORDERKEY    on Orders   (O_ORDERKEY);
+create        index IxO_ORDERDATE   on Orders   (O_ORDERDATE);
+
+// PartSupp (partitioned on ps_partkey)
+create        index IxPS_PARTKEY    on PartSupp (PS_PARTKEY);
+create        index IxPS_SUPPKEY    on PartSupp (PS_SUPPKEY);
+
+// Part (partitioned on p_partkey)
+create        index IxP_PARTKEY     on part     (P_PARTKEY);
+
+// Region (replicated)
+create        index IxR_REGIONKEY   on Region   (R_REGIONKEY);
+create        index IxR_NAME        on Region   (R_NAME);
+
+// Supplier (partitioned on s_suppkey)
+create        index IxS_SUPPKEY     on Supplier (S_SUPPKEY);
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*
+/time loadReplicated region   "<tpch_dir>/region.<suffix>"   ;
+/time loadReplicated nation   "<tpch_dir>/nation.<suffix>"   ;
+/time load supplier           "<tpch_dir>/supplier.<suffix>" ;
+/time load customer           "<tpch_dir>/customer.<suffix>" ;
+/time load part               "<tpch_dir>/part.<suffix>"     ;
+/time load partsupp           "<tpch_dir>/partsupp.<suffix>" ;
+*/
+/time load orders             "<tpch_dir>/orders.<suffix>"   ;
+/time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
+
+tablesizes;
+
+bpa;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

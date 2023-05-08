@@ -1,0 +1,516 @@
+--------------------------------------------------------------------------------
+-- Scan --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table Nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+create index IxN_NATIONKEY on nation (n_nationkey);
+success
+
+load nation "../DATA/TPCH/nation.tbl";
+success
+
+create table Region (
+	 R_REGIONKEY       INTEGER      NOT NULL,
+	 R_NAME            CHAR(25)     NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+success
+
+create index IxR_REGIONKEY on Region (R_REGIONKEY);
+success
+
+create index IxR_NAME on Region (R_NAME);
+success
+
+load Region "../DATA/TPCH/region.tbl";
+success
+
+//------------------------------------------------------------------------------
+// PROJECT
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0559
+  stage stageMarker0559 on all partitions :
+    scan rapidsse public Nation
+    | filter " type BOOLEAN  $1 2  <  "
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | dynamic_v2 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+
+//------------------------------------------------------------------------------
+// INDEXSCAN -
+//------------------------------------------------------------------------------
+pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    indexScan Nation IxN_NATIONKEY "UBOUND $I1 2 < "
+    | project   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | dynamic_v2  0
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+rows:
+  (0,'ALGERIA',0,' haggle. carefully final deposits detect slyly agai')
+  (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
+
+//------------------------------------------------------------------------------
+// INDEXJOIN -
+//------------------------------------------------------------------------------
+pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+     start
+   | pulse     once
+   | next
+
+  stage S01 on all partitions :
+     scan      Nation
+   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | dynamic_v2  0
+   | next
+
+  stage S02 on all partitions :
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+   | dynamic_v2  0
+   | next
+
+  stage S04 on origin :
+     output
+   | sink
+   | first
+
+end ;
+rows:
+  (0,'ALGERIA',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (1,'ARGENTINA',1,1,'AMERICA','hs use ironic, even requests. s')
+  (2,'BRAZIL',1,1,'AMERICA','hs use ironic, even requests. s')
+  (3,'CANADA',1,1,'AMERICA','hs use ironic, even requests. s')
+  (4,'EGYPT',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (5,'ETHIOPIA',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (6,'FRANCE',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (7,'GERMANY',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (8,'INDIA',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (9,'INDONESIA',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (10,'IRAN',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (11,'IRAQ',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (12,'JAPAN',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (13,'JORDAN',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (14,'KENYA',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (15,'MOROCCO',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (16,'MOZAMBIQUE',0,0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+  (17,'PERU',1,1,'AMERICA','hs use ironic, even requests. s')
+  (18,'CHINA',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (19,'ROMANIA',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (20,'SAUDI ARABIA',4,4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (21,'VIETNAM',2,2,'ASIA','ges. thinly even pinto beans ca')
+  (22,'RUSSIA',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (23,'UNITED KINGDOM',3,3,'EUROPE','ly final courts cajole furiously final excuse')
+  (24,'UNITED STATES',1,1,'AMERICA','hs use ironic, even requests. s')
+
+
+//------------------------------------------------------------------------------
+// AGGREGATE - INTEGER
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | filter " type BOOLEAN  $1 5  <  "
+    | aggreg " type INTEGER )  $1 sum  "
+    | dynamic_v2 0
+    | next
+  stage S02 on all nodes :
+    aggreg " type INTEGER )  $1 sum  "
+    | dynamic_v2 0
+    | next
+  stage S03 on origin :
+    aggreg " type INTEGER )  $1 sum  "
+    | dynamic_v2 0
+    | next
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ (10)
+
+//------------------------------------------------------------------------------
+// AGGREGATE - VARCHAR
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+ stage S01 on all partitions :
+   scan rapidsse public Nation
+   | aggreg " type VARCHAR )  $2 max  "
+   | dynamic_v2 0
+   | next
+ stage S02 on all nodes :
+   aggreg " type VARCHAR )  $1 max  "
+   | dynamic_v2 0
+   | next
+ stage S03 on origin :
+   aggreg " type VARCHAR )  $1 max  "
+   | dynamic_v2 0
+   | next
+ stage S04 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  ('VIETNAM')
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - INTEGER
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S01 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S02 on all partitions :
+   scan rapidsse public Nation
+   | gbyagg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | dynamic_v2 0
+   | next
+
+ stage S03 on all nodes :
+   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | dynamic_v2 0
+   | next
+
+ stage S04 on origin :
+   gbyagg " groupBy  type INTEGER as n_regionkey $2 aggregates  type INTEGER )  $1 sum  , type INTEGER $K1 "
+   | dynamic_v2 0
+   | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  (50,0)
+  (47,1)
+  (68,2)
+  (77,3)
+  (58,4)
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - VARCHAR
+//------------------------------------------------------------------------------
+ pipeline unamed
+ begin
+   stage S01 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S02 on all partitions :
+     scan rapidsse public Nation
+     | gbyAgg " groupBy  type INTEGER as n_regionkey $3 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | dynamic_v2 0
+     | next
+
+   stage S03 on all nodes :
+     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | dynamic_v2 0
+     | next
+
+   stage S04 on origin :
+     gbyagg " groupBy  type INTEGER as n_regionkey $1 aggregates  type INTEGER $K1 , type VARCHAR )  $2 max  "
+     | dynamic_v2 0
+     | next
+
+   stage S05 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+rows:
+  (0,'MOZAMBIQUE')
+  (1,'UNITED STATES')
+  (2,'VIETNAM')
+  (3,'UNITED KINGDOM')
+  (4,'SAUDI ARABIA')
+
+//------------------------------------------------------------------------------
+// GROUP BY AGGREGATE - KEY VARCHAR
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | gbyAgg " groupBy  type VARCHAR as n_name $2 aggregates  type VARCHAR $K1 , type INTEGER )  $1 sum  "
+    | dynamic_v2 0
+    | next
+
+  stage S02 on all nodes :
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | dynamic_v2 0
+    | next
+
+  stage S03 on origin :
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  "
+    | dynamic_v2 0
+    | next
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
+rows:
+  ('ALGERIA',0)
+  ('ARGENTINA',1)
+  ('BRAZIL',2)
+  ('CANADA',3)
+  ('CHINA',18)
+  ('EGYPT',4)
+  ('ETHIOPIA',5)
+  ('FRANCE',6)
+  ('GERMANY',7)
+  ('INDIA',8)
+  ('INDONESIA',9)
+  ('IRAN',10)
+  ('IRAQ',11)
+  ('JAPAN',12)
+  ('JORDAN',13)
+  ('KENYA',14)
+  ('MOROCCO',15)
+  ('MOZAMBIQUE',16)
+  ('PERU',17)
+  ('ROMANIA',19)
+  ('RUSSIA',22)
+  ('SAUDI ARABIA',20)
+  ('UNITED KINGDOM',23)
+  ('UNITED STATES',24)
+  ('VIETNAM',21)
+
+//------------------------------------------------------------------------------
+// PROJECT - ROW BUFFER
+//------------------------------------------------------------------------------
+
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | dynamic_v2 0
+    | next
+
+  stage S02 on all partitions :
+    project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | dynamic_v2 0
+    | next
+
+  stage S03 on origin :
+    output
+    | sink
+    | first
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+  (2,'BRAZIL')
+  (3,'CANADA')
+  (4,'EGYPT')
+  (5,'ETHIOPIA')
+  (6,'FRANCE')
+  (7,'GERMANY')
+  (8,'INDIA')
+  (9,'INDONESIA')
+  (10,'IRAN')
+  (11,'IRAQ')
+  (12,'JAPAN')
+  (13,'JORDAN')
+  (14,'KENYA')
+  (15,'MOROCCO')
+  (16,'MOZAMBIQUE')
+  (17,'PERU')
+  (18,'CHINA')
+  (19,'ROMANIA')
+  (20,'SAUDI ARABIA')
+  (21,'VIETNAM')
+  (22,'RUSSIA')
+  (23,'UNITED KINGDOM')
+  (24,'UNITED STATES')
+
+//------------------------------------------------------------------------------
+// SORT - INTEGER
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public Nation
+   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort " type INTEGER as n_nationkey $1 ASC  "
+   | dynamic_v2 0
+   | next
+
+ stage S02 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+  (2,'BRAZIL')
+  (3,'CANADA')
+  (4,'EGYPT')
+  (5,'ETHIOPIA')
+  (6,'FRANCE')
+  (7,'GERMANY')
+  (8,'INDIA')
+  (9,'INDONESIA')
+  (10,'IRAN')
+  (11,'IRAQ')
+  (12,'JAPAN')
+  (13,'JORDAN')
+  (14,'KENYA')
+  (15,'MOROCCO')
+  (16,'MOZAMBIQUE')
+  (17,'PERU')
+  (18,'CHINA')
+  (19,'ROMANIA')
+  (20,'SAUDI ARABIA')
+  (21,'VIETNAM')
+  (22,'RUSSIA')
+  (23,'UNITED KINGDOM')
+  (24,'UNITED STATES')
+
+//------------------------------------------------------------------------------
+// SORT - VARCHAR
+//------------------------------------------------------------------------------
+pipeline unamed
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public Nation
+   | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+   | sort " type VARCHAR as n_name $2 ASC  "
+   | dynamic_v2 0
+   | next
+
+ stage S02 on origin :
+   output
+   | sink
+   | first
+end ;
+rows:
+  (0,'ALGERIA')
+  (1,'ARGENTINA')
+  (2,'BRAZIL')
+  (3,'CANADA')
+  (18,'CHINA')
+  (4,'EGYPT')
+  (5,'ETHIOPIA')
+  (6,'FRANCE')
+  (7,'GERMANY')
+  (8,'INDIA')
+  (9,'INDONESIA')
+  (10,'IRAN')
+  (11,'IRAQ')
+  (12,'JAPAN')
+  (13,'JORDAN')
+  (14,'KENYA')
+  (15,'MOROCCO')
+  (16,'MOZAMBIQUE')
+  (17,'PERU')
+  (19,'ROMANIA')
+  (22,'RUSSIA')
+  (20,'SAUDI ARABIA')
+  (23,'UNITED KINGDOM')
+  (24,'UNITED STATES')
+  (21,'VIETNAM')
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table nation;
+success
+
+drop table region;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table nation;
+  mute
+
+  drop table region;
+  mute
+
+  bye;
+  mute
+}

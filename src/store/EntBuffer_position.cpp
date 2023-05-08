@@ -54,10 +54,13 @@ void EntBuffer::vPosVecPriorToEntry(Ent* aToEntry,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  if (KE_INT == m_eEntKind)
-    vPosVecPriorToEntry_int(aToEntry,aWithKey,aPriorVec);
-  else
+  if (KE_INT == m_eEntKind) {
+    vPosVecPriorToEntry_int(aToEntry, aWithKey, aPriorVec);
+  }
+  else {
     vPosVecPriorToEntry_gen(aToEntry,aWithKey,aPriorVec);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

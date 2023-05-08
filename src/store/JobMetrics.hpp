@@ -14,7 +14,7 @@ namespace STORE
   {
   private:
     JobId m_tJobId;
-  
+
     i8    m_nMilliseconds;
     i8    m_iPctFree;
     i8    m_nRefTimer;
@@ -32,17 +32,17 @@ namespace STORE
   
     JobMetrics(JobId tJobId);
    ~JobMetrics(void) noexcept(false);
-  
+
+    static void vCollect(JobId tJobId);
     static void vJobSet(IntStack* pIntStack);
     static void vRepair(Object* pObject);
-
-    bool bCollect(void);
   
     PipelineMetrics* pGetPipelineMetrics(i8& d_MetricsCursor);
     StageMetrics*    pGetStageMetrics(i8& d_MetricsCursor);
     StreamMetrics*   pGetStreamMetrics(i8& d_MetricsCursor);
     OpMetrics*       pGetOpMetrics(i8& d_MetricsCursor);
 
+    JobId            tJobId(void);
     MetricsWsp*      pMetricsWsp(void);
 
     JobMetrics*      pNext(void);
@@ -55,7 +55,7 @@ namespace STORE
     i8               nRefTimer(void);
     i8               nThreadsIdle(void);
 
-    bool bUpdate(bool bAppendList);
+   void              vUpdate(Job* pJob);
 
     void vPrint(void);
 

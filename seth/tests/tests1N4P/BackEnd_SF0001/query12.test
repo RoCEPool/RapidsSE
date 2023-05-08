@@ -52,15 +52,15 @@ begin
     | stageMarker31066
   stage stageMarker31066 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  }  ''MAIL''  ''SHIP''  #2  $24 in  and  $21 $22 <  and  $20 $21 <  and  $22 TIMESTAMP ''1994-01-01 00:00:00''  >=  and  $22 TIMESTAMP ''1995-01-01 00:00:00''  <  and  "
-    | aggreg " groupBy  type VARCHAR as l_shipmode $24 aggregates  type VARCHAR $K1 , type INTEGER )  }  $6 ''1-URGENT''  ==  $6 ''2-HIGH''  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER )  }  $6 ''1-URGENT''  !=  $6 ''2-HIGH''  !=  and WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+    | gbyAgg " groupBy  type VARCHAR as l_shipmode $24 aggregates  type VARCHAR $K1 , type INTEGER )  }  $6 ''1-URGENT''  ==  $6 ''2-HIGH''  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER )  }  $6 ''1-URGENT''  !=  $6 ''2-HIGH''  !=  and WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | stageMarker31069
   stage stageMarker31069 on all nodes :
-    aggreg " groupBy  type VARCHAR as l_shipmode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as l_shipmode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
     | combined 0
     | stageMarker31072
   stage stageMarker31072 on origin :
-    aggreg " groupBy  type VARCHAR as l_shipmode $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
+    gbyAgg " groupBy  type VARCHAR as l_shipmode $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
     | sort " type VARCHAR as l_shipmode $1 ASC  "
     | combined 0
     | stageLast
@@ -119,7 +119,7 @@ begin
              J1_L_SHIPDATE J1_L_COMMITDATE <  and
              J1_L_RECEIPTDATE DATE '1994-01-01'  >=  and
              J1_L_RECEIPTDATE DATE '1995-01-01'  <  and  "
-    | aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE
+    | gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE
                aggregates
                type VARCHAR $K1 , type INTEGER )
                  }  O_ORDERPRIORITY '1-URGENT'  ==
@@ -133,13 +133,13 @@ begin
     | next
 
   stage stageMarker31069 on all nodes :
-    aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+    gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
              aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker31072 on origin :
-    aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+    gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
              aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
     //| sort " type VARCHAR as l_shipmode $1 ASC  "
     | combined 0
@@ -198,7 +198,7 @@ begin
                  J1_L_RECEIPTDATE DATE '1994-01-01'  >=  and
                  J1_L_RECEIPTDATE DATE '1995-01-01'  <  and  "
                  */
-    aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE
+    gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE
                aggregates
                type VARCHAR $K1 , type INTEGER )
                  }  O_ORDERPRIORITY '1-URGENT'  ==
@@ -212,13 +212,13 @@ begin
     | next
 
   stage stageMarker31069 on all nodes :
-    aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+    gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
              aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
     | combined 0
     | next
 
   stage stageMarker31072 on origin :
-    aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+    gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
              aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
     | combined 0
     | next
@@ -272,7 +272,7 @@ rows:
      | next
 
    stage stageMarker31066 on all partitions :
-     aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE
+     gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE
                 aggregates
                 type VARCHAR $K1 , type INTEGER )
                   }  O_ORDERPRIORITY '1-URGENT'  ==
@@ -286,19 +286,14 @@ rows:
      | next
 
    stage stageMarker31069 on all nodes :
-     aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+     gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
               aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
      | combined 0
      | next
 
    stage stageMarker31072 on origin :
-     aggreg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+     gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
               aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  "
-     | combined 0
-     | next
-
-   stage stageNew on origin :
-     sort " type VARCHAR as l_shipmode $1 ASC  "
      | combined 0
      | next
 
@@ -309,6 +304,121 @@ rows:
  end ;
 
  rows:
+  ('MAIL',4,6)
+  ('SHIP',5,10)
+
+pipeline unamed
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     scan rapidsse public orders
+     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+     | hash "type INTEGER O_ORDERKEY"
+     | combined 0
+     | next hashcast
+
+   stage S02 on all partitions :
+     indexJoin Lineitem IxL_ORDERKEY expr bound $I1 O_ORDERKEY ==   // Lineitem - J1
+     | filter " type BOOLEAN J1_L_RECEIPTDATE DATE '1994-01-01'  >=  J1_L_RECEIPTDATE DATE '1995-01-01'  <  and  "
+     | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  J1_L_SHIPMODE in"
+     | filter " type BOOLEAN J1_L_SHIPDATE J1_L_COMMITDATE < "
+     | filter " type BOOLEAN J1_L_COMMITDATE J1_L_RECEIPTDATE <"
+     | project "type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE"
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     gbyAgg " groupBy    type VARCHAR as J1_L_SHIPMODE J1_L_SHIPMODE
+              aggregates type VARCHAR $K1 ,
+                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
+                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+     | combined 0
+     | next
+
+   stage S04 on all nodes :
+     gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+              aggregates  type VARCHAR $K1 ,
+                          type INTEGER )  $2 sum  ,
+                          type INTEGER )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     gbyAgg " groupBy  type VARCHAR as J1_L_SHIPMODE $1
+              aggregates  type VARCHAR $K1 ,
+                          type INTEGER as high_line_count )  $2 sum  ,
+                          type INTEGER as low_line_count )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+rows:
+  ('MAIL',4,6)
+  ('SHIP',5,10)
+
+pipeline unamed
+ begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     indexScan lineitem IxL_RECEIPTDATE "LBOUND $I1 >= DATE '1994-01-01' UBOUND $I1 DATE '1995-01-01'  <"
+     | filter " type BOOLEAN }  'MAIL'  'SHIP'  #2  L_SHIPMODE in"
+     | filter " type BOOLEAN L_SHIPDATE L_COMMITDATE < "
+     | filter " type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+     | project "type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | combined 0
+     | next broadcast
+
+   stage S02 on all partitions :
+     indexJoin Orders IxO_ORDERKEY expr bound $I1 L_ORDERKEY ==   // Orders - J1
+     | project "type VARCHAR as O_ORDERPRIORITY J1_O_ORDERPRIORITY , type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     gbyAgg " groupBy    type VARCHAR as L_SHIPMODE L_SHIPMODE
+              aggregates type VARCHAR $K1 ,
+                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  == O_ORDERPRIORITY '2-HIGH'  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  ,
+                         type INTEGER ) }  O_ORDERPRIORITY '1-URGENT'  !=  O_ORDERPRIORITY '2-HIGH'  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  "
+     | combined 0
+     | next
+
+   stage S04 on all nodes :
+     gbyAgg " groupBy     type VARCHAR as L_SHIPMODE $1
+              aggregates  type VARCHAR $K1 ,
+                          type INTEGER )  $2 sum  , type INTEGER )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     gbyAgg " groupBy     type VARCHAR as L_SHIPMODE $1
+              aggregates  type VARCHAR $K1 ,
+                          type INTEGER as high_line_count )  $2 sum  ,
+                          type INTEGER as low_line_count )  $3 sum  "
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+rows:
   ('MAIL',4,6)
   ('SHIP',5,10)
 

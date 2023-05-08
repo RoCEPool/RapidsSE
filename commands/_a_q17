@@ -1,0 +1,116 @@
+/*============================================================================*/
+/* _a_q17 -- Query17 (hand coded pipeline)                                    */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select
+  sum(l_extendedprice) / 7.0 as avg_yearly
+from
+  lineitem,
+  part
+where
+  p_partkey = l_partkey
+  and p_brand = 'Brand#23'
+  and p_container = 'MED BOX'
+  and l_quantity <
+  ( select
+      0.2 * avg(l_quantity)
+    from
+      lineitem
+    where
+      l_partkey = p_partkey );
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : LINEITEM, PART
+// JOIN ORDER : PART->LINEITEM...->LINEITEM
+// INDEXES    : IxL_PARTKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * TWIST FOR FLATTENING
+//   * AGGREG REPLACED BY ORDAGG AS DATA COMING IN ORDER OF PARTKEY
+//   * FILTER PUSH-DOWN TO SUBQUERY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   NONE
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// pipeline begin
+pipeline Query17
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+ stage S01 on all partitions :
+     scan rapidsse public part
+     | filter " type BOOLEAN  P_BRAND 'Brand#23'  ==  P_CONTAINER 'MED BOX'  ==  and"
+     | project "type INTEGER as P_PARTKEY P_PARTKEY"
+     | combined 0
+     | next broadcast
+
+  stage S02 on all partitions :
+    indexJoin lineitem IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    | ordagg " ordgroupBy type integer P_PARTKEY
+               aggregates type integer as P_PARTKEY $K1 ,
+                          type DECIMAL )  J1_L_QUANTITY sum  ,
+                          type INTEGER )  J1_L_QUANTITY count  "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    aggreg " groupBy    type integer P_PARTKEY
+             aggregates type integer as P_PARTKEY $K1 ,
+                        type DECIMAL )  $2 sum  ,
+                        type INTEGER )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg " groupBy    type integer P_PARTKEY
+             aggregates type integer as P_PARTKEY $K1 ,
+                        type DECIMAL )  $2 sum  ,
+                        type INTEGER )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type integer as P_PARTKEY P_PARTKEY ,
+              type DECIMAL as AV $2 $3 casttype DECIMAL cast / 0.2 *"
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    | filter " type BOOLEAN  J1_L_QUANTITY AV <  "
+    | project " type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  "
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    project " type decimal as avg_yearly ) $1 sum  "
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    project " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    output
+    | sink
+    | first
+end ;
+// pipeline end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

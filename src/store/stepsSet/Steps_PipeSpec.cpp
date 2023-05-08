@@ -39,6 +39,7 @@ void Step::vAddSteps_PipeSpec(void)
   vAddStep("PipeSpec[].get"_Stz,          &Step::vPipeSpecGet);
   vAddStep("PipeSpec[].optimisable"_Stz,  &Step::vPipeSpecOptimisable);
   vAddStep("PipeSpec[].set"_Stz,          &Step::vPipeSpecSet);
+  vAddStep("PipeSpec[].isSqlCompiler"_Stz, &Step::vPipeSpecIsSqlCompiler);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,6 +132,30 @@ void Step::vPipeSpecSet(void)
   m_pLogicUnit->m_xpVertexSpec =
     _pVertexSpec(m_pDataStack->pPopPtr(__func__));
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* PipeSpec[].isSqlCompiler -- is p.spec sqlCompiler ?                        */
+/*----------------------------------------------------------------------------*/
+void Step::vPipeSpecIsSqlCompiler(void)
+{
+  ENTRY();
+
+  bool bSqlCompiler = false;
+
+  VertexSpec* pPipeSpec = (* m_pLogicUnit->m_xpVertexSpec);
+
+  Stz* szPipeSpecNm = pPipeSpec->szVertexNm();
+
+  if (szPipeSpecNm->bSame("sqlCompiler"_Stz))
+    bSqlCompiler = true;
+  else
+    bSqlCompiler = false;
+
+
+  m_pDataStack->vPushInt(bSqlCompiler);
+
   EXIT();
 }
 

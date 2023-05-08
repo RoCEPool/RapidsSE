@@ -24,7 +24,461 @@ select o_year,
      order by o_year;
 
 */
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+/*
 
+// SF0001: changed 'ECONOMY ANODIZED STEEL' to 'ECONOMY ANODIZED TIN'
+
+EXPLAIN STAGE TRANSLITERATE
+select o_year,
+     sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share
+     from (
+
+     select extract(year from o_orderdate) as o_year,
+     l_extendedprice * (1-l_discount) as volume,
+     n2.n_name as nation
+     from part, supplier, lineitem, orders, customer, nation n1, nation n2, region
+     where p_partkey = l_partkey
+     and s_suppkey = l_suppkey
+     and l_orderkey = o_orderkey
+     and o_custkey = c_custkey
+     and c_nationkey = n1.n_nationkey
+     and n1.n_regionkey = r_regionkey
+     and r_name = 'AMERICA'
+     and s_nationkey = n2.n_nationkey
+     and o_orderdate >= '1995-01-01'
+     and o_orderdate <= '1996-12-31'
+     and p_type = 'ECONOMY ANODIZED TIN'
+     ) as all_nations
+
+     group by o_year
+     order by o_year;
+
+pipeline unamed
+begin
+  pipeline all_nations
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker3282
+    stage stageMarker3282 on all partitions :
+      scan rapidsse public part
+      | stageMarker3285 broadcast
+    stage stageMarker3285 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin "CROSS true  "
+      | stageMarker3288 broadcast
+    stage stageMarker3288 on all partitions :
+      scan rapidsse public LineItem
+      | abstractJoin "CROSS true  "
+      | stageMarker3291 broadcast
+    stage stageMarker3291 on all partitions :
+      scan rapidsse public orders
+      | abstractJoin "CROSS true  "
+      | stageMarker3294 broadcast
+    stage stageMarker3294 on all partitions :
+      scan rapidsse public customer
+      | abstractJoin "CROSS true  "
+      | stageMarker3297 broadcast
+    stage stageMarker3297 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin "CROSS true  "
+      | stageMarker3300 broadcast
+    stage stageMarker3300 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin "CROSS true  "
+      | stageMarker3303 broadcast
+    stage stageMarker3303 on all partitions :
+      scan rapidsse public region
+      | abstractJoin "CROSS true  "
+      | stageMarker3306
+    stage stageMarker3306 on all partitions :
+      filter " type BOOLEAN  $1 $18 ==  $10 $19 ==  and  $17 $33 ==  and  $34 $42 ==  and  $45 $50 ==  and  $52 $58 ==  and  $59 ''AMERICA''  ==  and  $13 $54 ==  and  $37 DATE ''1995-01-01''  >=  and  $37 DATE ''1996-12-31''  <=  and  $5 ''ECONOMY ANODIZED STEEL''  ==  and  "
+      | project " type INTEGER as o_year $37 extract_year  ,
+        |, type VARCHAR as nation $55 "
+      | combined 0
+      | stageMarker3309
+    stage stageMarker3309 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker3312
+  stage stageMarker3312 on all partitions :
+    call "all_nations "
+    | gbyAgg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  } type DECIMAL $3 ''BRAZIL''  ==  WHEN  $2 THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | stageMarker3315
+  stage stageMarker3315 on all nodes :
+    gbyAgg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker3509
+  stage stageMarker3509 on origin :
+    gbyAgg " groupBy  type INTEGER as o_year $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker3318
+  stage stageMarker3318 on origin :
+    project " type INTEGER as o_year $1 , type DECIMAL as mkt_share $3 $2 /  "
+    | sort " type INTEGER as o_year $1 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
+
+//orders->customer->nation->region->lineitem->part->supplier->nation
+//SF1: 563ms
+//SF10 : 7.1s
+/time pipeline Q8
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarkerA on all partitions :
+    indexScan orders IxO_ORDERDATE "LBOUND $I1 DATE '1995-01-01' >= UBOUND $I1 DATE '1996-12-31' <="
+    | project "type integer as O_CUSTKEY O_CUSTKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_ORDERDATE extract_year"
+    | combined 0
+    | next
+
+  stage stageMarkerB on all partitions :
+    indexJoin customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER as C_NATIONKEY J1_C_NATIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
+    | combined 0
+    | next
+
+  stage stageMarkerC on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type integer as N_REGIONKEY J1_N_REGIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
+    | combined 0
+    | next
+
+  stage stageMarkerD on all partitions :
+    indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    | filter "type BOOLEAN J1_R_NAME 'AMERICA' =="
+    | project "type integer as R_REGIONKEY J1_R_REGIONKEY , type integer as O_ORDERKEY O_ORDERKEY , type INTEGER as O_YEAR O_YEAR"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerE on all partitions :
+    indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY , type INTEGER as L_PARTKEY J1_L_PARTKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice J1_l_extendedprice , type DECIMAL as l_discount J1_l_discount"
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerF on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
+    | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED TIN' =="
+    | project "type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice l_extendedprice , type DECIMAL as l_discount l_discount"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerG on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as l_extendedprice l_extendedprice , type DECIMAL as l_discount l_discount"
+    | combined 0
+    | next
+
+  stage stageMarkerH on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as N_NATIONKEY J1_N_NATIONKEY , type INTEGER as O_YEAR O_YEAR , type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , type VARCHAR as NATION J1_N_NAME"
+    | combined 0
+    | next
+
+  stage stageMarkerI on all partitions :
+    gbyAgg " groupBy type INTEGER O_YEAR aggregates type INTEGER as O_YEAR $K1 , type DECIMAL  ) VOLUME sum  , type DECIMAL )  } type DECIMAL NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerJ on all nodes :
+    gbyAgg " groupBy type INTEGER O_YEAR aggregates  type INTEGER as O_YEAR $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerK on origin :
+    gbyAgg " groupBy  type INTEGER O_YEAR aggregates  type INTEGER as O_YEAR $K1 , type DECIMAL )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerL on origin :
+    project " type INTEGER as O_YEAR O_YEAR , type DECIMAL as mkt_share $3 $2 /  "
+    | sort " type INTEGER as o_year $1 ASC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows: (1996,0.00)
+
+sleep 4;
+success
+
+/*
+//region->nation->customer->orders->lineitem->part->supplier->nation
+//SF1: 427ms
+//SF10 : 4.7s
+
+pipeline Q8
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public region
+    | filter "type BOOLEAN R_NAME 'AMERICA' =="
+    | project "type INTEGER R_REGIONKEY as R_REGIONKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin nation IxN_REGIONKEY "BOUND $I1 R_REGIONKEY =="
+    | project "type INTEGER as N_NATIONKEY J1_N_NATIONKEY"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    indexJoin customer IxC_NATIONKEY "BOUND $I1 N_NATIONKEY =="
+    | project "type INTEGER as C_CUSTKEY J1_C_CUSTKEY"
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-01-01' >=  J1_O_ORDERDATE DATE '1996-12-31' <= and"
+    | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
+               type INTEGER as O_YEAR J1_O_ORDERDATE extract_year"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions :
+    indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+               type INTEGER as L_PARTKEY J1_L_PARTKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice J1_l_extendedprice ,
+               type DECIMAL as l_discount J1_l_discount"
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
+    | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED TIN' =="
+    | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
+               type VARCHAR as NATION J1_N_NAME"
+    | combined 0
+    | next
+
+  stage S09 on all partitions :
+    gbyAgg " groupBy type INTEGER O_YEAR
+             aggregates
+                     type INTEGER as O_YEAR $K1 ,
+                     type DECIMAL  ) VOLUME sum  ,
+                     type DECIMAL )  } type DECIMAL NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage S010 on all nodes :
+    gbyAgg " groupBy type INTEGER O_YEAR
+             aggregates
+                     type INTEGER as O_YEAR $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S011 on origin :
+    gbyAgg " groupBy type INTEGER O_YEAR
+             aggregates
+                     type INTEGER as O_YEAR $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S012 on origin :
+    project " type INTEGER as O_YEAR O_YEAR ,
+              type DECIMAL as mkt_share $3 $2 /  "
+    | combined 0
+    | next
+
+  stage S013 on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows: (1996,0.00)
+
+*/
+
+sleep 4;
+success
+
+
+// customer->
+pipeline Query8
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+      scan customer
+      | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY"
+      | combined 0
+      | next
+
+  stage S02 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    | filter "type BOOLEAN J1_R_NAME 'AMERICA' =="
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY"
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-01-01' >=  J1_O_ORDERDATE DATE '1996-12-31' <= and"
+    | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
+               type INTEGER as O_YEAR J1_O_ORDERDATE extract_year"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions :
+    indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+               type INTEGER as L_PARTKEY J1_L_PARTKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice J1_l_extendedprice ,
+               type DECIMAL as l_discount J1_l_discount"
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
+    | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED TIN' =="
+    | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
+               type VARCHAR as NATION J1_N_NAME"
+    | combined 0
+    | next
+
+  stage S09 on all partitions :
+    gbyAgg " groupBy type INTEGER O_YEAR
+             aggregates
+                     type INTEGER as O_YEAR $K1 ,
+                     type DECIMAL  ) VOLUME sum  ,
+                     type DECIMAL )  } type DECIMAL NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage S010 on all nodes :
+    gbyAgg " groupBy type INTEGER O_YEAR
+             aggregates
+                     type INTEGER as O_YEAR $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S011 on origin :
+    gbyAgg " groupBy type INTEGER O_YEAR
+             aggregates
+                     type INTEGER as O_YEAR $K1 ,
+                     type DECIMAL )  $2 sum  ,
+                     type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S012 on origin :
+    project " type INTEGER as O_YEAR O_YEAR ,
+              type DECIMAL as mkt_share $3 $2 /  "
+    | combined 0
+    | next
+
+  stage S013 on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows: (1996,0.00)
+
+sleep 4;
+success
 
 CLEANUP {
   bye;

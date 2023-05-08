@@ -134,6 +134,9 @@ void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
+void* aIndexTree_findEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent) {
+  return (void*)IndexTree::aFindEntry_hint((IndexTree*) aIndexTree, (Key*) aKey, (Ent*) aEnt_recent);
+}
 void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
   return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
 }
@@ -200,6 +203,7 @@ Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode)
   try {
     Ent *aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
+    //RASSERT(pIndexTree->pRootBuffer()->bVerify());
     //pIndexTree->vDump(false);
 
     return aInsertedEntry;
@@ -239,54 +243,12 @@ IndexTree* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find an entry in the indexTree                                             */
-/*----------------------------------------------------------------------------*/
-Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
-{
-  EntBuffer* pEntBuffer = nullptr;
-  eKC eCmp;
-
-  //pIndexTree->vDump(false);
-
-  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
-  if ( !aEnt )
-    return nullptr;
-
-  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
-  if ( !aEnt )
-    return nullptr;
-
-  Key* aEntKey = aEnt->aKey();
-
-  if (KE_GENERAL == aEnt->eKind()) {
-    eCmp = Key::eCompare(aEntKey,aKey);
-  }
-  else {
-    i8 iEntVal = *(i8 *) aEntKey;
-    i8 iWrkVal = *(i8 *) aKey;
-
-    if (iEntVal < iWrkVal)
-      eCmp = KC_BEFORE;
-    else if (iEntVal == iWrkVal)
-      eCmp = KC_SAME;
-    else
-      eCmp = KC_AFTER;
-  }
-
-  if (eCmp == KC_SAME)
-    return aEnt;
-  else
-    return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* position at entry greater than equal to given key                          */
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::aPositionGE(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key* aKey)
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -309,7 +271,6 @@ Ent* IndexTree::aPositionGT(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key*
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -332,7 +293,6 @@ Ent* IndexTree::aPositionLE(IndexTree* pIndexTree, Key* aKey)
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -358,7 +318,6 @@ Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
 {
   EntBuffer* pEntBuffer = nullptr;
   Ent* aEnt = nullptr;
-  eKC eCmp;
 
   pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
   if ( !pEntBuffer )
@@ -587,7 +546,7 @@ void IndexTree::vDump(bool bSameHeight)
     EntBuffer* pEntBuffer = m_pRootEntBuffer;
     
     while (pEntBuffer) {
-      //pEntBuffer->vShow();
+      pEntBuffer->vShow();
       pEntBuffer = pEntBuffer->pNextEntBuffer();
     }
   }
@@ -696,7 +655,7 @@ Rrf IndexTree::xwGetRef(Key* aFindKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   Rrf xwNilRef;
-  
+
   EntBuffer* pEntBuffer = pPositionH0Buffer(aFindKey);
   if (! pEntBuffer)
     return xwNilRef;
@@ -713,7 +672,7 @@ Rrf IndexTree::xwGetRef(Key* aFindKey)
     return xwNilRef;;
   }
   
-  eKC eCompare = Key::eCompare(aEntPos->aKey(),aFindKey);
+  eKC eCompare = Key::eCompare(pIndexDef(),aEntPos->aKey(),aFindKey);
   if (KC_SAME != eCompare)
     return xwNilRef;
 
@@ -737,7 +696,7 @@ IndexDef* IndexTree::pIndexDef(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  return m_pIndexDef;
+  return m_pIndex ? m_pIndex->pIndexDef() : m_pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1062,15 +1021,11 @@ Ent* IndexTree::aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes)
   
   m_okLock.vGrabWrite();
   
-  Pay* aPay = nullptr;
-  
   xEntWrk.vPayload(true);
   xEntWrk.vPayloadBytes(nPayloadBytes);
   
   byte* ayPayLoad = xEntWrk.ayPayload();
   RndLib::vBytes(ayPayLoad,nPayloadBytes);
-  
-  aPay = xEntWrk.aPay();
 
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
@@ -1484,3 +1439,6 @@ __aFooterFunction(IndexTree);
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+
+

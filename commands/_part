@@ -2,7 +2,9 @@
 /* _part -- create TPC-H Part table                                           */
 /*============================================================================*/
 
-create table part (
+// SF=200k rows
+
+create table Part (
 	 P_PARTKEY           INTEGER       NOT NULL,
 	 P_NAME              VARCHAR(55)   NOT NULL,
 	 P_MFGR              CHAR(25)      NOT NULL,
@@ -12,7 +14,9 @@ create table part (
 	 P_CONTAINER         CHAR(10)      NOT NULL,
 	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
 	 P_COMMENT           VARCHAR(23)   NOT NULL
-);
+)
+tablesize 29
+;
 
 /*============================================================================*/
 /* end                                                                        */

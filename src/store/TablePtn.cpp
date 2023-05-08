@@ -54,8 +54,8 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
       NEVER_REACH;
       break;
     case TT_INTERNAL:
-      m_eKind = CN_ROWTABLEPTN;
-      m_pRowTablePtn = new RowTablePtn(m_pTable,m_tLglPtn);
+      m_eKind = CN_CRWTABLEPTN;
+      m_pCrwTablePtn = new CrwTablePtn(m_pTable,m_tLglPtn);
       break;
     case TT_NORMAL:
       m_eKind = CN_CRWTABLEPTN;
@@ -72,7 +72,7 @@ TablePtn::TablePtn(Table *pTable, LglPtn tLglPtn, PhyPtn tPhyPtn)
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 }
-
+// TODO: Remove CN_ROWTABLEPTN from this file
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -229,16 +229,30 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
   // insert entries from the buffer into the indexes
 
   switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      m_pCrwTablePtn->vAppendBuffer(_pCrwBuffer(pDataBuffer));
+    case CN_CRWTABLEPTN: {
+      CrwBuffer *pCrwBuffer = _pCrwBuffer(pDataBuffer);
+      if (pCrwBuffer->nRows() == 0) {
+        delete pCrwBuffer;
+        return;
+      }
+      m_pCrwTablePtn->vAppendBuffer(pCrwBuffer);
       // TODO: Arjun - Update below for paging and bufferids
       vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
       break;
-    case CN_ROWTABLEPTN:
-      m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+    }
+
+    case CN_ROWTABLEPTN: {
+      RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
+      if (pRowBuffer->nRows() == 0) {
+        delete pRowBuffer;
+        return;
+      }
+      m_pRowTablePtn->vAppendBuffer(pRowBuffer);
       //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
       //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
       break;
+    }
+
     default: NEVER_REACH;
   }
 }
@@ -362,28 +376,21 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAnalyze(i8& nBuffers, i8& nRows)
+void TablePtn::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-
-  i8 nRowsTotal    = 0;
-  i8 nBuffersTotal = 0;
 
   CrwBuffer* pCrwRootBuffer = nullptr;
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       pCrwRootBuffer = m_pCrwTablePtn->pRootCrwBuffer();
+      if(pCrwRootBuffer)
+        pCrwRootBuffer->vAnalyze(nBuffers, nRows, jSumRowBytes);
       break;
     case CN_ROWTABLEPTN:
       NEVER_REACH
       break;
     default: NEVER_REACH;
-  }
-
-  if (pCrwRootBuffer){
-    pCrwRootBuffer->vAnalyze(nBuffers, nRows);
-    nRowsTotal += nRows;
-    nBuffersTotal += nBuffers;
   }
 }
 

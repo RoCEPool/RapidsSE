@@ -77,6 +77,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Discern();
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
+  Step::vAddSteps_Dynamic();
   Step::vAddSteps_Dynamo();
 
   Step::vAddSteps_Encode();
@@ -193,6 +194,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StageOfOp();
   Step::vAddSteps_Stats();
   Step::vAddSteps_Stencil();
+  Step::vAddSteps_Stencil_v2();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_Stream();

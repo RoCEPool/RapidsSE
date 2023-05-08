@@ -171,6 +171,7 @@ void CmdLineArgs::vInit(void)
   m_xSysArgs.m_bShmLock         = false;
   m_xSysArgs.m_iSocketLowMem    = C_UNKNOWN;
   m_xSysArgs.m_bSysMetrics      = false;
+  m_xSysArgs.m_iTest            = C_UNKNOWN;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
   m_xSysArgs.m_bTouch           = false;
@@ -985,6 +986,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--test"_Stz)) {
+      m_xSysArgs.m_iTest = argv[++i_Arg].iToI8();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--threads"_Stz)) {
       if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
         vPrintErrorMarker(argv, i_Arg);
@@ -1085,7 +1092,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     vPrintErrorMarker(argv, i_Arg);
-    vTrace("Unrecognized command argument: %s\n"_Stz,argv[i_Arg].szStz());
+    vTrace("Unrecognized command line argument: %s\n"_Stz,argv[i_Arg].szStz());
     return false;
   }
 
@@ -1465,7 +1472,7 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
   }
 
-  if (!gxCmdLineArgs.bUserPrompt()) {
+  if (! gxCmdLineArgs.bUserPrompt()) {
     vTrace("\n"_Stz);
     vTrace("Args:\n"_Stz);
 
@@ -1530,6 +1537,8 @@ void CmdLineArgs::vPrintStartupInfo(void)
 #endif
 
     if (m_xSysArgs.m_bDeveloper) vTrace("  --developer\n"_Stz);
+
+    if (m_xSysArgs.m_bInitial) vTrace("  --initial %s\n"_Stz,m_xSysArgs.m_sInitial.szStz());
 
     BASE::vTraceWith();
   }

@@ -1,0 +1,232 @@
+--------------------------------------------------------------------------------
+-- selectAgg (SF_0001)
+--------------------------------------------------------------------------------
+trackMemory;
+success
+
+// scan +aggGby
+/weaved select count(*) from nation group by n_regionkey;
+rows:
+  (5)
+  (5)
+  (5)
+  (5)
+  (5)
+
+// scan +aggGby
+/weaved select n_regionkey, count(*) from nation group by n_regionkey;
+rows:
+  (3, 5)
+  (4, 5)
+  (0, 5)
+  (2, 5)
+  (1, 5)
+
+// scan +aggGby
+/weaved select count(*), n_regionkey from nation group by n_regionkey;
+rows:
+  (5, 3)
+  (5, 4)
+  (5, 0)
+  (5, 2)
+  (5, 1)
+
+// scan + filter + aggGby
+/weaved select n_regionkey, min(n_nationkey), max(n_name) from nation group by n_regionkey;
+rows:
+  (0,0,'MOZAMBIQUE')
+  (1,1,'UNITED STATES')
+  (2,8,'VIETNAM')
+  (3,6,'UNITED KINGDOM')
+  (4,4,'SAUDI ARABIA')
+
+// scan + filter + aggGby + sort
+/weaved select n_regionkey, min(n_nationkey), max(n_name) from nation group by n_regionkey order by n_regionKey;
+ordered rows:
+  (0,0,'MOZAMBIQUE')
+  (1,1,'UNITED STATES')
+  (2,8,'VIETNAM')
+  (3,6,'UNITED KINGDOM')
+  (4,4,'SAUDI ARABIA')
+
+
+// scan + aggGby
+/weaved select min(n_nationkey), n_regionkey, max(n_name) from nation group by n_regionkey;
+rows:
+ (0,0,'MOZAMBIQUE')
+ (1,1,'UNITED STATES')
+ (8,2,'VIETNAM')
+ (6,3,'UNITED KINGDOM')
+ (4,4,'SAUDI ARABIA')
+
+// scan + aggGby + sort
+/weaved select min(n_nationkey), n_regionkey, max(n_name) from nation group by n_regionkey order by n_regionKey;
+rows:
+ (0,0,'MOZAMBIQUE')
+ (1,1,'UNITED STATES')
+ (8,2,'VIETNAM')
+ (6,3,'UNITED KINGDOM')
+ (4,4,'SAUDI ARABIA')
+
+// scan + filter + aggGby
+/weaved select n_regionkey, count(*) from nation where n_name < 'E' group by n_regionkey;
+rows:
+  (0,1)
+  (1,3)
+  (2,1)
+
+// scan + filter + aggGby
+/weaved select n_regionkey, min(n_name), max(n_nationkey) from nation where n_name < 'E' group by n_regionkey;
+rows:
+ (0,'ALGERIA',0)
+ (1,'ARGENTINA',3)
+ (2,'CHINA',18)
+
+// scan + filter + aggGby
+/weaved select min(n_name), n_regionkey, max(n_nationkey) from nation where n_name < 'E' group by n_regionkey;
+rows:
+ ('ALGERIA',0,0)
+ ('ARGENTINA',1,3)
+ ('CHINA',2,18)
+
+// scan + filter + aggGby
+/weaved select min(n_name), max(n_nationkey), n_regionkey from nation where n_name < 'E' group by n_regionkey;
+rows:
+ ('ALGERIA',0,0)
+ ('ARGENTINA',3,1)
+ ('CHINA',18,2)
+
+// scan + filter + aggGby + filter
+/weaved select min(n_name), max(n_nationkey), n_regionkey from nation where n_name < 'E' group by n_regionkey order by n_regionkey;
+ordered rows:
+ ('ALGERIA',0,0)
+ ('ARGENTINA',3,1)
+ ('CHINA',18,2)
+
+// scan + filter + aggGby + filter
+/weaved select P_MFGR, count(*) from part where p_size < 5 group by P_MFGR order by P_MFGR;
+ordered rows:
+ ('Manufacturer#1',2)
+ ('Manufacturer#2',5)
+ ('Manufacturer#3',4)
+ ('Manufacturer#4',4)
+ ('Manufacturer#5',6)
+
+// scan + filter + aggGby + filter
+/weaved select p_mfgr, p_brand,  count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_mfgr, p_brand;
+rows:
+ ('Manufacturer#1','Brand#13',1)
+ ('Manufacturer#1','Brand#11',1)
+ ('Manufacturer#2','Brand#25',1)
+ ('Manufacturer#2','Brand#24',2)
+ ('Manufacturer#2','Brand#22',1)
+ ('Manufacturer#2','Brand#21',1)
+ ('Manufacturer#3','Brand#33',2)
+ ('Manufacturer#3','Brand#32',2)
+ ('Manufacturer#4','Brand#45',2)
+ ('Manufacturer#4','Brand#44',1)
+ ('Manufacturer#4','Brand#43',1)
+ ('Manufacturer#5','Brand#55',2)
+ ('Manufacturer#5','Brand#53',2)
+ ('Manufacturer#5','Brand#52',2)
+
+// scan + filter + aggGby + filter
+/weaved select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_brand, p_mfgr;
+ordered rows:
+ ('Brand#11','Manufacturer#1',1)
+ ('Brand#13','Manufacturer#1',1)
+ ('Brand#21','Manufacturer#2',1)
+ ('Brand#22','Manufacturer#2',1)
+ ('Brand#24','Manufacturer#2',2)
+ ('Brand#25','Manufacturer#2',1)
+ ('Brand#32','Manufacturer#3',2)
+ ('Brand#33','Manufacturer#3',2)
+ ('Brand#43','Manufacturer#4',1)
+ ('Brand#44','Manufacturer#4',1)
+ ('Brand#45','Manufacturer#4',2)
+ ('Brand#52','Manufacturer#5',2)
+ ('Brand#53','Manufacturer#5',2)
+ ('Brand#55','Manufacturer#5',2)
+
+// scan + filter + aggGby + filter
+/weaved select count(*) as cnt, p_brand, p_mfgr from part where p_size < 5 group by p_mfgr, p_brand order by cnt, p_brand, p_mfgr;
+ordered rows:
+ (1,'Brand#11','Manufacturer#1')
+ (1,'Brand#13','Manufacturer#1')
+ (1,'Brand#21','Manufacturer#2')
+ (1,'Brand#22','Manufacturer#2')
+ (1,'Brand#25','Manufacturer#2')
+ (1,'Brand#43','Manufacturer#4')
+ (1,'Brand#44','Manufacturer#4')
+ (2,'Brand#24','Manufacturer#2')
+ (2,'Brand#32','Manufacturer#3')
+ (2,'Brand#33','Manufacturer#3')
+ (2,'Brand#45','Manufacturer#4')
+ (2,'Brand#52','Manufacturer#5')
+ (2,'Brand#53','Manufacturer#5')
+ (2,'Brand#55','Manufacturer#5')
+
+// indexScan + filter + aggGby + filter
+/weaved select P_MFGR, count(*) from part where p_partkey < 5 group by P_MFGR order by P_MFGR;
+ordered rows:
+ ('Manufacturer#1',2)
+ ('Manufacturer#3',1)
+ ('Manufacturer#4',1)
+
+// indexScan + filter + aggGby + filter
+/weaved select p_mfgr, p_brand,  count(*) from part where p_partkey < 15 group by p_mfgr, p_brand order by p_mfgr, p_brand;
+ordered rows:
+ ('Manufacturer#1','Brand#11',1)
+ ('Manufacturer#1','Brand#13',3)
+ ('Manufacturer#2','Brand#24',1)
+ ('Manufacturer#2','Brand#25',1)
+ ('Manufacturer#3','Brand#32',1)
+ ('Manufacturer#3','Brand#33',1)
+ ('Manufacturer#3','Brand#34',1)
+ ('Manufacturer#4','Brand#42',1)
+ ('Manufacturer#4','Brand#43',1)
+ ('Manufacturer#4','Brand#44',1)
+ ('Manufacturer#5','Brand#54',1)
+ ('Manufacturer#5','Brand#55',1)
+
+// indexScan + filter + aggGby + filter
+/weaved select p_brand, p_mfgr, count(*) from part where p_partkey < 15 group by p_mfgr, p_brand order by p_brand, p_mfgr;
+ordered rows:
+ ('Brand#11','Manufacturer#1',1)
+ ('Brand#13','Manufacturer#1',3)
+ ('Brand#24','Manufacturer#2',1)
+ ('Brand#25','Manufacturer#2',1)
+ ('Brand#32','Manufacturer#3',1)
+ ('Brand#33','Manufacturer#3',1)
+ ('Brand#34','Manufacturer#3',1)
+ ('Brand#42','Manufacturer#4',1)
+ ('Brand#43','Manufacturer#4',1)
+ ('Brand#44','Manufacturer#4',1)
+ ('Brand#54','Manufacturer#5',1)
+ ('Brand#55','Manufacturer#5',1)
+
+// indexScan + filter + aggGby + filter
+/weaved select count(*) as cnt, p_brand, p_mfgr from part where p_partkey < 15 group by p_mfgr, p_brand order by cnt, p_brand, p_mfgr;
+ordered rows:
+ (1,'Brand#11','Manufacturer#1')
+ (1,'Brand#24','Manufacturer#2')
+ (1,'Brand#25','Manufacturer#2')
+ (1,'Brand#32','Manufacturer#3')
+ (1,'Brand#33','Manufacturer#3')
+ (1,'Brand#34','Manufacturer#3')
+ (1,'Brand#42','Manufacturer#4')
+ (1,'Brand#43','Manufacturer#4')
+ (1,'Brand#44','Manufacturer#4')
+ (1,'Brand#54','Manufacturer#5')
+ (1,'Brand#55','Manufacturer#5')
+ (3,'Brand#13','Manufacturer#1')
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  bye;
+  mute
+}
+
+

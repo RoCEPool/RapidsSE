@@ -105,9 +105,9 @@
   //"Operand:- EV_M_EOS" .verbose
 
   // Cleanup any hashmap locks on crw/row buffers that this Task has
-  TablePtn[].grabWrite_msecLoop
-    TablePtn[].cleanup
-  TablePtn[].dropWrite
+  //TablePtn[].grabWrite_msecLoop
+  //  TablePtn[].cleanup
+  //TablePtn[].dropWrite
 
   // send out final progress units
 

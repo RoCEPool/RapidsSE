@@ -4,20 +4,222 @@
 /*  (original Query)
 
 select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
-     from ( select substring(c_phone from 1 for 2) as cntrycode, c_acctbal
-              from customer
-             where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
-               and c_acctbal > ( select avg(c_acctbal)
-                                   from customer
-                                  where c_acctbal > 0.00
-                                    and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
-                                    and not exists ( select * from orders where o_custkey = c_custkey )
-                                ) as custsale
+     from (
+       select c_custkey, substring(c_phone from 1 for 2) as cntrycode, c_acctbal
+       from customer
+       where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
+           and c_acctbal >
+             ( select avg(c_acctbal)
+               from customer
+               where c_acctbal > 0.00
+                     and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
+                     and not exists (
+                                      select * from orders where o_custkey = c_custkey )
+                                    ) as custsale
      group by cntrycode
      order by cntrycode;
 
 */
 
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+
+/*
+
+EXPLAIN STAGE TRANSLITERATE
+select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
+     from (
+       select substring(c_phone from 1 for 2) as cntrycode, c_acctbal
+       from customer
+       where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
+           and c_acctbal >
+             ( select avg(c_acctbal)
+               from customer
+               where c_acctbal > 0.00
+                     and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
+                     and not exists (
+                                      select * from orders where o_custkey = c_custkey )
+                                    ) as custsale
+     group by cntrycode
+     order by cntrycode;
+
+pipeline unamed
+begin
+  pipeline __subquery0005
+    params "c_custkey "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker1075
+    stage stageMarker1075 on all partitions :
+      scan rapidsse public orders
+      | filter " type BOOLEAN  $2 %1 ==  "
+      | project " type INTEGER as O_ORDERKEY $1 , type INTEGER as O_CUSTKEY $2 , type VARCHAR as O_ORDERSTATUS $3 , type DECIMAL as O_TOTALPRICE $4 , type DATE as O_ORDERDATE $5 , type VARCHAR as O_ORDERPRIORITY $6 , type VARCHAR as O_CLERK $7 , type INTEGER as O_SHIPPRIORITY $8 , type VARCHAR as O_COMMENT $9 "
+      | combined 0
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker1081
+    stage stageMarker1081 on all partitions :
+      scan rapidsse public Customer
+      | filter " type BOOLEAN  $6 0.00  >  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  and  "
+      | aggreg " type DECIMAL )  $6 sum  , type INTEGER )  $6 count  "
+      | combined 0
+      | stageMarker1084
+    stage stageMarker1084 on all nodes :
+      aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+      | combined 0
+      | stageMarker1226
+    stage stageMarker1226 on origin :
+      aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker1087
+    stage stageMarker1087 on origin :
+      project " type DECIMAL $2 $1 casttype DECIMAL CAST  /  "
+      | combined 0
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  pipeline custsale
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker1093
+    stage stageMarker1093 on all partitions :
+      scan rapidsse public Customer
+      | filter " type BOOLEAN  }  ''13''  ''31''  ''23''  ''29''  ''30''  ''18''  ''17''  #7  $5 1  2  substring3  in  $6 __subquery0003  >  and  $1 __subquery0005  exists  not  and  "
+      | project " type VARCHAR as cntrycode $5 1  2  substring3  , type DECIMAL as c_acctbal $6 "
+      | combined 0
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1099
+  stage stageMarker1099 on all partitions :
+    call "custsale "
+    | gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker1102
+  stage stageMarker1102 on all nodes :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | stageMarker1105
+  stage stageMarker1105 on origin :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    | sort " type VARCHAR as cntrycode $1 ASC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
+
+// NOTE: CHANGED KEY NOT EXISTS to KEY EXISTS for SF0001 data
+
+pipeline Query22
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S02 on all partitions :
+    scan Customer
+    | filter " type BOOLEAN  C_ACCTBAL 0.00  >
+               }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
+    | aggreg " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    aggreg " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as acctbal $2 $1 casttype DECIMAL CAST  /  "
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "bound $I1"
+    | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  J1_C_PHONE 1  2  substring3  in
+              J1_C_ACCTBAL acctbal  >  and "
+    | project " type INTEGER as C_CUSTKEY J1_C_CUSTKEY , type VARCHAR as cntrycode J1_C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL J1_C_ACCTBAL "
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    keyExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+                   "type BOOLEAN O_CUSTKEY 0 >"
+    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
+    | combined 0
+    | next
+
+ stage S08 on all partitions :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    gbyAgg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    sort " type VARCHAR as cntrycode $1 ASC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ ('13',2,13545.30)
+ ('17',1,9127.27)
+ ('18',3,22156.91)
+ ('23',3,25483.06)
+ ('29',4,36059.01)
+ ('30',2,17528.46)
+ ('31',2,18611.84)
 
 CLEANUP {
   bye;

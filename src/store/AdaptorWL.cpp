@@ -1665,8 +1665,8 @@ void AdaptorWL::vFinishQueryDialog()
 {
   vNextState(QUERY_COMPLETED);
 
-  i8 iQueryEndNanos = Hardware::iReadClock();
-  double dQueryTime = (double) (iQueryEndNanos - m_oQueryCtx.iQueryStartNanos()) / C_1B;
+  u8 uQueryEndNanos = Hardware::uReadClock();
+  double dQueryTime = (double) (uQueryEndNanos - m_oQueryCtx.uQueryStartNanos()) / C_1B;
 
   QueryExecuteResponse xResponse;
   xResponse.executionTime = dQueryTime;

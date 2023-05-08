@@ -1,0 +1,182 @@
+/*============================================================================*/
+/* _a_q8 -- Query8 (hand coded pipeline)                                      */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select o_year,
+   sum(case when nation = 'BRAZIL' then volume else 0 end) / sum(volume) as mkt_share
+from ( select
+          extract(year from o_orderdate) as o_year,
+          l_extendedprice * (1-l_discount) as volume,
+          n2.n_name as nation
+      from
+          part,
+          supplier,
+          lineitem,
+          orders,
+          customer,
+          nation n1,
+          nation n2,
+          region
+      where
+         p_partkey = l_partkey
+         and s_suppkey = l_suppkey
+         and l_orderkey = o_orderkey
+         and o_custkey = c_custkey
+         and c_nationkey = n1.n_nationkey
+         and n1.n_regionkey = r_regionkey
+         and r_name = 'AMERICA'
+         and s_nationkey = n2.n_nationkey
+         and o_orderdate >= '1995-01-01'
+         and o_orderdate <= '1996-12-31'
+         and p_type = 'ECONOMY ANODIZED STEEL' )
+   as all_nations
+group by
+  o_year
+order by
+  o_year;
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : PART, SUPPLIER, LINEITEM, ORDERS, CUSTOMER, NATION, REGION
+// JOIN ORDER : REGION->NATION->CUSTOMER->ORDERS->LINEITEM->PART->SUPPLIER->NATION
+// INDEXES    : IxC_NATIONKEY
+//              IxO_CUSTKEY
+//              IxL_ORDERKEY
+//              IxP_PARKKEY
+//              IxS_SUPPKEY
+//              IxN_NATIONKEY
+//              IxN_REGIONKEY
+//              IxR_REGIONKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * SORT NOT REQUIRED AS ORDER BY ON SAME COLUMNS AS GROUP BY
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   CAN EXPLORE DIFFERENT JOIN ORDERS.
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// pipeline begin
+pipeline Query8
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan customer
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
+               type INTEGER as C_NATIONKEY C_NATIONKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    | filter "type BOOLEAN J1_R_NAME 'AMERICA' =="
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY"
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+    | filter "type BOOLEAN J1_O_ORDERDATE DATE '1995-01-01' >=  J1_O_ORDERDATE DATE '1996-12-31' <= and"
+    | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
+               type INTEGER as O_YEAR J1_O_ORDERDATE extract_year"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions :
+    indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+    | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+               type INTEGER as L_PARTKEY J1_L_PARTKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice J1_l_extendedprice ,
+               type DECIMAL as l_discount J1_l_discount"
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S06 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
+    | filter "type BOOLEAN J1_P_TYPE 'ECONOMY ANODIZED STEEL' =="
+    | project "type INTEGER as L_SUPPKEY L_SUPPKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+    | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
+               type DECIMAL as l_discount l_discount"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
+               type VARCHAR as NATION J1_N_NAME"
+    | combined 0
+    | next
+
+  stage S09 on all partitions :
+    aggreg " groupBy    type INTEGER O_YEAR
+             aggregates type INTEGER as O_YEAR $K1 ,
+                        type DECIMAL  ) VOLUME sum  ,
+                        type DECIMAL )  } type DECIMAL NATION 'BRAZIL'  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage S10 on all nodes :
+    aggreg " groupBy    type INTEGER O_YEAR
+             aggregates type INTEGER as O_YEAR $K1 ,
+                        type DECIMAL )  $2 sum  ,
+                        type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    aggreg " groupBy    type INTEGER O_YEAR
+             aggregates type INTEGER as O_YEAR $K1 ,
+                        type DECIMAL )  $2 sum  ,
+                        type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    project " type INTEGER as O_YEAR O_YEAR ,
+              type DECIMAL as mkt_share $3 $2 /  "
+    | combined 0
+    | next
+
+  stage S13 on origin :
+    output
+    | sink
+    | first
+end ;
+
+// pipeline end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

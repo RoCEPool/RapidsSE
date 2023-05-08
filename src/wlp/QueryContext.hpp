@@ -24,7 +24,7 @@ namespace WLP
     i8  m_nStmtParsed;
     i8  m_nStmtSucceeded;
     i8  m_nStmtFailed;
-    i8  m_iQueryStartNanos;
+    u8  m_uQueryStartNanos;
     StatementCtxList* m_pStmtCtxList;
 
     Footer m_xFooter;
@@ -48,7 +48,7 @@ namespace WLP
     i8   nStmtSucceeded();
     void vIncStmtFailed();
     i8   nStmtFailed();
-    i8   iQueryStartNanos();
+    i8   uQueryStartNanos();
     i8   nStmtContexts();
 
     // Information from the QueryExecuteRequest

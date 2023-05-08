@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_SubSet : public Card_SUB
+  class Card_SubSet : public Card
   {
   public:
     void* operator new(size_t);
@@ -20,7 +18,6 @@ namespace STORE
   };
 
   Card_SubSet* _pCard_SubSet(void* aAddr);
-  bool _bIsCard_SubSet(void* aAddr);
 }
 
 /*============================================================================*/

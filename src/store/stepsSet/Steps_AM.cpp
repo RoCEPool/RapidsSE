@@ -61,6 +61,8 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::DEMON::tSuperDemonJobId@"_Stz,     &Step::vAM_SuperDemonJobIdFetch);
   vAddStep("AM::DEMON::tSuperDemonJobId!"_Stz,     &Step::vAM_SuperDemonJobIdStore);
 
+  vAddStep("AM::OptimiserEnabled"_Stz,             &Step::vAM_OptimiserEnabled);
+
   vAddStep("AM::SHOW::bBoot"_Stz,                  &Step::vAM_Show_Boot);
   vAddStep("AM::SHOW::bDir"_Stz,                   &Step::vAM_Show_Dir);
   vAddStep("AM::SHOW::bDir_Failure"_Stz,           &Step::vAM_Show_Dir_Failure);
@@ -79,9 +81,6 @@ void Step::vAddSteps_AM(void)
 
   vAddStep("AM::jobMetricsDisable"_Stz,            &Step::vAM_JobMetricsDisable);
   vAddStep("AM::jobMetricsEnable"_Stz,             &Step::vAM_JobMetricsEnable);
-
-  vAddStep("AM::reapDisable"_Stz,                  &Step::vAM_ReapDisable);
-  vAddStep("AM::reapEnable"_Stz,                   &Step::vAM_ReapEnable);
 
   vAddStep("AM::sysMetricsDisable"_Stz,            &Step::vAM_SysMetricsDisable);
   vAddStep("AM::sysMetricsEnable"_Stz,             &Step::vAM_SysMetricsEnable);
@@ -332,7 +331,20 @@ void Step::vAM_NodeMonDemonJobIdStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* AM::DEMON::tPageInDemonJobId@ -- fetch PageInDemon JobId                 */
+/* AM::OptimiserEnabled -- is the optimiser enabled ?                         */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_OptimiserEnabled(void) {
+  ENTRY();
+
+  b8 bDisable = AM::bDisableCmds();
+
+  m_pDataStack->vPushInt(!bDisable);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::DEMON::tPageInDemonJobId@ -- fetch PageInDemon JobId                   */
 /*----------------------------------------------------------------------------*/
 void Step::vAM_PageInDemonJobIdFetch(void)
 {
@@ -724,30 +736,6 @@ void Step::vAM_JobMetricsEnable(void)
   
   AM::SYSARGS::vJobMetrics(true);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* AM::reapDisable -- disble reaping of retired jobs                          */
-/*----------------------------------------------------------------------------*/
-void Step::vAM_ReapDisable(void)
-{
-  ENTRY();
-  
-  AM::SYSTEM::vReapEnabled(false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* AM::reapEnable -- enable reaping of retired jobs                           */
-/*----------------------------------------------------------------------------*/
-void Step::vAM_ReapEnable(void)
-{
-  ENTRY();
-  
-  AM::SYSTEM::vReapEnabled(true);
-  
   EXIT();
 }
 

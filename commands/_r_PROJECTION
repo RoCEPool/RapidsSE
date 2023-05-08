@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _r_PROJECTION -- projection test                                           */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index C_idx0  on Customer (C_CUSTKEY  );
+create index O_idx0  on Orders   (O_CUSTKEY  );
+create index L_idx0  on Lineitem (L_ORDERKEY );
+create index S_idx0  on Supplier (S_SUPPKEY  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// /glean_cue_from = "vTransform_AddPartitioning"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_PROJECTION"
+select sum(L_QUANTITY)
+  from Lineitem
+ where L_ORDERKEY < 100
+ group by L_SUPPKEY
+ order by sum(L_QUANTITY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

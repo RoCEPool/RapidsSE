@@ -2,7 +2,7 @@
 /* _orders_custkey - create TPC-H Orders table                                */
 /*============================================================================*/
 
-create table orders (
+create table Orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
 	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
@@ -14,6 +14,7 @@ create table orders (
 	 O_COMMENT         VARCHAR(79)   NOT NULL
 )
    partition by (O_CUSTKEY)
+   tablesize 181
 ;
 
 /*============================================================================*/

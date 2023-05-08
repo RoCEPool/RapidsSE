@@ -22,10 +22,10 @@ L_ProcessRow:
     printf("  i_Row %lld aHeadLine %p racStrArea %p\n",
     i_Row,aHeadLine,racStrArea);
   }
-  goto L_InflateT;
+  goto L_InflateCrwT;
 
 L_AdvanceNextRow:
-
+  aCombinedT->m_iJoinedRows = 0;
   i_Row++;
 
   if (i_Row == aCombinedT->m_nRows)

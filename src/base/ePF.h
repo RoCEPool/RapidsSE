@@ -108,7 +108,6 @@ enum ePF // prompt function
   
   /*    */ PF_RASSERT,
   /*    */ PF_READY,
-  /*    */ PF_REAP,
   /*    */ PF_RESOURCES,
   /*    */ PF_RETIRED,
   /*    */ PF_RMFIFO,
@@ -272,7 +271,6 @@ static Stz* aPF[]
   
   /*    */ "PF_RASSERT"_Stz,
   /*    */ "PF_READY"_Stz,
-  /*    */ "PF_REAP"_Stz,
   /*    */ "PF_RESOURCES"_Stz,
   /*    */ "PF_RETIRED"_Stz,
   /*    */ "PF_RMFIFO"_Stz,

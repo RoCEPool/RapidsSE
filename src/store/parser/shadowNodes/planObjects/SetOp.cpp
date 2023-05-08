@@ -95,8 +95,8 @@ void SetOp::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNo
   // TODO: manual polymorphism here
 
   if      (    UnionOp::bIsOfType(pNode)) {     UnionOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);  }
-//else if (IntersectOp::bIsOfType(pNode)) { IntersectOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);   }
-//else if (   ExceptOp::bIsOfType(pNode)) {    ExceptOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent);   }
+//else if (IntersectOp::bIsOfType(pNode)) { IntersectOp::vDescription(pNode, pRootNode, pExplainNode, sBuf, iIndent);   }
+//else if (   ExceptOp::bIsOfType(pNode)) {    ExceptOp::vDescription(pNode, pRootNode, pExplainNode, sBuf, iIndent);   }
 
   else {
     // Need to add in manual polymorphism here

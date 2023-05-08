@@ -55,6 +55,14 @@ void vEntWrk_print(void* pEntWrk, void* pIndexDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset the EntWrk                                                           */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_reset(void* pEntWrk)
+{
+  EntWrk::vEntReset((EntWrk*)pEntWrk);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWrk::EntWrk(void)
@@ -121,6 +129,16 @@ void EntWrk::vAppendElementEntStz(EntWrk* pEntWrk, Stz* sValue)
 {
   _static_
 
+  // Alka: entwrk reset
+  /*
+  static i8 nTimes = 0;
+
+  if (161 == nTimes)
+    vDebugPoint();
+
+  vTrace("vAppendElementEntStz: call# %03lld %s\n"_Stz,nTimes++,sValue->azChar());
+  */
+
   if ((i8)sValue == C_DATUM_NULL)
     pEntWrk->vAppendNull();
   else
@@ -141,6 +159,25 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 
   return ayElm;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set the entry desc in EntWrk ifi indexdef has a desc key                   */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vEntDesc(EntWrk* pEntWrk, IndexDef* pIndexDef)
+{
+  _static_
+
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
+
+    Column *pCol = pIndexDef->pGetColumn(i_Col);
+    if (!pCol->bIsAscending()) {
+      pEntWrk->aEnt()->vDesc(true);
+      break;
+    }
+
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* set the entry kind in EntWrk                                               */
@@ -171,6 +208,16 @@ void EntWrk::vPrint(EntWrk* pEntWrk, IndexDef* pIndexDef)
   _static_
 
   pEntWrk->vShow(pIndexDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the entwrk                                                           */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vEntReset(EntWrk* pEntWrk)
+{
+  _static_
+
+  pEntWrk->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,6 +412,9 @@ void EntWrk::vAppendStz(Stz* szArg)
   _precondition_(_MAGIC_,CN_ENTWRK,_FOOTER_);
   
   char* aDst = (char*)ayElmNext_dtm();
+
+  // Alka: entwrk reset
+  //vTrace("aDst %p\n"_Stz,aDst);
   
   i8 nElmSize = StrLib::iWordFlip(aDst, szArg->azChar());
   

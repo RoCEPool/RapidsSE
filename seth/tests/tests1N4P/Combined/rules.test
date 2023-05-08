@@ -43,6 +43,9 @@ success
 create index IxO_ORDERKEY  ON orders (O_ORDERKEY)  ;
 success;
 
+create index IxO_CUSTKEY  ON orders (O_CUSTKEY)  ;
+success;
+
 create table customer (
 	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
 	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
@@ -239,7 +242,7 @@ begin
 
   stage Gs_ORDERS on all partitions :
     scan orders
-    | aggreg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1  , type INTEGER )  $2 sum "
+    | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates  type INTEGER $K1  , type INTEGER )  $2 sum "
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
     | combined 0
     | next
@@ -327,6 +330,35 @@ end ;
 failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// indexJoin / keyExists allowed in a stage
+pipeline Q
+begin
+
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan customer
+  | next
+
+ stage S02 on all partitions :
+   indexJoin orders IxO_CUSTKEY "bound $I1 $L1 =="
+   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 J1_O_ORDERKEY =="
+                                        "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+   | combined 0
+   | next
+
+ stage last on origin :
+    output
+    | sink
+    | first
+
+ end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple indexScanOp's
 pipeline Q
 begin
@@ -365,6 +397,31 @@ begin
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
     | indexJoin customer IxC_CUSTKEY "bound $I1 $L2 =="
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple projectOp's
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+    | project " type INTEGER as l_orderkey $1"
     | combined 0
     | next
 
@@ -486,6 +543,82 @@ begin
 
 end ;
 failure contains: 'EC_INVALID_PIPELINE'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// sort and topOp
+
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+    | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+    | sort "type INTEGER L_PARTKEY ASC"
+    | top "TOP type INTEGER L_PARTKEY" 2
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+failure contains: 'EC_INVALID_PIPELINE'
+
+// gbyAgg and sort
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates type INTEGER $K1  , type INTEGER )  $2 sum "
+    | sort "type INTEGER $1 ASC"
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+end ;
+
+failure contains: 'EC_ORDERBY_WITH_AGGREGATES'
+
+// gbyAgg and top
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | gbyAgg " groupBy  type INTEGER as l_orderkey $1 aggregates type INTEGER $K1  , type INTEGER )  $2 sum "
+    | top "type INTEGER $1 ASC" 3
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+end ;
+
+failure contains: 'EC_INVALID_PIPELINE'
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

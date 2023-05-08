@@ -248,11 +248,15 @@ bool File::bModTime(Stz* szFilePath, time_t& tTime)
 /*----------------------------------------------------------------------------*/
 /* remove given file from file system                                         */
 /*----------------------------------------------------------------------------*/
-bool File::bRemove(Stz* szFilePath)
+bool File::bRemove(Stz* szFilePath, bool bIgnoreMissing)
 {
   int iResult = unlink(szFilePath->azChar());
   
   if (-1 == iResult) {
+    if (bIgnoreMissing && errno == ENOENT) {
+      return true;
+    }
+
     vTrace("File::bRemove: unlink() error; errno=%d"_Stz,errno);
     return false;
   }

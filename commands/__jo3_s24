@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* __jo3_s24 -- optimiser join ordering 3-way join statement 24               */
+/*============================================================================*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 8
+//  Partitions = 4
+//  size(A) < size(B) , size(B) > size(C)
+//  A            ->  B               B           ->  C
+//  cola != ptn  ->  colb != ptn     colb != ptn ->  colc != ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 10000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+load C "../DATA/Select/select.csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select * from dummy;
+
+trackMemory;
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo3_s24"
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL1
+   join C on B.B_COL1 = C.C_COL1
+ ;
+
+MemoryLeaks;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+drop table A;
+drop table B;
+drop table C;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+Join Permutations:                                          Network Total                     , Unicast Total
+  A->B (BROADCAST)(4*1000)  ->C (BROADCAST) (4*1000*10000)  Total=(4*1000  + (4*1000*10000))  , 0
+  B->A (BROADCAST)(4*10000) ->C (BROADCAST) (4*10000*1000)  Total=(4*10000 + (4*10000*1000))  , 0
+  B->C (BROADCAST)(4*10000) ->A (BROADCAST) (4*10000*1000)  Total=(4*10000 + (4*10000*1000))  , 0
+  C->B (BROADCAST)(4*1000)  ->A (BROADCAST) (4*1000*10000)  Total=(4*1000  + (4*1000*10000))  , 0
+
+Expected join order:
+  Either A->B->C or C->B->A
+
+Expected Result:
+  row: (42)
+  success: 1 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

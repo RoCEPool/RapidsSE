@@ -2,13 +2,13 @@
 /* _nationLoad - create and load TPC-H Nation table                           */
 /*============================================================================*/
 
-_nation
+//_nation
 
-/time load nation "/Users/Shared/tpch/SF1/nation.csv" ;
+/time load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
 
 select * from nation;
 
-/time export nation "/tmp/nation.csv";
+///time export nation "/tmp/nation.csv";
 
 /*============================================================================*/
 /* end                                                                        */

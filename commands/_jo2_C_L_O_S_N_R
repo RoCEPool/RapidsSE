@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _jo2_C_L_O_S_N_R -- join order test                                        */
+/*============================================================================*/
+
+// --initial _jo2_C_L_O_S_N_R
+
+__TPCH_SCHEMA
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo2_C_L_O_S_N_R"
+select
+       count(*)
+  from
+       Customer, //  29
+       Lineitem, // 630
+       Orders,   // 181
+       Supplier, //   2
+       Nation,   // R 1
+       Region    // R 1
+ where
+       C_CUSTKEY   = O_CUSTKEY
+   and O_ORDERKEY  = L_ORDERKEY
+   and L_SUPPKEY   = S_SUPPKEY
+   and S_NATIONKEY = N_NATIONKEY
+   and N_REGIONKEY = R_REGIONKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -18,7 +18,7 @@ namespace BASE
     static i8 iL2Cache(void);
     static i8 iL3Cache(void);
     static i8 iPhysicalMemory(void);
-    static i8 iReadClock(void);
+    static u8 uReadClock(void);
     static i8 iReadTsc(u4* puLogicalProcessorId);
 
     static void vChooseClockType(void);

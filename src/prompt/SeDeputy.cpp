@@ -195,6 +195,13 @@ void SeDeputy::vDeputyLoop(void)
       //pInpTknVec->vDumpVec();
       //pInpTagSet->vDumpSet();
 
+      i8 iStart;
+      i8 iEnd;
+      u4 uProc_start;
+      u4 uProc_end;
+      iStart = Hardware::iReadTsc(&uProc_start);
+
+
       m_eError = Api::eForkJobChild(tChildJobId,
                                     pInpTknVec, pInpTagSet,
                                     tParentId, tOriginId, tDistId,
@@ -219,6 +226,13 @@ void SeDeputy::vDeputyLoop(void)
       if (bIsPipeline)
         m_pRootJob->vProcessOutput();
 
+
+      iEnd = Hardware::iReadTsc(&uProc_end);
+      if (uProc_end == uProc_start) {
+        vTrace("Ticks %lld\n"_Stz, iEnd-iStart);
+     }
+
+
       vReportTime();
 
       m_pRootJob->vResetOutput();
@@ -231,8 +245,9 @@ void SeDeputy::vDeputyLoop(void)
       }
 
       // reset the C_TAG_TIME and C_TAG_NOWAIT
-      pInpTagSet->vDelete(C_TAG_TIME);
-      pInpTagSet->vDelete(C_TAG_NOWAIT);
+      m_pRootJob->pJobTags()->vDelete(C_TAG_TIME);
+      m_pRootJob->pJobTags()->vDelete(C_TAG_NOWAIT);
+      m_pRootJob->pJobTags()->vDelete(C_TAG_JOBMETRICS);
 
     }
 

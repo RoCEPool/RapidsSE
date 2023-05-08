@@ -1,0 +1,89 @@
+/*============================================================================*/
+/* _a_q14 -- Query14 (hand coded pipeline)                                    */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select
+  100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0
+           end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+from
+  lineitem,
+  part
+where
+  l_partkey = p_partkey
+  and l_shipdate >= '1995-09-01'
+  and l_shipdate < '1995-10-01';
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : LINEITEM, PART
+// JOIN ORDER : LINEITEM->PART
+// INDEXES    : IxL_SHIPDATE
+//              IxP_PARTKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * CHANGE SCAN TO INDEXSCAN
+//   * INDEXSCAN GETS THE FILTER PUSHED_DOWN
+//   * MINIMAL PROJECTIONS
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   CAN EXPLORE DIFFERENT JOIN ORDERS.
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// pipeline begin
+pipeline Query14
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    indexscan lineitem IxL_SHIPDATE "LBOUND DATE '1995-09-01' >= UBOUND DATE '1995-10-01' <"
+    | project "type INTEGER as L_PARTKEY L_PARTKEY ,
+               type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT"
+    | hash "type INTEGER L_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
+    | project " type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+                type DECIMAL )  }  }  J1_P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    project " type DECIMAL ) $1 sum  ,
+              type DECIMAL ) $2 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project " type DECIMAL ) $1 sum  ,
+              type DECIMAL ) $2 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as promo_revenue 100.00  $2 *  $1 /  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+// pipeline end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

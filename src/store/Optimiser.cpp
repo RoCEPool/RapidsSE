@@ -8,6 +8,21 @@
 #include "Dynamo.hpp"
 
 #include "SP_PipeSpec.hpp"
+#include "Job.hpp"
+#include "InfoSet.hpp"
+#include "Smoosh.hpp"
+#include "Smooth.hpp"
+#include "Fold.hpp"
+#include "MakeCode.hpp"
+#include "MakeFlat.hpp"
+#include "MakeOptimal.hpp"
+#include "MakeWeavable.hpp"
+#include "MakeSimpler.hpp"
+#include "CardIter.hpp"
+
+#include "CarryForward.hpp"
+#include "Error.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -26,17 +41,25 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
-  m_p_JobTags = p_JobTags;
+  m_p_JobTags      = p_JobTags;
   m_pUnOptPipeSpec = nullptr;
+  m_pCardCtl       = new CardCtl;
   
-  m_pCardCtl = new CardCtl;
-  
-  m_pBench   = new Bench(this);
-  m_pDissect = new Dissect(this);
-  m_pDrafter = new Drafter(this);
-  m_pWeave   = new Weave(this);
+  m_pBench       = new Bench(this);
 
-  m_pPaste   = new Card_SubSet;
+  m_pDissector   = new Dissector(m_pBench);
+  m_pWeaver      = new Weaver(m_pBench);
+
+  m_sJoinOrder   = "(none)"_Stz;
+
+  m_nJoinPermutations = 0;
+
+  for (i8 iIndex = 0; iIndex < C_PERMUTATIONS; iIndex++) {
+    m_sJoinPermutation[iIndex] = "(none)"_Stz;
+  }
+
+  m_pCI = new CardIter(m_pBench);
+
 
   _checkInitialised_(CN_OPTIMISER);
   
@@ -53,11 +76,12 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pCardCtl;
   
   delete m_pBench;
-  delete m_pDissect;
-  delete m_pDrafter;
-  delete m_pWeave;
-  
-  delete m_pPaste;
+
+  delete m_pDissector;
+  delete m_pWeaver;
+
+  delete m_pCI;
+  Card::vCardLeaks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +106,95 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* transform matrix                                                           */
+/*----------------------------------------------------------------------------*/
+bool Optimiser::bApplyTransformationMatrix(eEC* peErrorCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  bool bClean = true;
+
+  //m_pCardCtl->vReset();
+  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJECTION,0);
+  //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
+  //m_pCardCtl->vPrintSubCards(CK_KEY, true);
+
+  try {
+    //m_pOptimiser->pCardCtl()->vPrintSubCards(false, //CK_AGGELIST,
+    //CK_KEY, //CK_PROJECTION,
+    //CK_RPNCALC,
+    //                                          0);
+
+    if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE)) {
+      vTrace("JobTags\n"_Stz);
+      MY::pJob()->pJobTags()->vDumpSet(true);
+    }
+    pCardCtl()->vSaveShorter();
+    pCardCtl()->vSaveXhand();
+
+    vApplyTransformationMatrix();
+
+
+    bClean = true;
+  }
+
+  catch (Exception xException) {
+    // set peErrorCode
+    bClean = false;
+  }
+
+  catch (Error xError) {
+    *peErrorCode = xError.eErrorCode();
+    // todo: this should read xError.szErrorMsg()
+    //Stz* szError = xError.aErrorMsg();
+
+    bClean = false;
+  }
+
+  return bClean;
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply the recursive transformation matrix                                  */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vApplyTransformationMatrix(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
+
+  MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
+  pMakeSimpler->vSimplify();
+  delete pMakeSimpler;
+
+  Board::vValidate(m_pCI);
+
+  MakeFlat* pMakeFlat = new MakeFlat(m_pCI);
+  pMakeFlat->vFlatten();
+  delete pMakeFlat;
+
+  MakeOptimal* pMakeOptimal = new MakeOptimal(m_pCI);
+  pMakeOptimal->vOptimise();
+  delete pMakeOptimal;
+
+  MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
+  pMakeWeavable->vWeavable();
+  delete pMakeWeavable;
+
+  MakeCode* pMakeCode = new MakeCode(m_pCI);
+  pMakeCode->vSynthesise();
+  delete pMakeCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bench                                                                  */
+/*----------------------------------------------------------------------------*/
+Bench* Optimiser::pBench(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_pBench;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get cardCtl                                                                */
 /*----------------------------------------------------------------------------*/
 CardCtl* Optimiser::pCardCtl(void)
@@ -101,39 +214,15 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
   m_pUnOptPipeSpec = pm_pUnOptPipeSpec;
   
   SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
-  vTrace("Optimiser: %s\n"_Stz,spPipeSpec.sz());
+  //vTrace("Optimiser: \n%s\n"_Stz,spPipeSpec.sz());
       
-  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipeSpec);
-  
-  m_pBench->vPush(pBoard);
+  m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  //vOptimise();
+  //vTransform();
 
   return;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get drafter                                                                */
-/*----------------------------------------------------------------------------*/
-Drafter* Optimiser::pDrafter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  return m_pDrafter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get top board                                                              */
-/*----------------------------------------------------------------------------*/
-Board* Optimiser::pHeadBoard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  Board* pBoard = m_pBench->pHead();
-
-  return pBoard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,17 +236,67 @@ TagSet* Optimiser::pJobTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get paste buffer                                                          */
+/* get join order string                                                      */
 /*----------------------------------------------------------------------------*/
-Card_SubSet* Optimiser::pPaste(void)
+i8 Optimiser::nJoinPermutations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  return m_pPaste;
+  return m_nJoinPermutations;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set m_pUnOptPipeSpec                                                   */
+/* get join order string                                                      */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vJoinPermutations(i8 iJoinPermutations)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_nJoinPermutations = iJoinPermutations;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get join order string                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* Optimiser::szJoinPermutation(i8 iJoinPermutation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_sJoinPermutation[iJoinPermutation];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set join order string                                                      */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vJoinPermutation(i8 iJoinPermutation, Stz* szJoinPermutation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_sJoinPermutation[iJoinPermutation] = szJoinPermutation;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get join order string                                                      */
+/*----------------------------------------------------------------------------*/
+Stz* Optimiser::szJoinOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_sJoinOrder;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set join order string                                                      */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vJoinOrder(Stz* szJoinOrder)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_sJoinOrder = szJoinOrder;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set m_pUnOptPipeSpec                                                       */
 /*----------------------------------------------------------------------------*/
 void Optimiser::vPipeSpec(VertexSpec* pm_pUnOptPipeSpec)
 {
@@ -172,26 +311,23 @@ void Optimiser::vPipeSpec(VertexSpec* pm_pUnOptPipeSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop & delete top board                                                     */
+/* get query name                                                             */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vPopBoard(void)
+Stz* Optimiser::szQueryNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard = m_pBench->pPop();
-
-  if (pBoard)
-    delete pBoard;
+  return m_sQueryNm;
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop & delete top board                                                     */
+/* set query name                                                             */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vPushBoard(Board* pBoard)
+void Optimiser::vQueryNm(Stz* szQueryNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  m_pBench->vPush(pBoard);
+  m_sQueryNm = szQueryNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,10 +341,7 @@ void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
   
   delete m_pBench->pPop();
   
-  Board* pBoard = m_pDissect->pDissectSpec(m_pUnOptPipeSpec);
-
-  m_pBench->vAppend(pBoard);
-
+  m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,10 +351,10 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard = this->pHeadBoard();
-  m_pWeave->vWeaveOptStmt(pBoard);
+  Board* pBoard_query = m_pBench->pGetBoard((i8)0);
+  m_pWeaver->vWeaveOptStmt(pBoard_query);
 
-  Stz* szPipeline = m_pWeave->szOptStmt();
+  Stz* szPipeline = m_pWeaver->szOptStmt();
 
   return szPipeline;
 }
@@ -233,32 +366,49 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vOptimise(void)
+bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
+  Job* pJob = MY::pJob();
+  TagSet* pJobTags = pJob->pJobTags();
+
+  bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
+  bool bJoinPermutations = pJobTags->bHasName("<JoinPermutations>"_Stz);
+
   Board* pBoard = m_pBench->pHead();
-  CardRegs* pCardRegs = pBoard->pCardRegs();
 
-  //pBoard->vPrintBoard("vDissectSpec >> "_Stz);
-  
-  pBoard->vResolve_Symbols();
-  //pBoard->vResolve_RootStreams();
+  //bool bClean = m_pTransformer->bTransform(peErrorCode);
+  bool bClean = bApplyTransformationMatrix(peErrorCode);
 
-  //pBoard->vPrintBoard("vResolve_RootStreams >> "_Stz);
-//
-//  // rules
-//
-//  if (pBoard->bMay_Scan_Filter_to_IndexScan()) {
-//
-//    bool bRun = pBoard->bRule_Scan_Filter_to_IndexScan();
-//    UNUSED(bRun);
-//
-//    pCardRegs->vResetCardRegs();
-//  }
-  
-  //Cue::vGetReturn("$$$$$$ >>"_Stz);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (bJoinOrder) {
+    RASSERT(pInfoSet);
+    Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    m_sJoinOrder.szStz(),
+                                    C_VARGS_END);
+  }
+  else if (bJoinPermutations) {
+    RASSERT(pInfoSet);
+    for (i8 iIndex = 0; iIndex < m_nJoinPermutations; iIndex++)
+      Row *pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                      m_sJoinPermutation[iIndex].szStz(),
+                                      C_VARGS_END);
+  }
+  else {
+
+    bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
+    if (bClean && bInteractive) {
+      m_pWeaver->vWeaveOptStmt(pBoard);
+      vTrace("%s\n"_Stz, m_pWeaver->szOptStmt());
+      Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
+    }
+  }
+
+   return bClean;
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

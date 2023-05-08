@@ -18,7 +18,8 @@ struct Ent_int
     u8 m_uPayload :  1; // is there is a payload? (not used yet)
     u8 m_uKind    :  4; // kind (would be KE_INT)
     u8 m_uFree    :  1; // free entry
-    u8 m_uSpare   :  7; // spare
+    u8 m_uDesc    :  1; // has descending key?
+    u8 m_uSpare   :  6; // spare
   } Rrf;         // 64b                                             // 1 word
 
   tET m_taNextEntry[C_MAX_LVL_LEVELS];  // tickets                  // 2 words

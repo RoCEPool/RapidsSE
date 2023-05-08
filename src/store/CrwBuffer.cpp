@@ -271,16 +271,18 @@ RowTray* CrwBuffer::pRowTray(void)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows)
+void CrwBuffer::vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
     
   CrwBuffer* pNextBuffer = this;
-  
+
   do {
     
     nBuffers++;
     nRows += (pNextBuffer->nRows());
+
+    jSumRowBytes += pNextBuffer->nAllotedBytes();
     
 //    if (bDetailed)
 //      sAnalysis.vCatSprint("row: (%s, %lld, %5lld, %lld )\n"_Stz,
@@ -647,6 +649,33 @@ i8 CrwBuffer::nRowSize(void)
 
   return m_oRowTray.pNub()->nHeadBytes();
 }
+
+/*----------------------------------------------------------------------------*/
+/* get estimate for size of actual row                                        */
+/*----------------------------------------------------------------------------*/
+i8 CrwBuffer::jRowSizeEst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  i8 nHeads = m_oRowTray.pNub()->nHeads();
+
+  i8 jSpaceUsed = m_oRowTray.pNub()->nAllotedBytes();
+
+  i8 jRowSize = jSpaceUsed / nHeads;
+
+  return jRowSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row size of the buffer                                             */
+/*----------------------------------------------------------------------------*/
+i8 CrwBuffer::nAllotedBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  return m_oRowTray.pNub()->nAllotedBytes();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get the row size of the buffer                                             */

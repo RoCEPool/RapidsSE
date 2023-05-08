@@ -85,10 +85,18 @@
   
   [job].tagSet@ sFileNm_raw str.replaceTags locals| sFileNm |
 
-  PipeIn[].pipeOut
-
   // open the file for reading
   sFileNm OPEN_READ op__file if
+
+    // Determine the line ending if it hasn't been explicitly set.
+    // We must do this before PipeIn[].pipeOut so that it is known
+    // before ToKeyHshRow[].new is executed.
+
+    "<record_ends>" [job].tagSet@ tagSet.hasName not if
+      "<record_ends>" InfoSet[].detectLineEnding [job].tagSet@ tagSet.insertStr
+    then
+
+    PipeIn[].pipeOut
 
     // get size of file
     File0[].size C_1Mb / to iFileSizeMb
@@ -108,6 +116,9 @@
 
     // pipeout the infoset
     InfoSet[].pipeOut
+
+  else
+    PipeIn[].pipeOut
 
   then
 

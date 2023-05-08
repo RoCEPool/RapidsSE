@@ -570,7 +570,7 @@ void Grid::vShowGrid(void)
 void Grid::vShowNetwork(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-
+/*
   Node*   pNode;
   Socket* pSndSkt;
   Socket* pRcvSkt;
@@ -697,7 +697,7 @@ void Grid::vShowNetwork(void)
   }
 
   vDropRead();
-  
+  */
   vTrace(";;\n"_Stz);
 }
 

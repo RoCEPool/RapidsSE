@@ -13,6 +13,7 @@
 /se.ready
 /se*.log
 jmeter.log
+/queryLibs
 
 # For the Bamboo box
 /TPCH/

@@ -10,6 +10,7 @@
 
 #include "NamedBuffer.hpp"
 #include "LogicUnit.hpp"
+#include "DataBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

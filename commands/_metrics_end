@@ -1,0 +1,115 @@
+/*============================================================================*/
+/* _jo0_metrics_end -- end of metrics                                         */
+/*============================================================================*/
+
+// disable metrics
+metricsCtl disable;
+
+// sleep
+sleep 30;
+
+// generate system report data
+sysReport;
+
+print "-------------------------------------------";
+print "NETWORK VOLUME FOR JOIN ORDER TEST ........";
+
+// get network data
+select
+       thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(sendCount)  as sCount,
+       sum(sendBytes)  as sBytes,
+       sum(recvCount)  as rCount,
+       sum(recvBytes)  as rBytes
+  from
+       se__jobNetwork
+ group
+       by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "CRWBUFFERS FOR JOIN TEST ..................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as crwBuffersCount,
+       sum(bytes)      as crwBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'CRWBUFFER'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "ROWUFFERS FOR JOIN TEST ...................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as crwBuffersCount,
+       sum(bytes)      as crwBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'ROWBUFFER'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "BROADCASTS FOR JOIN TEST ..................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as broadCastCount,
+       sum(bytes)      as broadcastBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'SY_BROADCAST'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "HASHCASTS FOR JOIN TEST ..................";
+
+select thisNodeName    as thisNode,
+       otherNodeName   as otherNode,
+       sum(cnt)        as hashCastCount,
+       sum(bytes)      as hashCastBuffersBytes
+       from se__jobNetDissect
+       where socket = 'sndSkt'
+       and kind = 'SY_HASHCAST'
+        group
+              by thisNodeName, otherNodeName;
+
+print "-------------------------------------------";
+print "CRWBUFFERS received by stage ..............";
+
+select thisNodeName, stageName , sum(operand) from se__jobOperands where operandName = 'EV_D_CRWBUFFER' and opName = 'consumeOp' group by stageName, thisNodeName;
+
+print "-------------------------------------------";
+print "ROWBUFFERS received by stage ..............";
+
+select thisNodeName, stageName , sum(operand) from se__jobOperands where operandName = 'EV_D_ROWBUFFER' and opName = 'consumeOp' group by stageName, thisNodeName;
+
+print "-------------------------------------------";
+print "BUFFERS received by stage ....";
+
+select thisNodeName, stageName , sum(operands), sum(buffIn) from se__jobOperators where opName = 'consumeOp' group by stageName, thisNodeName;
+
+print "-------------------------------------------";
+
+sleep 2;
+
+antbl se__jobMetrics;
+antbl se__jobOperands;
+antbl se__jobOperators;
+
+antbl se__jobNetwork;
+antbl se__jobNetDissect;
+
+antbl se__sysMetrics;
+antbl se__sysLocks;
+
+bpa;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

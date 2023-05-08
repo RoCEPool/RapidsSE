@@ -50,7 +50,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
 
   char* azFrag = (char*)
       "\n"
-      "\n  void vNeverReach(i8 iLine);"
+      "\n  void vNeverReach(i8 i_Line);"
       "\n  #define NEVER_REACH vNeverReach(__LINE__)"
       "\n"
       "\n  typedef char i1;"
@@ -71,8 +71,8 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
       "\n  static const i8 C_I8_MIN = -9223372036854775806;"
       "\n  static const i8 C_I8_MAX = 9223372036854775806;"
-      "\n  static const i8 C_BCD_MIN = -140737488355327;"
-      "\n  static const i8 C_BCD_MAX = 140737488355327;"
+      "\n  static const i8 C_BCD_MIN = -36028797018963967;"
+      "\n  static const i8 C_BCD_MAX = 36028797018963967;"
       "\n  static const i8 C_CRW_HEADBYTES = 32;"
       "\n  static const i8 C_CRW_FIRSTHEAD = 640;"
       "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
@@ -313,6 +313,8 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    i8    iMixIn;"
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
+      "\n    i8    iLeftOuterRow;"
+      "\n    i8    iJoinedRows;"
       "\n    i8    i_BaseOffsetDataJ;"
       "\n    i8    i_BaseOffsetDataT;"
       "\n    i8    iIndexScanBuffer;"

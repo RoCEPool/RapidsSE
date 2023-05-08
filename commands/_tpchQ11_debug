@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* _tpchQ11_debug                                                             */
+/*============================================================================*/
+
+// --initial _tpchQ11_debug
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+
+select * from dummy;
+
+///////////////////////////////////////////////////////////////
+// QUERY 11 :  generates filter    " type BOOLEAN $2 __sq02 > "
+///////////////////////////////////////////////////////////////
+
+trackMemory;
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpchQ11_debug"
+select
+  ps_partkey,
+  sum(ps_supplycost * ps_availqty) as value
+from
+  partsupp,
+  supplier,
+  nation
+where
+  ps_suppkey = s_suppkey
+  and s_nationkey = n_nationkey
+  and n_name = 'IRAQ'
+group by
+  ps_partkey having
+    sum(ps_supplycost * ps_availqty) >
+    (
+      select
+        sum(ps_supplycost * ps_availqty) * 0.0001
+      from
+        partsupp,
+        supplier,
+        nation
+      where
+        ps_suppkey = s_suppkey
+        and s_nationkey = n_nationkey
+        and n_name = 'IRAQ'
+    )
+order by
+   value desc;
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+ rows: 20
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

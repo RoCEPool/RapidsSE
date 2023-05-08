@@ -1,0 +1,175 @@
+/*============================================================================*/
+/* _a_q7 -- Query7 (hand coded pipeline)                                      */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select
+    supp_nation,
+    cust_nation,
+    l_year,
+    sum(volume) as revenue
+from (
+    select
+       n1.n_name as supp_nation,
+       n2.n_name as cust_nation,
+       extract(year from l_shipdate) as l_year,
+       l_extendedprice * (1 - l_discount) as volume
+     from
+       supplier,
+       lineitem,
+       orders,
+       customer,
+       nation n1,
+       nation n2
+     where
+       s_suppkey = l_suppkey
+       and o_orderkey = l_orderkey
+       and c_custkey = o_custkey
+       and s_nationkey = n1.n_nationkey
+       and c_nationkey = n2.n_nationkey
+       and ( (n1.n_name = 'FRANCE' and n2.n_name = 'GERMANY')
+       or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE'))
+       and l_shipdate between '1995-01-01' and '1996-12-31'
+
+     ) as shipping
+ group by
+   supp_nation,
+   cust_nation,
+   l_year
+ order by
+   supp_nation,
+   cust_nation,
+   l_year;
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : SUPPLIER, LINEITEM, ORDERS, CUSTOMER, NATION
+// JOIN ORDER : NATION->CUSTOMER->ORDERS->LINEITEM->SUPPLIER->NATION
+// INDEXES    : IxC_NATIONKEY
+//              IxO_CUSTKEY
+//              IxL_ORDERKEY
+//              IxS_SUPPKEY
+//              IxN_NATIONKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * SORT NOT REQUIRED AS ORDER BY ON SAME COLUMNS AS GROUP BY
+//   * WHEN SCANNING NATION ADDED FILTER ON n2.n_name FOR 'FRANCE' AND 'GERMANY'
+//     AS LATER FILTER IS:
+//       (   (n1.n_name = 'FRANCE' and n2.n_name = 'GERMANY')
+//         or (n1.n_name = 'GERMANY' and n2.n_name = 'FRANCE')
+//       )
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   CAN EXPLORE DIFFERENT JOIN ORDERS.
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// pipeline begin
+pipeline Query7
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     scan customer
+     | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY"
+     | combined 0
+     | next
+
+  stage S02 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | filter "type BOOLEAN J1_N_NAME 'FRANCE' == J1_N_NAME 'GERMANY' == OR"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as N2_N_NAME J1_N_NAME"
+    | combined 0
+    | next
+
+   stage S03 on all partitions :
+     indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+     | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME"
+     | hash "type INTEGER O_ORDERKEY"
+     | combined 0
+     | next hashcast
+
+   stage S04 on all partitions :
+     indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+     | filter "type BOOLEAN } DATE '1995-01-01'  DATE '1996-12-31' J1_L_SHIPDATE between"
+     | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR J1_L_SHIPDATE extract_year ,
+                type DECIMAL as volume J1_L_EXTENDEDPRICE 1.00 J1_L_DISCOUNT -  * "
+     | hash "type INTEGER L_SUPPKEY "
+     | combined 0
+     | next hashcast
+
+   stage S05 on all partitions :
+     indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
+     | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR L_YEAR ,
+                type DECIMAL as VOLUME VOLUME"
+     | combined 0
+     | next
+
+   stage S06 on all partitions :
+     indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
+     | filter "type BOOLEAN J1_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
+                            J1_N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
+     | project "type VARCHAR as N1_N_NAME J1_N_NAME ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR L_YEAR ,
+                type DECIMAL as VOLUME VOLUME"
+     | combined 0
+     | next
+
+  stage S07 on all partitions :
+     aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+                      type VARCHAR as N2_N_NAME N2_N_NAME ,
+                      type INTEGER as L_YEAR L_YEAR aggregates
+                      type VARCHAR as N1_N_NAME $K1 ,
+                      type VARCHAR as N2_N_NAME $K2 ,
+                      type INTEGER as L_YEAR $K3 ,
+                      type DECIMAL AS REVENUE ) VOLUME sum  "
+     | combined 0
+     | next
+
+   stage S08 on all nodes :
+    aggreg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+                     type VARCHAR as N2_N_NAME N2_N_NAME ,
+                     type INTEGER as L_YEAR L_YEAR
+                     aggregates
+                     type VARCHAR as N1_N_NAME $K1 ,
+                     type VARCHAR as N2_N_NAME $K2 ,
+                     type INTEGER as L_YEAR $K3 ,
+                     type DECIMAL AS REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S09 on origin :
+     aggreg " groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
+                      type VARCHAR as CUST_NATION N2_N_NAME ,
+                      type INTEGER as L_YEAR L_YEAR
+                      aggregates
+                      type VARCHAR as N1_N_NAME $K1 ,
+                      type VARCHAR as N2_N_NAME $K2 ,
+                      type INTEGER as L_YEAR $K3 ,
+                      type DECIMAL AS REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+// pipeline end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

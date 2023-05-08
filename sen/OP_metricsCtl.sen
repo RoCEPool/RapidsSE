@@ -7,53 +7,36 @@
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
 : metricsCtl_action
 
-  <which> "jobMetrics" str.same if
-  
-    <setting> "disable" str.same if
-      AM::jobMetricsDisable
-    else
-    <setting> "enable" str.same if
-      AM::jobMetricsEnable
-    then then
-
+  <setting> "disable" str.same if
+    AM::sysMetricsDisable
   else
-  <which> "sysMetrics" str.same if
-
-    <setting> "disable" str.same if
-      AM::sysMetricsDisable
-    else
-    <setting> "enable" str.same if
-      AM::sysMetricsEnable
-    then then
-
+  <setting> "enable" str.same if
+    refTimer::reset
+    locks::reset
+    network::reset
+    AM::sysMetricsEnable
   else
-  <which> "derefMetrics" str.same if
+    EC_INVALID_COMMAND op__execErr
+  then then
 
-    <setting> "disable" str.same if
-      AM::derefMetricsDisable
-    else
-    <setting> "enable" str.same if
-      AM::derefMetricsEnable
-    then then
-
-  else
-  then then then
-  
-  
   true
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: metricsCtl :: metricsCtl <which> <setting> ;
+cmdSyntax: metricsCtl :: metricsCtl <setting> ;
 
 : metricsCtl_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <params>  = 2
+    <params>  = 1
 
     <opEntry> = "metricsCtl_op"
 }

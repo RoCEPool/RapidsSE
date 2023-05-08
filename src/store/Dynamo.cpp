@@ -14,6 +14,7 @@
 #include "Grid.hpp"
 #include "Procedure.hpp"
 #include "DeckSpec.hpp"
+#include "ParamsSpec.hpp"
 
 #include "SP_PipeSpec.hpp"
 #include "SP_Token.hpp"
@@ -42,6 +43,10 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   
   m_pScanner = nullptr;
   m_pCurrVertexSpec = nullptr;
+
+  m_pParamsSpec = nullptr;
+
+  m_bHasCode = false;
   
   _checkInitialised_(CN_DYNAMO);
   
@@ -54,11 +59,17 @@ Dynamo::Dynamo(TagSet* p_JobTags)
 Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-      
-  while (VertexSpec *pVertexSpec = pPop())
+
+  if (MY::pJob()->pJobTags()->bHasName("<CallingOptimiser>"_Stz))
+    vDebugPoint();
+
+  while (VertexSpec *pVertexSpec = pPop()) {
     delete pVertexSpec;
-  
+  }
+
   delete m_pScanner;
+
+  delete m_pParamsSpec;
 }
 
 
@@ -109,7 +120,10 @@ VertexSpec* Dynamo::pCompile(Stz* szPipelineStmt)
   m_szPipelineStmt = szPipelineStmt;
   
   m_pScanner = new Scanner(m_szPipelineStmt);
-  
+
+  if (MY::pJob()->pJobTags()->bHasName("<CallingOptimiser>"_Stz))
+    vDebugPoint();
+
   if (! (m_pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
          m_pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
 
@@ -151,6 +165,7 @@ bool Dynamo::bCompile(void)
     return false;
   }
 
+
   return true;
 }
 
@@ -169,16 +184,25 @@ bool Dynamo::bPass1_collect(void)
     return false;
 
   if (! (pTkn()->bSame("TAG"_Stz) ||
-        pTkn()->bSame("BEGIN"_Stz)))
+         pTkn()->bSame("PARAMS"_Stz) ||
+         pTkn()->bSame("BEGIN"_Stz)))
     return false;
 
   while (pTkn()->bSame("TAG"_Stz))
     if (! bCollectTag())
       return false;
 
+  if (pTkn()->bSame("PARAMS"_Stz))
+    if (! bCollectParams())
+      return false;
+
   if (! bCollectBeginEnd())
     return false;
 
+  bool bSawCode= bCollectCode();
+  if (bSawCode) {
+    vTrace("SawCode:\n %s\n"_Stz,szCode());
+  }
   return true;
 }
 
@@ -236,6 +260,27 @@ bool Dynamo::bCollectTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect params                                                             */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectParams(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  if (!pTkn()->bSame("PARAMS"_Stz))
+    return false;
+  vTokenAccept();
+                                                  // TODO: add parameter ordinal
+  s32 sParamNm = pTkn()->szChars();
+
+  m_pParamsSpec = new ParamsSpec;
+  m_pParamsSpec->vAppend(new ParamSpec(sParamNm));
+
+  vTokenAccept();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect a BEGIN { STAGE ... } END sequence                                 */
 /*----------------------------------------------------------------------------*/
 bool Dynamo::bCollectBeginEnd(void)
@@ -257,6 +302,32 @@ bool Dynamo::bCollectBeginEnd(void)
   if (! pTkn()->bSame("END"_Stz))
     return false;
   vTokenAccept();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect a __code__ ... __endCode__ sequence                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bCollectCode(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  Token* pToken = pTkn();
+
+  if (! pToken->bSame("__cpp_code__"_Stz))
+    return false;
+
+  vTokenAccept();
+  pToken = pTkn();
+
+  if (pToken->eToken() != TN_STRING)
+    return false;
+
+  vCode(pToken->szChars());
+
+  vTokenAccept();
+  pToken = pTkn();
 
   return true;
 }
@@ -306,6 +377,11 @@ bool Dynamo::bCollectStage(void)
 
   m_pCurrVertexSpec->vAddStageSpec(p_StageSpec);
 
+  if (m_pParamsSpec) {
+
+    m_pCurrVertexSpec->pDeckSpec()->vParamsSpec(m_pParamsSpec);
+    m_pParamsSpec = nullptr;
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! bCollectTopology(p_StageSpec))
@@ -1038,7 +1114,7 @@ bool Dynamo::bPass3_includes(void)
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
     if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
-      vTrace("Has Include 0: %lls\n"_Stz, szIncludePipNm);
+      vTrace("Has Include 0: %s\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
   }
@@ -1046,7 +1122,7 @@ bool Dynamo::bPass3_includes(void)
   if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
     if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
-      vTrace("Has Include 1: %lls\n"_Stz, szIncludePipNm);
+      vTrace("Has Include 1: %s\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
   }
@@ -1054,7 +1130,7 @@ bool Dynamo::bPass3_includes(void)
   if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
     if (! m_pCurrVertexSpec->m_sVertexNm.bSame(szIncludePipNm)) {
-      vTrace("Has Include 2: %lls\n"_Stz, szIncludePipNm);
+      vTrace("Has Include 2: %s\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
   }
@@ -1081,7 +1157,7 @@ bool Dynamo::bPass3_include(Stz *szIncludePipNm)
                                            pIncludeTknVec,
                                            &pwMatchedProc);
 
-  vTrace("Including: %lls\n"_Stz, sPipelineSmt.szStz());
+  vTrace("Including: %s\n"_Stz, sPipelineSmt.szStz());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1167,6 +1243,52 @@ void Dynamo::vTokenAccept(void)
 
   m_pScanner->vTokenAccept();
 }
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bHasCode(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  return m_bHasCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vHasCode(bool bHasCode)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  m_bHasCode = bHasCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Dynamo::szCode(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  return m_sCode.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vCode(Stz* szCode)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  m_sCode = szCode;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* _tpchQ13_debug                                                             */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+
+select * from dummy;
+
+////////////////////////////////////////////////////////////////
+// QUERY 13 :  CRASHING
+///////////////////////////////////////////////////////////////
+
+trackMemory;
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpch_debug"
+select
+       c_count,
+       count(*) as custdist
+  from (
+        select
+               c_custkey,
+               count(o_orderkey) as c_count
+          from
+               customer
+          left outer join orders
+                              on c_custkey = o_custkey
+                             and o_comment not like '%special%requests%'
+         group by c_custkey
+       ) as c_orders (c_custkey, c_count)
+ group by c_count
+ order by custdist desc,
+          c_count  desc;
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+ rows:
+   (10,135)
+   (9,11)
+   (8,2)
+   (20,1)
+   (0,1)
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -33,7 +33,7 @@ QueryContext::QueryContext(void)
   m_nStmtParsed      = 0;
   m_nStmtSucceeded   = 0;
   m_nStmtFailed      = 0;
-  m_iQueryStartNanos = 0;
+  m_uQueryStartNanos = 0;
   m_pStmtCtxList = new StatementCtxList;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUERYCONTEXT,_FOOTER_);
@@ -65,7 +65,7 @@ void QueryContext::vReset()
   m_nStmtParsed        = 0;
   m_nStmtSucceeded     = 0;
   m_nStmtFailed        = 0;
-  m_iQueryStartNanos   = 0;
+  m_uQueryStartNanos   = 0;
   m_pStmtCtxList->vDeleteAll();
 }
 
@@ -81,7 +81,7 @@ void QueryContext::vInit(com::rapidsdata::wirelineprotocol::messages::v5::QueryE
   m_nStmtParsed        = 0;
   m_nStmtSucceeded     = 0;
   m_nStmtFailed        = 0;
-  m_iQueryStartNanos   = Hardware::iReadClock();
+  m_uQueryStartNanos   = Hardware::uReadClock();
   //m_pStmtCtxList
 
   // Parse out each statement in the batch from the query and create a StatementContext
@@ -231,9 +231,9 @@ i8 QueryContext::nStmtFailed()
 /*----------------------------------------------------------------------------*/
 /* Get the query start time in nanoseconds                                    */
 /*----------------------------------------------------------------------------*/
-i8 QueryContext::iQueryStartNanos()
+i8 QueryContext::uQueryStartNanos()
 {
-  return m_iQueryStartNanos;
+  return m_uQueryStartNanos;
 }
 
 /*----------------------------------------------------------------------------*/

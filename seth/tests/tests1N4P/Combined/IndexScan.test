@@ -166,17 +166,17 @@ begin
 
   stage stageB on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | project " type INTEGER ) as SUM_KEY L_ORDERKEY sum ,
+    | aggreg " type INTEGER ) as SUM_KEY L_ORDERKEY sum ,
                  type INTEGER ) as CNT_KEY L_ORDERKEY count "
     | combined 0
     | next
   stage stageC on all nodes :
-    project " type INTEGER as SUM_KEY ) SUM_KEY sum ,
+    aggreg " type INTEGER as SUM_KEY ) SUM_KEY sum ,
                  type INTEGER as CNT_KEY ) CNT_KEY sum "
     | combined 0
     | next
   stage stageD on origin :
-    project " type INTEGER as SUM_KEY ) SUM_KEY sum ,
+    aggreg " type INTEGER as SUM_KEY ) SUM_KEY sum ,
                  type INTEGER as CNT_KEY ) CNT_KEY sum "
     | combined 0
     | next
@@ -195,21 +195,21 @@ begin
     start | pulse once | stageB
   stage stageB on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | aggreg " groupby type INTEGER L_PARTKEY
+    | gbyAgg " groupby type INTEGER L_PARTKEY
                 aggregates type INTEGER as PKEY $K1 ,
                 type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
                 type INTEGER as CNT_KEY ) L_ORDERKEY count "
     | combined 0
     | next
   stage stageC on all nodes :
-    aggreg " groupby type INTEGER PKEY
+    gbyAgg " groupby type INTEGER PKEY
               aggregates type INTEGER as PKEY $K1 ,
               type INTEGER as SUM_KEY ) SUM_KEY sum ,
               type INTEGER as CNT_KEY ) CNT_KEY sum "
     | combined 0
     | next
   stage stageD on origin :
-    aggreg " groupby type INTEGER PKEY
+    gbyAgg " groupby type INTEGER PKEY
               aggregates type INTEGER as PKEY $K1 ,
               type INTEGER as SUM_KEY ) SUM_KEY sum ,
               type INTEGER as CNT_KEY ) CNT_KEY sum "

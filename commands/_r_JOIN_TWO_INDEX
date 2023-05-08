@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* _r_JOIN_TWO_INDEX -- join with two possible indexes                        */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index L_idx_SHIPDATE  on lineitem (L_SHIPDATE );
+create index L_idx_ORDERKEY  on lineitem (L_ORDERKEY );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain stage transliterate
+select count(*)
+  from Orders, Lineitem
+ where
+       O_ORDERKEY  = L_ORDERKEY
+   //and
+   //    O_ORDERDATE = L_SHIPDATE
+;
+
+/optimise
+/glean_cue_from = "vSeries_75_EE_operators"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_JOIN_TWO_INDEX"
+select count(*)
+  from Orders, Lineitem
+ where
+       O_ORDERKEY  = L_ORDERKEY
+   //and
+   //    O_ORDERDATE = L_SHIPDATE
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

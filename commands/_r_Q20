@@ -1,0 +1,57 @@
+/*============================================================================*/
+/* _r_Q20 -- TCPH query 20 test                                               */
+/*============================================================================*/
+
+// --initial _r_Q20
+
+_r_schema
+
+create index N_idx0  on Nation   (N_NATIONKEY);
+create index P_idx0  on Part     (P_PARTKEY);
+create index PS_idx0 on PartSupp (PS_PARTKEY);
+create index S_idx0  on Supplier (S_SUPPKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q20"
+select s_name, // board[0]
+       s_address,
+       s_nationkey
+  from Supplier  // tblSyn a
+   //, Nation    // tblSyn b
+ where
+       s_suppkey in
+                    ( /* Q20_1 -- 52_W_L_NC_I board[1] */
+                      select ps_suppkey // tblSyn c
+                        from PartSupp
+                       where
+                             ps_partkey in
+                                           ( /* Q20_1_1 -- 52_W_L_NC_I board[3] */
+                                             select p_partkey // tblSyn e
+                                               from Part
+                                              where p_name like 'forest%'
+                                           )
+                         and
+                             ps_availqty >
+                                           ( /* Q20_1_2 -- 24_W_A_C_ro board[2] */
+                                             select 0.5 * sum(l_quantity)
+                                               from LineItem // tblSyn d
+                                              where L_PARTKEY = PS_PARTKEY
+                                              //and L_SUPPKEY = PS_SUPPKEY
+                                                and l_shipdate >= '1994-01-01'
+                                                and l_shipdate < '1995-01-01'
+                                            )
+                     )
+ //and s_nationkey = n_nationkey
+ //and n_name = 'CANADA'
+ order by s_name
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

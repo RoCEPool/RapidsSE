@@ -1,0 +1,29 @@
+/*============================================================================*/
+/* _jo2_PS_S_N_R -- join order test                                           */
+/*============================================================================*/
+
+// --initial _jo2_PS_S_N_R
+
+__TPCH_SCHEMA
+
+/jobMetrics
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo2_PS_S_N_R"
+select
+       count(*)
+  from
+       PartSupp, // 131
+       Supplier, //   2
+       Nation,   // R 1
+       Region    // R 1
+ where
+       PS_SUPPKEY  = S_SUPPKEY
+   and S_NATIONKEY = N_NATIONKEY
+   and N_REGIONKEY = R_REGIONKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

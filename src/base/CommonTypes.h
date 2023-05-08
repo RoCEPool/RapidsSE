@@ -13,9 +13,9 @@ typedef i8 tXN; // opaque type for transaction number
 //       So the valid user range of integers is as follows:
 static const i8 C_INT_MIN = -9223372036854775806LL;
 static const i8 C_INT_MAX =  9223372036854775806LL;
-
-static const i8 C_BCD_MIN = -140737488355327;
-static const i8 C_BCD_MAX = 140737488355327;
+//36028797018963967
+static const i8 C_BCD_MIN = -36028797018963967;
+static const i8 C_BCD_MAX = 36028797018963967;
 static const i8 C_BCD_SCALE_MIN = -128;
 static const i8 C_BCD_SCALE_MAX = 127;
 
@@ -103,8 +103,7 @@ public:
   operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
 
   void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
-  void vSet(i8 iMantissa, i8 iScale)   { T.m_iSpare = 0;
-                                         T.m_iMantissa = iMantissa; // set value
+  void vSet(i8 iMantissa, i8 iScale)   { T.m_iMantissa = iMantissa; // set value
                                          T.m_iScale = iScale; }
   void vSetMax(void)                { T.m_iBcd = C_I8_MAX; }  // set max value
   void vSetMid(void)                { T.m_iBcd = C_I8_MID; }  // set mid value

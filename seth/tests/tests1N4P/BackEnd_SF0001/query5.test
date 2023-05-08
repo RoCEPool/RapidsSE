@@ -11,12 +11,13 @@
       and c_nationkey = s_nationkey
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
-      and r_name = 'AMERICA'   // ASIA to AMERICA for SF0001 datset
+      and r_name = 'ASIA'
       and o_orderdate >= '1994-01-01'
       and o_orderdate < '1995-01-01'
       group by n_name
-      order by revenue desc;
+      order by revenue asc;
 
+// ASIA to AMERICA for SF0001 datset
 select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
       from customer, orders, lineitem, supplier, nation, region
       where c_custkey = o_custkey
@@ -25,7 +26,7 @@ select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
       and c_nationkey = s_nationkey
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
-      and r_name = 'ASIA'
+      and r_name = 'AMERICA'
       and o_orderdate >= '1994-01-01'
       and o_orderdate < '1995-01-01'
       group by n_name
@@ -84,15 +85,15 @@ begin
     | stageMarker10522
   stage stageMarker10522 on all partitions :
     filter " type BOOLEAN  $1 $10 ==  $18 $9 ==  and  $20 $34 ==  and  $4 $37 ==  and  $37 $41 ==  and  $43 $45 ==  and  $46 ''AMERICA''  ==  and  $13 DATE ''1994-01-01''  >=  and  $13 DATE ''1995-01-01''  <  and  "
-    | aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  "
+    | gbyAgg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  $23 1.  $24 -  *  sum  "
     | combined 0
     | stageMarker10525
   stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | stageMarker10528
   stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
     | sort " type DECIMAL $2 DESC  "
     | combined 0
     | stageLast
@@ -172,22 +173,22 @@ begin
                           J5_R_NAME 'AMERICA'  ==  and
                           J1_O_ORDERDATE DATE '1994-01-01'  >=  and
                           J1_O_ORDERDATE DATE '1995-01-01'  <  and  "
-    | aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
+    | gbyAgg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
     | combined 0
     | next
 
   stage stageNew on origin :
-    sort " type DECIMAL $2 ASC  "
+    sort " type DECIMAL $2 DESC  "
     | combined 0
     | next
 
@@ -197,9 +198,12 @@ begin
     | first
 end ;
 
-rows:
- ('PERU',-14237.80)
+ordered rows:
  ('ARGENTINA',-8058.15)
+ ('PERU',-14237.80)
+
+sleep 4;
+success
 
 //------------------------------------------------------------------------------
 // OPTIMIZED Q5_v2
@@ -251,22 +255,22 @@ begin
     | next
 
   stage stageMarker10522 on all partitions :
-    aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
   stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
     | combined 0
     | next
 
   stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
     | combined 0
     | next
 
   stage stageNew on origin :
-    sort " type DECIMAL $2 ASC  "
+    sort " type DECIMAL $2 DESC  "
     | combined 0
     | next
 
@@ -276,105 +280,26 @@ begin
     | first
 end ;
 
-rows:
- ('PERU',-14237.80)
+ordered rows:
  ('ARGENTINA',-8058.15)
+ ('PERU',-14237.80)
 
+sleep 4;
+success
 
 //------------------------------------------------------------------------------
 // OPTIMIZED Q5_v3
 // switched customer and orders join order
 //------------------------------------------------------------------------------
 
-pipeline unamed
+pipeline Query5
 begin
   stage stageStart on origin :
     start
     | pulse once
     | next
 
-  stage stageMarker10504 on all partitions :
-    scan rapidsse public Orders
-    | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
-                                O_ORDERDATE DATE '1995-01-01'  <  and  "
-    | combined 0
-    | next
-
-  stage stageMarker10507 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "bound $I1 O_CUSTKEY =="   // Customer - J1
-    | hash "type INTEGER O_ORDERKEY"
-    | combined 0
-    | next hashcast
-
-  stage stageMarker10510 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="   // Lineitem - J2
-    | hash "type INTEGER J2_L_SUPPKEY"
-    | combined 0
-    | next hashcast
-
-  stage stageMarker10513 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 J2_L_SUPPKEY =="   // Supplier - J3
-    | filter " type BOOLEAN J1_C_NATIONKEY J3_S_NATIONKEY == "
-    | hash "type INTEGER J3_S_NATIONKEY"
-    | combined 0
-    | next hashcast
-
-  stage stageMarker10516 on all partitions :
-    indexJoin Nation IxN_NATIONKEY expr "bound $I1 J3_S_NATIONKEY =="   // Nation - J4
-    | hash "type INTEGER J4_N_REGIONKEY"
-    | combined 0
-    | next hashcast
-
-  stage stageMarker10519 on all partitions :
-    indexJoin Region IxR_REGIONKEY expr "bound $I1 J4_N_REGIONKEY =="  // REGION - J5
-    | filter " type BOOLEAN J5_R_NAME 'AMERICA'  ==  "
-    | combined 0
-    | next
-
-  stage stageMarker10522 on all partitions :
-    aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
-    | combined 0
-    | next
-
-  stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
-    | combined 0
-    | next
-
-  stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
-    | combined 0
-    | next
-
-  stage stageNew on origin :
-    sort " type DECIMAL $2 ASC  "
-    | combined 0
-    | next
-
-  stage stageLast on origin :
-    output
-    | sink
-    | first
-end ;
-
-rows:
- ('PERU',-14237.80)
- ('ARGENTINA',-8058.15)
-
-
-//------------------------------------------------------------------------------
-// OPTIMIZED Q5_v4
-// added projections to reduce data flow
-//------------------------------------------------------------------------------
-
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-
-  stage stageMarker10504 on all partitions :
+  stage S00 on all partitions :
     scan rapidsse public Orders
     | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
                             O_ORDERDATE DATE '1995-01-01'  <  and  "
@@ -383,82 +308,196 @@ begin
     | combined 0
     | next
 
-  stage stageMarker10507 on all partitions :
-    indexJoin Customer IxC_CUSTKEY "bound $I1 O_CUSTKEY =="   // Customer - J1
+  stage S01 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
     | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
-               type INTEGER as J1_C_NATIONKEY J1_C_NATIONKEY"
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY"
     | hash "type INTEGER O_ORDERKEY"
     | combined 0
     | next hashcast
 
-  stage stageMarker10510 on all partitions :
-    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="   // Lineitem - J2
-    | project "type INTEGER as J1_C_NATIONKEY J1_C_NATIONKEY ,
-                   type INTEGER as J2_L_SUPPKEY J2_L_SUPPKEY ,
-                   type DECIMAL as J2_L_EXTENDEDPRICE J2_L_EXTENDEDPRICE ,
-                   type DECIMAL as J2_L_DISCOUNT J2_L_DISCOUNT"
-    | hash "type INTEGER J2_L_SUPPKEY"
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    | project "type INTEGER as C_NATIONKEY C_NATIONKEY ,
+                   type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+                   type DECIMAL as L_EXTENDEDPRICE J1_L_EXTENDEDPRICE ,
+                   type DECIMAL as L_DISCOUNT J1_L_DISCOUNT"
+    | hash "type INTEGER L_SUPPKEY"
     | combined 0
     | next hashcast
 
-  stage stageMarker10513 on all partitions :
-    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 J2_L_SUPPKEY =="   // Supplier - J3
-    | filter " type BOOLEAN J1_C_NATIONKEY J3_S_NATIONKEY == "
-    | project "type DECIMAL as J2_L_EXTENDEDPRICE J2_L_EXTENDEDPRICE ,
-               type DECIMAL as J2_L_DISCOUNT J2_L_DISCOUNT ,
-               type INTEGER as J3_S_NATIONKEY J3_S_NATIONKEY"
-    | hash "type INTEGER J3_S_NATIONKEY"
+  stage S03 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
+    | filter " type BOOLEAN C_NATIONKEY J1_S_NATIONKEY == "
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER as S_NATIONKEY J1_S_NATIONKEY"
+    | hash "type INTEGER S_NATIONKEY"
     | combined 0
     | next hashcast
 
-  stage stageMarker10516 on all partitions :
-    indexJoin Nation IxN_NATIONKEY expr "bound $I1 J3_S_NATIONKEY =="   // Nation - J4
-    | project "type DECIMAL as J2_L_EXTENDEDPRICE J2_L_EXTENDEDPRICE ,
-               type DECIMAL as J2_L_DISCOUNT J2_L_DISCOUNT ,
-               type VARCHAR as J4_N_NAME J4_N_NAME ,
-               type INTEGER as J4_N_REGIONKEY J4_N_REGIONKEY"
-    | hash "type INTEGER J4_N_REGIONKEY"
+  stage S04 on all partitions :
+    indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
+    | hash "type INTEGER N_REGIONKEY"
     | combined 0
     | next hashcast
 
-  stage stageMarker10519 on all partitions :
-    indexJoin Region IxR_REGIONKEY expr "bound $I1 J4_N_REGIONKEY =="  // REGION - J5
-    | filter " type BOOLEAN J5_R_NAME 'AMERICA'  ==  "
-    | project "type DECIMAL as J2_L_EXTENDEDPRICE J2_L_EXTENDEDPRICE ,
-               type DECIMAL as J2_L_DISCOUNT J2_L_DISCOUNT ,
-               type VARCHAR as J4_N_NAME J4_N_NAME"
+  stage S05 on all partitions :
+    indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
+    | filter " type BOOLEAN J1_R_NAME 'AMERICA'  ==  "
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR as N_NAME N_NAME"
     | combined 0
     | next
 
-  stage stageMarker10522 on all partitions :
-    aggreg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
+  stage S06 on all partitions :
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+                        type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
     | combined 0
     | next
 
-  stage stageMarker10525 on all nodes :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+  stage S07 on all nodes :
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+                        type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
-  stage stageMarker10528 on origin :
-    aggreg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+  stage S08 on origin :
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+             type DECIMAL as REVENUE ) REVENUE sum  "
     | combined 0
     | next
 
-  stage stageNew on origin :
-    sort " type DECIMAL $2 ASC  "
+  stage S09 on origin :
+    sort " type DECIMAL REVENUE DESC  "
     | combined 0
     | next
 
-  stage stageLast on origin :
+  stage S10 on origin :
     output
     | sink
     | first
 end ;
 
-rows:
- ('PERU',-14237.80)
+
+ordered rows:
  ('ARGENTINA',-8058.15)
+ ('PERU',-14237.80)
+
+
+sleep 4;
+success
+
+//------------------------------------------------------------------------------
+// OPTIMIZED Q5_v4
+// added projections to reduce data flow
+//------------------------------------------------------------------------------
+
+pipeline Query5
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage S00 on all partitions :
+    scan rapidsse public Orders
+    | filter " type BOOLEAN O_ORDERDATE DATE '1994-01-01'  >=
+                            O_ORDERDATE DATE '1995-01-01'  <  and  "
+    | project "type INTEGER as O_CUSTKEY O_CUSTKEY ,
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
+    | combined 0
+    | next
+
+  stage S01 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+    | project "type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type INTEGER as C_NATIONKEY J1_C_NATIONKEY"
+    | hash "type INTEGER O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage S02 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "bound $I1 O_ORDERKEY =="
+    | project "type INTEGER as C_NATIONKEY C_NATIONKEY ,
+                   type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+                   type DECIMAL as L_EXTENDEDPRICE J1_L_EXTENDEDPRICE ,
+                   type DECIMAL as L_DISCOUNT J1_L_DISCOUNT"
+    | hash "type INTEGER L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 L_SUPPKEY =="
+    | filter " type BOOLEAN C_NATIONKEY J1_S_NATIONKEY == "
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type INTEGER as S_NATIONKEY J1_S_NATIONKEY"
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    indexJoin Nation IxN_NATIONKEY expr "bound $I1 S_NATIONKEY =="
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY"
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    indexJoin Region IxR_REGIONKEY expr "bound $I1 N_REGIONKEY =="
+    | filter " type BOOLEAN J1_R_NAME 'AMERICA'  ==  "
+    | project "type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+               type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+               type VARCHAR as N_NAME N_NAME"
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+                        type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  "
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+                        type DECIMAL as REVENUE ) REVENUE sum  "
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    gbyAgg " groupBy    type VARCHAR as N_NAME N_NAME
+             aggregates type VARCHAR as N_NAME $K1 ,
+             type DECIMAL as REVENUE ) REVENUE sum  "
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort " type DECIMAL REVENUE DESC  "
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    output
+    | sink
+    | first
+end ;
+
+ordered rows:
+ ('ARGENTINA',-8058.15)
+ ('PERU',-14237.80)
+
 
 MemoryLeaks;
 rows: 0

@@ -73,7 +73,6 @@ i8 SN_Bcd::i(char** aacCrs, Format* pFmt)
 
   m_wDtm.m_wBcd.T.m_iMantissa  = iMantissa;
   m_wDtm.m_wBcd.T.m_iScale = iScale;
-  m_wDtm.m_wBcd.T.m_iSpare = 0;
 
   return m_wDtm;
 }

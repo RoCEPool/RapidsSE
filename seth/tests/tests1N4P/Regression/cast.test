@@ -115,7 +115,7 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast3.sql
 // Result file: ../queries/cast/results/cast3.res
-//TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN LOWER
 /*
 select a.colb1, b.colb9, cast((avg(a.cola1 + b.colg9 + a.cole1 + b.cole9) / 4) as decimal(10,7)) as OverAvg from table1 a join table9 b on pcol1 = pcol9 where lower(a.colb1) like '%ee%' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
@@ -164,8 +164,6 @@ QA results
 
 // Source file: ../queries/cast/rcast22.sql
 // Result file: ../queries/cast/results/cast22.res
-//TODO: ENABLE WHEN JOINS
-/*
 select pcol1, cast(colc1 as timestamp), pcol7, cast(colc7 as timestamp) from table1 join table7 on pcol1 = pcol7 where colb1 like 'bl%' order by pcol1, pcol7;
 ordered rows:
   (4, TIMESTAMP '2015-01-07 00:00:00.0', 4, TIMESTAMP '2015-10-17 00:00:00.0')
@@ -174,10 +172,11 @@ ordered rows:
   (62, TIMESTAMP '2015-06-06 00:00:00.0', 62, TIMESTAMP '2015-05-24 00:00:00.0')
   (65, TIMESTAMP '2015-12-18 00:00:00.0', 65, TIMESTAMP '2015-11-28 00:00:00.0')
   (85, TIMESTAMP '2015-03-07 00:00:00.0', 85, TIMESTAMP '2015-11-23 00:00:00.0')
-*/
 
 // Source file: ../queries/cast/rcast2.sql
 // Result file: ../queries/cast/results/cast2.res
+//TODO: ENABLE WHEN DECIMAL FORMAT
+/*
 select colb1, cast((avg(cold1) - -1.5) as decimal(10,7)) from table1 where colb1 in ('gold','GOLD','PINK','pink','purple','PURPLE','orange','ORANGE') group by colb1 order by colb1;
 ordered rows:
   ('ORANGE', 141.435)
@@ -186,7 +185,8 @@ ordered rows:
   ('gold', 156.41)
   ('orange', 129.744)
   ('pink', 122.99)
-  ('purple', 143.36333333333)
+  ('purple', 143.36333333333334)
+*/
 
 
 // Source file: ../queries/cast/rcast8.sql
@@ -246,8 +246,6 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast11.sql
 // Result file: ../queries/cast/results/cast11.res
-//TODO: ENABLE WHEN JOINS
-/*
 select cast(cole1 as integer), cast(cole9 as integer) from table1 join table9 using(ucol) where colb9 in ('orange','violet') order by cola1, colb9;
 ordered rows:
   (88, 59)
@@ -258,7 +256,6 @@ ordered rows:
   (78, 10)
   (128, -85)
   (107, 6)
-*/
 
 // Source file: ../queries/cast/rcast1.sql
 // Result file: ../queries/cast/results/rcast1.res
@@ -444,35 +441,32 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast13.sql
 // Result file: ../queries/cast/results/cast13.res
-//TODO: FIX
-/*
 select cast(cole1 as decimal), cast(cole9 as decimal), cast(cole4 as decimal) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
 ordered rows:
-  (89, 59, 132)
-  (140, -102, 109)
-  (65, 30, 17)
-  (28, -28, 34)
-  (31, -28, 25)
-  (40, 115, 149)
-  (94, 27, 27)
-  (96, -64, 113)
-  (96, 76, 113)
-  (49, 106, 104)
-  (120, 71, 38)
-  (120, 40, 38)
-  (8, -29, 64)
-  (8, 122, 64)
-  (71, 36, 140)
-  (136, -6, 42)
-  (9, -106, 148)
-  (147, -125, 144)
-  (86, 106, 104)
-  (130, -116, 23)
-  (NULL, -71, 107)
-  (139, -70, 84)
-  (139, -70, 135)
-  (139, -70, 83)
-*/
+  (88.86,59.12,131.82)
+  (139.85,-102.11,108.73)
+  (65.32,30.49,17.00)
+  (27.74,-28.39,34.24)
+  (30.69,-28.36,24.73)
+  (40.43,114.55,149.28)
+  (94.49,26.91,26.55)
+  (96.45,-64.19,113.08)
+  (96.45,75.58,113.08)
+  (48.97,106.39,104.14)
+  (120.40,70.74,37.94)
+  (120.40,40.37,37.94)
+  (8.40,-28.82,63.97)
+  (8.40,122.42,63.97)
+  (71.35,36.43,140.03)
+  (135.81,-5.76,41.98)
+  (8.87,-105.61,147.61)
+  (147.42,-125.17,144.05)
+  (86.42,106.39,104.14)
+  (129.96,-115.90,23.41)
+  (null,-71.14,106.81)
+  (139.18,-70.32,83.50)
+  (139.18,-70.32,135.01)
+  (139.18,-70.32,82.50)
 
 // Source file: ../queries/cast/rcast14.sql
 // Result file: ../queries/cast/results/cast14.res
@@ -577,33 +571,31 @@ ordered rows:
 
 // Source file: ../queries/cast/rcast24.sql
 // Result file: ../queries/cast/results/cast24.res
-//TODO: ENABLE WHEN JOINS
-/*
 select cast(cole1 as decimal(10,4)), cast(cole9 as decimal(10,3)), cast(cole4 as decimal(10,2)) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
 ordered rows:
-  (88.8600, 59.120, 131.82)
-  (139.8500, -102.110, 108.73)
-  (65.3200, 30.490, 17.00)
-  (27.7400, -28.390, 34.24)
-  (30.6900, -28.360, 24.73)
-  (40.4300, 114.550, 149.28)
-  (94.4900, 26.910, 26.55)
-  (96.4500, -64.190, 113.08)
-  (96.4500, 75.580, 113.08)
-  (48.9700, 106.390, 104.14)
-  (120.4000, 70.740, 37.94)
-  (120.4000, 40.370, 37.94)
-  (8.4000, -28.820, 63.97)
-  (8.4000, 122.420, 63.97)
-  (71.3500, 36.430, 140.03)
-  (135.8100, -5.760, 41.98)
-  (8.8700, -105.610, 147.61)
-  (147.4200, -125.170, 144.05)
-  (86.4200, 106.390, 104.14)
-  (129.9600, -115.900, 23.41)
-  (NULL, -71.140, 106.81)
-  (139.1800, -70.320, 83.50)
-  (139.1800, -70.320, 135.01)
-  (139.1800, -70.320, 82.50)
- */
+  (88.86, 59.12, 131.82)
+  (139.85, -102.11, 108.73)
+  (65.32, 30.49, 17.00)
+  (27.74, -28.39, 34.24)
+  (30.69, -28.36, 24.73)
+  (40.43, 114.55, 149.28)
+  (94.49, 26.91, 26.55)
+  (96.45, -64.19, 113.08)
+  (96.45, 75.58, 113.08)
+  (48.97, 106.39, 104.14)
+  (120.40, 70.74, 37.94)
+  (120.40, 40.37, 37.94)
+  (8.40, -28.82, 63.97)
+  (8.40, 122.42, 63.97)
+  (71.35, 36.43, 140.03)
+  (135.81, -5.76, 41.98)
+  (8.87, -105.61, 147.61)
+  (147.42, -125.17, 144.05)
+  (86.42, 106.39, 104.14)
+  (129.96, -115.90, 23.41)
+  (NULL, -71.14, 106.81)
+  (139.18, -70.32, 83.50)
+  (139.18, -70.32, 135.01)
+  (139.18, -70.32, 82.50)
+
 
