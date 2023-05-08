@@ -33,7 +33,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_bTrace      = false;
   m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
   m_xDynamicT.m_iProcessRow = 1;
-  m_xDynamicT.m_iHashRows   = 0;
+  m_xDynamicT.m_iRowsProcessed = 0;
 
   // rowbuffer T
   m_xDynamicT.m_aRowBuffer    = nullptr;
@@ -74,6 +74,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoTJ.m_racStrAreaSav = nullptr;
 
   // aggregate T (SR_AT)
+  m_xDynamicT.m_iAggregInit = 0;
   m_xDynamicT.m_xRowInfoAT.m_aRowSingle  = nullptr;
   m_xDynamicT.m_xRowInfoAT.m_aRowCellArray = nullptr;
   m_xDynamicT.m_xRowInfoAT.m_racStrArea  = nullptr;
@@ -87,6 +88,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoTO.m_racStrAreaSav  = nullptr;
 
   // pot output (SR_PO)
+  m_xDynamicT.m_iPot        = 0;
   m_xDynamicT.m_pPot        = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_aRowSingle    = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = nullptr;
@@ -94,7 +96,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoPO.m_racStrAreaSav = nullptr;
 
   // index scan T
-  m_xDynamicT.m_iIndexScan  = 0;
   m_xDynamicT.m_xIndexInfoT.m_aIndex     = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aIndexTree = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aIndexDef  = nullptr;
@@ -118,19 +119,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoJ.m_aEntBuffer = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
 
-  // project (col/exp)
-  m_xDynamicT.m_iProjectInit = 0;
-
-  // project (agg)
-  m_xDynamicT.m_iRowsProcessed = 0;
-
-  // project (gby/payload)
-  m_xDynamicT.m_nAggRows = 0;
-
-  // project (ordAgg)
-  m_xDynamicT.m_iHasOrdAggRow = 0;
-  m_xDynamicT.m_iOrdAggDone = 0;
-
   // payload (gby/srt/top)
   m_xDynamicT.m_aiPayload      = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_aIndex       = nullptr;
@@ -143,12 +131,13 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoPL.m_aEntBuffer   = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_aEntInt      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();
 
-  // top
-  m_xDynamicT.m_iTopInit         = 0;
-  m_xDynamicT.m_iInsertCntTOP    = 0;
-
   // limit
   m_xDynamicT.m_iLimitRows       = 0;
+
+  // ordAgg
+//  m_xDynamicT.m_iIndexScan  = 0;
+//  m_xDynamicT.m_iHasOrdAggRow = 0;
+//  m_xDynamicT.m_iOrdAggDone = 0;
 
   _checkInitialised_(CN_DYNAMIC);
   
