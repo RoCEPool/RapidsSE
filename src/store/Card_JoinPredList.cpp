@@ -68,6 +68,25 @@ Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
   return p_joinPredList;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
+{
+  _static_
+
+  CardIter xCI(p_deck);
+  while (xCI.G_bEachMain(CK_TABLE)) {
+    if (!(xCI.G.p_indexList = xCI.G.p_table->pSub_indexList()))
+      continue;
+
+    if (! pString->nLength())
+      pString->vSprint("Tables: %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+    else
+      pString->vCatSprint(", %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+  }
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

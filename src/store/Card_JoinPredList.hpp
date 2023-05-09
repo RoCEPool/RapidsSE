@@ -18,6 +18,8 @@ namespace STORE
 
     static Card_JoinPredList* pExtractList(Card_Deck* p_deck);
 
+    static void vTablesWithNoIndexes(Card_Deck* p_deck, String* pString);
+
     void vBuildList(Card_Filter* pCard_cmpPred, Card_IndexList* p_indexList);
 
   };

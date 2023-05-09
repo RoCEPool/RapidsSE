@@ -169,6 +169,14 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  if (! m_pCI->G.p_joinPredList->nChildCards()) {
+    s4K sTableList;
+    Card_JoinPredList::vTablesWithNoIndexes(pPipeline,sTableList);
+
+    Error xError(EC_MISSING_JOIN_INDEX,sTableList.szStz());
+    throw xError;
+  }
+
   // 3) Extract filtPredList from pipeline
 
   m_pCI->G.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
