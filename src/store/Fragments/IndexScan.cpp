@@ -50,47 +50,6 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexScanReturn --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexScanReturn
-void vIndexScanReturn(Dynamic_T* aDynamicT) {
-
-  void* aHeadLine;
-  void* aHeadLineSav;
-  void* aSubReturnLabel;
-
-  IndexInfo __INDEX_INFO__;
-
-  // marker-start
-  goto L__IndexScanRet;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-CRW-RET
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  L__IndexScanRet:
-
-  aHeadLine = aHeadLineSav;
-
-  goto __L_LABEL_NEXT__;
-
-  __L_LABEL_LOOP__:
-
-  // move to next entry
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
-      &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
-  goto L_IndexScanDeref;
-
-  // marker-end
-
-  __L_LABEL_NEXT__:
-  L_IndexScanDeref:
-
-  return;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

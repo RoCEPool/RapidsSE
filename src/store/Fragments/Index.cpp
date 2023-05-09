@@ -159,7 +159,7 @@ void vIndexCheckUpper(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  L_IndexScanDeref:
+  L_IndexDeref:
 
   // reached upper bound ?
   if (__INDEX_INFO__.m_aEntInt == __INDEX_INFO__.m_aEntUpper) {
@@ -174,6 +174,49 @@ void vIndexCheckUpper(Dynamic_T* aDynamicT) {
   L_Return:
   return;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexReturn ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexReturn
+void vIndexReturn(Dynamic_T* aDynamicT) {
+
+  void* aHeadLine;
+  void* aHeadLineSav;
+  void* aSubReturnLabel;
+
+  IndexInfo __INDEX_INFO__;
+  RowInfo __ROW_INFO_TO__;
+
+  // marker-start
+  goto L__IndexScanRet;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INFLATE-CRW-RET
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  L__IndexScanRet:
+
+  aHeadLine = aHeadLineSav;
+
+  goto __L_LABEL_NEXT__;
+
+  __L_LABEL_LOOP__:
+
+  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+
+  // move to next entry
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+      &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
+  goto L_IndexDeref;
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+  L_IndexDeref:
+
+  return;
 }
 
 /*============================================================================*/

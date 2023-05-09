@@ -128,7 +128,7 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   aDynamicT->m_xIndexInfoJ.m_aEntUpper = aIndexTree_positionLE(
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 
-  L_IndexJoinDeref:
+  L_IndexDeref:
   aDynamicT->m_iProcessRow = 1;
 
   printf("M5\n");
@@ -182,12 +182,12 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
    // move to next entry
    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
        &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
-   goto L_IndexJoinDeref;
+   goto L_IndexDeref;
    
   // marker-end
 
   __L_LABEL_NEXT__:
-  L_IndexJoinDeref:
+  L_IndexDeref:
 
   return;
 }
