@@ -58,7 +58,7 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
    aDynamicT->m_xRowInfoIT.m_aRowCellArray = aRowBuffer_GetCellArray(aDynamicT->m_aRowBuffer, i_CurrentRow);
 #endif
 
-   aDynamicT->m_xRowInfoIT.m_racStrArea = aDynamicT->m_xRowInfoIT.m_racStrAreaSav;
+   aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
 
    piColumn = (i8*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 

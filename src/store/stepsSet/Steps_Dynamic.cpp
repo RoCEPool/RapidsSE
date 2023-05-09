@@ -89,7 +89,7 @@ void Step::vDynamicExecute(void)
       RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
 
       aDynamicT->m_aRowBuffer  = pRowBuffer;
-      aDynamicT->m_xRowInfoIT.m_racStrArea = (char*)pRowBuffer->szStzAllot_begin();
+      aDynamicT->m_xRowInfoIT.m_acStrArea = (char*)pRowBuffer->szStzAllot_begin();
       aDynamicT->m_nRows       = pRowBuffer->nRows();
     }
   }

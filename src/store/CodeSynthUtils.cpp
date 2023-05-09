@@ -276,7 +276,7 @@ bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch*
         bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfoJ");
         break;
       case II_PL:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfoPL");
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfo");
         break;
       default:
         RASSERT(0);

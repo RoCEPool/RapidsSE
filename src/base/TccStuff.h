@@ -387,8 +387,8 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct RowInfo {
   void* m_aRowSingle;
   void* m_aRowCellArray;
-  char* m_racStrArea;
-  char* m_racStrAreaSav;
+  char* m_acStrArea;
+  char* m_acStrAreaSav;
 };
 
 struct IndexInfo {
@@ -476,12 +476,6 @@ struct Dynamic_T
 
 struct Combined_T
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // CODE SYNTH V2
-
-  // inflate T
-  struct RowInfo m_xRowInfoT;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // CODE SYNTH V1
 

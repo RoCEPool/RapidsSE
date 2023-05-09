@@ -170,21 +170,20 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L__IndexScanRet:
-  printf("M3\n");
+  
   aHeadLine = aHeadLineSav;
   aDynamicT->m_iJoinedRows++;
   goto __L_LABEL_NEXT__;
 
   __L_LABEL_LOOP__:
 
-   aDynamicT->m_xRowInfoTJ.m_racStrArea = aDynamicT->m_xRowInfoTJ.m_racStrAreaSav;
+   aDynamicT->m_xRowInfoTJ.m_acStrArea = aDynamicT->m_xRowInfoTJ.m_acStrAreaSav;
 
    // move to next entry
    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
        &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
    goto L_IndexJoinDeref;
-
-  printf("M4\n");
+   
   // marker-end
 
   __L_LABEL_NEXT__:
@@ -226,8 +225,8 @@ void vIndexJoinDereference(Dynamic_T* aDynamicT) {
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
   ayDstByte = (byte*)aDynamicT->m_xRowInfoTJ.m_aRowCellArray + 8*__LEFT_COLUMNS__;
-  acStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_racStrArea;
-  racStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_racStrArea;
+  acStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_acStrArea;
+  racStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataJ = C_1B  + C_8B + __RIGHT_COLUMNS__;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataJ);

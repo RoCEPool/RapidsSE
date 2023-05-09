@@ -1915,7 +1915,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
-          sPush.vSprint("_COPYSTR_IFTRUE(aDynamicT->m_xRowInfoAT.m_racStrArea, p%s->%s)\n"_Stz,
+          sPush.vSprint("_COPYSTR_IFTRUE(aDynamicT->m_xRowInfoAT.m_acStrArea, p%s->%s)\n"_Stz,
                         xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
         else
           sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
@@ -1952,7 +1952,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
-          sPush.vSprint("_COPYSTR_IFTRUE(aDynamicT->m_xRowInfoAT.m_racStrArea, p%s->%s)\n"_Stz,
+          sPush.vSprint("_COPYSTR_IFTRUE(aDynamicT->m_xRowInfoAT.m_acStrArea, p%s->%s)\n"_Stz,
                         xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
         else
           sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());

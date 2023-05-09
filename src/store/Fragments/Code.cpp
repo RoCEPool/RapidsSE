@@ -55,7 +55,7 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoIT.m_racStrArea;
+  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -260,7 +260,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   // process the row
   aDynamicT->m_iProcessRow = 1;
 
-  aDynamicT->m_xRowInfoIT.m_racStrArea = aDynamicT->m_xRowInfoIT.m_racStrAreaSav;
+  aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
 
   // marker-end
 }
@@ -317,9 +317,9 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
 
   L_InflateCrwRet:
 
-  aDynamicT->m_xRowInfoIT.m_racStrArea = acStrArea;
+  aDynamicT->m_xRowInfoIT.m_acStrArea = acStrArea;
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoIT.m_racStrArea;
+  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
 
   // marker-end
 
@@ -346,7 +346,7 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
   //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  //szStrArea = aDynamicT->m_racStrAreaT;
+  //szStrArea = aDynamicT->m_acStrAreaT;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -394,7 +394,7 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_racStrArea,&aDynamicT->m_iErrorCode);
+  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
@@ -434,7 +434,7 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
   p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoAT.m_racStrArea;
+  szStrArea = aDynamicT->m_xRowInfoAT.m_acStrArea;
   if ( aDynamicT->m_iAggregInit == 0 ) {
     // marker-end
   }
@@ -466,7 +466,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_racStrArea,&aDynamicT->m_iErrorCode);
+  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
@@ -493,7 +493,7 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-    aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_racStrArea,&aDynamicT->m_iErrorCode);
+    aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
@@ -546,7 +546,7 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
 
     aDynamicT->m_iProcessRow = 1;
 
-    aDynamicT->m_xRowInfoPT.m_racStrArea = aDynamicT->m_xRowInfoPT.m_racStrAreaSav;
+    aDynamicT->m_xRowInfoPT.m_acStrArea = aDynamicT->m_xRowInfoPT.m_acStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
                                       + sizeof(struct Ent_int)
                                       + 8);
@@ -580,7 +580,7 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
 
     aDynamicT->m_iProcessRow = 1;
 
-    aDynamicT->m_xRowInfoPT.m_racStrArea = aDynamicT->m_xRowInfoPT.m_racStrAreaSav;
+    aDynamicT->m_xRowInfoPT.m_acStrArea = aDynamicT->m_xRowInfoPT.m_acStrAreaSav;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aDynamicT->m_xIndexInfoPL.m_aEntInt
         + sizeof(struct Ent_int)
         + ((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0
@@ -660,7 +660,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     iElemSize += 8;
   }
   else {
-    szDstStz = aDynamicT->m_xRowInfoTO.m_racStrArea;
+    szDstStz = aDynamicT->m_xRowInfoTO.m_acStrArea;
 
 #ifdef WITH_TINYC
     nSrcSize = StrLib_iWordFlipBack(szDstStz,szSrcStz);
@@ -670,12 +670,12 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 #endif
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
 
-    iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_racStrArea,amCellAddress);
+    iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_acStrArea,amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
     // update the tub string size
     i8 iDstLen = strlen(szDstStz) + 1;
-    aDynamicT->m_xRowInfoTO.m_racStrArea += iDstLen;
+    aDynamicT->m_xRowInfoTO.m_acStrArea += iDstLen;
 #ifdef WITH_TINYC
     vTub_RowStrSize(aDynamicT->m_pTub,iDstLen);
 #endif
@@ -848,8 +848,8 @@ void vIndexDereference(Dynamic_T* aDynamicT) {
   aHeadLine = (struct HeadLine_T *)aIndexCrw;
   auMetaCode = META_AREA(aHeadLine);
   ayDstByte = (byte*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  acStrArea = (char*)aDynamicT->m_xRowInfoIT.m_racStrArea;
-  racStrArea = (char*)aDynamicT->m_xRowInfoIT.m_racStrArea;
+  acStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrArea;
+  racStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrArea;
   eStrInflateRule = SI_STRAREA_ADR;
   i_BaseOffsetDataT = C_1B  + C_8B  + 4;
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);
@@ -946,16 +946,16 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      nSrcSize = strlen(szSrcStz) + 1;
 
      // get the destination string
-     szDstStz = aDynamicT->m_xRowInfoTO.m_racStrArea;
+     szDstStz = aDynamicT->m_xRowInfoTO.m_acStrArea;
      strncpy(szDstStz, szSrcStz, nSrcSize);
 
      // copy the source to the destination
      amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
-     iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_racStrArea,amCellAddress);
+     iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_acStrArea,amCellAddress);
      p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
      // update the tub string size
-     aDynamicT->m_xRowInfoTO.m_racStrArea += nSrcSize;
+     aDynamicT->m_xRowInfoTO.m_acStrArea += nSrcSize;
 #ifdef WITH_TINYC
      vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif
