@@ -17,6 +17,10 @@ namespace Parser {
 class  sqlBaseVisitor : public sqlVisitor {
 public:
 
+  virtual antlrcpp::Any visitStatements(sqlParser::StatementsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -25,7 +29,15 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitQueryStatement(sqlParser::QueryStatementContext *ctx) override {
+  virtual antlrcpp::Any visitTags(sqlParser::TagsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitKeyValueTag(sqlParser::KeyValueTagContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -54,6 +66,10 @@ public:
   }
 
   virtual antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitQueryStatement(sqlParser::QueryStatementContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -606,6 +622,10 @@ public:
   }
 
   virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *ctx) override {
     return visitChildren(ctx);
   }
 

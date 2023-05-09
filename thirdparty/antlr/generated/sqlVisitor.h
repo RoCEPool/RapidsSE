@@ -20,11 +20,17 @@ public:
   /**
    * Visit parse trees produced by sqlParser.
    */
+    virtual antlrcpp::Any visitStatements(sqlParser::StatementsContext *context) = 0;
+
     virtual antlrcpp::Any visitStatement(sqlParser::StatementContext *context) = 0;
 
     virtual antlrcpp::Any visitStatementChoice(sqlParser::StatementChoiceContext *context) = 0;
 
-    virtual antlrcpp::Any visitQueryStatement(sqlParser::QueryStatementContext *context) = 0;
+    virtual antlrcpp::Any visitTags(sqlParser::TagsContext *context) = 0;
+
+    virtual antlrcpp::Any visitKeyValueTag(sqlParser::KeyValueTagContext *context) = 0;
+
+    virtual antlrcpp::Any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *context) = 0;
 
     virtual antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *context) = 0;
 
@@ -39,6 +45,8 @@ public:
     virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
 
     virtual antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitQueryStatement(sqlParser::QueryStatementContext *context) = 0;
 
     virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *context) = 0;
 
@@ -315,6 +323,8 @@ public:
     virtual antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *context) = 0;
 
     virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
+
+    virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *context) = 0;
 
     virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
 

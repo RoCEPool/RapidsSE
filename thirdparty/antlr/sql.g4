@@ -7,11 +7,18 @@ grammar sql ;
 }
 
 // statement / query -----------------------------------------------------------
-statement         : (ANTLR ':')? statementChoice ';' ;
-statementChoice   :  queryStatement | explainStatement ;
-//statementChoice   :  queryStatement | explainStatement | statisticsStatement ;
+statements        :  statement+ ;
+statement         :  tags statementChoice ';' ;
+statementChoice   :   queryStatement
+                    | explainStatement
+                    | lstbl ;
 
-queryStatement    : query ;
+tags              : (keyOnlyTag | keyValueTag)* ;
+keyValueTag       : TAG_ANGLEBRACKETS '=' (STRING_LITERAL | INTEGER_LITERAL);
+keyOnlyTag        : TAG_BACKSLASH |
+                    TAG_ANGLEBRACKETS ;
+
+// explain statement ----------------------------------------------------------
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
 explainOptions    : explainStageList |
                     explainFormat    |
@@ -23,6 +30,8 @@ explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
 explainFormat     : FORMAT (PRETTY | ROW);
 statisticsStatement : (queryHint)* (STATS | STATISTICS) statementChoice ;
 
+// query statement ------------------------------------------------------------
+queryStatement    : query ;
 query             : (queryHint)*
                     ( selectQuery
                     | setQuery
@@ -449,10 +458,15 @@ dayTimeInterval   :
                   ) ;
 
 
-// lexer ------------------------------------------------------
+// lstbl statement ------------------------------------------------------------
+lstbl : LSTBL ;
+
+
+// ============================================================================
+// lexer ----------------------------------------------------------------------
 
 nonReservedWord   :
-                    ANTLR | ASC
+                    ASC
                   | BIT | BITS | BLOCK | BLOOM | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | CONCAT
                   | DATA | DAYS | DECODE | DESC | DETAIL | DIGITS
@@ -461,7 +475,7 @@ nonReservedWord   :
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX
                   | KEY
-                  | LIMIT | LOOP
+                  | LIMIT | LOOP | LSTBL
                   | MINUTES | MONOTONIC | MONTHS
                   | NODE | NOW
                   | OFFSET
@@ -480,7 +494,6 @@ nonReservedWord   :
 ALL                   : A L L;
 AND                   : A N D;
 ANTI                  : A N T I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
-ANTLR                 : A N T L R;
 ANY                   : A N Y;
 AS                    : A S;
 ASC                   : A S C;
@@ -565,6 +578,7 @@ LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
 LOOP                  : L O O P;
+LSTBL                 : L S T B L;
 MAX                   : M A X;
 MIN                   : M I N;
 MINUTE                : M I N U T E;
@@ -679,6 +693,8 @@ fragment DIGIT        : '0' .. '9' ;
 fragment DUBLSINGL    : '\'\'' ;
 fragment DUBLDUBL     : '""' ;
 
+TAG_BACKSLASH         : '\\' PLAIN_IDENTIFIER ;
+TAG_ANGLEBRACKETS     : '<' PLAIN_IDENTIFIER '>' ;
 
 IDENTIFIER            : PLAIN_IDENTIFIER | BAKTIKD_IDENTIFIER | DUBLQUOTED_IDENTIFIER ;
 PLAIN_IDENTIFIER      : LETTER (LETTER | DIGIT | '_')* ;
