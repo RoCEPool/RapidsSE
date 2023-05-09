@@ -93,9 +93,9 @@ bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_BOUND)) {
-    if (xCI.G.p_bound->bEquivalent(p_cmpPred))
+  Kid xBounds(this);
+  while (xBounds.bEach(CK_BOUND)) {
+    if (xBounds.p_bound()->bEquivalent(p_cmpPred))
       return true;
   }
 

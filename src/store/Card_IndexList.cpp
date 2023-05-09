@@ -147,10 +147,9 @@ bool Card_IndexList::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  CardIter xCI_indexList(this);
-  while (xCI_indexList.G_bEachMain(CK_INDEX)) {
-    CardIter xCI_index(xCI_indexList.G.p_index);
-    if (xCI_indexList.G.p_index->bHasEquivalentBound(p_cmpPred))
+  Kid xIndexList(this);
+  while (xIndexList.bEach(CK_INDEX)) {
+    if (xIndexList.p_index()->bHasEquivalentBound(p_cmpPred))
       return true;
   }
   return false;
