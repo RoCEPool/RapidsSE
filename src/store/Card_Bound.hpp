@@ -23,6 +23,8 @@ namespace STORE
 
     Card_Term* pGetTerm(i8 i_Term);
 
+    bool bIsBoundedBy(Card_CmpPred* p_cmpPred);
+
     bool bIsEBound(void);
     bool bIsLBound(void);
     bool bIsUBound(void);

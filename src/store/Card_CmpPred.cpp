@@ -362,40 +362,6 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given cmpPred a subset of bounds?                                       */
-/*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(p_bounds);
-  while (xCI.G_bEachMain(CK_BOUND)) {
-
-    Stz* sz_bnd_idxColOdn = xCI.G.p_bound->pGetChild(0)->szSymbol();
-    Stz* sz_bnd_stmColOdn = xCI.G.p_bound->pGetChild(1)->szSymbol();
-    Stz* sz_bnd_rlnOpr    = xCI.G.p_bound->szSymbol();
-
-    Stz* sz_cmp_rlnOpr    = this->szSymbol();
-    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szSymbol();
-    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szSymbol();
-
-    if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
-      continue;
-
-    // todo: need bounds to be bndTyp , etc
-    // anyways...
-
-    if (sz_cmp_arg_0->bSame(sz_bnd_stmColOdn))
-      return true;
-    if (sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
-      return true;
-
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* does this cmpPred reference given table?                                   */
 /*----------------------------------------------------------------------------*/
 bool Card_CmpPred::bUsesTable(char cTblSyn)

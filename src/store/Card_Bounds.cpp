@@ -95,24 +95,7 @@ bool Card_Bounds::bHasBoundOf(Card_CmpPred* p_cmpPred)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_BOUND)) {
-
-    Stz *sz_bnd_idxColOdn = xCI.G.p_bound->pGetChild(0)->szSymbol();
-    Stz *sz_bnd_stmColOdn = xCI.G.p_bound->pGetChild(1)->szSymbol();
-    Stz *sz_bnd_rlnOpr    = xCI.G.p_bound->szSymbol();
-
-    Stz *sz_cmp_rlnOpr = p_cmpPred->szSymbol();
-    Stz *sz_cmp_arg_0  = p_cmpPred->pGetChild(0)->szSymbol();
-    Stz *sz_cmp_arg_1  = p_cmpPred->pGetChild(1)->szSymbol();
-
-    if (!sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
-      continue;
-
-    // todo: need bounds to be bndTyp , etc
-    // anyways...
-
-    if (sz_cmp_arg_0->bSame(sz_bnd_stmColOdn))
-      return true;
-    if (sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
+    if (xCI.G.p_bound->bIsBoundedBy(p_cmpPred))
       return true;
   }
 

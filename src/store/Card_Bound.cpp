@@ -162,6 +162,32 @@ Card_Term* Card_Bound::pGetTerm(i8 i_Term)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given compare predicate a subset of this bounds?                        */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bIsBoundedBy(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz *sz_bnd_idxColOdn = pGetChild(0)->szSymbol();
+  Stz *sz_bnd_stmColOdn = pGetChild(1)->szSymbol();
+  Stz *sz_bnd_rlnOpr    = szSymbol();
+
+  Stz *sz_cmp_rlnOpr = p_cmpPred->szSymbol();
+  Stz *sz_cmp_arg_0  = p_cmpPred->pGetChild(0)->szSymbol();
+  Stz *sz_cmp_arg_1  = p_cmpPred->pGetChild(1)->szSymbol();
+
+  if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
+    false;
+
+  if (sz_cmp_arg_0->bSame(sz_bnd_stmColOdn))
+    return true;
+  if (sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Bound::bIsEBound(void)

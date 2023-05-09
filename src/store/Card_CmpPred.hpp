@@ -36,7 +36,6 @@ namespace STORE
     bool bIsEqOp(void);
     char cOtherTable(char cTblSyn);
     bool bOverlapsWith(Card_CmpPred* p_cmpPred_arg);
-    bool bSubsetOf_bounds(Card_Bounds* p_bounds);
     bool bUsesTable(char cTblSyn);
     bool bUsesTables(char cTblSyn_a, char cTblSyn_b);
 
