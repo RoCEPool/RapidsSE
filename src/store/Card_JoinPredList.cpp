@@ -113,7 +113,7 @@ void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
     if ( ! (p_term_0->bIsColOdn() && p_term_1->bIsColOdn()))
       return C_CONTINUE_RECURSION;
 
-    if (! p_indexList->bHas_cmpPred_In_bounds(p_cmpPred_tst))
+    if (!p_indexList->bHasEquivalentBound(p_cmpPred_tst))
       return C_CONTINUE_RECURSION;
 
     Card_CmpPred* p_cmpPred_new = p_cmpPred_tst->pClone();

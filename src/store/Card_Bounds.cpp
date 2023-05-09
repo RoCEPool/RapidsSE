@@ -87,15 +87,15 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is given compare predicate a subset of this bounds?                        */
+/* does this bounds have a bound logically equivalent to given compare?       */
 /*----------------------------------------------------------------------------*/
-bool Card_Bounds::bHasBoundOf(Card_CmpPred* p_cmpPred)
+bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_BOUND)) {
-    if (xCI.G.p_bound->bIsBoundedBy(p_cmpPred))
+    if (xCI.G.p_bound->bEquivalent(p_cmpPred))
       return true;
   }
 

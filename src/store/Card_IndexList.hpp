@@ -25,7 +25,7 @@ namespace STORE
     void vChoose_index_For_indexScan(void);
 
 
-    bool bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred);
+    bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
 
   };
 

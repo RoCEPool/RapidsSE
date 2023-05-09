@@ -141,16 +141,16 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* does this index-list have a bound logically equivalent to given compare?   */
 /*----------------------------------------------------------------------------*/
-bool Card_IndexList::bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred)
+bool Card_IndexList::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   CardIter xCI_indexList(this);
   while (xCI_indexList.G_bEachMain(CK_INDEX)) {
     CardIter xCI_index(xCI_indexList.G.p_index);
-    if (xCI_indexList.G.p_index->bHas_cmpPred_In_bounds(p_cmpPred))
+    if (xCI_indexList.G.p_index->bHasEquivalentBound(p_cmpPred))
       return true;
   }
   return false;
