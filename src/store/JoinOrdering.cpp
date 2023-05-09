@@ -251,12 +251,19 @@ void JoinOrdering::vReorderTables(void)
 
   }
 
-  if ( ! p_joinOrdering ) {
+  if (! p_joinOrdering) {
     p_joinOrdering =
         Card_JoinOrdering::pPick(p_streamPrmAll,true);
   }
 
-  m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
+  if (! p_joinOrdering)  {
+
+    Error xError(EC_MISSING_JOIN_INDEX,"Missing INDEX on TABLE"_Stz);
+
+    throw xError;
+  }
+
+    m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
   m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);

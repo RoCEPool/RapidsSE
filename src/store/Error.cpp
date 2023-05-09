@@ -21,6 +21,18 @@ Error::Error(void)
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Error::Error(eEC eErrorCode, Stz* aErrorMsg)
+{
+  m_eErrorCode = eErrorCode;
+  StrLib::vCopyLen(m_caErrorMsg, aErrorMsg->azChar(), sizeof(m_caErrorMsg));
+
+  m_caFileName[0] = '\0';
+  m_iLineNo = C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Error::Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo)
 {
   m_eErrorCode = eErrorCode;

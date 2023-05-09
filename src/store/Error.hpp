@@ -16,6 +16,7 @@ namespace STORE
 
   public:
     Error(void);
+    Error(eEC eErrorCode, Stz* aErrorMsg);
     Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo);
     Error(eEC eErrorCode, Stz* aErrorMsg, Stz* aFileName, i8 iLineNo);
     
