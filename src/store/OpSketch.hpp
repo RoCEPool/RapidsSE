@@ -8,10 +8,11 @@
 #include "TinyC.hpp"
 #include "Tub.hpp"
 #include "ePE.h"
-#include "ePI.h"
 #include "ePL.h"
 #include "eEK.h"
 #include "eFM.h"
+#include "eIP.h"
+#include "eII.h"
 #include "eIV.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
@@ -57,6 +58,9 @@ namespace STORE
     s4K m_sStencilTo;
     s4K m_sStencilFrom;
 
+    // index information
+    eII m_eIndexInfo;
+
     // labels
     s256 m_sLabel;
     s256 m_sLabelNext;
@@ -71,8 +75,8 @@ namespace STORE
     TypedStack* m_pUpperStack;
     TypedStack* m_pInitStack;
 
-    s256 m_sLowerPosition;
-    s256 m_sUpperPosition;
+    eIP m_eLowerIP;
+    eIP m_eUpperIP;
 
     i8 m_nPayloadBytes;
 
@@ -86,7 +90,7 @@ namespace STORE
     void  operator delete(void*);
 
     OpSketch(void);
-    OpSketch(Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut,
+    OpSketch(Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, eII eIndexInfo,
              StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack = nullptr);
 
    ~OpSketch(void) noexcept(false);

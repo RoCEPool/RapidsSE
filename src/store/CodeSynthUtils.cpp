@@ -26,6 +26,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
   i8 nStringSize = sCode->nArea();
 
   s4K sLine;
+  s4K sReplacedLine;
   bool bFoundFunc = false;
   bool bFoundStart = false;
 
@@ -94,6 +95,12 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
         vReplaceStringArea(sLine, pOpSketch);
+
+        // cater to multiple replaces of IndexInfo
+        if (bReplaceIndexInfo(sLine, sReplacedLine, pOpSketch) )
+          sLine = sReplacedLine;
+
+        vReplaceIndexPosition(sLine, pOpSketch);
 
         // copy line into sCode
         StrLib::vSprintCat(sCode->szStz(), "%s\n"_Stz, sLine.azChar());
@@ -210,6 +217,75 @@ void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceIndexPosition(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azChar(), "__INDEX_POSITION_LOWER__")) {
+    switch(pOpSketch->m_eLowerIP) {
+      case IP_GT:
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aIndexTree_positionGT");
+        break;
+      case IP_GE:
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aIndexTree_positionGE");
+        break;
+      default:
+        RASSERT(0);
+    }
+
+    RASSERT(bResult);
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__INDEX_POSITION_UPPER__")) {
+    switch(pOpSketch->m_eUpperIP) {
+      case IP_LT:
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aIndexTree_positionLT");
+        RASSERT(bResult);
+        break;
+      case IP_LE:
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aIndexTree_positionLE");
+        RASSERT(bResult);
+        break;
+      default:
+        RASSERT(0);
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azChar(), "__INDEX_INFO__")) {
+    switch(pOpSketch->m_eIndexInfo) {
+      case II_ST:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfoT");
+        break;
+      case II_JJ:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfoJ");
+        break;
+      case II_PL:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfoPL");
+        break;
+      default:
+        RASSERT(0);
+    }
+    return true;
+  }
+
+  return false;
+}
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/

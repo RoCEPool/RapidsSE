@@ -18,6 +18,7 @@
 #include "SN_Flt.hpp"
 #include "SN_Bcd.hpp"
 #include "eFM.h"
+#include "eII.h"
 
 #include "OpSketch.hpp"
 
@@ -74,6 +75,11 @@ OpSketch::OpSketch(void)
   m_eStencilFrom = SR_NONE;
   m_eStencilTo   = SR_NONE;
 
+  m_sStencilTo = ""_Stz;
+  m_sStencilFrom = ""_Stz;
+
+  m_eIndexInfo = II_NONE;
+
   // expression stacks
   m_pExprStack   = nullptr;
   m_pNullStack   = nullptr;
@@ -83,8 +89,8 @@ OpSketch::OpSketch(void)
   m_pUpperStack  = nullptr;
   m_pInitStack   = nullptr;
 
-  m_sLowerPosition = ""_Stz;
-  m_sUpperPosition = ""_Stz;
+  m_eLowerIP = IP_NONE;
+  m_eUpperIP = IP_NONE;
 
   m_nPayloadBytes = 0;
   m_iLimitRows = 0;
@@ -98,7 +104,7 @@ OpSketch::OpSketch(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
-                   eSR eStencilOut, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack)
+                   eSR eStencilOut, eII eIndexInfo, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack)
     : Object(CN_OPSKETCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
@@ -123,10 +129,15 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
   m_eStencilFrom = eStencilIn;
   m_eStencilTo   = eStencilOut;
 
+  m_sStencilTo = ""_Stz;
+  m_sStencilFrom = ""_Stz;
+
+  m_eIndexInfo = eIndexInfo;
+
   // expression stacks
   m_pExprStack   = new TypedStack(KK_DATA_STACK);
   m_pNullStack   = nullptr;
-  m_pLowerStack  = nullptr;
+  m_pLowerStack  = new TypedStack(KK_DATA_STACK);
   m_pUpperStack  = new TypedStack(KK_DATA_STACK);
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
 
@@ -149,8 +160,8 @@ OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStenci
     }
   }
 
-  m_sLowerPosition = ""_Stz;
-  m_sUpperPosition = ""_Stz;
+  m_eLowerIP = IP_NONE;
+  m_eUpperIP = IP_NONE;
 
   m_nPayloadBytes = 0;
   m_iLimitRows = 0;
@@ -170,6 +181,7 @@ OpSketch::~OpSketch(void) noexcept(false)
   delete m_pExprStack;
   delete m_pInitStack;
   delete m_pGbyStack;
+  delete m_pLowerStack;
   delete m_pUpperStack;
   delete m_pOrdAggStack;
 }
@@ -910,16 +922,16 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
 
         if (pTkn->bSame(">"_Stz)) {
           RASSERT(bLowerBound);
-          m_sLowerPosition = "aIndexTree_positionGT"_Stz;
+          m_eLowerIP = IP_GT;
         } else if (pTkn->bSame(">="_Stz)) {
           RASSERT(bLowerBound);
-          m_sLowerPosition = "aIndexTree_positionGE"_Stz;
+          m_eLowerIP = IP_GE;
         } else if (pTkn->bSame("<"_Stz)) {
           RASSERT(bUpperBound);
-          m_sUpperPosition = "aIndexTree_positionLT"_Stz;
+          m_eUpperIP = IP_LT;
         } else if (pTkn->bSame("<="_Stz)) {
           RASSERT(bUpperBound);
-          m_sUpperPosition = "aIndexTree_positionLE"_Stz;
+          m_eUpperIP = IP_LE;
         } else {
           RASSERT(0);
         }

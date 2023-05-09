@@ -248,12 +248,26 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new INDEXBUFFER handler
         vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
-
         vAppendStencilTo(pOpSketch);
+
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pCodeFile);
-        vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-        vAppendCodeFragment(pOpSketch, "vIndexUpperCheck"_Stz, pCodeFile);
+
+        if (pOpSketch->m_eLowerIP == IP_NONE) {
+          vAppendCodeFragment(pOpSketch, "vIndexPositionBegin"_Stz, pCodeFile);
+        }
+        else {
+          vGenerateExprCode(pOpSketch->m_pLowerStack, "  "_Stz);
+          vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+          vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pCodeFile);
+        }
+
+        if (pOpSketch->m_eUpperIP != IP_NONE) {
+          vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
+          vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+          vAppendCodeFragment(pOpSketch, "vIndexPositionUpper"_Stz, pCodeFile);
+        }
+
+        vAppendCodeFragment(pOpSketch, "vIndexCheckUpper"_Stz, pCodeFile);
         vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz);
         vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexScanReturn"_Stz, pCodeFile);
@@ -283,7 +297,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           vAppendCodeFragment(pOpSketch, "vIndexJoinPositionBegin"_Stz, pCodeFile);
         }
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
-        //vAppendCodeFragment(pOpSketch, "vIndexUpperCheck"_Stz, pCodeFile);
         vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
         vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);

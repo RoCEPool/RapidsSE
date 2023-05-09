@@ -43,9 +43,26 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
   i_CurrentRow = -1;
 
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexPositionBegin -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexPositionBegin
+void vIndexPositionBegin(Dynamic_T* aDynamicT) {
+
+  // marker-start
+
+#ifdef WITH_TINYC
   // position at beginning of the index
-  aDynamicT->m_xIndexInfoT.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
-        aDynamicT->m_xIndexInfoT.m_aIndexTree, &aDynamicT->m_xIndexInfoT.m_aEntBuffer);
+  aDynamicT->__INDEX_INFO__.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
+        aDynamicT->__INDEX_INFO__.m_aIndexTree, &aDynamicT->__INDEX_INFO__.m_aEntBuffer);
+#endif
 
   if ( ! aDynamicT->m_xIndexInfoT.m_aEntInt )
     goto L_Return;
@@ -57,22 +74,47 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
 }
 
+
 /*----------------------------------------------------------------------------*/
-/*-- vIndexUpperCheck --------------------------------------------------------*/
+/*-- vIndexPositionLower -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vIndexUpperCheck
-void vIndexUpperCheck(Dynamic_T* aDynamicT) {
+// function-vIndexPositionLower
+void vIndexPositionLower(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  /// position at upper bound
-  aDynamicT->m_xIndexInfoT.m_aEntUpper =  (struct Ent_int *)aIndexTree_positionLT(
-      aDynamicT->m_xIndexInfoT.m_aIndexTree, aDynamicT->m_xIndexInfoT.m_aEntKey);
+#ifdef WITH_TINYC
+  // position at lower bound
+  aDynamicT->__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+      aDynamicT->__INDEX_INFO__.m_aIndexTree, &aDynamicT->__INDEX_INFO__.m_aEntBuffer, aDynamicT->__INDEX_INFO__.m_aEntKey);
+#endif
 
-  L_IndexScanDeref:
+  if ( ! aDynamicT->__INDEX_INFO__.m_aEntInt )
+    goto L_Return;
+
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexPositionUpper -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexPositionUpper
+void vIndexPositionUpper(Dynamic_T* aDynamicT) {
+
+  // marker-start
+
+#ifdef WITH_TINYC
+  // position at upper bound
+  aDynamicT->__INDEX_INFO__.m_aEntUpper =  (struct Ent_int *)__INDEX_POSITION_UPPER__(
+      aDynamicT->__INDEX_INFO__.m_aIndexTree, aDynamicT->__INDEX_INFO__.m_aEntKey);
+#endif
 
   // reached upper bound ?
-  if (aDynamicT->m_xIndexInfoT.m_aEntInt == aDynamicT->m_xIndexInfoT.m_aEntUpper) {
+  if (aDynamicT->__INDEX_INFO__.m_aEntInt == aDynamicT->__INDEX_INFO__.m_aEntUpper) {
     goto L_Return;
   }
 
@@ -86,6 +128,30 @@ void vIndexUpperCheck(Dynamic_T* aDynamicT) {
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- vIndexCheckUpper --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexCheckUpper
+void vIndexCheckUpper(Dynamic_T* aDynamicT) {
+
+  // marker-start
+
+  L_IndexScanDeref:
+
+  // reached upper bound ?
+  if (aDynamicT->__INDEX_INFO__.m_aEntInt == aDynamicT->__INDEX_INFO__.m_aEntUpper) {
+    goto L_Return;
+  }
+
+  // process the row
+  aDynamicT->m_iProcessRow = 1;
+
+  // marker-end
+
+  L_Return:
+  return;
+
+}
 /*----------------------------------------------------------------------------*/
 /*-- vIndexScanReturn --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -112,8 +178,8 @@ void vIndexScanReturn(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // move to next entry
-  aDynamicT->m_xIndexInfoT.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
-      &aDynamicT->m_xIndexInfoT.m_aEntBuffer, aDynamicT->m_xIndexInfoT.m_aEntInt);
+  aDynamicT->__INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+      &aDynamicT->__INDEX_INFO__.m_aEntBuffer, aDynamicT->__INDEX_INFO__.m_aEntInt);
   goto L_IndexScanDeref;
 
   // marker-end

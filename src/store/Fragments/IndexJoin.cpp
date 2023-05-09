@@ -108,6 +108,9 @@ void vIndexJoinPositionLower(Dynamic_T* aDynamicT) {
   aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int *)aIndexTree_positionGE(
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt )
+    goto L_Return;
+
   // marker-end
 
   L_Return:

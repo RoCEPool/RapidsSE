@@ -8,7 +8,7 @@ create index idx on nation (n_nationkey);
 
 /weaved select * from nation where n_nationkey < 2;
 
-/*
+
 /ccode pipeline _unnamed_
 begin
 
@@ -29,7 +29,7 @@ begin
     | first
 
 end ;
-*/
+/*
 
 /ccode pipeline _unnamed_
 begin
@@ -51,3 +51,4 @@ begin
     | first
 
 end ;
+*/

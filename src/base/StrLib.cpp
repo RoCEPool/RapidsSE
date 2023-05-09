@@ -3998,7 +3998,7 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
   _static_
   
   //note: this function does the replacement within the given string
-  //      therefore it must be large enough to handle expancesion
+  //      therefore it must be large enough to handle expansion
   
   // is this in tbe string?
   char* pSubstr = pString;

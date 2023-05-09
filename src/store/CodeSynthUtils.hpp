@@ -18,6 +18,8 @@ namespace STORE {
   private:
     static void vReplaceColumnNo(Stz *sLine, Column *pColumn);
     static void vReplaceColumnName(Stz *sLine, Column *pColumn);
+    static bool bReplaceIndexInfo(Stz *sLine, Stz *sReplacedLine, OpSketch *pOpSketch);
+    static void vReplaceIndexPosition(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceKeyKind(Stz *sLine, OpSketch *pOpSketch);
     static void vReplacePayloadIndex(Stz *sLine, i8 iPayloadIndex);
     static void vReplacePayloadBytes(Stz *sLine, OpSketch *pOpSketch);

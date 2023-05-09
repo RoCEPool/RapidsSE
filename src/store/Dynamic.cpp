@@ -95,6 +95,17 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoPO.m_racStrArea    = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_racStrAreaSav = nullptr;
 
+  // index infor dummy
+  m_xDynamicT.__INDEX_INFO__.m_aIndex     = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aIndexTree = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aIndexDef  = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aEntWrk    = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aEntKey    = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aEntBottom = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aEntUpper  = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aEntBuffer = nullptr;
+  m_xDynamicT.__INDEX_INFO__.m_aEntInt    = nullptr;
+
   // index scan T
   m_xDynamicT.m_xIndexInfoT.m_aIndex     = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aIndexTree = nullptr;
@@ -104,7 +115,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoT.m_aEntBottom = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aEntUpper  = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aEntBuffer = nullptr;
-  m_xDynamicT.m_xIndexInfoT.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
+  m_xDynamicT.m_xIndexInfoT.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();
 
   // index join with J
   m_xDynamicT.m_iIndexJoinInit = 0;

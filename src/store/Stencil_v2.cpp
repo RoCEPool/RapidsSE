@@ -26,6 +26,7 @@
 
 #include "CodeSynthUtils.hpp"
 #include "eSK.h"
+#include "eII.h"
 
 extern CmdLineArgs       gxCmdLineArgs;
 
@@ -1310,7 +1311,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
-  pOpSketch = new OpSketch(sJoinExpr, eHandlerKind, SK_INDEXJOIN, ePrevStencil_v2, SR_TJ, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(sJoinExpr, eHandlerKind, SK_INDEXJOIN, ePrevStencil_v2, SR_TJ, II_JJ, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
@@ -1361,7 +1362,7 @@ OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKin
   Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST, pStreamDefLft, pStreamDefOut);
 
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
@@ -1405,7 +1406,7 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKi
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
+  pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefLft);
 
   // make the labels
   sLabel.vSprint("L_InflateCrwT"_Stz);
@@ -1439,7 +1440,7 @@ OpSketch* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKi
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, pStreamDefLft, pStreamDefLft);
+  pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefLft);
 
   // make the labels
   sLabel.vSprint("L_InflateRowT"_Stz);
@@ -1481,7 +1482,7 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   Op *pNextOp = pStream->pGet(i_Op + 1);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sFilterExpr, eHandlerKind, SK_FILTER, ePrevStencil_v2, SR_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sFilterExpr, eHandlerKind, SK_FILTER, ePrevStencil_v2, SR_NONE, II_NONE, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
@@ -1509,7 +1510,7 @@ OpSketch* Stencil_v2::pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevSte
   s4K sLabelNext;
 
   // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_EOS, ePrevStencil_v2, SR_NONE, nullptr, nullptr);
+  OpSketch* pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_EOS, ePrevStencil_v2, SR_NONE, II_NONE, nullptr, nullptr);
 
   sLabel = ""_Stz;
   sLabelNext = ""_Stz;
@@ -1706,7 +1707,7 @@ OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new shape for this OP
-  OpSketch *pOpSketch = new OpSketch(sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
@@ -1748,7 +1749,7 @@ OpSketch* Stencil_v2::pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind,
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sProjectExpr, eHandlerKind, SK_PROJECT, ePrevStencil_v2, SR_PT, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sProjectExpr, eHandlerKind, SK_PROJECT, ePrevStencil_v2, SR_PT, II_NONE, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
@@ -1793,7 +1794,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new shape for this OP
-  OpSketch *pOpSketch = new OpSketch(sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, II_PL, pStreamDefLft, pStreamDefOut);
 
   // set the indexDef
   IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
@@ -1844,7 +1845,7 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
   IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(sSortExpr, eHandlerKind, SK_SORT, ePrevStencil_v2, ePrevStencil_v2, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(sSortExpr, eHandlerKind, SK_SORT, ePrevStencil_v2, ePrevStencil_v2,  II_PL, pStreamDefLft, pStreamDefOut);
 
   // set the labels in the opSketch
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
@@ -1929,7 +1930,7 @@ OpSketch* Stencil_v2::pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevS
   RASSERT(pStreamDefOut);
 
   // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_TUB, ePrevStencil_v2, SR_TO, pStreamDefOut, pStreamDefOut, pInitStack);
+  OpSketch* pOpSketch = new OpSketch(""_Stz, eHandlerKind, SK_TUB, ePrevStencil_v2, SR_TO,  II_PL, pStreamDefOut, pStreamDefOut, pInitStack);
 
   // set the labels in the opSketch
   sLabel = "L_AddRowToTubPot"_Stz;
