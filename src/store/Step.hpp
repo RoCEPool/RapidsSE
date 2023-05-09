@@ -201,6 +201,7 @@ namespace STORE
     static void vAddSteps_Tag(void);
     static void vAddSteps_TagSet(void);
     static void vAddSteps_Task(void);
+    static void vAddSteps_TaskList(void);
     static void vAddSteps_Tenants(void);
     static void vAddSteps_Test(void);
     static void vAddSteps_Text(void);

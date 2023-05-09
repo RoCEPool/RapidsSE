@@ -219,6 +219,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Tag();
   Step::vAddSteps_TagSet();
   Step::vAddSteps_Task();
+  Step::vAddSteps_TaskList();
   Step::vAddSteps_Tenants();
   Step::vAddSteps_Test();
   Step::vAddSteps_Text();

@@ -14,6 +14,8 @@ namespace STORE
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // external API functions
 
+  static TaskList* pParseCommand(Stz* szCommand, eEC& eErrCode, s2K& sErrStr);
+  static void vScheduleTask(Task* pTask);
 
   static Job* pCreateJob2PC(Job* pParentJob, Stz* sCmd);
   static void vDeleteRootJob(Job*& rpJob);

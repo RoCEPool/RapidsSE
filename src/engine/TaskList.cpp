@@ -172,6 +172,22 @@ i8 TaskList::nTasks(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repair                                                                     */
+/*----------------------------------------------------------------------------*/
+void TaskList::vRepairList(Object* pObject)
+{
+  _static_
+  TaskList* pTaskList = _pTaskList(pObject);
+  Task* pTask;
+
+  while ((pTask = pTaskList->pPopTask()) != nullptr) {
+    delete pTask;
+  }
+
+  delete pTaskList;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void TaskList::vContentDump(void)

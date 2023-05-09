@@ -38,6 +38,56 @@ extern pthread_key_t giTLS_CurrentPoint;
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Parse a command into one or more tasks. Returns a tasklist if successful.  */
+/* Otherwise returns null and sets the error code and string.                 */
+/*----------------------------------------------------------------------------*/
+TaskList* Api::pParseCommand(Stz* szCommand, eEC& eErrCode, s2K& sErrStr)
+{
+  TaskList* pTaskList = new TaskList(QK_NONE);
+
+  // TODO: Magic goes here
+
+  return pTaskList;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* schedule a task to run                                                     */
+/*----------------------------------------------------------------------------*/
+void Api::vScheduleTask(ENGINE::Task* pTask)
+{
+  // NOTE: While the content of this function is currently the same as
+  // vTriggerChildJob(), the aim is eventually make it suspend the parent
+  // job instead of blocking the parent job.
+
+  _static_
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RASSERT(pTask->pJob());
+  Job* pChildJob = pTask->pJob();
+
+  RASSERT(pTask->pJob()->pParentJob());
+  Job* pParentJob = pTask->pJob()->pParentJob();
+
+
+  pParentJob->vMutexLock();
+  RASSERT(MS_LOCKED == pParentJob->eMutexSide());
+
+  RASSERT(pChildJob->pTask());
+
+  pChildJob->vResponseTimerStart();
+
+  RASSERT(pChildJob->bHasTag(C_TAG_NOWAIT));
+  RASSERT(! pChildJob->bHasTag(C_TAG_WAIT));
+
+  Scheduler::vTaskApi_Add(pChildJob->pTask());
+
+  pParentJob->vMutexUnlock();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* delete root job                                                           */
 /*----------------------------------------------------------------------------*/
 void Api::vDeleteRootJob(Job*& rpRootJob)

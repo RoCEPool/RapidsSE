@@ -137,10 +137,12 @@ public:
   void vApiForkChild(void);
   void vApiForkDemon(void);
   void vApiForkChild2PC(void);
+  void vApiParseCommand(void);
   void vApiReapableJobFetch(void);
   void vApiReapableIsOriginator(void);
   void vApiReapableJobMetricsEnabled(void);
   void vApiReapableJobTagsFetch(void);
+  void vApiScheduleTask(void);
   void vApiSpawnJob(void);
 
   // arrange
@@ -2213,6 +2215,14 @@ void vDdlLockAssertNone(void);
   void vTaskWait(void);
   void vTaskYield(void);
   void vTaskYield_opLoop(void);
+
+  // tasklist
+  void vTaskListGet(void);
+  void vTaskListSet(void);
+  void vTaskListDelete(void);
+  void vTaskListIsEmpty(void);
+  void vTaskListPop(void);
+
 
   // tenants
   void vTenantsDelete(void);
