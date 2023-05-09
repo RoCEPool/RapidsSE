@@ -9,11 +9,13 @@ namespace STORE
   {
   private:
     eEC   m_eErrorCode;
+    char  m_caErrorMsg[256];
+
     char  m_caFileName[256];
     i8    m_iLineNo;
-    char  m_caErrorMsg[256];
-  
+
   public:
+    Error(void);
     Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo);
     Error(eEC eErrorCode, Stz* aErrorMsg, Stz* aFileName, i8 iLineNo);
     
@@ -21,6 +23,9 @@ namespace STORE
     Stz* aErrorMsg(void);
     Stz* aFileName(void);
     i8   iLineNo(void);
+    void vSet(Error& rxError);
+    void vSet(eEC eErrorCode, Stz* aErrorMsg);
+
   };
 }
 

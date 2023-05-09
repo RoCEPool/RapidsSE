@@ -22,6 +22,7 @@ namespace STORE
     void vAdd_key_exprs(CardIter* pCI);
 
     void vDeleteBounds(void);
+    bool bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred);
     void vSet_Choose_index(void);
     bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
    };

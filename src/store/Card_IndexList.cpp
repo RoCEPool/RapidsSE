@@ -150,10 +150,8 @@ bool Card_IndexList::bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred)
   CardIter xCI_indexList(this);
   while (xCI_indexList.G_bEachMain(CK_INDEX)) {
     CardIter xCI_index(xCI_indexList.G.p_index);
-    while (xCI_index.G_bEachMain(CK_BOUNDS)) {
-      if (xCI_index.G.p_bounds->bHasBoundOf(p_cmpPred))
-        return true;
-    }
+    if (xCI_indexList.G.p_index->bHas_cmpPred_In_bounds(p_cmpPred))
+      return true;
   }
   return false;
 }

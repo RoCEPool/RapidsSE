@@ -9,6 +9,7 @@
 #include "CardCtl.hpp"
 #include "Weaver.hpp"
 #include "PermGen.hpp"
+#include "Error.hpp"
 
 namespace STORE
 {
@@ -50,7 +51,7 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    bool bApplyTransformationMatrix(eEC* peErrorCode);
+    bool bApplyTransformationMatrix(Error& rxError, eEC* peErrorCode);
     void vApplyTransformationMatrix(void);
 
     Bench* pBench(void);
@@ -72,7 +73,7 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
-    bool bTransform(eEC* peErrorCode, InfoSet* pInfoSet);
+    bool bTransform(Error& rxError, eEC* peErrorCode, InfoSet* pInfoSet);
 
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
 

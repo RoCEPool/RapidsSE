@@ -108,7 +108,7 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* transform matrix                                                           */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bApplyTransformationMatrix(eEC* peErrorCode)
+bool Optimiser::bApplyTransformationMatrix(Error& rxError, eEC* peErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -144,10 +144,8 @@ bool Optimiser::bApplyTransformationMatrix(eEC* peErrorCode)
   }
 
   catch (Error xError) {
+    rxError.vSet(xError);
     *peErrorCode = xError.eErrorCode();
-    // todo: this should read xError.szErrorMsg()
-    //Stz* szError = xError.aErrorMsg();
-
     bClean = false;
   }
 
@@ -366,7 +364,7 @@ Stz* Optimiser::szWeave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
+bool Optimiser::bTransform(Error& rxError, eEC* peErrorCode, InfoSet* pInfoSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -379,7 +377,7 @@ bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
   Board* pBoard = m_pBench->pHead();
 
   //bool bClean = m_pTransformer->bTransform(peErrorCode);
-  bool bClean = bApplyTransformationMatrix(peErrorCode);
+  bool bClean = bApplyTransformationMatrix(rxError,peErrorCode);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

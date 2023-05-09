@@ -12,6 +12,7 @@
 #include "Job.hpp"
 
 #include "LogicUnit.hpp"
+#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -117,7 +118,8 @@ void Step::vOptimiserTransform(void) {
     pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
   }
 
-  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(&eErrorCode, pInfoSet);
+  Error xError;
+  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(xError,&eErrorCode, pInfoSet);
 
   // push error code
   if (!bResult)

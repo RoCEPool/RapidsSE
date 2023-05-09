@@ -151,6 +151,23 @@ void Card_Index::vDeleteBounds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Index::bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  CardIter xCI_index(this);
+  while (xCI_index.G_bEachMain(CK_BOUNDS)) {
+    if (xCI_index.G.p_bounds->bHasBoundOf(p_cmpPred))
+      return true;
+  }
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Index::vSet_Choose_index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
