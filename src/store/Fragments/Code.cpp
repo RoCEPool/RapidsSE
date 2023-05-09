@@ -736,7 +736,8 @@ void vTubVchCol(Dynamic_T* aDynamicT) {
   i8  nSrcSize;
   i8  iOffset;
   m8* amCellAddress;
-  char* __STRING_AREA__;
+  char* __STRING_AREA_TO__;
+  RowInfo __ROW_INFO_TO__;
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -752,16 +753,16 @@ void vTubVchCol(Dynamic_T* aDynamicT) {
     nSrcSize = strlen(szSrcStz) + 1;
 
     // get the destination string
-    szDstStz = __STRING_AREA__;
+    szDstStz = __ROW_INFO_TO__.m_acStrArea;
     strncpy(szDstStz, szSrcStz, nSrcSize);
 
     // copy the source to the destination
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
-    iOffset = - nDifference(__STRING_AREA__,amCellAddress);
+    iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
 
     // update the tub string size
-    __STRING_AREA__ += nSrcSize;
+    __ROW_INFO_TO__.m_acStrArea += nSrcSize;
   }
 
   // marker-end
@@ -789,7 +790,7 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
   char* szDstStz;
 
   i8  nSrcSize;
-  char* __STRING_AREA__;
+  RowInfo __ROW_INFO_TO__;
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -805,62 +806,17 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
     nSrcSize = strlen(szSrcStz) + 1;
 
     // get the destination string
-    szDstStz = __STRING_AREA__;
+    szDstStz = __ROW_INFO_TO__.m_acStrArea;
     strncpy(szDstStz, szSrcStz, nSrcSize);
 
     // copy the source to the destination
     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = (i8)szDstStz;
 
     // update the tub string size
-    __STRING_AREA__ += nSrcSize;
+    __ROW_INFO_TO__.m_acStrArea += nSrcSize;
   }
 
   // marker-end
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexDereference -------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexDereference
-void vIndexDereference(Dynamic_T* aDynamicT) {
-
-#include "vFLAT_Parameters_v2.h"
-
-  i8 iIndexBuffer;
-  i8 iIndexItem;
-  i8 i_BaseOffsetDataT;
-  char* aIndexCrw;
-
-  static const void* C_ADR_REGION = (void*)0x204800000000;
-  static const i8 C_CRW_HEADBYTES = 32;
-  static const i8 C_CRW_FIRSTHEAD = 640;
-
-  L_InflateAColumn:
-
-  // marker-start
-
-  // dereference the entry
-  iIndexBuffer = aDynamicT->m_xIndexInfoT.m_aEntInt->Rrf.m_uBuffer;
-  iIndexItem   = aDynamicT->m_xIndexInfoT.m_aEntInt->Rrf.m_uItem;
-  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
-
-  // inflate the derefenced entry
-  aHeadLine = (struct HeadLine_T *)aIndexCrw;
-  auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  acStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrArea;
-  racStrArea = (char*)aDynamicT->m_xRowInfoIT.m_acStrArea;
-  eStrInflateRule = SI_STRAREA_ADR;
-  i_BaseOffsetDataT = C_1B  + C_8B  + 4;
-  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataT);
-
-  // marker-end
-
-  __L_LABEL_NEXT__:
-
-  L_Return:
-  return;
-
 }
 
 /*----------------------------------------------------------------------------*/

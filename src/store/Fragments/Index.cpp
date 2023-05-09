@@ -16,6 +16,56 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexDereference -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexDereference
+void vIndexDereference(Dynamic_T* aDynamicT) {
+
+#include "vFLAT_Parameters_v2.h"
+
+  i8 iIndexBuffer;
+  i8 iIndexItem;
+  i8 i_BaseOffsetDataX;
+  char* aIndexCrw;
+
+  IndexInfo __INDEX_INFO__;
+  RowInfo   __ROW_INFO_TO__;
+  i8 __COLUMNS_TO_INFLATE_;
+  i8 __COLUMNS_INFLATED__;
+
+  static const void* C_ADR_REGION = (void*)0x204800000000;
+  static const i8 C_CRW_HEADBYTES = 32;
+  static const i8 C_CRW_FIRSTHEAD = 640;
+
+  L_InflateAColumn:
+
+  // marker-start
+
+  // dereference the entry
+  iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
+  iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
+  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
+
+  // inflate the derefenced entry
+  aHeadLine = (struct HeadLine_T *)aIndexCrw;
+  auMetaCode = META_AREA(aHeadLine);
+  ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
+  acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  racStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  eStrInflateRule = SI_STRAREA_ADR;
+  i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
+  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataX);
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexPositionBegin -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexPositionBegin

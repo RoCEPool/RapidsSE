@@ -48,8 +48,7 @@ int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT)
   i8 iItemJ;
   i8 iLeftOuterRow;
   i8 iJoinedRows;
-  i8 i_BaseOffsetDataJ;
-  i8 i_BaseOffsetDataT;
+  i8 i_BaseOffsetDataX;
   i8 iIndexBuffer;
   i8 iIndexItem;
   i8 i_CurrentRow;
@@ -123,8 +122,7 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
   i8 iItemJ;
   i8 iLeftOuterRow;
   i8 iJoinedRows;
-  i8 i_BaseOffsetDataJ;
-  i8 i_BaseOffsetDataT;
+  i8 i_BaseOffsetDataX;
   i8 iIndexBuffer;
   i8 iIndexItem;
   i8 i_CurrentRow;
@@ -196,8 +194,7 @@ int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
    i8    iItemJ;
    i8    iLeftOuterRow;
    i8    iJoinedRows;
-   i8    i_BaseOffsetDataJ;
-   i8    i_BaseOffsetDataT;
+   i8    i_BaseOffsetDataX;
    i8    iIndexBuffer;
    i8    iIndexItem;
    i8    i_CurrentRow;
@@ -274,8 +271,7 @@ int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
   i8 iItemJ;
   i8 iLeftOuterRow;
   i8 iJoinedRows;
-  i8 i_BaseOffsetDataJ;
-  i8 i_BaseOffsetDataT;
+  i8 i_BaseOffsetDataX;
   i8 iIndexBuffer;
   i8 iIndexItem;
   i8 i_CurrentRow;

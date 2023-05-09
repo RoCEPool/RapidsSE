@@ -85,8 +85,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceStructTo(sLine, pOpSketch);
         vReplaceStructFrom(sLine, pOpSketch);
 
-        vReplaceLeftColumns(sLine, pOpSketch);
-        vReplaceRightColumns(sLine, pOpSketch);
+        vReplaceColumnsInflated(sLine, pOpSketch);
+        vReplaceColumnsToInflate(sLine, pOpSketch);
 
         vReplaceLabel(sLine, pOpSketch);
         vReplaceLabelNext(sLine, pOpSketch);
@@ -94,7 +94,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
-        vReplaceStringArea(sLine, pOpSketch);
+        vReplaceRowInfoTo(sLine, pOpSketch);
 
         // cater to multiple replaces of IndexInfo
         if (bReplaceIndexInfo(sLine, sReplacedLine, pOpSketch) )
@@ -286,6 +286,7 @@ bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch*
 
   return false;
 }
+
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
@@ -433,15 +434,22 @@ void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceLeftColumns(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceColumnsInflated(Stz* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__LEFT_COLUMNS__")) {
-    RASSERT( pOpSketch->m_pStreamDefLft );
-    s256 sLeftColumns;
-    StrLib::vSprint(sLeftColumns,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__LEFT_COLUMNS__", sLeftColumns.azChar());
+  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_INFLATED__")) {
+
+    s256 sColumnsInflated;
+    if (pOpSketch->m_eSketchKind == SK_INDEXJOIN) {
+      RASSERT( pOpSketch->m_pStreamDefLft );
+      StrLib::vSprint(sColumnsInflated,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
+      StrLib::vSprint(sColumnsInflated,"0"_Stz);
+    }
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_INFLATED__", sColumnsInflated.azChar());
     RASSERT(bResult);
   }
 }
@@ -449,15 +457,23 @@ void CodeSynthUtils::vReplaceLeftColumns(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceRightColumns(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceColumnsToInflate(Stz* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__RIGHT_COLUMNS__")) {
-    RASSERT( pOpSketch->m_pStreamDefRht );
-    s256 sRightColumns;
-    StrLib::vSprint(sRightColumns,"%lld"_Stz,pOpSketch->m_pStreamDefRht->nColumns());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__RIGHT_COLUMNS__", sRightColumns.azChar());
+  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_TO_INFLATE_")) {
+
+    s256 sColumnsToInflate;
+    if (pOpSketch->m_eSketchKind == SK_INDEXJOIN) {
+      RASSERT(pOpSketch->m_pStreamDefRht);
+      StrLib::vSprint(sColumnsToInflate, "%lld"_Stz, pOpSketch->m_pStreamDefRht->nColumns());
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
+      StrLib::vSprint(sColumnsToInflate,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
+    }
+
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_TO_INFLATE_", sColumnsToInflate.azChar());
     RASSERT(bResult);
   }
 }
@@ -465,14 +481,50 @@ void CodeSynthUtils::vReplaceRightColumns(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplaceStringArea(Stz* sLine, OpSketch* pOpSketch)
+void CodeSynthUtils::vReplaceRowInfoTo(Stz* sLine, OpSketch* pOpSketch)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__STRING_AREA__")) {
-    RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__STRING_AREA__", (char*)aSRArea[pOpSketch->m_eStencilTo]);
-    RASSERT(bResult);
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azChar(), "__ROW_INFO_TO__")) {
+    RASSERT( pOpSketch->m_eStencilTo != SR_NONE );
+    switch(pOpSketch->m_eStencilTo) {
+      case SR_AT:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoAT");
+        RASSERT(bResult);
+        break;
+      case SR_IJ:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoIJ");
+        RASSERT(bResult);
+        break;
+      case SR_IT:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoIT");
+        RASSERT(bResult);
+        break;
+      case SR_PL:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoPL");
+        RASSERT(bResult);
+        break;
+      case SR_PO:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTO");
+        RASSERT(bResult);
+        break;
+      case SR_PT:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTO");
+        RASSERT(bResult);
+        break;
+      case SR_TO:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTO");
+        RASSERT(bResult);
+        break;
+      case SR_TJ:
+        bResult = StrLib::bReplace(sLine->azChar(), "__ROW_INFO_TO__", "aDynamicT->m_xRowInfoTJ");
+        RASSERT(bResult);
+        break;
+      default:
+        NEVER_REACH;
+    }
   }
 }
 

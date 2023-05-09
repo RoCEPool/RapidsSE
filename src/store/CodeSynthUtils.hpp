@@ -29,9 +29,9 @@ namespace STORE {
     static void vReplaceLabel(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceLabelNext(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceLabelLoop(Stz *sLine, OpSketch *pOpSketch);
-    static void vReplaceLeftColumns(Stz *sLine, OpSketch *pOpSketch);
-    static void vReplaceRightColumns(Stz *sLine, OpSketch *pOpSketch);
-    static void vReplaceStringArea(Stz* sLine, OpSketch* pOpSketch);
+    static void vReplaceColumnsInflated(Stz *sLine, OpSketch *pOpSketch);
+    static void vReplaceColumnsToInflate(Stz *sLine, OpSketch *pOpSketch);
+    static void vReplaceRowInfoTo(Stz* sLine, OpSketch* pOpSketch);
 
   };
 }

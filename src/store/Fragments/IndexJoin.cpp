@@ -192,54 +192,6 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
   return;
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- vIndexJoinDereference ---------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexJoinDereference
-void vIndexJoinDereference(Dynamic_T* aDynamicT) {
-
-#include "vFLAT_Parameters_v2.h"
-
-  i8 iIndexBuffer;
-  i8 iIndexItem;
-  i8 i_BaseOffsetDataJ;
-  char* aIndexCrw;
-
-  i8 __LEFT_COLUMNS__;
-  i8 __RIGHT_COLUMNS__;
-
-  static const void* C_ADR_REGION = (void*)0x204800000000;
-  static const i8 C_CRW_HEADBYTES = 32;
-  static const i8 C_CRW_FIRSTHEAD = 640;
-
-  L_InflateAColumn:
-
-  // marker-start
-
-  // dereference the entry
-  iIndexBuffer = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;
-  iIndexItem   = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uItem;
-  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
-
-  // inflate the derefenced entry
-  aHeadLine = (struct HeadLine_T *)aIndexCrw;
-  auMetaCode = META_AREA(aHeadLine);
-  ayDstByte = (byte*)aDynamicT->m_xRowInfoTJ.m_aRowCellArray + 8*__LEFT_COLUMNS__;
-  acStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_acStrArea;
-  racStrArea = (char*)aDynamicT->m_xRowInfoTJ.m_acStrArea;
-  eStrInflateRule = SI_STRAREA_ADR;
-  i_BaseOffsetDataJ = C_1B  + C_8B + __RIGHT_COLUMNS__;
-  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataJ);
-
-  // marker-end
-
-  __L_LABEL_NEXT__:
-
-  L_Return:
-  return;
-
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
