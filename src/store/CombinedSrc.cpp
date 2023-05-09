@@ -124,6 +124,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
   File* pCodeFile = new File(this);
+  File* pIndexFile = new File(this);
 
   bool bOpened;
 
@@ -242,6 +243,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
       case SK_INDEXSCAN:
         // open the indexScan code fragments file
+        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
+        RASSERT ( bOpened );
+
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/IndexScan.cpp"_Stz);
         RASSERT ( bOpened );
         
@@ -253,32 +257,36 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pCodeFile);
 
         if (pOpSketch->m_eLowerIP == IP_NONE) {
-          vAppendCodeFragment(pOpSketch, "vIndexPositionBegin"_Stz, pCodeFile);
+          vAppendCodeFragment(pOpSketch, "vIndexPositionBegin"_Stz, pIndexFile);
         }
         else {
           vGenerateExprCode(pOpSketch->m_pLowerStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pCodeFile);
+          vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
         }
 
         if (pOpSketch->m_eUpperIP != IP_NONE) {
           vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexPositionUpper"_Stz, pCodeFile);
+          vAppendCodeFragment(pOpSketch, "vIndexPositionUpper"_Stz, pIndexFile);
         }
 
-        vAppendCodeFragment(pOpSketch, "vIndexCheckUpper"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vIndexCheckUpper"_Stz, pIndexFile);
         vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz);
         vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexScanReturn"_Stz, pCodeFile);
 
         // close the indexScan code fragments file
         pCodeFile->vClose();
+        pIndexFile->vClose();
 
         break;
 
       case SK_INDEXJOIN:
         // open the indexJoin code fragments file
+        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
+        RASSERT ( bOpened );
+
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
         RASSERT ( bOpened );
 
@@ -304,6 +312,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         // close the indexJoin code fragments file
         pCodeFile->vClose();
+        pIndexFile->vClose();
 
         break;
 
@@ -407,6 +416,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
 
   delete pCodeFile;
+  delete pIndexFile;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Close the code fragment files
