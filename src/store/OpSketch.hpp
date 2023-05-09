@@ -104,7 +104,8 @@ namespace STORE
     void vGenerateStencilToStruct(u8 uSelectColumns = 0);
 
 
-    void vIndexDef(IndexDef* pIndexDEf);
+    void vIndexDef(IndexDef* pIndexDef);
+    void vIndexPositionLower(eIP eIndexPosition);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
     void vStreamDefRht(StreamDef* pStreamDefRht);

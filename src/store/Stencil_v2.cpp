@@ -1324,6 +1324,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
 
   // set the indexDef
   pOpSketch->vIndexDef(pIndex->pIndexDef());
+  pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(nullptr);

@@ -264,6 +264,16 @@ void OpSketch::vIndexDef(IndexDef* pIndexef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set index position lower                                                   */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vIndexPositionLower(eIP eIndexPosition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_eLowerIP = eIndexPosition;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set payloadBytes                                                           */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vPayloadBytes(i8 nPayloadBytes)

@@ -298,11 +298,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         if (pOpSketch->m_pExprStack->nValues()) {
-          vAppendCodeFragment(pOpSketch, "vIndexJoinPositionLower"_Stz, pCodeFile);
+          vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
         }
         else {
           // cross join
-          vAppendCodeFragment(pOpSketch, "vIndexJoinPositionBegin"_Stz, pCodeFile);
+          vAppendCodeFragment(pOpSketch, "vIndexPositionBegin"_Stz, pIndexFile);
         }
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
         vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);

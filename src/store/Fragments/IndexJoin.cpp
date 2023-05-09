@@ -97,45 +97,6 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexJoinPositionLower -------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexJoinPositionLower
-void vIndexJoinPositionLower(Dynamic_T* aDynamicT) {
-
-  // marker-start
-
-  // position at entry >= join key (lbound)
-  aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int *)aIndexTree_positionGE(
-      aDynamicT->m_xIndexInfoJ.m_aIndexTree, &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntKey);
-
-  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt )
-    goto L_Return;
-
-  // marker-end
-
-  L_Return:
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexJoinPositionBegin -------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexJoinPositionBegin
-void vIndexJoinPositionBegin(Dynamic_T* aDynamicT) {
-
-  // marker-start
-
-  // cross join - position at beginning of the index
-  aDynamicT->m_xIndexInfoJ.m_aEntInt =  (struct Ent_int*)aIndexTree_begin(
-      aDynamicT->m_xIndexInfoJ.m_aIndexTree, &aDynamicT->m_xIndexInfoJ.m_aEntBuffer);
-
-  // marker-end
-
-  L_Return:
-  return;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vIndexJoinContinue ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinContinue
