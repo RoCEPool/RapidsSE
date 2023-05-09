@@ -153,45 +153,6 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- vIndexJoinReturn --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexJoinReturn
-void vIndexJoinReturn(Dynamic_T* aDynamicT) {
-
-  void* aHeadLine;
-  void* aHeadLineSav;
-  void* aSubReturnLabel;
-
-  // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-CRW-RET
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  L__IndexScanRet:
-  
-  aHeadLine = aHeadLineSav;
-  aDynamicT->m_iJoinedRows++;
-  goto __L_LABEL_NEXT__;
-
-  __L_LABEL_LOOP__:
-
-   aDynamicT->m_xRowInfoTJ.m_acStrArea = aDynamicT->m_xRowInfoTJ.m_acStrAreaSav;
-
-   // move to next entry
-   aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
-       &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
-   goto L_IndexDeref;
-   
-  // marker-end
-
-  __L_LABEL_NEXT__:
-  L_IndexDeref:
-
-  return;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
