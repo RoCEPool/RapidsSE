@@ -270,13 +270,13 @@ bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch*
   if (StrLib::bContains(sLine->azChar(), "__INDEX_INFO__")) {
     switch(pOpSketch->m_eIndexInfo) {
       case II_ST:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfoT");
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoT");
         break;
       case II_JJ:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfoJ");
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfoJ");
         break;
       case II_PL:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "m_xIndexInfo");
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__INDEX_INFO__", "aDynamicT->m_xIndexInfo");
         break;
       default:
         RASSERT(0);

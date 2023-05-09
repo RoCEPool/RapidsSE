@@ -452,9 +452,6 @@ struct Dynamic_T
   void* m_pPot;
   struct RowInfo m_xRowInfoPO;
 
-  // dummy for compilation
-  struct IndexInfo __INDEX_INFO__;
-
   // index scan T
   struct IndexInfo m_xIndexInfoT;
 

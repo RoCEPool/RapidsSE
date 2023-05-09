@@ -61,6 +61,8 @@ void vIndexScanReturn(Dynamic_T* aDynamicT) {
   void* aHeadLineSav;
   void* aSubReturnLabel;
 
+  IndexInfo __INDEX_INFO__;
+
   // marker-start
   goto L__IndexScanRet;
 
@@ -77,8 +79,8 @@ void vIndexScanReturn(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // move to next entry
-  aDynamicT->__INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
-      &aDynamicT->__INDEX_INFO__.m_aEntBuffer, aDynamicT->__INDEX_INFO__.m_aEntInt);
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+      &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
   goto L_IndexScanDeref;
 
   // marker-end

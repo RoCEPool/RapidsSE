@@ -21,12 +21,14 @@
 // function-vIndexPositionBegin
 void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 
+  IndexInfo __INDEX_INFO__;
+
   // marker-start
 
 #ifdef WITH_TINYC
   // position at beginning of the index
-  aDynamicT->__INDEX_INFO__.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
-        aDynamicT->__INDEX_INFO__.m_aIndexTree, &aDynamicT->__INDEX_INFO__.m_aEntBuffer);
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
+        __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
 #endif
 
   if ( ! aDynamicT->m_xIndexInfoT.m_aEntInt )
@@ -46,15 +48,17 @@ void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 // function-vIndexPositionLower
 void vIndexPositionLower(Dynamic_T* aDynamicT) {
 
+  IndexInfo __INDEX_INFO__;
+
   // marker-start
 
 #ifdef WITH_TINYC
   // position at lower bound
-  aDynamicT->__INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
-      aDynamicT->__INDEX_INFO__.m_aIndexTree, &aDynamicT->__INDEX_INFO__.m_aEntBuffer, aDynamicT->__INDEX_INFO__.m_aEntKey);
+  __INDEX_INFO__.m_aEntInt =  (struct Ent_int *)__INDEX_POSITION_LOWER__(
+      __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
 #endif
 
-  if ( ! aDynamicT->__INDEX_INFO__.m_aEntInt )
+  if ( ! __INDEX_INFO__.m_aEntInt )
     goto L_Return;
 
   // marker-end
@@ -70,16 +74,18 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 // function-vIndexPositionUpper
 void vIndexPositionUpper(Dynamic_T* aDynamicT) {
 
+  IndexInfo __INDEX_INFO__;
+
   // marker-start
 
 #ifdef WITH_TINYC
   // position at upper bound
-  aDynamicT->__INDEX_INFO__.m_aEntUpper =  (struct Ent_int *)__INDEX_POSITION_UPPER__(
-      aDynamicT->__INDEX_INFO__.m_aIndexTree, aDynamicT->__INDEX_INFO__.m_aEntKey);
+  __INDEX_INFO__.m_aEntUpper =  (struct Ent_int *)__INDEX_POSITION_UPPER__(
+      __INDEX_INFO__.m_aIndexTree, __INDEX_INFO__.m_aEntKey);
 #endif
 
   // reached upper bound ?
-  if (aDynamicT->__INDEX_INFO__.m_aEntInt == aDynamicT->__INDEX_INFO__.m_aEntUpper) {
+  if (__INDEX_INFO__.m_aEntInt == __INDEX_INFO__.m_aEntUpper) {
     goto L_Return;
   }
 
@@ -99,12 +105,14 @@ void vIndexPositionUpper(Dynamic_T* aDynamicT) {
 // function-vIndexCheckUpper
 void vIndexCheckUpper(Dynamic_T* aDynamicT) {
 
+  IndexInfo __INDEX_INFO__;
+
   // marker-start
 
   L_IndexScanDeref:
 
   // reached upper bound ?
-  if (aDynamicT->__INDEX_INFO__.m_aEntInt == aDynamicT->__INDEX_INFO__.m_aEntUpper) {
+  if (__INDEX_INFO__.m_aEntInt == __INDEX_INFO__.m_aEntUpper) {
     goto L_Return;
   }
 
