@@ -123,7 +123,7 @@ void Step::vOptimiserTransform(void)
 
   // push error code
   if (! bResult) {
-    //m_pDataStack->vPushStz(xError.aErrorMsg());
+    m_pDataStack->vPushStz(xError.aErrorMsg());
     m_pDataStack->vPushInt((i8) xError.eErrorCode());
   }
 
