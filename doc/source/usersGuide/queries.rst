@@ -222,6 +222,9 @@ for simplicity.
 
 JOIN Clause
 ```````````
+
+Overview
+::::::::
 The ``JOIN`` clause allows a query to combine rows from multiple tables.
 There are many different ways in which two tables can be joined together,
 including *inner* and *outer* joins.
@@ -255,7 +258,7 @@ In RapidsSE a join predicate can be specified in multiple ways:
 
 1. By using the ``ON`` clause;
 2. By using the ``USING`` clause;
-3. By specifying the join predicate as part of a WHERE clause.
+3. By specifying the join predicate as part of a ``WHERE`` clause.
 
 These three methods are shown in the examples below where rows from table ``t1``
 are joined with rows from table ``t2`` if column ``c`` from ``t1`` is equal to
@@ -295,12 +298,95 @@ the second (right) table is combined with a row of ``NULL``\s for the first
 
 A ``FULL OUTER JOIN`` is a union of both a ``LEFT OUTER JOIN`` and a
 ``RIGHT OUTER JOIN``. Any rows from either table that are not previously
-matched are combined with a row of nulls of the opposite table and then
+matched are combined with a row of ``NULL``\s of the opposite table and then
 emitted.
 
-.. attention::
+.. index::
+   single: queries; JOIN support
+   single: JOIN (support)
 
-   RapidsSE does not yet support any joins.
+.. _joinSupport:
+
+RapidsSE Join Support
+:::::::::::::::::::::
+RapidsSE currently supports Index-Joins only. An index-join is a join which
+requires the table being joined to have a index on the join column (refer to join
+example below).
+
+Index-Joins are the only join technique supported at this stage.  Future
+versions of RapidsSE will support additional techniques such as hash-joins.
+Queries which attempt to join tables where there isn’t a supporting index will
+result in a user error. The supplied error message will enumerate the tables
+which do not have suitable indexes.
+
+.. rubric:: Example
+
+In the following example we see a join between the Lineitem and Orders tables drawn from the TPC-H schema:
+
+.. code:: sql
+
+   SELECT l_returnflag, l_linestatus, COUNT(*)
+     FROM lineitem, orders
+    WHERE l_orderkey = o_orderkey
+    GROUP BY l_returnflag, l_linestatus
+   ;
+
+In the case of RapidsSE, for this join to succeed either there must be an
+index on ``l_orderkey``, and/or an index on ``o_orderkey``. If there isn’t a
+suitable index then RapidsSE will return a user error.
+
+Also refer to the section :ref:`constraints`.
+
+Index-Join Errors
+:::::::::::::::::
+In the case where a join is not possible because suitable indexes are not
+available, RapidsSE will return an ``EC_MISSING_JOIN_INDEX`` user error.
+The supplied error text will enumerate the tables which do not have suitable
+indexes.
+
+.. rubric:: No Indexes At All
+
+Let us assume the ``lineitem``, ``orders`` and ``customer`` have been created
+with no indexes. Running a 3-way join query will result in the following error
+being returned:
+
+.. code:: sql
+
+  error: NODE1; EC_MISSING_JOIN_INDEX; Tables: lineitem, orders, customer;
+
+.. rubric:: Missing Index
+
+Let us assume the ``lineitem``, ``orders`` and ``customer`` have been created
+with only the index on ``l_orderkey``. Running a 3-way join query will result
+in the following error being returned:
+
+.. code:: sql
+
+  error: NODE1; EC_MISSING_JOIN_INDEX; Tables: Orders, Customer;
+
+
+Join Ordering
+:::::::::::::
+In the previous example it may be possible for RapidsSE to scan the
+``lineitem`` table first, and then for every row of ``lineitem`` attempt to
+join it to each matching row in the ``orders`` table.  This matching would be
+based on the ``WHERE``/``JOIN`` predicate: ``l_orderkey = o_orderkey``.  For
+this to be possible, there would need to be an index on the column
+``o_orderkey`` of the ``orders`` table.
+
+Alternatively it may also be possible for RapidsSE to scan the ``orders``
+table first, and then for every row of ``orders`` attempt to join it to each
+matching row in ``lineitem``.  This would be based on the ``WHERE``/``JOIN``
+predicate: ``l_orderkey = o_orderkey``. For this to be possible, there would
+need to be an index on column ``l_orderkey`` of the ``lineitem`` table.
+
+If there were indexes on both ``l_orderkey`` and ``o_orderkey``, then both of
+the join permutations are possible.  In this case the :ref:`RapidsSE SQL Optimiser <optimisation>`
+will choose one of the permutations based on estimating which has the lowest
+network overhead.
+
+If nether of the mentioned indexes is available then RapidsSE will return a
+user error.
 
 
 .. index::
