@@ -150,16 +150,10 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
 
   // In this mode we only want to support reasonably simple SELECT statements.
   // We want to disable these Sql operators:
-  //  - Subqueries
-  //  - Joins
-  //  - Limits
-  //  - Order By
   //  - Unions
-  //  - Group by part of aggregates
   //
   // We also want to disable these expression operators:
-  //  - Exists
-  //  - In
+  //  (none)
 
   // Find the /plan node
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
@@ -179,12 +173,7 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
 
       Stz* pszDisabledFeature = nullptr;
 
-      if      (TableSubquery::bIsOfType(pNode))   { pszDisabledFeature = ": Table subquery"_Stz;      }
-      else if (ExprSubquery::bIsOfType(pNode))    { pszDisabledFeature = ": Expression subquery"_Stz; }
-      else if (      JoinOp::bIsOfType(pNode))    { pszDisabledFeature = ": Table Join"_Stz;          }
-      else if (     LimitOp::bIsOfType(pNode))    { pszDisabledFeature = ": Limit"_Stz;               }
-      else if (     OrderOp::bIsOfType(pNode))    { pszDisabledFeature = ": Order By"_Stz;            }
-      else if (     UnionOp::bIsOfType(pNode))    { pszDisabledFeature = ": Union"_Stz;               }
+      if (     UnionOp::bIsOfType(pNode))    { pszDisabledFeature = ": Union"_Stz;               }
 
       if (pszDisabledFeature) {
         // Not currently allowed
@@ -195,38 +184,38 @@ void NameValidator::vCheckDisabledFunctionality(PlanNode* pRootNode)
       return GraphNav::WALK_CONTINUE;
   };
 
-  // Visitor lambda to validate expressions only.
-  auto fExprVisitor =
-      [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
-
-        UNUSED(sPath);
-        UNUSED(iDepth);
-        UNUSED(pvArg);
-
-        if (!Expr::bIsOfType(pNode)) {
-          // Only interested in expressions here
-          return GraphNav::WALK_CONTINUE;
-        }
-
-        Stz* pszDisabledFeature = nullptr;
-
-        if      (   ExistsExpr::bIsOfType(pNode))   { pszDisabledFeature = ": EXISTS expression"_Stz;    }
-        else if (       InExpr::bIsOfType(pNode))   { pszDisabledFeature = ": IN expression"_Stz;        }
-
-        if (pszDisabledFeature) {
-          // Not currently allowed
-          SemanticException::vThrow(EC_DISABLED_STATEMENT, pszDisabledFeature);
-        }
-
-        // Carry on
-        return GraphNav::WALK_CONTINUE;
-      };
+//  // Visitor lambda to validate expressions only.
+//  auto fExprVisitor =
+//      [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+//
+//        UNUSED(sPath);
+//        UNUSED(iDepth);
+//        UNUSED(pvArg);
+//
+//        if (!Expr::bIsOfType(pNode)) {
+//          // Only interested in expressions here
+//          return GraphNav::WALK_CONTINUE;
+//        }
+//
+//        Stz* pszDisabledFeature = nullptr;
+//
+//        if      (   ExistsExpr::bIsOfType(pNode))   { pszDisabledFeature = ": EXISTS expression"_Stz;    }
+//        else if (       InExpr::bIsOfType(pNode))   { pszDisabledFeature = ": IN expression"_Stz;        }
+//
+//        if (pszDisabledFeature) {
+//          // Not currently allowed
+//          SemanticException::vThrow(EC_DISABLED_STATEMENT, pszDisabledFeature);
+//        }
+//
+//        // Carry on
+//        return GraphNav::WALK_CONTINUE;
+//      };
 
   // Walk the graph and look for sql operators that are disabled.
   GraphNav::bGlobalWalk(pPlanNode, false, true, fSqlOpVisitor, pRootNode);
 
-  // Now walk the graph and check for expressions that are disabled
-  GraphNav::bGlobalWalk(pPlanNode, true,  true, fExprVisitor,  pRootNode);
+//  // Now walk the graph and check for expressions that are disabled
+//  GraphNav::bGlobalWalk(pPlanNode, true,  true, fExprVisitor,  pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
