@@ -34,7 +34,7 @@ __aFooterFunction(ToKeyHshRow)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* pFmt)
+ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
 : Object(CN_TOKEYHSHROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
@@ -42,7 +42,6 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, BucketMap* pBucketMap, Format* p
   m_pPipelineJob = AM::pPipelineJob();
 
   m_pStreamDef  = pStreamDef;
-  m_pBucketMap  = pBucketMap;
   m_nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
 
   m_nErrors = 0;

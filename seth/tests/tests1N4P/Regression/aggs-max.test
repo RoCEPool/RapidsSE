@@ -8,7 +8,7 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax21.sql
 // Result file: ../queries/aggs/max/results/max21.res
-//TODO: ENABLE WHEN OPTIMISER (SUBQUERIES)
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND MULTIPLE SUBQUERIES)
 /*
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX where x < (select min(cold9) from table9 where colb9 like 'gr%');
 rows:
@@ -38,7 +38,7 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/aggs/max/rmax22.sql
 // Result file: ../queries/aggs/max/results/max22.res
-//TODO: ENABLE WHEN OPTIMISER (SUBQUERIES)
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND MULTIPLE SUBQUERIES)
 /*
 select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9 having max(cold9)*-1 < (select sum(cold1) from table1 where colb1 in ('green', 'black', 'blue', 'red', 'pink', 'violet'));
 rows:
@@ -68,12 +68,9 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax18.sql
 // Result file: ../queries/aggs/max/results/max18.res
-//TODO: ENABLE WHEN OPTIMISER (SUBQUERIES)
-/*
 select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
 rows:
-  (248.45, 149.230000000000, 15)
-*/
+  (2.484500000e+02, 149.23, 15)
 
 // Source file: ../queries/aggs/max/rmax20.sql
 // Result file: ../queries/aggs/max/results/max20.res
@@ -83,8 +80,7 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax17.sql
 // Result file: ../queries/aggs/max/results/max17.res
-//TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
+/* HASH JOIN
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a ?*+HASH*? join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   (396, 'BLACK', -223.05, 'GREEN')
@@ -114,20 +110,17 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax16.sql
 // Result file: ../queries/aggs/max/results/max16.res
-//TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
-  (396, 'BLACK', -223.05, 'GREEN')
-  (349, 'BLACK', -215.84, 'ORANGE')
-  (418, 'BLACK', -143.43, 'WHITE')
-  (44, 'BLACK', -122.76, 'black')
-  (82, 'BLACK', -181.22, 'red')
-  (434, 'BLACK', 223.71, 'white')
-  (485, 'BLACK', -12.13, 'yellow')
-  (194, 'BLUE', -40.56, 'WHITE')
-  (353, 'BLUE', -21.71, 'maroon')
-*/
+  (396,'BLACK',-2.230500000e+02,'GREEN')
+  (349,'BLACK',-2.158400000e+02,'ORANGE')
+  (418,'BLACK',-1.434300000e+02,'WHITE')
+  (44,'BLACK',-1.227600000e+02,'black')
+  (82,'BLACK',-1.812200000e+02,'red')
+  (434,'BLACK',2.237100000e+02,'white')
+  (485,'BLACK',-1.213000000e+01,'yellow')
+  (194,'BLUE',-4.056000000e+01,'WHITE')
+  (353,'BLUE',-2.171000000e+01,'maroon')
 
 // Source file: ../queries/aggs/max/rmax14.sql
 // Result file: none
@@ -187,8 +180,6 @@ ordered rows:
 
 // Source file: ../queries/aggs/max/rmax19.sql
 // Result file: ../queries/aggs/max/results/max19.res
-//TODO: WHEN OPTIMIZER (SORT)
-/*
 select max(colb1), ucolvc from table1 where ucolvc < 'ggg' group by ucolvc order by ucolvc;
 ordered rows:
   ('orange', 'aaa')
@@ -197,7 +188,6 @@ ordered rows:
   ('violet', 'ddd')
   ('tan', 'eee')
   ('violet', 'fff')
-*/
 
 // Source file: ../queries/aggs/max/rmax19.sql
 // Result file: ../queries/aggs/max/results/max19.res
@@ -220,9 +210,6 @@ rows:
 
 // Source file: ../queries/aggs/max/rmax15.sql
 // Result file: ../queries/aggs/max/results/max15.res
-//TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
 select min(cold1) + min(cold9) from table1 join table9 using (ucol);
 rows:
-  (-225.22)
-*/
+  (-2.252200000e+02)

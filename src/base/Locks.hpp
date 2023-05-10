@@ -29,6 +29,8 @@ namespace BASE
 
     void vReset(void);
     void vShow(void);
+
+    Footer* aFooter(void);
   };
 }
 

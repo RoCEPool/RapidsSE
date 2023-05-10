@@ -10,7 +10,6 @@
 #include "eAR.h"
 #include "eBO.h"
 #include "eCC.h"
-#include "eCP.h"
 #include "eCX.h"
 #include "eDL.h"
 #include "eDS.h"
@@ -24,11 +23,11 @@
 #include "eNE.h"
 #include "eOK.h"
 
+#include "eOT.h"
 #include "eOI.h"
 #include "eOR.h"
 #include "ePF.h"
 #include "eYG.h"
-#include "ePY.h"
 #include "eYX.h"
 #include "eRG.h"
 #include "eRO.h"
@@ -124,7 +123,6 @@
 #include "HeadsUp.hpp"
 
 #include "LglPtn.hpp"
-#include "BucketMap.hpp"
 #include "Stage.hpp"
 #include "SysMetrics.hpp"
 
@@ -177,32 +175,6 @@ SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
   SysMetrics* pSysMetricsChain = gpAttachMap->pSysMetricsChain();
   
   return pSysMetricsChain;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   BKTMAP                                   */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-/*----------------------------------------------------------------------------*/
-/* convert bucket id to ptn id                                                */
-/*----------------------------------------------------------------------------*/
-LglPtn AM::BKTMAP::tLglPtnOf(KeyBkt tKeyBkt)
-{
-  _static_
-  
-  LglPtn tLglPtn = gpAttachMap->m_pBucketMap->tLglPtnOf(tKeyBkt);
-
-  return tLglPtn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bucket map                                                             */
-/*----------------------------------------------------------------------------*/
-BucketMap* AM::BKTMAP::pBucketMap(void)
-{
-  _static_
-  
-  return gpAttachMap->m_pBucketMap;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -898,6 +870,25 @@ void AM::JOB::vAckOriginatingJob(JobId tOriginId)
 /*----------------------------------------------------------------------------*/
 /* has job got given tag?                                                     */
 /*----------------------------------------------------------------------------*/
+bool AM::JOB::bHasTag(Stz* szTagNm)
+{
+  _static_
+
+  Job* pJob = MY::pJob();
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return false;
+
+  if (! pJobTags->bHasName(szTagNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
 bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 {
   _static_
@@ -1084,6 +1075,24 @@ void AM::JOB::vSendReject(RejectJob *pRejectJob)
   pSocket->vGrabWrite();
   bool bResult = pSocket->bSendObject(pRejectJob, oSysCall, SY_NONE);
   pSocket->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* has job got given tag?                                                     */
+/*----------------------------------------------------------------------------*/
+Stz* AM::JOB::szTagValue(Stz* szTagNm)
+{
+  _static_
+
+  Job* pJob = MY::pJob();
+
+  TagSet* pJobTags = pJob->pJobTags();
+  if (! pJobTags)
+    return nullptr;
+
+  Stz* szValue = pJobTags->szValue(szTagNm);
+
+  return szValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2942,29 +2951,6 @@ bool AM::SYSTEM::bPassesOpenSystem(Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-bool AM::SYSTEM::bReapEnabled(void)
-{
-  _static_
-  
-  if (! gpAttachMap)
-    return false;
-
-  return gpAttachMap->m_bReapEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set reap enabled?                                                          */
-/*----------------------------------------------------------------------------*/
-void AM::SYSTEM::vReapEnabled(bool bReapEnabled)
-{
-  _static_
-
-  gpAttachMap->m_bReapEnabled = bReapEnabled;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get system started                                                         */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSTEM::bStarted(void)
@@ -3237,7 +3223,7 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
   pTknVec->vSoftReset();
   pTknVec->vIntegrityCheck();
 
-  s4K sToken;
+  s48K sToken;
   
   char* azCrs = szString->azChar();
 
@@ -3253,6 +3239,19 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
     //vTrace("  %12s %s\n"_Stz,aTN[eToken],sToken.szStz());
     
     pTknVec->vAppendToken(sToken,eToken);
+
+    if (TN_NAME == eToken && sToken.bSame("__cpp_code__"_Stz)) {
+
+      sToken.vReset();
+      eToken = Token::eCollectCodeBlock(&azCrs,sToken);
+      pTknVec->vAppendToken(sToken,eToken);
+      sToken.vReset();
+      eToken = Token::eCollectSenName(&azCrs,sToken);
+      RASSERT(sToken.bSame("__codeEnd__"_Stz));
+      pTknVec->vAppendToken(sToken,eToken);
+
+      break;
+    }
   }
 }
 
@@ -3642,7 +3641,13 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       delete pInfoSet;
       break;
     }
-      
+
+    case CN_JOBMETRICS: {
+      JobMetrics* pJobMetrics = _pJobMetrics(pOperand);
+      delete pJobMetrics;
+      break;
+    }
+
     case CN_MARKER: {
       Marker* pMarker = _pMarker(pOperand);
       AM::MARKER::vFreeMarker(pMarker,pJob);
@@ -3702,11 +3707,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       break;
     }
 
-    case CN_BKTMAPGET: {
-      BktMapGet* pBktMapGet = _pBktMapGet(pOperand);
-      delete pBktMapGet;
-      break;
-    }
 /*
     case CN_PARCEL: {
       Parcel* pParcel = _pParcel(pOperand);
@@ -3721,20 +3721,6 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
 
     case CN_GRID: {
      break;
-    }
-
-    case CN_BUCKETMAP: {
-      break;
-    }
-
-    case CN_BUCKETGET: {
-      //vTrace(">>>>vDeleteOperand delete bucketget\n"_Stz);
-      break;
-    }
-
-    case CN_BUCKETINFO: {
-      //vTrace(">>>>vDeleteOperand delete bucketinfo\n"_Stz);
-      break;
     }
 
     case CN_PTNSTREAM: {
@@ -4278,7 +4264,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP:   eOperand = EV_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER:   eOperand = EV_D_CRWBUFFER; break;
     case CN_CSVBUFFER:   eOperand = EV_D_CSVBUFFER; break;
     case CN_ENTBUFFER:   eOperand = EV_D_ENTBUFFER; break;
@@ -4377,9 +4362,6 @@ i8 AM::iOperandEvKind(Operand* pOperand)
     case CN_PARCEL:       eOperand = EV_D_PARCEL;         break;
     case CN_TABLE:        eOperand = EV_D_TABLE;          break;
     case CN_GRID:         eOperand = EV_D_GRID;           break;
-    case CN_BKTMAPGET:       eOperand = EV_D_BKTMAPGET;      break;
-    case CN_BUCKETGET:       eOperand = EV_D_BUCKETGET;      break;
-    case CN_BUCKETINFO:       eOperand = EV_D_BUCKETINFO;      break;
     case CN_TABLEPTN:     eOperand = EV_D_TABLEPTN;      break;
 
     default:
@@ -4981,7 +4963,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_CC: return aCC[i_Enum];
     case EG_CM: return aCM[i_Enum];
     case EG_CN: return aCN[i_Enum];
-    case EG_CP: return aCP[i_Enum];
     //case EG_CS: return aCS[i_Enum];
     case EG_CT: return aCT[i_Enum];
     case EG_CX: return aCX[i_Enum];
@@ -5038,7 +5019,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
     case EG_PT: return aPT[i_Enum];
-    case EG_PY: return aPY[i_Enum];
 
     case EG_QK: return aQK[i_Enum];
 

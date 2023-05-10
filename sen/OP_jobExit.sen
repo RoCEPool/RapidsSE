@@ -5,67 +5,33 @@
 " OP_jobExit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* add reap activity here                                                     */
+/* insert job metrics                                                         */
 /*----------------------------------------------------------------------------*/
-: reap_activity ( -- )
+: insertJobMetrics ( pJob )
 
-  //false api::reapJobs
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_FLUSH ...                                                 */
-/*----------------------------------------------------------------------------*/
-/*
-: jobExit_Flush \handler
-
-  //"jobExit_Flush" .
-  
-  PipeIn[].delete
-  
-  //"__eventDemon" find dup if
-  //word.object@ locals| pEventDemon |
+  params| pJob |
+  0 locals| eError |
 
   AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
 
-  tEventDemonJobId jobId::isUnknown not if
-    tEventDemonJobId Tub[].pipeToJob
-  else
-    discard
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the event demon
 
-    // delete all buffers in the TUB
-    Tub[].deleteAllBuffers
-
-  then
-
-  true
-;
-*/
-
-/*----------------------------------------------------------------------------*/
-/* handler for EV_D_JOB ...                                                   */
-/*----------------------------------------------------------------------------*/
-/*
-: jobExit_Job \handler
-
-  0 locals| eError |
-  
-  Pipein[]\clear locals| pJob |
-  
-  //pJob "Exiting Job %v\n" .printf
-
-  "<job_report>" sysargs::tagSet@ tagSet.hasName not
-  if
-    true pJob job::reapable!
+  tEventDemonJobId jobId::isUnknown if
+    "Cant find __eventDemon" .
     true
     exit
   then
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  //pJob jobReport::reportJob to eError
-  
-  true pJob job::reapable!
+  // new a tub
+
+  Tub[].new
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // metrics
+
+  Tub[] pJob jobReport::metrics to eError
 
   eError EC_NONE == not if
     eError op__execErr
@@ -73,16 +39,65 @@
     exit
   then
 
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network
+
+  Tub[] pJob jobReport::network to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network dissect
+
+  Tub[] pJob jobReport::netDissect to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operators
+
+  Tub[] pJob jobReport::operators to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operands
+
+  Tub[] pJob jobReport::operands to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  tEventDemonJobId Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Tub[].delete
+
   true
-;
-*/
-
-/*----------------------------------------------------------------------------*/
-/* initialise                                                                 */
-/*----------------------------------------------------------------------------*/
-: jobExit_initialise
-
-  Tub[].new
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +106,7 @@
 : jobExit_StartMarker \handler
 
    0 locals| pJobToBeDeleted |
+
   "jobExit Demon Started" .boot
 
   begin
@@ -101,8 +117,15 @@
     begin
         pJobToBeDeleted
     while
-      // generate the job report here
-      //pJobToBeDeleted >str "JobReport: %v" str.format .
+      // generate the job metrics here
+      "<jobMetrics>" pJobToBeDeleted api::reapableJobTags@ tagSet.hasName if
+        pJobToBeDeleted api::reapableJobIsOriginator not if
+          pJobToBeDeleted api::reapableJobMetricsEnabled if
+            pJobToBeDeleted >str "Inserting JobMetrics for job %v" str.format .
+            pJobToBeDeleted insertJobMetrics
+          then
+        then
+      then
 
       // delete the job
       pJobToBeDeleted api::deleteJob
@@ -130,7 +153,7 @@
   //find: jobExit_Flush       EV_M_FLUSH [op].handler!
   find: jobExit_StartMarker EV_M_START [op].handler!
 
-  jobExit_initialise
+  //jobExit_initialise
   
   op__loop
 

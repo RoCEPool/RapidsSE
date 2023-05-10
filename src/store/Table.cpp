@@ -5,7 +5,6 @@
 #include <array>
 #include "BASE.h"
 
-#include "BucketMap.hpp"
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
@@ -25,7 +24,6 @@
 
 #include "Grid.hpp"
 #include "MY.hpp"
-#include "BucketInfo.hpp"
 
 extern SizeHeap  gxaSizeHeap[];
 Atomic gixTable;
@@ -60,14 +58,11 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pStreamDef   = nullptr;
   m_pPtnDef    = new PtnDef;
 
-  m_pBucketMap   = new BucketMap(m_eKind);
-
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
 
   m_pParcel      = nullptr;
 
-  m_pBucketMap->vSetTableNm(szTableNm); // for debug
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
   // HACK : Don't do this for DEFINE TABLES (which occur before cluster
@@ -109,7 +104,6 @@ Table::~Table(void) noexcept(false)
   m_pIdxVec->vClear();
   
   delete m_pIdxVec;
-  delete m_pBucketMap;
 
   delete m_pStreamDef;
   delete m_pPtnDef;
@@ -307,19 +301,22 @@ void Table::vAddIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
+void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   i8 nRowsTotal    = 0;
   i8 nBuffersTotal = 0;
-  
+  i8 jSumRowBytes  = 0;
   TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 
-  pTablePtn->vAnalyze(nBuffers, nRows);
+  pTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
   
   nRowsTotal += nRows;
   nBuffersTotal += nBuffers;
+
+  if (nRows)
+    jRowSize = jSumRowBytes / nRows;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,44 +330,9 @@ void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
   
   TablePtn* pTblPtn = pTablePtn(0);
 
+  pDataBuffer->vLglPtn((LglPtn)0);
+
   pTblPtn->vAppendBuffer(pDataBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the bucket map for this table                                          */
-/*----------------------------------------------------------------------------*/
-BucketMap* Table::pBucketMap(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  return m_pBucketMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the bucket map for this table                                          */
-/*----------------------------------------------------------------------------*/
-void Table::vBucketMap(BucketMap* pBucketMap)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  m_pBucketMap = pBucketMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the partition No from Bucket No                                        */
-/*----------------------------------------------------------------------------*/
-LglPtn  Table::tLglPtnOf(KeyBkt tKeyBkt)
-{
-  return m_pBucketMap->tLglPtnOf(tKeyBkt);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get the Next Bucket No from partition No                                   */
-/*----------------------------------------------------------------------------*/
-i8  Table::iPtnToBktNext(LglPtn tPtnNo, i8 iBktNo)
-{
-  return m_pBucketMap->iWhichBucketNext(tPtnNo, iBktNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -626,7 +588,6 @@ void Table::vResetPointers(void)
   
   m_pStreamDef = nullptr;
   m_pPtnDef  = nullptr;
-  m_pBucketMap = nullptr;
   m_pIdxVec    = nullptr;
   m_pTablePtnVec = nullptr;
 
@@ -659,6 +620,38 @@ PtnDef* Table::pPtnDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_pPtnDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get estimates for the table based on partition 0                           */
+/*----------------------------------------------------------------------------*/
+void Table::vGetGridEstimates(i8 &jTableSize, i8 &jRowSize, i8& nRowCount)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  i8 nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
+
+  jTableSize = 0;
+  jRowSize   = 0;
+  nRowCount  = 0;
+
+  i8 nBuffersPerPtn = 0;
+  i8 i_TablePtn = iPtnNoToTablePtn(0);
+  vAnalyze(i_TablePtn, nBuffersPerPtn, nRowCount, jRowSize);
+
+  if (! bIsReplicated())
+    nRowCount *= nPtnsInGrid;
+
+  if (nBuffersPerPtn > 1)
+    if (bIsReplicated())
+      jTableSize = nBuffersPerPtn;
+    else
+      jTableSize = nBuffersPerPtn * nPtnsInGrid;
+  else
+  if (m_pStreamDef->jTableSize())
+    jTableSize = m_pStreamDef->jTableSize();
+  else
+    jTableSize = 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -794,8 +787,6 @@ i8 Table::iPrepareParcel(void)
   }
   m_pParcel->vAddItem((Object *)m_pPtnDef);
 
-  m_pParcel->vAddItem((Object *)m_pBucketMap);
-
   if (m_pIdxVec->nItems() > 0)
     m_pParcel->vAddItem((Object *) m_pIdxVec);
 
@@ -817,22 +808,8 @@ void Table::vGetMetaParts(Parcel* pParcel)
   
   pParcel->vAddItem((Object *)m_pPtnDef);
 
-  pParcel->vAddItem((Object *)m_pBucketMap);
-
   if (m_pIdxVec->nItems() > 0)
     pParcel->vAddItem((Object *) m_pIdxVec);
-}
-
-/*----------------------------------------------------------------------------*/
-/* put bucketmap object part in a parcel                                      */
-/*----------------------------------------------------------------------------*/
-void Table::vGetBktMap(Parcel* pParcel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  pParcel->vAddItem((Object *)this);
-  m_pBucketMap->vUpdateMap(); // update with new partition
-  pParcel->vAddItem((Object *)m_pBucketMap);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -910,9 +887,6 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
       case CN_PTNDEF:
         m_pPtnDef = (PtnDef*) pObject;
         break;
-      case CN_BUCKETMAP:
-        m_pBucketMap = (BucketMap *) pObject;
-        break;
       case CN_IDXVEC: {
         m_pIdxVec = (IdxVec *) pObject;
         break;
@@ -957,45 +931,6 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put new bucketmap object part in the existing table                        */
-/*----------------------------------------------------------------------------*/
-bool Table::bUpdateBktMap(Parcel* pParcel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  if (!pParcel) return false;
-  i8 nItems = pParcel->nItems();
-
-  //vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, nItems);
-
-  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
-    Object* pObject =  pParcel->pGetItem(i_Item);
-    eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
-
-    switch (eClass) {
-      case CN_TABLE:
-        // do nothing for now
-        break;
-      case CN_BUCKETMAP:
-        delete m_pBucketMap; // delete old bucket map
-        m_pBucketMap = (BucketMap *) pObject;
-        break;
-      default:
-      {
-        vTrace("iReassembleObj %ld Error\n"_Stz, eClass);
-        return false;
-      }
-    }
-  }
-  // We are done with the received parcel, let's delete the received parcel
-  delete pParcel;
-  // Null the parcel pointer for this table
-  m_pParcel = nullptr;
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* put new bucket object part in the existing table                           */
 /*----------------------------------------------------------------------------*/
 bool Table::bUpdateBucket(Parcel* pParcel)
@@ -1012,9 +947,6 @@ bool Table::bUpdateBucket(Parcel* pParcel)
     eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
 
     switch (eClass) {
-      case CN_BUCKETINFO:
-        // do nothing for now
-        break;
       case CN_CRWBUFFER:
       {
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
@@ -1063,17 +995,6 @@ Stz* Table::szDumpTablePtn()
     sDumpBuffer.vConcat(pTablePtn->szDumpContents());
   }
   return sDumpBuffer;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* dump all contents of the table bucket map                                  */
-/*----------------------------------------------------------------------------*/
-Stz* Table::szDumpBucketMap()
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-
-  return m_pBucketMap->szDumpMap();
 }
 
 /*============================================================================*/

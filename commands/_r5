@@ -1,0 +1,90 @@
+/*============================================================================*/
+/* _r5 -- tpch query 5                                                        */
+/*============================================================================*/
+
+trackMemory;
+
+_region_replicated
+
+_nation_replicated
+create index N_idx0 on nation(N_NATIONKEY);
+
+_customer
+create index C_idx0 on customer(C_NATIONKEY);
+
+_orders
+create index O_idx0 on orders(O_CUSTKEY);
+
+_lineItem
+create index L_idx0 on lineitem(L_ORDERKEY);
+
+_supplier
+create index S_idx0 on supplier(S_SUPPKEY);
+
+//_part
+//_partsupp
+
+
+//load region "../tpch/sf_0001/region.csv" ;
+//load region "../tpch/sf1/region.csv" ;
+//select * from region;
+
+//load nation "../tpch/sf_0001/nation.csv" ;
+//load nation "../tpch/sf1/nation.csv" ;
+//select * from nation;
+
+//load customer "../tpch/sf_0001/customer.csv" ;
+//load customer "../tpch/sf1/customer.csv" ;
+//select * from customer;
+
+//load orders "../tpch/sf_0001/orders.csv" ;
+//load orders "../tpch/sf1/orders.csv" ;
+//select * from orders;
+
+//load lineItem "../tpch/sf_0001/lineItem.csv" ;
+//load lineItem "../tpch/sf1/lineItem.csv" ;
+//select * from lineitem;
+
+//load supplier "../tpch/sf_0001/supplier.csv" ;
+//load supplier "../tpch/sf1/supplier.csv" ;
+//select * from supplier;
+
+//load part "../tpch/sf_0001/part.csv" ;
+//load part "../tpch/sf1/part.csv" ;
+//select * from part;
+
+//load partsupp "../tpch/sf_0001/partsupp.csv" ;
+//load partsupp "../tpch/sf1/partsupp.csv" ;
+//select * from partsupp;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "OT_vAppend_preliminary_indexJoin"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r5"
+select
+  count(*)
+  from region, nation, customer, orders, lineitem, supplier
+  where n_regionkey = r_regionkey
+    and c_nationkey = n_nationkey
+    and o_custkey   = c_custkey
+    and l_orderkey  = o_orderkey
+    and s_suppkey   = l_suppkey
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table part;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

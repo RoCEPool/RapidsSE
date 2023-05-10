@@ -28,6 +28,8 @@ DeckSpec::DeckSpec(VertexSpec* pVertexSpec)
   
   m_pVertexSpec = pVertexSpec;
 
+  m_pParamsSpec = nullptr;
+
   _checkInitialised_(CN_DECKSPEC);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
@@ -42,6 +44,32 @@ DeckSpec::~DeckSpec(void) noexcept(false)
 
   while (StageSpec* pStageSpec = pPop())
     delete pStageSpec;
+
+  delete m_pParamsSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get parameter list spec                                                    */
+/*----------------------------------------------------------------------------*/
+ParamsSpec* DeckSpec::pParamsSpec(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
+
+  return m_pParamsSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set parameter list spec                                                    */
+/*----------------------------------------------------------------------------*/
+void DeckSpec::vParamsSpec(ParamsSpec* pParamsSpec)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DECKSPEC, _FOOTER_);
+
+  m_pParamsSpec = pParamsSpec;
 }
 
 /*============================================================================*/

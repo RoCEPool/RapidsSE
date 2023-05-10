@@ -30,7 +30,6 @@ success
 MemoryLeaks;
 rows:
  ('BUCKET',  256)
- ('BUCKETMAP_dyn',  1)
  ('BUCKETVEC',  4)
  ('CODEBLOCK',  3)
  ('CRWTABLEPTN',  256)

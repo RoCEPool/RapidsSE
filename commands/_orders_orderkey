@@ -14,7 +14,7 @@ create table orders (
 	 O_COMMENT         VARCHAR(79) NOT NULL
 )
 partition by (O_ORDERKEY)
-tablesize 2048
+tablesize 181
 ;
 
 /*============================================================================*/

@@ -1,0 +1,114 @@
+/*============================================================================*/
+/* _interval_debug                                                            */
+/*============================================================================*/
+
+create table interval6(a date,b timestamp,c time);
+
+load interval6 "../DATA/QA/interval/interval6.csv";
+
+/ep_enable
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_interval_debug"
+select
+       a+interval '1' month,
+       count(*)
+  from
+       interval6
+ group
+       by a+interval '1' month
+;
+
+
+
+
+
+/*
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0095
+  stage stageMarker0095 on all partitions :
+    scan rapidsse public interval6
+    | gbyAgg " groupBy  type DATE $1 INTERVAL_YM 259  +  aggregates  type DATE $K1 , type INTEGER )  countAll  "
+    | combined 0
+    | stageMarker0098
+  stage stageMarker0098 on all nodes :
+    gbyAgg " groupBy  type DATE $1 aggregates  type DATE $K1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | stageMarker0101
+  stage stageMarker0101 on origin :
+    gbyAgg " groupBy  type DATE $1 aggregates  type DATE $K1 , type INTEGER )  $2 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      interval6
+    //| project   " "
+    //| combined  0
+    | next
+
+  stage S02 on all partitions :
+      gbyAgg    " groupBy
+                    //type DATE $a.1 INTERVAL_YM 259 +
+                    type DATE $1 INTERVAL_YM 259 +
+                  aggregates
+                    type DATE $K1
+                  , type INTEGER ) countAll "
+    | combined  0
+    | next
+
+  stage S03 on all nodes :
+      gbyAgg    " groupBy
+                    type DATE $1
+                  aggregates
+                    type DATE $K1
+                  , type INTEGER ) $2 sum "
+    | combined  0
+    | next
+
+  stage S04 on origin :
+      gbyAgg    " groupBy
+                    type DATE $1
+                  aggregates
+                    type DATE $K1
+                  , type INTEGER ) $2 sum "
+    | combined  0
+    | next
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+rows:
+(date '2023-02-28',1)
+(date '2023-05-30',1)
+(date '2023-03-28',1)
+(date '2000-03-29',1)
+(date '2000-02-29',2)
+(date '2021-12-12',1)
+(date '2000-03-28',1)
+*/

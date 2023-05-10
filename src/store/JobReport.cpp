@@ -22,6 +22,7 @@
 #include "Stream.hpp"
 #include "Op.hpp"
 
+
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
@@ -90,24 +91,24 @@ eEC JobReport::eAllReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* metrics report                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
+eEC JobReport::eMetricsReport(Job* pJob, Tub* pTub)
 {
   _static_
   
   // find the participant job
   
-  Job* pJob = pFindParticipantJobNo(iJob);
-
-  if ( ! pJob ) {
-    JobId tJobId;
-    tJobId = iJob;
-    pJob = pFindParticipantJobId(tJobId);
-  }
-
-  if (! pJob) {
-    vTrace("Did not jind job %lld\n"_Stz,iJob);
-    return EC_NONE;
-  }
+//  Job* pJob = pFindParticipantJobNo(iJob);
+//
+//  if ( ! pJob ) {
+//    JobId tJobId;
+//    tJobId = iJob;
+//    pJob = pFindParticipantJobId(tJobId);
+//  }
+//
+//  if (! pJob) {
+//    vTrace("Did not jind job %lld\n"_Stz,iJob);
+//    return EC_NONE;
+//  }
   
   //vTrace("JobReport::eMetricsReport job =%p\n"_Stz,pJob);
 
@@ -160,7 +161,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                       (
                         C_VARGS_BEGIN
                        
-                       ,iJob
+                       ,pJobMetrics->tJobId().uJobNo()
 
                        ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
@@ -169,7 +170,6 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                        ,pStageMetrics->i_Stage()
                        ,pStageMetrics->szStageNm()
                        ,pStreamMetrics->i_Stream()
-                       ,pOpMetrics->i_Op()
                        ,pOpMetrics->szOpNm()
                        
                        ,pJobMetrics->nRefTimer()
@@ -209,21 +209,21 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* network dissect report                                                     */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
+eEC JobReport::eNetDissectReport(Job* pJob, Tub* pTub)
 {
   _static_
   
   
   // find the participant job
-  Job* pJob = pFindParticipantJobNo(iJob);
-
-  if ( ! pJob ) {
-    JobId tJobId;
-    tJobId = iJob;
-    pJob = pFindParticipantJobId(tJobId);
-  }
-  
-  // find the internal jobOperators table
+//  Job* pJob = pFindParticipantJobNo(iJob);
+//
+//  if ( ! pJob ) {
+//    JobId tJobId;
+//    tJobId = iJob;
+//    pJob = pFindParticipantJobId(tJobId);
+//  }
+//
+  // find the internal netDissect table
   Table* pJobNetDissectTable = AM::pTableFind(C_TDEF_JOBNETDISSECT);
   StreamDef* pStreamDef = pJobNetDissectTable->pStreamDef();
 
@@ -266,7 +266,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                   (
                     C_VARGS_BEGIN
                    
-                   ,iJob
+                   ,pJob->tJobId().uJobNo()
 
                    ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
@@ -278,7 +278,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    ,aCN[i_Item]
 
                    ,pTotup->nCnt(i_Item)
-                   ,pTotup->iSum(i_Item)
+                   ,pTotup->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
@@ -303,7 +303,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                   (
                     C_VARGS_BEGIN
                    
-                   ,iJob
+                   ,pJob->tJobId().uJobNo()
 
                    ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
@@ -315,7 +315,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    ,aSY[i_Item]
 
                    ,pWhyTot->nCnt(i_Item)
-                   ,pWhyTot->iSum(i_Item)
+                   ,pWhyTot->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
@@ -343,7 +343,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                   (
                     C_VARGS_BEGIN
                    
-                   ,iJob
+                   ,pJob->tJobId().uJobNo()
 
                    ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
@@ -355,7 +355,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    ,aCN[i_Item]
 
                    ,pTotup->nCnt(i_Item)
-                   ,pTotup->iSum(i_Item)
+                   ,pTotup->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
@@ -380,7 +380,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                   (
                     C_VARGS_BEGIN
                    
-                   ,iJob
+                   ,pJob->tJobId().uJobNo()
 
                    ,pThisNode->iNodeId()
                    ,pThisNode->szNodeNm()
@@ -392,7 +392,7 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
                    ,aSY[i_Item]
 
                    ,pWhyTot->nCnt(i_Item)
-                   ,pWhyTot->iSum(i_Item)
+                   ,pWhyTot->iBytes(i_Item)
 
                    ,C_VARGS_END
                   );
@@ -418,20 +418,20 @@ eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* network report                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
+eEC JobReport::eNetworkReport(Job* pJob, Tub* pTub)
 {
   _static_
   
   // find the participant job
-  Job* pJob = pFindParticipantJobNo(iJob);
-
-  if ( ! pJob ) {
-    JobId tJobId;
-    tJobId = iJob;
-    pJob = pFindParticipantJobId(tJobId);
-  }
+//  Job* pJob = pFindParticipantJobNo(iJob);
+//
+//  if ( ! pJob ) {
+//    JobId tJobId;
+//    tJobId = iJob;
+//    pJob = pFindParticipantJobId(tJobId);
+//  }
   
-  // find the internal jobOperators table
+  // find the internal jobNetwork table
   Table* pJobNetworkTable = AM::pTableFind(C_TDEF_JOBNETWORK);
   StreamDef* pStreamDef = pJobNetworkTable->pStreamDef();
 
@@ -464,7 +464,7 @@ eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
                 (
                   C_VARGS_BEGIN
                  
-                 ,iJob
+                 ,pJob->tJobId().uJobNo()
 
                  ,pThisNode->iNodeId()
                  ,pThisNode->szNodeNm()
@@ -502,22 +502,22 @@ eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* operand report                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
+eEC JobReport::eOperandReport(Job* pJob, Tub* pTub)
 {
   _static_
 
   // find the participant job
-  Job* pJob = pFindParticipantJobNo(iJob);
-
-  if ( ! pJob ) {
-    JobId tJobId;
-    tJobId = iJob;
-    pJob = pFindParticipantJobId(tJobId);
-  }
+//  Job* pJob = pFindParticipantJobNo(iJob);
+//
+//  if ( ! pJob ) {
+//    JobId tJobId;
+//    tJobId = iJob;
+//    pJob = pFindParticipantJobId(tJobId);
+//  }
 
   i8 iParticipantTsc = pJob->iTscParticipant();
   
-  // find the internal jobOperators table
+  // find the internal jobOpererands table
   Table* pJobOperandsTable = AM::pTableFind(C_TDEF_JOBOPERANDS);
   StreamDef* pStreamDef = pJobOperandsTable->pStreamDef();
 
@@ -535,15 +535,17 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
   Node*   pThisNode = MY::pNode();
 
   // get the pipeline
-  Task* pTask = pJob->pTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit();
-  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
-  
+//  Task* pTask = pJob->pTask();
+//  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+//  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
+
+  Pipeline* pPipeline = pJob->pMetricsPipeline();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // each stage in the pipeline
   Vertex* pPipeWork = pPipeline->pVertexRoot();
-  for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < pPipeWork->pDeck()->nItems(); i_Stage++) {
     Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
 
     // each stream in the stage
@@ -554,10 +556,12 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
     //for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
       for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
-        if ( ! pOp->pOpLogicUnit() )
-          continue;
         
         OperandWatch* pOperandWatch = pOp->pOperandWatch();
+
+        //if ( ! pOperandWatch )
+        //  continue;
+
         for (i8 i_Operand = 0; i_Operand < EV_ENUMS; i_Operand++) {
 
           if (! pOperandWatch->nCnt(i_Operand))
@@ -568,14 +572,14 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                       (
                         C_VARGS_BEGIN
                        
-                       ,iJob
+                       ,pJob->tJobId().uJobNo()
                        
                        ,pThisNode->iNodeId()
                        ,pThisNode->szNodeNm()
                        
                        ,pOp->pPipeline()->szPipelineNm()
-                       ,pOp->szStageName()
                        ,pOp->pStage()->i_Stage()
+                       ,pOp->szStageName()
                        ,pOp->tLglPtn().iAsI8()
                        ,pOp->szOpNm()
 
@@ -612,25 +616,25 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* operator report                                                            */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
+eEC JobReport::eOperatorReport(Job* pJob, Tub* pTub)
 {
   _static_
 
   // find the participant job
-  Job* pJob = pFindParticipantJobNo(iJob);
-
-  if ( ! pJob ) {
-    JobId tJobId;
-    tJobId = iJob;
-    pJob = pFindParticipantJobId(tJobId);
-  }
+//  Job* pJob = pFindParticipantJobNo(iJob);
+//
+//  if ( ! pJob ) {
+//    JobId tJobId;
+//    tJobId = iJob;
+//    pJob = pFindParticipantJobId(tJobId);
+//  }
   
-  // no such job ?
-  if (! pJob)
-    return EC_NO_SUCH_JOB;
+//  // no such job ?
+//  if (! pJob)
+//    return EC_NO_SUCH_JOB;
 
   // create the jobReport
-  JobReport* pJobReport = new JobReport(iJob, pJob);
+  //JobReport* pJobReport = new JobReport(iJob, pJob);
 
   // find the internal jobOperators table
   Table* pJobOperatorsTable = AM::pTableFind(C_TDEF_JOBOPERATORS);
@@ -649,15 +653,16 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   
   Node*   pThisNode = MY::pNode();
 
-  Task* pTask = pJob->pTask();
-  LogicUnit* pLogicUnit = pTask->pLogicUnit();
-
-  // get the pipeline
-  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
+//  Task* pTask = pJob->pTask();
+//  LogicUnit* pLogicUnit = pTask->pLogicUnit();
+//
+//  // get the pipeline
+//  Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
+   Pipeline* pPipeline = pJob->pMetricsPipeline();
 
   // each stage in the pipeline
   Vertex* pPipeWork = pPipeline->pVertexRoot();
-  for (i8 i_Stage = 0; i_Stage < pPipeWork->nItems(); i_Stage++) {
+  for (i8 i_Stage = 0; i_Stage < pPipeWork->pDeck()->nItems(); i_Stage++) {
 
     Stage* pStage = pPipeWork->pDeck()->pGet(i_Stage);
 
@@ -672,11 +677,17 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
         // get the stats for the op
         Op* pOp = pStream->pGet(i_Op);
 
-        // skip operators that don't have a LU
-        if ( ! pOp->pOpLogicUnit() )
+        // get the OP metrics stats
+        Stats* pStats = pOp->pMetricsStats();
+
+        // skip operators that don't have a metrics stats
+        if ( ! pStats )
           continue;
 
-        Stats* pStats = *pOp->pOpLogicUnit()->m_xpStats;
+        Thread* pThread = Thread::pThisTLSThread();
+
+        pThread->pPsxThd()->vSleepMsec(100,CN_WORD);
+
 
         s32 sBytesAlloc;
         MagLib::vByteMag(pStats->m_nBytesAlloc, sBytesAlloc);
@@ -708,17 +719,16 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                     (
                       C_VARGS_BEGIN
                                             
-                     ,iJob
+                     ,pJob->tJobId().uJobNo()
                       
                      ,pThisNode->iNodeId()
                      ,pThisNode->szNodeNm()
                      
                      ,pOp->pPipeline()->szPipelineNm()
-                     ,pOp->szStageName()
                      ,pOp->pStage()->i_Stage()
+                     ,pOp->szStageName()
                      ,pOp->tLglPtn().iAsI8()
                      ,pOp->szOpNm()
-
                      ,pStats->iMicroseconds()
                      ,pStats->m_nMaxQs
                      ,pStats->m_nOperands
@@ -727,20 +737,23 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                      ,pStats->m_nNewRowBuffer
                      ,pStats->m_nDelRowBuffer
                      ,pStats->m_nNewCsvBuffer
-                     ,pStats->m_nDelCsvBuffer
-                     ,pStats->m_nAllocs
-                     ,sBytesAlloc.azChar()
-                     ,pStats->m_nFrees
-                     ,sBytesFree.azChar()
-                     ,sMaxBytes.azChar()
-                     ,pStats->m_nReads
-                     ,sBytesRead.azChar()
-                     ,pStats->m_nWrites
-                     ,sBytesWrite.azChar()
-                     ,pStats->m_nParcelSends
-                     ,pStats->m_nObjectsSent
-                     ,pStats->m_nParcelRecvs
-                     ,pStats->m_nObjectsRecv
+
+                    ,pStats->m_nDelCsvBuffer
+                    ,pStats->m_nAllocs
+                    ,sBytesAlloc.azChar()
+                    ,pStats->m_nFrees
+                    ,sBytesFree.azChar()
+                   /*
+                   ,sMaxBytes.azChar()
+                   ,pStats->m_nReads
+                   ,sBytesRead.azChar()
+                   ,pStats->m_nWrites
+                   ,sBytesWrite.azChar()
+                   ,pStats->m_nParcelSends
+                   ,pStats->m_nObjectsSent
+                   ,pStats->m_nParcelRecvs
+                   ,pStats->m_nObjectsRecv
+                   */
                      ,C_VARGS_END
                     );
         
@@ -750,7 +763,7 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
   }
 
   // delete the jobReport
-  delete pJobReport;
+  //delete pJobReport;
 
   return EC_NONE;
 }

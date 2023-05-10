@@ -1,0 +1,114 @@
+/*============================================================================*/
+/* _a_q22 -- TCPH query 22 test                                               */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
+     from (
+       select c_custkey, substring(c_phone from 1 for 2) as cntrycode, c_acctbal
+       from customer
+       where substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
+           and c_acctbal >
+             ( select avg(c_acctbal)
+               from customer
+               where c_acctbal > 0.00
+                     and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
+                     and not exists (
+                                      select * from orders where o_custkey = c_custkey
+                                    )
+     ) as custsale
+     group by cntrycode
+     order by cntrycode;
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : CUSTOMER, ORDERS
+// JOIN ORDER : CUSTOMER->CUSTOMER->ORDERS
+// INDEXES    : IxC_CUSTKEY
+                IxO_CUSTKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   
+//
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+pipeline Query22
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S02 on all partitions :
+    scan Customer
+    | filter " type BOOLEAN  C_ACCTBAL 0.00  >
+               }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  C_PHONE 1  2  substring3  in  and  "
+    | project " type DECIMAL )  C_ACCTBAL sum  , type INTEGER )  C_ACCTBAL count  "
+    | combined 0
+    | next
+
+  stage S03 on all nodes :
+    project " type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project " type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type DECIMAL as acctbal $2 $1 casttype DECIMAL CAST  /  "
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin Customer IxC_CUSTKEY "bound $I1"
+    | filter " type BOOLEAN  }  '13'  '31'  '23'  '29'  '30'  '18'  '17'  #7  J1_C_PHONE 1  2  substring3  in
+              J1_C_ACCTBAL acctbal  >  and "
+    | project " type INTEGER as C_CUSTKEY J1_C_CUSTKEY , type VARCHAR as cntrycode J1_C_PHONE 1  2  substring3  , type DECIMAL as C_ACCTBAL J1_C_ACCTBAL "
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    keyNotExists ORDERS IxO_CUSTKEY  "BOUND $I1 C_CUSTKEY =="
+                   "type BOOLEAN O_CUSTKEY 0 >"
+    | project " type VARCHAR as cntrycode  cntrycode , type DECIMAL as C_ACCTBAL  C_ACCTBAL"
+    | combined 0
+    | next
+
+ stage S08 on all partitions :
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  , type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  $2 sum  , type DECIMAL )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    aggreg " groupBy  type VARCHAR as cntrycode $1 aggregates  type VARCHAR as cntrycode $K1 , type INTEGER as numcust )  $2 sum  , type DECIMAL as totacctbal )  $3 sum  "
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    sort " type VARCHAR as cntrycode $1 ASC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

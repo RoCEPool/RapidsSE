@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_MAIN.hpp"
+#include "Card_OP.hpp"
 
 namespace STORE
 {
-  class Card_Sort : public Card_MAIN
+  class Card_Sort : public Card_OP
   {
   public:
     void* operator new(size_t);
@@ -17,10 +15,15 @@ namespace STORE
   
     Card_Sort(void);
    ~Card_Sort(void) noexcept(false);
+
+    void vCut_sort(CardIter* pCI);
+
+    void vDerive_Projection_Key(CardIter* pCI);
+
+
   };
 
   Card_Sort* _pCard_Sort(void* aAddr);
-  bool _bIsCard_Sort(void* aAddr);
 }
 
 /*============================================================================*/

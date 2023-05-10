@@ -42,6 +42,8 @@ namespace STORE
     static void  vAppendElementEntStz(EntWrk* pEntWrk, Stz* sValue);
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     static void  vEntKind(EntWrk* pEntWrk, bool bPayload, eKE eKeyKind);
+    static void  vEntDesc(EntWrk* pEntWrk, IndexDef* pIndexDef);
+    static void  vEntReset(EntWrk* pEntWrk);
     static void  vPayloadCreate(EntWrk* pEntWrk, i8 nPayloadBytes);
     static void  vPrint(EntWrk* pEntWrk, IndexDef* pIndexDef);
 
@@ -108,6 +110,7 @@ namespace STORE
   void  vEntWrk_entKind(void* pEntWrk, i8 bPayload, i8 iKeyKind);
   void  vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
   void  vEntWrk_print(void* pEntWrk, void* pIndexDef);
+  void  vEntWrk_reset(void* pEntWrk);
 }
 
 /*============================================================================*/

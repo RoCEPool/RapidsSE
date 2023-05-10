@@ -91,6 +91,8 @@ Op::Op(Stream* p_Stream, OpSpec* p_OpSpec)
   
   m_iMetricsQueued = 0;
 
+  m_pMetricsStats = nullptr;
+
   _checkInitialised_(CN_OP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -123,6 +125,7 @@ Op::~Op(void) noexcept(false)
   bool bAssert = false;
   if (m_pPipeIn->pQueueLeft()->nItems() != 0) {
     //vTrace("Operand Queue not empty\n"_Stz)
+
     Operand *pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
     while (pOperand) {
       if (pOperand->bIsMarker()) {
@@ -130,8 +133,8 @@ Op::~Op(void) noexcept(false)
           AM::vDeleteOperand(pOperand, nullptr);
         }
         else {
-        bAssert = true;
-        vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
+          bAssert = true;
+          vTrace("Operand Queue for OP %s has %s\n"_Stz, szOpNm(), AM::pOperandName(pOperand));
         }
 
       pOperand = m_pPipeIn->pQueueLeft()->pPopQueue();
@@ -186,6 +189,9 @@ Op::~Op(void) noexcept(false)
     delete pTask;
 
   }
+
+  if (m_pMetricsStats)
+    delete m_pMetricsStats;
 
   delete m_pOpTags;
 
@@ -915,6 +921,26 @@ void Op::vMetricsQueued(i8 iMetricsQueued)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   m_iMetricsQueued = iMetricsQueued;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get metrics queued ops                                                     */
+/*----------------------------------------------------------------------------*/
+Stats* Op::pMetricsStats(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  return m_pMetricsStats;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set metrics queued ops                                                     */
+/*----------------------------------------------------------------------------*/
+void Op::vMetricsStats(Stats* pStats)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  m_pMetricsStats = pStats;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1716,7 +1742,31 @@ void Op::vSpawnTask(void)
   pJob->vActiveOpsInc();
 
   Task* pTask = this->pTask();
-  
+
+
+/*
+ //---------------------------------------------------------
+ // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
+ //---------------------------------------------------------
+
+  if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
+    bool (*afFun0)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
+    if (afFun0)
+      pTask->m_pLogicUnit->m_afFun0 = afFun0;
+    bool (*afFun1)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
+    if (afFun1)
+      pTask->m_pLogicUnit->m_afFun1 = afFun1;
+    bool (*afFun2)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun0;
+    if (afFun2)
+      pTask->m_pLogicUnit->m_afFun2 = afFun2;
+    bool (*afFun3)(void*) = pJob->pTask()->m_pLogicUnit->m_afFun3;
+    if (afFun3)
+      pTask->m_pLogicUnit->m_afFun3 = afFun3;
+  }
+
+*/
+
+
   if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD))
     pTask->vDedicatedThread(true);
         

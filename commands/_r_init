@@ -1,0 +1,33 @@
+/*============================================================================*/
+/* _r_init -- create table & indexes ; load data                              */
+/*============================================================================*/
+
+_customer
+_lineItem
+_nation
+_orders
+_part
+_partsupp
+_region
+_supplier
+create index C_idx0  on Customer (C_CUSTKEY  );
+create index L_idx0  on Lineitem (L_ORDERKEY );
+create index N_idx0  on Nation   (N_NATIONKEY);
+create index O_idx0  on Orders   (O_ORDERKEY );
+create index P_idx0  on Part     (P_PARTKEY  );
+create index PS_idx0 on Partsupp (PS_PARTKEY );
+create index PS_idx0 on Partsupp (PS_SUPPKEY );
+create index R_idx0  on Region   (R_REGIONKEY);
+create index S_idx0  on Supplier (S_SUPPKEY  );
+load customer "../tpch/sf_0001/customer.csv" ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
+load nation   "../tpch/sf_0001/nation.csv"   ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load part     "../tpch/sf_0001/part.csv"     ;
+load partsupp "../tpch/sf_0001/partsupp.csv" ;
+load region   "../tpch/sf_0001/region.csv"   ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

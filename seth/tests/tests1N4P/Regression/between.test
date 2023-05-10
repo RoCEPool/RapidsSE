@@ -114,8 +114,6 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/between/rbetween3.sql
 // Result file: ../queries/between/results/between3.res
-//TODO: WHEN DESC
-/*
 select colb1, colc1 from table1 where colc1 between timestamp '2015-01-01 12:00:00' and timestamp '2015-01-31 12:00:00' order by colc1, colb1 desc;
 ordered rows:
   ('ORANGE', TIMESTAMP '2015-01-04 00:00:00.0')
@@ -134,7 +132,6 @@ ordered rows:
   ('PURPLE', TIMESTAMP '2015-01-29 00:00:00.0')
   ('BLUE', TIMESTAMP '2015-01-29 00:00:00.0')
   ('PINK', TIMESTAMP '2015-01-30 00:00:00.0')
-*/
 
 // Source file: ../queries/between/rbetween3.sql
 // Result file: ../queries/between/results/between3.res
@@ -159,8 +156,6 @@ ordered rows:
 
 // Source file: ../queries/between/rbetween2.sql
 // Result file: ../queries/between/results/between2.res
-//TODO: WHEN DESC
-/*
 select colb1, ucolvc from table1 where colb1 between 'GR' and 'SO' order by colb1, ucolvc desc;
 ordered rows:
   ('GREEN', 'yyy')
@@ -182,7 +177,6 @@ ordered rows:
   ('PURPLE', 'sss')
   ('PURPLE', 'lll')
   ('RED', 'ccc')
-*/
 
 // Source file: ../queries/between/rbetween2.sql
 // Result file: ../queries/between/results/between2.res
@@ -285,7 +279,7 @@ ordered rows:
 
 // Source file: ../queries/between/rbetween18.sql
 // Result file: ../queries/between/results/between18.res
-//TODO: WHEN UPPER AND LEFT
+// TODO: WHEN UPPER AND LEFT
 /*
 select colb1, ucolvc, left(ucolvc,1) from table1 where colb1 between upper(left(ucolvc,1)) and 'WOLF' order by left(ucolvc,1), colb1 desc;
 ordered rows:
@@ -315,8 +309,6 @@ ordered rows:
 
 // Source file: ../queries/between/rbetween10.sql
 // Result file: ../queries/between/results/between10.res
-//TODO: ENABLE WHEN OPTIMIZER(SORT)
-/*
 select count(*), colc1 from table1 where colc1 not between timestamp '2015-01-15 12:00:00' and timestamp '2015-12-01 12:00:00' group by colc1 order by colc1;
 ordered rows:
   (1, TIMESTAMP '2015-01-04 00:00:00.0')
@@ -331,7 +323,6 @@ ordered rows:
   (1, TIMESTAMP '2015-12-18 00:00:00.0')
   (1, TIMESTAMP '2015-12-23 00:00:00.0')
   (1, TIMESTAMP '2015-12-30 00:00:00.0')
-*/
 
 // Source file: ../queries/between/rbetween10.sql
 // Result file: ../queries/between/results/between10.res
@@ -466,8 +457,6 @@ ordered rows:
 
 // Source file: ../queries/between/rbetween9.sql
 // Result file: ../queries/between/results/between9.res
-//TODO: ENABLE WHEN DESC
-/*
 select colb1, pcol1 from table1 where colb1 not between 'GRE' and 'tangent' order by colb1 desc, pcol1;
 ordered rows:
   ('yellow', 19)
@@ -489,7 +478,6 @@ ordered rows:
   ('BLACK', 88)
   ('BLACK', 92)
   ('BLACK', 97)
-*/
 
 // Source file: ../queries/between/rbetween9.sql
 // Result file: ../queries/between/results/between9.res

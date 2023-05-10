@@ -18,7 +18,8 @@ namespace STORE
   class Ent
   {
   friend class EntBuffer;
-  
+  friend class IndexTree;
+
   private:
 
     #ifdef __ENT_HEADER
@@ -55,7 +56,9 @@ namespace STORE
 
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
-  
+
+    void  vDesc(bool bDesc);
+    bool  bDesc(void);
     eCN   eGetClassNo(void);
   
     Dtm*  aElmSeq_dtm(void);

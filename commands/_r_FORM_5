@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* _r_FORM_5 -- sub-query form 5 analysis : refer Q18                         */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS26_T10_SubQuery_Analysis_Of_Main_Query"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_FORM_5"
+select sum(l_quantity)
+  from customer, orders, lineitem
+ where C_CUSTKEY  = O_CUSTKEY
+   and O_ORDERKEY = L_ORDERKEY
+   and O_ORDERKEY in (select L_ORDERKEY
+                       from lineitem
+                      group by L_ORDERKEY
+                     having sum(l_quantity) > 100)
+;
+// mq:
+// where  " type BOOLEAN  $1 $10 ==  $9 $18 ==  and  }  __subquery0002  #1  $9 in  and  "
+
+// sq:
+// params (none)
+// where  (n/a)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

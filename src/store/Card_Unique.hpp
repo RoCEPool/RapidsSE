@@ -3,13 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_Unique : public Card_SUB
+  class Card_Unique : public Card
   {
   public:
     void* operator new(size_t);
@@ -20,7 +18,6 @@ namespace STORE
   };
 
   Card_Unique* _pCard_Unique(void* aAddr);
-  bool _bIsCard_Unique(void* aAddr);
 }
 
 /*============================================================================*/

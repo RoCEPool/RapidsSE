@@ -5,31 +5,158 @@
 
 #include "BASE.h"
 
-#include "Dissect.hpp"
-#include "CardRegs.hpp"
-#include "RuleCtl.hpp"
+#include "eBK.h"
+
+#include "Card.hpp"
+#include "CardCtl.hpp"
+
+#include "Card_AbsJoin.hpp"
+#include "Card_Aggreg.hpp"
+#include "Card_AndPred.hpp"
+#include "Card_As.hpp"
+
+#include "Card_BoolCalc.hpp"
+#include "Card_Bound.hpp"
+#include "Card_Bounds.hpp"
+
+#include "Card_Call.hpp"
+#include "Card_CmpPred.hpp"
+#include "Card_COL.hpp"
+#include "Card_Combined.hpp"
+#include "Card_Constraint.hpp"
+#include "Card_Correlation.hpp"
+#include "Card_CostJoining.hpp"  //
+#include "Card_CostNetwork.hpp"  //
+#include "Card_CostStream.hpp"   //
+#include "Card_CostUnicast.hpp"  //
+#include "Card_CrossJoin.hpp"
+
+#include "Card_Debug.hpp"
+#include "Card_Deck.hpp"
+#include "Card_Direction.hpp"
+
+#include "Card_Expr.hpp"         //
+
+#include "Card_Filter.hpp"       //
+#include "Card_FiltPred.hpp"     //
+#include "Card_FiltPredList.hpp" //
+#include "Card_Flat.hpp"         //
+#include "Card_Fold.hpp"         //
+#include "Card_FoldElist.hpp"    //
+#include "Card_From.hpp"         //
+
+#include "Card_GbyAgg.hpp"
+
+#include "Card_Hash.hpp"
+#include "Card_Having.hpp"
+#include "Card_HshCol.hpp"
+
+#include "Card_IdxCol.hpp"
+#include "Card_IdxColList.hpp"
+#include "Card_Index.hpp"
+#include "Card_IndexJoin.hpp"
+#include "Card_IndexList.hpp"
+#include "Card_IndexNm.hpp"
+#include "Card_IndexScan.hpp"
+
+#include "Card_JoinCast.hpp"
+#include "Card_JoinEstimate.hpp" //
+#include "Card_JoinOrder.hpp"
+#include "Card_JoinOrdering.hpp" //
+#include "Card_JoinPredList.hpp" //
+
+#include "Card_Key.hpp"          //
+#include "Card_KeyExists.hpp"    //
+#include "Card_KeyNotExists.hpp" //
+
+#include "Card_Level.hpp"        //
+#include "Card_Limit.hpp"        //
+
+#include "Card_NCorrCols.hpp"
+#include "Card_Needed.hpp"
+#include "Card_Cast.hpp"
+#include "Card_Note.hpp"
+#include "Card_NotPred.hpp"
+
+#include "Card_On.hpp"
+#include "Card_OP.hpp"
+#include "Card_OrdAgg.hpp"
+#include "Card_OrPred.hpp"
+#include "Card_OuterColNm.hpp"
+#include "Card_OuterJoin.hpp"
+
+#include "Card_Project.hpp"
+#include "Card_Projection.hpp"
+
+#include "Card_RowCount.hpp"
+#include "Card_RowSize.hpp"
+#include "Card_RpnCalc.hpp"
+#include "Card_RpnTerms.hpp"
+
+#include "Card_Scan.hpp"
+#include "Card_Section.hpp"
+#include "Card_Send.hpp"
+#include "Card_Sort.hpp"
+#include "Card_Stage.hpp"
+#include "Card_StreamHead.hpp"
+#include "Card_StreamJoin.hpp"
+#include "Card_StreamKey.hpp"
+#include "Card_StreamPer.hpp"  //
+#include "Card_StreamPtn.hpp"
+#include "Card_StreamSet.hpp"  //
+#include "Card_SubSet.hpp"
+
+#include "Card_Table.hpp"
+#include "Card_TableList.hpp"
+#include "Card_TableNm.hpp"
+#include "Card_TablePtn.hpp"
+#include "Card_TableSize.hpp"
+#include "Card_TblSyn.hpp"
+#include "Card_Term.hpp"
+#include "Card_Top.hpp"
+#include "Card_Topology.hpp"
+
+#include "Card_Unique.hpp"
+
+#include "Card_Where.hpp"
+
+#include "VertexSpec.hpp"
+#include "DeckSpec.hpp"
+#include "StageSpec.hpp"
+#include "OpSpec.hpp"
+
+#include "SubQuery.hpp"
+#include "Scope.hpp"
+
 
 namespace STORE
 {
   class Bench;
-  class Dissect;
-  class Drafter;
-  class Weave;
+  class Dissector;
+  class Optimiser;
+  class CardIter;
+  class Weaver;
 
-  class Board : public Object //Card_OTHER
+  class Board : public Object
   {
-    friend class Bench;
-    friend class Dissect;
-    friend class Drafter;
-    friend class Weave;
   protected:
-    s32 m_sQueryNm;
-    Optimiser* m_pOptimiser;
+    i8          m_i_Board;
+    s32         m_sBoardNm;
+    eBK         m_eBoardKind;  // joinOrdering, subquery
 
-    CardRegs*  m_pCardRegs;
-    RuleCtl*   m_pRuleCtl;
+    Bench*      m_pBench;
+    SubQuery*   m_pSubQuery;
+    Card_Deck*  m_pCard_Deck;
 
-    Card_SubSet* m_pCard_SubSet;
+    s32         m_sXhand;
+    s256        m_sXform;
+    i8          m_iXform;
+    s256        m_sXdesc;
+
+    bool        m_bPrepareSubQueries;
+    bool        m_bFlattenSubQueries;
+    bool        m_bApplyOptimisations;
+    bool        m_bMakeWeavable;
 
   private:
     // must be last
@@ -39,105 +166,65 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Board(Stz* szQueryNm, Optimiser* pOptimiser);
+    Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench);
    ~Board(void) noexcept(false);
 
-    CardRegs* pCardRegs(void);
-    void vClear(void);
+    static void vDerive_foldExpr_H_A_NC_ro(CardIter* pCI);
+    static void vDerive_foldProjection_F(CardIter* pCI);
 
-    void vDeleteAllCards(void);
-  
-    Card* pFindMain(Stz* szCardNm);
- 
-    Card* pGetMainCard(i8 i_MainCard);
-    Card* pGetMainCard(i8 i_MainCard, eCK& reCard);
-  
-    i8   nMainCards(void);
-  
-    void vPinCards(Ribbon* pRibbon, i8 i_Board);
-  
-    void vPrintBoard(Stz* szCue=nullptr);
+    static bool bFindAndMarkSubQryCall(CardIter* pCI);
 
-    Stz* szQueryNm(void);
-    void vQueryNm(Stz* szQueryNm);
+    static void vMorphAll_table_To_EEop(CardIter* pCI);
 
-    void vRenumberMainCards(void);
+    static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
+    static void vIndividuate_crossJoin_filter(CardIter* pCI);
 
-    Card* pSearch(Stz* szCardNm);
-    void vSearch(Stz* szCardNm, Card*& rpMainCard, Card*& rpSubCard);
+    static void vValidate(CardIter* pCI);
+    static void vValidate_SubQuery(CardIter* pCI);
+
+    i8  i_Board(void);
+    void vBoardNo(i8 i_Board);
+    eBK eBoardKind(void);
+    Stz* szBoardNm(void);
+    void vBoardNm(Stz* szBoardNm);
+
+    CardCtl* pCardCtl(void);
+    void vClearMarks(void);
+
+    Card_Deck* pDeck(void);
 
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    void vPinBanners(Ribbon* pRibbon);
+    void vPinCards(Ribbon* pRibbon);
+    void vPinTitle(Ribbon* pRibbon,
+                   i8 iTransformNo,
+                   Stz* szExplain=nullptr);
+    void vPrintBoard(Stz* szDescription=nullptr);
 
-    void vRankCandIndex(Card_CandIndex* pCard_CandIndex);
-  
-    void vResolveAll                 (Card*        pAnyCard);
-    void vResolveTerm                (Card_Term*   pCard_Term);
+    SubQuery* pSubQuery(void);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    bool bAdd_CandIndexes            (void);
 
-    void vAdd_IndexScan              (void);
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szDescription);
+    i8   iXform(void);
+    void vXform(i8   iXform);
+    Stz* szXform(void);
+    void vXform(Stz* szTransformation);
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
 
-    void vCull_Filter                (void);
-  
-    void vCut_CandidateIndexes       (void);
-  
-    void vCut_PredCmps               (void);
-  
-    void vCut_Scan                   (void);
-  
-    bool bFind_Scan_AggGby           (bool bMark);
-  
-    bool bFind_Scan_Filter           (bool bMark);
-  
-    void vMark_PredCmps              (void);
-  
-    void vOrder_ProjectiveStreamDefs (void);
-  
-    bool bPick_CandidateIndex        (void);
 
-    void vRank_CandidateIndexes      (void);
-  
-    void vReduce_Filter              (void);
-  
-    //void vResolve_RootStreams        (void);
+    bool bPrepareSubQueries(void);
+    void vPrepareSubQueries(bool bPrepareSubQueries);
+    bool bFlattenSubQueries(void);
+    void vFlattenSubQueries(bool bFlattenSubQueries);
+    bool bApplyOptimisations(void);
+    void vApplyOptimisations(bool bApplyOptimisations);
+    bool bMakeWeavable(void);
+    void vMakeWeavable(bool bMakeWeavable);
 
-    void vResolve_Symbols            (void);
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    /* rule 00 */ bool bMay_AggGby_Sort_to_AggGby      (void);
-  
-    /* rule 00 */ bool bMay_ordStream_AggGby_to_OrdAgg (void);
-
-    /* rule 00 */ bool bMay_OrdAgg_Sort_to_OrdAgg      (void);
-  
-    /* rule 00 */ bool bMay_Scan_AggGby_to_IndexScan   (void);
-
-    /* rule 00 */ bool bMay_Scan_Filter_to_IndexScan   (void); // implemented
-  
-    /* rule 00 */ bool bMay_Scan_Sort_to_IndexScan     (void);
-  
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    /* rule 00 */ bool bRule_AggGby_Sort_to_AggGby     (void);
-  
-    /* rule 00 */ bool bRule_ordStream_AggGby_to_OrdAgg(void);
-  
-    /* rule 00 */ bool bRule_OrdAgg_Sort_to_OrdAgg     (void);
-  
-    /* rule 00 */ bool bRule_Scan_AggGby_to_IndexScan  (void);
-  
-    /* rule 00 */ bool bRule_Scan_Filter_to_IndexScan  (void); // implemented
-
-    /* rule 00 */ bool bRule_Scan_Sort_to_IndexScan    (void);
-  
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
- 
   private:
-      Footer* aFooter(void);
+    Footer* aFooter(void);
   };
 
   Board* _pBoard(void* aAddr);

@@ -45,7 +45,6 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
 #endif
 #endif
-  m_iBucketNo  = C_UNKNOWN;
   m_tLglPtn     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
@@ -236,27 +235,6 @@ i8 DataBuffer::iAgeSec(void)
   
   return iAge;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get bucket no                                                              */
-/*----------------------------------------------------------------------------*/
-i8 DataBuffer::iBucketNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_iBucketNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set bucket no                                                              */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vBucketNo(i8 iBucketNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_iBucketNo = iBucketNo;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* set buffer level                                                           */

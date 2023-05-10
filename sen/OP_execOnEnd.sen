@@ -1,0 +1,105 @@
+/*============================================================================*/
+/* OP_execOnEnd.sen -- ExecPipeline Op (execute the pipeline on END)          */
+/*============================================================================*/
+
+" OP_execOnEnd.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_X_CHILDEXIT ...                                             */
+/*----------------------------------------------------------------------------*/
+: execOnEnd_ChildExit \handler
+
+  //"EV_X_CHILDEXIT" .verbose
+
+  true LogicUnit[].RcvdChildExit!
+
+  nullptr [job].responseOp!
+
+  Marker[].newEndMarker
+  Marker[].pipeout
+
+  //"execute_ChildExit" .
+  Pipein[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: execOnEnd_EndMarker \handler
+
+  Pipein[].delete
+
+  <pipeline> to Text[]
+
+  "**************************" .
+  Text[] .
+  "**************************" .
+
+  [Op] [job].responseOp!
+  STD_NORMALFORK_TAG Text[] api::forkChild not if
+     //"****Error Code %v" .printf
+     nullptr [job].responseOp!
+     op__execErr
+     true
+     exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_LOWMEMORY operand                                         */
+/*----------------------------------------------------------------------------*/
+: execOnEnd_lowMemory \handler
+
+  //"EV_M_LOWMEMORY_handler" .verbose
+
+  PipeIn[].pipeToOutput
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler op request                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: execOnEnd_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: execOnEnd_EndMarker     EV_M_END           [op].handler!
+
+  find: execOnEnd_LowMemory     EV_M_LOWMEMORY     [op].handler!
+  find: execOnEnd_ChildExit     EV_X_CHILDEXIT     [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: execOnEnd :: execOnEnd <pipeline> ;
+
+: execOnEnd_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc>    = "--desc for op--"
+    <opEntry> = "execOnEnd_op"
+  }
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -24,10 +24,12 @@ namespace STORE
 
     bool   m_bIsPrimaryKey;  // is this the primary key?
     bool   m_bIsUnique;      // is this index unique?
-    
+    bool   m_bHasDescending; // has a desc column
+
     i8     m_nColumns;       // no of columns in the index
     Column m_xaColumn[C_MAX_INDEX_COLUMNS];
     i8     m_iaColSet[C_MAX_INDEX_COLUMNS+1];
+
 
     // must be last
     Footer m_xFooter;
@@ -54,6 +56,9 @@ namespace STORE
     Column* pGetColumn(i8 i_Column);
     i8     iGetColumn(i8 iColSet);
     i8     iGetStreamDefCol(i8 iColumn);
+    bool   bHasDescending(void);
+    void   vHasDescending(bool bHasDescending);
+
     Stz*   szIndexNm(void);
     void   vIndexNm(Stz* szIndexNm);
     eIT    eIndexType(void);

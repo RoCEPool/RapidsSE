@@ -43,6 +43,7 @@ enum eEC : u2 // error codes
   EC_COLUMN_COUNT_MISMATCH,         // SQL Compiler Subsystem
   EC_COLUMN_TYPE_MISMATCH,          // SQL Compiler Subsystem
   EC_COMMAND_TOO_LONG,
+  EC_COMPILATION_FAILED,
   EC_CORRBY_COLUMN_NOT_FOUND,       // SQL Compiler Subsystem
   EC_CORRBY_COLUMN_TYPE_MISMATCH,   // SQL Compiler Subsystem
   EC_CORRBY_NO_COMMON_COLUMNS,      // SQL Compiler Subsystem
@@ -87,6 +88,9 @@ enum eEC : u2 // error codes
   EC_DIVIDE_BY_ZERO,
   EC_DUPLICATE_COLUMN,
   EC_DUPLICATE_KEY,
+  EC_DYN_LINK_FAILED,
+  EC_DYN_SYM_RESOLVE_FAILED,
+  EC_DYN_UNLINK_FAILED,
 
   /* _E_ */
   EC_ESCAPE_SINGLE_CHAR,            // SQL Compiler Subsystem
@@ -172,6 +176,7 @@ enum eEC : u2 // error codes
   EC_MAX_COLUMNS,
   EC_MAX_ROW_LENGTH,
   EC_MAX_TABLE_NAME_LENGTH,
+  EC_MISSING_JOIN_INDEX,
 
   /* _N_ */
   EC_NO_COLUMNS_DIC,
@@ -312,6 +317,7 @@ static Stz* aEC[] =
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",        // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",         // SQL Compiler Subsystem
   /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
+  /* EC_COMPILATION_FAILED            */ (Stz*)"EC_COMPILATION_FAILED",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",      // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",  // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",     // SQL Compiler Subsystem
@@ -356,6 +362,9 @@ static Stz* aEC[] =
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
+  /* EC_DYN_LINK_FAILED               */ (Stz*)"EC_DYN_LINK_FAILED",
+  /* EC_DYN_SYM_RESOLVE_FAILED        */ (Stz*)"EC_DYN_SYM_RESOLVE_FAILED",
+  /* EC_DYN_UNLINK_FAILED             */ (Stz*)"EC_DYN_UNLINK_FAILED",
 
   /* _E_ */
   /* EC_ESCAPE_SINGLE_CHAR            */ (Stz*)"EC_ESCAPE_SINGLE_CHAR",           // SQL Compiler Subsystem
@@ -441,6 +450,7 @@ static Stz* aEC[] =
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
+  /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",
@@ -573,6 +583,7 @@ static Stz* aEC2[] = // error code
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"EC_COLUMN_COUNT_MISMATCH",          // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"EC_COLUMN_TYPE_MISMATCH",           // SQL Compiler Subsystem
   /* EC_COMMAND_TOO_LONG              */ (Stz*)"EC_COMMAND_TOO_LONG",
+  /* EC_COMPILATION_FAILED            */ (Stz*)"EC_COMPILATION_FAILED",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"EC_CORRBY_COLUMN_NOT_FOUND",        // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"EC_CORRBY_COLUMN_TYPE_MISMATCH",    // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"EC_CORRBY_NO_COMMON_COLUMNS",       // SQL Compiler Subsystem
@@ -618,6 +629,9 @@ static Stz* aEC2[] = // error code
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"EC_DIVIDE_BY_ZERO",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"EC_DUPLICATE_COLUMN",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"EC_DUPLICATE_KEY",
+  /* EC_DYN_LINK_FAILED               */ (Stz*)"EC_DYN_LINK_FAILED",
+  /* EC_DYN_SYM_RESOLVE_FAILED        */ (Stz*)"EC_DYN_SYM_RESOLVE_FAILED",
+  /* EC_DYN_UNLINK_FAILED             */ (Stz*)"EC_DYN_UNLINK_FAILED",
 
   /* _E_ */
   /* EC_ESCAPE_SINGLE_CHAR            */ (Stz*)"EC_ESCAPE_SINGLE_CHAR",             // SQL Compiler Subsystem
@@ -703,6 +717,7 @@ static Stz* aEC2[] = // error code
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"EC_MAX_TABLE_NAME_LENGTH",
+  /* EC_MISSING_JOIN_INDEX            */ (Stz*)"EC_MISSING_JOIN_INDEX",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"EC_NO_COLUMNS_DIC",
@@ -845,6 +860,7 @@ static Stz* aErrorMsg[] =
   /* EC_COLUMN_COUNT_MISMATCH         */ (Stz*)"The number of columns of each subquery do not match",   // SQL Compiler Subsystem
   /* EC_COLUMN_TYPE_MISMATCH          */ (Stz*)"Column types do not match",                             // SQL Compiler Subsystem
   /* EC_COMMAND_TOO_LONG              */ (Stz*)"Command too long",
+  /* EC_COMPILATION_FAILED            */ (Stz*)"Query compilation failed",
   /* EC_CORRBY_COLUMN_NOT_FOUND       */ (Stz*)"Column in CORRESPONDING BY list is not found in select list",   // SQL Compiler Subsystem
   /* EC_CORRBY_COLUMN_TYPE_MISMATCH   */ (Stz*)"Column in CORRESPONDING BY list has mismatched types in child queries", // SQL Compiler Subsystem
   /* EC_CORRBY_NO_COMMON_COLUMNS      */ (Stz*)"No common column names of the subqueries could be found for the CORRESPONDING list",  // SQL Compiler Subsystem
@@ -890,6 +906,9 @@ static Stz* aErrorMsg[] =
   /* EC_DIVIDE_BY_ZERO                */ (Stz*)"divide by zero",
   /* EC_DUPLICATE_COLUMN              */ (Stz*)"duplicate column",
   /* EC_DUPLICATE_KEY                 */ (Stz*)"duplicate key",
+  /* EC_DYN_LINK_FAILED               */ (Stz*)"dynamic linking of query binary failed",
+  /* EC_DYN_SYM_RESOLVE_FAILED        */ (Stz*)"dynamic symbol resolution of query binary failed",
+  /* EC_DYN_UNLINK_FAILED             */ (Stz*)"dynamic unlinking of query binary failed",
 
   /* _E_ */
   /* EC_ESCAPE_SINGLE_CHAR            */ (Stz*)"ESCAPE clause can only contain a single character", // SQL Compiler Subsystem
@@ -975,6 +994,7 @@ static Stz* aErrorMsg[] =
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
+  /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
 
   /* _N_ */
   /* EC_NO_COLUMNS_DIC                */ (Stz*)"no columns dictionary",

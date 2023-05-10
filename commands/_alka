@@ -1,6 +1,70 @@
 /*============================================================================*/
 /* _alka                                                                      */
 /*============================================================================*/
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+load C "../DATA/Select/select.csv";
+
+
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+/joinPermutations
+/pipelineName = "_alka"
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+
+ /*
+expected rows:
+  ('A UNICAST B UNICAST C')
+  ('B UNICAST A UNICAST C')
+  ('B UNICAST C UNICAST A')
+  ('C UNICAST B UNICAST A')
+  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 create table datums (
   int_col0   INTEGER NOT NULL,
   int_col1   INTEGER,
@@ -21,85 +85,6 @@ create table datums (
 );
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
-
-
-/*
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-select flt_col8 + 2 from datums;
-load lineitem "../TPCH/SF10/lineitem.tbl";
-*/
-
-
-create table LineItem
-(
- L_ORDERKEY      INTEGER       NOT NULL,
- L_PARTKEY       INTEGER       NOT NULL,
- L_SUPPKEY       INTEGER       NOT NULL,
- L_LINENUMBER    INTEGER       NOT NULL,
- L_QUANTITY      DECIMAL(15,2) NOT NULL,
- L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
- L_DISCOUNT      DECIMAL(15,2) NOT NULL,
- L_TAX           DECIMAL(15,2) NOT NULL,
- L_RETURNFLAG    CHAR(1)       NOT NULL,
- L_LINESTATUS    CHAR(1)       NOT NULL,
- L_SHIPDATE      DATE NOT      NULL,
- L_COMMITDATE    DATE NOT      NULL,
- L_RECEIPTDATE   DATE NOT      NULL,
- L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
- L_SHIPMODE      CHAR(10)      NOT NULL,
- L_COMMENT       VARCHAR(44)   NOT NULL
- );
-
-CREATE INDEX IxL_ORDERKEY ON lineitem(L_ORDERKEY);
-//CREATE INDEX IxL ON lineitem(l_returnflag);
-//create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
-//create index lineitem_part ON lineitem(L_PARTKEY);
-
-//load lineitem "../TPCH/SF10/lineitem.tbl";
-//load lineitem "../TPCH/SF_0001/lineitem.csv";
-//load lineitem "../DATA/TPCH/lineitem10.csv";
-
-_nation
-_region
-_customer;
-_part;
-_customer;
-_partsupp;
-_supplier;
-_orders;
-
-///time load orders "../DATA/TPCH/orders10.csv";
-///time load customer "../TPCH/SF_0001/customer.csv";
-
-CREATE INDEX orders_idx1 ON orders(O_CUSTKEY);
-CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);
-create index IxC_CUSTKEY ON customer(C_CUSTKEY);
-create index IxR_REGIONKEY on REGION (R_REGIONKEY);
-create index IxR_NAME on REGION (R_NAME);
-create index IxL_PARTKEY ON lineitem(L_PARTKEY);
-
-/time load region "<tpch_dir>/region.<suffix>";
-/time load nation "<tpch_dir>/nation.<suffix>";
-/time load lineitem "<tpch_dir>/lineitem.<suffix>";
-/time load orders "<tpch_dir>/orders.<suffix>";
-/time load part "<tpch_dir>/part.<suffix>";
-/time load partsupp "<tpch_dir>/partsupp.<suffix>";
-/time load customer "<tpch_dir>/customer.<suffix>";
-/time load supplier "<tpch_dir>/supplier.<suffix>";
-
-
 
 create table TABLE1 (
   pcol1   INTEGER NOT NULL,
@@ -157,14 +142,10 @@ create table TABLE9 (
 );
 Load TABLE9 "../DATA/Load/tbl9data.csv";
 
-//SELECT DATE '2023-02-16'+ INTERVAL '30' day + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
 
-//SELECT INTERVAL '30' day + DATE '2023-02-16' from nation where n_nationkey = 2;
+//explain stage transliterate select dec_col6 from datums;
+//explain stage transliterate select min(dec_col6) from datums;
+explain stage transliterate select min(dec_col6) from datums group by int_col0;
 
-//SELECT INTERVAL '10-11' year to month + DATE '2023-02-16' from nation where n_nationkey = 2;
-
-
-
-
-//SELECT INTERVAL '30' day + DATE '2023-02-16' + INTERVAL '10-11' year to month from nation where n_nationkey = 2;
+*/
 

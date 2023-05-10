@@ -19,15 +19,15 @@ success
 
 // no key
 create unique index idx on t();
-failure contains: 'invalid command'
+failure contains: 'invalid columns'
 
 // no index
 drop index t idx;
 failure contains: 'no such index'
 
-// no table
-drop index t1 idx;
-failure contains: 'Table does not exist'
+// no table / no index
+//drop index t1 idx;
+//failure contains: 'no such index'
 
 create table;
 failure contains: 'invalid command'

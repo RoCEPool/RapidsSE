@@ -98,6 +98,8 @@
 
 #define WITH_LOCALS_OOM EndDefine     // RAY
 
+#define WITH_TSCP_TIMER EndDefine    // Arjun: Use tscp as a timer instead of the GetTimeOfDay() for unload/reload timing
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -21,6 +21,7 @@ namespace BASE
     
   public:    
     String_t(void);
+    String_t(i8 iArg);
     String_t(char* azArg);
     String_t(Stz* szArg);
    ~String_t(void) noexcept(false);
@@ -29,9 +30,11 @@ namespace BASE
     operator Stz*(void);
     operator String*(void);
 
-    void operator =(i8);
+    void operator =(i8 iArg);
     void operator =(Stz* szArg);
-  
+    void operator =(char* asArg);
+    void operator =(const char* asArg);
+
     void vAppend(const char cChar);
     void vAppend(char** aazCursor, Stz* szArg);
     bool bBeginsWith(Stz* szArg);
@@ -96,6 +99,28 @@ String_t<AREA>::String_t(void)
 #else
   m_caCharArea[0] = '\0';
 #endif
+
+  _checkInitialisedSize_(AREA);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+String_t<AREA>::String_t(i8 iArg)
+    : Object(CN_STRING_T)
+{
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+
+  m_nArea = AREA;
+  m__reserved__ = C_UNKNOWN;
+  m__reserved2__ = C_UNKNOWN;
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
+#endif
+
+  StrLib::wToString(iArg,m_caCharArea);
 
   _checkInitialisedSize_(AREA);
 }
@@ -201,6 +226,32 @@ void String_t<AREA>::operator =(Stz* szArg)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::operator =(char* asArg)
+{
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+
+  StrLib::vCopyLen(m_caCharArea,asArg,AREA-1);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::operator =(const char* asArg)
+{
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
+
+  StrLib::vCopyLen(m_caCharArea,asArg,AREA-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

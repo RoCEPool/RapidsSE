@@ -15,7 +15,7 @@ ordered rows:
 // Source file: ../queries/isnull/risnull4.sql
 // Result file: ../queries/isnull/results/isnull4.res
 /*
-TODO: ENABLE WHEN concat and DESC
+TODO: ENABLE WHEN concat
 select colf9, concat(colb9,' - ',ucolvc) from table9 where colf9 is null order by concat(colb9,' - ',ucolvc), pcol9 desc;
 ordered rows:
   (NULL, '- mmm')
@@ -105,18 +105,14 @@ ordered rows:
   (154, -61, 'fff')
   (155, 53, 'mmm')
 
-
 // Source file: ../queries/isnull/risnull11.sql
 // Result file: ../queries/isnull/results/isnull11.res
-// TODO: ENABLE WHEN JOINS
-/*
 select pcol9, colb9, pcol1, colb1 from table9 join table1 using (ucol) where colb9 is not null and pcol1 between 70 and 80 order by pcol1,pcol9;
 ordered rows:
   (385, 'green', 70, 'PURPLE')
   (275, 'YELLOW', 73, 'tan')
   (212, 'green', 75, 'teal')
   (265, 'WHITE', 76, 'ORANGE')
-*/
 
 // Source file: ../queries/isnull/risnull8.sql
 // Result file: ../queries/isnull/results/isnull8.res
@@ -145,8 +141,6 @@ ordered rows:
 
 // Source file: ../queries/isnull/risnull12.sql
 // Result file: ../queries/isnull/results/isnull12.res
-// TODO: ENABLE WHEN JOINS
-/*
 select pcol9, colb9, pcol8, colb8 from table9 join table8 on pcol8 = pcol9 where colb9 is null order by pcol9;
 ordered rows:
   (10, NULL, 10, 'black')
@@ -157,7 +151,6 @@ ordered rows:
   (243, NULL, 243, 'PURPLE')
   (432, NULL, 432, 'aqua')
   (466, NULL, 466, 'red')
-*/
 
 // Source file: ../queries/isnull/risnull3.sql
 // Result file: ../queries/isnull/results/isnull3.res
@@ -174,8 +167,6 @@ ordered rows:
 
 // Source file: ../queries/isnull/risnull13.sql
 // Result file: ../queries/isnull/results/isnull13.res
-// TODO: ENABLE WHEN JOINS
-/*
 select pcol8, colb8, pcol9, colb9 from table8 join table9 on colb8 = colb9 where pcol9 between 219 and 221 order by pcol9, pcol8;
 ordered rows:
   (11, 'grey', 219, 'grey')
@@ -201,7 +192,6 @@ ordered rows:
   (464, 'violet', 221, 'violet')
   (467, 'violet', 221, 'violet')
   (493, 'violet', 221, 'violet')
-*/
 
 // Source file: ../queries/isnull/risnull6.sql
 // Result file: ../queries/isnull/results/isnull6.res
@@ -220,8 +210,6 @@ ordered rows:
 
 // Source file: ../queries/isnull/risnull1.sql
 // Result file: ../queries/isnull/results/isnull1.res
-/*
-TODO: ENABLE WHEN DESC
 select colb9, ucolvc from table9 where colb9 is null order by ucolvc desc;
 ordered rows:
   (NULL, 'zzz')
@@ -232,4 +220,3 @@ ordered rows:
   (NULL, 'mmm')
   (NULL, 'iii')
   (NULL, 'bbb')
-*/

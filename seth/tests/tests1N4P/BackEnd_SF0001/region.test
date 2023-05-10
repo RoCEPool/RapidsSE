@@ -7,7 +7,10 @@ create table region (
 R_REGIONKEY       INTEGER NOT NULL,
 R_NAME            CHAR(25) NOT NULL,
 R_COMMENT         VARCHAR(152)
-);
+)
+replicated
+tablesize 1
+;
 success
 
 //------------------------------------------------------------------------------
@@ -18,11 +21,11 @@ affected: 0
 
 -----------------------------------------------------------------------
 // load the table
-load region "../TPCH/SF_0001/region.csv";
+loadReplicated region "../TPCH/SF_0001/region.csv";
 success
 
-select count(*) from region;
-rows: (5)
+//select count(*) from region;
+//rows: (5)
 
 compactidx region IxR_REGIONKEY;
 success

@@ -1,0 +1,158 @@
+/*============================================================================*/
+/* _a_q18 -- Query18 (hand coded pipeline)                                    */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice,
+  sum(l_quantity)
+from
+  customer,
+  orders,
+  lineitem
+where
+  o_orderkey in (
+    select
+      l_orderkey
+    from
+      lineitem
+    group by
+      l_orderkey
+    having
+     sum(l_quantity) > 300.00 )
+  and c_custkey = o_custkey
+  and o_orderkey = l_orderkey
+group by
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice
+order by
+  o_totalprice desc,
+  o_orderdate limit 100;
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : CUSTOMER, ORDERS, LINEITEM
+// JOIN ORDER : LINEITEM->ORDERS->CUSTOMER
+// INDEXES    : NONE
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * TWIST FOR FLATTENING OF SUBQUERY
+//   * REPLACE AGGREG WITH ORDAGG IN SUBQUERY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   NONE
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// pipeline begin
+pipeline Query18
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+      indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
+     | ordAgg " ordgroupBy  type INTEGER as L_ORDERKEY L_ORDERKEY aggregates  type INTEGER as L_ORDERKEY $K1 , type DECIMAL as SUM_QTY )  L_QUANTITY sum  "
+     | filter  " type BOOLEAN  SUM_QTY 300.00  >  "
+     | combined 0
+     | next broadcast
+
+   stage S02 on all partitions :
+     indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
+     | project "type INTEGER as O_CUSTKEY J1_O_CUSTKEY ,
+                type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+                type DATE as O_ORDERDATE J1_O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE J1_O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage S03 on all partitions :
+     indexJoin customer IxC_CUSTKEY "bound $I1 $L1 =="
+     | project "type VARCHAR as C_NAME J1_C_NAME ,
+                type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+                type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                type DATE as O_ORDERDATE O_ORDERDATE ,
+                type DECIMAL as O_TOTALPRICE O_TOTALPRICE ,
+                type DECIMAL as SUM_QTY SUM_QTY "
+     | combined 0
+     | next
+
+   stage S04 on all partitions :
+     aggreg " groupBy type VARCHAR as C_NAME C_NAME ,
+                      type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                      type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                      type DATE as O_ORDERDATE O_ORDERDATE ,
+                      type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                      aggregates
+                      type VARCHAR as C_NAME $K1 ,
+                      type INTEGER as C_CUSTKEY $K2 ,
+                      type INTEGER as O_ORDERKEY $K3 ,
+                      type DATE as O_ORDERDATE $K4 ,
+                      type DECIMAL as O_TOTALPRICE $K5 ,
+                      type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage S05 on all nodes :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage S06 on origin :
+     aggreg " groupBy  type VARCHAR as C_NAME C_NAME ,
+                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
+                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
+                       type DATE as O_ORDERDATE O_ORDERDATE ,
+                       type DECIMAL as O_TOTALPRICE O_TOTALPRICE
+                       aggregates
+                       type VARCHAR as C_NAME $K1 ,
+                       type INTEGER as C_CUSTKEY $K2 ,
+                       type INTEGER as O_ORDERKEY $K3 ,
+                       type DATE as O_ORDERDATE $K4 ,
+                       type DECIMAL as O_TOTALPRICE $K5 ,
+                       type DECIMAL as SUM_QTY ) SUM_QTY sum  "
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     sort " type DECIMAL as O_TOTALPRICE O_TOTALPRICE DESC  , type DATE as O_ORDERDATE O_ORDERDATE ASC  "
+     | limit 100
+     | combined 0
+     | next
+
+   stage S08 on origin :
+     output
+     | sink
+     | first
+ end ;
+// pipeline end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -77,6 +77,7 @@ IndexDef::IndexDef(void)
 
   m_bIsPrimaryKey = false;
   m_bIsUnique     = false;
+  m_bHasDescending = false;
   
   m_nColumns      = 0;
   //m_xaColumn[C_MAX_INDEXCOLUMNS];
@@ -104,6 +105,7 @@ IndexDef::IndexDef(IndexDef* pIndexDef)
 
   m_bIsPrimaryKey = pIndexDef->bIsPrimaryKey();
   m_bIsUnique     = pIndexDef->bIsUnique();
+  m_bHasDescending = pIndexDef->bHasDescending();
   
   m_nColumns      = pIndexDef->nColumns();
   
@@ -234,6 +236,27 @@ void IndexDef::vDetermineKeyKind(void)
   }
 
   m_eKeyKind = KE_INT;
+}
+
+/*----------------------------------------------------------------------------*/
+/* index has one or more descending columns                                   */
+/*----------------------------------------------------------------------------*/
+bool IndexDef::bHasDescending(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  return m_bHasDescending;
+}
+
+/*----------------------------------------------------------------------------*/
+/* index has one or more descending columns                                   */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vHasDescending(bool bHasDescending)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
+
+  m_eKeyKind = KE_GENERAL;
+  m_bHasDescending = bHasDescending;
 }
 
 /*----------------------------------------------------------------------------*/

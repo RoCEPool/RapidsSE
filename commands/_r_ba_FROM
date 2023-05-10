@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* _r_ba_FROM -- from sub-query test : pattern a/b -> ba                      */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+_orders
+_supplier
+create index L_idx0 on lineitem(L_ORDERKEY);
+create index O_idx0 on orders  (O_ORDERKEY);
+create index S_idx0 on supplier(S_SUPPKEY) ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_ba_FROM"
+select count(*)
+  from (select *
+          from orders, lineitem
+         where L_ORDERKEY = O_ORDERKEY)
+;
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+bSQ aMQ
+
+==00 P--------------
+  CALL *1
+      __subquery0002
+  0]level
+        AL_PARTITION
+
+
+
+
+
+
+
+*/
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

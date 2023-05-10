@@ -287,6 +287,16 @@ i8 Stz::nLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsEmpty: test if this Stz is "" (NB: not a null ptr)                      */
+/*----------------------------------------------------------------------------*/
+bool Stz::bIsEmpty(void)
+{
+  bool bIsEmpty = StrLib::bIsEmpty(azChar());
+
+  return bIsEmpty;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsInteger: test if this Stz is numeric                                    */
 /*----------------------------------------------------------------------------*/
 bool Stz::bIsInteger(void)
@@ -331,13 +341,17 @@ bool Stz::bIsSomeTrue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bIsEmpty: test if this Stz is "" (NB: not a null ptr)                      */
+/* test if this Stz is "$nn"                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stz::bIsEmpty(void)
+bool Stz::bIsStreamColOrd(void)
 {
-  bool bIsEmpty = StrLib::bIsEmpty(azChar());
+  if (! StrLib::bIsDollar(m_caChar[0]))
+    return false;
 
-  return bIsEmpty;
+  if (! StrLib::bIsInteger(&m_caChar[1]))
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,6 +371,16 @@ bool Stz::bOneOf(Stz* szArg, ...)
   va_end(args);
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal value                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Stz::iOrdinal(void)
+{
+  i8 iOrdinal = StrLib::iToI8(&m_caChar[1]);
+
+  return iOrdinal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -393,6 +417,22 @@ void Stz::vSprint(Stz* szFormat, ...)
   vsprintf(azChar(),szFormat->azChar(),args);
   
   va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if this Stz is "$nn"                                                  */
+/*----------------------------------------------------------------------------*/
+char Stz::cTableSyn(void)
+{
+  if (! StrLib::bIsDollar(m_caChar[0]))
+    return '?';
+
+  if (! StrLib::bIsDollar(m_caChar[1]))
+    return '?';
+
+  char cTableSyn = m_caChar[2];
+
+  return cTableSyn;
 }
 
 /*----------------------------------------------------------------------------*/

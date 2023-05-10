@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* _jo1_L_O_S -- join order test                                              */
+/*============================================================================*/
+
+/jobMetrics
+/joWrite
+/filterPred
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo1_L_O_S"
+select
+       count(*)
+  from
+       Lineitem, // 630
+       Orders,   // 181
+       Supplier  //   2
+ where
+       O_ORDERKEY = L_ORDERKEY
+   and L_SUPPKEY  = S_SUPPKEY
+
+   //and l_shipdate between '1995-01-01' and '1996-12-31'
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

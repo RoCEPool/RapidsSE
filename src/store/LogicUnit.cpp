@@ -86,10 +86,6 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,   LR_AGGTYPESTACK)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
-,      m_xpBktMapGet(this,RF_REPAIR_DELETE,     BktMapGet::vRepair,         LR_BKTMAP)
-,      m_xpBucketGet(this,RF_REPAIR_DELETE,     BucketGet::vRepair,      LR_BUCKETGET)
-,     m_xpBucketInfo(this,RF_REPAIR_DELETE,    BucketInfo::vRepair,     LR_BUCKETINFO)
-
 ,       m_xpCombined(this,RF_REPAIR_DELETE,      Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepairList,  LR_CRWBUFFER)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,      CrwToRow::vRepair,       LR_CRWTOROW)
@@ -97,8 +93,9 @@ LogicUnit::LogicUnit(void)
 
 ,     m_xpDataBuffer(this,RF_REPAIR_DELETE,    DataBuffer::vRepair,     LR_DATABUFFER)
 ,           m_xpDeck(this,RF_REPAIR_DELETE,          Deck::vRepair,     LR_DATABUFFER)
-,           m_xpDir0(this,RF_REPAIR_DELETE,           Dir::vRepair,           LR_DIR0)
-,           m_xpDir1(this,RF_REPAIR_DELETE,           Dir::vRepair,           LR_DIR1)
+,           m_xpDir0(this,RF_REPAIR_DELETE,           Dir::vRepair,         LR_DIR0)
+,           m_xpDir1(this,RF_REPAIR_DELETE,           Dir::vRepair,         LR_DIR1)
+,         m_xpDynamic(this,RF_REPAIR_DELETE,        Dynamic::vRepair,       LR_DYNAMIC)
 ,         m_xpDynamo(this,RF_REPAIR_DELETE,        Dynamo::vRepair,         LR_DYNAMO)
 
 ,    m_xpErrorMarker(this,RF_REPAIR_DELETE,       Operand::vRepair,    LR_ERRORMARKER)
@@ -159,6 +156,7 @@ LogicUnit::LogicUnit(void)
 ,          m_xpStage(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                          LR_STATS)
 ,        m_xpStencil(this,RF_REPAIR_DELETE,       Stencil::vRepair,        LR_STENCIL)
+,        m_xpStencil_v2(this,RF_REPAIR_DELETE,    Stencil_v2::vRepair,     LR_STENCIL)
 ,         m_xpStream(this,RF_SET_NULL,     nullptr,                          LR_STAGE)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFLFT)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,     StreamDef::vRepair,   LR_STREAMDEFOUT)
@@ -293,8 +291,6 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   // registers should have been repaired
   RASSERT(m_xpAggTimer.bIsNull());
-  RASSERT(m_xpBktMapGet.bIsNull());
-  RASSERT(m_xpBucketGet.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
   RASSERT(m_xpCrwToRow.bIsNull());

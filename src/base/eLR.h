@@ -13,8 +13,6 @@ enum eLR // Logic Unit Registers
   /*  */ LR_ANSWERWL,
   
   /*  */ LR_BKTMAP,
-  /*  */ LR_BUCKETGET,
-  /*  */ LR_BUCKETINFO,
 
   /*  */ LR_CHILDEXIT,
   /*  */ LR_COMBINED,
@@ -26,6 +24,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_DECK,
   /*  */ LR_DIR0,
   /*  */ LR_DIR1,
+  /*  */ LR_DYNAMIC,
   /*  */ LR_DYNAMO,
   
   /*  */ LR_ERRORMARKER,
@@ -128,8 +127,6 @@ static Stz* aLR[]
   /*  */ "LR_ANSWERWL"_Stz,
 
   /*  */ "LR_BKTMAP"_Stz,
-  /*  */ "LR_BUCKETGET"_Stz,
-  /*  */ "LR_BUCKETINFO"_Stz,
   
   /*  */ "LR_CHILDEXIT"_Stz,
   /*  */ "LR_COMBINED"_Stz,
@@ -141,6 +138,7 @@ static Stz* aLR[]
   /*  */ "LR_DECK"_Stz,
   /*  */ "LR_DIR0"_Stz,
   /*  */ "LR_DIR1"_Stz,
+  /*  */ "LR_DYNAMIC"_Stz,
   /*  */ "LR_DYNAMO"_Stz,
   
   /*  */ "LR_ERRORMARKER"_Stz,

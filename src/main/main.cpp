@@ -66,7 +66,6 @@ int main(int argc, char* argv[])
 //  printf("sizeof(Table) %lld\n",(i8)sizeof(Table));
 //  printf("sizeof(StreamDef) %lld\n",(i8)sizeof(StreamDef));
 //  printf("sizeof(IndexDef) %lld\n",(i8)sizeof(IndexDef));
-//  printf("sizeof(BucketMap) %lld\n",(i8)sizeof(BucketMap));
 //  printf("sizeof(Object) %lld\n",(i8)sizeof(Object));
 //  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
 //  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
@@ -74,6 +73,9 @@ int main(int argc, char* argv[])
 
 //  printf("sizeof(RowBuffer) %lld\n",(i8)sizeof(RowBuffer));
 //  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
+
+
+  printf("sizeof(Ent) %lld\n",(i8)sizeof(Ent));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -175,6 +177,7 @@ int main(int argc, char* argv[])
   // Set the default clock type for Hardware::iReadClock().
   // This needs to be done after IntLib::vInitGlobals() above.
   Hardware::vChooseClockType();
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

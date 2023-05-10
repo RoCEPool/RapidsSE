@@ -14,13 +14,12 @@ __pCastFunction_Card(STORE,Card_RpnTerms,CK_RPNTERMS)
 __aNewFunction(Card_RpnTerms,CN_CARD)
 __vDeleteFunction(Card_RpnTerms,CN_CARD)
 
-__bIsCard(STORE,Card_RpnTerms,CK_RPNTERMS)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnTerms::Card_RpnTerms(void)
-: Card_OTHER(CK_RPNTERMS)
+: Card(CK_RPNTERMS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -42,20 +41,25 @@ Card_RpnTerms::~Card_RpnTerms(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* evaluate top term                                                          */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-eTE Card_RpnTerms::eTopTermEval(void)
+bool Card_RpnTerms::bIsInList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pHead());
-  
-  if (! pCard_Term)
-    return TE_NONE;
-  
-  eTE eTermEval = pCard_Term->eTermEval();
-  
-  return eTermEval;
+
+  i8 nTerms = nItems();
+  if (nTerms < 2)
+    return false;
+
+  Card_Term* p_term_2ndLast = _pCard_Term(pGetChild(nTerms-2));
+  if (! p_term_2ndLast)
+    return false;
+
+  char* azTerm = p_term_2ndLast->szSymbol()->azChar();
+  if ('#' == azTerm[0])
+    return false;
+
+  return true;
 }
 
 /*============================================================================*/

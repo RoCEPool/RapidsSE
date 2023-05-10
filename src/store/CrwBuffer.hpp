@@ -53,6 +53,8 @@ namespace STORE
     void       vOperandDump(i8 iDetail);
     i8         nRows(void);
     i8         nRowSize(void);
+    i8         nAllotedBytes(void);
+    i8         jRowSizeEst(void);
     i8         nHeadSize(void);
 
 
@@ -103,7 +105,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
-    void vAnalyze(i8& nBuffers, i8& nRows);
+    void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vDump(void);
     void vRestore(void);
     void vRestoreNub(void);

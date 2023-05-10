@@ -13,11 +13,24 @@
 # Refer to the below url for details:
 #  https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 
+# $(info $$MAKECMDGOALS is [${MAKECMDGOALS}])
 
-# First check for gcc version 5 or later. This is needed by ANTLR.
-GCC_VERSION_GTE5 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 5 | bc)
-ifeq ($(GCC_VERSION_GTE5), 0)
-  define ERR
+IS_TGT_CLEAN := $(filter clean,${MAKECMDGOALS})
+IS_TGT_CENTOS7DEBUG := $(filter centos7Debug,${MAKECMDGOALS})
+IS_TGT_CENTOS7RELEASE := $(filter centos7Release,${MAKECMDGOALS})
+
+CHECK_GCC_VER := $(or $(IS_TGT_CLEAN), $(IS_TGT_CENTOS7DEBUG), $(IS_TGT_CENTOS7RELEASE), checkGccVer)
+
+# $(info $$IS_TGT_CLEAN is [${IS_TGT_CLEAN}])
+# $(info $$IS_TGT_CENTOS7DEBUG is [${IS_TGT_CENTOS7DEBUG}])
+# $(info $$IS_TGT_CENTOS7RELEASE is [${IS_TGT_CENTOS7RELEASE}])
+# $(info $$CHECK_GCC_VER is [${CHECK_GCC_VER}])
+
+ifeq ($(CHECK_GCC_VER),checkGccVer)
+  # First check for gcc version 5 or later. This is needed by ANTLR.
+  GCC_VERSION_GTE5 := $(shell echo `gcc -dumpversion | cut -f1-2 -d.` \>= 5 | bc)
+  ifeq ($(GCC_VERSION_GTE5), 0)
+    define ERR
 gcc version 5 or later is required. You have v$(shell gcc -dumpversion).
 
 To install gcc >5 on Centos7 run the following commands:
@@ -27,8 +40,9 @@ Then from the Source directory run the following command to build rapidsse:
   scl enable devtoolset-8 'make -j 8'
 
 
-  endef
-  $(error $(ERR))
+    endef
+    $(error $(ERR))
+  endif
 endif
 
 LINUX_WARNINGS :=

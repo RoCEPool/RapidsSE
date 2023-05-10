@@ -24,6 +24,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ANSWERWL,
   /* */ CN_API,
   /* */ CN_ARG,
+  /* */ CN_ARGDEF,
   /* */ CN_ARRANGE,
   /* */ CN_ATOMIC,
   /* */ CN_ATTACHMAP,
@@ -36,10 +37,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,
-  /* */ CN_BUCKETGET,
-  /* */ CN_BUCKETINFO,
-  /* */ CN_BUCKETMAP,
-  /* */ CN_BKTMAPGET,
   /* */ CN_BUFFERMAP,
   /* */ CN_BUFFERPOOL,
   /* */ CN_BYTERATE,
@@ -48,7 +45,9 @@ enum eCN : u2 // Class Number
   /* */ CN__C__,
   /* */ CN_CARD,
   /* */ CN_CARDCTL,
-  /* */ CN_CARDREGS,
+  /* */ CN_CARDITER,
+  /* */ CN_CARDITERMEMBERS,
+  /* */ CN_CARRYFORWARD,
   /* */ CN_CATALOG,
   /* */ CN_CHARSER,
   /* */ CN_CHILDEXIT,
@@ -56,9 +55,12 @@ enum eCN : u2 // Class Number
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
+  /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
+  /* */ CN_COMBINEDSRC,
   /* */ CN_CONDITIONALQUERYNODEITER,
+  /* */ CN_CORRELATEDJOIN,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTABLEPTN,
@@ -79,9 +81,9 @@ enum eCN : u2 // Class Number
   /* */ CN_DICLOCK,
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
-  /* */ CN_DISSECT,
-  /* */ CN_DRAFTER,
+  /* */ CN_DISSECTOR,
   /* */ CN_DTEVAL,
+  /* */ CN_DYNAMIC,
   /* */ CN_DYNAMO,
 
   /* */ CN__E__,
@@ -92,6 +94,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTBUFSORTER,
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
+  /* */ CN_EQUIVALENCE,
   /* */ CN_EVENTHANDLERS,
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
@@ -105,6 +108,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FIPVAL,
   /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
+  /* */ CN_FOLD,
   /* */ CN_FORMAT,
   /* */ CN_FREEPOOLBUFFER,
   /* */ CN_FREECHUNK,
@@ -146,9 +150,11 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBMETRICS,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
+  /* */ CN_JOINORDERING,
 
   /* */ CN__K__,
   /* */ CN_KEY,
+  /* */ CN_KID,
 
   /* */ CN__L__,
   /* */ CN_LARGEPERSISTENT,
@@ -156,6 +162,7 @@ enum eCN : u2 // Class Number
   /* */ CN_LARGEVIRTUAL,
   /* */ CN_LGLBUFSET,
   /* */ CN_LGLPTNMAP,
+  /* */ CN_LIBINFO,
   /* */ CN_LICENCE,
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
@@ -176,6 +183,11 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
+  /* */ CN_MAKECODE,
+  /* */ CN_MAKEFLAT,
+  /* */ CN_MAKEOPTIMAL,
+  /* */ CN_MAKESIMPLER,
+  /* */ CN_MAKEWEAVABLE,
   /* */ CN_MARKER,
   /* */ CN_MARKERCHAIN,
   /* */ CN_MARKERMGR,
@@ -204,26 +216,33 @@ enum eCN : u2 // Class Number
   /* */ CN_OBJTRACKER,
   /* */ CN_OUTPUT,
   /* */ CN_OP,
+  /* */ CN_OPDEF,
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPERANDWATCH,
+  /* */ CN_OPSKETCH,
   /* */ CN_OPMETRICS,
   /* */ CN_OPSPEC,
   /* */ CN_OPTIMISER,
   /* */ CN_OTHEROPERAND,
+  /* */ CN_OUTERQUERY,
 
   /* */ CN__P__,
   /* */ CN_PAGEFILE,
   /* */ CN_PAGINGMETRICS,
+  /* */ CN_PARAMSPEC,
+  /* */ CN_PARAMSSPEC,
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
+  /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
   /* */ CN_PIPEIN,
   /* */ CN_PIPELINE,
+  /* */ CN_PIPELINEDEF,
   /* */ CN_PIPELINEMETRICS,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
@@ -281,7 +300,6 @@ enum eCN : u2 // Class Number
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
   /* */ CN_RUFILE,
-  /* */ CN_RULECTL,
   /* */ CN_RUMEMORY,
   /* */ CN_RUMUTEX,
   /* */ CN_RUPASS,
@@ -290,10 +308,12 @@ enum eCN : u2 // Class Number
   /* */ CN_RUWORK,
 
   /* */ CN__S__,
+  /* */ CN_SAWOPCARDS,
   /* */ CN_SCANNER,
   /* */ CN_SCHEDULE,
   /* */ CN_SCHEDULER,
   /* */ CN_SCHEMA,
+  /* */ CN_SCOPE,
   /* */ CN_SEAPI,
   /* */ CN_SEDEPUTY,
   /* */ CN_SEEME,
@@ -313,6 +333,8 @@ enum eCN : u2 // Class Number
   /* */ CN_SMALLPERSISTENT,
   /* */ CN_SMALLTRANSIENT,
   /* */ CN_SMALLVIRTUAL,
+  /* */ CN_SMOOSH,
+  /* */ CN_SMOOTH,
   /* */ CN_SNBCD,
   /* */ CN_SNBOL,
   /* */ CN_SNDTE,
@@ -331,12 +353,14 @@ enum eCN : u2 // Class Number
   /* */ CN_SQLPLANNER,
   /* */ CN_STACK,
   /* */ CN_STAGE,
+  /* */ CN_STAGEDEF,
   /* */ CN_STAGEMETRICS,
   /* */ CN_STAGESPEC,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
   /* */ CN_STATS,
   /* */ CN_STENCIL,
+  /* */ CN_STENCIL_V2,
   /* */ CN_STEP,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPS,
@@ -350,6 +374,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
   /* */ CN_SUBCALL,
+  /* */ CN_SUBQUERY,
   /* */ CN_SUBRETURN,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
@@ -412,7 +437,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
-  /* */ CN_WEAVE,
+  /* */ CN_WEAVER,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
   /* */ CN_WSPCONVERGENT_t,
@@ -442,6 +467,7 @@ static Stz* aCN[]
   /* */ "ANSWERWL"_Stz,             // CN_ANSWERWL
   /* */ "API"_Stz,                  // CN_API
   /* */ "ARG"_Stz,                  // CN_ARG
+  /* */ "ARGDEF"_Stz,               // CN_ARGDEF
   /* */ "ARRANGE"_Stz,              // CN_ARRANGE
   /* */ "ATOMIC"_Stz,               // CN_ATOMIC
   /* */ "ATTACHMAP"_Stz,            // CN_ATTACHMAP
@@ -454,10 +480,6 @@ static Stz* aCN[]
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
-  /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
-  /* */ "BUCKETINFO"_Stz,           // CN_BUCKETINFO
-  /* */ "BUCKETMAP_dyn"_Stz,        // CN_BUCKETMAP
-  /* */ "BKTMAPGET"_Stz,            // CN_BKTMAPGET
   /* */ "BUFFERMAP"_Stz,            // CN_BUFFERMAP
   /* */ "BUFFERPOOL"_Stz,           // CN_BUFFERPOOL
   /* */ "BYTERATE"_Stz,             // CN_BYTERATE
@@ -466,7 +488,9 @@ static Stz* aCN[]
   /* */ "_C__"_Stz,                 // CN__C__
   /* */ "CARD"_Stz,                 // CN_CARD
   /* */ "CARDCTL"_Stz,              // CN_CARDCTL
-  /* */ "CARDREGS"_Stz,             // CN_CARDREGS
+  /* */ "CARDITER"_Stz,             // CN_CARDITER
+  /* */ "CARDITERMEMBERS"_Stz,      // CN_CARDITERMEMBERS
+  /* */ "CARRYFORWARD"_Stz,         // CN_CARRYFORWARD
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CHARSER"_Stz,              // CN_CHARSER
   /* */ "CHILDEXIT"_Stz,            // CN_CHILDEXIT
@@ -474,9 +498,12 @@ static Stz* aCN[]
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
+  /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
+  /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
+  /* */ "CORRELATEDJOIN"_Stz,       // CN_CORRELATEDJOIN
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
@@ -497,9 +524,9 @@ static Stz* aCN[]
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
-  /* */ "DISSECT"_Stz,              // CN_DISSECT
-  /* */ "DRAFTER"_Stz,              // CN_DRAFTER
+  /* */ "DISSECTER"_Stz,            // CN_DISSECTOR
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
+  /* */ "DYNAMIC"_Stz,              // CN_DYNAMIC
   /* */ "DYNAMO"_Stz,               // CN_DYNAMO
 
   /* */ "_E__"_Stz,                 // CN__E__
@@ -510,6 +537,7 @@ static Stz* aCN[]
   /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
   /* */ "ENTWRK"_Stz,               // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
+  /* */ "EQUIVALENCE"_Stz,          // CN_EQUIVALENCE
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
@@ -523,6 +551,7 @@ static Stz* aCN[]
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
   /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
+  /* */ "FOLD"_Stz,                 // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEPOOLBUFFER"_Stz,       // CN_FREEPOOLBUFFER
   /* */ "FREECHUNK"_Stz,            // CN_FREECHUNK
@@ -564,9 +593,11 @@ static Stz* aCN[]
   /* */ "JOBMETRICS"_Stz,           // CN_JOBMETRICS
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
+  /* */ "JOINORDERING"_Stz,         // CN_JOINORDERING
 
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY
+  /* */ "KID"_Stz,                  // CN_KID
 
   /* */ "_L__"_Stz,                 // CN__L__
   /* */ "LARGEPERSISTENT"_Stz,      // CN_LARGEPERSISTENT
@@ -574,6 +605,7 @@ static Stz* aCN[]
   /* */ "LARGEVIRTUAL"_Stz,         // CN_LARGEVIRTUAL
   /* */ "LGLBUFSET"_Stz,            // CN_LGLBUFSET
   /* */ "LGLPTNMAP"_Stz,            // CN_LGLPTNMAP
+  /* */ "LIBINFO"_Stz,              // CN_LIBINFO
   /* */ "LICENCE"_Stz,              // CN_LICENCE
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
@@ -594,6 +626,11 @@ static Stz* aCN[]
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__
+  /* */ "MAKECODE"_Stz,             // CN_MAKECODE
+  /* */ "MAKEFLAT"_Stz,             // CN_MAKEFLAT
+  /* */ "MAKEOPTIMAL"_Stz,          // CN_MAKEOPTIMAL
+  /* */ "MAKESIMPLER"_Stz,          // CN_MAKESIMPLER
+  /* */ "MAKEWEAVABLE"_Stz,         // CN_MAKEWEAVABLE
   /* */ "MARKER"_Stz,               // CN_MARKER
   /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
   /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR
@@ -622,26 +659,33 @@ static Stz* aCN[]
   /* */ "OBJTRACKER"_Stz,           // CN_OBJTRACKER
   /* */ "OUTPUT"_Stz,               // CN_OUTPUT
   /* */ "OP"_Stz,                   // CN_OP
+  /* */ "OPDEF"_Stz,                // CN_OPDEF
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPERANDWATCH"_Stz,         // CN_OPERANDWATCH
+  /* */ "OPSKETCH"_Stz,             // CN_OPSKETCH
   /* */ "OPMETRICS"_Stz,            // CN_OPMETRICS
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
   /* */ "OPTIMISER"_Stz,            // CN_OPTIMISER
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
+  /* */ "OUTERQUERY"_Stz,           // CN_OUTERQUERY
 
   /* */ "_P__"_Stz,                 // CN__P__
   /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE
   /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
+  /* */ "PARAMSPEC"_Stz,            // CN_PARAMSPEC
+  /* */ "PARAMSSPEC"_Stz,           // CN_PARAMSSPEC
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
+  /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPEIN"_Stz,               // CN_PIPEIN
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
+  /* */ "PIPELINEDEF"_Stz,          // CN_PIPELINEDEF
   /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
@@ -699,7 +743,6 @@ static Stz* aCN[]
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
   /* */ "RUFILE"_Stz,               // CN_RUFILE
-  /* */ "RULECTL"_Stz,              // CN_RULECTL
   /* */ "RUMEMORY"_Stz,             // CN_RUMEMORY
   /* */ "RUMUTEX"_Stz,              // CN_RUMUTEX
   /* */ "RUPASS"_Stz,               // CN_RUPASS
@@ -708,10 +751,12 @@ static Stz* aCN[]
   /* */ "RUWORK"_Stz,               // CN_RUWORK
 
   /* */ "_S__"_Stz,                 // CN__S__
+  /* */ "SAWOPCARDS"_Stz,           // CN_SAWOPCARDS
   /* */ "SCANNER"_Stz,              // CN_SCANNER
   /* */ "SCHEDULE"_Stz,             // CN_SCHEDULE
   /* */ "SCHEDULER"_Stz,            // CN_SCHEDULER
   /* */ "SCHEMA"_Stz,               // CN_SCHEMA
+  /* */ "SCOPE"_Stz,                // CN_SCOPE
   /* */ "SEAPI"_Stz,                // CN_SEAPI
   /* */ "SEDEPUTY"_Stz,             // CN_SEDEPUTY
   /* */ "SEEME"_Stz,                // CN_SEEME
@@ -731,6 +776,8 @@ static Stz* aCN[]
   /* */ "SMALLPERSISTENT"_Stz,      // CN_SMALLPERSISTENT
   /* */ "SMALLTRANSIENT"_Stz,       // CN_SMALLTRANSIENT
   /* */ "SMALLVIRTUAL"_Stz,         // CN_SMALLVIRTUAL
+  /* */ "SMOOSH"_Stz,               // CN_SMOOSH
+  /* */ "SMOOTH"_Stz,               // CN_SMOOTH
   /* */ "SNBCD"_Stz,                // CN_SNBCD
   /* */ "SNBOL"_Stz,                // CN_SNBOL
   /* */ "SNDTE"_Stz,                // CN_SNDTE
@@ -749,12 +796,14 @@ static Stz* aCN[]
   /* */ "SQLPLANNER"_Stz,           // CN_SQLPLANNER
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
+  /* */ "STAGEDEF"_Stz,             // CN_STAGEDEF
   /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATS"_Stz,                // CN_STATS
   /* */ "STENCIL"_Stz,              // CN_STENCIL
+  /* */ "STENCIL_V2"_Stz,           // CN_STENCIL_V2
   /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
   /* */ "STEPS"_Stz,                // CN_STEPS
@@ -768,6 +817,7 @@ static Stz* aCN[]
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
+  /* */ "SUBQUERY"_Stz,             // CN_SUBQUERY
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
@@ -830,7 +880,7 @@ static Stz* aCN[]
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP
-  /* */ "WEAVE"_Stz,                // CN_WEAVE
+  /* */ "WEAVER"_Stz,               // CN_WEAVER
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t

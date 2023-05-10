@@ -57,8 +57,18 @@ INCLUDE 'query1.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running tpch query 2...';
+INCLUDE 'query2.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running tpch query 3...';
 INCLUDE 'query3.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 4...';
+INCLUDE 'query4.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
@@ -72,9 +82,29 @@ INCLUDE 'query6.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-//LOG 'Running tpch query 10...';
-//INCLUDE 'query10.test';
-//INCLUDE 'sleep.test';
+LOG 'Running tpch query 7...';
+INCLUDE 'query6.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 8...';
+INCLUDE 'query8.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 9...';
+INCLUDE 'query9.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 10...';
+INCLUDE 'query10.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 11...';
+INCLUDE 'query11.test';
+INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 12...';
@@ -82,8 +112,48 @@ INCLUDE 'query12.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+LOG 'Running tpch query 13...';
+INCLUDE 'query13.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 14...';
+INCLUDE 'query14.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 15...';
+INCLUDE 'query15.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running tpch query 16...';
 INCLUDE 'query16.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 17...';
+INCLUDE 'query17.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 18...';
+INCLUDE 'query18.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 19...';
+INCLUDE 'query19.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 20...';
+INCLUDE 'query22.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 22...';
+INCLUDE 'query22.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------

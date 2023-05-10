@@ -92,6 +92,7 @@
 
 
 #include "ColumnOrdinal.hpp"
+#include "ColumnParameter.hpp"
 #include "ColumnRef.hpp"
 
 #include "FilterOp.hpp"
@@ -150,11 +151,10 @@ Backend::Backend(RootNode* pPlanRoot)
   m_bStartStage      = false;
   m_bCombinedOp      = false;
   m_pPrevStageMarker = nullptr;
-  m_bJoinPredicate   = false;
   m_bInSubquery      = false;
+  m_bSubqueryRef     = false;
   m_sIndent          = ""_Stz;
 
-  m_iColumnsOfLeftChild = C_UNKNOWN;
   m_pColExprList        = nullptr;
 
   _checkInitialised_(CN_BACKEND);
@@ -181,7 +181,7 @@ Backend::~Backend(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* transliterate plan into a pipeline statement                               */
 /*----------------------------------------------------------------------------*/
-bool Backend::bTransliterate(String* sPipeline) {
+bool Backend::bTransliterate(Stz* sPipelineName, String* sPipeline) {
   _static_
 
   m_sPipeline = sPipeline;
@@ -191,13 +191,14 @@ bool Backend::bTransliterate(String* sPipeline) {
 //#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // get the plan node of the plan
+
   QueryNode* pPlanNode = ShadowRoot::pPlanRoot(m_pPlanRoot);
   ASSERT(pPlanNode);
 
   QueryNode* pStartingNode = pPlanNode;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Handle an EXPLAIN of a plan. In this case pPlanNode will only have 1 child
   // which is a MainSubquery. The MainSubquery will have an ExplainMarker which
   // will have an ExplainOp. This may potentially be followed by another MainSubquery
@@ -210,119 +211,32 @@ bool Backend::bTransliterate(String* sPipeline) {
     pStartingNode = _pQueryNode(pStartingNode->pFirstChild()->pFirstChild()->pFirstChild());
   }
 
-  // At this point, pStartingNode is pointing to a node who will have children that
-  // represent the subqueries in the statement. There must be one child which is
-  // of type MainSubquery.
-  PlanNodeIter* pIter = pStartingNode->pNewChildrenIter();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the pipeline
 
-  // append the main pipeline
-  vAppendPipeline("unamed"_Stz);
+  // append the main pipeline name
+  vAppendPipeline(sPipelineName);
 
-  while (pIter->bHasNext()) {
-    QueryNode* pSubqueryMarker = _pQueryNode(pIter->pNext());
-    ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
+  // We want to iterate bottom up over each logical subquery and generate the pipeline for each subquery
+  GraphNav::bGlobalWalkBottomUp(pStartingNode, false, true, vVisitorSubQuery, (void *) this);
 
-    if (TableSubquery::bIsOfType(pSubqueryMarker) ||
-        ExprSubquery::bIsOfType(pSubqueryMarker) ) {
+  // pStartingNode's last child should be the main outer query
+  QueryNode* pMainSubQuery = _pQueryNode(pStartingNode->pLastChild());
 
-      m_bInSubquery = true;
-      m_sIndent = "  "_Stz;
+  // The MainSubquery node should have one child which is a StageMarker node
+  ASSERT(pMainSubQuery->nChildren() == 1);
+  ASSERT(StageMarker::bIsOfType(pMainSubQuery->pFirstChild()));
+  QueryNode* pStageMarker = _pQueryNode(pMainSubQuery->pFirstChild());
 
-      // The MainSubquery node should have one child which is a StageMarker node
-      ASSERT(pSubqueryMarker->nChildren() == 1);
-      ASSERT(StageMarker::bIsOfType(pSubqueryMarker->pFirstChild()));
-      QueryNode* pStageMarker = _pQueryNode(pSubqueryMarker->pFirstChild());
+  // append the start stage
+  vAppendStartStage();
 
-      m_sPipeline->vCatSprint(
-          "%spipeline %s\n"
-          ""_Stz,
-          m_sIndent.azChar(),
-          SubqueryMarker::szTableAlias(pSubqueryMarker));
+  // generate the pipeline for the main outer query
+  GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
 
-      // append the nested pipeline for the table subquery
-      //vAppendPipeline(SubqueryMarker::szTableAlias(pSubqueryMarker));
+  // append the last stage
+  vAppendLastStage("on origin"_Stz);
 
-      // Get the list of correlated columns
-      QueryNode* pCorrColumnsNode = SubqueryMarker::pCorrelatedColumnsNode(pSubqueryMarker);
-      ASSERT(pCorrColumnsNode);
-      ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
-
-      QueryNode* pExprList = _pQueryNode(pCorrColumnsNode);
-
-      if (pExprList->bHasChildren()) {
-        //PlanNodeIter* pIter = pExprList->pNewChildrenIter();
-
-        PlanNodeIter* pExprIter = pExprList->pNewChildrenIter();
-
-        m_sPipeline->vCatSprint(
-            "  %sparams \""
-            ""_Stz,
-            m_sIndent.azChar());
-
-        bool bFirstExpr = true;
-        while (pExprIter->bHasNext()) {
-
-          if (bFirstExpr) {
-            bFirstExpr = false;
-          } else {
-            m_sPipeline->vCatSprint(" , "_Stz);
-          }
-
-          // get the next projectedColumn from the iterator
-          QueryNode *pParam = static_cast<QueryNode *>(pExprIter->pNext());
-          ASSERT(pParam);
-          ASSERT(ColumnRef::bIsOfType(pParam));
-
-          sPipeline->vCatSprint("%s"_Stz, ColumnRef::szColumn(pParam));
-
-        }
-
-        sPipeline->vCatSprint(" \"\n"_Stz);
-        delete pExprIter;
-      }
-
-      m_sPipeline->vCatSprint(
-          "%sbegin\n"
-          ""_Stz,
-          m_sIndent.azChar());
-
-      // append the start stage
-      vAppendStartStage();
-
-      // We want to iterate over each logical subgraph, bounded by StageMarkers,
-      // and generate the pipeline for each statement
-      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vAppendLastStage("on origin"_Stz);
-
-      m_bInSubquery = false;
-      m_sIndent = ""_Stz;
-
-    } else if (MainSubquery::bIsOfType(pSubqueryMarker)) {
-      QueryNode* pMainSubqueryMarker = _pQueryNode(pSubqueryMarker);
-
-      // The MainSubquery node should have one child which is a StageMarker node
-      ASSERT(pMainSubqueryMarker->nChildren() == 1);
-      ASSERT(StageMarker::bIsOfType(pMainSubqueryMarker->pFirstChild()));
-      QueryNode* pStageMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
-
-      // append the start stage
-      vAppendStartStage();
-
-      // We want to iterate over each logical subgraph, bounded by StageMarkers,
-      // and generate the pipeline for each statement
-      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vAppendLastStage("on origin"_Stz);
-
-    } else {
-      NEVER_REACH
-    }
-  }
-
-  delete pIter;
   return true;
 }
 
@@ -446,7 +360,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    pBackend->vAppendNextOp("aggreg \""_Stz);
+    pBackend->vAppendNextOp("gbyAgg \""_Stz);
     pBackend->m_bCombinedOp = true;
 
     // Get the groupBy from ProjectOp
@@ -637,24 +551,25 @@ void Backend::vAppendAbstractJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
   QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
 
-  // Get the joinType property
-  //eJT eJoinType = JoinOp::eJoinType(pNode);
-
-  // Get the joinPredicate property
-  //QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
-  //ASSERT(pJoinPredicate);
-
-  // save the left child columns
-  pBackend->m_bJoinPredicate = true;
-  pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
-
   pBackend->vAppendNextOp("abstractJoin \""_Stz);
+  switch(JoinOp::eJoinType(pNode)) {
+    case JT_INNER:                   /* sPipeline->vCatSprint("INNER"_Stz); */ break;
+    case JT_CROSS:                   sPipeline->vCatSprint("CROSS"_Stz); break;
+    case JT_SEMI:                    sPipeline->vCatSprint("SEMI"_Stz); break;
+    case JT_ANTI:                    sPipeline->vCatSprint("ANTI"_Stz); break;
+    case JT_LEFT_OUTER:              sPipeline->vCatSprint("LEFT_OUTER"_Stz); break;
+    case JT_RIGHT_OUTER:             sPipeline->vCatSprint("RIGHT_OUTER"_Stz); break;
+    case JT_FULL_OUTER:              sPipeline->vCatSprint("FULL_OUTER"_Stz); break;
+    case JT_NATURAL_INNER:           sPipeline->vCatSprint("NATURAL_INNER"_Stz); break;
+    case JT_NATURAL_LEFT_OUTER:      sPipeline->vCatSprint("NATURAL_LEFT_OUTER"_Stz); break;
+    case JT_NATURAL_RIGHT_OUTER:     sPipeline->vCatSprint("NATURAL_RIGHT_OUTER"_Stz); break;
+    case JT_NATURAL_FULL_OUTER:      sPipeline->vCatSprint("NATURAL_FULL_OUTER"_Stz); break;
+    default:
+      break;
+  }
+
   GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   sPipeline->vCatSprint(" \""_Stz);
-
-  // reset left child columns
-  pBackend->m_bJoinPredicate = false;
-  pBackend->m_iColumnsOfLeftChild = C_UNKNOWN;
 
   // cleanup
   pBackend->m_pColExprList->vDeleteAll();
@@ -758,14 +673,45 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   // We don't need to free this object.
   QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pBackend->m_pPlanRoot);
 
-  // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
-
-    pBackend->vAppendNextOp("project \""_Stz);
-    pBackend->m_bCombinedOp = true;
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
+
+    // Iterate each projected expression to see if there are any aggregates
+    bool bHasAggregate = false;
+
+    while (pIter->bHasNext()) {
+
+      // get the next projectedColumn from the iterator
+      QueryNode *pProjectedColumn = static_cast<QueryNode *>(pIter->pNext());
+      ASSERT(pProjectedColumn);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+
+      QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
+
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      RASSERT(pOrdinalExpr);
+
+      if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
+        bHasAggregate = true;
+      }
+
+      delete pOrdinalExpr;
+    }
+
+    delete pIter;
+
+    // does the projection have aggregates ?
+    if (bHasAggregate)
+      pBackend->vAppendNextOp("aggreg \""_Stz);
+    else
+      pBackend->vAppendNextOp("project \""_Stz);
+
+    pBackend->m_bCombinedOp = true;
+
+    // get a plan node iterator
+    pIter = pProjectedColumns->pNewChildrenIter();
 
     while (pIter->bHasNext()) {
 
@@ -1034,7 +980,12 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
       sPipeline->vCatSprint(" #%lld "_Stz, iInExprCount);
       GraphNav::bGlobalWalk(pLeftExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
-      sPipeline->vCatSprint(" in "_Stz);
+      if (pBackend->m_bSubqueryRef) {
+        sPipeline->vCatSprint(" in "_Stz);
+        pBackend->m_bSubqueryRef = false;
+      }
+      else
+        sPipeline->vCatSprint(" inList "_Stz);
 
       // TODO: CHECK THIS OUT
       return GraphNav::WALK_SKIP_CHILDREN;
@@ -1050,32 +1001,25 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
   if (ColumnOrdinal::bIsOfType(pOrdinalExpr)) {
     QueryNode* pColumnOrdinal = _pQueryNode(pOrdinalExpr);
-    bool bJoinPredicate = pBackend->m_bJoinPredicate;
-
-    RASSERT(pBackend->m_iColumnsOfLeftChild);
 
     i8 iColumnOrdinal = ColumnOrdinal::iOrdinal(pColumnOrdinal);
 
-    if (bJoinPredicate) {
+    sPipeline->vCatSprint(
+        " $%lld"
+        ""_Stz,
+        ColumnOrdinal::iOrdinal(pColumnOrdinal));
+  }
 
-      if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
-        sPipeline->vCatSprint(
-            " $L%lld"
-            ""_Stz,
-            iColumnOrdinal);
-      else
-        sPipeline->vCatSprint(
-            " $R%lld"
-            ""_Stz,
-            iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
+  if (ColumnParameter::bIsOfType(pOrdinalExpr)) {
+    QueryNode* pColumnParameter = _pQueryNode(pOrdinalExpr);
 
-    }
-    else {
-      sPipeline->vCatSprint(
-          " $%lld"
-          ""_Stz,
-          ColumnOrdinal::iOrdinal(pColumnOrdinal));
-    }
+
+    i8 iColumnParameter = ColumnParameter::iParameter(pColumnParameter);
+
+    sPipeline->vCatSprint(
+        " %%%lld"
+        ""_Stz,
+        iColumnParameter);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1503,6 +1447,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
   if (SubqueryRefExpr::bIsOfType(pOrdinalExpr)) {
     sPipeline->vCatSprint(" %s "_Stz, SubqueryRefExpr::szTableAlias(pOrdinalExpr));
+    pBackend->m_bSubqueryRef = true;
     return GraphNav::WALK_CONTINUE;
   }
 
@@ -1717,6 +1662,119 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
 }
 
 /*----------------------------------------------------------------------------*/
+/* visitor function for the stage                                             */
+/*----------------------------------------------------------------------------*/
+GraphNav::eWalkCtrl Backend::vVisitorSubQuery(PlanNode* pRootNode, s2K& sPath, i8 iDepth, void* pvArg)
+{
+  _static_
+
+  // Continue walking till a subQueryMarker is hit
+  if (!TableSubquery::bIsOfType(pRootNode) &&
+      !ExprSubquery::bIsOfType(pRootNode)) {
+    return GraphNav::WALK_CONTINUE;
+  }
+
+  // get the backend
+  Backend* pBackend = (Backend*)pvArg;
+
+  QueryNode* pSubqueryMarker = _pQueryNode(pRootNode);
+  ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
+
+  pBackend->m_bInSubquery = true;
+  pBackend->m_sIndent = "  "_Stz;
+
+  // The Subquery node should have one child which is a StageMarker node
+  ASSERT(pSubqueryMarker->nChildren() == 1);
+  ASSERT(StageMarker::bIsOfType(pSubqueryMarker->pFirstChild()));
+
+  pBackend->m_sPipeline->vCatSprint(
+      "%spipeline %s\n"
+      ""_Stz,
+      pBackend->m_sIndent.azChar(),
+      SubqueryMarker::szTableAlias(pSubqueryMarker));
+
+  // Get the list of correlated columns
+  QueryNode* pCorrColumnsNode = SubqueryMarker::pCorrelatedColumnsNode(pSubqueryMarker);
+  ASSERT(pCorrColumnsNode);
+  ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
+
+  QueryNode* pExprList = _pQueryNode(pCorrColumnsNode);
+
+  if (pExprList->bHasChildren()) {
+    //PlanNodeIter* pIter = pExprList->pNewChildrenIter();
+
+    PlanNodeIter* pExprIter = pExprList->pNewChildrenIter();
+
+    pBackend->m_sPipeline->vCatSprint(
+        "  %sparams \""
+        ""_Stz,
+        pBackend->m_sIndent.azChar());
+
+    bool bFirstExpr = true;
+    while (pExprIter->bHasNext()) {
+
+      if (bFirstExpr) {
+        bFirstExpr = false;
+      } else {
+        pBackend->m_sPipeline->vCatSprint(" , "_Stz);
+      }
+
+      // get the next parameter from the iterator
+      QueryNode *pParam = static_cast<QueryNode *>(pExprIter->pNext());
+      ASSERT(pParam);
+      ASSERT(ColumnRef::bIsOfType(pParam));
+
+      pBackend->m_sPipeline->vCatSprint("%s"_Stz, ColumnRef::szColumn(pParam));
+
+    }
+
+    pBackend->m_sPipeline->vCatSprint(" \"\n"_Stz);
+    delete pExprIter;
+  }
+
+  // append begin
+  pBackend->m_sPipeline->vCatSprint(
+      "%sbegin\n"
+      ""_Stz,
+      pBackend->m_sIndent.azChar());
+
+  RASSERT(pSubqueryMarker->bHasChildren());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // walk the main query of this subQuery
+
+  QueryNode* pStageMarker = _pQueryNode(pSubqueryMarker->pFirstChild());
+  ASSERT(StageMarker::bIsOfType(pStageMarker));
+
+  PlanNodeIter* pIter = pStageMarker->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode *pQueryNode = static_cast<QueryNode *>(pIter->pNext());
+
+    // is it a main subQuery
+    if (MainSubquery::bIsOfType(pQueryNode)) {
+
+      QueryNode* pStageMarker_main = _pQueryNode(pQueryNode->pFirstChild());
+      ASSERT(StageMarker::bIsOfType(pStageMarker_main));
+
+      // append the start stage
+      pBackend->vAppendStartStage();
+      GraphNav::bGlobalWalk(pStageMarker_main, false, true, vVisitorPlan, (void *) pBackend);
+    }
+
+  }
+  delete pIter;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append the last stage
+  pBackend->vAppendLastStage("on origin"_Stz);
+
+  pBackend->m_bInSubquery = false;
+  pBackend->m_sIndent = ""_Stz;
+
+  return GraphNav::WALK_CONTINUE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append last stage to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendLastStage(Stz* szLocation) {
@@ -1924,7 +1982,7 @@ bool Backend::bInTableSubquery(QueryNode* pNode) {
   i8 iNodeDepth;
 
   b1 bFound = GraphNav::bGetPathAndDepth(pNode, m_pPlanRoot, sNodePath, iNodeDepth, true);
-  ASSERT(bFound);
+  RASSERT(bFound);
 
   // First find the main subquery that this SubqueryRefOp is a child of.
   // If we walk the graph bottom-up along the path obtained above

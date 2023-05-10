@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* __CS2: Code Synthesizer V2                                                 */
+/*============================================================================*/
+_nation
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+explain stage transliterate select sum(n_nationkey) from nation where n_nationkey < 5;
+/*
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+  stage S01 on all partitions :
+    scan rapidsse public Nation
+    | filter " type BOOLEAN  $1 5  <  "
+    | aggreg " type INTEGER )  $1 sum  "
+    | dynamic_v2 0
+    | next
+  stage S02 on all nodes :
+    aggreg " type INTEGER )  $1 sum  "
+    | dynamic_v2 0
+    | next
+  stage S03 on origin :
+    aggreg " type INTEGER )  $1 sum  "
+    | dynamic_v2 0
+    | next
+  stage S04 on origin :
+    output
+    | sink
+    | first
+end ;
+*/
+explain stage transliterate select max(n_name) from nation;
+
+/ccode pipeline unamed
+begin
+stage S00 on origin :
+  start
+  | pulse once
+  | next
+stage S01 on all partitions :
+  scan rapidsse public Nation
+  | aggreg " type VARCHAR )  $2 max  "
+  | dynamic_v2 0
+  | next
+
+stage S02 on all nodes :
+  aggreg " type VARCHAR )  $1 max  "
+  | dynamic_v2 0
+  | next
+  /*
+stage S03 on origin :
+  aggreg " type VARCHAR )  $1 max  "
+  | dynamic_v2 0
+  | next
+  */
+stage S04 on origin :
+  output
+  | sink
+  | first
+end ;

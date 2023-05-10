@@ -1,0 +1,98 @@
+/*============================================================================*/
+/* _a_q13 -- Query13 (hand coded pipeline)                                    */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select
+  c_count,
+  count(*) as custdist
+from (
+  select
+    c_custkey,
+    count(o_orderkey) as c_count
+  from
+    customer left outer join orders on
+    c_custkey = o_custkey
+    and o_comment not like '%special%requests%'
+  group by
+    c_custkey
+  ) as c_orders (c_custkey, c_count)
+group by
+   c_count
+order by
+   c_count desc,
+   custdist desc
+;
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : CUSTOMER, ORDERS
+// JOIN ORDER : CUSTOMER->ORDERS
+// INDEXES    : IxO_CUSTKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * AS CUSTOMER DATA IS COMING IN CUSTKEY ORDER AND GROUP BY IS ON CUSTKEY
+//     WE CAN CHANGE AGGREG TO ORDAGG
+// (NOTE: assumption is that the customet data is loaded in customer key order ....
+//        should we be doing an indexScan on IxC_CUSTKEY ???)
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   CAN EXPLORE DIFFERENT JOIN ORDERS.
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// pipeline begin
+pipeline Query13
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public customer
+    | next
+
+  stage S02 on all partitions :
+    indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
+        "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
+               type INTEGER as O_ORDERKEY J1_O_ORDERKEY"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    ordAgg " ordGroupBy  type INTEGER as C_CUSTKEY $1
+             aggregates  type INTEGER $K1 ,
+                         type INTEGER ) O_ORDERKEY count  "
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    aggreg " groupBy    type INTEGER as c_count $2
+             aggregates
+                        type INTEGER $K1 ,
+                        type INTEGER as custdist )  countAll  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    sort " type INTEGER $1 DESC ,
+           type INTEGER as c_count $2 DESC "
+    | combined 0
+    | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+ end ;
+// pipeline end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

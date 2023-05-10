@@ -1,0 +1,123 @@
+/*============================================================================*/
+/* _a_q1 -- Query1 (hand coded pipeline)                                      */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select l_returnflag, l_linestatus,
+        sum(l_quantity) as sum_qty,
+        sum(l_extendedprice) as sum_base_price,
+        sum(l_extendedprice*(1-l_discount)) as sum_disc_price,
+        sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge,
+        avg(l_quantity) as avg_qty,
+        avg(l_extendedprice) as avg_price,
+        avg(l_discount) as avg_disc,
+        count(*) as count_order
+        from lineitem
+        where l_shipdate <= DATE '1998-09-01'
+        group by l_returnflag, l_linestatus
+        order by l_returnflag, l_linestatus;
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : LINEITEM
+// JOIN ORDER : NONE
+// INDEXES    : NONE
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * ORDER BY CAN BE DISCARDED AS IT IS ON THE SAME COLUMNS AS GROUP BY
+//   * ONCE WE HAVE INTERVALS WE NEED TO DO LITERAL ARITHMETIC UPFRONT
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   NONE
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+// pipeline begin
+pipeline Query1
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public lineitem
+    | filter " type BOOLEAN  $11 DATE '1998-09-01'  <=  "
+    | aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+      aggregates
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) L_QUANTITY sum  ,
+      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
+      type INTEGER ) L_EXTENDEDPRICE count  ,
+      type INTEGER ) L_QUANTITY count  ,
+      type DECIMAL ) L_DISCOUNT sum  ,
+      type INTEGER ) L_DISCOUNT count  ,
+      type INTEGER ) countAll  "
+    | combined 0
+    | next
+
+  stage S02 on all nodes :
+    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+      aggregates
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum ,
+      type INTEGER ) $7 sum ,
+      type INTEGER ) $8 sum ,
+      type DECIMAL ) $9 sum ,
+      type INTEGER ) $10 sum ,
+      type INTEGER ) $11 sum "
+    | combined 0
+    | next
+
+  stage S03 on origin :
+    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+      aggregates
+      type VARCHAR as L_RETURNFLAG $K1 ,
+      type VARCHAR as L_LINESTATUS $K2 ,
+      type DECIMAL as SUM_QTY ) SUM_QTY sum ,
+      type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum ,
+      type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum ,
+      type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum ,
+      type INTEGER ) $7 sum ,
+      type INTEGER ) $8 sum ,
+      type DECIMAL ) $9 sum ,
+      type INTEGER ) $10 sum ,
+      type INTEGER as COUNT_ORDER ) $11 sum"
+    | combined 0
+    | next
+
+  stage S04 on origin :
+    project "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY SUM_QTY ,
+      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL as AVG_QTY SUM_QTY $8 casttype DECIMAL CAST  / ,
+      type DECIMAL as AVG_PRICE SUM_BASE_PRICE $7 casttype DECIMAL CAST  / ,
+      type DECIMAL as AVG_DISC $9 $10 casttype DECIMAL CAST  / ,
+      type INTEGER as COUNT_ORDER COUNT_ORDER "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    output
+    | sink
+    | first
+end ;
+// pipeline end
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

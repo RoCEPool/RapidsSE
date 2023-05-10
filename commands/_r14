@@ -1,0 +1,48 @@
+/*============================================================================*/
+/* _r14                                                                       */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+create index L_idx0 on lineitem(L_ORDERKEY);
+
+_part
+create index P_idx0 on part(P_PARTKEY);
+
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+//select * from lineitem;
+
+load part "../tpch/sf_0001/part.csv" ;
+//select * from part;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "OTvAppend_indexList_To_scan"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r14"
+select 100
+         * sum(case when p_type like 'PROMO%'
+                    then l_extendedPrice * (1 - l_discount)
+                    else 0
+               end)
+         / sum(l_extendedPrice * (1 - l_discount))
+  from lineItem, part
+ where l_partKey  =  p_partKey
+   and l_shipDate >= '1995-09-01'
+   and l_shipDate <  '1995-10-01'
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table part;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

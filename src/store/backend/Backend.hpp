@@ -24,10 +24,9 @@ namespace STORE
     bool           m_bStartStage;
     bool           m_bCombinedOp;
     QueryNode*     m_pPrevStageMarker;
-    bool           m_bJoinPredicate;
     bool           m_bInSubquery;
+    bool           m_bSubqueryRef;
     s32            m_sIndent;
-    i8             m_iColumnsOfLeftChild;
     QueryNodeList* m_pColExprList;
 
     // must be last
@@ -40,7 +39,7 @@ namespace STORE
     Backend(RootNode* pPlanRoot);
    ~Backend(void) noexcept(false);
 
-    bool bTransliterate(String* sPipeline);
+    bool bTransliterate(Stz* sPipelineName, String* sPipeline);
 
   private:
 
@@ -74,6 +73,8 @@ namespace STORE
                                                     s2K& sPath, i8 iDepth, void* pvArg);
     static Parser::GraphNav::eWalkCtrl vVisitorStatement(PlanNode* pNode,
                                                     s2K& sPath, i8 iDepth, void* pvArg);
+    static Parser::GraphNav::eWalkCtrl vVisitorSubQuery(PlanNode* pNode,
+                                                         s2K& sPath, i8 iDepth, void* pvArg);
 
     //
     // pipeline stages

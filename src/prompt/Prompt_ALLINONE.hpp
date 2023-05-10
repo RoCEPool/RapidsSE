@@ -122,7 +122,6 @@ namespace PROMPT
 
   bool bPrompt_rassert(SePrompt* pPrompt);
   bool bPrompt_ready(SePrompt* pPrompt);
-  bool bPrompt_reap(SePrompt* pPrompt);
   bool bPrompt_resources(SePrompt* pPrompt);
   bool bPrompt_retired(SePrompt* pPrompt);
   bool bPrompt_rmfifo(SePrompt* pPrompt);

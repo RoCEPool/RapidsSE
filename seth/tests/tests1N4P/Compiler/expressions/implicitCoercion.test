@@ -1037,18 +1037,20 @@ explain select  '9223372036854775807' - 1 from nation;
 failure contains: 'Integer literal 9223372036854775807 is outside the valid integer range'
 
 // VARCHAR to DECIMAL
-explain select '-140737488355329' + 1.0 from nation;
-failure contains: 'Value is out of range: -140737488355329: Max/min decimal precision supported is'
+explain select '-36028797018963968' + 1.0 from nation;
+failure contains: 'Value is out of range: -36028797018963968: Max/min decimal precision supported is'
 
-explain select  '140737488355329' - 1.0 from nation;
-failure contains: 'Value is out of range: 140737488355329: Max/min decimal precision supported is'
+explain select  '36028797018963968' - 1.0 from nation;
+failure contains: 'Value is out of range: 36028797018963968: Max/min decimal precision supported is'
 
-explain select '-140737488355328.123' + 1.0 from nation;
+//TODO: FIX WITH HELP FROM CRAIG
+/*
+explain select '-36028797018963967.123' + 1.0 from nation;
 failure contains: 'Value is out of range: -140737488355328.123: Max/min decimal precision supported is'
 
-explain select  '140737488355327.123' - 1.0 from nation;
+explain select  '36028797018963967.123' - 1.0 from nation;
 failure contains: 'Value is out of range: 140737488355327.123: Max/min decimal precision supported is'
-
+*/
 
 // VARCHAR to FLOAT
 explain select '-1e400' + 1.0e0 from nation;

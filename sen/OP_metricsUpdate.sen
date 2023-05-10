@@ -34,18 +34,92 @@
 : metricsUpdate_Job
 
   0 locals| pJobMetrics |
+  0 locals| eError |
   
-  // "metricsUpdate_Metrics" .
-  
+  "metricsUpdate_Metrics" .
   PipeIn[]\clear to pJobMetrics
-  
-  pJobMetrics jobMetrics.update not if
-  
-    //pJobMetrics jobMetrics.delete
-    
-  then
-  
-  true
+
+  AM::DEMON::tEventDemonJobId@ locals| tEventDemonJobId |
+
+    tEventDemonJobId jobId::isUnknown if
+      "Cant find __eventDemon" .
+      true
+      exit
+    then
+
+    Tub[].new
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // metrics
+
+    Tub[] pJobMetrics jobReport::metrics to eError
+
+    eError EC_NONE == not if
+      eError op__execErr
+      true
+      exit
+    then
+
+    tEventDemonJobId Tub[].pipeToJob
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // network
+
+    Tub[] pJobMetrics jobReport::network to eError
+
+    eError EC_NONE == not if
+      eError op__execErr
+      true
+      exit
+    then
+
+    tEventDemonJobId Tub[].pipeToJob
+
+/*
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // network dissect
+
+    Tub[] iJob jobReport::netDissect to eError
+
+    eError EC_NONE == not if
+      eError op__execErr
+      true
+      exit
+    then
+
+    tEventDemonJobId Tub[].pipeToJob
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // operators
+
+    Tub[] iJob jobReport::operators to eError
+
+    eError EC_NONE == not if
+      eError op__execErr
+      true
+      exit
+    then
+
+    tEventDemonJobId Tub[].pipeToJob
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // operands
+
+    Tub[] iJob jobReport::operands to eError
+
+    eError EC_NONE == not if
+      eError op__execErr
+      true
+      exit
+    then
+
+    tEventDemonJobId Tub[].pipeToJob
+  */
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    Tub[].delete
+
+    true
 ;
 
 /*----------------------------------------------------------------------------*/

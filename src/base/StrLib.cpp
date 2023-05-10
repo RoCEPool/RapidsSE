@@ -1090,6 +1090,22 @@ bool StrLib::bEqualTo(const char* s1, const char* s2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bEqualTo: test if the two args match                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bEqualTo(const char* s1, i8 nLen2, const char* s2)
+{
+  _static_
+
+  i8 iDiff = strncmp(s1,s2,nLen2);
+
+  if (0 == iDiff)
+    return true;
+  else
+    return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* bEqualTo: are two arguments equal (case or no case)                        */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bEqualTo(const char* pArg1, const char* pArg2, i8 iCase)
@@ -2943,7 +2959,7 @@ bool StrLib::bIsEmpty(char* ps)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bIsEqual: is char an equal?                                                */
+/* bSameAs: is char an equal?                                                */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsEqual(const char c)
 {
@@ -3164,6 +3180,19 @@ bool StrLib::bIsLessThan(const char c)
   _static_
   
   if (c == '<')
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsLowerCase: is char a lower case char?                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsLowerCase(const char c)
+{
+  _static_
+
+  if (c >= 'a' and c <= 'z')
     return true;
   else
     return false;
@@ -3398,6 +3427,19 @@ bool StrLib::bIsUnderscore(const char c)
   _static_
   
   if ('_' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsUpperCase: is char an upper case char?                                  */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsUpperCase(const char c)
+{
+  _static_
+
+  if (c >= 'A' and c <= 'Z')
     return true;
   else
     return false;
@@ -3910,6 +3952,32 @@ void StrLib::vRemoveSuffix(char *azArg, char cIntro)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove tail from arg                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTail(char* azArg, const char* pTail)
+{
+  _static_
+
+  i8 nChars = nLength(pTail);
+
+  vRemoveTailBy(azArg,nChars);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove tail by nChars                                                      */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveTailBy(char* azArg, i8 nChars)
+{
+  _static_
+
+  char* z = azNullTerminator(azArg);
+  char* y = z - nChars;
+
+  *y = '\0';
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* remove tail int digits from arg                                            */
 /*----------------------------------------------------------------------------*/
 void StrLib::vRemoveTailInt(char *azArg)
@@ -4207,6 +4275,65 @@ bool StrLib::bSame(const char* pArg1, const char* pArg2)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Given a word, convert it to a short hand notation                          */
+/*----------------------------------------------------------------------------*/
+void StrLib::vShortHand(char *azDst, const char *azSrc)
+{
+  _static_
+
+  char cStart = *azSrc;
+  if(cStart >= 97 && cStart <= 122)
+  {
+    // indexJoin -> iJ
+    *azDst = cStart;
+
+    azSrc++;
+
+    while(*azSrc != '\0')
+    {
+      if(*azSrc >= 65 && *azSrc <= 90)
+      {
+        azDst++;
+        *azDst = *azSrc;
+        azDst++;
+        *azDst = '\0';
+        return;
+      }
+      azSrc++;
+    }
+  } else if(cStart >= 65 && cStart <= 90)
+  {
+    // if the first char is caps
+    // IndexJoin -> IJ
+    // INDEXJOIN -> I
+    *azDst = cStart;
+
+    azSrc++;
+
+    // search for the next caps letter
+    bool bSmall = 0;
+    while(*azSrc >= 97 && *azSrc <= 122 && *azSrc != '\0')
+    {
+      azSrc++;
+      bSmall = 1;
+    }
+
+    // Add the next caps char if we found at lease one small char before
+    if(*azSrc != '\0' && bSmall == 1)
+    {
+      azDst++;
+      *azDst = *azSrc;
+    }
+    azDst++;
+    *azDst = '\0';
+    return;
+  } else
+  {
+    *azDst = '\0';
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4544,6 +4671,25 @@ void StrLib::vSubPath(char* azDst, char* azSrc)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bTailIs(const char *z, char *ss)
+{
+  _static_
+
+  i8 nSS_len  = nLength(ss);
+
+  const char* y = z - nSS_len;
+
+  //vTrace("%s %lld ]%s[\n"_Stz,ss,nSS_len,y);
+
+  if (bEqualTo(y,nSS_len,ss))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find tab location in given arg                                             */
 /*----------------------------------------------------------------------------*/
 char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
@@ -4778,6 +4924,20 @@ i8 StrLib::iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed)
 /*----------------------------------------------------------------------------*/
 /* convert arg to lower case                                                  */
 /*----------------------------------------------------------------------------*/
+char StrLib::cToLower(char c)
+{
+  _static_
+
+  char c2 = c;
+  if (c >= 'A' && c <= 'Z')
+    c2 = c + ('a' - 'A');
+
+  return c2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert arg to lower case                                                  */
+/*----------------------------------------------------------------------------*/
 void StrLib::vToLower(char* s)
 {
   _static_
@@ -4786,6 +4946,20 @@ void StrLib::vToLower(char* s)
     *s = (char)tolower((unsigned char)*s);
     s++;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert arg to upper case                                                  */
+/*----------------------------------------------------------------------------*/
+char StrLib::cToUpper(char c)
+{
+  _static_
+
+  char c2 = c;
+  if (c >= 'a' && c <= 'z')
+    c2 = c - ('a' - 'A');
+
+  return c2;
 }
 
 /*----------------------------------------------------------------------------*/

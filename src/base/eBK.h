@@ -1,29 +1,25 @@
 /*============================================================================*/
-/* eBK.h -- Bound Kind                                                        */
+/* eBK.h -- Board Kind                                                        */
 /*============================================================================*/
 #pragma once
 
-enum eBK // bound kind
+enum eBK // board kind
 {
   /*  0 */ BK_NONE=0,
-  
-  /*    */ BK_LBOUND,  // > | >=
-  /*    */ BK_UBOUND,  // < | <=
-  /*    */ BK_RBOUND,  // lbound and ubound
-  /*    */ BK_EBOUND,  // = | ==
-  
+
+  /*    */ BK_JOINORDERING,
+  /*    */ BK_SUBQUERY,
+
   /*    */ BK_ENUMS,
 };
 
 static Stz* aBK[]
 {
   /*  0 */ "NONE"_Stz,
-  
-  /*    */ "BK_LBOUND"_Stz,
-  /*    */ "BK_UBOUND"_Stz,
-  /*    */ "BK_RBOUND"_Stz,
-  /*    */ "BK_EBOUND"_Stz,
-  
+
+  /*    */ "BK_JOINORDERING"_Stz,
+  /*    */ "BK_SUBQUERY"_Stz,
+
   /*    */ "ENUMS"_Stz,
 };
 

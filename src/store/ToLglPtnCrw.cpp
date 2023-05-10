@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ToBktCrw.cpp -- Convert ptn nst row buffers to ptn crw buffers             */
+/* ToLglPtnCrw.cpp -- Convert ptn nst row buffers to ptn crw buffers          */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -108,7 +108,7 @@ void ToLglPtnCrw::vConvert(RowBuffer* pRowBuffer)
   
   if (! m_pCrwBuffer) {
     //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
-    m_pCrwBuffer = pNewCrwBuffer(tLglPtn, pRowBuffer->iBucketNo());
+    m_pCrwBuffer = pNewCrwBuffer(tLglPtn);
     vAddNst(pRowBuffer);
   }
   
@@ -197,7 +197,7 @@ void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tLglPtn, RowBuffer* pRowBuffer)
     
     //m_pCrwBuffer->vPrintRows(m_pStreamDef);
     //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
-    m_pCrwBuffer = pNewCrwBuffer(tLglPtn, pRowBuffer->iBucketNo());
+    m_pCrwBuffer = pNewCrwBuffer(tLglPtn);
     vAddNst(pRowBuffer);
 
     bAppended = m_pCrwBuffer->bAppendRow(aRow);
@@ -208,7 +208,7 @@ void ToLglPtnCrw::vAddRowsToBuffer(LglPtn tLglPtn, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* create a new crw buffer                                                    */
 /*----------------------------------------------------------------------------*/
-CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, KeyBkt tKeyBkt)
+CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOLGLPTNCRW,_FOOTER_);
 
@@ -218,8 +218,6 @@ CrwBuffer* ToLglPtnCrw::pNewCrwBuffer(LglPtn tLglPtn, KeyBkt tKeyBkt)
   pCrwBuffer->vStreamDef(m_pStreamDef);
 
   pCrwBuffer->vLglPtn(tLglPtn);
-
-  pCrwBuffer->vBucketNo(tKeyBkt);
 
   // open buffer for append
   pCrwBuffer->vAppendOpen(m_paRowCompactor[tLglPtn],false);

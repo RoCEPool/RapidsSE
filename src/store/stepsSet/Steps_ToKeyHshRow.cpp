@@ -157,10 +157,7 @@ void Step::vToKeyHshRowNew(void)
 
   StreamDef* pStreamDef = m_pLogicUnit->m_xpTable->pStreamDef();
 
-  BucketMap* pBucketMap = m_pLogicUnit->m_xpTable->pBucketMap();
-
-
-  ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pBucketMap,pFmt);
+  ToKeyHshRow* pToKeyHshRow = new ToKeyHshRow(pStreamDef,pFmt);
       
   m_pLogicUnit->m_xpToKeyHshRow = pToKeyHshRow;
   

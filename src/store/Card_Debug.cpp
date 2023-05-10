@@ -12,13 +12,12 @@ __pCastFunction_Card(STORE,Card_Debug,CK_DEBUG)
 __aNewFunction(Card_Debug,CN_CARD)
 __vDeleteFunction(Card_Debug,CN_CARD)
 
-__bIsCard(STORE,Card_Debug,CK_DEBUG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Debug::Card_Debug(void)
-: Card_MAIN(CK_DEBUG)
+: Card(CK_DEBUG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

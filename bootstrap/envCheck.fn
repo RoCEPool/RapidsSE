@@ -13,6 +13,7 @@ fi
 ###############################################################################
 
 readonly GCC_MINIMUM_VERSION="4.8.5"
+readonly CLANG_MINIMUM_VERSION="4.2.0"
 readonly BASH_MINIMUM_VERSION="4.2.46"
 
 readonly UDP_SENDER_FILE="udpSender.py"
@@ -115,8 +116,9 @@ function validate3rdPartyTools() {
     # Check that bash has the correct version
     validateBash
 
-    # Check that gcc is installed and is new enough
-    validateGcc
+    # Check that there is a compiler available and that we can compile
+    # a simple application
+    validateCompilers
 
     # Check that the ldconfig utility is installed
     validateLdconfig
@@ -149,8 +151,9 @@ function validate3rdPartyTools() {
     # Check that bash has the correct version
     validateBash "${nodeNames[@]}"
 
-    # Check that gcc is installed and is new enough
-    validateGcc "${nodeNames[@]}"
+    # Check that there is a compiler available and that we can compile
+    # a simple application
+    validateCompilers "${nodeNames[@]}"
 
     # Check that the ldconfig utility is installed
     validateLdconfig "${nodeNames[@]}"
@@ -1468,11 +1471,11 @@ function validateNodeNames() {
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## Check that GCC is installed and is new enough on each node.
+## Check that a suitable compiler is installed and that it can compile a simple program.
 ## Params:
 ##  $@ - (optional) the list of node names to check. If not set then check all.
 
-function validateGcc() {
+function validateCompilers() {
 
   local -a nodeNames;
 
@@ -1486,52 +1489,113 @@ function validateGcc() {
   local host
   local remoteCmd
   local output
+  local errMsg="The compiler validation checks failed on the following nodes:"
 
   declare -a sshArgs=()
   declare -a failedNodes=()
+  declare -a compilers=()
 
-  debugPrint "Validating gcc version"
+  # First, determine which of gcc or clang is available
+  debugPrint "Validating compilers"
 
-  for nodeName in "${nodeNames[@]}"
-  do
+  for nodeName in "${nodeNames[@]}"; do
     host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
 
-    remoteCmd="which gcc &>/dev/null && gcc -dumpversion 2>/dev/null"
-
-    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
-
-    # Run it and check if it returned with a success error code
-    if ! output="$(ssh "${sshArgs[@]}")" ; then
+    if ! output="$(validateCompilerOnHost ${host})"; then
       failedNodes+=("${nodeName}")
-      continue
-    fi
-
-    # Check the gcc version is sufficient.
-    # First check if the output is empty.
-    if [ -z "${output:-}" ]; then
-      failedNodes+=("${nodeName}")
-      continue;
-    fi
-
-    # Check the version number.
-    if ! isVersionGreaterThanOrEqualTo "${output}" "${GCC_MINIMUM_VERSION}" ; then
-      debugPrint "GCC on node ${nodeName} is too old - Found: ${output} ; Required: ${GCC_MINIMUM_VERSION}"
-      failedNodes+=("${nodeName}")
-      continue
+      errMsg+="$(printf "\n  %-8s [host: %12s] : %s" "${nodeName}" "${host}" "${output:-}")"
     fi
   done
 
   if [ "${#failedNodes[@]}" -gt 0 ]; then
-    local errMsg="GCC is either not installed or is too old (min: ${GCC_MINIMUM_VERSION}) on the following nodes:"
-
-    for nodeName in "${failedNodes[@]}"
-    do
-      host="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_HOST_KEY}")"
-      errMsg+="$(printf "\n  %-12s [host: %12s]" "${nodeName}" "${host}")"
-    done
-
     errorExit "${errMsg}"
   fi
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Check that a suitable compiler is installed and that it can compile a simple program.
+## Params:
+##  $1 - hostname to check
+## Returns: an error message on stdout if there is a problem.
+
+function validateCompilerOnHost() {
+
+  if [ $# -ne 1 ]; then
+    errorExit "Function validateCompilerOnHost requires 1 parameter"
+  fi
+
+  local host="$1"
+  local lastError=""
+  local sampleProgram
+
+  sampleProgram="$(cat <<-EOF
+#include <stdio.h>
+#include <dlfcn.h>
+
+int main(int argc, char** argv)
+{
+  // Test that basic dlopen functionality is available
+  void* pvHandle = dlopen(NULL, RTLD_LAZY);
+  dlclose(pvHandle);
+
+  printf("Hello World!\n");
+  return 0;
+}
+EOF
+  )"
+
+  local compilers=("gcc" "clang")
+  local compilerMinVers=("${GCC_MINIMUM_VERSION}" "${CLANG_MINIMUM_VERSION}")
+  local compiler
+  local compilerMinVer
+
+  local i=0
+
+  while [ "${i}" -lt "${#compilers[@]}" ]; do
+    compiler="${compilers[$i]}"
+    compilerMinVer="${compilerMinVers[$i]}"
+
+    if [ "${lastError:-x}" != "x" ]; then
+      lastError="${lastError} ;"
+    fi
+
+    # Check if gcc is available and the version is acceptable
+    debugPrint "Validating ${compiler} compiler on host ${host}"
+
+    remoteCmd="which ${compiler} &>/dev/null && ${compiler} -dumpversion 2>/dev/null"
+
+    sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
+
+    # Run it and check if it returned with a success error code
+    if output="$(ssh "${sshArgs[@]}")" && [ "${output:-x}" != "x" ] ; then
+
+      # Now compare the version
+      if isVersionGreaterThanOrEqualTo "${output}" "${compilerMinVer}" ; then
+
+        # So far so good. Now compile a simple program
+        remoteCmd="${compiler} -x c -ldl -o /tmp/compilerTest - 2>&1"
+        sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
+
+        if output="$(ssh "${sshArgs[@]}" <<< "${sampleProgram}")" ; then
+          true
+          return
+        else
+          debugPrint "\nCompilation of sample program with ${compiler} failed:\n${output}\n\n"
+          lastError="${lastError} Compilation of a sample program with ${compiler} failed. Rerun with --debug to see details."
+        fi
+      else
+        lastError="${lastError} Version of ${compiler} is too old - found: ${output}, required: ${compilerMinVer}"
+      fi
+    else
+      lastError="${lastError} ${compiler} compiler not found"
+    fi
+
+    i=$((i + 1))
+  done
+
+  echo "${lastError}"
+  false
 }
 
 

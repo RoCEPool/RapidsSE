@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* _r_SELECT_STAR -- select * test                                            */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index L_idx0  on Lineitem (L_ORDERKEY );
+create index O_idx0  on Orders   (O_ORDERKEY );
+create index P_idx0  on Part     (P_PARTKEY  );
+create index PS_idx0 on PartSupp (PS_PARTKEY );
+create index PS_idx1 on PartSupp (PS_SUPPKEY );
+create index S_idx0  on Supplier (S_SUPPKEY  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vSeries_80_Index_Scan"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_STREAM_ORDER"
+select count(*)
+  from Orders
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vSeries_80_Index_Scan"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_STREAM_ORDER"
+select count(*)
+  from Lineitem, PartSupp, Part, Supplier
+ where P_PARTKEY = PS_PARTKEY
+   and L_SUPPKEY  = PS_SUPPKEY
+   and PS_SUPPKEY = S_SUPPKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

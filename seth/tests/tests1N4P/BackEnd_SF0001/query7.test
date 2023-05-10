@@ -43,7 +43,7 @@ from (
 --verified
 rows: 0
 
-// change FRANCE to IRAN for dataset
+// SF0001: change FRANCE to IRAN for dataset
 select
     supp_nation,
     cust_nation,
@@ -88,6 +88,297 @@ rows:
 
 */
 
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+/*
+
+EXPLAIN STAGE TRANSLITERATE
+select
+    supp_nation,
+    cust_nation,
+    l_year,
+    sum(volume) as revenue
+from (
+    select
+       n1.n_name as supp_nation,
+       n2.n_name as cust_nation,
+       extract(year from l_shipdate) as l_year,
+       l_extendedprice * (1 - l_discount) as volume
+     from
+       supplier,
+       lineitem,
+       orders,
+       customer,
+       nation n1,
+       nation n2
+     where
+       s_suppkey = l_suppkey
+       and o_orderkey = l_orderkey
+       and c_custkey = o_custkey
+       and s_nationkey = n1.n_nationkey
+       and c_nationkey = n2.n_nationkey
+       and ( (n1.n_name = 'IRAN' and n2.n_name = 'GERMANY')
+       or (n1.n_name = 'GERMANY' and n2.n_name = 'IRAN'))
+       and l_shipdate between '1995-01-01' and '1996-12-31'
+
+     ) as shipping
+     group by
+       supp_nation,
+       cust_nation,
+       l_year
+     order by
+       supp_nation,
+       cust_nation,
+       l_year;
+
+ pipeline unamed
+ begin
+   pipeline shipping
+   begin
+     stage stageStart on origin :
+       start
+       | pulse once
+       | stageMarker2182
+     stage stageMarker2182 on all partitions :
+       scan rapidsse public supplier
+       | stageMarker2185 broadcast
+     stage stageMarker2185 on all partitions :
+       scan rapidsse public lineitem
+       | abstractJoin " true  "
+       | stageMarker2188 broadcast
+     stage stageMarker2188 on all partitions :
+       scan rapidsse public orders
+       | abstractJoin " true  "
+       | stageMarker2191 broadcast
+     stage stageMarker2191 on all partitions :
+       scan rapidsse public customer
+       | abstractJoin " true  "
+       | stageMarker2194 broadcast
+     stage stageMarker2194 on all partitions :
+       scan rapidsse public nation
+       | abstractJoin " true  "
+       | stageMarker2197 broadcast
+     stage stageMarker2197 on all partitions :
+       scan rapidsse public nation
+       | abstractJoin " true  "
+       | stageMarker2200
+     stage stageMarker2200 on all partitions :
+       filter " type BOOLEAN  $1 $10 ==  $24 $8 ==  and  $33 $25 ==  and  $4 $41 ==  and  $36 $45 ==  and  $42 ''IRAN''  ==  $46 ''GERMANY''  ==  and  $42 ''GERMANY''  ==  $46 ''IRAN''  ==  and  or  and  }  DATE ''1995-01-01''  DATE ''1996-12-31''  $18 between  and  "
+       | project " type VARCHAR as supp_nation $42 , type VARCHAR as cust_nation $46 , type INTEGER as l_year $18 extract_year  , type DECIMAL as volume $13 1.00  $14 -  *  "
+       | combined 0
+       | stageMarker2203
+     stage stageMarker2203 on all partitions :
+
+       stageLast
+     stage stageLast on origin :
+       output
+       | sink
+       | stageStart
+   end
+
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageMarker2206
+   stage stageMarker2206 on all partitions :
+     call "shipping "
+     | gbyAgg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+     | combined 0
+     | stageMarker2209
+   stage stageMarker2209 on all nodes :
+     gbyAgg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL )  $4 sum  "
+     | combined 0
+     | stageMarker2212
+   stage stageMarker2212 on origin :
+     gbyAgg " groupBy  type VARCHAR as supp_nation $1 , type VARCHAR as cust_nation $2 , type INTEGER as l_year $3 aggregates  type VARCHAR $K1 , type VARCHAR $K2 , type INTEGER $K3 , type DECIMAL as revenue )  $4 sum  "
+     | sort " type VARCHAR as supp_nation $1 ASC  , type VARCHAR as cust_nation $2 ASC  , type INTEGER as l_year $3 ASC  "
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+*/
+
+//customer->nation
+pipeline Query7
+begin
+   stage S00 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S01 on all partitions :
+     scan customer
+     | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type INTEGER as C_NATIONKEY C_NATIONKEY"
+     | combined 0
+     | next
+
+  stage S02 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+    | filter "type BOOLEAN J1_N_NAME 'FRANCE' == J1_N_NAME 'GERMANY' == OR"
+    | project "type INTEGER as C_CUSTKEY C_CUSTKEY , type VARCHAR as N2_N_NAME J1_N_NAME"
+    | combined 0
+    | next
+
+   stage S03 on all partitions :
+     indexJoin orders IxO_CUSTKEY "BOUND $I1 C_CUSTKEY =="
+     | project "type integer as O_ORDERKEY J1_O_ORDERKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME"
+     | hash "type INTEGER O_ORDERKEY"
+     | combined 0
+     | next hashcast
+
+   stage S04 on all partitions :
+     indexJoin LineItem IxL_ORDERKEY "BOUND $I1 O_ORDERKEY =="
+     | filter "type BOOLEAN } DATE '1995-01-01'  DATE '1996-12-31' J1_L_SHIPDATE between"
+     | project "type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR J1_L_SHIPDATE extract_year ,
+                type DECIMAL as volume J1_L_EXTENDEDPRICE 1.00 J1_L_DISCOUNT -  * "
+     | hash "type INTEGER L_SUPPKEY "
+     | combined 0
+     | next hashcast
+
+   stage S05 on all partitions :
+     indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
+     | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR L_YEAR ,
+                type DECIMAL as VOLUME VOLUME"
+     | combined 0
+     | next
+
+   stage S06 on all partitions :
+     indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
+     | filter "type BOOLEAN J1_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and
+                            J1_N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
+     | project "type VARCHAR as N1_N_NAME J1_N_NAME ,
+                type VARCHAR as N2_N_NAME N2_N_NAME ,
+                type INTEGER as L_YEAR L_YEAR ,
+                type DECIMAL as VOLUME VOLUME"
+     | combined 0
+     | next
+
+  stage S07 on all partitions :
+     gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+                      type VARCHAR as N2_N_NAME N2_N_NAME ,
+                      type INTEGER as L_YEAR L_YEAR aggregates
+                      type VARCHAR as N1_N_NAME $K1 ,
+                      type VARCHAR as N2_N_NAME $K2 ,
+                      type INTEGER as L_YEAR $K3 ,
+                      type DECIMAL AS REVENUE ) VOLUME sum  "
+     | combined 0
+     | next
+
+   stage S08 on all nodes :
+    gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+                     type VARCHAR as N2_N_NAME N2_N_NAME ,
+                     type INTEGER as L_YEAR L_YEAR
+                     aggregates
+                     type VARCHAR as N1_N_NAME $K1 ,
+                     type VARCHAR as N2_N_NAME $K2 ,
+                     type INTEGER as L_YEAR $K3 ,
+                     type DECIMAL AS REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S09 on origin :
+     gbyAgg " groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
+                      type VARCHAR as CUST_NATION N2_N_NAME ,
+                      type INTEGER as L_YEAR L_YEAR
+                      aggregates
+                      type VARCHAR as N1_N_NAME $K1 ,
+                      type VARCHAR as N2_N_NAME $K2 ,
+                      type INTEGER as L_YEAR $K3 ,
+                      type DECIMAL AS REVENUE ) REVENUE sum  "
+     | combined 0
+     | next
+
+   stage S10 on origin :
+     output
+     | sink
+     | first
+ end ;
+
+rows:
+ ('IRAN','GERMANY',1995,-7157.99)
+ ('IRAN','GERMANY',1996,-14234.13)
+
+/*
+JUST AN EXPERIMENT
+// LINEITEM (INDEXSCAN) ->
+//SF10: 43secs
+/time pipeline Query7
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageA on all partitions :
+    indexScan LineItem IxL_SHIPDATE  "LBOUND DATE '1995-01-01' >= UBOUND  DATE '1996-12-31' <="
+    | project " type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER as L_SUPPKEY L_SUPPKEY  , type INTEGER as L_YEAR L_SHIPDATE extract_year , type DECIMAL as volume L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * "
+    | combined 0
+    | next broadcast
+
+  stage stageB on all partitions :
+    indexJoin orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
+    | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
+    | combined 0
+    | next
+
+ stage stageMarkerC on all partitions :
+   indexJoin customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
+   | project " type INTEGER as C_NATIONKEY J1_C_NATIONKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
+   | combined 0
+   | next
+
+ stage stageMarkerB on all partitions :
+   indexJoin nation IxN_NATIONKEY "BOUND $I1 C_NATIONKEY =="
+   | filter "type BOOLEAN J1_N_NAME 'FRANCE' == J1_N_NAME 'GERMANY' == OR"
+   | project "type INTEGER as L_SUPPKEY L_SUPPKEY , type INTEGER as N_NATIONKEY J1_N_NATIONKEY , type VARCHAR as N2_N_NAME J1_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
+   | hash "type INTEGER L_SUPPKEY "
+   | combined 0
+   | next hashcast
+
+ stage Gj_SUPPLIER on all partitions :
+   indexJoin Supplier IxS_SUPPKEY expr bound $I1 L_SUPPKEY ==
+   | project "type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
+   | combined 0
+   | next
+
+ stage stageMarkerB on all partitions :
+   indexJoin Nation IxN_NATIONKEY expr bound $I1 S_NATIONKEY ==
+   | filter "type BOOLEAN J1_N_NAME 'FRANCE' == N2_N_NAME 'GERMANY' == and J1_N_NAME 'GERMANY' == N2_N_NAME 'FRANCE' == and or"
+   | project "type VARCHAR as N1_N_NAME J1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR , type DECIMAL as volume volume "
+   | combined 0
+   | next
+
+ stage stageMarker2206 on all partitions :
+   gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) VOLUME sum  "
+   | combined 0
+   | next
+
+ stage stageMarker2209 on all nodes :
+  gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
+   | combined 0
+   | next
+
+ stage stageMarker2212 on origin :
+   gbyAgg " groupBy type VARCHAR as N1_N_NAME N1_N_NAME , type VARCHAR as N2_N_NAME N2_N_NAME , type INTEGER as L_YEAR L_YEAR aggregates  type VARCHAR as N1_N_NAME $K1 , type VARCHAR as N2_N_NAME $K2 , type INTEGER as L_YEAR $K3 , type DECIMAL AS REVENUE ) REVENUE sum  "
+   //| sort " type VARCHAR as supp_nation $1 ASC  , type VARCHAR as cust_nation $2 ASC  , type INTEGER as l_year $3 ASC  "
+   | combined 0
+   | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
 
 CLEANUP {
   bye;

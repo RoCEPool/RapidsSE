@@ -269,8 +269,19 @@ void Step::vParcelPipeOut(void)
   //i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
 
   RowBuffer* pRowBuffer_shared = nullptr;
-  if (CN_ROWBUFFER == eOperandClass)
-    pRowBuffer_shared = _pRowBuffer(pOperand);
+
+  /**************************************************************************
+   * ALKA 26Oct 2022: COMMENTED the following lines whereby we share the same
+   * rowBuffer across partitions !!!
+   * With the codeSynthesizer modifying the rowBuffer (changes offsets to pinters)
+   * sharing of rowBuffers does not work.
+   * Hence we now duplicate the rowBuffer for each partition.
+   * If we want to share it we will need to modify the codeSynthesier
+   * (maybe version 2)
+   **************************************************************************/
+
+  //if (CN_ROWBUFFER == eOperandClass)
+  //  pRowBuffer_shared = _pRowBuffer(pOperand);
 
   i8 nQueued = 0;
 
@@ -339,8 +350,17 @@ void Step::vParcelPipeOut(void)
         nQueued++;
       }
 
+      /**************************************************************************
+      * ALKA : COMMENTED the following check as now we don't share
+      * rowBuffers across partitions !!!
+      * With the codeSynthesizer modifying the rowBuffer (changes offsets to pinters)
+      * sharing of rowBuffers does not work.
+      * Hence we now duplicate the rowBuffer for each partition.
+      * If we want to share it we will need to modify the codeSynthesier
+      * (maybe version 2)
+      **************************************************************************/
       // delete the original operand (to be optimised)
-      if (CN_ROWBUFFER != eOperandClass)
+      //if (CN_ROWBUFFER != eOperandClass)
         AM::vDeleteOperand(pOperand,pOuterJobOfTask());
       
       delete pParcel;

@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* _r_FOURWAYJOIN -- partitioning test                                        */
+/*============================================================================*/
+
+_r_schema
+
+create index C_idx0  on Customer (C_CUSTKEY  );
+create index L_idx0  on Lineitem (L_ORDERKEY );
+create index L_idx1  on Lineitem (L_SUPPKEY  );
+create index O_idx0  on Orders   (O_ORDERKEY );
+create index O_idx1  on Orders   (O_CUSTKEY  );
+create index P_idx0  on Part     (P_PARTKEY  );
+create index PS_idx0 on PartSupp (PS_PARTKEY );
+create index PS_idx1 on PartSupp (PS_SUPPKEY );
+create index S_idx0  on Supplier (S_SUPPKEY  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_FOURWAYJOIN"
+select count(*)
+  from Customer,
+       Orders,
+       Lineitem,
+       Supplier
+ where C_CUSTKEY  = O_CUSTKEY
+   and L_ORDERKEY = O_ORDERKEY
+   and L_SUPPKEY  = S_SUPPKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

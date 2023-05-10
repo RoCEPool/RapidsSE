@@ -10,33 +10,20 @@
 : metricsCollectJob
 
   0 locals| iJob |
-  
-  "collecting job metrics" .
 
   LogicUnit[].intStack@ jobMetrics::jobSet
 
-  //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
+  LogicUnit[].intStack@ intStack.items@ if
+    //LogicUnit[].intStack@ intStack.items@ "JobMetrics being collected for %v jobs" .printf
+  then
 
   begin
     LogicUnit[].intStack@ intStack.items@
   while
 
     LogicUnit[].intStack@ intStack.pop to iJob
-    
-    iJob jobMetrics::new LogicUnit[].jobMetrics!
-    
-    LogicUnit[].jobMetrics@ jobMetrics.collect if
-
-      LogicUnit[].jobMetrics@
-        nullptr LogicUnit[].jobMetrics!
-        [op].pipeout
-
-    else
-      LogicUnit[].jobMetrics@
-        nullptr LogicUnit[].jobMetrics!
-        jobMetrics.delete
-
-    then
+    //iJob "metricsDemon collecting job metrics for job %v" str.format .
+    iJob jobMetrics.collect
 
   repeat
 ;
@@ -46,7 +33,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollectSys
 
-  "collecting sys metrics" .
+  //"collecting sys metrics" .
       
   SysMetrics::new attachmap::addSysMetrics
 ;
@@ -59,11 +46,6 @@
   // "metricsCollect_Start" .
 
   intStack::new LogicUnit[].intStack!
-  
-  
-  //LogicUnit[].intStack@ intStack.delete
-  //nullptr LogicUnit[].intStack!
-
 
   EV_M_START_handler
 ;
@@ -73,21 +55,21 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollect_DataPulse
   
-
+/*
   begin
-    
+
     sysargs::jobMetrics@ if
-    
+
       metricsCollectJob
-            
+
     then
-    
+
     sysargs::sysMetrics@ if
     
       metricsCollectSys
 
     then
-    
+
     
     sysargs::jobMetrics@ sysargs::sysMetrics@ or if
     
@@ -100,6 +82,25 @@
     then
     
   again
+*/
+
+begin
+
+    // collect job metrics
+    metricsCollectJob
+
+    sysargs::sysMetrics@ if
+
+      metricsCollectSys
+
+    then
+
+
+    // sleep
+    sysargs::metricsSleep@ thread::sleepMsec
+
+  again
+
 
   EV_M_DATAPULSE_handler
 ;

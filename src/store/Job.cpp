@@ -76,8 +76,13 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   m_eJobPhase  = JP_NONE;
   m_eError_job = EC_NONE;
   m_eChildError = EC_NONE;
+  m_bOriginatorJob = false;
   m_bNodeLoss     = false;
   m_bUpdateParent = false;
+
+  m_bJobMetrics   = true;
+
+  m_pMetricsPipeline = nullptr;
 
   m_pExecuteJob   = nullptr;
   m_pEndJob       = nullptr;
@@ -100,7 +105,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   /* 09 */ m_pMarkerChain = nullptr;
   /* 10 */ m_bAllocate    = true;
 
-    m_iSysTimeStart       = Hardware::iReadClock();
+    m_iSysTimeStart       = Hardware::uReadClock();
 
 #ifdef WITH_OOM_FAULTINJECTION
   PsxThd::vTlsSet(giTLS_CurrentPoint,(void*)5);
@@ -178,6 +183,10 @@ Job::~Job(void) noexcept(false)
         m_pJobMetrics = pJobMetricsNext;
       }
 
+    }
+
+    if (m_pMetricsPipeline) {
+      delete m_pMetricsPipeline;
     }
 
     if (m_pTask) {
@@ -824,6 +833,26 @@ bool Job::bIsOriginator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this an originator job?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Job::bOriginatorJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bOriginatorJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set originator job                                                         */
+/*----------------------------------------------------------------------------*/
+void Job::vOriginatorJob(bool bOriginatorJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bOriginatorJob = bOriginatorJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this an participant job?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Job::bIsParticipant(void)
@@ -924,6 +953,26 @@ void Job::vJobList(eJL eJobList)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eJobList = eJobList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set jobMetrics enabled/disabled                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vJobMetrics(bool bJobMetrics)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bJobMetrics = bJobMetrics;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get jobMetrics enabled/disabled                                            */
+/*----------------------------------------------------------------------------*/
+bool Job::bJobMetrics(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bJobMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1410,6 +1459,26 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+Pipeline* Job::pMetricsPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pMetricsPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pipeline                                                               */
+/*----------------------------------------------------------------------------*/
+void Job::vMetricsPipeline(Pipeline* pPipeline)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_pMetricsPipeline = pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pipeout the response operand                                               */
 /*----------------------------------------------------------------------------*/
 void Job::vPipeoutResponse(Operand* pOperand)
@@ -1496,6 +1565,7 @@ void Job::vPostRecv(void)
   // originating job
   m_pExecuteJob  = nullptr;
   m_pEndJob  = nullptr;
+  m_bOriginatorJob = false;
 
   // - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
   // participant job
@@ -1863,7 +1933,7 @@ void Job::vResponseTimerStart(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vStart();
-  m_iSysTimeStart = Hardware::iReadClock();
+  m_iSysTimeStart = Hardware::uReadClock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1874,7 +1944,7 @@ void Job::vResponseTimerUpdate(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oResponseTimer.vUpdate();
-  m_iSysTimeEnd = Hardware::iReadClock();
+  m_iSysTimeEnd = Hardware::uReadClock();
 }
 
 /*----------------------------------------------------------------------------*/

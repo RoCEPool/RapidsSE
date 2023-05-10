@@ -60,7 +60,7 @@
   "
   procedure::add
 
-/*
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create unique index
   
@@ -85,7 +85,7 @@
   end ;
   "
   procedure::add
-*/
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create schema

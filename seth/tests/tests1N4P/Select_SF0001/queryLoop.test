@@ -1,0 +1,121 @@
+--------------------------------------------------------------------------------
+-- tpch queries in a loop
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running tpchQueries (SF_0001) test in a loop.';
+
+LOOP 1 {
+
+//------------------------------------------------------------------------------
+LOG 'Create customer ...';
+INCLUDE 'customer.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create lineitem ...';
+INCLUDE 'lineitem.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create nation ...';
+INCLUDE 'nation.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create orders ...';
+INCLUDE 'orders.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create part ...';
+INCLUDE 'part.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create partsupp ...';
+INCLUDE 'partsupp.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create region ...';
+INCLUDE 'region.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create supplier ...';
+INCLUDE 'supplier.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectScan...';
+INCLUDE 'selectScan.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectIndexScan...';
+INCLUDE 'selectIndexScan.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectFilter...';
+INCLUDE 'selectFilter.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectAgg...';
+INCLUDE 'selectAgg.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectAggGby...';
+INCLUDE 'selectAggGby.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running selectJoin...';
+INCLUDE 'selectJoin.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running oneWayPtn...';
+INCLUDE 'oneWayPtn.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running twoWayPtn...';
+INCLUDE 'twoWayPtn.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running threeWayPtn...';
+INCLUDE 'threeWayPtn.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running Flattening queries...';
+//INCLUDE 'Flattening.test';
+
+//------------------------------------------------------------------------------
+// 'truncating tpch tables...';
+INCLUDE 'truncate.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Dropping tpch schema...';
+INCLUDE 'schemaDrop.test';
+
+} -- end of loop
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  drop table supplier;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table partsupp;
+  mute
+
+  drop table part;
+  mute
+
+  drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table nation;
+  mute
+
+  bye;
+  mute
+}
+

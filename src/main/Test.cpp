@@ -55,6 +55,8 @@
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 
+#include "CodeSynthUtils.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */
 /*----------------------------------------------------------------------------*/
@@ -1356,7 +1358,8 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
   EntWrk xEntWrk;
 
   i8 nInts = pKeySamples->nInts();
-  
+  IndexDef* pIndexDef = pEntBuffer->pIndexDef();
+
   for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
           
     i8 iInt = pKeySamples->iInt(i_Int);
@@ -1370,7 +1373,7 @@ void vTest21_delete(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalDel_)
     Ent* aDeleteEnt = pEntBuffer->aNextEntry(aPriorEnt,0);
     
     if (aDeleteEnt) {
-      bool b = Key::bEqualTo(aDeleteEnt->aKey(),xEntWrk.aKey());
+      bool b = Key::bEqualTo(pIndexDef,aDeleteEnt->aKey(),xEntWrk.aKey());
       
       if (b) {
         pEntBuffer->vDeleteEntry(&aDeleteEnt);
@@ -1436,6 +1439,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
   EntWrk xEntWrk;
 
   i8 nInts = pKeySamples->nInts();
+  IndexDef* pIndexDef = pEntBuffer->pIndexDef();
 
   if (KE_INT == pEntBuffer->eEntKind()) {
     for (i8 i_Int = 0; i_Int < nInts; i_Int++) {
@@ -1465,7 +1469,7 @@ void vTest21_search(EntBuffer* pEntBuffer,IntSet* pKeySamples, i8& nTotalSel_)
     Ent* aSearchedEnt = pEntBuffer->aNextEntry(aPriorEnt,0);
     
     if (aSearchedEnt) {
-      bool b = Key::bEqualTo(aSearchedEnt->aKey(),xEntWrk.aKey());
+      bool b = Key::bEqualTo(pIndexDef,aSearchedEnt->aKey(),xEntWrk.aKey());
       UNUSED(b);
     }
     //RASSERT(aSearchedEnt);
@@ -2321,6 +2325,122 @@ void vTest63(void)
 /*----------------------------------------------------------------------------*/
 void vTest64(void)
 {
+}
+
+
+
+
+#include "Index.hpp"
+#include "SP_Ent.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test0                                                             */
+/*----------------------------------------------------------------------------*/
+
+i8 g_iSum_ticks = 0;
+i8 g_nFindCalls = 0;
+
+void vCmdLineTest0(void)
+{
+  printf("vCmdLineTest0\n");
+
+  IndexDef* pIndexDef = new IndexDef;
+  pIndexDef->vAddColumn("Int"_Stz,CT_INTEGER);
+
+  Index* pIndex = new Index("Flat"_Stz);
+  pIndex->vIndexDef(pIndexDef);
+
+  IndexTree* pIndexTree = new IndexTree(pIndex,pIndexDef,0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+  //static const i8 n_INSERTS = 10000000;
+  static const i8 n_INSERTS = 10000;
+  i8 iStart;
+  i8 iEnd;
+  u4 uProc_start;
+  u4 uProc_end;
+
+  iStart = Hardware::iReadTsc(&uProc_start);
+
+  i8 iErrorCode;
+
+  Ent xEnt(CN_ENT,sizeof(Ent));
+  xEnt.vKind(KE_INT);
+
+  for (i8 i = 0; i < n_INSERTS; i++) {
+
+    xEnt.vIntElm0(i);
+    RASSERT(KE_INT == xEnt.eKind());
+    RASSERT(xEnt.iIntElm0() == i);
+
+    IndexTree::aInsertEnt(pIndexTree,&xEnt,&iErrorCode);
+  }
+  iEnd = Hardware::iReadTsc(&uProc_end);
+  if (uProc_end == uProc_start) {
+    vTrace("InsertEntry %lld %lld %lld\n"_Stz,
+           n_INSERTS, iEnd-iStart,  (iEnd-iStart) / n_INSERTS);
+  }
+
+  g_iSum_ticks = 0;
+  g_nFindCalls = 0;
+
+  SP_Ent sp_ent;
+  Ent *pEnt = nullptr;
+
+  xEnt.vIntElm0(0);
+  pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
+//  if (pEnt)
+//    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+
+
+  //for (i8 i = 3; i < 1000000; i = i*2) {
+  //for (i8 i = 3; i < n_INSERTS; i += 10000) {
+  for (i8 i = 0; i < n_INSERTS; i++) {
+    xEnt.vIntElm0(i);
+    pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
+    RASSERT(pEnt && i == pEnt->iIntElm0());
+//    if (pEnt)
+//      vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+  }
+
+
+
+  xEnt.vIntElm0(667766);
+  pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
+//  if (pEnt)
+//    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+  xEnt.vIntElm0(667767);
+  pEnt = IndexTree::aFindEntry_hint(pIndexTree, xEnt.aKey(),pEnt);
+//  if (pEnt)
+//    vTrace("%s\n"_Stz, sp_ent.sz(&xEnt, pIndexDef));
+
+  vTrace("FindEntry %lld, %lld %lld\n"_Stz,
+         g_nFindCalls, g_iSum_ticks, g_iSum_ticks / g_nFindCalls);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  delete pIndexTree;
+  delete pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test1                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest1(void)
+{
+  printf("vCmdLineTest1\n");
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* cmd line test2                                                             */
+/*----------------------------------------------------------------------------*/
+void vCmdLineTest2(void)
+{
+  printf("vCmdLineTest2\n");
+
 }
 
 /*============================================================================*/

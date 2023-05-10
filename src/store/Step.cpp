@@ -55,13 +55,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_AttachMap();
   
   Step::vAddSteps_Bp();
-  Step::vAddSteps_BktMap();
-  Step::vAddSteps_BktMapGet();
-  Step::vAddSteps_BktMapSend();
-  Step::vAddSteps_BktMapRecv();
   Step::vAddSteps_Build();
-  Step::vAddSteps_BucketGet();
-  Step::vAddSteps_BucketRecv();
 
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
@@ -83,6 +77,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Discern();
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
+  Step::vAddSteps_Dynamic();
   Step::vAddSteps_Dynamo();
 
   Step::vAddSteps_Encode();
@@ -198,6 +193,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StageOfOp();
   Step::vAddSteps_Stats();
   Step::vAddSteps_Stencil();
+  Step::vAddSteps_Stencil_v2();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_Stream();

@@ -205,7 +205,6 @@ void PromptHelper::vDisableFuncs(void)
       case PF_QUESTION:        { pFunc->m_bEnabled = false; continue; }
       case PF_RASSERT:         { pFunc->m_bEnabled = false; continue; }
       case PF_READY:           { pFunc->m_bEnabled = false; continue; }
-      case PF_REAP:            { pFunc->m_bEnabled = false; continue; }
       case PF_RESOURCES:       { pFunc->m_bEnabled = false; continue; }
       case PF_RETIRED:         { pFunc->m_bEnabled = false; continue; }
       case PF_RMFIFO:          { pFunc->m_bEnabled = false; continue; }

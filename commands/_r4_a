@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* _r4_a -- tpch query 4 a (main outer query)                                 */
+/*============================================================================*/
+
+trackMemory;
+
+_orders
+
+create index O_idx_orderdate on orders(o_orderdate);
+
+load orders "../tpch/sf_0001/orders.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+//glean_cue_from = "OT_vPromote_scan_To_indexScan"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r4_a"
+select
+  o_orderpriority,
+  count(*)          as order_count
+  from Orders
+ where     o_orderdate >= '1993-07-01'
+       and o_orderdate <  '1993-10-01'
+ group by o_orderpriority
+ order by o_orderpriority
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

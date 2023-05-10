@@ -1,0 +1,48 @@
+/*============================================================================*/
+/* _r18_in -- in sub_query test                                               */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+create index L_idx0 on lineitem(L_ORDERKEY);
+
+_orders
+create index O_idx0 on orders(O_ORDERKEY);
+
+_customer
+create index C_Idx0 ON customer(C_CUSTKEY);
+
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load customer "../tpch/sf_0001/customer.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vHZ0_T20_Reinstate_stagesV3"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r18_in"
+select count(*)
+  from orders, lineitem, customer
+ where o_orderkey in
+         (select l_orderkey
+            from lineitem
+           group by l_orderkey
+          having sum(l_quantity) > 100)
+   and c_custkey  = o_custkey
+   and o_orderkey = l_orderkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

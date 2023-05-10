@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* _jo3_C_L_O2_S_N_R1 -- join order test                                      */
+/*============================================================================*/
+
+// --initial _jo3_C_L_O2_S_N_R1
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+/filterPred
+/glean_interactive
+/transliterated
+/weaved
+/joWrite
+/pipelineName = "_jo3_C_L_O2_S_N_R1"
+select
+       count(*)
+  from
+       Customer, //  29
+       Lineitem, // 630
+       Orders,   // 181
+       Supplier, //   2
+       Nation,   // R 1
+       Region    // R 1
+ where
+       C_CUSTKEY   = O_CUSTKEY
+   and O_ORDERKEY  = L_ORDERKEY
+   and L_SUPPKEY   = S_SUPPKEY
+   and S_NATIONKEY = N_NATIONKEY
+   and N_REGIONKEY = R_REGIONKEY
+
+   and r_name      =  'ASIA'
+   and o_orderdate >= '1994-01-01'
+   and o_orderdate <  '1995-01-01'
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

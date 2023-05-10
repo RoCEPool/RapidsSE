@@ -121,16 +121,6 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("BktMap[]"_Stz)) {
-    pCurrentWord->vEncodeCall("BktMap[].set"_Stz);
-    EXIT();
-    return;
-  }
-  else if (szTerm->bSame("BucketGet[]"_Stz)) {
-    pCurrentWord->vEncodeCall("BucketGet[].set"_Stz);
-    EXIT();
-    return;
-  }
   else if (szTerm->bSame("CounterA[]"_Stz)) {
     pCurrentWord->vEncodeCall("CounterA[].set"_Stz);
     EXIT();
@@ -193,6 +183,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("Deck[]"_Stz)) {
     pCurrentWord->vEncodeCall("Deck[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Dynamic[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Dynamic[].set"_Stz);
     EXIT();
     return;
   }

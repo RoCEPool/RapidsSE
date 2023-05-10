@@ -25,6 +25,9 @@ namespace BASE
 
     b8        m_bRevertToCpp; // revert to cpp tokens after read command
 
+    b8        m_bCodeBlock;
+    b8        m_bCodeEnd;
+
     // some debugging aids
     i8        d_iDebugMode;    // debug mode?
   
@@ -34,6 +37,7 @@ namespace BASE
     i8        d_nCollectVecTillSemicolon; // function counter
     i8        d_nReadCommand;             // function counter
     i8        d_nUseBegin;     //
+
 
     // must be last
     Footer m_xFooter;    
@@ -88,11 +92,12 @@ namespace BASE
     void vUseStdin(void);
     void vUseString(Stz* szString);
  
-  private:    
+  private:
+
     void vCollectOneToken(void);
     bool bCollectVecFirstLine(eEC& eInputError);
     bool bCollectVecTillSemicolon(eEC& eInputError);
-  
+
     void vCollectCpp(void);
     void vCollectCppLiteral(void);
     void vCollectCppNumber(void);
@@ -105,6 +110,11 @@ namespace BASE
     void vCollectSenName(void);
     void vCollectSenString(void);
     void vCollectSenTag(void);
+
+    void vCollectCodeBlock(void);
+    void vCollectCodeEnd(void);
+    bool bIsCodeBlockBegin(void);
+    bool bIsCodeBlockEnd(char* z);
 
     void vSkipWhitespace(void);
     bool bHaveWhitespace(void);

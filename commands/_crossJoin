@@ -1,0 +1,129 @@
+/*============================================================================*/
+/* _scan : test of scan to pipeline transliterate 14 jan 2021                 */
+/*============================================================================*/
+
+
+_lineitem
+_orders
+_supplier
+
+create index IxO_ORDERKEY ON orders(O_ORDERKEY);
+create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+
+/time load orders "<tpch_dir>/orders.<suffix>";
+/time load supplier "<tpch_dir>/supplier.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+
+/***************************************
+explain stage transliterate
+  select count(*)
+    from orders, lineitem
+  where L_ORDERKEY = O_ORDERKEY
+    and exists (select *
+                 from supplier
+                where S_SUPPKEY = L_SUPPKEY);
+
+
+pipeline unamed
+begin
+  pipeline __subquery0003
+    params "L_SUPPKEY "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker0880
+    stage stageMarker0880 on all partitions :
+      scan rapidsse public supplier
+      | filter " type BOOLEAN  $1 ==  "
+      | project " type INTEGER as S_SUPPKEY $1 , type VARCHAR as S_NAME $2 , type VARCHAR as S_ADDRESS $3 , type INTEGER as S_NATIONKEY $4 , type VARCHAR as S_PHONE $5 , type DECIMAL as S_ACCTBAL $6 , type VARCHAR as S_COMMENT $7 "
+      | combined 0
+      | stageMarker0883
+    stage stageMarker0883 on all partitions :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0886
+  stage stageMarker0886 on all partitions :
+    scan rapidsse public orders
+    | stageMarker0889 broadcast
+  stage stageMarker0889 on all partitions :
+    scan rapidsse public lineitem
+    | abstractJoin "CROSS true  "
+    | stageMarker0892
+  stage stageMarker0892 on all partitions :
+    filter " type BOOLEAN  $10 $1 ==  $12 __subquery0003  exists  and  "
+    | project " type INTEGER )  countAll  "
+    | combined 0
+    | stageMarker0895
+  stage stageMarker0895 on all nodes :
+    project " type INTEGER )  $1 sum  "
+    | combined 0
+    | stageMarker0898
+  stage stageMarker0898 on origin :
+    project " type INTEGER )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+***************************************/
+
+
+pipeline unamed
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public supplier
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY "
+    | combined 0
+    | next broadcast
+
+  stage S02 on all partitions :
+    indexJoin orders O_idx0 "bound $I1"
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY "
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    indexJoin lineitem L_idx0 "bound $I1 O_ORDERKEY =="
+    | filter " type BOOLEAN S_SUPPKEY J1_L_SUPPKEY =="
+    | project " type INTEGER )  countAll  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    project " type INTEGER )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    project " type INTEGER )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

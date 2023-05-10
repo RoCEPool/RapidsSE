@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* __o_s7 -- optimiser statement 7                                            */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_o_s1"
+select p_partkey, count(*)
+  from Part,
+       PartSupp
+ where p_partkey  = ps_partkey
+    and p_brand = 'Brand#44'
+ group by p_partkey
+ order by p_partkey;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+Expected result :
+  row: (8,4)
+  row: (28,4)
+  row: (43,4)
+  row: (80,4)
+  row: (86,4)
+  row: (88,4)
+  row: (185,4)
+  success: 7 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

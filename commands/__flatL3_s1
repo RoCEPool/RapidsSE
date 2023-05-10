@@ -1,0 +1,67 @@
+/*============================================================================*/
+/* __flatL3_s1 -- flattening with 3 levels of subqueries                      */
+/*============================================================================*/
+
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+load C "../DATA/Select/select.csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select * from dummy;
+
+trackMemory;
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "__flatL3_s1"
+select sum(Z2),sum(Z1)
+  from (
+     select X2+2 as Z1, X1+4 as Z2 from (
+        select A.A_COL2 as X1, B.B_COL0 as X2 from A,B
+          where A.A_COL0 = B.B_COL0) as T1
+     ) as T2
+   ;
+
+MemoryLeaks;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+drop table A;
+drop table B;
+drop table C;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+Expected Result:
+  rows:
+    (278,144)
+  success: 6 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

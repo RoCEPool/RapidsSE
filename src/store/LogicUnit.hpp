@@ -15,6 +15,7 @@
 #include "Pot.hpp"
 #include "Tub.hpp"
 #include "Combined.hpp"
+#include "Dynamic.hpp"
 
 #include "EntWrk.hpp"
 
@@ -22,12 +23,9 @@
 #include "RluDiary.hpp"
 #include "PtnDef.hpp"
 #include "MetaGet.hpp"
-#include "BktMapGet.hpp"
-#include "BucketGet.hpp"
-#include "BucketInfo.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
-#include "Stencil.hpp"
+#include "Stencil_v2.hpp"
 #include "SubCall.hpp"
 #include "SubReturn.hpp"
 
@@ -90,10 +88,6 @@ namespace STORE
     REG<AnswerWL,       CN_ANSWERWL      > m_xpAnswerWL;
     REG<IntStack,       CN_AGGTIMER      > m_xpAggTypeStack;
 
-    REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
-    REG<BucketGet,      CN_BUCKETINFO    > m_xpBucketInfo;
-    REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
-
     REG<Combined,       CN_COMBINED      > m_xpCombined;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
     REG<CrwToRow,       CN_CRWTOROW      > m_xpCrwToRow;
@@ -103,6 +97,7 @@ namespace STORE
     REG<Deck,           CN_DECK          > m_xpDeck;
     REG<Dir,            CN_DIR           > m_xpDir0;
     REG<Dir,            CN_DIR           > m_xpDir1;
+    REG<Dynamic,        CN_DYNAMIC       > m_xpDynamic;
     REG<Dynamo,         CN_DYNAMO        > m_xpDynamo;
 
     REG<Operand,        CN_NONE          > m_xpErrorMarker;
@@ -163,6 +158,7 @@ namespace STORE
     REG<Stage,          CN_STAGE         > m_xpStage;
     REG<Stats,          CN_STATS         > m_xpStats;
     REG<Stencil,        CN_STENCIL       > m_xpStencil;
+    REG<Stencil_v2,     CN_STENCIL_V2    > m_xpStencil_v2;
     REG<Stream,         CN_STREAM        > m_xpStream;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;

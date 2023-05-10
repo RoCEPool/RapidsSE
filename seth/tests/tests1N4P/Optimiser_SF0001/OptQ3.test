@@ -1,0 +1,50 @@
+--------------------------------------------------------------------------------
+-- tpch query3 (SF_0001)
+--------------------------------------------------------------------------------
+trackMemory;
+success
+
+select l_orderkey,
+  sum(l_extendedprice*(1-l_discount)) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where c_mktsegment = 'BUILDING'
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < '1995-03-15'
+  and l_shipdate > '1995-03-15'
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate
+limit 10;
+
+rows:
+  (47,0.00,    DATE '1993-01-04',1)
+  (402,0.00,   DATE '1993-08-05',1)
+  (1386,0.00,  DATE '1993-12-25',1)
+  (514,0.00,   DATE '1994-06-02',1)
+  (98,0.00,    DATE '1995-01-25',1)
+  (884,-40.47, DATE '1992-05-03',1)
+  (83,-50.90,  DATE '1994-03-26',1)
+  (553,-110.41,DATE '1992-07-10',1)
+  (327,-206.60,DATE '1994-07-05',1)
+  (64,-251.04, DATE '1993-10-19',1)
+
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  bye;
+  mute
+}
+
+

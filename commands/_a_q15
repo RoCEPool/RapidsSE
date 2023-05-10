@@ -1,0 +1,107 @@
+/*============================================================================*/
+/* _a_q15 -- Query15 (hand coded pipeline)                                    */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+create view
+  revenue[STREAM_ID] (supplier_no, total_revenue) as
+select
+  l_suppkey,
+  sum(l_extendedprice * (1 - l_discount))
+from
+  lineitem
+where
+  l_shipdate >= date '01-01-1996'
+  and l_shipdate <  date '01-04-1996'
+group by
+  l_suppkey;
+
+select
+  s_suppkey,
+  s_name,
+  s_address,
+  s_phone,
+  total_revenue
+from
+  supplier,
+  revenue
+where
+  s_suppkey = supplier_no
+  and total_revenue >=
+    ( select max(total_revenue) from revenue) order by s_suppkey;
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : LINEITEM, SUPPLIER
+// JOIN ORDER : NONE
+// INDEXES    : IxL_SHIPDATE
+//              IxS_SUPPKEY
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * VIEW BECOMES LIKE A SUBQUERY, TWISTED AND EXECUTED FIRST
+//   * SCAN BECAOMES INDEXSCAN
+//   * THEN TO GET THE MAX OF THE AGGREG COLUMN OF THE VIEW WE EXECUTE TOP
+//   * THIS RESULT IS THEN JOINED WITH SUPPLIER ON L_SUPPKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// EXTRA NOTES:
+//   NONE
+
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+// pipeline begin
+pipeline Query15
+ begin
+   stage S01 on origin :
+     start
+     | pulse once
+     | next
+
+   stage S02 on all partitions :
+     indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1996-01-01' >= UBOUND $I1 DATE '1996-04-01' <"
+     | aggreg " groupBy    type INTEGER as l_suppkey $3
+                aggregates type INTEGER $K1 ,
+                           type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | combined 0
+     | next
+
+   stage S03 on all nodes :
+     aggreg " groupBy    type INTEGER as l_suppkey $1
+              aggregates type INTEGER $K1 ,
+                         type DECIMAL )  $2 sum  "
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     aggreg " groupBy    type INTEGER as l_suppkey $1
+              aggregates type INTEGER as supplier_no $K1 ,
+                         type DECIMAL )  $2 sum  "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+     top "TOP type DECIMAL $2" 1
+     | hash "type INTEGER supplier_no"
+     | combined 0
+     | next hashcast
+
+   stage S06 on all partitions :
+     indexJoin supplier IxS_SuppKey "BOUND $I1 supplier_no ==" //J1
+     | combined 0
+     | next
+
+   stage S07 on origin :
+     output
+     | sink
+     | first
+ end ;
+// pipeline end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

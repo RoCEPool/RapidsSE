@@ -1,0 +1,55 @@
+/*============================================================================*/
+/* _tpchQ17_debug                                                             */
+/*============================================================================*/
+
+// --initial _tpchQ17_debug
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+
+select * from dummy;
+
+////////////////////////////////////////////////////////////////
+// QUERY 17 :
+///////////////////////////////////////////////////////////////
+
+trackMemory;
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpchQ17_debug"
+select
+  sum(l_extendedprice) / 7.0 as avg_yearly
+from
+  lineitem,
+  part
+where
+  p_partkey = l_partkey
+  and p_brand = 'Brand#23'
+  and p_container = 'MED BAG'
+  and l_quantity <
+    (
+    select
+      0.2 * avg(l_quantity)
+    from
+      lineitem
+    where
+      l_partkey = p_partkey
+    );
+
+MemoryLeaks;
+
+/*
+Expected Result:
+rows:
+ (2495.31)
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

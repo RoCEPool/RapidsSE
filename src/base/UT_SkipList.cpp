@@ -75,10 +75,10 @@ bool UT_SkipList::bRunTests(void)
   
   m_pIntSet->vNewAry(10000);
   m_pIntSet->vAscending();
-  //m_pIntSet->vPrint();
+  //m_pElementSeq->vPrint();
   
   m_pIntSet->vRandomise();
-  //m_pIntSet->vPrint();
+  //m_pElementSeq->vPrint();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

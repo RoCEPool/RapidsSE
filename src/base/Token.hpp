@@ -37,6 +37,7 @@ namespace BASE
     static bool bStartCppString(char cArg);
     static bool bEndCppString(char cArg);
 
+    static bool bStartCodeBlock(char* azArg);
     static bool bStartSenInteger(char cArg);
     static bool bStartSenName(char cArg);
     static bool bStartSenString(char cArg);
@@ -44,6 +45,7 @@ namespace BASE
     static bool bEndSenString(char cArg);
 
 
+    static eTN eCollectCodeBlock(char** aazCrs, Stz* szString);
     static eTN eCollectSenName(char** aazCrs, Stz* szString);
     static eTN eCollectSenNumber(char** aazCrs, Stz* szString);
     static eTN eCollectSenString(char** aazCrs, Stz* szString);

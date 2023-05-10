@@ -3334,11 +3334,11 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
                             ": Max/min decimal scale supported is [-128, 127] : %s"_Stz, szStr);
   }
 
-  if (iMantissa > 140737488355327 || iMantissa < -140737488355328) {
-    // iDecimal > (2^47 - 1) || iDecimal < (-2^47)
+  if (iMantissa > 36028797018963967 || iMantissa < -36028797018963967) {
+    // iDecimal > (2^55 - 1) || iDecimal < (-2^55 - 1)
     SyntaxException::vThrow(iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
-                            ": Max/min decimal precision supported is [-1,407,374,883,553.28, 1,407,374,883,553.27] : %s"_Stz, szStr);
+                            ": Max/min decimal precision supported is [-360,287,970,189,639.67, 360,287,970,189,639.67] : %s"_Stz, szStr);
   }
 
   ASSERT(sizeof(Bcd) == C_BYTES_PER_WORD);

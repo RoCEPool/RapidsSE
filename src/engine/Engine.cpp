@@ -7,7 +7,6 @@
 #include <signal.h>
 
 #include "CmdLineArgs.hpp"
-#include "BucketMap.hpp"
 #include "LglPtnMap.hpp"
 
 #include "RowOnce.hpp"
@@ -57,6 +56,11 @@
 #include "Heart.h"
 
 #include "PromptHelper.hpp"
+#include "CompileLib.hpp"
+
+
+#include "Test.hpp"
+
 
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
@@ -115,6 +119,8 @@ void Engine::vMainEntry(void)
   }
 
   vPreliminary();
+
+  //PermGen::vTest_Permutation_v2(5);
 
   vRunCommandLine();
   
@@ -320,6 +326,23 @@ void Engine::vRunCommandLine(void)
         
       case BO_START_PROMPT:
         vStartSystem();
+
+
+
+
+        if (C_UNKNOWN != gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+          switch (gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+            case 0: vCmdLineTest0(); break;
+            case 1: vCmdLineTest1(); break;
+            case 2: vCmdLineTest2(); break;
+
+          }
+        }
+
+
+
         //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
 #ifdef WITH_APPLE
@@ -798,9 +821,6 @@ void Engine::vInternalTables(void)
   pStreamDef = AM::pStreamDefFind(C_TDEF_JOBOPERATORS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBOPERATORS,pStreamDef);
 
-  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBREPORT);
-  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBREPORT,pStreamDef);
-
   pStreamDef = AM::pStreamDefFind(C_TDEF_MEMORYLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_MEMORYLOG,pStreamDef);
 
@@ -1218,7 +1238,6 @@ void Engine::vOpenTrace(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 void Engine::vPostRecvFns(void)
 {
-  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
   gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
   gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
   gxaSizeHeap[CN_INDEX].m_fpPostRecvFn     = (fpPOSTFN*)Index::vPostRecv;
@@ -1685,6 +1704,31 @@ void Engine::vStartSystem(void)
     
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
 
+  // Initialise and check for system compilers
+  if (!CompileLib::bInit()) {
+    Process::vExitStartup();
+  }
+
+  // Temporary
+  vTrace("\n\nDefault compiler:\n"_Stz);
+  CompileLib::vTest();
+
+  vTrace("\n\ngcc compiler:\n"_Stz);
+  CompileLib::vTest("gcc"_Stz);
+
+  vTrace("\n\nclang compiler:\n"_Stz);
+  CompileLib::vTest("clang"_Stz);
+
+  vTrace("\n\ndevtoolset-10 compiler:\n"_Stz);
+  CompileLib::vTest("devtoolset-10"_Stz);
+
+  vTrace("\n\nllvm-toolset-7.0 compiler:\n"_Stz);
+  CompileLib::vTest("llvm-toolset-7.0"_Stz);
+
+  vTrace("\n\ntcc compiler:\n"_Stz);
+  CompileLib::vTest("tcc"_Stz);
+
+
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {
     gpAttachMap->vPrintAttachMap();
@@ -1739,8 +1783,6 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pLglPtnMap =
       new LglPtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
-
-  gpAttachMap->m_pBucketMap = new BucketMap(TT_NORMAL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

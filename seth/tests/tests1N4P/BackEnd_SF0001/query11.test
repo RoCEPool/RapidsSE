@@ -9,25 +9,518 @@ select ps_partkey, sum(ps_supplycost * ps_availqty) as value
     and s_nationkey = n_nationkey
     and n_name = 'GERMANY'
     group by ps_partkey having sum(ps_supplycost * ps_availqty) > (
+
     select sum(ps_supplycost * ps_availqty) * 0.0000010000
     from partsupp, supplier, nation
     where ps_suppkey = s_suppkey
     and s_nationkey = n_nationkey
     and n_name = 'GERMANY' )
+
     order by value desc;
 
 */
 
-select l_orderkey,
-    sum(l_extendedprice*(1-l_discount)) as revenue,
-    o_orderdate,
-    o_shippriority
-    from orders, lineitem
-    where l_orderkey = o_orderkey
-    and o_orderdate < DATE '1995-03-15'
-    and l_shipdate > DATE '1995-03-15'
-    group by l_orderkey, o_orderdate, o_shippriority;
-rows: 701
+/*
+
+// CHANGED GERMANY TO IRAQ for SF0001 dataset
+
+EXPLAIN STAGE TRANSLITERATE
+select ps_partkey, sum(ps_supplycost * ps_availqty) as value
+    from partsupp, supplier, nation
+    where ps_suppkey = s_suppkey
+    and s_nationkey = n_nationkey
+    and n_name = 'IRAQ'
+    group by ps_partkey having sum(ps_supplycost * ps_availqty) > (
+    select sum(ps_supplycost * ps_availqty) * 0.0000010000
+    from partsupp, supplier, nation
+    where ps_suppkey = s_suppkey
+    and s_nationkey = n_nationkey
+    and n_name = 'IRAQ' )
+    order by value desc;
+
+
+pipeline unamed
+begin
+  pipeline __subquery0003
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker4605
+    stage stageMarker4605 on all partitions :
+      scan rapidsse public partsupp
+      | stageMarker4608 broadcast
+    stage stageMarker4608 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin "CROSS true  "
+      | stageMarker4611 broadcast
+    stage stageMarker4611 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin "CROSS true  "
+      | stageMarker4614
+    stage stageMarker4614 on all partitions :
+      filter " type BOOLEAN  $2 $6 ==  $9 $13 ==  and  $14 ''GERMANY''  ==  and  "
+      | aggreg " type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
+      | combined 0
+      | stageMarker4617
+    stage stageMarker4617 on all nodes :
+      aggreg " type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker4744
+    stage stageMarker4744 on origin :
+      aggreg " type DECIMAL )  $1 sum  "
+      | combined 0
+      | stageMarker4620
+    stage stageMarker4620 on origin :
+      project " type DECIMAL $1 0.0000010000  *  "
+      | combined 0
+      | stageMarker4623
+    stage stageMarker4623 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker4626
+  stage stageMarker4626 on all partitions :
+    scan rapidsse public partsupp
+    | stageMarker4629 broadcast
+  stage stageMarker4629 on all partitions :
+    scan rapidsse public supplier
+    | abstractJoin "CROSS true  "
+    | stageMarker4632 broadcast
+  stage stageMarker4632 on all partitions :
+    scan rapidsse public nation
+    | abstractJoin "CROSS true  "
+    | stageMarker4635
+  stage stageMarker4635 on all partitions :
+    filter " type BOOLEAN  $2 $6 ==  $9 $13 ==  and  $14 ''GERMANY''  ==  and  "
+    | gbyAgg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $4 $3 casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | stageMarker4638
+  stage stageMarker4638 on all nodes :
+    gbyAgg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL )  $2 sum  "
+    | combined 0
+    | stageMarker4641
+  stage stageMarker4641 on origin :
+    gbyAgg " groupBy  type INTEGER as ps_partkey $1 aggregates  type INTEGER $K1 , type DECIMAL as value )  $2 sum  "
+    | filter " type BOOLEAN  $2 __subquery0003  >  "
+    | sort " type DECIMAL $2 DESC  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
+
+//partsupp->supplier->nation
+// SF1: 393ms
+//SF10: 8.1s
+
+pipeline Query11
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarkerA on all partitions :
+    scan rapidsse public partsupp
+    | project " type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY "
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerB on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY "
+    | combined 0
+    | next
+
+  stage stageMarkerC on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | aggreg " type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerD on all nodes :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum"
+    | combined 0
+    | next
+
+  stage stageMarkerD on origin :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerD_a on origin :
+    project " type DECIMAL as INNERRESULT $1 0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage stageMarkerE on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "BOUND $I1"
+    | project " type INTEGER as PS_PARTKEY J1_PS_PARTKEY , type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY J1_PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT"
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerF on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage stageMarkerG on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  PS_SUPPLYCOST PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage stageMarkerH on all nodes :
+    gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage stageMarkerI on origin :
+    gbyAgg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage stageMarkerJ on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL $2 ASC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+rows: 20
+
+sleep 4;
+success
+
+//supplier->nation->partsupp
+//SF1: 289ms
+//SF10: 1.8s
+pipeline Query11
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarkerA on all partitions :
+    scan supplier
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type INTEGER as S_SUPPKEY S_SUPPKEY"
+    | combined 0
+    | next
+
+  stage stageMarkerB on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY"
+    | combined 0
+    | next broadcast
+
+ stage stageMarkerC on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | next
+
+  stage stageMarkerD on all nodes :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+ stage stageMarkerD on origin :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum "
+    | combined 0
+    | next
+
+ stage stageMarkerD_a on origin :
+    project " type DECIMAL as INNERRESULT $1 0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage stageMarkerE on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1"
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type INTEGER as S_SUPPKEY J1_S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT "
+    | combined 0
+    | next
+
+  stage stageMarkerF on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next broadcast
+
+  stage stageMarkerG on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | gbyAgg " groupBy type INTEGER J1_PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage stageMarkerH on all nodes :
+    gbyAgg " groupBy type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage stageMarkerI on origin :
+    gbyAgg " groupBy  type INTEGER PS_PARTKEY aggregates type INTEGER as PS_PARTKEY $K1 , type DECIMAL as VALUE )  $2 sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage stageMarkerJ on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY , type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL $2 ASC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+rows: 20
+
+sleep 4;
+success
+
+/*
+//nation->supplier->partsupp...>nation->supplier->partsupp
+//SF1: 278ms
+//SF10: 1.6s
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan nation
+    | filter " type BOOLEAN N_NAME 'IRAQ'  ==  "
+    | project " type INTEGER as N_NATIONKEY N_NATIONKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY"
+    | combined 0
+    | next broadcast
+
+ stage S03 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum   0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1"
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | project " type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_NATIONKEY "bound $I1 N_NATIONKEY =="
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | gbyAgg " groupBy    type INTEGER J1_PS_PARTKEY
+               aggregates
+                          type INTEGER as PS_PARTKEY $K1 ,
+                          type DECIMAL as VALUE ) J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+                          type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE ) VALUE sum  , type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE as VALUE ) VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL VALUE ASC  "
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
+rows: 20
+
+sleep 4;
+success
+*/
+
+pipeline Query11
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan supplier
+     | project " type INTEGER as S_SUPPKEY S_SUPPKEY ,
+                type INTEGER as S_NATIONKEY S_NATIONKEY"
+    | combined 0
+    | next broadcast
+
+  stage S01 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY"
+    | combined 0
+    | next
+
+ stage S03 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | aggreg " type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum  "
+    | combined 0
+    | next
+
+  stage S05 on origin :
+    aggreg " type DECIMAL as INNERRESULT )  $1 sum "
+    | combined 0
+    | next broadcast
+
+  stage S05 on origin :
+    project " type DECIMAL as INNERRESULT $1 0.000001  *  "
+    | combined 0
+    | next broadcast
+
+  stage S07 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1"
+    | project " type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    indexJoin nation IxN_NATIONKEY "bound $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ'  ==  "
+    | project " type INTEGER as S_SUPPKEY S_SUPPKEY ,
+                type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next broadcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_SUPPKEY "bound $I1 S_SUPPKEY =="
+    | gbyAgg " groupBy    type INTEGER J1_PS_PARTKEY
+               aggregates type INTEGER as PS_PARTKEY $K1 ,
+                          type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
+                          type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S09 on all nodes :
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE ) VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S10 on origin :
+    gbyAgg " groupBy    type INTEGER PS_PARTKEY
+             aggregates type INTEGER as PS_PARTKEY $K1 ,
+                        type DECIMAL as VALUE )  VALUE sum  ,
+                        type DECIMAL as INNERRESULT INNERRESULT"
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    filter " type BOOLEAN  value INNERRESULT  >  "
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
+                type DECIMAL as VALUE VALUE"
+    | sort " type DECIMAL VALUE DESC  "
+    | combined 0
+    | next
+
+  stage S12 on origin :
+    output
+    | sink
+    | first
+end ;
+ordered rows:
+ (25,28323020.68)
+ (175,23853953.63)
+ (75,17959598.01)
+ (105,15053163.81)
+ (165,12197465.06)
+ (95,12046889.50)
+ (125,12003476.11)
+ (15,11798438.79)
+ (45,9423874.47)
+ (135,9311247.28)
+ (185,9305341.78)
+ (55,8092552.89)
+ (115,7954624.00)
+ (35,7132671.49)
+ (145,6633786.59)
+ (155,5552007.57)
+ (5,5461046.93)
+ (65,4834763.09)
+ (195,3817436.31)
+ (85,3338711.39)
 
 CLEANUP {
   bye;

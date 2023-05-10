@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* _jo1_L_O_P_PS_S -- join order: Supplier, Orders, Lineitem, Part, PartSupp */
+/*============================================================================*/
+
+/jobMetrics
+/joWrite
+/filterPred
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo1_L_O_P_PS_S"
+select
+       count(*)
+  from
+       Lineitem, // 630
+       Orders,   // 181
+       Part,     //  29
+       PartSupp, // 131
+       Supplier  //   2
+ where
+       L_ORDERKEY = O_ORDERKEY
+   and L_PARTKEY  = P_PARTKEY
+   and P_PARTKEY  = PS_PARTKEY
+// and L_PARTKEY  = PS_PARTKEY
+   and L_SUPPKEY  = S_SUPPKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

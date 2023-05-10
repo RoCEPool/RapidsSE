@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* _r_a_b_HAVING -- having sub-query test : pattern a/b -> a|b                */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+_orders
+_supplier
+create index L_idx0 on lineitem(L_ORDERKEY);
+create index O_idx0 on orders  (O_ORDERKEY);
+create index S_idx0 on supplier(S_SUPPKEY) ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_a_b_HAVING"
+select l_orderkey, sum(l_quantity)
+  from lineitem
+ group by l_orderkey
+having sum(l_quantity) > (select avg(l_quantity)
+                            from lineitem)
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+aMQ | bSQ
+
+==04 O--------------
+  HAVING *2
+  0]level
+           AL_ORIGIN
+  1]rpnCalc
+                  $2
+      __subquery0002
+                   >
+
+
+
+
+*/
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

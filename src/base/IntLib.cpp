@@ -24,10 +24,22 @@ const u1 C_VLQ_NULL_BIT = 6;
 const u1 C_VLQ_SIGN_BIT = 5;
 
 /*----------------------------------------------------------------------------*/
+/* Return the absolute value of an integer                                    */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iAbs(i8 iVal)
+{
+  _static_
+
+  return iVal < 0 ? -iVal : iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return a shifted bit sequence                                              */
 /*----------------------------------------------------------------------------*/
 u8 IntLib::uBits(u8 uArg, i8 i_Bit, i8 nBits)
 {
+  _static_
+
   i8 nLeft = 63 - i_Bit;
   u8 uL = uArg << nLeft;
 
@@ -42,6 +54,8 @@ u8 IntLib::uBits(u8 uArg, i8 i_Bit, i8 nBits)
 /*----------------------------------------------------------------------------*/
 u8 IntLib::uByte(u8 uArg, i8 i_Byte)
 {
+  _static_
+
   _WordAsBytes wWord;
   
   wWord.m_uU8 = uArg;
@@ -54,6 +68,8 @@ u8 IntLib::uByte(u8 uArg, i8 i_Byte)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iByteMagNull(u8 uArg)
 {
+  _static_
+
   if (uArg == (u8)C_DATUM_NULL)
     return 0;
   
@@ -65,6 +81,8 @@ i8 IntLib::iByteMagNull(u8 uArg)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iBytePower(i8 iRaised)
 {
+  _static_
+
   if (0 == iRaised) return 0;
   if (1 == iRaised) return 256;
   if (2 == iRaised) return 65536;
@@ -82,6 +100,8 @@ i8 IntLib::iBytePower(i8 iRaised)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iByteSpace(u8 nNumbers)
 {
+  _static_
+
   i8 nB[8] = {0,0,0,0,0,0,0,0};
 //  u8 nL[8] = {C_1_BYTE, C_2_BYTES,C_3_BYTES,C_4_BYTES,
 //              C_5_BYTES,C_6_BYTES,C_7_BYTES,C_8_BYTES};
@@ -144,6 +164,8 @@ i8 IntLib::iByteSpace(u8 nNumbers)
 /*----------------------------------------------------------------------------*/
 bool IntLib::bIsDecaCycle(i8 iArg)
 {
+  _static_
+
   if (iArg >= C_100T) { if (0 == iArg % C_100T) return true; else return false; }
   if (iArg >= C_10T ) { if (0 == iArg % C_10T ) return true; else return false; }
   if (iArg >= C_1T  ) { if (0 == iArg % C_1T  ) return true; else return false; }
@@ -170,6 +192,8 @@ bool IntLib::bIsDecaCycle(i8 iArg)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iDecaIndex(i8 iArg, i8& i_Magn, i8 &i_Group)
 {
+  _static_
+
   if (iArg >= C_1E  ) { i_Magn = 18; i_Group = (iArg-(iArg/C_1E)  *C_1E)  /C_100P; return C_100P + iArg / C_1E;   }
 
   if (iArg >= C_100P) { i_Magn = 17; i_Group = (iArg-(iArg/C_100P)*C_100P)/C_10P;  return  C_10P + iArg / C_100P; }
@@ -202,6 +226,8 @@ i8 IntLib::iDecaIndex(i8 iArg, i8& i_Magn, i8 &i_Group)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iDecile(i8 iArg, i8 iMax)
 {
+  _static_
+
   double dPercent = (iArg * 100) / iMax;
   double dDecile = dPercent / 10;
   
@@ -218,6 +244,8 @@ i8 IntLib::iDecile(i8 iArg, i8 iMax)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iDecimalMagnitude(i8 iArg)
 {
+  _static_
+
   if (iArg == 0) return 0;
   if (iArg  < 10) return 1;
   if (iArg  < 100) return 2;
@@ -238,10 +266,43 @@ i8 IntLib::iDecimalMagnitude(i8 iArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return the factorial of arg                                                */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iFactorial(i8 iArg)
+{
+  _static_
+
+  switch (iArg) {
+    case 0:  return 1;
+
+    case  1: return 1;
+    case  2: return 2;
+    case  3: return 6;
+    case  4: return 24;
+    case  5: return 120;
+    case  6: return 720;
+    case  7: return 5040;
+    case  8: return 40320;
+    case  9: return 362880;
+    case 10: return 3628800;
+    case 11: return 39916800;
+    case 12: return 479001600;
+    case 13: return 6227020800;
+    case 14: return 87178291200;
+    case 15: return 1307674368000;
+    case 16: return 20922789888000;
+    default: return C_UNKNOWN;
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* flip the endian of given i8 arg                                            */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iFlipEndian(i8 iArg)
 {
+  _static_
+
   _WordAsBytes xArg;
   _WordAsBytes xResult;
   
@@ -264,6 +325,8 @@ i8 IntLib::iFlipEndian(i8 iArg)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
 {
+  _static_
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // explicitly handle null
   if (C_DATUM_NULL == iInt) {
@@ -370,10 +433,29 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
 */
 
 /*----------------------------------------------------------------------------*/
+/* Return the base-10 logarithm of an integer value, as an integer value      */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iLog10(i8 iVal)
+{
+  _static_
+
+  if (iVal < 0) {
+    // Positive values only, please
+    iVal = -iVal;
+  }
+
+  d8 dResult = log10(iVal);
+  i8 iResult = (i8) dResult;
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the decile of value given its maximum                               */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iPercent(i8 iNumerator, i8 iDenominator)
 {
+  _static_
+
   i8 iPercent = DIV(iNumerator * 100, iDenominator);
   
   return iPercent;
@@ -384,6 +466,8 @@ i8 IntLib::iPercent(i8 iNumerator, i8 iDenominator)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iPow(i8 iArg, i8 iRaisedTo)
 {
+  _static_
+
   d8 dRaised = pow(iArg,iRaisedTo);
   
   i8 iRaised = (i8)dRaised;
@@ -392,10 +476,25 @@ i8 IntLib::iPow(i8 iArg, i8 iRaisedTo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rotate integer at given subscript to end of array                          */
+/*----------------------------------------------------------------------------*/
+void IntLib::vPrint(i8 iaArray[], i8 nElements)
+{
+  _static_
+
+  for (i8 i_Element = 0; i_Element < nElements; i_Element++)
+    vTrace ("%s%lld"_Stz,
+            !i_Element ? " " : ", ", iaArray[i_Element]);
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return the quartile of value given its maximum                             */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iQuartile(i8 iNumerator, i8 iDenominator)
 {
+  _static_
+
   double dPercent  = (iNumerator * 100) / iDenominator;
   double dQuartile = dPercent / 4;
   
@@ -408,10 +507,30 @@ i8 IntLib::iQuartile(i8 iNumerator, i8 iDenominator)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rotate integer at given subscript to end of array                          */
+/*----------------------------------------------------------------------------*/
+void IntLib::vRotate(i8 iaArray[],i8 nElements, i8 i_at)
+{
+  _static_
+
+  i8 iToEnd = iaArray[i_at];
+
+  void* aSrc = &iaArray[i_at+1];
+  void* aDst = &iaArray[i_at];
+  i8 nBytes  = sizeof(i8) * (nElements - i_at - 1);
+
+  MemLib::vMove(aDst,aSrc,nBytes,CN_NONE);
+
+  iaArray[nElements-1] = iToEnd;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return 10 raised to given power                                            */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iTenToPow(i8 iPower)
 {
+  _static_
+
   switch (iPower) {
     case 0: return 1;
     case 1: return 10;
@@ -435,6 +554,8 @@ i8 IntLib::iTenToPow(i8 iPower)
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iVlqToInt(byte yVlqVec[])
 {
+  _static_
+
   bool bContinue;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -524,33 +645,12 @@ i8 IntLib::iVlqToInt(byte yVlqVec[])
 */
 
 /*----------------------------------------------------------------------------*/
-/* Return the base-10 logarithm of an integer value, as an integer value      */
-/*----------------------------------------------------------------------------*/
-i8 IntLib::iLog10(i8 iVal)
-{
-  if (iVal < 0) {
-    // Positive values only, please
-    iVal = -iVal;
-  }
-
-  d8 dResult = log10(iVal);
-  i8 iResult = (i8) dResult;
-  return iResult;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return the absolute value of an integer                                    */
-/*----------------------------------------------------------------------------*/
-i8 IntLib::iAbs(i8 iVal)
-{
-  return iVal < 0 ? -iVal : iVal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert integer argument to text                                           */
 /*----------------------------------------------------------------------------*/
 char* IntLib::sAsText(i8 iValue)
 {
+  _static_
+
   switch (iValue) {
     case 0: return (char*)"zero";
     case 1: return (char*)"one";
@@ -568,6 +668,9 @@ char* IntLib::sAsText(i8 iValue)
   //return (char*)"other";
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* init all globals                                                           */

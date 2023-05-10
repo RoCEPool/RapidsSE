@@ -47,7 +47,38 @@ namespace STORE
 
     static char* aAllotPayStr(IndexTree* pIndexTree, Stz* szStz);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
     static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_hint(IndexTree* aIndexTree, Key* aKey, Ent* aEnt_recent=nullptr);
+
+    static Ent* aFindEntry_CS2_v1(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v2(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v3(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v4(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v5(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v6(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v7(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v8(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v9(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v10(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v11(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v12(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v13(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v14(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v15(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v16(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v17(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v18(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aFindEntry_CS2_v19(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v20(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v21(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v22(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v23(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v24(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v25(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v26(IndexTree* aIndexTree, Key* aKey_find);
+    static Ent* aFindEntry_CS2_v27(IndexTree* aIndexTree, Key* aKey_find, Ent* aEnt_recent=nullptr);
+
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt, i8* piErrorCode);
     static Ent* aInsertEntTop(IndexTree* aIndexTree, Ent* aEnt, Ent** aaEntBottom, i8 iTopCount, i8* piErrorCode);
@@ -112,6 +143,7 @@ namespace STORE
   void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr);
   void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
   void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
+  void* aIndexTree_findEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent);
   void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
   void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount);
   void  aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);

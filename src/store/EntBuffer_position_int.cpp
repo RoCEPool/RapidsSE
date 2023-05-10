@@ -10,19 +10,9 @@
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 
-#define ELM0_OF_KEY(aKey)   ( *(i8*)aKey )
+#include "Index.hpp"
+#include "IndexDef.hpp"
 
-#define ELM0_OF_ENTRY(aEnt_int) ( aEnt_int->m_iIntElm0 )
-
-#define END_TICKET(tNxtEnt) ( C_ENT_END_TICKET == tNxtEnt )
-
-#define GET_ENTRY(tTicket)  ( &aItemArray[tTicket] )
-
-#define NEXT_TICKET(aEnt_int,i_Lvl) ( aEnt_int->m_taNextEntry[i_Lvl] )
-
-#define SCAN_IS_AT_PRIOR_POS(iKeyElm,iNextElm) ( iKeyElm <= iNextElm )
-
-#define STORE_PRIOR_POS(aVec,i_Lvl,aEnt) ( aVec[i_Lvl] = (Ent*)aEnt )
 
 /*----------------------------------------------------------------------------*/
 /* find entry given int key                                                   */
@@ -59,10 +49,18 @@ Ent* EntBuffer::aFindEnt_int(Key* aWithKey_int)
       iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
-            
+
+//      if (pIndexDef()->bHasDescending()) {
+//        if (SCAN_IS_AT_PRIOR_POS_DESC(iWithIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+//      else {
+//        if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+      RASSERT( ! pIndexDef()->bHasDescending() );
       if (SCAN_IS_AT_PRIOR_POS(iWithIntElm0,iNextEnt_IntElm0))
-        break;
-      
+          break;
       aScanEnt = aNextEnt_int;
     }
 
@@ -119,7 +117,16 @@ Ent* EntBuffer::aFindEntryBefore_int(Key* aGivenKey_int)
       iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
       
       //vTrace("@%lld : %lld v %lld\n"_Stz,i_Level,iKey_IntElm,iNextEnt_IntElm);
-            
+
+//      if (pIndexDef()->bHasDescending()) {
+//        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+//      else {
+//        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+      RASSERT( ! pIndexDef()->bHasDescending() );
       if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
         break;
       
@@ -397,7 +404,17 @@ void EntBuffer::vPosVecPriorToEntry_int(Key* aGivenKey_int,
 
       aNextEnt_int = GET_ENTRY(tNextEnt);
       iNextEnt_IntElm0 = ELM0_OF_ENTRY(aNextEnt_int);
-            
+
+//      if (pIndexDef()->bHasDescending()) {
+//        if (SCAN_IS_AT_PRIOR_POS_DESC(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+//      else {
+//        if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
+//          break;
+//      }
+
+      RASSERT( ! pIndexDef()->bHasDescending() );
       if (SCAN_IS_AT_PRIOR_POS(iGivenIntElm0,iNextEnt_IntElm0))
         break;
       
@@ -424,7 +441,9 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
   RASSERT(KE_INT == m_eEntKind);
   
   //ASSERT(0 == m_iBufferHeight);
-        
+
+  IndexDef* pIndexDef = this->pIndexDef();
+
   i8 nLvlLevels = AM::nLvlLevels();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -460,6 +479,14 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
       i8 iWithInt = *(i8*)aWithKey;
       
       //bGreaterEqual = Key::bGreaterEqual(aNextEntry_sl->aKey(), aWithKey);
+//      if (pIndexDef->bHasDescending()) {
+//        bGreaterEqual = (iNextInt <= iWithInt);
+//      }
+//      else {
+//        bGreaterEqual = (iNextInt >= iWithInt);
+//      }
+
+      RASSERT( ! pIndexDef->bHasDescending() );
       bGreaterEqual = (iNextInt >= iWithInt);
 
       if (bGreaterEqual) {
@@ -491,6 +518,7 @@ void EntBuffer::vPosVecPriorToEntry_int(Ent* aToEntry,
 #undef GET_ENTRY
 #undef NEXT_TICKET
 #undef SCAN_IS_AT_PRIOR_POS
+#undef SCAN_IS_AT_PRIOR_POS_DESC
 #undef STORE_PRIOR_POS
 
 /*============================================================================*/

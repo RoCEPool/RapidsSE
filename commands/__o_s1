@@ -1,0 +1,33 @@
+/*============================================================================*/
+/* __o_s1 -- optimiser statement 1                                            */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_o_s1"
+select *
+  from Part
+  join PartSupp
+    on p_partkey  = ps_partkey
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+  Expected result:
+  800 rows
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

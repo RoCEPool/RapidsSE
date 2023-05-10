@@ -26,7 +26,7 @@ Q10_0: select
 
  group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment
 
- order by Revenue desc
+ order by Revenue asc
 
  limit 20;
 
@@ -61,13 +61,11 @@ begin
   // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
   stage Gs_ORDERS on all partitions :
 
-    indexScan 2 Orders IxO_ORDERDATE
-        "lbound date '1993-10-01' >=
-         ubound date '1994-01-01' < "
+    indexScan Orders IxO_ORDERDATE
+        "lbound date '1993-10-01' >=  ubound date '1994-01-01' < "
     
-    | project 2
-        "type INTEGER as _custkey  O_CUSTKEY ,
-         type INTEGER as _orderkey O_ORDERKEY"
+    | project
+        "type INTEGER as _custkey  O_CUSTKEY , type INTEGER as _orderkey O_ORDERKEY"
 
     | combined 0
     | next
@@ -76,11 +74,9 @@ begin
 
   // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
   stage Gj_CUSTOMER on all partitions :
-    indexJoin 2 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
-    | project 2 expr
-        type INTEGER as _custkey _custkey ,
-        type INTEGER as _orderkey _orderkey
-    | hash 2 expr type INTEGER _orderkey
+    indexJoin Customer IxC_CUSTKEY expr bound $I1 _custkey ==  //J1
+    | project expr  type INTEGER as _custkey _custkey ,  type INTEGER as _orderkey _orderkey
+    | hash expr type INTEGER _orderkey
     | combined 0
     | next hashcast
     
@@ -88,38 +84,31 @@ begin
 
   // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
   stage Gj_LINEITEM on all partitions :
-    indexJoin 2 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
-    | filter 2
-        "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-    | aggreg 2 expr
-        type INTEGER as _custkey _custkey ,
-        type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1  J1_L_DISCOUNT -  *  sum
-        groupby type INTEGER _custkey
+    indexJoin Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==  //J2
+    | filter  "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | aggreg expr groupby type INTEGER _custkey aggregates type INTEGER as _custkey $K1 , type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum
     | combined 0
     | next
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    
   stage G_AGG_N on all nodes :
-    aggreg 2 expr
-      type INTEGER as _custkey _custkey ,
-      type DECIMAL as REVENUE ) REVENUE  sum
-      groupby type INTEGER _custkey
+    aggreg expr groupby type INTEGER _custkey aggregates type INTEGER as _custkey $K1 , type DECIMAL as REVENUE ) REVENUE  sum
     | combined 0
     | next
     
   stage G_GAG_O on origin :
-    aggreg 1 expr
-       type INTEGER as _custkey _custkey ,
-       type DECIMAL as REVENUE ) REVENUE  sum
-       groupby type INTEGER _custkey
-    //| combined 0
-    | limit 1 20
+    aggreg expr groupby type INTEGER _custkey aggregates type INTEGER as _custkey $K1 , type DECIMAL as REVENUE ) REVENUE  sum
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    sort " type DECIMAL $2 ASC  "
+    | limit 100
+    | combined 0
     | next
 
   stage last on origin :
     output
-    | debug accum0
     | sink
     | first
     

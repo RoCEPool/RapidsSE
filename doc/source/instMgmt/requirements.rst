@@ -49,9 +49,11 @@ RapidsSE has the following minimum system requirements:
    "**RAM:**", "4GB"
    "**Shared Memory:**", "``/dev/shm`` must have at least 3GB allocated to it."
    "**Network:**", "1Gb ethernet"
-   "**Ports:**", "Two TCP ports are needed (defaults: client port 9123 and internal port 5541).
+   "**Ports:**", "Two TCP ports are needed (defaults: client port ``9123`` and internal port ``5541``).
 
-   One UDP port is needed (default: 8888), either for UDP broadcast or UDP multicast."
+   One UDP port is needed (default: ``8888``), either for UDP broadcast or UDP multicast.
+   If UDP multicast is desired then appropriate network routers are required that are
+   capable of at least IGMP v2 for dynamically forming and closing multicast groups."
    "**Operating System:**", "Any of the following:
 
    * CentOS 7,
@@ -60,7 +62,7 @@ RapidsSE has the following minimum system requirements:
    * Ubuntu 18, 20 or 22"
    "**Software Dependencies:**", "The following software is required on each node in the cluster:
 
-   * ``gcc`` >= 4.8.5
+   * Either ``gcc`` >= 4.8.5 or ``clang`` >= 4.2.0
    * ``libatomic.so.1``
    * ``bash`` >= 4.2
    * ``tar``

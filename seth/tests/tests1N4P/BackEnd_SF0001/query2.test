@@ -11,7 +11,8 @@
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE'
-      and ps_supplycost = (
+      and ps_supplycost =
+      (
       select min(ps_supplycost)
       from partsupp, supplier, nation, region
       where p_partkey = ps_partkey
@@ -19,20 +20,48 @@
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE' )
-       order by s_acctbal desc, n_name, s_name, p_partkey;
+
+       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
 
   -- verfified
   rows: 0
-*/
 
-/*
-// modified query for the SF_0001 dataset
-// p_size < 15
+// for SF0001 changed %BRASS to %STEEL, p_size = 15 to p_size = 20, r_name EUROPE to AFRICA
 select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
      from part, supplier, partsupp, nation, region
       where p_partkey = ps_partkey
       and s_suppkey = ps_suppkey
-      and p_size < 15
+      and p_size = 20
+      and p_type like '%STEEL'
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'AFRICA'
+      and ps_supplycost = (
+      select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'AFRICA' )
+       order by s_acctbal desc, n_name, s_name, p_partkey limit 100;
+
+verified
+   4641.08 | Supplier#000000004 | MOROCCO | 24 | Manufacturer#5 | Bk7ah4CK8SYQTepEmvMkkgMwg | 25-843-787-7479 | riously even requests above the exp
+   1365.79 | Supplier#000000006 | KENYA   | 56 | Manufacturer#1 | tQxuVm7s7CnK              | 24-696-997-4969 | final accounts. regular dolphins use against the furiously ironic decoys.
+*/
+
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+
+/*
+EXPLAIN STAGE TRANSLITERATE
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size = 15
       and p_type like '%BRASS'
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
@@ -45,73 +74,405 @@ select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comme
       and s_nationkey = n_nationkey
       and n_regionkey = r_regionkey
       and r_name = 'EUROPE' )
-       order by s_acctbal desc, n_name, s_name, p_partkey;
+       order by s_acctbal asc, n_name, s_name, p_partkey limit 100;
 
-    -- verfified
-    rows:
-    (6820.35,'Supplier#000000007','UNITED KINGDOM',47,'Manufacturer#4','s:4TicNGB4uO6PaSqNBUq','33-990-965-2201','s unwind silently furiously regular courts. final requests are deposits. requests wake quietly blit')
+select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment
+     from part, supplier, partsupp, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and p_size = 15
+      and p_type like '%STEEL'
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'AFRICA'
+      and ps_supplycost = (
+      select min(ps_supplycost)
+      from partsupp, supplier, nation, region
+      where p_partkey = ps_partkey
+      and s_suppkey = ps_suppkey
+      and s_nationkey = n_nationkey
+      and n_regionkey = r_regionkey
+      and r_name = 'AFRICA' )
+       order by p_partkey;
 
-*/
-
-// Below queries modified for dataset SF0001
-// p_size < 15, and NO LIKE
-
-/////////////////////
-// Q02_0           //
-/////////////////////
-
-/////////////////////
-// Q02_1           //
-/////////////////////
-
-//------------------------------------------------------------------------------
-
-// OUTER QUERY
 pipeline unamed
 begin
+  pipeline __subquery0003
+    params "p_partkey "
+  begin
+    stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker6128
+    stage stageMarker6128 on all partitions :
+      scan rapidsse public partsupp
+      | stageMarker6131 broadcast
+    stage stageMarker6131 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin "CROSS true  "
+      | stageMarker6134 broadcast
+    stage stageMarker6134 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin "CROSS true  "
+      | stageMarker6137 broadcast
+    stage stageMarker6137 on all partitions :
+      scan rapidsse public region
+      | abstractJoin "CROSS true  "
+      | stageMarker6140
+    stage stageMarker6140 on all partitions :
+      filter " type BOOLEAN  $1 ==  $6 $2 ==  and  $9 $13 ==  and  $15 $17 ==  and  $18 ''AFRICA''  ==  and  "
+      | aggreg " type DECIMAL )  $4 min  "
+      | combined 0
+      | stageMarker6143
+    stage stageMarker6143 on all nodes :
+      aggreg " type DECIMAL )  $1 min  "
+      | combined 0
+      | stageMarker6146
+    stage stageMarker6146 on origin :
+      aggreg " type DECIMAL )  $1 min  "
+      | combined 0
+      | stageMarker6149
+    stage stageMarker6149 on origin :
+
+      stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end
+
   stage stageStart on origin :
+      start
+      | pulse once
+      | stageMarker3382
+    stage stageMarker3382 on all partitions :
+      scan rapidsse public part
+      | stageMarker3385 broadcast
+    stage stageMarker3385 on all partitions :
+      scan rapidsse public supplier
+      | abstractJoin "CROSS true  "
+      | stageMarker3388 broadcast
+    stage stageMarker3388 on all partitions :
+      scan rapidsse public partsupp
+      | abstractJoin "CROSS true  "
+      | stageMarker3391 broadcast
+    stage stageMarker3391 on all partitions :
+      scan rapidsse public nation
+      | abstractJoin "CROSS true  "
+      | stageMarker3394 broadcast
+    stage stageMarker3394 on all partitions :
+      scan rapidsse public region
+      | abstractJoin "CROSS true  "
+      | stageMarker3397
+    stage stageMarker3397 on all partitions :
+      filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 20  ==  and  }  $5 ''%STEEL''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''AFRICA''  ==  and  $20 $1 __subquery0003  ==  and  "
+      | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
+      | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+      | limit 100
+      | combined 0
+      | stageMarker3400
+    stage stageMarker3400 on all nodes :
+      sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+      | limit 100
+      | combined 0
+      | stageMarker3403
+    stage stageMarker3403 on origin :
+      sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+      | limit 100
+      | combined 0
+      | stageLast
+    stage stageLast on origin :
+      output
+      | sink
+      | stageStart
+  end ;
+*/
+
+
+/*
+Incorrect result with sf10
+pipeline Query2
+begin
+  stage S00 on origin :
     start
     | pulse once
-    | stageMarker3905
-  stage stageMarker3905 on all partitions :
-    scan rapidsse public part
-    | stageMarker3908
-  stage stageMarker3911 on all partitions :
-    indexJoin 1 parsupp IxPS_SUPPKEY "BOUND $I1 $L1 =="
-    | stageMarker3914 hashcast
-  stage stageMarker3908 on all partitions :
-    indexJoin 1 supplier IxS_SUPPKEY "BOUND $I1 $L1 =="
-    | hash 2 "type INTEGER _orderkey"
-    | stageMarker3911 hashcast
-  stage stageMarker3914 on all partitions :
-    indexJoin 1 nation IxN_NATIONKEY "BOUND $I1 $L1 =="
-    | stageMarker3917 broadcast
-  stage stageMarker3917 on all partitions :
-    indexJoin 1 region IxR_REGIONKEY "BOUND $I1 $L1 =="
-    | stageMarker3920
-  stage stageMarker3920 on all partitions :
-    filter " type BOOLEAN  $1 $17 ==  $10 $18 ==  and  $6 15  <  and  }  $5 ''%BRASS''  6 matchTrailing  and  $13 $22 ==  and  $24 $26 ==  and  $27 ''EUROPE''  ==  and  /* $20 $1 __subquery0003  ==  and*/  "
-    | project " type DECIMAL as s_acctbal $15 , type VARCHAR as s_name $11 , type VARCHAR as n_name $23 , type INTEGER as p_partkey $1 , type VARCHAR as p_mfgr $3 , type VARCHAR as s_address $12 , type VARCHAR as s_phone $14 , type VARCHAR as s_comment $16 "
-    | sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | next
+
+  stage S01 on all partitions :
+    indexscan partsupp IxPS_PARTKEY "LBOUND $I1 0 >="
+    | project " type INTEGER as PS_PARTKEY PS_PARTKEY ,
+                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+                type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | hash "type INTEGER PS_SUPPKEY"
     | combined 0
-    | stageMarker3923
-  stage stageMarker3923 on all nodes :
-    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | next hashcast
+
+  stage S02 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+               type DECIMAL as S_ACCTBAL J1_S_ACCTBAL ,
+               type VARCHAR as S_NAME J1_S_NAME ,
+               type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
+               type VARCHAR as S_PHONE J1_S_PHONE ,
+               type VARCHAR as S_COMMENT J1_S_COMMENT "
     | combined 0
-    | stageMarker3926
-  stage stageMarker3926 on origin :
-    sort " type DECIMAL as s_acctbal $1 DESC  , type VARCHAR as n_name $3 ASC  , type VARCHAR as s_name $2 ASC  , type INTEGER as p_partkey $4 ASC  "
+    | next
+
+  stage S03 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as PS_PARTKEY PS_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY ,
+               type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+               type VARCHAR as S_NAME S_NAME ,
+               type VARCHAR as N_NAME J1_N_NAME ,
+               type VARCHAR as S_ADDRESS S_ADDRESS ,
+               type VARCHAR as S_PHONE S_PHONE ,
+               type VARCHAR as S_COMMENT S_COMMENT "
+
     | combined 0
-    | stageLast
-  stage stageLast on origin :
+    | next
+
+  stage S04 on all partitions :
+    indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
+    | gbyAgg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+                 aggregates
+                 type INTEGER as PS_PARTKEY $K1 ,
+                 type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+                 type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                 type VARCHAR as S_NAME S_NAME ,
+                 type VARCHAR as N_NAME N_NAME ,
+                 type VARCHAR as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR as S_PHONE S_PHONE ,
+                 type VARCHAR as S_COMMENT S_COMMENT "
+    | combined 0
+    | next
+
+  stage S05 on all nodes :
+    gbyAgg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+             aggregates
+             type INTEGER as PS_PARTKEY $K1 ,
+             type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+             type VARCHAR as S_NAME S_NAME ,
+             type VARCHAR as N_NAME N_NAME ,
+             type VARCHAR as S_ADDRESS S_ADDRESS ,
+             type VARCHAR as S_PHONE S_PHONE ,
+             type VARCHAR as S_COMMENT S_COMMENT "
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    gbyAgg " GroupBy type INTEGER as PS_PARTKEY PS_PARTKEY
+             aggregates
+             type INTEGER as PS_PARTKEY $K1 ,
+             type DECIMAL as PS_SUPPLYCOST ) PS_SUPPLYCOST min ,
+             type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+             type VARCHAR as S_NAME S_NAME ,
+             type VARCHAR as N_NAME N_NAME ,
+             type VARCHAR as S_ADDRESS S_ADDRESS ,
+             type VARCHAR as S_PHONE S_PHONE ,
+             type VARCHAR as S_COMMENT S_COMMENT "
+    | hash "type INTEGER PS_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S07 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 PS_PARTKEY ==" //J1
+    | filter " type BOOLEAN  }  J1_P_TYPE '%STEEL'  6 matchTrailing
+             J1_P_SIZE 20 == and"
+    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                type VARCHAR as S_NAME S_NAME ,
+                type VARCHAR as N_NAME N_NAME ,
+                type INTEGER as P_PARTKEY J1_P_PARTKEY ,
+                type VARCHAR as P_MFGR J1_P_MFGR ,
+                type VARCHAR as S_ADDRESS S_ADDRESS ,
+                type VARCHAR as S_PHONE S_PHONE ,
+                type VARCHAR as S_COMMENT S_COMMENT "
+    | sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC  ,
+             type VARCHAR as N_NAME N_NAME ASC  ,
+             type VARCHAR as S_NAME S_NAME ASC  ,
+             type INTEGER as P_PARTKEY P_PARTKEY ASC  "
+     | limit 100
+    | combined 0
+    | next
+
+  stage S08 on all nodes :
+   sort " type DECIMAL as S_ACCTBAL S_ACCTBAL ASC ,
+             type VARCHAR as N_NAME N_NAME ASC ,
+             type VARCHAR as S_NAME S_NAME ASC ,
+             type INTEGER as P_PARTKEY P_PARTKEY ASC"
+    | limit 100
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort " type DECIMAL as s_acctbal s_acctbal ASC ,
+           type VARCHAR as N_NAME N_NAME ASC ,
+           type VARCHAR as S_NAME S_NAME ASC ,
+           type INTEGER as p_partkey p_partkey ASC"
+     | limit 100
+     | combined 0
+     | next
+
+  stage S10 on origin :
     output
     | sink
-    | stageStart
+    | first
 end ;
+
+rows:
+  (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969', *)
+  (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479', *)
+*/
+
+pipeline Query2
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan part
+    | filter " type BOOLEAN  }  P_TYPE '%STEEL'  6 matchTrailing P_SIZE 20 == and"
+    | project " type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY ,
+                type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY ,
+                type DECIMAL as PS_SUPPLYCOST J1_PS_SUPPLYCOST"
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER as S_NATIONKEY J1_S_NATIONKEY "
+    | combined 0
+    | next
+
+  stage S04 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST ,
+               type INTEGER as N_REGIONKEY J1_N_REGIONKEY "
+    | combined 0
+    | next
+
+  stage S05 on all partitions :
+    indexJoin region IxR_REGIONKEY "BOUND $I1 N_REGIONKEY =="
+    | filter " type BOOLEAN  J1_R_NAME 'AFRICA'  == "
+    | gbyAgg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER as P_PARTKEY $K1 ,
+                          type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min "
+    | combined 0
+    | next
+
+  stage S06 on all nodes :
+     gbyAgg " GroupBy     type INTEGER as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER as P_PARTKEY $K1 ,
+                          type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+     gbyAgg " GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+               aggregates type INTEGER as P_PARTKEY $K1 ,
+                          type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min "
+    | hash "type INTEGER P_PARTKEY"
+    | combined 0
+    | next hashcast
+
+  stage S08 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | filter "type BOOLEAN PS_SUPPLYCOST_MIN J1_PS_SUPPLYCOST =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY"
+    | combined 0
+    | next
+
+  stage S09 on all partitions :
+    indexJoin part IxP_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project " type INTEGER as P_PARTKEY P_PARTKEY ,
+                type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+                type VARCHAR as P_MFGR J1_P_MFGR"
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S10 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+                type DECIMAL as S_ACCTBAL J1_S_ACCTBAL ,
+                type VARCHAR as S_NAME J1_S_NAME ,
+                type INTEGER as P_PARTKEY P_PARTKEY ,
+                type VARCHAR as P_MFGR P_MFGR ,
+                type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
+                type VARCHAR as S_PHONE J1_S_PHONE ,
+                type VARCHAR as S_COMMENT J1_S_COMMENT "
+    | combined 0
+    | next
+
+  stage S11 on all partitions :
+    indexJoin nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | project " type DECIMAL as S_ACCTBAL S_ACCTBAL ,
+                type VARCHAR as S_NAME S_NAME ,
+                type VARCHAR as N_NAME J1_N_NAME ,
+                 type INTEGER as P_PARTKEY P_PARTKEY ,
+                 type VARCHAR as P_MFGR P_MFGR ,
+                 type VARCHAR as S_ADDRESS S_ADDRESS ,
+                 type VARCHAR as S_PHONE S_PHONE ,
+                 type VARCHAR as S_COMMENT S_COMMENT "
+    | sort "type DECIMAL S_ACCTBAL DESC ,
+            type VARCHAR N_NAME ASC ,
+            type VARCHAR S_NAME ASC ,
+            type INTEGER P_PARTKEY ASC"
+    | limit 100
+    | combined 0
+    | next
+
+  stage S12 on all nodes :
+    sort "type DECIMAL S_ACCTBAL DESC ,
+          type VARCHAR N_NAME ASC ,
+          type VARCHAR S_NAME ASC ,
+          type INTEGER P_PARTKEY ASC"
+    | limit 100
+    | combined 0
+    | next
+
+  stage S13 on origin :
+    sort "type DECIMAL S_ACCTBAL DESC ,
+          type VARCHAR N_NAME ASC ,
+          type VARCHAR S_NAME ASC ,
+          type INTEGER P_PARTKEY ASC"
+    | limit 100
+    | combined 0
+    | next
+
+  stage S14 on origin :
+    output
+    | sink
+    | first
+end ;
+
+ordered rows:
+  (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479', *)
+  (1365.79,'Supplier#000000006','KENYA',56,'Manufacturer#1','tQxuVm7s7CnK','24-696-997-4969', *)
 
 CLEANUP {
   bye;
   mute
 }
-
-

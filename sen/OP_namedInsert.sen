@@ -26,6 +26,7 @@
   Table[] assert
 ;
 
+
 /*----------------------------------------------------------------------------*/
 /* handler for EV_D_NAMEDBUFFER ...                                           */
 /*----------------------------------------------------------------------------*/
@@ -35,18 +36,66 @@
 
   NamedBuffer[].name@ locals| sBufferNm |
 
+  // locate the table
   sBufferNm locateNamedTable
 
+  // create the streamDef of this table
+  Table[] StreamDefOut[].newFromTable
+  StreamDefOut[] to StreamDefLft[]
+  nullptr to StreamDefOut[]
 
-  //CN_CRWBUFFER NamedBuffer[].morphClass
+  // morph the nameBuffer to a rowBuffer
   CN_ROWBUFFER NamedBuffer[].morphClass
+  NamedBuffer[]\clear to RowBuffer[]
+
+  // set the lgl ptn of the rowBuffer
+  0 RowBuffer[].setLglPtn
+
+  // set the decider copies of the rowBuffer
+  1 RowBuffer[].setDeciderCopies
+
+  // convert the rowBuffer to a CrwBuffer
+  ToLglPtnCrw[].create
+  RowBuffer[] ToLglPtnCrw[].convert
+
+  // delete the RowBuffer
+  RowBuffer[].delete
+
+  // insert the crwBuffers into the table
 
   0 Table[].tablePtnGet to TablePtn[]
-  
-  TablePtn[].grabWrite_msecLoop
-  //nullptr to NamedBuffer[]
-  NamedBuffer[]\clear TablePtn[].appendBuffer
-  TablePtn[].dropWrite
+
+  0 ToLglPtnCrw[].completed to CrwBuffer[]
+
+  begin
+    CrwBuffer[].isNull not
+  while
+    CrwBuffer[].appendClose
+    TablePtn[].grabWrite_msecLoop
+    CrwBuffer[]\clear TablePtn[].appendBuffer
+    TablePtn[].dropWrite
+
+    0 ToLglPtnCrw[].completed to CrwBuffer[]
+
+  repeat
+
+  0 ToLglPtnCrw[].dangling to CrwBuffer[]
+
+  begin
+    CrwBuffer[].isNull not
+  while
+    CrwBuffer[].appendClose
+    TablePtn[].grabWrite_msecLoop
+    CrwBuffer[]\clear TablePtn[].appendBuffer
+    TablePtn[].dropWrite
+
+    0 ToLglPtnCrw[].dangling to CrwBuffer[]
+
+  repeat
+
+  // cleanup
+  ToLglPtnCrw[].delete
+  StreamDefLft[].delete
 
   //sBufferNm "$$$ OP_namedInsert %v" .printf
   Table[].name@ "$$$ OP_namedInsert %v" .printf

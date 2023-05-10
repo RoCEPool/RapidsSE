@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* _r_FOLD_74_H_A_NC_ro -- sub-query flattening test : refer Q11              */
+/*============================================================================*/
+
+// --initial _r_FOLD_74_H_A_NC_ro
+
+trackMemory;
+
+_r_schema
+
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+create index PS_idx1 on partsupp (PS_SUPPKEY );
+create index S_idx0  on supplier (S_SUPPKEY  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_FOLD_74_H_L_NC_ro"
+select ps_partkey,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by ps_partkey
+having sum(ps_supplycost * ps_availqty) > (select avg(ps_supplycost * ps_availqty)
+                                             from partsupp, supplier
+                                            where PS_SUPPKEY = S_SUPPKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

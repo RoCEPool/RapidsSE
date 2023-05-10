@@ -29,7 +29,6 @@ NamedBuffer::NamedBuffer(StreamDef* pStreamDef)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 
   vBufferNm(pStreamDef->szStreamDefNm());
-  vBucketNo(0);
     
 //  _postcondition_(_ADDRESS_,_MAGIC_,CN_NAMEDBUFFER);
 }

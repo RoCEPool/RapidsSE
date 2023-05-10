@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* _tpchQ18_debug                                                             */
+/*============================================================================*/
+
+// --initial _tpchQ18_debug
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+
+select * from dummy;
+
+////////////////////////////////////////////////////////////////
+// QUERY 18 :  MEMORY LEAKS
+//             row: ('CARRYFORWARD',  1)
+//             row: ('FOLD_W_A_C_ro',  1)
+//             row: ('SMOOTH',  1)
+///////////////////////////////////////////////////////////////
+
+trackMemory;
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpchQ18_debug"
+select
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice,
+  sum(l_quantity)
+from
+  orders,
+  customer,
+  lineitem
+where
+  o_orderkey in
+    (
+    select
+      l_orderkey
+    from
+      lineitem
+    group by
+      l_orderkey
+    having
+      sum(l_quantity) > 100
+    )
+  and c_custkey = o_custkey
+  and o_orderkey = l_orderkey
+group by
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice
+order by
+  o_totalprice desc,
+  o_orderdate;
+
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+ rows: (1996,0.00)
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

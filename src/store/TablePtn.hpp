@@ -61,7 +61,7 @@ namespace STORE
     BufferId oRootBufferId(void);
     CrwBuffer* pRootCrwBuffer(void);
     RowBuffer* pRootRowBuffer(void);
-    void vAnalyze(i8& nBuffers, i8& nRows);
+    void vAnalyze(i8& nBuffers, i8& nRows, i8& jSumRowBytes);
     void vTruncate(void);
     void vTruncateIndex(Index* pIndex);
     bool bVerifyTable(void);

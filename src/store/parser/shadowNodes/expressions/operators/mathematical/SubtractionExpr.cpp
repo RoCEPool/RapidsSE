@@ -54,21 +54,17 @@ static TypeMap2D* S_pTypeMap = (new TypeMap2D())
     ->pAddMapping(TypeId::xIdOf(CT_DATE),           TM_ALL_DT_INTERVALS,                  TypeId::xIdOf(CT_TIMESTAMP))
 
     // Time
-    // A time can only be subtracted by times or intervals that contain hour, minute and second fields only.
+    // A time can only be subtracted by times or day-time intervals.
+    // The day field is effectively ignored because it always subtracts 24 hours.
     // Having extra fields (year, month days) is an error
     ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(CT_TIME),               TypeId::xIdOf(IV_HOUR_TO_SECOND))
-    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_HOUR),               TypeId::xIdOf(CT_TIME))
-    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_MINUTE),             TypeId::xIdOf(CT_TIME))
-    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_SECOND),             TypeId::xIdOf(CT_TIME))
-    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_HOUR_TO_MINUTE),     TypeId::xIdOf(CT_TIME))
-    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_HOUR_TO_SECOND),     TypeId::xIdOf(CT_TIME))
-    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(IV_MINUTE_TO_SECOND),   TypeId::xIdOf(CT_TIME))
+    ->pAddMapping(TypeId::xIdOf(CT_TIME),           TM_ALL_DT_INTERVALS,                  TypeId::xIdOf(CT_TIME))
     ->pAddMapping(TypeId::xIdOf(CT_TIME),           TypeId::xIdOf(CT_UNKNOWN),            TypeId::xIdOf(CT_UNKNOWN))
 
     // Timestamp
     ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TypeId::xIdOf(CT_TIMESTAMP),            TypeId::xIdOf(IV_DAY_TO_SECOND))
-    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TM_ALL_YM_INTERVALS,                       TypeId::xIdOf(CT_TIMESTAMP))
-    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TM_ALL_DT_INTERVALS,                       TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TM_ALL_YM_INTERVALS,                    TypeId::xIdOf(CT_TIMESTAMP))
+    ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TM_ALL_DT_INTERVALS,                    TypeId::xIdOf(CT_TIMESTAMP))
     ->pAddMapping(TypeId::xIdOf(CT_TIMESTAMP),    TypeId::xIdOf(CT_UNKNOWN),              TypeId::xIdOf(CT_UNKNOWN))
 
     // Intervals - other Intervals

@@ -1,0 +1,117 @@
+/*============================================================================*/
+/* _opt_debug1 -- (case.test)                                                  */
+/*============================================================================*/
+
+trackMemory;
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc);
+create index TABLE1_COLA1 on table1(cola1);
+
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,  //1
+  scol9   INTEGER NOT NULL,  //2
+  tcol9   INTEGER NOT NULL,  //3
+  colb9   VARCHAR(20),       //4
+  cold9   FLOAT,             //5
+  cole9   DECIMAL,           //6
+  colf9   INTEGER,           //7
+  colg9   INTEGER,           //8
+  ucol    INTEGER,           //9
+  ucolvc  VARCHAR(5)         //10
+);
+
+create index table9_pcol9 on table9(pcol9);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_colb9 on table9(colb9);
+create index table9_ucol on table9(ucol);
+
+Load TABLE9 "../DATA/Load/tbl9data.csv";
+
+
+
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_cue_trace = "x"
+/glean_interactive
+/transliterated
+/weaved
+  select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z
+    from table9) as TbX
+    where x < 0 or Y > 0;
+
+//////////////////////////////////////////////////////////////////////////////
+// RAY: Note the origin->all partitions and broadcast from S03->S04
+//      This causes 4 rows to be returned on a 1N4P configuration
+//////////////////////////////////////////////////////////////////////////////
+
+/*
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      TABLE9
+    | project   "   type FLOAT ) $5 min
+                  , type DECIMAL ) $6 min
+                  , type INTEGER ) $7 min "
+    | combined  0
+    | next
+
+  stage S02 on all nodes :
+      project   "   type FLOAT ) $1 min
+                  , type DECIMAL ) $2 min
+                  , type INTEGER ) $3 min "
+    | combined  0
+    | next
+
+  stage S03 on origin :
+      project   "   type FLOAT as x ) $1 min
+                  , type DECIMAL as y ) $2 min
+                  , type INTEGER as z ) $3 min "
+    | combined  0
+    | next      broadcast
+
+  stage S04 on all partitions :
+      filter    " type BOOLEAN $1 0.000000000e+00 < $2 0.00 > or "
+    | combined  0
+    | next
+
+  stage S05 on origin :
+      project   "   type FLOAT as x $1
+                  , type DECIMAL as y $2
+                  , type INTEGER as z $3 "
+    | combined  0
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

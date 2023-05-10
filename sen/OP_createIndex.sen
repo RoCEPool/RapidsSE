@@ -43,7 +43,15 @@
 
   pIndex index.isUnique@ if
     pIndex index.isValidUniqueIndex not if
-    
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // deletes the index
+      pIndex pIndex index.table@ table.deleteIndex
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // tidy up the index and forget it
+      <indexNm> index::deleteIndex
+
       [ddlLock].testDrop
       
       EC_INVALID_COLUMNS_UNIQUE_INDEX op__execErr

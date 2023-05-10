@@ -1,0 +1,228 @@
+/*============================================================================*/
+/* _a_q20 -- TCPH query 20 test                                               */
+/*============================================================================*/
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+select s_name,
+       s_address
+  from Supplier,
+       Nation
+ where s_suppkey in (
+    select ps_suppkey
+      from PartSupp
+     where
+           ps_partkey in (
+                               select p_partkey
+                                 from Part
+                                where p_name like 'forest%'
+                             )
+       and
+           ps_availqty > (
+                           select 0.5 * sum(l_quantity)
+                             from LineItem
+                            where L_PARTKEY = PS_PARTKEY
+                              and L_SUPPKEY = PS_SUPPKEY
+                              and l_shipdate >= '1994-01-01'
+                              and l_shipdate < '1995-01-01'
+                         )
+                    )
+   and s_nationkey = n_nationkey
+   and n_name = 'IRAQ'
+ order by s_name
+;
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TABLES     : LINEITEM, PART, PARSUPP, SUPPLIER
+// JOIN ORDER : PART->LINEITEM->PARTSUPP->SUPPLIER->NATION
+// INDEXES    : IxL_PARTKEY
+                IxPS_SUPPKEY
+                IxS_SUPPKEY
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// TRICKS:
+//   * PUSH-DOWN FILTERS OF PART TO REDUCE ROWS BEING SELECTED FROM PART
+//   * APPLY FILTER AGAIN AFTER JOIN
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+pipeline unamed
+begin
+
+  //SQY
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+    stage S01 on all partitions :
+      scan rapidsse public Part
+      | filter " type BOOLEAN  }  $2 'forest%'  7 matchLeading "
+      | project " type INTEGER as p_partkey $1 "
+      | combined 0
+      | next broadcast
+
+  //SQY
+    stage S02 on all partitions :
+      indexJoin lineitem IxL_PARTKEY "BOUND $I1 P_PARTKEY =="
+      | filter " type BOOLEAN  J1_L_SHIPDATE DATE '1994-01-01' >= J1_L_SHIPDATE DATE '1995-01-01'  <  and  "
+      | aggreg " groupBy  type integer P_PARTKEY ,
+                          type integer J1_L_SUPPKEY
+                       aggregates type integer as P_PARTKEY $K1 ,
+                                  type integer as L_SUPPKEY $K2 ,
+                                  type DECIMAL )  $6 sum"
+      | combined 0
+      | next
+
+    stage S03 on all nodes :
+      aggreg " groupBy type integer P_PARTKEY ,
+                       type integer L_SUPPKEY
+                  aggregates type integer as P_PARTKEY $K1 ,
+                             type integer as L_SUPPKEY $K2 ,
+                             type DECIMAL )  $3 sum"
+      | combined 0
+      | next
+
+    stage S04 on origin :
+      aggreg " groupBy type integer P_PARTKEY ,
+                       type integer L_SUPPKEY
+                   aggregates type integer as P_PARTKEY $K1 ,
+                              type integer as L_SUPPKEY $K2 ,
+                              type DECIMAL )  $3 sum"
+      | combined 0
+      | next
+
+    stage S05 on origin :
+      project " type integer as P_PARTKEY P_PARTKEY , type integer as L_SUPPKEY L_SUPPKEY , type DECIMAL as sqyResult 0.5  $3 *  "
+      | combined 0
+      | next broadcast
+
+   stage S06 on all partitions :
+     indexJoin partSupp IxPS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+     | filter " type BOOLEAN P_PARTKEY J1_PS_PARTKEY == J1_PS_AVAILQTY casttype DECIMAL CAST sqyResult  > and "
+     | project " type INTEGER as PS_SUPPKEY $2"
+     | hash "type INTEGER PS_SUPPKEY"
+     | combined 0
+     | next hashcast
+
+   stage S06a on all partitions :
+     aggreg " groupBy type integer PS_SUPPKEY
+                        aggregates type integer as PS_SUPPKEY $K1"
+     | combined 0
+     | next
+
+  stage S07 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR as S_NAME J1_S_NAME , type VARCHAR as S_ADDRESS J1_S_ADDRESS"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'IRAQ' ==  "
+    | project " type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
+    | sort " type VARCHAR S_NAME ASC  "
+    | combined 0
+    | next
+
+  stage stageMarker1680 on origin :
+    sort " type VARCHAR S_NAME ASC  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    output
+    | sink
+    | first
+end ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+/* WAS SLOWER with indexScan on lineitem
+
+top pipeline runs in 187ms.
+below pipeline runs in 223ms.
+
+/time pipeline Query20
+begin
+
+  //SQY
+    stage S00 on origin :
+      start
+      | pulse once
+      | next
+
+  //SQY
+    stage S02 on all partitions :
+      indexScan lineitem IxL_SHIPDATE "LBOUND $I1 DATE '1994-01-01' >= UBOUND $I1 DATE '1995-01-01' <"
+      | project " type INTEGER as L_PARTKEY L_PARTKEY , type INTEGER as L_SUPPKEY L_SUPPKEY , type DECIMAL as L_QUANTITY L_QUANTITY"
+      | hash "type INTEGER L_PARTKEY"
+      | combined 0
+      | next hashcast
+
+   stage S01 on all partitions :
+      indexJoin part IxP_PARTKEY "BOUND $I1 L_PARTKEY =="
+      | filter " type BOOLEAN  }  J1_P_NAME 'forest%'  7 matchLeading "
+      | aggreg " groupBy  type integer J1_P_PARTKEY , type integer L_SUPPKEY aggregates type integer as P_PARTKEY $K1 , type integer as L_SUPPKEY $K2 , type DECIMAL )  L_QUANTITY sum"
+      | combined 0
+      | next
+
+    stage S03 on all nodes :
+      aggreg " groupBy type integer P_PARTKEY , type integer L_SUPPKEY aggregates type integer as P_PARTKEY $K1 , type integer as L_SUPPKEY $K2 , type DECIMAL )  $3 sum"
+      | combined 0
+      | next
+
+    stage S04 on origin :
+      aggreg " groupBy type integer P_PARTKEY , type integer L_SUPPKEY  aggregates type integer as P_PARTKEY $K1 ,  type integer as L_SUPPKEY $K2 , type DECIMAL )  $3 sum"
+      | combined 0
+      | next
+
+    stage S05 on origin :
+      project " type integer as P_PARTKEY P_PARTKEY , type integer as L_SUPPKEY L_SUPPKEY , type DECIMAL as sqyResult 0.5  $3 *  "
+      | combined 0
+      | next broadcast
+
+   stage S06 on all partitions :
+     indexJoin partSupp IxPS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
+     | filter " type BOOLEAN P_PARTKEY J1_PS_PARTKEY == J1_PS_AVAILQTY casttype DECIMAL CAST sqyResult  > and "
+     | project " type INTEGER as PS_SUPPKEY $2"
+     | hash "type INTEGER PS_SUPPKEY"
+     | combined 0
+     | next hashcast
+
+   stage S06a on all partitions :
+     aggreg " groupBy type integer PS_SUPPKEY aggregates type integer as PS_SUPPKEY $K1"
+     | combined 0
+     | next
+
+  stage S07 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY "BOUND $I1 PS_SUPPKEY =="
+    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR as S_NAME J1_S_NAME , type VARCHAR as S_ADDRESS J1_S_ADDRESS"
+    | combined 0
+    | next
+
+  stage S08 on all partitions :
+    indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
+    | filter " type BOOLEAN J1_N_NAME 'CANADA' ==  "
+    | project " type VARCHAR as S_NAME S_NAME , type VARCHAR as S_ADDRESS S_ADDRESS "
+    | sort " type VARCHAR S_NAME ASC  "
+    | combined 0
+    | next
+
+  stage stageMarker1680 on origin :
+    sort " type VARCHAR S_NAME ASC  "
+    | combined 0
+    | next
+
+  stage S07 on origin :
+    output
+    | sink
+    | first
+end ;
+
+*/

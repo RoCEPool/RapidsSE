@@ -5,7 +5,7 @@
 #include "BASE.h"
 
 #include "RowBuffer.hpp"
-
+#include "LglPtnMap.hpp"
 #include "Pot.hpp"
 
 
@@ -73,9 +73,9 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode)
   try {
     Row* aDstRow;
 
+    LglPtnMap* pPtnMap = AM::pLglPtnMap();
     i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-    KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
-    LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
+    LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHsh);
 
     // get row buffer for given partition (new a first buffer if ncessary)
     RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[tLglPtn]);
@@ -119,9 +119,9 @@ void Pot::vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize)
 
   RASSERT(CN_POT == pPot->eGetClassNo());
 
+  LglPtnMap* pPtnMap = AM::pLglPtnMap();
   i8 iKeyHsh = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
-  KeyBkt tKeyBkt = KeyBkt::tToKeyBkt(iKeyHsh);
-  LglPtn tLglPtn = AM::BKTMAP::tLglPtnOf(tKeyBkt);
+  LglPtn tLglPtn = pPtnMap->tHashToLglPtnId(iKeyHsh);
 
   RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(tLglPtn));
 

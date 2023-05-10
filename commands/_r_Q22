@@ -1,0 +1,55 @@
+/*============================================================================*/
+/* _r_Q22 -- TCPH query 22 test                                               */
+/*============================================================================*/
+
+// --initial _r_Q22
+
+_r_schema
+
+create index C_idx0  on Customer (C_CUSTKEY);
+create index O_idx0  on Orders   (O_CUSTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q22"
+select cntrycode,
+       count(*)       as numcust,
+       sum(c_acctbal) as totacctbal
+  from
+       ( /* Q22_1: */
+         select substring (c_phone from 1 for 2) as cntrycode,
+                c_acctbal
+           from Customer
+          where
+                substring (c_phone from 1 for 2)
+                  in ('13','31','23','29','30','18','17')
+            and
+                c_acctbal >
+                            ( /* Q22_1_1: */
+                              select avg(c_acctbal)
+                                from Customer
+                               where substring (c_phone from 1 for 2)
+                                       in ('13','31','23','29','30','18','17')
+                            )
+             and
+                 exists
+                            ( /* Q22_1_2: */
+                              select *
+                                from Orders
+                               where O_CUSTKEY = C_CUSTKEY
+                                 and O_SHIPPRIORITY > 0
+                            )
+       )
+
+ group by cntrycode
+ order by cntrycode
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

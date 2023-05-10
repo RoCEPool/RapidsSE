@@ -433,7 +433,7 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
 
   RASSERT(pChildJob->pTask());
 
-  //pChildJob->vResponseTimerStart();
+  pChildJob->vResponseTimerStart();
 
   RASSERT(pChildJob->bHasTag(C_TAG_NOWAIT));
   RASSERT(! pChildJob->bHasTag(C_TAG_WAIT));
@@ -555,9 +555,6 @@ void Api::vCallEngineJob(Stz* szJobNm, Stz* szEntryPt, bool bAddAxioms)
 
   pEngineTask->vState(TS_RETIRED);
   pEngineTask->vDropTaskLock((Stz*)__func__);
-
-  //Api::vReapJobsOnce();
-  //gpAttachMap->pJobs()->vReapJobsOnce();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
