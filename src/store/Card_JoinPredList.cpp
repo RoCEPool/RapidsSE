@@ -77,7 +77,8 @@ void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
 
   CardIter xCI(p_deck);
   while (xCI.G_bEachMain(CK_TABLE)) {
-    if (!(xCI.G.p_indexList = xCI.G.p_table->pSub_indexList()))
+    if ((xCI.G.p_indexList = xCI.G.p_table->pSub_indexList()) &&
+        xCI.G.p_indexList->nChildCards())
       continue;
 
     if (! pString->nLength())

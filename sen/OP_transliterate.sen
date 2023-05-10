@@ -214,11 +214,9 @@
 
   //Text[] .
 
-  AM::OptimiserEnabled if
-    _Call_Optimiser not if
-      true
-      exit
-    then
+  _Call_Optimiser not if
+    true
+    exit
   then
 
   //Text[] .
