@@ -257,7 +257,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
   Pot* pPot = _pPot(pDynamic->aDynamicT()->m_pPot);
 
   sReturnLabel = ""_Stz;
-  sLabelLoop = "L_AdvanceNextRow"_Stz;
+  sLabelLoop = ""_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect the op information from the stage
@@ -290,6 +290,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
       RASSERT(!bInflateCrw);
 
       eHandlerKind = HK_INDEXBUFFER;
+      sLabelLoop = "L_AdvanceNextIndexT"_Stz;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupIndexScan(pDynamic, pStream, pOp);
@@ -310,6 +311,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
       RASSERT(!m_xStageOps.m_bIndexScan);
 
       eHandlerKind = HK_CRWBUFFER;
+      sLabelLoop = "L_AdvanceNextCrwT"_Stz;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupScan(pDynamic, pStream, pOp);
@@ -330,6 +332,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
       RASSERT(!m_xStageOps.m_bIndexScan);
 
       eHandlerKind = HK_ROWBUFFER;
+      sLabelLoop = "L_AdvanceNextRowT"_Stz;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //vSetupScan(pDynamic, pStream, pOp);
@@ -362,7 +365,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //vSetupEos(pDynamic, pOp, HK_EOS);
 
-      pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
+      pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -402,7 +405,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
       OpSketch *pGbyAggOpSketch = pOpSketch;
       Op *pLastOp = pOp;
 
-      pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
+      pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -463,7 +466,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
       Op *pLastOp = pOp;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
+      pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -503,7 +506,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sketch EOS handler function
-    pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, ""_Stz);
+    pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, sLabelLoop);
     vAppend(pOpSketch);
   }
 

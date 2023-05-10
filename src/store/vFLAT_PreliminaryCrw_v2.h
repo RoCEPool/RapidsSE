@@ -24,7 +24,7 @@ L_ProcessRow:
   }
   goto L_InflateCrwT;
 
-L_AdvanceNextRow:
+L_AdvanceNextCrwT:
   aDynamicT->m_iJoinedRows = 0;
   i_Row++;
 

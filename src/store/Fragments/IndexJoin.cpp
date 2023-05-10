@@ -66,7 +66,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   i8 iLeftOuterRow;
   i8 __KEY_KIND__;
 
-  L_AdvanceNextRow:
+  __L_LABEL_LOOP__:
 
   // marker-start
 
@@ -91,7 +91,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
-    goto L_AdvanceNextRow;
+    goto __L_LABEL_LOOP__;
   }
 // marker-end
 }
@@ -113,7 +113,7 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   static const i8 C_CRW_HEADBYTES = 32;
   static const i8 C_CRW_FIRSTHEAD = 640;
 
-  L_AdvanceNextRow:
+  __L_LABEL_LOOP__:
 
   // marker-start
 
@@ -121,7 +121,7 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
     aDynamicT->m_iProcessRow = 0;
-    goto L_AdvanceNextRow;
+    goto __L_LABEL_LOOP__;
   }
 
   // find the upper bound entry
@@ -136,7 +136,7 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 
     aDynamicT->m_iProcessRow = 0;
     printf("M6\n");
-    goto L_AdvanceNextRow;              //
+    goto __L_LABEL_LOOP__;
   }
   printf("M7\n");
   aHeadLineSav = aHeadLine;

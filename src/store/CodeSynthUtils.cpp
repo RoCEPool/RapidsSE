@@ -408,6 +408,31 @@ void CodeSynthUtils::vReplaceLabel(Stz* sLine, OpSketch* pOpSketch)
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceLabelIndex(Stz* sLine, OpSketch* pOpSketch)
+{
+  _static_
+/*
+  s256 sLabel;
+
+  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_INDEX_DEREF__")) {
+    sLabel.vSprint("L_IndexDeref_%d"_Stz, pOpSketch->m_iOperatorNo);
+    RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_INDEX_DEREF__", sLabel.azChar());
+    RASSERT(bResult);
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_INDEX_RETURN__")) {
+    sLabel.vSprint("L_IndexReturn_%d"_Stz, pOpSketch->m_iOperatorNo);
+    RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_INDEX_RETURN__", sLabel.azChar());
+    RASSERT(bResult);
+  }
+  */
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
 void CodeSynthUtils::vReplaceLabelNext(Stz* sLine, OpSketch* pOpSketch)
 {
   _static_

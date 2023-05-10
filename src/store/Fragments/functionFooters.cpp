@@ -16,12 +16,12 @@ int vInflateCrwEnd(struct Dynamic_T* aDynamicT)
 
     #include "vFLAT_Parameters_v2.h"
 
-    L_AdvanceNextRow:
+    __L_LABEL_LOOP__:
 
-    aSubReturnLabel = && L_AdvanceNextRow;
+    aSubReturnLabel = && __L_LABEL_LOOP__;
 
   // marker-start
-  goto L_AdvanceNextRow;
+  goto __L_LABEL_LOOP__;
 
   L_Return:
     goto L_ReturnFinal;
@@ -45,12 +45,12 @@ int vInflateRowEnd(struct Dynamic_T* aDynamicT)
 
     #include "vFLAT_Parameters_v2.h"
 
-    L_AdvanceNextRow:
+    __L_LABEL_LOOP__:
 
-    aSubReturnLabel = && L_AdvanceNextRow;
+    aSubReturnLabel = && __L_LABEL_LOOP__;
 
     // marker-start
-    goto L_AdvanceNextRow;
+    goto __L_LABEL_LOOP__;
 
     L_Return:
     goto L_ReturnFinal;
@@ -74,12 +74,12 @@ int vIndexScanEnd(struct Dynamic_T* aDynamicT)
 
 #include "vFLAT_Parameters_v2.h"
 
-    L_AdvanceNextRow:
+    __L_LABEL_LOOP__:
 
-    aSubReturnLabel = && L_AdvanceNextRow;
+    aSubReturnLabel = && __L_LABEL_LOOP__;
 
     // marker-start
-    goto L_AdvanceNextRow;
+    goto __L_LABEL_LOOP__;
 
     L_Return:
     goto L_ReturnFinal;

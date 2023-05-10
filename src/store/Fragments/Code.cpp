@@ -42,8 +42,6 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL_LOOP__:
 
-  L_AdvanceNextRow:
-
   // marker-start
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,7 +57,7 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
-    goto L_AdvanceNextRow;
+    goto __L_LABEL_LOOP__;
   }
 
   // - - - - - - - - - - - - - -

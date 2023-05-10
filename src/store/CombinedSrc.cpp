@@ -156,7 +156,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
       case SK_EOS:
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // end previous handler
-        vAppendFunctionFooter(ePreviousHandler);
+        vAppendFunctionFooter(pOpSketch, ePreviousHandler);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // begin new EOS handler
@@ -411,7 +411,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end EOS handler
   RASSERT(eCurrentHandler == HK_EOS);
-  vAppendFunctionFooter(eCurrentHandler);
+  vAppendFunctionFooter(nullptr, eCurrentHandler);
 
   vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
 
@@ -646,7 +646,7 @@ void CombinedSrc::vAppendFileHeaders(void) {
 /*----------------------------------------------------------------------------*/
 /* append function footer fragment                                            */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendFunctionFooter(eHK eHandlerKind)
+void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -673,7 +673,7 @@ void CombinedSrc::vAppendFunctionFooter(eHK eHandlerKind)
 
   sCode = ""_Stz;
   m_pFunctionFooter->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionFooter, pOpSketch, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());

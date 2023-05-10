@@ -41,7 +41,7 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
 
   i_CurrentRow = -1;
 
-  L_AdvanceNextRow:
+  __L_LABEL_LOOP__:
 
    aDynamicT->m_iJoinedRows = 0;
 
