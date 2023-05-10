@@ -55,6 +55,8 @@ OpSketch::OpSketch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
+  m_iOperatorNo = C_UNKNOWN;
+
   m_eSketchKind = SK_NONE;
   m_eHandlerKind = HK_NONE;
 
@@ -103,11 +105,13 @@ OpSketch::OpSketch(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch::OpSketch(Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
+OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
                    eSR eStencilOut, eII eIndexInfo, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack)
     : Object(CN_OPSKETCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_iOperatorNo = C_UNKNOWN;
 
   m_eSketchKind = eSketchKind;
   m_eHandlerKind = eHandlerKind;

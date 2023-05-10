@@ -37,8 +37,9 @@ namespace STORE
 
   private:
 
-    eSK  m_eSketchKind;
+    i8 m_iOperatorNo;
 
+    eSK  m_eSketchKind;
     eHK  m_eHandlerKind;
 
     // expression string
@@ -90,7 +91,7 @@ namespace STORE
     void  operator delete(void*);
 
     OpSketch(void);
-    OpSketch(Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, eII eIndexInfo,
+    OpSketch(i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, eII eIndexInfo,
              StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack = nullptr);
 
    ~OpSketch(void) noexcept(false);
