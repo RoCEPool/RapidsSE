@@ -18,6 +18,8 @@
 
 #include "Ribbon.hpp"
 
+#include "Symbol.hpp"
+
 namespace STORE
 {
   class Card_AbsJoin;
@@ -197,82 +199,6 @@ namespace STORE
 {
   static const bool C_CONTINUE_RECURSION  = true;
   static const bool C_TERMINATE_RECURSION = false;
-
-  class Symbol {
-  public:
-    s256    m_sSymbol;
-    TagSet* m_pProperties;
-
-  public:
-    Symbol(void);
-    Symbol(Stz* szSymbol);
-
-    void operator =(Stz* szArg);
-    void operator =(Symbol* pSymbol);
-    void operator =(Symbol& rxSymbol);
-
-    // auto conversion
-    operator Stz*(void);
-
-    static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
-
-    eRO  eEvalRelnOp(void);
-    eQO  eEvalSubQryOp(void);
-
-    i8   iExtractOrdinal(void);
-    char cExtractTableSynonym(void);
-
-    bool bIsAggOp(void);          // avg, count, ... sum
-    bool bIsBoolFn(void);         // between, case ... matchTrailing
-    bool bIsComma(void);          // ,
-    bool bIsIndexColumn(void);    // $In
-    bool bIsKeyOrdinal(void);            // $Kn
-    bool bIsParameterOrdinal(void);      // %n
-    bool bIsRelnOp(void);         // <, <=, ... >
-    bool bIsStreamOrdinal(void);   // $n
-    bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
-    bool bIsSubQueryColumn(void); // __n
-    bool bIsColumnOrdinal(void);    // $c.n
-    bool bIsValueOrdinal(void);         // $n or $c.n
-
-    bool bNeedsBrace(void);       // between, case, ... matchTrailing
-
-    bool bSameAs(char cArg);
-    bool bSameAs(Stz* szArg);
-    bool bSameAs(Symbol* pArg);
-
-    void vSet(Symbol* pSymbol);
-    void vSetIndexColOrdinal(i8 iIdxColOdn);
-    void vSetKeyOrdinal(i8 iKeyOdn);
-    void vSetStreamOrdinal(i8 iStmColOdn);
-    void vSetSubQueryOrdinal(i8 iSqNo);
-    void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
-    void vSetTableColSyn(char cTblSyn);
-    void vSprint(Stz* szFormat, ...);
-
-    Stz* szType(void);
-    void vType(Stz* szType);
-
-    Stz* szSymbol(void);
-
-    void Y_vAll(Card* pCard_arg);
-    void Y_vAll(TagSet* pProperties);
-    void Y_vCut(Stz* szPpyNm);
-//    char Y_cGet(i8 i_Ppy);
-//    char Y_cGet(Stz* szPptNm);
-    i8   Y_iGet(i8 i_Ppy);
-    i8   Y_iGet(Stz* szPpyNm);
-    Stz* Y_szGet(i8 i_Ppy);
-    Stz* Y_szGet(Stz* szPptNm);
-    bool Y_bHas(Stz* szPpyNm);
-    i8   Y_nPpy(void);
-    Stz* Y_szPpyNm(i8 i_Ppy);
-    eTN  Y_ePpyTkn(i8 i_Ppy);
-    void Y_vSet(Stz* szPpyNm);
-    void Y_vSet(Stz* szPpyNm, i8 iPpy);
-    void Y_vSet(Stz* szPpyNm, Stz* szPpy);
-    void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
-  };
 
   class Card : public Object
              , public ChildCards
