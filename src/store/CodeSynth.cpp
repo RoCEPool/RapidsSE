@@ -2362,7 +2362,7 @@ void CodeSynth::vPayloadAgg(void) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nothing to generate if no payload expressions
-//  if (!m_pExprStack->nValues())
+//  if (!m_pPreExprStack->nValues())
 //    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3659,10 +3659,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
-  nExpr = m_pExprStack->nValues() - 1;
+  nExpr = m_pPreExprStack->nValues() - 1;
 
   while ( nExpr >= 0) {
-    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    pTypedCell = m_pPreExprStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 

@@ -5,6 +5,8 @@
 
 #include "BASE.h"
 
+#include "Ppy.hpp"
+
 namespace STORE
 {
   class Symbol {

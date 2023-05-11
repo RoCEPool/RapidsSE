@@ -23,7 +23,7 @@ namespace STORE
     IndexDef*  m_pIndexDef_join;
     IndexDef*  m_pIndexDef_gbyAgg;
 
-    IntStack*  m_pExprStack;
+    IntStack*  m_pPreExprStack;
     ColsReq*   m_pColsReq;
 
   protected:
