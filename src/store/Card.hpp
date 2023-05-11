@@ -263,14 +263,16 @@ namespace STORE
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);
-    Stz* Y_szGet(Stz* szPptNm);
+    Stz* Y_szGet(Stz* szPpyNm);
     bool Y_bHas(Stz* szPpyNm);
     i8   Y_nPpy(void);
     Stz* Y_szPpyNm(i8 i_Ppy);
     eTN  Y_ePpyTkn(i8 i_Ppy);
+    eTN  Y_ePpyTkn(Stz* szPpyNm);
     void Y_vSet(Stz* szPpyNm);
     void Y_vSet(Stz* szPpyNm, i8 iPpy);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
+    void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
   };
 
