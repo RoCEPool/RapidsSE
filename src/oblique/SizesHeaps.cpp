@@ -264,6 +264,7 @@
 #include "StageDef.hpp"
 #include "MakeCode.hpp"
 #include "Ppy.hpp"
+#include "Symbol.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -656,6 +657,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SUBCALL,                  sizeof(SubCall),            HT_T_TINY    ,FILL },
   { CN_SUBQUERY,                 sizeof(SubQuery),           HT_T_TINY    ,FILL },
   { CN_SUBRETURN,                sizeof(SubReturn),          HT_T_TINY    ,FILL },
+  { CN_SYMBOL,                   sizeof(Symbol),             HT_T_TINY   ,FILL },
   { CN_SYSCALL,                  sizeof(SysCall),            HT_INVALID   ,FILL },
   { CN_SYSMETRICS,               sizeof(SysMetrics),         HT_T_TINY    ,FILL },
   { CN_SYSREPORT,                sizeof(SysReport),          HT_T_TINY    ,FILL },

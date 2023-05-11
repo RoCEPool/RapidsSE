@@ -9,10 +9,15 @@
 
 namespace STORE
 {
-  class Symbol {
+  class Symbol : public Object
+  {
   public:
     s256    m_sSymbol;
     TagSet* m_pProperties;
+
+  protected:
+    // must be last
+    Footer m_xFooter;
 
   public:
     Symbol(void);
@@ -75,6 +80,8 @@ namespace STORE
     i8   Y_iGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);
     Stz* Y_szGet(Stz* szPpyNm);
+    Ppy  Y_xGet(i8 i_Ppy);
+    Ppy  Y_xGet(Stz* szPpyNm);
     bool Y_bHas(Stz* szPpyNm);
     i8   Y_nPpy(void);
     Stz* Y_szPpyNm(i8 i_Ppy);
@@ -85,6 +92,10 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
+
+  protected:
+    Footer* aFooter(void);
+
   };
 
 }

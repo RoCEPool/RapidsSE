@@ -4,10 +4,12 @@
 #pragma once
 
 #include "OpDef.hpp"
+#include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class StageDef : public ListNL_t<OpDef>
+  class StageDef : public Object
+                 , public ListExo2_t<OpDef>
   {
   public:
     i8  m_i_Stage;

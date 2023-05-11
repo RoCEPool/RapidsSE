@@ -4,10 +4,12 @@
 #pragma once
 
 #include "StageDef.hpp"
+#include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class PipelineDef : public ListNL_t<StageDef>
+  class PipelineDef : public Object
+                    , public ListExo2_t<StageDef>
   {
   public:
     s32  m_sPipelineNm;
