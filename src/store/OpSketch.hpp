@@ -66,6 +66,7 @@ namespace STORE
     s256 m_sLabel;
     s256 m_sLabelNext;
     s256 m_sLabelLoop;
+    s256 m_sLabelOuterLoop;
 
     // expression stacks
     TypedStack* m_pExprStack;
@@ -108,7 +109,7 @@ namespace STORE
     void vIndexDef(IndexDef* pIndexDef);
     void vIndexPositionLower(eIP eIndexPosition);
     void vPayloadBytes(i8 nPayloadBytes);
-    void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
+    void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
     void vStreamDefRht(StreamDef* pStreamDefRht);
     eSK eSketchKind(void);
 

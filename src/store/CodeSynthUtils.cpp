@@ -91,6 +91,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplaceLabel(sLine, pOpSketch);
         vReplaceLabelNext(sLine, pOpSketch);
         vReplaceLabelLoop(sLine, pOpSketch);
+        vReplaceLabelIndex(sLine, pOpSketch);
 
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
@@ -411,7 +412,7 @@ void CodeSynthUtils::vReplaceLabel(Stz* sLine, OpSketch* pOpSketch)
 void CodeSynthUtils::vReplaceLabelIndex(Stz* sLine, OpSketch* pOpSketch)
 {
   _static_
-/*
+
   s256 sLabel;
 
   if (StrLib::bContains(sLine->azChar(), "__L_LABEL_INDEX_DEREF__")) {
@@ -427,7 +428,7 @@ void CodeSynthUtils::vReplaceLabelIndex(Stz* sLine, OpSketch* pOpSketch)
     bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_INDEX_RETURN__", sLabel.azChar());
     RASSERT(bResult);
   }
-  */
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,6 +455,12 @@ void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azChar(), "__L_LABEL_LOOP__")) {
     RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
     bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_LOOP__", pOpSketch->m_sLabelLoop.azChar());
+    RASSERT(bResult);
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__L_LABEL_OUTER_LOOP__")) {
+    RASSERT( ! pOpSketch->m_sLabelOuterLoop.bSame(""_Stz) );
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_OUTER_LOOP__", pOpSketch->m_sLabelOuterLoop.azChar());
     RASSERT(bResult);
   }
 }

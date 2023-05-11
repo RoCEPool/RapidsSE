@@ -26,7 +26,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
-  __L_LABEL_LOOP__:
+  __L_LABEL_OUTER_LOOP__:
 
   // marker-start
 
@@ -34,13 +34,12 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
   // INDEXJOIN-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //struct __STRUCT_FROM__ *p__STRUCT_FROM__;
+  __L_LABEL__:
+
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
   p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;
-
-  __L_LABEL__:
 
   // init indexJoin
   if (aDynamicT->m_iIndexJoinInit == 0) {
@@ -51,7 +50,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
+    goto __L_LABEL_OUTER_LOOP__;
   }
 
 // marker-end
@@ -66,7 +65,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   i8 iLeftOuterRow;
   i8 __KEY_KIND__;
 
-  __L_LABEL_LOOP__:
+  __L_LABEL_OUTER_LOOP__:
 
   // marker-start
 
@@ -91,7 +90,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
+    goto __L_LABEL_OUTER_LOOP__;
   }
 // marker-end
 }
@@ -113,6 +112,7 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   static const i8 C_CRW_HEADBYTES = 32;
   static const i8 C_CRW_FIRSTHEAD = 640;
 
+  __L_LABEL_OUTER_LOOP__:
   __L_LABEL_LOOP__:
 
   // marker-start
@@ -121,14 +121,14 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
     aDynamicT->m_iProcessRow = 0;
-    goto __L_LABEL_LOOP__;
+    goto __L_LABEL_OUTER_LOOP__;
   }
 
   // find the upper bound entry
   aDynamicT->m_xIndexInfoJ.m_aEntUpper = aIndexTree_positionLE(
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
 
-  L_IndexDeref:
+  __L_LABEL_INDEX_DEREF__:
   aDynamicT->m_iProcessRow = 1;
 
   printf("M5\n");
@@ -136,10 +136,10 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 
     aDynamicT->m_iProcessRow = 0;
     printf("M6\n");
-    goto __L_LABEL_LOOP__;
+    goto __L_LABEL_OUTER_LOOP__;
   }
   printf("M7\n");
-  aHeadLineSav = aHeadLine;
+  //aHeadLineSav = aHeadLine;
 
   // dereference the entry
   iBufferJ = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;

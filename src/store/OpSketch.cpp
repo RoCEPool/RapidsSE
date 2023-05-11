@@ -72,6 +72,7 @@ OpSketch::OpSketch(void)
   m_sLabel     = ""_Stz;
   m_sLabelNext = ""_Stz;
   m_sLabelLoop = ""_Stz;
+  m_sLabelOuterLoop = ""_Stz;
 
   // stencils
   m_eStencilFrom = SR_NONE;
@@ -111,7 +112,7 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  m_iOperatorNo = C_UNKNOWN;
+  m_iOperatorNo = iOperatorNo;
 
   m_eSketchKind = eSketchKind;
   m_eHandlerKind = eHandlerKind;
@@ -128,6 +129,7 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_sLabel     = ""_Stz;
   m_sLabelNext = ""_Stz;
   m_sLabelLoop = ""_Stz;
+  m_sLabelOuterLoop = ""_Stz;
 
   // stencils
   m_eStencilFrom = eStencilIn;
@@ -1172,13 +1174,17 @@ void OpSketch::vGenerateStencilToStruct(u8 uSelectColumns) {
 /*----------------------------------------------------------------------------*/
 /* set the labels                                                             */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
+void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
   
   m_sLabel     = sLabel;
   m_sLabelNext = sLabelNext;
   m_sLabelLoop = sLabelLoop;
+  if (sLabelOuterLoop->bSame(""_Stz))
+     m_sLabelOuterLoop = sLabelLoop;
+  else
+    m_sLabelOuterLoop = sLabelOuterLoop;
 }
 
 /*----------------------------------------------------------------------------*/

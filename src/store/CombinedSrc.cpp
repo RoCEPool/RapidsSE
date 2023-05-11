@@ -307,7 +307,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
         vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz, pIndexFile);
-        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIJ"_Stz, "vInflateCrwCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexReturn"_Stz, pIndexFile);
 
         // close the indexJoin code fragments file

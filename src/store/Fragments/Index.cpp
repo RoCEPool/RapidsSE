@@ -108,6 +108,23 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
       __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntKey);
 #endif
 
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexScanContinue-----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexScanContinue
+void vIndexScanContinue(Dynamic_T* aDynamicT) {
+
+  IndexInfo __INDEX_INFO__;
+
+  // marker-start
+
   if ( ! __INDEX_INFO__.m_aEntInt )
     goto L_Return;
 
@@ -159,7 +176,7 @@ void vIndexCheckUpper(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  L_IndexDeref:
+  __L_LABEL_INDEX_DEREF__:
 
   // reached upper bound ?
   if (__INDEX_INFO__.m_aEntInt == __INDEX_INFO__.m_aEntUpper) {
@@ -190,16 +207,17 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
   RowInfo __ROW_INFO_TO__;
 
   // marker-start
-  goto L__IndexScanRet;
+  goto __L_LABEL_INDEX_RETURN__;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // INFLATE-CRW-RET
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  L__IndexScanRet:
+  __L_LABEL_INDEX_RETURN__:
+  printf("L_indexReturn\n");
 
-  aHeadLine = aHeadLineSav;
-
+  //aHeadLine = aHeadLineSav;
+  aDynamicT->m_iJoinedRows++;   // ?? only for join
   goto __L_LABEL_NEXT__;
 
   __L_LABEL_LOOP__:
@@ -209,12 +227,12 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
   // move to next entry
   __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
-  goto L_IndexDeref;
+  goto __L_LABEL_INDEX_DEREF__;
 
   // marker-end
 
   __L_LABEL_NEXT__:
-  L_IndexDeref:
+  __L_LABEL_INDEX_DEREF__:
 
   return;
 }

@@ -212,6 +212,33 @@ rows:
   (23,'UNITED KINGDOM',3,3,'EUROPE','ly final courts cajole furiously final excuse')
   (24,'UNITED STATES',1,1,'AMERICA','hs use ironic, even requests. s')
 
+//------------------------------------------------------------------------------
+// INDEXSCAN + INDEXJOIN
+//------------------------------------------------------------------------------
+pipeline _unnamed_
+  begin
+
+  stage S00 on origin :
+    start
+    | pulse     once
+    | next
+
+  stage S02 on all partitions :
+    indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
+    | indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+    | dynamic_v2  0
+    | next
+
+  stage S04 on origin :
+    output
+    | sink
+    | first
+  end ;
+rows:
+  (2,'BRAZIL',1,'y alongside of the pending deposits. carefully special packages are about the ironic forges. slyly special ',1,'AMERICA','hs use ironic, even requests. s')
+  (3,'CANADA',1,'eas hang ironic, silent packages. slyly regular packages are furiously over the tithes. fluffily bold',1,'AMERICA','hs use ironic, even requests. s')
+  (4,'EGYPT',4,'y above the carefully unusual theodolites. final dugouts are quickly across the furiously regular d',4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
+  (5,'ETHIOPIA',0,'ven packages wake quickly. regu',0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
 
 //------------------------------------------------------------------------------
 // AGGREGATE - INTEGER

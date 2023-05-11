@@ -422,14 +422,14 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
     // generate code for indexScan OP
     if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
 
-      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupIndexJoin(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchIndexJoin(pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
+
+      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
 
       ePrevStencil_v2 = SR_TJ;
       continue;
@@ -1294,6 +1294,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
 
   s256 sLabel;
   s256 sLabelNext;
+  s256 sLabelOuterLoop;
 
   Stz* sFilterExpr = ""_Stz;
 
@@ -1320,7 +1321,8 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
-  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+  sLabelOuterLoop = sLabelLoop;
+  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
 
   // set the streamDefRht
   pOpSketch->vStreamDefRht(pStreamDefRht);
