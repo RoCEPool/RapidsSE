@@ -28,6 +28,8 @@ namespace STORE
 
     ~PipelineDef(void) noexcept(false);
 
+    Stz* szPipelineNm(void);
+    void vPipelineNm(Stz* szPipelineNm);
 
   protected:
     Footer* aFooter(void);
