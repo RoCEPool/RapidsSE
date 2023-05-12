@@ -43,6 +43,8 @@ OpDef::~OpDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
+  vDeleteAll();
+
   delete m_pStreamDef_arriving;
   delete m_pStreamDef_emitted;
 

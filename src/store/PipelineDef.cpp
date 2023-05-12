@@ -32,6 +32,7 @@ PipelineDef::~PipelineDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 
+  vDeleteAll();
 }
 
 

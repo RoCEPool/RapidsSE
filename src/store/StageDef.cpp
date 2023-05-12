@@ -34,6 +34,7 @@ StageDef::~StageDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
+  vDeleteAll();
 }
 
 

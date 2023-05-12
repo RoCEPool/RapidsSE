@@ -182,6 +182,8 @@ namespace STORE
     static void vValidate(CardIter* pCI);
     static void vValidate_SubQuery(CardIter* pCI);
 
+    Bench* pBench(void);
+
     i8  i_Board(void);
     void vBoardNo(i8 i_Board);
     eBK eBoardKind(void);
