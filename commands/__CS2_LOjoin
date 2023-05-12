@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __CS1_LOjoin: Code Synthesizer V1                                            */
+/* __CS2_LOjoin: Code Synthesizer V2                                          */
 /*============================================================================*/
 create table L (l_int_col0 integer);
 create table R(r_int_col0 integer, r_vch_col1 varchar);
@@ -8,10 +8,8 @@ create index R_idx on R(r_int_col0);
 load L "../DATA/Joins/L.csv";
 load R "../DATA/Joins/R.csv";
 
-/transliterated
-/glean_interactive
-/weaved
-select * from L left outer join R on l_int_col0 = r_int_col0;
+///weaved
+//select * from L left outer join R on l_int_col0 = r_int_col0;
 
 /ccode pipeline unamed
 begin

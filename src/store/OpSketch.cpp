@@ -92,6 +92,8 @@ OpSketch::OpSketch(void)
   m_pUpperStack  = nullptr;
   m_pInitStack   = nullptr;
 
+  m_bLeftOuter = false;
+
   m_eLowerIP = IP_NONE;
   m_eUpperIP = IP_NONE;
 
@@ -165,6 +167,8 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
       m_pInitStack->vPushStz(xTypeValueArea.szStz());
     }
   }
+
+  m_bLeftOuter = false;
 
   m_eLowerIP = IP_NONE;
   m_eUpperIP = IP_NONE;
@@ -327,8 +331,6 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
   i8 iGkyCols = 0;
   i8 nExpr;
   eDM eCastType;
-
-  bool bLeftOuter = false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
@@ -517,7 +519,7 @@ void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // left_outer
     if (pTkn->bSame("left_outer"_Stz)) {
-      bLeftOuter = true;
+      m_bLeftOuter = true;
       continue;
     }
 
@@ -1591,13 +1593,13 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   }
 
   // if column nullable generate null check expressions
-  if (pColumn->bIsNullable()) {
-    sOperation.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
-    m_pNullStack->vPushStz(sOperation);
-    sOperation.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
-    m_pNullStack->vPushStz(sOperation);
-    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
-  }
+//  if (pColumn->bIsNullable()) {
+//    sOperation.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+//    m_pNullStack->vPushStz(sOperation);
+//    sOperation.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
+//    m_pNullStack->vPushStz(sOperation);
+//    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

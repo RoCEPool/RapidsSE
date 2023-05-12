@@ -206,6 +206,8 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
   IndexInfo __INDEX_INFO__;
   RowInfo __ROW_INFO_TO__;
 
+  i8 iLeftOuterRow;
+
   // marker-start
   goto __L_LABEL_INDEX_RETURN__;
 
@@ -214,15 +216,21 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   __L_LABEL_INDEX_RETURN__:
-  printf("L_indexReturn\n");
 
-  //aHeadLine = aHeadLineSav;
-  aDynamicT->m_iJoinedRows++;   // ?? only for join
+  aHeadLine = aHeadLineSav;
+  aDynamicT->m_iJoinedRows++;
+
   goto __L_LABEL_NEXT__;
 
   __L_LABEL_LOOP__:
 
   __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+
+  // check if last row was a leftOuter
+  if ( iLeftOuterRow ) {
+    iLeftOuterRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
 
   // move to next entry
   __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
@@ -233,6 +241,7 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
 
   __L_LABEL_NEXT__:
   __L_LABEL_INDEX_DEREF__:
+  __L_LABEL_OUTER_LOOP__:
 
   return;
 }

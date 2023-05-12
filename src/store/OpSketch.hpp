@@ -77,6 +77,8 @@ namespace STORE
     TypedStack* m_pUpperStack;
     TypedStack* m_pInitStack;
 
+    bool m_bLeftOuter;
+
     eIP m_eLowerIP;
     eIP m_eUpperIP;
 

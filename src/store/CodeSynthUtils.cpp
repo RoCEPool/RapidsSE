@@ -100,6 +100,10 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
           sLine = sReplacedLine;
 
         // cater to multiple replaces of IndexInfo
+        if (bReplaceRowInfoFrom(sLine, sReplacedLine, pOpSketch) )
+          sLine = sReplacedLine;
+
+        // cater to multiple replaces of IndexInfo
         if (bReplaceIndexInfo(sLine, sReplacedLine, pOpSketch) )
           sLine = sReplacedLine;
 
@@ -510,6 +514,59 @@ void CodeSynthUtils::vReplaceColumnsToInflate(Stz* sLine, OpSketch* pOpSketch)
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_TO_INFLATE_", sColumnsToInflate.azChar());
     RASSERT(bResult);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bReplaceRowInfoFrom(Stz* sLine, Stz* sReplacedLine, OpSketch* pOpSketch)
+{
+  _static_
+
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azChar(), "__ROW_INFO_FROM__")) {
+    RASSERT( pOpSketch->m_eStencilFrom != SR_NONE );
+    switch(pOpSketch->m_eStencilFrom) {
+      case SR_AT:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoAT");
+        RASSERT(bResult);
+        break;
+      case SR_IJ:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoIJ");
+        RASSERT(bResult);
+        break;
+      case SR_IT:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoIT");
+        RASSERT(bResult);
+        break;
+      case SR_PL:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoPL");
+        RASSERT(bResult);
+        break;
+      case SR_PO:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        RASSERT(bResult);
+        break;
+      case SR_PT:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        RASSERT(bResult);
+        break;
+      case SR_TO:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        RASSERT(bResult);
+        break;
+      case SR_TJ:
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTJ");
+        RASSERT(bResult);
+        break;
+      default:
+        NEVER_REACH;
+    }
+    return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

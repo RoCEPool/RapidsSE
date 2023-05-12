@@ -74,7 +74,7 @@ success
 create index R_idx on R(r_int_col0);
 success
 
-// left outer join
+// join
 pipeline unamed
 begin
   stage stageStart on origin :
