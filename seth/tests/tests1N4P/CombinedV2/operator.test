@@ -597,10 +597,10 @@ create index R_idx on R(r_int_col0);
 load L "../DATA/Joins/L.csv";
 load R "../DATA/Joins/R.csv";
 
-///weaved
-//select * from L left outer join R on l_int_col0 = r_int_col0;
 
-/ccode pipeline unamed
+// LEFT_OUTER with scan
+
+pipeline unamed
 begin
   stage stageStart on origin :
     start
@@ -618,6 +618,28 @@ begin
     | first
 end ;
 rows: 48
+
+
+// LEFT_OUTER with indexscan
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0142 on all partitions :
+    indexScan L L_idx "LBOUND $I1 2 >"
+    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | dynamic_v2 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+rows: 39
 
 //------------------------------------------------------------------------------
 // drop the tables

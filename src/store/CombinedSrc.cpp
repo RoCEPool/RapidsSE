@@ -256,6 +256,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pCodeFile);
 
+        // No lower bound
         if (pOpSketch->m_eLowerIP == IP_NONE) {
           vAppendCodeFragment(pOpSketch, "vIndexPositionBegin"_Stz, pIndexFile);
         }
@@ -269,10 +270,12 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           vGenerateExprCode(pOpSketch->m_pUpperStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
           vAppendCodeFragment(pOpSketch, "vIndexPositionUpper"_Stz, pIndexFile);
+          vAppendCodeFragment(pOpSketch, "vIndexDereferenceUB"_Stz, pIndexFile);
+        }
+        else {
+          vAppendCodeFragment(pOpSketch, "vIndexDereferenceLB"_Stz, pIndexFile);
         }
 
-        vAppendCodeFragment(pOpSketch, "vIndexCheckUpper"_Stz, pIndexFile);
-        vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz, pIndexFile);
         vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexReturn"_Stz, pIndexFile);
 
@@ -316,16 +319,16 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
           vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
           vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pCodeFile);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO4"_Stz, pCodeFile);
+          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
         }
         else {
           vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
         }
 
-        vAppendCodeFragment(pOpSketch, "vIndexDereference"_Stz, pIndexFile);
+        vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, "vInflateCrwCol"_Stz);
-        vAppendCodeFragment(pOpSketch, "vIndexReturn"_Stz, pIndexFile);
+        vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pCodeFile);
 
         // close the indexJoin code fragments file
         pCodeFile->vClose();

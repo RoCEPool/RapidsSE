@@ -165,7 +165,6 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 // function-vIndexJoinContinueLO0
 void vIndexJoinContinueLO0(Dynamic_T* aDynamicT) {
 
-  i8 iLeftOuterRow;
   // marker-start
 
   printf("M1\n");
@@ -190,6 +189,7 @@ void vIndexJoinContinueLO1(Dynamic_T* aDynamicT) {
 
       aDynamicT->m_iProcessRow = 1;
       iLeftOuterRow = 1;
+      printf("leftOuter = 1\n");
 
       // marker-end
 
@@ -243,37 +243,111 @@ void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexJoinContinueLO4 ---------------------------------------------------*/
+/*-- vIndexJoinDereference ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vIndexJoinContinueLO4
-void vIndexJoinContinueLO4(Dynamic_T* aDynamicT) {
+// function-vIndexJoinDereference
+void vIndexJoinDereference(Dynamic_T* aDynamicT) {
 
-  void *aHeadLineSav;
-  void *aHeadLine;
-  void *aCrwJ;
+#include "vFLAT_Parameters_v2.h"
 
-  i8 iBufferJ;
-  i8 iItemJ;
-  i8 iLeftOuterRow;
+  i8 iIndexBuffer;
+  i8 iIndexItem;
+  i8 i_BaseOffsetDataX;
+  char* aIndexCrw;
 
-  static const void *C_ADR_REGION = (void *) 0x204800000000;
+  IndexInfo __INDEX_INFO__;
+  RowInfo   __ROW_INFO_TO__;
+  i8 __COLUMNS_TO_INFLATE_;
+  i8 __COLUMNS_INFLATED__;
+
+  static const void* C_ADR_REGION = (void*)0x204800000000;
   static const i8 C_CRW_HEADBYTES = 32;
   static const i8 C_CRW_FIRSTHEAD = 640;
 
+  L_InflateAColumn:
+
   // marker-start
+
+  // process the row
+  aDynamicT->m_iProcessRow = 1;
 
   aHeadLineSav = aHeadLine;
 
   // dereference the entry
-  iBufferJ = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;
-  iItemJ = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uItem;
-  aCrwJ = ((char *) C_ADR_REGION + iBufferJ * C_1MB + C_CRW_FIRSTHEAD + iItemJ * C_CRW_HEADBYTES);
+  iIndexBuffer = __INDEX_INFO__.m_aEntInt->Rrf.m_uBuffer;
+  iIndexItem   = __INDEX_INFO__.m_aEntInt->Rrf.m_uItem;
+  aIndexCrw    = ( (char*)C_ADR_REGION + iIndexBuffer * C_1MB + C_CRW_FIRSTHEAD+ iIndexItem * C_CRW_HEADBYTES );
+
+  // inflate the derefenced entry
+  aHeadLine = (struct HeadLine_T *)aIndexCrw;
+  auMetaCode = META_AREA(aHeadLine);
+  ayDstByte = (byte*)__ROW_INFO_TO__.m_aRowCellArray + 8*__COLUMNS_INFLATED__;
+  acStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  racStrArea = (char*)__ROW_INFO_TO__.m_acStrArea;
+  eStrInflateRule = SI_STRAREA_ADR;
+  i_BaseOffsetDataX = C_1B  + C_8B  + __COLUMNS_TO_INFLATE_;
+  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetDataX);
 
   // marker-end
 
   __L_LABEL_NEXT__:
 
   L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexJoinReturn --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinReturn
+void vIndexJoinReturn(Dynamic_T* aDynamicT) {
+
+  void* aHeadLine;
+  void* aHeadLineSav;
+  void* aSubReturnLabel;
+
+  IndexInfo __INDEX_INFO__;
+  RowInfo __ROW_INFO_TO__;
+
+  i8 iLeftOuterRow;
+
+  // marker-start
+  goto __L_LABEL_INDEX_RETURN__;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INFLATE-CRW-RET
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  __L_LABEL_INDEX_RETURN__:
+
+  aHeadLine = aHeadLineSav;
+  aDynamicT->m_iJoinedRows++;
+
+  goto __L_LABEL_NEXT__;
+
+  __L_LABEL_LOOP__:
+
+  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+
+  // check if last row was a leftOuter
+  if ( iLeftOuterRow ) {
+    printf("got leftOuter \n");
+    iLeftOuterRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  // move to next entry
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+      &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
+  goto __L_LABEL_INDEX_DEREF__;
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+  __L_LABEL_INDEX_DEREF__:
+  __L_LABEL_OUTER_LOOP__:
+
   return;
 }
 
