@@ -150,8 +150,8 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  s2K sArg;
   return;
+  s2K sArg;
 
   ArgDef* pArgDef = new ArgDef;
 
@@ -159,25 +159,24 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
 
   switch (eCard) {
 
-    case CK_ABSJOIN:      p_OP->vCraftArg(sArg); break;
-    case CK_AGGREG:       p_OP->vCraftArg(sArg); break;
-    case CK_CAST:         p_OP->vCraftArg(sArg); break;
-    case CK_COMBINED:     p_OP->vCraftArg(sArg); break;
-    case CK_CROSSJOIN:    p_OP->vCraftArg(sArg); break;
-    case CK_FILTER:       p_OP->vCraftArg(sArg); break;
-    case CK_GBYAGG:       p_OP->vCraftArg(sArg); break;
-    case CK_HASH:         p_OP->vCraftArg(sArg); break;
-    case CK_HAVING:       p_OP->vCraftArg(sArg); break;
-    case CK_INDEXJOIN:    p_OP->vCraftArg(sArg); break;
-    case CK_INDEXSCAN:    p_OP->vCraftArg(sArg); break;
-    case CK_KEYEXISTS:    p_OP->vCraftArg(sArg); break;
-    case CK_KEYNOTEXISTS: p_OP->vCraftArg(sArg); break;
-    case CK_LIMIT:        p_OP->vCraftArg(sArg); break;
-    case CK_ORDAGG:       p_OP->vCraftArg(sArg); break;
-    case CK_PROJECT:      p_OP->vCraftArg(sArg); break;
-    case CK_SCAN:         p_OP->vCraftArg(sArg); break;
-    case CK_SORT:         p_OP->vCraftArg(sArg); break;
-    case CK_WHERE:        p_OP->vCraftArg(sArg); break;
+    case CK_AGGREG:       p_OP->vRpnAggreg   (sArg, _pCard_Aggreg(p_OP));    break;
+    case CK_CAST:         break;
+    case CK_COMBINED:     p_OP->vRpnCombined (sArg, _pCard_Combined(p_OP));  break;
+    case CK_CROSSJOIN:    p_OP->vRpnCrossJoin(sArg, _pCard_CrossJoin(p_OP)); break;
+    case CK_FILTER:       p_OP->vRpnFilter   (sArg, _pCard_Filter(p_OP));    break;
+    case CK_GBYAGG:       p_OP->vRpnGbyAgg   (sArg, _pCard_GbyAgg(p_OP));    break;
+    case CK_HASH:         break;
+    case CK_HAVING:       p_OP->vRpnHaving   (sArg, _pCard_Having(p_OP));    break;
+    case CK_INDEXJOIN:    p_OP->vRpnIndexJoin(sArg, _pCard_Index(p_OP));     break;
+    case CK_INDEXSCAN:    p_OP->vRpnIndexScan(sArg, _pCard_Index(p_OP));     break;
+    case CK_KEYEXISTS:    p_OP->vRpnKeyExists(sArg, _pCard_KeyExists(p_OP)); break;
+    case CK_KEYNOTEXISTS: p_OP->vRpnKeyNotExists(sArg, _pCard_KeyNotExists(p_OP)); break;
+    case CK_LIMIT:        p_OP->vRpnLimit    (sArg, _pCard_Limit(p_OP));     break;
+    case CK_ORDAGG:       p_OP->vRpnOrdAgg   (sArg, _pCard_OrdAgg(p_OP));    break;
+    case CK_PROJECT:      p_OP->vRpnProject  (sArg, _pCard_Project(p_OP));   break;
+    case CK_SCAN:         p_OP->vRpnScan     (sArg, _pCard_Scan(p_OP));      break;
+    case CK_SORT:         p_OP->vRpnSort     (sArg, _pCard_Sort(p_OP));      break;
+    case CK_WHERE:        p_OP->vRpnWhere    (sArg, _pCard_Where(p_OP));     break;
 
     default:
       vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
