@@ -34,7 +34,7 @@ namespace STORE
 
     StageDef*  pCraftStageDef(Card_OP* p_OP);
     OpDef*     pCraftOpDef(Card_OP* p_OP);
-    ArgDef*    pCraftArgDef(Card_OP* p_OP, OpDef* pOpDef);
+    void       vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef);
 
   protected:
     Footer* aFooter(void);

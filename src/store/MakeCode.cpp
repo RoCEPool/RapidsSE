@@ -109,7 +109,7 @@ PipelineDef* MakeCode::pCraftPipelineDef(Board* pBoard)
     }
 
   }
-  
+
   return pPipelineDef;
 }
 
@@ -138,21 +138,55 @@ OpDef* MakeCode::pCraftOpDef(Card_OP* p_OP)
 
   pOpDef->vOpNm(p_OP->szCardNm());
 
+  vCraftArgDefs(p_OP,pOpDef);
+
   return pOpDef;
 }
 
 /*----------------------------------------------------------------------------*/
 /* craft arg def                                                              */
 /*----------------------------------------------------------------------------*/
-ArgDef* MakeCode::pCraftArgDef(Card_OP* p_OP, OpDef* pOpDef)
+void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
+  s2K sArg;
+  return;
+
   ArgDef* pArgDef = new ArgDef;
 
-  return pArgDef;
-}
+  eCK eCard = p_OP->eCard();
 
+  switch (eCard) {
+
+    case CK_ABSJOIN:      p_OP->vCraftArg(sArg); break;
+    case CK_AGGREG:       p_OP->vCraftArg(sArg); break;
+    case CK_CAST:         p_OP->vCraftArg(sArg); break;
+    case CK_COMBINED:     p_OP->vCraftArg(sArg); break;
+    case CK_CROSSJOIN:    p_OP->vCraftArg(sArg); break;
+    case CK_FILTER:       p_OP->vCraftArg(sArg); break;
+    case CK_GBYAGG:       p_OP->vCraftArg(sArg); break;
+    case CK_HASH:         p_OP->vCraftArg(sArg); break;
+    case CK_HAVING:       p_OP->vCraftArg(sArg); break;
+    case CK_INDEXJOIN:    p_OP->vCraftArg(sArg); break;
+    case CK_INDEXSCAN:    p_OP->vCraftArg(sArg); break;
+    case CK_KEYEXISTS:    p_OP->vCraftArg(sArg); break;
+    case CK_KEYNOTEXISTS: p_OP->vCraftArg(sArg); break;
+    case CK_LIMIT:        p_OP->vCraftArg(sArg); break;
+    case CK_ORDAGG:       p_OP->vCraftArg(sArg); break;
+    case CK_PROJECT:      p_OP->vCraftArg(sArg); break;
+    case CK_SCAN:         p_OP->vCraftArg(sArg); break;
+    case CK_SORT:         p_OP->vCraftArg(sArg); break;
+    case CK_WHERE:        p_OP->vCraftArg(sArg); break;
+
+    default:
+      vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
+             __FILE__, (i8)__LINE__,(i8) eCard, aCK[eCard]);
+      NEVER_REACH;
+  }
+
+  return;
+}
 
 /*============================================================================*/
 /* end                                                                        */

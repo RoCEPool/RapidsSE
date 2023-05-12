@@ -210,7 +210,7 @@ void Weaver::vOp(Card* pCard)
 
     case CK_ABSJOIN:      vArgAbsJoin      (sOpArgs,_pCard_AbsJoin(pCard));      break;
     case CK_AGGREG:       vArgAggreg       (sOpArgs,_pCard_Aggreg(pCard));       break;
-    case CK_CAST:         vArgCast         (sOpArgs, _pCard_Cast(pCard));        break;
+    case CK_CAST:         vArgCast         (sOpArgs,_pCard_Cast(pCard));         break;
     case CK_COMBINED:     vArgCombined     (sOpArgs,_pCard_Combined(pCard));     break;
     case CK_CROSSJOIN:    vArgCrossJoin    (sOpArgs,_pCard_CrossJoin(pCard));    break;
     case CK_FILTER:       vArgFilter       (sOpArgs,_pCard_Filter(pCard));       break;
