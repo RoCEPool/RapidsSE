@@ -3804,6 +3804,49 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.castTest)')
 
 
+
+// Casting a timestamp literal to a date
+EXPLAIN WITH_TYPES SELECT CAST('2020-11-12 11:12:13.123456',DATE) FROM castTest LIMIT 1;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(''2020-11-12 11:12:13.123456'',DATE) FROM castTest LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = DATE ''2020-11-12'' ; Ordinal Expr = DATE ''2020-11-12'') ; type: DATE
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.castTest)')
+
+
+// Casting a timestamp literal to a time
+EXPLAIN WITH_TYPES SELECT CAST('2020-11-12 11:12:13.123456',TIME) FROM castTest LIMIT 1;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(''2020-11-12 11:12:13.123456'',TIME) FROM castTest LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = TIME ''11:12:13'' ; Ordinal Expr = TIME ''11:12:13'') ; type: TIME
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.castTest)')
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
