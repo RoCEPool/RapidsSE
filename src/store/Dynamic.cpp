@@ -96,28 +96,28 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoPO.m_acStrAreaSav = nullptr;
 
   // index scan T
-  m_xDynamicT.m_xIndexInfoT.m_aIndex     = nullptr;
-  m_xDynamicT.m_xIndexInfoT.m_aIndexTree = nullptr;
-  m_xDynamicT.m_xIndexInfoT.m_aIndexDef  = nullptr;
-  m_xDynamicT.m_xIndexInfoT.m_aEntWrk    = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
-  m_xDynamicT.m_xIndexInfoT.m_aEntKey    = ((EntWrk*)m_xDynamicT.m_xIndexInfoT.m_aEntWrk)->aKey();
-  m_xDynamicT.m_xIndexInfoT.m_aEntBottom = nullptr;
-  m_xDynamicT.m_xIndexInfoT.m_aEntUpper  = nullptr;
-  m_xDynamicT.m_xIndexInfoT.m_aEntBuffer = nullptr;
-  m_xDynamicT.m_xIndexInfoT.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();
+  m_xDynamicT.m_xIndexInfoT.m_aIndex      = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aIndexTree  = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aIndexDef   = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aEntWrk     = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
+  m_xDynamicT.m_xIndexInfoT.m_aEntKey     = ((EntWrk*)m_xDynamicT.m_xIndexInfoT.m_aEntWrk)->aKey();
+  m_xDynamicT.m_xIndexInfoT.m_aEntBottom  = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aEntUpper   = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aEntBuffer  = nullptr;
+  m_xDynamicT.m_xIndexInfoT.m_aEntInt     = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();
 
   // index join with J
   m_xDynamicT.m_iIndexJoinInit = 0;
-  m_xDynamicT.m_iJoinedRows = 0;
-  m_xDynamicT.m_xIndexInfoJ.m_aIndex     = nullptr;
-  m_xDynamicT.m_xIndexInfoJ.m_aIndexTree = nullptr;
-  m_xDynamicT.m_xIndexInfoJ.m_aIndexDef  = nullptr;
-  m_xDynamicT.m_xIndexInfoJ.m_aEntWrk    = (void*)&pLogicUnit->m_oEntWrkJ;
-  m_xDynamicT.m_xIndexInfoJ.m_aEntKey    = ((EntWrk*)m_xDynamicT.m_xIndexInfoJ.m_aEntWrk)->aKey();
-  m_xDynamicT.m_xIndexInfoJ.m_aEntBottom = nullptr;
-  m_xDynamicT.m_xIndexInfoJ.m_aEntUpper  = nullptr;
-  m_xDynamicT.m_xIndexInfoJ.m_aEntBuffer = nullptr;
-  m_xDynamicT.m_xIndexInfoJ.m_aEntInt    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
+  m_xDynamicT.m_iJoinedRows    = 0;
+  m_xDynamicT.m_xIndexInfoJ.m_aIndex      = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aIndexTree  = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aIndexDef   = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntWrk     = (void*)&pLogicUnit->m_oEntWrkJ;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntKey     = ((EntWrk*)m_xDynamicT.m_xIndexInfoJ.m_aEntWrk)->aKey();
+  m_xDynamicT.m_xIndexInfoJ.m_aEntBottom  = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntUpper   = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntBuffer  = nullptr;
+  m_xDynamicT.m_xIndexInfoJ.m_aEntInt     = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
 
   // payload (gby/srt/top)
   m_xDynamicT.m_aiPayload      = nullptr;

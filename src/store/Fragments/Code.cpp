@@ -711,6 +711,27 @@ void vCopyCol(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vCopyNulls --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vCopyNulls
+void vCopyNulls(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_TO__ {
+    union Int_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vTubVchCol --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vTubVchCol
@@ -761,6 +782,10 @@ void vTubVchCol(Dynamic_T* aDynamicT) {
 
     // update the tub string size
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
+
+#ifdef WITH_TINYC
+    vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
+#endif
   }
 
   // marker-end
@@ -823,11 +848,12 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
 // function-vTubRowStr
 void vTubRowStr(Dynamic_T* aDynamicT) {
 
+  {
   // marker-start
 #ifdef WITH_TINYC
-  vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
+    vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif
-
+  }
   // marker-end
 }
 
