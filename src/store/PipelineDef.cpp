@@ -18,7 +18,7 @@ __aFooterFunction(PipelineDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PipelineDef::PipelineDef(void)
-    : ListNL_t<StageDef>(CN_PIPELINEDEF)
+    : Object(CN_PIPELINEDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINEDEF, _FOOTER_);
 

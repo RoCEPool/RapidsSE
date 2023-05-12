@@ -254,6 +254,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PLANOPERAND,
   /* */ CN_POT,
   /* */ CN_PORT,
+  /* */ CN_PPY,
   /* */ CN_PREDICATE,
   /* */ CN_PREDICATEVEC,
   /* */ CN_PRIMITIVENODE,
@@ -376,6 +377,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SUBCALL,
   /* */ CN_SUBQUERY,
   /* */ CN_SUBRETURN,
+  /* */ CN_SYMBOL,
   /* */ CN_SYSCALL,
   /* */ CN_SYSMETRICS,
   /* */ CN_SYSREPORT,
@@ -697,6 +699,7 @@ static Stz* aCN[]
   /* */ "PLANOPERAND"_Stz,          // CN_PLANOPERAND
   /* */ "POT"_Stz,                  // CN_POT
   /* */ "PORT"_Stz,                 // CN_PORT
+  /* */ "PPY"_Stz,                  // CN_PPY
   /* */ "PREDICATE"_Stz,            // CN_PREDICATE
   /* */ "PREDICATEVEC"_Stz,         // CN_PREDICATEVEC
   /* */ "PRIMITIVENODE"_Stz,        // CN_PRIMITIVENODE
@@ -819,6 +822,7 @@ static Stz* aCN[]
   /* */ "SUBCALL"_Stz,              // CN_SUBCALL
   /* */ "SUBQUERY"_Stz,             // CN_SUBQUERY
   /* */ "SUBRETURN"_Stz,            // CN_SUBRETURN
+  /* */ "SYMBOL"_Stz,               // CN_SYMBOL
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
   /* */ "SYSREPORT"_Stz,            // CN_SYSREPORT

@@ -11,20 +11,37 @@
 #include "Index.hpp"       // TODO: remove
 
 /*----------------------------------------------------------------------------*/
+/*-- Lifecycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__aFooterFunction(Symbol)
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Symbol::Symbol(void)
+: Object(CN_SYMBOL)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   m_pProperties = nullptr;
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Symbol::Symbol(Stz* szArg)
+    : Object(CN_SYMBOL)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   m_sSymbol = szArg;
   m_pProperties = nullptr;
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,6 +49,8 @@ Symbol::Symbol(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 void Symbol::operator =(Stz* szArg)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   m_sSymbol = szArg;
 }
 
@@ -40,6 +59,8 @@ void Symbol::operator =(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 void Symbol::operator =(Symbol* pSymbol)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   m_sSymbol = pSymbol->m_sSymbol;
 
   if (pSymbol->m_pProperties) {
@@ -59,6 +80,8 @@ void Symbol::operator =(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 void Symbol::operator =(Symbol& rxSymbol)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   m_sSymbol = rxSymbol.m_sSymbol;
 
   if (rxSymbol.m_pProperties) {
@@ -78,6 +101,7 @@ void Symbol::operator =(Symbol& rxSymbol)
 /*----------------------------------------------------------------------------*/
 Symbol::operator Stz*(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return m_sSymbol.szStz();
 }
@@ -111,6 +135,8 @@ bool Symbol::b_IsSubQueryName(BASE::Stz *szStz)
 /*----------------------------------------------------------------------------*/
 eRO Symbol::eEvalRelnOp(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
        if (m_sSymbol.bSame("<"_Stz))   return RO_LESS_THAN;
   else if (m_sSymbol.bSame("<="_Stz))  return RO_LESS_EQUAL;
   else if (m_sSymbol.bSame("="_Stz))   return RO_EQUAL_TO;
@@ -127,6 +153,8 @@ eRO Symbol::eEvalRelnOp(void)
 /*----------------------------------------------------------------------------*/
 eQO Symbol::eEvalSubQryOp(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
        if (m_sSymbol.bSame("exists"_Stz))    return QO_EXISTS_OP;
   else if (m_sSymbol.bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
   else if (m_sSymbol.bSame("in"_Stz))        return QO_IN_OP;
@@ -140,6 +168,8 @@ eQO Symbol::eEvalSubQryOp(void)
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iExtractOrdinal(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   i8 i_Col = StrLib::iGleanInt(m_sSymbol.azChar());
 
   return i_Col;
@@ -150,6 +180,8 @@ i8 Symbol::iExtractOrdinal(void)
 /*----------------------------------------------------------------------------*/
 char Symbol::cExtractTableSynonym(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
@@ -168,6 +200,7 @@ char Symbol::cExtractTableSynonym(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsAggOp(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
        if (m_sSymbol.bSame("avg"_Stz))      return true;
   else if (m_sSymbol.bSame("count"_Stz))    return true;
@@ -185,6 +218,8 @@ bool Symbol::bIsAggOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsBoolFn(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
        if (m_sSymbol.bSame("between"_Stz))         return true;
   else if (m_sSymbol.bSame("inList"_Stz))          return true;
   else if (m_sSymbol.bSame("isNull"_Stz))          return true;
@@ -203,6 +238,8 @@ bool Symbol::bIsBoolFn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsComma(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (m_sSymbol.bSame(","_Stz))
     return true;
   else
@@ -214,6 +251,8 @@ bool Symbol::bIsComma(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsIndexColumn(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
@@ -233,6 +272,8 @@ bool Symbol::bIsIndexColumn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsKeyOrdinal(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
@@ -252,6 +293,8 @@ bool Symbol::bIsKeyOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsParameterOrdinal(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
@@ -270,6 +313,8 @@ bool Symbol::bIsParameterOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsRelnOp(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (RO_NONE != eEvalRelnOp())
     return true;
 
@@ -281,6 +326,8 @@ bool Symbol::bIsRelnOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsStreamOrdinal(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
 
@@ -296,6 +343,8 @@ bool Symbol::bIsStreamOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryOp(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
        if (m_sSymbol.bSame("exists"_Stz))    return true;
   else if (m_sSymbol.bSame("in"_Stz))        return true;
   else if (m_sSymbol.bSame("notExists"_Stz)) return true;
@@ -309,6 +358,8 @@ bool Symbol::bIsSubQueryOp(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSubQueryColumn(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
@@ -333,6 +384,8 @@ bool Symbol::bIsSubQueryColumn(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsColumnOrdinal(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
@@ -352,6 +405,8 @@ bool Symbol::bIsColumnOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsValueOrdinal(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (bIsStreamOrdinal() || bIsColumnOrdinal())
     return true;
 
@@ -379,6 +434,8 @@ bool Symbol::bNeedsBrace(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSameAs(char cArg)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (*this->szSymbol()->azChar() == cArg)
     return true;
   else
@@ -390,6 +447,8 @@ bool Symbol::bSameAs(char cArg)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSameAs(Stz* szArg)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (this->szSymbol()->bSame(szArg))
     return true;
 
@@ -401,6 +460,8 @@ bool Symbol::bSameAs(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bSameAs(Symbol* pArg)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (this->szSymbol()->bSame(pArg->szSymbol()))
     return true;
 
@@ -412,6 +473,7 @@ bool Symbol::bSameAs(Symbol* pArg)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet(Symbol* pSymbol)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = pSymbol->m_sSymbol;
 
@@ -433,6 +495,8 @@ void Symbol::vSet(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSprint(Stz* szFormat, ...)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   s256 sSymbol;
 
   va_list xArgs;
@@ -448,6 +512,8 @@ void Symbol::vSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   vSprint("$I%lld"_Stz, iIdxColOdn);
 }
 
@@ -456,6 +522,8 @@ void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   vSprint("$K%lld"_Stz, iKeyOdn);
 }
 
@@ -464,6 +532,8 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   vSprint("$%lld"_Stz, iStmColOdn);
 }
 
@@ -472,6 +542,8 @@ void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   vSprint("__sq%02lld"_Stz, iSqNo);
 }
 
@@ -480,6 +552,8 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetTableColSyn(char cTblSyn)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   //((char*) m_sSymbol.azChar())[1] = cTblSyn;
 
   vSprint("%c"_Stz, cTblSyn);
@@ -490,6 +564,8 @@ void Symbol::vSetTableColSyn(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
 }
 
@@ -498,6 +574,8 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szType(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   Stz* sz = Y_szGet(P_Type);
 
   return sz;
@@ -508,6 +586,8 @@ Stz* Symbol::szType(void)
 /*----------------------------------------------------------------------------*/
 void Symbol:: vType(Stz* szType)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   Y_vSet(P_Type,szType);
 }
 
@@ -517,6 +597,8 @@ void Symbol:: vType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szSymbol(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   return m_sSymbol.szStz();
 }
 
@@ -525,6 +607,7 @@ Stz* Symbol::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vAll(Card* pCard_arg)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (!pCard_arg->pSymbol()->m_pProperties) {
     if (m_pProperties) {
@@ -545,6 +628,7 @@ void Symbol::Y_vAll(Card* pCard_arg)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vAll(TagSet* pProperties)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
@@ -557,6 +641,7 @@ void Symbol::Y_vAll(TagSet* pProperties)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vCut(Stz* szPpyNm)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return;
@@ -569,6 +654,7 @@ void Symbol::Y_vCut(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 i8 Symbol::Y_iGet(Stz* szPpyNm)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
@@ -583,6 +669,7 @@ i8 Symbol::Y_iGet(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 i8 Symbol::Y_iGet(i8 i_Ppy)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
@@ -595,8 +682,24 @@ i8 Symbol::Y_iGet(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
+Stz* Symbol::Y_szGet(i8 i_Ppy)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+
+  Stz* szPpy = m_pProperties->szValue(i_Ppy);
+
+  return szPpy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
 Stz* Symbol::Y_szGet(Stz* szPpyNm)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
@@ -609,22 +712,44 @@ Stz* Symbol::Y_szGet(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::Y_szGet(i8 i_Ppy)
+Ppy Symbol::Y_xGet(i8 i_Ppy)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Ppy xPpy;
 
   if (! m_pProperties)
-    return nullptr;
+    return xPpy;
 
-  Stz* szPpy = m_pProperties->szValue(i_Ppy);
+  xPpy = m_pProperties->szValue(i_Ppy);
 
-  return szPpy;
+  return xPpy;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+Ppy Symbol::Y_xGet(Stz* szPpyNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Ppy xPpy;
+
+  if (! m_pProperties)
+    return xPpy;
+
+  xPpy = m_pProperties->szValue(szPpyNm);
+
+  return xPpy;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* has given property ?                                                       */
 /*----------------------------------------------------------------------------*/
 bool Symbol::Y_bHas(Stz* szPpyNm)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return false;
@@ -637,6 +762,7 @@ bool Symbol::Y_bHas(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 i8 Symbol::Y_nPpy(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return 0;
@@ -651,6 +777,7 @@ i8 Symbol::Y_nPpy(void)
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::Y_szPpyNm(i8 i_Ppy)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
@@ -665,6 +792,7 @@ Stz* Symbol::Y_szPpyNm(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 eTN Symbol::Y_ePpyTkn(i8 i_Ppy)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     return TN_NONE;
@@ -679,6 +807,8 @@ eTN Symbol::Y_ePpyTkn(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 eTN Symbol::Y_ePpyTkn(Stz* szPpyNm)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (! m_pProperties)
     return TN_NONE;
 
@@ -696,6 +826,7 @@ eTN Symbol::Y_ePpyTkn(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vSet(Stz* szPpyNm)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
@@ -708,6 +839,7 @@ void Symbol::Y_vSet(Stz* szPpyNm)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
@@ -720,6 +852,8 @@ void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (! m_pProperties)
     m_pProperties = new TagSet;
 
@@ -736,6 +870,8 @@ void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vSet(Stz* szPpyNm, Symbol* pSymbol)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
   if (! pSymbol->Y_bHas(szPpyNm)) {
     Y_vCut(szPpyNm);
     return;
@@ -755,6 +891,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   s256 sPpy;
 

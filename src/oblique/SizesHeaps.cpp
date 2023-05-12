@@ -263,6 +263,8 @@
 #include "PipelineDef.hpp"
 #include "StageDef.hpp"
 #include "MakeCode.hpp"
+#include "Ppy.hpp"
+#include "Symbol.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -532,6 +534,7 @@ SizeHeap gxaSizeHeap[]
   {CN_PLANOPERAND,          sizeof(PlanOperand),            HT_T_TINY    , FILL },
   {CN_POT,                  sizeof(Pot),                    HT_T_LARGE   , FILL },
   {CN_PORT,                 sizeof(Port),                   HT_T_LARGE   , FILL },
+  {CN_PPY,                  sizeof(Ppy),                    HT_T_TINY    , FILL },
   {CN_PREDICATE,            sizeof(Predicate),              HT_T_TINY    , FILL },
   {CN_PREDICATEVEC,         sizeof(PredicateVec),           HT_T_MEDIUM  , FILL },
   {CN_PRIMITIVENODE,        sizeof(PrimitiveNode),          HT_V_TINY    , FILL },
@@ -654,6 +657,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SUBCALL,                  sizeof(SubCall),            HT_T_TINY    ,FILL },
   { CN_SUBQUERY,                 sizeof(SubQuery),           HT_T_TINY    ,FILL },
   { CN_SUBRETURN,                sizeof(SubReturn),          HT_T_TINY    ,FILL },
+  { CN_SYMBOL,                   sizeof(Symbol),             HT_T_TINY   ,FILL },
   { CN_SYSCALL,                  sizeof(SysCall),            HT_INVALID   ,FILL },
   { CN_SYSMETRICS,               sizeof(SysMetrics),         HT_T_TINY    ,FILL },
   { CN_SYSREPORT,                sizeof(SysReport),          HT_T_TINY    ,FILL },

@@ -18,7 +18,7 @@ __aFooterFunction(OpDef)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpDef::OpDef(void)
-    : ListNL_t<ArgDef>(CN_OPDEF)
+    : Object(CN_OPDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
@@ -30,7 +30,7 @@ OpDef::OpDef(void)
   m_pIndexDef_join      = nullptr;
   m_pIndexDef_gbyAgg    = nullptr;
 
-  m_pExprStack          = nullptr;
+  m_pPreExprStack          = nullptr;
   m_pColsReq            = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
@@ -49,7 +49,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pIndexDef_join;
   delete m_pIndexDef_gbyAgg;
 
-  delete m_pExprStack;
+  delete m_pPreExprStack;
 }
 
 

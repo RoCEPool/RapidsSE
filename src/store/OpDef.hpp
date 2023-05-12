@@ -8,10 +8,12 @@
 #include "ColsReq.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"
+#include "ListExo2_t.hpp"
 
 namespace STORE
 {
-  class OpDef : public ListNL_t<ArgDef>
+  class OpDef : public Object
+              , public ListExo2_t<ArgDef>
   {
   public:
     i8  m_i_Op;
@@ -23,7 +25,7 @@ namespace STORE
     IndexDef*  m_pIndexDef_join;
     IndexDef*  m_pIndexDef_gbyAgg;
 
-    IntStack*  m_pExprStack;
+    IntStack*  m_pPreExprStack;
     ColsReq*   m_pColsReq;
 
   protected:
