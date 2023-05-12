@@ -589,8 +589,45 @@ rows:
   (24,'UNITED STATES')
   (21,'VIETNAM')
 
+create table L (l_int_col0 integer);
+create table R(r_int_col0 integer, r_vch_col1 varchar);
+create index L_idx on L(l_int_col0);
+create index R_idx on R(r_int_col0);
+
+load L "../DATA/Joins/L.csv";
+load R "../DATA/Joins/R.csv";
+
+///weaved
+//select * from L left outer join R on l_int_col0 = r_int_col0;
+
+/ccode pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageMarker0142 on all partitions :
+    scan rapidsse public L
+    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | dynamic_v2 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+rows: 48
+
 //------------------------------------------------------------------------------
 // drop the tables
+
+drop table L;
+success
+
+drop table R;
+success
+
 drop table nation;
 success
 
@@ -601,6 +638,12 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
+
+  drop table L;
+  success
+
+  drop table R;
+  success
 
   drop table nation;
   mute

@@ -262,7 +262,7 @@ void vIndexJoinContinueLO4(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  //aHeadLineSav = aHeadLine;
+  aHeadLineSav = aHeadLine;
 
   // dereference the entry
   iBufferJ = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;
