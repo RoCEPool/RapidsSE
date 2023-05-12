@@ -24,9 +24,13 @@ namespace STORE
     void  operator delete(void*);
 
     StageDef(void);
-
     ~StageDef(void) noexcept(false);
 
+    i8 i_Stage(void);
+    void vStage(i8 i_Stage);
+
+    Stz* szStageNm(void);
+    void vStageNm(Stz* szStageNm);
 
   protected:
     Footer* aFooter(void);

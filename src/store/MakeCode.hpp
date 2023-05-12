@@ -6,6 +6,7 @@
 #include "Bench.hpp"
 #include "CardIter.hpp"
 
+#include "PipelineDef.hpp"
 
 namespace STORE
 {
@@ -13,7 +14,7 @@ namespace STORE
   {
   private:
 
-    CardIter* m_pCI;
+    CardIter*    m_pCI;
 
   protected:
     // must be last
@@ -27,6 +28,13 @@ namespace STORE
    ~MakeCode(void) noexcept(false);
 
     void vSynthesise(void);
+
+  private:
+    PipelineDef* pCraftPipelineDef(Board* pBoard);
+
+    StageDef*  pCraftStageDef(Card_OP* p_OP);
+    OpDef*     pCraftOpDef(Card_OP* p_OP);
+    void       vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef);
 
   protected:
     Footer* aFooter(void);

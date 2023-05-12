@@ -37,9 +37,13 @@ namespace STORE
     void  operator delete(void*);
 
     OpDef(void);
-
     ~OpDef(void) noexcept(false);
 
+    i8 i_Op(void);
+    void vOp(i8 i_Op);
+
+    Stz* szOpNm(void);
+    void vOpNm(Stz* szOpNm);
 
   protected:
     Footer* aFooter(void);

@@ -30,7 +30,7 @@ OpDef::OpDef(void)
   m_pIndexDef_join      = nullptr;
   m_pIndexDef_gbyAgg    = nullptr;
 
-  m_pPreExprStack          = nullptr;
+  m_pPreExprStack       = nullptr;
   m_pColsReq            = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
@@ -42,6 +42,8 @@ OpDef::OpDef(void)
 OpDef::~OpDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  vDeleteAll();
 
   delete m_pStreamDef_arriving;
   delete m_pStreamDef_emitted;
@@ -62,6 +64,45 @@ OpDef::~OpDef(void) noexcept(false)
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+i8 OpDef::i_Op(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  return m_i_Op;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vOp(i8 i_Op)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  m_i_Op = i_Op;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* OpDef::szOpNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  return m_sOpNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vOpNm(Stz* szOpNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  m_sOpNm = szOpNm;
+}
 
 /*============================================================================*/
 /* end                                                                        */

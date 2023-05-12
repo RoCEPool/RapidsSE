@@ -32,6 +32,7 @@ PipelineDef::~PipelineDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 
+  vDeleteAll();
 }
 
 
@@ -43,6 +44,27 @@ PipelineDef::~PipelineDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* PipelineDef::szPipelineNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
+
+  return m_sPipelineNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void PipelineDef::vPipelineNm(Stz* szPipelineNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
+
+  m_sPipelineNm = szPipelineNm;
+}
 
 
 /*============================================================================*/
