@@ -21,11 +21,10 @@
 // function-vProjectBegin
 void vProjectBegin(Dynamic_T* aDynamicT) {
 
-  struct __STRUCT_FROM__ {
-    i8 N_NATIONKEY;
-  };
-
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  RowInfo __ROW_INFO_FROM__;
+  RowInfo __ROW_INFO_TO__;
 
   char* szStrArea;
 
@@ -33,27 +32,27 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PROJECT-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  struct __STRUCT_FROM__* __STRUCT_FROM__;
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
-  __L_LABEL__:
+__L_LABEL__:
+
+  printf("  // PROJECT-OP\n");
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 
-  aDynamicT->m_xRowInfoPT.m_acStrArea = aDynamicT->m_xRowInfoPT.m_acStrAreaSav;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoPT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoPT.m_acStrArea;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+  szStrArea = __ROW_INFO_TO__.m_acStrArea;
+
   // marker-end
 
   return;

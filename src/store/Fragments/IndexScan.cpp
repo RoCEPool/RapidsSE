@@ -35,9 +35,12 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   __L_LABEL__:
+
+  printf("INDEXSCAN-OP\n");
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   paW = &aDynamicT->m_aW[0];
 

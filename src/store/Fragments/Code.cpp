@@ -45,12 +45,14 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
   // marker-start
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // AGGREG-OP
+  // GBYAGG-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
+
+  printf("GBYAGG-OP\n");
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
@@ -251,6 +253,8 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
+  printf("INFLATE-CRW\n");
+
   paW = &aDynamicT->m_aW[0];
 
   i_CurrentRow = -1;
@@ -343,6 +347,8 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
+  printf("SORT-OP\n");
+
   //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   //szStrArea = aDynamicT->m_acStrAreaT;
 
@@ -384,6 +390,8 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
+
+  printf("TUB\n");
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -430,6 +438,8 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
   struct __STRUCT_TO__* p__STRUCT_FROM__;
 
   __L_LABEL__:
+
+  printf("TUB\n");
 
   p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoAT.m_acStrArea;
@@ -533,7 +543,7 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
   // marker-start
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
-  struct __STRUCT_TO__* p__STRUCT_FROM__;
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
   // - - - - - - - - - - - - - -
   // payload traversal
@@ -567,7 +577,7 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
   // marker-start
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
-  struct __STRUCT_TO__* p__STRUCT_FROM__;
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
 
   // - - - - - - - - - - - - - -
   // payload traversal

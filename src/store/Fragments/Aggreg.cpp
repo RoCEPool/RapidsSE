@@ -36,6 +36,8 @@ i8 iAggregBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
+  printf("AGGREG-OP\n");
+
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;

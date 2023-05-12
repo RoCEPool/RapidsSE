@@ -36,6 +36,8 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
+  printf("INDEXJOIN-OP\n");
+
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
@@ -72,6 +74,8 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // INDEXJOIN-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  printf("INDEXJOIN-OP\n");
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
   p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;

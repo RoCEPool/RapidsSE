@@ -84,6 +84,8 @@ int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT)
   void *aEntFound;
   void *aCrwJ;
 
+  printf("__FUNCTION_CRW__\n");
+
   // marker-end
 
   L_InflateCrwT:
@@ -157,6 +159,8 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
+
+  printf("__FUNCTION_EOS__\n");
 
   // marker-end
 }
@@ -235,6 +239,8 @@ int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
    void* aCrwJ;
    struct tm* pDateTime;
 
+  printf("__FUNCTION_INDEX__\n");
+
   // marker-end
 }
 
@@ -306,6 +312,8 @@ int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
+
+  printf("__FUNCTION_ROW__\n");
 
   // marker-end
 

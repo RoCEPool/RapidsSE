@@ -34,6 +34,8 @@ void vFilterBegin(Dynamic_T* aDynamicT) {
 
 __L_LABEL__:
 
+  printf("FILTER-OP\n");
+
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;

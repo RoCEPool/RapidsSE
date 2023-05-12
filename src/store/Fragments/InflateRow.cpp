@@ -36,6 +36,7 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
 
   L_InflateRowT:
 
+  printf("INFLATE-ROW\n");
 
   paW = &aDynamicT->m_aW[0];
 
