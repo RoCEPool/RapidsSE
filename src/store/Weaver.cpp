@@ -205,7 +205,9 @@ void Weaver::vOp(Card* pCard)
   s4K sOpArgs;
 
   eCK eCard = pCard->eCard();
-  
+
+  Card_OP* p_OP = (Card_OP*)pCard;
+
   switch (eCard) {
 
     case CK_ABSJOIN:      vArgAbsJoin      (sOpArgs,_pCard_AbsJoin(pCard));      break;
@@ -249,6 +251,58 @@ void Weaver::vOp(Card* pCard)
 
   m_i_Op_stage++;
 }
+/*----------------------------------------------------------------------------*/
+//void Weaver::vOp(Card* pCard)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
+//
+//  s4K sOpArgs;
+//
+//  eCK eCard = pCard->eCard();
+//
+//  switch (eCard) {
+//
+//    case CK_ABSJOIN:      vArgAbsJoin      (sOpArgs,_pCard_AbsJoin(pCard));      break;
+//    case CK_AGGREG:       vArgAggreg       (sOpArgs,_pCard_Aggreg(pCard));       break;
+//    case CK_CAST:         vArgCast         (sOpArgs,_pCard_Cast(pCard));         break;
+//    case CK_COMBINED:     vArgCombined     (sOpArgs,_pCard_Combined(pCard));     break;
+//    case CK_CROSSJOIN:    vArgCrossJoin    (sOpArgs,_pCard_CrossJoin(pCard));    break;
+//    case CK_FILTER:       vArgFilter       (sOpArgs,_pCard_Filter(pCard));       break;
+//    case CK_GBYAGG:       vArgGbyAgg       (sOpArgs,_pCard_GbyAgg(pCard));       break;
+//    case CK_HASH:         vArgHash         (sOpArgs,_pCard_Hash(pCard));         break;
+//    case CK_HAVING:       vArgHaving       (sOpArgs,_pCard_Having(pCard));       break;
+//    case CK_INDEXJOIN:    vArgIndexJoin    (sOpArgs,_pCard_IndexJoin(pCard));    break;
+//    case CK_INDEXSCAN:    vArgIndexScan    (sOpArgs,_pCard_IndexScan(pCard));    break;
+//    case CK_KEYEXISTS:    vArgKeyExists    (sOpArgs,_pCard_KeyExists(pCard));    break;
+//    case CK_KEYNOTEXISTS: vArgKeyNotExists (sOpArgs,_pCard_KeyNotExists(pCard)); break;
+//    case CK_LIMIT:        vArgLimit        (sOpArgs,_pCard_Limit(pCard));        break;
+//    case CK_ORDAGG:       vArgOrdAgg       (sOpArgs,_pCard_OrdAgg(pCard));       break;
+//    case CK_PROJECT:      vArgProject      (sOpArgs,_pCard_Project(pCard));      break;
+//    case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
+//    case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
+//    case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
+//
+//    default:
+//      vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
+//             __FILE__, (i8)__LINE__,(i8) eCard, aCK[eCard]);
+//      NEVER_REACH;
+//  }
+//
+//  s32 sOpNm;
+//  if (CK_CAST == eCard)       sOpNm = "next"_Stz;
+//  else if (CK_CROSSJOIN == eCard)  sOpNm = "indexJoin"_Stz;
+//  else if (CK_HAVING == eCard)     sOpNm = "filter"_Stz;
+//  else if (CK_WHERE == eCard)      sOpNm = "filter"_Stz;
+//  else                             sOpNm = aCK_short[eCard];
+//
+//  vTabOp();
+//  vConcat("%-9s %s"_Stz,
+//          sOpNm.azChar(),
+//          sOpArgs.szStz());
+//  vEolOp();
+//
+//  m_i_Op_stage++;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* weave : abstractJoin " 1 "                                                 */
@@ -271,8 +325,8 @@ void Weaver::vArgAggreg(Stz* szOpArgs, Card_Aggreg* pCard_Aggreg)
   // 0) aggElist : 1) gbyList
 
   s4K sRpnExpr;
-  
-  vRpnAggreg(sRpnExpr,pCard_Aggreg);
+
+  pCard_Aggreg->vRpnAggreg(sRpnExpr,pCard_Aggreg);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -298,7 +352,7 @@ void Weaver::vArgCombined(Stz* szOpArgs, Card_Combined* pCard_Combine)
 
   s4K sRpnExpr;
 
-  vRpnCombined(sRpnExpr, pCard_Combine);
+  pCard_Combine->vRpnCombined(sRpnExpr, pCard_Combine);
 
   szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
 }
@@ -317,7 +371,7 @@ void Weaver::vArgCrossJoin(Stz* szOpArgs, Card_CrossJoin* pCard_CrossJoin)
   Card_TableNm* p_tableNm = pCard_CrossJoin->pSub_tableNm();
   Card_IndexNm* p_indexNm = pCard_CrossJoin->pSub_indexNm();
 
-  vRpnCrossJoin(sRpnExpr,pCard_CrossJoin);
+  pCard_CrossJoin->vRpnCrossJoin(sRpnExpr,pCard_CrossJoin);
 
   szOpArgs->vCatSprint("%s %s \"%s \""_Stz
       , p_tableNm->szSymbol()
@@ -339,7 +393,7 @@ void Weaver::vArgFilter(Stz* szOpArgs, Card_Filter* pCard_Filter)
 
   //pCard_Filter->vDump();
 
-  vRpnFilter(sRpnExpr,pCard_Filter);
+  pCard_Filter->vRpnFilter(sRpnExpr,pCard_Filter);
   
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -359,7 +413,7 @@ void Weaver::vArgGbyAgg(Stz* szOpArgs, Card_GbyAgg* pCard_AggGby)
   //pCard_AggGby->vDump();
 
 
-  vRpnGbyAgg(sRpnExpr, pCard_AggGby);
+  pCard_AggGby->vRpnGbyAgg(sRpnExpr, pCard_AggGby);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -389,7 +443,7 @@ void Weaver::vArgHaving(Stz* szOpArgs, Card_Having* pCard_Having)
 
   s4K sRpnExpr;
 
-  vRpnHaving(sRpnExpr,pCard_Having);
+  pCard_Having->vRpnHaving(sRpnExpr,pCard_Having);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -413,7 +467,7 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
   }
   Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
 
-  vRpnIndexJoin(sRpnExpr, p_index);
+  pCard_IndexJoin->vRpnIndexJoin(sRpnExpr, p_index);
 
   if (Card_OuterJoin* p_outerJoin = pCard_IndexJoin->pSub_outerJoin()) {
     if (p_outerJoin->bIsSymbol("left"_Stz))
@@ -446,7 +500,7 @@ void Weaver::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
   Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
   s4K sRpnExpr;
 
-  vRpnIndexScan(sRpnExpr, p_index);
+  pCard_IndexScan->vRpnIndexScan(sRpnExpr, p_index);
   
   szOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szSymbol(), p_indexNm->szSymbol());
   szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
@@ -464,11 +518,11 @@ void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
   Card_IndexNm* p_indexNm = pCard_KeyExists->pSub_indexNm();
 
   s4K sRpnExpr;
-  vRpnKeyExists(sRpnExpr,pCard_KeyExists);
+  pCard_KeyExists->vRpnKeyExists(sRpnExpr,pCard_KeyExists);
 
   s4K sRpnConstraint;
   if (pCard_KeyExists->pSub_constraint())
-    vRpnKeyExists_constraint(sRpnConstraint, pCard_KeyExists);
+    pCard_KeyExists->vRpnKeyExists_constraint(sRpnConstraint, pCard_KeyExists);
   else
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
@@ -490,11 +544,11 @@ void Weaver::vArgKeyNotExists(Stz* szOpArgs, Card_KeyNotExists* p_keyNotExists)
   Card_IndexNm* p_indexNm = p_keyNotExists->pSub_indexNm();
 
   s4K sRpnExpr;
-  vRpnKeyNotExists(sRpnExpr,p_keyNotExists);
+  p_keyNotExists->vRpnKeyNotExists(sRpnExpr,p_keyNotExists);
 
   s4K sRpnConstraint;
   if (p_keyNotExists->pSub_constraint())
-    vRpnKeyNotExists_constraint(sRpnConstraint, p_keyNotExists);
+    p_keyNotExists->vRpnKeyNotExists_constraint(sRpnConstraint, p_keyNotExists);
   else
     sRpnConstraint = " type boolean 1 1 == "_Stz;
 
@@ -515,8 +569,8 @@ void Weaver::vArgLimit(Stz* szOpArgs, Card_Limit* pCard_Limit)
   // limit : 0) rows
 
   s4K sRpnExpr;
-  
-  vRpnLimit(sRpnExpr,pCard_Limit);
+
+  pCard_Limit->vRpnLimit(sRpnExpr,pCard_Limit);
 
   szOpArgs->vCatSprint("%s"_Stz,sRpnExpr.szStz());
 }
@@ -532,8 +586,8 @@ void Weaver::vArgOrdAgg(Stz* szOpArgs, Card_OrdAgg* pCard_OrdAgg)
   // ordagg : 0) aggElist
 
   s4K sRpnExpr;
-  
-  vRpnOrdAgg(sRpnExpr, pCard_OrdAgg);
+
+  pCard_OrdAgg->vRpnOrdAgg(sRpnExpr, pCard_OrdAgg);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -548,8 +602,8 @@ void Weaver::vArgProject(Stz* szOpArgs, Card_Project* pCard_Project)
   // project : 0) projElist
   
   s4K sRpnExpr;
-  
-  vRpnProject(sRpnExpr,pCard_Project);
+
+  pCard_Project->vRpnProject(sRpnExpr,pCard_Project);
   
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -564,8 +618,8 @@ void Weaver::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
   // scan : 0) {table}
 
   s4K sRpnExpr;
-  
-  vRpnScan(sRpnExpr,pCard_Scan);
+
+  pCard_Scan->vRpnScan(sRpnExpr,pCard_Scan);
 
   Card_TableNm* p_tableNm = pCard_Scan->pSub_tableNm();
   
@@ -585,8 +639,8 @@ void Weaver::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
   // sort : 0) ???
 
   s4K sRpnExpr;
-  
-  vRpnSort(sRpnExpr,pCard_Sort);
+
+  pCard_Sort->vRpnSort(sRpnExpr,pCard_Sort);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
@@ -602,7 +656,7 @@ void Weaver::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
 
   s4K sRpnExpr;
 
-  vRpnWhere(sRpnExpr,pCard_Where);
+  pCard_Where->vRpnWhere(sRpnExpr,pCard_Where);
 
   szOpArgs->vCatSprint("\"%s \""_Stz,sRpnExpr.szStz());
 }
