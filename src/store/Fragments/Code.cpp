@@ -38,6 +38,8 @@ i8 vExprCheck(Dynamic_T* aDynamicT) {
 i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+
   char* szStrArea;
 
   __L_LABEL_LOOP__:
@@ -54,8 +56,8 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   printf("GBYAGG-OP\n");
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
+  szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -239,6 +241,8 @@ i8 iGbyAggGenKeyEnd(Dynamic_T* aDynamicT) {
 // function-vInflateCrwBegin
 void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
+  RowInfo __ROW_INFO_TO__;
+
   i8* paW;
   i8 i_CurrentRow;
 
@@ -262,7 +266,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   // process the row
   aDynamicT->m_iProcessRow = 1;
 
-  aDynamicT->m_xRowInfoIT.m_acStrArea = aDynamicT->m_xRowInfoIT.m_acStrAreaSav;
+  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
 
   // marker-end
 }
