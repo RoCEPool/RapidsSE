@@ -582,8 +582,6 @@ QueryNode* LiteralExpr::pCoerceTo(TypeId xTargetTypeId, QueryNode* pExpr, PlanNo
   return nullptr;
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* Convert an integer literal to a varchar literal. May return null.          */
 /*----------------------------------------------------------------------------*/
@@ -597,7 +595,19 @@ QueryNode* LiteralExpr::pLiteralToVarchar(QueryNode* pExpr, PlanNode* pRootNode)
     return nullptr;
   }
 
-  LiteralExpr::vDescribe(pExpr, sBuf, pRootNode);
+  if (TimestampLiteral::bIsOfType(pExpr)) {
+    TimestampLiteral::vDescribeValueOnly(pExpr, sBuf, pRootNode);
+
+  } else if (DateLiteral::bIsOfType(pExpr)) {
+    DateLiteral::vDescribeValueOnly(pExpr, sBuf, pRootNode);
+
+  } else if (TimeLiteral::bIsOfType(pExpr)) {
+    TimeLiteral::vDescribeValueOnly(pExpr, sBuf, pRootNode);
+
+  } else {
+    LiteralExpr::vDescribe(pExpr, sBuf, pRootNode);
+  }
+
   return StringLiteral::pCreate(new Text(sBuf.szStz()));
 }
 
