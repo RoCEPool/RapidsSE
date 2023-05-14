@@ -10,6 +10,8 @@
 #include "PipelineDef.hpp"
 #include "Stencil_v2.hpp"
 
+#include "Symbol.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -156,32 +158,128 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   return;
-  s2K sArg;
+  s2K sExpr;
 
-  ArgDef* pArgDef = new ArgDef;
+  ArgDef* pArgDef;
 
   eCK eCard = p_OP->eCard();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   switch (eCard) {
 
-    case CK_AGGREG:       p_OP->vRpnAggreg   (sArg, _pCard_Aggreg(p_OP));    break;
+    case CK_AGGREG:       p_OP->vRpnAggreg      (sExpr, _pCard_Aggreg      (p_OP)); break;
     case CK_CAST:         break;
-    case CK_COMBINED:     p_OP->vRpnCombined (sArg, _pCard_Combined(p_OP));  break;
-    case CK_CROSSJOIN:    p_OP->vRpnCrossJoin(sArg, _pCard_CrossJoin(p_OP)); break;
-    case CK_FILTER:       p_OP->vRpnFilter   (sArg, _pCard_Filter(p_OP));    break;
-    case CK_GBYAGG:       p_OP->vRpnGbyAgg   (sArg, _pCard_GbyAgg(p_OP));    break;
+    case CK_COMBINED:     p_OP->vRpnCombined    (sExpr, _pCard_Combined    (p_OP)); break;
+    case CK_CROSSJOIN:    p_OP->vRpnCrossJoin   (sExpr, _pCard_CrossJoin   (p_OP)); break;
+    case CK_FILTER:       p_OP->vRpnFilter      (sExpr, _pCard_Filter      (p_OP)); break;
+    case CK_GBYAGG:       p_OP->vRpnGbyAgg      (sExpr, _pCard_GbyAgg      (p_OP)); break;
     case CK_HASH:         break;
-    case CK_HAVING:       p_OP->vRpnHaving   (sArg, _pCard_Having(p_OP));    break;
-    case CK_INDEXJOIN:    p_OP->vRpnIndexJoin(sArg, _pCard_Index(p_OP));     break;
-    case CK_INDEXSCAN:    p_OP->vRpnIndexScan(sArg, _pCard_Index(p_OP));     break;
-    case CK_KEYEXISTS:    p_OP->vRpnKeyExists(sArg, _pCard_KeyExists(p_OP)); break;
-    case CK_KEYNOTEXISTS: p_OP->vRpnKeyNotExists(sArg, _pCard_KeyNotExists(p_OP)); break;
-    case CK_LIMIT:        p_OP->vRpnLimit    (sArg, _pCard_Limit(p_OP));     break;
-    case CK_ORDAGG:       p_OP->vRpnOrdAgg   (sArg, _pCard_OrdAgg(p_OP));    break;
-    case CK_PROJECT:      p_OP->vRpnProject  (sArg, _pCard_Project(p_OP));   break;
-    case CK_SCAN:         p_OP->vRpnScan     (sArg, _pCard_Scan(p_OP));      break;
-    case CK_SORT:         p_OP->vRpnSort     (sArg, _pCard_Sort(p_OP));      break;
-    case CK_WHERE:        p_OP->vRpnWhere    (sArg, _pCard_Where(p_OP));     break;
+    case CK_HAVING:       p_OP->vRpnHaving      (sExpr, _pCard_Having      (p_OP)); break;
+    case CK_INDEXJOIN:    p_OP->vRpnIndexJoin   (sExpr, _pCard_Index       (p_OP)); break;
+    case CK_INDEXSCAN:    p_OP->vRpnIndexScan   (sExpr, _pCard_Index       (p_OP)); break;
+    case CK_KEYEXISTS:    p_OP->vRpnKeyExists   (sExpr, _pCard_KeyExists   (p_OP)); break;
+    case CK_KEYNOTEXISTS: p_OP->vRpnKeyNotExists(sExpr, _pCard_KeyNotExists(p_OP)); break;
+    case CK_LIMIT:        p_OP->vRpnLimit       (sExpr, _pCard_Limit       (p_OP)); break;
+    case CK_ORDAGG:       p_OP->vRpnOrdAgg      (sExpr, _pCard_OrdAgg      (p_OP)); break;
+    case CK_PROJECT:      p_OP->vRpnProject     (sExpr, _pCard_Project     (p_OP)); break;
+    case CK_SCAN:         p_OP->vRpnScan        (sExpr, _pCard_Scan        (p_OP)); break;
+    case CK_SORT:         p_OP->vRpnSort        (sExpr, _pCard_Sort        (p_OP)); break;
+    case CK_WHERE:        p_OP->vRpnWhere       (sExpr, _pCard_Where       (p_OP)); break;
+
+    default:
+      vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,
+             __FILE__, (i8)__LINE__,(i8) eCard, aCK[eCard]);
+      NEVER_REACH;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  switch (eCard) {
+
+    case CK_AGGREG:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_CAST:
+      pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szSymbol()));
+      break;
+
+    case CK_COMBINED:
+      break;
+
+    case CK_CROSSJOIN:
+      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      break;
+
+    case CK_FILTER:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_GBYAGG:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_HASH: {
+      Card_HshCol *p_hshCol = _pCard_Hash(p_OP)->pSub_hshCol();
+      pOpDef->vAppend(new ArgDef(0, "type"_Stz,  aCT[Card::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))]));
+      pOpDef->vAppend(new ArgDef(1, "column"_Stz,  p_hshCol->szSymbol()));
+    }
+      break;
+
+    case CK_HAVING:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_INDEXJOIN:
+      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      break;
+
+    case CK_INDEXSCAN:
+      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      break;
+
+    case CK_KEYEXISTS:
+      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      break;
+
+    case CK_KEYNOTEXISTS:
+      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
+      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      break;
+
+    case CK_LIMIT:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_ORDAGG:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_PROJECT:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_SCAN:
+      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szSymbol()));
+      break;
+
+    case CK_SORT:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
+
+    case CK_WHERE:
+      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      break;
 
     default:
       vTrace("Missing Case [%s:%lld] : %lld %s\n"_Stz,

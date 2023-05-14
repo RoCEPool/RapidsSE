@@ -46,11 +46,12 @@ namespace STORE
     void vOp          (Card* pCard);
 
     void vArgAbsJoin     (Stz* szOpArgs,  Card_AbsJoin*   pCard_AbsJoin);
-    void vArgGbyAgg      (Stz* szOpArgs,  Card_GbyAgg*    pCard_AggGby);
     void vArgAggreg      (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
+    void vArgCast        (Stz* szOpArgs, Card_Cast*      pCard_Next);
     void vArgCombined    (Stz* szOpArgs,  Card_Combined*  pCard_Combine);
     void vArgCrossJoin   (Stz* szOpArgs,  Card_CrossJoin* pCard_CrossJoin);
     void vArgFilter      (Stz* szOpArgs,  Card_Filter*    pCard_Filter);
+    void vArgGbyAgg      (Stz* szOpArgs,  Card_GbyAgg*    pCard_AggGby);
     void vArgHash        (Stz* szOpArgs,  Card_Hash*      pCard_Hash);
     void vArgHaving      (Stz* szOpArgs,  Card_Having*    pCard_Having);
     void vArgIndexJoin   (Stz* szOpArgs,  Card_IndexJoin* pCard_IndexJoin);
@@ -58,7 +59,6 @@ namespace STORE
     void vArgKeyExists   (Stz* szOpArgs,  Card_KeyExists* pCard_KeyExists);
     void vArgKeyNotExists(Stz* szOpArgs,  Card_KeyNotExists* pCard_KeyNotExists);
     void vArgLimit       (Stz* szOpArgs,  Card_Limit*     pCard_Limit);
-    void vArgCast        (Stz* szOpArgs, Card_Cast*      pCard_Next);
     void vArgOrdAgg      (Stz* szOpArgs,  Card_OrdAgg*    pCard_OrdAgg);
     void vArgProject     (Stz* szOpArgs,  Card_Project*   pCard_Project);
     void vArgScan        (Stz* szOpArgs,  Card_Scan*      pCard_Scan);

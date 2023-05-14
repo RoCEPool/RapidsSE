@@ -28,6 +28,20 @@ ArgDef::ArgDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+ArgDef::ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal)
+    : Object(CN_ARGDEF)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
+
+  vStore(i_Arg,szArgNm,szArgVal);
+
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 ArgDef::~ArgDef(void) noexcept(false)
@@ -117,6 +131,17 @@ void ArgDef::vDump(i8 i_Tab)
          Stz::szTab(i_Tab),m_i_Arg,m_sArgNm.szStz(),m_sArgVal.szStz());
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ArgDef::vStore(i8 i_Arg, Stz* szArgNm, Stz* szArgVal)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_ARGDEF, _FOOTER_);
+
+  vArg(i_Arg);
+  vArgNm(szArgNm);
+  vArgVal(szArgVal);
+}
 
 /*============================================================================*/
 /* end                                                                        */
