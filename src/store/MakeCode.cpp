@@ -31,6 +31,11 @@ MakeCode::MakeCode(CardIter* pCI)
 
   m_pCI = pCI;
 
+  m_pPipelineDef = nullptr;
+  m_pStageDef    = nullptr;
+  m_pOpDef       = nullptr;
+  m_pArgDef      = nullptr;
+
   _checkInitialised_(CN_MAKECODE);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
@@ -58,12 +63,12 @@ void MakeCode::vSynthesise(void)
 
   Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
 
-  PipelineDef*  pPipelineDef = pCraftPipelineDef(pBoard);
+  vCraftPipelineDef(pBoard);
 
 
-  eEC eError = Stencil_v2::eSynthesise(pPipelineDef);
+  eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
   UNUSED(eError);
-  delete pPipelineDef;
+  delete m_pPipelineDef;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +78,7 @@ void MakeCode::vSynthesise(void)
 /*----------------------------------------------------------------------------*/
 /* craft pipeline def                                                         */
 /*----------------------------------------------------------------------------*/
-PipelineDef* MakeCode::pCraftPipelineDef(Board* pBoard)
+void MakeCode::vCraftPipelineDef(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
@@ -83,10 +88,9 @@ PipelineDef* MakeCode::pCraftPipelineDef(Board* pBoard)
   OpDef*    pOpDef    = nullptr;
   ArgDef*   pArgDef   = nullptr;
 
-  PipelineDef* pPipelineDef = new PipelineDef;
+  m_pPipelineDef = new PipelineDef;
 
-  pPipelineDef->vPipelineNm(sQueryNm);
-  pPipelineDef->vDump();
+  m_pPipelineDef->vPipelineNm(sQueryNm);
 
 
   Kid xBoard(pBoard->pDeck());
@@ -96,10 +100,8 @@ PipelineDef* MakeCode::pCraftPipelineDef(Board* pBoard)
 
       pStageDef = pCraftStageDef((Card_OP*)(xBoard.pChild()));
 
-      pStageDef->vStage(pPipelineDef->nItems());
-      pPipelineDef->vAppend(pStageDef);
-
-      pStageDef->vDump();
+      pStageDef->vStage(m_pPipelineDef->nItems());
+      m_pPipelineDef->vAppend(pStageDef);
     }
     else {
       RASSERT(pStageDef);
@@ -109,12 +111,11 @@ PipelineDef* MakeCode::pCraftPipelineDef(Board* pBoard)
 
       pOpDef->vOp(pStageDef->nItems());
       pStageDef->vAppend(pOpDef);
-
     }
 
   }
 
-  return pPipelineDef;
+  m_pPipelineDef->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +127,7 @@ StageDef* MakeCode::pCraftStageDef(Card_OP* p_OP)
 
   StageDef* pStageDef = new StageDef;
 
-  pStageDef->vStageNm(p_OP->szCardNm());
+  pStageDef->vStageNm(p_OP->szSymbol());
 
   return pStageDef;
 }
@@ -144,9 +145,6 @@ OpDef* MakeCode::pCraftOpDef(Card_OP* p_OP)
 
   vCraftArgDefs(p_OP,pOpDef);
 
-
-  pOpDef->vDump();
-
   return pOpDef;
 }
 
@@ -157,7 +155,6 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  return;
   s2K sExpr;
 
   ArgDef* pArgDef;
@@ -176,8 +173,8 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
     case CK_GBYAGG:       p_OP->vRpnGbyAgg      (sExpr, _pCard_GbyAgg      (p_OP)); break;
     case CK_HASH:         break;
     case CK_HAVING:       p_OP->vRpnHaving      (sExpr, _pCard_Having      (p_OP)); break;
-    case CK_INDEXJOIN:    p_OP->vRpnIndexJoin   (sExpr, _pCard_Index       (p_OP)); break;
-    case CK_INDEXSCAN:    p_OP->vRpnIndexScan   (sExpr, _pCard_Index       (p_OP)); break;
+    case CK_INDEXJOIN:    p_OP->vRpnIndexJoin   (sExpr, _pCard_IndexJoin   (p_OP)->pSub_index()); break;
+    case CK_INDEXSCAN:    p_OP->vRpnIndexScan   (sExpr, _pCard_IndexScan   (p_OP)->pSub_index()); break;
     case CK_KEYEXISTS:    p_OP->vRpnKeyExists   (sExpr, _pCard_KeyExists   (p_OP)); break;
     case CK_KEYNOTEXISTS: p_OP->vRpnKeyNotExists(sExpr, _pCard_KeyNotExists(p_OP)); break;
     case CK_LIMIT:        p_OP->vRpnLimit       (sExpr, _pCard_Limit       (p_OP)); break;

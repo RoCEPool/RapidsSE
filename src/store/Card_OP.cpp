@@ -982,49 +982,46 @@ void Card_OP::vRpnIndexJoin(Stz* szRpnExpr,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
-  if (pCard_bounds) {
-    //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pGetChild(0);
-
-    Card_Bound* p_bound = nullptr;
-    for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {
-
-      if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
-        p_bound = _pCard_Bound(xKid.pChild());
-        break;
-      }
-    }
-
-
-    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
-
-    i8 nSubs = p_bound->nChildCards();
-    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
-      Card* pSubCard = p_bound->pGet(i_Sub);
-
-      if (! pSubCard->bIsCard(CK_TERM))
-        continue;
-
-      Card_Term* p_term = _pCard_Term(pSubCard);
-
-      if (p_term->pSymbol()->bIsStreamOrdinal() ||
-          p_term->pSymbol()->bIsColumnOrdinal()) {
-
-        if (!p_term->pSymbol()->Y_bHas(P_Type)) {
-          p_term->vDump();
-          pSubCard->vDump();
-          RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
-        }
-      }
-
-      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
-    }
-
-    szRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol());
-
+  if (! pCard_bounds)
     return;
+
+  //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pGetChild(0);
+
+  Card_Bound* p_bound = nullptr;
+  for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {
+
+    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
+      p_bound = _pCard_Bound(xKid.pChild());
+      break;
+    }
   }
 
-  NEVER_REACH
+
+  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+  i8 nSubs = p_bound->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+    Card* pSubCard = p_bound->pGet(i_Sub);
+
+    if (! pSubCard->bIsCard(CK_TERM))
+      continue;
+
+    Card_Term* p_term = _pCard_Term(pSubCard);
+
+    if (p_term->pSymbol()->bIsStreamOrdinal() ||
+        p_term->pSymbol()->bIsColumnOrdinal()) {
+
+      if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+        p_term->vDump();
+        pSubCard->vDump();
+        RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+      }
+    }
+
+    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+  }
+
+  szRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/

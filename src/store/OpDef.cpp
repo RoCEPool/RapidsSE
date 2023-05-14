@@ -71,7 +71,14 @@ void OpDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
-  vTrace("%sOpDef %s\n"_Stz,Stz::szTab(i_Tab),m_sOpNm.szStz());
+  vTrace("%sOpDef: [%lld] %s\n"_Stz,
+         Stz::szTab(i_Tab),m_i_Op,m_sOpNm.szStz());
+
+  i8 nArgs = nItems();
+  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
+    ArgDef* pArgDef = pGet(i_Arg);
+    pArgDef->vDump();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

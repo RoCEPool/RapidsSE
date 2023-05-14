@@ -16,6 +16,11 @@ namespace STORE
 
     CardIter*    m_pCI;
 
+    PipelineDef*  m_pPipelineDef;
+    StageDef*     m_pStageDef;
+    OpDef*        m_pOpDef;
+    ArgDef*       m_pArgDef;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -30,7 +35,7 @@ namespace STORE
     void vSynthesise(void);
 
   private:
-    PipelineDef* pCraftPipelineDef(Board* pBoard);
+    void vCraftPipelineDef(Board* pBoard);
 
     StageDef*  pCraftStageDef(Card_OP* p_OP);
     OpDef*     pCraftOpDef(Card_OP* p_OP);
