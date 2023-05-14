@@ -50,9 +50,12 @@ StageDef::~StageDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void StageDef::vDump(void)
+void StageDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+
+  vTrace("%sStageDef %s\n"_Stz,
+         Stz::szTab(i_Tab),m_sStageNm.szStz());
 
 }
 

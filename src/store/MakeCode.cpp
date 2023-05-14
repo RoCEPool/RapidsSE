@@ -84,19 +84,20 @@ PipelineDef* MakeCode::pCraftPipelineDef(Board* pBoard)
   PipelineDef* pPipelineDef = new PipelineDef;
 
   pPipelineDef->vPipelineNm(sQueryNm);
-  //vTrace("Pipeline %s\n"_Stz,sQueryNm.szStz());
+  pPipelineDef->vDump();
 
 
   Kid xBoard(pBoard->pDeck());
   while (xBoard.bEach()) {
 
     if (xBoard.pChild()->szCardNm()->bSame("stage"_Stz)) {
-      //vTrace("Stage %s\n"_Stz,xBoard.pChild()->szCardNm());
 
       pStageDef = pCraftStageDef((Card_OP*)(xBoard.pChild()));
 
       pStageDef->vStage(pPipelineDef->nItems());
       pPipelineDef->vAppend(pStageDef);
+
+      pStageDef->vDump();
     }
     else {
       RASSERT(pStageDef);
@@ -106,6 +107,7 @@ PipelineDef* MakeCode::pCraftPipelineDef(Board* pBoard)
 
       pOpDef->vOp(pStageDef->nItems());
       pStageDef->vAppend(pOpDef);
+
     }
 
   }
@@ -139,6 +141,9 @@ OpDef* MakeCode::pCraftOpDef(Card_OP* p_OP)
   pOpDef->vOpNm(p_OP->szCardNm());
 
   vCraftArgDefs(p_OP,pOpDef);
+
+
+  pOpDef->vDump();
 
   return pOpDef;
 }

@@ -34,7 +34,7 @@ namespace STORE
     Stz* szArgVal(void);
     void vArgVal(Stz* szArgVal);
 
-    void vDump(void);
+    void vDump(i8 i_Tab=3);
 
   protected:
     Footer* aFooter(void);

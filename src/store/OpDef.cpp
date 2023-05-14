@@ -67,10 +67,11 @@ OpDef::~OpDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void OpDef::vDump(void)
+void OpDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
+  vTrace("%sOpDef %s\n"_Stz,Stz::szTab(i_Tab),m_sOpNm.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
