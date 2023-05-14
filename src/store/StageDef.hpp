@@ -26,6 +26,8 @@ namespace STORE
     StageDef(void);
     ~StageDef(void) noexcept(false);
 
+    void vDump(void);
+
     i8 i_Stage(void);
     void vStage(i8 i_Stage);
 

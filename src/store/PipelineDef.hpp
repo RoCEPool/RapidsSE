@@ -28,6 +28,8 @@ namespace STORE
 
     ~PipelineDef(void) noexcept(false);
 
+    void vDump(void);
+
     Stz* szPipelineNm(void);
     void vPipelineNm(Stz* szPipelineNm);
 

@@ -34,6 +34,8 @@ namespace STORE
     Stz* szArgVal(void);
     void vArgVal(Stz* szArgVal);
 
+    void vDump(void);
+
   protected:
     Footer* aFooter(void);
   };

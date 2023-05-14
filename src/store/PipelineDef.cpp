@@ -49,6 +49,15 @@ PipelineDef::~PipelineDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void PipelineDef::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* PipelineDef::szPipelineNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);

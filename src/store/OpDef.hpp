@@ -39,6 +39,8 @@ namespace STORE
     OpDef(void);
     ~OpDef(void) noexcept(false);
 
+    void vDump(void);
+
     i8 i_Op(void);
     void vOp(i8 i_Op);
 
