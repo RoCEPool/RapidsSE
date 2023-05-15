@@ -180,8 +180,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   sLabelLoop = ""_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect the op information from the stage
-  eEC eError = eCollectStage(pStageDef);
+  // collect the validate information of the stage
+  eEC eError = eValidateStage(pStageDef);
   if (eError != EC_NONE)
     return eError;
 
@@ -2668,9 +2668,9 @@ eEC Stencil_v2::eCollectStage(Dynamic* pDynamic, Stream* pStream) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect and validate the stage information of stage being combined         */
+/* collect and validate the stage information of stage being synthesised      */
 /*----------------------------------------------------------------------------*/
-eEC Stencil_v2::eCollectStage(StageDef* pStageDef) {
+eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 

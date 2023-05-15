@@ -88,7 +88,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop);
     OpSketch* pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
 
-    eEC eCollectStage(StageDef* pStageDef);
+    eEC eValidateStage(StageDef* pStageDef);
 
 
 
