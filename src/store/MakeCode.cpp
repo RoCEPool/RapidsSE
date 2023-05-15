@@ -65,7 +65,6 @@ void MakeCode::vSynthesise(void)
 
   vCraftPipelineDef(pBoard);
 
-
   eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
   UNUSED(eError);
   delete m_pPipelineDef;
@@ -84,80 +83,61 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 
   s32 sQueryNm = pBoard->pBench()->pOptimiser()->szQueryNm();
 
-  StageDef* pStageDef = nullptr;
-  OpDef*    pOpDef    = nullptr;
-  ArgDef*   pArgDef   = nullptr;
-
-  m_pPipelineDef = new PipelineDef;
-
-  m_pPipelineDef->vPipelineNm(sQueryNm);
-
+  m_pPipelineDef = new PipelineDef(sQueryNm);
 
   Kid xBoard(pBoard->pDeck());
   while (xBoard.bEach()) {
 
     if (xBoard.pChild()->szCardNm()->bSame("stage"_Stz)) {
-
-      pStageDef = pCraftStageDef((Card_OP*)(xBoard.pChild()));
-
-      pStageDef->vStage(m_pPipelineDef->nItems());
-      m_pPipelineDef->vAppend(pStageDef);
+      vCraftStageDef((Card_OP*)(xBoard.pChild()));
     }
     else {
-      RASSERT(pStageDef);
+      RASSERT(m_pStageDef);
       //vTrace("Op %s\n"_Stz,xBoard.pChild()->szCardNm());
-
-      pOpDef = pCraftOpDef((Card_OP*)(xBoard.pChild()));
-
-      pOpDef->vOp(pStageDef->nItems());
-      pStageDef->vAppend(pOpDef);
+      vCraftOpDef((Card_OP*)(xBoard.pChild()));
     }
 
   }
 
-  //m_pPipelineDef->vDump();
+  m_pPipelineDef->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
 /* craft stage def                                                            */
 /*----------------------------------------------------------------------------*/
-StageDef* MakeCode::pCraftStageDef(Card_OP* p_OP)
+void MakeCode::vCraftStageDef(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  StageDef* pStageDef = new StageDef;
-
-  pStageDef->vStageNm(p_OP->szSymbol());
-
-  return pStageDef;
+  m_pStageDef = new StageDef(m_pPipelineDef->nItems(),p_OP->szSymbol());
+  m_pPipelineDef->vAppend(m_pStageDef);
 }
 
 /*----------------------------------------------------------------------------*/
 /* craft op def                                                               */
 /*----------------------------------------------------------------------------*/
-OpDef* MakeCode::pCraftOpDef(Card_OP* p_OP)
+void MakeCode::vCraftOpDef(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  OpDef* pOpDef = new OpDef;
+  eCK eCard = p_OP->eCard();
+  if (CK_COMBINED == eCard)
+    return;
 
-  pOpDef->vOpNm(p_OP->szCardNm());
+  m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm());
+  m_pStageDef->vAppend(m_pOpDef);
 
-  vCraftArgDefs(p_OP,pOpDef);
-
-  return pOpDef;
+  vCraftArgDefs(p_OP);
 }
 
 /*----------------------------------------------------------------------------*/
 /* craft arg def                                                              */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
+void MakeCode::vCraftArgDefs(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   s2K sExpr;
-
-  ArgDef* pArgDef;
 
   eCK eCard = p_OP->eCard();
 
@@ -167,7 +147,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
 
     case CK_AGGREG:       p_OP->vRpnAggreg      (sExpr, _pCard_Aggreg      (p_OP)); break;
     case CK_CAST:         break;
-    case CK_COMBINED:     p_OP->vRpnCombined    (sExpr, _pCard_Combined    (p_OP)); break;
+    //case CK_COMBINED:     p_OP->vRpnCombined    (sExpr, _pCard_Combined    (p_OP)); break;
     case CK_CROSSJOIN:    p_OP->vRpnCrossJoin   (sExpr, _pCard_CrossJoin   (p_OP)); break;
     case CK_FILTER:       p_OP->vRpnFilter      (sExpr, _pCard_Filter      (p_OP)); break;
     case CK_GBYAGG:       p_OP->vRpnGbyAgg      (sExpr, _pCard_GbyAgg      (p_OP)); break;
@@ -195,87 +175,87 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef)
   switch (eCard) {
 
     case CK_AGGREG:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_CAST:
-      pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(0, "topology"_Stz, _pCard_Cast(p_OP)->szSymbol()));
       break;
 
-    case CK_COMBINED:
-      break;
+//    case CK_COMBINED:
+//      break;
 
     case CK_CROSSJOIN:
-      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_CrossJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
     case CK_FILTER:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_GBYAGG:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_HASH: {
       Card_HshCol *p_hshCol = _pCard_Hash(p_OP)->pSub_hshCol();
-      pOpDef->vAppend(new ArgDef(0, "type"_Stz,  aCT[Card::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))]));
-      pOpDef->vAppend(new ArgDef(1, "column"_Stz,  p_hshCol->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(0, "type"_Stz,  aCT[Card::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))]));
+      m_pOpDef->vAppend(new ArgDef(1, "column"_Stz,  p_hshCol->szSymbol()));
     }
       break;
 
     case CK_HAVING:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_INDEXJOIN:
-      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
     case CK_INDEXSCAN:
-      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexScan(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
     case CK_KEYEXISTS:
-      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
     case CK_KEYNOTEXISTS:
-      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
-      pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
       break;
 
     case CK_LIMIT:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_ORDAGG:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_PROJECT:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_SCAN:
-      pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szSymbol()));
       break;
 
     case CK_SORT:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     case CK_WHERE:
-      pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
     default:

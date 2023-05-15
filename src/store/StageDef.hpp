@@ -24,6 +24,7 @@ namespace STORE
     void  operator delete(void*);
 
     StageDef(void);
+    StageDef(i8 i_Stage, Stz* szStageNm);
     ~StageDef(void) noexcept(false);
 
     void vDump(i8 i_Tab=1);

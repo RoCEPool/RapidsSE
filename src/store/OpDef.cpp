@@ -37,6 +37,30 @@ OpDef::OpDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+OpDef::OpDef(i8 i_Op, Stz* szOpNm)
+    : Object(CN_OPDEF)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  vOp(i_Op);
+  vOpNm(szOpNm);
+
+  m_pStreamDef_arriving = nullptr;
+  m_pStreamDef_emitted  = nullptr;
+
+  m_pIndexDef_join      = nullptr;
+  m_pIndexDef_gbyAgg    = nullptr;
+
+  m_pPreExprStack       = nullptr;
+  m_pColsReq            = nullptr;
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 OpDef::~OpDef(void) noexcept(false)

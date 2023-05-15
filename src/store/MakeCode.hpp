@@ -37,9 +37,9 @@ namespace STORE
   private:
     void vCraftPipelineDef(Board* pBoard);
 
-    StageDef*  pCraftStageDef(Card_OP* p_OP);
-    OpDef*     pCraftOpDef(Card_OP* p_OP);
-    void       vCraftArgDefs(Card_OP* p_OP, OpDef* pOpDef);
+    void vCraftStageDef(Card_OP* p_OP);
+    void vCraftOpDef(Card_OP* p_OP);
+    void vCraftArgDefs(Card_OP* p_OP);
 
   protected:
     Footer* aFooter(void);

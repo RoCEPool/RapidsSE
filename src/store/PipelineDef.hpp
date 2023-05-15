@@ -24,7 +24,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    PipelineDef(void);
+    PipelineDef(Stz* szPipelineNm);
 
     ~PipelineDef(void) noexcept(false);
 

@@ -17,10 +17,12 @@ __aFooterFunction(PipelineDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineDef::PipelineDef(void)
+PipelineDef::PipelineDef(Stz* szPipelineNm)
     : Object(CN_PIPELINEDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINEDEF, _FOOTER_);
+
+  vPipelineNm(szPipelineNm);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 }

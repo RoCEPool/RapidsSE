@@ -37,6 +37,7 @@ namespace STORE
     void  operator delete(void*);
 
     OpDef(void);
+    OpDef(i8 i_Op, Stz* szOpNm);
     ~OpDef(void) noexcept(false);
 
     void vDump(i8 i_Tab=2);

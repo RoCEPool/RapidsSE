@@ -28,6 +28,21 @@ StageDef::StageDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+StageDef::StageDef(i8 i_Stage, Stz* szStageNm)
+    : Object(CN_STAGEDEF)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
+
+  vStage(i_Stage);
+  vStageNm(szStageNm);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 StageDef::~StageDef(void) noexcept(false)
