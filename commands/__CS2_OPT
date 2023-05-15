@@ -4,23 +4,38 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-/weaved select n_nationkey, n_name from nation;
+/weaved select n_nationkey, n_name from nation where n_regionkey < 3;
+
+
+
+
 
 /*
-/ccode pipeline unamed
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
 begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0559
-  stage stageMarker0559 on all partitions :
-    scan rapidsse public Nation
-    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | dynamic_v2 0
-    | stageLast
-  stage stageLast on origin :
-    output
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Nation
+    | filter    " type BOOLEAN $3 3 < "
+    | combined  0
+    | next
+
+  stage S02 on all partitions :
+      project   "   type INTEGER as n_nationkey $1
+                  , type VARCHAR as n_name $2 "
+    | combined  0
+    | next
+
+  stage S03 on origin :
+      output
     | sink
-    | stageStart
+    | first
+
 end ;
 */
