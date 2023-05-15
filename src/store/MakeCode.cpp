@@ -47,12 +47,35 @@ MakeCode::MakeCode(CardIter* pCI)
 MakeCode::~MakeCode(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  delete m_pPipelineDef;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* retrieve m_pPipelineDef                                                    */
+/*----------------------------------------------------------------------------*/
+PipelineDef* MakeCode::pPipelineDef(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  return m_pPipelineDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* store m_pPipelineDef                                                       */
+/*----------------------------------------------------------------------------*/
+void MakeCode::vPipelineDef(PipelineDef* pPipelineDef)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  m_pPipelineDef = pPipelineDef;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* call synthesiser                                                           */
@@ -67,7 +90,6 @@ void MakeCode::vSynthesise(void)
 
   //eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
   //UNUSED(eError);
-  delete m_pPipelineDef;
 }
 
 /*----------------------------------------------------------------------------*/

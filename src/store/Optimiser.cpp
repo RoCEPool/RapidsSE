@@ -60,6 +60,7 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   m_pCI = new CardIter(m_pBench);
 
+  m_pPipelineDef = nullptr;
 
   _checkInitialised_(CN_OPTIMISER);
   
@@ -293,6 +294,26 @@ void Optimiser::vJoinOrder(Stz* szJoinOrder)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   m_sJoinOrder = szJoinOrder;
+}
+
+/*----------------------------------------------------------------------------*/
+/* retrieve m_pPipelineDef                                                    */
+/*----------------------------------------------------------------------------*/
+PipelineDef* Optimiser::pPipelineDef(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
+
+  return m_pPipelineDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* store m_pPipelineDef                                                       */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vPipelineDef(PipelineDef* pPipelineDef)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
+
+  m_pPipelineDef = pPipelineDef;
 }
 
 /*----------------------------------------------------------------------------*/

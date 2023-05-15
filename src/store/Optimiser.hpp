@@ -9,6 +9,7 @@
 #include "CardCtl.hpp"
 #include "Weaver.hpp"
 #include "PermGen.hpp"
+#include "PipelineDef.hpp"
 
 namespace STORE
 {
@@ -36,6 +37,8 @@ namespace STORE
     s256         m_sJoinOrder; // join order string
 
     CardIter*    m_pCI;
+
+    PipelineDef* m_pPipelineDef;
 
     // must be last
     Footer m_xFooter;
@@ -73,6 +76,9 @@ namespace STORE
     void vQueryNm(Stz* szQueryNm);
 
     bool bTransform(eEC* peErrorCode, InfoSet* pInfoSet);
+
+    PipelineDef* pPipelineDef(void);
+    void vPipelineDef(PipelineDef* pPipelineDef);
 
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
 

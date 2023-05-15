@@ -32,6 +32,9 @@ namespace STORE
     MakeCode(CardIter* pCI);
    ~MakeCode(void) noexcept(false);
 
+    PipelineDef* pPipelineDef(void);
+    void vPipelineDef(PipelineDef* pPipelineDef);
+
     void vSynthesise(void);
 
   private:
