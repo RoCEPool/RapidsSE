@@ -1,6 +1,10 @@
+
+
+
 #include "SamplingData.hpp"
 
 
+typedef unsigned long long u64;
 void vInsertIntData(SamplingData &SampData)
 {
 

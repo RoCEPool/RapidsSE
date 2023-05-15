@@ -13,6 +13,41 @@
  *
  *
  */
+
+#include <time.h>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <array>
+#include <vector>
+#include <functional>
+
+#include <map>
+
+
+using namespace std;
+typedef unsigned long long u64;
+
+
+struct tLData {
+  u64 llMinVal;
+  u64 llMaxVal;
+};
+
+struct tFData {
+  double dMinVal;
+  double dMaxVal;
+};
+
+union uMinMax {
+  tLData lData;
+  tFData dData;
+};
+
+
+#define MAX_ARRAY 10000
+#define MAX_UNIQUE_VALUES 1000
+
 class SamplingData {
 private:
   bool m_bFinalized;
