@@ -9,17 +9,17 @@ Constraints and Limitations
 
 RapidsSE has several system limitations. These are documented below:
 
-1. **Data type value ranges**
+#. **Data type value ranges**
 
    Each data type can have specific limitations with their range of values.
    Refer to the section Data Types for more details.
 
-2. **CHAR and VARCHAR length**
+#. **CHAR and VARCHAR length**
 
    ``CHAR`` and ``VARCHAR`` values are currently limited to 4,000 bytes
    (not characters) in length. This will be expanded in a future release.
 
-3. **Character encoding**
+#. **Character encoding**
 
    RapidsSE does not currently recognise any character encoding. All strings
    are treated as ASCII strings. While multi-byte character values can be
@@ -28,27 +28,27 @@ RapidsSE has several system limitations. These are documented below:
    represent one character. This will affect expression operators that
    manipulate string values such as ``SUBSTRING``.
 
-4. **Maximum of 48 columns per table**
+#. **Maximum of 48 columns per table**
 
    RapidsSE does not support tables having more than 48 columns.
 
-5. **Maximum of 16 keys per index**
+#. **Maximum of 16 keys per index**
 
    A composite key index (an index on more than one column) on a table cannot
    have more than 16 keys.
 
-6. **Statement length**
+#. **Statement length**
 
    A statement issued to RapidsSE cannot have more than 2048 tokens (words)
    or be longer than 48,000 bytes.
 
-7. **Logging defaults**
+#. **Logging defaults**
 
    RapidsSE currently supports 4 historical log files each with a maximum size
    of 20MB. RapidsSE currently does not allow the user to alter the logging
    parameters.
 
-8. **Node loss**
+#. **Node loss**
 
    RapidsSE currently does not tolerate the loss of a node in the cluster. If
    a node in the cluster is to go offline then commands being submitted to
@@ -57,7 +57,7 @@ RapidsSE has several system limitations. These are documented below:
    restarting of the node or adding of a node to the cluster to compensate.
    This will be addressed in a future version.
 
-9. **Low memory**
+#. **Low memory**
 
    As an in-memory system, if RapidsSE runs out of space during the execution
    of a command then an error message will be returned to the user. This can
@@ -68,32 +68,37 @@ RapidsSE has several system limitations. These are documented below:
    A future version of RapidsSE will pre-allocate enough memory for an
    administrator to try to recover some space, e.g. by dropping a table.
 
-10. **Large scale factors**
+#. **Large scale factors**
 
-    The current version of RapidsSE has not been validated for clusters
-    of more than 10 nodes or scale factors in excess of SF1000. This will
-    be validated and addressed in a future version.
+   The current version of RapidsSE has not been validated for clusters
+   of more than 10 nodes or scale factors in excess of SF1000. This will
+   be validated and addressed in a future version.
 
-11. **Joins**
+#. **Join Type**
 
-    RapidsSE only supports INNER joins (the default).
+   RapidsSE only supports INNER joins (the default).
 
-    RapidsSE also only supports equi-joins. That is, join predicates that are
-    compared for equality.
+   RapidsSE also only supports equi-joins. That is, join predicates that are
+   compared for equality.
 
-12. **Unique indexes**
+#. **Index-joins**
 
-    RapidsSE does not yet support unique indexes or primary keys, only
-    non-unique indexes.
+   RapidsSE only supports joining a table on an indexed column only. Refer to
+   the section :ref:`joinSupport`.
 
-13. **Interval columns**
+#. **Unique indexes**
 
-    RapidsSE does not support ``INTERVAL`` columns in ``CREATE TABLE`` statements,
-    however intervals are supported as literals and in expression calculations. This
-    constraint also means that intervals cannot be directly loaded with commands
-    like ``load`` and ``dload``.
+   RapidsSE does not yet support unique indexes or primary keys, only
+   non-unique indexes.
 
-14. **Interval aggregates**
+#. **Interval columns**
 
-    Aggregate expressions (``SUM``, ``MIN``, ``MAX``, etc) are not currently
-    supported on interval expressions.
+   RapidsSE does not support ``INTERVAL`` columns in ``CREATE TABLE`` statements,
+   however intervals are supported as literals and in expression calculations. This
+   constraint also means that intervals cannot be directly loaded with commands
+   like ``load`` and ``dload``.
+
+#. **Interval aggregates**
+
+   Aggregate expressions (``SUM``, ``MIN``, ``MAX``, etc) are not currently
+   supported on interval expressions.

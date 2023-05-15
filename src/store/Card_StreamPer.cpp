@@ -221,6 +221,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       vDebugPoint();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // stream head : table is the head of this stream permutation
 
     if (0 == nChildCards()) {
       //+ table is the head of this stream permutation
@@ -242,7 +243,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // table is a join in this stream permutation
+    // stream join : table is a join in this stream permutation
 
     Card_StreamJoin *p_streamJoin = new Card_StreamJoin;
     p_streamJoin->vSymbol(cTblSyn_ith);

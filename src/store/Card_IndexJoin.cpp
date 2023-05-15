@@ -208,7 +208,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

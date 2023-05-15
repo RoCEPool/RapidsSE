@@ -86,6 +86,21 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* does this bounds have a bound logically equivalent to given compare?       */
+/*----------------------------------------------------------------------------*/
+bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Kid xBounds(this);
+  while (xBounds.bEach(CK_BOUND)) {
+    if (xBounds.p_bound()->bEquivalent(p_cmpPred))
+      return true;
+  }
+
+  return false;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -20,6 +20,7 @@ namespace STORE
 
     Card_Bound* pFindChosenBound(void);
 
+    bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

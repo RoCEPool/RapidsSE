@@ -81,6 +81,16 @@ eXK Card_CmpPred::eCastKind(char cTblSyn_l, Card_TablePtn* p_tablePtn_l,
 }
 
 /*----------------------------------------------------------------------------*/
+/* clone this compare predicate                                               */
+/*----------------------------------------------------------------------------*/
+Card_CmpPred* Card_CmpPred::pClone(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return _pCard_CmpPred(pDupCardRecursive());
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the E_eTerm_Bound of given index               */
 /*----------------------------------------------------------------------------*/
 Card_CmpPred* Card_CmpPred::pCmpPredFindBound(Index* pIndex, ePB eBound)
@@ -347,40 +357,6 @@ bool Card_CmpPred::bOverlapsWith(Card_CmpPred* p_PredCmp_arg)
       || cTableSyn_this_1 == cTableSyn_arg_1
       )
     return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given cmpPred a subset of bounds?                                       */
-/*----------------------------------------------------------------------------*/
-bool Card_CmpPred::bSubsetOf_bounds(Card_Bounds* p_bounds)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(p_bounds);
-  while (xCI.G_bEachMain(CK_BOUND)) {
-
-    Stz* sz_bnd_idxColOdn = xCI.G.p_bound->pGetChild(0)->szSymbol();
-    Stz* sz_bnd_stmColOdn = xCI.G.p_bound->pGetChild(1)->szSymbol();
-    Stz* sz_bnd_rlnOpr    = xCI.G.p_bound->szSymbol();
-
-    Stz* sz_cmp_rlnOpr    = this->szSymbol();
-    Stz* sz_cmp_arg_0     = this->pGetChild(0)->szSymbol();
-    Stz* sz_cmp_arg_1     = this->pGetChild(1)->szSymbol();
-
-    if (! sz_cmp_rlnOpr->bSame(sz_bnd_rlnOpr))
-      continue;
-
-    // todo: need bounds to be bndTyp , etc
-    // anyways...
-
-    if (sz_cmp_arg_0->bSame(sz_bnd_stmColOdn))
-      return true;
-    if (sz_cmp_arg_1->bSame(sz_bnd_stmColOdn))
-      return true;
-
-  }
 
   return false;
 }

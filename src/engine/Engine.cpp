@@ -1715,23 +1715,23 @@ void Engine::vStartSystem(void)
   }
 
   // Temporary
-  vTrace("\n\nDefault compiler:\n"_Stz);
-  CompileLib::vTest();
-
-  vTrace("\n\ngcc compiler:\n"_Stz);
-  CompileLib::vTest("gcc"_Stz);
-
-  vTrace("\n\nclang compiler:\n"_Stz);
-  CompileLib::vTest("clang"_Stz);
-
-  vTrace("\n\ndevtoolset-10 compiler:\n"_Stz);
-  CompileLib::vTest("devtoolset-10"_Stz);
-
-  vTrace("\n\nllvm-toolset-7.0 compiler:\n"_Stz);
-  CompileLib::vTest("llvm-toolset-7.0"_Stz);
-
-  vTrace("\n\ntcc compiler:\n"_Stz);
-  CompileLib::vTest("tcc"_Stz);
+//  vTrace("\n\nDefault compiler:\n"_Stz);
+//  CompileLib::vTest();
+//
+//  vTrace("\n\ngcc compiler:\n"_Stz);
+//  CompileLib::vTest("gcc"_Stz);
+//
+//  vTrace("\n\nclang compiler:\n"_Stz);
+//  CompileLib::vTest("clang"_Stz);
+//
+//  vTrace("\n\ndevtoolset-10 compiler:\n"_Stz);
+//  CompileLib::vTest("devtoolset-10"_Stz);
+//
+//  vTrace("\n\nllvm-toolset-7.0 compiler:\n"_Stz);
+//  CompileLib::vTest("llvm-toolset-7.0"_Stz);
+//
+//  vTrace("\n\ntcc compiler:\n"_Stz);
+//  CompileLib::vTest("tcc"_Stz);
 
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);

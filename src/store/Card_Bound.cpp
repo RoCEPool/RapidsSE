@@ -150,6 +150,31 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this bound logically equivalent to given compare?                       */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bEquivalent(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pBnd_rlnOpr = pSymbol();
+  Symbol* pBnd_idxOdn = pGetChild(0)->pSymbol(); UNUSED(pBnd_idxOdn);
+  Symbol* pBnd_stmOdn = pGetChild(1)->pSymbol();
+
+  Symbol* pCmp_rlnOpr = p_cmpPred->pSymbol();
+  Symbol* pCmp_arg_0  = p_cmpPred->pGetChild(0)->pSymbol();
+  Symbol* pCmp_arg_1  = p_cmpPred->pGetChild(1)->pSymbol();
+
+  if (! pCmp_rlnOpr->bSameAs(pBnd_rlnOpr))
+    return false;
+
+  if (pBnd_stmOdn->bSameAs(pCmp_arg_0) ||
+      pBnd_stmOdn->bSameAs(pCmp_arg_1))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Bound::pGetTerm(i8 i_Term)

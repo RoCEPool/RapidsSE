@@ -51,7 +51,7 @@ Card_TableList::~Card_TableList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_TableList* Card_TableList::pExtract(Card_Deck* p_deck)
+Card_TableList* Card_TableList::pExtractList(Card_Deck* p_deck)
 {
   _static_
 

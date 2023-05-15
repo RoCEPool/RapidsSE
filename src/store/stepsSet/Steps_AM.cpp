@@ -61,8 +61,6 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::DEMON::tSuperDemonJobId@"_Stz,     &Step::vAM_SuperDemonJobIdFetch);
   vAddStep("AM::DEMON::tSuperDemonJobId!"_Stz,     &Step::vAM_SuperDemonJobIdStore);
 
-  vAddStep("AM::OptimiserEnabled"_Stz,             &Step::vAM_OptimiserEnabled);
-
   vAddStep("AM::SHOW::bBoot"_Stz,                  &Step::vAM_Show_Boot);
   vAddStep("AM::SHOW::bDir"_Stz,                   &Step::vAM_Show_Dir);
   vAddStep("AM::SHOW::bDir_Failure"_Stz,           &Step::vAM_Show_Dir_Failure);
@@ -326,19 +324,6 @@ void Step::vAM_NodeMonDemonJobIdStore(void)
 
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   AM::DEMON::vNodeMonDemonJobId(tJobId);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* AM::OptimiserEnabled -- is the optimiser enabled ?                         */
-/*----------------------------------------------------------------------------*/
-void Step::vAM_OptimiserEnabled(void) {
-  ENTRY();
-
-  b8 bDisable = AM::bDisableCmds();
-
-  m_pDataStack->vPushInt(!bDisable);
 
   EXIT();
 }
