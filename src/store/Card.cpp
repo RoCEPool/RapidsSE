@@ -168,22 +168,6 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bound for relational op                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szBound(Stz* szRelnOp)
-{
-  _static_
-
-  if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz))
-    return "LBOUND"_Stz;
-
-  if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz))
-    return "UBOUND"_Stz;
-
-  return "BOUND"_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
 /* check for leaks                                                            */
 /*----------------------------------------------------------------------------*/
 void Card::vCardLeaks(void)
@@ -288,34 +272,6 @@ eCK Card::eTo_eCK(Stz* szCardNm)
       return (eCK)i_Card;
   
   return CK_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
-/*----------------------------------------------------------------------------*/
-eCT Card::eTo_eCT(Stz* szType)
-{
-  _static_
-
-  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (aCT[i_Type]->bSame(szType))
-      return (eCT)i_Type;
-
-  return CT_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find eCT by name                                                           */
-/*----------------------------------------------------------------------------*/
-eCT Card::eTo_eCT_char(Stz* szType)
-{
-  _static_
-
-  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
-    if (szCT_char[i_Type]->bSame(szType))
-      return (eCT)i_Type;
-
-  return CT_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

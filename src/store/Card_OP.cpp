@@ -1561,7 +1561,7 @@ void Card_OP::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
   }
 
   szRpnExpr->vCatSprint(" type %s"_Stz,
-                        aCT[Card::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szGet(P_Type))]);
+                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szGet(P_Type))]);
 
   if (p_as)
     vAs(szRpnExpr, p_as);
