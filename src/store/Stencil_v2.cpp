@@ -146,6 +146,7 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
       return eErrorCode;
     }
     pStencil->vCombine(false);
+    pStageDef->vCode(pStencil->szOpSource());
   }
 
   return EC_NONE;
