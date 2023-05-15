@@ -193,9 +193,7 @@ eCT Card_Expr::eColumnType(void)
 
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
 
-    Stz *szType = p_rpnCalc->pSymbol()->szType();
-
-    eCT eColType = Card::eTo_eCT_char(szType);
+    eCT eColType = p_rpnCalc->eColumnType();
 
     return eColType;
   }

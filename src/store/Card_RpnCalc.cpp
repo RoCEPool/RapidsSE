@@ -90,6 +90,20 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eCT Card_RpnCalc::eColumnType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Stz *szType = pSymbol()->szType()) {
+    eCT eColType = Card::eTo_eCT_char(szType);
+    return eColType;
+  }
+
+  return CT_NONE;
+}
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vConcat(STORE::Card_RpnCalc *p_rpnCalc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
