@@ -98,8 +98,6 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
     }
 
   }
-
-  //m_pPipelineDef->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

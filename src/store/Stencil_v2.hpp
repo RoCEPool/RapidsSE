@@ -81,6 +81,12 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
   private:
 
+    eEC eSynthesise(StageDef* pStageDef);
+    void vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault);
+    OpSketch* pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop);
+
+
+
     eEC eCollectStage(Dynamic* pDynamic, Stream* pStream);
 
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
@@ -97,7 +103,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind);
-
 
     OpSketch* pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
