@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* __CS2_OPT_ray : Code Synthesizer V2 called from Optimiser                  */
+/*============================================================================*/
+
+_nation
+
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+/filterPred
+/pipelineName = "__CS2_OPT_ray"
+select
+       n_nationkey, n_name
+  from
+       nation
+ where
+       n_regionkey < 3;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

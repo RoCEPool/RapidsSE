@@ -145,6 +145,46 @@ void OpDef::vOpNm(Stz* szOpNm)
   m_sOpNm = szOpNm;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+StreamDef* OpDef::pStreamDef_arriving(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  return m_pStreamDef_arriving;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vStreamDef_arriving(StreamDef* pStreamDef_arriving)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  m_pStreamDef_arriving = pStreamDef_arriving;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+StreamDef* OpDef::pStreamDef_emitted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  return m_pStreamDef_emitted;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vStreamDef_emitted(StreamDef* pStreamDef_emitted)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  m_pStreamDef_emitted = pStreamDef_emitted;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

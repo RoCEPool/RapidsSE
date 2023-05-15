@@ -48,6 +48,12 @@ namespace STORE
     Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);
 
+    StreamDef* pStreamDef_arriving(void);
+    void vStreamDef_arriving(StreamDef* pStreamDef_arriving);
+
+    StreamDef* pStreamDef_emitted(void);
+    void vStreamDef_emitted(StreamDef* pStreamDef_emitted);
+
   protected:
     Footer* aFooter(void);
   };
