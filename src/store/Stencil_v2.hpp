@@ -16,7 +16,7 @@
 struct stageOps_V2 {
 
   i8 m_iAggregOp;
-  i8 m_iCombinedOp;
+  i8 m_iCombinedOp;   // to go
   i8 m_iFilterOp;
   i8 m_iHashOp;
   i8 m_iIndexJoinOp;
@@ -83,9 +83,13 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     eEC eSynthesise(StageDef* pStageDef);
     void vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault);
+    OpSketch* pSketchEos(StageDef* pStageDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop);
+    OpSketch* pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop);
     OpSketch* pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
+
+    eEC eValidateStage(StageDef* pStageDef);
 
 
 

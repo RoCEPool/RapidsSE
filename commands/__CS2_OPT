@@ -11,6 +11,11 @@ _nation
 
 
 /*
+
+/////////////////////////////
+WEAVED BEFORE CODE SYNTHESIS
+/////////////////////////////
+
 pipeline _unnamed_
   tag <optimised> = 1 endTag
 begin
@@ -23,13 +28,11 @@ begin
   stage S01 on all partitions :
       scan      Nation
     | filter    " type BOOLEAN $3 3 < "
-    | combined  0
     | next
 
   stage S02 on all partitions :
       project   "   type INTEGER as n_nationkey $1
                   , type VARCHAR as n_name $2 "
-    | combined  0
     | next
 
   stage S03 on origin :
@@ -38,4 +41,45 @@ begin
     | first
 
 end ;
+
+
+
+/////////////////////////////
+WEAVED AFTER CODE SYNTHESIS
+/////////////////////////////
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    scan Nation
+    | dynamic  0
+    | next
+
+  stage S02 on all partitions :
+    dynamic  0
+    | next
+
+  stage S03 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+__cpp_code__
+.....
+.....
+.....
+__codeEnd__
+;
+
 */
+

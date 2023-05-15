@@ -12,8 +12,9 @@ namespace STORE
                  , public ListExo2_t<OpDef>
   {
   public:
-    i8  m_i_Stage;
-    s32 m_sStageNm;
+    i8   m_i_Stage;
+    s32  m_sStageNm;
+    s48K m_sCode;
 
   protected:
     // must be last
@@ -26,6 +27,9 @@ namespace STORE
     StageDef(void);
     StageDef(i8 i_Stage, Stz* szStageNm);
     ~StageDef(void) noexcept(false);
+
+    void vCode(Stz* szCode);
+    Stz* szCode(void);
 
     void vDump(i8 i_Tab=1);
 
