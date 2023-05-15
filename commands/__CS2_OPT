@@ -11,6 +11,11 @@ _nation
 
 
 /*
+
+/////////////////////////////
+WEAVED BEFORE CODE SYNTHESIS
+/////////////////////////////
+
 pipeline _unnamed_
   tag <optimised> = 1 endTag
 begin
@@ -38,4 +43,44 @@ begin
     | first
 
 end ;
+
+
+
+/////////////////////////////
+WEAVED AFTER CODE SYNTHESIS
+/////////////////////////////
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+    dynamic  0
+    | next
+
+  stage S02 on all partitions :
+    dynamic  0
+    | next
+
+  stage S03 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+__cpp_code__
+.....
+.....
+.....
+__codeEnd__
+;
+
 */
+
