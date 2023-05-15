@@ -142,7 +142,7 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
     pStageDef->vDump();
     eErrorCode = pStencil->eSynthesise(pStageDef);
-    if (eErrorCode != EC_NONE) {
+    if (eErrorCode == EC_NONE) {
       pStencil->vCombine(false);
       return eErrorCode;
     }
@@ -167,6 +167,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
   OpSketch *pOpSketch;
 
+  OpDef* pOpDefScan;
+
   eSR ePrevStencil_v2 = SR_NONE;
   eHK eHandlerKind = HK_NONE;
 
@@ -183,7 +185,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   //  return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each operator in the streamDef (skip consumeOP)
+  // for each operator in the streamDef
   for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
 
     // get the op
@@ -197,6 +199,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     // skip scan OP for now (sketch later)
     if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
       bInflateCrw = true;
+      pOpDefScan = pOpDef;
       continue;
     }
 
@@ -213,28 +216,37 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       //vSetupScan(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchInflateCrw(pStageDef, pOpDef, eHandlerKind, sLabelLoop);
+      pOpSketch = pSketchInflateCrw(pStageDef, pOpDefScan, eHandlerKind, sLabelLoop);
       vAppend(pOpSketch);
 
       bInflateCrw = false;
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
     }
-/*
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the filterOP
+    if (pOpDef->szOpNm()->bSame("filter"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchFilter(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
-    if (pOp->szOpNm()->bSame("project"_Stz)) {
+    if (pOpDef->szOpNm()->bSame("project"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupProject(pDynamic, pStream, pOp);
+      //vSetupProject(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchProject(pStream, pOp, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      pOpSketch = pSketchProject(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       ePrevStencil_v2 = SR_PT;
     }
-    */
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1564,7 +1576,7 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK 
   //u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(i_Op, ""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefLft);
+  pOpSketch = new OpSketch(i_Op, ""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefOut);
 
   // make the labels
   sLabel.vSprint("L_InflateCrwT"_Stz);
@@ -1690,6 +1702,46 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, 
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(pPreExpStack);
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch filter                                                              */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  i8 i_Op = pOpDef->i_Op();
+
+  // get filter expr from OpDef
+  Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal();
+
+  // get the streamDefOut
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+  // get the aggregate type stack
+  IntStack* pPreExprStack = pOpDef->m_pPreExprStack;
+
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(i_Op, sFilterExpr, eHandlerKind, SK_FILTER, ePrevStencil_v2, SR_NONE, II_NONE, pStreamDefLft, pStreamDefOut);
+
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
+
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks(pPreExprStack);
 
   return pOpSketch;
 }
@@ -1954,6 +2006,56 @@ OpSketch* Stencil_v2::pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind,
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(pPreExpStack);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch project expressions                                                 */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  i8 i_Op = pOpDef->i_Op();
+
+  // get project expr from OpDef
+  Stz* sProjectExpr = pOpDef->pArgDef_expr()->szArgVal();
+
+  // get the streamDefs
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+  // get the predicate expression stack
+  IntStack* pPreExprStack = pOpDef->m_pPreExprStack;
+
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(i_Op, sProjectExpr, eHandlerKind, SK_PROJECT, ePrevStencil_v2, SR_PT, II_NONE, pStreamDefLft, pStreamDefOut);
+
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
+
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // HACK
+  pPreExprStack = new IntStack;
+  pPreExprStack->vPush(PE_EXP);
+  pPreExprStack->vPush(PE_EXP);
+  // END HACK
+
+  // generate the expressißon stacks
+  pOpSketch->vGenerateExprStacks(pPreExprStack);
+
+  // HACK
+  delete pPreExprStack;
+  // END HACK
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();
