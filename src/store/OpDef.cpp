@@ -91,6 +91,45 @@ OpDef::~OpDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+ArgDef* OpDef::pArgDef(i8 i_Arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return _pArgDef(pGet(i_Arg));
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ArgDef* OpDef::pArgDef(Stz* szArgNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  i8 nArgs = nItems();
+  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
+    ArgDef *pArgDef = pGet(i_Arg);
+    if (pArgDef->szArgNm()->bSame((szArgNm)))
+      return pArgDef;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ArgDef* OpDef::pArgDef_expr(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return pArgDef("expr"_Stz);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void OpDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);

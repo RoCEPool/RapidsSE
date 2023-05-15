@@ -40,6 +40,10 @@ namespace STORE
     OpDef(i8 i_Op, Stz* szOpNm);
     ~OpDef(void) noexcept(false);
 
+    ArgDef* pArgDef(i8 i_Arg);
+    ArgDef* pArgDef(Stz* szArgNm);
+    ArgDef* pArgDef_expr(void);
+
     void vDump(i8 i_Tab=2);
 
     i8 i_Op(void);
@@ -47,6 +51,7 @@ namespace STORE
 
     Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);
+
 
     StreamDef* pStreamDef_arriving(void);
     void vStreamDef_arriving(StreamDef* pStreamDef_arriving);
