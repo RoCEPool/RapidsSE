@@ -103,7 +103,7 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
     pCompletedBuffer->vNextLinkedBuffer(nullptr);
     pCompletedBuffer->vPrevLinkedBuffer(nullptr);
   }
-
+  // Arjun: Potential race condition
   return pCompletedBuffer;
 }
 

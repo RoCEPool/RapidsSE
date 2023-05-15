@@ -291,6 +291,7 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
       //vTrace("vAppendLeft() converting Operator to bufferId\n"_Stz);
       // Replace RowBuffer address with BufferId and append to queue
       DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
+      // Assert Prev and Next pointers are null
       BufferId oBufferId = pDataBuffer->oGetBufferId();
       pOperand = (Operand *) oBufferId.m_pvAsAddress;
       AM::pHashMap()->vDropKeyLock(pOperand);
