@@ -142,10 +142,10 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
     pStageDef->vDump();
     eErrorCode = pStencil->eSynthesise(pStageDef);
-    if (eErrorCode == EC_NONE) {
-      pStencil->vCombine(false);
+    if (eErrorCode != EC_NONE) {
       return eErrorCode;
     }
+    pStencil->vCombine(false);
   }
 
   return EC_NONE;
@@ -183,6 +183,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   //eEC eError = eCollectStage(pDynamic, pStream);
   //if (eError != EC_NONE)
   //  return eError;
+
+  m_szStageNm = pStageDef->szStageNm();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each operator in the streamDef
@@ -251,33 +253,30 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the TUB/POT
-  /*
   if ( bGeneratePotTub ) {
 
     OpSketch* pLastOpSketch = pOpSketch;
 
-    if (pDynamic->aDynamicT()->m_iPot) {
-      RASSERT(0);
+    //if (pDynamic->aDynamicT()->m_iPot) {
+    //  RASSERT(0);
       //pOpSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
-    } else {
+    //} else {
 
-      Op *pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
+    //  Op *pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pDynamic, pLastOp, eHandlerKind);
+    //  vSetupTub(pDynamic, pLastOp, eHandlerKind);
 
       pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, ePrevStencil_v2, sLabelLoop);
     }
 
-    // add the op sketch to the stencil
-    vAppend(pOpSketch);
+  // add the op sketch to the stencil
+  vAppend(pOpSketch);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // sketch EOS handler function
-    pOpSketch = pSketchEos(pStream, HK_EOS, ePrevStencil_v2, sLabelLoop);
-    vAppend(pOpSketch);
-  }
-  */
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sketch EOS handler function
+  pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+  vAppend(pOpSketch);
 
   return EC_NONE;
 }
@@ -1750,6 +1749,28 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
 /* sketch eos                                                                 */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  // create a new opSketch
+  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, eHandlerKind, SK_EOS, ePrevStencil_v2, SR_NONE, II_NONE, nullptr, nullptr);
+
+  sLabel = ""_Stz;
+  sLabelNext = ""_Stz;
+
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch eos                                                                 */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchEos(StageDef* pStageDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
