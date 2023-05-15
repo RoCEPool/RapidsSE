@@ -28,13 +28,11 @@ begin
   stage S01 on all partitions :
       scan      Nation
     | filter    " type BOOLEAN $3 3 < "
-    | combined  0
     | next
 
   stage S02 on all partitions :
       project   "   type INTEGER as n_nationkey $1
                   , type VARCHAR as n_name $2 "
-    | combined  0
     | next
 
   stage S03 on origin :
