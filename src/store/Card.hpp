@@ -320,7 +320,7 @@ namespace STORE
     bool bSameSymbolPpyRecursive(Card* pCard_OTHER); // not needed??
 
     void vSetType(Card* p_card_arg);
-    void vSetType(Ppy& rxPpy_type);
+    void vSetType(Ppy xPpy_type);
     void vSetType(Stz* szType_arg);
 
     Symbol* pSymbol(void);

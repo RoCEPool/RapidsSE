@@ -1443,19 +1443,19 @@ void Card::vSetType(Card* p_card_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Ppy xPpy_type( p_card_arg->m_xSymbol.Y_xGet(P_Type).szPpy() );
+//  Ppy xPpy_type( p_card_arg->m_xSymbol.Y_xGet(P_Type).szPpy() );
 
-  vSetType(xPpy_type);
+  vSetType(p_card_arg->m_xSymbol.Y_xGet(P_Type));
 }
 
 /*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vSetType(Ppy& rxPpy_type)
+void Card::vSetType(Ppy xPpy_type)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.Y_vSet(P_Type,rxPpy_type.szPpy());
+  m_xSymbol.Y_vSet(P_Type, xPpy_type.szPpy());
 }
 
 /*----------------------------------------------------------------------------*/

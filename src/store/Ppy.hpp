@@ -20,12 +20,12 @@ namespace STORE
     Ppy(void);
     Ppy(i8 iPpy);
     Ppy(Ppy* pPpy);
-    Ppy(Ppy &rxPpy);
+    //Ppy(Ppy xPpy);
     Ppy(Stz* szPpy);
     ~Ppy(void) noexcept(false);
 
     void operator =(i8   iPpy);
-    void operator =(Ppy& rxPpy);
+    //void operator =(Ppy& rxPpy);
     void operator =(Ppy  xPpy);
     void operator =(Stz* szPpy);
 
