@@ -34,15 +34,20 @@ public:
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
   void vAdaptorWLHasStatement(void);
+  void vAdaptorWLHasQuery(void);
   void vAdaptorWLIsChildJobActive(void);
   void vAdaptorWLNew(void);
   void vAdaptorWLNextPayloadToSendFetch(void);
   void vAdaptorWLProcessWLMsg(void);
   void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLProtocolErrorTest(void);
+  void vAdaptorWLQueryComplete(void);
+  void vAdaptorWLQueryStrPush(void);
   void vAdaptorWLResultMetadata(void);
   void vAdaptorWLRowBuffer(void);
   void vAdaptorWLStatementFetch(void);
+  void vAdaptorWLStatementToSubmit(void);
+  void vAdaptorWLStatementParsingError(void);
   void vAdaptorWLStatementSubmitted(void);
   void vAdaptorWLStatementSubmittedError(void);
   void vAdaptorWLStreamSet(void);
@@ -2220,6 +2225,7 @@ void vDdlLockAssertNone(void);
   void vTaskListSet(void);
   void vTaskListDelete(void);
   void vTaskListIsEmpty(void);
+  void vTaskListIsNull(void);
   void vTaskListPop(void);
 
 

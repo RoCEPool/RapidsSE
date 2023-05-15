@@ -86,7 +86,7 @@ void QueryContext::vInit(com::rapidsdata::wirelineprotocol::messages::v5::QueryE
 
   // Parse out each statement in the batch from the query and create a StatementContext
   // for each one.
-  vExtractStatements();
+  //vExtractStatements();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void QueryContext::vExtractStatements()
   ASSERT(m_pQueryExecuteRequest);
   ASSERT(m_pStmtCtxList);
   ASSERT(m_pStmtCtxList->nItems() == 0);
-  
+
   i8 nQueryLen = (i8) m_pQueryExecuteRequest->query.length();
 
   i8 iStmtCrs = -1;

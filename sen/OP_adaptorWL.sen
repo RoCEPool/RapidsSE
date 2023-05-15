@@ -32,8 +32,11 @@
 : adaptorWL_submitStatement params| sSmt |
   "adaptorWL_submitStatement" .verbose
 
+  // DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME
+
   sSmt "FORKING CHILD FOR COMMAND: %v"  str.format .
 
+  // ### OLD API ###
   // spawn a job for the smt
   [Op] [job].responseOp!
   STD_NORMALFORK_TAG sSmt api::forkChild not if
@@ -46,7 +49,52 @@
   then
 
   AdaptorWL[].stmtSubmitted
+
 ;
+
+/*----------------------------------------------------------------------------*/
+/* Parse a query into one or more tasks                                       */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_parseQuery params| sSmt |
+  "adaptorWL_parseQuery" .verbose
+
+  TaskList[].isNull assert
+
+  // Parse the command into one or more tasks
+  STD_NORMALFORK_TAG sSmt api::parseCommand if
+
+    // A pointer to a tasklist is now on the data stack. Save it.
+    TaskList[].set
+
+  else
+    // Error code and error message are on the stack. Use it to form a message
+    // to be send to the client.
+    AdaptorWL[].stmtParsingErr
+    exit
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* Schedule the next task, if any                                             */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_scheduleNextTask
+  "adaptorWL_scheduleNextTask" .verbose
+
+  0 locals| pNextTask |
+
+  TaskList[].isEmpty if
+    AdaptorWL[].queryComplete
+    TaskList[].delete
+    exit
+  then
+
+  TaskList[].pop to pNextTask
+
+  pNextTask AdaptorWL[].statementToSubmit
+
+  pNextTask api::scheduleTask
+;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -120,9 +168,25 @@
     exit
   then
 
-  // Check if there are statements to be submitted through the API
-  AdaptorWL[].hasStatement if
-    AdaptorWL[].statement@ adaptorWL_submitStatement
+// DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME
+//  // Check if there are statements to be submitted through the API
+//  AdaptorWL[].hasStatement if
+//    AdaptorWL[].statement@ adaptorWL_submitStatement
+//
+//    // Pipeout any payloads that were just generated so they can be sent straight away
+//    adaptorWL_sendAnyWLResponses
+//
+//    // Check if the protocol is unviable
+//    AdaptorWL[].protocolErrorTest if
+//      AdaptorWL[].protocolError@ op__execErr
+//      true
+//      exit
+//    then
+//  then
+
+  // Check if there are queries to be parsed and submitted through the API
+  AdaptorWL[].hasQuery if
+    AdaptorWL[].queryStr@ adaptorWL_parseQuery
 
     // Pipeout any payloads that were just generated so they can be sent straight away
     adaptorWL_sendAnyWLResponses
@@ -133,6 +197,11 @@
       true
       exit
     then
+
+
+    // Schedule the next task, if any
+    adaptorWL_scheduleNextTask
+
   then
 
   true
@@ -299,19 +368,26 @@
     exit
   then
 
-  // Check if there are statements to be submitted through the API
-  AdaptorWL[].hasStatement if
-    AdaptorWL[].statement@ adaptorWL_submitStatement
+// DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME DELETE ME
+//  // ### OLD API ###
+//  // Check if there are statements to be submitted through the API
+//  AdaptorWL[].hasStatement if
+//    AdaptorWL[].statement@ adaptorWL_submitStatement
+//  then
 
-    // Pipeout any payloads that were just generated so they can be sent straight away
-    adaptorWL_sendAnyWLResponses
+  // ### NEW API ###
+  // Schedule the next task, if any
+  adaptorWL_scheduleNextTask
 
-    // Check if the protocol is unviable
-    AdaptorWL[].protocolErrorTest if
-      AdaptorWL[].protocolError@ op__execErr
-      true
-      exit
-    then
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses
+
+  // Check if the protocol is unviable
+  AdaptorWL[].protocolErrorTest if
+    AdaptorWL[].protocolError@ op__execErr
+    true
+    exit
   then
 
   true

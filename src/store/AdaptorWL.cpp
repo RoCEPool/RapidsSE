@@ -326,6 +326,21 @@ void AdaptorWL::vStatementSubmitted()
 /*----------------------------------------------------------------------------*/
 /* Update the state that a statement has failed to submit                     */
 /*----------------------------------------------------------------------------*/
+void AdaptorWL::vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg)
+{
+  ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
+  Stz* szErrMsg= "Error: %s; %s: %s"_Stz;
+
+  vSerialiseErrorResponse(eErrCode, szErrMsg, aEC2[eErrCode], aErrorMsg[eErrCode], szErrMsg);
+  m_pStmtCtx->vGotError(true);
+
+  // The child job failed during submission.
+  vChildJobExited();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Update the state that a statement has failed to submit                     */
+/*----------------------------------------------------------------------------*/
 void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 {
   ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));

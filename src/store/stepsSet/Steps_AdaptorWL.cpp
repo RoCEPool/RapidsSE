@@ -25,15 +25,20 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].executionError"_Stz,      &Step::vAdaptorWLExecutionError);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
-  vAddStep("AdaptorWL[].hasStatement"_Stz,        &Step::vAdaptorWLHasStatement);
+  vAddStep("AdaptorWL[].hasStatement"_Stz,        &Step::vAdaptorWLHasStatement);         // DELETE ME
+  vAddStep("AdaptorWL[].hasQuery"_Stz,            &Step::vAdaptorWLHasQuery);
   vAddStep("AdaptorWL[].isChildJobActive"_Stz,    &Step::vAdaptorWLIsChildJobActive);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz,  &Step::vAdaptorWLNextPayloadToSendFetch);
   vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
   vAddStep("AdaptorWL[].protocolErrorTest"_Stz,   &Step::vAdaptorWLProtocolErrorTest);
+  vAddStep("AdaptorWL[].queryComplete"_Stz,       &Step::vAdaptorWLQueryComplete);
+  vAddStep("AdaptorWL[].queryStr@"_Stz,           &Step::vAdaptorWLQueryStrPush);
   vAddStep("AdaptorWL[].resultMetadata"_Stz,      &Step::vAdaptorWLResultMetadata);
   vAddStep("AdaptorWL[].rowBuffer"_Stz,           &Step::vAdaptorWLRowBuffer);
-  vAddStep("AdaptorWL[].statement@"_Stz,          &Step::vAdaptorWLStatementFetch);
+  vAddStep("AdaptorWL[].statement@"_Stz,          &Step::vAdaptorWLStatementFetch);   // DELETE ME
+  vAddStep("AdaptorWL[].statementToSubmit"_Stz,   &Step::vAdaptorWLStatementToSubmit);
+  vAddStep("AdaptorWL[].stmtParsingErr"_Stz,      &Step::vAdaptorWLStatementParsingError);
   vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);
   vAddStep("AdaptorWL[].stmtSubmittedErr"_Stz,    &Step::vAdaptorWLStatementSubmittedError);
   vAddStep("AdaptorWL[].streamSet"_Stz,           &Step::vAdaptorWLStreamSet);
@@ -205,6 +210,34 @@ void Step::vAdaptorWLProtocolErrorTest(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* adaptorWL[].queryComplete -- Perform actions when the query is completed   */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLQueryComplete(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  pAdaptorWL->vQueryComplete();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].queryStr@ -- Push the query string onto the data stack         */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLQueryStrPush(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  m_pDataStack->vPushStz(pAdaptorWL->szQuery());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* adaptorWL[].resultMetadata -- Resultset metadata has been received         */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLResultMetadata(void)
@@ -251,6 +284,20 @@ void Step::vAdaptorWLHasStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* adaptorWL[].hasQuery -- Push true if there is a query to be parsed         */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLHasQuery(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  m_pDataStack->vPushInt(pAdaptorWL->bHasQuery() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* adaptorWL[].isChildJobActive -- Push true if there is a statement executing*/
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLIsChildJobActive(void)
@@ -291,6 +338,44 @@ void Step::vAdaptorWLStatementFetch(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   m_pDataStack->vPushStz(pAdaptorWL->szStatement());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AdaptorWL[].statementToSubmit -- There is a next statement to be executed  */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLStatementToSubmit(void)
+{
+  ENTRY();
+
+  Task* pNextTask = _pTask(m_pDataStack->pPopPtr(__func__));
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  pAdaptorWL->vStatementToSubmit(pNextTask);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AdaptorWL[].stmtParsingErr -- The statement parsing failed.                */
+/* An error code and error string must be on the stack.                       */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLStatementParsingError(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  s2K sErrMsg;
+  m_pDataStack->vPopStz(sErrMsg.szStz(), __func__);
+  ASSERT(sErrMsg.nLength() > 0);
+
+  eEC eErrCode = (eEC) m_pDataStack->iPopInt(__func__);
+  ASSERT(eErrCode != EC_NONE);
+
+  pAdaptorWL->vStatementParsingFailed(eErrCode, sErrMsg.szStz());
 
   EXIT();
 }

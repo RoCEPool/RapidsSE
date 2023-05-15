@@ -92,8 +92,15 @@ namespace STORE
     Stz* szStatement();
     bool bHasStatement();
 
+    bool bHasQuery();   // TODO
+    Stz* szQuery();     // TODO
+
     // State-change handlers called from sen code
+    void vStatementToSubmit(Task* pNextTask);    // TODO
+    void vQueryComplete();        // TODO
+
     void vStatementSubmitted();
+    void vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg);
     void vStatementSubmissionFailed(eEC eErrCode);
     void vCompilerError(InfoSet* pInfoSet);
     void vExecutionError(InfoSet* pInfoSet);

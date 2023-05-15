@@ -19,10 +19,10 @@ void Step::vAddSteps_TaskList(void)
   vAddStep("TaskList[]"_Stz,           &Step::vTaskListGet);
   vAddStep("TaskList[].get"_Stz,       &Step::vTaskListGet);
   vAddStep("TaskList[].set"_Stz,       &Step::vTaskListSet);
-
-  vAddStep("tasklist.delete"_Stz ,     &Step::vTaskListDelete);
-  vAddStep("tasklist.isEmpty"_Stz,     &Step::vTaskListIsEmpty);
-  vAddStep("tasklist.pop"_Stz,         &Step::vTaskListPop);
+  vAddStep("TaskList[].isNull"_Stz,    &Step::vTaskListIsNull);
+  vAddStep("TaskList[].delete"_Stz ,   &Step::vTaskListDelete);
+  vAddStep("TaskList[].isEmpty"_Stz,   &Step::vTaskListIsEmpty);
+  vAddStep("TaskList.pop"_Stz,         &Step::vTaskListPop);
 
 }
 
@@ -55,15 +55,17 @@ void Step::vTaskListSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tasklist.delete -- delete the tasklist on the stack                        */
+/* TaskList[].delete -- delete the tasklist register                          */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskListDelete(void)
 {
   ENTRY();
 
-  TaskList* pTaskList = _pTaskList(m_pDataStack->pPopPtr(__func__));
+  TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
   ASSERT(pTaskList);
   delete pTaskList;
+
+  m_pLogicUnit->m_xpTaskList = nullptr;
 
   EXIT();
 }
@@ -75,11 +77,24 @@ void Step::vTaskListIsEmpty(void)
 {
   ENTRY();
 
-  TaskList* pTaskList = _pTaskList(m_pDataStack->pPopPtr(__func__));
-  ASSERT(pTaskList);
+  TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
 
-  bool bIsEmpty = (pTaskList->pPeekTask() != nullptr);
+  bool bIsEmpty = (!pTaskList || pTaskList->pPeekTask() == nullptr);
   m_pDataStack->vPushBol(bIsEmpty);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tasklist.isNull -- return true if the task list register is null           */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskListIsNull(void)
+{
+  ENTRY();
+
+  TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
+
+  m_pDataStack->vPushBol(pTaskList == nullptr);
 
   EXIT();
 }
@@ -91,7 +106,7 @@ void Step::vTaskListPop(void)
 {
   ENTRY();
 
-  TaskList* pTaskList = _pTaskList(m_pDataStack->pPopPtr(__func__));
+  TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
   ASSERT(pTaskList);
 
   Task* pTask = pTaskList->pPopTask();

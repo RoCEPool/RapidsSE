@@ -65,6 +65,9 @@ void Step::vApiParseCommand(void)
   s48K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
+  s48K sCmdTagStr;
+  m_pDataStack->vPopStr(sCmdTagStr,__func__);
+
   TaskList* pTaskList = Api::pParseCommand(sCmd.szStz(), eErrCode, sErrStr);
 
   if (EC_NONE == eErrCode) {
@@ -72,6 +75,7 @@ void Step::vApiParseCommand(void)
     m_pDataStack->vPushInt(true);
   }
   else {
+    m_pDataStack->vPushStz(sErrStr.szStz());
     m_pDataStack->vPushInt(eErrCode);
     m_pDataStack->vPushInt(false);
   }
