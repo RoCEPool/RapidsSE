@@ -123,7 +123,7 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
     return;
 
   if (CK_CAST == eCard) {
-    vTrace("CAST: %s\n"_Stz,p_OP->szSymbol());
+    //vTrace("CAST: %s\n"_Stz,p_OP->szSymbol());
     if (!p_OP->szSymbol()->bSame("hashCast"_Stz))
       return;
   }

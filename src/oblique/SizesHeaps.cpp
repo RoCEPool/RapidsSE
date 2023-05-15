@@ -265,6 +265,7 @@
 #include "MakeCode.hpp"
 #include "Ppy.hpp"
 #include "Symbol.hpp"
+#include "Weaver2.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -720,6 +721,7 @@ SizeHeap gxaSizeHeap[]
   {CN__W__,                     'W' - ('A' - 1),         HT_INVALID   , FILL },
   {CN_WAKEUP,                   sizeof(Wakeup),          HT_INVALID   , FILL },
   {CN_WEAVER,                   sizeof(Weaver),          HT_T_LARGE   , FILL },
+  {CN_WEAVER2,                  sizeof(Weaver2),         HT_T_LARGE   , FILL },
   {CN_WILDERNESS,               sizeof(Wilderness),      HT_INVALID   , FILL },
   {CN_WORD,                     sizeof(Word),            HT_T_TINY    , FILL },
   {CN_WSPCONVERGENT_t,          0,                       HT_INVALID   , FILL },
