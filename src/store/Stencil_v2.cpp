@@ -228,6 +228,26 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for inflateRow before handling the current operator
+    if (!bInflateGenerated) {
+
+      RASSERT(!m_xStageOps.m_bIndexScan);
+
+      eHandlerKind = HK_ROWBUFFER;
+      sLabelLoop = "L_AdvanceNextRowT"_Stz;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //vSetupScan(pDynamic, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchInflateRow(pStageDef, pOpDef, eHandlerKind, sLabelLoop);
+      vAppend(pOpSketch);
+
+      bInflateGenerated = true;
+      ePrevStencil_v2 = SR_IT;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
     if (pOpDef->szOpNm()->bSame("filter"_Stz)) {
 
@@ -1557,43 +1577,6 @@ OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKin
 /*----------------------------------------------------------------------------*/
 /* sketch inflate compact rows of crwBuffer)                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  OpSketch* pOpSketch;
-
-  s256 sLabel;
-  s256 sLabelNext;
-
-  i8 i_Op = pOpDef->i_Op();
-
-  // get the streamDefLft
-  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
-
-  // get the columns to be selected
-  //u8 uSelectColumns = uGetSelectColumns(pStream);
-
-  // create a new opSketch for this OP
-  pOpSketch = new OpSketch(i_Op, ""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefOut);
-
-  // make the labels
-  sLabel.vSprint("L_InflateCrwT"_Stz);
-  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
-
-  // set the labels in the opSketch
-  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
-
-  return pOpSketch;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sketch inflate compact rows of crwBuffer)                                  */
-/*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1629,6 +1612,43 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKi
 }
 
 /*----------------------------------------------------------------------------*/
+/* sketch inflate compact rows of crwBuffer)                                  */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  OpSketch* pOpSketch;
+
+  s256 sLabel;
+  s256 sLabelNext;
+
+  i8 i_Op = pOpDef->i_Op();
+
+  // get the streamDefLft
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+  // get the columns to be selected
+  //u8 uSelectColumns = uGetSelectColumns(pStream);
+
+  // create a new opSketch for this OP
+  pOpSketch = new OpSketch(i_Op, ""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefOut);
+
+  // make the labels
+  sLabel.vSprint("L_InflateCrwT"_Stz);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
+
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sketch inflate of row from rowBuffer                                       */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop) {
@@ -1652,6 +1672,39 @@ OpSketch* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKi
   // make the labels
   sLabel.vSprint("L_InflateRowT"_Stz);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
+
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct();
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch inflate of row from rowBuffer                                       */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  OpSketch *pOpSketch;
+
+  s256 sLabel;
+  s256 sLabelNext;
+
+  i8 i_Op = pOpDef->i_Op();
+
+  // get the streamDefOut
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+
+  // create a new opSketch for this OP
+  pOpSketch = new OpSketch(i_Op, ""_Stz, eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefLft);
+
+  // make the labels
+  sLabel.vSprint("L_InflateRowT"_Stz);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
@@ -1721,9 +1774,16 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // get filter expr from OpDef
   Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal();
 
+  // HACK
+  // get the streamDefOut from previous OP
+  OpDef* pPreviousOpDef = pStageDef->pGet(pOpDef->i_Op() - 1);
+  StreamDef *pStreamDefLft = pPreviousOpDef->m_pStreamDef_emitted;
+  StreamDef *pStreamDefOut = pPreviousOpDef->m_pStreamDef_emitted;
+  // END HACK
+
   // get the streamDefOut
-  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+  //StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  //StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // get the aggregate type stack
   IntStack* pPreExprStack = pOpDef->m_pPreExprStack;
