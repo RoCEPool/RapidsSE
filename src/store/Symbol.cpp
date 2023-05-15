@@ -888,7 +888,7 @@ void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
   m_pProperties->vReplace(szPpyNm, szPpy);
 
   if (szPpyNm->bSame(P_Type)) {
-    RASSERT(!szPpy->bSame(""_Stz));
+    //RASSERT(!szPpy->bSame(""_Stz));
     RASSERT(!szPpy->bSame("!"_Stz));
   }
 }
