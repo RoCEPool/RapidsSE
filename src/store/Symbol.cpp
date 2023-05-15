@@ -125,6 +125,34 @@ bool Symbol::b_IsSubQueryName(BASE::Stz *szStz)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* find eCT by name                                                           */
+/*----------------------------------------------------------------------------*/
+eCT Symbol::eTo_eCT_str(Stz* szType)
+{
+  _static_
+
+  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
+    if (aCT[i_Type]->bSame(szType))
+      return (eCT)i_Type;
+
+  return CT_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find eCT by name                                                           */
+/*----------------------------------------------------------------------------*/
+eCT Symbol::eTo_eCT_char(Stz* szType)
+{
+  _static_
+
+  for (i8 i_Type = 0; i_Type < CT_ENUMS; i_Type++)
+    if (szCT_char[i_Type]->bSame(szType))
+      return (eCT)i_Type;
+
+  return CT_NONE;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/

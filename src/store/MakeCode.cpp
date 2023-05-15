@@ -201,7 +201,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
 
     case CK_HASH: {
       Card_HshCol *p_hshCol = _pCard_Hash(p_OP)->pSub_hshCol();
-      m_pOpDef->vAppend(new ArgDef(0, "type"_Stz,  aCT[Card::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))]));
+      m_pOpDef->vAppend(new ArgDef(0, "type"_Stz,  aCT[Symbol::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))]));
       m_pOpDef->vAppend(new ArgDef(1, "column"_Stz,  p_hshCol->szSymbol()));
     }
       break;

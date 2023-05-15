@@ -254,17 +254,17 @@ StreamDef* Card_Projection::pToStreamDef(void)
 
   StreamDef* pStreamDef = new StreamDef;
 
-
   Kid xExpr(this);
   while (xExpr.bEach(CK_EXPR)) {
     s32 sColNm = xExpr.p_expr()->pSub_as()
                    ? xExpr.p_expr()->pSub_as()->szSymbol()
                    : "--NO AS--"_Stz;
-//    vTrace("ToStreamDef: %lld %s\n"_Stz,
-//           xExpr.i_Child(),
-//           sColNm.szStz());
-//
-    pStreamDef->vAddColumn(sColNm,CT_INTEGER,C_UNKNOWN,C_UNKNOWN);
+
+    eCT eColumnType = xExpr.p_expr()->eColumnType();
+
+    //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumnType]);
+
+    pStreamDef->vAddColumn(sColNm,eColumnType,C_UNKNOWN,C_UNKNOWN);
   }
 
   return pStreamDef;

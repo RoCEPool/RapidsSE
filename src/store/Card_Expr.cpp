@@ -187,6 +187,23 @@ void Card_Expr::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eCT Card_Expr::eColumnType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
+
+    eCT eColType = p_rpnCalc->eColumnType();
+
+    return eColType;
+  }
+
+  return CT_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Expr::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

@@ -31,6 +31,8 @@ namespace STORE
     operator Stz*(void);
 
     static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
+    static eCT  eTo_eCT_str(Stz* szType);
+    static eCT  eTo_eCT_char(Stz* szType);
 
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);

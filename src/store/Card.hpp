@@ -238,8 +238,6 @@ namespace STORE
 
    ~Card(void) noexcept(false);
 
-    static Stz* szBound(Stz* szRelnOp);
-
     static void vCardLeaks(void);
 
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
@@ -250,9 +248,6 @@ namespace STORE
 
 
     static eCK  eTo_eCK(Stz* szCardNm);
-
-    static eCT  eTo_eCT(Stz* szType);
-    static eCT  eTo_eCT_char(Stz* szType);
 
     static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
 

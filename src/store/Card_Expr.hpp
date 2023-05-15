@@ -20,11 +20,12 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
 
     //-----------------------------------------------------------
-   static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
+    static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
 
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    eCT  eColumnType(void);
     Card_Expr* pClone(void);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
     Card_Expr* pCraft_expr_early(CardIter* pCI);

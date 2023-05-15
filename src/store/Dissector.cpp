@@ -1064,7 +1064,7 @@ Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = _pCard_Term(pCard_RpnTerms->pPop());
 
-  Stz* szType = szCT_char[Card::eTo_eCT(pCard_Term_type->szSymbol())];
+  Stz* szType = szCT_char[Symbol::eTo_eCT_str(pCard_Term_type->szSymbol())];
 
   delete pCard_Term_type;
 
