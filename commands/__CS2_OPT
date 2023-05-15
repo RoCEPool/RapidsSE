@@ -58,7 +58,8 @@ begin
     | next
 
   stage S01 on all partitions :
-    dynamic  0
+    scan Nation
+    | dynamic  0
     | next
 
   stage S02 on all partitions :
