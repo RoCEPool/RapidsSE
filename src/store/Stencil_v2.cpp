@@ -1719,7 +1719,7 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   i8 i_Op = pOpDef->i_Op();
 
   // get filter expr from OpDef
-  Stz* sFilterExpr = ""_Stz; //pOpDef->szGetExpr(); //szValue(C_TAG_EXPR);
+  Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefOut
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -2026,7 +2026,7 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
   i8 i_Op = pOpDef->i_Op();
 
   // get project expr from OpDef
-  Stz* sProjectExpr = ""_Stz; //pOpDef->getExpr();
+  Stz* sProjectExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -2044,8 +2044,18 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
+  // HACK
+  pPreExprStack = new IntStack;
+  pPreExprStack->vPush(PE_EXP);
+  pPreExprStack->vPush(PE_EXP);
+  // END HACK
+
   // generate the expressißon stacks
   pOpSketch->vGenerateExprStacks(pPreExprStack);
+
+  // HACK
+  delete pPreExprStack;
+  // END HACK
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();
