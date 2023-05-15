@@ -122,6 +122,12 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
   if (CK_COMBINED == eCard)
     return;
 
+  if (CK_CAST == eCard) {
+    vTrace("CAST: %s\n"_Stz,p_OP->szSymbol());
+    if (!p_OP->szSymbol()->bSame("hashCast"_Stz))
+      return;
+  }
+
   m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm());
   m_pStageDef->vAppend(m_pOpDef);
 
