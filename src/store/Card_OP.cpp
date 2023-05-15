@@ -1602,6 +1602,38 @@ void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* craft arriving streamDef                                                   */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card_OP::pCraftStreamDef_arriving(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Projection* p_projection = pSub_projection();
+  if (! p_projection)
+    return nullptr;
+
+  StreamDef* pStreamDef_arriving = p_projection->pToStreamDef();
+
+  return pStreamDef_arriving;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft emitted streamDef                                                    */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card_OP::pCraftStreamDef_emitted(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Projection* p_projection = pSub_projection();
+  if (! p_projection)
+    return nullptr;
+
+  StreamDef* pStreamDef_emitted = p_projection->pToStreamDef();
+
+  return pStreamDef_emitted;
+
+}
 
 /*============================================================================*/
 /* end                                                                        */

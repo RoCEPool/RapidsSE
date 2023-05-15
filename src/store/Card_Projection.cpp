@@ -245,6 +245,18 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert to streamDef                                                       */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card_Projection::pToStreamDef(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  StreamDef* pStreamDef = new StreamDef;
+
+  return pStreamDef;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

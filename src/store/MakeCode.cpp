@@ -125,7 +125,7 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
   m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm());
   m_pStageDef->vAppend(m_pOpDef);
 
-  vCraftStreamDefs();
+  vCraftStreamDefs(p_OP);
 
   vCraftArgDefs(p_OP);
 }
@@ -270,12 +270,12 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft stream def's                                                         */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftStreamDefs(void)
+void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  m_pOpDef->m_pStreamDef_arriving = new StreamDef;
-  m_pOpDef->m_pStreamDef_emitted  = new StreamDef;
+  m_pOpDef->m_pStreamDef_arriving = p_OP->pCraftStreamDef_arriving();
+  m_pOpDef->m_pStreamDef_emitted  = p_OP->pCraftStreamDef_emitted();
 }
 
 /*============================================================================*/
