@@ -2,6 +2,8 @@
 /* __CS2_OPT_ray : Code Synthesizer V2 called from Optimiser                  */
 /*============================================================================*/
 
+// --initial __CS2_OPT_ray
+
 _nation
 
 /time load nation   "<tpch_dir>/nation.<suffix>";
