@@ -264,6 +264,8 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   i_CurrentRow = -1;
 
+  aDynamicT->m_nCols = __NUM_COLUMNS__;
+
   // process the row
   aDynamicT->m_iProcessRow = 1;
 

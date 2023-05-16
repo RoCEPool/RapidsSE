@@ -160,7 +160,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // begin new EOS handler
-        vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
         break;
 
       case SK_AGGREG:
@@ -251,7 +251,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new INDEXBUFFER handler
-        vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
         vAppendStencilTo(pOpSketch);
 
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pCodeFile);
@@ -339,7 +339,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
       case SK_INFLATE_CRW:
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new CRWBUFFER handler
-        vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
 
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz);
@@ -354,7 +354,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new ROWBUFFER handler
-        vAppendFunctionHeader(eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
 
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz, pCodeFile);
@@ -728,7 +728,7 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind)
 /*----------------------------------------------------------------------------*/
 /* append function header fragment                                            */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm)
+void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, Stz* szStageNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -761,6 +761,8 @@ void CombinedSrc::vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm)
       NEVER_REACH;
   }
 
+  // append header
+
   sCode = ""_Stz;
   m_pFunctionHeader->vSeekStart();
   bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
@@ -771,8 +773,49 @@ void CombinedSrc::vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm)
   RASSERT(bResult);
 
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-}
 
+  if (eHandlerKind == HK_EOS)
+    return;
+
+  // append vSetColumns
+
+  sCode = ""_Stz;
+  m_pFunctionHeader->vSeekStart();
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, pOpSketch, "vSetColumns"_Stz, sCode, nullptr, C_UNKNOWN);
+  RASSERT(bExtracted);
+
+  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+
+  // append function continue
+
+  switch(eHandlerKind) {
+    case HK_CRWBUFFER:
+      szFunction = "vCrwContinue";
+      iFunction = 0;
+      break;
+    case HK_ROWBUFFER:
+      szFunction = "vRowContinue";
+      iFunction = 1;
+      break;
+    case HK_INDEXBUFFER:
+      szFunction = "vIndexContinue";
+      iFunction = 2;
+      break;
+    case HK_EOS:
+      szFunction = "__FUNCTION_EOS__";
+      iFunction = 3;
+      break;
+    default:
+      NEVER_REACH;
+  }
+
+  sCode = ""_Stz;
+  m_pFunctionHeader->vSeekStart();
+  bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
+  RASSERT(bExtracted);
+
+  StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+}
 
 /*----------------------------------------------------------------------------*/
 /* append stencil to                                                          */

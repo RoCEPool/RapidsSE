@@ -20,9 +20,33 @@
 /*--------------------------------------------------------------------*/
 /* flattened function -- CRWBUFFER HANDLER                            */
 /*--------------------------------------------------------------------*/
-int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT)
-{
+int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT) {
 
+  // marker-end
+
+}
+
+// function-vSetColumns
+/*--------------------------------------------------------------------*/
+/* vSetColumns --                                                     */
+/*--------------------------------------------------------------------*/
+int vSetColumns(struct Dynamic_T* aDynamicT) {
+
+  i8 __NUM_COLUMNS__;
+
+  // marker-start
+  aDynamicT->m_nCols = __NUM_COLUMNS__;
+
+  // marker-end
+}
+
+// function-vCrwContinue
+/*--------------------------------------------------------------------*/
+/* vCrwContinue --                                                    */
+/*--------------------------------------------------------------------*/
+int vCrwContinue(struct Dynamic_T* aDynamicT) {
+
+  // marker-start
   #include "../src/store/vFLAT_Parameters_v2.h"
   #include "../src/store/vFLAT_PreliminaryCrw_v2.h"
 
@@ -174,7 +198,18 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 
-   #include "../src/store/vFLAT_Parameters_v2.h"
+  // marker-end
+
+}
+
+// function-vIndexContinue
+/*--------------------------------------------------------------------*/
+/* vIndexContinue --                                                  */
+/*--------------------------------------------------------------------*/
+int vIndexContinue(struct Dynamic_T* aDynamicT) {
+
+  // marker-start
+#include "../src/store/vFLAT_Parameters_v2.h"
 
 
    char* szSrcStz;
@@ -253,8 +288,18 @@ int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
 {
+  // marker-end
+}
 
-  #include "../src/store/vFLAT_Parameters_v2.h"
+// function-vRowContinue
+/*--------------------------------------------------------------------*/
+/* vRowContinue --                                                    */
+/*--------------------------------------------------------------------*/
+int vRowContinue(struct Dynamic_T* aDynamicT) {
+
+  // marker-start
+
+#include "../src/store/vFLAT_Parameters_v2.h"
 
   char *szSrcStz;
   char *szDstStz;

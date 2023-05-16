@@ -1095,7 +1095,12 @@ void Stencil_v2::vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
-  pDynamic->aDynamicT()->m_nCols = pTable->pStreamDef()->nColumns();
+  pDynamic->aDynamicT()->
+
+
+
+
+  m_nCols = pTable->pStreamDef()->nColumns();
 
   i8 iIndexNo = pIndexScan->iIndexNo();
 
@@ -1300,7 +1305,7 @@ void Stencil_v2::vSetupScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  pDynamic->aDynamicT()->m_nCols = pStreamDefLft->nColumns();
+//  pDynamic->aDynamicT()->m_nCols = pStreamDefLft->nColumns();
 //  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
 //  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
 //      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle,

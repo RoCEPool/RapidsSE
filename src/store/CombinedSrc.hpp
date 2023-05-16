@@ -65,7 +65,7 @@ namespace STORE {
     void vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile);
     void vAppendFileHeaders(void);
     void vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind);
-    void vAppendFunctionHeader(eHK eHandlerKind, Stz* szStageNm);
+    void vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, Stz* szStageNm);
     void vAppendStencilTo(OpSketch* pOpSketch);
     void vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction);
     void vAppendCodeNullRightCols(OpSketch* pOpSketch, Stz* szFunction);
