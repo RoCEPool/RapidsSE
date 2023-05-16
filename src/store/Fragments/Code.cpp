@@ -241,7 +241,7 @@ i8 iGbyAggGenKeyEnd(Dynamic_T* aDynamicT) {
 // function-vInflateCrwBegin
 void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
-  RowInfo_v2 __ROW_INFO_TO__;
+  RowInfo __ROW_INFO_TO__;
 
   i8* paW;
   i8 i_CurrentRow;
@@ -263,6 +263,8 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   paW = &aDynamicT->m_aW[0];
 
   i_CurrentRow = -1;
+
+  aDynamicT->m_nCols = __NUM_COLUMNS__;
 
   // process the row
   aDynamicT->m_iProcessRow = 1;
@@ -405,13 +407,13 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoTO.m_aRowSingle;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoTO.m_aRowCellArray;
 
   // marker-end
 
@@ -479,13 +481,13 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowSingle;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowCellArray;
 
   // marker-end
   L_Return:
@@ -506,13 +508,13 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_TINYC
-    aDynamicT->m_xRowInfoTO.m_aRowSingle = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+    aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
 
-    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowSingle;
+    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowCellArray;
 
   // marker-end
   L_Return:

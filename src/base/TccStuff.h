@@ -386,13 +386,6 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 
 struct RowInfo {
-  void* m_aRowSingle;
-  void* m_aRowCellArray;
-  char* m_acStrArea;
-  char* m_acStrAreaSav;
-};
-
-struct RowInfo_v2 {
   i8   m_iCell[256];
   char m_cStringArea[16384]; // _C_16KB;
   void* m_aRowCellArray;
@@ -435,10 +428,10 @@ struct Dynamic_T
   i8 m_iHeadSize;
   enum eSI           m_eStrInflateRule;
   struct HeadLine_T* m_aHeadLine0;
-  struct RowInfo_v2  m_xRowInfoIT;
+  struct RowInfo  m_xRowInfoIT;
 
   // inflate J (SR_IJ)
-  struct RowInfo_v2 m_xRowInfoIJ;
+  struct RowInfo m_xRowInfoIJ;
 
   // Project payload (SR_PL)
   struct RowInfo m_xRowInfoPL;

@@ -45,9 +45,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_eStrInflateRule = SI_NONE;
   m_xDynamicT.m_aHeadLine0      = nullptr;
 
-
-
-
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoIT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -59,9 +56,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoIT.m_iCell[0];
   m_xDynamicT.m_xRowInfoIT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoIT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
-
-
-
 
   // inflate J (SR_IJ)
   for (i8 i = 0; i < 256; i++)
@@ -76,46 +70,91 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoIJ.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
 
-
   // project PL (SR_PL)
-  m_xDynamicT.m_xRowInfoPL.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoPL.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoPL.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoPL.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoPL.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoPL.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoPL.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoPL.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPL.m_iCell[0];
+  m_xDynamicT.m_xRowInfoPL.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoPL.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
 
   // project T (SR_PT)
-  m_xDynamicT.m_xRowInfoPT.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoPT.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoPT.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoPT.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoPT.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoPT.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoPT.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoPT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPT.m_iCell[0];
+  m_xDynamicT.m_xRowInfoPT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPT.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoPT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPT.m_cStringArea[0];
+
 
   // join T & J (SR_TJ)
-  m_xDynamicT.m_xRowInfoTJ.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoTJ.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoTJ.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoTJ.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoTJ.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoTJ.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoTJ.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoTJ.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoTJ.m_iCell[0];
+  m_xDynamicT.m_xRowInfoTJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoTJ.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoTJ.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoTJ.m_cStringArea[0];
+
 
   // aggregate T (SR_AT)
   m_xDynamicT.m_iAggregInit = 0;
-  m_xDynamicT.m_xRowInfoAT.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoAT.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoAT.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoAT.m_acStrAreaSav  = nullptr;
+
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoAT.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoAT.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoAT.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoAT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoAT.m_iCell[0];
+  m_xDynamicT.m_xRowInfoAT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoAT.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoAT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoAT.m_cStringArea[0];
 
   // tub output (SR_TO)
   m_xDynamicT.m_pTub        = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoTO.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoTO.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoTO.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoTO.m_iCell[0];
+  m_xDynamicT.m_xRowInfoTO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoTO.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
 
   // pot output (SR_PO)
   m_xDynamicT.m_iPot        = 0;
   m_xDynamicT.m_pPot        = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoPO.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoPO.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoPO.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPO.m_iCell[0];
+  m_xDynamicT.m_xRowInfoPO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPO.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoPO.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPO.m_cStringArea[0];
+
 
   // index scan T
   m_xDynamicT.m_xIndexInfoT.m_iInit         = 0;
@@ -187,24 +226,6 @@ Dynamic::~Dynamic(void) noexcept(false)
     IndexDef* pIndexDef = _pIndexDef(m_xDynamicT.m_xIndexInfoPL.m_aIndexDef);
     delete pIndexDef;
   }
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIJ.m_aRowSingle);
-  //delete pRowSingle;
-
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoTJ.m_aRowSingle);
-  delete pRowSingle;
-
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPT.m_aRowSingle);
-  delete pRowSingle;
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIT.m_aRowSingle);
-  //delete pRowSingle;
-
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoAT.m_aRowSingle);
-  delete pRowSingle;
-
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPL.m_aRowSingle);
-  delete pRowSingle;
 }
 
 /*----------------------------------------------------------------------------*/
