@@ -447,11 +447,11 @@ struct Dynamic_T
   struct RowInfo_v2 m_xRowInfoPT;
 
   // join T & J (SR_TJ)
-  struct RowInfo m_xRowInfoTJ;
+  struct RowInfo_v2 m_xRowInfoTJ;
 
   // aggregate T (SR_AT)
   i8 m_iAggregInit;
-  struct RowInfo m_xRowInfoAT;
+  struct RowInfo_v2 m_xRowInfoAT;
 
   // Tub Output (SR_TO)
   void*   m_pTub;
