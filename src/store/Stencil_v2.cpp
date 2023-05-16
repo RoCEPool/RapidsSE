@@ -1066,13 +1066,13 @@ void Stencil_v2::vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   // get the scanIndex from the indexScanOp
   Index* pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
   pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndex = pIndexScan;
-
-  // create RowSingleT
-  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
-  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle,
-  &pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea);
-  pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea;
+//
+//  // create RowSingleT
+//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
+//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
+//  (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle,
+//  &pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea);
+//  pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea;
 
   // get the index tree for the index
   Table* pTable = pIndexScan->pTable();
@@ -1301,11 +1301,11 @@ void Stencil_v2::vSetupScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   pDynamic->aDynamicT()->m_nCols = pStreamDefLft->nColumns();
-  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
-  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle,
-                                      &pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea);
-  pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea;
+//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
+//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
+//      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle,
+//                                      &pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea);
+//  pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea;
 
 }
 

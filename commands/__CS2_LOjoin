@@ -3,6 +3,7 @@
 /*============================================================================*/
 create table L (l_int_col0 integer);
 create table R(r_int_col0 integer, r_vch_col1 varchar);
+create index L_idx on L(l_int_col0);
 create index R_idx on R(r_int_col0);
 
 load L "../DATA/Joins/L.csv";
@@ -19,9 +20,10 @@ begin
     | next
   stage stageMarker0142 on all partitions :
     scan rapidsse public L
-    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
+    //indexScan L L_idx "LBOUND $I1 2 >"
+    | indexJoin R R_idx " left_outer BOUND $I1 l_int_col0 ==" //J1
     | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
-    | dynamic_v2 0
+    | combined 0
     | next
   stage stageLast on origin :
     output
@@ -30,3 +32,53 @@ begin
 end ;
 
 // 48 rows;
+/*
+row: (null,null,'x')
+row: (0,0,'a')
+row: (1,1,'b')
+row: (1,1,'a')
+row: (2,2,'c')
+row: (2,2,'b')
+row: (2,2,'a')
+row: (3,null,null)
+row: (4,4,'e')
+row: (4,4,'d')
+row: (4,4,'c')
+row: (4,4,'b')
+row: (4,4,'a')
+row: (5,5,'f')
+row: (5,5,'e')
+row: (5,5,'d')
+row: (5,5,'c')
+row: (5,5,'b')
+row: (5,5,'a')
+row: (6,null,null)
+row: (7,7,'h')
+row: (7,7,'g')
+row: (7,7,'f')
+row: (7,7,'e')
+row: (7,7,'d')
+row: (7,7,'c')
+row: (7,7,'b')
+row: (7,7,'a')
+row: (8,8,'i')
+row: (8,8,'h')
+row: (8,8,'g')
+row: (8,8,'f')
+row: (8,8,'e')
+row: (8,8,'d')
+row: (8,8,'c')
+row: (8,8,'b')
+row: (8,8,'a')
+row: (9,9,'j')
+row: (9,9,'i')
+row: (9,9,'h')
+row: (9,9,'g')
+row: (9,9,'f')
+row: (9,9,'e')
+row: (9,9,'d')
+row: (9,9,'c')
+row: (9,9,'b')
+row: (9,9,'a')
+row: (10,null,null)
+*/

@@ -87,6 +87,7 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 
         vReplaceColumnsInflated(sLine, pOpSketch);
         vReplaceColumnsToInflate(sLine, pOpSketch);
+        vReplaceNumColumns(sLine, pOpSketch);
 
         vReplaceLabel(sLine, pOpSketch);
         vReplaceLabelNext(sLine, pOpSketch);
@@ -305,6 +306,21 @@ void CodeSynthUtils::vReplaceKeyKind(Stz* sLine, OpSketch* pOpSketch)
     s256 sKey;
     StrLib::wToString((i8) pOpSketch->m_pIndexDef->eKeyKind(), sKey.azChar());
     bool bResult = StrLib::bReplace(sLine->azChar(), "__KEY_KIND__", sKey.azChar());
+    RASSERT(bResult);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
+
+  _static_
+
+  if (StrLib::bContains(sLine->azChar(), "__NUM_COLUMNS__")) {
+    s256 sColumn;
+    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__NUM_COLUMNS__", sColumn.azChar());
     RASSERT(bResult);
   }
 }

@@ -241,10 +241,11 @@ i8 iGbyAggGenKeyEnd(Dynamic_T* aDynamicT) {
 // function-vInflateCrwBegin
 void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
-  RowInfo __ROW_INFO_TO__;
+  RowInfo_v2 __ROW_INFO_TO__;
 
   i8* paW;
   i8 i_CurrentRow;
+  i8 __NUM_COLUMNS__;
 
   // marker-start
 
@@ -266,7 +267,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   // process the row
   aDynamicT->m_iProcessRow = 1;
 
-  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+  __ROW_INFO_TO__.m_acStrArea  = __ROW_INFO_TO__.m_acStrAreaSav;
 
   // marker-end
 }

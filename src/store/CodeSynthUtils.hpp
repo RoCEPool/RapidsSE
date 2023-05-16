@@ -21,6 +21,7 @@ namespace STORE {
     static bool bReplaceIndexInfo(Stz *sLine, Stz *sReplacedLine, OpSketch *pOpSketch);
     static void vReplaceIndexPosition(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceKeyKind(Stz *sLine, OpSketch *pOpSketch);
+    static void vReplaceNumColumns(Stz *sLine, OpSketch *pOpSketch);
     static void vReplacePayloadIndex(Stz *sLine, i8 iPayloadIndex);
     static void vReplacePayloadBytes(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceStructTo(Stz *sLine, OpSketch *pOpSketch);
