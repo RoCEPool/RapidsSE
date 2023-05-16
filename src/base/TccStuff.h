@@ -311,6 +311,7 @@ enum eMC // meta code
 };
 
 static const i8 _C_1M = 1000000;
+static const i8 _C_16KB = 16*1024;
 static const i8 _C_SECS_PER_MIN = 60;
 static const i8 _C_SECS_PER_HR  = 3600;
 static const i8 _C_SECS_PER_DAY = 3600*24;
@@ -391,7 +392,16 @@ struct RowInfo {
   char* m_acStrAreaSav;
 };
 
+struct RowInfo_v2 {
+  i8   m_iCell[256];
+  char m_cStringArea[16384]; // _C_16KB;
+  void* m_aRowCellArray;
+  char* m_acStrArea;
+  char* m_acStrAreaSav;
+};
+
 struct IndexInfo {
+  i8    m_iInit;
   void *m_aIndex;
   void *m_aIndexTree;
   void *m_aIndexDef;
@@ -425,10 +435,10 @@ struct Dynamic_T
   i8 m_iHeadSize;
   enum eSI           m_eStrInflateRule;
   struct HeadLine_T* m_aHeadLine0;
-  struct RowInfo     m_xRowInfoIT;
+  struct RowInfo_v2  m_xRowInfoIT;
 
   // inflate J (SR_IJ)
-  struct RowInfo m_xRowInfoIJ;
+  struct RowInfo_v2 m_xRowInfoIJ;
 
   // Project payload (SR_PL)
   struct RowInfo m_xRowInfoPL;
