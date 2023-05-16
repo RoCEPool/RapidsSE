@@ -455,12 +455,12 @@ struct Dynamic_T
 
   // Tub Output (SR_TO)
   void*   m_pTub;
-  struct RowInfo m_xRowInfoTO;
+  struct RowInfo_v2 m_xRowInfoTO;
 
   // Pot Ouput (SR_PO)
   i8    m_iPot;
   void* m_pPot;
-  struct RowInfo m_xRowInfoPO;
+  struct RowInfo_v2 m_xRowInfoPO;
 
   // index scan T
   struct IndexInfo m_xIndexInfoT;

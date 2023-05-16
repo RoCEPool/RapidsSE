@@ -113,7 +113,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // aggregate T (SR_AT)
   m_xDynamicT.m_iAggregInit = 0;
-  
+
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoAT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -128,18 +128,33 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // tub output (SR_TO)
   m_xDynamicT.m_pTub        = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoTO.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoTO.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoTO.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoTO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoTO.m_iCell[0];
+  m_xDynamicT.m_xRowInfoTO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoTO.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
 
   // pot output (SR_PO)
   m_xDynamicT.m_iPot        = 0;
   m_xDynamicT.m_pPot        = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoPO.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoPO.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoPO.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoPO.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPO.m_iCell[0];
+  m_xDynamicT.m_xRowInfoPO.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPO.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoPO.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPO.m_cStringArea[0];
+
 
   // index scan T
   m_xDynamicT.m_xIndexInfoT.m_iInit         = 0;
