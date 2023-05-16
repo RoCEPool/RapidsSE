@@ -23,6 +23,9 @@
 #include "CarryForward.hpp"
 #include "Error.hpp"
 
+#include "Weaver.hpp"
+#include "Weaver2.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -48,7 +51,6 @@ Optimiser::Optimiser(TagSet* p_JobTags)
   m_pBench       = new Bench(this);
 
   m_pDissector   = new Dissector(m_pBench);
-  m_pWeaver      = new Weaver(m_pBench);
 
   m_sJoinOrder   = "(none)"_Stz;
 
@@ -79,7 +81,6 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pBench;
 
   delete m_pDissector;
-  delete m_pWeaver;
 
   delete m_pCI;
 
@@ -372,18 +373,34 @@ void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ewaved statement                                                       */
+/* get weaved statement                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Board* pBoard_query = m_pBench->pGetBoard((i8)0);
-  m_pWeaver->vWeaveOptStmt(pBoard_query);
+  if (AM::JOB::bHasTag(C_WEAVER2)) {
+    Weaver2 *pWeaver2 = new Weaver2(m_pBench,m_pPipelineDef);
 
-  Stz* szPipeline = m_pWeaver->szOptStmt();
+    Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
+    pWeaver2->vWeaveOptStmt(pBoard_query);
 
-  return szPipeline;
+    m_sOptStmt = pWeaver2->szOptStmt();
+
+    delete pWeaver2;
+  }
+  else {
+    Weaver *pWeaver = new Weaver(m_pBench);
+
+    Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
+    pWeaver->vWeaveOptStmt(pBoard_query);
+
+    m_sOptStmt = pWeaver->szOptStmt();
+
+    delete pWeaver;
+  }
+
+  return m_sOptStmt;
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -423,19 +440,9 @@ bool Optimiser::bTransform(eEC* peErrorCode, InfoSet* pInfoSet)
                                       m_sJoinPermutation[iIndex].szStz(),
                                       C_VARGS_END);
   }
-  else {
-
-    bool bInteractive = pJobTags->bHasName("<interactive>"_Stz);
-    if (bClean && bInteractive) {
-      m_pWeaver->vWeaveOptStmt(pBoard);
-      vTrace("%s\n"_Stz, m_pWeaver->szOptStmt());
-      Cue::vGetReturn("$$ The Optimised Pipeline >> "_Stz);
-    }
-  }
 
    return bClean;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

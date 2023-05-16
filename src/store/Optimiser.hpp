@@ -7,7 +7,6 @@
 
 #include "Bench.hpp"
 #include "CardCtl.hpp"
-#include "Weaver.hpp"
 #include "PermGen.hpp"
 #include "PipelineDef.hpp"
 
@@ -29,7 +28,6 @@ namespace STORE
   
     Bench*       m_pBench;
     Dissector*   m_pDissector;
-    Weaver*      m_pWeaver;
 
     i8           m_nJoinPermutations;
     s256         m_sJoinPermutation[C_PERMUTATIONS]; // join permutation string
@@ -39,6 +37,8 @@ namespace STORE
     CardIter*    m_pCI;
 
     PipelineDef* m_pPipelineDef;
+
+    s48K m_sOptStmt;
 
     // must be last
     Footer m_xFooter;
