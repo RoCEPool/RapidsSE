@@ -120,20 +120,20 @@ namespace STORE
     void vNextState(eState eNextState);
 
     // Wireline message handlers
-    void processProtocolCompatibleRequest();
-    void processDisconnectRequest();
-    void processPingRequest();
-    void processClearTextTunnelRequest();
-    void processPlainAuthenticationRequest();
-    void processKerberosAuthenticationRequest();
-    void processGssNegotiationMsg();
-    void processSessionChangeRequest();
-    void processQueryExecuteRequest();
-    void processQueryProgressRequest();
-    void processSessionMonitoringRequest();
-    void processParseStatementRequest();
-    void processStatementBindAndExecuteRequest();
-    void processClosePreparedStatementRequest();
+    void vProcessProtocolCompatibleRequest();
+    void vProcessDisconnectRequest();
+    void vProcessPingRequest();
+    void vProcessClearTextTunnelRequest();
+    void vProcessPlainAuthenticationRequest();
+    void vProcessKerberosAuthenticationRequest();
+    void vProcessGssNegotiationMsg();
+    void vProcessSessionChangeRequest();
+    void vProcessQueryExecuteRequest();
+    void vProcessQueryProgressRequest();
+    void vProcessSessionMonitoringRequest();
+    void vProcessParseStatementRequest();
+    void vProcessStatementBindAndExecuteRequest();
+    void vProcessClosePreparedStatementRequest();
 
 
     // Errors

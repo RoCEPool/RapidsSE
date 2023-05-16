@@ -206,20 +206,20 @@ void AdaptorWL::vProcessWLMsg(void)
 
   switch (eMsgType) {
 
-    case MessageTypes::type::ProtocolCompatibleRequest:       processProtocolCompatibleRequest();       break;
-    case MessageTypes::type::DisconnectRequest:               processDisconnectRequest();               break;
-    case MessageTypes::type::PingRequest:                     processPingRequest();                     break;
-    case MessageTypes::type::ClearTextTunnelRequest:          processClearTextTunnelRequest();          break;
-    case MessageTypes::type::PlainAuthenticationRequest:      processPlainAuthenticationRequest();      break;
-    case MessageTypes::type::KerberosAuthenticationRequest:   processKerberosAuthenticationRequest();   break;
-    case MessageTypes::type::GssNegotiationMsg:               processGssNegotiationMsg();               break;
-    case MessageTypes::type::SessionChangeRequest:            processSessionChangeRequest();            break;
-    case MessageTypes::type::QueryExecuteRequest:             processQueryExecuteRequest();             break;
-    case MessageTypes::type::QueryProgressRequest:            processQueryProgressRequest();            break;
-    case MessageTypes::type::SessionMonitoringRequest:        processSessionMonitoringRequest();        break;
-    case MessageTypes::type::ParseStatementRequest:           processParseStatementRequest();           break;
-    case MessageTypes::type::StatementBindAndExecuteRequest:  processStatementBindAndExecuteRequest();  break;
-    case MessageTypes::type::ClosePreparedStatementRequest:   processClosePreparedStatementRequest();   break;
+    case MessageTypes::type::ProtocolCompatibleRequest:       vProcessProtocolCompatibleRequest();      break;
+    case MessageTypes::type::DisconnectRequest:               vProcessDisconnectRequest();              break;
+    case MessageTypes::type::PingRequest:                     vProcessPingRequest();                    break;
+    case MessageTypes::type::ClearTextTunnelRequest:          vProcessClearTextTunnelRequest();         break;
+    case MessageTypes::type::PlainAuthenticationRequest:      vProcessPlainAuthenticationRequest();     break;
+    case MessageTypes::type::KerberosAuthenticationRequest:   vProcessKerberosAuthenticationRequest();  break;
+    case MessageTypes::type::GssNegotiationMsg:               vProcessGssNegotiationMsg();              break;
+    case MessageTypes::type::SessionChangeRequest:            vProcessSessionChangeRequest();           break;
+    case MessageTypes::type::QueryExecuteRequest:             vProcessQueryExecuteRequest();            break;
+    case MessageTypes::type::QueryProgressRequest:            vProcessQueryProgressRequest();           break;
+    case MessageTypes::type::SessionMonitoringRequest:        vProcessSessionMonitoringRequest();       break;
+    case MessageTypes::type::ParseStatementRequest:           vProcessParseStatementRequest();          break;
+    case MessageTypes::type::StatementBindAndExecuteRequest:  vProcessStatementBindAndExecuteRequest(); break;
+    case MessageTypes::type::ClosePreparedStatementRequest:   vProcessClosePreparedStatementRequest();  break;
 
       // The following are messages that should never be received by RapidsSE
       // as they should never be sent by a client. Only sent by a server.
@@ -1072,7 +1072,7 @@ void AdaptorWL::vNextState(eState eNextState)
 /*----------------------------------------------------------------------------*/
 /* Processes a ProtocolCompatibleRequest message                              */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processProtocolCompatibleRequest()
+void AdaptorWL::vProcessProtocolCompatibleRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::ProtocolCompatibleRequest);
@@ -1155,7 +1155,7 @@ void AdaptorWL::processProtocolCompatibleRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a DisconnectRequest message                                      */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processDisconnectRequest()
+void AdaptorWL::vProcessDisconnectRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::DisconnectRequest);
@@ -1170,7 +1170,7 @@ void AdaptorWL::processDisconnectRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a PingRequest message                                            */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processPingRequest()
+void AdaptorWL::vProcessPingRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::PingRequest);
@@ -1193,7 +1193,7 @@ void AdaptorWL::processPingRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a ClearTextTunnelRequest message                                 */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processClearTextTunnelRequest()
+void AdaptorWL::vProcessClearTextTunnelRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::ClearTextTunnelRequest);
@@ -1216,7 +1216,7 @@ void AdaptorWL::processClearTextTunnelRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a PlainAuthenticationRequest message                             */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processPlainAuthenticationRequest()
+void AdaptorWL::vProcessPlainAuthenticationRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::PlainAuthenticationRequest);
@@ -1242,7 +1242,7 @@ void AdaptorWL::processPlainAuthenticationRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a KerberosAuthenticationRequest message                          */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processKerberosAuthenticationRequest()
+void AdaptorWL::vProcessKerberosAuthenticationRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::KerberosAuthenticationRequest);
@@ -1268,7 +1268,7 @@ void AdaptorWL::processKerberosAuthenticationRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a GssNegotiationMsg message                                      */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processGssNegotiationMsg()
+void AdaptorWL::vProcessGssNegotiationMsg()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::GssNegotiationMsg);
@@ -1294,7 +1294,7 @@ void AdaptorWL::processGssNegotiationMsg()
 /*----------------------------------------------------------------------------*/
 /* Processes a SessionChangeRequest message                                   */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processSessionChangeRequest()
+void AdaptorWL::vProcessSessionChangeRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::SessionChangeRequest);
@@ -1334,7 +1334,7 @@ void AdaptorWL::processSessionChangeRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a QueryExecuteRequest message                                    */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processQueryExecuteRequest()
+void AdaptorWL::vProcessQueryExecuteRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::QueryExecuteRequest);
@@ -1407,7 +1407,7 @@ void AdaptorWL::processQueryExecuteRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a QueryProgressRequest message                                   */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processQueryProgressRequest()
+void AdaptorWL::vProcessQueryProgressRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::QueryProgressRequest);
@@ -1430,7 +1430,7 @@ void AdaptorWL::processQueryProgressRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a SessionMonitoringRequest message                               */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processSessionMonitoringRequest()
+void AdaptorWL::vProcessSessionMonitoringRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::SessionMonitoringRequest);
@@ -1453,7 +1453,7 @@ void AdaptorWL::processSessionMonitoringRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a ParseStatementRequest message                                  */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processParseStatementRequest()
+void AdaptorWL::vProcessParseStatementRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::ParseStatementRequest);
@@ -1476,7 +1476,7 @@ void AdaptorWL::processParseStatementRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a StatementBindAndExecuteRequest message                         */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processStatementBindAndExecuteRequest()
+void AdaptorWL::vProcessStatementBindAndExecuteRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::StatementBindAndExecuteRequest);
@@ -1499,7 +1499,7 @@ void AdaptorWL::processStatementBindAndExecuteRequest()
 /*----------------------------------------------------------------------------*/
 /* Processes a ClosePreparedStatementRequest message                          */
 /*----------------------------------------------------------------------------*/
-void AdaptorWL::processClosePreparedStatementRequest()
+void AdaptorWL::vProcessClosePreparedStatementRequest()
 {
   ASSERT(m_pCurrentMsg);
   ASSERT(m_iCurrentMsgType == MessageTypes::type::ClosePreparedStatementRequest);
