@@ -82,6 +82,9 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pWeaver;
 
   delete m_pCI;
+
+  delete m_pPipelineDef;
+
   Card::vCardLeaks();
 }
 
@@ -182,6 +185,9 @@ void Optimiser::vApplyTransformationMatrix(void)
 
   MakeCode* pMakeCode = new MakeCode(m_pCI);
   pMakeCode->vSynthesise();
+  m_pPipelineDef = pMakeCode->pPipelineDef();
+  pMakeCode->vPipelineDef(nullptr);
+
   delete pMakeCode;
 }
 
