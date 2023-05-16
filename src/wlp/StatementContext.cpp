@@ -22,14 +22,13 @@ __vDeleteFunction(StatementContext,CN_STATEMENTCONTEXT)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StatementContext::StatementContext(Stz* szStmtStart, i8 iLen, Stz* szId, i8 iKey)
+StatementContext::StatementContext(Stz* szStmt, Stz* szId)
 : Object(CN_STATEMENTCONTEXT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATEMENTCONTEXT,_FOOTER_);
 
-  m_sStmtBuf.vCopy(szStmtStart, iLen);
+  m_sStmtBuf.vCopy(szStmt);
   m_sStmtId  = szId;
-  m_iStmtKey = iKey;
   m_bGotStmtError = false;
   m_iAffectedRows = 0;
   m_eVerb = NONE;
@@ -66,14 +65,6 @@ Stz* StatementContext::szStmt()
 Stz* StatementContext::szStmtId()
 {
   return m_sStmtId.szStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return the statement key (secret token)                                    */
-/*----------------------------------------------------------------------------*/
-i8 StatementContext::iStmtId()
-{
-  return m_iStmtKey;
 }
 
 /*----------------------------------------------------------------------------*/

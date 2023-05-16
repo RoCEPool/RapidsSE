@@ -34,8 +34,8 @@ QueryContext::QueryContext(void)
   m_nStmtSucceeded   = 0;
   m_nStmtFailed      = 0;
   m_uQueryStartNanos = 0;
-  m_pStmtCtxList = new StatementCtxList;
-  
+  m_bAbortEarly      = false;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUERYCONTEXT,_FOOTER_);
 }
 
@@ -46,9 +46,6 @@ QueryContext::~QueryContext(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUERYCONTEXT,_FOOTER_);
   delete m_pQueryExecuteRequest;
-
-  m_pStmtCtxList->vDeleteAll();
-  delete m_pStmtCtxList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,11 +59,11 @@ void QueryContext::vReset()
 {
   delete m_pQueryExecuteRequest;
   m_pQueryExecuteRequest = nullptr;
-  m_nStmtParsed        = 0;
-  m_nStmtSucceeded     = 0;
-  m_nStmtFailed        = 0;
-  m_uQueryStartNanos   = 0;
-  m_pStmtCtxList->vDeleteAll();
+  m_nStmtParsed          = 0;
+  m_nStmtSucceeded       = 0;
+  m_nStmtFailed          = 0;
+  m_uQueryStartNanos     = 0;
+  m_bAbortEarly          = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,109 +72,13 @@ void QueryContext::vReset()
 void QueryContext::vInit(com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* pQueryExecuteRequest)
 {
   ASSERT(!m_pQueryExecuteRequest);
-  ASSERT(m_pStmtCtxList->nItems() == 0);
 
   m_pQueryExecuteRequest = pQueryExecuteRequest;
-  m_nStmtParsed        = 0;
-  m_nStmtSucceeded     = 0;
-  m_nStmtFailed        = 0;
-  m_uQueryStartNanos   = Hardware::uReadClock();
-  //m_pStmtCtxList
-
-  // Parse out each statement in the batch from the query and create a StatementContext
-  // for each one.
-  //vExtractStatements();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Extracts statements & creates a StatementContext for each                  */
-/*----------------------------------------------------------------------------*/
-void QueryContext::vExtractStatements()
-{
-  ASSERT(m_pQueryExecuteRequest);
-  ASSERT(m_pStmtCtxList);
-  ASSERT(m_pStmtCtxList->nItems() == 0);
-
-  i8 nQueryLen = (i8) m_pQueryExecuteRequest->query.length();
-
-  i8 iStmtCrs = -1;
-  i8 iStartCrs = 0;
-  StatementContext* pStmtCtx;
-
-  while (++iStmtCrs < nQueryLen) {
-    char c = m_pQueryExecuteRequest->query.at(iStmtCrs);
-
-    switch (c) {
-
-      case '/':
-        // Check for SQL comments and advance over the comment block
-        if (    (iStmtCrs + 1 < nQueryLen)
-                && m_pQueryExecuteRequest->query.at(iStmtCrs + 1) == '*'
-            ) {
-          ++iStmtCrs;  // Cursor points at the first '*'
-
-          // Advance to the "*/" or the EOS
-          while (++iStmtCrs < nQueryLen) {
-            char d = m_pQueryExecuteRequest->query.at(iStmtCrs);
-            if (d == '*' && (iStmtCrs + 1 < nQueryLen) && m_pQueryExecuteRequest->query.at(iStmtCrs + 1) == '/') {
-              break;
-            }
-          }
-        }
-        break;
-
-      case '\'':
-        // Advance over the single-quoted string
-        while (++iStmtCrs < nQueryLen && m_pQueryExecuteRequest->query.at(iStmtCrs) != '\'') {}
-        break;
-
-      case '"':
-        // Advance over the double-quoted string
-        while (++iStmtCrs < nQueryLen && m_pQueryExecuteRequest->query.at(iStmtCrs) != '"') {}
-        break;
-
-      case '`':
-        // Advance over the backtick identifier
-        while (++iStmtCrs < nQueryLen && m_pQueryExecuteRequest->query.at(iStmtCrs) != '`') {}
-        break;
-
-      case ';':
-        // Extract the semicolon terminated statement
-        // TODO: TEMP: Don't include the terminating semicolon as this gets interpreted as another
-        //       argument to the sqlCompiler procedure.
-        pStmtCtx = new StatementContext((Stz*) (m_pQueryExecuteRequest->query.c_str() + iStartCrs),
-                                        iStmtCrs - iStartCrs,
-//                                        m_iStmtCrs - iStartCrs + 1,
-                                        "abc"_Stz,    // TODO: Use a real statementId
-                                        -1);          // TODO: Use a real statementKey
-        m_pStmtCtxList->vAppend(pStmtCtx);
-
-        // Another statement?
-        iStartCrs = iStmtCrs + 1;
-        break;
-
-      default:
-        continue;
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* Get the next StatementContext, or nullptr if there are no more             */
-/*----------------------------------------------------------------------------*/
-StatementContext* QueryContext::pPopStmtCtx()
-{
-  ASSERT(m_pStmtCtxList);
-  return m_pStmtCtxList->pPop();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Get an iterator of statement context objects. Must be deleted              */
-/*----------------------------------------------------------------------------*/
-StatementCtxIter* QueryContext::pStmtCtxIter()
-{
-  ASSERT(m_pStmtCtxList);
-  return m_pStmtCtxList->pNewIter();
+  m_nStmtParsed          = 0;
+  m_nStmtSucceeded       = 0;
+  m_nStmtFailed          = 0;
+  m_uQueryStartNanos     = Hardware::uReadClock();
+  m_bAbortEarly          = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,11 +138,21 @@ i8 QueryContext::uQueryStartNanos()
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get the number of statement contexts in the list                           */
+/* Set the abort early flag                                                   */
 /*----------------------------------------------------------------------------*/
-i8 QueryContext::nStmtContexts()
+void QueryContext::vAbortEarly(bool bAbortEarly)
 {
-  return m_pStmtCtxList->nItems();
+  // If one statement in a batch (query) fails, do we abort the remaining statements?
+  m_bAbortEarly = bAbortEarly;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the abort early flag                                                   */
+/*----------------------------------------------------------------------------*/
+bool QueryContext::bAbortEarly()
+{
+  // If one statement in a batch (query) fails, do we abort the remaining statements?
+  return m_bAbortEarly;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,7 +160,7 @@ i8 QueryContext::nStmtContexts()
 /*----------------------------------------------------------------------------*/
 Stz* QueryContext::szQueryText()
 {
-  return (Stz*) (m_pQueryExecuteRequest->query.c_str());
+  return (m_pQueryExecuteRequest ? (Stz*) (m_pQueryExecuteRequest->query.c_str()) : nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

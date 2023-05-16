@@ -644,7 +644,6 @@ SizeHeap gxaSizeHeap[]
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
   { CN_STATEMENTCONTEXT,         sizeof(WLP::StatementContext),HT_T_MEDIUM  ,FILL },
-  { CN_STATEMENTCTXLIST,         sizeof(WLP::StatementCtxList),HT_T_TINY  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
   { CN_STENCIL,                  sizeof(Stencil),            HT_T_SMALL   ,FILL },
   { CN_STENCIL_V2,               sizeof(Stencil_v2),         HT_T_LARGE   ,FILL },

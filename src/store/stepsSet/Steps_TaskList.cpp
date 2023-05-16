@@ -22,7 +22,7 @@ void Step::vAddSteps_TaskList(void)
   vAddStep("TaskList[].isNull"_Stz,    &Step::vTaskListIsNull);
   vAddStep("TaskList[].delete"_Stz ,   &Step::vTaskListDelete);
   vAddStep("TaskList[].isEmpty"_Stz,   &Step::vTaskListIsEmpty);
-  vAddStep("TaskList.pop"_Stz,         &Step::vTaskListPop);
+  vAddStep("TaskList[].pop"_Stz,       &Step::vTaskListPop);
 
 }
 
@@ -48,7 +48,7 @@ void Step::vTaskListSet(void)
   TaskList* pTaskList = _pTaskList(m_pDataStack->pPopPtr(__func__));
   ASSERT(pTaskList);
 
-  ASSERT(*m_pLogicUnit->m_xpTaskList);
+  ASSERT(m_pLogicUnit->m_xpTaskList.bIsNull());
   m_pLogicUnit->m_xpTaskList = pTaskList;
 
   EXIT();
@@ -61,8 +61,19 @@ void Step::vTaskListDelete(void)
 {
   ENTRY();
 
+  if (m_pLogicUnit->m_xpTaskList.bIsNull()) {
+    return;
+  }
+
   TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
-  ASSERT(pTaskList);
+  Task* pTask;
+
+  pTaskList->vGrabLock();
+  while ((pTask = pTaskList->pPopTask()) != nullptr) {
+    delete pTask;
+  }
+  pTaskList->vDropLock();
+
   delete pTaskList;
 
   m_pLogicUnit->m_xpTaskList = nullptr;
@@ -77,10 +88,11 @@ void Step::vTaskListIsEmpty(void)
 {
   ENTRY();
 
-  TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
+  TaskList* pTaskList = * m_pLogicUnit->m_xpTaskList;
 
-  bool bIsEmpty = (!pTaskList || pTaskList->pPeekTask() == nullptr);
-  m_pDataStack->vPushBol(bIsEmpty);
+  pTaskList->vGrabLock();
+  m_pDataStack->vPushBol(m_pLogicUnit->m_xpTaskList->pPeekTask() == nullptr);
+  pTaskList->vDropLock();
 
   EXIT();
 }
@@ -92,9 +104,7 @@ void Step::vTaskListIsNull(void)
 {
   ENTRY();
 
-  TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
-
-  m_pDataStack->vPushBol(pTaskList == nullptr);
+  m_pDataStack->vPushBol(m_pLogicUnit->m_xpTaskList.bIsNull());
 
   EXIT();
 }
@@ -109,7 +119,10 @@ void Step::vTaskListPop(void)
   TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
   ASSERT(pTaskList);
 
+  pTaskList->vGrabLock();
   Task* pTask = pTaskList->pPopTask();
+  pTaskList->vDropLock();
+
   m_pDataStack->vPushPtr(pTask);
 
   EXIT();

@@ -19,7 +19,6 @@ namespace WLP
 
     s48K  m_sStmtBuf;
     s256  m_sStmtId;
-    i8    m_iStmtKey;
     bool  m_bGotStmtError;
     i8    m_iAffectedRows;
     eAffectedVerb m_eVerb;
@@ -32,12 +31,11 @@ namespace WLP
     void* operator new(size_t);
     void  operator delete(void*);
     
-    StatementContext(Stz* szStmtStart, i8 iLen, Stz* szId, i8 iKey);
+    StatementContext(Stz* szStmt, Stz* szId);
     ~StatementContext(void) noexcept(false);
 
     Stz* szStmt();
     Stz* szStmtId();
-    i8   iStmtId();
     bool bGotError();
     void vGotError(bool bError);
     i8   nAffectedRows();

@@ -362,7 +362,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
   /* */ CN_STATEMENTCONTEXT,
-  /* */ CN_STATEMENTCTXLIST,
   /* */ CN_STATS,
   /* */ CN_STENCIL,
   /* */ CN_STENCIL_V2,
@@ -810,7 +809,6 @@ static Stz* aCN[]
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATEMENTCONTEXT"_Stz,     // CN_STATEMENTCONTEXT
-  /* */ "STATEMENTCTXLIST"_Stz,     // CN_STATEMENTCTXLIST
   /* */ "STATS"_Stz,                // CN_STATS
   /* */ "STENCIL"_Stz,              // CN_STENCIL
   /* */ "STENCIL_V2"_Stz,           // CN_STENCIL_V2

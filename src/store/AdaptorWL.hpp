@@ -9,6 +9,7 @@
 #include "ApiHelper.hpp"
 #include "PayloadObj.hpp"
 #include "QueryContext.hpp"
+#include "StatementContext.hpp"
 
 // Forward declarations (outside namespace STORE scope)
 namespace WLP { class BufferTransport; }
@@ -89,16 +90,13 @@ namespace STORE
     bool bHasPayloadToSend();
     WLP::PayloadObj* pNextPayloadToSend();
 
-    Stz* szStatement();
-    bool bHasStatement();
-
-    bool bHasQuery();   // TODO
-    Stz* szQuery();     // TODO
+    bool bHasQuery();
+    Stz* szQuery();
+    bool bAbortEarly();
 
     // State-change handlers called from sen code
-    void vStatementToSubmit(Task* pNextTask);    // TODO
-    void vQueryComplete();        // TODO
 
+    void vStatementToSubmit(Task* pNextTask);
     void vStatementSubmitted();
     void vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg);
     void vStatementSubmissionFailed(eEC eErrCode);
@@ -109,6 +107,8 @@ namespace STORE
     void vResultMetadata(StreamDef* pStreamDef);
     void vRowData(CrwBuffer* pCrwBuffer);
     void vRowData(RowBuffer* pRowBuffer);
+    void vQueryComplete();
+    void vQueryReceipt(TaskList* pTaskList);
 
   private:
 
@@ -145,8 +145,6 @@ namespace STORE
 
     // Helpers
     bool bQueryInProgress();
-    void vSendQueryReceipt();
-    void vFinishQueryDialog();
     i8   eToWLType(eCT eColType);
     i8   nRowsToSend(i8 iRowsInBuf);
     void vCreateAndAddRow(

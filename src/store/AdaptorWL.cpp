@@ -17,6 +17,7 @@
 #include "TailLine.hpp"
 #include "RowInflator.hpp"
 #include "SP_Bcd.hpp"
+#include "Job.hpp"
 
 // All of the wireline protocol messages
 #include "wlp/thrift/generated/AuthenticationOkResponse_types.h"
@@ -297,20 +298,56 @@ WLP::PayloadObj* AdaptorWL::pNextPayloadToSend(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get the next statement to be sent through the SE API                       */
+/* Is there a query to be parsed through the SE API                           */
 /*----------------------------------------------------------------------------*/
-Stz* AdaptorWL::szStatement()
+bool AdaptorWL::bHasQuery()
 {
-  ASSERT(m_pStmtCtx);
-  return m_pStmtCtx->szStmt();
+  return (m_oQueryCtx.szQueryText() != nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Is there a statement to be sent through the SE API                         */
+/* Get the query string to be parsed through the SE API.                      */
+/* May contain multiple statements.                                           */
 /*----------------------------------------------------------------------------*/
-bool AdaptorWL::bHasStatement()
+Stz* AdaptorWL::szQuery()
 {
-  return (m_pStmtCtx != nullptr);
+  Stz* szQuery = m_oQueryCtx.szQueryText();
+  ASSERT(szQuery);
+  return szQuery;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Do we need to abort any remaining statements?                              */
+/*----------------------------------------------------------------------------*/
+bool AdaptorWL::bAbortEarly()
+{
+  return m_oQueryCtx.bAbortEarly();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Update the state that a statement has been submitted                       */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vStatementToSubmit(Task* pNextTask)
+{
+  ASSERT(bCheckState( {QUERY_BEGUN, API_CHILD_JOB_EXITED} ));
+
+  vNextState(API_STATEMENT_TO_SUBMIT);
+
+  // Create a statement context to hold information about the running of
+  // this current statement in the (potential) batch.
+
+  ASSERT(!m_pStmtCtx);
+
+  Stz* szCommand = pNextTask->pJob()->szCmd();
+  ASSERT(szCommand);
+
+  s256 sJobId;
+  sJobId.vSprint("%lld"_Stz, pNextTask->pJob()->tJobId().iAsI8());
+
+  m_pStmtCtx = new WLP::StatementContext(szCommand,
+                                         sJobId.szStz());
+
+  m_oQueryCtx.vIncStmtParsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,6 +355,7 @@ bool AdaptorWL::bHasStatement()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vStatementSubmitted()
 {
+  ASSERT(m_pStmtCtx);
   ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
 
   vNextState(API_STATEMENT_SUBMITTED);
@@ -328,14 +366,11 @@ void AdaptorWL::vStatementSubmitted()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg)
 {
-  ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
-  Stz* szErrMsg= "Error: %s; %s: %s"_Stz;
+  ASSERT(bCheckState( {QUERY_BEGUN} ));
+  Stz* szErrFmt= "Error: %s; %s: %s"_Stz;
 
-  vSerialiseErrorResponse(eErrCode, szErrMsg, aEC2[eErrCode], aErrorMsg[eErrCode], szErrMsg);
-  m_pStmtCtx->vGotError(true);
-
-  // The child job failed during submission.
-  vChildJobExited();
+  vSerialiseErrorResponse(eErrCode, szErrFmt, aEC2[eErrCode], aErrorMsg[eErrCode], szErrMsg);
+  ASSERT(!m_pStmtCtx);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,24 +489,11 @@ void AdaptorWL::vChildJobExited()
 
   delete m_pStmtCtx;
   m_pStmtCtx = nullptr;
+
   vNextState(API_CHILD_JOB_EXITED);
 
   if (bAbortRemaining) {
-    // Remove all the remaining statement contexts. This will cause the query to finish.
-    while ( (m_pStmtCtx = m_oQueryCtx.pPopStmtCtx()) != nullptr) {
-      delete m_pStmtCtx;
-      m_pStmtCtx = nullptr;
-    }
-  }
-
-  m_pStmtCtx = m_oQueryCtx.pPopStmtCtx();
-  if (m_pStmtCtx) {
-    m_oQueryCtx.vIncStmtParsed();
-    vNextState(API_STATEMENT_TO_SUBMIT);
-
-  } else {
-    // Send a QueryExecuteResponse to terminate the query and update the state appropriately
-    vFinishQueryDialog();
+    m_oQueryCtx.vAbortEarly(true);
   }
 }
 
@@ -796,6 +818,71 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
 
     m_pStmtCtx->vAddAffectedRows(iRowsToSend);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Send a QueryExecuteResponse, update the state & clean up the current query */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vQueryComplete()
+{
+  ASSERT(bCheckState( { QUERY_BEGUN,
+                        API_CHILD_JOB_EXITED } ));
+  vNextState(QUERY_COMPLETED);
+
+  u8 uQueryEndNanos = Hardware::uReadClock();
+  double dQueryTime = (double) (uQueryEndNanos - m_oQueryCtx.uQueryStartNanos()) / C_1B;
+
+  QueryExecuteResponse xResponse;
+  xResponse.executionTime = dQueryTime;
+  xResponse.numStatementsParsed    = m_oQueryCtx.nStmtParsed();
+  xResponse.numStatementsSucceeded = m_oQueryCtx.nStmtSucceeded();
+  xResponse.numStatementsFailed    = m_oQueryCtx.nStmtFailed();
+
+  vSerialiseAndSendMsg(&xResponse, MessageTypes::type::QueryExecuteResponse);
+
+  // Doing this after changing the state to QUERY_COMPLETED will delete m_pCurrentMsg
+  m_oQueryCtx.vReset();
+
+  vNextState(READY);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Processed parsed tasks and send a QueryReceiptResponse back to the client  */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vQueryReceipt(ENGINE::TaskList* pTaskList)
+{
+  ASSERT(bCheckState( {QUERY_BEGUN} ));
+
+  QueryReceiptResponse xQueryReceipt;
+  std::vector<StatementReceipt> xStatementReceipts;
+
+  i8 nStatements = 0;
+
+  pTaskList->vGrabLock();
+  Task* pTask = pTaskList->pPeekTask();
+  pTaskList->vDropLock();
+
+  while (pTask != nullptr) {
+    ++nStatements;
+
+    Stz* szCommand = pTask->pJob()->szCmd();
+    s256 sJobId;
+    sJobId.vSprint("%lld"_Stz, pTask->pJob()->tJobId().iAsI8());
+
+    StatementReceipt xStatementReceipt{};
+    xStatementReceipt.__set_statementString(szCommand->azChar());
+    xStatementReceipt.__set_statementId(sJobId.azChar());
+    xStatementReceipt.__set_statementKey(12345);    // TODO: set this appropriately
+
+    xStatementReceipts.push_back(xStatementReceipt);
+
+    // TODO: Register the statement ID and statement key
+
+    pTask = pTask->pNextItem();
+  }
+
+  xQueryReceipt.__set_statementReceipts(xStatementReceipts);
+  vSerialiseAndSendMsg(&xQueryReceipt, MessageTypes::QueryReceiptResponse);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1342,7 +1429,6 @@ void AdaptorWL::vProcessQueryExecuteRequest()
   ASSERT(m_oQueryCtx.nStmtParsed() == 0);
   ASSERT(m_oQueryCtx.nStmtSucceeded() == 0);
   ASSERT(m_oQueryCtx.nStmtFailed() == 0);
-  ASSERT(m_oQueryCtx.nStmtContexts() == 0);
 
   if (!bCheckState({READY})) { return; }
 
@@ -1385,23 +1471,6 @@ void AdaptorWL::vProcessQueryExecuteRequest()
   // so that we can keep it until the query is completed.
   m_oQueryCtx.vInit(pMsg);
   m_pCurrentMsg = nullptr;
-
-  // Send back a QueryReceiptResponse before we submit the first query.
-  vSendQueryReceipt();
-
-  // The query string in the QueryExecuteRequest may contain more than one statement
-  // to be executed. Hence there may be more than one StatementContexts.
-  m_pStmtCtx = m_oQueryCtx.pPopStmtCtx();
-  if (m_pStmtCtx) {
-    m_oQueryCtx.vIncStmtParsed();
-    vNextState(API_STATEMENT_TO_SUBMIT);
-
-  } else {
-    // Send a QueryExecuteResponse to terminate the query and update the state appropriately
-    vFinishQueryDialog();
-  }
-
-  ASSERT(!m_pCurrentMsg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1641,61 +1710,6 @@ bool AdaptorWL::bQueryInProgress()
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* Send a QueryReceiptResponse back to the client                             */
-/*----------------------------------------------------------------------------*/
-void AdaptorWL::vSendQueryReceipt()
-{
-  ASSERT(bCheckState( {QUERY_BEGUN} ));
-
-  QueryReceiptResponse xQueryReceipt;
-  std::vector<StatementReceipt> xStatementReceipts;
-
-  i8 nStatements = 0;
-
-  WLP::StatementCtxIter* pIter = m_oQueryCtx.pStmtCtxIter();
-
-  while (pIter->bHasNext()) {
-    WLP::StatementContext* pStmtCtx = pIter->pNext();
-    ++nStatements;
-
-    StatementReceipt xStatementReceipt{};
-    xStatementReceipt.__set_statementString(pStmtCtx->szStmt()->azChar());
-    xStatementReceipt.__set_statementId(pStmtCtx->szStmtId()->azChar());
-    xStatementReceipt.__set_statementKey(pStmtCtx->iStmtId());
-
-    xStatementReceipts.push_back(xStatementReceipt);
-  }
-
-  delete pIter;
-
-  xQueryReceipt.__set_statementReceipts(xStatementReceipts);
-  vSerialiseAndSendMsg(&xQueryReceipt, MessageTypes::QueryReceiptResponse);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Send a QueryExecuteResponse, update the state & clean up the current query */
-/*----------------------------------------------------------------------------*/
-void AdaptorWL::vFinishQueryDialog()
-{
-  vNextState(QUERY_COMPLETED);
-
-  u8 uQueryEndNanos = Hardware::uReadClock();
-  double dQueryTime = (double) (uQueryEndNanos - m_oQueryCtx.uQueryStartNanos()) / C_1B;
-
-  QueryExecuteResponse xResponse;
-  xResponse.executionTime = dQueryTime;
-  xResponse.numStatementsParsed    = m_oQueryCtx.nStmtParsed();
-  xResponse.numStatementsSucceeded = m_oQueryCtx.nStmtSucceeded();
-  xResponse.numStatementsFailed    = m_oQueryCtx.nStmtFailed();
-
-  vSerialiseAndSendMsg(&xResponse, MessageTypes::type::QueryExecuteResponse);
-
-  // Doing this after changing the state to QUERY_COMPLETED will delete m_pCurrentMsg
-  m_oQueryCtx.vReset();
-
-  vNextState(READY);
-}
 
 /*----------------------------------------------------------------------------*/
 /* Convert an eCT to a wireline data type (DataType::type)                    */

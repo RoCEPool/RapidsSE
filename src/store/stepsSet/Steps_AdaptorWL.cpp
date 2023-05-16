@@ -25,22 +25,22 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].executionError"_Stz,      &Step::vAdaptorWLExecutionError);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
-  vAddStep("AdaptorWL[].hasStatement"_Stz,        &Step::vAdaptorWLHasStatement);         // DELETE ME
   vAddStep("AdaptorWL[].hasQuery"_Stz,            &Step::vAdaptorWLHasQuery);
+  vAddStep("AdaptorWL[].isAbortEarly"_Stz,        &Step::vAdaptorWLIsAbortEarly);
   vAddStep("AdaptorWL[].isChildJobActive"_Stz,    &Step::vAdaptorWLIsChildJobActive);
   vAddStep("AdaptorWL[].nextPayloadToSend@"_Stz,  &Step::vAdaptorWLNextPayloadToSendFetch);
   vAddStep("AdaptorWL[].processWLMsg"_Stz,        &Step::vAdaptorWLProcessWLMsg);
   vAddStep("AdaptorWL[].protocolError@"_Stz,      &Step::vAdaptorWLProtocolErrorFetch);
   vAddStep("AdaptorWL[].protocolErrorTest"_Stz,   &Step::vAdaptorWLProtocolErrorTest);
   vAddStep("AdaptorWL[].queryComplete"_Stz,       &Step::vAdaptorWLQueryComplete);
+  vAddStep("AdaptorWL[].queryReceipt"_Stz,        &Step::vAdaptorWLQueryReceipt);
   vAddStep("AdaptorWL[].queryStr@"_Stz,           &Step::vAdaptorWLQueryStrPush);
   vAddStep("AdaptorWL[].resultMetadata"_Stz,      &Step::vAdaptorWLResultMetadata);
   vAddStep("AdaptorWL[].rowBuffer"_Stz,           &Step::vAdaptorWLRowBuffer);
-  vAddStep("AdaptorWL[].statement@"_Stz,          &Step::vAdaptorWLStatementFetch);   // DELETE ME
   vAddStep("AdaptorWL[].statementToSubmit"_Stz,   &Step::vAdaptorWLStatementToSubmit);
   vAddStep("AdaptorWL[].stmtParsingErr"_Stz,      &Step::vAdaptorWLStatementParsingError);
-  vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);
-  vAddStep("AdaptorWL[].stmtSubmittedErr"_Stz,    &Step::vAdaptorWLStatementSubmittedError);
+  vAddStep("AdaptorWL[].stmtSubmitted"_Stz,       &Step::vAdaptorWLStatementSubmitted);   // DELETE
+  vAddStep("AdaptorWL[].stmtSubmittedErr"_Stz,    &Step::vAdaptorWLStatementSubmittedError);  // DELETE???
   vAddStep("AdaptorWL[].streamSet"_Stz,           &Step::vAdaptorWLStreamSet);
 }
 
@@ -224,6 +224,24 @@ void Step::vAdaptorWLQueryComplete(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* adaptorWL[].queryReceipt -- Send a query receipt for the parsed tasks      */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLQueryReceipt(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  TaskList* pTaskList = _pTaskList(* m_pLogicUnit->m_xpTaskList);
+
+  ASSERT(pAdaptorWL);
+  ASSERT(pTaskList);
+
+  pAdaptorWL->vQueryReceipt(pTaskList);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* adaptorWL[].queryStr@ -- Push the query string onto the data stack         */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLQueryStrPush(void)
@@ -270,20 +288,6 @@ void Step::vAdaptorWLProtocolErrorFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* adaptorWL[].hasStatement -- Push true if there is a statement to submit    */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLHasStatement(void)
-{
-  ENTRY();
-
-  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-
-  m_pDataStack->vPushInt(pAdaptorWL->bHasStatement() ? 1 : 0);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* adaptorWL[].hasQuery -- Push true if there is a query to be parsed         */
 /*----------------------------------------------------------------------------*/
 void Step::vAdaptorWLHasQuery(void)
@@ -293,6 +297,20 @@ void Step::vAdaptorWLHasQuery(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
 
   m_pDataStack->vPushInt(pAdaptorWL->bHasQuery() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].isAbortEarly -- Push true if execution of the query is to abort*/
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLIsAbortEarly(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+
+  m_pDataStack->vPushInt(pAdaptorWL->bAbortEarly() ? 1 : 0);
 
   EXIT();
 }
@@ -324,20 +342,6 @@ void Step::vAdaptorWLRowBuffer(void)
   ASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
 
   pAdaptorWL->vRowData(pRowBuffer);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* AdaptorWL[].statement@ -- Push & clear the statement to submit             */
-/*----------------------------------------------------------------------------*/
-void Step::vAdaptorWLStatementFetch(void)
-{
-  ENTRY();
-
-  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
-
-  m_pDataStack->vPushStz(pAdaptorWL->szStatement());
 
   EXIT();
 }

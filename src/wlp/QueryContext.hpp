@@ -12,20 +12,15 @@ namespace com { namespace rapidsdata { namespace wirelineprotocol { namespace me
 
 namespace WLP
 {
-  // Forward declarations and typedefs
-  class StatementContext;
-  typedef ListExo_t<CN_STATEMENTCTXLIST, StatementContext> StatementCtxList;
-  typedef ListExoIter_t<StatementContext> StatementCtxIter;
-
   class QueryContext : public Object
   {
     private:
     com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* m_pQueryExecuteRequest;
-    i8  m_nStmtParsed;
-    i8  m_nStmtSucceeded;
-    i8  m_nStmtFailed;
-    u8  m_uQueryStartNanos;
-    StatementCtxList* m_pStmtCtxList;
+    i8   m_nStmtParsed;
+    i8   m_nStmtSucceeded;
+    i8   m_nStmtFailed;
+    u8   m_uQueryStartNanos;
+    bool m_bAbortEarly;
 
     Footer m_xFooter;
 
@@ -39,8 +34,6 @@ namespace WLP
 
     void vReset();
     void vInit(com::rapidsdata::wirelineprotocol::messages::v5::QueryExecuteRequest* pQueryExecuteRequest);
-    StatementContext* pPopStmtCtx();
-    StatementCtxIter* pStmtCtxIter();
 
     void vIncStmtParsed();
     i8   nStmtParsed();
@@ -49,7 +42,8 @@ namespace WLP
     void vIncStmtFailed();
     i8   nStmtFailed();
     i8   uQueryStartNanos();
-    i8   nStmtContexts();
+    void vAbortEarly(bool bAbortEarly);
+    bool bAbortEarly();
 
     // Information from the QueryExecuteRequest
     Stz* szQueryText();
@@ -59,8 +53,6 @@ namespace WLP
     i8   iMaxRowsToReturn();
 
   private:
-    void vExtractStatements();
-
     Footer* aFooter(void);
   };
   

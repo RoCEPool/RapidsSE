@@ -33,8 +33,8 @@ public:
   void vAdaptorWLExecutionError(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
-  void vAdaptorWLHasStatement(void);
   void vAdaptorWLHasQuery(void);
+  void vAdaptorWLIsAbortEarly(void);
   void vAdaptorWLIsChildJobActive(void);
   void vAdaptorWLNew(void);
   void vAdaptorWLNextPayloadToSendFetch(void);
@@ -42,10 +42,10 @@ public:
   void vAdaptorWLProtocolErrorFetch(void);
   void vAdaptorWLProtocolErrorTest(void);
   void vAdaptorWLQueryComplete(void);
+  void vAdaptorWLQueryReceipt(void);
   void vAdaptorWLQueryStrPush(void);
   void vAdaptorWLResultMetadata(void);
   void vAdaptorWLRowBuffer(void);
-  void vAdaptorWLStatementFetch(void);
   void vAdaptorWLStatementToSubmit(void);
   void vAdaptorWLStatementParsingError(void);
   void vAdaptorWLStatementSubmitted(void);
