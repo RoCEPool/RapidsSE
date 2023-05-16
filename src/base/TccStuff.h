@@ -444,7 +444,7 @@ struct Dynamic_T
   struct RowInfo_v2 m_xRowInfoPL;
 
   // project T (SR_PT)
-  struct RowInfo m_xRowInfoPT;
+  struct RowInfo_v2 m_xRowInfoPT;
 
   // join T & J (SR_TJ)
   struct RowInfo m_xRowInfoTJ;

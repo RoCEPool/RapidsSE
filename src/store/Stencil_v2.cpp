@@ -1221,15 +1221,15 @@ void Stencil_v2::vSetupProject(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  //LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  //StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleP
-  pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowSingle = new RowSingle(pStreamDefOut);
-  pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowCellArray =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowSingle,
-                                      &pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrArea);
-  pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrArea;
+//  pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowSingle = new RowSingle(pStreamDefOut);
+//  pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowCellArray =
+//      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowSingle,
+//                                      &pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrArea);
+//  pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrArea;
 }
 
 /*----------------------------------------------------------------------------*/
