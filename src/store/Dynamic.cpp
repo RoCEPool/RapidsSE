@@ -226,24 +226,6 @@ Dynamic::~Dynamic(void) noexcept(false)
     IndexDef* pIndexDef = _pIndexDef(m_xDynamicT.m_xIndexInfoPL.m_aIndexDef);
     delete pIndexDef;
   }
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIJ.m_aRowSingle);
-  //delete pRowSingle;
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoTJ.m_aRowSingle);
-  //delete pRowSingle;
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPT.m_aRowSingle);
-  //delete pRowSingle;
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIT.m_aRowSingle);
-  //delete pRowSingle;
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoAT.m_aRowSingle);
-  //delete pRowSingle;
-
-  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPL.m_aRowSingle);
-  //delete pRowSingle;
 }
 
 /*----------------------------------------------------------------------------*/

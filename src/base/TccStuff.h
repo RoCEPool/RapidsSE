@@ -386,7 +386,6 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 
 struct RowInfo {
-  void* m_aRowSingle;
   void* m_aRowCellArray;
   char* m_acStrArea;
   char* m_acStrAreaSav;
