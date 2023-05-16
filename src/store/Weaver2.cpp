@@ -126,6 +126,14 @@ void Weaver2::vCppBlock(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
+  i8 nStages = m_pPipelineDef->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
+
+    vTrace("Code %s:\n%s\n"_Stz,pStageDef->szStageNm(),pStageDef->szCode());
+
+  }
+
   vConcat("\n"_Stz);
   vConcat("// __cpp_code__\n"_Stz);
   vConcat("// ...\n"_Stz);

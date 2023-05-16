@@ -88,8 +88,11 @@ void MakeCode::vSynthesise(void)
 
   vCraftPipelineDef(pBoard);
 
-  //eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
-  //UNUSED(eError);
+  if (AM::JOB::bHasTag(C_WEAVER2)) {
+    eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
+    UNUSED(eError);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
