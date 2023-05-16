@@ -1118,11 +1118,11 @@ void Stencil_v2::vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
   // create RowSingleJ
-  pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowSingle = new RowSingle(pStreamDefRht);
-  pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowCellArray =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowSingle,
-                                      &pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrArea);
-  pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrArea;
+  //pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowSingle = new RowSingle(pStreamDefRht);
+  //pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowCellArray =
+  //    (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowSingle,
+  //                                    &pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrArea);
+  //pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrArea;
 
   // get the joinIndex from the indexJoinOp
   Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);

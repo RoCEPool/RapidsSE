@@ -64,10 +64,18 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
 
   // inflate J (SR_IJ)
-  m_xDynamicT.m_xRowInfoIJ.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoIJ.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoIJ.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoIJ.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoIJ.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoIJ.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoIJ.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoIJ.m_iCell[0];
+  m_xDynamicT.m_xRowInfoIJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoIJ.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
+
 
   // project PL (SR_PL)
   m_xDynamicT.m_xRowInfoPL.m_aRowSingle    = nullptr;
@@ -180,8 +188,8 @@ Dynamic::~Dynamic(void) noexcept(false)
     delete pIndexDef;
   }
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIJ.m_aRowSingle);
-  delete pRowSingle;
+  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoIJ.m_aRowSingle);
+  //delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoTJ.m_aRowSingle);
   delete pRowSingle;

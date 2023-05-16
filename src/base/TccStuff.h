@@ -438,7 +438,7 @@ struct Dynamic_T
   struct RowInfo_v2  m_xRowInfoIT;
 
   // inflate J (SR_IJ)
-  struct RowInfo m_xRowInfoIJ;
+  struct RowInfo_v2 m_xRowInfoIJ;
 
   // Project payload (SR_PL)
   struct RowInfo m_xRowInfoPL;
