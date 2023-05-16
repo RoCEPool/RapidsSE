@@ -32,7 +32,9 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
   
   m_i_Stage = 0;
   m_i_Op_stage = 0;
-  
+
+  m_pDeck = nullptr;
+
   _checkInitialised_(CN_WEAVER2);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
@@ -256,6 +258,16 @@ void Weaver2::vStageLast(void)
   vTabOp();  vConcat("output"_Stz);       vEolOp();  m_i_Op_stage++;
   vTabOp();  vConcat("sink"_Stz);         vEolOp();  m_i_Op_stage++;
   vTabOp();  vConcat("first"_Stz);        vEolOp();  m_i_Op_stage++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : dynamic :                                                          */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vDynamic(StageDef* pStageDef)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  vTabOp();  vConcat("dynamic   /*alka???*/"_Stz);  vEolOp();  m_i_Op_stage++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -827,6 +839,10 @@ void Weaver2::vWeaveOptStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
+#if 1
+  vWeaveOptStmt2(pBoard);
+  return;
+#else
   RASSERT(BK_SUBQUERY == pBoard->eBoardKind());
 
   m_i_Stage = 0;
@@ -858,7 +874,66 @@ void Weaver2::vWeaveOptStmt(Board* pBoard)
   vSemicolon();
 
   //vTrace("%s\n"_Stz, szOptStmt());
+#endif
 }
+/*----------------------------------------------------------------------------*/
+void Weaver2::vWeaveOptStmt2(Board* pBoard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  RASSERT(BK_SUBQUERY == pBoard->eBoardKind());
+
+  m_i_Stage = 0;
+  m_i_Op_stage = 0;
+  m_sOptStmt = ""_Stz;
+
+  m_pBoard = pBoard;
+
+  m_pDeck = m_pBoard->pDeck();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vPipeline();
+  vTags();
+  vBegin();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vStageFirst();
+
+  CardIter xCI(m_pDeck);
+  i8 nStages = m_pPipelineDef->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    StageDef* pStageDef = m_pPipelineDef->pGet(i_Stage);
+    Card_Stage* p_stage = pStageDef->pCard_Stage();
+
+    vStageNext(p_stage);
+
+    if (* pStageDef->szCode()->azChar()) {
+
+      xCI.G_vMainResynch(p_stage);
+      if (xCI.G_bEachMain()) {
+        if (CK_SCAN == xCI.G.e_MainCard) {
+          vOp(xCI.G.p_MainCard);
+        }
+      }
+
+      vDynamic(pStageDef);
+    }
+
+  }
+
+  vStageLast();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vEnd();
+  vCppBlock();
+  vSemicolon();
+
+  //vTrace("%s\n"_Stz, szOptStmt());
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

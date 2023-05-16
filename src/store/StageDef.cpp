@@ -23,6 +23,7 @@ StageDef::StageDef(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
 
   m_i_Stage = C_UNKNOWN;
+  m_pCard_Stage = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 }
@@ -30,7 +31,7 @@ StageDef::StageDef(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageDef::StageDef(i8 i_Stage, Stz* szStageNm)
+StageDef::StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage)
     : Object(CN_STAGEDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGEDEF, _FOOTER_);
@@ -38,6 +39,8 @@ StageDef::StageDef(i8 i_Stage, Stz* szStageNm)
   vStage(i_Stage);
   vStageNm(szStageNm);
   m_sCode = ""_Stz;
+
+  vCard_Stage(p_stage);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 }
@@ -62,6 +65,26 @@ StageDef::~StageDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Stage* StageDef::pCard_Stage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+
+  return m_pCard_Stage;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void StageDef::vCard_Stage(Card_Stage* pCard_Stage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+
+  m_pCard_Stage = pCard_Stage;
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

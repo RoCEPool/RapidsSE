@@ -15,6 +15,8 @@ namespace STORE
 
     PipelineDef* m_pPipelineDef;
 
+    Card_Deck* m_pDeck;
+
     i8 m_i_Stage;
     i8 m_i_Op_stage;
     s48K m_sOptStmt;
@@ -32,6 +34,7 @@ namespace STORE
    ~Weaver2(void) noexcept(false);
   
     void vWeaveOptStmt(Board* pBoard);
+    void vWeaveOptStmt2(Board* pBoard);
     Stz* szOptStmt(void);
     Stz* szCppBlock(void);
 
@@ -49,6 +52,8 @@ namespace STORE
     void vStageFirst  (void);
     void vStageNext   (Card_Stage* pCard_Stage);
     void vStageLast   (void);
+
+    void vDynamic     (StageDef* pStageDef);
 
     void vOp          (Card* pCard);
 

@@ -132,7 +132,9 @@ void MakeCode::vCraftStageDef(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  m_pStageDef = new StageDef(m_pPipelineDef->nItems(),p_OP->szSymbol());
+  m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
+                             p_OP->szSymbol(),
+                             _pCard_Stage(p_OP));
   m_pPipelineDef->vAppend(m_pStageDef);
 }
 

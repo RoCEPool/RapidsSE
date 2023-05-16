@@ -15,6 +15,7 @@ _nation
 /glean_interactive
 /transliterated
 /weaved
+/weaver2
 /filterPred
 /pipelineName = "__CS2_OPT_ray"
 select

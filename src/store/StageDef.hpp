@@ -5,16 +5,19 @@
 
 #include "OpDef.hpp"
 #include "ListExo2_t.hpp"
+#include "Card_Stage.hpp"
 
 namespace STORE
 {
   class StageDef : public Object
                  , public ListExo2_t<OpDef>
   {
-  public:
+  private:
     i8   m_i_Stage;
     s32  m_sStageNm;
     s48K m_sCode;
+
+    Card_Stage* m_pCard_Stage;
 
   protected:
     // must be last
@@ -25,11 +28,14 @@ namespace STORE
     void  operator delete(void*);
 
     StageDef(void);
-    StageDef(i8 i_Stage, Stz* szStageNm);
+    StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage);
     ~StageDef(void) noexcept(false);
 
-    void vCode(Stz* szCode);
+    Card_Stage* pCard_Stage(void);
+    void vCard_Stage(Card_Stage* pCard_Stage);
+
     Stz* szCode(void);
+    void vCode(Stz* szCode);
 
     void vDump(i8 i_Tab=1);
 
