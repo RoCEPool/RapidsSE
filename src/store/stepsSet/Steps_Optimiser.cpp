@@ -104,7 +104,20 @@ void Step::vOptimiserTransform(void) {
   ENTRY();
 
   eEC eErrorCode;
-  b8 bResult = m_pLogicUnit->m_xpOptimiser->bApplyTransformationMatrix(&eErrorCode);
+  b8 bResult;
+  InfoSet *pInfoSet = nullptr;
+
+  Job* pJob = MY::pJob();
+  TagSet* pJobTags = pJob->pJobTags();
+  bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
+  bool bJoinPermutations = pJobTags->bHasName("<joinPermutations>"_Stz);
+
+  if (bJoinOrder || bJoinPermutations) {
+    // get the streamSet for joinOrder
+    pInfoSet = _pInfoSet(*(m_pLogicUnit)->m_xpStreamSet);
+  }
+
+  bResult = m_pLogicUnit->m_xpOptimiser->bTransform(&eErrorCode, pInfoSet);
 
   // push error code
   if (!bResult)
