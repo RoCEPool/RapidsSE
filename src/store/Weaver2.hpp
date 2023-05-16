@@ -18,6 +18,7 @@ namespace STORE
     i8 m_i_Stage;
     i8 m_i_Op_stage;
     s48K m_sOptStmt;
+    s48K m_sCppBlock;
 
   private:
     // must be last
@@ -32,6 +33,7 @@ namespace STORE
   
     void vWeaveOptStmt(Board* pBoard);
     Stz* szOptStmt(void);
+    Stz* szCppBlock(void);
 
   private:
   
@@ -39,6 +41,8 @@ namespace STORE
     void vTags        (void);
     void vBegin       (void);
     void vEnd         (void);
+    void vCppBlock   (void);
+    void vSemicolon   (void);
 
     void vCard        (Card* pCard);
   
