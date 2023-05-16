@@ -126,18 +126,39 @@ void Weaver2::vCppBlock(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
+  bool bHasCode = false;
+
   i8 nStages = m_pPipelineDef->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
 
-    vTrace("Code %s:\n%s\n"_Stz,pStageDef->szStageNm(),pStageDef->szCode());
+    //vTrace("Code %s:\n%s\n"_Stz,pStageDef->szStageNm(),pStageDef->szCode());
 
+    if (*pStageDef->szCode()->azChar()) {
+      bHasCode = true;
+      break;
+    }
   }
 
-  vConcat("\n"_Stz);
-  vConcat("// __cpp_code__\n"_Stz);
-  vConcat("// ...\n"_Stz);
-  vConcat("// __codeEnd__\n"_Stz);
+  if (bHasCode) {
+
+    vConcat("\n"_Stz);
+    vConcat("__cpp_code__\n"_Stz);
+
+    for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+      StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
+      vConcat("\n"_Stz);
+      vConcat(pStageDef->szCode());
+    }
+
+    vConcat("\n"_Stz);
+    vConcat("__codeEnd__\n"_Stz);
+
+    vTrace("Code %s\n"_Stz, m_sOptStmt.szStz());
+    vTrace("Code %lld\n"_Stz, m_sOptStmt.nLength());
+
+    vDebugPoint();
+  }
 }
 
 
