@@ -4,6 +4,9 @@
 
 // --initial __CS2_OPT_ray
 
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
 _nation
 
 /time load nation   "<tpch_dir>/nation.<suffix>";
