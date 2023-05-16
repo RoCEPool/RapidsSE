@@ -880,15 +880,21 @@ void Stencil_v2::vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, St
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   i8 iNextOp = i_Op + 1;
-  OpDef *pOpNext = pStageDef->pGet(iNextOp);
 
-  if (pOpNext->szOpNm()->bSame("dynamic_v2"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
-    // if nextOp is combined/hash, then next label is sDefault
+  if (iNextOp >= pStageDef->nItems()) {
     sLabelNext->vCopy(sDefault);
   }
   else {
-    // form next label using next op
-    sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
+    OpDef *pOpNext = pStageDef->pGet(iNextOp);
+
+    if (pOpNext->szOpNm()->bSame("dynamic_v2"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
+      // if nextOp is combined/hash, then next label is sDefault
+      sLabelNext->vCopy(sDefault);
+    }
+    else {
+      // form next label using next op
+      sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
+    }
   }
 }
 
@@ -2738,7 +2744,7 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate the opDef's
-  for (i8 i_Op = 0; i_Op < pStageDef->nItems() - 1; i_Op++) {
+  for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
 
     // get the op
     OpDef *pOpDef = pStageDef->pGet(i_Op);
