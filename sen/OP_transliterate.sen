@@ -154,9 +154,9 @@
 
   PipeSpec[].delete
 
-  "<weaved>"  [job].tagSet@ tagSet.hasName if
-    Text[] "Weaved: \n%v"  str.format .
-  then
+  //"<weaved>"  [job].tagSet@ tagSet.hasName if
+  //  Text[] "Weaved: \n%v"  str.format .
+  //then
 
   true
 ;
@@ -208,9 +208,9 @@
     [job].tagSet@ tagSet.dump
   then
 
-  "<transliterated>" [job].tagSet@ tagSet.hasName if
-    Text[] "Tranliterated: \n%v"  str.format .
-  then
+ // "<transliterated>" [job].tagSet@ tagSet.hasName if
+ //   Text[] "Tranliterated: \n%v"  str.format .
+ // then
 
   //Text[] .
 

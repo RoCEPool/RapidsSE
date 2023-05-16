@@ -31,7 +31,7 @@
   Optimiser[].new
     PipeSpec[] Optimiser[].dissect
     //Optimiser[].optimise
-    Optimiser[].weave dup . to Text[] // discard
+    Optimiser[].weave to Text[] // discard
   Optimiser[].delete
 
   PipeSpec[].delete
@@ -66,11 +66,11 @@
 
   then
 
-  Text[] .
+  //Text[] .
 
   _run_Optimiser
 
-  Text[] .
+  //Text[] .
 
   EV_M_DATAPULSE_handler
 ;

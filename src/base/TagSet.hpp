@@ -23,7 +23,7 @@ namespace BASE
     i8   m_nItems;
     Tag  m_xaTag[C_TAG_SET];
   
-    b32K m_xyStrings;
+    b64K m_xyStrings;
   
     // must be last
     Footer m_xFooter;
