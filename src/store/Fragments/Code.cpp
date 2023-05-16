@@ -241,7 +241,7 @@ i8 iGbyAggGenKeyEnd(Dynamic_T* aDynamicT) {
 // function-vInflateCrwBegin
 void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
-  RowInfo_v2 __ROW_INFO_TO__;
+  RowInfo __ROW_INFO_TO__;
 
   i8* paW;
   i8 i_CurrentRow;

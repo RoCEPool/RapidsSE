@@ -386,12 +386,6 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 
 struct RowInfo {
-  void* m_aRowCellArray;
-  char* m_acStrArea;
-  char* m_acStrAreaSav;
-};
-
-struct RowInfo_v2 {
   i8   m_iCell[256];
   char m_cStringArea[16384]; // _C_16KB;
   void* m_aRowCellArray;
@@ -434,32 +428,32 @@ struct Dynamic_T
   i8 m_iHeadSize;
   enum eSI           m_eStrInflateRule;
   struct HeadLine_T* m_aHeadLine0;
-  struct RowInfo_v2  m_xRowInfoIT;
+  struct RowInfo  m_xRowInfoIT;
 
   // inflate J (SR_IJ)
-  struct RowInfo_v2 m_xRowInfoIJ;
+  struct RowInfo m_xRowInfoIJ;
 
   // Project payload (SR_PL)
-  struct RowInfo_v2 m_xRowInfoPL;
+  struct RowInfo m_xRowInfoPL;
 
   // project T (SR_PT)
-  struct RowInfo_v2 m_xRowInfoPT;
+  struct RowInfo m_xRowInfoPT;
 
   // join T & J (SR_TJ)
-  struct RowInfo_v2 m_xRowInfoTJ;
+  struct RowInfo m_xRowInfoTJ;
 
   // aggregate T (SR_AT)
   i8 m_iAggregInit;
-  struct RowInfo_v2 m_xRowInfoAT;
+  struct RowInfo m_xRowInfoAT;
 
   // Tub Output (SR_TO)
   void*   m_pTub;
-  struct RowInfo_v2 m_xRowInfoTO;
+  struct RowInfo m_xRowInfoTO;
 
   // Pot Ouput (SR_PO)
   i8    m_iPot;
   void* m_pPot;
-  struct RowInfo_v2 m_xRowInfoPO;
+  struct RowInfo m_xRowInfoPO;
 
   // index scan T
   struct IndexInfo m_xIndexInfoT;
