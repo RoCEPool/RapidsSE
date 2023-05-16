@@ -441,7 +441,7 @@ struct Dynamic_T
   struct RowInfo_v2 m_xRowInfoIJ;
 
   // Project payload (SR_PL)
-  struct RowInfo m_xRowInfoPL;
+  struct RowInfo_v2 m_xRowInfoPL;
 
   // project T (SR_PT)
   struct RowInfo m_xRowInfoPT;

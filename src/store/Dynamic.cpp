@@ -45,9 +45,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_eStrInflateRule = SI_NONE;
   m_xDynamicT.m_aHeadLine0      = nullptr;
 
-
-
-
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoIT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -59,9 +56,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIT.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoIT.m_iCell[0];
   m_xDynamicT.m_xRowInfoIT.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoIT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
-
-
-
 
   // inflate J (SR_IJ)
   for (i8 i = 0; i < 256; i++)
@@ -76,12 +70,18 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIJ.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
   m_xDynamicT.m_xRowInfoIJ.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
 
-
   // project PL (SR_PL)
-  m_xDynamicT.m_xRowInfoPL.m_aRowSingle    = nullptr;
-  m_xDynamicT.m_xRowInfoPL.m_aRowCellArray = nullptr;
-  m_xDynamicT.m_xRowInfoPL.m_acStrArea     = nullptr;
-  m_xDynamicT.m_xRowInfoPL.m_acStrAreaSav  = nullptr;
+  for (i8 i = 0; i < 256; i++)
+    m_xDynamicT.m_xRowInfoPL.m_iCell[i] = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xRowInfoPL.m_cStringArea,_C_16KB,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xRowInfoPL.m_cStringArea[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xRowInfoPL.m_aRowCellArray = (void*)&m_xDynamicT.m_xRowInfoPL.m_iCell[0];
+  m_xDynamicT.m_xRowInfoPL.m_acStrArea     = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
+  m_xDynamicT.m_xRowInfoPL.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
 
   // project T (SR_PT)
   m_xDynamicT.m_xRowInfoPT.m_aRowSingle    = nullptr;
@@ -203,8 +203,8 @@ Dynamic::~Dynamic(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoAT.m_aRowSingle);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPL.m_aRowSingle);
-  delete pRowSingle;
+  //pRowSingle = _pRowSingle(m_xDynamicT.m_xRowInfoPL.m_aRowSingle);
+  //delete pRowSingle;
 }
 
 /*----------------------------------------------------------------------------*/

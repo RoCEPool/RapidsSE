@@ -1246,13 +1246,13 @@ void Stencil_v2::vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind) {
 
   Tub *pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
 
-  if (eHandlerKind == HK_EOS) {
-    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle = new RowSingle(pStreamDefOut);
-    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowCellArray =
-        (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle,
-                                        &pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrArea);
-    pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrArea;
-  }
+//  if (eHandlerKind == HK_EOS) {
+//    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle = new RowSingle(pStreamDefOut);
+//    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowCellArray =
+//        (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle,
+//                                        &pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrArea);
+//    pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrArea;
+//  }
 
   // get the rowPix
   RowPix *pRowPix = pStreamDefOut->pRowPix();
