@@ -65,7 +65,9 @@ namespace STORE
     i8 nTrimChildren(eCK eCard, Stz* szSymbol);
 
 
-
+    void vValidate_mayHave(eCK eCard, ...);
+    void vValidate_mustHave(eCK eCard, ...);
+    void vValidate_notHave(eCK eCard, ...);
   };
 }
 

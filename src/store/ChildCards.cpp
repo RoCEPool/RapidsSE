@@ -588,6 +588,118 @@ i8 ChildCards::nTrimChildren(eCK eCard, Stz* szSymbol)
   return nTrimmed;
 }
 
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                 */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vValidate_mayHave(eCK eCard, ...)
+{
+  va_list xArgs;
+
+//  va_start(xArgs,eCard);
+//
+//  while (CK_NONE != eCard) {
+//    eCard = va_arg(xArgs, eCK);
+//  }
+//
+//  va_end(xArgs);
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  while (pSubCard_I->bHasNext()) {
+    Card* pTestCard = pSubCard_I->pNext();
+    eCK eCard_test = pTestCard->eCard();
+
+    bool bMayHave = false;
+
+    va_start(xArgs,eCard);
+    eCK eCard_mayHave = eCard;
+    while (CK_NONE != eCard_mayHave) {
+      eCard_mayHave = va_arg(xArgs, eCK);
+      if (eCard_test == eCard_mayHave) {
+        bMayHave = true;
+        break;
+      }
+    }
+    va_end(xArgs);
+
+    RASSERT(bMayHave);
+  }
+
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vValidate_mustHave(eCK eCard, ...)
+{
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  va_start(xArgs, eCard);
+  eCK eCard_mustHave = eCard;
+  while (CK_NONE != eCard_mustHave) {
+    Card* pTestCard = pSubCard_I->pNext();
+    eCK eCard_test = pTestCard->eCard();
+
+    bool bMustHave = false;
+
+    eCK eCard_mustHave = eCard;
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      if (eCard_test == eCard_mustHave) {
+        bMustHave = true;
+        break;
+      }
+      eCard_mustHave = va_arg(xArgs, eCK);
+    }
+
+    RASSERT(bMustHave);
+
+  }
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void ChildCards::vValidate_notHave(eCK eCard, ...)
+{
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  va_start(xArgs, eCard);
+  eCK eCard_mustHave = eCard;
+  while (CK_NONE != eCard_mustHave) {
+    Card* pTestCard = pSubCard_I->pNext();
+    eCK eCard_test = pTestCard->eCard();
+
+    bool bMustHave = false;
+
+    eCK eCard_mustHave = eCard;
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      if (eCard_test == eCard_mustHave) {
+        bMustHave = true;
+        break;
+      }
+      eCard_mustHave = va_arg(xArgs, eCK);
+    }
+
+    RASSERT(! bMustHave);
+
+  }
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
