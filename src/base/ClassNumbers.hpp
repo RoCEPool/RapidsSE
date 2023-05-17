@@ -59,6 +59,7 @@ enum eCN : u2 // Class Number
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
   /* */ CN_COMBINEDSRC,
+  /* */ CN_COMMANDPARSER,
   /* */ CN_CONDITIONALQUERYNODEITER,
   /* */ CN_CORRELATEDJOIN,
   /* */ CN_CRVBUFFER,
@@ -506,6 +507,7 @@ static Stz* aCN[]
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "COMBINEDSRC"_Stz,          // CN_COMBINEDSRC
+  /* */ "COMMANDPARSER"_Stz,        // CN_COMMANDPARSER
   /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
   /* */ "CORRELATEDJOIN"_Stz,       // CN_CORRELATEDJOIN
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER

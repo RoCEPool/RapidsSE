@@ -107,6 +107,7 @@
 #include "Exemplar.hpp"
 
 #include "Combined.hpp"
+#include "CommandParser.hpp"
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
@@ -341,6 +342,7 @@ SizeHeap gxaSizeHeap[]
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
   { CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
+  { CN_COMMANDPARSER,            sizeof(CommandParser),      HT_T_SMALL   , FILL },
   { CN_CONDITIONALQUERYNODEITER, sizeof(ConditionalQueryNodeIter), HT_T_TINY,FILL },
   { CN_CORRELATEDJOIN,           sizeof(CorrelatedJoin),           HT_T_TINY    , FILL },
   { CN_CRVBUFFER,                sizeof(CrvBuffer),          HT_T_LARGE   ,FILL },

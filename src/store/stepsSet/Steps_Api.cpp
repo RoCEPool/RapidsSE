@@ -68,7 +68,11 @@ void Step::vApiParseCommand(void)
   s48K sCmdTagStr;
   m_pDataStack->vPopStr(sCmdTagStr,__func__);
 
-  TaskList* pTaskList = Api::pParseCommand(sCmd.szStz(), eErrCode, sErrStr);
+  TaskList* pTaskList = Api::pParseCommand(sCmd.szStz(),
+                                           sCmdTagStr.szStz(),
+                                           this,
+                                           eErrCode,
+                                           sErrStr);
 
   if (EC_NONE == eErrCode) {
     m_pDataStack->vPushPtr(pTaskList);

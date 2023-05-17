@@ -13,7 +13,7 @@ namespace STORE
   public:
     s256 m_sPtnDefNm;   // ptnDef name
   
-    Location m_oLocation; // logical location of stream def
+    BASE::Location m_oLocation; // logical location of stream def
 
     i8     m_nColumns;                    // total columns
     Column m_xaColumn[C_MAX_COLUMNS];     // array of columns
@@ -44,7 +44,7 @@ namespace STORE
     Column* pFindColumn(Stz* sColumnNm);
     Column* pGetColumn(i8 i_Col);
     void    vListContents(i8 i_Depth);
-    Location* pLocation(void);
+    BASE::Location* pLocation(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
     void    vPtnDefNm(Stz* szPtnDefNm);

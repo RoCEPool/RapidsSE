@@ -21,12 +21,12 @@ namespace STORE
     void  operator delete(void*);
   
     Locator(void);
-    Locator(Location* pLocation);
+    Locator(BASE::Location* pLocation);
    ~Locator(void) noexcept(false);
   
     static void vFlist(void);
 
-    void vLocate(Location* pLocation);
+    void vLocate(BASE::Location* pLocation);
 
     Dic* pTenant(void);
     Dic* pCatalog(void);

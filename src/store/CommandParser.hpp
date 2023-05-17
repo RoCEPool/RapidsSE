@@ -1,0 +1,86 @@
+/*============================================================================*/
+/* CommandParser.cpp - Parses all external SE commands & produces tasks       */
+/*============================================================================*/
+#pragma once
+
+#include "sqlBaseVisitor.h"
+#include "SqlException.hpp"
+//#include "eJT.h"
+//#include "TypeId.hpp"
+
+#define __NOT_IMPL(FEATURE) \
+  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
+  return nullptr; \
+EndDefine
+
+#define __NOT_IMPL2(FEATURE) \
+  SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE ); \
+  return nullptr; \
+EndDefine
+
+#define __NOT_IMPL3(FEATURE) \
+SyntaxException::vThrowNotImplemented(pCtx->start->getLine(), pCtx->start->getCharPositionInLine(), FEATURE##_Stz ); \
+EndDefine
+
+namespace STORE
+{
+class CommandParser : public Object, public Parser::sqlBaseVisitor
+  {
+  private:
+    // The query text that was entered by the user
+    s48K m_sQueryStr;
+
+    TagSet*   m_pCommonTagSet;
+    Task*     m_pParentTask;
+    TaskList* m_pTaskList;
+
+    Footer m_xFooter;
+
+   public:
+    
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
+    CommandParser(TagSet* pCommonTagSet, Task* pParentTask);
+    ~CommandParser(void) noexcept;
+
+    TaskList* pParseCommand(Stz* szCommand);
+
+
+    Footer* aFooter(void);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Visited grammar rules:
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    antlrcpp::Any visitStatements(Parser::sqlParser::StatementsContext *pCtx)               override;
+
+
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  private:
+    static Text* pCleanId(Parser::sqlParser::IdentifierContext* pCtx);
+    static Text* pCleanString(Parser::sqlParser::StringLiteralContext* pCtx);
+    static Text* pCleanString(antlr4::Token* pToken);
+    static void  vCleanString(Parser::sqlParser::StringLiteralContext* pCtx, s256& sBuf);
+    static void  vCleanString(Parser::sqlParser::IdentifierContext* pCtx, s256& sBuf);
+    static void  vCleanString(antlr4::Token* pToken, s256& sBuf);
+    static void  vCleanString(std::string& sStr, s256& sBuf);
+    static i8    iCleanInt(Parser::sqlParser::SignedIntegerLiteralContext* pCtx);
+    static i8    iCleanInt(Parser::sqlParser::IntegerLiteralContext* pCtx);
+    static i8    iCleanInt(antlr4::Token* pToken);
+    static i8    iCleanInt(std::string& sStr);
+    static u8    uCleanInt(Parser::sqlParser::SignedIntegerLiteralContext* pCtx);
+    static u8    uCleanInt(Parser::sqlParser::IntegerLiteralContext* pCtx);
+    static u8    uCleanInt(antlr4::Token* pToken);
+    static u8    uCleanInt(std::string& sStr);
+
+  };
+  
+  CommandParser* _pCommandParser(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -21,6 +21,8 @@
 #include "TagConstants.h"
 
 #include "SP_TagSet.hpp"
+#include "CommandParser.hpp"
+#include "SqlException.hpp"
 
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
@@ -41,11 +43,99 @@ extern pthread_key_t giTLS_CurrentPoint;
 /* Parse a command into one or more tasks. Returns a tasklist if successful.  */
 /* Otherwise returns null and sets the error code and string.                 */
 /*----------------------------------------------------------------------------*/
-TaskList* Api::pParseCommand(Stz* szCommand, eEC& eErrCode, s2K& sErrStr)
+TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTask,
+                             eEC& eErrCode, s2K& sErrStr)
 {
+  // Notes:
+  //
+  // Note that the szCommand being passed in may contain multiple statements to
+  // be executed. e.g. "lstbl; SELECT * FROM t1; DROP TABLE t1;".
+  // A separate task will be created for each statement.
+  //
+  // The purpose of this API is to:
+  //   (1) Provide command translation;
+  //         e.g. [SELECT * FROM t1;] gets translated into the command
+  //         [sqlCompiler "SELECT * FROM t1;"]
+  //
+  //   (2) Provide more expressive command parsing & command definitions;
+  //         Currently the parsing of commands is limited by the current tokenising
+  //         and parsing mechanisms, which limit the expressiveness of how
+  //         commands defined.
+  //         e.g. support names in double quotes & backticks, command options
+  //         that aren't specified in tag syntax, etc.
+  //
+  //   (3) Better report command syntax errors;
+  //
+  // Objective #2 means that we cannot directly reuse some of the existing code that
+  // prepares jobs based on a vector of tokens.
+
+  Job* pParentJob = pParentTask->pJob();
+
   TaskList* pTaskList = new TaskList(QK_NONE);
 
-  // TODO: Magic goes here
+  // First create a common tag set that will be copied into the tag set for
+  // each job.
+  TagSet*   pCommonTagSet = new TagSet;
+
+  // Now we tokenise the command tags passed in and populate the common command tag set.
+  TokenVec* pCommonTagTknVec = AM::TOKENISE::pTokeniseSen(szCommandTags);
+  CmdHelper::vPopulateTagSet(pCommonTagSet, pCommonTagTknVec);
+
+  // We add to this common tag set any inherited tags from the current job
+  TagSet* pParentJobTags = pParentTask->pOuterJobOfTask()->pJobTags();
+
+  if (pParentJobTags->bHasName(C_TAG_CCODE))        pCommonTagSet->vInsert(C_TAG_CCODE);
+  if (pParentJobTags->bHasName(C_TAG_JOBMETRICS))   pCommonTagSet->vInsert(C_TAG_JOBMETRICS);
+  if (pParentJobTags->bHasName(C_TAG_PIPELINENAME)) pCommonTagSet->vInsert(C_TAG_PIPELINENAME);
+
+  // Tokenise and parse the command string using ANTLR.
+  // In the process of this we also resolve a command to a pipeline using
+  // the dictionary, and substitute pipeline arguments appropriately.
+  CommandParser* pCommandParser = new CommandParser(pCommonTagSet, pParentTask);
+
+  try {
+    pTaskList = pCommandParser->pParseCommand(szCommand);
+
+  } catch (Parser::SyntaxException& e) {
+    delete pCommandParser;
+    eErrCode = e.eErrorCode();
+    sErrStr.vCopy(e.szError());
+    return nullptr;
+
+  } catch (Parser::SemanticException& e) {
+    delete pCommandParser;
+    eErrCode = e.eErrorCode();
+    sErrStr.vCopy(e.szError());
+    return nullptr;
+  }
+
+  ASSERT(pTaskList);
+  ASSERT(pTaskList->nTasks() > 0);
+  pCommonTagSet = nullptr; // Owned by CommandParser
+  delete pCommandParser;
+
+  // Do any final adjustments to each command's tag set.
+  Task* pTask;
+  pTaskList->vGrabLock();
+  pTask = pTaskList->pPeekTask();
+  pTaskList->vDropLock();
+
+  while (pTask) {
+    TagSet* pCmdTagSet = pTask->pJob()->pJobTags();
+
+    // Ensure the tag path is set
+    if (!pCmdTagSet->bHasName(C_TAG_PATH)) {
+      if (pParentJob) {
+        pCmdTagSet->vReplace(C_TAG_PATH, pParentJob->pJobTags()->szValue(C_TAG_PATH));
+
+      } else {
+        pCmdTagSet->vReplace(C_TAG_PATH, C_SE_PATH_ROOT);
+      }
+    }
+
+    pTask = pTask->pNextItem();
+  }
+
 
   return pTaskList;
 }
@@ -56,6 +146,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, eEC& eErrCode, s2K& sErrStr)
 /*----------------------------------------------------------------------------*/
 void Api::vScheduleTask(ENGINE::Task* pTask)
 {
+  // TODO
   // NOTE: While the content of this function is currently the same as
   // vTriggerChildJob(), the aim is eventually make it suspend the parent
   // job instead of blocking the parent job.
