@@ -46,10 +46,11 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 
   m_pSubQuery = new SubQuery(this);
 
-  m_bPrepareSubQueries  = false;
-  m_bFlattenSubQueries  = false;
-  m_bApplyOptimisations = false;
-  m_bMakeWeavable       = false;
+  m_bMadeSimpler  = false;
+  m_bMadeFlat     = false;
+  m_bMadeOptimal  = false;
+  m_bMadeWeavable = false;
+  m_bMadeCode     = false;
 
   _checkInitialised_(CN_BOARD);
 
@@ -262,7 +263,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 {
   _static_
 
-  if (! pCI->G.pBoard->bPrepareSubQueries())
+  if (!pCI->G.pBoard->bMadeSimpler())
     return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -719,81 +720,101 @@ void Board::vXhand(const char* asXhand)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bPrepareSubQueries(void)
+bool Board::bMadeSimpler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_bPrepareSubQueries;
+  return m_bMadeSimpler;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrepareSubQueries(bool bPrepareSubQueries)
+void Board::vMadeSimpler(bool bMadeSimpler)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_bPrepareSubQueries = bPrepareSubQueries;
+  m_bMadeSimpler = bMadeSimpler;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bFlattenSubQueries(void)
+bool Board::bMadeFlat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_bFlattenSubQueries;
+  return m_bMadeFlat;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vFlattenSubQueries(bool bFlattenSubQueries)
+void Board::vMadeFlat(bool bMadeFlat)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_bFlattenSubQueries = bFlattenSubQueries;
+  m_bMadeFlat = bMadeFlat;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bApplyOptimisations(void)
+bool Board::bMadeOptimal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_bApplyOptimisations;
+  return m_bMadeOptimal;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vApplyOptimisations(bool bApplyOptimisations)
+void Board::vMadeOptimal(bool bMadeOptimal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_bApplyOptimisations = bApplyOptimisations;
+  m_bMadeOptimal = bMadeOptimal;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bMakeWeavable(void)
+bool Board::bMadeWeavable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_bMakeWeavable;
+  return m_bMadeWeavable;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vMakeWeavable(bool bMakeWeavable)
+void Board::vMadeWeavable(bool bMadeWeavable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_bMakeWeavable = bMakeWeavable;
+  m_bMadeWeavable = bMadeWeavable;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bMadeCode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_bMadeCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vMadeCode(bool bMadeCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_bMadeCode = bMadeCode;
 }
 
 /*============================================================================*/
