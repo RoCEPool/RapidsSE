@@ -267,7 +267,7 @@ void Weaver2::vDynamic(StageDef* pStageDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  vTabOp();  vConcat("dynamic   /*alka???*/"_Stz);  vEolOp();  m_i_Op_stage++;
+  vTabOp();  vConcat("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -919,8 +919,11 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
       }
 
       vDynamic(pStageDef);
-    }
 
+      if (xCI.G_bEachMain(CK_CAST)) {
+        vOp(xCI.G.p_MainCard);
+      }
+    }
   }
 
   vStageLast();
