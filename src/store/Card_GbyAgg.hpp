@@ -37,6 +37,7 @@ namespace STORE
 
     void vUpdate_projection(CardIter* pCI);
 
+    void vValidate(void);
   };
 
   Card_GbyAgg* _pCard_GbyAgg(void* aAddr);

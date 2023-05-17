@@ -18,6 +18,7 @@ namespace STORE
 
     void vComputeProjection(CardIter* pCI); // prototype
 
+    void vValidate(void);
   };
 
   Card_Limit* _pCard_Limit(void* aAddr);

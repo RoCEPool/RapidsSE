@@ -22,6 +22,7 @@ namespace STORE
 
     void vEarlyProject_leaf(CardIter* pCI);
 
+    void vValidate(void);
   };
 
   Card_IndexScan* _pCard_IndexScan(void* aAddr);

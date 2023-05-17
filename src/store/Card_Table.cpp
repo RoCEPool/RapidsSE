@@ -544,6 +544,13 @@ void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   pCI->G.pDeck->vRenumberRecursive();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vValidate(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
 
 /*============================================================================*/
 /* end                                                                        */

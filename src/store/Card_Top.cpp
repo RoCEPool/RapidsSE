@@ -48,6 +48,13 @@ void Card_Top::vComputeProjection(CardIter* pCI)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Top::vValidate(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -39,6 +39,8 @@ namespace STORE
     void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);
 
     void vUpdate_projection_off_running(CardIter* pCI);
+
+    void vValidate(void);
   };
 
   Card_Project* _pCard_Project(void* aAddr);

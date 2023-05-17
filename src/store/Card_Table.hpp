@@ -48,6 +48,8 @@ namespace STORE
     void vSet_Syn(char* cTableSyn);
     void vSmooth(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vValidate(void);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

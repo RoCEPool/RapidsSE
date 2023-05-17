@@ -31,6 +31,8 @@ namespace STORE
     void vEarlyProject_add_transients(CardIter* pCI);
     void vEarlyProject_recurse_passthru(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vValidate(void);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

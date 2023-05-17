@@ -273,21 +273,21 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 
     switch (xCI.G.e_MainCard) {
 
-      case CK_AGGREG:          break;
-      case CK_CALL:            break;
-      case CK_FILTER:          break;
-      case CK_GBYAGG:          break;
-      case CK_HAVING:          break;
-      case CK_INDEXJOIN        break;
-      case CK_INDEXSCAN:       break;
-      case CK_LIMIT:           break;
-      case CK_ORDAGG:          break;
-      case CK_PROJECT:         break;
-      case CK_SCAN:            break;
-      case CK_SORT:            break;
-      case CK_TABLE:           break;
-      case CK_TOP:             break;
-      case CK_WHERE:           break;
+      case CK_AGGREG:     xCI.G.p_aggreg->vValidate();    break;
+      case CK_CALL:       xCI.G.p_call->vValidate();      break;
+      case CK_FILTER:     xCI.G.p_filter->vValidate();    break;
+      case CK_GBYAGG:     xCI.G.p_gbyAgg->vValidate();    break;
+      case CK_HAVING:     xCI.G.p_having->vValidate();    break;
+      case CK_INDEXJOIN:  xCI.G.p_indexJoin->vValidate(); break;
+      case CK_INDEXSCAN:  xCI.G.p_indexScan->vValidate(); break;
+      case CK_LIMIT:      xCI.G.p_limit->vValidate();     break;
+      case CK_ORDAGG:     xCI.G.p_ordAgg->vValidate();    break;
+      case CK_PROJECT:    xCI.G.p_project->vValidate();   break;
+      case CK_SCAN:       xCI.G.p_scan->vValidate();      break;
+      case CK_SORT:       xCI.G.p_sort->vValidate();      break;
+      case CK_TABLE:      xCI.G.p_table->vValidate();     break;
+      case CK_TOP:        xCI.G.p_top->vValidate();       break;
+      case CK_WHERE:      xCI.G.p_where->vValidate();     break;
 
       default:
         vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
