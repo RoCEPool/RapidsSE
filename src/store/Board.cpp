@@ -273,39 +273,21 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 
     switch (xCI.G.e_MainCard) {
 
-      case CK_AGGREG:
-        break;
-      case CK_CALL:
-        break;
-      case CK_FILTER:
-        if ((xCI.G.p_boolCalc = xCI.G.p_MainCard->pSub_boolCalc())) {
-
-        }
-        break;
-      case CK_GBYAGG:
-        break;
-      case CK_HAVING:
-        break;
-      case CK_INDEXJOIN:
-        break;
-      case CK_INDEXSCAN:
-        break;
-      case CK_LIMIT:
-        break;
-      case CK_ORDAGG:
-        break;
-      case CK_PROJECT:
-        break;
-      case CK_SCAN:
-        break;
-      case CK_SORT:
-        break;
-      case CK_TABLE:
-        break;
-      case CK_TOP:
-        break;
-      case CK_WHERE:
-        break;
+      case CK_AGGREG:          break;
+      case CK_CALL:            break;
+      case CK_FILTER:          break;
+      case CK_GBYAGG:          break;
+      case CK_HAVING:          break;
+      case CK_INDEXJOIN        break;
+      case CK_INDEXSCAN:       break;
+      case CK_LIMIT:           break;
+      case CK_ORDAGG:          break;
+      case CK_PROJECT:         break;
+      case CK_SCAN:            break;
+      case CK_SORT:            break;
+      case CK_TABLE:           break;
+      case CK_TOP:             break;
+      case CK_WHERE:           break;
 
       default:
         vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);

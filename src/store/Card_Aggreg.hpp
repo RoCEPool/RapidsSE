@@ -28,6 +28,8 @@ namespace STORE
     void vSmooth(CardIter* pCI);
     void vUpdate_projection(CardIter* pCI);
 
+    void vValidate(void);
+
   };
 
   Card_Aggreg* _pCard_Aggreg(void* aAddr);
