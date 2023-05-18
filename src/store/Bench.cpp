@@ -30,6 +30,12 @@ Bench::Bench(Optimiser* pOptimiser)
 
   m_bIsFlat = false;
 
+  m_bMadeSimpler  = false;
+  m_bMadeFlat     = false;
+  m_bMadeOptimal  = false;
+  m_bMadeWeavable = false;
+  m_bMadeCode     = false;
+
   m_pCI = new CardIter(this);
 
   _checkInitialised_(CN_BENCH);
@@ -299,6 +305,106 @@ void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
   m_pCI->vXhand(azHand);
 
   vClearMarks();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bMadeSimpler(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_bMadeSimpler;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vMadeSimpler(bool bMadeSimpler)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_bMadeSimpler = bMadeSimpler;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bMadeFlat(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_bMadeFlat;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vMadeFlat(bool bMadeFlat)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_bMadeFlat = bMadeFlat;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bMadeOptimal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_bMadeOptimal;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vMadeOptimal(bool bMadeOptimal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_bMadeOptimal = bMadeOptimal;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bMadeWeavable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_bMadeWeavable;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vMadeWeavable(bool bMadeWeavable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_bMadeWeavable = bMadeWeavable;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Bench::bMadeCode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_bMadeCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Bench::vMadeCode(bool bMadeCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_bMadeCode = bMadeCode;
 }
 
 

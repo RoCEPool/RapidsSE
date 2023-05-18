@@ -21,6 +21,13 @@ namespace STORE
 
     bool m_bIsFlat;
 
+    bool m_bMadeSimpler;
+    bool m_bMadeFlat;
+    bool m_bMadeOptimal;
+    bool m_bMadeWeavable;
+    bool m_bMadeCode;
+
+
   public:
     CardIter*    m_pCI;
 
@@ -56,6 +63,19 @@ namespace STORE
 
     void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
+
+
+    bool bMadeSimpler(void);
+    void vMadeSimpler(bool bMadeSimpler);
+    bool bMadeFlat(void);
+    void vMadeFlat(bool bMadeFlat);
+    bool bMadeOptimal(void);
+    void vMadeOptimal(bool bMadeOptimal);
+    bool bMadeWeavable(void);
+    void vMadeWeavable(bool bMadeWeavable);
+    bool bMadeCode(void);
+    void vMadeCode(bool bMadeCode);
+
 
   private:
     Footer* aFooter(void);
