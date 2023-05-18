@@ -15,7 +15,7 @@ statementChoice   :   queryStatement
 
 tags              : (keyOnlyTag | keyValueTag)* ;
 keyValueTag       : TAG_ANGLEBRACKETS '=' (STRING_LITERAL | INTEGER_LITERAL);
-keyOnlyTag        : TAG_BACKSLASH |
+keyOnlyTag        : TAG_FWDSLASH |
                     TAG_ANGLEBRACKETS ;
 
 // explain statement ----------------------------------------------------------
@@ -693,7 +693,7 @@ fragment DIGIT        : '0' .. '9' ;
 fragment DUBLSINGL    : '\'\'' ;
 fragment DUBLDUBL     : '""' ;
 
-TAG_BACKSLASH         : '\\' PLAIN_IDENTIFIER ;
+TAG_FWDSLASH          : '/' PLAIN_IDENTIFIER ;
 TAG_ANGLEBRACKETS     : '<' PLAIN_IDENTIFIER '>' ;
 
 IDENTIFIER            : PLAIN_IDENTIFIER | BAKTIKD_IDENTIFIER | DUBLQUOTED_IDENTIFIER ;

@@ -68,6 +68,10 @@ TaskList::TaskList(eQK eKind)
 TaskList::~TaskList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  Task* pTask;
+  while ((pTask = pPopTask()) != nullptr) {
+    delete pTask;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

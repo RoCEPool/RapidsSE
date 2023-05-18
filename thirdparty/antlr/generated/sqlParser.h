@@ -45,7 +45,7 @@ public:
     UNION = 167, UNIQUE = 168, UPDATE = 169, USING = 170, VALUE = 171, VALUES = 172, 
     VARBINARY = 173, VARCHAR = 174, VARYING = 175, WEEK = 176, WEEKS = 177, 
     WHEN = 178, WHERE = 179, WITH_NAMES = 180, WITH_TYPES = 181, WITH = 182, 
-    XOR = 183, YEAR = 184, YEARS = 185, TAG_BACKSLASH = 186, TAG_ANGLEBRACKETS = 187, 
+    XOR = 183, YEAR = 184, YEARS = 185, TAG_FWDSLASH = 186, TAG_ANGLEBRACKETS = 187, 
     IDENTIFIER = 188, PLAIN_IDENTIFIER = 189, BAKTIKD_IDENTIFIER = 190, 
     DUBLQUOTED_IDENTIFIER = 191, STRING_LITERAL = 192, SINGLQUOTED_STRING = 193, 
     DUBLQUOTED_STRING = 194, FLOAT_LITERAL = 195, DECIMAL_LITERAL = 196, 
@@ -292,7 +292,7 @@ public:
   public:
     KeyOnlyTagContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TAG_BACKSLASH();
+    antlr4::tree::TerminalNode *TAG_FWDSLASH();
     antlr4::tree::TerminalNode *TAG_ANGLEBRACKETS();
 
 

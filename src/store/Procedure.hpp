@@ -33,6 +33,9 @@ namespace STORE
 
     static void  vAddProcedure(TokenVec* pTokenVec);
 
+    static bool  bTranslateToPipeline(Stz* szProcedureName,
+                                      Stz* szOrigStmt,
+                                      String* pToPipelineStmt);
 
     static bool  bTranslateToPipeline(String* pToPipelineStmt,
                                       TokenVec* pTokenVec,
@@ -40,6 +43,7 @@ namespace STORE
 
   private:
 
+    static Word* pFindProcedure(Stz* szProcedure);
     static Word* pFindProcedure(TokenVec* pTokenVec);
 
     void vParseAndAdd(void);

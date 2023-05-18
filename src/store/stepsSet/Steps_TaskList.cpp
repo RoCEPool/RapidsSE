@@ -66,14 +66,6 @@ void Step::vTaskListDelete(void)
   }
 
   TaskList* pTaskList = *m_pLogicUnit->m_xpTaskList;
-  Task* pTask;
-
-  pTaskList->vGrabLock();
-  while ((pTask = pTaskList->pPopTask()) != nullptr) {
-    delete pTask;
-  }
-  pTaskList->vDropLock();
-
   delete pTaskList;
 
   m_pLogicUnit->m_xpTaskList = nullptr;

@@ -14,6 +14,10 @@
 
 #include "Text.hpp"
 #include "AttachMap.hpp"
+#include "TagConstants.h"
+#include "Procedure.hpp"
+#include "Api.hpp"
+#include "Job.hpp"
 
 extern AttachMap*  gpAttachMap;
 
@@ -39,10 +43,17 @@ CommandParser::CommandParser(TagSet* pCommonTagSet, Task* pParentTask)
   ASSERT(pCommonTagSet);
   ASSERT(pParentTask);
 
+  // m_sQueryStr;
   m_pCommonTagSet = pCommonTagSet;
   m_pParentTask = pParentTask;
 
   m_pTaskList = new TaskList(QK_NONE);
+
+  // Information pertaining to the current statement
+  m_pCurStmtTagSet = nullptr;
+  // m_sCurStmtStr
+  m_szProcName = nullptr;
+
   _checkInitialised_(CN_COMMANDPARSER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPARSER,_FOOTER_);
@@ -57,17 +68,10 @@ CommandParser::~CommandParser(void) noexcept
 
   delete m_pCommonTagSet;
   m_pParentTask = nullptr;
+  delete m_pTaskList;
 
-  if (m_pTaskList) {
-    Task* pTask;
-
-    m_pTaskList->vGrabLock();
-      while ((pTask = m_pTaskList->pPopTask()) != nullptr) {
-        delete pTask;
-      }
-    m_pTaskList->vDropLock();
-    delete m_pTaskList;
-  }
+  ASSERT(!m_pCurStmtTagSet);
+  ASSERT(!m_szProcName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +79,7 @@ CommandParser::~CommandParser(void) noexcept
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Parse and create an initial plan for a SQL statement                       */
+/* Parse any SE system command                                                */
 /*----------------------------------------------------------------------------*/
 TaskList* CommandParser::pParseCommand(Stz* szCommand)
 {
@@ -106,9 +110,9 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand)
     Parser::SyntaxException::vThrowAntlr(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
   }
 
-
   // Visit the parse tree that resulted from the above parsing.
-  // May throw a SyntaxException or SemanticException.
+  // This allows us to determine the statement type, extract tags and other values, etc.
+  // This may throw a SyntaxException or SemanticException.
   this->visitStatements(pStatementsCtx);
 
   // TaskList is owned by the caller.
@@ -124,15 +128,146 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand)
 /*----------------------------------------------------------------------------*/
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Statement node (top-most level of the parse tree)                          */
+/* Statements node (top-most level of the parse tree)                         */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitStatements(Parser::sqlParser::StatementsContext *pCtx)
 {
-  // Save the whole statement text
+  // Save the whole query text which may contain multiple statements.
   antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
   m_sQueryStr.vCopy((Stz*) queryStlStr.c_str());
+
+  return visitChildren(pCtx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Statement node                                                             */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext *pCtx)
+{
+  // Save the current statement text
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string sStmtStr = pCtx->start->getInputStream()->getText(interval);
+
+  m_sCurStmtStr.vCopy((Stz*) sStmtStr.c_str());
+
+  // Create a tag set for this command and populate it with any common tags
+  ASSERT(!m_pCurStmtTagSet);
+  m_pCurStmtTagSet = new TagSet();
+  m_pCurStmtTagSet->vCopy(m_pCommonTagSet);
+
+  ASSERT(!m_szProcName);
+
+  visitChildren(pCtx);
+
+  // Except for raw pipeline statements being specified, all commands should be resolvable
+  // to a procedure or pipeline statement in the dictionary.
+  sSTMT sStmt;
+  if (m_szProcName) {
+    m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, m_szProcName);
+
+    if (!Procedure::bTranslateToPipeline(m_szProcName, m_sCurStmtStr.szStz(), sStmt.pString())) {
+      // All external commands should be resolvable.
+      NEVER_REACH
+    }
+
+  } else {
+    // TODO: raw pipeline specified?
+    sStmt.vCopy(m_sCurStmtStr);
+    m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, "pipeline"_Stz);
+  }
+
+  JobId tParentId;
+  tParentId = m_pParentTask->pOuterJobOfTask()->tJobId();
+
+  Task* pTask = Api::pCreateTask(sStmt.szStz(), m_pCurStmtTagSet, tParentId);
+
+  if (!pTask) {
+    i8 iLine = pCtx->start->getLine();
+    i8 iColumn = pCtx->start->getCharPositionInLine();
+    Parser::SyntaxException::vThrow(iLine, iColumn, EC_INVALID_COMMAND);
+  }
+
+  m_pTaskList->vGrabLock();
+  m_pTaskList->vAddTask(pTask);
+  m_pTaskList->vDropLock();
+
+  // TODO: post-statement cleanup.
+
+  m_pCurStmtTagSet = nullptr;   // TODO: check where this gets deleted.
+  m_sCurStmtStr.vReset();
+  m_szProcName = nullptr;
+
+  return nullptr;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* StatementChoice node                                                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementChoiceContext *pCtx)
+{
+  // Determine which procedure/pipeline needs to be invoked for a given command.
+  // Note that for most commands we don't need to descend the parse tree any further
+  // than this. Some others we do.
+
+  if (pCtx->queryStatement() ||
+      pCtx->explainStatement()) { m_szProcName = "sqlCompiler"_Stz;   return nullptr; }
+  else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;         return nullptr; }
+  else                          { NOT_IMPLEMENTED_YET }
+
+  // NOTE:
+  // the load/dload commands that accept multiple paths need to convert these
+  // arguments into tags. Hence this part of the graph needs to be descended.
+  // Refer to CmdHelper::vExtractCmdPaths.
+
+  NEVER_REACH
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Extract a key-only tag and add it to the current statement's tag set       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContext *pCtx)
+{
+  std::string sTagName;
+
+  if (pCtx->TAG_FWDSLASH()) {
+    sTagName = pCtx->TAG_FWDSLASH()->getText().substr(1);
+
+  } else {
+    ASSERT(pCtx->TAG_ANGLEBRACKETS());
+    std::string s = pCtx->TAG_ANGLEBRACKETS()->getText();
+    sTagName = s.substr(1, s.length() - 2);
+  }
+
+  m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str());
+
+  return visitChildren(pCtx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Extract a key-value tag and add it to the current statement's tag set      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitKeyValueTag(Parser::sqlParser::KeyValueTagContext *pCtx)
+{
+  std::string sTagName;
+
+  ASSERT(pCtx->TAG_ANGLEBRACKETS());
+  std::string s = pCtx->TAG_ANGLEBRACKETS()->getText();
+  sTagName = s.substr(1, s.length() - 2);
+
+  if (pCtx->STRING_LITERAL()) {
+    // Get value without quotes
+    std::string sValue = pCtx->STRING_LITERAL()->getText().substr(1, pCtx->STRING_LITERAL()->getText().length() - 2);
+    m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str(), (Stz*) sValue.c_str());
+
+  } else {
+    ASSERT(pCtx->INTEGER_LITERAL());
+    i8 iValue = iCleanInt(pCtx->INTEGER_LITERAL()->getSymbol());
+    m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str(), iValue);
+  }
 
   return visitChildren(pCtx);
 }

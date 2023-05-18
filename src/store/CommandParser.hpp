@@ -27,12 +27,16 @@ namespace STORE
 class CommandParser : public Object, public Parser::sqlBaseVisitor
   {
   private:
-    // The query text that was entered by the user
+    // The query text that was entered by the user. May contain more than 1 statement.
     s48K m_sQueryStr;
 
     TagSet*   m_pCommonTagSet;
     Task*     m_pParentTask;
     TaskList* m_pTaskList;
+
+    TagSet*   m_pCurStmtTagSet;
+    s48K      m_sCurStmtStr;
+    Stz*      m_szProcName;
 
     Footer m_xFooter;
 
@@ -52,7 +56,11 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Visited grammar rules:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    antlrcpp::Any visitStatements(Parser::sqlParser::StatementsContext *pCtx)               override;
+    antlrcpp::Any visitStatements(Parser::sqlParser::StatementsContext *pCtx)             override;
+    antlrcpp::Any visitStatement(Parser::sqlParser::StatementContext *pCtx)               override;
+    antlrcpp::Any visitStatementChoice(Parser::sqlParser::StatementChoiceContext *pCtx)   override;
+    antlrcpp::Any visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContext *pCtx)             override;
+    antlrcpp::Any visitKeyValueTag(Parser::sqlParser::KeyValueTagContext *pCtx)           override;
 
 
 

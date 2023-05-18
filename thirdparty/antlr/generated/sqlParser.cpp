@@ -85,7 +85,7 @@ sqlParser::StatementsContext* sqlParser::statements() {
     || _la == sqlParser::LSTBL || ((((_la - 143) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 143)) & ((1ULL << (sqlParser::SELECT - 143))
       | (1ULL << (sqlParser::WITH - 143))
-      | (1ULL << (sqlParser::TAG_BACKSLASH - 143))
+      | (1ULL << (sqlParser::TAG_FWDSLASH - 143))
       | (1ULL << (sqlParser::TAG_ANGLEBRACKETS - 143))
       | (1ULL << (sqlParser::HINT_START - 143)))) != 0));
    
@@ -275,7 +275,7 @@ sqlParser::TagsContext* sqlParser::tags() {
     setState(246);
     _errHandler->sync(this);
     _la = _input->LA(1);
-    while (_la == sqlParser::TAG_BACKSLASH
+    while (_la == sqlParser::TAG_FWDSLASH
 
     || _la == sqlParser::TAG_ANGLEBRACKETS) {
       setState(244);
@@ -382,8 +382,8 @@ sqlParser::KeyOnlyTagContext::KeyOnlyTagContext(ParserRuleContext *parent, size_
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* sqlParser::KeyOnlyTagContext::TAG_BACKSLASH() {
-  return getToken(sqlParser::TAG_BACKSLASH, 0);
+tree::TerminalNode* sqlParser::KeyOnlyTagContext::TAG_FWDSLASH() {
+  return getToken(sqlParser::TAG_FWDSLASH, 0);
 }
 
 tree::TerminalNode* sqlParser::KeyOnlyTagContext::TAG_ANGLEBRACKETS() {
@@ -415,7 +415,7 @@ sqlParser::KeyOnlyTagContext* sqlParser::keyOnlyTag() {
     enterOuterAlt(_localctx, 1);
     setState(253);
     _la = _input->LA(1);
-    if (!(_la == sqlParser::TAG_BACKSLASH
+    if (!(_la == sqlParser::TAG_FWDSLASH
 
     || _la == sqlParser::TAG_ANGLEBRACKETS)) {
     _errHandler->recoverInline(this);
@@ -14722,11 +14722,11 @@ std::vector<std::string> sqlParser::_symbolicNames = {
   "TRIM", "TRAILING", "TRUNCATE", "SQL_TRUE", "TYPE", "TYPEOF", "UNION", 
   "UNIQUE", "UPDATE", "USING", "VALUE", "VALUES", "VARBINARY", "VARCHAR", 
   "VARYING", "WEEK", "WEEKS", "WHEN", "WHERE", "WITH_NAMES", "WITH_TYPES", 
-  "WITH", "XOR", "YEAR", "YEARS", "TAG_BACKSLASH", "TAG_ANGLEBRACKETS", 
-  "IDENTIFIER", "PLAIN_IDENTIFIER", "BAKTIKD_IDENTIFIER", "DUBLQUOTED_IDENTIFIER", 
-  "STRING_LITERAL", "SINGLQUOTED_STRING", "DUBLQUOTED_STRING", "FLOAT_LITERAL", 
-  "DECIMAL_LITERAL", "INTEGER_LITERAL", "HINT_START", "HINT_END", "SLASH_COMMENT", 
-  "SQL_COMMENT", "BLOCK_COMMENT", "WHITESPACE"
+  "WITH", "XOR", "YEAR", "YEARS", "TAG_FWDSLASH", "TAG_ANGLEBRACKETS", "IDENTIFIER", 
+  "PLAIN_IDENTIFIER", "BAKTIKD_IDENTIFIER", "DUBLQUOTED_IDENTIFIER", "STRING_LITERAL", 
+  "SINGLQUOTED_STRING", "DUBLQUOTED_STRING", "FLOAT_LITERAL", "DECIMAL_LITERAL", 
+  "INTEGER_LITERAL", "HINT_START", "HINT_END", "SLASH_COMMENT", "SQL_COMMENT", 
+  "BLOCK_COMMENT", "WHITESPACE"
 };
 
 dfa::Vocabulary sqlParser::_vocabulary(_literalNames, _symbolicNames);

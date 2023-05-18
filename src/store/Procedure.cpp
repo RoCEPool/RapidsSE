@@ -80,6 +80,18 @@ void Procedure::vAddProcedure(TokenVec* pTokenVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* translate stored procedure cmd into a pipeline cmd, substituting arguments */
+/*----------------------------------------------------------------------------*/
+bool Procedure::bTranslateToPipeline(Stz* szProcedureName,
+                                     Stz* szOrigStmt,
+                                     String* pToPipelineStmt
+                                     /* TODO: args here */)
+{
+  _static_
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* translate stored procedure command into a pipeline command                 */
 /*----------------------------------------------------------------------------*/
 bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
@@ -307,6 +319,30 @@ bool Procedure::bTranslateToPipeline(String* pToPipelineStmt,
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* find word for procedure matching given name                                */
+/*----------------------------------------------------------------------------*/
+Word* Procedure::pFindProcedure(Stz* szProcedure)
+{
+  _static_
+
+  // check we have procedure category defined
+
+  Dic* pDicRoot = AM::DIC::pRoot();
+
+  Word* pProcCatg = pDicRoot->pFindWord(C_PROCEDURE_CATG);
+
+  if (!pProcCatg)
+    return nullptr;
+
+  Word* pwMatchedProc = pDicRoot->pFindWord(szProcedure);
+
+  if (pwMatchedProc && pwMatchedProc->eCategoryEnum() == WC_PROCEDURE)
+    return pwMatchedProc;
+
+  return nullptr;
+}
 
 /*----------------------------------------------------------------------------*/
 /* find word for procedure matching given name                                */
