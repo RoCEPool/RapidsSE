@@ -640,23 +640,22 @@ void ChildCards::vValidate_mustHave(eCK eCard, ...)
   va_start(xArgs, eCard);
   eCK eCard_mustHave = eCard;
   while (CK_NONE != eCard_mustHave) {
-    Card* pTestCard = pSubCard_I->pNext();
-    eCK eCard_test = pTestCard->eCard();
 
     bool bMustHave = false;
 
-    eCK eCard_mustHave = eCard;
     pSubCard_I->vBeforeFirst();
     while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
       if (eCard_test == eCard_mustHave) {
         bMustHave = true;
         break;
       }
-      eCard_mustHave = va_arg(xArgs, eCK);
     }
 
     RASSERT(bMustHave);
 
+    eCard_mustHave = va_arg(xArgs, eCK);
   }
 
   va_end(xArgs);

@@ -153,12 +153,6 @@ namespace STORE
     i8          m_iXform;
     s256        m_sXdesc;
 
-    bool        m_bMadeSimpler;
-    bool        m_bMadeFlat;
-    bool        m_bMadeOptimal;
-    bool        m_bMadeWeavable;
-    bool        m_bMadeCode;
-
   private:
     // must be last
     Footer m_xFooter;
@@ -216,17 +210,6 @@ namespace STORE
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
 
-
-    bool bMadeSimpler(void);
-    void vMadeSimpler(bool bMadeSimpler);
-    bool bMadeFlat(void);
-    void vMadeFlat(bool bMadeFlat);
-    bool bMadeOptimal(void);
-    void vMadeOptimal(bool bMadeOptimal);
-    bool bMadeWeavable(void);
-    void vMadeWeavable(bool bMadeWeavable);
-    bool bMadeCode(void);
-    void vMadeCode(bool bMadeCode);
 
   private:
     Footer* aFooter(void);

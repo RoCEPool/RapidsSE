@@ -169,25 +169,30 @@ void Optimiser::vApplyTransformationMatrix(void)
   MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
   pMakeSimpler->vSimplify();
   delete pMakeSimpler;
+  m_pCI->m_pBench->vMadeSimpler(true);
 
   Board::vValidate(m_pCI);
 
   MakeFlat* pMakeFlat = new MakeFlat(m_pCI);
   pMakeFlat->vFlatten();
   delete pMakeFlat;
+  m_pCI->m_pBench->vMadeFlat(true);
 
   MakeOptimal* pMakeOptimal = new MakeOptimal(m_pCI);
   pMakeOptimal->vOptimise();
   delete pMakeOptimal;
+  m_pCI->m_pBench->vMadeOptimal(true);
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
   pMakeWeavable->vWeavable();
   delete pMakeWeavable;
+  m_pCI->m_pBench->vMadeWeavable(true);
 
   MakeCode* pMakeCode = new MakeCode(m_pCI);
   pMakeCode->vSynthesise();
   m_pPipelineDef = pMakeCode->pPipelineDef();
   pMakeCode->vPipelineDef(nullptr);
+  m_pCI->m_pBench->vMadeCode(true);
 
   delete pMakeCode;
 }

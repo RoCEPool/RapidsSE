@@ -298,6 +298,8 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 void Card_Where::vValidate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_BOOLCALC,CK_NONE);
 }
 
 /*============================================================================*/
