@@ -26,6 +26,8 @@ CardIter::CardIter(Card*  pCard)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  vInit();
+
   G.xKid.vParent(pCard);
 
   G.xKid.m_bActive = true;
@@ -43,6 +45,8 @@ CardIter::CardIter(CardIter* pCardIter_src)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  vInit();
+
   vSet(pCardIter_src);
 }
 
@@ -54,8 +58,34 @@ CardIter::CardIter(Bench* pBench)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  vInit();
+
   m_pBench   = pBench;
   m_pCardCtl = m_pBench->pCardCtl();
+
+  _checkInitialised_(CN_CARDITER);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+CardIter::~CardIter(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* initialiser                                                                */
+/*----------------------------------------------------------------------------*/
+void CardIter::vInit(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  m_pBench   = nullptr;
+  m_pCardCtl = nullptr;
 
   G.xKid.vParent(nullptr);
 
@@ -86,20 +116,6 @@ CardIter::CardIter(Bench* pBench)
 
   G_vClearMembers();
   G_vClearRegisters();
-
-
-  _checkInitialised_(CN_CARDITER);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-CardIter::~CardIter(void) noexcept(false)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
 }
 
 

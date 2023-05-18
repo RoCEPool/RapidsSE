@@ -655,7 +655,7 @@ void ChildCards::vValidate_mustHave(eCK eCard, ...)
 
     RASSERT(bMustHave);
 
-    eCard_mustHave = va_arg(xArgs, eCK);
+    eCard_mustHave = (eCK)va_arg(xArgs, eCK);
   }
 
   va_end(xArgs);
