@@ -3,8 +3,15 @@
 /*============================================================================*/
 
 #include "BASE.h"
-
+#include "eCX.h"
 #include "SP_ColPix.hpp"
+
+/*----------------------------------------------------------------------------*/
+/* new row pix                                                                */
+/*----------------------------------------------------------------------------*/
+void* aRowPix_new(i8 nColumns, void* pColumnInfo) {
+  return RowPix::aRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
+}
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -21,10 +28,9 @@ RowPix* BASE::_pRowPix(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RowPix::operator new(size_t)
 {
-  vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-         "fatal: RowPix class cannot be new'd\n"_Stz);
-  
-  NEVER_REACH;
+  RowPix* pRowPix = (RowPix*)Heaps::pAllocate(CN_ROWPIX);
+
+  return pRowPix;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,13 +66,11 @@ RowPix::RowPix(void)
   m_nNameOffset  = C_UNKNOWN;
   m_nTotalChars  = 0;
 
-  
   for (i8 i_Col = 0; i_Col < C_ROWPIX_COLUMNS; i_Col++)
     m_xaColPix[i_Col].m_uAsU8 = 0;
   
   MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
-  
-  
+
   _checkInitialised_(CN_ROWPIX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
@@ -80,6 +84,66 @@ RowPix::~RowPix(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
+
+  i8 nNameSize;
+  i8 nStzOfs;
+  bool bAddPtnHash = 0;
+
+  RowPix* pRowPix = new RowPix;
+
+  pRowPix->m_bInitialised = true;
+  pRowPix->m_bShortForm   = false;
+  pRowPix->m_nColumns = nNumCols;
+  pRowPix->m_nExtraCols   = 0;
+  pRowPix->m_bPtnHash     = false;
+  pRowPix->m_nMaxRowSize  = 256;
+  pRowPix->m_nTotalChars = 0;
+
+  pRowPix->m_nNameOffset = sizeof(ColPix)
+                              * ( nNumCols + (bAddPtnHash ? 1 : 0) );
+
+  MemLib::vZero(pRowPix->m_baPixArea,sizeof(pRowPix->m_baPixArea),CN_ROWPIX);
+
+  ColPix* axaColPixDst = pRowPix->m_xaColPix;
+
+  char* azNames = aAdd<char*>(axaColPixDst,pRowPix->m_nNameOffset);
+  char* azColNmDst = azNames;
+
+  for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
+
+    pRowPix->m_xaColPix[i_Col].m_uAsU8 = 0;
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
+
+    axColPixDst->m_uNumber   = (u8)i_Col;
+    // name
+    axColPixDst->m_uKind     = (u8)CX_USERCOL;
+    axColPixDst->m_uType     = (u8)pColumnInfo[i_Col].m_iColumnType;
+    axColPixDst->m_uDatum    = (u8)Column::eDatum((eCT)pColumnInfo[i_Col].m_iColumnType);
+    axColPixDst->m_uLength   = (u8)pColumnInfo[i_Col].m_iColumnLength;
+    axColPixDst->m_uScale    = (u8)pColumnInfo[i_Col].m_iColumnScale;
+    axColPixDst->m_bNullable = (u8)pColumnInfo[i_Col].m_bIsNullable;
+    axColPixDst->m_bPtnKey   = (u8)pColumnInfo[i_Col].m_bPtnKey;
+    axColPixDst->m_uSpare    = (u8)0;
+
+    StrLib::vCopy(azColNmDst,&pColumnInfo[i_Col].m_cColumnNm[0]);
+    nNameSize = StrLib::nSize(azColNmDst);
+
+    nStzOfs = nDifference(axColPixDst,azColNmDst);
+    axColPixDst->m_uName = nStzOfs;
+
+    azColNmDst += nNameSize;
+    pRowPix->m_nTotalChars += nNameSize;
+  }
+
+  pRowPix->m_nTotalChars++;
+  * azColNmDst = '\0';
+
+  return (void*)pRowPix;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -142,7 +206,7 @@ ColPix* RowPix::axaColPixArray(void)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 //  MemLib::vCopy(this,pRowPixSrc,sizeof(RowPix),CN_ROWPIX);
 //
-//  
+//
 //  //m_nRowSizeProper = Row::nRowProper(pRowPixSrc);
 //}
 

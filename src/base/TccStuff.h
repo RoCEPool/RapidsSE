@@ -384,8 +384,18 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
   ( ((byte*)addr1 >= (byte*)addr2) \
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
+struct ColumnInfo {
+  i8    m_iColumnNo;      // this columns subscript
+  char  m_cColumnNm[32];  // name of the column
+  i8    m_iColumnType;    // column type (CT_INTEGER etc) // ALKA COME BACK TO THIS
+  i8    m_iColumnLength;  // logical length of the column
+  i8    m_iColumnScale;   // logical scale of the column
+  i8    m_bIsNullable;    // is column nullable?
+  i8    m_bPtnKey;
+};
 
 struct RowInfo {
+  i8   m_iInitialize;
   i8   m_iCell[256];
   char m_cStringArea[16384]; // _C_16KB;
   void* m_aRowCellArray;
@@ -410,6 +420,7 @@ struct IndexInfo {
 // CODE SYNTH V2
 struct Dynamic_T
 {
+
   i8 m_bTrace;
   i8 m_iErrorCode;
   i8 m_iProcessRow;
@@ -622,10 +633,13 @@ void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
+void  vTub_RowPix(void* pTub, void* pRowPix);
 
 i8    StrLib_iLike2(char* azStr, char* azRegExp);
 i8    StrLib_iLike3(char* azStr, char* azRegExp, char cEsc);
 i8    StrLib_iWordFlipBack(char* aDst, char* aSrc);
+
+void* aRowPix_new(i8 nColumns, void* pColumnInfo);
 
 /*============================================================================*/
 /* end                                                                        */

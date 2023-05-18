@@ -62,6 +62,9 @@ void Step::vDynamicExecute(void)
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
   Dynamic_T* aDynamicT = pDynamic->aDynamicT();
 
+  aDynamicT->m_pPot = * m_pLogicUnit->m_xpPot;
+  aDynamicT->m_pTub = * m_pLogicUnit->m_xpTub;
+
   i8 iTrace = m_pDataStack->iPopInt(__func__);
 
   bool (*afFun)(void*);

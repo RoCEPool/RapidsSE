@@ -32,6 +32,7 @@ namespace STORE
 
     static void* aAllotRow(Tub* pTub, char** aazStrArea, i8* piErrorCode);
     static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
+    static void  vSetRowPix(Tub* pTub, RowPix* pRowPix);
 
   public:
   
@@ -54,6 +55,7 @@ namespace STORE
   Tub* _pTub(void* aAddr);
   void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
   void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
+  void vTub_RowPix(void* pTub, void* aRowPix);
 }
 
 /*============================================================================*/

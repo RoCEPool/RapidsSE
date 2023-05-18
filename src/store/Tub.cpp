@@ -30,6 +30,13 @@ void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void vTub_RowPix(void* pTub, void* pRowPix) {
+  Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tub::Tub(void)
@@ -124,6 +131,19 @@ void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
   RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
   pRowBuffer->vTakeHead(nRowStrSize);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void Tub::vSetRowPix(Tub* pTub, RowPix* pRowPix)
+{
+  _static_
+
+  RASSERT(CN_TUB == pTub->eGetClassNo());
+
+  pTub->vRowPix(pRowPix);
 
 }
 
@@ -255,7 +275,7 @@ RowPix* Tub::pRowPix(void)
 void Tub::vRowPix(RowPix* pRowPix)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-    
+
   m_pRowPix = pRowPix;
 }
 

@@ -125,7 +125,7 @@ void Step::vStencilSketch_v2(void)
     if (pTagSet->bHasName(C_TAG_CCODE))
       bGenerateCCode = true;
 
-    pStencil->vCombine(bGenerateCCode);
+    pStencil->vCombine(true, bGenerateCCode);
     pStencil->vPrint();
   }
 

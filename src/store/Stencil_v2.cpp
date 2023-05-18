@@ -134,19 +134,23 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
 
   eEC eErrorCode;
 
-  Stencil_v2* pStencil = new Stencil_v2;
 
   i8 nStages = pPipelineDef->nItems();
 
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stencil_v2* pStencil = new Stencil_v2;
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
     pStageDef->vDump();
     eErrorCode = pStencil->eSynthesise(pStageDef);
     if (eErrorCode != EC_NONE) {
       return eErrorCode;
     }
-    pStencil->vCombine(false);
+    if (i_Stage == 0)
+      pStencil->vCombine(true, false);
+    else
+      pStencil->vCombine(false, false);
     pStageDef->vCode(pStencil->szOpSource());
+    delete pStencil;
   }
 
   return EC_NONE;
@@ -310,13 +314,13 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 /*----------------------------------------------------------------------------*/
 /* combine synthesized op code (put code for all shapes together)             */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vCombine(bool bGenerateCCode)
+void Stencil_v2::vCombine(bool bFileHeader, bool bGenerateCCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize the code for the combined operators
-  m_pOpSource->vSynthesizeCode(this);
+  m_pOpSource->vSynthesizeCode(this, bFileHeader);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write to a file
@@ -381,6 +385,16 @@ Stz* Stencil_v2::szOpSource(void)
   char* azCode = m_pOpSource->azCode();
   
   return (Stz*)azCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return op source code                                                      */
+/*----------------------------------------------------------------------------*/
+void Stencil_v2::vOpSource(Stz* szOpSource)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
+
+  m_pOpSource->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1302,9 +1316,9 @@ void Stencil_v2::vSetupScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   // get the streamDefLft
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-
+//  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+//  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+//
 //  pDynamic->aDynamicT()->m_nCols = pStreamDefLft->nColumns();
 //  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
 //  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
