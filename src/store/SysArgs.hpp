@@ -50,6 +50,7 @@ namespace STORE
     } m_xHeartbeatDefn[C_MAX_NODES];
 
     TagSet m_oArgTags;  // arguments tag set
+    TagSet m_oSysTags;  // system level tag set
 
     // command
     bool m_bAddNode;     // add node
