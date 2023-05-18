@@ -30,7 +30,7 @@ namespace STORE
     void vCullPred(char cWithMark);
     bool bIsEmpty(void);
 
-    void vValidate(void);
+    void vValidate(i8 iDepth);
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

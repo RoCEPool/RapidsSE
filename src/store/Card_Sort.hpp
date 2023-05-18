@@ -20,7 +20,7 @@ namespace STORE
 
     void vDerive_Projection_Key(CardIter* pCI);
 
-    void vValidate(void);
+    void vValidate(i8 iDepth);
   };
 
   Card_Sort* _pCard_Sort(void* aAddr);

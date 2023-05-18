@@ -51,7 +51,7 @@ void Card_Top::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Top::vValidate(void)
+void Card_Top::vValidate(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

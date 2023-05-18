@@ -547,7 +547,7 @@ void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vValidate(void)
+void Card_Table::vValidate(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

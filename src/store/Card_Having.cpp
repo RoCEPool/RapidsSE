@@ -146,7 +146,7 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Having::vValidate(void)
+void Card_Having::vValidate(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

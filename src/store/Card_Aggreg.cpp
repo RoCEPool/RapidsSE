@@ -166,7 +166,7 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Aggreg::vValidate(void)
+void Card_Aggreg::vValidate(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

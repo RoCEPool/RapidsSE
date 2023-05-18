@@ -16,7 +16,7 @@ namespace STORE
     Card_Call(void);
    ~Card_Call(void) noexcept(false);
 
-    void vValidate(void);
+    void vValidate(i8 iDepth);
   };
 
   Card_Call* _pCard_Call(void* aAddr);

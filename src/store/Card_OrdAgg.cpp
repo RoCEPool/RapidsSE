@@ -133,7 +133,7 @@ void Card_OrdAgg::vUpdate_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vValidate(void)
+void Card_OrdAgg::vValidate(i8 iDepth)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }
