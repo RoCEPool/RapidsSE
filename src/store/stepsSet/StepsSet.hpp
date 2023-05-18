@@ -2308,6 +2308,7 @@ void vDdlLockAssertNone(void);
   void vTinyCIsNotNull(void);
   void vTinyCNew(void);
   void vTinyCRelocate(void);
+  void vTinyCSet(void);
   void vTinyCSymbols(void);
 
   void vTinyCCompile_v2(void);

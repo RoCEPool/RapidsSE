@@ -72,8 +72,9 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     static eEC eSynthesise(PipelineDef* pPipelineDef);
 
-    void vCombine(bool bGenerateCCode);
+    void vCombine(bool bFileHeader, bool bGenerateCCode);
     Stz* szOpSource(void);
+    void vOpSource(Stz* szOpSource);
     void vPrint(void);
     void vSetup(Dynamic* pDynamic, Stream* pStream);
     eEC  eSketch(Dynamic* pDynamic, Stream* pStream);

@@ -1744,6 +1744,9 @@ void Op::vSpawnTask(void)
   Task* pTask = this->pTask();
 
 
+  if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
+    pTask->m_pLogicUnit->m_xpTinyC = pJob->pTask()->m_pLogicUnit->m_xpTinyC;
+  }
 /*
  //---------------------------------------------------------
  // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)

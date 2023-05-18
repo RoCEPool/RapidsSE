@@ -4,14 +4,11 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-/weaved select n_nationkey, n_name from nation where n_regionkey < 3;
+///weaver2 select * from nation;
 
 
-
-
-
+/weaver2 select * from nation where n_nationkey < 3;
 /*
-
 /////////////////////////////
 WEAVED BEFORE CODE SYNTHESIS
 /////////////////////////////

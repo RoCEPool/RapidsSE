@@ -119,7 +119,7 @@ void CombinedSrc::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i
 /*----------------------------------------------------------------------------*/
 /* Synthesize code for the combined operators                                 */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
+void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
@@ -140,7 +140,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append the file headers
-  vAppendFileHeaders();
+  if (bFileHeader)
+    vAppendFileHeaders();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -433,7 +434,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil)
   RASSERT(eCurrentHandler == HK_EOS);
   vAppendFunctionFooter(nullptr, eCurrentHandler);
 
-  vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
+  //vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
 
   delete pCodeFile;
   delete pIndexFile;
@@ -468,6 +469,7 @@ void CombinedSrc::vPrint(void) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
     MemLib::vZero(m_caCode, sizeof(m_caCode), CN_COMBINEDSRC);
+    m_azCodeCrs   = m_caCode;
   }
 
 /*----------------------------------------------------------------------------*/

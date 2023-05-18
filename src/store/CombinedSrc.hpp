@@ -46,7 +46,7 @@ namespace STORE {
 
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
-    void vSynthesizeCode(Stencil_v2* pStencil);
+    void vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader);
 
     char *azCode(void);
 

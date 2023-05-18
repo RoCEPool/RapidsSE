@@ -750,6 +750,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* find functions in tinyC                                                    */
+/*----------------------------------------------------------------------------*/
+: TinyC[].findFunctions
+
+    [op].stageNm@ "finding functions for stage %v" str.format .
+    "iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
+    "iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
+    "iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
+    "iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
+;
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : Tub[].pipeOutCompleted

@@ -519,25 +519,21 @@
 /* _ptp beg */    EC_NONE == assert
 /* _ptp beg */    to PipeSpec[]
 
-/****************************************************************************
+/****************************************************************************/
 
                   //---------------------------------------------------------
                   // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
                   //---------------------------------------------------------
 
                   Dynamo[].hasCode if
+                   "DYNAMO HAS CODE" .
                     TinyC[].new
                     Dynamo[].code@ TinyC[].compile_dynamoCode
                     1 TinyC[].symbols
                     TinyC[].relocate assert
-                    "iFun0_stageMarker0324" TinyC[].find to Fun0[]
-                    "iFun1_stageMarker0324" TinyC[].find to Fun1[]
-                    "iFun2_stageMarker0324" TinyC[].find to Fun2[]
-                    "iFun3_stageMarker0324" TinyC[].find to Fun3[]
-                    TinyC[].delete
                   then
 
-**************************************************************************/
+/**************************************************************************/
 
 /* _ptp beg */  Dynamo[].delete
 /* _ptp beg */
@@ -657,6 +653,10 @@
 /* _ptp exe */  nullptr to Deck[]
 
 /* ---- --- */  // !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!!
+
+                TinyC[].isNotNull if
+                  TinyC[].delete
+                then
 
 /* _ptp exd */  // - - - - - - - - - - - -
 /* _ptp exd */  // this job has executed

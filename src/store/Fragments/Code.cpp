@@ -400,6 +400,20 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   printf("TUB\n");
 
+  if (aDynamicT->m_xRowInfoTO.m_iInitialize) {
+    struct ColumnInfo xColumnInfo[] = {
+        {0, "n_nationkey", 6, 19,  0, 0, 1},
+        {1, "n_name",      11, 25, 0, 0, 0},
+        {1, "n_regionkey", 6, 19, 0, 0, 0},
+        {1, "n_comment",   11, 152, 0, 0, 0}
+    };
+#ifdef WITH_TINYC
+    void* aRowPix = aRowPix_new(4, &xColumnInfo);
+    vTub_RowPix(aDynamicT->m_pTub, aRowPix);
+#endif
+    aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
+  }
+
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
