@@ -21,7 +21,7 @@ namespace STORE
     void vEarlyProject_root(CardIter* pCI);
     void vUpdate_projection(CardIter* pCI);
 
-    void vValidate(i8 iDepth);
+    void vValidate(i8 iDepth, Card* pParent);
   };
 
   Card_OrdAgg* _pCard_OrdAgg(void* aAddr);

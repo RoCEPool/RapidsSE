@@ -101,7 +101,7 @@ void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_IndexScan::vValidate(i8 iDepth)
+void Card_IndexScan::vValidate(i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

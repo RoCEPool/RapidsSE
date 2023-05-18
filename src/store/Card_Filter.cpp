@@ -198,7 +198,7 @@ bool Card_Filter::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vValidate(i8 iDepth)
+void Card_Filter::vValidate(i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

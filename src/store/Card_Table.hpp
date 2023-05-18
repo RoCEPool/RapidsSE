@@ -49,7 +49,7 @@ namespace STORE
     void vSmooth(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
-    void vValidate(i8 iDepth);
+    void vValidate(i8 iDepth, Card* pParent);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

@@ -32,7 +32,7 @@ namespace STORE
     void vEarlyProject_recurse_passthru(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
-    void vValidate(i8 iDepth);
+    void vValidate(i8 iDepth, Card* pParent);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

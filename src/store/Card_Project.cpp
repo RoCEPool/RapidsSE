@@ -373,7 +373,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vValidate(i8 iDepth)
+void Card_Project::vValidate(i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
