@@ -189,6 +189,14 @@ void Card_KeyNotExists::vUpdate_projection(CardIter* pCI)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_KeyNotExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

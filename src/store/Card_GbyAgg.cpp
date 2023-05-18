@@ -292,7 +292,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_GbyAgg::vValidate(i8 iDepth, Card* pParent)
+void Card_GbyAgg::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }

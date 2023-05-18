@@ -22,6 +22,7 @@ namespace STORE
 
     void vEarlyProject_recurse_update(CardIter* pCI);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_CrossJoin* _pCard_CrossJoin(void* aAddr);

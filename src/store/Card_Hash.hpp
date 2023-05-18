@@ -17,7 +17,10 @@ namespace STORE
    ~Card_Hash(void) noexcept(false);
 
     static Card_Hash* pDerive(Card_Expr* p_expr);
-   };
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
+  };
 
   Card_Hash* _pCard_Hash(void* aAddr);
 }
