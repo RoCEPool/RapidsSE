@@ -40,7 +40,7 @@ namespace STORE
 
     void vUpdate_projection_off_running(CardIter* pCI);
 
-    void vValidate(void);
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Project* _pCard_Project(void* aAddr);

@@ -25,7 +25,7 @@ namespace STORE
     void vSmooth(CardIter* pCI, bool bSawProject);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
-    void vValidate(void);
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Having* _pCard_Having(void* aAddr);

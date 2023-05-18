@@ -28,7 +28,7 @@ namespace STORE
     void vSmooth(CardIter* pCI);
     void vUpdate_projection(CardIter* pCI);
 
-    void vValidate(void);
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
   };
 

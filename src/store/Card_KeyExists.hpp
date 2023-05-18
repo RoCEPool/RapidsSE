@@ -26,6 +26,9 @@ namespace STORE
 
     void vUpdate_projection(CardIter* pCI);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
+
   };
 
   Card_KeyExists* _pCard_KeyExists(void* aAddr);

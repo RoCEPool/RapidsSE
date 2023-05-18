@@ -18,6 +18,8 @@ namespace STORE
 
     static void vMorph_to_flat(CardIter* pCI);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 
   Card_Fold* _pCard_Fold(void* aAddr);

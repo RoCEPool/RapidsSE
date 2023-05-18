@@ -28,6 +28,9 @@ namespace STORE
     void vReviewAs(CardIter* pCI);
 
     StreamDef* pToStreamDef(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

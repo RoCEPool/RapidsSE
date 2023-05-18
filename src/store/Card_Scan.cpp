@@ -111,7 +111,7 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Scan::vValidate(void)
+ void Card_Scan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 }
