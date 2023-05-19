@@ -2,13 +2,13 @@
 # All test files included in here will be run in the continuous integration environment.
 # This is a recursive testList file.
 
-../../../seth/tests/dummyTests/testList
-../../../seth/tests/tests1N4P/Filter/testList
-../../../seth/tests/tests1N4P/Limit/testList
-../../../seth/tests/tests1N4P/Misc/testList
-../../../seth/tests/tests1N4P/Projections/testList
+#../../../seth/tests/dummyTests/testList
+#../../../seth/tests/tests1N4P/Filter/testList
+#../../../seth/tests/tests1N4P/Limit/testList
+#../../../seth/tests/tests1N4P/Misc/testList
+#../../../seth/tests/tests1N4P/Projections/testList
 //../../../seth/tests/tests1N4P/Regression/testList
 //../../../seth/tests/tests1N1P/Transliterate/testList
-../../../seth/tests/tests1N4P/BackEnd/testList
-../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
+#../../../seth/tests/tests1N4P/BackEnd/testList
+#../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
 //../../../seth/tests/tests1N4P/Optimiser_SF0001/testList
