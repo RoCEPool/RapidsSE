@@ -18,7 +18,7 @@ namespace STORE
                                  eEC& eErrCode, s2K& sErrStr);
   static void vScheduleTask(Task* pTask);
 
-  static Task* pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId);
+  static Task* pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId, Stz* szOrigCmd);
 
   static Job* pCreateJob2PC(Job* pParentJob, Stz* sCmd);
   static void vDeleteRootJob(Job*& rpJob);

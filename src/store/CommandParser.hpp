@@ -37,6 +37,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     TagSet*   m_pCurStmtTagSet;
     s48K      m_sCurStmtStr;
     Stz*      m_szProcName;
+    TokenVec* m_pArgValues;
 
     Footer m_xFooter;
 

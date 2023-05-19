@@ -18,6 +18,7 @@
 #include "RowInflator.hpp"
 #include "SP_Bcd.hpp"
 #include "Job.hpp"
+#include "TagConstants.h"
 
 // All of the wireline protocol messages
 #include "wlp/thrift/generated/AuthenticationOkResponse_types.h"
@@ -338,7 +339,7 @@ void AdaptorWL::vStatementToSubmit(Task* pNextTask)
 
   ASSERT(!m_pStmtCtx);
 
-  Stz* szCommand = pNextTask->pJob()->szCmd();
+  Stz* szCommand = pNextTask->pJob()->pJobTags()->szValue(C_TAG_STMT);
   ASSERT(szCommand);
 
   s256 sJobId;

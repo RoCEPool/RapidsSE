@@ -69,9 +69,11 @@ TaskList::~TaskList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   Task* pTask;
+  vGrabLock();
   while ((pTask = pPopTask()) != nullptr) {
     delete pTask;
   }
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,9 +186,11 @@ void TaskList::vRepairList(Object* pObject)
   TaskList* pTaskList = _pTaskList(pObject);
   Task* pTask;
 
+  pTaskList->vGrabLock();
   while ((pTask = pTaskList->pPopTask()) != nullptr) {
     delete pTask;
   }
+  pTaskList->vDropLock();
 
   delete pTaskList;
 }

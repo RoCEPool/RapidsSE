@@ -193,7 +193,7 @@ void Api::vScheduleTask(ENGINE::Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* Create an unscheduled task from a pipeline command                         */
 /*----------------------------------------------------------------------------*/
-Task* Api::pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId)
+Task* Api::pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId, Stz* szOrigCmd)
 {
   // Tokenise the pipeline command
   TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(szPipelineCmd);
@@ -237,6 +237,10 @@ Task* Api::pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId)
     pCmdTagSet->vDumpSet();
     THROW("Api::eForkJobOld: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Set the original statement in this pipeline job
+  pCmdTagSet->vAppend(C_TAG_STMT, szOrigCmd);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the child job

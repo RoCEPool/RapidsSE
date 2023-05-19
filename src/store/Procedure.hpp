@@ -34,6 +34,7 @@ namespace STORE
     static void  vAddProcedure(TokenVec* pTokenVec);
 
     static bool  bTranslateToPipeline(Stz* szProcedureName,
+                                      TokenVec* pArgValues,
                                       Stz* szOrigStmt,
                                       String* pToPipelineStmt);
 

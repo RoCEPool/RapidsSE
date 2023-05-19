@@ -53,6 +53,7 @@ CommandParser::CommandParser(TagSet* pCommonTagSet, Task* pParentTask)
   m_pCurStmtTagSet = nullptr;
   // m_sCurStmtStr
   m_szProcName = nullptr;
+  m_pArgValues = nullptr;
 
   _checkInitialised_(CN_COMMANDPARSER);
   
@@ -72,6 +73,7 @@ CommandParser::~CommandParser(void) noexcept
 
   ASSERT(!m_pCurStmtTagSet);
   ASSERT(!m_szProcName);
+  delete m_pArgValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,6 +160,8 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
   m_pCurStmtTagSet->vCopy(m_pCommonTagSet);
 
   ASSERT(!m_szProcName);
+  ASSERT(!m_pArgValues);
+  m_pArgValues = new TokenVec();
 
   visitChildren(pCtx);
 
@@ -167,7 +171,7 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
   if (m_szProcName) {
     m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, m_szProcName);
 
-    if (!Procedure::bTranslateToPipeline(m_szProcName, m_sCurStmtStr.szStz(), sStmt.pString())) {
+    if (!Procedure::bTranslateToPipeline(m_szProcName, m_pArgValues, m_sCurStmtStr.szStz(), sStmt.pString())) {
       // All external commands should be resolvable.
       NEVER_REACH
     }
@@ -181,7 +185,7 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
   JobId tParentId;
   tParentId = m_pParentTask->pOuterJobOfTask()->tJobId();
 
-  Task* pTask = Api::pCreateTask(sStmt.szStz(), m_pCurStmtTagSet, tParentId);
+  Task* pTask = Api::pCreateTask(sStmt.szStz(), m_pCurStmtTagSet, tParentId, m_sCurStmtStr.szStz());
 
   if (!pTask) {
     i8 iLine = pCtx->start->getLine();
@@ -198,6 +202,8 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
   m_pCurStmtTagSet = nullptr;   // TODO: check where this gets deleted.
   m_sCurStmtStr.vReset();
   m_szProcName = nullptr;
+  delete m_pArgValues;
+  m_pArgValues = nullptr;
 
   return nullptr;
 }
@@ -213,8 +219,12 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   // than this. Some others we do.
 
   if (pCtx->queryStatement() ||
-      pCtx->explainStatement()) { m_szProcName = "sqlCompiler"_Stz;   return nullptr; }
+      pCtx->explainStatement()) { m_szProcName = "sqlCompiler"_Stz;
+                                  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
+                                  return nullptr; }
+
   else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;         return nullptr; }
+
   else                          { NOT_IMPLEMENTED_YET }
 
   // NOTE:
