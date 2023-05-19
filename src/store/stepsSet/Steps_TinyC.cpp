@@ -117,13 +117,13 @@ void Step::vTinyCDelete(void)
   //---------------------------------------------------------
   // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
   //---------------------------------------------------------
-
+/*
   void* aTinyFunc = m_pLogicUnit->m_aTinyFunc;
   if (aTinyFunc) {
     free(aTinyFunc);
     m_pLogicUnit->m_aTinyFunc = nullptr;
   }
-
+*/
 
   EXIT();
 }
