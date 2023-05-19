@@ -7,7 +7,7 @@ _nation
 ///weaver2 select * from nation;
 
 
-/weaver2 select * from nation where n_nationkey < 3;
+/weaver2 select * from nation; // where n_nationkey < 3;
 /*
 /////////////////////////////
 WEAVED BEFORE CODE SYNTHESIS

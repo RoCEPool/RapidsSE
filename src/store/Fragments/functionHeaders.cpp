@@ -32,10 +32,10 @@ int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 int vSetColumns(struct Dynamic_T* aDynamicT) {
 
-  i8 __NUM_COLUMNS__;
+  i8 __COLUMNS_IN__;
 
   // marker-start
-  aDynamicT->m_nCols = __NUM_COLUMNS__;
+  aDynamicT->m_nCols = __COLUMNS_IN__;
 
   // marker-end
 }

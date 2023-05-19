@@ -415,6 +415,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // TUB in CRW/ROW/INDEX handler
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
+          vAppendCodePixCols(pOpSketch);
+          vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
 
@@ -858,6 +860,45 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
         vAppendCodeFragment(pOpSketch, "vCopyCol"_Stz, pColumn);
         break;
     }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment for copying columns                                   */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s256 sCopy;
+  i8 nColumns = pOpSketch->m_pStreamDefOut->nColumns();
+
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+
+    m_pCommonCode->vSeekStart();
+
+    Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
+
+    if (i_Col == nColumns - 1)
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld}\n };\n"_Stz,
+                    pColumn->iColumnNo(),
+                    pColumn->szColNm(),
+                    pColumn->eColumnType(),
+                    pColumn->iColumnLength(),
+                    pColumn->iColumnScale(),
+                    pColumn->bIsNullable(),
+                    pColumn->bIsPtnKey());
+    else
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld},\n"_Stz,
+                    pColumn->iColumnNo(),
+                    pColumn->szColNm(),
+                    pColumn->eColumnType(),
+                    pColumn->iColumnLength(),
+                    pColumn->iColumnScale(),
+                    pColumn->bIsNullable(),
+                    pColumn->bIsPtnKey());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
 
 }

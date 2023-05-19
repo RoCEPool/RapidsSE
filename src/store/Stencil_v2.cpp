@@ -2155,6 +2155,8 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
   pPreExprStack = new IntStack;
   pPreExprStack->vPush(PE_EXP);
   pPreExprStack->vPush(PE_EXP);
+  pPreExprStack->vPush(PE_EXP);
+  pPreExprStack->vPush(PE_EXP);
   // END HACK
 
   // generate the expressißon stacks

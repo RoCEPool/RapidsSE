@@ -245,7 +245,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   i8* paW;
   i8 i_CurrentRow;
-  i8 __NUM_COLUMNS__;
+  i8 __COLUMNS_IN__;
 
   // marker-start
 
@@ -264,7 +264,7 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   i_CurrentRow = -1;
 
-  aDynamicT->m_nCols = __NUM_COLUMNS__;
+  aDynamicT->m_nCols = __COLUMNS_IN__;
 
   // process the row
   aDynamicT->m_iProcessRow = 1;
@@ -383,10 +383,6 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
     i8 iDummy;
   };
 
-  char* szStrArea;
-
-  __L_LABEL_LOOP__:
-
   // marker-start
 
 
@@ -399,16 +395,33 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
   printf("TUB\n");
-
   if (aDynamicT->m_xRowInfoTO.m_iInitialize) {
+
     struct ColumnInfo xColumnInfo[] = {
-        {0, "n_nationkey", 6, 19,  0, 0, 1},
-        {1, "n_name",      11, 25, 0, 0, 0},
-        {1, "n_regionkey", 6, 19, 0, 0, 0},
-        {1, "n_comment",   11, 152, 0, 0, 0}
+        // marker-end
     };
+  }
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iTubContinue ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iTubContinue
+i8 iTubContinue(Dynamic_T* aDynamicT) {
+
+  char* szStrArea;
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  i8 __COLUMNS_IN__;
+
+  __L_LABEL_LOOP__:
+
+  {
+  // marker-start
+
 #ifdef WITH_TINYC
-    void* aRowPix = aRowPix_new(4, &xColumnInfo);
+    void* aRowPix = aRowPix_new(__COLUMNS_OUT__, &xColumnInfo);
     vTub_RowPix(aDynamicT->m_pTub, aRowPix);
 #endif
     aDynamicT->m_xRowInfoTO.m_iInitialize = 0;

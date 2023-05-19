@@ -317,10 +317,17 @@ void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
 
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__NUM_COLUMNS__")) {
+  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_IN__")) {
     s256 sColumn;
     StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__NUM_COLUMNS__", sColumn.azChar());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_IN__", sColumn.azChar());
+    RASSERT(bResult);
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__COLUMNS_OUT__")) {
+    s256 sColumn;
+    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefOut->nColumns());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_OUT__", sColumn.azChar());
     RASSERT(bResult);
   }
 }
