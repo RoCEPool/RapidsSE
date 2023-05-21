@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
+#include "IndexDef.hpp"
 
 namespace STORE
 {
@@ -77,7 +78,8 @@ namespace STORE
     StreamDef* pCraftStreamDef_arriving(void);
     StreamDef* pCraftStreamDef_emitted(void);
 
-
+    IndexDef* pCraftIndexDef_join(void);
+    IndexDef* pCraftIndexDef_gbyAgg(void);
   };
 
   Card_OP* _pCard_OP(void* aAddr);

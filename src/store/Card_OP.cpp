@@ -1635,6 +1635,27 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(void)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* craft indexDef for join                                                    */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_OP::pCraftIndexDef_join(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft indexDef for gbyAgg                                                  */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_OP::pCraftIndexDef_gbyAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return nullptr;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
