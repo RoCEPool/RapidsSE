@@ -276,6 +276,10 @@ StreamDef* Card_Projection::pToStreamDef(void)
 void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_EXPR,CK_NONE);
+
+  pSub_expr()->vValidate(pCI,iDepth+1,this);
 }
 
 

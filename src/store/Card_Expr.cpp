@@ -422,6 +422,24 @@ Stz* Card_Expr::szP_Type(void)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK eHas = eValidate_mustEither(CK_BOOLCALC,CK_RPNCALC,CK_NONE);
+
+  if (CK_BOOLCALC == eHas)
+    pSub_boolCalc()->vValidate(pCI,iDepth+1,this);
+  else
+    pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
+
+}
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -45,6 +45,7 @@ namespace STORE
 
     Stz* szP_Type(void);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);

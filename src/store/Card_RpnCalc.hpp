@@ -32,6 +32,9 @@ namespace STORE
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
 
     Stz* szP_Type(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 
   Card_RpnCalc* _pCard_RpnCalc(void* aAddr);

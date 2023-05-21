@@ -47,6 +47,7 @@ CardIter::CardIter(CardIter* pCardIter_src)
 
   vInit();
 
+  m_pBench = pCardIter_src->m_pBench;
   vSet(pCardIter_src);
 }
 

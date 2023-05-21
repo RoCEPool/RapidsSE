@@ -33182,7 +33182,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  \"_run_Optimiser\" .\n"
     "\n"
-    "  Text[] .\n"
+    "  //Text[] .\n"
     "\n"
     "  Dynamo[].new\n"
     "\n"

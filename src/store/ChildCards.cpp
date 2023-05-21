@@ -631,6 +631,45 @@ void ChildCards::vValidate_mayHave(eCK eCard, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
+eCK ChildCards::eValidate_mustEither(eCK eCard, ...)
+{
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  i8 nHas = 0;
+  eCK eFound = CK_NONE;
+
+  va_start(xArgs, eCard);
+  eCK eCard_mustHave = eCard;
+  while (CK_NONE != eCard_mustHave) {
+
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
+      if (eCard_test == eCard_mustHave) {
+        nHas++;
+        eFound = eCard_test;
+      }
+    }
+
+
+    eCard_mustHave = (eCK)va_arg(xArgs, eCK);
+  }
+
+  RASSERT(1 == nHas);
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+
+  return eFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
 void ChildCards::vValidate_mustHave(eCK eCard, ...)
 {
   va_list xArgs;
@@ -675,23 +714,22 @@ void ChildCards::vValidate_notHave(eCK eCard, ...)
   va_start(xArgs, eCard);
   eCK eCard_mustHave = eCard;
   while (CK_NONE != eCard_mustHave) {
-    Card* pTestCard = pSubCard_I->pNext();
-    eCK eCard_test = pTestCard->eCard();
 
-    bool bMustHave = false;
+    bool bNotHave = false;
 
-    eCK eCard_mustHave = eCard;
     pSubCard_I->vBeforeFirst();
     while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
       if (eCard_test == eCard_mustHave) {
-        bMustHave = true;
+        bNotHave = true;
         break;
       }
-      eCard_mustHave = va_arg(xArgs, eCK);
     }
 
-    RASSERT(! bMustHave);
+    RASSERT(! bNotHave);
 
+    eCard_mustHave = (eCK)va_arg(xArgs, eCK);
   }
 
   va_end(xArgs);

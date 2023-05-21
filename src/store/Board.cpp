@@ -264,12 +264,14 @@ void Board::vValidate_SubQuery(CardIter *pCI)
   // main cards
 
   CardIter xCI(pCI);
+  RASSERT(xCI.m_pBench);
   while (xCI.G_bEachMain()) {
 
     switch (xCI.G.e_MainCard) {
 
       case CK_AGGREG:       xCI.G.p_aggreg->vValidate       (&xCI,0,nullptr); break;
       case CK_CALL:         xCI.G.p_call->vValidate         (&xCI,0,nullptr); break;
+      case CK_CAST:         xCI.G.p_cast->vValidate         (&xCI,0,nullptr); break;
       case CK_COMBINED:     xCI.G.p_combined->vValidate     (&xCI,0,nullptr); break;
       case CK_CROSSJOIN:    xCI.G.p_crossJoin->vValidate    (&xCI,0,nullptr); break;
       case CK_FLAT:         xCI.G.p_flat->vValidate         (&xCI,0,nullptr); break;
@@ -287,6 +289,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
       case CK_PROJECT:      xCI.G.p_project->vValidate      (&xCI,0,nullptr); break;
       case CK_SCAN:         xCI.G.p_scan->vValidate         (&xCI,0,nullptr); break;
       case CK_SORT:         xCI.G.p_sort->vValidate         (&xCI,0,nullptr); break;
+      case CK_STAGE:        xCI.G.p_stage->vValidate        (&xCI,0,nullptr); break;
       case CK_TABLE:        xCI.G.p_table->vValidate        (&xCI,0,nullptr); break;
       case CK_TOP:          xCI.G.p_top->vValidate          (&xCI,0,nullptr); break;
       case CK_WHERE:        xCI.G.p_where->vValidate        (&xCI,0,nullptr); break;

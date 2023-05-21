@@ -15,6 +15,8 @@ namespace STORE
   
     Card_Level(eAL eAggLevel);
    ~Card_Level(void) noexcept(false);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Level* _pCard_Level(void* aAddr);
