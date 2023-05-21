@@ -762,6 +762,19 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* find functions in DynamicLibrary                                            */
+/*----------------------------------------------------------------------------*/
+: LibInfo[].findFunctions
+
+    [op].stageNm@ "finding functions for stage %v" str.format .
+    "iFun0_" [op].stageNm@ str.cat LibInfo[].find to Fun0[]
+    "iFun1_" [op].stageNm@ str.cat LibInfo[].find to Fun1[]
+    "iFun2_" [op].stageNm@ str.cat LibInfo[].find to Fun2[]
+    "iFun3_" [op].stageNm@ str.cat LibInfo[].find to Fun3[]
+;
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : Tub[].pipeOutCompleted

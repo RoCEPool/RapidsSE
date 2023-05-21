@@ -250,7 +250,7 @@
   Pot[].new
   dynamic[].new
 
-  TinyC[].findFunctions
+  LibInfo[].findFunctions
 
   // pipeout the start marker
   Pipein[].pipeout
