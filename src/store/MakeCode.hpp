@@ -44,6 +44,7 @@ namespace STORE
     void vCraftOpDef(Card_OP* p_OP);
     void vCraftArgDefs(Card_OP* p_OP);
 
+    void vCraftIndexDefs(Card_OP* p_OP);
     void vCraftStreamDefs(Card_OP* p_OP);
 
   protected:

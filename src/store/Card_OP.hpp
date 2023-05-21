@@ -75,11 +75,11 @@ namespace STORE
     void vAs          (Stz* szRpnExpr, Card_As*        pCard_As);
     void vTerm        (Stz* szRpnExpr, Card_Term*      pCard_Term);
 
-    StreamDef* pCraftStreamDef_arriving(void);
-    StreamDef* pCraftStreamDef_emitted(void);
-
     IndexDef* pCraftIndexDef_join(void);
     IndexDef* pCraftIndexDef_gbyAgg(void);
+
+    StreamDef* pCraftStreamDef_arriving(void);
+    StreamDef* pCraftStreamDef_emitted(void);
   };
 
   Card_OP* _pCard_OP(void* aAddr);

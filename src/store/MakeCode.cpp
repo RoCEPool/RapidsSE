@@ -159,6 +159,7 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs(p_OP);
+  vCraftIndexDefs(p_OP);
 
   vCraftArgDefs(p_OP);
 }
@@ -298,6 +299,17 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
   }
 
   return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft index def's                                                          */
+/*----------------------------------------------------------------------------*/
+void MakeCode::vCraftIndexDefs(Card_OP* p_OP)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  m_pOpDef->m_pIndexDef_join   = p_OP->pCraftIndexDef_join();
+  m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_gbyAgg();
 }
 
 /*----------------------------------------------------------------------------*/
