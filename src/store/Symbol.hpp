@@ -34,6 +34,7 @@ namespace STORE
     static eCT  eTo_eCT_str(Stz* szType);
     static eCT  eTo_eCT_char(Stz* szType);
 
+    eCT  eColType(void);
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
 

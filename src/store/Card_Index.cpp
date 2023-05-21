@@ -199,30 +199,6 @@ IndexDef* Card_Index::pGetIndexDef(Card_Table *p_Table)
   return IndexDef;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-IndexDef* Card_Index::pToIndexDef(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card_IdxColList* p_idxColList = pSub_idxColList();
-  if (! p_idxColList)
-    return nullptr;
-
-  IndexDef* pIndexDef = new IndexDef;
-
-  Kid xIdxColList(p_idxColList);
-  while (xIdxColList.bEach(CK_IDXCOL)) {
-    Card_IdxCol* p_idxCol = xIdxColList.p_idxCol();
-
-    p_idxCol->szSymbol();
-
-    pIndexDef->vAddColumn(p_idxCol->szSymbol(),CT_INTEGER);
-  }
-
-  return pIndexDef;
-}
 
 /*============================================================================*/
 /* end                                                                        */

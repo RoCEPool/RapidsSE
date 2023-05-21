@@ -159,6 +159,22 @@ eCT Symbol::eTo_eCT_char(Stz* szType)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get column type                                                            */
+/*----------------------------------------------------------------------------*/
+eCT Symbol::eColType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Stz* szType = Y_szGet(P_Type);
+  if (! szType)
+    return CT_NONE;
+
+  eCT eColumnType = eTo_eCT_char(szType);
+
+  return eColumnType;
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
 eRO Symbol::eEvalRelnOp(void)

@@ -187,6 +187,25 @@ Stz* Card_Key::szP_Type(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+IndexDef* Card_Key::pToIndexDef(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  IndexDef* pIndexDef = new IndexDef;
+
+  Kid xKey(this);
+  while (xKey.bEach(CK_EXPR)) {
+    Card_Expr* p_expr = xKey.p_expr();
+
+    pIndexDef->vAddColumn("?"_Stz,CT_INTEGER);
+  }
+
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

@@ -271,6 +271,7 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
     void vClearMarksRecursive(void);
+    eCT  eColType(void);
 
     void  vDump(i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCard(void);
