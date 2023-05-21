@@ -1745,7 +1745,7 @@ void Op::vSpawnTask(void)
 
 
   if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
-    pTask->m_pLogicUnit->m_xpTinyC = pJob->pTask()->m_pLogicUnit->m_xpTinyC;
+    pTask->m_pLogicUnit->m_xpLibInfo = pJob->pTask()->m_pLogicUnit->m_xpLibInfo;
   }
 /*
  //---------------------------------------------------------

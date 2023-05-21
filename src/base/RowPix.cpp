@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 /* new row pix                                                                */
 /*----------------------------------------------------------------------------*/
-void* aRowPix_new(i8 nColumns, void* pColumnInfo) {
+extern "C" void* aRowPix_new(i8 nColumns, void* pColumnInfo) {
   return RowPix::aRowPixNew(nColumns, (ColumnInfo*)pColumnInfo);
 }
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/* safe cast                                                                   */
 /*----------------------------------------------------------------------------*/
 RowPix* BASE::_pRowPix(void* aAddr)
 {

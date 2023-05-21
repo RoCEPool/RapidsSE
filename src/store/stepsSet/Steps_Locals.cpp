@@ -281,6 +281,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("LibInfo[]"_Stz)) {
+    pCurrentWord->vEncodeCall("LibInfo[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Marker[]"_Stz)) {
     pCurrentWord->vEncodeCall("Marker[].set"_Stz);
     EXIT();

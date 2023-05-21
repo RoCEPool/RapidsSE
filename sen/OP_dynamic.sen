@@ -38,7 +38,7 @@
 
   0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  nullptr to TinyC[]
+  nullptr to LibInfo[]
 
   Tub[].delete
   Pot[].delete
@@ -250,7 +250,7 @@
   Pot[].new
   dynamic[].new
 
-  TinyC[].findFunctions
+  LibInfo[].findFunctions
 
   // pipeout the start marker
   Pipein[].pipeout

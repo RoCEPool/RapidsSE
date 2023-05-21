@@ -44,6 +44,8 @@ namespace STORE
     LibInfo(bool bCollectStats=false);
     ~LibInfo(void);
 
+    static void vRepair(Object* pObject);
+
     eEC  eErrCode();
     Stz* szErrDetails();
     u8   uCompileNanos();

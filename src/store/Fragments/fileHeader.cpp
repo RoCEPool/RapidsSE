@@ -1,21 +1,22 @@
 
 
 /*====================================================================*/
-/* Flattened code combinedOp                                          */
+/* Flattened code executed by the dynamicOP                           */
 /*====================================================================*/
 
-#ifdef WITH_TINYC
-  #include "tcclib.h" // include libc header for TCC
-#else
   #include <stdio.h>
   #include <string.h>
-#endif
 
   #include "../src/primitives/BaseTypes_tcc.h"
-  #include "../src/base/TccStuff.h"
+  #include "../src/base/CodeSynthCommon.h"
+  #include "../src/base/ClangStuff.h"
 
-  void vNeverReach(i8 i_Line);
-  #define NEVER_REACH vNeverReach(__LINE__)
+  void vNeverReachCode(i8 iLine) {
+    printf("NEVER_REACH_CODE point in synthesised code was reached at line %lld !!!\n", iLine);
+    //exit(0);
+  }
+
+  #define NEVER_REACH vNeverReachCode(__LINE__)
 
   typedef char i1;
   typedef unsigned short u2;
@@ -44,9 +45,6 @@
   static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;
   static const u8 C_YEAR_BASE  = 1900;
   static const i8 TMP_TBLCOL_SCALE  = 2;
-
-  int strcmp(const char *__s1, const char *__s2);
-  void strncpy(const char *__s1, const char *__s2, size_t);
 
   #define C_BITS_PER_WORD 64
   #define C_MAX_LVL_LEVELS 6
@@ -82,4 +80,5 @@
   time_t time(time_t *time);
   struct tm *localtime(const time_t *time);
 
+  extern void* aRowPix_new(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 

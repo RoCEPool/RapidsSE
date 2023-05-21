@@ -17,6 +17,7 @@
   #include \"tcclib.h\"
   #include \"../src/primitives/BaseTypes_tcc.h\"
   #include \"../src/base/TccStuff.h\"
+  #include \"../src/base/CodeSynthCommon.h\"
 
   void vNeverReach(i8 iLine);
   #define NEVER_REACH vNeverReach(__LINE__)

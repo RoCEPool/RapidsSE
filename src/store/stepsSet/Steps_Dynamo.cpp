@@ -77,15 +77,6 @@ void Step::vDynamoCompile(void)
       vTraceM("%s\n"_Stz,spPipeSpec.sz());
     }
 
-//    if ( ! pDynamo->szCode()->bSame(""_Stz)) {
-//      TinyC* pTinyC = new TinyC;
-//      m_pLogicUnit->m_xpTinyC = pTinyC;
-//      pTinyC->vBegin();
-//      pTinyC->vAcquire(pTinyC,TinyC::vTinyError);
-//      bool bClean = pTinyC->bCompile((char*)pDynamo->szCode());
-//      RASSERT(bClean);
-//    }
-
     m_pDataStack->vPushPtr(pPipeSpec);
     m_pDataStack->vPushInt(EC_NONE);
   }
