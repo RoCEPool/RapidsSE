@@ -45,6 +45,8 @@
 #include "Deck.hpp"
 #include "Port.hpp"
 
+#include "LibInfo.hpp"
+
 #include "eLH.h"
 #include "eXK.h"
 #include "eEK.h"
@@ -119,7 +121,8 @@ namespace STORE
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
-  
+
+    REG<LibInfo,        CN_LIBINFO       > m_xpLibInfo;
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
 
     REG<Operand,        CN_NONE          > m_xpMarker;

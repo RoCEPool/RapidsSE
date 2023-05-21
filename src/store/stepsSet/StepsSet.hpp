@@ -1198,6 +1198,17 @@ void vDdlLockAssertNone(void);
   void vExitOperandPipeToOutput(void);
   void vExitOperandSet(void);
 
+  // LibInfo
+  void vLibInfoCompile(void);
+  void vLibInfoDelete(void);
+  void vLibInfoFind(void);
+  void vLibInfoGet(void);
+  void vLibInfoIsNotNull(void);
+  void vLibInfoLink(void);
+  void vLibInfoNew(void);
+  void vLibInfoSet(void);
+  void vLibInfoUnlink(void);
+
   // memory
   void vMemoryByteDump(void);
   void vMemoryStatistics(void);

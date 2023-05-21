@@ -32,6 +32,8 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 
+#include "LibInfo.hpp"
+
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "OpSpec.hpp"
@@ -118,6 +120,7 @@ LogicUnit::LogicUnit(void)
 
 ,     m_xpJobMetrics(this,RF_REPAIR_DELETE,    JobMetrics::vRepair,     LR_JOBMETRICS)
 
+,          m_xpLibInfo(this,RF_REPAIR_DELETE,         LibInfo::vRepair,     LR_LIBINFO)
 ,           m_xpList(this,RF_REPAIR_DELETE,     RowSingle::vRepairList,       LR_LIST)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                         LR_MARKER)
