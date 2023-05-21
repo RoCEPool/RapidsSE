@@ -66,8 +66,9 @@ namespace BASE
   };
 
   RowPix* _pRowPix(void* aAddr);
-  void* aRowPix_new(i8 nNumCols, void* pColumnInfo);
 }
+
+//extern "C" void* aRowPix_new(i8 nNumCols, void* pColumnInfo);
 
 /*============================================================================*/
 /* end                                                                        */

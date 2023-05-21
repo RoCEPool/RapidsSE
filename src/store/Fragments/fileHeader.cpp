@@ -4,12 +4,8 @@
 /* Flattened code combinedOp                                          */
 /*====================================================================*/
 
-#ifdef WITH_TINYC
-  #include "tcclib.h" // include libc header for TCC
-#else
   #include <stdio.h>
   #include <string.h>
-#endif
 
   #include "../src/primitives/BaseTypes_tcc.h"
   #include "../src/base/TccStuff.h"
@@ -45,9 +41,6 @@
   static const u8 C_YEAR_BASE  = 1900;
   static const i8 TMP_TBLCOL_SCALE  = 2;
 
-  int strcmp(const char *__s1, const char *__s2);
-  void strncpy(const char *__s1, const char *__s2, size_t);
-
   #define C_BITS_PER_WORD 64
   #define C_MAX_LVL_LEVELS 6
   #define C_LOGIC_LOCALS 32
@@ -82,4 +75,5 @@
   time_t time(time_t *time);
   struct tm *localtime(const time_t *time);
 
+  extern void* aRowPix_new(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 

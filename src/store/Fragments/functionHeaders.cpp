@@ -13,10 +13,6 @@
 
 // marker-start
 
-#ifdef WITH_TINYC
-  #include "tcclib.h" // include libc header for TCC
-#endif
-
 /*--------------------------------------------------------------------*/
 /* flattened function -- CRWBUFFER HANDLER                            */
 /*--------------------------------------------------------------------*/
