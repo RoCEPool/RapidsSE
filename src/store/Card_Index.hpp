@@ -27,6 +27,7 @@ namespace STORE
     bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
 
     IndexDef* pGetIndexDef(Card_Table* p_Table);
+    IndexDef* pToIndexDef(void);
 
   };
 
