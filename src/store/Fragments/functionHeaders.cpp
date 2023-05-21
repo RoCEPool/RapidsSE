@@ -7,7 +7,8 @@
 #include <string.h>
 
 #include "../src/primitives/BaseTypes_tcc.h"
-#include "../src/base/TccStuff.h"
+#include "../src/base/CodeSynthCommon.h"
+#include "../src/base/ClangStuff.h"
 
 // function-__FUNCTION_CRW__
 

@@ -1,14 +1,15 @@
 
 
 /*====================================================================*/
-/* Flattened code combinedOp                                          */
+/* Flattened code executed by the dynamicOP                           */
 /*====================================================================*/
 
   #include <stdio.h>
   #include <string.h>
 
   #include "../src/primitives/BaseTypes_tcc.h"
-  #include "../src/base/TccStuff.h"
+  #include "../src/base/CodeSynthCommon.h"
+  #include "../src/base/ClangStuff.h"
 
   void vNeverReach(i8 i_Line);
   #define NEVER_REACH vNeverReach(__LINE__)
