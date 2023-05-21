@@ -527,10 +527,20 @@
 
                   Dynamo[].hasCode if
                    "DYNAMO HAS CODE" .
-                    TinyC[].new
-                    Dynamo[].code@ TinyC[].compile_dynamoCode
-                    1 TinyC[].symbols
-                    TinyC[].relocate assert
+
+                    //Compiler[].new
+                    //Dynamo[].code@ TinyC[].compile_dynamoCode
+                    //1 TinyC[].symbols
+                    //TinyC[].relocate assert
+
+                    LibInfo[].new
+                    Dynamo[].code@ "DynLibNm" LibInfo[].compile not if
+                      "COMPILATION FAILED" .
+                    else
+                      LibInfo[].link not if
+                        "DYNAMIC LINKING OF LIBRARY FAILED" .
+                      then
+                    then
                   then
 
 /**************************************************************************/
@@ -654,8 +664,13 @@
 
 /* ---- --- */  // !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!!
 
-                TinyC[].isNotNull if
-                  TinyC[].delete
+                //TinyC[].isNotNull if
+                //  TinyC[].delete
+                //then
+
+                LibInfo[].isNotNull if
+                  LibInfo[].Unlink assert
+                  LibInfo[].delete
                 then
 
 /* _ptp exd */  // - - - - - - - - - - - -
