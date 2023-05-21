@@ -272,6 +272,16 @@ struct SpaceUnit_T
   byte m_yaByte[2 * C_BYTES_PER_WORD];
 };
 
+struct ColumnInfo {
+  i8    m_iColumnNo;      // this columns subscript
+  char  m_cColumnNm[32];  // name of the column
+  i8    m_iColumnType;    // column type (CT_INTEGER etc) // ALKA COME BACK TO THIS
+  i8    m_iColumnLength;  // logical length of the column
+  i8    m_iColumnScale;   // logical scale of the column
+  i8    m_bIsNullable;    // is column nullable?
+  i8    m_bPtnKey;
+};
+
 static const i8 C_HEADLINE_QUANTA  = C_BYTES_PER_WORD;
 static const i8 C_SPACEUNIT_QUANTA = 2 * C_BYTES_PER_WORD;
 

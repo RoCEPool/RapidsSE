@@ -38,7 +38,7 @@
 
   0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  nullptr to TinyC[]
+  nullptr to LibInfo[]
 
   Tub[].delete
   Pot[].delete

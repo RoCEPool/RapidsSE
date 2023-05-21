@@ -64,6 +64,7 @@
 #include "Table.hpp"
 
 #include "MY.hpp"
+#include "CompileLib.hpp"
 
 extern void* C_ADR_REGION;
 
@@ -459,7 +460,7 @@ void LogicUnit::vCleanup(void)
     free(m_aTinyFunc);
     m_aTinyFunc = nullptr;
   }
-  
+
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 

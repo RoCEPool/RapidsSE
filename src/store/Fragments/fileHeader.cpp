@@ -11,8 +11,12 @@
   #include "../src/base/CodeSynthCommon.h"
   #include "../src/base/ClangStuff.h"
 
-  void vNeverReach(i8 i_Line);
-  #define NEVER_REACH vNeverReach(__LINE__)
+  void vNeverReachCode(i8 iLine) {
+    printf("NEVER_REACH_CODE point in synthesised code was reached at line %lld !!!\n", iLine);
+    //exit(0);
+  }
+
+  #define NEVER_REACH vNeverReachCode(__LINE__)
 
   typedef char i1;
   typedef unsigned short u2;

@@ -32,7 +32,7 @@ void Step::vAddSteps_LibInfo(void)
   vAddStep("LibInfo[].link"_Stz,         &Step::vLibInfoLink);
   vAddStep("LibInfo[].new"_Stz,          &Step::vLibInfoNew);
   vAddStep("LibInfo[].set"_Stz,          &Step::vLibInfoSet);
-  vAddStep("LibInfo[].unlink"_Stz,       &Step::vLibInfoDelete);
+  vAddStep("LibInfo[].unlink"_Stz,       &Step::vLibInfoUnlink);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,6 +68,8 @@ void Step::vLibInfoDelete(void)
     
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
   m_pLogicUnit->m_xpLibInfo = nullptr;
+
+  CompileLib::vDelete(pLibInfo);
 
   delete pLibInfo;
 

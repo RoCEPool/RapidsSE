@@ -131,8 +131,7 @@ extern i8    StrLib_iLike2(char* azStr, char* azRegExp);
 extern i8    StrLib_iLike3(char* azStr, char* azRegExp, char cEsc);
 extern i8    StrLib_iWordFlipBack(char* aDst, char* aSrc);
 
-extern void* aRowPix_new(i8 nColumns, void* pColumnInfo);
-
+extern void  vNeverReachCode(i8 iLine);
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -18,21 +18,21 @@ __aFooterFunction(Tub)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
+extern "C" void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
   return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
+extern "C" void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
   Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-void vTub_RowPix(void* pTub, void* pRowPix) {
+extern "C" void vTub_RowPix(void* pTub, void* pRowPix) {
   Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
 }
 
