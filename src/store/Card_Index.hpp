@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
+#include "IndexDef.hpp"
 
 namespace STORE
 {
@@ -24,7 +25,10 @@ namespace STORE
     void vDeleteBounds(void);
     void vSet_Choose_index(void);
     bool bTblColOdn_IsKeyIn_index(Stz* szTblColOdn);
-   };
+
+    IndexDef* pGetIndexDef(Card_Table* p_Table);
+
+  };
 
   Card_Index* _pCard_Index(void* aAddr);
 }

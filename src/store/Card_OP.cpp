@@ -1642,7 +1642,21 @@ IndexDef* Card_OP::pCraftIndexDef_join(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return nullptr;
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
+    return nullptr;
+
+  Card_IndexList* p_indexList = pSub_indexList();
+  if (! p_indexList)
+    return nullptr;
+
+  Card_Index* p_index = p_indexList->pFindChosenIndex();
+  if (! p_index)
+    return nullptr;
+
+  IndexDef* pIndexDef = p_index->pGetIndexDef(p_table);
+
+  return pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/

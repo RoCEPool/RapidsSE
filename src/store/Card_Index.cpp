@@ -178,6 +178,26 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_Index::pGetIndexDef(Card_Table *p_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
+  if (! pTable)
+    return nullptr;
+
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
+  if (! pIndex)
+    return nullptr;
+
+  IndexDef* IndexDef = pIndex->pIndexDef();
+
+  return IndexDef;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
