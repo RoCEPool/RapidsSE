@@ -72,7 +72,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pStreamDef_arriving;
   delete m_pStreamDef_emitted;
 
-  delete m_pIndexDef_join;
+  //delete m_pIndexDef_join;
   delete m_pIndexDef_gbyAgg;
 
   delete m_pPreExprStack;
