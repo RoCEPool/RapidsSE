@@ -57,6 +57,7 @@
 
 #include "PromptHelper.hpp"
 #include "CompileLib.hpp"
+#include "PlanDefinitionParser.hpp"
 
 
 #include "Test.hpp"
@@ -1709,25 +1710,10 @@ void Engine::vStartSystem(void)
     Process::vExitStartup();
   }
 
-  // Temporary
-//  vTrace("\n\nDefault compiler:\n"_Stz);
-//  CompileLib::vTest();
-//
-//  vTrace("\n\ngcc compiler:\n"_Stz);
-//  CompileLib::vTest("gcc"_Stz);
-//
-//  vTrace("\n\nclang compiler:\n"_Stz);
-//  CompileLib::vTest("clang"_Stz);
-//
-//  vTrace("\n\ndevtoolset-10 compiler:\n"_Stz);
-//  CompileLib::vTest("devtoolset-10"_Stz);
-//
-//  vTrace("\n\nllvm-toolset-7.0 compiler:\n"_Stz);
-//  CompileLib::vTest("llvm-toolset-7.0"_Stz);
-//
-//  vTrace("\n\ntcc compiler:\n"_Stz);
-//  CompileLib::vTest("tcc"_Stz);
-
+  // Initialise the SQL Compiler plan graph template
+  if (!Parser::PlanDefinitionParser::bInit()) {
+    Process::vExitStartup();
+  }
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {

@@ -132,7 +132,6 @@
 #include "PathIdentifier.hpp"
 #include "VertexSpec.hpp"
 #include "Pipeline.hpp"
-#include "PlannerLock.hpp"
 
 #include "Dynamo.hpp"
 
@@ -523,7 +522,6 @@ SizeHeap gxaSizeHeap[]
   { CN_PIPELINEDEF,              sizeof(PipelineDef),        HT_T_LARGE   , FILL },
   { CN_PIPELINEMETRICS,          sizeof(PipelineMetrics),    HT_T_TINY    ,FILL },
   { CN_PLANDEFINITIONPARSER,     sizeof(PlanDefinitionParser),   HT_V_MEDIUM,   FILL },
-  { CN_PLANNERLOCK,              sizeof(PlannerLock),            HT_T_TINY    , FILL },
   {CN_PLANNODE,             sizeof(PlanNode),               HT_V_TINY    , FILL },
   {CN_PLANNODEBUILDER,      sizeof(PlanNodeBuilder),        HT_T_TINY    , FILL },
   {CN_PLANNODEBUILDERLIST,  sizeof(PlanNodeBuilderList),    HT_T_TINY    , FILL },
