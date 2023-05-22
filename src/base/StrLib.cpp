@@ -5,6 +5,39 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 vExtern_StrLibLike2(char* azStr, char* azRegExp) {
+  _static_
+
+  i8 i = StrLib::iLike2(azStr, azRegExp);
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* like: search for regexp anywhere in given string                           */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 vExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) {
+  _static_
+
+  i8 i = StrLib::iLike3(azStr, azRegExp, cEsc);
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+extern "C" i8 vExtern_StrLibWordFlipBack(char* aDst, char* aSrc) {
+  _static_
+
+  return StrLib::iWordFlipBack(aDst, aSrc);
+}
+
+/*----------------------------------------------------------------------------*/
 
 static i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
