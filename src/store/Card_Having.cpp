@@ -146,6 +146,21 @@ void Card_Having::vCorrect_After_Inject(CardIter* pCI, bool bBump)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Having::vUpdate_projection(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if ((pCI->G.p_projection = pCI->G.p_having->pSub_projection())) {
+
+    pCI->G.p_having->vDeleteChild(pCI->G.p_projection);
+    pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

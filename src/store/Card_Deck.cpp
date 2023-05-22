@@ -349,9 +349,9 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
         pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_projection(pCI);
         break;
 
-      case CK_HAVING:
-        vDebugPoint();
-        break;
+//      case CK_HAVING:
+//        pCI->G.p_having->Card_Having::vUpdate_projection(pCI);
+//        break;
 
       case CK_ORDAGG:
         pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_projection(pCI);
@@ -366,9 +366,9 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
         pCI->G.p_table->vUpdate_projection(pCI);
         break;
 
-      case CK_WHERE:
-        vDebugPoint();
-        break;
+//      case CK_WHERE:
+//        pCI->G.p_where->Card_Where::vUpdate_projection(pCI);
+//        break;
 
       default:
         if (pCI->G.p_MainCard->pSub_projection()) {
@@ -376,6 +376,10 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
           vDebugPoint();
         }
         break;
+    }
+
+    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
+      pCI->G.p_filter->Card_Filter::vUpdate_projection(pCI);
     }
 
     if (pCI->G.p_MainCard->pSub_projection()) {

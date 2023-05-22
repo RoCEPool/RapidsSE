@@ -30,6 +30,8 @@ namespace STORE
     void vCullPred(char cWithMark);
     bool bIsEmpty(void);
 
+    void vUpdate_projection(CardIter* pCI);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
