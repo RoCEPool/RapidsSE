@@ -290,7 +290,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
 
-      //pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
 
       continue;
     }
@@ -349,9 +349,9 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
         pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_projection(pCI);
         break;
 
-//      case CK_HAVING:
-//        pCI->G.p_having->Card_Having::vUpdate_projection(pCI);
-//        break;
+      case CK_HAVING:
+        pCI->G.p_having->Card_Having::vUpdate_projection(pCI);
+        break;
 
       case CK_ORDAGG:
         pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_projection(pCI);
@@ -366,9 +366,9 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
         pCI->G.p_table->vUpdate_projection(pCI);
         break;
 
-//      case CK_WHERE:
-//        pCI->G.p_where->Card_Where::vUpdate_projection(pCI);
-//        break;
+      case CK_WHERE:
+        pCI->G.p_where->Card_Where::vUpdate_projection(pCI);
+        break;
 
       default:
         if (pCI->G.p_MainCard->pSub_projection()) {

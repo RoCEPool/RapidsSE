@@ -789,7 +789,8 @@ void Weaver::vWeaveOptStmt(Board* pBoard)
 
   vEnd();
 
-  //vTrace("%s\n"_Stz, szOptStmt());
+  if (AM::JOB::bHasTag(C_WEAVED))
+    vTrace("%s\n"_Stz, szOptStmt());
 }
 
 /*============================================================================*/
