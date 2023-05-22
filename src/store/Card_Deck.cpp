@@ -263,6 +263,27 @@ Card_Projection* Card_Deck::p_projection_fold(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* ensure types                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Deck::vEnsureTypes(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+   pCI->vRestart();
+
+  while (pCI->G_bEachMain()) {
+
+    if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
+      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
+        pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+      continue;
+    }
+
+  }
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* initial projection analysis                                                */
