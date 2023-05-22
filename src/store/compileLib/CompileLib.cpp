@@ -318,9 +318,9 @@ void CompileLib::vDelete(LibInfo* pLibInfo)
   }
 
   // Remove source file, if exists
-  if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
-  }
+  //if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
+  //  File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+  //}
 
   if (pLibInfo->m_bCollectStats) {
     pLibInfo->m_uDeleteNanos = Hardware::uReadClock() - uStartTime;

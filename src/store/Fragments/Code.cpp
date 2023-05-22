@@ -88,7 +88,7 @@ void vGbyAggCreatePayLoad(Dynamic_T* aDynamicT) {
     // create the payload
 
 #ifdef WITH_CLANG
-    vEnt_payloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
+  vExtern_EntPayloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
 #endif
     // marker-end
 }
@@ -564,8 +564,10 @@ void vEosPayLoadTubEnd(Dynamic_T* aDynamicT) {
   // marker-start
     // - - - - - - - - - - - - - -
     // move to next entry
-    aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+#ifdef WITH_CLANG
+    aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
         &aDynamicT->m_xIndexInfoPL.m_aEntBuffer, aDynamicT->m_xIndexInfoPL.m_aEntInt);
+#endif
   }
 
   // marker-end

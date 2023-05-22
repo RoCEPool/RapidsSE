@@ -285,8 +285,12 @@ void vIndexReturn(Dynamic_T* aDynamicT) {
 
   // move to next entry
   printf("moving to next index scan\n");
-  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
+
+#ifdef WITH_CLANG
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
       &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
+#endif
+
   goto __L_LABEL_INDEX_DEREF__;
 
   // marker-end
