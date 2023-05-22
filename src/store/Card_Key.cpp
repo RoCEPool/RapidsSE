@@ -193,14 +193,32 @@ IndexDef* Card_Key::pToIndexDef(void)
 
   IndexDef* pIndexDef = new IndexDef;
 
-  Kid xKey(this);
-  while (xKey.bEach(CK_EXPR)) {
-    Card_Expr* p_expr = xKey.p_expr();
+  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
+  if (! p_rpnCalc)
+    return nullptr;
 
-    pIndexDef->vAddColumn("?"_Stz,CT_INTEGER);
+  Kid xRpnCalc(p_rpnCalc);
+  while (xRpnCalc.bEach(CK_EXPR)) {
+    Card_Expr* p_expr = xRpnCalc.p_expr();
+
+    Card_Term* p_term = p_expr->pGetTerm(0);
+    if (! p_term)
+      continue;
+
+    Stz* szColNm  = p_term->szSymbol();
+    eCT  eColType = p_term->eColType();
+
+    if (! szColNm || CT_NONE == eColType)
+      continue;
+
+    pIndexDef->vAddColumn(szColNm,eColType);
   }
 
-  return pIndexDef;
+  if (pIndexDef->nColumns())
+    return pIndexDef;
+
+  delete pIndexDef;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
