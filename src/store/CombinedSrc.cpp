@@ -684,7 +684,7 @@ void CombinedSrc::vAppendFileHeaders(void) {
   i8 nFileSize;
   s16KB sCode;
 
-  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_TINYC");
+  StrLib::vAppendString(&m_azCodeCrs, "#define WITH_CLANG");
 
   // read the file header in
   sCode = ""_Stz;

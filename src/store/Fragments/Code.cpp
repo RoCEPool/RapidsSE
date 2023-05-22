@@ -87,7 +87,7 @@ void vGbyAggCreatePayLoad(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - -
     // create the payload
 
-#ifdef WITH_TINYC
+#ifdef WITH_CLANG
     vEnt_payloadCreate(aDynamicT->m_xIndexInfoPL.m_aEntInt, __PAYLOADBYTES__);
 #endif
     // marker-end
@@ -415,16 +415,19 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
   struct __STRUCT_TO__* p__STRUCT_TO__;
+  ColumnInfo xColumnInfo;
+  
   i8 __COLUMNS_IN__;
+  i8 __COLUMNS_OUT__;
 
   __L_LABEL_LOOP__:
 
   {
   // marker-start
 
-#ifdef WITH_TINYC
+#ifdef WITH_CLANG
     void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-    vTub_RowPix(aDynamicT->m_pTub, aRowPix);
+    vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
 #endif
     aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
   }
@@ -435,8 +438,8 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
   }
 
   // allocate a row from the tub
-#ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+#ifdef WITH_CLANG
+  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
@@ -509,8 +512,8 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
     goto L_Return;
 
   // allocate a row from the tub
-#ifdef WITH_TINYC
-  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+#ifdef WITH_CLANG
+  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
@@ -536,8 +539,8 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
       goto L_Return;
 
   // allocate a row from the tub
-#ifdef WITH_TINYC
-    aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aTub_AllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+#ifdef WITH_CLANG
+    aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
@@ -706,7 +709,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
   else {
     szDstStz = aDynamicT->m_xRowInfoTO.m_acStrArea;
 
-#ifdef WITH_TINYC
+#ifdef WITH_CLANG
     nSrcSize = StrLib_iWordFlipBack(szDstStz,szSrcStz);
     //for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
     //  printf("%c ", szDstStz[i_Byte]);
@@ -720,8 +723,8 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     // update the tub string size
     i8 iDstLen = strlen(szDstStz) + 1;
     aDynamicT->m_xRowInfoTO.m_acStrArea += iDstLen;
-#ifdef WITH_TINYC
-    vTub_RowStrSize(aDynamicT->m_pTub,iDstLen);
+#ifdef WITH_CLANG
+    vExtern_TubRowStrSize(aDynamicT->m_pTub,iDstLen);
 #endif
 
     iElemSize += nSrcSize;
@@ -829,8 +832,8 @@ void vTubVchCol(Dynamic_T* aDynamicT) {
     // update the tub string size
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 
-#ifdef WITH_TINYC
-    vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
+#ifdef WITH_CLANG
+    vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif
   }
 
@@ -896,8 +899,8 @@ void vTubRowStr(Dynamic_T* aDynamicT) {
 
   {
   // marker-start
-#ifdef WITH_TINYC
-    vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
+#ifdef WITH_CLANG
+    vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif
   }
   // marker-end
@@ -982,8 +985,8 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
      // update the tub string size
      aDynamicT->m_xRowInfoTO.m_acStrArea += nSrcSize;
-#ifdef WITH_TINYC
-     vTub_RowStrSize(aDynamicT->m_pTub,nSrcSize);
+#ifdef WITH_CLANG
+     vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
 #endif
   }
 

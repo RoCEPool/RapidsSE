@@ -16,23 +16,48 @@ __vDeleteFunction(Tub,CN_TUB)
 __aFooterFunction(Tub)
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
+extern "C" void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
   return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea, piErrorCode);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
+extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
   Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-extern "C" void vTub_RowPix(void* pTub, void* pRowPix) {
+extern "C" void vExtern_TubRowPix(void* pTub, void* pRowPix) {
+  Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
+  return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea, piErrorCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
+  Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void vTub_RowPix(void* pTub, void* pRowPix) {
   Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
 }
 

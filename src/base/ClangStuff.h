@@ -30,7 +30,9 @@ extern void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
 extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
 extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
-
+extern void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
+extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize);
+extern void  vExtern_TubRowPix(void* pTub, void* pRowPix);
 
 
 
@@ -40,9 +42,7 @@ extern void  vRowSingle_Print(void* pRowSingle);
 extern void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
 extern void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 
-extern void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
-extern void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
-extern void  vTub_RowPix(void* pTub, void* pRowPix);
+
 
 extern i8    StrLib_iLike2(char* azStr, char* azRegExp);
 extern i8    StrLib_iLike3(char* azStr, char* azRegExp, char cEsc);
