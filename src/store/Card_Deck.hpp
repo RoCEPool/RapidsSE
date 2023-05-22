@@ -29,8 +29,6 @@ namespace STORE
                                   Card_Cast*      p_cast_prev,
                                   Card_OP*        p_OP_curr);
 
-    void vEnsureTypes(CardIter* pCI);
-
     void vProjectionUpdate(CardIter* pCI);
 
     Card_Projection* p_projection_fold(void);

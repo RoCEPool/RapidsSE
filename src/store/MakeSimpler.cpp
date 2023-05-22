@@ -187,20 +187,6 @@ void MakeSimpler::vDeleteUnneeded(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Projection Analysis                                                        */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vEnsureTypes(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  m_pCI->G.pDeck->vEnsureTypes(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void MakeSimpler::vIndexAnalysis(void)
