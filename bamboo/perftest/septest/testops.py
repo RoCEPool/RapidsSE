@@ -134,6 +134,9 @@ def write_jmeter_property_file(host: str, cluster_cfg: ClusterConfig):
         "",
         "# JDBC driver URL to use",
         f'JDBC_URL={jdbc_url}',
+        "",
+        "# Force output files to be flushed (lower performance)",
+        "jmeter.save.saveservice.autoflush=true",
         ""
     ]
     content = "\n".join(lines)

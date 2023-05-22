@@ -1526,6 +1526,16 @@ dload lineitem paths
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Queries" enabled="true"/>
         <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q1&apos;);
+OUT.println(&quot;Running Q1&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q1Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1592,6 +1602,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q2&apos;);
+OUT.println(&quot;Running Q2&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q2Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1654,6 +1674,16 @@ limit 100;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q3&apos;);
+OUT.println(&quot;Running Q3&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q3Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1695,6 +1725,16 @@ limit 10;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q4&apos;);
+OUT.println(&quot;Running Q4&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q4Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1765,6 +1805,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q5&apos;);
+OUT.println(&quot;Running Q5&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q5Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1843,6 +1893,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q6&apos;);
+OUT.println(&quot;Running Q6&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q6Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1891,6 +1951,16 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q7&apos;);
+OUT.println(&quot;Running Q7&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q7Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1949,6 +2019,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q8&apos;);
+OUT.println(&quot;Running Q8&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q8Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2000,6 +2080,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q9&apos;);
+OUT.println(&quot;Running Q9&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q9Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2049,6 +2139,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q10&apos;);
+OUT.println(&quot;Running Q10&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q10Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2143,6 +2243,16 @@ limit 20;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q11&apos;);
+OUT.println(&quot;Running Q11&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2189,6 +2299,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q12&apos;);
+OUT.println(&quot;Running Q12&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q12Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2255,6 +2375,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q13&apos;);
+OUT.println(&quot;Running Q13&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q13Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2294,6 +2424,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q14&apos;);
+OUT.println(&quot;Running Q14&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q14Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2342,6 +2482,16 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q15&apos;);
+OUT.println(&quot;Running Q15&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q15Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2377,6 +2527,16 @@ This query requires a view to be created first.</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q16&apos;);
+OUT.println(&quot;Running Q16&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q16Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2467,6 +2627,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q17&apos;);
+OUT.println(&quot;Running Q17&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q17Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2503,6 +2673,16 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q18&apos;);
+OUT.println(&quot;Running Q18&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q18Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2555,6 +2735,16 @@ limit 100;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q19&apos;);
+OUT.println(&quot;Running Q19&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q19Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2605,6 +2795,16 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q20&apos;);
+OUT.println(&quot;Running Q20&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q20Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2709,6 +2909,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q21&apos;);
+OUT.println(&quot;Running Q21&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q21Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2766,6 +2976,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q22&apos;);
+OUT.println(&quot;Running Q22&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q22Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2818,6 +3038,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;All queries completed&apos;);
+OUT.println(&quot;All queries completed&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
         </hashTree>
       </hashTree>
     </hashTree>
