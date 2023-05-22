@@ -14,9 +14,9 @@ statementChoice   :   queryStatement
                     | lstbl ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
-keyValueTag       : TAG_ANGLEBRACKETS '=' (STRING_LITERAL | INTEGER_LITERAL);
-keyOnlyTag        : TAG_FWDSLASH |
-                    TAG_ANGLEBRACKETS ;
+keyValueTag       : '<' keyName=IDENTIFIER '>' '=' (STRING_LITERAL | INTEGER_LITERAL);
+keyOnlyTag        : '/' IDENTIFIER |
+                    '<' IDENTIFIER '>' ;
 
 // explain statement ----------------------------------------------------------
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
@@ -692,9 +692,6 @@ fragment DIGIT        : '0' .. '9' ;
 
 fragment DUBLSINGL    : '\'\'' ;
 fragment DUBLDUBL     : '""' ;
-
-TAG_FWDSLASH          : '/' PLAIN_IDENTIFIER ;
-TAG_ANGLEBRACKETS     : '<' PLAIN_IDENTIFIER '>' ;
 
 IDENTIFIER            : PLAIN_IDENTIFIER | BAKTIKD_IDENTIFIER | DUBLQUOTED_IDENTIFIER ;
 PLAIN_IDENTIFIER      : LETTER (LETTER | DIGIT | '_')* ;

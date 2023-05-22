@@ -45,12 +45,11 @@ public:
     UNION = 167, UNIQUE = 168, UPDATE = 169, USING = 170, VALUE = 171, VALUES = 172, 
     VARBINARY = 173, VARCHAR = 174, VARYING = 175, WEEK = 176, WEEKS = 177, 
     WHEN = 178, WHERE = 179, WITH_NAMES = 180, WITH_TYPES = 181, WITH = 182, 
-    XOR = 183, YEAR = 184, YEARS = 185, TAG_FWDSLASH = 186, TAG_ANGLEBRACKETS = 187, 
-    IDENTIFIER = 188, PLAIN_IDENTIFIER = 189, BAKTIKD_IDENTIFIER = 190, 
-    DUBLQUOTED_IDENTIFIER = 191, STRING_LITERAL = 192, SINGLQUOTED_STRING = 193, 
-    DUBLQUOTED_STRING = 194, FLOAT_LITERAL = 195, DECIMAL_LITERAL = 196, 
-    INTEGER_LITERAL = 197, HINT_START = 198, HINT_END = 199, SLASH_COMMENT = 200, 
-    SQL_COMMENT = 201, BLOCK_COMMENT = 202, WHITESPACE = 203
+    XOR = 183, YEAR = 184, YEARS = 185, IDENTIFIER = 186, PLAIN_IDENTIFIER = 187, 
+    BAKTIKD_IDENTIFIER = 188, DUBLQUOTED_IDENTIFIER = 189, STRING_LITERAL = 190, 
+    SINGLQUOTED_STRING = 191, DUBLQUOTED_STRING = 192, FLOAT_LITERAL = 193, 
+    DECIMAL_LITERAL = 194, INTEGER_LITERAL = 195, HINT_START = 196, HINT_END = 197, 
+    SLASH_COMMENT = 198, SQL_COMMENT = 199, BLOCK_COMMENT = 200, WHITESPACE = 201
   };
 
   enum {
@@ -275,9 +274,10 @@ public:
 
   class  KeyValueTagContext : public antlr4::ParserRuleContext {
   public:
+    antlr4::Token *keyName = nullptr;;
     KeyValueTagContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TAG_ANGLEBRACKETS();
+    antlr4::tree::TerminalNode *IDENTIFIER();
     antlr4::tree::TerminalNode *STRING_LITERAL();
     antlr4::tree::TerminalNode *INTEGER_LITERAL();
 
@@ -292,8 +292,7 @@ public:
   public:
     KeyOnlyTagContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TAG_FWDSLASH();
-    antlr4::tree::TerminalNode *TAG_ANGLEBRACKETS();
+    antlr4::tree::TerminalNode *IDENTIFIER();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

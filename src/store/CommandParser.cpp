@@ -243,15 +243,8 @@ antlrcpp::Any CommandParser::visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContex
 {
   std::string sTagName;
 
-  if (pCtx->TAG_FWDSLASH()) {
-    sTagName = pCtx->TAG_FWDSLASH()->getText().substr(1);
-
-  } else {
-    ASSERT(pCtx->TAG_ANGLEBRACKETS());
-    std::string s = pCtx->TAG_ANGLEBRACKETS()->getText();
-    sTagName = s.substr(1, s.length() - 2);
-  }
-
+  ASSERT(pCtx->IDENTIFIER());
+  sTagName = pCtx->IDENTIFIER()->getText();
   m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str());
 
   return visitChildren(pCtx);
@@ -264,8 +257,8 @@ antlrcpp::Any CommandParser::visitKeyValueTag(Parser::sqlParser::KeyValueTagCont
 {
   std::string sTagName;
 
-  ASSERT(pCtx->TAG_ANGLEBRACKETS());
-  std::string s = pCtx->TAG_ANGLEBRACKETS()->getText();
+  ASSERT(pCtx->keyName);
+  std::string s = pCtx->keyName->getText();
   sTagName = s.substr(1, s.length() - 2);
 
   if (pCtx->STRING_LITERAL()) {
