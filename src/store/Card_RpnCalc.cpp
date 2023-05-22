@@ -587,13 +587,14 @@ void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_EXPR,CK_NONE);
+  vValidate_mustHave(CK_TERM, CK_NONE);
 
   Kid xRpnCalc(this);
   while (xRpnCalc.bEach(CK_TERM)) {
-    Card_Term* p_term = xRpnCalc.p_term();
-    p_term->vValidate(pCI,iDepth+1,this);
+    Card_Term *p_term = xRpnCalc.p_term();
+    p_term->vValidate(pCI, iDepth + 1, this);
   }
+}
 
 /*============================================================================*/
 /* end                                                                        */
