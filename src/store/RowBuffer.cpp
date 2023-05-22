@@ -19,7 +19,15 @@ __pCastFunction(STORE, RowBuffer, CN_ROWBUFFER);
 /*----------------------------------------------------------------------------*/
 /* get address of cell array of row                                           */
 /*----------------------------------------------------------------------------*/
-extern "C" void* aRowBuffer_GetCellArray(void* pRowBuffer, i8 iRow)
+extern "C" void* aExtern_RowBufferCellArray(void* pRowBuffer, i8 iRow)
+{
+  return RowBuffer::aGetCellArray((RowBuffer*)pRowBuffer, iRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of cell array of row                                           */
+/*----------------------------------------------------------------------------*/
+void* aRowBuffer_GetCellArray(void* pRowBuffer, i8 iRow)
 {
   return RowBuffer::aGetCellArray((RowBuffer*)pRowBuffer, iRow);
 }

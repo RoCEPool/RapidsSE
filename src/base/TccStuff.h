@@ -143,7 +143,7 @@ void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
-//void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
+void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
 void  vRowSingle_Print(void* pRowSingle);
 
 void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);

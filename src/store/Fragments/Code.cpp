@@ -423,7 +423,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
   // marker-start
 
 #ifdef WITH_TINYC
-    void* aRowPix = aRowPix_new(__COLUMNS_OUT__, &xColumnInfo);
+    void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
     vTub_RowPix(aDynamicT->m_pTub, aRowPix);
 #endif
     aDynamicT->m_xRowInfoTO.m_iInitialize = 0;

@@ -81,5 +81,3 @@
   time_t time(time_t *time);
   struct tm *localtime(const time_t *time);
 
-  extern void* aRowPix_new(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
-

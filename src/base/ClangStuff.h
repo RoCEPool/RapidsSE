@@ -28,9 +28,8 @@ extern void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
 
 
-extern void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
-
-extern void* aRowPix_new(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
+extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
+extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
 
 
 
