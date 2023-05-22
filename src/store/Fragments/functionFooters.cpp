@@ -5,6 +5,7 @@
 
 #include "BASE.h"
 #include "ClangStuff.h"
+#include "ClangDynamic.h"
 
 // function-vInflateCrwEnd
 /*--------------------------------------------------------------------*/
@@ -55,8 +56,8 @@ int vInflateRowEnd(struct Dynamic_T* aDynamicT)
     L_Return:
     goto L_ReturnFinal;
 
-#include "../src/store/vFLAT_InflateColumn.h"
-#include "../src/store/vFLAT_SkipColumn.h"
+//#include "../src/store/vFLAT_InflateColumn.h"
+//#include "../src/store/vFLAT_SkipColumn.h"
 
     L_ReturnFinal:
     return 1;

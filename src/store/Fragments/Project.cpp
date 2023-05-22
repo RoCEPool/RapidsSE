@@ -6,6 +6,7 @@
 #include "Combined.hpp"
 #include "IndexDef.hpp"
 #include "CodeSynthCommon.h"
+#include "ClangDynamic.h"
 #include "ClangStuff.h"
 #include "Pay.hpp"
 #include "Key.hpp"

@@ -6,6 +6,7 @@
 #include "Dynamic.hpp"
 #include "IndexDef.hpp"
 #include "ClangStuff.h"
+#include "ClangDynamic.h"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"

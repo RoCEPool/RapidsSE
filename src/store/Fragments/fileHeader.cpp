@@ -10,6 +10,7 @@
   #include "../src/primitives/BaseTypes_tcc.h"
   #include "../src/base/CodeSynthCommon.h"
   #include "../src/base/ClangStuff.h"
+  #include "../src/base/ClangDynamic.h"
 
   void vNeverReachCode(i8 iLine) {
     printf("NEVER_REACH_CODE point in synthesised code was reached at line %lld !!!\n", iLine);

@@ -8,7 +8,7 @@
 
 #include "../src/primitives/BaseTypes_tcc.h"
 #include "../src/base/CodeSynthCommon.h"
-#include "../src/base/ClangStuff.h"
+#include "../src/base/ClangDynamic.h"
 
 // function-__FUNCTION_CRW__
 
