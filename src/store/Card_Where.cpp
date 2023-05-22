@@ -240,7 +240,7 @@ void Card_Where::vEarlyProject_add_transients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Where::vEarlyProject_recurse_passthru(CardIter* pCI)
+void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -256,6 +256,12 @@ void Card_Where::vEarlyProject_recurse_passthru(CardIter* pCI)
   Card_OP::vEarlyProject_backstep(pCI);
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+  pCI->vPrintBoard();
+
+  vUpdate_projection(pCI);
+
+  pCI->vPrintBoard();
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

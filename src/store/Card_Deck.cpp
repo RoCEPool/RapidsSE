@@ -292,7 +292,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
       pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
 
-      continue;
+      //continue;
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
@@ -358,12 +358,22 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
         break;
 
       case CK_PROJECT:
-        if (pCI->G.p_MainCard->pSub_needed())
+        //if (pCI->G.p_MainCard->pSub_needed())
           pCI->G.p_project->Card_Project::vUpdate_projection(pCI);
         break;
 
       case CK_TABLE:
         pCI->G.p_table->vUpdate_projection(pCI);
+
+        if (pCI->G.p_filter = pCI->G.p_table->pSub_filter()) {
+          if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
+
+            pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
+            pCI->G.p_filter->vAppend(pCI->G.p_table->pSub_projection()->pClone());
+
+          }
+        }
+
         break;
 
       case CK_WHERE:
@@ -378,9 +388,9 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
         break;
     }
 
-    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
-      pCI->G.p_filter->Card_Filter::vUpdate_projection(pCI);
-    }
+//    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
+//      pCI->G.p_filter->Card_Filter::vUpdate_projection(pCI);
+//    }
 
     if (pCI->G.p_MainCard->pSub_projection()) {
       pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
