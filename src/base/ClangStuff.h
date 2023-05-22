@@ -7,12 +7,12 @@ extern void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 
 extern void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
 
-extern void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
-extern void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue);
-extern void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
-extern void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
-extern void vEntWrk_print(void* pEntWrk, void* pIndexDef);
-extern void vEntWrk_reset(void* pEntWrk);
+extern void vExtern_EntWrkAppendElementInt(void* pEntWrk, i8 iInt);
+extern void vExtern_EntWrkAppendElementStz(void* pEntWrk, char* sValue);
+extern void vExtern_EntWrkEntKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
+extern void vExtern_EntWrkPayloadCreate(void* pEntWrk, i8 nPayloadBytes);
+extern void vExtern_EntWrkPrint(void* pEntWrk, void* pIndexDef);
+extern void vExtern_EntWrkReset(void* pEntWrk);
 
 extern void* aIndexTree_allotPayStr(void* pIndexTree, char* sStr);
 extern void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);

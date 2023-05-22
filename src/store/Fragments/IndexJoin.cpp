@@ -48,7 +48,9 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
   // init indexJoin
   if (aDynamicT->m_iIndexJoinInit == 0) {
-    vEntWrk_entKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+#ifdef WITH_CLANG
+    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+#endif
     iLeftOuterRow = 0;
     aDynamicT->m_iIndexJoinInit = 1;
   }
@@ -87,12 +89,16 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 
   // init indexJoin
   if (aDynamicT->m_iIndexJoinInit == 0) {
-    vEntWrk_entKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+#ifdef WITH_CLANG
+    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
+#endif
     iLeftOuterRow = 0;
     aDynamicT->m_iIndexJoinInit = 1;
   }
   else {
-    vEntWrk_reset(aDynamicT->m_xIndexInfoJ.m_aEntWrk);
+#ifdef WITH_CLANG
+    vExtern_EntWrkReset(aDynamicT->m_xIndexInfoJ.m_aEntWrk);
+#endif
   }
 
   if (!aDynamicT->m_iProcessRow) {
