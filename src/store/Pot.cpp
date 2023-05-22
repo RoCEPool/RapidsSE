@@ -20,6 +20,24 @@ __vDeleteFunction(Pot,CN_POT)
 __aFooterFunction(Pot)
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {
+  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea, piErrorCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iMixIn, i8 nRowStrSize) {
+  Pot::vRowStrSize((Pot*)pPot, iMixIn, nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
 void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {

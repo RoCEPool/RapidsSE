@@ -26,20 +26,19 @@ extern void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
 extern void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
 
-extern void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
-extern void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
-
-
 extern void* aExtern_RowBufferCellArray(void* aRowBuffer, i8 iRow) __attribute__((weak_import));
 extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((weak_import));
+
+extern void* aExtern_PotAllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
+extern void  vExtern_PotRowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
+
+extern i8    iExtern_StrLibLike2(char* azStr, char* azRegExp);
+extern i8    iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc);
+extern i8    iExtern_StrLibWordFlipBack(char* aDst, char* aSrc);
+
 extern void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode);
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize);
 extern void  vExtern_TubRowPix(void* pTub, void* pRowPix);
-
-
-extern i8 iExtern_StrLibLike2(char* azStr, char* azRegExp);
-extern i8 iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc);
-extern i8 iExtern_StrLibWordFlipBack(char* aDst, char* aSrc);
 
 extern void  vNeverReachCode(i8 iLine);
 /*============================================================================*/
