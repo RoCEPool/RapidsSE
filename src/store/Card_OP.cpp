@@ -436,7 +436,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         return;
 
       case CK_WHERE:
-        pCI->G.p_where->vEarlyProject_recurse_passthru(pCI);
+        pCI->G.p_where->vEarlyProject_recurse_update(pCI);
         return;
 
       // -- -- -- -- -- -- --

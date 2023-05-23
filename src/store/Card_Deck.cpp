@@ -281,7 +281,6 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
   while (pCI->G_bEachMain()) {
 
-
     if (CK_TABLE == pCI->G.e_MainCard) {
       pCI->G.p_table->vUpdate_projection(pCI);
       continue;
@@ -290,11 +289,11 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
-      continue;
-    }
 
-    if (33 == pCI->G.p_MainCard->i_Child())
-      vDebugPoint();
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+
+      //continue;
+    }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Analysis.m_pProjection_prior) {
@@ -340,27 +339,58 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       continue;
     }
 
-    if (CK_TABLE == pCI->G.e_MainCard) {
-      pCI->G.p_table->vUpdate_projection(pCI);
+    switch (pCI->G.e_MainCard) {
+
+      case CK_AGGREG:
+        pCI->G.p_aggreg->Card_Aggreg::vUpdate_projection(pCI);
+        break;
+
+      case CK_GBYAGG:
+        pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_projection(pCI);
+        break;
+
+      case CK_HAVING:
+        pCI->G.p_having->Card_Having::vUpdate_projection(pCI);
+        break;
+
+      case CK_ORDAGG:
+        pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_projection(pCI);
+        break;
+
+      case CK_PROJECT:
+        //if (pCI->G.p_MainCard->pSub_needed())
+          pCI->G.p_project->Card_Project::vUpdate_projection(pCI);
+        break;
+
+      case CK_TABLE:
+        pCI->G.p_table->vUpdate_projection(pCI);
+
+        if (pCI->G.p_filter = pCI->G.p_table->pSub_filter()) {
+          if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
+
+            pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
+            pCI->G.p_filter->vAppend(pCI->G.p_table->pSub_projection()->pClone());
+
+          }
+        }
+
+        break;
+
+      case CK_WHERE:
+        pCI->G.p_where->Card_Where::vUpdate_projection(pCI);
+        break;
+
+      default:
+        if (pCI->G.p_MainCard->pSub_projection()) {
+          vTrace("UPDATE? %s"_Stz, pCI->G.p_MainCard->szCardNm());
+          vDebugPoint();
+        }
+        break;
     }
-    else if (CK_PROJECT == pCI->G.e_MainCard) {
-      if (pCI->G.p_MainCard->pSub_needed()) {
-        pCI->G.p_project->Card_Project::vUpdate_projection(pCI);
-      }
-    }
-    else if (CK_AGGREG == pCI->G.e_MainCard) {
-      pCI->G.p_aggreg->Card_Aggreg::vUpdate_projection(pCI);
-    }
-    else if (CK_GBYAGG == pCI->G.e_MainCard) {
-      pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_projection(pCI);
-    }
-    else if (CK_ORDAGG == pCI->G.e_MainCard) {
-      pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_projection(pCI);
-    }
-    else if (pCI->G.p_MainCard->pSub_projection()) {
-      vTrace("UPDATE? %s"_Stz,pCI->G.p_MainCard->szCardNm());
-      vDebugPoint();
-    }
+
+//    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
+//      pCI->G.p_filter->Card_Filter::vUpdate_projection(pCI);
+//    }
 
     if (pCI->G.p_MainCard->pSub_projection()) {
       pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
