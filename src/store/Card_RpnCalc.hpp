@@ -18,6 +18,7 @@ namespace STORE
    ~Card_RpnCalc(void) noexcept(false);
 
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    Card_RpnCalc* pClone(void);
     void vConcat(Card_RpnCalc* p_rpnCalc);
     void vConvert_sqyOp_not_To_notSqyOp(void);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
@@ -27,6 +28,9 @@ namespace STORE
     bool bHasTerm(Symbol* pSymbol);
     bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
+
+    Card_RpnCalc *pReducedCopy(i8 i_Expr);
+
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
 

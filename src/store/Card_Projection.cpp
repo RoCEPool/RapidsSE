@@ -199,6 +199,24 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return a reduced copy of this projection                                   */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pReducedCopy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Projection* p_projection_reduced = new Card_Projection;
+
+  i8 i_Expr = 0;
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_Expr* p_expr_copy = xKid.p_expr()->pReducedCopy(i_Expr++);
+    p_projection_reduced->vAppend(p_expr_copy);
+  }
+
+  return p_projection_reduced;
+}
+
+/*----------------------------------------------------------------------------*/
 /* as review                                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vReviewAs(CardIter* pCI)

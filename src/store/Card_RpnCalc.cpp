@@ -90,6 +90,16 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_RpnCalc* Card_RpnCalc::pClone(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return _pCard_RpnCalc(pDupCardRecursive());
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vConcat(STORE::Card_RpnCalc *p_rpnCalc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -279,6 +289,32 @@ void Card_RpnCalc::vOntoStzList(StzList* pStzList)
   pStzList->vAppend(":"_Stz);
 
   ChildCards::vOntoStzList(pStzList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a reduced copy of this rpnCalc                                      */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (1 == nChildCards()) {
+    Card_RpnCalc* p_rpnCalc_reduced = pClone();
+    return p_rpnCalc_reduced;
+  }
+
+  Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
+  p_rpnCalc_reduced->vSetType(this);
+
+  Symbol xExprNo;
+  xExprNo.vSetStreamOrdinal(i_Expr + 1);
+
+  Card_Term* p_term = new Card_Term(xExprNo);
+  p_term->vSetType(this);
+
+  p_rpnCalc_reduced->vAppend(p_term);
+
+  return p_rpnCalc_reduced;
 }
 
 /*----------------------------------------------------------------------------*/

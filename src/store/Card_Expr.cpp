@@ -343,6 +343,29 @@ void Card_Expr::vReconstruct(Card_As*    p_as_arg,
 }
 
 /*----------------------------------------------------------------------------*/
+/* return a reduced copy of this expr                                         */
+/*----------------------------------------------------------------------------*/
+Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol xExprNo;
+  xExprNo.vSetStreamOrdinal(i_Expr + 1);
+
+  Card_Expr* p_expr_reduced = new Card_Expr;
+  p_expr_reduced->vSymbol(xExprNo);
+
+  if (Card_As* p_as = pSub_as())
+    p_expr_reduced->vAppend(p_as->pClone());
+
+  Card_RpnCalc* p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy(i_Expr);
+
+  p_expr_reduced->vAppend(p_rpnCalc_reduced);
+
+  return p_expr_reduced;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
