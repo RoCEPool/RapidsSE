@@ -1541,7 +1541,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
   pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(nullptr);
+  pOpSketch->vGenerateExprStacks();
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct(0);
@@ -1591,7 +1591,7 @@ OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKin
   pOpSketch->vIndexDef(pIndexDef);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(nullptr);
+  pOpSketch->vGenerateExprStacks();
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct(0);
@@ -1761,9 +1761,6 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-  // get the aggregate type stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
-
   Op *pNextOp = pStream->pGet(i_Op + 1);
 
   // create a new opSketch for this OP
@@ -1779,7 +1776,7 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   pOpSketch->vGenerateStencilToStruct();
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(pPreExpStack);
+  pOpSketch->vGenerateExprStacks();
 
   return pOpSketch;
 }
@@ -1810,9 +1807,6 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   //StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   //StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // get the aggregate type stack
-  IntStack* pPreExprStack = pOpDef->m_pPreExprStack;
-
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sFilterExpr, eHandlerKind, SK_FILTER, ePrevStencil_v2, SR_NONE, II_NONE, pStreamDefLft, pStreamDefOut);
 
@@ -1826,7 +1820,7 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   pOpSketch->vGenerateStencilToStruct();
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(pPreExprStack);
+  pOpSketch->vGenerateExprStacks();
 
   return pOpSketch;
 }
@@ -2057,9 +2051,6 @@ OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  // get the aggregate type stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
-
   // create a new shape for this OP
   OpSketch *pOpSketch = new OpSketch(pOp->i_Op(), sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
 
@@ -2070,7 +2061,7 @@ OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(pPreExpStack);
+  pOpSketch->vGenerateExprStacks();
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();
@@ -2099,9 +2090,6 @@ OpSketch* Stencil_v2::pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind,
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-  // get the predicate expression stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
-
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sProjectExpr, eHandlerKind, SK_PROJECT, ePrevStencil_v2, SR_PT, II_NONE, pStreamDefLft, pStreamDefOut);
 
@@ -2112,7 +2100,7 @@ OpSketch* Stencil_v2::pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind,
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(pPreExpStack);
+  pOpSketch->vGenerateExprStacks();
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();
@@ -2139,9 +2127,6 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // get the predicate expression stack
-  IntStack* pPreExprStack = pOpDef->m_pPreExprStack;
-
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sProjectExpr, eHandlerKind, SK_PROJECT, ePrevStencil_v2, SR_PT, II_NONE, pStreamDefLft, pStreamDefOut);
 
@@ -2151,20 +2136,8 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  // HACK
-  pPreExprStack = new IntStack;
-  pPreExprStack->vPush(PE_EXP);
-  pPreExprStack->vPush(PE_EXP);
-  pPreExprStack->vPush(PE_EXP);
-  pPreExprStack->vPush(PE_EXP);
-  // END HACK
-
   // generate the expressißon stacks
-  pOpSketch->vGenerateExprStacks(pPreExprStack);
-
-  // HACK
-  delete pPreExprStack;
-  // END HACK
+  pOpSketch->vGenerateExprStacks();
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();
@@ -2196,9 +2169,6 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  // get the aggregate type stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
-
   // create a new shape for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, II_PL, pStreamDefLft, pStreamDefOut);
 
@@ -2216,7 +2186,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(pPreExpStack);
+  pOpSketch->vGenerateExprStacks();
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();
@@ -2267,7 +2237,7 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks(nullptr);
+  pOpSketch->vGenerateExprStacks();
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct(0);

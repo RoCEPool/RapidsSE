@@ -103,7 +103,7 @@ namespace STORE
     static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
-    void vGenerateExprStacks(IntStack* pPreExpStack);
+    void vGenerateExprStacks(void);
     void vGenerateStencilFromStruct(void);
     void vGenerateStencilToStruct(u8 uSelectColumns = 0);
 

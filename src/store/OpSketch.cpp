@@ -306,7 +306,7 @@ eSK OpSketch::eSketchKind(void)
 /*----------------------------------------------------------------------------*/
 /* generate the expression stacks                                             */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vGenerateExprStacks(IntStack* pPreExpStack)
+void OpSketch::vGenerateExprStacks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
