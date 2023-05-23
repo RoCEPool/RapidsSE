@@ -21,6 +21,9 @@ namespace STORE
     OpDef*        m_pOpDef;
     ArgDef*       m_pArgDef;
 
+    OpDef*        m_pOpDef_leading;
+    ColsReq*      m_pColsReq;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -46,6 +49,8 @@ namespace STORE
 
     void vCraftIndexDefs(Card_OP* p_OP);
     void vCraftStreamDefs(Card_OP* p_OP);
+
+    void vUpdateColsReq(Card_OP* p_OP);
 
   protected:
     Footer* aFooter(void);

@@ -44,6 +44,9 @@ namespace STORE
     ArgDef* pArgDef(Stz* szArgNm);
     ArgDef* pArgDef_expr(void);
 
+    ColsReq* pColsReq(void);
+    void vColsReq(ColsReq* ColsReq);
+
     void vDump(i8 i_Tab=2);
 
     i8 i_Op(void);
