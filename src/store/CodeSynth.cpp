@@ -3876,7 +3876,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       i_Col = 0;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // move to the next predicate expression
+      // set the next predicate expression
       ePreExp = PE_EXP;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
