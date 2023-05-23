@@ -725,7 +725,8 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Analysis.m_pProjection_prior)
-    p_projection = pCI->Analysis.m_pProjection_prior->pClone();
+//    p_projection = pCI->Analysis.m_pProjection_prior->pClone();
+    p_projection = pCI->Analysis.m_pProjection_prior->pReducedCopy();
   else
     p_projection = new Card_Projection;
 
