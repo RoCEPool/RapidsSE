@@ -3756,9 +3756,9 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   i8 i_Col = 0;
   i8 i_ColPL = 0;
   i8 i_DupCtr = 1;
-  i8 iGbyCols;
+  i8 iGbyCols = 0;
   i8 iGkyCols = 0;
-  eDM eCastType;
+  eDM eCastType = DM_NONE;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
@@ -3810,17 +3810,15 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
         if (eExprKind == EK_AGGORD && iGbyCols >= 2)
             m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
-      else {
-        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
-      }
-
-      if (ePreExp == PE_GKY)
+      else if (ePreExp == PE_GKY) {
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
         iGkyCols++;
-      else
+      }
+      else {
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
         i_Col++;
-
-      if (ePreExp != PE_GBY && ePreExp != PE_GKY)
         i_ColPL++;
+      }
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression

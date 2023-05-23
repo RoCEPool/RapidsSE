@@ -3,7 +3,7 @@
 # These tests are run in a single node, multi-partition configuration.
 # This is a recursive testList file.
 
-#../../../seth/tests/dummyTests/testList
+../../../seth/tests/dummyTests/testList
 //../../../seth/tests/tests1N4P/CombinedV2/testList
 #../../../seth/tests/tests1N4P/DataTypes/testList
 #../../../seth/tests/tests1N4P/Expressions/testList
