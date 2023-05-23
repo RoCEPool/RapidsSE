@@ -3755,12 +3755,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
   i8 i_Col = 0;
   i8 i_ColPL = 0;
-  i8 i_ExprStack = 0;
   i8 i_DupCtr = 1;
   i8 iGbyCols;
   i8 iGkyCols = 0;
   eDM eCastType;
-  ePE ePreExp_;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
@@ -3774,13 +3772,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   // get the predicate expression
   ePE ePreExp = PE_EXP;
 
-  ePreExp_ = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_ExprStack) : PE_NONE;
-
-  //RASSERT(ePreExp == ePreExp_);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack
-  pExprStack = m_pExprStack;
+  pExprStack = pWorkingStack(eExprKind, ePreExp);
+  RASSERT(m_pExprStack == pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
@@ -3828,15 +3823,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       if (ePreExp != PE_GBY && ePreExp != PE_GKY)
         i_ColPL++;
 
-      i_ExprStack++;
-
-      if (ePreExp != PE_GBY)
-        ePreExp = PE_EXP;
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
-      ePreExp_ = (ePE) m_pPreExpStack->iPeek(i_ExprStack);
-      //RASSERT(ePreExp_ == ePreExp);
+      if (ePreExp != PE_GBY)
+        ePreExp = PE_EXP;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
@@ -3848,7 +3838,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame("groupby"_Stz)) {
 
       ePreExp = PE_GBY;
-      RASSERT(ePreExp == ePreExp_);
 
       iGbyCols = 0;
 
@@ -3863,7 +3852,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame("ordGroupby"_Stz)) {
 
       ePreExp = PE_GBY;
-      RASSERT(ePreExp == ePreExp_);
 
       iGbyCols = 0;
 
@@ -3889,15 +3877,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       }
 
       i_Col = 0;
-      i_ExprStack++;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
-      //ePreExp_ = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
-      //RASSERT(ePreExp == ePreExp);
-
       ePreExp = PE_EXP;
-      //pExprStack = m_pExprStack;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
@@ -4020,8 +4003,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
         else {
           if (sNext[0] == 'K') {
             ePreExp = PE_GKY;
-            ePreExp_ = (ePE) m_pPreExpStack->iPeek(i_ExprStack);
-            RASSERT(ePreExp_ == ePreExp);
           }
           char *sNextDigit = (char*)(pTkn->szChars() + 2);
           if (StrLib::bIsDigit(sNextDigit[0])) {
@@ -4188,7 +4169,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("cast"_Stz)) {
       ePreExp = PE_CST;
-      //RASSERT(ePreExp == ePreExp_);
       vPushCast(pExprStack, pExprType, eCastType);
       continue;
     }
