@@ -3749,7 +3749,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   bool bUpperBound = false;
 
   TypedStack *pExprStack;
-  IntStack *pExprType;
+  IntStack   *pExprType;
 
   Token *pTkn;
 
@@ -3769,7 +3769,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   pExprType = new IntStack;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the predicate expression
+  // set the predicate expression
   ePE ePreExp = PE_EXP;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3811,7 +3811,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
             m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
       else {
-        pExprStack = m_pExprStack;
+        //pExprStack = m_pExprStack;
         vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
       }
 
