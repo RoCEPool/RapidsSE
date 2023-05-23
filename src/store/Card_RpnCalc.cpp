@@ -282,6 +282,27 @@ void Card_RpnCalc::vOntoStzList(StzList* pStzList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return a reduced copy of this rpnCalc                                      */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
+  p_rpnCalc_reduced->vSetType(this);
+
+  Symbol xExprNo;
+  xExprNo.vSetStreamOrdinal(i_Expr);
+
+  Card_Term* p_term = new Card_Term(xExprNo);
+  p_term->vSetType(this);
+
+  p_rpnCalc_reduced->vAppend(p_term);
+
+  return p_rpnCalc_reduced;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)

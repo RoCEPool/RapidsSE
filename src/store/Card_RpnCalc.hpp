@@ -27,6 +27,9 @@ namespace STORE
     bool bHasTerm(Symbol* pSymbol);
     bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
+
+    Card_RpnCalc *pReducedCopy(i8 i_Expr);
+
     bool bSameAs(Card_RpnCalc* p_rpnCalc_arg);
     Card_BoolCalc* pToBoolCalc(CardIter* pCI);
 

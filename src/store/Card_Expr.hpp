@@ -36,6 +36,8 @@ namespace STORE
     bool bOf(Symbol* pSymbol);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
+    Card_Expr *pReducedCopy(i8 i_Expr);
+
     void vRenumberForm_keyOdn(i8 i_Expr);
     void vRenumberForm_stmOdn(i8 i_Expr);
 
