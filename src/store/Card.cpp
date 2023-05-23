@@ -790,6 +790,18 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eAL Card::eGetLevel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eAL eLevel = (eAL) pSymbol()->Y_iGet(P_Level);
+
+  return eLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Stz* Card::szGetType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -1447,6 +1459,22 @@ bool Card::bSameSymbolPpyRecursive(Card* pCard_OTHER)
   }
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameTopology(Card *p_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eAL eLevel_this = this->eGetLevel();
+  eAL eLevel_arg  = p_arg->eGetLevel();
+
+  if (eLevel_arg == eLevel_this)
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

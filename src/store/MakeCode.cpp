@@ -119,7 +119,7 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
     if (xBoard.pChild()->szCardNm()->bSame("stage"_Stz)) {
       m_pOpDef_leading = nullptr;
       m_pColsReq = nullptr;
-      vCraftStageDef((Card_OP*)(xBoard.pChild()));
+      vCraftStageDef(xBoard.p_stage());
     }
     else {
       RASSERT(m_pStageDef);
@@ -129,7 +129,7 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
         m_pColsReq = new ColsReq;
         m_pOpDef_leading->vColsReq(m_pColsReq);
       }
-      vCraftOpDef((Card_OP*)(xBoard.pChild()));
+      vCraftOpDef(xBoard.p_OP());
     }
 
   }
@@ -138,13 +138,13 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* craft stage def                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftStageDef(Card_OP* p_OP)
+void MakeCode::vCraftStageDef(Card_Stage* p_stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
-                             p_OP->szSymbol(),
-                             _pCard_Stage(p_OP));
+                             p_stage->szSymbol(),
+                             p_stage);
   m_pPipelineDef->vAppend(m_pStageDef);
 }
 

@@ -35,6 +35,7 @@ namespace STORE
     static void vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level_running, i8& nStages);
 
   public:
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 

@@ -43,7 +43,7 @@ namespace STORE
   private:
     void vCraftPipelineDef(Board* pBoard);
 
-    void vCraftStageDef(Card_OP* p_OP);
+    void vCraftStageDef(Card_Stage*p_stage);
     void vCraftOpDef(Card_OP* p_OP);
     void vCraftArgDefs(Card_OP* p_OP);
 

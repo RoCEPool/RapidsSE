@@ -286,6 +286,7 @@ namespace STORE
     Card* pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
+    eAL  eGetLevel(void);
     Stz* szGetType(void);
 
     bool bHasSubRecursive(Card* pSubCard);
@@ -296,6 +297,7 @@ namespace STORE
     bool bIsCard(eCK eCard);
     bool bIsSymbol(char cSymbol);
     bool bIsSymbol(Stz* szSymbol);
+
 
     char cMark1(void);
     void vMark1(char cMark1);
@@ -321,6 +323,8 @@ namespace STORE
     bool bSameSymbol(Card* pArg);
     bool bSameSymbolRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
     bool bSameSymbolPpyRecursive(Card* pCard_OTHER); // not needed??
+
+    bool bSameTopology(Card* p_arg);
 
     void vSetType(Card* p_card_arg);
     void vSetType(Ppy xPpy_type);
