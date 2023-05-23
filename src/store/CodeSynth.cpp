@@ -3811,7 +3811,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
             m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
       else {
-        //pExprStack = m_pExprStack;
         vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
       }
 
@@ -3893,10 +3892,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       eExprKind = EK_SORT;
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working stack
-      pExprStack = pWorkingStack(eExprKind, ePreExp);
-
+      RASSERT(pExprStack == m_pExprStack);
       continue;
     }
 
@@ -3906,10 +3902,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       eExprKind = EK_TOP;
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working stack
-      pExprStack = pWorkingStack(eExprKind, ePreExp);
-
+      RASSERT(pExprStack == m_pExprStack);
       continue;
     }
 
@@ -3919,10 +3912,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       eExprKind = EK_FILTER;
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working stack
-      pExprStack = pWorkingStack(eExprKind, ePreExp);
-
+      RASSERT(pExprStack == m_pExprStack);
       continue;
     }
 
@@ -3944,6 +3934,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // lbound
     if (pTkn->bSame("lbound"_Stz)) {
 
+      RASSERT(ePreExp == PE_EXP);
+
       // push upperBound assign column
       if (bUpperBound)
         vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_ColPL, i_DupCtr);
@@ -3959,6 +3951,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ubound
     if (pTkn->bSame("ubound"_Stz)) {
+
+      RASSERT(ePreExp == PE_EXP);
 
       // push lowerBound assign column
       if (bLowerBound)
@@ -4152,10 +4146,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     if (pTkn->bSame("}"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the normal expression stack
-      pExprStack = m_pExprStack;
+      RASSERT(pExprStack = m_pExprStack);
       continue;
     }
 
@@ -4175,9 +4166,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame(")"_Stz)) {
 
+      ePreExp = PE_EXP;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the normal expression stack
-      pExprStack = m_pExprStack;
+      pExprStack = pWorkingStack(eExprKind, ePreExp);
       continue;
     }
 
