@@ -9,7 +9,16 @@ namespace STORE
 {
   class ColsReq : public Object
   {
+    static const i8 C_COLSREQ = 128;
+
   protected:
+
+    i8 m_nCols;
+
+    struct {
+      i8   m_i_Col_from1;
+      s32  m_sColNm;
+    } m_axCols[C_COLSREQ];
 
   protected:
     // must be last

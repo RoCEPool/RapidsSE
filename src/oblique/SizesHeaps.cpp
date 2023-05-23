@@ -336,7 +336,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
   { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,FILL },
-  { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_TINY    , FILL },
+  { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
   { CN_COMBINEDSRC,              sizeof(CombinedSrc),              HT_T_LARGE   , FILL },
