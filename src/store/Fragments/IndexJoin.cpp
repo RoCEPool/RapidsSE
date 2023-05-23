@@ -139,9 +139,10 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   }
 
   // find the upper bound entry
-  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aIndexTree_positionLE(
+#ifdef WITH_CLANG
+  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
-
+#endif
   __L_LABEL_INDEX_DEREF__:
   aDynamicT->m_iProcessRow = 1;
 
@@ -238,9 +239,10 @@ void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
   // marker-start
 
   // find the upper bound entry
-  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aIndexTree_positionLE(
+#ifdef WITH_CLANG
+  aDynamicT->m_xIndexInfoJ.m_aEntUpper = aExtern_IndexTreePositionLE(
       aDynamicT->m_xIndexInfoJ.m_aIndexTree, aDynamicT->m_xIndexInfoJ.m_aEntKey);
-
+#endif
   __L_LABEL_INDEX_DEREF__:
   aDynamicT->m_iProcessRow = 1;
 

@@ -104,8 +104,9 @@ void vGbyAggFindKey(Dynamic_T* aDynamicT) {
   // marker-start
   // - - - - - - - - - - - - - -
   // find key in payload index
-  aEntFound = aIndexTree_findEntry(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
-
+#ifdef WITH_CLANG
+  aEntFound = aExtern_IndexTreeFindEntry(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
+#endif
   if ( !aEntFound ) {
     // marker-end
   }
@@ -126,8 +127,11 @@ i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
 
     // - - - - - - - - - - - - - -
     // insert key in the payload
-    aEntInserted = aIndexTree_insertEnt(
+#ifdef WITH_CLANG
+    aEntInserted = aExtern_IndexTreeInsertEnt(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
+#endif
+
     if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
       return 0;
     }
@@ -188,8 +192,11 @@ i8 iGbyAggInsertVchKey(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // insert key in the payload
-  aEntInserted = aIndexTree_insertEnt(
+#ifdef WITH_CLANG
+  aEntInserted = aExtern_IndexTreeInsertEnt(
       aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
+#endif
+
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
@@ -588,8 +595,10 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // payload traversal
+#ifdef WITH_CLANG
   aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)
-      aIndexTree_begin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
+      aExtern_IndexTreeBegin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
+#endif
 
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
@@ -622,8 +631,10 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
 
   // - - - - - - - - - - - - - -
   // payload traversal
-  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aIndexTree_begin(
+#ifdef WITH_CLANG
+  aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aExtern_IndexTreeBegin(
       aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
+#endif
 
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
@@ -1050,8 +1061,11 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
   }
   else {
     nSrcSize = strlen(szSrcStz);
-    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aIndexTree_allotPayStr(
+#ifdef WITH_CLANG
+    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aExtern_IndexTreeAllotPayStr(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, szSrcStz);
+#endif
+
     szDstStz = (char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
     strncpy(szDstStz, szSrcStz, nSrcSize);
   }
