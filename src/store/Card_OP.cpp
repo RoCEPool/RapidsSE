@@ -452,6 +452,26 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this op bring data into the pipeline                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bIsDataInclusion(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+    case CK_INDEXJOIN:
+    case CK_INDEXSCAN:
+    case CK_SCAN:
+    case CK_TABLE:
+      return true;
+    default:
+      return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_OP::bIsEarlyLeaf(CardIter* pCI)
