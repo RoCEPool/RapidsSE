@@ -3760,6 +3760,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   i8 iGbyCols;
   i8 iGkyCols = 0;
   eDM eCastType;
+  ePE ePreExp_;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
@@ -3771,14 +3772,15 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the predicate expression
-  ePE ePreExp = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_ExprStack) : PE_NONE;
+  ePE ePreExp = PE_EXP;
+
+  ePreExp_ = m_pPreExpStack ? (ePE)m_pPreExpStack->iPeek(i_ExprStack) : PE_NONE;
+
+  //RASSERT(ePreExp == ePreExp_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack
-  pExprStack = pWorkingStack(EK_NONE, ePreExp);
-
-  if (!pExprStack)
-    pExprStack = m_pExprStack;
+  pExprStack = m_pExprStack;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
@@ -3805,27 +3807,22 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to normal expstack
-      if (ePreExp != PE_GBY)
-        pExprStack = m_pExprStack;
-
       if (ePreExp == PE_GBY) {
         // push assign column
         vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
         iGbyCols++;
+
+        if (eExprKind == EK_AGGORD && iGbyCols >= 2)
+            m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
       }
-      else
+      else {
+        pExprStack = m_pExprStack;
         vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      }
 
       if (ePreExp == PE_GKY)
         iGkyCols++;
-
-      if (ePreExp == PE_GBY && eExprKind == EK_AGGORD)
-        if (iGbyCols >= 2)
-          m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
-
-      if (ePreExp != PE_GKY)
+      else
         i_Col++;
 
       if (ePreExp != PE_GBY && ePreExp != PE_GKY)
@@ -3833,9 +3830,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       i_ExprStack++;
 
+      if (ePreExp != PE_GBY)
+        ePreExp = PE_EXP;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
-      ePreExp = (ePE) m_pPreExpStack->iPeek(i_ExprStack);
+      ePreExp_ = (ePE) m_pPreExpStack->iPeek(i_ExprStack);
+      //RASSERT(ePreExp_ == ePreExp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
@@ -3846,7 +3847,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("groupby"_Stz)) {
 
-      RASSERT(ePreExp == PE_GBY);
+      ePreExp = PE_GBY;
+      RASSERT(ePreExp == ePreExp_);
 
       iGbyCols = 0;
 
@@ -3860,7 +3862,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("ordGroupby"_Stz)) {
 
-      RASSERT(ePreExp == PE_GBY);
+      ePreExp = PE_GBY;
+      RASSERT(ePreExp == ePreExp_);
 
       iGbyCols = 0;
 
@@ -3890,7 +3893,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to the next predicate expression
-      ePreExp = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
+      //ePreExp_ = (ePE)m_pPreExpStack->iPeek(i_ExprStack);
+      //RASSERT(ePreExp == ePreExp);
+
+      ePreExp = PE_EXP;
+      //pExprStack = m_pExprStack;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
@@ -4011,8 +4018,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
           continue;
         }
         else {
-          char *sNext = (char*)(pTkn->szChars() + 2);
-          if (StrLib::bIsDigit(sNext[0])) {
+          if (sNext[0] == 'K') {
+            ePreExp = PE_GKY;
+            ePreExp_ = (ePE) m_pPreExpStack->iPeek(i_ExprStack);
+            RASSERT(ePreExp_ == ePreExp);
+          }
+          char *sNextDigit = (char*)(pTkn->szChars() + 2);
+          if (StrLib::bIsDigit(sNextDigit[0])) {
             vPushOrdCol(pExprStack, pExprType, ePreExp, eExprKind, pTkn);
             continue;
           }
@@ -4175,6 +4187,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     if (pTkn->bSame("cast"_Stz)) {
+      ePreExp = PE_CST;
+      //RASSERT(ePreExp == ePreExp_);
       vPushCast(pExprStack, pExprType, eCastType);
       continue;
     }
@@ -4189,7 +4203,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("count"_Stz)) {
 
-      RASSERT(ePreExp == PE_CNT);
+      ePreExp = PE_CNT;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
@@ -4200,7 +4214,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("countAll"_Stz)) {
 
-      RASSERT(ePreExp == PE_ALL);
+      ePreExp = PE_ALL;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
@@ -4211,7 +4225,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if ( pTkn->bSame("countDistinct"_Stz)) {
 
-      RASSERT(ePreExp == PE_CNT);
+      ePreExp = PE_CNT;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
@@ -4222,7 +4236,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("min"_Stz)) {
 
-      RASSERT(ePreExp == PE_MIN);
+      ePreExp = PE_MIN;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
@@ -4233,7 +4247,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if ( pTkn->bSame("max"_Stz)) {
 
-      RASSERT(ePreExp == PE_MAX);
+      ePreExp = PE_MAX;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
@@ -4244,7 +4258,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
     if (pTkn->bSame("sum"_Stz)) {
 
-      RASSERT(ePreExp == PE_SUM);
+      ePreExp = PE_SUM;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
@@ -4461,7 +4475,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
 
 #ifdef WITH_DEBUG_VERSION
-  /*
+/*
   TypeValueArea* pTypedCell;
 
 
@@ -4478,13 +4492,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   }
 
   // dump the ExprStack
-  vTrace("--------------------------------------\n"_Stz);
-  vTrace("EXPRSTACK:\n"_Stz);
-  nExpr = m_pPreExprStack->nValues() - 1;
+//  vTrace("--------------------------------------\n"_Stz);
+//  vTrace("EXPRSTACK:\n"_Stz);
+//  nExpr = m_pPreExpStack->nItems() - 1;
 
   while ( nExpr >= 0) {
-    pTypedCell = m_pPreExprStack->aPeekItem(nExpr--);
-    vTrace("%s\n"_Stz, pTypedCell->szStz());
+    ePE ePreExp = (ePE)m_pPreExpStack->iPeek(nExpr--);
+    vTrace("%s\n"_Stz, aPE[ePreExp]);
   }
 
   // dump the NullStack
@@ -4547,7 +4561,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     pTypedCell = pPostStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
-  */
+*/
 #endif
 
 
