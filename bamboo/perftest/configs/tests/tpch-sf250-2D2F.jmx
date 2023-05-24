@@ -25,7 +25,7 @@ c5ad.8xlarge</stringProp>
           </elementProp>
           <elementProp name="QUERY_LOOP_COUNT" elementType="Argument">
             <stringProp name="Argument.name">QUERY_LOOP_COUNT</stringProp>
-            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -285,7 +285,8 @@ c5ad.8xlarge</stringProp>
    O_CLERK           CHAR(15)      NOT NULL,
    O_SHIPPRIORITY    INTEGER       NOT NULL,
    O_COMMENT         VARCHAR(79)   NOT NULL
-);</stringProp>
+) partition by (O_CUSTKEY) 
+;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -388,7 +389,10 @@ c5ad.8xlarge</stringProp>
    N_NAME            CHAR(25)     NOT NULL,
    N_REGIONKEY       INTEGER      NOT NULL,
    N_COMMENT         VARCHAR(152)
-);</stringProp>
+)
+replicated
+tableSize 1
+;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -405,7 +409,10 @@ c5ad.8xlarge</stringProp>
    R_REGIONKEY       INTEGER      NOT NULL,
    R_NAME            CHAR(25)     NOT NULL,
    R_COMMENT         VARCHAR(152)
-);</stringProp>
+)
+replicated
+tableSize 1
+;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -479,7 +486,7 @@ group by
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createLineitemIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX lineitem_idx1 ON lineitem (l_shipdate);</stringProp>
+              <stringProp name="query">CREATE INDEX IxL_ORDERKEY ON lineitem (L_ORDERKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -492,7 +499,46 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createLineitemIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX lineitem_idx2 ON lineitem (l_orderkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxL_PARTKEY ON lineitem (L_PARTKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createLineitemIdx3" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxL_SHIPDATE ON lineitem (L_SHIPDATE);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createLineitemIdx4" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxL_SUPPKEY ON lineitem (L_SUPPKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createLineitemIdx5" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxL_RECEIPTDATE ON lineitem (L_RECEIPTDATE);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -505,7 +551,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createOrdersIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX orders_idx1 ON orders(o_custkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxO_CUSTKEY ON orders(O_CUSTKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -518,7 +564,20 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createOrdersIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX orders_idx2 ON orders(o_orderkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxO_ORDERKEY ON orders(O_ORDERKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createOrdersIdx3" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxO_ORDERDATE ON orders(O_ORDERDATE);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -531,7 +590,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartsuppIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX partsupp_idx1 ON partsupp(ps_partkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_suppkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -540,12 +599,11 @@ group by
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
             </JDBCSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartsuppIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX partsupp_idx2 ON partsupp(ps_suppkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxPS_PARTKEY ON partsupp(ps_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -554,12 +612,11 @@ group by
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
             </JDBCSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createPartIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX part_idx1 ON part(p_partkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxP_PARTKEY ON part(p_partkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -568,12 +625,11 @@ group by
               <stringProp name="resultSetMaxRows"></stringProp>
               <stringProp name="resultVariable"></stringProp>
               <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: Check if this index is actually required</stringProp>
             </JDBCSampler>
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createCustomerIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX customer_idx1 ON customer(c_custkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxC_CUSTKEY ON customer(c_custkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -586,7 +642,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createCustomerIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX customer_idx2 ON customer(c_nationkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxC_NATIONKEY ON customer(c_nationkey);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -599,7 +655,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createSupplierIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX supplier_idx1 ON supplier(s_suppkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxS_SUPPKEY ON supplier(S_SUPPKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -612,7 +668,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createSupplierIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX supplier_idx2 ON supplier(s_nationkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxS_NATIONKEY ON supplier(S_NATIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -625,7 +681,20 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createNationIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX nation_idx1 ON nation(n_nationkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createNationIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -638,7 +707,7 @@ group by
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="createRegionIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">CREATE INDEX region_idx1 ON region(r_regionkey);</stringProp>
+              <stringProp name="query">CREATE INDEX IxR_REGIONKEY ON region(R_REGIONKEY);</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -825,7 +894,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index lineItem lineitem_idx1 ;</stringProp>
+              <stringProp name="query">compact index lineItem IxL_ORDERKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -838,7 +907,46 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index lineItem lineitem_idx2 ;</stringProp>
+              <stringProp name="query">compact index lineItem IxL_PARTKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx3" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index lineItem IxL_SHIPDATE ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx4" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index lineItem IxL_SUPPKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx5" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index lineItem IxL_RECEIPTDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -869,7 +977,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactOrdersIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index orders orders_idx1 ;</stringProp>
+              <stringProp name="query">compact index orders IxO_CUSTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -882,7 +990,20 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactOrdersIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index orders orders_idx2 ;</stringProp>
+              <stringProp name="query">compact index orders IxO_ORDERKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactOrdersIdx3" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index orders IxO_ORDERDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -913,7 +1034,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartsuppIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index partsupp partsupp_idx1 ;</stringProp>
+              <stringProp name="query">compact index partsupp IxPS_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -926,7 +1047,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartsuppIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index partsupp partsupp_idx2 ;</stringProp>
+              <stringProp name="query">compact index partsupp IxPS_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -957,7 +1078,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index part part_idx1 ;</stringProp>
+              <stringProp name="query">compact index part IxP_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -988,7 +1109,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactCustomerIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index customer customer_idx1 ;</stringProp>
+              <stringProp name="query">compact index customer IxC_CUSTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1001,7 +1122,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactCustomerIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index customer customer_idx2 ;</stringProp>
+              <stringProp name="query">compact index customer IxC_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1032,7 +1153,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactSupplierIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index supplier supplier_idx1 ;</stringProp>
+              <stringProp name="query">compact index supplier IxS_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1045,7 +1166,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactSupplierIdx2" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index supplier supplier_idx2 ;</stringProp>
+              <stringProp name="query">compact index supplier IxS_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1058,7 +1179,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadNation" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">load nation &quot;/mnt/disk1/data1/nation.tbl&quot; ;</stringProp>
+              <stringProp name="query">loadReplicated nation &quot;/mnt/disk1/data1/nation.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1072,7 +1193,20 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactNationIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index nation nation_idx1 ;</stringProp>
+              <stringProp name="query">compact index nation IxN_NATIONKEY ;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Update Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactNationIdx2" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">compact index nation IxN_REGIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1085,7 +1219,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="loadRegion" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">load region &quot;/mnt/disk1/data1/region.tbl&quot; ;</stringProp>
+              <stringProp name="query">loadReplicated region &quot;/mnt/disk1/data1/region.tbl&quot; ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1099,7 +1233,7 @@ dload lineitem paths
             <hashTree/>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactRegionIdx1" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">compact index region region_idx1 ;</stringProp>
+              <stringProp name="query">compact index region IxR_REGIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -1390,14 +1524,51 @@ dload lineitem paths
             <hashTree/>
           </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Queries" enabled="false"/>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Queries" enabled="true"/>
         <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q1&apos;);
+OUT.println(&quot;Running Q1&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q1Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity)                                     as sum_qty,
+  sum(l_extendedprice)                                as sum_base_price,
+  sum(l_extendedprice * (1-l_discount))               as sum_disc_price,
+  sum(l_extendedprice * (1-l_discount) * (1 + l_tax)) as sum_charge,
+  avg(l_quantity)                                     as avg_qty,
+  avg(l_extendedprice)                                as avg_price,
+  avg(l_discount)                                     as avg_disc,
+  count(*)                                            as count_order
+from LineItem
+where l_shipdate &lt;= DATE &apos;1998-09-01&apos;
+group by l_returnflag, l_linestatus
+order by l_returnflag, l_linestatus;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1.withIntervals" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">select
   l_returnflag,
@@ -1413,7 +1584,7 @@ dload lineitem paths
 from
   lineitem
 where
-  l_shipdate &lt;= date(&apos;1998-12-01&apos; - interval &apos;90&apos; day)
+  l_shipdate &lt;= date &apos;1998-12-01&apos; - interval &apos;90&apos; day
 group by
   l_returnflag,
   l_linestatus
@@ -1431,6 +1602,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q2&apos;);
+OUT.println(&quot;Running Q2&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q2Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1493,6 +1674,16 @@ limit 100;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q3&apos;);
+OUT.println(&quot;Running Q3&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q3Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1534,6 +1725,16 @@ limit 10;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q4&apos;);
+OUT.println(&quot;Running Q4&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q4Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1548,7 +1749,39 @@ from
   orders
 where 
   o_orderdate &gt;= &apos;1993-07-01&apos;
-  and o_orderdate &lt; &apos;1993-07-01&apos; + interval &apos;3&apos; month
+  and o_orderdate &lt; &apos;1993-10-01&apos;
+  and exists (
+    select 
+      *
+    from 
+      lineitem
+    where 
+      l_orderkey = o_orderkey
+      and l_commitdate &lt; l_receiptdate )
+group by 
+  o_orderpriority
+order by 
+  o_orderpriority;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4.withIntervals" enabled="false">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  o_orderpriority, 
+  count(*) as order_count
+from 
+  orders
+where 
+  o_orderdate &gt;= date &apos;1993-07-01&apos;
+  and o_orderdate &lt; date &apos;1993-07-01&apos; + interval &apos;3&apos; month
   and exists (
     select 
       *
@@ -1572,6 +1805,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q5&apos;);
+OUT.println(&quot;Running Q5&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q5Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1597,8 +1840,44 @@ where
   and s_nationkey = n_nationkey
   and n_regionkey = r_regionkey
   and r_name = &apos;ASIA&apos;
-  and o_orderdate &gt;= &apos;1994-01-01&apos;
-  and o_orderdate &lt; &apos;1994-01-01&apos; + interval &apos;1&apos; year
+  and o_orderdate &gt;= date &apos;1994-01-01&apos;
+  and o_orderdate &lt; date &apos;1995-01-01&apos;
+group by 
+  n_name
+order by 
+  revenue desc;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5.withIntervals" enabled="false">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  n_name, 
+  sum(l_extendedprice * (1 - l_discount)) as revenue
+from 
+  customer, 
+  orders, 
+  lineitem, 
+  supplier, 
+  nation, 
+  region
+where 
+  c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and l_suppkey = s_suppkey
+  and c_nationkey = s_nationkey
+  and s_nationkey = n_nationkey
+  and n_regionkey = r_regionkey
+  and r_name = &apos;ASIA&apos;
+  and o_orderdate &gt;= date &apos;1994-01-01&apos;
+  and o_orderdate &lt; date &apos;1994-01-01&apos; + interval &apos;1&apos; year
 group by 
   n_name
 order by 
@@ -1614,6 +1893,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q6&apos;);
+OUT.println(&quot;Running Q6&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q6Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1626,8 +1915,29 @@ order by
 from 
   lineitem
 where 
-  l_shipdate &gt;= &apos;1994-01-01&apos;
-  and l_shipdate &lt; &apos;1994-01-01&apos; + interval &apos;1&apos; year
+  l_shipdate &gt;= date &apos;1994-01-01&apos;
+  and l_shipdate &lt; date &apos;1995-01-01&apos;
+  and l_discount between 0.06 - 0.01 and 0.06 + 0.01
+  and l_quantity &lt; 24;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6.withIntervals" enabled="false">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  sum(l_extendedprice*l_discount) as revenue
+from 
+  lineitem
+where 
+  l_shipdate &gt;= date &apos;1994-01-01&apos;
+  and l_shipdate &lt; date &apos;1994-01-01&apos; + interval &apos;1&apos; year
   and l_discount between 0.06 - 0.01 and 0.06 + 0.01
   and l_quantity &lt; 24;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1641,6 +1951,16 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q7&apos;);
+OUT.println(&quot;Running Q7&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q7Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1674,7 +1994,7 @@ from
       and s_nationkey = n1.n_nationkey
       and c_nationkey = n2.n_nationkey
       and ( 
-        (n1.n_name = &apos;FRANCE&apos; and n2.n_name = &apos;GERMANY&apos;)
+           (n1.n_name = &apos;FRANCE&apos;  and n2.n_name = &apos;GERMANY&apos;)
         or (n1.n_name = &apos;GERMANY&apos; and n2.n_name = &apos;FRANCE&apos;)
       )
       and l_shipdate &gt;= &apos;1995-01-01&apos;
@@ -1699,6 +2019,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q8&apos;);
+OUT.println(&quot;Running Q8&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q8Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1721,7 +2051,8 @@ from (
     orders, 
     customer, 
     nation n1, 
-    nation n2, region
+    nation n2, 
+    region
   where 
     p_partkey = l_partkey
     and s_suppkey = l_suppkey
@@ -1731,8 +2062,7 @@ from (
     and n1.n_regionkey = r_regionkey
     and r_name = &apos;AMERICA&apos;
     and s_nationkey = n2.n_nationkey
-    and o_orderdate &gt;= &apos;1995-01-01&apos;
-    and o_orderdate &lt;= &apos;1996-12-31&apos;
+    and o_orderdate between date &apos;1995-01-01&apos; and date &apos;1996-12-31&apos;
     and p_type = &apos;ECONOMY ANODIZED STEEL&apos; 
   ) as all_nations
 group by 
@@ -1750,6 +2080,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q9&apos;);
+OUT.println(&quot;Running Q9&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q9Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1799,6 +2139,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q10&apos;);
+OUT.println(&quot;Running Q10&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q10Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1823,8 +2173,52 @@ from
 where 
   c_custkey = o_custkey
   and l_orderkey = o_orderkey
-  and o_orderdate &gt;= &apos;1993-10-01&apos;
-  and o_orderdate &lt; &apos;1993-10-01&apos; + interval &apos;3&apos; month
+  and o_orderdate &gt;= date &apos;1993-10-01&apos;
+  and o_orderdate &lt; date &apos;1994-01-01&apos;
+  and l_returnflag = &apos;R&apos;
+  and c_nationkey = n_nationkey
+group by 
+  c_custkey, 
+  c_name, 
+  c_acctbal, 
+  c_phone, 
+  n_name, 
+  c_address, 
+  c_comment
+order by 
+  revenue desc 
+limit 20;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10.withIntervals" enabled="false">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  c_custkey, 
+  c_name, 
+  sum(l_extendedprice * (1 - l_discount)) as revenue,
+  c_acctbal, 
+  n_name, 
+  c_address, 
+  c_phone, 
+  c_comment
+from 
+  customer, 
+  orders, 
+  lineitem, 
+  nation
+where 
+  c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate &gt;= date &apos;1993-10-01&apos;
+  and o_orderdate &lt; date &apos;1993-10-01&apos; + interval &apos;3&apos; month
   and l_returnflag = &apos;R&apos;
   and c_nationkey = n_nationkey
 group by 
@@ -1849,6 +2243,16 @@ limit 20;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q11&apos;);
+OUT.println(&quot;Running Q11&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -1872,7 +2276,7 @@ group by
 having 
   sum(ps_supplycost * ps_availqty) &gt; (
     select 
-      sum(ps_supplycost * ps_availqty) * 0.0001
+      sum(ps_supplycost * ps_availqty) * 0.0000004
     from 
       partsupp, 
       supplier, 
@@ -1895,12 +2299,52 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q12&apos;);
+OUT.println(&quot;Running Q12&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q12Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  l_shipmode,
+  sum(case when o_orderpriority = &apos;1-URGENT&apos; or o_orderpriority = &apos;2-HIGH&apos; then 1 else 0 end) as high_line_count,
+  sum(case when o_orderpriority &lt;&gt; &apos;1-URGENT&apos; and o_orderpriority &lt;&gt; &apos;2-HIGH&apos; then 1 else 0 end) as low_line_count
+from 
+  orders, 
+  lineitem
+where 
+  o_orderkey = l_orderkey
+  and l_shipmode in (&apos;MAIL&apos;, &apos;SHIP&apos;)
+  and l_commitdate &lt; l_receiptdate
+  and l_shipdate &lt; l_commitdate
+  and l_receiptdate &gt;= date &apos;1994-01-01&apos;
+  and l_receiptdate &lt; date &apos;1995-01-01&apos;
+group by 
+  l_shipmode
+order by 
+  l_shipmode;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12.withIntervals" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">select 
   l_shipmode,
@@ -1931,7 +2375,17 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q13Loop" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q13&apos;);
+OUT.println(&quot;Running Q13&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q13Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -1970,12 +2424,43 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q14&apos;);
+OUT.println(&quot;Running Q14&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q14Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  100.00 * sum(case when p_type like &apos;PROMO%&apos; then l_extendedprice*(1-l_discount) else 0 end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+from 
+  lineitem, 
+  part
+where 
+  l_partkey = p_partkey
+  and l_shipdate &gt;= &apos;1995-09-01&apos;
+  and l_shipdate &lt; &apos;1995-10-01&apos;;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14.withIntervals" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">select 
   100.00 * sum(case when p_type like &apos;PROMO%&apos; then l_extendedprice*(1-l_discount) else 0 end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
@@ -1997,6 +2482,16 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q15&apos;);
+OUT.println(&quot;Running Q15&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q15Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2032,12 +2527,64 @@ This query requires a view to be created first.</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q16&apos;);
+OUT.println(&quot;Running Q16&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q16Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  p_brand, 
+  p_type, 
+  p_size, 
+  count(ps_suppkey) as supplier_cnt
+from 
+  partsupp, 
+  part
+where 
+  p_partkey = ps_partkey
+  and p_brand &lt;&gt; &apos;Brand#45&apos;
+  and p_type not like &apos;MEDIUM POLISHED%&apos;
+  and p_size in (49,14,23,45,19,3,36,9)
+  and ps_suppkey not in (
+    select 
+      s_suppkey
+    from 
+      supplier
+    where 
+      s_comment like &apos;%Customer%Complaints%&apos; 
+   )
+group by 
+  p_brand, 
+  p_type, 
+  p_size
+order by 
+  supplier_cnt desc, 
+  p_brand, 
+  p_type, 
+  p_size;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16.withCountDistinct" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">select 
   p_brand, 
@@ -2080,6 +2627,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q17&apos;);
+OUT.println(&quot;Running Q17&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q17Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2116,6 +2673,16 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q18&apos;);
+OUT.println(&quot;Running Q18&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q18Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2168,6 +2735,16 @@ limit 100;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q19&apos;);
+OUT.println(&quot;Running Q19&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q19Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2218,12 +2795,71 @@ where
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q20Loop" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q20&apos;);
+OUT.println(&quot;Running Q20&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q20Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
           <hashTree>
             <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20" enabled="true">
+              <stringProp name="dataSource">SEConnPool</stringProp>
+              <stringProp name="query">select 
+  s_name, 
+  s_address
+from 
+  supplier, 
+  nation
+where 
+  s_suppkey in (
+    select 
+      ps_suppkey
+    from 
+      partsupp
+    where 
+      ps_partkey in (
+        select 
+          p_partkey
+        from 
+          part
+        where 
+          p_name like &apos;forest%&apos; 
+       )
+       and ps_availqty &gt; (
+         select 
+           0.5 * sum(l_quantity)
+         from 
+           lineitem
+         where 
+           l_partkey = ps_partkey
+           and l_suppkey = ps_suppkey
+           and l_shipdate &gt;= date &apos;1994-01-01&apos;
+           and l_shipdate &lt; date &apos;1995-01-01&apos;
+       ) 
+  )
+  and s_nationkey = n_nationkey
+  and n_name = &apos;CANADA&apos;
+order by 
+  s_name;</stringProp>
+              <stringProp name="queryArguments"></stringProp>
+              <stringProp name="queryArgumentsTypes"></stringProp>
+              <stringProp name="queryTimeout"></stringProp>
+              <stringProp name="queryType">Select Statement</stringProp>
+              <stringProp name="resultSetHandler">Store as String</stringProp>
+              <stringProp name="resultSetMaxRows"></stringProp>
+              <stringProp name="resultVariable"></stringProp>
+              <stringProp name="variableNames"></stringProp>
+            </JDBCSampler>
+            <hashTree/>
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20.withIntervals" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">select 
   s_name, 
@@ -2273,7 +2909,17 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q21Loop" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q21&apos;);
+OUT.println(&quot;Running Q21&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q21Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -2330,7 +2976,17 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q22Loop" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;Running Q22&apos;);
+OUT.println(&quot;Running Q22&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q22Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -2382,6 +3038,16 @@ order by
             </JDBCSampler>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;All queries completed&apos;);
+OUT.println(&quot;All queries completed&quot;);
+OUT.flush();</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
         </hashTree>
       </hashTree>
     </hashTree>
