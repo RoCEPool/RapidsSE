@@ -212,6 +212,8 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 //  m_xDynamicT.m_iHasOrdAggRow = 0;
 //  m_xDynamicT.m_iOrdAggDone = 0;
 
+  m_xDynamicT.m_aStreamDefOut = nullptr;
+
   _checkInitialised_(CN_DYNAMIC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMIC,_FOOTER_);

@@ -228,6 +228,7 @@ LogicUnit::LogicUnit(void)
   m_afFun1 = nullptr;
   m_afFun2 = nullptr;
   m_afFun3 = nullptr;
+  m_afFun4 = nullptr;
 
   m_sStringA  = ""_Stz;
   m_sString0  = ""_Stz;

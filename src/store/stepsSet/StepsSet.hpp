@@ -466,6 +466,7 @@ void vDdlLockAssertNone(void);
   void vDynamicIsIndexScanFetch(void);
   void vDynamicIsIndexScanStore(void);
   void vDynamicNew(void);
+  void vDynamicStreamDefOut(void);
 
   void vDynamoCodeFetch(void);
   void vDynamoCompile(void);
@@ -602,6 +603,9 @@ void vDdlLockAssertNone(void);
   void vFun3Get(void);
   void vFun3Set(void);
   void vFun3Setup(void);
+  void vFun4Call(void);
+  void vFun4Get(void);
+  void vFun4Set(void);
 
   // grid
   void vGridDumpInfo(void);

@@ -89,6 +89,8 @@ struct Dynamic_T
   i8* m_aiPayload;
   struct IndexInfo m_xIndexInfoPL;
 
+  void* m_aStreamDefOut;
+
   // ordered aggregates
 //  i8      m_iIndexScan;
 //  i8      m_iHasOrdAggRow;

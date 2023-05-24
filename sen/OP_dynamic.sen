@@ -117,7 +117,19 @@
 
   //"OP_dynamic got a DATAPULSE" .
 
+  // pipeout DATAPULSE
   Pipein[].pipeout
+
+/*
+  // execute function to generate the streamDefOut
+  nullptr Fun5[] 0 Dynamic[].execute assert
+
+  // get streamDefOut from Dynamic
+  Dynamic[].streamDefOut to StreamDefOut[]
+
+  // pipeout the streamDef
+  StreamDefOut[].pipeout
+*/
 
   // is there an indexScan OP ?
   Dynamic[].IsIndexScan@ if

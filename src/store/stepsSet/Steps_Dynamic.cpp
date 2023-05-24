@@ -23,6 +23,7 @@ void Step::vAddSteps_Dynamic(void)
   vAddStep("Dynamic[].IsIndexScan@"_Stz,  &Step::vDynamicIsIndexScanFetch);
   vAddStep("Dynamic[].IsIndexScan!"_Stz,  &Step::vDynamicIsIndexScanStore);
   vAddStep("Dynamic[].new"_Stz,           &Step::vDynamicNew);
+  vAddStep("Dynamic[].streamDefOut"_Stz,  &Step::vDynamicStreamDefOut);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,6 +200,20 @@ void Step::vDynamicNew(void)
   
   m_pLogicUnit->m_xpDynamic = new Dynamic(m_pLogicUnit);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamic[].streamDefOut -- get the streamDefOut                             */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamicStreamDefOut(void)
+{
+  ENTRY();
+
+  Dynamic* pDynamic = *m_pLogicUnit->m_xpDynamic;
+
+  m_pDataStack->vPushPtr((Object*)pDynamic->aDynamicT()->m_aStreamDefOut);
+
   EXIT();
 }
 
