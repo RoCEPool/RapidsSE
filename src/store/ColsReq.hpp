@@ -16,7 +16,7 @@ namespace STORE
     i8 m_nCols;
 
     struct {
-      i8   m_i_Col_from1;
+      i8   m_i_Col_base1;
       s32  m_sColNm;
     } m_axCols[C_COLSREQ];
 
@@ -30,7 +30,9 @@ namespace STORE
 
     ColsReq(void);
 
-    ~ColsReq(void) noexcept(false);
+   ~ColsReq(void) noexcept(false);
+
+    void vAddCol(i8 i_Col_base1, Stz* szColNm);
 
 
   protected:

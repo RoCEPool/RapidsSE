@@ -28,6 +28,7 @@ namespace STORE
     void vEarlyProject_root(CardIter* pCI);
     void vEarlyProject_backstep(CardIter* pCI);
 
+    bool bIsDataInclusion(void);
     bool bIsEarlyLeaf(CardIter* pCI);
     bool bIsEarlyRoot(void);
     bool bIsNodeLevel(void);

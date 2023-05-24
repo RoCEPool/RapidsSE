@@ -23,7 +23,7 @@ ColsReq::ColsReq(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++)
-    m_axCols[i_Col].m_i_Col_from1 = C_UNKNOWN;
+    m_axCols[i_Col].m_i_Col_base1 = C_UNKNOWN;
 
   m_nCols = 0;
 
@@ -49,6 +49,17 @@ ColsReq::~ColsReq(void) noexcept(false)
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ColsReq::vAddCol(i8 i_Col_base1, Stz *szColNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_axCols[i_Col_base1].m_i_Col_base1 = i_Col_base1;
+  m_axCols[i_Col_base1].m_sColNm = szColNm;
+
+}
 
 /*============================================================================*/
 /* end                                                                        */

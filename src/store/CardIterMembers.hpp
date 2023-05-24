@@ -49,6 +49,8 @@ namespace STORE
 
     Card_Expr*   p_expr(void);
     Card_IdxCol* p_idxCol(void);
+    Card_OP*     p_OP(void);
+    Card_Stage*  p_stage(void);
     Card_Term*   p_term(void);
 
     i8 iGetOdn(void);

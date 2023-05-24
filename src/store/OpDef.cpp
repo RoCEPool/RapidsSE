@@ -72,6 +72,8 @@ OpDef::~OpDef(void) noexcept(false)
 
   //delete m_pIndexDef_join;
   delete m_pIndexDef_gbyAgg;
+
+  delete m_pColsReq;
 }
 
 
@@ -120,6 +122,26 @@ ArgDef* OpDef::pArgDef_expr(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   return pArgDef("expr"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ColsReq* OpDef::pColsReq(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return m_pColsReq;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vColsReq(ColsReq* pColsReq)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  m_pColsReq = pColsReq;
 }
 
 

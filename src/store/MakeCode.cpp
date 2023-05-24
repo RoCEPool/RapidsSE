@@ -31,10 +31,13 @@ MakeCode::MakeCode(CardIter* pCI)
 
   m_pCI = pCI;
 
-  m_pPipelineDef = nullptr;
-  m_pStageDef    = nullptr;
-  m_pOpDef       = nullptr;
-  m_pArgDef      = nullptr;
+  m_pPipelineDef   = nullptr;
+  m_pStageDef      = nullptr;
+  m_pOpDef         = nullptr;
+  m_pArgDef        = nullptr;
+
+  m_pOpDef_leading = nullptr;
+  m_pColsReq       = nullptr;
 
   _checkInitialised_(CN_MAKECODE);
 
@@ -114,12 +117,14 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
   while (xBoard.bEach()) {
 
     if (xBoard.pChild()->szCardNm()->bSame("stage"_Stz)) {
-      vCraftStageDef((Card_OP*)(xBoard.pChild()));
+      m_pOpDef_leading = nullptr;
+      m_pColsReq = nullptr;
+      vCraftStageDef(xBoard.p_stage());
     }
     else {
       RASSERT(m_pStageDef);
       //vTrace("Op %s\n"_Stz,xBoard.pChild()->szCardNm());
-      vCraftOpDef((Card_OP*)(xBoard.pChild()));
+      vCraftOpDef(xBoard.p_OP());
     }
 
   }
@@ -128,13 +133,13 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* craft stage def                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftStageDef(Card_OP* p_OP)
+void MakeCode::vCraftStageDef(Card_Stage* p_stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
-                             p_OP->szSymbol(),
-                             _pCard_Stage(p_OP));
+                             p_stage->szSymbol(),
+                             p_stage);
   m_pPipelineDef->vAppend(m_pStageDef);
 }
 
@@ -162,6 +167,8 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
   vCraftIndexDefs(p_OP);
 
   vCraftArgDefs(p_OP);
+
+  vUpdateColsReq(p_OP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,6 +333,39 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
 
   m_pOpDef->m_pStreamDef_arriving = p_OP->pCraftStreamDef_arriving();
   m_pOpDef->m_pStreamDef_emitted  = p_OP->pCraftStreamDef_emitted();
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the current cols required                                           */
+/*----------------------------------------------------------------------------*/
+void MakeCode::vUpdateColsReq(Card_OP* p_OP)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  eCK eCard = p_OP->eCard();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  switch (eCard) {
+
+    case CK_AGGREG:
+    case CK_CROSSJOIN:
+    case CK_FILTER:
+    case CK_GBYAGG:
+    case CK_HAVING:
+    case CK_INDEXJOIN:
+    case CK_INDEXSCAN:
+    case CK_KEYEXISTS:
+    case CK_KEYNOTEXISTS:
+    case CK_ORDAGG:
+    case CK_PROJECT:
+    case CK_SCAN:
+      return;
+
+    default:
+      return;
+  }
+
 }
 
 /*============================================================================*/
