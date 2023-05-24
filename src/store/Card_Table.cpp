@@ -218,6 +218,21 @@ Card_Table* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Table::vFixTablePos(CardIter* pCI)
+{
+  _static_
+
+  for (Kid xKid(pCI->G.pDeck); xKid.bEach(CK_TABLE); /**/) {
+    if (xKid.p_table()->bHasPrmOdn()) {
+      xKid.p_table()->pSymbol()->Y_vSet(P_FixedPos,(i8)0);
+      break;
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 i8 Card_Table::nTables(CardIter* pCI)
 {
   _static_

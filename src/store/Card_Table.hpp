@@ -29,8 +29,9 @@ namespace STORE
     static void vAffixTableSyn(CardIter* pCI, char* cTableSyn);
     static void vAppendIndexList(CardIter* pCI);
     static void vDeriveBoundsFromFilter(CardIter* pCI);
-    static void vProduceTablePtns(CardIter* pCI);
     static Card_Table* pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
+    static void vFixTablePos(CardIter* pCI);
+    static void vProduceTablePtns(CardIter* pCI);
     static i8 nTables(CardIter* pCI);
     static i8 nTables_foldBreak(CardIter* pCI);
     static i8 nTables_reverse_foldBreak(CardIter* pCI);
