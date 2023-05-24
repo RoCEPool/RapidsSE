@@ -160,6 +160,7 @@ static Stz* P_Permutation  = "i_Permutation"_Stz;
 static Stz* P_ProjBump     = "nProjBump"_Stz;
 static Stz* P_ProjBumped   = "nProjBumped"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
+static Stz* P_ReqCol       = "bReqCol"_Stz;
 static Stz* P_SendKind     = "eSendKind"_Stz;
 static Stz* P_SentOut      = "nSentOut"_Stz;
 static Stz* P_Smoothed     = "bSmoothed"_Stz;

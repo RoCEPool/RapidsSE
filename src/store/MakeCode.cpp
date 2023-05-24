@@ -124,11 +124,6 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
     else {
       RASSERT(m_pStageDef);
       //vTrace("Op %s\n"_Stz,xBoard.pChild()->szCardNm());
-      if (! m_pOpDef_leading) {
-        m_pOpDef_leading = m_pOpDef;
-        m_pColsReq = new ColsReq;
-        m_pOpDef_leading->vColsReq(m_pColsReq);
-      }
       vCraftOpDef(xBoard.p_OP());
     }
 
@@ -174,7 +169,6 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
   vCraftArgDefs(p_OP);
 
   vUpdateColsReq(p_OP);
-
 }
 
 /*----------------------------------------------------------------------------*/
