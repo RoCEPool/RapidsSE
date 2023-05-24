@@ -115,7 +115,7 @@ def __create_hardware_regr_record(cur: typing.Union[psycopg.Cursor[typing.Any],
     """
 
     sql = "SELECT hardwareId, hardwareName, numMachines, instanceType, isSpotInstance, " \
-          "isRegrConfig FROM hardware WHERE hardwareName = (%s)"
+          "isRegrConfig FROM hardware WHERE hardwareName = (%s) AND isRegrConfig = TRUE"
     data = (hw_config.get_hardware_name(),)
 
     cur.execute(sql, data)
@@ -288,7 +288,7 @@ def __create_cluster_regr_record(cur: typing.Union[psycopg.Cursor[typing.Any], p
 
     sql = "SELECT clusterId, clusterName, numNodes, ptnsPerNode, threadsPerNode, sharedMem," \
           "params, isRegrConfig " \
-          "FROM cluster WHERE clusterName = (%s)"
+          "FROM cluster WHERE clusterName = (%s) AND isRegrConfig = TRUE"
     data = (cluster_config.get_cluster_name(),)
 
     cur.execute(sql, data)
