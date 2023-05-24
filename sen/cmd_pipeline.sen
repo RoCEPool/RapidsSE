@@ -528,13 +528,8 @@
                   Dynamo[].hasCode if
                    "DYNAMO HAS CODE" .
 
-                    //Compiler[].new
-                    //Dynamo[].code@ TinyC[].compile_dynamoCode
-                    //1 TinyC[].symbols
-                    //TinyC[].relocate assert
-
                     LibInfo[].new
-                    Dynamo[].code@ "DynLibNm" LibInfo[].compile not if
+                    Dynamo[].code@ Dynamo[].name@ LibInfo[].compile not if
                       "COMPILATION FAILED" .
                     else
                       LibInfo[].link not if

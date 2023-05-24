@@ -39,6 +39,7 @@ void Step::vAddSteps_Dynamo(void)
   vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
   vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
   vAddStep("Dynamo[].hasCode"_Stz,  &Step::vDynamoHasCode);
+  vAddStep("Dynamo[].name@"_Stz,    &Step::vDynamoNameFetch);
   vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
 }
 
@@ -126,6 +127,22 @@ void Step::vDynamoHasCode(void)
     m_pDataStack->vPushInt(false);
   else
     m_pDataStack->vPushInt(true);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].name@ -- fetch the name of the dynamo pipeline                    */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoNameFetch(void)
+{
+  ENTRY();
+
+  s4K szName;
+
+  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
+  szName = pDynamo->szName();
+  m_pDataStack->vPushStr(szName);
+
   EXIT();
 }
 

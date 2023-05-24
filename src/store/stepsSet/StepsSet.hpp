@@ -471,6 +471,7 @@ void vDdlLockAssertNone(void);
   void vDynamoDelete(void);
   void vDynamoGet(void);
   void vDynamoHasCode(void);
+  void vDynamoNameFetch(void);
   void vDynamoNew(void);
 
   // encode

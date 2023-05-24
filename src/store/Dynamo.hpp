@@ -47,6 +47,7 @@ namespace STORE
 
     VertexSpec* pCompile(Stz* szPipelineStmt);
     Stz* szCode(void);
+    Stz* szName(void);
 
   private:
     Footer* aFooter(void);

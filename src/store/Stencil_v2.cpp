@@ -2497,7 +2497,7 @@ eEC Stencil_v2::eCollectStage(Dynamic* pDynamic, Stream* pStream) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // Should be the first OP after consumeOp
-      if (i_Op != 1) {
+      if (i_Op != 0) {
         vTrace("Error: indexScanOP should be the first OP in the stage (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
         return EC_INVALID_PIPELINE;
@@ -2880,7 +2880,7 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // Should be the first OP after consumeOp
-      if (i_Op != 1) {
+      if (i_Op != 0) {
         vTrace("Error: indexScanOP should be the first OP in the stage (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
         return EC_INVALID_PIPELINE;
