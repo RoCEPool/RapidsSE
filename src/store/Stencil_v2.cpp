@@ -145,11 +145,13 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
     if (eErrorCode != EC_NONE) {
       return eErrorCode;
     }
-    if (i_Stage == 0)
-      pStencil->vCombine(true, false);
-    else
-      pStencil->vCombine(false, false);
+
+    // synthesise the code for the stage
+    pStencil->vSynthesise(i_Stage);
+
+    // add the synthesised code to the stageDef
     pStageDef->vCode(pStencil->szOpSource());
+
     delete pStencil;
   }
 
@@ -197,11 +199,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
     // get the op
     OpDef *pOpDef = pStageDef->pGet(i_Op);
-
-    // break when we reach the combined OP
-    //if (pOpDef->szOpNm()->bSame("dynamic_v2"_Stz)) {
-    //  break;
-    //}
 
     // skip scan OP for now (sketch later)
     if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
@@ -312,67 +309,20 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* combine synthesized op code (put code for all shapes together)             */
+/* synthesizecode for all operators for given stage                           */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vCombine(bool bFileHeader, bool bGenerateCCode)
+void Stencil_v2::vSynthesise(i8 i_Stage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
+  bool bPrependHeaders = false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize the code for the combined operators
-  m_pOpSource->vSynthesizeCode(this, bFileHeader);
+  if ( i_Stage == 0)
+    bPrependHeaders = true;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // write to a file
-
-  if ( ! gxCmdLineArgs.m_xSysArgs.m_bCombined && ! bGenerateCCode)
-    return;
-
-  s256 sFileHpp;
-  s256 sFileC;
-  s256 funcName;
-  LocalFile oFile;
-
-  i8 iQueryNo = AM::iQueryNoInc();
-
-  if (gxCmdLineArgs.m_xSysArgs.m_bCombined) {
-    if (!Dir::bExists("../combined"_Stz)) {
-      if (!Dir::bMake("../combined"_Stz)) {
-        vTrace("Unable to make dir ../combined"_Stz);
-        return;
-      }
-    }
-    sFileHpp.vSprint("../combined/FlatQuery.hpp"_Stz, iQueryNo,
-                      AM::pGrid()->pThisNode()->szNodeNm());
-    sFileC.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
-                      AM::pGrid()->pThisNode()->szNodeNm());
-  }
-  else if (bGenerateCCode) {
-    if (! Dir::bExists("../ccode"_Stz)) {
-      if (! Dir::bMake("../ccode"_Stz)) {
-        vTrace("Unable to make dir ../ccode"_Stz);
-        return;
-      }
-    }
-    sFileHpp.vSprint("../ccode/FlatQuery.hpp"_Stz, iQueryNo,
-                      AM::pGrid()->pThisNode()->szNodeNm());
-    sFileC.vSprint("../ccode/FlatQuery%lld_%s.c"_Stz, iQueryNo,
-                      AM::pGrid()->pThisNode()->szNodeNm());
-  }
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // write to the .hpp file
-  //bool bResult = oFile.bOpenAppend(sFileHpp);
-  //oFile.vPrint((Stz*)m_pOpHeader->azCode());
-  //oFile.vClose();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // write to the .c file
-  bool bResult = oFile.bOpenWrite(sFileC);
-  oFile.vPrint((Stz*)m_pOpSource->azCode());
-  oFile.vClose();
-
+    m_pOpSource->vSynthesizeCode(this, bPrependHeaders);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,6 +360,7 @@ void Stencil_v2::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
+/*
 eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
@@ -689,6 +640,7 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
 
   return EC_NONE;
 }
+*/
 
 /*----------------------------------------------------------------------------*/
 /* setup the combinedOp                                                       */

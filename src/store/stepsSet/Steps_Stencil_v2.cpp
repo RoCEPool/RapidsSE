@@ -100,7 +100,7 @@ void Step::vStencilSetup_v2(void)
 void Step::vStencilSketch_v2(void)
 {
   ENTRY();
-
+/*
   Stencil_v2* pStencil   = * m_pLogicUnit->m_xpStencil_v2;
 
   Dynamic* pDynamic = _pDynamic(m_pDataStack->pPopPtr(__func__));
@@ -130,7 +130,7 @@ void Step::vStencilSketch_v2(void)
   }
 
   m_pDataStack->vPushInt(eError);
-
+*/
   EXIT();
 }
 
