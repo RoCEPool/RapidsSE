@@ -76,6 +76,7 @@ namespace STORE
     void vAs          (Stz* szRpnExpr, Card_As*        pCard_As);
     void vTerm        (Stz* szRpnExpr, Card_Term*      pCard_Term);
 
+    Index*    pCraftIndex_indexScan(void);
     IndexDef* pCraftIndexDef_join(void);
     IndexDef* pCraftIndexDef_gbyAgg(void);
 

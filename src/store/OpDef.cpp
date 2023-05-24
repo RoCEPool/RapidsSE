@@ -27,6 +27,8 @@ OpDef::OpDef(void)
   m_pStreamDef_arriving = nullptr;
   m_pStreamDef_emitted  = nullptr;
 
+  m_pIndex_indexScan    = nullptr;
+
   m_pIndexDef_join      = nullptr;
   m_pIndexDef_gbyAgg    = nullptr;
 
@@ -48,6 +50,8 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
 
   m_pStreamDef_arriving = nullptr;
   m_pStreamDef_emitted  = nullptr;
+
+  m_pIndex_indexScan    = nullptr;
 
   m_pIndexDef_join      = nullptr;
   m_pIndexDef_gbyAgg    = nullptr;

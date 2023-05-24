@@ -59,20 +59,25 @@ void Step::vDynamicExecute(void)
 
   i8 iResult;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get DynamicT
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
   Dynamic_T* aDynamicT = pDynamic->aDynamicT();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the trace flag
   i8 iTrace = m_pDataStack->iPopInt(__func__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the function pointer
   bool (*afFun)(void*);
   afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the data buffer
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // setup DynamicT
   aDynamicT->m_pPot = * m_pLogicUnit->m_xpPot;
   aDynamicT->m_pTub = * m_pLogicUnit->m_xpTub;

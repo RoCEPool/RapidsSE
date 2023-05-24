@@ -199,6 +199,23 @@ IndexDef* Card_Index::pGetIndexDef(Card_Table *p_Table)
   return IndexDef;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Index* Card_Index::pGetIndex(Card_Table *p_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
+  if (! pTable)
+    return nullptr;
+
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
+  if (! pIndex)
+    return nullptr;
+
+  return pIndex;
+}
 
 /*============================================================================*/
 /* end                                                                        */

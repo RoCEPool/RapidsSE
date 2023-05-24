@@ -22,6 +22,8 @@ namespace STORE
     StreamDef* m_pStreamDef_arriving;
     StreamDef* m_pStreamDef_emitted;
 
+    Index*     m_pIndex_indexScan;
+
     IndexDef*  m_pIndexDef_join;
     IndexDef*  m_pIndexDef_gbyAgg;
 

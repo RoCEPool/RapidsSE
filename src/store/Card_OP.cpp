@@ -8,6 +8,7 @@
 #include "Card_Table.hpp"
 #include "CardIter.hpp"
 #include "Table.hpp"
+#include "Index.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1653,6 +1654,30 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(void)
 
   return pStreamDef_emitted;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft index for indexScan                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Card_OP::pCraftIndex_indexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
+    return nullptr;
+
+  Card_IndexList* p_indexList = pSub_indexList();
+  if (! p_indexList)
+    return nullptr;
+
+  Card_Index* p_index = p_indexList->pFindChosenIndex();
+  if (! p_index)
+    return nullptr;
+
+  Index* pIndex = p_index->pGetIndex(p_table);
+
+  return pIndex;
 }
 
 /*----------------------------------------------------------------------------*/

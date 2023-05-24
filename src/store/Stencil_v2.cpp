@@ -77,12 +77,9 @@ Stencil_v2::Stencil_v2(void)
 
 
   try {
-
     m_pOpSource    = new CombinedSrc;
-
   }
   catch (LowMemory xLowMemory) {
-
     throw xLowMemory;
   }
 
@@ -181,13 +178,15 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   if (eError != EC_NONE)
     return eError;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the stage name
   m_szStageNm = pStageDef->szStageNm();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each operator in the streamDef
+  // for each operator in the stageDef
   for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
 
-    // get the op
+    // get the opDef
     OpDef *pOpDef = pStageDef->pGet(i_Op);
 
     // skip scan OP for now (sketch later)
@@ -213,6 +212,24 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       bInflateCrw = false;
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
+    }
+
+    // generate code for indexScan OP
+    if (pOpDef->szOpNm()->bSame("indexScan"_Stz)) {
+
+      // either scan / indexScan should be there
+      RASSERT(!bInflateCrw);
+
+      eHandlerKind = HK_INDEXBUFFER;
+      sLabelLoop = "L_AdvanceNextIndexT"_Stz;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchIndexScan(pStageDef, pOpDef, eHandlerKind, sLabelLoop);
+      vAppend(pOpSketch);
+
+      bInflateGenerated = true;
+      ePrevStencil_v2 = SR_IT;
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1482,7 +1499,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1491,28 +1508,27 @@ OpSketch* Stencil_v2::pSketchIndexScan(Stream* pStream, Op* pOp, eHK eHandlerKin
   s256 sLabel;
   s256 sLabelNext;
 
-  // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  i8 i_Op = pOpDef->i_Op();
+
+  // get indexScan expr from OpDef
+  Stz* sIndexScanExpr = pOpDef->pArgDef_expr()->szArgVal();
+
+  // get the streamDefs
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
   // get the index
-  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+  Index* pIndex = pOpDef->m_pIndex_indexScan;
+  vTrace("Chosen index: %s\n"_Stz, pIndex->szIndexNm());
   IndexDef* pIndexDef = pIndex->pIndexDef();
 
-  // get the tags
-  TagSet* pOpTags = pOp->pOpTags();
-
-  // get indexScan expr from OP
-  Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
-
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(pOp->i_Op(),sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op,sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST, pStreamDefLft, pStreamDefOut);
 
-  u8 uSelectColumns = uGetSelectColumns(pStream);
+  //u8 uSelectColumns = uGetSelectColumns(pStream);
 
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-  vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(),i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
@@ -1580,7 +1596,7 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK 
 
   i8 i_Op = pOpDef->i_Op();
 
-  // get the streamDefLft
+  // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 

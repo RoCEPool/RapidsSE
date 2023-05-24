@@ -149,7 +149,7 @@ void vIndexPositionBegin(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
   // position at beginning of the index
-  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
+  __INDEX_INFO__.m_aEntInt =(struct Ent_int*)aExtern_IndexTreeBegin(
         __INDEX_INFO__.m_aIndexTree, &__INDEX_INFO__.m_aEntBuffer);
 #endif
 
