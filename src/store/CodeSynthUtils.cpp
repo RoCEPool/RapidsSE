@@ -275,6 +275,20 @@ bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch*
 
   bool bResult;
 
+  if (StrLib::bContains(sLine->azChar(), "__INDEXDEF__")) {
+    s256 sIndexDef;
+    StrLib::wToString((i8) pOpSketch->m_pIndexDef, sIndexDef.azChar());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEXDEF__", sIndexDef.azChar());
+    RASSERT(bResult);
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__INDEXTREE__")) {
+    s256 sIndexTree;
+    StrLib::wToString((i8) pOpSketch->m_pIndexTree, sIndexTree.azChar());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEXTREE__", sIndexTree.azChar());
+    RASSERT(bResult);
+  }
+
   if (StrLib::bContains(sLine->azChar(), "__INDEX_INFO__")) {
     switch(pOpSketch->m_eIndexInfo) {
       case II_ST:

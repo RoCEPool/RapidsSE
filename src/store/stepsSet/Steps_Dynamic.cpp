@@ -20,7 +20,8 @@ void Step::vAddSteps_Dynamic(void)
   vAddStep("Dynamic[].delete"_Stz,        &Step::vDynamicDelete);
   vAddStep("Dynamic[].execute"_Stz,       &Step::vDynamicExecute);
   vAddStep("Dynamic[].hashRows@"_Stz,     &Step::vDynamicHashRowsFetch);
-  vAddStep("Dynamic[].indexT"_Stz,        &Step::vDynamicIndexT);
+  vAddStep("Dynamic[].IsIndexScan@"_Stz,  &Step::vDynamicIsIndexScanFetch);
+  vAddStep("Dynamic[].IsIndexScan!"_Stz,  &Step::vDynamicIsIndexScanStore);
   vAddStep("Dynamic[].new"_Stz,           &Step::vDynamicNew);
 }
 
@@ -161,16 +162,30 @@ void Step::vDynamicHashRowsFetch(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* Dynamic[].indexT -- get the Dynamic indexT                                */
+/* Dynamic[].IsIndexScan! -- store the Dynamic IsIndexScan                    */
 /*----------------------------------------------------------------------------*/
-void Step::vDynamicIndexT(void)
+void Step::vDynamicIsIndexScanStore(void)
 {
   ENTRY();
 
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
-  Index* pIndex = _pIndex(pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndex);
+  bool bIndexScan = m_pDataStack->iPopBol(__func__);
 
-  m_pDataStack->vPushPtr(pIndex);
+  pDynamic->aDynamicT()->m_bIndexScan = bIndexScan;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamic[].IsIndexScan@ -- fetch the Dynamic IsIndexScan                    */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamicIsIndexScanFetch(void)
+{
+  ENTRY();
+
+  Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
+
+  m_pDataStack->vPushBol(pDynamic->aDynamicT()->m_bIndexScan);
 
   EXIT();
 }

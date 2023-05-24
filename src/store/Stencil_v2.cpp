@@ -1519,7 +1519,6 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
 
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
-  vTrace("Chosen index: %s\n"_Stz, pIndex->szIndexNm());
   IndexDef* pIndexDef = pIndex->pIndexDef();
 
   // create a new opSketch for this OP
@@ -1535,6 +1534,29 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
 
   // set the indexDef
   pOpSketch->vIndexDef(pIndexDef);
+
+  // get the index tree for the index
+  Table* pTable = pIndex->pTable();
+
+  LglPtn tLglPtn;
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+    tLglPtn = 0; //pOpDef->tLglPtn();
+  }
+  else {
+    tLglPtn = 0; //pOp->tLglPtn();
+  }
+
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+  i8 iIndexNo = pIndex->iIndexNo();
+
+  // get the indexTree
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+
+  // set the indexDef
+  pOpSketch->vIndexTree(pIndexTree);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();

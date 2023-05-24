@@ -50,6 +50,7 @@ namespace STORE
     StreamDef* m_pStreamDefRht;
     StreamDef* m_pStreamDefOut;
     IndexDef*  m_pIndexDef;
+    IndexTree* m_pIndexTree;
 
     // stencils
     eSR m_eStencilFrom;
@@ -110,6 +111,7 @@ namespace STORE
 
     void vIndexDef(IndexDef* pIndexDef);
     void vIndexPositionLower(eIP eIndexPosition);
+    void vIndexTree(IndexTree* pIndexTree);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
     void vStreamDefRht(StreamDef* pStreamDefRht);

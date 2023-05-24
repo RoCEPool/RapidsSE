@@ -6,6 +6,7 @@
 
   #include <stdio.h>
   #include <string.h>
+  #include <stdbool.h>
 
   #include "../src/primitives/BaseTypes_tcc.h"
   #include "../src/base/CodeSynthCommon.h"

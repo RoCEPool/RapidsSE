@@ -34,6 +34,10 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_iErrorCode  = (i8)EC_NONE;
   m_xDynamicT.m_iProcessRow = 1;
   m_xDynamicT.m_iRowsProcessed = 0;
+  m_xDynamicT.m_bIndexScan = false;
+
+  // limit
+  m_xDynamicT.m_iLimitRows       = 0;
 
   // rowbuffer T
   m_xDynamicT.m_aRowBuffer    = nullptr;
@@ -202,9 +206,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoPL.m_aEntUpper    = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_aEntBuffer   = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_aEntInt      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();
-
-  // limit
-  m_xDynamicT.m_iLimitRows       = 0;
 
   // ordAgg
 //  m_xDynamicT.m_iIndexScan  = 0;

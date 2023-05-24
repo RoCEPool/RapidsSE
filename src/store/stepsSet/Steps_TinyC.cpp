@@ -162,7 +162,7 @@ void Step::vTinyCGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TinyC[].isNotNull -- get TinyC                                                   */
+/* TinyC[].isNotNull -- get TinyC                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTinyCIsNotNull(void)
 {

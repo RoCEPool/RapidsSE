@@ -66,7 +66,8 @@ OpSketch::OpSketch(void)
   m_pStreamDefLft = nullptr;
   m_pStreamDefOut= nullptr;
   m_pStreamDefRht = nullptr;
-  m_pIndexDef= nullptr;
+  m_pIndexDef     = nullptr;
+  m_pIndexTree    = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
@@ -126,6 +127,7 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_pStreamDefOut = pStreamDefOut;
   m_pStreamDefRht = nullptr;
   m_pIndexDef     = nullptr;
+  m_pIndexTree    = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
@@ -266,11 +268,21 @@ void OpSketch::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_Du
 /*----------------------------------------------------------------------------*/
 /* set indexdef                                                               */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vIndexDef(IndexDef* pIndexef)
+void OpSketch::vIndexDef(IndexDef* pIndexDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
-  m_pIndexDef = pIndexef;
+  m_pIndexDef = pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set indexTree                                                              */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vIndexTree(IndexTree* pIndexTree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_pIndexTree = pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/

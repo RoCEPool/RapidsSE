@@ -119,6 +119,26 @@
 
   Pipein[].pipeout
 
+  // is there an indexScan OP ?
+  Dynamic[].IsIndexScan@ if
+
+    // execute the indexScan and combinedOp's
+    nullptr Fun2[] 0 Dynamic[].execute assert
+
+    // execute EOS handling
+    nullptr Fun3[] 1 Dynamic[].execute assert
+
+    // pipeout all Tub[]/Pot[]
+    Dynamic[].hashRows@ if
+      Pot[].pipeOutRemainderPtns
+    else
+      Tub[].pipeOutRemainder
+    then
+
+    Marker[].newEosMarker
+    Marker[].pipeOut
+  then
+
   true
 ;
 
@@ -251,6 +271,10 @@
   dynamic[].new
 
   LibInfo[].findFunctions
+
+  Fun2[].isNotNull if
+    true dynamic[].IsIndexScan!
+  then
 
   // pipeout the start marker
   Pipein[].pipeout

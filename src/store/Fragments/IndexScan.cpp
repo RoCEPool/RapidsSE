@@ -26,6 +26,9 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   i8 i_CurrentRow;
   i8*   paW;
 
+  void* __INDEXDEF__;
+  void* __INDEXTREE__;
+
   __L_LABEL_LOOP__:
 
   // marker-start
@@ -45,6 +48,8 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   paW = &aDynamicT->m_aW[0];
+  aDynamicT->m_xIndexInfoT.m_aIndexDef = __INDEXDEF__;
+  aDynamicT->m_xIndexInfoT.m_aIndexTree = __INDEXTREE__;
 
   i_CurrentRow = -1;
 

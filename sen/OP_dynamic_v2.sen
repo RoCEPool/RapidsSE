@@ -117,7 +117,7 @@
   Pipein[].pipeout
 
   // if index is set then must be an indexScan OP
-  Dynamic[].IndexT to Index[]
+  //Dynamic[].IndexT to Index[]
   Index[].isNull not if
 
     // execute the indexScan and combinedOp's

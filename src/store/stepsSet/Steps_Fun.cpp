@@ -44,6 +44,7 @@ void Step::vAddSteps_Fun(void)
   vAddStep("Fun2[]"_Stz,      &Step::vFun2Get);
   vAddStep("Fun2[].call"_Stz, &Step::vFun2Call);
   vAddStep("Fun2[].get"_Stz,  &Step::vFun2Get);
+  vAddStep("Fun2[].isNotNull"_Stz,  &Step::vFun2IsNotNull);
   vAddStep("Fun2[].set"_Stz,  &Step::vFun2Set);
   vAddStep("Fun2[].setup"_Stz,&Step::vFun2Setup);
 
@@ -274,6 +275,18 @@ void Step::vFun2Get(void)
   ENTRY();
 
   m_pDataStack->vPushInt((i8)* m_pLogicUnit->m_afFun2);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fun2[].isNotNull -- fun2 is not null                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vFun2IsNotNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_pLogicUnit->m_afFun2 ? 1 : 0);
 
   EXIT();
 }

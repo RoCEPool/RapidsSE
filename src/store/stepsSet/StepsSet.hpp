@@ -463,7 +463,8 @@ void vDdlLockAssertNone(void);
   void vDynamicExecute(void);
   void vDynamicHashRowsFetch(void);
   void vDynamicGet(void);
-  void vDynamicIndexT(void);
+  void vDynamicIsIndexScanFetch(void);
+  void vDynamicIsIndexScanStore(void);
   void vDynamicNew(void);
 
   void vDynamoCodeFetch(void);
@@ -594,6 +595,7 @@ void vDdlLockAssertNone(void);
   void vFun1Setup(void);
   void vFun2Call(void);
   void vFun2Get(void);
+  void vFun2IsNotNull(void);
   void vFun2Set(void);
   void vFun2Setup(void);
   void vFun3Call(void);
