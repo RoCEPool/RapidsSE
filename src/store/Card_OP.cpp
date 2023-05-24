@@ -295,6 +295,14 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_OP::vDeleteFilterIfEmpty(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

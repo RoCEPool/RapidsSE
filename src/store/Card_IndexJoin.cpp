@@ -115,6 +115,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   vUpdate_projection(pCI);
 
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+
   pCI->vPrintBoard();
 
   // restore needed
@@ -122,6 +124,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->Early.m_pNeeded_later = p_needed_save;
 
   pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+
 
   pCI->vPrintBoard();
 
@@ -244,6 +248,8 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 
