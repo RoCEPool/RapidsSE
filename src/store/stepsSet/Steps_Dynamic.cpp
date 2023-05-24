@@ -59,27 +59,34 @@ void Step::vDynamicExecute(void)
 
   i8 iResult;
 
+  // get DynamicT
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
   Dynamic_T* aDynamicT = pDynamic->aDynamicT();
 
-  aDynamicT->m_pPot = * m_pLogicUnit->m_xpPot;
-  aDynamicT->m_pTub = * m_pLogicUnit->m_xpTub;
-
+  // get the trace flag
   i8 iTrace = m_pDataStack->iPopInt(__func__);
 
+  // get the function pointer
   bool (*afFun)(void*);
   afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
 
+  // get the data buffer
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
+  // setup DynamicT
+  aDynamicT->m_pPot = * m_pLogicUnit->m_xpPot;
+  aDynamicT->m_pTub = * m_pLogicUnit->m_xpTub;
   aDynamicT->m_iErrorCode = (i8)EC_NONE;
+  aDynamicT->m_eStrInflateRule = SI_STRAREA_ADR;
+  aDynamicT->m_bTrace     = iTrace;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // DataBuffer ?
   if (pDataBuffer) {
 
+    // CRWBUFFER ?
     if (pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
-      // CRWBUFFER
+
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
 
       aDynamicT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
@@ -89,6 +96,7 @@ void Step::vDynamicExecute(void)
     else {
       // ROWBUFFER
       RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER);
+
       RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
 
       aDynamicT->m_aRowBuffer  = pRowBuffer;
@@ -96,15 +104,8 @@ void Step::vDynamicExecute(void)
       aDynamicT->m_nRows       = pRowBuffer->nRows();
     }
   }
-  else {
-    //EOSMARKER
-    // nothing to do
-  }
 
-  aDynamicT->m_eStrInflateRule = SI_STRAREA_ADR;
-  aDynamicT->m_bTrace     = iTrace;
-
-  /*
+  /***************************************************
   if ( afFun ==  m_pLogicUnit->m_afFun3 ) {
     // invoke with null databuffer (ordAgg)
     if (aDynamicT->m_iHasOrdAggRow) {
@@ -115,8 +116,10 @@ void Step::vDynamicExecute(void)
         iResult = m_pLogicUnit->m_afFun1(aDynamicT);
     }
   }
-*/
+  *******************************************************/
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute the dynamic function
   iResult = afFun(aDynamicT);
 
   // EOS marker handler done ?
@@ -128,9 +131,9 @@ void Step::vDynamicExecute(void)
     IndexDef* pIndexDef = _pIndexDef(aDynamicT->m_xIndexInfoPL.m_aIndexDef);
     delete pIndexDef;
     aDynamicT->m_xIndexInfoPL.m_aIndexDef = nullptr;
-
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push error
   if ( !iResult )
     m_pDataStack->vPushInt(aDynamicT->m_iErrorCode);
