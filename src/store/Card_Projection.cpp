@@ -217,6 +217,20 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Projection::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bHasTerm(pSymbol))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return a reduced copy of this projection                                   */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pReducedCopy(void)

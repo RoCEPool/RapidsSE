@@ -26,6 +26,7 @@ namespace STORE
     bool bCullPred(Card_PRED* p_pred, char cWithMark);
     Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
+    bool bHasTerm(Symbol* pSymbol);
     void vMarkWrt_table(CardIter* pCI);
     void vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED* p_PRED);
     void vPushPred(Card_PRED* p_pred_toBeAdded);

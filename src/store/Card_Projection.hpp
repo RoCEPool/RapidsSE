@@ -26,6 +26,7 @@ namespace STORE
     void vDeletePrjKey(CardIter* pCI);
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
+    bool bHasTerm(Symbol* pSymbol);
     Card_Projection* pReducedCopy(void);
     void vReviewAs(CardIter* pCI);
   };
