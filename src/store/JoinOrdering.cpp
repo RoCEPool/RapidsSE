@@ -88,9 +88,9 @@ void JoinOrdering::vJoinOrdering(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix position of table which uses subquery result as pos 0
-  m_pCI->vTransform(__func__, "fix position of table which uses subquery result"_Stz);
-  Card_Table::vFixTablePos(m_pCI);
-  m_pCI->vEndTransform();
+//  m_pCI->vTransform(__func__, "fix position of table which uses subquery result"_Stz);
+//  Card_Table::vFixTablePos(m_pCI);
+//  m_pCI->vEndTransform();
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

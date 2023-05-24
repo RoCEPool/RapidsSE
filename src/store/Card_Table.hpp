@@ -42,7 +42,7 @@ namespace STORE
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);
     Stz* szColNm(i8 i_Col_base0);
     void vDeriveBoundsFrom_filter(Card_Filter* p_filter);
-    bool bHasPrmOdn(void);
+    bool bUsesSqyRsl(void);
     void vMorph_table_To_EEop(CardIter *pCI);
     void vPrint(Ribbon* pRibbon, i8 iDepth);
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);

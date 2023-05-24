@@ -223,7 +223,7 @@ void Card_Table::vFixTablePos(CardIter* pCI)
   _static_
 
   for (Kid xKid(pCI->G.pDeck); xKid.bEach(CK_TABLE); /**/) {
-    if (xKid.p_table()->bHasPrmOdn()) {
+    if (xKid.p_table()->bUsesSqyRsl()) {
       xKid.p_table()->pSymbol()->Y_vSet(P_FixedPos,(i8)0);
       break;
     }
@@ -413,12 +413,12 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
 /*----------------------------------------------------------------------------*/
 /* does this table contain a sub-query parameter ordinal                      */
 /*----------------------------------------------------------------------------*/
-bool Card_Table::bHasPrmOdn(void)
+bool Card_Table::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_IndexList* p_indexList = pSub_indexList())
-    return p_indexList->bHasPrmOdn();
+    return p_indexList->bUsesSqyRsl();
 
   return false;
 }

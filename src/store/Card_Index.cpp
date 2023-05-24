@@ -165,12 +165,12 @@ bool Card_Index::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Index::bHasPrmOdn(void)
+bool Card_Index::bUsesSqlRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Bounds* p_bounds = pSub_bounds())
-    return p_bounds->bHasPrmOdn();
+    return p_bounds->bUsesSqyRsl();
 
   return false;
 }

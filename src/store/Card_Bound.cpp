@@ -288,12 +288,12 @@ Card_Term* Card_Bound::pGet_tblColOdn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Bound::bHasPrmOdn(void)
+bool Card_Bound::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
-    if (xKid.p_term()->bIsPrmOdn())
+    if (xKid.p_term()->bIsStmOdn() && 1 == xKid.p_term()->iGetOdn())
       return true;
   }
 

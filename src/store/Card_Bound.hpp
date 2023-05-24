@@ -25,7 +25,7 @@ namespace STORE
 
     Card_Term* pGetTerm(i8 i_Term);
 
-    bool bHasPrmOdn(void);
+    bool bUsesSqyRsl(void);
 
     bool bIsEBound(void);
     bool bIsLBound(void);

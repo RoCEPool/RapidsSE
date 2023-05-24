@@ -105,12 +105,12 @@ bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Bounds::bHasPrmOdn(void)
+bool Card_Bounds::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/) {
-    if (xKid.p_bound()->bHasPrmOdn())
+    if (xKid.p_bound()->bUsesSqyRsl())
       return true;
   }
 
