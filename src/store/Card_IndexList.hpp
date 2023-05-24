@@ -24,9 +24,8 @@ namespace STORE
     void vChoose_index_For_indexJoin(void);
     void vChoose_index_For_indexScan(void);
 
-
     bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
-
+    bool bHasPrmOdn(void);
   };
 
   Card_IndexList* _pCard_IndexList(void* aAddr);

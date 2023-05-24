@@ -102,6 +102,21 @@ bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Bounds::bHasPrmOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/) {
+    if (xKid.p_bound()->bHasPrmOdn())
+      return true;
+  }
+
+  return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

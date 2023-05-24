@@ -17,10 +17,9 @@ namespace STORE
    ~Card_Bounds(void) noexcept(false);
 
     void vCullBound(char cWithMark);
-
     Card_Bound* pFindChosenBound(void);
-
     bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
+    bool bHasPrmOdn(void);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

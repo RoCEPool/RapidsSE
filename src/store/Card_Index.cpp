@@ -165,6 +165,20 @@ bool Card_Index::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Index::bHasPrmOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Bounds* p_bounds = pSub_bounds())
+    return p_bounds->bHasPrmOdn();
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Index::vSet_Choose_index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

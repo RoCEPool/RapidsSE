@@ -146,6 +146,7 @@ static Stz* P_CrlKeyTest   = "bCrlKeyTest"_Stz;
 static Stz* P_CrlRslTest   = "bCrlRslTest"_Stz;
 static Stz* P_DebugOption  = "szDebugOption"_Stz;
 static Stz* P_Early        = "bEarly"_Stz;
+static Stz* P_FixedPos     = "i_FixedPos"_Stz;
 static Stz* P_HideHeat     = "bHideHeat"_Stz;
 static Stz* P_Injected     = "bInjected"_Stz;
 static Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;

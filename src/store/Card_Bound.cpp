@@ -285,6 +285,21 @@ Card_Term* Card_Bound::pGet_tblColOdn(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bHasPrmOdn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+    if (xKid.p_term()->bIsPrmOdn())
+      return true;
+  }
+
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get $t.c of ebound                                                         */

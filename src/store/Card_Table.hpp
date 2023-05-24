@@ -39,10 +39,11 @@ namespace STORE
 
     void vBounds_AddPred(Card_Index* p_index,
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);
-    void vDeriveBoundsFrom_filter(Card_Filter* p_filter);
     Stz* szColNm(i8 i_Col_base0);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
+    void vDeriveBoundsFrom_filter(Card_Filter* p_filter);
+    bool bHasPrmOdn(void);
     void vMorph_table_To_EEop(CardIter *pCI);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(char* cTableSyn);
