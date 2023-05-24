@@ -99,7 +99,7 @@ void Card_Projection::vCorrectStmOdn(Card_Projection* p_projection_prior)
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
     if (Card_BoolCalc* p_boolCalc = xKid.p_expr()->pSub_boolCalc())
-      ;
+      p_boolCalc->vCorrectStmOdn(p_projection_prior);
     else
     if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
       p_rpnCalc->vCorrectStmOdn(p_projection_prior);
@@ -214,6 +214,20 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
     xKid.p_expr()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFindExprOfSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bHasTerm(pSymbol))
+      return xKid.p_expr();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

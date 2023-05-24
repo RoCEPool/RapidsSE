@@ -247,6 +247,7 @@ namespace STORE
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSetStreamOrdinal(i8 iStmColOdn);
     void vSetSubQueryOrdinal(i8 iSqNo);
+    void vSetSym(Stz* szSym);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
     void vSprint(Stz* szFormat, ...);

@@ -353,12 +353,9 @@ void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
   if (! bIsStmOdn())
     return;
 
-  while (iGetOdn()) {
-    Symbol* pSym = pSymbol();
-    if (p_projection_prior->bHasTerm(pSym))
-      return;
-
-    vBump_stmOdn(-1);
+  Symbol* pSym = pSymbol();
+  if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
+    pSym->vSetSym(p_expr->pSymbol()->szSymbol());
   }
 }
 
