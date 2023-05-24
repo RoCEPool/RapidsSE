@@ -738,6 +738,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
 
   s16KB sCode;
   s256 sFunSignature;
+  s256 sFunctionPrefix;
   bool bExtracted;
   bool bResult;
   i8 iFunction;
@@ -747,19 +748,19 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   switch(eHandlerKind) {
     case HK_CRWBUFFER:
       szFunction = "__FUNCTION_CRW__";
-      iFunction = 0;
-      break;
-    case HK_ROWBUFFER:
-      szFunction = "__FUNCTION_ROW__";
-      iFunction = 1;
-      break;
-    case HK_INDEXBUFFER:
-      szFunction = "__FUNCTION_INDEX__";
-      iFunction = 2;
+      sFunSignature = "iCrwHandler_";
       break;
     case HK_EOS:
       szFunction = "__FUNCTION_EOS__";
-      iFunction = 3;
+      sFunSignature = "iEosHandler_";
+      break;
+    case HK_INDEXBUFFER:
+      szFunction = "__FUNCTION_INDEX__";
+      sFunSignature = "iIndexHandler_";
+      break;
+    case HK_ROWBUFFER:
+      szFunction = "__FUNCTION_ROW__";
+      sFunSignature = "iRowHandler_";
       break;
     default:
       NEVER_REACH;
@@ -772,7 +773,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   bExtracted = CodeSynthUtils::bExtract(m_pFunctionHeader, nullptr, szFunction, sCode, nullptr, C_UNKNOWN);
   RASSERT(bExtracted);
 
-  sFunSignature.vSprint("iFun%d_%s"_Stz, iFunction,szStageNm);
+  sFunSignature.vConcat(szStageNm);
   bResult = StrLib::bReplace(sCode.azChar(), szFunction.azChar(), sFunSignature.azChar());
   RASSERT(bResult);
 

@@ -3,13 +3,11 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "CmdLineArgs.hpp"
 
 #include "Stencil_v2.hpp"
 #include "Stream.hpp"
 #include "StreamDef.hpp"
 #include "Op.hpp"
-#include "Fragments.hpp"
 
 #include "LogicUnit.hpp"
 #include "TagConstants.h"
@@ -21,15 +19,12 @@
 #include "Table.hpp"
 #include "IndexTree.hpp"
 #include "Stage.hpp"
-#include "RowSingle.hpp"
 #include "IndexStream.hpp"
 
 #include "CodeSynthUtils.hpp"
 #include "eSK.h"
 #include "eII.h"
 #include "PipelineDef.hpp"
-
-extern CmdLineArgs       gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -165,7 +160,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
-  s4K sReturnLabel;
   s4K sLabelLoop;
 
   bool bInflateGenerated = false;
@@ -179,10 +173,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   eSR ePrevStencil_v2 = SR_NONE;
   eHK eHandlerKind = HK_NONE;
 
-  //Tub* pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
-  //Pot* pPot = _pPot(pDynamic->aDynamicT()->m_pPot);
-
-  sReturnLabel = ""_Stz;
   sLabelLoop = ""_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -211,13 +201,10 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     // generate the code for inflateCrw before handling the current operator
     if (bInflateCrw) {
 
-      //RASSERT(!m_xStageOps.m_bIndexScan);
+      RASSERT(!m_xStageOps.m_bIndexScan);
 
       eHandlerKind = HK_CRWBUFFER;
       sLabelLoop = "L_AdvanceNextCrwT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupScan(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchInflateCrw(pStageDef, pOpDefScan, eHandlerKind, sLabelLoop);
@@ -236,9 +223,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
       eHandlerKind = HK_ROWBUFFER;
       sLabelLoop = "L_AdvanceNextRowT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupScan(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchInflateRow(pStageDef, pOpDef, eHandlerKind, sLabelLoop);
@@ -262,9 +246,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     if (pOpDef->szOpNm()->bSame("project"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupProject(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchProject(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
@@ -285,9 +266,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     //} else {
 
     //  Op *pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //  vSetupTub(pDynamic, pLastOp, eHandlerKind);
 
       pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, ePrevStencil_v2, sLabelLoop);
     }
