@@ -21,6 +21,7 @@ enum eSK // sketch kind
   /*   */ SK_PROJECT,     // projection
   /*   */ SK_SEMIJOIN,    // semi-join
   /*   */ SK_SORT,        // sort
+  /*   */ SK_STREAMDEF,   // streamDef
   /*   */ SK_TOP,         // top
   /*   */ SK_TUB,         // tub
 };
@@ -43,6 +44,7 @@ static Stz* aSK[]
   /*   */ "PROJECT"_Stz,
   /*   */ "SEMIJOIN"_Stz,
   /*   */ "SORT"_Stz,
+  /*   */ "STREAMDEF"_Stz,
   /*   */ "TOP"_Stz,
   /*   */ "TUB"_Stz,
 

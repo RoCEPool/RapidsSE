@@ -423,8 +423,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
   char* szStrArea;
   struct __STRUCT_TO__* p__STRUCT_TO__;
   ColumnInfo xColumnInfo;
-  
-  i8 __COLUMNS_IN__;
+
   i8 __COLUMNS_OUT__;
 
   __L_LABEL_LOOP__:
@@ -1069,6 +1068,41 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
     szDstStz = (char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
     strncpy(szDstStz, szSrcStz, nSrcSize);
   }
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iStreamDefBegin ---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iStreamDefBegin
+void vStreamDefBegin(Dynamic_T* aDynamicT) {
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // STREAMDEF
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  printf("STREAMDEF\n");
+
+  struct ColumnInfo xColumnInfo[] = {
+      // marker-end
+  };
+
+
+}
+/*----------------------------------------------------------------------------*/
+/*-- vStreamDefEnd -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vStreamDefEnd
+void vStreamDefEnd(Dynamic_T* aDynamicT) {
+
+  ColumnInfo xColumnInfo;
+  i8 __COLUMNS_OUT__;
+
+  // marker-start
+  aDynamicT->m_aStreamDefOut = aExtern_StreamDefNew(__COLUMNS_OUT__, &xColumnInfo);
+
   // marker-end
 }
 

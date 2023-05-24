@@ -9,6 +9,17 @@
 #include "eCX.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* new row pix                                                                */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_StreamDefNew(i8 nNumCols, void* pColumnInfo) {
+  return (void*)StreamDef::pStreamDefNew(nNumCols, (ColumnInfo*) pColumnInfo);
+}
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 StreamDef* STORE::_pStreamDef(void* aAddr)
@@ -79,6 +90,23 @@ void StreamDef::vPostRecv(void* aStreamDef)
   _static_
 
   StreamDef* pStreamDef = _pStreamDef(aStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a streamDef                                                            */
+/*----------------------------------------------------------------------------*/
+StreamDef* StreamDef::pStreamDefNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
+
+  StreamDef* pStreamDef = new StreamDef;
+
+  for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
+      pStreamDef->vAddColumn((Stz*)&pColumnInfo[i_Col].m_cColumnNm[0],
+                             (eCT)pColumnInfo[i_Col].m_iColumnType,
+                             pColumnInfo[i_Col].m_iColumnLength,
+                             pColumnInfo[i_Col].m_iColumnScale);
+  }
+
+  return pStreamDef;
 }
 
 /*----------------------------------------------------------------------------*/

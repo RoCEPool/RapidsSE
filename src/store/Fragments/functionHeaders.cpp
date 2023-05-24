@@ -361,3 +361,16 @@ int vRowContinue(struct Dynamic_T* aDynamicT) {
 
   return 0;
 }
+
+// function-__FUNCTION_STREAMDEF__
+
+// marker-start
+
+/*--------------------------------------------------------------------*/
+/* flattened function -- STREAMDEF                                    */
+/*--------------------------------------------------------------------*/
+int __FUNCTION_STREAMDEF__(struct Dynamic_T* aDynamicT) {
+
+  // marker-end
+
+}

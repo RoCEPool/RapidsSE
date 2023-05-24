@@ -386,6 +386,23 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         break;
 
+      case SK_STREAMDEF:
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // end previous handler
+        vAppendFunctionFooter(pOpSketch, ePreviousHandler);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // begin new EOS handler
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // StreamDefOut generation
+        vAppendCodeFragment(pOpSketch, "iStreamDefBegin"_Stz);
+        vAppendCodePixCols(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vStreamDefEnd"_Stz);
+        break;
+
       case SK_TUB:
 
         vAppendStencilTo(pOpSketch);
@@ -433,7 +450,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end EOS handler
-  RASSERT(eCurrentHandler == HK_EOS);
+  RASSERT(eCurrentHandler == HK_STREAMDEF);
   vAppendFunctionFooter(nullptr, eCurrentHandler);
 
   //vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
@@ -715,6 +732,9 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind)
     case HK_ROWBUFFER:
       szFunction = "vInflateRowEnd";
       break;
+    case HK_STREAMDEF:
+      szFunction = "iStreamDefEnd";
+      break;
     default:
       NEVER_REACH;
   }
@@ -741,7 +761,6 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   s256 sFunctionPrefix;
   bool bExtracted;
   bool bResult;
-  i8 iFunction;
 
   s256 szFunction;
 
@@ -761,6 +780,10 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
     case HK_ROWBUFFER:
       szFunction = "__FUNCTION_ROW__";
       sFunSignature = "iRowHandler_";
+      break;
+    case HK_STREAMDEF:
+      szFunction = "__FUNCTION_STREAMDEF__";
+      sFunSignature = "iStreamDef_";
       break;
     default:
       NEVER_REACH;
@@ -796,19 +819,18 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
   switch(eHandlerKind) {
     case HK_CRWBUFFER:
       szFunction = "vCrwContinue";
-      iFunction = 0;
       break;
     case HK_ROWBUFFER:
       szFunction = "vRowContinue";
-      iFunction = 1;
       break;
     case HK_INDEXBUFFER:
       szFunction = "vIndexContinue";
-      iFunction = 2;
       break;
     case HK_EOS:
       szFunction = "__FUNCTION_EOS__";
-      iFunction = 3;
+      break;
+    case HK_STREAMDEF:
+      szFunction = "__FUNCTION_STREAMDEF__";
       break;
     default:
       NEVER_REACH;

@@ -271,11 +271,11 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
   }
 
+  OpSketch* pLastOpSketch = pOpSketch;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the TUB/POT
   if ( bGeneratePotTub ) {
-
-    OpSketch* pLastOpSketch = pOpSketch;
 
     //if (pDynamic->aDynamicT()->m_iPot) {
     //  RASSERT(0);
@@ -284,15 +284,20 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
     //  Op *pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
 
-      pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, ePrevStencil_v2, sLabelLoop);
-    }
+    pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, ePrevStencil_v2, sLabelLoop);
 
-  // add the op sketch to the stencil
-  vAppend(pOpSketch);
+    // add the op sketch to the stencil
+    vAppend(pOpSketch);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sketch EOS handler function
   pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+  vAppend(pOpSketch);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sketch StreamDef function
+  pOpSketch = pSketchStreamDef(pLastOpSketch, HK_STREAMDEF);
   vAppend(pOpSketch);
 
   return EC_NONE;
@@ -2209,6 +2214,26 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct(0);
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch streamDef                                                                 */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  // get the streamDefOut
+  StreamDef *pStreamDefOut = pLastOp->m_pStreamDefOut;
+  RASSERT(pStreamDefOut);
+
+  // create a new opSketch
+  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, eHandlerKind, SK_STREAMDEF, SR_NONE,  SR_NONE, II_NONE, pStreamDefOut, pStreamDefOut);
 
   return pOpSketch;
 }

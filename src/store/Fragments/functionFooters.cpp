@@ -105,3 +105,14 @@ int iEosEnd(struct Dynamic_T* aDynamicT)
     return 1;
 }
 // marker-end
+
+// function-iStreamDefEnd
+/*--------------------------------------------------------------------*/
+/* iStreamDefEnd                                                      */
+/*--------------------------------------------------------------------*/
+int iStreamDefEnd(struct Dynamic_T* aDynamicT)
+{
+  // marker-start
+  return 1;
+}
+// marker-end
