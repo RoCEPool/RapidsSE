@@ -176,6 +176,17 @@ void Card_RpnCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    xKid.p_term()->vCorrectStmOdn(p_projection_prior);
+}
+
+/*----------------------------------------------------------------------------*/
 /* ensure all terms have a type                                               */
 /*----------------------------------------------------------------------------*/
 void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)

@@ -90,6 +90,24 @@ Card_Projection* Card_Projection::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    if (Card_BoolCalc* p_boolCalc = xKid.p_expr()->pSub_boolCalc())
+      ;
+    else
+    if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
+      p_rpnCalc->vCorrectStmOdn(p_projection_prior);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* craft factored-column-set this projection needs for early-projects         */
 /*----------------------------------------------------------------------------*/
 Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)

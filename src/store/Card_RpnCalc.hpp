@@ -22,6 +22,7 @@ namespace STORE
     void vConcat(Card_RpnCalc* p_rpnCalc);
     void vConvert_sqyOp_not_To_notSqyOp(void);
     void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Card_Term* pGetTerm(i8 i_Term);
