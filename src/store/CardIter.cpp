@@ -2850,6 +2850,22 @@ void Kid::vReset(void)
   m_bActive = true;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Kid::vSynch(Card* pChild_find)
+{
+  i8 nChildren = m_pParent->nChildCards();
+
+  for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
+    Card *pChild_test = m_pParent->pGetChild(i_Child);
+    if (pChild_test == pChild_find) {
+      m_i_Child = i_Child;
+      return;
+    }
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
