@@ -49,8 +49,9 @@ namespace STORE
     StreamDef* m_pStreamDefLft;
     StreamDef* m_pStreamDefRht;
     StreamDef* m_pStreamDefOut;
+    Table*     m_pTable;
+    Index*     m_pIndex;
     IndexDef*  m_pIndexDef;
-    IndexTree* m_pIndexTree;
 
     // stencils
     eSR m_eStencilFrom;
@@ -108,10 +109,10 @@ namespace STORE
     void vGenerateStencilFromStruct(void);
     void vGenerateStencilToStruct(u8 uSelectColumns = 0);
 
-
+    void vTable(Table* pTable);
+    void vIndex(Index* pIndex);
     void vIndexDef(IndexDef* pIndexDef);
     void vIndexPositionLower(eIP eIndexPosition);
-    void vIndexTree(IndexTree* pIndexTree);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
     void vStreamDefRht(StreamDef* pStreamDefRht);

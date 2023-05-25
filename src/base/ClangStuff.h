@@ -13,6 +13,11 @@ extern void  vExtern_EntWrkPayloadCreate(void* pEntWrk, i8 nPayloadBytes);
 extern void  vExtern_EntWrkPrint(void* pEntWrk, void* pIndexDef);
 extern void  vExtern_EntWrkReset(void* pEntWrk);
 
+extern void* aExtern_FindTable(void* aTableName);
+extern void* aExtern_FindIndex(void* aTable, void* aIndexName);
+extern void* aExtern_GetIndexDef(void* aIndex);
+extern void* aExtern_GetIndexTree(void* aTable, void* aIndex);
+
 extern void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr);
 extern void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer);
 extern void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey);

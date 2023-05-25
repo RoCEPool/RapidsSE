@@ -170,6 +170,15 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // index scan T
   m_xDynamicT.m_xIndexInfoT.m_iInit         = 0;
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cTableName,32,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cIndexName,32,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xIndexInfoT.m_cTableName[0] = '\0';
+  m_xDynamicT.m_xIndexInfoT.m_cIndexName[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xIndexInfoT.m_aTable      = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aIndex      = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aIndexTree  = nullptr;
   m_xDynamicT.m_xIndexInfoT.m_aIndexDef   = nullptr;
@@ -184,6 +193,17 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_iIndexJoinInit = 0;
   m_xDynamicT.m_iJoinedRows    = 0;
   m_xDynamicT.m_xIndexInfoJ.m_iInit         = 0;
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cTableName,32,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cIndexName,32,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xIndexInfoJ.m_cTableName[0] = '\0';
+  m_xDynamicT.m_xIndexInfoJ.m_cIndexName[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xIndexInfoJ.m_cIndexName[0] = '\0';
+  m_xDynamicT.m_xIndexInfoJ.m_aTable      = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aIndex      = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aIndexTree  = nullptr;
   m_xDynamicT.m_xIndexInfoJ.m_aIndexDef   = nullptr;
@@ -197,6 +217,16 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // payload (gby/srt/top)
   m_xDynamicT.m_aiPayload      = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_iInit         = 0;
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cTableName,32,CN_BYTES_T);
+  MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cIndexName,32,CN_BYTES_T);
+#else
+  m_xDynamicT.m_xIndexInfoPL.m_cTableName[0] = '\0';
+  m_xDynamicT.m_xIndexInfoPL.m_cIndexName[0] = '\0';
+#endif
+
+  m_xDynamicT.m_xIndexInfoPL.m_aTable       = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_aIndex       = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_aIndexTree   = nullptr;
   m_xDynamicT.m_xIndexInfoPL.m_aIndexDef    = nullptr;

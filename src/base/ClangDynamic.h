@@ -14,14 +14,17 @@ struct RowInfo {
 
 struct IndexInfo {
   i8    m_iInit;
-  void *m_aIndex;
-  void *m_aIndexTree;
-  void *m_aIndexDef;
-  void *m_aEntWrk;
-  void *m_aEntKey;
-  void *m_aEntBottom;
-  void *m_aEntUpper;
-  void *m_aEntBuffer;
+  char  m_cTableName[32];
+  char  m_cIndexName[32];
+  void* m_aTable;
+  void* m_aIndex;
+  void* m_aIndexTree;
+  void* m_aIndexDef;
+  void* m_aEntWrk;
+  void* m_aEntKey;
+  void* m_aEntBottom;
+  void* m_aEntUpper;
+  void* m_aEntBuffer;
   struct Ent_int* m_aEntInt;
 };
 

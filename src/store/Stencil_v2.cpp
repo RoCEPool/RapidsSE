@@ -1173,8 +1173,8 @@ void Stencil_v2::vSetupAggreg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  //LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  //StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleAgg
 //  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle = new RowSingle(pStreamDefOut);
@@ -1524,7 +1524,6 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
 
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
-  IndexDef* pIndexDef = pIndex->pIndexDef();
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(i_Op,sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST, pStreamDefLft, pStreamDefOut);
@@ -1537,31 +1536,14 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  // set the indexDef
-  pOpSketch->vIndexDef(pIndexDef);
+  // set the table
+  pOpSketch->vTable(pIndex->pTable());
 
-  // get the index tree for the index
-  Table* pTable = pIndex->pTable();
-
-  LglPtn tLglPtn;
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  if (pStreamDef->bReplicated()) {
-    tLglPtn = 0; //pOpDef->tLglPtn();
-  }
-  else {
-    tLglPtn = 0; //pOp->tLglPtn();
-  }
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-  i8 iIndexNo = pIndex->iIndexNo();
-
-  // get the indexTree
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  // set the index
+  pOpSketch->vIndex(pIndex);
 
   // set the indexDef
-  pOpSketch->vIndexTree(pIndexTree);
+  pOpSketch->vIndexDef(pIndex->pIndexDef());
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
@@ -2005,7 +1987,7 @@ OpSketch* Stencil_v2::pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2013,22 +1995,20 @@ OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   s4K sLabelNext;
   s256 szStageNm;
 
-  i8 i_Op = pOp->i_Op();
+  i8 i_Op = pOpDef->i_Op();
 
-  // get project expr from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sAggregExpr = pOpTags->szValue(C_TAG_EXPR);
+  // get aggregate expr from OpDef
+  Stz* sAggregExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new shape for this OP
-  OpSketch *pOpSketch = new OpSketch(pOp->i_Op(), sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
 
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
