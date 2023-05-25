@@ -192,18 +192,23 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (pCI->Analysis.m_pProjection_prior) {
       if (Card_Expr* p_expr_col =
           pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
+        // record what $c.n it was
+        p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
         p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
         //vTrace("  TO %s\n"_Stz,p_expr_col->szSymbol());
         return C_CONTINUE_RECURSION;
       }
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
     if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
       return C_CONTINUE_RECURSION;
 
     // column of this table
+
+    // record what $c.n it was
+    p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
 
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
     i8 nExpr_prior = pCI->G.p_projection->nChildCards();
