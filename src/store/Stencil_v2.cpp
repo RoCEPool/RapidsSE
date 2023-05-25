@@ -292,7 +292,33 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       ePrevStencil_v2 = SR_PT;
     }
 
-  }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the sort OP
+    if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //vSetupSort(pDynamic, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchSort(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      //ePrevStencil_v2 = SR_PL;
+
+      OpSketch *pSortOpSketch = pOpSketch;
+      OpDef *pLastOpDef = pOpDef;
+
+      pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchTub(pSortOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      bGeneratePotTub = false;
+    }
+
+ }
 
   OpSketch* pLastOpSketch = pOpSketch;
 
@@ -1749,7 +1775,7 @@ OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // get aggregate expr from OpDef
   Stz* sAggregExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  // get the streamDefOut
+  // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
@@ -1899,7 +1925,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch sort                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
+OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
 {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -1908,30 +1934,26 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
   s4K sLabelNext;
   s4K sLabelPrev;
 
-  i8 i_Op = pOp->i_Op();
+  i8 i_Op = pOpDef->i_Op();
 
-  // get sort expr from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sSortExpr = pOpTags->szValue(C_TAG_EXPR);
+  // get sort expr from OpDef
+  Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefs
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // get the sort type stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sSortExpr, eHandlerKind, SK_SORT, ePrevStencil_v2, ePrevStencil_v2,  II_PL, pStreamDefLft, pStreamDefOut);
 
   // set the labels in the opSketch
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
   pOpSketch->vSetLabels(sLabel, ""_Stz, szLabelLoop);
 
   // set the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
+  IndexDef *pIndexDef = _pIndexDef(pOpDef->m_pIndexDef_sort);
   pOpSketch->vIndexDef(pIndexDef);
 
   // set the payLoad bytes
@@ -1948,7 +1970,7 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch streamDef                                                                 */
+/* sketch streamDef                                                           */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind) {
 

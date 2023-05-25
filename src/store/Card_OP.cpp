@@ -1725,6 +1725,22 @@ IndexDef* Card_OP::pCraftIndexDef_gbyAgg(void)
   return pIndexDef;
 }
 
+/*----------------------------------------------------------------------------*/
+/* craft indexDef for sort                                                    */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_OP::pCraftIndexDef_sort(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Key* p_key = pSub_key();
+  if (! p_key)
+    return nullptr;
+
+  IndexDef* pIndexDef = p_key->pToIndexDef();
+
+  return pIndexDef;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
