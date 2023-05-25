@@ -87,6 +87,13 @@ void JoinOrdering::vJoinOrdering(void)
   m_pCI->vEndTransform();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fix position of table which uses subquery result as pos 0
+  m_pCI->vTransform(__func__, "fix position of table which uses subquery result"_Stz);
+  Card_Table::vFixTablePos(m_pCI);
+  m_pCI->vEndTransform();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
 
   if (AM::JOB::bHasTag(C_JO_DISABLE)) {

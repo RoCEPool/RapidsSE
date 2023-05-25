@@ -172,6 +172,29 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [p_projection_prior](Card* p_card)
+  {
+    if (p_card->pSymbol()->bIsStreamOrdinal())
+      _pCard_Term(p_card)->vCorrectStmOdn(p_projection_prior);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vCullPred(char cWithMark)
@@ -268,6 +291,33 @@ Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
   vRemovePred(p_pred_corr);
 
   return p_pred_corr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bHas = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pSymbol, &bHas](Card* p_card)
+  {
+    if (p_card->pSymbol()->bSameAs(pSymbol)) {
+      bHas = true;
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/

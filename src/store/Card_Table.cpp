@@ -218,6 +218,21 @@ Card_Table* Card_Table::pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Table::vFixTablePos(CardIter* pCI)
+{
+  _static_
+
+  for (Kid xKid(pCI->G.pDeck); xKid.bEach(CK_TABLE); /**/) {
+    if (xKid.p_table()->bUsesSqyRsl()) {
+      xKid.p_table()->pSymbol()->Y_vSet(P_FixedPos,(i8)0);
+      break;
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 i8 Card_Table::nTables(CardIter* pCI)
 {
   _static_
@@ -320,6 +335,26 @@ void Card_Table::vBounds_AddPred(Card_Index* p_index,
 }
 
 /*----------------------------------------------------------------------------*/
+/* table projection analysis                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Table::szColNm(i8 i_Col_base0)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_TableNm* p_tableNm = pSub_tableNm();
+
+  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  Column* pColumn = pStreamDef->pGetColumn(i_Col_base0);
+
+  Stz* szColNm = pColumn->szColNm();
+
+  return szColNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create bounds under table from filter                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
@@ -376,23 +411,16 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table projection analysis                                                  */
+/* does this table contain a sub-query parameter ordinal                      */
 /*----------------------------------------------------------------------------*/
-Stz* Card_Table::szColNm(i8 i_Col_base0)
+bool Card_Table::bUsesSqyRsl(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_TableNm* p_tableNm = pSub_tableNm();
+  if (Card_IndexList* p_indexList = pSub_indexList())
+    return p_indexList->bUsesSqyRsl();
 
-  Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-
-  Column* pColumn = pStreamDef->pGetColumn(i_Col_base0);
-
-  Stz* szColNm = pColumn->szColNm();
-
-  return szColNm;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

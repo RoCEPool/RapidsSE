@@ -312,6 +312,24 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Expr::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bHas = false;
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    bHas = p_boolCalc->bHasTerm(pSymbol);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    bHas = p_rpnCalc->bHasTerm(pSymbol);
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Expr::bOf(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

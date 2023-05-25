@@ -21,10 +21,13 @@ namespace STORE
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
 
     Card_Projection* pClone(void);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDeletePrjKey(CardIter* pCI);
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
+    Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
+    bool bHasTerm(Symbol* pSymbol);
     Card_Projection* pReducedCopy(void);
     void vReviewAs(CardIter* pCI);
   };

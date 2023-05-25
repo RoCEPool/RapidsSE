@@ -153,6 +153,8 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+
   pCI->vPrintBoard();
 
   pCI->G.p_key = pSub_key();

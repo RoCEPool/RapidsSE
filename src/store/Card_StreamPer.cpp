@@ -239,6 +239,16 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
         break;
       }
 
+      if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
+        if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
+          p_streamHead->vAppend(new Card_Note("**BAD POS**"_Stz));
+          pSymbol()->Y_vSet(P_Invalid);
+          i_InvalidAtJoin = i_Elm;
+          break;
+        }
+      }
+
+
       continue;
     }
 
@@ -250,6 +260,15 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     vAppend(p_streamJoin);
 
     p_streamJoin->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
+
+    if (p_table_ith->pSymbol()->Y_bHas(P_FixedPos)) {
+      if (p_table_ith->pSymbol()->Y_iGet(P_FixedPos) != i_Elm) {
+        p_streamJoin->vAppend(new Card_Note("**BAD POS**"_Stz));
+        pSymbol()->Y_vSet(P_Invalid);
+        i_InvalidAtJoin = i_Elm;
+        break;
+      }
+    }
 
 
     bool bSupported = false;
