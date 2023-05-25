@@ -385,6 +385,8 @@ class TestRunner:
             if fieldnames is None:
                 return False
 
+            return_status = True
+
             # Must have these fields minimum: label, success, Latency
             # Optional fields that can be used: timestamp, failureMessage, responseMessage, Connect
 
@@ -414,10 +416,13 @@ class TestRunner:
                     errmsg = f"Value for field \"{C_CSV_LABEL}\" in test {os.path.basename(metric_file)} " \
                              f"must not be a null or empty string value"
                     LOG.error(errmsg)
-                    # Mark the test as having failed
-                    self.result.test_passed = False
-                    self.result.stderr = errmsg
-                    return False
+
+                    if return_status:
+                        return_status = False
+                        # Mark the test as having failed
+                        self.result.test_passed = False
+                        self.result.stderr = errmsg
+                    continue
 
                 if not success:
                     failuremsg = None
@@ -443,20 +448,25 @@ class TestRunner:
                                  f"failed with an error"
                     LOG.error(errmsg)
 
-                    # Mark the test as having failed
-                    self.result.test_passed = False
-                    self.result.stderr = errmsg
-                    return False
+                    if return_status:
+                        return_status = False
+                        # Mark the test as having failed
+                        self.result.test_passed = False
+                        self.result.stderr = errmsg
+                    continue
 
                 # Check that latency_str is not null or an empty string
                 if (latency_str is None) or (len(latency_str) == 0):
                     errmsg = f"Value for field \"{C_CSV_LATENCY}\" in metric file {os.path.basename(metric_file)} " \
                              f"for test {self.test_name} must not be a null or empty string value"
                     LOG.error(errmsg)
-                    # Mark the test as having failed
-                    self.result.test_passed = False
-                    self.result.stderr = errmsg
-                    return False
+
+                    if return_status:
+                        return_status = False
+                        # Mark the test as having failed
+                        self.result.test_passed = False
+                        self.result.stderr = errmsg
+                    continue
 
                 # Convert the latency string into a numeric
                 try:
@@ -467,10 +477,13 @@ class TestRunner:
                              f"\"{C_CSV_LATENCY}\" field is not numeric in metric file " \
                              f"{os.path.basename(metric_file)} for test {self.test_name}"
                     LOG.error(errmsg)
-                    # Mark the test as having failed
-                    self.result.test_passed = False
-                    self.result.stderr = errmsg
-                    return False
+
+                    if return_status:
+                        return_status = False
+                        # Mark the test as having failed
+                        self.result.test_passed = False
+                        self.result.stderr = errmsg
+                    continue
 
                 # Subtract the connect field from the latency field, if it exists
                 if has_connect_field:
@@ -483,10 +496,13 @@ class TestRunner:
                                  f"\"{C_CSV_CONNECT}\" field is not numeric in metric file " \
                                  f"{os.path.basename(metric_file)} for test {self.test_name}"
                         LOG.error(errmsg)
-                        # Mark the test as having failed
-                        self.result.test_passed = False
-                        self.result.stderr = errmsg
-                        return False
+
+                        if return_status:
+                            return_status = False
+                            # Mark the test as having failed
+                            self.result.test_passed = False
+                            self.result.stderr = errmsg
+                        continue
 
                 # Is there a timestamp field we can use?
                 timestamp = None
@@ -502,17 +518,24 @@ class TestRunner:
                                  f"\"{C_CSV_TIMESTAMP}\" field couldn't be converted to datetime object " \
                                  f"in metric file {os.path.basename(metric_file)} for test {self.test_name}"
                         LOG.error(errmsg)
-                        # Mark the test as having failed
-                        self.result.test_passed = False
-                        self.result.stderr = errmsg
-                        return False
+
+                        if return_status:
+                            return_status = False
+                            # Mark the test as having failed
+                            self.result.test_passed = False
+                            self.result.stderr = errmsg
+                        continue
 
                 # Record the metric
                 self.result.add_metric(label, latency, timestamp)
                 metrics_added += 1
 
-        LOG.info(f"Found {metrics_added} metrics from file {metric_file}")
-        return True
+        if return_status:
+            LOG.info(f"Found {metrics_added} metrics from file {metric_file}")
+        else:
+            LOG.error(f"Found {metrics_added} metrics from file {metric_file}, with errors.")
+
+        return return_status
 
     def __parse_tsv_metric(self, metric_file: string) -> bool:
         """

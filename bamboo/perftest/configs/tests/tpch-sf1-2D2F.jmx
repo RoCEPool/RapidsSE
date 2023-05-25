@@ -461,7 +461,7 @@ group by
                   <success>true</success>
                   <label>true</label>
                   <code>false</code>
-                  <message>false</message>
+                  <message>true</message>
                   <threadName>false</threadName>
                   <dataType>false</dataType>
                   <encoding>false</encoding>
@@ -747,7 +747,7 @@ group by
                   <success>true</success>
                   <label>true</label>
                   <code>false</code>
-                  <message>false</message>
+                  <message>true</message>
                   <threadName>false</threadName>
                   <dataType>false</dataType>
                   <encoding>false</encoding>
@@ -869,7 +869,7 @@ e.g.
                     <success>true</success>
                     <label>true</label>
                     <code>false</code>
-                    <message>false</message>
+                    <message>true</message>
                     <threadName>false</threadName>
                     <dataType>false</dataType>
                     <encoding>false</encoding>
@@ -1301,7 +1301,7 @@ dload lineitem paths
                   <success>true</success>
                   <label>true</label>
                   <code>false</code>
-                  <message>false</message>
+                  <message>true</message>
                   <threadName>false</threadName>
                   <dataType>false</dataType>
                   <encoding>false</encoding>
@@ -1598,7 +1598,7 @@ dload lineitem paths
             <hashTree/>
           </hashTree>
         </hashTree>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for failure" enabled="true">
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for setup failure" enabled="true">
           <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
@@ -3507,16 +3507,6 @@ order by
               </hashTree>
             </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;All queries has finished executing&apos;);
-OUT.println(&quot;All queries has finished executing&quot;);
-OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
             <boolProp name="ResultCollector.error_logging">false</boolProp>
             <objProp>
@@ -3528,7 +3518,7 @@ OUT.flush();</stringProp>
                 <success>true</success>
                 <label>true</label>
                 <code>false</code>
-                <message>false</message>
+                <message>true</message>
                 <threadName>false</threadName>
                 <dataType>false</dataType>
                 <encoding>false</encoding>
@@ -3550,6 +3540,16 @@ OUT.flush();</stringProp>
           </ResultCollector>
           <hashTree/>
         </hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="script">log.info(&apos;All queries has finished executing&apos;);
+OUT.println(&quot;All queries has finished executing&quot;);
+OUT.flush();</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
         <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for any query failures" enabled="true">
           <stringProp name="IfController.condition">${HAS_FAILED_QUERY}
 ${__jexl3(&quot;${HAS_FAILED_QUERY}&quot;== &quot;true&quot;,)}</stringProp>
@@ -3566,12 +3566,12 @@ System.exit(1);</stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
         </hashTree>
-        <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Log completion" enabled="true">
-          <boolProp name="resetInterpreter">false</boolProp>
-          <stringProp name="parameters"></stringProp>
-          <stringProp name="filename"></stringProp>
-          <stringProp name="script">log.info(&quot;No errors detected in any queries.&quot;);</stringProp>
-        </BeanShellPreProcessor>
+        <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Log completion" enabled="true">
+          <stringProp name="BeanShellSampler.query">log.info(&quot;No errors detected in any queries.&quot;);</stringProp>
+          <stringProp name="BeanShellSampler.filename"></stringProp>
+          <stringProp name="BeanShellSampler.parameters"></stringProp>
+          <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+        </BeanShellSampler>
         <hashTree/>
       </hashTree>
     </hashTree>
