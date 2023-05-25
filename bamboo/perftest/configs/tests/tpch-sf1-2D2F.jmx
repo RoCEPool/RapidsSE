@@ -1618,7 +1618,7 @@ dload lineitem paths
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
             <boolProp name="resetInterpreter">false</boolProp>
-            <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, false);</stringProp>
+            <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;false&quot;);</stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="true"/>
@@ -1704,12 +1704,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -1793,12 +1793,12 @@ limit 100;</stringProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -1861,12 +1861,12 @@ limit 10;</stringProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -1958,12 +1958,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2063,12 +2063,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2138,12 +2138,12 @@ where
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2223,12 +2223,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2301,12 +2301,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2377,12 +2377,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2498,12 +2498,12 @@ limit 20;</stringProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2571,12 +2571,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2664,12 +2664,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2730,12 +2730,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2766,8 +2766,8 @@ from
   part
 where 
   l_partkey = p_partkey
-  and l_shipdate &gt;= &apos;1995-09-01&apos;
-  and l_shipdate &lt; &apos;1995-10-01&apos;;</stringProp>
+  and l_shipdate &gt;= date &apos;1995-09-01&apos;
+  and l_shipdate &lt; date &apos;1995-10-01&apos;;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2787,8 +2787,8 @@ from
   part
 where 
   l_partkey = p_partkey
-  and l_shipdate &gt;= &apos;1995-09-01&apos;
-  and l_shipdate &lt; &apos;1995-09-01&apos; + interval &apos;1&apos; month;</stringProp>
+  and l_shipdate &gt;= date &apos;1995-09-01&apos;
+  and l_shipdate &lt; date &apos;1995-09-01&apos; + interval &apos;1&apos; month;</stringProp>
                 <stringProp name="queryArguments"></stringProp>
                 <stringProp name="queryArgumentsTypes"></stringProp>
                 <stringProp name="queryTimeout"></stringProp>
@@ -2805,12 +2805,12 @@ where
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2867,12 +2867,12 @@ This query requires a view to be created first.</stringProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -2984,12 +2984,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -3047,12 +3047,12 @@ where
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -3126,12 +3126,12 @@ limit 100;</stringProp>
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -3203,12 +3203,12 @@ where
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -3334,12 +3334,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -3418,12 +3418,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -3497,12 +3497,12 @@ order by
                 <boolProp name="IfController.useExpression">true</boolProp>
               </IfController>
               <hashTree>
-                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
                   <stringProp name="filename"></stringProp>
                   <stringProp name="parameters"></stringProp>
                   <boolProp name="resetInterpreter">false</boolProp>
-                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
-                </BeanShellPreProcessor>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, &quot;true&quot;);</stringProp>
+                </BeanShellListener>
                 <hashTree/>
               </hashTree>
             </hashTree>
@@ -3517,9 +3517,42 @@ OUT.flush();</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
+          <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
+            <boolProp name="ResultCollector.error_logging">false</boolProp>
+            <objProp>
+              <name>saveConfig</name>
+              <value class="SampleSaveConfiguration">
+                <time>false</time>
+                <latency>true</latency>
+                <timestamp>true</timestamp>
+                <success>true</success>
+                <label>true</label>
+                <code>false</code>
+                <message>false</message>
+                <threadName>false</threadName>
+                <dataType>false</dataType>
+                <encoding>false</encoding>
+                <assertions>false</assertions>
+                <subresults>true</subresults>
+                <responseData>false</responseData>
+                <samplerData>false</samplerData>
+                <xml>false</xml>
+                <fieldNames>true</fieldNames>
+                <responseHeaders>false</responseHeaders>
+                <requestHeaders>false</requestHeaders>
+                <responseDataOnError>false</responseDataOnError>
+                <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+                <assertionsResultsToSave>0</assertionsResultsToSave>
+                <connectTime>true</connectTime>
+              </value>
+            </objProp>
+            <stringProp name="filename">queries.csv</stringProp>
+          </ResultCollector>
+          <hashTree/>
         </hashTree>
         <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for any query failures" enabled="true">
-          <stringProp name="IfController.condition">${HAS_FAILED_QUERY}</stringProp>
+          <stringProp name="IfController.condition">${HAS_FAILED_QUERY}
+${__jexl3(&quot;${HAS_FAILED_QUERY}&quot;== &quot;true&quot;,)}</stringProp>
           <boolProp name="IfController.evaluateAll">false</boolProp>
           <boolProp name="IfController.useExpression">true</boolProp>
         </IfController>
@@ -3528,10 +3561,18 @@ OUT.flush();</stringProp>
             <boolProp name="resetInterpreter">false</boolProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="filename"></stringProp>
-            <stringProp name="script">System.exit(1);</stringProp>
+            <stringProp name="script">log.info(&quot;Errors detected in queries. Exiting with error code 1&quot;);
+System.exit(1);</stringProp>
           </BeanShellPreProcessor>
           <hashTree/>
         </hashTree>
+        <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Log completion" enabled="true">
+          <boolProp name="resetInterpreter">false</boolProp>
+          <stringProp name="parameters"></stringProp>
+          <stringProp name="filename"></stringProp>
+          <stringProp name="script">log.info(&quot;No errors detected in any queries.&quot;);</stringProp>
+        </BeanShellPreProcessor>
+        <hashTree/>
       </hashTree>
     </hashTree>
   </hashTree>
