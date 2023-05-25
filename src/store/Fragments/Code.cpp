@@ -1078,7 +1078,6 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
 void vStreamDefBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // STREAMDEF
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1101,7 +1100,9 @@ void vStreamDefEnd(Dynamic_T* aDynamicT) {
   i8 __COLUMNS_OUT__;
 
   // marker-start
-  aDynamicT->m_aStreamDefOut = aExtern_StreamDefNew(__COLUMNS_OUT__, &xColumnInfo);
+#ifdef WITH_CLANG
+  aDynamicT->m_aStreamDefOut = aExtern_StreamDefNew(__COLUMNS_OUT__, (void*)&xColumnInfo);
+#endif
 
   // marker-end
 }

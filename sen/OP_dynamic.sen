@@ -120,24 +120,22 @@
   // pipeout DATAPULSE
   Pipein[].pipeout
 
-/*
   // execute function to generate the streamDefOut
-  nullptr Fun5[] 0 Dynamic[].execute assert
+  nullptr Fun4[] 0 Dynamic[].execute assert
 
   // get streamDefOut from Dynamic
   Dynamic[].streamDefOut to StreamDefOut[]
 
-  // pipeout the streamDef
+  // pipeout the streamDefOut
   StreamDefOut[].pipeout
-*/
 
   // is there an indexScan OP ?
   Dynamic[].IsIndexScan@ if
 
-    // execute the indexScan and combinedOp's
+    // execute the indexScan handler function
     nullptr Fun2[] 0 Dynamic[].execute assert
 
-    // execute EOS handling
+    // execute the EOS handler function
     nullptr Fun3[] 1 Dynamic[].execute assert
 
     // pipeout all Tub[]/Pot[]
@@ -265,8 +263,8 @@
 
   0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  // pipeout the streamDef
-  Pipein[].pipeout
+  // delete the streamDef
+  Pipein[].delete
 
   true
 ;
