@@ -802,7 +802,7 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
 
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 
-  if (eHandlerKind == HK_EOS)
+  if (eHandlerKind == HK_EOS || eHandlerKind == HK_STREAMDEF)
     return;
 
   // append vSetColumns
