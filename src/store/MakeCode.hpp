@@ -57,6 +57,8 @@ namespace STORE
     void vUpdateColsReq_filter(ColsReq* pColsReq, Card_Filter* p_filter);
     void vUpdateColsReq_project(ColsReq* pColsReq, Card_Project* p_project);
 
+    void vUpdateColsReq_terms(ColsReq* pColsReq, Card* pSubCard);
+
   protected:
     Footer* aFooter(void);
   };

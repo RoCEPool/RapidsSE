@@ -406,6 +406,9 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
 void MakeCode::vUpdateColsReq_filter(ColsReq* pColsReq, Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+  vUpdateColsReq_terms(pColsReq,p_boolCalc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -414,6 +417,34 @@ void MakeCode::vUpdateColsReq_filter(ColsReq* pColsReq, Card_Filter* p_filter)
 void MakeCode::vUpdateColsReq_project(ColsReq* pColsReq, Card_Project* p_project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  Card_Projection* p_projection = p_project->pSub_projection();
+  vUpdateColsReq_terms(pColsReq,p_projection);
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the current cols required                                           */
+/*----------------------------------------------------------------------------*/
+void MakeCode::vUpdateColsReq_terms(ColsReq* pColsReq, Card* pSubCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambda = [pColsReq] (Card_Term* p_term) {
+
+    if (! p_term->pSymbol()->bIsStreamOrdinal())
+      return C_CONTINUE_RECURSION;
+
+    if (! p_term->pSymbol()->Y_bHas(P_TblCol))
+      return C_CONTINUE_RECURSION;
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  pSubCard->bApplyRecursive_term(bLambda);
 }
 
 /*============================================================================*/
