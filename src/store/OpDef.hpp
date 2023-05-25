@@ -26,6 +26,7 @@ namespace STORE
 
     IndexDef*  m_pIndexDef_join;
     IndexDef*  m_pIndexDef_gbyAgg;
+    IndexDef*  m_pIndexDef_sort;
 
     ColsReq*   m_pColsReq;
 

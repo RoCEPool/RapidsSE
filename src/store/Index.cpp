@@ -10,9 +10,57 @@
 #include "CrvBuffer.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
-
+#include "Op.hpp"
+#include "Stage.hpp"
+#include "Stream.hpp"
 
 Index*  gpReadApiIndex;
+
+/*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* find the index                                                             */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_GetIndexDef(void* aIndex) {
+  Index* pIndex = _pIndex(aIndex);
+  return pIndex->pIndexDef();
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the index                                                             */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_GetIndexTree(void* aTable, void* aIndex) {
+
+  LglPtn tLglPtn;
+
+  Table* pTable = _pTable(aTable);
+  Index* pIndex = _pIndex(aIndex);
+
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  Op* pOp = MY::pOp();
+
+  if (pStreamDef->bReplicated()) {
+
+    Stage*  pStage   = pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+
+    tLglPtn = pOp0_0->tLglPtn();
+  }
+  else {
+    tLglPtn = pOp->tLglPtn();
+  }
+
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+  i8 iIndexNo = pIndex->iIndexNo();
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+
+  return pIndexTree;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/

@@ -5,6 +5,8 @@
 #include "CodeSynthUtils.hpp"
 #include "StrLib.hpp"
 #include "OpSketch.hpp"
+#include "Table.hpp"
+#include "Index.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -275,17 +277,13 @@ bool CodeSynthUtils::bReplaceIndexInfo(Stz* sLine, Stz* sReplacedLine, OpSketch*
 
   bool bResult;
 
-  if (StrLib::bContains(sLine->azChar(), "__INDEXDEF__")) {
-    s256 sIndexDef;
-    StrLib::wToString((i8) pOpSketch->m_pIndexDef, sIndexDef.azChar());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEXDEF__", sIndexDef.azChar());
+  if (StrLib::bContains(sLine->azChar(), "__TABLENAME__")) {
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__TABLENAME__", pOpSketch->m_pTable->szTableNm()->azChar());
     RASSERT(bResult);
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__INDEXTREE__")) {
-    s256 sIndexTree;
-    StrLib::wToString((i8) pOpSketch->m_pIndexTree, sIndexTree.azChar());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEXTREE__", sIndexTree.azChar());
+  if (StrLib::bContains(sLine->azChar(), "__INDEXNAME__")) {
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEXNAME__", pOpSketch->m_pIndex->szIndexNm()->azChar());
     RASSERT(bResult);
   }
 

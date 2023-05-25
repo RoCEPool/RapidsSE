@@ -26,8 +26,7 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   i8 i_CurrentRow;
   i8*   paW;
 
-  void* __INDEXDEF__;
-  void* __INDEXTREE__;
+  char* __INDEXNAME__;
 
   __L_LABEL_LOOP__:
 
@@ -48,8 +47,16 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   paW = &aDynamicT->m_aW[0];
-  aDynamicT->m_xIndexInfoT.m_aIndexDef = __INDEXDEF__;
-  aDynamicT->m_xIndexInfoT.m_aIndexTree = __INDEXTREE__;
+
+  strcpy(&aDynamicT->m_xIndexInfoT.m_cTableName[0], "__TABLENAME__");
+  strcpy(&aDynamicT->m_xIndexInfoT.m_cIndexName[0], "__INDEXNAME__");
+
+#ifdef WITH_CLANG
+  aDynamicT->m_xIndexInfoT.m_aTable = aExtern_FindTable(aDynamicT->m_xIndexInfoT.m_cTableName);
+  aDynamicT->m_xIndexInfoT.m_aIndex = aExtern_FindIndex(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_cIndexName);
+  aDynamicT->m_xIndexInfoT.m_aIndexDef = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoT.m_aIndex);
+  aDynamicT->m_xIndexInfoT.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_aIndex);
+#endif
 
   i_CurrentRow = -1;
 

@@ -399,8 +399,6 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   // TUB
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-
   __L_LABEL__:
 
   printf("TUB\n");
@@ -415,21 +413,13 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iTubContinue ------------------------------------------------------------*/
+/*-- iTubRowPix --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iTubContinue
-i8 iTubContinue(Dynamic_T* aDynamicT) {
-
-  char* szStrArea;
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-  ColumnInfo xColumnInfo;
-
-  i8 __COLUMNS_OUT__;
-
-  __L_LABEL_LOOP__:
+// function-iTubRowPix
+i8 iTubRowPix(Dynamic_T* aDynamicT) {
 
   {
-  // marker-start
+    // marker-start
 
 #ifdef WITH_CLANG
     void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
@@ -437,6 +427,28 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 #endif
     aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
   }
+
+  // marker-end
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iTubContinue ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iTubContinue
+i8 iTubContinue(Dynamic_T* aDynamicT) {
+
+  char* szStrArea;
+  ColumnInfo xColumnInfo;
+
+  i8 __COLUMNS_OUT__;
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -474,17 +486,8 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // TUB
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
   struct __STRUCT_TO__* p__STRUCT_FROM__;
-
-  __L_LABEL__:
-
-  printf("TUB\n");
 
   p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoAT.m_acStrArea;

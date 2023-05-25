@@ -250,6 +250,29 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOP
+    if (pOpDef->szOpNm()->bSame("aggreg"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchAggreg(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      ePrevStencil_v2 = SR_AT;
+
+      OpSketch *pAggOpSketch = pOpSketch;
+      OpDef *pLastOpDef = pOpDef;
+
+      pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchTub(pAggOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop, pAggOpSketch->m_pInitStack);
+      vAppend(pOpSketch);
+
+      bGeneratePotTub = false;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
     if (pOpDef->szOpNm()->bSame("filter"_Stz)) {
 
@@ -269,7 +292,33 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       ePrevStencil_v2 = SR_PT;
     }
 
-  }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the sort OP
+    if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //vSetupSort(pDynamic, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchSort(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      //ePrevStencil_v2 = SR_PL;
+
+      OpSketch *pSortOpSketch = pOpSketch;
+      OpDef *pLastOpDef = pOpDef;
+
+      pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchTub(pSortOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      bGeneratePotTub = false;
+    }
+
+ }
 
   OpSketch* pLastOpSketch = pOpSketch;
 
@@ -278,22 +327,20 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   if ( bGeneratePotTub ) {
 
     //if (pDynamic->aDynamicT()->m_iPot) {
-    //  RASSERT(0);
+      //  RASSERT(0);
       //pOpSketch = pSketchPot(pOpSketch, ePrevStencil_v2);
     //} else {
-
-    //  Op *pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
-
-    pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      pOpSketch = pSketchTub(pLastOpSketch, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+    //}
 
     // add the op sketch to the stencil
     vAppend(pOpSketch);
-  }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sketch EOS handler function
-  pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
-  vAppend(pOpSketch);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // sketch EOS handler function
+    pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+    vAppend(pOpSketch);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sketch StreamDef function
@@ -335,26 +382,6 @@ Stz* Stencil_v2::szOpSource(void)
   char* azCode = m_pOpSource->azCode();
   
   return (Stz*)azCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return op source code                                                      */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vOpSource(Stz* szOpSource)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
-
-  m_pOpSource->vReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* print the synthesized code                                                 */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
-
-  //vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,75 +431,6 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
     if (pOp->szOpNm()->bSame("dynamic_v2"_Stz)) {
       break;
     }
-
-    // skip scan OP for now (sketch later)
-    if (pOp->szOpNm()->bSame("scan"_Stz)) {
-      bInflateCrw = true;
-      continue;
-    }
-
-    // generate code for indexScan OP
-    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
-
-      // either scan / indexScan should be there
-      RASSERT(!bInflateCrw);
-
-      eHandlerKind = HK_INDEXBUFFER;
-      sLabelLoop = "L_AdvanceNextIndexT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupIndexScan(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchIndexScan(pStream, pOp, eHandlerKind, sLabelLoop);
-      vAppend(pOpSketch);
-
-      bInflateGenerated = true;
-      ePrevStencil_v2 = SR_IT;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for inflateCrw before handling the current operator
-    if (bInflateCrw) {
-
-      RASSERT(!m_xStageOps.m_bIndexScan);
-
-      eHandlerKind = HK_CRWBUFFER;
-      sLabelLoop = "L_AdvanceNextCrwT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupScan(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchInflateCrw(pStream, pOp, eHandlerKind, sLabelLoop);
-      vAppend(pOpSketch);
-
-      bInflateCrw = false;
-      bInflateGenerated = true;
-      ePrevStencil_v2 = SR_IT;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for inflateRow before handling the current operator
-    if (!bInflateGenerated) {
-
-      RASSERT(!m_xStageOps.m_bIndexScan);
-
-      eHandlerKind = HK_ROWBUFFER;
-      sLabelLoop = "L_AdvanceNextRowT"_Stz;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupScan(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchInflateRow(pStream, pOp, eHandlerKind, sLabelLoop);
-      vAppend(pOpSketch);
-
-      bInflateGenerated = true;
-      ePrevStencil_v2 = SR_IT;
-    }
-
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOP
@@ -641,189 +599,6 @@ eEC Stencil_v2::eSketch(Dynamic* pDynamic, Stream* pStream)
   return EC_NONE;
 }
 */
-
-/*----------------------------------------------------------------------------*/
-/* setup the combinedOp                                                       */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetup(Dynamic* pDynamic, Stream* pStream)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
-
-  bool bInflateGenerated = false;
-  eEK  eExprKind = EK_NONE;
-
-  Tub* pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
-  Pot* pPot = _pPot(pDynamic->aDynamicT()->m_pPot);
-
-  // collect the op information from the stage
-  eEC eError = eCollectStage(pDynamic, pStream);
-  RASSERT(eError == EC_NONE);
-
-  // for each operator in the stream
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
-
-    // get the op
-    Op *pOp = pStream->pGet(i_Op);
-
-    // skip consumeOP
-    if (pOp->szOpNm()->bSame("consumeOp"_Stz))
-      continue;
-
-    // skip scan OP
-    if (pOp->szOpNm()->bSame("scan"_Stz)) {
-      continue;
-    }
-
-    //------------------------------------------------
-    // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
-    //------------------------------------------------
-
-    /*
-    //---------------------------------------------------------
-    // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
-    //---------------------------------------------------------
-    // break when we reach the combined OP
-    if (pOp->szOpNm()->bSame("dynamic"_Stz)) {
-      break;
-    }
-    */
-
-    if (pOp->szOpNm()->bSame("dynamic_v2"_Stz)) {
-      break;
-    }
-
-    // get the streamDefOut
-    LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for inflate (for first OP)
-    if ( m_xStageOps.m_bScan && ! bInflateGenerated && ! m_xStageOps.m_bIndexScan) {
-      vSetupScan(pDynamic, pStream, pOp);
-      bInflateGenerated = true;
-    }
-
-    if ( ! m_xStageOps.m_bScan && ! m_bRowBuffer && ! m_xStageOps.m_bIndexScan) {
-      // row buffer processing
-      m_bRowBuffer = true;
-    }
-    else {
-      vSetupScan(pDynamic, pStream, pOp);
-      bInflateGenerated = true;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the filterOP
-    if (pOp->szOpNm()->bSame("filter_v2"_Stz)) {
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggregOp / projectOP
-    if (pOp->szOpNm()->bSame("gbyAgg_v2"_Stz)) {
-
-      vSetupGbyAgg(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pDynamic, pOp, HK_EOS);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for projectOP
-    if (pOp->szOpNm()->bSame("project"_Stz)) {
-
-      // get the project kind
-      eExprKind = pLogicUnit->m_eExprKind;
-
-      //if (eExprKind == EK_PROJECT) {
-        vSetupProject(pDynamic, pStream, pOp);
-      //}
-      //else {
-      //  RASSERT(eExprKind == EK_AGGREG);
-      //  vSetupProjectAgg(pDynamic, pStream, pOp);
-      //}
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the ordAgg
-    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
-      vSetupOrdAgg(pDynamic, pStream, pOp);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the indexJoinOp
-    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-      vSetupIndexJoin(pDynamic, pStream, pOp);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the indexScanOp
-    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
-
-      // there should be no RowBuffer or scan
-      RASSERT( !m_xStageOps.m_bScan );
-      RASSERT( !bInflateGenerated );
-      RASSERT( !m_bRowBuffer );
-
-      RASSERT(m_xStageOps.m_bIndexScan);
-
-      // indexScan should be the second op after consume
-      RASSERT(i_Op == 1);
-
-      vSetupIndexScan(pDynamic, pStream, pOp);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the keyExistsOp
-    if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
-      vSetupKeyExists(pDynamic, pStream, pOp);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the keyNotExistsOP
-    if (pOp->szOpNm()->bSame("keyNotExists"_Stz)) {
-      vSetupKeyExists(pDynamic, pStream, pOp);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the sortOP
-    if (pOp->szOpNm()->bSame("sort"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupSort(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pDynamic, pOp, HK_EOS);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the topOP
-    if (pOp->szOpNm()->bSame("top"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTop(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSetupTub(pDynamic, pOp, HK_EOS);
-    }
-
-  }
-
-  // get the lastOp
-  Op* pLastOp = pStream->pGet(m_xStageOps.m_pDynamicOp->i_Op() - 1);
-  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  RASSERT(pStreamDefOut);
-
-  // get the row
-  RowPix* pRowPix = pStreamDefOut->pRowPix();
-  if (pDynamic->aDynamicT()->m_iPot) {
-    pPot->vRowPix(pRowPix);
-  }
-  else {
-    pTub->vRowPix(pRowPix);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* return op stage name                                                       */
@@ -1173,8 +948,8 @@ void Stencil_v2::vSetupAggreg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  //LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  //StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
   // create RowSingleAgg
 //  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle = new RowSingle(pStreamDefOut);
@@ -1524,7 +1299,6 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
 
   // get the index
   Index* pIndex = pOpDef->m_pIndex_indexScan;
-  IndexDef* pIndexDef = pIndex->pIndexDef();
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(i_Op,sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST, pStreamDefLft, pStreamDefOut);
@@ -1537,31 +1311,14 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  // set the indexDef
-  pOpSketch->vIndexDef(pIndexDef);
+  // set the table
+  pOpSketch->vTable(pIndex->pTable());
 
-  // get the index tree for the index
-  Table* pTable = pIndex->pTable();
-
-  LglPtn tLglPtn;
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  if (pStreamDef->bReplicated()) {
-    tLglPtn = 0; //pOpDef->tLglPtn();
-  }
-  else {
-    tLglPtn = 0; //pOp->tLglPtn();
-  }
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-  i8 iIndexNo = pIndex->iIndexNo();
-
-  // get the indexTree
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  // set the index
+  pOpSketch->vIndex(pIndex);
 
   // set the indexDef
-  pOpSketch->vIndexTree(pIndexTree);
+  pOpSketch->vIndexDef(pIndex->pIndexDef());
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
@@ -2005,7 +1762,7 @@ OpSketch* Stencil_v2::pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -2013,22 +1770,20 @@ OpSketch* Stencil_v2::pSketchAggreg(Stream* pStream, Op* pOp, eHK eHandlerKind, 
   s4K sLabelNext;
   s256 szStageNm;
 
-  i8 i_Op = pOp->i_Op();
+  i8 i_Op = pOpDef->i_Op();
 
-  // get project expr from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sAggregExpr = pOpTags->szValue(C_TAG_EXPR);
+  // get aggregate expr from OpDef
+  Stz* sAggregExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  // get the streamDefs
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new shape for this OP
-  OpSketch *pOpSketch = new OpSketch(pOp->i_Op(), sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
 
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
@@ -2170,7 +1925,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch sort                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
+OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
 {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
@@ -2179,30 +1934,26 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
   s4K sLabelNext;
   s4K sLabelPrev;
 
-  i8 i_Op = pOp->i_Op();
+  i8 i_Op = pOpDef->i_Op();
 
-  // get sort expr from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sSortExpr = pOpTags->szValue(C_TAG_EXPR);
+  // get sort expr from OpDef
+  Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefs
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // get the sort type stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sSortExpr, eHandlerKind, SK_SORT, ePrevStencil_v2, ePrevStencil_v2,  II_PL, pStreamDefLft, pStreamDefOut);
 
   // set the labels in the opSketch
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
   pOpSketch->vSetLabels(sLabel, ""_Stz, szLabelLoop);
 
   // set the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
+  IndexDef *pIndexDef = _pIndexDef(pOpDef->m_pIndexDef_sort);
   pOpSketch->vIndexDef(pIndexDef);
 
   // set the payLoad bytes
@@ -2219,7 +1970,7 @@ OpSketch* Stencil_v2::pSketchSort(Dynamic* pDynamic, Stream* pStream, Op* pOp, e
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch streamDef                                                                 */
+/* sketch streamDef                                                           */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind) {
 
