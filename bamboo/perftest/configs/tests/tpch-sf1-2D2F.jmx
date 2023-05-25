@@ -1612,29 +1612,35 @@ dload lineitem paths
           </BeanShellSampler>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="TPC-H Queries" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">false</boolProp>
-        </TransactionController>
+        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Queries" enabled="true"/>
         <hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Init query failure variable" enabled="true">
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q1&apos;);
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, false);</stringProp>
+          </BeanShellPreProcessor>
+          <hashTree/>
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q1 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q1&apos;);
 OUT.println(&quot;Running Q1&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q1Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q1Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1.withoutInterval" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select
   l_returnflag,
   l_linestatus,
   sum(l_quantity)                                     as sum_qty,
@@ -1649,19 +1655,19 @@ from LineItem
 where l_shipdate &lt;= DATE &apos;1998-09-01&apos;
 group by l_returnflag, l_linestatus
 order by l_returnflag, l_linestatus;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q1" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select
   l_returnflag,
   l_linestatus,
   sum(l_quantity) as sum_qty,
@@ -1682,35 +1688,52 @@ group by
 order by
   l_returnflag,
   l_linestatus;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q2&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q2 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q2&apos;);
 OUT.println(&quot;Running Q2&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q2Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q2Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q2" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select
   s_acctbal,
   s_name,
   n_name,
@@ -1754,35 +1777,52 @@ order by
   s_name,
   p_partkey
 limit 100;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q3&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q3 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q3&apos;);
 OUT.println(&quot;Running Q3&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q3Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q3Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q3" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   l_orderkey,
   sum(l_extendedprice*(1-l_discount)) as revenue,
   o_orderdate,
@@ -1805,35 +1845,52 @@ order by
   revenue desc, 
   o_orderdate
 limit 10;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q4&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q4 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q4&apos;);
 OUT.println(&quot;Running Q4&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q4Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q4Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4.withoutInterval" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   o_orderpriority, 
   count(*) as order_count
 from 
@@ -1853,19 +1910,19 @@ group by
   o_orderpriority
 order by 
   o_orderpriority;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q4" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   o_orderpriority, 
   count(*) as order_count
 from 
@@ -1885,35 +1942,52 @@ group by
   o_orderpriority
 order by 
   o_orderpriority;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q5&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q5 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q5&apos;);
 OUT.println(&quot;Running Q5&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q5Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q5Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5.withoutInterval" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   n_name, 
   sum(l_extendedprice * (1 - l_discount)) as revenue
 from 
@@ -1937,19 +2011,19 @@ group by
   n_name
 order by 
   revenue desc;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q5" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   n_name, 
   sum(l_extendedprice * (1 - l_discount)) as revenue
 from 
@@ -1973,35 +2047,52 @@ group by
   n_name
 order by 
   revenue desc;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q6&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q6 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q6&apos;);
 OUT.println(&quot;Running Q6&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q6Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q6Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6.withoutInterval" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   sum(l_extendedprice*l_discount) as revenue
 from 
   lineitem
@@ -2010,19 +2101,19 @@ where
   and l_shipdate &lt; date &apos;1995-01-01&apos;
   and l_discount between 0.06 - 0.01 and 0.06 + 0.01
   and l_quantity &lt; 24;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q6" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   sum(l_extendedprice*l_discount) as revenue
 from 
   lineitem
@@ -2031,35 +2122,52 @@ where
   and l_shipdate &lt; date &apos;1994-01-01&apos; + interval &apos;1&apos; year
   and l_discount between 0.06 - 0.01 and 0.06 + 0.01
   and l_quantity &lt; 24;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q7&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q7 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q7&apos;);
 OUT.println(&quot;Running Q7&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q7Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q7Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q7" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   supp_nation, 
   cust_nation, 
   l_year, 
@@ -2099,35 +2207,52 @@ order by
   supp_nation, 
   cust_nation, 
   l_year;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q8&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q8 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q8&apos;);
 OUT.println(&quot;Running Q8&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q8Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q8" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q8Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q8" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   o_year,
   sum(case when nation = &apos;BRAZIL&apos; then volume else 0 end) / sum(volume) as mkt_share
 from ( 
@@ -2160,35 +2285,52 @@ group by
   o_year
 order by 
   o_year;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q9&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q9 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q9&apos;);
 OUT.println(&quot;Running Q9&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q9Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q9Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q9" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   nation, 
   o_year, 
   sum(amount) as sum_profit
@@ -2219,35 +2361,52 @@ group by
 order by 
   nation, 
   o_year desc;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q10&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q10 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q10&apos;);
 OUT.println(&quot;Running Q10&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q10Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q10Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10.withoutInterval" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   c_custkey, 
   c_name, 
   sum(l_extendedprice * (1 - l_discount)) as revenue,
@@ -2279,19 +2438,19 @@ group by
 order by 
   revenue desc 
 limit 20;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q10" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   c_custkey, 
   c_name, 
   sum(l_extendedprice * (1 - l_discount)) as revenue,
@@ -2323,35 +2482,52 @@ group by
 order by 
   revenue desc 
 limit 20;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q11&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q11 Group" enabled="false"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q11&apos;);
 OUT.println(&quot;Running Q11&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q11" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   ps_partkey, 
   sum(ps_supplycost * ps_availqty) as value
 from 
@@ -2379,35 +2555,52 @@ having
    )
 order by 
   value desc;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q12&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q12 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q12&apos;);
 OUT.println(&quot;Running Q12&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q12Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q12Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12.withoutIntervals" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   l_shipmode,
   sum(case when o_orderpriority = &apos;1-URGENT&apos; or o_orderpriority = &apos;2-HIGH&apos; then 1 else 0 end) as high_line_count,
   sum(case when o_orderpriority &lt;&gt; &apos;1-URGENT&apos; and o_orderpriority &lt;&gt; &apos;2-HIGH&apos; then 1 else 0 end) as low_line_count
@@ -2425,19 +2618,19 @@ group by
   l_shipmode
 order by 
   l_shipmode;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q12" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   l_shipmode,
   sum(case when o_orderpriority = &apos;1-URGENT&apos; or o_orderpriority = &apos;2-HIGH&apos; then 1 else 0 end) as high_line_count,
   sum(case when o_orderpriority &lt;&gt; &apos;1-URGENT&apos; and o_orderpriority &lt;&gt; &apos;2-HIGH&apos; then 1 else 0 end) as low_line_count
@@ -2455,35 +2648,52 @@ group by
   l_shipmode
 order by 
   l_shipmode;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q13&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q13 Group" enabled="false"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q13&apos;);
 OUT.println(&quot;Running Q13&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q13Loop" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q13Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q13" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   c_count, 
   count(*) as custdist
 from 
@@ -2504,35 +2714,52 @@ group by
 order by 
   custdist desc, 
   c_count desc;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q14&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q14 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q14&apos;);
 OUT.println(&quot;Running Q14&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q14Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q14Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14.withoutIntervals" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   100.00 * sum(case when p_type like &apos;PROMO%&apos; then l_extendedprice*(1-l_discount) else 0 end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
 from 
   lineitem, 
@@ -2541,19 +2768,19 @@ where
   l_partkey = p_partkey
   and l_shipdate &gt;= &apos;1995-09-01&apos;
   and l_shipdate &lt; &apos;1995-10-01&apos;;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q14" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   100.00 * sum(case when p_type like &apos;PROMO%&apos; then l_extendedprice*(1-l_discount) else 0 end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
 from 
   lineitem, 
@@ -2562,35 +2789,52 @@ where
   l_partkey = p_partkey
   and l_shipdate &gt;= &apos;1995-09-01&apos;
   and l_shipdate &lt; &apos;1995-09-01&apos; + interval &apos;1&apos; month;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q15&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q15 Group" enabled="false"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q15&apos;);
 OUT.println(&quot;Running Q15&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q15Loop" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q15Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q15" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   s_suppkey, 
   s_name, 
   s_address, 
@@ -2604,38 +2848,55 @@ where
   and total_revenue &gt;= ( select max(total_revenue) from revenue)
 order by 
   s_suppkey;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-              <stringProp name="TestPlan.comments">IMPORTANT NOTE:
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+                <stringProp name="TestPlan.comments">IMPORTANT NOTE:
 
 This query requires a view to be created first.</stringProp>
-            </JDBCSampler>
-            <hashTree/>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q16&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q16 Group" enabled="false"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q16&apos;);
 OUT.println(&quot;Running Q16&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q16Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q16Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16.withoutCountDistinct" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   p_brand, 
   p_type, 
   p_size, 
@@ -2665,19 +2926,19 @@ order by
   p_brand, 
   p_type, 
   p_size;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16.withCountDistinct" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q16" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   p_brand, 
   p_type, 
   p_size, 
@@ -2707,35 +2968,52 @@ order by
   p_brand, 
   p_type, 
   p_size;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q17&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q17 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q17&apos;);
 OUT.println(&quot;Running Q17&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q17Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q17" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q17Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q17" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   sum(l_extendedprice) / 7.0 as avg_yearly
 from 
   lineitem, 
@@ -2753,35 +3031,52 @@ where
       l_partkey = p_partkey 
    )
 ;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q18&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q18 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q18&apos;);
 OUT.println(&quot;Running Q18&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q18Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q18Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q18" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   c_name, 
   c_custkey, 
   o_orderkey, 
@@ -2815,35 +3110,52 @@ order by
   o_totalprice desc, 
   o_orderdate
 limit 100;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q19&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q19 Group" enabled="true"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q19&apos;);
 OUT.println(&quot;Running Q19&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q19Loop" enabled="true">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q19" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q19Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q19" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   sum(l_extendedprice * (1 - l_discount) ) as revenue
 from 
   lineitem, 
@@ -2875,35 +3187,52 @@ where
     and l_shipinstruct = &apos;DELIVER IN PERSON&apos; 
   )
 ;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q20&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q20 Group" enabled="false"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q20&apos;);
 OUT.println(&quot;Running Q20&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q20Loop" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q20Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20.withoutIntervals" enabled="false">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   s_name, 
   s_address
 from 
@@ -2940,19 +3269,19 @@ where
   and n_name = &apos;CANADA&apos;
 order by 
   s_name;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20.withIntervals" enabled="false">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q20" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   s_name, 
   s_address
 from 
@@ -2989,35 +3318,52 @@ where
   and n_name = &apos;CANADA&apos;
 order by 
   s_name;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q21&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q21 Group" enabled="false"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q21&apos;);
 OUT.println(&quot;Running Q21&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q21Loop" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q21" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q21Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q21" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select
   s_name,
   count(*) as numwait 
 from
@@ -3056,35 +3402,52 @@ group by
 order by
   numwait desc,
   s_name;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;Running Q22&apos;);
+          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Q22 Group" enabled="false"/>
+          <hashTree>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+              <stringProp name="cacheKey">true</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">log.info(&apos;Running Q22&apos;);
 OUT.println(&quot;Running Q22&quot;);
 OUT.flush();</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q22Loop" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
-          </LoopController>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q22" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">select 
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Sampler>
+            <hashTree/>
+            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q22Loop" enabled="true">
+              <boolProp name="LoopController.continue_forever">true</boolProp>
+              <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
+            </LoopController>
+            <hashTree>
+              <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="q22" enabled="true">
+                <stringProp name="dataSource">SEConnPool</stringProp>
+                <stringProp name="query">select 
   cntrycode, 
   count(*) as numcust, 
   sum(c_acctbal) as totacctbal
@@ -3118,26 +3481,55 @@ group by
   cntrycode
 order by 
   cntrycode;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
+                <stringProp name="queryArguments"></stringProp>
+                <stringProp name="queryArgumentsTypes"></stringProp>
+                <stringProp name="queryTimeout"></stringProp>
+                <stringProp name="queryType">Select Statement</stringProp>
+                <stringProp name="resultSetHandler">Store as String</stringProp>
+                <stringProp name="resultSetMaxRows"></stringProp>
+                <stringProp name="resultVariable"></stringProp>
+                <stringProp name="variableNames"></stringProp>
+              </JDBCSampler>
+              <hashTree/>
+              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for error" enabled="true">
+                <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+                <boolProp name="IfController.evaluateAll">false</boolProp>
+                <boolProp name="IfController.useExpression">true</boolProp>
+              </IfController>
+              <hashTree>
+                <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="parameters"></stringProp>
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="script">vars.put(&quot;HAS_FAILED_QUERY&quot;, true);</stringProp>
+                </BeanShellPreProcessor>
+                <hashTree/>
+              </hashTree>
+            </hashTree>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;All queries completed&apos;);
-OUT.println(&quot;All queries completed&quot;);
+            <stringProp name="script">log.info(&apos;All queries has finished executing&apos;);
+OUT.println(&quot;All queries has finished executing&quot;);
 OUT.flush();</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
+          <hashTree/>
+        </hashTree>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for any query failures" enabled="true">
+          <stringProp name="IfController.condition">${HAS_FAILED_QUERY}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Exit with error code" enabled="true">
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">System.exit(1);</stringProp>
+          </BeanShellPreProcessor>
           <hashTree/>
         </hashTree>
       </hashTree>
