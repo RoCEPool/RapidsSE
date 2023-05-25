@@ -223,7 +223,7 @@ c5ad.8xlarge</stringProp>
         <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Main Thread Group" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">stoptest</stringProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
@@ -234,9 +234,13 @@ c5ad.8xlarge</stringProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <stringProp name="TestPlan.comments">We set continue on failure so that the failure of a single query doesn&apos;t stop everything</stringProp>
       </ThreadGroup>
       <hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="Setup" enabled="true"/>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Setup" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">false</boolProp>
+        </TransactionController>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="createTables" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -477,6 +481,20 @@ group by
               </objProp>
               <stringProp name="filename">createTables.csv</stringProp>
             </ResultCollector>
+            <hashTree/>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for failure" enabled="true">
+            <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Exit JMeter with error code" enabled="true">
+              <stringProp name="BeanShellSampler.query">System.exit(1);</stringProp>
+              <stringProp name="BeanShellSampler.filename"></stringProp>
+              <stringProp name="BeanShellSampler.parameters"></stringProp>
+              <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+            </BeanShellSampler>
             <hashTree/>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="createIndexes" enabled="true">
@@ -751,6 +769,20 @@ group by
             </ResultCollector>
             <hashTree/>
           </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for failure" enabled="true">
+            <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Exit JMeter with error code" enabled="true">
+              <stringProp name="BeanShellSampler.query">System.exit(1);</stringProp>
+              <stringProp name="BeanShellSampler.filename"></stringProp>
+              <stringProp name="BeanShellSampler.parameters"></stringProp>
+              <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+            </BeanShellSampler>
+            <hashTree/>
+          </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="prepareData" enabled="true"/>
           <hashTree>
             <SystemSampler guiclass="SystemSamplerGui" testclass="SystemSampler" testname="generateData" enabled="true">
@@ -860,6 +892,20 @@ e.g.
               </ResultCollector>
               <hashTree/>
             </hashTree>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for failure" enabled="true">
+            <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Exit JMeter with error code" enabled="true">
+              <stringProp name="BeanShellSampler.query">System.exit(1);</stringProp>
+              <stringProp name="BeanShellSampler.filename"></stringProp>
+              <stringProp name="BeanShellSampler.parameters"></stringProp>
+              <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+            </BeanShellSampler>
+            <hashTree/>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="loadData" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -1277,6 +1323,20 @@ dload lineitem paths
             </ResultCollector>
             <hashTree/>
           </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for failure" enabled="true">
+            <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Exit JMeter with error code" enabled="true">
+              <stringProp name="BeanShellSampler.query">System.exit(1);</stringProp>
+              <stringProp name="BeanShellSampler.filename"></stringProp>
+              <stringProp name="BeanShellSampler.parameters"></stringProp>
+              <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+            </BeanShellSampler>
+            <hashTree/>
+          </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="validateRowCount" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
@@ -1523,8 +1583,39 @@ dload lineitem paths
             </ResultCollector>
             <hashTree/>
           </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for failure" enabled="true">
+            <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Exit JMeter with error code" enabled="true">
+              <stringProp name="BeanShellSampler.query">System.exit(1);</stringProp>
+              <stringProp name="BeanShellSampler.filename"></stringProp>
+              <stringProp name="BeanShellSampler.parameters"></stringProp>
+              <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+            </BeanShellSampler>
+            <hashTree/>
+          </hashTree>
         </hashTree>
-        <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Queries" enabled="true"/>
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Check for failure" enabled="true">
+          <stringProp name="IfController.condition">${__jexl3(!${JMeterThread.last_sample_ok},)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Exit JMeter with error code" enabled="true">
+            <stringProp name="BeanShellSampler.query">System.exit(1);</stringProp>
+            <stringProp name="BeanShellSampler.filename"></stringProp>
+            <stringProp name="BeanShellSampler.parameters"></stringProp>
+            <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+          </BeanShellSampler>
+          <hashTree/>
+        </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="TPC-H Queries" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">false</boolProp>
+        </TransactionController>
         <hashTree>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
@@ -2243,7 +2334,7 @@ limit 20;</stringProp>
             </JDBCSampler>
             <hashTree/>
           </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="false">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -2253,7 +2344,7 @@ OUT.flush();</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="true">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Q11Loop" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
