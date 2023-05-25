@@ -357,30 +357,63 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  eCK eCard = p_OP->eCard();
+  eCK eCard_OP = p_OP->eCard();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  switch (eCard) {
+  switch (eCard_OP) {
 
     case CK_AGGREG:
     case CK_CROSSJOIN:
-    case CK_FILTER:
-    case CK_GBYAGG:
-    case CK_HAVING:
     case CK_INDEXJOIN:
     case CK_INDEXSCAN:
-    case CK_KEYEXISTS:
-    case CK_KEYNOTEXISTS:
     case CK_ORDAGG:
-    case CK_PROJECT:
     case CK_SCAN:
-      return;
+      break;
 
     default:
       return;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  ColsReq* pColsReq = new ColsReq;
+  m_pOpDef->vColsReq(pColsReq);
+
+  Kid xKid(m_pCI->G.pDeck);
+  for (xKid.vSynch(p_OP); xKid.bEach(); /**/) {
+    Card* p_later = xKid.pChild();
+    eCK eCard_later = p_later->eCard();
+
+    switch (eCard_later) {
+
+      case CK_FILTER:
+        vUpdateColsReq_filter(pColsReq, _pCard_Filter(p_later));
+        continue;
+
+      case CK_PROJECT:
+        vUpdateColsReq_project(pColsReq, _pCard_Project(p_later));
+        continue;
+
+      default:
+        continue;
+    }
+
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the current cols required                                           */
+/*----------------------------------------------------------------------------*/
+void MakeCode::vUpdateColsReq_filter(ColsReq* pColsReq, Card_Filter* p_filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* update the current cols required                                           */
+/*----------------------------------------------------------------------------*/
+void MakeCode::vUpdateColsReq_project(ColsReq* pColsReq, Card_Project* p_project)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 }
 
 /*============================================================================*/
