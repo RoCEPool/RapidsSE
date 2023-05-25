@@ -157,6 +157,7 @@ static Stz* P_Level        = "eLevel"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_ParamOdn     = "szParamOdn"_Stz;
 static Stz* P_Permutation  = "i_Permutation"_Stz;
+static Stz* P_Pointer      = "pProinter"_Stz;
 static Stz* P_ProjBump     = "nProjBump"_Stz;
 static Stz* P_ProjBumped   = "nProjBumped"_Stz;
 static Stz* P_PtndJoin     = "i_PtndJoin"_Stz;
