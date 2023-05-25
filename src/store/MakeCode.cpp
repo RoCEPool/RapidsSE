@@ -361,17 +361,20 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
 
   switch (eCard_OP) {
 
-    case CK_AGGREG:
     case CK_CROSSJOIN:
     case CK_INDEXJOIN:
     case CK_INDEXSCAN:
-    case CK_ORDAGG:
     case CK_SCAN:
       break;
 
     default:
       return;
   }
+
+  Card_Table* p_table = p_OP->pSub_table();
+  Stz* szTbl = p_table->szSymbol();
+  RASSERT(StrLib::bIsAlpha(*szTbl->azChar()));
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -386,11 +389,11 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
     switch (eCard_later) {
 
       case CK_FILTER:
-        vUpdateColsReq_filter(pColsReq, _pCard_Filter(p_later));
+        vUpdateColsReq_filter(p_table, pColsReq, _pCard_Filter(p_later));
         continue;
 
       case CK_PROJECT:
-        vUpdateColsReq_project(pColsReq, _pCard_Project(p_later));
+        vUpdateColsReq_project(p_table, pColsReq, _pCard_Project(p_later));
         continue;
 
       default:
@@ -403,41 +406,47 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vUpdateColsReq_filter(ColsReq* pColsReq, Card_Filter* p_filter)
+void MakeCode::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq, Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
-  vUpdateColsReq_terms(pColsReq,p_boolCalc);
+  vUpdateColsReq_terms(p_table, pColsReq,p_boolCalc);
 }
 
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vUpdateColsReq_project(ColsReq* pColsReq, Card_Project* p_project)
+void MakeCode::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq, Card_Project* p_project)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   Card_Projection* p_projection = p_project->pSub_projection();
-  vUpdateColsReq_terms(pColsReq,p_projection);
+  vUpdateColsReq_terms(p_table, pColsReq,p_projection);
 }
 
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vUpdateColsReq_terms(ColsReq* pColsReq, Card* pSubCard)
+void MakeCode::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card* pSubCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [pColsReq] (Card_Term* p_term) {
+  auto bLambda = [p_table, pColsReq] (Card_Term* p_term) {
 
     if (! p_term->pSymbol()->bIsStreamOrdinal())
       return C_CONTINUE_RECURSION;
 
     if (! p_term->pSymbol()->Y_bHas(P_TblCol))
       return C_CONTINUE_RECURSION;
+
+    Symbol* pSymbol = p_term->pSymbol();
+    if (! p_table->bIsTblColOf(pSymbol->Y_szGet(P_TblCol)))
+      return C_CONTINUE_RECURSION;
+
+    pColsReq->vAddCol(pSymbol->iExtractOrdinal(),"??"_Stz);
 
     return C_CONTINUE_RECURSION;
   };

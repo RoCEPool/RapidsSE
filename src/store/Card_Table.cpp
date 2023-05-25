@@ -396,6 +396,22 @@ Stz* Card_Table::szColNm(i8 i_Col_base0)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given symbol a $c.n of this table?                                      */
+/*----------------------------------------------------------------------------*/
+bool Card_Table::bIsTblColOf(Stz* szTblCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  char cTbl_this = *this->pSymbol()->szSymbol()->azChar();
+  char cTbl_arg  = *(szTblCol->azChar()+1);
+
+  if (cTbl_this == cTbl_arg)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert <table> into either <scan>, <indexJoin> or <keyExists>             */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
