@@ -139,7 +139,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the file headers
+  // append the file headersHK
   if (bFileHeader)
     vAppendFileHeaders();
 
@@ -421,6 +421,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
+            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
+            vAppendCodePixCols(pOpSketch);
+            vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
@@ -433,6 +436,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           // TUB in CRW/ROW/INDEX handler
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
+          vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
           vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }

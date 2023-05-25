@@ -89,7 +89,7 @@ void Step::vStencilSetup_v2(void)
   pDynamic->aDynamicT()->m_pTub        = *m_pLogicUnit->m_xpTub;
   pDynamic->aDynamicT()->m_pPot        = *m_pLogicUnit->m_xpPot;
 
-  pStencil->vSetup(pDynamic, pStream);
+  //pStencil->vSetup(pDynamic, pStream);
 
   EXIT();
 }
