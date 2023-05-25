@@ -2853,13 +2853,13 @@ void Kid::vReset(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Kid::vSynch(Card* pChild_find)
+void Kid::vSynch(Card* pChild_with)
 {
   i8 nChildren = m_pParent->nChildCards();
 
   for (i8 i_Child = 0; i_Child < nChildren; i_Child++) {
     Card *pChild_test = m_pParent->pGetChild(i_Child);
-    if (pChild_test == pChild_find) {
+    if (pChild_test == pChild_with) {
       m_i_Child = i_Child;
       return;
     }

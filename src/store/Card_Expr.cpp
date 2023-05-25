@@ -253,14 +253,6 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
     p_expr_early->vAppend(p_as->pClone());
 
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
-  Card_Term* p_term_0_early = p_rpnCalc_early->pGetTerm(0);
-  if (p_term_0_early->pSymbol()->Y_bHas(P_TblCol)) {
-    p_term_0_early->vSymbol(p_term_0_early->pSymbol()->Y_szGet(P_TblCol));
-  }
-  else {
-    vDebugPoint();
-  }
-  //p_term_0_early->vDump();
   p_expr_early->vAppend(p_rpnCalc_early);
 
   return p_expr_early;

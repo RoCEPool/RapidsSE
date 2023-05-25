@@ -316,10 +316,6 @@ bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
     if (szThis->bSame(szArg))
       continue;
 
-    Stz* szArg_tblCol = p_term_arg->pSymbol()->Y_szGet(P_TblCol);
-    if (szArg_tblCol && szThis->bSame(szArg_tblCol))
-      continue;
-
     return false;
   }
 
