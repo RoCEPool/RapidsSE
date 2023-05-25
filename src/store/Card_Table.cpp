@@ -165,7 +165,8 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
 
     Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = AM::pTableFind(p_tableNm->szSymbol());
+    Table* pTable = pAccess_Table(p_tableNm->szSymbol());
+    pCI->G.p_table->pSymbol()->Y_vSet(P_Pointer,pTable);
 
     i8 jTableSize;
     i8 jRowSize;

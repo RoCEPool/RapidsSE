@@ -11,6 +11,8 @@
 #include "Stencil_v2.hpp"
 
 #include "Symbol.hpp"
+#include "Table.hpp"
+#include "StreamDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -449,7 +451,19 @@ void MakeCode::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card
     if (! p_table->bIsTblColOf(pSymbol->Y_szGet(P_TblCol)))
       return C_CONTINUE_RECURSION;
 
-    pColsReq->vAddCol(pSymbol->iExtractOrdinal(),"??"_Stz);
+    Stz* szTblCol = pSymbol->Y_szGet(P_TblCol);
+    i8 i_Col = StrLib::iGleanInt(szTblCol->azChar());
+
+    s32 sColNm;
+    if (Table* pTable = _pTable(p_table->pSymbol()->Y_pGet(P_Pointer))) {
+      StreamDef* pStreamDef = pTable->pStreamDef();
+      Column* pColumn = pStreamDef->pGetColumn(i_Col-1);
+      sColNm = pColumn->szColNm();
+    }
+    else
+      sColNm = "??"_Stz;
+
+    pColsReq->vAddCol(i_Col, sColNm);
 
     return C_CONTINUE_RECURSION;
   };

@@ -924,6 +924,19 @@ void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
 /*----------------------------------------------------------------------------*/
 /* set given property                                                         */
 /*----------------------------------------------------------------------------*/
+void Symbol::Y_vSet(Stz* szPpyNm, Object* pObject)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vReplace(szPpyNm, pObject);
+
+}
+/*----------------------------------------------------------------------------*/
+/* set given property                                                         */
+/*----------------------------------------------------------------------------*/
 void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
