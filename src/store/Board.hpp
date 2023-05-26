@@ -23,6 +23,7 @@
 #include "Card_CmpPred.hpp"
 #include "Card_COL.hpp"
 #include "Card_Combined.hpp"
+#include "Card_COND.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_Correlation.hpp"
 #include "Card_CostJoining.hpp"  //
