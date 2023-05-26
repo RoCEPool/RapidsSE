@@ -58,6 +58,8 @@ namespace STORE
     eSD     eDirection(i8 i_Order);
     void    vDirection(i8 i_Order, eSD eDirection);
 
+    void    vDump(void);
+
     Column* pFindColumn(Stz* sColumnNm);
   
     Column* pGetColumn(i8 i_Col);

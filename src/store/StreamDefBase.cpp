@@ -305,6 +305,20 @@ void StreamDefBase::vDirection(i8 i_Order, eSD eDirection)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
+    vTrace("               Col %lld: %s %s\n"_Stz,
+           i_Col, m_xaColumn[i_Col].szColNm(), aCT[m_xaColumn[i_Col].eColumnType()]);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* find column with given name                                                */
 /*----------------------------------------------------------------------------*/
 Column* StreamDefBase::pFindColumn(Stz* szColumnNm)

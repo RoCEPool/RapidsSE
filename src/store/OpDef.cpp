@@ -31,6 +31,7 @@ OpDef::OpDef(void)
 
   m_pIndexDef_join      = nullptr;
   m_pIndexDef_gbyAgg    = nullptr;
+  m_pIndexDef_sort      = nullptr;
 
   m_pColsReq            = nullptr;
 
@@ -55,6 +56,7 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
 
   m_pIndexDef_join      = nullptr;
   m_pIndexDef_gbyAgg    = nullptr;
+  m_pIndexDef_sort      = nullptr;
 
   m_pColsReq            = nullptr;
 
@@ -76,6 +78,7 @@ OpDef::~OpDef(void) noexcept(false)
 
   //delete m_pIndexDef_join;
   delete m_pIndexDef_gbyAgg;
+  delete m_pIndexDef_sort;
 
   delete m_pColsReq;
 }
@@ -161,8 +164,10 @@ void OpDef::vDump(i8 i_Tab)
 
   vTrace("%s     : StreamDef_arriving %p\n"_Stz,
          Stz::szTab(i_Tab),m_pStreamDef_arriving);
+  m_pStreamDef_arriving->vDump();
   vTrace("%s     : StreamDef_emitted  %p\n"_Stz,
          Stz::szTab(i_Tab),m_pStreamDef_emitted);
+  m_pStreamDef_emitted->vDump();
   vTrace("%s     : Index_indexScan    %p\n"_Stz,
          Stz::szTab(i_Tab),m_pIndex_indexScan);
   vTrace("%s     : IndexDef_gbyAgg    %p\n"_Stz,

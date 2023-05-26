@@ -381,18 +381,18 @@ void OpSketch::vGenerateExprStacks(void)
 
 
 #ifdef WITH_DEBUG_VERSION
-//       vTrace("TKN: %s\n"_Stz, pTkn->azChars());
-//
-//    // dump the TypeStack
-//    vTrace("--------------------------------------\n"_Stz);
-//    vTrace("EXPRTYPE:\n"_Stz);
-//    i8 nExpr = pExprType->nItems() - 1;
-//
-//    while ( nExpr >= 0) {
-//      eDM eType = (eDM)pExprType->iPeek(nExpr--);
-//      vTrace("%s\n"_Stz, aDM[eType]);
-//    }
-//    vTrace("--------------------------------------\n"_Stz);
+       vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    // dump the TypeStack
+    vTrace("--------------------------------------\n"_Stz);
+    vTrace("EXPRTYPE:\n"_Stz);
+    i8 nExpr = pExprType->nItems() - 1;
+
+    while ( nExpr >= 0) {
+      eDM eType = (eDM)pExprType->iPeek(nExpr--);
+      vTrace("%s\n"_Stz, aDM[eType]);
+    }
+    vTrace("--------------------------------------\n"_Stz);
 #endif
 
     if (pTkn->bSame(","_Stz)) {
