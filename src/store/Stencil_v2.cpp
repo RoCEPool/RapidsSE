@@ -308,6 +308,22 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       bGeneratePotTub = false;
     }
 
+    // generate code for indexScan OP
+    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //vSetupIndexJoin(pDynamic, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchIndexJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+
+      ePrevStencil_v2 = SR_TJ;
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOpDef->szOpNm()->bSame("project"_Stz)) {
@@ -1249,7 +1265,7 @@ void Stencil_v2::vSketchEosTop(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 /*----------------------------------------------------------------------------*/
 /* sketch code for indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop)
+OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1259,29 +1275,27 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
   s256 sLabelNext;
   s256 sLabelOuterLoop;
 
-  Stz* sFilterExpr = ""_Stz;
+  i8 i_Op = pOpDef->i_Op();
 
-  // get join expr from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sJoinExpr = pOpTags->szValue(C_TAG_KEYEXPR);
+  // get join expr from OpDef
+  Stz* sJoinExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefs
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-  StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
-  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+  //Index* pIndex = pOpDef->m_pIndex_indexJoin;
 
   // get the select columns
   //u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
-  pOpSketch = new OpSketch(pOp->i_Op(), sJoinExpr, eHandlerKind, SK_INDEXJOIN, ePrevStencil_v2, SR_TJ, II_JJ, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op, sJoinExpr, eHandlerKind, SK_INDEXJOIN, ePrevStencil_v2, SR_TJ, II_JJ, pStreamDefLft, pStreamDefOut);
 
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-  vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTubPot"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
   sLabelOuterLoop = sLabelLoop;
@@ -1291,7 +1305,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(Stream* pStream, Op* pOp, eHK eHandlerKin
   pOpSketch->vStreamDefRht(pStreamDefRht);
 
   // set the indexDef
-  pOpSketch->vIndexDef(pIndex->pIndexDef());
+  //pOpSketch->vIndexDef(pIndex->pIndexDef());
   pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
@@ -2185,17 +2199,6 @@ eEC Stencil_v2::eCollectStage(Dynamic* pDynamic, Stream* pStream) {
 
       m_xStageOps.m_iAggregOp++;
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE PAYLOAD OP's
-      if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top)"
-            "in the same stage (%s)!!!\n"_Stz,
-            m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_bPayloadOp = true;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2379,22 +2382,6 @@ eEC Stencil_v2::eCollectStage(Dynamic* pDynamic, Stream* pStream) {
         return EC_INVALID_PIPELINE;
       }
 
-      eEK eExprKind = pOp->pOpLogicUnit()->m_eExprKind;
-
-      if (eExprKind == EK_AGGREG) {
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // MULTIPLE PAYLOAD OP's
-        if (m_xStageOps.m_bPayloadOp) {
-          vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-                 m_szStageNm.azChar());
-
-          return EC_INVALID_PIPELINE;
-        }
-
-        m_xStageOps.m_bPayloadOp = true;
-      }
-
       m_xStageOps.m_iProjectOp++;
     }
 
@@ -2542,28 +2529,12 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
       continue;
     }
 
-    // combined OP
-//    if (pOpDef->szOpNm()->bSame("dynamic_v2"_Stz)) {
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // MULTIPLE COMBINED OP's
-//      if (m_xStageOps.m_iCombinedOp) {
-//        vTrace("Error: Cannot have multiple combinedOp's (%s)!!!\n"_Stz,
-//               m_szStageNm.azChar());
-//        return EC_INVALID_PIPELINE;
-//      }
-//
-//      m_xStageOps.m_iCombinedOp++;
-//      //m_xStageOps.m_pDynamicOp = pOp;
-//      continue;
-//    }
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // skip scanOP and combinedOP and count no of OPS to combine
+    // skip scanOPand count no of OPS to combine
     iOpsToCombine++;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // aggregate Op
+    // groupBy aggregate Op
     if (pOpDef->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       m_xStageOps.m_iAggregOp++;
@@ -2571,7 +2542,7 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE PAYLOAD OP's
       if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top)"
+        vTrace("Error: Cannot have multiple combination of payload operators (gbyAgg/sort/top)"
                "in the same stage (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
 
@@ -2766,13 +2737,13 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // gbyAgg
-    if (pOpDef->szOpNm()->bSame("gbyAgg"_Stz)) {
+    // aggreg
+    if (pOpDef->szOpNm()->bSame("aggreg"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE PAYLOAD OP's
       if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+        vTrace("Error: Cannot have multiple combination of payload operators (aggreg/gbyAgg/sort/top) in the same stage (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
 
         return EC_INVALID_PIPELINE;
@@ -2780,7 +2751,7 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
       m_xStageOps.m_bPayloadOp = true;
 
-      m_xStageOps.m_iProjectOp++;
+      m_xStageOps.m_iAggregOp++;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2832,7 +2803,7 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE PAYLOAD OP's
       if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
+        vTrace("Error: Cannot have multiple combination of payload operators (gbyAgg/sort/top) in the same stage (%s)!!!\n"_Stz,
                m_szStageNm.azChar());
 
         return EC_INVALID_PIPELINE;
