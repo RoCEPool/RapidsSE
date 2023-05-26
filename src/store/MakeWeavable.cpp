@@ -58,10 +58,11 @@ void MakeWeavable::vWeavable(void)
 
 //  vSeries(BK_SUBQUERY, 0, __func__);
 
+#if ! F_PRE_INDIVIDUATE
   vCullNonusedBounds();
   vCullUsedBoundsFromFilter();
-
   vIndividuateFilter();
+#endif
 
   vReinstateStages();
 

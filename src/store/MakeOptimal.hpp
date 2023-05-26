@@ -51,6 +51,9 @@ namespace STORE
     void vMorph_scan_To_indexScan(void);
     void vPromote_gbyAgg_To_ordAgg(void);
 
+    void vCullNonusedBounds(void);
+    void vCullUsedBoundsFromFilter(void);
+    void vIndividuateFilter(void);
 
   protected:
     Footer* aFooter(void);
