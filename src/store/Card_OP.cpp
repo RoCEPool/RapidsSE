@@ -299,6 +299,9 @@ void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (! p_projection_prior)
+    return;
+
   if (Card_Filter* p_filter = pSub_filter())
     p_filter->vCorrectStmOdn(p_projection_prior);
 
