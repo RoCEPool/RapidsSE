@@ -726,6 +726,36 @@ i8 Symbol::Y_iGet(i8 i_Ppy)
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
 /*----------------------------------------------------------------------------*/
+Object* Symbol::Y_pGet(i8 i_Ppy)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+
+  Object* pPpy = m_pProperties->pValue(i_Ppy);
+
+  return pPpy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+Object* Symbol::Y_pGet(Stz* szPpyNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+
+  Object* pPpy = m_pProperties->pValue(szPpyNm);
+
+  return pPpy;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
 Stz* Symbol::Y_szGet(i8 i_Ppy)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -891,6 +921,19 @@ void Symbol::Y_vSet(Stz* szPpyNm, i8 iPpy)
   m_pProperties->vReplace(szPpyNm, iPpy);
 }
 
+/*----------------------------------------------------------------------------*/
+/* set given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::Y_vSet(Stz* szPpyNm, Object* pObject)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vReplace(szPpyNm, pObject);
+
+}
 /*----------------------------------------------------------------------------*/
 /* set given property                                                         */
 /*----------------------------------------------------------------------------*/

@@ -81,6 +81,8 @@ namespace STORE
 //    char Y_cGet(Stz* szPptNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
+    Object* Y_pGet(i8 i_Ppy);
+    Object* Y_pGet(Stz* szPpyNm);
     Stz* Y_szGet(i8 i_Ppy);
     Stz* Y_szGet(Stz* szPpyNm);
     Ppy  Y_xGet(i8 i_Ppy);
@@ -92,6 +94,7 @@ namespace STORE
     eTN  Y_ePpyTkn(Stz* szPpyNm);
     void Y_vSet(Stz* szPpyNm);
     void Y_vSet(Stz* szPpyNm, i8 iPpy);
+    void Y_vSet(Stz* szPpyNm, Object* pObject);
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
