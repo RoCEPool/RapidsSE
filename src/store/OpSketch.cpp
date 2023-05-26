@@ -381,6 +381,7 @@ void OpSketch::vGenerateExprStacks(void)
 
 
 #ifdef WITH_DEBUG_VERSION
+    /*
        vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // dump the TypeStack
@@ -393,6 +394,7 @@ void OpSketch::vGenerateExprStacks(void)
       vTrace("%s\n"_Stz, aDM[eType]);
     }
     vTrace("--------------------------------------\n"_Stz);
+  */
 #endif
 
     if (pTkn->bSame(","_Stz)) {
@@ -1033,7 +1035,7 @@ void OpSketch::vGenerateExprStacks(void)
 
 
 #ifdef WITH_DEBUG_VERSION
-
+/*
   TypeValueArea* pTypedCell;
 
   vTrace("\n*****************************************************\n"_Stz);
@@ -1110,7 +1112,7 @@ void OpSketch::vGenerateExprStacks(void)
     pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
-
+*/
 #endif
 
 
