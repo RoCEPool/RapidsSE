@@ -1662,9 +1662,9 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft index for indexScan                                                  */
+/* craft index for indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
-Index* Card_OP::pCraftIndex_indexScan(void)
+Index* Card_OP::pCraftIndex_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1686,9 +1686,9 @@ Index* Card_OP::pCraftIndex_indexScan(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft indexDef for join                                                    */
+/* craft index for indexScan                                                  */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_OP::pCraftIndexDef_join(void)
+Index* Card_OP::pCraftIndex_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1704,9 +1704,9 @@ IndexDef* Card_OP::pCraftIndexDef_join(void)
   if (! p_index)
     return nullptr;
 
-  IndexDef* pIndexDef = p_index->pGetIndexDef(p_table);
+  Index* pIndex = p_index->pGetIndex(p_table);
 
-  return pIndexDef;
+  return pIndex;
 }
 
 /*----------------------------------------------------------------------------*/

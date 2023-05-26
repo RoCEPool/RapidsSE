@@ -323,9 +323,11 @@ void MakeCode::vCraftIndexes(Card_OP* p_OP)
 
   eCK eCard = p_OP->eCard();
 
+  if (CK_INDEXJOIN == eCard)
+    m_pOpDef->m_pIndex_indexJoin   = p_OP->pCraftIndex_indexJoin();
+
   if (CK_INDEXSCAN == eCard)
     m_pOpDef->m_pIndex_indexScan   = p_OP->pCraftIndex_indexScan();
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,9 +338,6 @@ void MakeCode::vCraftIndexDefs(Card_OP* p_OP)
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   eCK eCard = p_OP->eCard();
-
-  if (CK_INDEXJOIN == eCard)
-    m_pOpDef->m_pIndexDef_join   = p_OP->pCraftIndexDef_join();
 
   if (CK_GBYAGG == eCard)
     m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_gbyAgg();

@@ -23,8 +23,8 @@ namespace STORE
     StreamDef* m_pStreamDef_emitted;
 
     Index*     m_pIndex_indexScan;
+    Index*     m_pIndex_indexJoin;
 
-    IndexDef*  m_pIndexDef_join;
     IndexDef*  m_pIndexDef_gbyAgg;
     IndexDef*  m_pIndexDef_sort;
 
