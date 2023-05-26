@@ -282,6 +282,33 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOp
+    if (pOpDef->szOpNm()->bSame("gbyAgg"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //vSetupGbyAgg(pDynamic, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchGbyAgg(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      ePrevStencil_v2 = SR_PL;
+
+      OpSketch *pGbyAggOpSketch = pOpSketch;
+      OpDef *pLastOp = pOpDef;
+
+      pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchTub(pGbyAggOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop, pGbyAggOpSketch->m_pInitStack);
+      pOpSketch->vIndexDef(pGbyAggOpSketch->m_pIndexDef);
+      vAppend(pOpSketch);
+
+      bGeneratePotTub = false;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOpDef->szOpNm()->bSame("project"_Stz)) {
 
@@ -1779,7 +1806,7 @@ OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // create a new shape for this OP
+  // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sAggregExpr, eHandlerKind, SK_AGGREG, ePrevStencil_v2, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
@@ -1876,7 +1903,7 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
 /*----------------------------------------------------------------------------*/
 /* sketch project group by expressions                                        */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp, eHK eHandlerKind,
+OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind,
                                     eSR ePrevStencil_v2, Stz* sLabelLoop)
 {
 
@@ -1886,22 +1913,20 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
   s4K sLabelNext;
   s256 szStageNm;
 
-  i8 i_Op = pOp->i_Op();
+  i8 i_Op = pOpDef->i_Op();
 
-  // get gbyAgg expr from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sGbyAggExpr = pOpTags->szValue(C_TAG_EXPR);
+  // get the grouby aggregate expr from OpDef
+  Stz* sGbyAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  // get the streamDefs
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // create a new shape for this OP
+  // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, II_PL, pStreamDefLft, pStreamDefOut);
 
   // set the indexDef
-  IndexDef *pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
+  IndexDef *pIndexDef = pOpDef->m_pIndexDef_gbyAgg; //_pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
   pOpSketch->vIndexDef(pIndexDef);
 
   // set the payLoad bytes
@@ -1909,8 +1934,8 @@ OpSketch* Stencil_v2::pSketchGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // set the labels in the opSketch
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the expression stacks
