@@ -56,6 +56,7 @@ void ColsReq::vAddCol(i8 i_Col_base1, Stz *szColNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
+  m_nCols++;
   m_axCols[i_Col_base1].m_i_Col_base1 = i_Col_base1;
   m_axCols[i_Col_base1].m_sColNm = szColNm;
 
