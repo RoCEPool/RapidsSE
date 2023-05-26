@@ -258,7 +258,7 @@ StreamDef* Card_Projection::pToStreamDef(void)
   while (xExpr.bEach(CK_EXPR)) {
     s32 sColNm = xExpr.p_expr()->pSub_as()
                    ? xExpr.p_expr()->pSub_as()->szSymbol()
-                   : "--NO AS--"_Stz;
+                   : "NO_AS"_Stz;
 
     eCT eColumnType = xExpr.p_expr()->eColumnType();
 
