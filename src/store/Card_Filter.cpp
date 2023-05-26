@@ -180,6 +180,38 @@ void Card_Filter::vCullPred(char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/* early project                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vEarlyProject_recurse_passThru(CardIter* pCI)
+{
+  //vDump(0,(Stz*)__func__);
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // save the current projection needed
+  //   we can restore to this save if projection needed get extended
+  Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
+
+  pCI->vPrintBoard();
+
+  Card_OP::vEarlyProject_backstep(pCI);
+
+  /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
+
+  pCI->vPrintBoard();
+
+  // restore needed
+  delete pCI->Early.m_pNeeded_later;
+  pCI->Early.m_pNeeded_later = p_needed_save;
+
+  //pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+  pCI->vPrintBoard();
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Filter::bIsEmpty(void)

@@ -28,6 +28,9 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vCullPred(char cWithMark);
+
+    void vEarlyProject_recurse_passThru(CardIter* pCI);
+
     bool bIsEmpty(void);
 
     void vUpdate_projection(CardIter* pCI);
