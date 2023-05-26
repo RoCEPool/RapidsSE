@@ -1,16 +1,14 @@
 /*============================================================================*/
-/*                                                                            */
+/* _ray0                                                                      */
 /*============================================================================*/
 
-select count(*) from se__jobreport;
+_nation;
 
-select max(responseMS), avg(responseMS), max(responseMS) from se__jobreport;
-
-select magnitude, count(*) from se__jobReport group by magnitude;
-
-select magnitude, t, j, count(*) from se__jobReport group by magnitude, t, j;
-
-/time load se__jobReport "/Users/ray/Desktop/Folders/RapidsData/report.csv";
+/glean_interactive
+/weaver2
+/weaved
+/pipelineName = "_ray0"
+select max(n_name) from nation group by n_nationkey;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -113,8 +113,9 @@ void StageDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
-  vTrace("%sStageDef: [%lld] %s\n"_Stz,
-         Stz::szTab(i_Tab),m_i_Stage,m_sStageNm.szStz());
+  vTrace("%sStageDef: [%lld] %s (Code %p)\n"_Stz,
+         Stz::szTab(i_Tab),m_i_Stage,m_sStageNm.szStz(),
+         *szCode()->azChar() ? szCode() : nullptr);
 
   i8 nOps = nItems();
   for (i8 i_Stage = 0; i_Stage < nOps; i_Stage++) {

@@ -64,6 +64,7 @@ void PipelineDef::vDump(i8 i_Tab)
     pStageDef->vDump();
   }
 
+  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
