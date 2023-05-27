@@ -29,7 +29,8 @@ namespace STORE
 
     void vCullPred(char cWithMark);
 
-    void vEarlyProject_recurse_passThru(CardIter* pCI);
+    void vEarlyProject_add_transients(CardIter* pCI);
+    void vEarlyProject_recurse_update(CardIter* pCI);
 
     bool bIsEmpty(void);
 

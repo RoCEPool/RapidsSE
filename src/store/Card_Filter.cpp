@@ -180,19 +180,31 @@ void Card_Filter::vCullPred(char cWithMark)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vEarlyProject_add_transients(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vAddTransients(pCI);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* early project                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_Filter::vEarlyProject_recurse_passThru(CardIter* pCI)
+void Card_Filter::vEarlyProject_recurse_update(CardIter* pCI)
 {
-  //vDump(0,(Stz*)__func__);
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->vPrintBoard();
 
   // save the current projection needed
   //   we can restore to this save if projection needed get extended
   Card_Needed* p_needed_save = pCI->Early.m_pNeeded_later->pClone();
 
-  pCI->vPrintBoard();
+  // check for additional/temporary transients
+  vEarlyProject_add_transients(pCI);
 
   Card_OP::vEarlyProject_backstep(pCI);
 
@@ -200,11 +212,13 @@ void Card_Filter::vEarlyProject_recurse_passThru(CardIter* pCI)
 
   pCI->vPrintBoard();
 
+  vUpdate_projection(pCI);
+
+  pCI->vPrintBoard();
+
   // restore needed
   delete pCI->Early.m_pNeeded_later;
   pCI->Early.m_pNeeded_later = p_needed_save;
-
-  //pCI->Analysis.m_pProjection_prior = pSub_projection();
 
   pCI->vPrintBoard();
 
