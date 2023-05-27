@@ -16,6 +16,7 @@
 #include "eIV.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
+#include "ColsReq.hpp"
 
 namespace STORE
 {
@@ -52,6 +53,8 @@ namespace STORE
     Table*     m_pTable;
     Index*     m_pIndex;
     IndexDef*  m_pIndexDef;
+
+    ColsReq*   m_pColsReq;
 
     // stencils
     eSR m_eStencilFrom;
@@ -104,6 +107,8 @@ namespace STORE
     static void vMakeColumnNm(StreamDef *pStreamDef, Stz *szColumn, eSR eStencilRow, i8 i_Column);
     static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+
+    void vCopyColsReq(ColsReq* pColsReq);
 
     void vGenerateExprStacks(void);
     void vGenerateStencilFromStruct(void);

@@ -70,6 +70,8 @@ OpSketch::OpSketch(void)
   m_pIndex        = nullptr;
   m_pIndexDef     = nullptr;
 
+  m_pColsReq      = nullptr;
+
   // labels
   m_sLabel     = ""_Stz;
   m_sLabelNext = ""_Stz;
@@ -130,6 +132,8 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_pTable        = nullptr;
   m_pIndex        = nullptr;
   m_pIndexDef     = nullptr;
+
+  m_pColsReq      = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
@@ -192,6 +196,7 @@ OpSketch::~OpSketch(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
+  delete m_pColsReq;
   delete m_pExprStack;
   delete m_pInitStack;
   delete m_pGbyStack;
@@ -266,6 +271,26 @@ void OpSketch::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_Du
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* copy columns required                                                      */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyColsReq(ColsReq* pColsReq)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  i8 nCols = 0;
+
+  m_pColsReq = new ColsReq;
+
+  for (i8 i_Col = 0; nCols < pColsReq->m_nCols; i_Col++) {
+    if (pColsReq->m_axCols->m_i_Col_base1 != C_UNKNOWN) {
+      nCols++;
+      m_pColsReq->m_axCols->m_i_Col_base1 = pColsReq->m_axCols->m_i_Col_base1;
+      m_pColsReq->m_axCols->m_sColNm = pColsReq->m_axCols->m_sColNm;
+    }
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* set table                                                                  */

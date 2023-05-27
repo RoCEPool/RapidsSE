@@ -11,7 +11,7 @@ namespace STORE
   {
     static const i8 C_COLSREQ = 128;
 
-  protected:
+  public:
 
     i8 m_nCols;
 

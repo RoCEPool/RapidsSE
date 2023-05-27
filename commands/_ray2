@@ -2,7 +2,19 @@
 /* _ray2 : timing load of lineitem 6 Oct 2020                                */
 /*============================================================================*/
 
+_nation;
 
+/glean_interactive
+/weaver2
+/weaved
+/pipelineName = "_ray1"
+select max(n_name) from nation group by n_nationkey;
+
+
+
+
+
+/*
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 print section "Create LineItem";
 
@@ -38,6 +50,8 @@ anTbl lineitem;
 //szidx lineitem lineitem_idx1;
 
 //dumpIdx lineitem lineitem_idx1;
+*/
+
 
 /*============================================================================*/
 /* end                                                                        */

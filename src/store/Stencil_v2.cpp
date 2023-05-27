@@ -1425,8 +1425,8 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK 
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // get the columns to be selected
-  //u8 uSelectColumns = uGetSelectColumns(pStream);
+  // get the columns required
+  ColsReq* pColsReq = pOpDef->m_pColsReq;
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(i_Op, ""_Stz, eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefOut);
@@ -1437,6 +1437,9 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK 
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // set the colsRequired
+  pOpSketch->vCopyColsReq(pColsReq);
 
   // generate the stencil structure for this OP
   pOpSketch->vGenerateStencilToStruct();
