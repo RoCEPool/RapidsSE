@@ -11,7 +11,7 @@ namespace STORE
   class Card_COND : public Card_OP
   {
   public:
-    Card_COND(void);
+    Card_COND(eCK eCard);
    ~Card_COND(void) noexcept(false);
 
   };

@@ -8,8 +8,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_COND::Card_COND(void)
-: Card_OP(CK_FILTER)
+Card_COND::Card_COND(eCK eCard)
+: Card_OP(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

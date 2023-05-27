@@ -27,7 +27,7 @@ __vDeleteFunction(Card_Filter,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Filter::Card_Filter(void)
-: Card_OP(CK_FILTER)
+: Card_COND(CK_FILTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

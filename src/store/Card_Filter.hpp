@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_OP.hpp"
+#include "Card_COND.hpp"
 #include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_Filter : public Card_OP
+  class Card_Filter : public Card_COND
   {
   public:
     void* operator new(size_t);
