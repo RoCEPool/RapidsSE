@@ -5,8 +5,6 @@
 
 #include "Board.hpp"
 
-#define F_PRE_INDIVIDUATE 1
-
 namespace STORE
 {
   class MakeFlat;
