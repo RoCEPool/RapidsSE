@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Aggreg,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::Card_Aggreg(void)
-: Card_Project(CK_AGGREG)
+: Card_AGG(CK_AGGREG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

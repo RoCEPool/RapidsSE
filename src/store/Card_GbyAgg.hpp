@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_Project.hpp"
+#include "Card_AGG.hpp"
 
 namespace STORE
 {
   class CarryForward;
 
-  class Card_GbyAgg : public Card_Project
+  class Card_GbyAgg : public Card_AGG
   {  
   public:
     void* operator new(size_t);

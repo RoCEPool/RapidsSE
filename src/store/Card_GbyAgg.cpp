@@ -19,7 +19,7 @@ __vDeleteFunction(Card_GbyAgg, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_GbyAgg::Card_GbyAgg(void)
-: Card_Project(CK_GBYAGG)
+: Card_AGG(CK_GBYAGG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
