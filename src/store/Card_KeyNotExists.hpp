@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_OP.hpp"
+#include "Card_COND.hpp"
 
 namespace STORE
 {
-  class Card_KeyNotExists : public Card_OP
+  class Card_KeyNotExists : public Card_COND
   {
   public:
     void* operator new(size_t);

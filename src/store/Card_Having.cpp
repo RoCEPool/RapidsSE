@@ -20,7 +20,7 @@ __vDeleteFunction(Card_Having,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(void)
-: Card_OP(CK_HAVING)
+: Card_COND(CK_HAVING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
