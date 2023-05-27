@@ -5,7 +5,7 @@
 
 #include "Board.hpp"
 
-#define F_PRE_INDIVIDUATE 0
+#define F_PRE_INDIVIDUATE 1
 
 namespace STORE
 {
