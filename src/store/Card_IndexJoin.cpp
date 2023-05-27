@@ -174,33 +174,9 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambda = [pCI] (Card_Term* p_term) {
-
-    if (!p_term->bIsValOdn())
-      return C_CONTINUE_RECURSION;
-
-    if (pCI->Early.m_pNeeded_later->pFindExpr(p_term->pSymbol()))
-      return C_CONTINUE_RECURSION;
-
-    if (Card_Expr* p_expr_defn = pCI->pResolvePrior_expr(p_term)) {
-      //p_expr_defn->vDump();
-      Card_Expr* p_expr_clone = p_expr_defn->pClone();
-      pCI->Early.m_pNeeded_later->vAppend(p_expr_clone);
-      pCI->Early.m_pNeeded_later->vRenumberAll_expr();
-    }
-
-    return C_CONTINUE_RECURSION;
-  };
-
   pCI->G.p_filter = pSub_filter();
 
-  CardIter xCI_filter(pCI->G.p_filter);
-  while (xCI_filter.G_bEachMain(CK_BOOLCALC)) {
-
-    xCI_filter.G.p_boolCalc->bApplyRecursive_term(bLambda);
-
-  }
-
+  pCI->G.p_filter->vAddTransients(pCI);
 }
 
 /*----------------------------------------------------------------------------*/
