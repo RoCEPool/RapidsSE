@@ -174,9 +174,11 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+#if ! F_PRE_INDIVIDUATE
   pCI->G.p_filter = pSub_filter();
 
   pCI->G.p_filter->vAddTransients(pCI);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

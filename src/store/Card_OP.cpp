@@ -403,7 +403,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
 #if F_PRE_INDIVIDUATE
       case CK_FILTER:
         pCI->vSave();
-        pCI->G.p_filter->vEarlyProject_recurse_passThru(pCI);
+        pCI->G.p_filter->vEarlyProject_recurse_update(pCI);
         pCI->vRestore();
         return;
 #endif
