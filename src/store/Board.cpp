@@ -204,42 +204,6 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vIndividuate_indexJoin_filter_b(CardIter* pCI)
-{
-  _static_
-
-  // todo: xt
-
-  pCI->G.p_indexJoin->vRemoveChild(pCI->G.p_filter);
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter,
-                             pCI->G.p_indexJoin);
-
-  if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPush(pCI->G.p_indexJoin->pSub_level()->pDupCardRecursive());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vIndividuate_crossJoin_filter(CardIter* pCI)
-{
-  _static_
-
-  // todo: xt
-
-  pCI->G.p_crossJoin->vRemoveChild(pCI->G.p_filter);
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter,
-                             pCI->G.p_crossJoin);
-
-  if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPush(pCI->G.p_crossJoin->pSub_level()->pDupCardRecursive());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vValidate(CardIter* pCI)
 {
   _static_
@@ -260,6 +224,8 @@ void Board::vValidate_SubQuery(CardIter *pCI)
   if (!pCI->m_pBench->bMadeSimpler())
     return;
 
+  Card_Deck* pDeck = pCI->G.pDeck;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // main cards
 
@@ -269,30 +235,30 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 
     switch (xCI.G.e_MainCard) {
 
-      case CK_AGGREG:       xCI.G.p_aggreg->vValidate       (&xCI,0,nullptr); break;
-      case CK_CALL:         xCI.G.p_call->vValidate         (&xCI,0,nullptr); break;
-      case CK_CAST:         xCI.G.p_cast->vValidate         (&xCI,0,nullptr); break;
-      case CK_COMBINED:     xCI.G.p_combined->vValidate     (&xCI,0,nullptr); break;
-      case CK_CROSSJOIN:    xCI.G.p_crossJoin->vValidate    (&xCI,0,nullptr); break;
-      case CK_FLAT:         xCI.G.p_flat->vValidate         (&xCI,0,nullptr); break;
-      case CK_FILTER:       xCI.G.p_filter->vValidate       (&xCI,0,nullptr); break;
-      case CK_FOLD:         xCI.G.p_fold->vValidate         (&xCI,0,nullptr); break;
-      case CK_GBYAGG:       xCI.G.p_gbyAgg->vValidate       (&xCI,0,nullptr); break;
-      case CK_HAVING:       xCI.G.p_having->vValidate       (&xCI,0,nullptr); break;
-      case CK_HASH:         xCI.G.p_hash->vValidate         (&xCI,0,nullptr); break;
-      case CK_INDEXJOIN:    xCI.G.p_indexJoin->vValidate    (&xCI,0,nullptr); break;
-      case CK_INDEXSCAN:    xCI.G.p_indexScan->vValidate    (&xCI,0,nullptr); break;
-      case CK_KEYEXISTS:    xCI.G.p_keyExists->vValidate    (&xCI,0,nullptr); break;
-      case CK_KEYNOTEXISTS: xCI.G.p_keyNotExists->vValidate (&xCI,0,nullptr); break;
-      case CK_LIMIT:        xCI.G.p_limit->vValidate        (&xCI,0,nullptr); break;
-      case CK_ORDAGG:       xCI.G.p_ordAgg->vValidate       (&xCI,0,nullptr); break;
-      case CK_PROJECT:      xCI.G.p_project->vValidate      (&xCI,0,nullptr); break;
-      case CK_SCAN:         xCI.G.p_scan->vValidate         (&xCI,0,nullptr); break;
-      case CK_SORT:         xCI.G.p_sort->vValidate         (&xCI,0,nullptr); break;
-      case CK_STAGE:        xCI.G.p_stage->vValidate        (&xCI,0,nullptr); break;
-      case CK_TABLE:        xCI.G.p_table->vValidate        (&xCI,0,nullptr); break;
-      case CK_TOP:          xCI.G.p_top->vValidate          (&xCI,0,nullptr); break;
-      case CK_WHERE:        xCI.G.p_where->vValidate        (&xCI,0,nullptr); break;
+      case CK_AGGREG:       xCI.G.p_aggreg->vValidate       (&xCI,0,pDeck); break;
+      case CK_CALL:         xCI.G.p_call->vValidate         (&xCI,0,pDeck); break;
+      case CK_CAST:         xCI.G.p_cast->vValidate         (&xCI,0,pDeck); break;
+      case CK_COMBINED:     xCI.G.p_combined->vValidate     (&xCI,0,pDeck); break;
+      case CK_CROSSJOIN:    xCI.G.p_crossJoin->vValidate    (&xCI,0,pDeck); break;
+      case CK_FLAT:         xCI.G.p_flat->vValidate         (&xCI,0,pDeck); break;
+      case CK_FILTER:       xCI.G.p_filter->vValidate       (&xCI,0,pDeck); break;
+      case CK_FOLD:         xCI.G.p_fold->vValidate         (&xCI,0,pDeck); break;
+      case CK_GBYAGG:       xCI.G.p_gbyAgg->vValidate       (&xCI,0,pDeck); break;
+      case CK_HAVING:       xCI.G.p_having->vValidate       (&xCI,0,pDeck); break;
+      case CK_HASH:         xCI.G.p_hash->vValidate         (&xCI,0,pDeck); break;
+      case CK_INDEXJOIN:    xCI.G.p_indexJoin->vValidate    (&xCI,0,pDeck); break;
+      case CK_INDEXSCAN:    xCI.G.p_indexScan->vValidate    (&xCI,0,pDeck); break;
+      case CK_KEYEXISTS:    xCI.G.p_keyExists->vValidate    (&xCI,0,pDeck); break;
+      case CK_KEYNOTEXISTS: xCI.G.p_keyNotExists->vValidate (&xCI,0,pDeck); break;
+      case CK_LIMIT:        xCI.G.p_limit->vValidate        (&xCI,0,pDeck); break;
+      case CK_ORDAGG:       xCI.G.p_ordAgg->vValidate       (&xCI,0,pDeck); break;
+      case CK_PROJECT:      xCI.G.p_project->vValidate      (&xCI,0,pDeck); break;
+      case CK_SCAN:         xCI.G.p_scan->vValidate         (&xCI,0,pDeck); break;
+      case CK_SORT:         xCI.G.p_sort->vValidate         (&xCI,0,pDeck); break;
+      case CK_STAGE:        xCI.G.p_stage->vValidate        (&xCI,0,pDeck); break;
+      case CK_TABLE:        xCI.G.p_table->vValidate        (&xCI,0,pDeck); break;
+      case CK_TOP:          xCI.G.p_top->vValidate          (&xCI,0,pDeck); break;
+      case CK_WHERE:        xCI.G.p_where->vValidate        (&xCI,0,pDeck); break;
 
       default:
         vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);

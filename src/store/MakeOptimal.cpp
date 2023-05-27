@@ -774,17 +774,16 @@ void MakeOptimal::vIndividuateFilter(void)
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    Board::vIndividuate_indexJoin_filter_b(m_pCI);
+    Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    Board::vIndividuate_crossJoin_filter(m_pCI);
+    Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->vEndTransform();
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

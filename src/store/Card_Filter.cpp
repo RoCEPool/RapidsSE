@@ -82,7 +82,15 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
 {
   _static_
 
+  if (! pCI->G.p_MainCard->pSub_projection())
+    pCI->G.p_MainCard->vDump();
+
+  RASSERT(pCI->G.p_MainCard->pSub_projection());
+
   pCI->G.p_MainCard->vRemoveChild(pCI->G.p_filter);
+
+  pCI->G.p_filter->vAppend(pCI->G.p_MainCard->pSub_projection()->pClone());
+
   pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_MainCard);
 
   if (! pCI->G.p_filter->pSub_level()) {
@@ -265,6 +273,9 @@ void Card_Filter::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vValidate_mustHave(CK_BOOLCALC,CK_NONE);
+
+  if (CK_DECK == pParent->eCard())
+    vValidate_mustHave(CK_PROJECTION,CK_NONE);
 }
 
 /*============================================================================*/

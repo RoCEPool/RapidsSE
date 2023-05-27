@@ -173,9 +173,6 @@ namespace STORE
 
     static void vMorphAll_table_To_EEop(CardIter* pCI);
 
-    static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
-    static void vIndividuate_crossJoin_filter(CardIter* pCI);
-
     static void vValidate(CardIter* pCI);
     static void vValidate_SubQuery(CardIter* pCI);
 
