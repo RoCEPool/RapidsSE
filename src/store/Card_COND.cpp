@@ -42,8 +42,6 @@ void Card_COND::vAddTransients(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  RASSERT(pCI->G.p_filter);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   auto bLambda = [pCI] (Card_Term* p_term) {
@@ -66,7 +64,7 @@ void Card_COND::vAddTransients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G.p_filter->pSub_boolCalc()->bApplyRecursive_term(bLambda);
+  pSub_boolCalc()->bApplyRecursive_term(bLambda);
 
 }
 

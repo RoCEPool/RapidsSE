@@ -161,12 +161,18 @@ void OpDef::vDump(i8 i_Tab)
   vTrace("%sOpDef: [%lld] %s\n"_Stz,
          Stz::szTab(i_Tab),m_i_Op,m_sOpNm.szStz());
 
-  vTrace("%s     : StreamDef_arriving %p\n"_Stz,
-         Stz::szTab(i_Tab),m_pStreamDef_arriving);
-  m_pStreamDef_arriving->vDump();
-  vTrace("%s     : StreamDef_emitted  %p\n"_Stz,
-         Stz::szTab(i_Tab),m_pStreamDef_emitted);
-  m_pStreamDef_emitted->vDump();
+  if (m_pStreamDef_arriving) {
+    vTrace("%s     : StreamDef_arriving %p\n"_Stz,
+           Stz::szTab(i_Tab), m_pStreamDef_arriving);
+    m_pStreamDef_arriving->vDump();
+  }
+
+  if (m_pStreamDef_emitted) {
+    vTrace("%s     : StreamDef_emitted  %p\n"_Stz,
+           Stz::szTab(i_Tab), m_pStreamDef_emitted);
+    m_pStreamDef_emitted->vDump();
+  }
+
   vTrace("%s     : Index_indexScan    %p\n"_Stz,
          Stz::szTab(i_Tab),m_pIndex_indexScan);
   vTrace("%s     : m_pIndex_indexJoin    %p\n"_Stz,
