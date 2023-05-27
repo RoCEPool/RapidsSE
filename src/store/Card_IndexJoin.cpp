@@ -174,11 +174,6 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#if ! F_PRE_INDIVIDUATE
-  pCI->G.p_filter = pSub_filter();
-
-  pCI->G.p_filter->vAddTransients(pCI);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -235,18 +230,6 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   pCI->vPrintBoard();
 
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vIndividuateFilter(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    Board::vIndividuate_indexJoin_filter_b(pCI);
-  }
 }
 
 /*----------------------------------------------------------------------------*/

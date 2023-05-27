@@ -58,12 +58,6 @@ void MakeWeavable::vWeavable(void)
 
 //  vSeries(BK_SUBQUERY, 0, __func__);
 
-#if ! F_PRE_INDIVIDUATE
-  vCullNonusedBounds();
-  vCullUsedBoundsFromFilter();
-  vIndividuateFilter();
-#endif
-
   vReinstateStages();
 
   vAddStageCasts();
@@ -213,30 +207,6 @@ void MakeWeavable::vCullUsedBoundsFromFilter(void)
 //  }
 
   m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vIndividuateFilter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-
-  m_pCI->G_vRestart();
-  Card_Scan::vIndividuateFilter(m_pCI);
-
-  m_pCI->G_vRestart();
-  Card_IndexScan::vIndividuateFilter(m_pCI);
-
-  m_pCI->G_vRestart();
-  Card_IndexJoin::vIndividuateFilter(m_pCI);
-
-  m_pCI->G_vRestart();
-  Card_CrossJoin::vIndividuateFilter(m_pCI);
 
   m_pCI->vEndTransform();
 }

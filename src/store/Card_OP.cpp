@@ -400,13 +400,11 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         pCI->vRestore();
         return;
 
-#if F_PRE_INDIVIDUATE
       case CK_FILTER:
         pCI->vSave();
         pCI->G.p_filter->vEarlyProject_recurse_update(pCI);
         pCI->vRestore();
         return;
-#endif
 
       case CK_INDEXJOIN:
         pCI->vSave();

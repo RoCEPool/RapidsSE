@@ -41,18 +41,6 @@ Card_CrossJoin::~Card_CrossJoin(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_CrossJoin::vIndividuateFilter(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    Board::vIndividuate_crossJoin_filter(pCI);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* table morphs to crossJoin                                                  */
 /*----------------------------------------------------------------------------*/
 void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)

@@ -39,22 +39,6 @@ Card_Scan::~Card_Scan(void) noexcept(false)
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
- void Card_Scan::vIndividuateFilter(CardIter* pCI) {
-
-   _static_
-
-   while (pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-     pCI->G.p_scan->vRemoveChild(pCI->G.p_filter);
-     pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_scan);
-
-     if (! pCI->G.p_filter->pSub_level()) {
-       pCI->G.p_filter->vPush(pCI->G.p_scan->pSub_level()->pDupCardRecursive());
-     }
-   }
- }
 
 /*----------------------------------------------------------------------------*/
 /* table morphs to scan                                                       */

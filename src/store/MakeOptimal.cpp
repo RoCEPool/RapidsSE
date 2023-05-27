@@ -69,11 +69,9 @@ void MakeOptimal::vOptimise(void)
 
   vPromote_gbyAgg_To_ordAgg();
 
-#if F_PRE_INDIVIDUATE
   vCullNonusedBounds();
   vCullUsedBoundsFromFilter();
   vIndividuateFilter();
-#endif
 
   vEarlyProjections();
 
@@ -765,25 +763,21 @@ void MakeOptimal::vIndividuateFilter(void)
   m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
   m_pCI->G_vRestart();
-//  Card_Scan::vIndividuateFilter(m_pCI);
   while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->G_vRestart();
-  //Card_IndexScan::vIndividuateFilter(m_pCI);
   while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
   m_pCI->G_vRestart();
-  //Card_IndexJoin::vIndividuateFilter(m_pCI);
   while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
     Board::vIndividuate_indexJoin_filter_b(m_pCI);
   }
 
   m_pCI->G_vRestart();
-  //Card_CrossJoin::vIndividuateFilter(m_pCI);
   while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
     Board::vIndividuate_crossJoin_filter(m_pCI);
   }
