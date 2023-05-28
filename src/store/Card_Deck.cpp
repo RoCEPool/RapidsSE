@@ -295,6 +295,10 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       //continue;
     }
 
+    if (CK_SORT == pCI->G.e_MainCard) {
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    }
+
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Analysis.m_pProjection_prior) {
         pCI->G.p_key->vTypes_For_stmColOdn(pCI);
@@ -360,6 +364,9 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       case CK_PROJECT:
         //if (pCI->G.p_MainCard->pSub_needed())
           pCI->G.p_project->Card_Project::vUpdate_projection(pCI);
+        break;
+
+      case CK_SORT:
         break;
 
       case CK_TABLE:
