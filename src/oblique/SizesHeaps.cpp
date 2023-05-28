@@ -266,6 +266,7 @@
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
+#include "XF_Eg.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -727,6 +728,7 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,          0,                       HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),          HT_INVALID   , FILL },
+  {CN_XF_EG,                    sizeof(XF_Eg),           HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),          HT_INVALID   , FILL },
 
