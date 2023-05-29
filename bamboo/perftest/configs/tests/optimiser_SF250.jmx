@@ -1607,67 +1607,11 @@ dload lineitem paths
         </hashTree>
         <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="TPC-H Pipeline Queries" enabled="true"/>
         <hashTree>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceBeforeQueries" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceBeforeQueries" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceBeforeQueries_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceBeforeQueries.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p1_debugMarker" enabled="true">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P1Loop ***&apos;)</stringProp>
+            <stringProp name="script">log.info(&apos;*** About to start Pipelines ***&apos;)</stringProp>
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
@@ -1688,7 +1632,7 @@ begin
   stage S01 on all partitions :
     scan rapidsse public lineitem
     | filter &quot; type BOOLEAN  $11 DATE &apos;1998-09-01&apos;  &lt;=  &quot;
-    | aggreg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    | gbyAgg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
@@ -1705,7 +1649,7 @@ begin
     | next
 
   stage S02 on all nodes :
-    aggreg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    gbyAgg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
@@ -1722,7 +1666,7 @@ begin
     | next
 
   stage S03 on origin :
-    aggreg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
+    gbyAgg &quot; groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
@@ -1810,9 +1754,17 @@ end ;</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** Done executing P1Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
-            <stringProp name="query">sleep 20;</stringProp>
+            <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
@@ -1823,70 +1775,6 @@ end ;</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
-          <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP1" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP1" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP1_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP1.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p2_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P2Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P2Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -1939,21 +1827,21 @@ begin
   stage S05 on all partitions :
     indexJoin region IxR_REGIONKEY &quot;BOUND $I1 N_REGIONKEY ==&quot;
     | filter &quot; type BOOLEAN  J1_R_NAME &apos;EUROPE&apos;  == &quot;
-    | aggreg &quot; GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+    | gbyAgg &quot; GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST min &quot;
     | combined 0
     | next
 
   stage S06 on all nodes :
-     aggreg &quot; GroupBy     type INTEGER as P_PARTKEY P_PARTKEY
+     gbyAgg &quot; GroupBy     type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min &quot;
     | combined 0
     | next
 
   stage S07 on origin :
-     aggreg &quot; GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
+     gbyAgg &quot; GroupBy    type INTEGER as P_PARTKEY P_PARTKEY
                aggregates type INTEGER as P_PARTKEY $K1 ,
                           type DECIMAL as PS_SUPPLYCOST_MIN ) PS_SUPPLYCOST_MIN min &quot;
     | hash &quot;type INTEGER P_PARTKEY&quot;
@@ -2087,6 +1975,14 @@ create index IxP_PARTKEY  ON part (P_PARTKEY)  ;</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">log.info(&apos;*** Done executing P2Loop ***&apos;)</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
           <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
@@ -2100,70 +1996,6 @@ create index IxP_PARTKEY  ON part (P_PARTKEY)  ;</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
-          <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP2" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP2" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP2_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP2.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p3_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P3Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P3Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -2303,70 +2135,6 @@ create index IxO_CUSTKEY  ON Orders  (O_CUSTKEY)  ;</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP3" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP3" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP3_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP3.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p4_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P4Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P4Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2395,7 +2163,7 @@ begin
   stage S02 on all partitions :
     keyExists lineitem IxL_ORDERKEY  &quot;BOUND $I1 O_ORDERKEY ==&quot;
                                       &quot;type BOOLEAN L_COMMITDATE L_RECEIPTDATE &lt;&quot;
-    | aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
+    | gbyAgg &quot;groupby type VARCHAR O_ORDERPRIORITY
               aggregates
               type VARCHAR as O_ORDERPRIORITY $K1 ,
               type INTEGER as ORDER_COUNT ) countAll&quot;
@@ -2403,7 +2171,7 @@ begin
     | next
 
   stage S03 on all nodes :
-    aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg &quot;groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
             type INTEGER as ORDER_COUNT ) ORDER_COUNT sum&quot;
@@ -2411,7 +2179,7 @@ begin
     | next
 
   stage S04 on origin :
-    aggreg &quot;groupby type VARCHAR O_ORDERPRIORITY
+    gbyAgg &quot;groupby type VARCHAR O_ORDERPRIORITY
             aggregates
             type VARCHAR as O_ORDERPRIORITY $K1 ,
             type INTEGER as ORDER_COUNT ) ORDER_COUNT sum&quot;
@@ -2489,70 +2257,6 @@ end ;</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP4" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP4" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP4_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP4.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p5_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P5Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P5Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2622,21 +2326,21 @@ begin
     | next
 
   stage S06 on all partitions :
-    aggreg &quot; groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg &quot; groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  &quot;
     | combined 0
     | next
 
   stage S07 on all nodes :
-    aggreg &quot; groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg &quot; groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
                         type DECIMAL as REVENUE ) REVENUE sum  &quot;
     | combined 0
     | next
 
   stage S08 on origin :
-    aggreg &quot; groupBy    type VARCHAR as N_NAME N_NAME
+    gbyAgg &quot; groupBy    type VARCHAR as N_NAME N_NAME
              aggregates type VARCHAR as N_NAME $K1 ,
              type DECIMAL as REVENUE ) REVENUE sum  &quot;
     | combined 0
@@ -2723,70 +2427,6 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP5" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP5" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP5_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP5.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p6_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P6Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P6Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -2804,17 +2444,17 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
    stage S01 on all partitions :
      indexscan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1994-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1995-01-01&apos; &lt;&quot;
      | filter &quot; type BOOLEAN  }  0.05 0.07 L_DISCOUNT between L_QUANTITY 24. &lt; and&quot;
-     | project &quot; type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  &quot;
+     | aggreg &quot; type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT *  sum  &quot;
      | combined 0
      | next
 
    stage S02 on all nodes :
-     project &quot; type DECIMAL as REVENUE ) REVENUE sum  &quot;
+     aggreg &quot; type DECIMAL as REVENUE ) REVENUE sum  &quot;
      | combined 0
      | next
 
    stage S03 on origin :
-     project &quot; type DECIMAL as REVENUE ) REVENUE sum  &quot;
+     aggreg &quot; type DECIMAL as REVENUE ) REVENUE sum  &quot;
      | combined 0
      | next
 
@@ -2890,70 +2530,6 @@ create index IxL_SHIPDATE ON Lineitem (L_SHIPDATE)  ;</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP6" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP6" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP6_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP6.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p7_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P7Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P7Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -3021,7 +2597,7 @@ begin
      | next
 
   stage S07 on all partitions :
-     aggreg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+     gbyAgg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
                       type VARCHAR as N2_N_NAME N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR aggregates
                       type VARCHAR as N1_N_NAME $K1 ,
@@ -3032,7 +2608,7 @@ begin
      | next
 
    stage S08 on all nodes :
-    aggreg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
+    gbyAgg &quot; groupBy type VARCHAR as N1_N_NAME N1_N_NAME ,
                      type VARCHAR as N2_N_NAME N2_N_NAME ,
                      type INTEGER as L_YEAR L_YEAR
                      aggregates
@@ -3044,7 +2620,7 @@ begin
      | next
 
    stage S09 on origin :
-     aggreg &quot; groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
+     gbyAgg &quot; groupBy type VARCHAR as SUPP_NATION N1_N_NAME ,
                       type VARCHAR as CUST_NATION N2_N_NAME ,
                       type INTEGER as L_YEAR L_YEAR
                       aggregates
@@ -3131,70 +2707,6 @@ CREATE INDEX IxC_NATIONKEY ON CUSTOMER(C_NATIONKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP7" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP7" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP7_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP7.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p8_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P8Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P8Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -3211,14 +2723,14 @@ begin
 
   stage S01 on all partitions :
     scan customer
-    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY , 
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY ,
                type INTEGER as C_NATIONKEY C_NATIONKEY&quot;
     | combined 0
     | next
 
   stage S02 on all partitions :
     indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 C_NATIONKEY ==&quot;
-    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY , 
+    | project &quot;type INTEGER as C_CUSTKEY C_CUSTKEY ,
                type INTEGER as N_REGIONKEY J1_N_REGIONKEY&quot;
     | combined 0
     | next
@@ -3233,7 +2745,7 @@ begin
   stage S04 on all partitions :
     indexJoin orders IxO_CUSTKEY &quot;BOUND $I1 C_CUSTKEY ==&quot;
     | filter &quot;type BOOLEAN J1_O_ORDERDATE DATE &apos;1995-01-01&apos; &gt;=  J1_O_ORDERDATE DATE &apos;1996-12-31&apos; &lt;= and&quot;
-    | project &quot;type integer as O_ORDERKEY J1_O_ORDERKEY , 
+    | project &quot;type integer as O_ORDERKEY J1_O_ORDERKEY ,
                type INTEGER as O_YEAR J1_O_ORDERDATE extract_year&quot;
     | hash &quot;type INTEGER O_ORDERKEY&quot;
     | combined 0
@@ -3241,10 +2753,10 @@ begin
 
   stage S05 on all partitions :
     indexJoin LineItem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
-    | project &quot;type INTEGER as L_SUPPKEY J1_L_SUPPKEY , 
-               type INTEGER as L_PARTKEY J1_L_PARTKEY , 
-               type INTEGER as O_YEAR O_YEAR , 
-               type DECIMAL as l_extendedprice J1_l_extendedprice , 
+    | project &quot;type INTEGER as L_SUPPKEY J1_L_SUPPKEY ,
+               type INTEGER as L_PARTKEY J1_L_PARTKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice J1_l_extendedprice ,
                type DECIMAL as l_discount J1_l_discount&quot;
     | hash &quot;type INTEGER L_PARTKEY&quot;
     | combined 0
@@ -3253,9 +2765,9 @@ begin
   stage S06 on all partitions :
     indexJoin part IxP_PARTKEY &quot;BOUND $I1 L_PARTKEY ==&quot;
     | filter &quot;type BOOLEAN J1_P_TYPE &apos;ECONOMY ANODIZED STEEL&apos; ==&quot;
-    | project &quot;type INTEGER as L_SUPPKEY L_SUPPKEY , 
-               type INTEGER as O_YEAR O_YEAR , 
-               type DECIMAL as l_extendedprice l_extendedprice , 
+    | project &quot;type INTEGER as L_SUPPKEY L_SUPPKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
                type DECIMAL as l_discount l_discount&quot;
     | hash &quot;type INTEGER L_SUPPKEY&quot;
     | combined 0
@@ -3263,47 +2775,47 @@ begin
 
   stage S07 on all partitions :
     indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 L_SUPPKEY ==&quot;
-    | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY , 
-               type INTEGER as O_YEAR O_YEAR , 
-               type DECIMAL as l_extendedprice l_extendedprice , 
+    | project &quot;type INTEGER as S_NATIONKEY J1_S_NATIONKEY ,
+               type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as l_extendedprice l_extendedprice ,
                type DECIMAL as l_discount l_discount&quot;
     | combined 0
     | next
 
   stage S08 on all partitions :
     indexJoin nation IxN_NATIONKEY &quot;BOUND $I1 S_NATIONKEY ==&quot;
-    | project &quot;type INTEGER as O_YEAR O_YEAR , 
-               type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * , 
+    | project &quot;type INTEGER as O_YEAR O_YEAR ,
+               type DECIMAL as VOLUME L_EXTENDEDPRICE 1.00 L_DISCOUNT -  * ,
                type VARCHAR as NATION J1_N_NAME&quot;
     | combined 0
     | next
 
   stage S09 on all partitions :
-    aggreg &quot; groupBy    type INTEGER O_YEAR 
-             aggregates type INTEGER as O_YEAR $K1 , 
-                        type DECIMAL  ) VOLUME sum  , 
+    gbyAgg &quot; groupBy    type INTEGER O_YEAR
+             aggregates type INTEGER as O_YEAR $K1 ,
+                        type DECIMAL  ) VOLUME sum  ,
                         type DECIMAL )  } type DECIMAL NATION &apos;BRAZIL&apos;  ==  WHEN  VOLUME THEN  0.00  ELSE  ENDIF  CASE  sum  &quot;
     | combined 0
     | next
 
   stage S10 on all nodes :
-    aggreg &quot; groupBy    type INTEGER O_YEAR 
-             aggregates type INTEGER as O_YEAR $K1 , 
-                        type DECIMAL )  $2 sum  , 
+    gbyAgg &quot; groupBy    type INTEGER O_YEAR
+             aggregates type INTEGER as O_YEAR $K1 ,
+                        type DECIMAL )  $2 sum  ,
                         type DECIMAL )  $3 sum  &quot;
     | combined 0
     | next
 
   stage S11 on origin :
-    aggreg &quot; groupBy    type INTEGER O_YEAR 
-             aggregates type INTEGER as O_YEAR $K1 , 
-                        type DECIMAL )  $2 sum  , 
+    gbyAgg &quot; groupBy    type INTEGER O_YEAR
+             aggregates type INTEGER as O_YEAR $K1 ,
+                        type DECIMAL )  $2 sum  ,
                         type DECIMAL )  $3 sum  &quot;
     | combined 0
     | next
 
   stage S12 on origin :
-    project &quot; type INTEGER as O_YEAR O_YEAR , 
+    project &quot; type INTEGER as O_YEAR O_YEAR ,
               type DECIMAL as mkt_share $3 $2 /  &quot;
     | combined 0
     | next
@@ -3312,8 +2824,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3388,70 +2899,6 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP8" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP8" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP8_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP8.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p9_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P9Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -3516,7 +2963,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
     | next
 
   stage S07 on all partitions :
-    aggreg &quot;groupBy type VARCHAR NATION ,
+    gbyAgg &quot;groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                     type VARCHAR as NATION $K1 ,
@@ -3526,7 +2973,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
     | next
 
   stage S08 on all nodes :
-    aggreg &quot;groupBy type VARCHAR NATION ,
+    gbyAgg &quot;groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -3536,7 +2983,7 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
     | next
 
   stage S09 on origin :
-    aggreg &quot;groupBy type VARCHAR NATION ,
+    gbyAgg &quot;groupBy type VARCHAR NATION ,
                     type INTEGER O_YEAR
             aggregates
                      type VARCHAR as NATION $K1 ,
@@ -3627,7 +3074,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop_a" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop_a" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -3685,7 +3132,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
     | next
 
   stage S06 on all partitions :
-    aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+    gbyAgg &quot;groupBy    type INTEGER S_NATIONKEY ,
                        type INTEGER O_YEAR
             aggregates type INTEGER as S_NATIONKEY $K1 ,
                        type INTEGER as O_YEAR $K2 ,
@@ -3694,7 +3141,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
     | next
 
   stage S07 on all nodes :
-    aggreg &quot;groupBy type INTEGER S_NATIONKEY ,
+    gbyAgg &quot;groupBy type INTEGER S_NATIONKEY ,
     type INTEGER O_YEAR
     aggregates type INTEGER as S_NATIONKEY $K1 ,
     type INTEGER as O_YEAR $K2 ,
@@ -3703,7 +3150,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
     | next
 
   stage S08 on origin :
-    aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+    gbyAgg &quot;groupBy    type INTEGER S_NATIONKEY ,
                        type INTEGER O_YEAR
             aggregates type INTEGER as S_NATIONKEY $K1 ,
                        type INTEGER as O_YEAR $K2 ,
@@ -3730,7 +3177,8 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
     output
     | sink
     | first
-  end ;</stringProp>
+  end ;
+</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3788,13 +3236,13 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
             <stringProp name="queryArgumentsTypes"></stringProp>
             <stringProp name="queryTimeout"></stringProp>
-            <stringProp name="queryType">Update Statement</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
             <stringProp name="resultSetHandler">Store as String</stringProp>
             <stringProp name="resultSetMaxRows"></stringProp>
             <stringProp name="resultVariable"></stringProp>
@@ -3802,7 +3250,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop_b" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P9Loop_b" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -3874,7 +3322,7 @@ stage S07 on all partitions :
   | next
 
 stage S08 on all nodes :
-  aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+  gbyAgg &quot;groupBy    type INTEGER S_NATIONKEY ,
                      type INTEGER O_YEAR
           aggregates type INTEGER as S_NATIONKEY $K1 ,
                      type INTEGER as O_YEAR $K2 ,
@@ -3883,7 +3331,7 @@ stage S08 on all nodes :
   | next
 
 stage S09 on origin :
-  aggreg &quot;groupBy    type INTEGER S_NATIONKEY ,
+  gbyAgg &quot;groupBy    type INTEGER S_NATIONKEY ,
                      type INTEGER O_YEAR
           aggregates type INTEGER as S_NATIONKEY $K1 ,
                      type INTEGER as O_YEAR $K2 ,
@@ -3968,7 +3416,7 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             </ResultSaver>
             <hashTree/>
           </hashTree>
-          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
             <stringProp name="dataSource">SEConnPool</stringProp>
             <stringProp name="query">sleep 10;</stringProp>
             <stringProp name="queryArguments"></stringProp>
@@ -3981,70 +3429,6 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
-          <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP9" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP9" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP9_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP9.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p10_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P10Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
           <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P10Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -4072,21 +3456,21 @@ begin
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY &quot;BOUND $I1 O_ORDERKEY ==&quot;
     | filter  &quot;type BOOLEAN J1_L_RETURNFLAG &apos;R&apos; ==&quot;
-    | aggreg  &quot;groupby    type INTEGER O_CUSTKEY
+    | gbyAgg  &quot;groupby    type INTEGER O_CUSTKEY
                aggregates type INTEGER as O_CUSTKEY $K1 ,
                           type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1.0  J1_L_DISCOUNT -  *  sum &quot;
     | combined 0
     | next
 
   stage S03 on all nodes :
-    aggreg &quot;groupby    type INTEGER O_CUSTKEY
+    gbyAgg &quot;groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum &quot;
     | combined 0
     | next
 
   stage S04 on origin :
-    aggreg &quot;groupby    type INTEGER O_CUSTKEY
+    gbyAgg &quot;groupby    type INTEGER O_CUSTKEY
             aggregates type INTEGER as O_CUSTKEY $K1 ,
                        type DECIMAL as REVENUE ) REVENUE  sum&quot;
     | combined 0
@@ -4205,70 +3589,6 @@ create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY) ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP10" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP10" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP10_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP10.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p11_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P11Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P11Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4299,17 +3619,22 @@ begin
 
  stage S03 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
-    | project &quot; type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  &quot;
+    | aggreg &quot; type DECIMAL )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  &quot;
     | combined 0
     | next
 
   stage S04 on all nodes :
-    project &quot; type DECIMAL as INNERRESULT )  $1 sum  &quot;
+    aggreg &quot; type DECIMAL as INNERRESULT )  $1 sum  &quot;
     | combined 0
     | next
 
   stage S05 on origin :
-    project &quot; type DECIMAL as INNERRESULT )  $1 sum   0.0000004  *  &quot;
+    aggreg &quot; type DECIMAL as INNERRESULT )  $1 sum &quot;
+    | combined 0
+    | next
+
+  stage S06 on origin :
+    project &quot; type DECIMAL as INNERRESULT $1 0.0000004  *  &quot;
     | combined 0
     | next broadcast
 
@@ -4331,7 +3656,7 @@ begin
 
   stage S08 on all partitions :
     indexJoin partsupp IxPS_SUPPKEY &quot;bound $I1 S_SUPPKEY ==&quot;
-    | aggreg &quot; groupBy    type INTEGER J1_PS_PARTKEY
+    | gbyAgg &quot; groupBy    type INTEGER J1_PS_PARTKEY
                aggregates type INTEGER as PS_PARTKEY $K1 ,
                           type DECIMAL as VALUE )  J1_PS_SUPPLYCOST J1_PS_AVAILQTY casttype DECIMAL CAST  *  sum  ,
                           type DECIMAL as INNERRESULT INNERRESULT&quot;
@@ -4339,7 +3664,7 @@ begin
     | next
 
   stage S09 on all nodes :
-    aggreg &quot; groupBy    type INTEGER PS_PARTKEY
+    gbyAgg &quot; groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
                         type DECIMAL as VALUE ) VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT&quot;
@@ -4347,7 +3672,7 @@ begin
     | next
 
   stage S10 on origin :
-    aggreg &quot; groupBy    type INTEGER PS_PARTKEY
+    gbyAgg &quot; groupBy    type INTEGER PS_PARTKEY
              aggregates type INTEGER as PS_PARTKEY $K1 ,
                         type DECIMAL as VALUE )  VALUE sum  ,
                         type DECIMAL as INNERRESULT INNERRESULT&quot;
@@ -4366,8 +3691,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4439,70 +3763,6 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP11" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP11" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP11_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP11.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p12_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P12Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P12Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4533,17 +3793,17 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
      | next
 
    stage S03 on all partitions :
-     aggreg &quot; groupBy  type VARCHAR as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR $K1 , type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
+     gbyAgg &quot; groupBy  type VARCHAR as L_SHIPMODE L_SHIPMODE aggregates type VARCHAR $K1 , type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  == O_ORDERPRIORITY &apos;2-HIGH&apos;  ==  or WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  , type INTEGER ) }  O_ORDERPRIORITY &apos;1-URGENT&apos;  !=  O_ORDERPRIORITY &apos;2-HIGH&apos;  !=  and  WHEN  1 THEN  0  ELSE  ENDIF  CASE  sum  &quot;
      | combined 0
      | next
 
    stage S04 on all nodes :
-     aggreg &quot; groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  &quot;
+     gbyAgg &quot; groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER )  $2 sum  , type INTEGER )  $3 sum  &quot;
      | combined 0
      | next
 
    stage S05 on origin :
-     aggreg &quot; groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  &quot;
+     gbyAgg &quot; groupBy  type VARCHAR as L_SHIPMODE $1 aggregates  type VARCHAR $K1 , type INTEGER as high_line_count )  $2 sum  , type INTEGER as low_line_count )  $3 sum  &quot;
      | combined 0
      | next
 
@@ -4622,70 +3882,6 @@ create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP12" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP12" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP12_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP12.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p13_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P13Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P13Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4720,7 +3916,7 @@ begin
     | next
 
   stage S04 on origin :
-    aggreg &quot; groupBy    type INTEGER as c_count $2
+    gbyAgg &quot; groupBy    type INTEGER as c_count $2
              aggregates
                         type INTEGER $K1 ,
                         type INTEGER as custdist )  countAll  &quot;
@@ -4807,70 +4003,6 @@ create index IxO_CUSTKEY  ON Customer  (O_CUSTKEY)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP13" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP13" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP13_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP13.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p14_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P14Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P14Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -4896,19 +4028,19 @@ begin
 
   stage S02 on all partitions :
     indexJoin part IxP_PARTKEY &quot;bound $I1 L_PARTKEY ==&quot;
-    | project &quot; type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+    | aggreg &quot; type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
                 type DECIMAL )  }  }  J1_P_TYPE &apos;PROMO%&apos;  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  &quot;
     | combined 0
     | next
 
   stage S03 on all nodes :
-    project &quot; type DECIMAL ) $1 sum  ,
+    aggreg &quot; type DECIMAL ) $1 sum  ,
               type DECIMAL ) $2 sum  &quot;
     | combined 0
     | next
 
   stage S04 on origin :
-    project &quot; type DECIMAL ) $1 sum  ,
+    aggreg &quot; type DECIMAL ) $1 sum  ,
               type DECIMAL ) $2 sum  &quot;
     | combined 0
     | next
@@ -4993,70 +4125,6 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP14" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP14" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP14_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP14.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p15_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P15Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P15Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -5073,21 +4141,21 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
 
    stage S02 on all partitions :
      indexScan lineitem IxL_SHIPDATE &quot;LBOUND $I1 DATE &apos;1996-01-01&apos; &gt;= UBOUND $I1 DATE &apos;1996-04-01&apos; &lt;&quot;
-     | aggreg &quot; groupBy    type INTEGER as l_suppkey $3
+     | gbyAgg &quot; groupBy    type INTEGER as l_suppkey $3
                 aggregates type INTEGER $K1 ,
                            type DECIMAL )  $6 1.00  $7 -  *  sum  &quot;
      | combined 0
      | next
 
    stage S03 on all nodes :
-     aggreg &quot; groupBy    type INTEGER as l_suppkey $1
+     gbyAgg &quot; groupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER $K1 ,
                          type DECIMAL )  $2 sum  &quot;
      | combined 0
      | next
 
    stage S04 on origin :
-     aggreg &quot; groupBy    type INTEGER as l_suppkey $1
+     gbyAgg &quot; groupBy    type INTEGER as l_suppkey $1
               aggregates type INTEGER as supplier_no $K1 ,
                          type DECIMAL as TOTAL_REVENUE ) $2 sum  &quot;
      | combined 0
@@ -5100,11 +4168,11 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
      | next hashcast
 
    stage S06 on all partitions :
-     indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 supplier_no ==&quot; 
-     | project &quot;type INTEGER as S_SUPPKEY J1_S_SUPPKEY , 
-                type VARCHAR as S_NAME J1_S_NAME , 
-                type VARCHAR as S_ADDRESS J1_S_ADDRESS , 
-                type VARCHAR as S_PHONE J1_S_PHONE , 
+     indexJoin supplier IxS_SUPPKEY &quot;BOUND $I1 supplier_no ==&quot;
+     | project &quot;type INTEGER as S_SUPPKEY J1_S_SUPPKEY ,
+                type VARCHAR as S_NAME J1_S_NAME ,
+                type VARCHAR as S_ADDRESS J1_S_ADDRESS ,
+                type VARCHAR as S_PHONE J1_S_PHONE ,
                 type DECIMAL TOTAL_REVENUE &quot;
      | combined 0
      | next
@@ -5183,63 +4251,7 @@ create index IxS_SuppKey  ON Supplier  (S_SuppKey)  ;
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP15" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP15" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP15_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP15.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p16_debugMarker" enabled="false">
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
@@ -5247,7 +4259,7 @@ create index IxS_SuppKey  ON Supplier  (S_SuppKey)  ;
             <stringProp name="scriptLanguage">groovy</stringProp>
           </JSR223Sampler>
           <hashTree/>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop" enabled="false">
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P16Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
           </LoopController>
@@ -5283,7 +4295,7 @@ begin
     | next
 
   stage S03 on all partitions :
-    aggreg &quot; groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+    gbyAgg &quot; groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                      type VARCHAR as P_BRAND P_BRAND ,
                        type VARCHAR as P_TYPE P_TYPE ,
                        type INTEGER as P_SIZE P_SIZE
@@ -5298,7 +4310,7 @@ begin
     | next
 
   stage S04 on all nodes :
-    aggreg &quot; groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+    gbyAgg &quot; groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
                          type VARCHAR as P_BRAND P_BRAND ,
                            type VARCHAR as P_TYPE P_TYPE ,
                            type INTEGER as P_SIZE P_SIZE
@@ -5318,7 +4330,7 @@ begin
     | next
 
   stage S06 on all partitions :
-    aggreg &quot; groupBy  type VARCHAR as P_BRAND P_BRAND ,
+    gbyAgg &quot; groupBy  type VARCHAR as P_BRAND P_BRAND ,
                        type VARCHAR as P_TYPE P_TYPE ,
                        type INTEGER as P_SIZE P_SIZE
                        aggregates
@@ -5330,7 +4342,7 @@ begin
     | next
 
   stage S07 on all nodes :
-    aggreg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
+    gbyAgg &quot; groupBy type VARCHAR as P_BRAND P_BRAND ,
                      type VARCHAR as P_TYPE P_TYPE ,
                      type INTEGER as P_SIZE P_SIZE
                      aggregates
@@ -5342,7 +4354,7 @@ begin
     | next
 
   stage S08 on origin :
-    aggreg &quot; groupBy  type VARCHAR as P_BRAND P_BRAND ,
+    gbyAgg &quot; groupBy  type VARCHAR as P_BRAND P_BRAND ,
                       type VARCHAR as P_TYPE P_TYPE ,
                       type INTEGER as P_SIZE P_SIZE
                       aggregates
@@ -5365,8 +4377,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5475,7 +4486,7 @@ begin
   stage S03 on all partitions :
     keyNotExists SUPPLIER IxS_SUPPKEY  &quot;BOUND $I1 PS_SUPPKEY ==&quot;
                &quot;type BOOLEAN  }  S_COMMENT &apos;%Customer%Complaints%&apos;  8 10 matchMiddle1&quot;
-    | aggreg &quot; groupBy   type VARCHAR as P_TYPE P_TYPE ,
+    | gbyAgg &quot; groupBy   type VARCHAR as P_TYPE P_TYPE ,
                          type INTEGER as P_SIZE P_SIZE ,
                          type VARCHAR as P_BRAND P_BRAND ,
                          type INTEGER as PS_SUPPKEY PS_SUPPKEY
@@ -5487,7 +4498,7 @@ begin
     | next
 
   stage S04 on all nodes :
-     aggreg &quot; groupBy    type VARCHAR as P_TYPE P_TYPE ,
+     gbyAgg &quot; groupBy    type VARCHAR as P_TYPE P_TYPE ,
                           type INTEGER as P_SIZE P_SIZE ,
                           type VARCHAR as P_BRAND P_BRAND ,
                           type INTEGER as PS_SUPPKEY PS_SUPPKEY
@@ -5499,7 +4510,7 @@ begin
     | next
 
   stage S05 on origin :
-     aggreg &quot; groupBy    type VARCHAR as P_TYPE P_TYPE ,
+     gbyAgg &quot; groupBy    type VARCHAR as P_TYPE P_TYPE ,
                           type INTEGER as P_SIZE P_SIZE ,
                           type VARCHAR as P_BRAND P_BRAND ,
                           type INTEGER as PS_SUPPKEY PS_SUPPKEY
@@ -5512,7 +4523,7 @@ begin
     | next hashcast
 
   stage S06 on all partitions :
-    aggreg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
                          type INTEGER as P_SIZE P_SIZE ,
                          type VARCHAR as P_BRAND P_BRAND
               aggregates type VARCHAR  as P_TYPE $K1 ,
@@ -5523,7 +4534,7 @@ begin
     | next
 
   stage S07 on all nodes :
-    aggreg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
                          type INTEGER as P_SIZE P_SIZE ,
                          type VARCHAR as P_BRAND P_BRAND
              aggregates  type VARCHAR  as P_TYPE $K1 ,
@@ -5534,7 +4545,7 @@ begin
     | next
 
   stage S08 on origin :
-    aggreg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
+    gbyAgg &quot; groupBy     type VARCHAR as P_TYPE P_TYPE ,
                          type INTEGER as P_SIZE P_SIZE ,
                          type VARCHAR as P_BRAND P_BRAND
              aggregates  type VARCHAR  as P_TYPE $K1 ,
@@ -5556,8 +4567,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5627,70 +4637,6 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP16" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP16" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP16_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP16.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p17_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P17Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P17Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -5722,7 +4668,7 @@ begin
     | next
 
   stage S03 on all nodes :
-    aggreg &quot; groupBy    type integer P_PARTKEY
+    gbyAgg &quot; groupBy    type integer P_PARTKEY
              aggregates type integer as P_PARTKEY $K1 ,
                         type DECIMAL )  $2 sum  ,
                         type INTEGER )  $3 sum  &quot;
@@ -5730,7 +4676,7 @@ begin
     | next
 
   stage S04 on origin :
-    aggreg &quot; groupBy    type integer P_PARTKEY
+    gbyAgg &quot; groupBy    type integer P_PARTKEY
              aggregates type integer as P_PARTKEY $K1 ,
                         type DECIMAL )  $2 sum  ,
                         type INTEGER )  $3 sum  &quot;
@@ -5746,21 +4692,26 @@ begin
   stage S06 on all partitions :
     indexJoin lineitem IxL_PARTKEY &quot;bound $I1 $L1 ==&quot;
     | filter &quot; type BOOLEAN  J1_L_QUANTITY AV &lt;  &quot;
-    | project &quot; type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  &quot;
+    | aggreg &quot; type decimal as avg_yearly ) J1_L_EXTENDEDPRICE sum  &quot;
     | combined 0
     | next
 
   stage S07 on all nodes :
-    project &quot; type decimal as avg_yearly ) $1 sum  &quot;
+    aggreg &quot; type decimal as avg_yearly ) $1 sum  &quot;
     | combined 0
     | next
 
   stage S08 on origin :
-    project &quot; type DECIMAL as avg_yearly ) $1 sum 7.0 / &quot;
+    aggreg &quot; type DECIMAL as avg_yearly ) $1 sum &quot;
     | combined 0
     | next
 
   stage S09 on origin :
+    project &quot; type DECIMAL as avg_yearly $1 7.0 / &quot;
+    | combined 0
+    | next
+
+  stage S10 on origin :
     output
     | sink
     | first
@@ -5832,70 +4783,6 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP17" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP17" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP17_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP17.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p18_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P18Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P18Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -5939,7 +4826,7 @@ begin
      | next
 
    stage S04 on all partitions :
-     aggreg &quot; groupBy type VARCHAR as C_NAME C_NAME ,
+     gbyAgg &quot; groupBy type VARCHAR as C_NAME C_NAME ,
                       type INTEGER as C_CUSTKEY C_CUSTKEY ,
                       type INTEGER as O_ORDERKEY O_ORDERKEY ,
                       type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -5955,7 +4842,7 @@ begin
      | next
 
    stage S05 on all nodes :
-     aggreg &quot; groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg &quot; groupBy  type VARCHAR as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -5971,7 +4858,7 @@ begin
      | next
 
    stage S06 on origin :
-     aggreg &quot; groupBy  type VARCHAR as C_NAME C_NAME ,
+     gbyAgg &quot; groupBy  type VARCHAR as C_NAME C_NAME ,
                        type INTEGER as C_CUSTKEY C_CUSTKEY ,
                        type INTEGER as O_ORDERKEY O_ORDERKEY ,
                        type DATE as O_ORDERDATE O_ORDERDATE ,
@@ -6066,70 +4953,6 @@ CREATE INDEX IxC_CUSTKEY ON CUSTOMER(C_CUSTKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP18" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP18" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP18_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP18.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p19_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P19Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P19Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -6192,17 +5015,17 @@ begin
    | next
 
 stage S03 on all partitions :
-   project &quot; type DECIMAL )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  &quot;
+   aggreg &quot; type DECIMAL )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  &quot;
    | combined 0
    | next
 
  stage S04 on all nodes :
-   project &quot; type DECIMAL )  $1 sum  &quot;
+   aggreg &quot; type DECIMAL )  $1 sum  &quot;
    | combined 0
    | next
 
  stage S05 on origin :
-   project &quot; type DECIMAL as revenue )  $1 sum  &quot;
+   aggreg &quot; type DECIMAL as revenue )  $1 sum  &quot;
    | combined 0
    | next
 
@@ -6278,62 +5101,6 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP19" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP19" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP19_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP19.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P20Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -6359,7 +5126,7 @@ begin
     stage S02 on all partitions :
       indexJoin lineitem IxL_PARTKEY &quot;BOUND $I1 P_PARTKEY ==&quot;
       | filter &quot; type BOOLEAN  J1_L_SHIPDATE DATE &apos;1994-01-01&apos; &gt;= J1_L_SHIPDATE DATE &apos;1995-01-01&apos;  &lt;  and  &quot;
-      | aggreg &quot; groupBy  type integer P_PARTKEY ,
+      | gbyAgg &quot; groupBy  type integer P_PARTKEY ,
                           type integer J1_L_SUPPKEY
                        aggregates type integer as P_PARTKEY $K1 ,
                                   type integer as L_SUPPKEY $K2 ,
@@ -6368,7 +5135,7 @@ begin
       | next
 
     stage S03 on all nodes :
-      aggreg &quot; groupBy type integer P_PARTKEY ,
+      gbyAgg &quot; groupBy type integer P_PARTKEY ,
                        type integer L_SUPPKEY
                   aggregates type integer as P_PARTKEY $K1 ,
                              type integer as L_SUPPKEY $K2 ,
@@ -6377,7 +5144,7 @@ begin
       | next
 
     stage S04 on origin :
-      aggreg &quot; groupBy type integer P_PARTKEY ,
+      gbyAgg &quot; groupBy type integer P_PARTKEY ,
                        type integer L_SUPPKEY
                    aggregates type integer as P_PARTKEY $K1 ,
                               type integer as L_SUPPKEY $K2 ,
@@ -6399,7 +5166,7 @@ begin
      | next hashcast
 
    stage S06a on all partitions :
-     aggreg &quot; groupBy type integer PS_SUPPKEY
+     gbyAgg &quot; groupBy type integer PS_SUPPKEY
                         aggregates type integer as PS_SUPPKEY $K1&quot;
      | combined 0
      | next
@@ -6498,70 +5265,6 @@ CREATE INDEX IxN_NATIONPKEY ON NATION(N_NATIONPKEY);</stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
           <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP20" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP20" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP20_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP20.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p20_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P20Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
-          <hashTree/>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="P22Loop" enabled="true">
             <boolProp name="LoopController.continue_forever">true</boolProp>
             <stringProp name="LoopController.loops">${QUERY_LOOP_COUNT}</stringProp>
@@ -6580,18 +5283,18 @@ begin
     scan Customer
     | filter &quot; type BOOLEAN  C_ACCTBAL 0.00  &gt;
                }  &apos;13&apos;  &apos;31&apos;  &apos;23&apos;  &apos;29&apos;  &apos;30&apos;  &apos;18&apos;  &apos;17&apos;  #7  C_PHONE 1  2  substring3  in  and  &quot;
-    | project &quot; type DECIMAL )  C_ACCTBAL sum  ,
+    | aggreg &quot; type DECIMAL )  C_ACCTBAL sum  ,
                 type INTEGER )  C_ACCTBAL count  &quot;
     | combined 0
     | next
 
   stage S03 on all nodes :
-    project &quot; type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  &quot;
+    aggreg &quot; type DECIMAL )  $1 sum  , type INTEGER )  $2 sum  &quot;
     | combined 0
     | next
 
   stage S04 on origin :
-    project &quot; type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  &quot;
+    aggreg &quot; type INTEGER )  $2 sum  , type DECIMAL )  $1 sum  &quot;
     | combined 0
     | next
 
@@ -6619,14 +5322,14 @@ begin
     | next
 
  stage S08 on all partitions :
-    aggreg &quot; groupBy     type VARCHAR as cntrycode $1
+    gbyAgg &quot; groupBy     type VARCHAR as cntrycode $1
              aggregates  type VARCHAR as cntrycode $K1 , type INTEGER )  countAll  ,
                          type DECIMAL )  $2 sum  &quot;
     | combined 0
     | next
 
   stage S09 on all nodes :
-    aggreg &quot; groupBy     type VARCHAR as cntrycode $1
+    gbyAgg &quot; groupBy     type VARCHAR as cntrycode $1
              aggregates  type VARCHAR as cntrycode $K1 ,
                          type INTEGER )  $2 sum  ,
                          type DECIMAL )  $3 sum  &quot;
@@ -6634,7 +5337,7 @@ begin
     | next
 
   stage S10 on origin :
-    aggreg &quot; groupBy     type VARCHAR as cntrycode $1
+    gbyAgg &quot; groupBy     type VARCHAR as cntrycode $1
              aggregates  type VARCHAR as cntrycode $K1 ,
                          type INTEGER as numcust )  $2 sum  ,
                          type DECIMAL as totacctbal )  $3 sum  &quot;
@@ -6650,8 +5353,7 @@ begin
     output
     | sink
     | first
-end ;
-</stringProp>
+end ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -6719,70 +5421,6 @@ CREATE INDEX IxO_CUSTKEY ON ORDERS(O_CUSTKEY);</stringProp>
             <stringProp name="variableNames"></stringProp>
             <stringProp name="TestPlan.comments">NO indexes required!</stringProp>
           </JDBCSampler>
-          <hashTree/>
-          <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="SpaceAfterP22" enabled="true"/>
-          <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="spaceAfterP22" enabled="true">
-              <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">space;</stringProp>
-              <stringProp name="queryArguments"></stringProp>
-              <stringProp name="queryArgumentsTypes"></stringProp>
-              <stringProp name="queryTimeout"></stringProp>
-              <stringProp name="queryType">Select Statement</stringProp>
-              <stringProp name="resultSetHandler">Store as String</stringProp>
-              <stringProp name="resultSetMaxRows"></stringProp>
-              <stringProp name="resultVariable"></stringProp>
-              <stringProp name="variableNames"></stringProp>
-            </JDBCSampler>
-            <hashTree/>
-            <ResultSaver guiclass="ResultSaverGui" testclass="ResultSaver" testname="Save Responses to a file" enabled="true">
-              <stringProp name="FileSaver.filename">spaceAfterP22_</stringProp>
-              <boolProp name="FileSaver.errorsonly">false</boolProp>
-              <boolProp name="FileSaver.successonly">false</boolProp>
-              <boolProp name="FileSaver.skipsuffix">false</boolProp>
-              <boolProp name="FileSaver.skipautonumber">false</boolProp>
-            </ResultSaver>
-            <hashTree/>
-            <ResultCollector guiclass="SimpleDataWriter" testclass="ResultCollector" testname="Simple Data Writer" enabled="true">
-              <boolProp name="ResultCollector.error_logging">false</boolProp>
-              <objProp>
-                <name>saveConfig</name>
-                <value class="SampleSaveConfiguration">
-                  <time>false</time>
-                  <latency>true</latency>
-                  <timestamp>true</timestamp>
-                  <success>true</success>
-                  <label>true</label>
-                  <code>false</code>
-                  <message>true</message>
-                  <threadName>false</threadName>
-                  <dataType>false</dataType>
-                  <encoding>false</encoding>
-                  <assertions>false</assertions>
-                  <subresults>true</subresults>
-                  <responseData>false</responseData>
-                  <samplerData>false</samplerData>
-                  <xml>false</xml>
-                  <fieldNames>true</fieldNames>
-                  <responseHeaders>false</responseHeaders>
-                  <requestHeaders>false</requestHeaders>
-                  <responseDataOnError>false</responseDataOnError>
-                  <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-                  <assertionsResultsToSave>0</assertionsResultsToSave>
-                  <connectTime>true</connectTime>
-                </value>
-              </objProp>
-              <stringProp name="filename">spaceAfterP22.csv</stringProp>
-            </ResultCollector>
-            <hashTree/>
-          </hashTree>
-          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="p22_debugMarker" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">log.info(&apos;*** About to start P22Loop ***&apos;)</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Sampler>
           <hashTree/>
           <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="debugMarker" enabled="true">
             <stringProp name="cacheKey">true</stringProp>
