@@ -1640,7 +1640,7 @@ void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 StreamDef* Card_OP::pCraftStreamDef_arriving(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
+  
   Card_Projection* p_projection = pSub_projection();
   if (! p_projection)
     return nullptr;

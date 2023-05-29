@@ -33,13 +33,11 @@ MakeCode::MakeCode(CardIter* pCI)
 
   m_pCI = pCI;
 
-  m_pPipelineDef   = nullptr;
-  m_pStageDef      = nullptr;
-  m_pOpDef         = nullptr;
-  m_pArgDef        = nullptr;
+  m_pPipelineDef = nullptr;
+  m_pStageDef    = nullptr;
+  m_pOpDef       = nullptr;
 
-  m_pOpDef_leading = nullptr;
-  m_pColsReq       = nullptr;
+  m_pStreamDef_prior = nullptr;
 
   _checkInitialised_(CN_MAKECODE);
 
@@ -119,8 +117,6 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
   while (xBoard.bEach()) {
 
     if (xBoard.pChild()->szCardNm()->bSame("stage"_Stz)) {
-      m_pOpDef_leading = nullptr;
-      m_pColsReq = nullptr;
       vCraftStageDef(xBoard.p_stage());
     }
     else {
@@ -353,8 +349,11 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  m_pOpDef->m_pStreamDef_arriving = p_OP->pCraftStreamDef_arriving();
+  if (m_pStreamDef_prior)
+    m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
   m_pOpDef->m_pStreamDef_emitted  = p_OP->pCraftStreamDef_emitted();
+
+  m_pStreamDef_prior = m_pOpDef->m_pStreamDef_emitted;
 }
 
 /*----------------------------------------------------------------------------*/

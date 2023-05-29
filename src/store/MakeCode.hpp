@@ -19,10 +19,8 @@ namespace STORE
     PipelineDef*  m_pPipelineDef;
     StageDef*     m_pStageDef;
     OpDef*        m_pOpDef;
-    ArgDef*       m_pArgDef;
 
-    OpDef*        m_pOpDef_leading;
-    ColsReq*      m_pColsReq;
+    StreamDef*    m_pStreamDef_prior;
 
   protected:
     // must be last
