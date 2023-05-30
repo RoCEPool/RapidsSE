@@ -132,7 +132,7 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stencil_v2* pStencil = new Stencil_v2;
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
-    pStageDef->vDump();
+    //pStageDef->vDump();
     eErrorCode = pStencil->eSynthesise(pStageDef);
     if (eErrorCode != EC_NONE) {
       return eErrorCode;
@@ -1422,7 +1422,7 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK 
   i8 i_Op = pOpDef->i_Op();
 
   // get the streamDefs
-  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_emitted;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // get the columns required

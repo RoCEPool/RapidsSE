@@ -204,6 +204,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
+        vAppendCodeIndexCols(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
+        vAppendCodeFragment(pOpSketch, "iGbyAggContinue"_Stz);
         vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz);
@@ -583,10 +587,28 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
   s16KB sCode;
   bool bExtracted;
 
+  //i8 nCols = 0;
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
+//    if (nCols > pOpSketch->m_pColsReq->m_nCols) {
+//      break;
+//    }
+//
+//    nCols++;
+
     Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
+
     StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
+
+//    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_Col_base1 == C_UNKNOWN) {
+//      sCode = ""_Stz;
+//      m_pCommonCode->vSeekStart();
+//
+//      bExtracted = CodeSynthUtils::bExtractInflate(m_pCommonCode, pColumn, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
+//      RASSERT(bExtracted);
+//      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+//      continue;
+//    }
 
     sCode = ""_Stz;
     m_pCommonCode->vSeekStart();
@@ -930,6 +952,44 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* append code fragment for copying columns                                   */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  s256 sCopy;
+  i8 nColumns = pOpSketch->m_pIndexDef->nColumns();
+
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+
+    m_pCommonCode->vSeekStart();
+
+    Column *pColumn = pOpSketch->m_pIndexDef->pGetColumn(i_Col);
+
+    if (i_Col == nColumns - 1)
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld}\n };\n"_Stz,
+                    pColumn->iColumnNo(),
+                    pColumn->szColNm(),
+                    pColumn->eColumnType(),
+                    pColumn->iColumnLength(),
+                    pColumn->iColumnScale(),
+                    pColumn->bIsNullable(),
+                    pColumn->bIsPtnKey());
+    else
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld},\n"_Stz,
+                    pColumn->iColumnNo(),
+                    pColumn->szColNm(),
+                    pColumn->eColumnType(),
+                    pColumn->iColumnLength(),
+                    pColumn->iColumnScale(),
+                    pColumn->bIsNullable(),
+                    pColumn->bIsPtnKey());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
+
+}
 /*----------------------------------------------------------------------------*/
 /* append code fragment for copying columns                                   */
 /*----------------------------------------------------------------------------*/

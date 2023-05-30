@@ -24,6 +24,8 @@ extern void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey);
 extern void* aExtern_IndexTreeFindEntry_hint(void* aIndexTree, void* aKey, void* aEnt_recent);
 extern void* aExtern_IndexTreeInsertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode);
 extern void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode);
+extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
+extern void* aExtern_IndexTreeNew(void* aIndexDef);
 extern void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 extern void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 extern void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey);

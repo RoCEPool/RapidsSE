@@ -73,6 +73,7 @@ namespace STORE {
     void vAppendCodePopulatePayloadCols(OpSketch* pOpSketch);
     void vAppendCodePayLoadToTubCols(OpSketch* pOpSketch);
     void vAppendCodePixCols(OpSketch* pOpSketch);
+    void vAppendCodeIndexCols(OpSketch* pOpSketch);
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
     bool bOpenCodeFiles(void);

@@ -283,11 +283,12 @@ void OpSketch::vCopyColsReq(ColsReq* pColsReq)
 
   m_pColsReq = new ColsReq;
 
+  m_pColsReq->m_nCols = pColsReq->m_nCols;
   for (i8 i_Col = 0; nCols < pColsReq->m_nCols; i_Col++) {
-    if (pColsReq->m_axCols->m_i_Col_base1 != C_UNKNOWN) {
+    if (pColsReq->m_axCols[i_Col].m_i_Col_base1 != C_UNKNOWN) {
       nCols++;
-      m_pColsReq->m_axCols->m_i_Col_base1 = pColsReq->m_axCols->m_i_Col_base1;
-      m_pColsReq->m_axCols->m_sColNm = pColsReq->m_axCols->m_sColNm;
+      m_pColsReq->m_axCols[i_Col].m_i_Col_base1 = pColsReq->m_axCols[i_Col].m_i_Col_base1;
+      m_pColsReq->m_axCols[i_Col].m_sColNm = pColsReq->m_axCols[i_Col].m_sColNm;
     }
   }
 }
@@ -406,7 +407,7 @@ void OpSketch::vGenerateExprStacks(void)
 
 
 #ifdef WITH_DEBUG_VERSION
-    /*
+
        vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // dump the TypeStack
@@ -419,14 +420,14 @@ void OpSketch::vGenerateExprStacks(void)
       vTrace("%s\n"_Stz, aDM[eType]);
     }
     vTrace("--------------------------------------\n"_Stz);
-  */
+
 #endif
 
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
 
-      nExpr = pExprType->nItems();
-      RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
+      //nExpr = pExprType->nItems();
+      //RASSERT(eResultExprType == (eDM)pExprType->iPeek(nExpr-1));
       eResultExprType = DM_UNK;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -342,6 +342,13 @@ void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_OUT__", sColumn.azChar());
     RASSERT(bResult);
   }
+
+  if (StrLib::bContains(sLine->azChar(), "__INDEX_COLUMNS__")) {
+    s256 sColumn;
+    StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pIndexDef->nColumns());
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_COLUMNS__", sColumn.azChar());
+    RASSERT(bResult);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

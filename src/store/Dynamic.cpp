@@ -169,7 +169,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
 
   // index scan T
-  m_xDynamicT.m_xIndexInfoT.m_iInit         = 0;
+  m_xDynamicT.m_xIndexInfoT.m_iInitialize = 1;
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cTableName,32,CN_BYTES_T);
   MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cIndexName,32,CN_BYTES_T);
@@ -192,7 +192,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // index join with J
   m_xDynamicT.m_iIndexJoinInit = 0;
   m_xDynamicT.m_iJoinedRows    = 0;
-  m_xDynamicT.m_xIndexInfoJ.m_iInit         = 0;
+  m_xDynamicT.m_xIndexInfoJ.m_iInitialize   = 1;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cTableName,32,CN_BYTES_T);
@@ -216,7 +216,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // payload (gby/srt/top)
   m_xDynamicT.m_aiPayload      = nullptr;
-  m_xDynamicT.m_xIndexInfoPL.m_iInit         = 0;
+  m_xDynamicT.m_xIndexInfoPL.m_iInitialize  = 1;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cTableName,32,CN_BYTES_T);

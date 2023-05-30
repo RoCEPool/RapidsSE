@@ -61,6 +61,25 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
   szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 
+  // marker-end
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iGbyAggContinue ---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iGbyAggContinue
+i8 iGbyAggContinue(Dynamic_T* aDynamicT) {
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // GBYAGG-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
@@ -316,6 +335,38 @@ void vInflateCrwCol(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vSkipCrwCol -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vSkipCrwCol
+void vSkipCrwCol(Dynamic_T* aDynamicT) {
+
+  void* aSubReturnLabel;
+  u8 uMetaCode;
+  u8* auMetaCode;
+  u8 uHigh;
+  u8 uLow;
+  i8 i_Col;
+  i8 __COLUMN_NO__;
+
+  // marker-start
+  // - - - - - - - - - - - -
+  i_Col = __COLUMN_NO__;
+  uMetaCode = *auMetaCode++;
+
+  uHigh = uMetaCode >> 4;
+  uLow  = uMetaCode & 0x0F;
+
+  aSubReturnLabel = && __L_RETURN_TO_LABEL__;
+  goto L_SkipAColumn;
+
+  __L_RETURN_TO_LABEL__:
+
+  // marker-end
+  L_SkipAColumn:
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vInflateCrwReturn -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vInflateCrwReturn
@@ -339,6 +390,7 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
 
+  printf("%p\n", aDynamicT->m_xRowInfoIT.m_iCell[0]);
   // marker-end
 
   return;
@@ -410,6 +462,45 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   }
 
   return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexDefBegin -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexDefBegin
+i8 vIndexDefBegin(Dynamic_T* aDynamicT) {
+
+  // marker-start
+
+  if (aDynamicT->m_xIndexInfoPL.m_iInitialize) {
+
+    struct ColumnInfo xColumnInfo[] = {
+        // marker-end
+    };
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexDefContinue ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexDefContinue
+i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
+
+  ColumnInfo xColumnInfo;
+  i8 __INDEX_COLUMNS__;
+
+  {
+    // marker-start
+
+#ifdef WITH_CLANG
+    aDynamicT->m_xIndexInfoPL.m_aIndexDef = aExtern_IndexDefNew(__INDEX_COLUMNS__, (void*)&xColumnInfo);
+    aDynamicT->m_xIndexInfoPL.m_aIndexTree = aExtern_IndexTreeNew(aDynamicT->m_xIndexInfoPL.m_aIndexDef);
+#endif
+    aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
+  }
+
+  // marker-end
+
 }
 
 /*----------------------------------------------------------------------------*/
