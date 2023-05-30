@@ -13,7 +13,7 @@ struct RowInfo {
 };
 
 struct IndexInfo {
-  i8    m_iInit;
+  i8    m_iInitialize;
   char  m_cTableName[32];
   char  m_cIndexName[32];
   void* m_aTable;
