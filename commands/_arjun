@@ -207,3 +207,31 @@ pipeline __pageout
       | first
   end ;
 
+tag default <tpch_dir> = "../TPCH/SF1" ;
+tag default <suffix>   = "tbl";
+
+_paging
+
+space;
+
+load LineItem_1 "../TPCH/SF1/lineitem.tbl" ;
+load LineItem_2 "../TPCH/SF1/lineitem.tbl" ;
+
+space;
+
+load LineItem_3 "../TPCH/SF1/lineitem.tbl" ;
+
+space;
+
+select * from Lineitem_1 where L_ORDERKEY < 5;
+
+load LineItem_4 "../TPCH/SF1/lineitem.tbl" ;
+load LineItem_5 "../TPCH/SF1/lineitem.tbl" ;
+
+space;
+
+load LineItem_6 "../TPCH/SF1/lineitem.tbl" ;
+load LineItem_7 "../TPCH/SF1/lineitem.tbl" ;
+
+select * from Lineitem_7 where L_ORDERKEY < 5;
+
