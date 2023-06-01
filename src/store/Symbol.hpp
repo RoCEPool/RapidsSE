@@ -54,6 +54,9 @@ namespace STORE
     bool bIsColumnOrdinal(void);    // $c.n
     bool bIsValueOrdinal(void);         // $n or $c.n
 
+    void vValidate_mustHave_ppy(Stz* szPpy, ...);
+
+
     bool bNeedsBrace(void);       // between, case, ... matchTrailing
 
     bool bSameAs(char cArg);

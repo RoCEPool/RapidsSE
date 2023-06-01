@@ -458,6 +458,28 @@ bool Symbol::bIsValueOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate symbol properties                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vValidate_mustHave_ppy(Stz* szPpy, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  va_list xArgs;
+
+  va_start(xArgs, szPpy);
+  Stz* szPpy_mustHave = szPpy;
+  while (nullptr != szPpy_mustHave) {
+
+    bool bMustHave = Y_bHas(szPpy_mustHave);
+    RASSERT(bMustHave);
+
+    szPpy_mustHave = (Stz*)va_arg(xArgs, Stz*);
+  }
+
+  va_end(xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bNeedsBrace(void)
