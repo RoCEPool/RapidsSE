@@ -133,8 +133,9 @@ extern "C" void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, voi
   return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
                                   iTopCount, piErrorCode);
 }
-extern "C" void* aExtern_IndexTreeNew(void* aIndexDef) {
+extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
   IndexTree* pIndexTree = new IndexTree(nullptr, (IndexDef*)aIndexDef, C_UNKNOWN);
+  *aiKeyKind = (i8)((IndexDef*)aIndexDef)->eKeyKind();
   return pIndexTree;
 }
 extern "C" void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {

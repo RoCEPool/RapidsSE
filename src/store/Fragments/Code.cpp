@@ -465,6 +465,34 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vTubBegin2 ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iTubBegin2
+i8 iTubBegin2(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_TO__ {
+    i8 iDummy;
+  };
+
+  // marker-start
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TUB
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  __L_LABEL__:
+
+  printf("TUB\n");
+
+    struct ColumnInfo xColumnInfo[] = {
+        // marker-end
+    };
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexDefBegin -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexDefBegin
@@ -493,8 +521,16 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
     // marker-start
 
 #ifdef WITH_CLANG
+    bool bPayload = true;
+    i8 iKeyKind;
     aDynamicT->m_xIndexInfoPL.m_aIndexDef = aExtern_IndexDefNew(__INDEX_COLUMNS__, (void*)&xColumnInfo);
-    aDynamicT->m_xIndexInfoPL.m_aIndexTree = aExtern_IndexTreeNew(aDynamicT->m_xIndexInfoPL.m_aIndexDef);
+    aDynamicT->m_xIndexInfoPL.m_aIndexTree = aExtern_IndexTreeNew(aDynamicT->m_xIndexInfoPL.m_aIndexDef, &iKeyKind);
+
+    if (__COLUMNS_OUT__ == __INDEX_COLUMNS__)
+      bPayload = false;
+
+    vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, iKeyKind);
+
 #endif
     aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
   }
@@ -512,12 +548,32 @@ i8 iTubRowPix(Dynamic_T* aDynamicT) {
   {
     // marker-start
 
+    printf("TUB initializing rowPix %p\n", aDynamicT);
 #ifdef WITH_CLANG
     void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
     vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
 #endif
     aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
   }
+
+  // marker-end
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iTubRowPix2 --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iTubRowPix2
+i8 iTubRowPix2(Dynamic_T* aDynamicT) {
+
+    // marker-start
+
+    printf("TUB initializing rowPix %p\n", aDynamicT);
+#ifdef WITH_CLANG
+    void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
+    vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
+#endif
 
   // marker-end
 
@@ -821,10 +877,10 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     //  printf("%c ", szDstStz[i_Byte]);
     //printf("\n");
 #endif
-    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
+    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 
     iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_acStrArea,amCellAddress);
-    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
     // update the tub string size
     i8 iDstLen = strlen(szDstStz) + 1;
@@ -918,10 +974,10 @@ void vTubVchCol(Dynamic_T* aDynamicT) {
   // column __COLUMN_NO__
 
   // get the source string
-  szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iOffset;
+  szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
   if (szSrcStz == (char*)C_DATUM_NULL) {
     // copy the source to the destination
-    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = C_DATUM_NULL;
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
   }
   else {
     nSrcSize = strlen(szSrcStz) + 1;
@@ -931,9 +987,9 @@ void vTubVchCol(Dynamic_T* aDynamicT) {
     strncpy(szDstStz, szSrcStz, nSrcSize);
 
     // copy the source to the destination
-    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
+    amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
     iOffset = - nDifference(__ROW_INFO_TO__.m_acStrArea,amCellAddress);
-    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
     // update the tub string size
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
@@ -975,10 +1031,10 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
   // column __COLUMN_NO__
 
   // get the source string
-  szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iOffset;
+  szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
   if (szSrcStz == (char*)C_DATUM_NULL) {
     // copy the source to the destination
-    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = C_DATUM_NULL;
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
   }
   else {
     nSrcSize = strlen(szSrcStz) + 1;
@@ -988,7 +1044,7 @@ void vCopyVchCol(Dynamic_T* aDynamicT) {
     strncpy(szDstStz, szSrcStz, nSrcSize);
 
     // copy the source to the destination
-    p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = (i8)szDstStz;
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = (i8)szDstStz;
 
     // update the tub string size
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
@@ -1075,7 +1131,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
    szSrcStz = (char*)(char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
    if (szSrcStz == (char*)C_DATUM_NULL) {
      // copy the source to the destination
-     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = C_DATUM_NULL;
+     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
    }
    else {
      nSrcSize = strlen(szSrcStz) + 1;
@@ -1085,9 +1141,9 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      strncpy(szDstStz, szSrcStz, nSrcSize);
 
      // copy the source to the destination
-     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iOffset;
+     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
      iOffset = - nDifference(aDynamicT->m_xRowInfoTO.m_acStrArea,amCellAddress);
-     p__STRUCT_TO__->__COLUMN_TO__.m_iOffset = iOffset;
+     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = iOffset;
 
      // update the tub string size
      aDynamicT->m_xRowInfoTO.m_acStrArea += nSrcSize;

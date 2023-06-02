@@ -8,6 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 #include "Index.hpp"
+#include "Op.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -65,6 +66,9 @@ void Step::vDynamicExecute(void)
   // get DynamicT
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
   Dynamic_T* aDynamicT = pDynamic->aDynamicT();
+
+  vTrace("Stage: %s %p \n"_Stz, m_pOp->pStage()->szStageNm(), aDynamicT);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the trace flag
@@ -125,7 +129,11 @@ void Step::vDynamicExecute(void)
   }
   *******************************************************/
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if ( afFun ==  m_pLogicUnit->m_afFun3 )
+    vTrace("Stage: %s TUB init %p %lld\n"_Stz, m_pOp->pStage()->szStageNm(), aDynamicT, aDynamicT->m_xRowInfoTO.m_iInitialize);
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the dynamic function
   iResult = afFun(aDynamicT);
 

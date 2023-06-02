@@ -8,7 +8,7 @@ extern void  vExtern_EntPayloadCreate(void* pEntWrk, i8 nPayloadBytes);
 
 extern void  vExtern_EntWrkAppendElementInt(void* pEntWrk, i8 iInt);
 extern void  vExtern_EntWrkAppendElementStz(void* pEntWrk, char* sValue);
-extern void  vExtern_EntWrkEntKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
+extern void  vExtern_EntWrkEntKind(void* pEntWrk, i8 bPayLoad, i8 iKeyKind);
 extern void  vExtern_EntWrkPayloadCreate(void* pEntWrk, i8 nPayloadBytes);
 extern void  vExtern_EntWrkPrint(void* pEntWrk, void* pIndexDef);
 extern void  vExtern_EntWrkReset(void* pEntWrk);
@@ -25,7 +25,7 @@ extern void* aExtern_IndexTreeFindEntry_hint(void* aIndexTree, void* aKey, void*
 extern void* aExtern_IndexTreeInsertEnt(void* aIndexDef, void* aEnt, i8* piErrorCode);
 extern void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode);
 extern void* aExtern_IndexDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
-extern void* aExtern_IndexTreeNew(void* aIndexDef);
+extern void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind);
 extern void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 extern void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 extern void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey);

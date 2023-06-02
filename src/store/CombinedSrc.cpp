@@ -415,6 +415,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           if (pOpSketch->m_eStencilFrom == SR_PL) {
+            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+            vAppendCodePixCols(pOpSketch);
+            vAppendCodeFragment(pOpSketch, "iTubRowPix2"_Stz);
             if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
@@ -425,9 +428,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
-            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
             vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubRowPix2"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
