@@ -18,6 +18,7 @@ namespace STORE
     struct {
       i8   m_i_Col_base1;
       s32  m_sColNm;
+      bool m_bPayload;
     } m_axCols[C_COLSREQ];
 
   protected:
