@@ -421,7 +421,11 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pSymbol()->vValidate_mustHave_ppy(P_Type);
+//  if (! pSymbol()->bTest_mustHave_ppy(P_Type,nullptr)) {
+//    vDump();
+//    RASSERT(0);
+//  }
+
 
   eCK eHas = eValidate_mustEither(CK_BOOLCALC,CK_RPNCALC,CK_NONE);
 

@@ -54,7 +54,6 @@ namespace STORE
     bool bIsColumnOrdinal(void);    // $c.n
     bool bIsValueOrdinal(void);         // $n or $c.n
 
-    void vValidate_mustHave_ppy(Stz* szPpy, ...);
 
 
     bool bNeedsBrace(void);       // between, case, ... matchTrailing
@@ -72,10 +71,13 @@ namespace STORE
     void vSetTableColSyn(char cTblSyn);
     void vSprint(Stz* szFormat, ...);
 
+    Stz* szSymbol(void);
+
+    bool bTest_mustHave_ppy(Stz* szPpy, ...);
+
     Stz* szType(void);
     void vType(Stz* szType);
 
-    Stz* szSymbol(void);
 
     void Y_vAll(Card* pCard_arg);
     void Y_vAll(TagSet* pProperties);

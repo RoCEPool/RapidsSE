@@ -458,28 +458,6 @@ bool Symbol::bIsValueOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate symbol properties                                                 */
-/*----------------------------------------------------------------------------*/
-void Symbol::vValidate_mustHave_ppy(Stz* szPpy, ...)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  va_list xArgs;
-
-  va_start(xArgs, szPpy);
-  Stz* szPpy_mustHave = szPpy;
-  while (nullptr != szPpy_mustHave) {
-
-    bool bMustHave = Y_bHas(szPpy_mustHave);
-    RASSERT(bMustHave);
-
-    szPpy_mustHave = (Stz*)va_arg(xArgs, Stz*);
-  }
-
-  va_end(xArgs);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bNeedsBrace(void)
@@ -636,6 +614,44 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get symbol                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szSymbol(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_sSymbol.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate symbol properties                                                 */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  bool bMustHave = true;
+
+  va_list xArgs;
+
+  va_start(xArgs, szPpy);
+  Stz* szPpy_mustHave = szPpy;
+  while (nullptr != szPpy_mustHave) {
+
+    bMustHave = Y_bHas(szPpy_mustHave);
+
+    if (! bMustHave)
+      break;
+
+    szPpy_mustHave = (Stz*)va_arg(xArgs, Stz*);
+  }
+
+  va_end(xArgs);
+
+  return bMustHave;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get type                                                                   */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szType(void)
@@ -657,16 +673,6 @@ void Symbol:: vType(Stz* szType)
   Y_vSet(P_Type,szType);
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* get symbol                                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szSymbol(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  return m_sSymbol.szStz();
-}
 
 /*----------------------------------------------------------------------------*/
 /* get given property                                                         */
