@@ -163,6 +163,45 @@
 /* org_ org */
 
 
+/*
+
+                // test if pipeline needs to go thru the optimiser
+                // - - - - - - - - - -
+                "<optimise_passThru>" [job].tagSet@ tagSet.hasName if
+                  "Going through Optimiser" .
+                  "new" .
+                  Optimiser[].new
+                  PipeSpec[] Optimiser[].dissect
+                  "dissect" .
+                  Optimiser[].transform if
+                    "transform" .
+                    // replace <cmd> with weaved statement
+                    "<cmd>" Optimiser[].weave [job].tagSet@ tagSet.replaceStr
+                    <cmd> .
+                    Optimiser[].delete
+                  else
+                    "error" .
+                  // - didnt optimise (errorCode on stack)
+                  [job].error!
+                  [ddlLock].testDrop
+                  Dynamo[].delete
+                  [job].removeOriginator
+                  ListedJob[].assertNoRef
+
+                  Path[].discardAll
+                  [task].grabLock
+                  [job].addExited
+                  [job].updateParent assert
+
+                  [job].signalParent assert
+
+                    [task].retire // does not queue onto exit demon
+
+                  HAZARD
+                  then
+                then
+
+*/
 
 
 
@@ -209,21 +248,24 @@
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */
 
-/* org_ org */  // - - - - - - - - - -
-/* org_ org */  // test if optimising
-/* org_ org */  // - - - - - - - - - -
-/* org_ org */  "<optimise>" [job].tagSet@ tagSet.hasName
-/* org_ org */  PipeSpec[].optimisable
-/* org_ org */  and
-/* org_ org */  if
-/* org_ org */    "Would Optimise" .
-/* org_ org */    <cmd> .
-/* org_ org */  then
-/* org_ org */  Optimiser[].new
-/* org_ org *///  PipeSpec[] Optimiser[].dissect
-/* org_ org *///  Optimiser[].optimise
-/* org_ org *///  Optimiser[].weave discard
-/* org_ org */  Optimiser[].delete
+/*
+?* org_ org *?  // - - - - - - - - - -
+?* org_ org *?  // test if optimising
+?* org_ org *?  // - - - - - - - - - -
+?* org_ org *?  "<optimise>" [job].tagSet@ tagSet.hasName
+?* org_ org *?  PipeSpec[].optimisable
+?* org_ org *?  and
+?* org_ org *?  if
+?* org_ org *?    "Would Optimise" .
+?* org_ org *?    <cmd> .
+?* org_ org *?  then
+?* org_ org *?  Optimiser[].new
+?* org_ org *?//  PipeSpec[] Optimiser[].dissect
+?* org_ org *?//  Optimiser[].optimise
+?* org_ org *?//  Optimiser[].weave discard
+?* org_ org *?  Optimiser[].delete
+*/
+
 /* org_ org */
 /* org_ org */
 /* org_ org */  // - - - -
