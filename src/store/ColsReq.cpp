@@ -22,9 +22,10 @@ ColsReq::ColsReq(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
-  for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++)
+  for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++) {
     m_axCols[i_Col].m_i_Col_base1 = C_UNKNOWN;
-
+    m_axCols[i_Col].m_bPayload = false;
+  }
   m_nCols = 0;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);

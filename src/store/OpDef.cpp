@@ -31,6 +31,7 @@ OpDef::OpDef(void)
   m_pIndex_indexJoin    = nullptr;
 
   m_pIndexDef_gbyAgg    = nullptr;
+  m_pColsLoc_gbyAgg     = nullptr;
   m_pIndexDef_sort      = nullptr;
 
   m_pColsReq            = nullptr;
@@ -143,13 +144,32 @@ ColsReq* OpDef::pColsReq(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void OpDef::vColsLoc_gbyAgg(ColsReq *pColsLoc_gbyAgg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  m_pColsLoc_gbyAgg = pColsLoc_gbyAgg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ColsReq* OpDef::pColsLoc_gbyAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return m_pColsLoc_gbyAgg;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void OpDef::vColsReq(ColsReq* pColsReq)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   m_pColsReq = pColsReq;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

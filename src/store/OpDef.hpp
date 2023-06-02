@@ -26,6 +26,8 @@ namespace STORE
     Index*     m_pIndex_indexJoin;
 
     IndexDef*  m_pIndexDef_gbyAgg;
+    ColsReq*   m_pColsLoc_gbyAgg;
+
     IndexDef*  m_pIndexDef_sort;
 
     ColsReq*   m_pColsReq;
@@ -45,6 +47,9 @@ namespace STORE
     ArgDef* pArgDef(i8 i_Arg);
     ArgDef* pArgDef(Stz* szArgNm);
     ArgDef* pArgDef_expr(void);
+
+    ColsReq* pColsLoc_gbyAgg(void);
+    void vColsLoc_gbyAgg(ColsReq* pColsLoc_gbyAgg);
 
     ColsReq* pColsReq(void);
     void vColsReq(ColsReq* ColsReq);
