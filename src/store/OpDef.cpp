@@ -31,7 +31,7 @@ OpDef::OpDef(void)
   m_pIndex_indexJoin    = nullptr;
 
   m_pIndexDef_gbyAgg    = nullptr;
-  m_pColsLoc_gbyAgg     = nullptr;
+  m_pColLocs_gbyAgg     = nullptr;
   m_pIndexDef_sort      = nullptr;
 
   m_pColsReq            = nullptr;
@@ -57,6 +57,7 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
   m_pIndex_indexJoin    = nullptr;
 
   m_pIndexDef_gbyAgg    = nullptr;
+  m_pColLocs_gbyAgg     = nullptr;
   m_pIndexDef_sort      = nullptr;
 
   m_pColsReq            = nullptr;
@@ -78,6 +79,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pStreamDef_emitted;
 
   delete m_pIndexDef_gbyAgg;
+  delete m_pColLocs_gbyAgg;
   delete m_pIndexDef_sort;
 
   delete m_pColsReq;
@@ -148,7 +150,7 @@ void OpDef::vColsLoc_gbyAgg(ColsReq *pColsLoc_gbyAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  m_pColsLoc_gbyAgg = pColsLoc_gbyAgg;
+  m_pColLocs_gbyAgg = pColsLoc_gbyAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +160,7 @@ ColsReq* OpDef::pColsLoc_gbyAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  return m_pColsLoc_gbyAgg;
+  return m_pColLocs_gbyAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,10 +201,20 @@ void OpDef::vDump(i8 i_Tab)
          Stz::szTab(i_Tab),m_pIndex_indexJoin);
   vTrace("%s     : IndexDef_gbyAgg    %p\n"_Stz,
          Stz::szTab(i_Tab),m_pIndexDef_gbyAgg);
+
+  vTrace("%s     : ColLocs_gbyAgg  %p\n"_Stz,
+         Stz::szTab(i_Tab), m_pColLocs_gbyAgg);
+  if (m_pColLocs_gbyAgg)
+    m_pColLocs_gbyAgg->vDump();
+
+
+
   vTrace("%s     : m_pIndexDef_sort   %p\n"_Stz,
          Stz::szTab(i_Tab),m_pIndexDef_sort);
   vTrace("%s     : m_pColsReq         %p\n"_Stz,
          Stz::szTab(i_Tab),m_pColsReq);
+  if (m_pColsReq)
+    m_pColsReq->vDump();
 
   i8 nArgs = nItems();
   for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {

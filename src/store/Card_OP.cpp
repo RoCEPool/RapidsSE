@@ -9,6 +9,7 @@
 #include "CardIter.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
+#include "ColsReq.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -1633,6 +1634,28 @@ void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
   szRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szSymbol());
 }
 
+/*----------------------------------------------------------------------------*/
+/* craft column locations (for gbyAgg)                                        */
+/*----------------------------------------------------------------------------*/
+ColsReq* Card_OP::pCraftColLocs_gbyAgg(StreamDef* pStreamDef_emitted,
+                                       IndexDef*  pIndexDef_gbyAgg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! bIsCard(CK_GBYAGG))
+    return nullptr;
+
+  ColsReq*  pColLocs_gbyAgg = new ColsReq;
+
+  i8 nCols = pStreamDef_emitted->nColumns();
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pCol = pStreamDef_emitted->pGetColumn(i_Col);
+    pColLocs_gbyAgg->vAddCol(i_Col,pCol->szColNm(),false);
+  }
+
+  return pColLocs_gbyAgg;
+}
 
 /*----------------------------------------------------------------------------*/
 /* craft arriving streamDef                                                   */

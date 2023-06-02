@@ -33,8 +33,9 @@ namespace STORE
 
    ~ColsReq(void) noexcept(false);
 
-    void vAddCol(i8 i_Col_base1, Stz* szColNm);
+    void vAddCol(i8 i_Col_base1, Stz* szColNm, bool bPayLoad=false);
 
+    void vDump(void);
 
   protected:
     Footer* aFooter(void);
