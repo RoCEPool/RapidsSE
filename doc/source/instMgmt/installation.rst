@@ -133,7 +133,8 @@ If a firewall is being used on any of the nodes in the RapidsSE cluster then
 an exception must be added to the firewall to allow for connections to be made
 on the default RapidsSE ports of TCP/9123, TCP/5541 and UDP/8888.
 
-On **Centos 7**, the steps for adding a port to the firewall are as follows:
+On **Centos 7** and similar systems, the steps for adding a port to the firewall
+are as follows:
 
 #. Execute the following command: ::
 
@@ -150,7 +151,8 @@ On **Centos 7**, the steps for adding a port to the firewall are as follows:
 
 #. Repeat the above commands on each node in the cluster.
 
-On **Ubuntu 20**, the steps for adding a port to the firewall are as follows:
+On **Ubuntu 20** and similar systems, the steps for adding a port to the firewall
+are as follows:
 
 #. Execute the following commands: ::
 
