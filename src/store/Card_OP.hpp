@@ -77,8 +77,8 @@ namespace STORE
     void vAs          (Stz* szRpnExpr, Card_As*        pCard_As);
     void vTerm        (Stz* szRpnExpr, Card_Term*      pCard_Term);
 
-    ColsReq*  pCraftColLocs_gbyAgg(StreamDef* pStreamDef_emitted,
-                                   IndexDef*  pIndexDef_gbyAgg);
+    ColsReq*  pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
+                                  IndexDef*  pIndexDef_gbyAgg);
 
     Index*    pCraftIndex_indexJoin(void);
     Index*    pCraftIndex_indexScan(void);

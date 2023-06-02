@@ -1635,26 +1635,33 @@ void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft column locations (for gbyAgg)                                        */
+/* craft column map (where to find columns of stream def in index entry       */
 /*----------------------------------------------------------------------------*/
-ColsReq* Card_OP::pCraftColLocs_gbyAgg(StreamDef* pStreamDef_emitted,
-                                       IndexDef*  pIndexDef_gbyAgg)
+ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
+                                      IndexDef*  pIndexDef_gbyAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! bIsCard(CK_GBYAGG))
     return nullptr;
 
-  ColsReq*  pColLocs_gbyAgg = new ColsReq;
+  ColsReq*  pColMap_gbyAgg = new ColsReq;
 
   i8 nCols = pStreamDef_emitted->nColumns();
 
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
     Column* pCol = pStreamDef_emitted->pGetColumn(i_Col);
-    pColLocs_gbyAgg->vAddCol(i_Col,pCol->szColNm(),false);
+
+    /// ????
+//    if $K
+//      key
+//    else
+//      payload
+
+    pColMap_gbyAgg->vAddCol(i_Col, pCol->szColNm(), false);
   }
 
-  return pColLocs_gbyAgg;
+  return pColMap_gbyAgg;
 }
 
 /*----------------------------------------------------------------------------*/

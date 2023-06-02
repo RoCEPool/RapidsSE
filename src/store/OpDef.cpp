@@ -31,7 +31,7 @@ OpDef::OpDef(void)
   m_pIndex_indexJoin    = nullptr;
 
   m_pIndexDef_gbyAgg    = nullptr;
-  m_pColLocs_gbyAgg     = nullptr;
+  m_pColMap_gbyAgg     = nullptr;
   m_pIndexDef_sort      = nullptr;
 
   m_pColsReq            = nullptr;
@@ -57,7 +57,7 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
   m_pIndex_indexJoin    = nullptr;
 
   m_pIndexDef_gbyAgg    = nullptr;
-  m_pColLocs_gbyAgg     = nullptr;
+  m_pColMap_gbyAgg     = nullptr;
   m_pIndexDef_sort      = nullptr;
 
   m_pColsReq            = nullptr;
@@ -79,7 +79,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pStreamDef_emitted;
 
   delete m_pIndexDef_gbyAgg;
-  delete m_pColLocs_gbyAgg;
+  delete m_pColMap_gbyAgg;
   delete m_pIndexDef_sort;
 
   delete m_pColsReq;
@@ -150,7 +150,7 @@ void OpDef::vColsLoc_gbyAgg(ColsReq *pColsLoc_gbyAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  m_pColLocs_gbyAgg = pColsLoc_gbyAgg;
+  m_pColMap_gbyAgg = pColsLoc_gbyAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@ ColsReq* OpDef::pColsLoc_gbyAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
-  return m_pColLocs_gbyAgg;
+  return m_pColMap_gbyAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -205,9 +205,9 @@ void OpDef::vDump(i8 i_Tab)
     m_pIndexDef_gbyAgg->vDump();
 
   vTrace("%s     : ColLocs_gbyAgg  %p\n"_Stz,
-         Stz::szTab(i_Tab), m_pColLocs_gbyAgg);
-  if (m_pColLocs_gbyAgg)
-    m_pColLocs_gbyAgg->vDump();
+         Stz::szTab(i_Tab), m_pColMap_gbyAgg);
+  if (m_pColMap_gbyAgg)
+    m_pColMap_gbyAgg->vDump();
 
 
 

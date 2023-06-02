@@ -352,9 +352,9 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
   m_pOpDef->m_pStreamDef_emitted = p_OP->pCraftStreamDef_emitted();
-  m_pOpDef->m_pColLocs_gbyAgg =
-      p_OP->pCraftColLocs_gbyAgg(m_pOpDef->m_pStreamDef_emitted,
-                                 m_pOpDef->m_pIndexDef_gbyAgg);
+  m_pOpDef->m_pColMap_gbyAgg =
+      p_OP->pCraftColMap_gbyAgg(m_pOpDef->m_pStreamDef_emitted,
+                                m_pOpDef->m_pIndexDef_gbyAgg);
 
   m_pStreamDef_prior = m_pOpDef->m_pStreamDef_emitted;
 }
