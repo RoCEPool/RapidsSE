@@ -74,7 +74,7 @@ void ColsReq::vDump(void)
     vTrace("               Col %lld: %s %s\n"_Stz,
            i_Col,
            m_axCols[i_Col].m_sColNm.szStz(),
-           m_axCols[i_Col].m_bPayload ? "payload" : "");
+           m_axCols[i_Col].m_bPayload ? "payload" : "key");
   }
 }
 

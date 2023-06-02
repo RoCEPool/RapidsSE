@@ -248,7 +248,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
-StreamDef* Card_Projection::pToStreamDef(void)
+StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

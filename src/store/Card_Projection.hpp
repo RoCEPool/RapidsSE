@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card_ELIST.hpp"
+#include "ColsReq.hpp"
 
 namespace STORE
 {
@@ -27,7 +28,7 @@ namespace STORE
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
     void vReviewAs(CardIter* pCI);
 
-    StreamDef* pToStreamDef(void);
+    StreamDef* pToStreamDef(ColsReq* pColMap_gbyAgg=nullptr);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
