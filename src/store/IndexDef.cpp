@@ -254,6 +254,16 @@ void IndexDef::vDetermineKeyKind(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexDef::vDump(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INDEXDEF, _FOOTER_);
+
+  vListContents(0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* index has one or more descending columns                                   */
 /*----------------------------------------------------------------------------*/
 bool IndexDef::bHasDescending(void)

@@ -201,6 +201,8 @@ void OpDef::vDump(i8 i_Tab)
          Stz::szTab(i_Tab),m_pIndex_indexJoin);
   vTrace("%s     : IndexDef_gbyAgg    %p\n"_Stz,
          Stz::szTab(i_Tab),m_pIndexDef_gbyAgg);
+  if (m_pIndexDef_gbyAgg)
+    m_pIndexDef_gbyAgg->vDump();
 
   vTrace("%s     : ColLocs_gbyAgg  %p\n"_Stz,
          Stz::szTab(i_Tab), m_pColLocs_gbyAgg);
@@ -211,6 +213,9 @@ void OpDef::vDump(i8 i_Tab)
 
   vTrace("%s     : m_pIndexDef_sort   %p\n"_Stz,
          Stz::szTab(i_Tab),m_pIndexDef_sort);
+  if (m_pIndexDef_sort)
+    m_pIndexDef_sort->vDump();
+
   vTrace("%s     : m_pColsReq         %p\n"_Stz,
          Stz::szTab(i_Tab),m_pColsReq);
   if (m_pColsReq)

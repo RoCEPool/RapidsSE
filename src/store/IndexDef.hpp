@@ -51,6 +51,7 @@ namespace STORE
     i8      nColumns(void);
     i8*     aiaColSet(void);
     void    vDetermineKeyKind(void);
+    void    vDump(void);
     Column* pFindColumn(Stz* szColumnNm);
     Column* pFindColumn(i8 i_ColSet);
     Column* pGetColumn(i8 i_Column);
