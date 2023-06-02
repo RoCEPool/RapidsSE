@@ -30,6 +30,8 @@ RapidsSE is formally supported on the following operating systems:
 •	Ubuntu 18, 20 and 22
 •	Amazon AWS Linux 2
 •	OpenEuler 22.03 LTS
+•	Rocky Linux 8 and 9
+•	Alma Linux 8 and 9
 
 RapidsSE has not been tested on other operating systems, though it may work
 if the target system has a compatible version of glibc and all of the
@@ -61,7 +63,9 @@ RapidsSE has the following minimum system requirements:
    * CentOS Stream 8 or 9,
    * Red Hat Enterprise Linux 8,
    * Ubuntu 18, 20 or 22,
-   * openEuler 22.03 LTS"
+   * openEuler 22.03 LTS,
+   * Rocky Linux 8 or 9,
+   * AlmaLinux 8 or 9"
    "**Software Dependencies:**", "The following software is required on each node in the cluster:
 
    * Either ``gcc`` >= 4.8.5 or ``clang`` >= 4.2.0
@@ -90,7 +94,8 @@ RapidsSE has the following minimum system requirements:
 
 The RapidsSE dependencies can be installed with the following command:
 
-  On CentOS 7, CentOS Stream 8 & 9 and Red Hat Enterprise Linux 8:
+  On CentOS 7, CentOS Stream 8 & 9, Red Hat Enterprise Linux 8, Rocky Linux 8 & 9
+  and AlmaLinux 8 & 9:
 
     ``sudo yum install bash gcc libatomic tar nmap-ncat iproute bc python3 gawk ncurses parallel``
 
