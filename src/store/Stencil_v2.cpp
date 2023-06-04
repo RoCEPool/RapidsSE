@@ -336,6 +336,18 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the semiJoinOP
+    if (pOpDef->szOpNm()->bSame("semiJoin"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      //vSetupKeyExists(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchSemiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the sort OP
     if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
 
@@ -1646,60 +1658,58 @@ OpSketch* Stencil_v2::pSketchEos(StageDef* pStageDef, eHK eHandlerKind, eSR ePre
 /*----------------------------------------------------------------------------*/
 /* sketch keyExists                                                           */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, bool bExists) {
-/*
+OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
+  OpSketch *pOpSketch;
+
   s4K sLabel;
-  s4K sLabelEnd;
   s4K sLabelNext;
-  s4K sLabelPrev;
-  s4K sLabelLoop;
 
-  i8 i_Op = pOp->i_Op();
-  CodeSynth_v2 *pCodeSynth;
-  //bool bLastFilter = false;
+  i8 i_Op = pOpDef->i_Op();
 
-  // create a new shape for this OP
-  OpSketch *pShape = new OpSketch;
+  // get semi-join expr from OP
+  Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal(); // ????????
 
-  // get filter expr from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
-
-  // get key expr from OP
-  Stz* sKeyExpr = pOpTags->szValue(C_TAG_KEYEXPR);
+  // get join expr from OP
+  Stz* sJoinExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the streamDefLft
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-  StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
-
-  // get the aggregate type stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+  StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
   // get the index
-  Index *pIndex = _pIndex(pDynamic->aDynamicT()->m_aIndexJ);
+  //Index *pIndex = _pIndex(pDynamic->aDynamicT()->m_aIndexJ);
 
-  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+  //u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for struct for streamDefRht
-  pCodeSynth = new CodeSynth_v2(pStreamDefRht, SR_IJ);
-  pCodeSynth->vSynthStruct(uSelectColumns);
-  pShape->vStructSynthA(pCodeSynth);
+  // generate the code for the semi-join
+  pOpSketch = new OpSketch(i_Op, sJoinExpr, eHandlerKind, SK_SEMIJOIN, ePrevStencil_v2, SR_TJ, II_JJ, pStreamDefLft, pStreamDefOut);
 
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  sLabelEnd.vSprint("L_%s_END_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  //sLabelEnd.vSprint("L_%s_END_%d"_Stz, pOp->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AdvanceNextRow"_Stz);
 
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, pStreamDefLft, pIndex->pIndexDef(), pPreExpStack, SR_IJ, ePrevStencil_v2);
-  pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, sLabelEnd, sLabelNext, uSelectColumns, bExists);
-  pShape->vCodeSynthB(pCodeSynth);
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelLoop);
 
-  return pShape;
-  */
-  return nullptr;
+  // set the streamDefRht
+  pOpSketch->vStreamDefRht(pStreamDefRht);
+
+  // set the indexDef
+  //pOpSketch->vIndexDef(pIndex->pIndexDef());
+  pOpSketch->vIndexPositionLower(IP_GE);
+
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks();
+
+  // generate the stencil structure for this OP
+  pOpSketch->vGenerateStencilToStruct(0);
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
