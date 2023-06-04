@@ -877,13 +877,11 @@ Card_Projection* Dissector::pProjection(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* eval typed calc expr : TYPE <type> [ AS <as> ] <calcExpr> [ ASC | DESC ]   */
+/* eval typed calc expr : TYPE <type> [ AS <as> ] <rpnCalc> [ ASC | DESC ]    */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-   
-  //pCard_RpnTerms->vDump();
 
   Card_Expr* pCard_Expr = new Card_Expr;
 
@@ -916,6 +914,7 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   pCard_Expr->vAppend(pCard_RpnCalc);
 
   pCard_RpnCalc->pSymbol()->Y_vSet(P_Type, szP_Type);
+  pCard_Expr->pSymbol()->Y_vSet(P_Type, szP_Type);
 
 
   // [ AS <as> ]
