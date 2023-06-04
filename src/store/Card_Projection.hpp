@@ -28,7 +28,7 @@ namespace STORE
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
     void vReviewAs(CardIter* pCI);
 
-    StreamDef* pToStreamDef(ColsReq* pColMap_gbyAgg=nullptr);
+    StreamDef* pToStreamDef(ColsReq* pColMap_gbyAgg=nullptr,Card_Key* p_key=nullptr);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

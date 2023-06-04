@@ -248,7 +248,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
-StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg)
+StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg, Card_Key* p_key)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -265,6 +265,11 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg)
     //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumnType]);
 
     pStreamDef->vAddColumn(sColNm,eColumnType,C_UNKNOWN,C_UNKNOWN);
+
+    if (pColMap_gbyAgg) {
+      RASSERT(p_key);
+
+    }
   }
 
   return pStreamDef;

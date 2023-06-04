@@ -1691,10 +1691,14 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap_gbyAgg)
   if (! p_projection)
     return nullptr;
 
-  if (bIsCard(CK_GBYAGG))
+  Card_Key* p_key = nullptr;
+  if (bIsCard(CK_GBYAGG)) {
     *ppColMap_gbyAgg = new ColsReq;
+    p_key = pSub_key();
+    RASSERT(p_key);
+  }
 
-  StreamDef* pStreamDef_emitted = p_projection->pToStreamDef(*ppColMap_gbyAgg);
+  StreamDef* pStreamDef_emitted = p_projection->pToStreamDef(*ppColMap_gbyAgg,p_key);
 
   return pStreamDef_emitted;
 }
