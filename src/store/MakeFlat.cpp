@@ -34,7 +34,7 @@ MakeFlat::MakeFlat(CardIter* pCI)
 
   _checkInitialised_(CN_MAKEFLAT);
 
-  m_pCI->vUsingBoard(BK_SUBQUERY, 0);
+  m_pCI->vUsingBoard((i8)0);
   m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
 

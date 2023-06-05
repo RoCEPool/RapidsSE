@@ -208,7 +208,7 @@ void Board::vValidate(CardIter* pCI)
 {
   _static_
 
-  pCI->vUsingBoard(BK_SUBQUERY, 0);
+  pCI->vUsingBoard((i8)0);
 
   if (pCI->G.pBoard->eBoardKind() == BK_SUBQUERY)
     vValidate_SubQuery(pCI);

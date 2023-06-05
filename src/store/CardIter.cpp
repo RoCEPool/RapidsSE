@@ -1758,7 +1758,7 @@ void CardIter::vPrintBench(eBK eBoard, i8 i_Board)
       pBoard->vPrintBoard(szXhand());
     }
     else {
-      for (i8 i_Each = 0; m_pBench->bBoardExists(eBoard, i_Each); i_Each++) {
+      for (i8 i_Each = 0; m_pBench->bBoardExists(i_Each); i_Each++) {
         Board *pBoard = m_pBench->pGetBoard(i_Each);
         pBoard->vPrintBoard(szXhand());
       }
@@ -2360,7 +2360,7 @@ i8 CardIter::iTransformDepth(void)
 /*----------------------------------------------------------------------------*/
 /* set up which board to use                                                  */
 /*----------------------------------------------------------------------------*/
-void CardIter::vUsingBoard(eBK eBoard, i8 i_Board)
+void CardIter::vUsingBoard(i8 i_Board)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 

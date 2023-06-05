@@ -46,7 +46,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBoard(Board* pBoard);
-    bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    bool bBoardExists(i8 i_SubBoard = C_UNKNOWN);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
     void vClearMarks(void);
@@ -59,9 +59,6 @@ namespace STORE
     Optimiser* pOptimiser(void);
     char cPrefix(void);
     void vPrefix(char cPrefix);
-
-    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
-    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
 
 
     bool bMadeSimpler(void);

@@ -96,7 +96,7 @@ void Bench::vAddBoard(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* does given board exist?                                                    */
 /*----------------------------------------------------------------------------*/
-bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
+bool Bench::bBoardExists(i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -260,34 +260,6 @@ void Bench::vPrefix(char cPrefix)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vEndSeries(eBK eBoard, i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  RASSERT(0 == m_pCI->iTransformDepth());
-
-  //m_pTransforms->vXform(C_NA);
-  //m_pCardCtl->vUseXhand();
-
-  m_pCI->vPrintBench(eBoard, i_Board);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Bench::vSeries(eBK eBoard, i8 i_Board, const char* azHand)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  m_pCI->vUsingBoard(eBoard, i_Board);
-  m_pCI->vXhand(azHand);
-
-  vClearMarks();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

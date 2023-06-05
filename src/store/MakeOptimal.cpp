@@ -29,7 +29,7 @@ MakeOptimal::MakeOptimal(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   m_pCI = pCI;
-  m_pCI->vUsingBoard(BK_SUBQUERY, 0);
+  m_pCI->vUsingBoard((i8)0);
 
 
   _checkInitialised_(CN_MAKEOPTIMAL);

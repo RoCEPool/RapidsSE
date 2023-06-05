@@ -59,13 +59,13 @@ void MakeSimpler::vSimplify(void)
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
+    m_pCI->vUsingBoard(m_pCI->G.i_Board);
     vShortenQueryNames();
   }
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(BK_SUBQUERY, m_pCI->G.i_Board);
+    m_pCI->vUsingBoard(m_pCI->G.i_Board);
 
     //vGroup_InitialAdjustments();
     vMoveOn();
