@@ -208,7 +208,7 @@ void Board::vValidate(CardIter* pCI)
 {
   _static_
 
-  pCI->vUsingBoard((i8)0);
+  //pCI->vUsingBoard((i8)0);
 
   if (pCI->G.pBoard->eBoardKind() == BK_SUBQUERY)
     vValidate_SubQuery(pCI);
@@ -239,6 +239,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
       case CK_CALL:         xCI.G.p_call->vValidate         (&xCI,0,pDeck); break;
       case CK_CAST:         xCI.G.p_cast->vValidate         (&xCI,0,pDeck); break;
       case CK_COMBINED:     xCI.G.p_combined->vValidate     (&xCI,0,pDeck); break;
+      case CK_CORRELATION:  break;
       case CK_CROSSJOIN:    xCI.G.p_crossJoin->vValidate    (&xCI,0,pDeck); break;
       case CK_FLAT:         xCI.G.p_flat->vValidate         (&xCI,0,pDeck); break;
       case CK_FILTER:       xCI.G.p_filter->vValidate       (&xCI,0,pDeck); break;
