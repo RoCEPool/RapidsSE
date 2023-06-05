@@ -90,17 +90,18 @@ Card_Expr* Card_Expr::pGby_expr_From_expr_corr(Card_Expr* pExpr_corr)
 
   RASSERT(pExpr_corr->szP_Type());
 
-  Card_Expr*    p_gbyExpr = new Card_Expr;
+  Card_Expr*    p_expr_gby = new Card_Expr;
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
   Card_Term*    p_term    = pExpr_corr->pSub_term()->pClone();
 
-  p_gbyExpr->vAppend(p_rpnCalc);
+  p_expr_gby->vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
 
   p_rpnCalc->pSymbol()->Y_vSet(P_Type, pExpr_corr->szP_Type());
   p_term->pSymbol()->Y_vSet(P_Type, pExpr_corr->szP_Type());
+  p_expr_gby->pSymbol()->Y_vSet(P_Type, pExpr_corr->szP_Type());
 
-  return p_gbyExpr;
+  return p_expr_gby;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,6 +128,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
 
   p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr_gby->szP_Type());
   p_term->pSymbol()->Y_vSet(P_Type, p_expr_gby->szP_Type());
+  p_expr->pSymbol()->Y_vSet(P_Type, p_expr_gby->szP_Type());
 
   return p_expr;
 }
