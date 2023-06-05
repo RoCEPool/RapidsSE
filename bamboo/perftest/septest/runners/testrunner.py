@@ -101,10 +101,15 @@ class TestRunner:
         else:
             raise errors.NotImplementedYet("Only JMeter test files (*.[jmx | jtl | jmeter]) are currently supported")
 
-        if not self.abnormal_exit:
-            # An abnormal exit could occur if the test hung and the machines got shut down, for instance.
-            # In that case we don't want to run the operations below.
+        # The test may have ended with an error, or possibly because the test hung or ran out
+        # of time and the machines got shut down. In either case we want to try to collect
+        # the test artifacts, though this may produce additional errors.
+        try:
             self.collect_test_artifacts()
+        except errors.ClusterError as e:
+            msg = f"Error detected while trying to clean up test and collect metrics:\n" \
+                  f"{str(e)}"
+            LOG.exception(msg, e)
 
         LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
                  f"Result = {'SUCCESS' if self.result.test_passed else 'FAILURE'}")
@@ -232,9 +237,13 @@ class TestRunner:
             self.result.set_test_ended(test_passed=True, test_skipped=False)
 
         except errors.SshError as e:
-            msg = f"Error while trying to execute JMeter file at {self.ip_addr}:{self.remote_test_file}" \
-                  f"\n\nStdout Output:\n{e.stdout}" \
-                  f"\n\nStderr Output:\n{e.stderr}\n"
+            stdout = e.stdout.replace("\n", "\n    ") if e.stdout is not None else ""
+            stderr = e.stderr.replace("\n", "\n    ") if e.stderr is not None else ""
+
+            msg = f"Error while trying to remotely execute JMeter file at {self.ip_addr}:{self.remote_test_file}" \
+                  f"\n  Exit code:\n{e.exit_code}" \
+                  f"\n  Stdout Output:\n{stdout}" \
+                  f"\n  Stderr Output:\n{stderr}\n"
             self.result.set_test_ended(test_passed=False, test_skipped=False, stdout=e.stdout, stderr=e.stderr)
             self.abnormal_exit = True
             LOG.error(msg)

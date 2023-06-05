@@ -190,7 +190,7 @@ class BuildRunner:
                   f"\nCommand: {' '.join(command)}" \
                   f"\nStdout Output:\n{e.stdout}" \
                   f"\nStderr Output:\n{e.stderr}"
-            raise errors.SshError(msg, e.stdout, e.stderr) from e
+            raise errors.SshError(msg, e.stdout, e.stderr, e.returncode) from e
 
         except subprocess.TimeoutExpired as e:
             msg = f"Copying the repository from {src} to {dest} timed out after {e.timeout} seconds." \

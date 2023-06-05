@@ -77,15 +77,16 @@ class SubProcessError(TracebackError):
 
 class SshError(TracebackError):
     """Errors that come up from running commands over SSH"""
-    def __init__(self, msg: str, stdout: str, stderr: str):
+    def __init__(self, msg: str, stdout: str = None, stderr: str = None, exit_code: int = -1234):
         super(SshError, self).__init__(msg)
         self.stdout = stdout
         self.stderr = stderr
+        self.exit_code = exit_code
 
     def __reduce__(self):
         # For pickleability of the exception in a multi-process environment
         # Reference: https://stackoverflow.com/a/36342588
-        return SshError, (self.args[0], self.stdout, self.stderr)
+        return SshError, (self.args[0], self.stdout, self.stderr, self.exit_code)
 
     def __str__(self) -> str:
         s = super(SshError, self).__str__()
@@ -94,6 +95,9 @@ class SshError(TracebackError):
 
         if self.stderr is not None:
             s = s + f"\nStderr: {self.stderr}"
+
+        if self.exit_code != -1234:
+            s = s + f"\nExit Code: {str(self.exit_code)}"
 
         return s
 

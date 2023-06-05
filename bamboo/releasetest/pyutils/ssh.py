@@ -30,7 +30,7 @@ def run_ssh(host: str, command: str, timeout: float = None, ctx: str = "") -> su
 
     if result.returncode != 0:
         msg = f"{ctx}Error while executing the command: {' '.join(ssh_command)}"
-        raise errors.SshError(msg, result.stdout, result.stderr)
+        raise errors.SshError(msg, result.stdout, result.stderr, result.returncode)
 
     return result
 
@@ -67,4 +67,4 @@ def run_scp(src: str, dest: str, timeout: float = None, recursive: bool = False,
               f"Return code: {str(result.returncode)}\n" + \
               f"Stdout: {result.stdout}\n" + \
               f"Stderr: {result.stderr}"
-        raise errors.SshError(msg, result.stdout, result.stderr)
+        raise errors.SshError(msg, result.stdout, result.stderr, result.returncode)
