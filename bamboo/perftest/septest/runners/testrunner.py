@@ -1,5 +1,6 @@
 """Runs a test file"""
 import datetime
+import time
 import glob
 import string
 import logging
@@ -17,11 +18,15 @@ from pyutils.clusterconfig import ClusterConfig
 LOG = logging.getLogger(__name__)
 
 C_JMETER_BINARY = "/opt/jmeter/bin/jmeter"
+C_JMETER_STOPTEST = "/opt/jmeter/bin/stoptest.sh"
+C_JMETER_SHUTDOWN = "/opt/jmeter/bin/shutdown.sh"
 C_JMETER_EXTS = ["jmx", "jmeter"]
 C_SUPPORT_FILES = "supportFiles"
 C_TEST_DIR_FMT = "j{:04d}_t{:02d}_{:02d}_{:s}"
 C_SCP_TIMEOUT_SEC = 60
 C_CLOUD_INIT_OUTPUT = "/cloud-init-output.log"
+C_TEST_FINISH_SLEEP_IVL = 2
+C_TEST_FINISH_TIMEOUT = 120
 
 # CSV fields
 C_CSV_LABEL = "label"
@@ -77,7 +82,7 @@ class TestRunner:
         )
         self.remote_test_file = None
         self.result = TestResult(test_path, self.test_name, test_id, job_result_id, self.remote_test_dir)
-        self.abnormal_exit = False
+        self.test_finished = False
 
         assert self.local_test_file.exists()
         assert (self.test_name is not None) and (len(self.test_name) > 0)
@@ -113,6 +118,55 @@ class TestRunner:
 
         LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
                  f"Result = {'SUCCESS' if self.result.test_passed else 'FAILURE'}")
+        self.test_finished = True
+
+    def notify_stop_jmeter_test(self):
+        """
+        Attempt to notify and force exit a running JMeter test.
+        We do this by calling a JMeter script on the remote node which sends
+        a UDP message to the listening JMeter process. We will wait a little
+        bit of time for this to complete.
+        """
+
+        # First we try a shutdown command. This will stop the test after the current
+        # command has finished executing. This should hopefully not take too long
+        # (unless it is a load command running).
+        LOG.info(f"Attempting to gracefully notify the running JMeter process that it should exit "
+                 f"with the command: {C_JMETER_SHUTDOWN}")
+
+        timeout = 10
+        success = False
+
+        try:
+            ssh.run_ssh(self.ip_addr, C_JMETER_SHUTDOWN, timeout=timeout)
+            success = True
+
+        except errors.SshError as e:
+            LOG.exception("Encountered an error while trying to notify the JMeter process to shutdown.", e)
+
+        except subprocess.TimeoutExpired as e:
+            LOG.error(f"Timed out while trying to notify the JMeter process to shutdown ({timeout} sec).")
+
+        if success and self.__wait_for_test_finish(C_TEST_FINISH_TIMEOUT):
+            return
+
+        # The above didn't work so we need to be more forceful. When we run
+        # a stop command then JMeter will try to exit immediately.
+        LOG.info(f"Attempting to forcefully stop the running JMeter process "
+                 f"with the command: {C_JMETER_STOPTEST}")
+
+        try:
+            ssh.run_ssh(self.ip_addr, C_JMETER_STOPTEST, timeout=timeout)
+            success = True
+
+        except errors.SshError as e:
+            LOG.exception("Encountered an error while trying to forcefully stop the JMeter process.", e)
+
+        except subprocess.TimeoutExpired as e:
+            LOG.error(f"Timed out while trying to forcefully stop the JMeter process ({timeout} sec).")
+
+        if success:
+            self.__wait_for_test_finish(C_TEST_FINISH_TIMEOUT)
 
     def collect_test_artifacts(self):
         """Copies logs and artifacts back to artifact directory"""
@@ -245,7 +299,6 @@ class TestRunner:
                   f"\n  Stdout Output:\n{stdout}" \
                   f"\n  Stderr Output:\n{stderr}\n"
             self.result.set_test_ended(test_passed=False, test_skipped=False, stdout=e.stdout, stderr=e.stderr)
-            self.abnormal_exit = True
             LOG.error(msg)
 
     def __remote_test_log_file_path(self):
@@ -608,6 +661,21 @@ class TestRunner:
                 self.result.add_metric(label, value)
 
         return True
+
+    def __wait_for_test_finish(self, timeout: float) -> bool:
+        current_time = datetime.datetime.now()
+        end_time = current_time + datetime.timedelta(seconds=timeout)
+
+        LOG.info(f"Waiting for JMeter test to complete ({timeout} sec)")
+
+        while current_time < end_time:
+            if self.test_finished:
+                return True
+
+            time.sleep(C_TEST_FINISH_SLEEP_IVL)
+            current_time = datetime.datetime.now()
+
+        return self.test_finished
 
     def __cleanup_test(self):
         self.__cleanup_test_file()

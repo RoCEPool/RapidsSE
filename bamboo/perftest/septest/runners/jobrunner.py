@@ -161,6 +161,12 @@ class JobRunner:
                           f"minutes has been exceeded. Commencing shutdown hooks.")
                 errmsg = f"Job has timed out after {self.all_configs.get_job().get_max_duration()} minutes."
 
+                # Attempt to gracefully stop the current JMeter test.
+                # This will allow the test runner to collect metrics and logs of what has
+                # occurred so far.
+                if self.current_test_runner is not None:
+                    self.current_test_runner.notify_stop_jmeter_test()
+
             elif se_crashed:
                 LOG.error("RapidsSE has crashed!! Commencing shutdown hooks.")
                 errmsg = "RapidsSE has crashed. Please check the log artifact files for details."
