@@ -68,98 +68,6 @@
   true
 ;
 
-/*----------------------------------------------------------------------------*/
-/* HACK call the optimiser                                                    */
-/*----------------------------------------------------------------------------*/
-: _Call_Optimiser
-
-  // "_Call_Optimiser" .
-
-  0 locals| bJoinOrder |
-  0 locals| bJoinPermutations |
-
-  "<CallingOptimiser>" 1 [job].tagSet@ tagSet.appendInt
-
-  //Text[] .
-
-  Dynamo[].new
-
-  Text[] Dynamo[].compile to ErrorCode[]
-  Dynamo[].delete
-
-  ErrorCode[] EC_NONE == not if
-    // - error compile
-    //"Error Compile" .
-    false
-    exit
-  then
-
-  // + clean compile
-  //"Clean Compile" .
-  to PipeSpec[]
-
-  Optimiser[].new
-
-  "<joinOrder>" [job].tagSet@ tagSet.hasName if
-    1 to bJoinOrder
-  then
-
-  "<joinPermutations>" [job].tagSet@ tagSet.hasName if
-    1 to bJoinPermutations
-  then
-
-  // invalid to execute with both /joinOrder and /joinPermutations
-  bJoinOrder bJoinPermutations and if
-    EC_INVALID_COMMAND op__execErr
-    Optimiser[].delete
-    PipeSpec[].delete
-    false
-    exit
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - -
-  // JoinOrder or JoinPermutations
-
-  bJoinOrder bJoinPermutations or if
-
-     // find the <streamDef> table (--joinOrder)
-     <streamDef> op__tableDef_streamSet assert
-
-     // create a new streamDef
-     streamSetTable[] StreamDefLft[].new
-
-     // pipeout the streamDef
-     StreamDefLft[].pipeOut
-
-     // create an infoSet operand where joinOrder will be added
-     streamSetTable[] StreamSet[].new
-
-  then
-
-  PipeSpec[] Optimiser[].dissect
-
-  Optimiser[].transform if
-
-    Optimiser[].weave to Text[] // discard
-
-  else
-    op__execErr
-    Optimiser[].delete
-    PipeSpec[].delete
-    false
-    exit
-  then
-
-  Optimiser[].delete
-
-  PipeSpec[].delete
-
-  //"<weaved>"  [job].tagSet@ tagSet.hasName if
-  //  Text[] "Weaved: \n%v"  str.format .
-  //then
-
-  true
-;
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_D_PLANOPERAND ...                                           */
@@ -208,56 +116,8 @@
     [job].tagSet@ tagSet.dump
   then
 
- // "<transliterated>" [job].tagSet@ tagSet.hasName if
- //   Text[] "Tranliterated: \n%v"  str.format .
- // then
-
-  //Text[] .
-
-  AM::OptimiserEnabled if
-    _Call_Optimiser not if
-      true
-      exit
-    then
-  then
-
-  //Text[] .
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - -
-  // JoinOrder
-
-  "<joinOrder>" [job].tagSet@ tagSet.hasName if
-
-    // pipeout join order information (which should be in the StreamSet[]
-    StreamSet[].isNull not assert
-    StreamSet[].pipeout
-
-    // exit as no need to execute the statement
-    Marker[].newLeaveMarker
-    Marker[].pipeout
-    true
-    exit
-  then
-
-  // - - - - - - - - - - - - - - - - - - - - - - -
-  // JoinPermutations
-
-  "<joinPermutations>" [job].tagSet@ tagSet.hasName if
-
-    // pipeout join permutations information (which should be in the StreamSet[]
-    StreamSet[].isNull not assert
-    StreamSet[].pipeout
-
-    // exit as no need to execute the statement
-    Marker[].newLeaveMarker
-    Marker[].pipeout
-    true
-    exit
-  then
-
   [Op] [job].responseOp!
-  STD_NORMALFORK_TAG Text[] api::forkChild not if
+  STD_NORMALFORK_SELECT_TAG Text[] api::forkChild not if
      //"****Error Code %v" .printf
      nullptr [job].responseOp!
      op__execErr

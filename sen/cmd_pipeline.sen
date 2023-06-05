@@ -133,9 +133,7 @@
 /* org_ org */      "org_ org" "Dynamo compile"                    [job].trace
 /* org_ org */  then
 /* org_ org */
-
 /* org_ org */  Dynamo[].new
-
 /* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
 /* org_ org */    // + clean compile
@@ -162,71 +160,40 @@
 /* org_ org */  Dynamo[].delete
 /* org_ org */
 
-
-/*
-
-                // test if pipeline needs to go thru the optimiser
-                // - - - - - - - - - -
-                "<optimise_passThru>" [job].tagSet@ tagSet.hasName if
-                  "Going through Optimiser" .
-                  "new" .
-                  Optimiser[].new
-                  PipeSpec[] Optimiser[].dissect
-                  "dissect" .
-                  Optimiser[].transform if
-                    "transform" .
-                    // replace <cmd> with weaved statement
-                    "<cmd>" Optimiser[].weave [job].tagSet@ tagSet.replaceStr
-                    <cmd> .
-                    Optimiser[].delete
-                  else
-                    "error" .
-                  // - didnt optimise (errorCode on stack)
-                  [job].error!
-                  [ddlLock].testDrop
-                  Dynamo[].delete
-                  [job].removeOriginator
-                  ListedJob[].assertNoRef
-
-                  Path[].discardAll
-                  [task].grabLock
-                  [job].addExited
-                  [job].updateParent assert
-
-                  [job].signalParent assert
-
-                    [task].retire // does not queue onto exit demon
-
-                  HAZARD
-                  then
-                then
-
-*/
-
-
-
-
-
+/* org_ org */ // - - - - - - - - - - - - - - - - - - - - - - - -
+/* org_ org */ // test if pipeline needs to go thru the optimiser
+/* org_ org */ // - - - - - - - - - - - - - - - - - - - - - - - -
+/* org_ org */
+/* org_ org */ "<optimise>" [job].tagSet@ tagSet.hasName
+/* org_ org */ "<optimise_passThru>" [job].tagSet@ tagSet.hasName or if
+/* org_ org */    Optimiser[].new
+/* org_ org */    PipeSpec[] Optimiser[].dissect
+/* org_ org */
+/* org_ org */    Optimiser[].transform if
+/* org_ org */      // replace original <cmd> with weaved statement
+/* org_ org */      "<cmd>" Optimiser[].weave [job].tagSet@ tagSet.replaceStr
+/* org_ org */      Optimiser[].delete
+/* org_ org */    else
+/* org_ ovr */      // - didnt optimise (errorCode on stack)
+/* org_ org */      [job].error!
+/* org_ org */      [ddlLock].testDrop
+/* org_ org */      Dynamo[].delete
+/* org_ org */      [job].removeOriginator
+/* org_ org */      ListedJob[].assertNoRef
+/* org_ org */      Path[].discardAll
+/* org_ org */      [task].grabLock
+/* org_ org */      [job].addExited
+/* org_ org */      [job].updateParent assert
+/* org_ org */
+/* org_ org */      [job].signalParent assert
+/* org_ org */
+/* org_ org */      [task].retire // does not queue onto exit demon
+/* org_ org */
+/* org_ org */      HAZARD
+/* org_ org */    then
+/* org_ org */  then
 
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
-
-
-/* org_ org *  // - - - - - - - - - - - - - - - - - -
-* org_ org *  // become the originator on this node
-* org_ org *  // - - - - - - - - - - - - - - - - - -
-* org_ org *  [job].setOriginId
-* org_ org *  [job].distIdGenerate
-* org_ org *  [job].addOriginator
-* org_ org *  [job].assertOriginator
-* org_ org *
-* org_ org *  [args].distJob if
-* org_ org *    "pipeline" "origin"
-* org_ org *      "org_ org" "lst originator"                      [job].trace
-* org_ org *  then
-*/
-
-
-
 
 /* org_ org */  "<show_command>" sysargs::tagSet@ tagSet.hasName if
 /* org_ org */    <cmd> .
@@ -236,35 +203,17 @@
 /* org_ org */  then
 /* org_ org */
 /* org_ org */
-               "<jobMetrics>" [job].tagSet@ tagSet.hasName if
-                 PipeSpec[].IsSqlCompiler if
-                   [job].disableJobMetrics
-                 then
-               then
+/* org_ org */  "<jobMetrics>" [job].tagSet@ tagSet.hasName if
+/* org_ org */    PipeSpec[].IsSqlCompiler if
+/* org_ org */      [job].disableJobMetrics
+/* org_ org */    then
+/* org_ org */  then
 
 /* org_ org */
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */  // test if distributed job may execute
 /* org_ org */  // - - - - - - - - - - - - - - - - - -
 /* org_ org */
-
-/*
-?* org_ org *?  // - - - - - - - - - -
-?* org_ org *?  // test if optimising
-?* org_ org *?  // - - - - - - - - - -
-?* org_ org *?  "<optimise>" [job].tagSet@ tagSet.hasName
-?* org_ org *?  PipeSpec[].optimisable
-?* org_ org *?  and
-?* org_ org *?  if
-?* org_ org *?    "Would Optimise" .
-?* org_ org *?    <cmd> .
-?* org_ org *?  then
-?* org_ org *?  Optimiser[].new
-?* org_ org *?//  PipeSpec[] Optimiser[].dissect
-?* org_ org *?//  Optimiser[].optimise
-?* org_ org *?//  Optimiser[].weave discard
-?* org_ org *?  Optimiser[].delete
-*/
 
 /* org_ org */
 /* org_ org */

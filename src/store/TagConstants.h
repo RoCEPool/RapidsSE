@@ -23,6 +23,7 @@ static Stz* C_TAG_FAULTPOINT   = "<faultPoint>"_Stz;
 static Stz* C_TAG_FLOW         = "<flow>"_Stz;
 static Stz* C_TAG_FORCELOG     = "<forceLog>"_Stz;
 static Stz* C_TAG_FREEPCT      = "<freePct>"_Stz;
+static Stz* C_TAG_GLEAN_INTERACTIVE = "<glean_interactive>"_Stz;
 static Stz* C_TAG_GRID         = "<grid>"_Stz;
 static Stz* C_TAG_HOST         = "<host>"_Stz;
 static Stz* C_TAG_INFOSET      = "<infoSet>"_Stz;
@@ -68,6 +69,8 @@ static Stz* C_TAG_XFER         = "<xfer>"_Stz;
 static Stz* C_TAG_SENDKIND     = "<sendKind>"_Stz;
 static Stz* C_TAG_SENDS        = "<sends>"_Stz;
 static Stz* C_TAG_WAIT         = "<wait>"_Stz;
+static Stz* C_TAG_WEAVED       = "<weaved>"_Stz;
+static Stz* C_TAG_WEAVER2      = "<weaver2>"_Stz;
 
 
 static Stz* C_TAG_LD_DATE_FORMAT          = "<date_format>"_Stz;

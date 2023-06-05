@@ -4,12 +4,41 @@
 
 _nation;
 
-/glean_interactive
-/weaver2
-/weaved
-/pipelineName = "_ray2"
-select max(n_name) from nation group by n_nationkey;
+/time load nation   "<tpch_dir>/nation.<suffix>";
 
+/glean_interactive
+/weaved
+/weaver2
+/pipelineName = "_ray2"
+select n_nationkey from nation;
+
+/*
+/weaved
+/weaver2
+/glean_interactive
+/optimise_passThru
+pipeline _ray_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Nation
+    | project " type INTEGER as n_nationkey $1 "
+    | combined 0
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

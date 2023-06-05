@@ -84,7 +84,16 @@ void Step::vApiForkChild(void)
     pCmdTagSet->vInsert(C_TAG_JOBMETRICS);
 
   if (pJobTags->bHasName(C_TAG_PIPELINENAME))
-    pCmdTagSet->vInsert(C_TAG_PIPELINENAME);
+    pCmdTagSet->vInsert(C_TAG_PIPELINENAME, pJobTags->szValue(C_TAG_PIPELINENAME));
+
+  if (pJobTags->bHasName(C_TAG_GLEAN_INTERACTIVE))
+    pCmdTagSet->vInsert(C_TAG_GLEAN_INTERACTIVE);
+
+  if (pJobTags->bHasName(C_TAG_WEAVED))
+    pCmdTagSet->vInsert(C_TAG_WEAVED);
+
+  if (pJobTags->bHasName(C_TAG_WEAVER2))
+    pCmdTagSet->vInsert(C_TAG_WEAVER2);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
