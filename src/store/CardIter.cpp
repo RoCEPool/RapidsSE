@@ -2364,10 +2364,12 @@ void CardIter::vUsingBoard(eBK eBoard, i8 i_Board)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.pBoard = m_pBench->pGetBoard(eBoard, i_Board);
-  G.pDeck  = G.pBoard->pDeck();
+  Board* pBoard = m_pBench->pGetBoard(eBoard, i_Board);
+//  G.pDeck  = G.pBoard->pDeck();
+//
+//  this->vChangeCard(G.pBoard->pDeck());
 
-  this->vChangeCard(G.pBoard->pDeck());
+  vUsingBoard(pBoard);
 }
 
 /*----------------------------------------------------------------------------*/
