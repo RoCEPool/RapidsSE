@@ -14,7 +14,7 @@
   #include "../src/base/ClangDynamic.h"
 
   void vNeverReachCode(i8 iLine) {
-    printf("NEVER_REACH_CODE point in synthesised code was reached at line %lld !!!\n", iLine);
+    printf("NEVER_REACH_CODE point in synthesised code was reached at line %%lld !!!\n", iLine);
     //exit(0);
   }
 

@@ -390,7 +390,6 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
 
-  printf("%p\n", aDynamicT->m_xRowInfoIT.m_iCell[0]);
   // marker-end
 
   return;
@@ -1253,6 +1252,45 @@ void vStreamDefEnd(Dynamic_T* aDynamicT) {
 #ifdef WITH_CLANG
   aDynamicT->m_aStreamDefOut = aExtern_StreamDefNew(__COLUMNS_OUT__, (void*)&xColumnInfo);
 #endif
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vStencilToBegin ---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vStencilToBegin
+void vStencilToBegin(Dynamic_T* aDynamicT) {
+
+  // marker-start
+  struct __STRUCT_TO__ {
+    // marker-end
+  };
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vStencilToCol -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vStencilToCol
+void vStencilToCol(Dynamic_T* aDynamicT) {
+
+  i8 __UNION_TYPE__;
+
+    // marker-start
+    __UNION_TYPE__;
+    // marker-end
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vStencilToEnd -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vStencilToEnd
+  void vStencilToEnd(Dynamic_T* aDynamicT) {
+
+  {
+    // marker-start
+  };
 
   // marker-end
 }

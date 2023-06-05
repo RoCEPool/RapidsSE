@@ -374,6 +374,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         //vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "iSortBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
+        vAppendCodeIndexCols(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
@@ -880,8 +883,26 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+  s16KB sCode;
 
+  //StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+
+  sCode = ""_Stz;
+  m_pCommonCode->vSeekStart();
+  vAppendCodeFragment(pOpSketch, "vStencilToBegin"_Stz);
+
+  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefOut->nColumns(); i_Col++) {
+
+    Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
+
+    sCode = ""_Stz;
+    m_pCommonCode->vSeekStart();
+    vAppendCodeFragment(pOpSketch, "vStencilToCol"_Stz, pColumn);
+  }
+
+  sCode = ""_Stz;
+  m_pCommonCode->vSeekStart();
+  vAppendCodeFragment(pOpSketch, "vStencilToEnd"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -890,7 +911,6 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
 void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
-
 
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 

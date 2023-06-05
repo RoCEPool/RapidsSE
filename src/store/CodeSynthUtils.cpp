@@ -213,14 +213,70 @@ void CodeSynthUtils::vReplaceColumnName(Stz* sLine, Column* pColumn) {
 
   _static_
 
+  bool bResult;
   s256 sColNm;
   sColNm = pColumn->szColNm();
   StrLib::vToUpper((char *) sColNm.azChar());
+
+  if (StrLib::bContains(sLine->azChar(), "__UNION_TYPE__")) {
+    switch(pColumn->eColumnType()) {
+      case CT_BOOLEAN:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Bol_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_DATE:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Dte_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_DECIMAL:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Bcd_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_FLOAT:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Flt_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_INTEGER:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Int_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_INTERVAL_DT:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Ivl_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_INTERVAL_YM:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Ivl_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_TIME:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Tme_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_TIMESTAMP:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Tsp_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_UNKNOWN:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Unk_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      case CT_CHAR:
+      case CT_VARCHAR:
+        bResult = StrLib::bReplace(sLine->azChar(), "__UNION_TYPE__", "  union Vch_T __COLUMN_TO__");
+        RASSERT(bResult);
+        break;
+      default:
+        NEVER_REACH
+    }
+
+    RASSERT(bResult);
+  }
 
   if (StrLib::bContains(sLine->azChar(), "__COLUMN_TO__")) {
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMN_TO__", sColNm.azChar());
     RASSERT(bResult);
   }
+
   if (StrLib::bContains(sLine->azChar(), "__COLUMN_FROM__")) {
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMN_FROM__", sColNm.azChar());
     RASSERT(bResult);
