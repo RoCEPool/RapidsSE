@@ -532,7 +532,7 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn)
+void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, File* pCodeFile)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -540,8 +540,11 @@ void CombinedSrc::vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Colu
   bool bExtracted;
 
   sCode = ""_Stz;
-  m_pCommonCode->vSeekStart();
-  bExtracted = CodeSynthUtils::bExtract(m_pCommonCode, pOpSketch, szFunction, sCode, pColumn, C_UNKNOWN);
+  if ( ! pCodeFile )
+    pCodeFile = m_pCommonCode;
+
+  pCodeFile->vSeekStart();
+  bExtracted = CodeSynthUtils::bExtract(pCodeFile, pOpSketch, szFunction, sCode, pColumn, C_UNKNOWN);
   RASSERT(bExtracted);
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
 }
@@ -884,25 +887,32 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   s16KB sCode;
+  File* pStencilFile = new File(this);
 
-  //StrLib::vAppendString(&m_azCodeCrs, pOpSketch->m_sStencilTo.azChar());
+  bool bOpened = pStencilFile->bOpenRead("../src/store/Fragments/Stencil.cpp"_Stz);
+  RASSERT ( bOpened );
+
 
   sCode = ""_Stz;
-  m_pCommonCode->vSeekStart();
-  vAppendCodeFragment(pOpSketch, "vStencilToBegin"_Stz);
+  pStencilFile->vSeekStart();
+  vAppendCodeFragment(pOpSketch, "vStencilToBegin"_Stz, pStencilFile);
 
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefOut->nColumns(); i_Col++) {
 
     Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
 
     sCode = ""_Stz;
-    m_pCommonCode->vSeekStart();
-    vAppendCodeFragment(pOpSketch, "vStencilToCol"_Stz, pColumn);
+    pStencilFile->vSeekStart();
+    vAppendCodeFragment(pOpSketch, "vStencilToCol"_Stz, pColumn, pStencilFile);
   }
 
   sCode = ""_Stz;
-  m_pCommonCode->vSeekStart();
-  vAppendCodeFragment(pOpSketch, "vStencilToEnd"_Stz);
+  pStencilFile->vSeekStart();
+  vAppendCodeFragment(pOpSketch, "vStencilToEnd"_Stz, pStencilFile);
+
+  // close the stencil code fragments file
+  pStencilFile->vClose();
+  delete pStencilFile;
 }
 
 /*----------------------------------------------------------------------------*/
