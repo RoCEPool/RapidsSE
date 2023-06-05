@@ -1754,12 +1754,12 @@ void CardIter::vPrintBench(eBK eBoard, i8 i_Board)
 
   for (;;) {
     if (C_UNKNOWN != i_Board) {
-      Board *pBoard = m_pBench->pGetBoard(eBoard, i_Board);
+      Board *pBoard = m_pBench->pGetBoard(i_Board);
       pBoard->vPrintBoard(szXhand());
     }
     else {
       for (i8 i_Each = 0; m_pBench->bBoardExists(eBoard, i_Each); i_Each++) {
-        Board *pBoard = m_pBench->pGetBoard(eBoard, i_Each);
+        Board *pBoard = m_pBench->pGetBoard(i_Each);
         pBoard->vPrintBoard(szXhand());
       }
     }
@@ -2364,10 +2364,7 @@ void CardIter::vUsingBoard(eBK eBoard, i8 i_Board)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  Board* pBoard = m_pBench->pGetBoard(eBoard, i_Board);
-//  G.pDeck  = G.pBoard->pDeck();
-//
-//  this->vChangeCard(G.pBoard->pDeck());
+  Board* pBoard = m_pBench->pGetBoard(i_Board);
 
   vUsingBoard(pBoard);
 }

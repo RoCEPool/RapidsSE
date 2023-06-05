@@ -100,7 +100,7 @@ bool Bench::bBoardExists(eBK eBoard, i8 i_SubBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
-  if (pGetBoard(eBoard,i_SubBoard))
+  if (pGetBoard(i_SubBoard))
     return true;
 
   return false;
@@ -146,9 +146,9 @@ void Bench::vClearMarks(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get board of given kind                                                    */
+/* get board                                                                  */
 /*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
+Board* Bench::pGetBoard(i8 i_Board)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
 
@@ -157,46 +157,6 @@ Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
 
   Board *pBoard = this->pGet(i_Board);
   ASSERT(pBoard->i_Board() == i_Board);
-  return pBoard;
-
-//  i8 nBoards = this->nBoards();
-//  for (i8 i_each = 0; i_each < nBoards; i_each++) {
-//    Board *pBoard = this->pGet(i_each);
-//
-//    if (eBoard == pBoard->eBoardKind() &&
-//        i_Board == pBoard->i_Board())
-//      return pBoard;
-//  }
-//
-//  return nullptr;
-}
-/*----------------------------------------------------------------------------*/
-//Board* Bench::pGetBoard(eBK eBoard, i8 i_Board)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-//
-//  i8 nBoards = this->nBoards();
-//  for (i8 i_each = 0; i_each < nBoards; i_each++) {
-//    Board *pBoard = this->pGet(i_each);
-//
-//    if (eBoard == pBoard->eBoardKind() && (C_UNKNOWN == i_Board ||
-//                                           i_Board == pBoard->i_Board()))
-//      return pBoard;
-//  }
-//
-//  return nullptr;
-//}
-
-
-/*----------------------------------------------------------------------------*/
-/* get board                                                                  */
-/*----------------------------------------------------------------------------*/
-Board* Bench::pGetBoard(i8 i_Board)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
-
-  Board *pBoard = this->pGet(i_Board);
-
   return pBoard;
 }
 
