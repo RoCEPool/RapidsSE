@@ -306,6 +306,7 @@ void Weaver2::vOp(Card* pCard)
     case CK_PROJECT:      vArgProject      (sOpArgs,_pCard_Project(pCard));      break;
     case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
     case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
+    case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));         break;
     case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
@@ -318,6 +319,7 @@ void Weaver2::vOp(Card* pCard)
        if (CK_CAST == eCard)       sOpNm = "next"_Stz;
   else if (CK_CROSSJOIN == eCard)  sOpNm = "indexJoin"_Stz;
   else if (CK_HAVING == eCard)     sOpNm = "filter"_Stz;
+  else if (CK_TABLE == eCard)      sOpNm = "scan"_Stz;
   else if (CK_WHERE == eCard)      sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
 
@@ -724,6 +726,27 @@ void Weaver2::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
 }
 
 /*----------------------------------------------------------------------------*/
+/* weave : table <tableNm>                                                    */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vArgTable(Stz* szOpArgs, Card_Table* pCard_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  // scan : 0) {table}
+
+  s4K sRpnExpr;
+
+  pCard_Table->vRpnTable(sRpnExpr,pCard_Table);
+
+  Card_TableNm* p_tableNm = pCard_Table->pSub_tableNm();
+
+  Stz* szTableNm = p_tableNm->szSymbol();
+  //m_i_Op_stage++;
+
+  szOpArgs->vCatSprint("%s"_Stz,szTableNm);
+}
+
+/*----------------------------------------------------------------------------*/
 /* weave : where <expr>                                                       */
 /*----------------------------------------------------------------------------*/
 void Weaver2::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
@@ -913,7 +936,7 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 
       xCI.G_vMainResynch(p_stage);
       if (xCI.G_bEachMain()) {
-        if (CK_SCAN == xCI.G.e_MainCard) {
+        if (CK_SCAN == xCI.G.e_MainCard || CK_TABLE == xCI.G.e_MainCard) {
           vOp(xCI.G.p_MainCard);
         }
       }

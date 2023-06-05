@@ -1447,6 +1447,14 @@ void Card_OP::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for table op                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnTable(Stz* szRpnExpr, Card_Table* pCard_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for filter op                                               */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)

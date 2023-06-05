@@ -161,7 +161,10 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
       return;
   }
 
-  m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm());
+  if (p_OP->bIsCard(CK_TABLE))
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz);
+  else
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm());
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs(p_OP);
@@ -190,7 +193,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
 
     case CK_AGGREG:       p_OP->vRpnAggreg      (sExpr, _pCard_Aggreg      (p_OP)); break;
     case CK_CAST:         break;
-    //case CK_COMBINED:     p_OP->vRpnCombined    (sExpr, _pCard_Combined    (p_OP)); break;
+    case CK_COMBINED:     break;
     case CK_CROSSJOIN:    p_OP->vRpnCrossJoin   (sExpr, _pCard_CrossJoin   (p_OP)); break;
     case CK_FILTER:       p_OP->vRpnFilter      (sExpr, _pCard_Filter      (p_OP)); break;
     case CK_GBYAGG:       p_OP->vRpnGbyAgg      (sExpr, _pCard_GbyAgg      (p_OP)); break;
@@ -205,6 +208,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
     case CK_PROJECT:      p_OP->vRpnProject     (sExpr, _pCard_Project     (p_OP)); break;
     case CK_SCAN:         p_OP->vRpnScan        (sExpr, _pCard_Scan        (p_OP)); break;
     case CK_SORT:         p_OP->vRpnSort        (sExpr, _pCard_Sort        (p_OP)); break;
+    case CK_TABLE:        break;
     case CK_WHERE:        p_OP->vRpnWhere       (sExpr, _pCard_Where       (p_OP)); break;
 
     default:
@@ -297,6 +301,10 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
 
+    case CK_TABLE:
+      m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Table(p_OP)->pSub_tableNm()->szSymbol()));
+      break;
+
     case CK_WHERE:
       m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
       break;
@@ -368,19 +376,25 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
 
   eCK eCard_OP = p_OP->eCard();
 
+  Card_Table* p_table = nullptr;
+
   switch (eCard_OP) {
 
     case CK_CROSSJOIN:
     case CK_INDEXJOIN:
     case CK_INDEXSCAN:
     case CK_SCAN:
+      p_table = p_OP->pSub_table();
+       break;
+
+    case CK_TABLE:
+      p_table = _pCard_Table(p_OP);
       break;
 
     default:
       return;
   }
 
-  Card_Table* p_table = p_OP->pSub_table();
   Stz* szTbl = p_table->szSymbol();
   RASSERT(StrLib::bIsAlpha(*szTbl->azChar()));
 

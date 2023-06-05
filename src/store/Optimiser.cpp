@@ -173,19 +173,22 @@ void Optimiser::vApplyTransformationMatrix(void)
 
   Board::vValidate(m_pCI);
 
-  MakeFlat* pMakeFlat = new MakeFlat(m_pCI);
-  pMakeFlat->vFlatten();
-  delete pMakeFlat;
-  m_pCI->m_pBench->vMadeFlat(true);
+  if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
 
-  Board::vValidate(m_pCI);
+    MakeFlat *pMakeFlat = new MakeFlat(m_pCI);
+    pMakeFlat->vFlatten();
+    delete pMakeFlat;
+    m_pCI->m_pBench->vMadeFlat(true);
 
-  MakeOptimal* pMakeOptimal = new MakeOptimal(m_pCI);
-  pMakeOptimal->vOptimise();
-  delete pMakeOptimal;
-  m_pCI->m_pBench->vMadeOptimal(true);
+    Board::vValidate(m_pCI);
 
-  Board::vValidate(m_pCI);
+    MakeOptimal *pMakeOptimal = new MakeOptimal(m_pCI);
+    pMakeOptimal->vOptimise();
+    delete pMakeOptimal;
+    m_pCI->m_pBench->vMadeOptimal(true);
+
+    Board::vValidate(m_pCI);
+  }
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
   pMakeWeavable->vWeavable();
