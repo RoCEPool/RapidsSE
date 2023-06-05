@@ -254,21 +254,39 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg, Card_Key* p_ke
 
   StreamDef* pStreamDef = new StreamDef;
 
+  i8 i_Col = 1;
+  s32 sColNm;
+  eCT eColumnType;
+
   Kid xExpr(this);
   while (xExpr.bEach(CK_EXPR)) {
-    s32 sColNm = xExpr.p_expr()->pSub_as()
-                   ? xExpr.p_expr()->pSub_as()->szSymbol()
-                   : "NO_AS"_Stz;
 
-    eCT eColumnType = xExpr.p_expr()->eColumnType();
+    if (xExpr.p_expr()->pSub_as())
+      sColNm = xExpr.p_expr()->pSub_as()->szSymbol();
+    else
+      sColNm = xExpr.p_expr()->pGetTerm(0)->szSymbol();
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // stream def column
+
+    eColumnType = xExpr.p_expr()->eColumnType();
 
     //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumnType]);
 
     pStreamDef->vAddColumn(sColNm,eColumnType,C_UNKNOWN,C_UNKNOWN);
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // col map (gbyagg) column
+
     if (pColMap_gbyAgg) {
       RASSERT(p_key);
 
+      bool bPayload = false;
+      if (xExpr.p_expr()->pSymbol()->bIsKeyOrdinal())
+        bPayload = true;
+
+      pColMap_gbyAgg->vAddCol(i_Col++,sColNm,bPayload);
     }
   }
 
