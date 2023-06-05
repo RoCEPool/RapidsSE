@@ -437,7 +437,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
     pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
 
   //if (pParent && pParent->bIsCard(CK_PROJECT)) {
-    vValidate_mustHave(CK_AS,CK_NONE);
+  //  vValidate_mustHave(CK_AS,CK_NONE);
   //}
 }
 
