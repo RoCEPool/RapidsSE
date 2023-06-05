@@ -111,8 +111,6 @@ namespace STORE
     void vCopyColsReq(ColsReq* pColsReq);
 
     void vGenerateExprStacks(void);
-    void vGenerateStencilFromStruct(void);
-    void vGenerateStencilToStruct(u8 uSelectColumns = 0);
 
     void vTable(Table* pTable);
     void vIndex(Index* pIndex);

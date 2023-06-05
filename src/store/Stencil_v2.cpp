@@ -1335,9 +1335,6 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct(0);
-
   return pOpSketch;
 }
 
@@ -1388,9 +1385,6 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct(0);
-
   return pOpSketch;
 }
 
@@ -1424,9 +1418,6 @@ OpSketch* Stencil_v2::pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKi
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
 
   return pOpSketch;
 }
@@ -1465,9 +1456,6 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK 
   // set the colsRequired
   pOpSketch->vCopyColsReq(pColsReq);
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
-
   return pOpSketch;
 }
 
@@ -1499,9 +1487,6 @@ OpSketch* Stencil_v2::pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKi
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
-
   return pOpSketch;
 }
 
@@ -1531,9 +1516,6 @@ OpSketch* Stencil_v2::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef, eHK 
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
 
   return pOpSketch;
 }
@@ -1569,9 +1551,6 @@ OpSketch* Stencil_v2::pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, 
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
@@ -1613,9 +1592,6 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
@@ -1717,9 +1693,6 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct(0);
 
   return pOpSketch;
 }
@@ -1857,9 +1830,6 @@ OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
-
   return pOpSketch;
 }
 
@@ -1914,9 +1884,6 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct(0);
-
   return pOpSketch;
 }
 
@@ -1953,9 +1920,6 @@ OpSketch* Stencil_v2::pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind,
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
-
   return pOpSketch;
 }
 
@@ -1989,9 +1953,6 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
 
   // generate the expressißon stacks
   pOpSketch->vGenerateExprStacks();
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
 
   return pOpSketch;
 }
@@ -2037,9 +1998,6 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
 
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
-
   return pOpSketch;
 }
 
@@ -2083,9 +2041,6 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct(0);
 
   return pOpSketch;
 }
@@ -2177,9 +2132,6 @@ OpSketch* Stencil_v2::pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevS
   sLabel = "L_AddRowToTubPot"_Stz;
   sLabelNext = ""_Stz;
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
-
-  // generate the stencil structure for this OP
-  pOpSketch->vGenerateStencilToStruct();
 
   return pOpSketch;
 }

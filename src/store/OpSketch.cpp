@@ -82,7 +82,6 @@ OpSketch::OpSketch(void)
   m_eStencilFrom = SR_NONE;
   m_eStencilTo   = SR_NONE;
 
-  m_sStencilTo = ""_Stz;
   m_sStencilFrom = ""_Stz;
 
   m_eIndexInfo = II_NONE;
@@ -145,7 +144,6 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_eStencilFrom = eStencilIn;
   m_eStencilTo   = eStencilOut;
 
-  m_sStencilTo = ""_Stz;
   m_sStencilFrom = ""_Stz;
 
   m_eIndexInfo = eIndexInfo;
@@ -1144,107 +1142,6 @@ void OpSketch::vGenerateExprStacks(void)
 
   delete pTokenVec;
   delete pExprType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate the from stencil structure                                        */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vGenerateStencilFromStruct(void) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
-  m_sStencilFrom.vSprint("\n  struct %s* pTub;"_Stz, xStencilRow[m_eStencilFrom].m_szInclude,
-                         xStencilRow[m_eStencilFrom].m_szInclude);
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate the streamDef into a struct as the stencil structure              */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vGenerateStencilToStruct(u8 uSelectColumns) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
-
-  StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"_Stz);
-
-  switch (m_eStencilTo) {
-    case SR_IJ:
-      StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // Inflate J-Table"_Stz);
-      break;
-    case SR_IT:
-      StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // Inflate T-Table"_Stz);
-      break;
-    case SR_PL:
-      StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // Project PayLoad"_Stz);
-      break;
-    case SR_AT:
-      StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // Aggregate T-Table"_Stz);
-      break;
-    case SR_PT:
-      StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // Project T-Table"_Stz);
-      break;
-    case SR_TO:
-      StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // TUB"_Stz);
-      break;
-    case SR_TJ:
-      StrLib::vSprintCat((Stz *) m_sStencilTo, "\n  // IndexJoin TJ-Table"_Stz);
-      break;
-    default:
-      break;
-  }
-  StrLib::vSprintCat((Stz *) m_sStencilTo, "\n\n  struct %s { \n"_Stz, xStencilRow[m_eStencilTo]);
-
-  i8 i_DupCtr = 1;
-  s256 sColNm;
-  for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
-
-    if (uSelectColumns) {
-      if (!BitLib::bIsOn(uSelectColumns, i_Col))
-        continue;
-    }
-    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
-    Column* pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-
-    switch(pColumn->eColumnType()) {
-      case CT_BOOLEAN:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Bol_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_DATE:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Dte_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_DECIMAL:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Bcd_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_FLOAT:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Flt_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_INTEGER:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Int_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_INTERVAL_DT:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Ivl_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_INTERVAL_YM:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Ivl_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_TIME:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Tme_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_TIMESTAMP:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Tsp_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_UNKNOWN:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Unk_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_CHAR:
-      case CT_VARCHAR:
-        StrLib::vSprintCat((Stz *) m_sStencilTo, "    union Vch_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      default:
-        NEVER_REACH
-    }
-  }
-
-  StrLib::vSprintCat((Stz *) m_sStencilTo, "  };"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
