@@ -520,7 +520,9 @@
                    "DYNAMO HAS CODE" .
 
                     LibInfo[].new
-                    Dynamo[].code@ Dynamo[].name@ LibInfo[].compile not if
+                    Dynamo[].code@
+                      Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
+                        LibInfo[].compile not if
                       "COMPILATION FAILED" .
                     else
                       LibInfo[].link not if
