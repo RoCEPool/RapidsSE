@@ -938,6 +938,14 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
   }
 
 
+  if (! pCard_Expr->pSub_as()) {
+    s32 sAs;
+    sAs.vSprint("_COL_%lld"_Stz,ri_Expr+1);
+    Card_As* pCard_As = new Card_As(sAs);
+    pCard_Expr->vInsert(pCard_As);
+  }
+
+
   ri_Expr++;
   return pCard_Expr;
 }

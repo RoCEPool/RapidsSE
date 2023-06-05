@@ -1653,6 +1653,41 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_wit
   return bReplaced;
 }
 
+/*----------------------------------------------------------------------------*/
+/* validate set of child cards                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vValidate_mustHave(eCK eCard, ...)
+{
+  va_list xArgs;
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  va_start(xArgs, eCard);
+  eCK eCard_mustHave = eCard;
+  while (CK_NONE != eCard_mustHave) {
+
+    bool bMustHave = false;
+
+    pSubCard_I->vBeforeFirst();
+    while (pSubCard_I->bHasNext()) {
+      Card* pTestCard = pSubCard_I->pNext();
+      eCK eCard_test = pTestCard->eCard();
+      if (eCard_test == eCard_mustHave) {
+        bMustHave = true;
+        break;
+      }
+    }
+
+    RASSERT(bMustHave);
+
+    eCard_mustHave = (eCK)va_arg(xArgs, eCK);
+  }
+
+  va_end(xArgs);
+
+  delete pSubCard_I;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

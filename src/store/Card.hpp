@@ -347,6 +347,7 @@ namespace STORE
 
     bool bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with);
 
+    void vValidate_mustHave(eCK eCard, ...);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
