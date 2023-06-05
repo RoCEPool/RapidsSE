@@ -281,7 +281,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           vAppendCodeFragment(pOpSketch, "vIndexDereferenceLB"_Stz, pIndexFile);
         }
 
-        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, "vInflateCrwCol"_Stz);
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexReturn"_Stz, pIndexFile);
 
         // close the indexScan code fragments file
@@ -332,7 +332,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         }
 
         vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
-        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, "vInflateCrwCol"_Stz);
+        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pCodeFile);
 
         // close the indexJoin code fragments file
@@ -346,10 +346,17 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // new CRWBUFFER handler
         vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
 
+        // open the inflateCrw code fragments file
+        bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz);
-        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColT"_Stz, "vInflateCrwCol"_Stz);
-        vAppendCodeFragment(pOpSketch, "vInflateCrwReturn"_Stz);
+        vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz, pCodeFile);
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColT"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vInflateCrwReturn"_Stz, pCodeFile);
+
+        // close the inflateCrw code fragments file
+        pCodeFile->vClose();
         break;
 
       case SK_INFLATE_ROW:
@@ -588,13 +595,20 @@ void CombinedSrc::vAppendCodeFragmentKey(OpSketch* pOpSketch, Stz* szFunction, F
 /*----------------------------------------------------------------------------*/
 /* append code fragment for inflate columns                                   */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix, Stz* szFunction)
+void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix, File* pCodeFile)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   s256 sReturnToColumn;
   s16KB sCode;
   bool bExtracted;
+  bool bOpened = false;
+
+  if ( ! pCodeFile ) {
+    // open the inflateCrw code fragments file
+    bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+    RASSERT ( bOpened );
+  }
 
   //i8 nCols = 0;
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
@@ -620,24 +634,35 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 //    }
 
     sCode = ""_Stz;
-    m_pCommonCode->vSeekStart();
+    pCodeFile->vSeekStart();
 
-    bExtracted = CodeSynthUtils::bExtractInflate(m_pCommonCode, pColumn, sReturnToColumn, szFunction, sCode);
+    bExtracted = CodeSynthUtils::bExtractInflate(pCodeFile, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
     RASSERT(bExtracted);
     StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
+
+  if (bOpened)
+    pCodeFile->vClose();
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* append code fragment for inflate columns                                   */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnPrefix, Stz* szFunction)
+void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnPrefix, File* pCodeFile)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   s256 sReturnToColumn;
   s16KB sCode;
   bool bExtracted;
+  bool bOpened = false;
+
+  if ( ! pCodeFile ) {
+    // open the inflateCrw code fragments file
+    bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+    RASSERT ( bOpened );
+  }
 
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefRht->nColumns(); i_Col++) {
 
@@ -645,12 +670,15 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
     StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
     sCode = ""_Stz;
-    m_pCommonCode->vSeekStart();
+    pCodeFile->vSeekStart();
 
-    bExtracted = CodeSynthUtils::bExtractInflate(m_pCommonCode, pColumn, sReturnToColumn, szFunction, sCode);
+    bExtracted = CodeSynthUtils::bExtractInflate(pCodeFile, pColumn, sReturnToColumn, "vInflateCrwCol"_Stz, sCode);
     RASSERT(bExtracted);
     StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
+
+  if (bOpened)
+    pCodeFile->vClose();
 }
 
 
