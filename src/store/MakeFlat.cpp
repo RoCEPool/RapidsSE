@@ -296,7 +296,7 @@ void MakeFlat::vFlattenByDecisionTree(void)
 
   m_pCI->vEndTransform();
 
-  Board::vValidate(m_pCI);
+  Bench::vValidate(m_pCI);
 
 }
 

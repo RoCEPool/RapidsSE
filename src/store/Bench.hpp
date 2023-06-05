@@ -41,6 +41,7 @@ namespace STORE
    ~Bench(void) noexcept(false);
 
 
+    static void vValidate(CardIter* pCI);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

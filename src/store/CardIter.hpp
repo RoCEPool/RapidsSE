@@ -192,6 +192,7 @@ namespace STORE
     i8   iTransformDepth(void);
 
     void vUsingBoard(eBK eBoard, i8 i_Board);
+    void vUsingBoard(Board* pBoard);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);

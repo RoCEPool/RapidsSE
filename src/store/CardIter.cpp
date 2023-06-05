@@ -2371,6 +2371,19 @@ void CardIter::vUsingBoard(eBK eBoard, i8 i_Board)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up which board to use                                                  */
+/*----------------------------------------------------------------------------*/
+void CardIter::vUsingBoard(Board* pBoard)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.pBoard = pBoard;
+  G.pDeck  = G.pBoard->pDeck();
+
+  this->vChangeCard(G.pBoard->pDeck());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */
 /*----------------------------------------------------------------------------*/
 Stz* CardIter::szXdesc(void)

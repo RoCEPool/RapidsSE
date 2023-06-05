@@ -171,7 +171,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   delete pMakeSimpler;
   m_pCI->m_pBench->vMadeSimpler(true);
 
-  Board::vValidate(m_pCI);
+  Bench::vValidate(m_pCI);
 
   if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
 
@@ -180,14 +180,14 @@ void Optimiser::vApplyTransformationMatrix(void)
     delete pMakeFlat;
     m_pCI->m_pBench->vMadeFlat(true);
 
-    Board::vValidate(m_pCI);
+    Bench::vValidate(m_pCI);
 
     MakeOptimal *pMakeOptimal = new MakeOptimal(m_pCI);
     pMakeOptimal->vOptimise();
     delete pMakeOptimal;
     m_pCI->m_pBench->vMadeOptimal(true);
 
-    Board::vValidate(m_pCI);
+    Bench::vValidate(m_pCI);
   }
 
   MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
@@ -195,7 +195,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   delete pMakeWeavable;
   m_pCI->m_pBench->vMadeWeavable(true);
 
-  Board::vValidate(m_pCI);
+  Bench::vValidate(m_pCI);
 
   MakeCode* pMakeCode = new MakeCode(m_pCI);
   pMakeCode->vSynthesise();
@@ -203,7 +203,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   pMakeCode->vPipelineDef(nullptr);
   m_pCI->m_pBench->vMadeCode(true);
 
-  Board::vValidate(m_pCI);
+  Bench::vValidate(m_pCI);
 
   delete pMakeCode;
 }
