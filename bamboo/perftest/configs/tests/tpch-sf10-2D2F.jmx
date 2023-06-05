@@ -28,6 +28,11 @@ c5ad.8xlarge</stringProp>
             <stringProp name="Argument.value">5</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="SLEEP_TIME" elementType="Argument">
+            <stringProp name="Argument.name">SLEEP_TIME</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
@@ -3316,9 +3321,9 @@ OUT.flush();</stringProp>
           <hashTree/>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P1Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3496,9 +3501,9 @@ end ;</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P2Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3736,9 +3741,9 @@ create index IxP_PARTKEY  ON part (P_PARTKEY)  ;</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P3Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -3901,9 +3906,9 @@ create index IxO_CUSTKEY  ON Orders  (O_CUSTKEY)  ;</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P4Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4050,9 +4055,9 @@ end ;</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P5Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4247,9 +4252,9 @@ create index IxR_REGIONKEY ON Region (R_REGIONKEY)   ;</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P6Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4377,9 +4382,9 @@ create index IxL_SHIPDATE ON Lineitem (L_SHIPDATE)  ;</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P7Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4581,9 +4586,9 @@ CREATE INDEX IxC_NATIONKEY ON CUSTOMER(C_NATIONKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P8Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -4800,9 +4805,9 @@ CREATE INDEX IxR_REGIONKEY ON REGION(R_REGIONKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P9Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5002,9 +5007,9 @@ CREATE INDEX IxN_NATIONKEY ON NATION(N_NATIONKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P10Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5188,9 +5193,9 @@ create index IxL_ORDERKEY ON Lineitem (L_ORDERKEY) ;
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P11Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5389,9 +5394,9 @@ create index IxN_NATIONKEY  ON Orders  (N_NATIONKEY)  ;
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P12Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5535,9 +5540,9 @@ create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P13Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5683,9 +5688,9 @@ create index IxO_CUSTKEY  ON Customer  (O_CUSTKEY)  ;
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P14Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5832,9 +5837,9 @@ create index IxP_PARTKEY  ON Part  (P_PARTKEY)  ;
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P15Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -5985,9 +5990,9 @@ create index IxS_SuppKey  ON Supplier  (S_SuppKey)  ;
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P16Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -6200,9 +6205,9 @@ CREATE INDEX IxS_SUPPKEY ON SUPPLIER(S_SUPPKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P17Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -6373,9 +6378,9 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P18Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -6570,9 +6575,9 @@ CREATE INDEX IxC_CUSTKEY ON CUSTOMER(C_CUSTKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P19Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -6745,9 +6750,9 @@ CREATE INDEX IxL_PARTKEY ON LINEITEM(L_PARTKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P20Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
@@ -6936,9 +6941,9 @@ CREATE INDEX IxN_NATIONPKEY ON NATION(N_NATIONPKEY);</stringProp>
           </hashTree>
           <GenericController guiclass="LogicControllerGui" testclass="GenericController" testname="P22Group" enabled="true"/>
           <hashTree>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="p_sleep" enabled="false">
               <stringProp name="dataSource">SEConnPool</stringProp>
-              <stringProp name="query">sleep 10;</stringProp>
+              <stringProp name="query">sleep ${SLEEP_TIME};</stringProp>
               <stringProp name="queryArguments"></stringProp>
               <stringProp name="queryArgumentsTypes"></stringProp>
               <stringProp name="queryTimeout"></stringProp>
