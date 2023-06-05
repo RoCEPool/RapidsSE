@@ -126,13 +126,18 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
 
   eEC eErrorCode;
 
-
   i8 nStages = pPipelineDef->nItems();
+
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stencil_v2 *pStencil = new Stencil_v2;
+    StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
+    pStageDef->vDump();
+  }
+
 
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stencil_v2* pStencil = new Stencil_v2;
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
-    //pStageDef->vDump();
     eErrorCode = pStencil->eSynthesise(pStageDef);
     if (eErrorCode != EC_NONE) {
       return eErrorCode;
