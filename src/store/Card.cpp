@@ -1687,6 +1687,8 @@ void Card::vValidate_mayHave(eCK eCard, ...)
     }
     va_end(xArgs);
 
+    if (! bMayHave)
+      vDump();
     RASSERT(bMayHave);
   }
 
@@ -1718,6 +1720,8 @@ void Card::vValidate_mustHave(eCK eCard, ...)
       }
     }
 
+    if (! bMustHave)
+      vDump();
     RASSERT(bMustHave);
 
     eCard_mustHave = (eCK)va_arg(xArgs, eCK);
@@ -1758,6 +1762,8 @@ eCK Card::eValidate_mustEither(eCK eCard, ...)
     eCard_mustHave = (eCK)va_arg(xArgs, eCK);
   }
 
+  if (1 != nHas)
+    vDump();
   RASSERT(1 == nHas);
 
   va_end(xArgs);
@@ -1792,6 +1798,8 @@ void Card::vValidate_notHave(eCK eCard, ...)
       }
     }
 
+    if (bNotHave)
+      vDump();
     RASSERT(! bNotHave);
 
     eCard_mustHave = (eCK)va_arg(xArgs, eCK);
