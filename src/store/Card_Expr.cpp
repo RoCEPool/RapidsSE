@@ -232,7 +232,7 @@ void Card_Expr::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
+Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -253,6 +253,13 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI)
 
   if (p_as)
     p_expr_early->vAppend(p_as->pClone());
+  else {
+    s32 sAs;
+    sAs.vSprint("_COL_%lld"_Stz,i_Expr);
+    Card_As* p_as_new = new Card_As(sAs);
+    p_expr_early->vAppend(p_as_new);
+
+  }
 
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
   p_expr_early->vAppend(p_rpnCalc_early);
@@ -436,9 +443,9 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   else
     pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
 
-  //if (pParent && pParent->bIsCard(CK_PROJECT)) {
-  //  vValidate_mustHave(CK_AS,CK_NONE);
-  //}
+  if (pParent && ! pParent->bIsCard(CK_KEY)) {
+    vValidate_mustHave(CK_AS,CK_NONE);
+  }
 }
 
 
