@@ -610,28 +610,28 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
     RASSERT ( bOpened );
   }
 
-  //i8 nCols = 0;
+  i8 nCols = 0;
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
-//    if (nCols > pOpSketch->m_pColsReq->m_nCols) {
-//      break;
-//    }
-//
-//    nCols++;
+    if (nCols > pOpSketch->m_pColsReq->m_nCols) {
+      break;
+    }
+
+    nCols++;
 
     Column* pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_Col);
 
     StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
-//    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_Col_base1 == C_UNKNOWN) {
-//      sCode = ""_Stz;
-//      m_pCommonCode->vSeekStart();
-//
-//      bExtracted = CodeSynthUtils::bExtractInflate(m_pCommonCode, pColumn, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
-//      RASSERT(bExtracted);
-//      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
-//      continue;
-//    }
+    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_Col_base1 == C_UNKNOWN) {
+      sCode = ""_Stz;
+      pCodeFile->vSeekStart();
+
+      bExtracted = CodeSynthUtils::bExtractInflate(pCodeFile, pColumn, sReturnToColumn, "vSkipCrwCol"_Stz, sCode);
+      RASSERT(bExtracted);
+      StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+      continue;
+    }
 
     sCode = ""_Stz;
     pCodeFile->vSeekStart();

@@ -93,6 +93,7 @@ void vSkipCrwCol(Dynamic_T* aDynamicT) {
   u8 uLow;
   i8 i_Col;
   i8 __COLUMN_NO__;
+  byte* ayDstByte;
 
   // marker-start
   // - - - - - - - - - - - -
@@ -103,6 +104,7 @@ void vSkipCrwCol(Dynamic_T* aDynamicT) {
   uLow  = uMetaCode & 0x0F;
 
   aSubReturnLabel = && __L_RETURN_TO_LABEL__;
+  ayDstByte += 8;
   goto L_SkipAColumn;
 
   __L_RETURN_TO_LABEL__:
