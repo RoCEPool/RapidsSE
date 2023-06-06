@@ -202,42 +202,50 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
       case SK_GBYAGG:
 
+        // open the gbyagg code fragments file
+        bOpened = pCodeFile->bOpenRead("../src/store/Fragments/GbyAgg.cpp"_Stz);
+        RASSERT ( bOpened );
+
         // stencio to
         vAppendStencilTo(pOpSketch);
 
         // create indexDef and indexTree
-        vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz, pCodeFile);
         vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
         vAppendCodeIndexCols(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
 
         // populate the payload key
-        vAppendCodeFragment(pOpSketch, "iGbyAggContinue"_Stz);
+        vAppendCodeFragment(pOpSketch, "iGbyAggContinue"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
         // find the key
-        vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz);
+        vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz, pCodeFile);
 
         // create the payload
         if (pOpSketch->m_nPayloadBytes)
-          vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
+          vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
 
         // insert key
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iGbyAggInsertIntKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
           vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-          vAppendCodeFragment(pOpSketch, "iGbyAggIntKeyEnd"_Stz);
+          vAppendCodeFragment(pOpSketch, "iGbyAggIntKeyEnd"_Stz, pCodeFile);
         }
         else {
-          vAppendCodeFragment(pOpSketch, "iGbyAggInsertVchKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
           vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-          vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz);
+          vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz, pCodeFile);
         }
 
         // populate the payload
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
+        // close the gbyAgg code fragments file
+        pCodeFile->vClose();
+        break;
 
         break;
 
@@ -400,13 +408,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
         if (pOpSketch->m_nPayloadBytes)
-          vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
+          vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iGbyAggInsertIntKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
         }
         else {
-          vAppendCodeFragment(pOpSketch, "iGbyAggInsertVchKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
         }
         vAppendCodePopulatePayloadCols(pOpSketch);
 

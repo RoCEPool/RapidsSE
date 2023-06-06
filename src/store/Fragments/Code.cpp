@@ -34,70 +34,14 @@ i8 vExprCheck(Dynamic_T* aDynamicT) {
 }
 
 
-/*----------------------------------------------------------------------------*/
-/*-- iGbyAggBegin ------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iGbyAggBegin
-i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  RowInfo __ROW_INFO_FROM__;
 
-  char* szStrArea;
-
-  __L_LABEL_LOOP__:
-
-  // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // GBYAGG-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-
-  __L_LABEL__:
-
-  printf("GBYAGG-OP\n");
-
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
-  szStrArea = __ROW_INFO_FROM__.m_acStrArea;
-
-  // marker-end
-
-  return 0;
-}
 
 /*----------------------------------------------------------------------------*/
-/*-- iGbyAggContinue ---------------------------------------------------------*/
+/*-- vCreatePayLoad ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iGbyAggContinue
-i8 iGbyAggContinue(Dynamic_T* aDynamicT) {
-
-  __L_LABEL_LOOP__:
-
-  // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process row ?
-  if ( ! aDynamicT->m_iProcessRow ) {
-    aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the payload key
-  aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
-  // marker-end
-
-  return 0;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vGbyAggCreatePayLoad ----------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vGbyAggCreatePayLoad
-void vGbyAggCreatePayLoad(Dynamic_T* aDynamicT) {
+// function-vCreatePayLoad
+void vCreatePayLoad(Dynamic_T* aDynamicT) {
 
   i8 __PAYLOADBYTES__;
 
@@ -112,30 +56,10 @@ void vGbyAggCreatePayLoad(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vGbyAggFindKey ----------------------------------------------------------*/
+/*-- iIndexInsertIntKey ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vGbyAggFindKey
-void vGbyAggFindKey(Dynamic_T* aDynamicT) {
-
-  void* aEntFound;
-
-  // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find key in payload index
-#ifdef WITH_CLANG
-  aEntFound = aExtern_IndexTreeFindEntry(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
-#endif
-  if ( !aEntFound ) {
-    // marker-end
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- iGbyAggInsertIntKey -----------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iGbyAggInsertIntKey
-i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
+// function-iIndexInsertIntKey
+i8 iIndexInsertIntKey(Dynamic_T* aDynamicT) {
 
   void* aEntInserted;
   void* aEntFound;
@@ -171,36 +95,7 @@ i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iGbyAggIntKeyEnd --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iGbyAggIntKeyEnd
-i8 iGbyAggIntKeyEnd(Dynamic_T* aDynamicT) {
-
-  void* aEntFound;
-
-  {
-  // marker-start
-
-    // check for error
-    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
-      return 0;
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // aggregate the payload
-  aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
-                  + sizeof(struct Ent_int)
-                  + 8);
-
-  // marker-end
-
- return 0;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- iGbyAggInsertVchKey -----------------------------------------------------*/
+/*-- iIndexInsertVchKey ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iGbyAggInsertVchKey
 i8 iGbyAggInsertVchKey(Dynamic_T* aDynamicT) {
@@ -236,35 +131,6 @@ i8 iGbyAggInsertVchKey(Dynamic_T* aDynamicT) {
 
 // marker-end
 
-
-}
-/*----------------------------------------------------------------------------*/
-/*-- iGbyAggGenKeyEnd --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iGbyAggGenKeyEnd
-i8 iGbyAggGenKeyEnd(Dynamic_T* aDynamicT) {
-
-  void* aEntFound;
-
-  {
-  // marker-start
-
-    // check for error
-    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
-      return 0;
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // aggregate the payload
-  aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
-                  + sizeof(struct Ent_int)
-                  + ((struct Ent_int*)aEntFound)->m_iIntElm0
-                  + 8);
-
-  // marker-end
-
- return 0;
 
 }
 
