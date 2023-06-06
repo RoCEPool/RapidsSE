@@ -35,14 +35,15 @@ namespace STORE
     static eCT  eTo_eCT_char(Stz* szType);
 
     eCT  eColType(void);
+
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
-
     i8   iExtractOrdinal(void);
     char cExtractTableSynonym(void);
 
     bool bIsAggOp(void);          // avg, count, ... sum
     bool bIsBoolFn(void);         // between, case ... matchTrailing
+    bool bIsColumnOrdinal(void);    // $c.n
     bool bIsComma(void);          // ,
     bool bIsIndexColumn(void);    // $In
     bool bIsKeyOrdinal(void);            // $Kn
@@ -51,10 +52,8 @@ namespace STORE
     bool bIsStreamOrdinal(void);   // $n
     bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
     bool bIsSubQueryColumn(void); // __n
-    bool bIsColumnOrdinal(void);    // $c.n
+    bool bIsSyntheticAs(void); // __n
     bool bIsValueOrdinal(void);         // $n or $c.n
-
-
 
     bool bNeedsBrace(void);       // between, case, ... matchTrailing
 
@@ -67,6 +66,7 @@ namespace STORE
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSetStreamOrdinal(i8 iStmColOdn);
     void vSetSubQueryOrdinal(i8 iSqNo);
+    void vSetSyntheticAs(i8 iAsNo);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
     void vSprint(Stz* szFormat, ...);
@@ -77,7 +77,6 @@ namespace STORE
 
     Stz* szType(void);
     void vType(Stz* szType);
-
 
     void Y_vAll(Card* pCard_arg);
     void Y_vAll(TagSet* pProperties);

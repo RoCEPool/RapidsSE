@@ -278,6 +278,27 @@ bool Symbol::bIsBoolFn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a symbol for a table-column (i.e. $c.n)                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsColumnOrdinal(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
+  char acFourth = m_sSymbol.azChar()[3];
+
+  if ('$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '.' == acThird
+      && StrLib::bIsDigit(acFourth))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a comma separator?                                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsComma(void)
@@ -424,9 +445,9 @@ bool Symbol::bIsSubQueryColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a table-column (i.e. $c.n)                            */
+/* is this a symbol for a synthetic as?  (i.e. _COLn)                         */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsColumnOrdinal(void)
+bool Symbol::bIsSyntheticAs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -434,14 +455,16 @@ bool Symbol::bIsColumnOrdinal(void)
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
   char acFourth = m_sSymbol.azChar()[3];
+  char acFifth  = m_sSymbol.azChar()[4];
 
-  if ('$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '.' == acThird
-      && StrLib::bIsDigit(acFourth))
+  if (   '_' == acFirst
+      && 'C' == acSecond
+      && 'O' == acThird
+      && 'L' == acFourth
+      && StrLib::bIsDigit(acFifth))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -589,6 +612,16 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("__sq%02lld"_Stz, iSqNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSetSyntheticAs(i8 iAsNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSprint("__COL%lld"_Stz, iAsNo);
 }
 
 /*----------------------------------------------------------------------------*/
