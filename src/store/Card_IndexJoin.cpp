@@ -150,9 +150,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 
     if (pCI->G.p_term->bIsStmOdn()) {
       Card_Expr* p_expr_stmCol = new Card_Expr;
-      s32 sAs;
-      sAs.vSprint("_COL_%lld"_Stz,pCI->Early.m_pNeeded_later->nChildCards());
-      Card_As* p_as = new Card_As(sAs);
+      Card_As* p_as = new Card_As(pCI->Early.m_pNeeded_later->nChildCards());
       p_expr_stmCol->vAppend(p_as);
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
       p_rpnCalc->vSetType(pCI->G.p_term);

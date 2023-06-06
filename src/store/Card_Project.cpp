@@ -173,9 +173,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
     Card_Expr* p_expr_early = x_needed.p_expr()->pClone();
 
     if (! p_expr_early->pSub_as()) {
-      s32 sAs;
-      sAs.vSprint("_COL_%lld"_Stz,p_projection_early->nChildCards());
-      Card_As* p_as_new = new Card_As(sAs);
+      Card_As* p_as_new = new Card_As(p_projection_early->nChildCards());
       p_expr_early->vAppend(p_as_new);
     }
     p_projection_early->vInsert(p_expr_early);

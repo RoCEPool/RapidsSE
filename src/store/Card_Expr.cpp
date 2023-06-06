@@ -255,11 +255,8 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   if (p_as)
     p_expr_early->vAppend(p_as->pClone());
   else {
-    s32 sAs;
-    sAs.vSprint("_COL_%lld"_Stz,i_Expr);
-    Card_As* p_as_new = new Card_As(sAs);
+    Card_As* p_as_new = new Card_As(i_Expr);
     p_expr_early->vAppend(p_as_new);
-
   }
 
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());

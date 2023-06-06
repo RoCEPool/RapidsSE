@@ -631,8 +631,6 @@ void Symbol::vSetTableColSyn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  //((char*) m_sSymbol.azChar())[1] = cTblSyn;
-
   vSprint("%c"_Stz, cTblSyn);
 }
 

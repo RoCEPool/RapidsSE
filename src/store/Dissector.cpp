@@ -939,12 +939,9 @@ Card_Expr* Dissector::pExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& 
 
 
   if (! pCard_Expr->pSub_as()) {
-    s32 sAs;
-    sAs.vSprint("_COL_%lld"_Stz,ri_Expr+1);
-    Card_As* pCard_As = new Card_As(sAs);
+    Card_As* pCard_As = new Card_As(ri_Expr+1);
     pCard_Expr->vInsert(pCard_As);
   }
-
 
   ri_Expr++;
   return pCard_Expr;
@@ -1012,28 +1009,6 @@ Card_As* Dissector::pAs(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Dissector::vAsEnsure(Card_Expr* p_expr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  Card_As* pCard_As = _pCard_As(p_expr->pFindSubCard(CK_AS));
-  if (pCard_As)
-    return;
-
-  s32 sAs;
-  sAs.vSprint("COL_%lld"_Stz, p_expr->i_Child());
-
-  pCard_As = new Card_As(sAs);
-
-  Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
-
-  p_expr->vInsertBefore(pCard_As,p_rpnCalc);
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* collect <sortDirn> terms :                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Direction* Dissector::pDirection(Card_RpnTerms* pCard_RpnTerms)
@@ -1077,7 +1052,6 @@ Stz* Dissector::szType(Card_RpnTerms* pCard_RpnTerms)
 
   return szType;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
