@@ -943,7 +943,7 @@ dload lineitem paths
 ;</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_ORDERKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_ORDERKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -956,7 +956,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx2" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -969,7 +969,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx3" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_SHIPDATE" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_SHIPDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -982,7 +982,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx4" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_SUPPKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -995,7 +995,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactLineitemIdx5" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxL_RECEIPTDATE" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index lineItem IxL_RECEIPTDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1026,7 +1026,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactOrdersIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_CUSTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_CUSTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1039,7 +1039,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactOrdersIdx2" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_ORDERKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_ORDERKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1052,7 +1052,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactOrdersIdx3" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxO_ORDERDATE" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index orders IxO_ORDERDATE ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1083,7 +1083,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartsuppIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxPS_SUPPKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index partsupp IxPS_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1096,7 +1096,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartsuppIdx2" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxPS_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index partsupp IxPS_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1127,7 +1127,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactPartIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxP_PARTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index part IxP_PARTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1158,7 +1158,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactCustomerIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxC_CUSTKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index customer IxC_CUSTKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1171,7 +1171,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactCustomerIdx2" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxC_NATIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index customer IxC_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1202,7 +1202,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactSupplierIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxS_SUPPKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index supplier IxS_SUPPKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1215,7 +1215,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactSupplierIdx2" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxS_NATIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index supplier IxS_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1242,7 +1242,7 @@ dload lineitem paths
               <stringProp name="TestPlan.comments">Note: This is not a distributed load because the table is so small.</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactNationIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxN_NATIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index nation IxN_NATIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1255,7 +1255,7 @@ dload lineitem paths
               <stringProp name="variableNames"></stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactNationIdx2" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxN_REGIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index nation IxN_REGIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
@@ -1282,7 +1282,7 @@ dload lineitem paths
               <stringProp name="TestPlan.comments">Note: This is not a distributed load because the table is so small.</stringProp>
             </JDBCSampler>
             <hashTree/>
-            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compactRegionIdx1" enabled="true">
+            <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="compact_IxR_REGIONKEY" enabled="true">
               <stringProp name="dataSource">SEConnPool</stringProp>
               <stringProp name="query">compact index region IxR_REGIONKEY ;</stringProp>
               <stringProp name="queryArguments"></stringProp>
