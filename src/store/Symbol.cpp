@@ -969,6 +969,9 @@ void Symbol::Y_vSet(Stz* szPpyNm, Stz* szPpy)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(szPpy);
+  RASSERT(*szPpy->azChar());
+
   if (! m_pProperties)
     m_pProperties = new TagSet;
 

@@ -161,6 +161,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
 
   p_expr_simple->vAppend(p_rpnCalc);
+  p_expr_simple->vSetType(p_rpnCalc);
 
   p_expr_simple->vAppend(p_expr->pSub_as()->pDupCardRecursive());
 
@@ -431,10 +432,10 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  if (! pSymbol()->bTest_mustHave_ppy(P_Type,nullptr)) {
-//    vDump();
-//    RASSERT(0);
-//  }
+  if (! pSymbol()->bTest_mustHave_ppy(P_Type,nullptr)) {
+    vDump();
+    RASSERT(0);
+  }
 
 
   eCK eHas = eValidate_mustEither(CK_BOOLCALC,CK_RPNCALC,CK_NONE);

@@ -102,6 +102,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G.p_term->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
   pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
+  pCI->G.p_expr->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
 }
 
