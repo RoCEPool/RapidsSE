@@ -16,12 +16,25 @@ __vDeleteFunction(Card_As,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Card_As::Card_As(i8 iAsNo)
+: Card(CK_AS)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pSymbol()->vSetSyntheticAs(iAsNo);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Card_As::Card_As(Stz* szAs)
 : Card(CK_AS,szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vSymbol(szAs);
     
   _checkInitialised_(CN_CARD);
   
