@@ -264,6 +264,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
   p_expr_early->vAppend(p_rpnCalc_early);
 
+  p_expr_early->vSetType(p_rpnCalc_early);
   return p_expr_early;
 }
 
