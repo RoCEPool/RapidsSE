@@ -786,6 +786,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
     p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
+    p_expr->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
 
     Symbol xSymbol_tblCol;
     xSymbol_tblCol.vSetTableColOrdinal(cTblSyn, i_Col + 1);

@@ -58,22 +58,34 @@ void MakeOptimal::vOptimise(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
   vDelete_flat();
+  Bench::vValidate(m_pCI);
 
   vMorph_table_To_EEop();
+  Bench::vValidate(m_pCI);
 
   vMorph_scan_To_indexScan();
+  Bench::vValidate(m_pCI);
 
   vDerive_Projection_Keys();
+  Bench::vValidate(m_pCI);
 
   vCut_sort();
+  Bench::vValidate(m_pCI);
 
   vPromote_gbyAgg_To_ordAgg();
+  Bench::vValidate(m_pCI);
 
   vCullNonusedBounds();
+  Bench::vValidate(m_pCI);
+
   vCullUsedBoundsFromFilter();
+  Bench::vValidate(m_pCI);
+
   vIndividuateFilter();
+  Bench::vValidate(m_pCI);
 
   vEarlyProjections();
+  Bench::vValidate(m_pCI);
 
   vDebugPoint();
 }
