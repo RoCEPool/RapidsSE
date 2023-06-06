@@ -152,6 +152,19 @@ class TestRunner:
 
         # The above didn't work so we need to be more forceful. When we run
         # a stop command then JMeter will try to exit immediately.
+        self.hard_stop_jmeter_test()
+
+    def hard_stop_jmeter_test(self):
+        """
+        Attempt to hard stop and force exit a running JMeter test.
+        We do this by calling a JMeter script on the remote node which sends
+        a UDP message to the listening JMeter process. We will wait a little
+        bit of time for this to complete.
+        """
+
+        timeout = 10
+        success = False
+
         LOG.info(f"Attempting to forcefully stop the running JMeter process "
                  f"with the command: {C_JMETER_STOPTEST}")
 

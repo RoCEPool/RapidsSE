@@ -170,6 +170,8 @@ class JobRunner:
             elif se_crashed:
                 LOG.error("RapidsSE has crashed!! Commencing shutdown hooks.")
                 errmsg = "RapidsSE has crashed. Please check the log artifact files for details."
+                if self.current_test_runner is not None:
+                    self.current_test_runner.hard_stop_jmeter_test()
 
             # If we have had an abnormal exit and there is a test in progress then we need to
             # mark it as failed and add its result.
