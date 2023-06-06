@@ -304,8 +304,8 @@ class TestRunner:
             self.result.set_test_ended(test_passed=True, test_skipped=False)
 
         except errors.SshError as e:
-            stdout = e.stdout.replace("\n", "\n    ") if e.stdout is not None else ""
-            stderr = e.stderr.replace("\n", "\n    ") if e.stderr is not None else ""
+            stdout = ("  " + e.stdout.replace("\n", "\n    ")) if e.stdout is not None else ""
+            stderr = ("  " + e.stderr.replace("\n", "\n    ")) if e.stderr is not None else ""
 
             msg = f"Error while trying to remotely execute JMeter file at {self.ip_addr}:{self.remote_test_file}" \
                   f"\n  Exit code:\n{e.exit_code}" \
