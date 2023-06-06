@@ -157,6 +157,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
       Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
       p_rpnCalc->vSetType(pCI->G.p_term);
       p_expr_stmCol->vAppend(p_rpnCalc);
+      p_expr_stmCol->vSetType(p_rpnCalc);
       p_rpnCalc->vAppend(pCI->G.p_term->pDupCardRecursive());
       pCI->Early.m_pNeeded_later->vAppend(p_expr_stmCol);
       pCI->Early.m_pNeeded_later->vRenumberAll_expr();
