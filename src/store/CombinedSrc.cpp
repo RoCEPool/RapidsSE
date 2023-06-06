@@ -202,18 +202,28 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
       case SK_GBYAGG:
 
+        // stencio to
         vAppendStencilTo(pOpSketch);
+
+        // create indexDef and indexTree
         vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
         vAppendCodeIndexCols(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
+
+        // populate the payload key
         vAppendCodeFragment(pOpSketch, "iGbyAggContinue"_Stz);
         vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
+        // find the key
         vAppendCodeFragment(pOpSketch, "vGbyAggFindKey"_Stz);
+
+        // create the payload
         if (pOpSketch->m_nPayloadBytes)
           vAppendCodeFragment(pOpSketch, "vGbyAggCreatePayLoad"_Stz);
 
+        // insert key
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
           vAppendCodeFragment(pOpSketch, "iGbyAggInsertIntKey"_Stz);
           vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
@@ -224,6 +234,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
           vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz);
         }
+
+        // populate the payload
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
@@ -1030,7 +1042,7 @@ void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
     Column *pColumn = pOpSketch->m_pIndexDef->pGetColumn(i_Col);
 
     if (i_Col == nColumns - 1)
-      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld}\n };\n"_Stz,
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld}\n   };\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
                     pColumn->eColumnType(),

@@ -25,6 +25,7 @@ i8 vExprCheck(Dynamic_T* aDynamicT) {
 
   // marker-start
 
+  // check for error
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
@@ -77,15 +78,13 @@ i8 iGbyAggContinue(Dynamic_T* aDynamicT) {
   // marker-start
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // GBYAGG-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  if (!aDynamicT->m_iProcessRow) {
+  // process row ?
+  if ( ! aDynamicT->m_iProcessRow ) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
-  // - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the payload key
   aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
   // marker-end
@@ -103,7 +102,7 @@ void vGbyAggCreatePayLoad(Dynamic_T* aDynamicT) {
   i8 __PAYLOADBYTES__;
 
     // marker-start
-    // - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create the payload
 
 #ifdef WITH_CLANG
@@ -121,7 +120,7 @@ void vGbyAggFindKey(Dynamic_T* aDynamicT) {
   void* aEntFound;
 
   // marker-start
-  // - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find key in payload index
 #ifdef WITH_CLANG
   aEntFound = aExtern_IndexTreeFindEntry(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntKey);
@@ -144,17 +143,19 @@ i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-    // - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert key in the payload
 #ifdef WITH_CLANG
     aEntInserted = aExtern_IndexTreeInsertEnt(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
 #endif
 
+    // check for error
     if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
       return 0;
     }
 
+    // did we insert the key ?
     if (aEntInserted) {
       aDynamicT->m_iRowsProcessed++;
       aDynamicT->m_aiPayload = (i8 *) ((char *) aEntInserted
@@ -180,12 +181,13 @@ i8 iGbyAggIntKeyEnd(Dynamic_T* aDynamicT) {
   {
   // marker-start
 
+    // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
   }
 
-  // - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate the payload
   aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
                   + sizeof(struct Ent_int)
@@ -209,17 +211,19 @@ i8 iGbyAggInsertVchKey(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  // - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert key in the payload
 #ifdef WITH_CLANG
   aEntInserted = aExtern_IndexTreeInsertEnt(
       aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
 #endif
 
+  // check for error
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
+  // did we insert the key ?
   if (aEntInserted) {
     aDynamicT->m_iRowsProcessed++;
     aDynamicT->m_aiPayload = (i8 *) ((char *) aEntInserted
@@ -245,12 +249,13 @@ i8 iGbyAggGenKeyEnd(Dynamic_T* aDynamicT) {
   {
   // marker-start
 
+    // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
   }
 
-  // - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate the payload
   aDynamicT->m_aiPayload = (i8 *) ((char *) aEntFound
                   + sizeof(struct Ent_int)
@@ -287,12 +292,13 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
   //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
   //szStrArea = aDynamicT->m_acStrAreaT;
 
+  // process the row ?
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
-  // - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the payload key
   aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
   // marker-end
@@ -306,6 +312,8 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 /*----------------------------------------------------------------------------*/
 // function-iTubBegin
 i8 iTubBegin(Dynamic_T* aDynamicT) {
+
+  RowInfo __ROW_INFO_TO__;
 
   struct __STRUCT_TO__ {
     i8 iDummy;
@@ -321,7 +329,10 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
   printf("TUB\n");
-  if (aDynamicT->m_xRowInfoTO.m_iInitialize) {
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the RowPix
+  if (__ROW_INFO_TO__.m_iInitialize) {
 
     struct ColumnInfo xColumnInfo[] = {
         // marker-end
@@ -360,14 +371,18 @@ i8 iTubBegin2(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexDefBegin -------------------------------------------------------------*/
+/*-- vIndexDefBegin ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexDefBegin
 i8 vIndexDefBegin(Dynamic_T* aDynamicT) {
 
-  // marker-start
+  IndexInfo __INDEX_INFO__;
 
-  if (aDynamicT->m_xIndexInfoPL.m_iInitialize) {
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the indexDef and the indexTree
+
+  if (__INDEX_INFO__.m_iInitialize) {
 
     struct ColumnInfo xColumnInfo[] = {
         // marker-end
@@ -376,10 +391,12 @@ i8 vIndexDefBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexDefContinue ----------------------------------------------------------*/
+/*-- vIndexDefContinue -------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexDefContinue
 i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
+
+  IndexInfo __INDEX_INFO__;
 
   ColumnInfo xColumnInfo;
   i8 __INDEX_COLUMNS__;
@@ -390,16 +407,24 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 #ifdef WITH_CLANG
     bool bPayload = true;
     i8 iKeyKind;
+
+    // create the indexDef
     aDynamicT->m_xIndexInfoPL.m_aIndexDef = aExtern_IndexDefNew(__INDEX_COLUMNS__, (void*)&xColumnInfo);
+
+    // create the indexTree
     aDynamicT->m_xIndexInfoPL.m_aIndexTree = aExtern_IndexTreeNew(aDynamicT->m_xIndexInfoPL.m_aIndexDef, &iKeyKind);
 
+    // do we have a payload ?
     if (__COLUMNS_OUT__ == __INDEX_COLUMNS__)
       bPayload = false;
 
+    // set the entry kind
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoPL.m_aEntWrk, bPayload, iKeyKind);
 
 #endif
-    aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
+
+    // mark IndexInfo as initialized
+    __INDEX_INFO__.m_iInitialize = 0;
   }
 
   // marker-end
@@ -412,6 +437,8 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 // function-iTubRowPix
 i8 iTubRowPix(Dynamic_T* aDynamicT) {
 
+  RowInfo __ROW_INFO_TO__;
+
   {
     // marker-start
 
@@ -420,7 +447,7 @@ i8 iTubRowPix(Dynamic_T* aDynamicT) {
     void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
     vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
 #endif
-    aDynamicT->m_xRowInfoTO.m_iInitialize = 0;
+    __ROW_INFO_TO__.m_iInitialize = 0;
   }
 
   // marker-end
@@ -464,6 +491,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
+  // process the row ?
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
@@ -473,6 +501,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 #ifdef WITH_CLANG
   aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
+  // check for error
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
@@ -523,6 +552,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
   {
     // marker-start
 
+    // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
@@ -531,6 +561,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
     aDynamicT->m_iAggregInit = 1;
   }
 
+  // any rows processed ?
   if (!aDynamicT->m_iRowsProcessed)
     goto L_Return;
 
@@ -565,6 +596,7 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 #ifdef WITH_CLANG
     aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
+    // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
@@ -585,7 +617,7 @@ void vEosPayLoadTubEnd(Dynamic_T* aDynamicT) {
   {
 
   // marker-start
-    // - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry
 #ifdef WITH_CLANG
     aDynamicT->m_xIndexInfoPL.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
@@ -616,6 +648,8 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
       aExtern_IndexTreeBegin(aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 #endif
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // traverse the index
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
     aDynamicT->m_iProcessRow = 1;
@@ -652,6 +686,8 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
       aDynamicT->m_xIndexInfoPL.m_aIndexTree, &aDynamicT->m_xIndexInfoPL.m_aEntBuffer);
 #endif
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // traverse theindex
   while (aDynamicT->m_xIndexInfoPL.m_aEntInt) {
 
     aDynamicT->m_iProcessRow = 1;
