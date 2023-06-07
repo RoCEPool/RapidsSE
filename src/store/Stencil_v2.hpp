@@ -95,6 +95,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
     OpSketch* pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind);
+    OpSketch* pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop, TypedStack* pInitStack = nullptr);
 
     eEC eValidateStage(StageDef* pStageDef);
 
@@ -118,22 +119,10 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     void vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind);
 
-    OpSketch* pSketchEos(Stream* pStream, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchFilter(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchInflateCrw(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
-    OpSketch* pSketchInflateRow(Stream* pStream, Op* pOp, eHK eHandlerKind, Stz* sLabelLoop);
-    OpSketch* pSketchProject(Stream* pStream, Op* pOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-     OpSketch* pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop, TypedStack* pInitStack = nullptr);
-
-
-
-
-
 
 
     void vSketchEosSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSketchEosTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-
 
     OpSketch* pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
