@@ -216,7 +216,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
 
         // populate the payload key
-        vAppendCodeFragment(pOpSketch, "iGbyAggContinue"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
         vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
@@ -401,6 +401,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         //vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "iSortBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
         vAppendCodeIndexCols(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);

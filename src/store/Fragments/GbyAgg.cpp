@@ -51,32 +51,6 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iGbyAggContinue ---------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iGbyAggContinue
-i8 iGbyAggContinue(Dynamic_T* aDynamicT) {
-
-  __L_LABEL_LOOP__:
-
-  // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process row ?
-  if ( ! aDynamicT->m_iProcessRow ) {
-    aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the payload key
-  aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
-  // marker-end
-
-  return 0;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vGbyAggFindKey ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vGbyAggFindKey

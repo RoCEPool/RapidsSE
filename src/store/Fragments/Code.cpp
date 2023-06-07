@@ -155,18 +155,6 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
 
   printf("SORT-OP\n");
 
-  //p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  //szStrArea = aDynamicT->m_acStrAreaT;
-
-  // process the row ?
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // populate the payload key
-  aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
   // marker-end
 
   return 0;
@@ -1024,6 +1012,33 @@ void vStreamDefEnd(Dynamic_T* aDynamicT) {
 #endif
 
   // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iResetPLKey -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iResetPLKey
+i8 iResetPLKey(Dynamic_T* aDynamicT) {
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process row ?
+  if ( ! aDynamicT->m_iProcessRow ) {
+    aDynamicT->m_iProcessRow = 1;
+    goto __L_LABEL_LOOP__;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the payload key
+  aDynamicT->m_xIndexInfoPL.m_aEntInt->m_iIntElm0 = 0;
+
+  // marker-end
+
+  return 0;
+
 }
 
 /*============================================================================*/
