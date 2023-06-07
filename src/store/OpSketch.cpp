@@ -811,8 +811,8 @@ void OpSketch::vGenerateExprStacks(void)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // aggregate follows, generate init expressions in the m_aInitStack
-      eExprType = (eDM)pExprType->iPop();
-      vPushAggCol(pExprStack, ePreExp, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      //eExprType = (eDM)pExprType->iPop();
+      vPushAggCol(pExprStack, ePreExp, DM_INT, i_Col+iGkyCols, i_ColPL, i_DupCtr);
       continue;
     }
 
@@ -1807,7 +1807,9 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
 
 
   if (pColumn->eColumnType() == CT_VARCHAR && ePreExp == PE_EXP &&
-      m_eSketchKind != EK_FILTER && m_eSketchKind != EK_SORT)
+      m_eSketchKind != EK_FILTER &&
+      m_eSketchKind != EK_SORT   &&
+      m_eSketchKind != EK_AGGREG)
     pExprStack->vPushStz("_ALLOC_VCH(szStrArea)"_Stz);
 
   // push the type

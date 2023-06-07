@@ -129,7 +129,6 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
   i8 nStages = pPipelineDef->nItems();
 
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-    Stencil_v2 *pStencil = new Stencil_v2;
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
     pStageDef->vDump();
   }
@@ -311,7 +310,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       ePrevStencil_v2 = SR_PL;
 
       OpSketch *pGbyAggOpSketch = pOpSketch;
-      OpDef *pLastOp = pOpDef;
 
       pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
@@ -374,16 +372,16 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       pOpSketch = pSketchSort(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
-      //ePrevStencil_v2 = SR_PL;
+      ePrevStencil_v2 = SR_PL;
 
       OpSketch *pSortOpSketch = pOpSketch;
-      OpDef *pLastOpDef = pOpDef;
 
       pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchTub(pSortOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      pOpSketch->vIndexDef(pSortOpSketch->m_pIndexDef);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
