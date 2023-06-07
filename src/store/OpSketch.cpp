@@ -287,6 +287,7 @@ void OpSketch::vCopyColsReq(ColsReq* pColsReq)
       nCols++;
       m_pColsReq->m_axCols[i_Col].m_i_Col_base1 = pColsReq->m_axCols[i_Col].m_i_Col_base1;
       m_pColsReq->m_axCols[i_Col].m_sColNm = pColsReq->m_axCols[i_Col].m_sColNm;
+      m_pColsReq->m_axCols[i_Col].m_bPayload = pColsReq->m_axCols[i_Col].m_bPayload;
     }
   }
 }

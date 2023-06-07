@@ -317,6 +317,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchTub(pGbyAggOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop, pGbyAggOpSketch->m_pInitStack);
       pOpSketch->vIndexDef(pGbyAggOpSketch->m_pIndexDef);
+      pOpSketch->vCopyColsReq(pGbyAggOpSketch->m_pColsReq);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -336,6 +337,22 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
       ePrevStencil_v2 = SR_TJ;
       continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the limitOP
+    if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
+
+      //pCombined->aCombinedT()->m_iLimitRows = 1;
+
+      // limit after a payload will move to EOSHandler
+      if (m_xStageOps.m_bPayloadOp) {
+        continue;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchLimit(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1702,43 +1719,33 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
 /*----------------------------------------------------------------------------*/
 /* sketch limit                                                               */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchLimit(Dynamic* pDynamic, Stream* pStream, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
-/*
+OpSketch* Stencil_v2::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
 
-  i8 i_Op = pOp->i_Op();
-  CodeSynth_v2 *pCodeSynth;
-
-  // create a new shape for this OP
-  OpSketch *pShape = new OpSketch;
+  i8 i_Op = pOpDef->i_Op();
 
   // get limit from limitOp
-  TagSet* pOpTags = pOp->pOpTags();
-  i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+  Stz* sLimitExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-
-  // new the aggregate type stack
-  pLogicUnit->m_xpPreExpStack = new IntStack;
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+  // get the streamDefs
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the OP
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, pStreamDefLft, nullptr, pPreExpStack, ePrevStencil_v2, SR_NONE);
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTubPot"_Stz);
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(i_Op, sLimitExpr, eHandlerKind, SK_LIMIT, ePrevStencil_v2, SR_NONE, II_NONE, pStreamDefLft, pStreamDefOut);
 
-  pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, sLabelLoop);
-  pShape->vCodeSynthB(pCodeSynth);
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
-  return pShape;
-  */
-  return nullptr;
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1977,6 +1984,9 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // get the grouby aggregate expr from OpDef
   Stz* sGbyAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
+  // get the columns required
+  ColsReq* pColsReq = pOpDef->m_pColMap_gbyAgg;
+
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
@@ -1996,6 +2006,9 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
+  // set the colsRequired (payload information)
+  pOpSketch->vCopyColsReq(pColsReq);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();

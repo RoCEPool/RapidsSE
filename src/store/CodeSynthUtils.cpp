@@ -385,6 +385,11 @@ void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
 
   _static_
 
+  if (StrLib::bContains(sLine->azChar(), "__LIMIT_ROWS__")) {
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__LIMIT_ROWS__", pOpSketch->m_sExprString.azChar());
+    RASSERT(bResult);
+  }
+
   if (StrLib::bContains(sLine->azChar(), "__COLUMNS_IN__")) {
     s256 sColumn;
     StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());

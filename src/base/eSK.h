@@ -17,6 +17,7 @@ enum eSK // sketch kind
   /*   */ SK_INDEXSCAN,   // index scan
   /*   */ SK_INFLATE_CRW, // inflate CRW
   /*   */ SK_INFLATE_ROW, // inflate ROW
+  /*   */ SK_LIMIT,       // limit
   /*   */ SK_POT,         // pot
   /*   */ SK_PROJECT,     // projection
   /*   */ SK_SEMIJOIN,    // semi-join
@@ -40,6 +41,7 @@ static Stz* aSK[]
   /*   */ "INDEXSCAN"_Stz,
   /*   */ "INFLATE_CRW"_Stz,
   /*   */ "INFLATE_ROW"_Stz,
+  /*   */ "LIMIT"_Stz,
   /*   */ "POT"_Stz,
   /*   */ "PROJECT"_Stz,
   /*   */ "SEMIJOIN"_Stz,

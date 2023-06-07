@@ -397,6 +397,18 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         break;
 
+      case SK_LIMIT:
+        // open the limit code fragments file
+        bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Limit.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        vAppendCodeFragment(pOpSketch, "vLimit"_Stz, pCodeFile);
+
+        // close the inflateRow code fragments file
+        pCodeFile->vClose();
+
+        break;
+
       case SK_SORT:
 
         //vAppendStencilTo(pOpSketch);
