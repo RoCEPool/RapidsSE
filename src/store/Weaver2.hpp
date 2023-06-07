@@ -19,6 +19,7 @@ namespace STORE
 
     i8 m_i_Stage;
     i8 m_i_Op_stage;
+    bool m_bOpPrinted;
     s48K m_sOptStmt;
     s48K m_sCppBlock;
 

@@ -30,8 +30,9 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
   m_pOptimiser    = m_pBench->pOptimiser();
   m_pBoard        = nullptr;
   
-  m_i_Stage = 0;
+  m_i_Stage    = 0;
   m_i_Op_stage = 0;
+  m_bOpPrinted = false;
 
   m_pDeck = nullptr;
 
@@ -237,6 +238,7 @@ void Weaver2::vStageNext(Card_Stage* pCard_Stage)
   m_i_Stage++;
   
   m_i_Op_stage = 0;
+  m_bOpPrinted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,7 +337,7 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
   else                             sOpNm = aCK_short[eCard];
 
   if (bCommented)
-    while (StrLib::bReplace(sOpArgs.azChar(),"\n   ","\n //"))
+    while (StrLib::bReplace(sOpArgs.azChar(),"\n    ","\n  //"))
       {;}
 
   vTabOp(bCommented);
@@ -850,16 +852,22 @@ void Weaver2::vTabOp(bool bCommented)
   
   if (m_i_Op_stage) {
     if (bCommented)
-      vConcat(" // | "_Stz);
+      vConcat("  //| "_Stz);
     else
+    if (m_bOpPrinted)
       vConcat("    | "_Stz);
-  }
-  else {
-    if (bCommented)
-      vConcat("   // "_Stz);
     else
       vConcat("      "_Stz);
   }
+  else {
+    if (bCommented)
+      vConcat("  //  "_Stz);
+    else
+      vConcat("      "_Stz);
+  }
+
+  if (! bCommented)
+    m_bOpPrinted = true;
 }
 
 /*----------------------------------------------------------------------------*/
