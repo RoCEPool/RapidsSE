@@ -284,13 +284,16 @@ void Weaver2::vDynamic(StageDef* pStageDef)
 /*----------------------------------------------------------------------------*/
 /* weave a card                                                               */
 /*----------------------------------------------------------------------------*/
-void Weaver2::vOp(Card* pCard)
+void Weaver2::vOp(Card* pCard, bool bCommented)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
   
   s4K sOpArgs;
 
   eCK eCard = pCard->eCard();
+
+  if (CK_SEND == eCard)
+    return;
 
   Card_OP* p_OP = (Card_OP*)pCard;
 
@@ -314,7 +317,7 @@ void Weaver2::vOp(Card* pCard)
     case CK_PROJECT:      vArgProject      (sOpArgs,_pCard_Project(pCard));      break;
     case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
     case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
-    case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));         break;
+    case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));        break;
     case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
@@ -331,7 +334,11 @@ void Weaver2::vOp(Card* pCard)
   else if (CK_WHERE == eCard)      sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
 
-  vTabOp();
+  if (bCommented)
+    while (StrLib::bReplace(sOpArgs.azChar(),"\n   ","\n //"))
+      {;}
+
+  vTabOp(bCommented);
   vConcat("%-9s %s"_Stz,
           sOpNm.azChar(),
           sOpArgs.szStz());
@@ -837,14 +844,22 @@ void Weaver2::vPreStage(void)
 /*----------------------------------------------------------------------------*/
 /* tab before op                                                              */
 /*----------------------------------------------------------------------------*/
-void Weaver2::vTabOp(void)
+void Weaver2::vTabOp(bool bCommented)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
   
-  if (m_i_Op_stage)
-    vConcat("    | "_Stz);
-  else
-    vConcat("      "_Stz);
+  if (m_i_Op_stage) {
+    if (bCommented)
+      vConcat(" // | "_Stz);
+    else
+      vConcat("    | "_Stz);
+  }
+  else {
+    if (bCommented)
+      vConcat("   // "_Stz);
+    else
+      vConcat("      "_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -943,15 +958,23 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
     if (* pStageDef->szCode()->azChar()) {
 
       xCI.G_vMainResynch(p_stage);
-      if (xCI.G_bEachMain()) {
+      while (xCI.G_bEachMain()) {
         if (CK_SCAN == xCI.G.e_MainCard || CK_TABLE == xCI.G.e_MainCard) {
           vOp(xCI.G.p_MainCard);
+        }
+        else
+        if (CK_CAST == xCI.G.e_MainCard ) {
+          xCI.G_vMainResynch(xCI.pPrevChild());
+          break;
+        }
+        else {
+          vOp(xCI.G.p_MainCard,/*commented*/true);
         }
       }
 
       vDynamic(pStageDef);
 
-      if (xCI.G_bEachMain(CK_CAST)) {
+      if (xCI.bIsActive() && xCI.G_bEachMain(CK_CAST)) {
         vOp(xCI.G.p_MainCard);
       }
     }

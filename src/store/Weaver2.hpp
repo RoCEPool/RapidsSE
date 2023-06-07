@@ -55,7 +55,7 @@ namespace STORE
 
     void vDynamic     (StageDef* pStageDef);
 
-    void vOp          (Card* pCard);
+    void vOp          (Card* pCard, bool bCommented=false);
 
     void vArgAbsJoin     (Stz* szOpArgs,  Card_AbsJoin*   pCard_AbsJoin);
     void vArgAggreg      (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
@@ -86,7 +86,7 @@ namespace STORE
 
     void vPreStage(void);
   
-    void vTabOp(void);
+    void vTabOp(bool bCommented=false);
     void vTabStage(void);
 
   private:

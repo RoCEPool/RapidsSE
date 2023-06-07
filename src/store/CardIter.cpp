@@ -1345,6 +1345,8 @@ void CardIter::G_vMainResynch(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
+  G.xKid.m_bActive = true;
+
   for (G.xKid.vChild(-1); G.xKid.bEach(); /**/)
     if (G.p_MainCard == G.xKid.pChild())
       break;
@@ -2319,6 +2321,16 @@ void CardIter::vSubQueryIteration(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   Sqy.m_i_SubQuery = C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is tracing enabled?                                                        */
+/*----------------------------------------------------------------------------*/
+bool CardIter::bIsActive(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  return G.xKid.m_bActive;
 }
 
 
