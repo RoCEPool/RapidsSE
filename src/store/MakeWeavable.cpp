@@ -233,7 +233,7 @@ void MakeWeavable::vReinstateStages(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* renumber all synthetic as                                                  */
+/* final renumbering all synthetic as                                         */
 /*----------------------------------------------------------------------------*/
 void MakeWeavable::vRenumberAll_syntheticAs(void)
 {

@@ -320,6 +320,64 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* initial projection analysis                                                */
+/*----------------------------------------------------------------------------*/
+void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->vRestart();
+  while (pCI->G_bEachSubOfMain(CK_TABLE))
+    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
+      pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
+
+  pCI->vRestart();
+  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
+
+  while (pCI->G_bEachMain()) {
+
+    if (CK_SCAN == pCI->G.e_MainCard ||
+        CK_INDEXJOIN == pCI->G.e_MainCard) {
+      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+      pCI->G.p_table->vUpdate_projection(pCI);
+      continue;
+    }
+
+    if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
+      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
+        pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+
+      //continue;
+    }
+
+    if (CK_SORT == pCI->G.e_MainCard) {
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    }
+
+    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+      if (pCI->Analysis.m_pProjection_prior) {
+        pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_key->vRenumberAll_expr();
+      }
+    }
+
+    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+
+      if (pCI->Analysis.m_pProjection_prior) {
+        pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
+        pCI->G.p_projection->vRenumberAll_expr();
+      }
+
+      pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
+    }
+
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* update projections after some change                                       */
 /*----------------------------------------------------------------------------*/
 void Card_Deck::vProjectionUpdate(CardIter* pCI)

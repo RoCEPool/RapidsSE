@@ -34,6 +34,7 @@ namespace STORE
     Card_Projection* p_projection_fold(void);
 
     void vProjectionAnalysis(CardIter* pCI);
+    void vProjectionAnalysis_passThru(CardIter* pCI);
 
   };
 

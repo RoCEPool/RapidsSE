@@ -268,6 +268,14 @@ void Weaver2::vDynamic(StageDef* pStageDef)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
   vTabOp();  vConcat("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
+
+  if (AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
+    vTabOp();
+    vConcat("next"_Stz);
+    vEolOp();
+    m_i_Op_stage++;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -957,7 +965,8 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
   vCppBlock();
   vSemicolon();
 
-  //vTrace("%s\n"_Stz, szOptStmt());
+  if (AM::JOB::bHasTag(C_WEAVED))
+    vTrace("%s\n"_Stz, szOptStmt());
 }
 
 

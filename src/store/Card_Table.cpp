@@ -120,6 +120,18 @@ _static_
 }
 
 /*----------------------------------------------------------------------------*/
+/* affix table syntax to all tables                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, char* cTableSyn) {
+
+  _static_
+
+  while (pCI->G_bEach2SubOfMain(CK_TABLE, CK_TABLENM))  {
+    pCI->G.p_table->vSet_Syn(cTableSyn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* append index list under all tables                                         */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vAppendIndexList(CardIter* pCI) {

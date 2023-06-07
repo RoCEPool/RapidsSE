@@ -94,6 +94,32 @@ void MakeSimpler::vSimplify(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* apply the reducePipeline set of transformations to all subPipe boards      */
+/*----------------------------------------------------------------------------*/
+void MakeSimpler::vSimplify_passThru(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    m_pCI->vUsingBoard(m_pCI->G.i_Board);
+    vShortenQueryNames();
+  }
+
+  m_pCI->vBoardIteration();
+  while (m_pCI->bEachBoard()) {
+    m_pCI->vUsingBoard(m_pCI->G.i_Board);
+
+    vTableAnalysis_passThru(&m_cTableSyn);
+
+    vProjectionAnalysis_passThru();
+
+    vDebugPoint();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -251,6 +277,21 @@ void MakeSimpler::vProjectionAnalysis(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Projection Analysis                                                        */
+/*----------------------------------------------------------------------------*/
+void MakeSimpler::vProjectionAnalysis_passThru(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "((desc))"_Stz);
+
+  m_pCI->G.pDeck->vProjectionAnalysis_passThru(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void MakeSimpler::vRpnCalcToBoolCalc(void)
@@ -348,6 +389,28 @@ void MakeSimpler::vTableAnalysis(char* acTableSyn)
 
   m_pCI->vEndTransform();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Table Analysis                                                             */
+/*----------------------------------------------------------------------------*/
+void MakeSimpler::vTableAnalysis_passThru(char* acTableSyn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Affix Table Syntax To All Table
+  Card_Table::vAffixTableSyn_passThru(m_pCI, acTableSyn);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Produce Table Partition Under All Table
+//  m_pCI->G_vRestart();
+//  Card_Table::vProduceTablePtns(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

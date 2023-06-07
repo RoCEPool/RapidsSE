@@ -28,6 +28,7 @@ namespace STORE
    ~MakeSimpler(void) noexcept(false);
 
     void vSimplify(void);
+    void vSimplify_passThru(void);
 
   private:
     void vAddLevel(void);
@@ -37,10 +38,12 @@ namespace STORE
     void vMoveOn(void);
     void vNotOps(void);
     void vProjectionAnalysis(void);
+    void vProjectionAnalysis_passThru(void);
     void vRpnCalcToBoolCalc(void);
     void vScanBecomesTable(void);
     void vShortenQueryNames(void);
     void vTableAnalysis(char* acTableSyn);
+    void vTableAnalysis_passThru(char* acTableSyn);
 
   protected:
     Footer* aFooter(void);

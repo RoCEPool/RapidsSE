@@ -207,6 +207,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
     case CK_ORDAGG:       p_OP->vRpnOrdAgg      (sExpr, _pCard_OrdAgg      (p_OP)); break;
     case CK_PROJECT:      p_OP->vRpnProject     (sExpr, _pCard_Project     (p_OP)); break;
     case CK_SCAN:         p_OP->vRpnScan        (sExpr, _pCard_Scan        (p_OP)); break;
+    case CK_SEND:         break;
     case CK_SORT:         p_OP->vRpnSort        (sExpr, _pCard_Sort        (p_OP)); break;
     case CK_TABLE:        break;
     case CK_WHERE:        p_OP->vRpnWhere       (sExpr, _pCard_Where       (p_OP)); break;
@@ -295,6 +296,9 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
 
     case CK_SCAN:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Scan(p_OP)->pSub_tableNm()->szSymbol()));
+      break;
+
+    case CK_SEND:
       break;
 
     case CK_SORT:

@@ -166,14 +166,15 @@ void Optimiser::vApplyTransformationMatrix(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
 
-  MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
-  pMakeSimpler->vSimplify();
-  delete pMakeSimpler;
-  m_pCI->m_pBench->vMadeSimpler(true);
-
-  Bench::vValidate(m_pCI);
-
   if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
+
+    MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
+    pMakeSimpler->vSimplify();
+    delete pMakeSimpler;
+    m_pCI->m_pBench->vMadeSimpler(true);
+
+    Bench::vValidate(m_pCI);
+
 
     MakeFlat *pMakeFlat = new MakeFlat(m_pCI);
     pMakeFlat->vFlatten();
@@ -188,24 +189,43 @@ void Optimiser::vApplyTransformationMatrix(void)
     m_pCI->m_pBench->vMadeOptimal(true);
 
     Bench::vValidate(m_pCI);
+
+    MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
+    pMakeWeavable->vWeavable();
+    delete pMakeWeavable;
+    m_pCI->m_pBench->vMadeWeavable(true);
+
+    Bench::vValidate(m_pCI);
+
+    MakeCode* pMakeCode = new MakeCode(m_pCI);
+    pMakeCode->vSynthesise();
+    m_pPipelineDef = pMakeCode->pPipelineDef();
+    pMakeCode->vPipelineDef(nullptr);
+    m_pCI->m_pBench->vMadeCode(true);
+
+    delete pMakeCode;
+    Bench::vValidate(m_pCI);
+
+  }
+  else {
+
+    MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
+    pMakeSimpler->vSimplify_passThru();
+    delete pMakeSimpler;
+    m_pCI->m_pBench->vMadeSimpler(true);
+
+    //m_pCI->vPrintBoard();
+
+    MakeCode* pMakeCode = new MakeCode(m_pCI);
+    pMakeCode->vSynthesise();
+    m_pPipelineDef = pMakeCode->pPipelineDef();
+    pMakeCode->vPipelineDef(nullptr);
+    m_pCI->m_pBench->vMadeCode(true);
+
+    delete pMakeCode;
+
   }
 
-  MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
-  pMakeWeavable->vWeavable();
-  delete pMakeWeavable;
-  m_pCI->m_pBench->vMadeWeavable(true);
-
-  Bench::vValidate(m_pCI);
-
-  MakeCode* pMakeCode = new MakeCode(m_pCI);
-  pMakeCode->vSynthesise();
-  m_pPipelineDef = pMakeCode->pPipelineDef();
-  pMakeCode->vPipelineDef(nullptr);
-  m_pCI->m_pBench->vMadeCode(true);
-
-  Bench::vValidate(m_pCI);
-
-  delete pMakeCode;
 }
 
 /*----------------------------------------------------------------------------*/
