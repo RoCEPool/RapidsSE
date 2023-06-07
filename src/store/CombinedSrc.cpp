@@ -206,7 +206,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/GbyAgg.cpp"_Stz);
         RASSERT ( bOpened );
 
-        // stencio to
+        // stencil to
         vAppendStencilTo(pOpSketch);
 
         // create indexDef and indexTree

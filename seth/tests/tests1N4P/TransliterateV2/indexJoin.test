@@ -1,0 +1,79 @@
+--------------------------------------------------------------------------------
+-- INDEX JOIN tests --- CO-PARTITIONED
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+//------------------------------------------------------------------------------
+// INDEX JOIN
+// nation.n_negionkey = region.r_regionkey
+// PtnKey[nation] = n_negionkey
+// PtnKey[region] = r_regionkey
+
+create table nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+create table region (
+	 R_REGIONKEY       INTEGER      NOT NULL,
+	 R_NAME            CHAR(25)     NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+success
+
+create index IxR_REGIONKEY on REGION (R_REGIONKEY);
+success
+
+load nation "../DATA/TPCH/nation.tbl" ;
+success
+
+load region "../DATA/TPCH/region.tbl" ;
+success
+
+//------------------------------------------------------------------------------
+// JOIN
+select n_nationkey, r_name from nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
+  join region ON n_nationkey = r_regionkey;
+rows:
+  (0,'AFRICA')
+  (1,'AMERICA')
+  (2,'ASIA')
+  (3,'EUROPE')
+  (4,'MIDDLE EAST')
+
+//------------------------------------------------------------------------------
+// JOIN
+select n_nationkey, r_name from nation /*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = unicast */
+  join region ON n_nationkey = r_regionkey where n_nationkey < 3;
+rows:
+  (0,'AFRICA')
+  (1,'AMERICA')
+  (2,'ASIA')
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table nation;
+success
+
+drop table region;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  drop table nation;
+  mute
+
+  drop table region;
+  mute
+
+  bye;
+  mute
+}

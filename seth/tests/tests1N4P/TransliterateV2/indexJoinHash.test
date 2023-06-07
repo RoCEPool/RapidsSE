@@ -1,0 +1,345 @@
+--------------------------------------------------------------------------------
+-- INDEX JOIN tests ---
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+//------------------------------------------------------------------------------
+// INDEX JOIN (NO LEFT DATA)
+// T1.a = T2.a
+// PtnKey[T] = a
+// PtnKey[J] = c
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_a on T2 (a);
+success
+
+load T2 "../DATA/Joins/T2.csv" ;
+success
+
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500 and T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+select T1.a, T1.d, T2.* from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+select T1.*, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+select T1.a, T1.d, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >=500 and T2.b >= 500;
+rows: 0
+
+// drop the tables
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// INDEX JOIN (NO RIGHT DATA)
+// T1.a = T2.a
+// PtnKey[T] = a
+// PtnKey[J] = c
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_a on T2 (a);
+success
+
+load T1 "../DATA/Joins/T1.csv" ;
+success
+
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500 and T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+select T1.a, T1.d, T2.* from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+select T1.*, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+select T1.a, T1.d, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >=500 and T2.b >= 500;
+rows: 0
+
+// drop the tables
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// INDEX JOIN (NO LEFT AND RIGHT DATA)
+// T1.a = T2.a
+// PtnKey[T] = b
+// PtnKey[J] = c
+
+// T1.a = T2.a
+// PtnKey[T] = a
+// PtnKey[J] = c
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_a on T2 (c);
+success
+
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500 and T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+select T1.a, T1.d, T2.* from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+select T1.*, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows: 0
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+select T1.a, T1.d, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >=500 and T2.b >= 500;
+rows: 0
+
+// drop the tables
+drop table T1;
+success
+
+drop table T2;
+success
+
+//------------------------------------------------------------------------------
+// INDEX JOIN
+// T1.a = T2.a
+// PtnKey[T] = a
+// PtnKey[J] = c
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (c);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_a on T2 (a);
+success
+
+load T1 "../DATA/Joins/T1.csv" ;
+success
+
+load T2 "../DATA/Joins/T2.csv" ;
+success
+
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a;
+rows:
+  (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
+  (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
+  (3,303,33993,'T-ROW3',3,337,3339,'J-ROW3b')
+  (4,null,4344,'T-ROW4',4,464,444,'J-ROW4')
+  (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
+  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows:
+  (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
+  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+  (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows:
+  (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
+  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER
+select * from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500 and T2.b >= 500;
+rows:
+ (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT FILTER & PROJECT
+select T1.a, T1.d, T2.* from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >= 500;
+rows:
+  (6,'T-ROW6',6,null,666,'J-ROW6')
+  (7,'T-ROW7',7,7347,null,'J-ROW7')
+  (1,'T-ROW1',1,181,111,'J-ROW1')
+
+//------------------------------------------------------------------------------
+// RIGHT FILTER & PROJECT
+select T1.*, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T2.b >= 500;
+rows:
+  (3,303,33993,'T-ROW3',3,'J-ROW3a')
+  (7,727,7377,'T-ROW7',7,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// LEFT and RIGHT FILTER & PROJECT
+select T1.a, T1.d, T2.a, T2.d from T1 /*+ joinAlgorithm = index, joinIndex = T2_a, joinRouting = hashcast, hashkey = T1.a */
+  join T2 on T1.a = T2.a where T1.b >=500 and T2.b >= 500;
+rows:
+  (7,'T-ROW7',7,'J-ROW7')
+
+//------------------------------------------------------------------------------
+// drop the tables
+
+drop table T1;
+success
+
+drop table T2;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table T1;
+  mute
+
+  drop table T2;
+  mute
+
+  bye;
+  mute
+}
