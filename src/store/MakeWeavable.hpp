@@ -30,9 +30,6 @@ namespace STORE
   private:
 
     void vAddStageCasts(void);
-    void vCullNonusedBounds(void);
-    void vCullUsedBoundsFromFilter(void);
-    void vIndividuateFilter(void);
     void vReinstateStages(void);
     void vRenumberAll_syntheticAs(void);
     void vStmColToColNmOfKeyExists(void);
