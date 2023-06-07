@@ -445,7 +445,7 @@ bool Symbol::bIsSubQueryColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol for a synthetic as?  (i.e. _COLn)                         */
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsSyntheticAs(void)
 {
@@ -456,12 +456,14 @@ bool Symbol::bIsSyntheticAs(void)
   char acThird  = m_sSymbol.azChar()[2];
   char acFourth = m_sSymbol.azChar()[3];
   char acFifth  = m_sSymbol.azChar()[4];
+  char acSixth  = m_sSymbol.azChar()[5];
 
   if (   '_' == acFirst
-      && 'C' == acSecond
-      && 'O' == acThird
-      && 'L' == acFourth
-      && StrLib::bIsDigit(acFifth))
+      && '_' == acSecond
+      && 'C' == acThird
+      && 'O' == acFourth
+      && 'L' == acFifth
+      && StrLib::bIsDigit(acSixth))
     return true;
 
   return false;

@@ -34,6 +34,7 @@ namespace STORE
     void vCullUsedBoundsFromFilter(void);
     void vIndividuateFilter(void);
     void vReinstateStages(void);
+    void vRenumberAll_syntheticAs(void);
     void vStmColToColNmOfKeyExists(void);
     void vTblColToStmCol(void);
 

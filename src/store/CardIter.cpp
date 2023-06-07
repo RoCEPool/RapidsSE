@@ -942,6 +942,34 @@ bool CardIter::G_bEachSubOfMain(eCK eSubKind)
 /*----------------------------------------------------------------------------*/
 /* step main register to next main which has sub and update M member          */
 /*----------------------------------------------------------------------------*/
+bool CardIter::G_bEachSubOfMain_reverse(eCK eSubKind)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  while (G_bEachMain_reverse()) {
+    if (! (G.p_SubOfMain = G.p_MainCard->pFindSubCard(eSubKind)))
+      continue;
+
+    vFocusOnMain();
+
+    G_vMember(G.e_MainCard, G.p_MainCard, __func__);
+    G.e_SubOfMain = G.p_SubOfMain->eCard();
+    G_vMember(G.e_SubOfMain, G.p_SubOfMain, __func__);
+    return true;
+  }
+
+  G.p_MainCard  = nullptr;
+  G.e_MainCard  = CK_NONE;
+  G.p_SubOfMain = nullptr;
+  G.e_SubOfMain = CK_NONE;
+  G_vMember(eSubKind, nullptr, __func__);
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* step main register to next main which has sub and update M member          */
+/*----------------------------------------------------------------------------*/
 bool CardIter::G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2)
 {
   _precondition_( _MAGIC_, _FOOTER_);
