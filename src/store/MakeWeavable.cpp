@@ -137,7 +137,7 @@ void MakeWeavable::vStmColToColNmOfKeyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "((20))))"_Stz);
+  m_pCI->vTransform(__func__, "vStmColToColNmOfKeyExists"_Stz);
 
   m_pCI->vRestart();
 
