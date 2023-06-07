@@ -57,10 +57,13 @@ void ColsReq::vAddCol(i8 i_Col_base1, Stz *szColNm, bool bPayLoad)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
+  m_axCols[m_nCols].m_i_Col_base1 = i_Col_base1;
+  m_axCols[m_nCols].m_sColNm      = szColNm;
+  m_axCols[m_nCols].m_bPayload    = bPayLoad;
+
   m_nCols++;
-  m_axCols[i_Col_base1].m_i_Col_base1 = i_Col_base1;
-  m_axCols[i_Col_base1].m_sColNm = szColNm;
-  m_axCols[i_Col_base1].m_bPayload = bPayLoad;
+
+  vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,6 +87,17 @@ void ColsReq::vDump(void)
 void ColsReq::vValidate(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+
+  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
+    if (! StrLib::bIsSqlName(m_axCols[i_Col].m_sColNm.azChar())) {
+      vDump();
+      break;
+    }
+  }
+
+  for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
+    RASSERT(StrLib::bIsSqlName(m_axCols[i_Col].m_sColNm.azChar()));
+  }
 }
 
 /*============================================================================*/

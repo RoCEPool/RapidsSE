@@ -434,6 +434,8 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
     }
 
   }
+
+  pColsReq->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/

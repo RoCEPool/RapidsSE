@@ -19,6 +19,9 @@ namespace STORE
     i8  m_i_Op;
     s32 m_sOpNm;
 
+    i8   m_nCollapses;
+    bool m_bCollapsed;
+
     StreamDef* m_pStreamDef_arriving;
     StreamDef* m_pStreamDef_emitted;
 

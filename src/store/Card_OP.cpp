@@ -1670,6 +1670,8 @@ ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
     pColMap_gbyAgg->vAddCol(i_Col, pCol->szColNm(), false);
   }
 
+  pColMap_gbyAgg->vValidate();
+
   return pColMap_gbyAgg;
 }
 
@@ -1708,6 +1710,9 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap_gbyAgg)
   }
 
   StreamDef* pStreamDef_emitted = p_projection->pToStreamDef(*ppColMap_gbyAgg,p_key);
+
+  if (*ppColMap_gbyAgg)
+    (*ppColMap_gbyAgg)->vValidate();
 
   return pStreamDef_emitted;
 }

@@ -23,6 +23,8 @@ OpDef::OpDef(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   m_i_Op = C_UNKNOWN;
+  m_nCollapses = 0;
+  m_bCollapsed = false;
 
   m_pStreamDef_arriving = nullptr;
   m_pStreamDef_emitted  = nullptr;
