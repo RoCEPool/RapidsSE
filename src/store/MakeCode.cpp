@@ -161,8 +161,12 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
       return;
   }
 
-  if (p_OP->bIsCard(CK_TABLE))
+  if (p_OP->bIsCard(CK_HAVING))
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz);
+  else if (p_OP->bIsCard(CK_TABLE))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz);
+  else if (p_OP->bIsCard(CK_WHERE))
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz);
   else
     m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm());
   m_pStageDef->vAppend(m_pOpDef);
