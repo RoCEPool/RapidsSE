@@ -194,6 +194,7 @@ namespace BASE
     static bool  bIsSign(const char c);
     static bool  bIsSingleQuote(const char c);
     static bool  bIsSlash(const char c);
+    static bool  bIsSqlName(char* ps);
     static bool  bIsTilde(const char c);
     static bool  bIsUnderscore(const char c);
     static bool  bIsUpperCase(const char c);

@@ -3374,6 +3374,7 @@ bool StrLib::bIsPlus(const char c)
     return false;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* bIsQuestion: is char a question?                                           */
 /*----------------------------------------------------------------------------*/
@@ -3438,6 +3439,30 @@ bool StrLib::bIsSingleQuote(const char c)
   else
     return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is argument a valid sql name?                                              */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsSqlName(char* ps)
+{
+  _static_
+
+  char* az = ps;
+
+  // must start with a alpha or underscore
+  char c = *az++;
+  if (! (isalpha(c) || '_' == c))
+    return false;
+
+  // followed by zero or more: alpha, digit or underscore
+  while ((c = *az++)) {
+    if (! (bIsAlphaDigit(c) || '_' == c))
+      return false;
+  }
+
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* bIsTilde: is char a tilde?                                                 */
