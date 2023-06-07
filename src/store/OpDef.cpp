@@ -315,6 +315,8 @@ void OpDef::vValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
+  RASSERT(StrLib::bIsSqlName(m_sOpNm.azChar()));
+
   if (m_pStreamDef_arriving)
     m_pStreamDef_arriving->vValidate();
 

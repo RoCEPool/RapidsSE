@@ -172,6 +172,8 @@ void StageDef::vValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
+  RASSERT(StrLib::bIsSqlName(m_sStageNm.azChar()));
+
   i8 nOps = nItems();
   for (i8 i_Stage = 0; i_Stage < nOps; i_Stage++) {
     OpDef* pOpDef = pGet(i_Stage);

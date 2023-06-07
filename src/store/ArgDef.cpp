@@ -150,6 +150,8 @@ void ArgDef::vValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARGDEF,_FOOTER_);
 
+  RASSERT(StrLib::bIsSqlName(m_sArgNm.azChar()));
+
 }
 
 /*============================================================================*/
