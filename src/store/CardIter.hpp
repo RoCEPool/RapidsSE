@@ -129,6 +129,7 @@ namespace STORE
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoardNm(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
+    bool bIsActive(void);
     bool bIsTracing(void);
 
     bool bJustRestarted(void);
