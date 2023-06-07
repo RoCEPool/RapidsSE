@@ -39,6 +39,8 @@ namespace STORE
 
     void vStore(i8 i_Arg, Stz* szArgNm, Stz* szArgVal);
 
+    void vValidate(void);
+
   protected:
     Footer* aFooter(void);
   };

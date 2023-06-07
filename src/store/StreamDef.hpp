@@ -31,6 +31,8 @@ namespace STORE
 
     StreamDef* pDup(void);
 
+    void vValidate(void);
+
     Footer* aFooter(void);
   };
   

@@ -69,6 +69,8 @@ namespace STORE
     StreamDef* pStreamDef_emitted(void);
     void vStreamDef_emitted(StreamDef* pStreamDef_emitted);
 
+    void vValidate(void);
+
   protected:
     Footer* aFooter(void);
   };

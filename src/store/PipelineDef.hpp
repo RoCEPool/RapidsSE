@@ -33,6 +33,8 @@ namespace STORE
     Stz* szPipelineNm(void);
     void vPipelineNm(Stz* szPipelineNm);
 
+    void vValidate(void);
+
   protected:
     Footer* aFooter(void);
   };

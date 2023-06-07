@@ -308,6 +308,39 @@ void OpDef::vStreamDef_emitted(StreamDef* pStreamDef_emitted)
   m_pStreamDef_emitted = pStreamDef_emitted;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void OpDef::vValidate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+
+  if (m_pStreamDef_arriving)
+    m_pStreamDef_arriving->vValidate();
+
+  if (m_pStreamDef_emitted)
+    m_pStreamDef_emitted->vValidate();
+
+  if (m_pIndexDef_gbyAgg)
+    m_pIndexDef_gbyAgg->vValidate();
+
+  if (m_pColMap_gbyAgg)
+    m_pColMap_gbyAgg->vValidate();
+
+  if (m_pIndexDef_sort)
+    m_pIndexDef_sort->vValidate();
+
+  if (m_pColsReq)
+    m_pColsReq->vValidate();
+
+  i8 nArgs = nItems();
+  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
+    ArgDef* pArgDef = pGet(i_Arg);
+    pArgDef->vDump();
+  }
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

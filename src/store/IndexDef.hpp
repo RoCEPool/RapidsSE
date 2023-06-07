@@ -78,6 +78,8 @@ namespace STORE
     eEC    eParse(Table* pTable, Stz* szCmd);
     void   vResetPointers(void);
     i8     iSortKeyDatum(void);
+
+    void   vValidate(void);
   
   private:
     eEC eAddIdxCol(Table* pTable, i8 iCol, Stz* szColNm);

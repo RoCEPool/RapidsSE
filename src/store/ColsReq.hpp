@@ -37,6 +37,8 @@ namespace STORE
 
     void vDump(void);
 
+    void vValidate(void);
+
   protected:
     Footer* aFooter(void);
   };

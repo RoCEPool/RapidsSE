@@ -45,6 +45,8 @@ namespace STORE
     Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
 
+    void vValidate(void);
+
   protected:
     Footer* aFooter(void);
   };

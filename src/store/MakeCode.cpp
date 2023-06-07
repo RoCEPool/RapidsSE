@@ -129,6 +129,8 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 
   if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
     m_pPipelineDef->vDump();
+
+  m_pPipelineDef->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
