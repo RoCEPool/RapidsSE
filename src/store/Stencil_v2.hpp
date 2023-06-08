@@ -16,7 +16,6 @@
 struct stageOps_V2 {
 
   i8 m_iAggregOp;
-  i8 m_iCombinedOp;   // to go
   i8 m_iFilterOp;
   i8 m_iHashOp;
   i8 m_iIndexJoinOp;
@@ -34,7 +33,6 @@ struct stageOps_V2 {
   bool m_bPayloadOp;
   bool m_bGeneratePotTub;
 
-  Op* m_pDynamicOp;
   Op* m_pHavingFilterOp;
   Op* m_pLimitOp;
 
@@ -51,11 +49,8 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
   {
   private:
 
-    s256        m_szStageNm;
-    bool        m_bRowBuffer;
-
-    stageOps_V2 m_xStageOps;
-
+    s256         m_szStageNm;
+    stageOps_V2  m_xStageOps;
     CombinedSrc* m_pOpSource;
 
     // must be last
@@ -81,6 +76,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     eEC eSynthesise(StageDef* pStageDef);
     void vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault);
+
     OpSketch* pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchEos(StageDef* pStageDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
@@ -100,9 +96,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     eEC eValidateStage(StageDef* pStageDef);
 
 
-
-
-    void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
 
     void vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp);

@@ -43,10 +43,8 @@ Stencil_v2::Stencil_v2(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
   m_szStageNm    = ""_Stz;
-  m_bRowBuffer   = false;
 
   m_xStageOps.m_iAggregOp    = 0;
-  m_xStageOps.m_iCombinedOp  = 0;
   m_xStageOps.m_iFilterOp    = 0;
   m_xStageOps.m_iHashOp      = 0;
   m_xStageOps.m_iIndexJoinOp = 0;
@@ -66,7 +64,6 @@ Stencil_v2::Stencil_v2(void)
 
   m_xStageOps.m_bGeneratePotTub = true;
 
-  m_xStageOps.m_pDynamicOp     = nullptr;
   m_xStageOps.m_pHavingFilterOp = nullptr;
   m_xStageOps.m_pLimitOp        = nullptr;
 
@@ -263,7 +260,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       ePrevStencil_v2 = SR_AT;
 
       OpSketch *pAggOpSketch = pOpSketch;
-      OpDef *pLastOpDef = pOpDef;
 
       pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
@@ -301,9 +297,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     if (pOpDef->szOpNm()->bSame("gbyAgg"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupGbyAgg(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchGbyAgg(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
@@ -317,7 +310,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchTub(pGbyAggOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop, pGbyAggOpSketch->m_pInitStack);
       pOpSketch->vIndexDef(pGbyAggOpSketch->m_pIndexDef);
-      pOpSketch->vCopyColsReq(pGbyAggOpSketch->m_pColsReq);
+      pOpSketch->vCopyColsMap(pGbyAggOpSketch->m_pColsMap);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -506,26 +499,6 @@ void Stencil_v2::vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, St
       // form next label using next op
       sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
     }
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get the next label for Op                                                  */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  i8 iNextOp = i_Op + 1;
-  Op *pOpNext = pStream->pGet(iNextOp);
-
-  if (pOpNext->szOpNm()->bSame("dynamic_v2"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
-    // if nextOp is combined/hash, then next label is sDefault
-    sLabelNext->vCopy(sDefault);
-  }
-  else {
-    // form next label using next op
-    sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
   }
 }
 
@@ -943,10 +916,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
-  //Index* pIndex = pOpDef->m_pIndex_indexJoin;
-
-  // get the select columns
-  //u8 uSelectColumns = uGetSelectColumns(pStream);
+  Index* pIndex = pOpDef->m_pIndex_indexJoin;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
@@ -959,11 +929,14 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   sLabelOuterLoop = sLabelLoop;
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
 
+  // HACK : should come from optimiser
   // set the streamDefRht
-  pOpSketch->vStreamDefRht(pStreamDefRht);
+  Table* pTable = pIndex->pTable();
+  pOpSketch->vStreamDefRht(pTable->pStreamDef());
 
   // set the indexDef
-  //pOpSketch->vIndexDef(pIndex->pIndexDef());
+  pOpSketch->vIndex(pIndex);
+  pOpSketch->vIndexDef(pIndex->pIndexDef());
   pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
@@ -1439,7 +1412,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   Stz* sGbyAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the columns required
-  ColsReq* pColsReq = pOpDef->m_pColMap_gbyAgg;
+  ColsReq* pColsMap = pOpDef->m_pColMap_gbyAgg;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1461,8 +1434,8 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
-  // set the colsRequired (payload information)
-  pOpSketch->vCopyColsReq(pColsReq);
+  // set the colsMap (payload information)
+  pOpSketch->vCopyColsMap(pColsMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks();
@@ -1622,14 +1595,6 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
     OpDef *pOpDef = pStageDef->pGet(i_Op);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // OP after CombinedOp ?
-//    if ( m_xStageOps.m_iCombinedOp ) {
-//      vTrace("Error: Cannot have OP's after combinedOp (%s)!!!\n"_Stz,
-//             m_szStageNm.azChar());
-//      return EC_INVALID_PIPELINE;
-//    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // scanOp
     if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
 
@@ -1700,11 +1665,11 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // Should be the last OP before CombinedOp
-      if (i_Op != pStageDef->nItems() - 3) {
-        vTrace("Error: HashOP should be the last OP before combinedOP (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
+//      if (i_Op != pStageDef->nItems() - 3) {
+//        vTrace("Error: HashOP should be the last OP before combinedOP (%s)!!!\n"_Stz,
+//               m_szStageNm.azChar());
+//        return EC_INVALID_PIPELINE;
+//      }
 
       m_xStageOps.m_iHashOp++;
 
@@ -1768,7 +1733,7 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // keyExistsOp
-    if (pOpDef->szOpNm()->bSame("keyExists"_Stz)) {
+    if (pOpDef->szOpNm()->bSame("semijoin"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE KEYEXISTS-OP's
@@ -1791,7 +1756,7 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // keyNotExistsOp
-    if (pOpDef->szOpNm()->bSame("keyNotExists"_Stz)) {
+    if (pOpDef->szOpNm()->bSame("antijoin"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // MULTIPLE LIMIT-OP's
@@ -1938,13 +1903,6 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
       m_xStageOps.m_iTopOp++;
     }
   }
-
-  // we should have seen a combinedOP ?
-//  if ( m_xStageOps.m_iCombinedOp == 0 ) {
-//    vTrace("Error: Missing combinedOp (%s)!!!\n"_Stz,
-//           m_szStageNm.azChar());
-//    return EC_INVALID_PIPELINE;
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // any OP's to combine ?

@@ -188,7 +188,7 @@ void vIndexPositionLower(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexScanContinue-----------------------------------------------------*/
+/*-- vIndexScanContinue-------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexScanContinue
 void vIndexScanContinue(Dynamic_T* aDynamicT) {

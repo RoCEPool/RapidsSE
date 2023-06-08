@@ -145,6 +145,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
     vAppendFileHeaders();
 
 
+  bool bHasIndexInflate = false;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sketch code for each operator
   for (i8 iOpSketch = 0; iOpSketch < pStencil->nItems(); iOpSketch++) {
@@ -158,11 +160,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
       case SK_EOS:
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // end previous handler
-        vAppendFunctionFooter(pOpSketch, ePreviousHandler);
+        vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // begin new EOS handler
-        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
         break;
 
       case SK_AGGREG:
@@ -268,6 +270,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         break;
 
       case SK_INDEXSCAN:
+
+        bHasIndexInflate = true;
+
         // open the indexScan code fragments file
         bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
         RASSERT ( bOpened );
@@ -277,7 +282,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new INDEXBUFFER handler
-        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
         vAppendStencilTo(pOpSketch);
 
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pCodeFile);
@@ -317,6 +322,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         break;
 
       case SK_INDEXJOIN:
+
+        bHasIndexInflate = true;
+
         // open the indexJoin code fragments file
         bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
         RASSERT ( bOpened );
@@ -358,10 +366,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         }
 
         vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
-        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz);
+        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
         vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pCodeFile);
 
         // close the indexJoin code fragments file
+        pInflateFile->vClose();
         pCodeFile->vClose();
         pIndexFile->vClose();
 
@@ -370,7 +381,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
       case SK_INFLATE_CRW:
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new CRWBUFFER handler
-        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
         // open the inflateCrw code fragments file
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
@@ -392,7 +403,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new ROWBUFFER handler
-        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz, pCodeFile);
@@ -443,11 +454,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // end previous handler
-        vAppendFunctionFooter(pOpSketch, ePreviousHandler);
+        vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // begin new EOS handler
-        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm());
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // StreamDefOut generation
@@ -510,7 +521,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end EOS handler
   RASSERT(eCurrentHandler == HK_STREAMDEF);
-  vAppendFunctionFooter(nullptr, eCurrentHandler);
+  vAppendFunctionFooter(nullptr, eCurrentHandler, bHasIndexInflate);
 
   //vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
 
@@ -688,12 +699,6 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
   bool bExtracted;
   bool bOpened = false;
 
-  if ( ! pCodeFile ) {
-    // open the inflateCrw code fragments file
-    bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
-    RASSERT ( bOpened );
-  }
-
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefRht->nColumns(); i_Col++) {
 
     Column* pColumn = pOpSketch->m_pStreamDefRht->pGetColumn(i_Col);
@@ -707,8 +712,6 @@ void CombinedSrc::vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* sReturnP
     StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
 
-  if (bOpened)
-    pCodeFile->vClose();
 }
 
 
@@ -806,7 +809,7 @@ void CombinedSrc::vAppendFileHeaders(void) {
 /*----------------------------------------------------------------------------*/
 /* append function footer fragment                                            */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind)
+void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind, bool &bHasIndexInflate)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -823,7 +826,10 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind)
       szFunction = "vIndexScanEnd";
       break;
     case HK_ROWBUFFER:
-      szFunction = "vInflateRowEnd";
+      if (bHasIndexInflate)
+        szFunction = "vInflateRowIndexEnd";
+      else
+        szFunction = "vInflateRowEnd";
       break;
     case HK_STREAMDEF:
       szFunction = "iStreamDefEnd";
@@ -840,12 +846,13 @@ void CombinedSrc::vAppendFunctionFooter(OpSketch* pOpSketch, eHK eHandlerKind)
   RASSERT(bExtracted);
 
   StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
+  bHasIndexInflate = false;
 }
 
 /*----------------------------------------------------------------------------*/
 /* append function header fragment                                            */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, Stz* szStageNm)
+void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, Stz* szStageNm, bool bHasIndexInflate )
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -914,7 +921,10 @@ void CombinedSrc::vAppendFunctionHeader(OpSketch* pOpSketch, eHK eHandlerKind, S
       szFunction = "vCrwContinue";
       break;
     case HK_ROWBUFFER:
-      szFunction = "vRowContinue";
+      if (bHasIndexInflate)
+        szFunction = "vRowIndexContinue";
+      else
+        szFunction = "vRowContinue";
       break;
     case HK_INDEXBUFFER:
       szFunction = "vIndexContinue";

@@ -295,10 +295,10 @@ void CodeSynthUtils::vReplaceIndexPosition(Stz* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azChar(), "__INDEX_POSITION_LOWER__")) {
     switch(pOpSketch->m_eLowerIP) {
       case IP_GT:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aIndexTree_positionGT");
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGT");
         break;
       case IP_GE:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aIndexTree_positionGE");
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_LOWER__", "aExtern_IndexTreePositionGE");
         break;
       default:
         RASSERT(0);
@@ -310,11 +310,11 @@ void CodeSynthUtils::vReplaceIndexPosition(Stz* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azChar(), "__INDEX_POSITION_UPPER__")) {
     switch(pOpSketch->m_eUpperIP) {
       case IP_LT:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aIndexTree_positionLT");
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLT");
         RASSERT(bResult);
         break;
       case IP_LE:
-        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aIndexTree_positionLE");
+        bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_POSITION_UPPER__", "aExtern_IndexTreePositionLE");
         RASSERT(bResult);
         break;
       default:
