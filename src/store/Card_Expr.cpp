@@ -317,6 +317,22 @@ void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pGetSymbol(i8 i_Term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Term* p_term_i = pSub_rpnCalc()->pGetTerm(i_Term);
+  if (! p_term_i)
+    return nullptr;
+
+  Symbol* p_symbol_i = p_term_i->pSymbol();
+
+  return p_symbol_i;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

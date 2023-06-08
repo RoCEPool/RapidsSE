@@ -113,16 +113,16 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 
   m_pPipelineDef = new PipelineDef(sQueryNm);
 
-  Kid xBoard(pBoard->pDeck());
-  while (xBoard.bEach()) {
+  Kid xDeck(pBoard->pDeck());
+  while (xDeck.bEach()) {
 
-    if (xBoard.pChild()->szCardNm()->bSame("stage"_Stz)) {
-      vCraftStageDef(xBoard.p_stage());
+    if (xDeck.pChild()->szCardNm()->bSame("stage"_Stz)) {
+      vCraftStageDef(xDeck.p_stage());
     }
     else {
       RASSERT(m_pStageDef);
-      //vTrace("Op %s\n"_Stz,xBoard.pChild()->szCardNm());
-      vCraftOpDef(xBoard.p_OP());
+      vTrace("Op %s\n"_Stz, xDeck.p_OP()->szCardNm());
+      vCraftOpDef(xDeck.p_OP());
     }
 
   }

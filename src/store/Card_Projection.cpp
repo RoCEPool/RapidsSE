@@ -260,17 +260,18 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg, Card_Key* p_ke
 
   Kid xExpr(this);
   while (xExpr.bEach(CK_EXPR)) {
+    Card_Expr* p_expr = xExpr.p_expr();
 
-    if (xExpr.p_expr()->pSub_as())
-      sColNm = xExpr.p_expr()->pSub_as()->szSymbol();
+    if (p_expr->pSub_as())
+      sColNm = p_expr->pSub_as()->szSymbol();
     else
-      sColNm = xExpr.p_expr()->pGetTerm(0)->szSymbol();
+      sColNm = p_expr->pGetTerm(0)->szSymbol();
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream def column
 
-    eColumnType = xExpr.p_expr()->eColumnType();
+    eColumnType = p_expr->eColumnType();
 
     //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumnType]);
 
@@ -283,7 +284,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg, Card_Key* p_ke
       RASSERT(p_key);
 
       bool bPayload = false;
-      if (xExpr.p_expr()->pSymbol()->bIsKeyOrdinal())
+      if (! p_expr->pSymbol()->bIsKeyOrdinal())
         bPayload = true;
 
       pColMap_gbyAgg->vAddCol(i_Col++,sColNm,bPayload);
