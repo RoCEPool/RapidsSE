@@ -530,90 +530,6 @@ void Stencil_v2::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* s
 }
 
 /*----------------------------------------------------------------------------*/
-/* get select columns                                                         */
-/*----------------------------------------------------------------------------*/
-u8 Stencil_v2::uGetSelectColumns(Stream* pStream) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  bool bProject = false;
-
-  u8 uSelectColumns = 0;
-
-  // for each operator in the stream
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
-
-    // get the op
-    Op *pOp = pStream->pGet(i_Op);
-
-    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-      LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-//      for (i8 i=0; i<64; i++) {
-//        if (BitLib::bIsOn(pLogicUnit->m_uSelectColumns, i))
-//          vTrace("OP: %s ; Column %lld\n"_Stz, pOp->szOpNm(), i);
-//      }
-      uSelectColumns |= pLogicUnit->m_uSelectColumns;
-      continue;
-    }
-
-    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
-        pOp->szOpNm()->bSame("project"_Stz) ||
-        pOp->szOpNm()->bSame("ordagg"_Stz)) {
-      LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-      uSelectColumns |= pLogicUnit->m_uSelectColumns;
-      bProject = true;
-      break;
-    }
-
-    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-    uSelectColumns |= pLogicUnit->m_uSelectColumns;
-
-    // break when we reach the combined OP
-    if (pOp->szOpNm()->bSame("dynamic_v2"_Stz)) {
-      break;
-    }
-
-  }
-
-  // if no projection, select all columns
-  if (!bProject)
-    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-
-  //uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-  return uSelectColumns;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for indexJoin                                                       */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  // create the groupby index
-  eKE eKind;
-  bool bPayload = true;
-
-  // get the indexDef
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
-  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-
-  // do we have a payload ?
-  if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
-    bPayload = false;
-
-  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
-
-  // delete the indexdef in the LU of OP
-  // not the correct place... will come back to it
-  delete *pLogicUnit->m_xpIndexDef;
-  pLogicUnit->m_xpIndexDef = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set up for indexJoin                                                       */
 /*----------------------------------------------------------------------------*/
 void Stencil_v2::vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
@@ -811,71 +727,6 @@ void Stencil_v2::vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* set up for project aggregate                                               */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupAggreg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  // get the streamDefOut
-  //LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  //StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  // create RowSingleAgg
-//  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle = new RowSingle(pStreamDefOut);
-//  pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowCellArray =
-//      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoAT.m_aRowSingle,
-//                                      &pDynamic->aDynamicT()->m_xRowInfoAT.m_acStrArea);
-//  pDynamic->aDynamicT()->m_xRowInfoAT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoAT.m_acStrArea;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for project expression                                              */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupProject(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  // get the streamDefOut
-  //LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  //StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  // create RowSingleP
-//  pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowSingle = new RowSingle(pStreamDefOut);
-//  pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowCellArray =
-//      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoPT.m_aRowSingle,
-//                                      &pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrArea);
-//  pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoPT.m_acStrArea;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for project expression                                              */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  RASSERT(pStreamDefOut);
-
-  Tub *pTub = _pTub(pDynamic->aDynamicT()->m_pTub);
-
-//  if (eHandlerKind == HK_EOS) {
-//    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle = new RowSingle(pStreamDefOut);
-//    pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowCellArray =
-//        (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoPL.m_aRowSingle,
-//                                        &pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrArea);
-//    pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoPL.m_acStrArea;
-//  }
-
-  // get the rowPix
-  RowPix *pRowPix = pStreamDefOut->pRowPix();
-  pTub->vRowPix(pRowPix);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set up for sort                                                            */
 /*----------------------------------------------------------------------------*/
 void Stencil_v2::vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
@@ -903,26 +754,6 @@ void Stencil_v2::vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   // not the correct place... will come back to it
   delete *pLogicUnit->m_xpIndexDef;
   pLogicUnit->m_xpIndexDef = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for scan                                                            */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  // get the streamDefLft
-//  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-//  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-//
-//  pDynamic->aDynamicT()->m_nCols = pStreamDefLft->nColumns();
-//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
-//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
-//      (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle,
-//                                      &pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea);
-//  pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea;
-
 }
 
 /*----------------------------------------------------------------------------*/

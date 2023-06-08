@@ -103,19 +103,13 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
 
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
-    u8   uGetSelectColumns(Stream* pStream);
 
-    void vSetupAggreg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSetupGbyAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSetupProject(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSetupScan(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSetupTub(Dynamic* pDynamic, Op* pOp, eHK eHandlerKind);
 
 
 
