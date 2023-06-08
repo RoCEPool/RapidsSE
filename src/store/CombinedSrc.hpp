@@ -71,6 +71,7 @@ namespace STORE {
     void vAppendCodeNullRightCols(OpSketch* pOpSketch, Stz* szFunction);
     void vAppendCodeKeyToTubCols(OpSketch* pOpSketch);
     void vAppendCodePopulatePayloadCols(OpSketch* pOpSketch);
+    void vAppendCodeToTubCols(OpSketch* pOpSketch);
     void vAppendCodePayLoadToTubCols(OpSketch* pOpSketch);
     void vAppendCodePixCols(OpSketch* pOpSketch);
     void vAppendCodeIndexCols(OpSketch* pOpSketch);

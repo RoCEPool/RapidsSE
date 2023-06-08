@@ -71,6 +71,7 @@ OpSketch::OpSketch(void)
   m_pIndexDef     = nullptr;
 
   m_pColsReq      = nullptr;
+  m_pColsMap      = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
@@ -133,6 +134,7 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_pIndexDef     = nullptr;
 
   m_pColsReq      = nullptr;
+  m_pColsMap      = nullptr;
 
   // labels
   m_sLabel     = ""_Stz;
@@ -195,6 +197,7 @@ OpSketch::~OpSketch(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   delete m_pColsReq;
+  delete m_pColsMap;
   delete m_pExprStack;
   delete m_pInitStack;
   delete m_pGbyStack;
@@ -271,6 +274,28 @@ void OpSketch::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_Du
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy columns map (for gbyAgg and ordAgg)                                    */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyColsMap(ColsReq* pColsMap)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  i8 nCols = 0;
+
+  m_pColsMap = new ColsReq;
+
+  m_pColsMap->m_nCols = pColsMap->m_nCols;
+  for (i8 i_Col = 0; nCols < pColsMap->m_nCols; i_Col++) {
+    if (pColsMap->m_axCols[i_Col].m_i_Col_base1 != C_UNKNOWN) {
+      nCols++;
+      m_pColsMap->m_axCols[i_Col].m_i_Col_base1 = pColsMap->m_axCols[i_Col].m_i_Col_base1;
+      m_pColsMap->m_axCols[i_Col].m_sColNm = pColsMap->m_axCols[i_Col].m_sColNm;
+      m_pColsMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy columns required                                                      */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vCopyColsReq(ColsReq* pColsReq)
@@ -300,6 +325,16 @@ void OpSketch::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* check column mapping and see if column is a payload                        */
+/*----------------------------------------------------------------------------*/
+bool OpSketch::bIsPayload(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  return m_pColsMap->m_axCols[i_Col].m_bPayload ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

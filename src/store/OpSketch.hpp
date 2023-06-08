@@ -55,6 +55,7 @@ namespace STORE
     IndexDef*  m_pIndexDef;
 
     ColsReq*   m_pColsReq;
+    ColsReq*   m_pColsMap;
 
     // stencils
     eSR m_eStencilFrom;
@@ -109,10 +110,12 @@ namespace STORE
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
     void vCopyColsReq(ColsReq* pColsReq);
+    void vCopyColsMap(ColsReq* pColsMap);
 
     void vGenerateExprStacks(void);
 
     void vTable(Table* pTable);
+    bool bIsPayload(i8 i_Col);
     void vIndex(Index* pIndex);
     void vIndexDef(IndexDef* pIndexDef);
     void vIndexPositionLower(eIP eIndexPosition);
