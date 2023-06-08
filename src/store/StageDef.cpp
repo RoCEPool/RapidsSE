@@ -109,6 +109,20 @@ void StageDef::vCode(Stz* sCode)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void StageDef::vCollapseOps(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+
+  i8 nOps = nItems();
+  for (i8 i_Stage = 0; i_Stage < nOps; i_Stage++) {
+    OpDef* pOpDef = pGet(i_Stage);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void StageDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);

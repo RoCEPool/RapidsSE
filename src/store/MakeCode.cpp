@@ -131,6 +131,8 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
     m_pPipelineDef->vDump();
 
   m_pPipelineDef->vValidate();
+  m_pPipelineDef->vCollapseOps();
+  m_pPipelineDef->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/
