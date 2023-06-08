@@ -16,7 +16,8 @@ namespace STORE
     Card_Hash(void);
    ~Card_Hash(void) noexcept(false);
 
-    static Card_Hash* pDerive(Card_Expr* p_expr);
+    static Card_Hash* pDerive(Card_Expr* p_expr,
+                              Card_Projection* p_projection_prev);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
