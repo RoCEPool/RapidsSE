@@ -284,7 +284,8 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap_gbyAgg, Card_Key* p_ke
       RASSERT(p_key);
 
       bool bPayload = false;
-      if (! p_expr->pSymbol()->bIsKeyOrdinal())
+//    if (! p_expr->pSymbol()->bIsKeyOrdinal())
+      if (! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
       pColMap_gbyAgg->vAddCol(i_Col++,sColNm,bPayload);
