@@ -472,8 +472,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
             else
               vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
-            vAppendCodeKeyToTubCols(pOpSketch);
-            vAppendCodePayLoadToTubCols(pOpSketch);
+            vAppendCodeToTubCols(pOpSketch);
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
@@ -1099,91 +1098,36 @@ void CombinedSrc::vAppendCodeNullRightCols(OpSketch* pOpSketch, Stz* szFunction)
   }
 
 }
+
 /*----------------------------------------------------------------------------*/
-/* append code fragment for index key columns to tub                          */
+/* append code fragment for key, payload columns to tub                       */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodeKeyToTubCols(OpSketch* pOpSketch)
-{
+void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   s16KB sCode;
   bool bExtracted;
 
   IndexDef* pIndexDef = pOpSketch->m_pIndexDef;
-  StreamDef* pStreamDefOut = pOpSketch->m_pStreamDefOut;
-
-  //s256 sColNm;
-  //i8 i_DupCtr = 1;
-
-  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
-
-    sCode = ""_Stz;
-    m_pCommonCode->vSeekStart();
-
-    // get the index columns
-    Column* pIndexColumn = pIndexDef->pGetColumn(i_Col);
-
-    // get the steamDef column No maching the indexColumn
-    i8 iStreamDefCol = pIndexDef->iGetStreamDefCol(pIndexColumn->iColumnNo());
-
-    // make the column name
-    //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, iStreamDefCol);
-
-    Column *pColumn = pStreamDefOut->pGetColumn(iStreamDefCol);
-
-    if (pIndexDef->eKeyKind() == KE_GENERAL) {
-      switch (pColumn->eColumnType()) {
-
-        case CT_VARCHAR:
-        case CT_CHAR:
-          vAppendCodeFragment(pOpSketch, "vPLVchKeyToTub"_Stz, pColumn);
-          break;
-
-        default:
-          RASSERT(0);
-          break;
-      }
-    }
-    else {
-      vAppendCodeFragment(pOpSketch, "vPayLoadKeyToTub"_Stz, pColumn);
-    }
-
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* append code fragment for payload columns to tub                            */
-/*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodePayLoadToTubCols(OpSketch* pOpSketch)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
-
-  s16KB sCode;
-  bool bExtracted;
-
-  IndexDef* pIndexDef = pOpSketch->m_pIndexDef;
-  StreamDef* pStreamDefOut = pOpSketch->m_pStreamDefOut;
+  StreamDef *pStreamDefOut = pOpSketch->m_pStreamDefOut;
 
   s256 sColNm;
   i8 i_DupCtr = 1;
   i8 iPayLoad = 0;
   i8 nColumns = pStreamDefOut->nColumns();
-  i8 iIndexColumns = pIndexDef->nColumns();
 
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++, iIndexColumns++) {
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is column in the key ?
-    Column* pIndexColumn = pIndexDef->pFindColumn(pColumn->iColumnNo());
+    // is column in the payload ?
+    bool bIsPayload = pOpSketch->bIsPayload(pColumn->iColumnNo());
 
-    if (pIndexColumn)
-      continue;
+    if (bIsPayload) {
 
-    // make the column name
-    vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_Col);
+      // make the column name
+      vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
     switch (pColumn->eColumnType()) {
 
@@ -1199,7 +1143,41 @@ void CombinedSrc::vAppendCodePayLoadToTubCols(OpSketch* pOpSketch)
     iPayLoad++;
   }
 
-  }
+    else {
+      sCode = ""_Stz;
+      m_pCommonCode->vSeekStart();
+
+      // get the index columns
+      //Column* pIndexColumn = pIndexDef->pGetColumn(i_Col);
+
+      // get the steamDef column No maching the indexColumn
+      //i8 iStreamDefCol = pIndexDef->iGetStreamDefCol(pIndexColumn->iColumnNo());
+
+      // make the column name
+      //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, iStreamDefCol);
+
+      //Column *pColumn = pStreamDefOut->pGetColumn(iStreamDefCol);
+
+      if (pIndexDef->eKeyKind() == KE_GENERAL) {
+        switch (pColumn->eColumnType()) {
+
+          case CT_VARCHAR:
+          case CT_CHAR:
+            vAppendCodeFragment(pOpSketch, "vPLVchKeyToTub"_Stz, pColumn);
+            break;
+
+          default:
+            RASSERT(0);
+            break;
+        }
+      }
+      else {
+        vAppendCodeFragment(pOpSketch, "vPayLoadKeyToTub"_Stz, pColumn);
+      }
+    }
+}
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* close the code fragment files                                             */
