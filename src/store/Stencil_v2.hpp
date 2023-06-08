@@ -102,8 +102,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
 
 
-    eEC eCollectStage(Dynamic* pDynamic, Stream* pStream);
-
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
 

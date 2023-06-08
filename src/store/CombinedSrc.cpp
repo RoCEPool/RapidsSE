@@ -125,6 +125,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
   File* pCodeFile = new File(this);
   File* pIndexFile = new File(this);
+  File* pInflateFile = new File(this);
 
   bool bOpened;
 
@@ -301,10 +302,15 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           vAppendCodeFragment(pOpSketch, "vIndexDereferenceLB"_Stz, pIndexFile);
         }
 
-        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz);
+        // open the inflateCrw code fragments file
+        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+        vAppendCodeInflateCols(pOpSketch, "L_RetT_ColIS"_Stz, pInflateFile);
+
         vAppendCodeFragment(pOpSketch, "vIndexReturn"_Stz, pIndexFile);
 
         // close the indexScan code fragments file
+        pInflateFile->vClose();
         pCodeFile->vClose();
         pIndexFile->vClose();
 
@@ -511,6 +517,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
   delete pCodeFile;
   delete pIndexFile;
+  delete pInflateFile;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Close the code fragment files
@@ -637,12 +644,6 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
   bool bExtracted;
   bool bOpened = false;
 
-  if ( ! pCodeFile ) {
-    // open the inflateCrw code fragments file
-    bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
-    RASSERT ( bOpened );
-  }
-
   i8 nCols = 0;
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefLft->nColumns(); i_Col++) {
 
@@ -673,9 +674,6 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
     RASSERT(bExtracted);
     StrLib::vAppendString(&m_azCodeCrs, sCode.azChar());
   }
-
-  if (bOpened)
-    pCodeFile->vClose();
 
 }
 
