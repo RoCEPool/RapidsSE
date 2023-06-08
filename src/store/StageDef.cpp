@@ -114,8 +114,17 @@ void StageDef::vCollapseOps(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
   i8 nOps = nItems();
-  for (i8 i_Stage = 0; i_Stage < nOps; i_Stage++) {
-    OpDef* pOpDef = pGet(i_Stage);
+  for (i8 i_Op = 0; i_Op < nOps - 1; i_Op++) {
+    OpDef* pOpDef_curr = pGet(i_Op);
+    OpDef* pOpDef_next = pGet(i_Op + 1);
+
+    if (pOpDef_curr->m_sOpNm.bSame("scan"_Stz) &&
+        pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
+
+//      pOpDef_next->m_bCollapsed = true;
+//      pOpDef_curr->m_nCollapses++;
+    }
+
   }
 
 }
@@ -132,8 +141,8 @@ void StageDef::vDump(i8 i_Tab)
          *szCode()->azChar() ? szCode() : nullptr);
 
   i8 nOps = nItems();
-  for (i8 i_Stage = 0; i_Stage < nOps; i_Stage++) {
-    OpDef* pOpDef = pGet(i_Stage);
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    OpDef* pOpDef = pGet(i_Op);
     pOpDef->vDump();
   }
 
@@ -189,8 +198,8 @@ void StageDef::vValidate(void)
   RASSERT(StrLib::bIsSqlName(m_sStageNm.azChar()));
 
   i8 nOps = nItems();
-  for (i8 i_Stage = 0; i_Stage < nOps; i_Stage++) {
-    OpDef* pOpDef = pGet(i_Stage);
+  for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+    OpDef* pOpDef = pGet(i_Op);
     pOpDef->vValidate();
   }
 
