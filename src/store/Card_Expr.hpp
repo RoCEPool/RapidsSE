@@ -35,6 +35,7 @@ namespace STORE
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Symbol* pGetSymbol(i8 i_Term);
     Card_Term* pGetTerm(i8 i_Term);
+    bool bIsExpressionOfKey(void);
     bool bOf(Symbol* pSymbol);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);

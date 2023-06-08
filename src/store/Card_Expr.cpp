@@ -345,6 +345,21 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsExpressionOfKey(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol_0 = pGetSymbol(0);
+
+  if (pSymbol_0->bIsKeyOrdinal())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Expr::bOf(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
