@@ -14,6 +14,8 @@ CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
 /weaver2
+/glean_interactive
+/transliterated
 /weaved
 select n_nationkey, n_regionkey from nation, region where r_regionKey = n_regionkey;
 

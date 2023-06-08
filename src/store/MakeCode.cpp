@@ -161,12 +161,15 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
 
   if (CK_CAST == eCard) {
     //vTrace("CAST: %s\n"_Stz,p_OP->szSymbol());
-    if (!p_OP->szSymbol()->bSame("hashCast"_Stz))
+    //if (!p_OP->szSymbol()->bSame("hashCast"_Stz))
       return;
   }
 
   if (p_OP->bIsCard(CK_HAVING))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz);
+  else
+  if (p_OP->bIsCard(CK_HASH))
+    m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz);
   else if (p_OP->bIsCard(CK_TABLE))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz);
   else if (p_OP->bIsCard(CK_WHERE))
@@ -377,6 +380,9 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
 //                                m_pOpDef->m_pIndexDef_gbyAgg);
 
   m_pStreamDef_prior = m_pOpDef->m_pStreamDef_emitted;
+
+  if (! m_pOpDef->m_pStreamDef_emitted && p_OP->bIsCard(CK_HASH))
+    m_pOpDef->m_pStreamDef_emitted = m_pOpDef->m_pStreamDef_arriving->pDup();
 }
 
 /*----------------------------------------------------------------------------*/

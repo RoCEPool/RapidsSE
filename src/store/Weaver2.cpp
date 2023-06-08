@@ -972,7 +972,7 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
         }
         else
         if (CK_CAST == xCI.G.e_MainCard ) {
-          xCI.G_vMainResynch(xCI.pPrevChild());
+          //xCI.G_vMainResynch(xCI.pPrevChild());
           break;
         }
         else {
@@ -982,9 +982,9 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 
       vDynamic(pStageDef);
 
-      if (xCI.bIsActive() && xCI.G_bEachMain(CK_CAST)) {
-        vOp(xCI.G.p_MainCard);
-      }
+//      if (xCI.bIsActive() && xCI.G_bEachMain(CK_CAST)) {
+//        vOp(xCI.G.p_MainCard);
+//      }
     }
   }
 
