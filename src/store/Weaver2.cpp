@@ -271,12 +271,12 @@ void Weaver2::vDynamic(StageDef* pStageDef)
 
   vTabOp();  vConcat("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
 
-  if (AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
+  //if (AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
     vTabOp();
     vConcat("next"_Stz);
     vEolOp();
     m_i_Op_stage++;
-  }
+  //}
 
 }
 
