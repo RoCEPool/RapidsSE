@@ -2,21 +2,34 @@
 /* _ray6 :                                                                    */
 /*============================================================================*/
 
-_lineitem
+_nation
+create index IxN_NATIONKEY on nation (n_nationkey);
+/time load nation   "<tpch_dir>/nation.<suffix>";
 
-load lineitem "../tpch/SF_0001/lineitem.csv" ;
+/weaved
+/weaver2
+/optimise_passthru
+pipeline _unnamed_
+begin
 
-select
-  sum(l_extendedprice * l_discount) as Revenue
-  from LineItem
- where
-           l_shipdate >= DATE '1994-01-01'
-       and l_shipdate <  DATE '1995-01-01'
-       and l_discount between 0.05 - 0.01 and 0.06 + 0.01
-//     and l_quantity <  24
-;
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
 
-drop table lineitem;
+  stage S01 on all partitions :
+    indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 > "
+    | project  "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | combined  0
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
 
 /*============================================================================*/
 /* end                                                                        */
