@@ -107,7 +107,7 @@ void StageDef::vCode(Stz* sCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* collapse one or more operators into one                                    */
 /*----------------------------------------------------------------------------*/
 void StageDef::vCollapseOps(void)
 {
@@ -121,8 +121,11 @@ void StageDef::vCollapseOps(void)
     if (pOpDef_curr->m_sOpNm.bSame("scan"_Stz) &&
         pOpDef_next->m_sOpNm.bSame("project"_Stz)) {
 
-//      pOpDef_next->m_bCollapsed = true;
-//      pOpDef_curr->m_nCollapses++;
+      /// ???
+
+
+      pOpDef_next->m_bCollapsed = true;
+      pOpDef_curr->m_nCollapses++;
     }
 
   }
