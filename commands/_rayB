@@ -13,6 +13,9 @@ load orders   "../tpch/SF_0001/orders.csv" ;
 
 
 /weaver2
+/glean_interactive
+/transliterated
+/weaved
 /optimise_passthru
 pipeline _unnamed_
 begin

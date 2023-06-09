@@ -443,9 +443,25 @@ Card* Dissector::pOp_Hash(TagSet* pArgTags)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calcExpr : calculation expression list
 
-  pCard_Hash->vTransferChildren(pCard_RpnTerms);
+  //pCard_Hash->vTransferChildren(pCard_RpnTerms);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  Card_HshCol* p_hshCol = new Card_HshCol;
+
+  Card_Term* p_term = _pCard_Term(pCard_RpnTerms->pGet(1));
+  eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol());
+
+  p_hshCol->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
+  pCard_Hash->vAppend(p_hshCol);
+
+  Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
+
+  Card_Term* p_term_stmCol = new Card_Term(p_term2->pSymbol());
+  p_term_stmCol->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
+
+  p_hshCol->vAppend(p_term_stmCol);
 
   delete pCard_RpnTerms;
 

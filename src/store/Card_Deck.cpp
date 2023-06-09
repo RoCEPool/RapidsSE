@@ -344,6 +344,8 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
 
   while (pCI->G_bEachMain()) {
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     if (CK_SCAN == pCI->G.e_MainCard ||
         CK_INDEXJOIN == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
@@ -360,6 +362,15 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (pCI->G.p_MainCard->bIsCard(CK_HASH)) {
+      pCI->G.p_hshCol = pCI->G.p_MainCard->pSub_hshCol();
+      pCI->G.p_hshCol->vDump();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
@@ -369,8 +380,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
       //continue;
     }
 
-    if (CK_LIMIT == pCI->G.e_MainCard ||
-        CK_SORT == pCI->G.e_MainCard) {
+    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_LIMIT,CK_SORT,CK_NONE)) {
       pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
     }
 
