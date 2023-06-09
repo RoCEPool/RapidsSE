@@ -199,7 +199,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
     case CK_CROSSJOIN:    p_OP->vRpnCrossJoin   (sExpr, _pCard_CrossJoin   (p_OP)); break;
     case CK_FILTER:       p_OP->vRpnFilter      (sExpr, _pCard_Filter      (p_OP)); break;
     case CK_GBYAGG:       p_OP->vRpnGbyAgg      (sExpr, _pCard_GbyAgg      (p_OP)); break;
-    case CK_HASH:         break;
+    case CK_HASH:         p_OP->vRpnHash        (sExpr, _pCard_Hash        (p_OP)); break;
     case CK_HAVING:       p_OP->vRpnHaving      (sExpr, _pCard_Having      (p_OP)); break;
     case CK_INDEXJOIN:    p_OP->vRpnIndexJoin   (sExpr, _pCard_IndexJoin   (p_OP)->pSub_index()); break;
     case CK_INDEXSCAN:    p_OP->vRpnIndexScan   (sExpr, _pCard_IndexScan   (p_OP)->pSub_index()); break;
@@ -250,9 +250,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
       break;
 
     case CK_HASH: {
-      Card_HshCol *p_hshCol = _pCard_Hash(p_OP)->pSub_hshCol();
-      m_pOpDef->vAppend(new ArgDef(0, "type"_Stz,  aCT[Symbol::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))]));
-      m_pOpDef->vAppend(new ArgDef(1, "column"_Stz,  p_hshCol->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
     }
       break;
 

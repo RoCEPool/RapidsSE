@@ -55,6 +55,7 @@ namespace STORE
     void vRpnCrossJoin   (Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin);
     void vRpnFilter      (Stz* szRpnExpr, Card_Filter*    pCard_Filter);
     void vRpnGbyAgg      (Stz* szRpnExpr, Card_GbyAgg*    pCard_GbyAgg);
+    void vRpnHash        (Stz* szRpnExpr, Card_Hash*      pCard_Hash);
     void vRpnHaving      (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin   (Stz* szRpnExpr, Card_Index*     pCard_Index);
     void vRpnIndexScan   (Stz* szRpnExpr, Card_Index*     pCard_Index);

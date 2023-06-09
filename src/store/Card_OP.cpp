@@ -988,6 +988,20 @@ void Card_OP::vRpnGbyAgg(Stz* szRpnExpr, Card_GbyAgg* pCard_GbyAgg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* weave : hash  <expr>                                                       */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
+
+  szOpArgs->vCatSprint("\"type %s %s\""_Stz,
+                       aCT[Symbol::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))],
+                       p_hshCol->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for having op                                               */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
