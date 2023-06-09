@@ -27,12 +27,14 @@ begin
 
   stage S01 on all partitions :
       scan      Lineitem
+    | project "type INTEGER $1"
     | hash "type INTEGER $1"
     | combined  0
     | next hashcast
 
   stage S02 on all partitions :
       indexJoin orders IxO_ORDERKEY " BOUND $I1 $1 == "
+    | project "type INTEGER $1 , type INTEGER $2"
     | combined  0
     | next
 
