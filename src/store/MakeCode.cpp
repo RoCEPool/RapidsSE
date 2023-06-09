@@ -155,20 +155,12 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
-  eCK eCard = p_OP->eCard();
-  if (CK_COMBINED == eCard)
+  if (p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;
-
-  if (CK_CAST == eCard) {
-    //vTrace("CAST: %s\n"_Stz,p_OP->szSymbol());
-    //if (!p_OP->szSymbol()->bSame("hashCast"_Stz))
-      return;
-  }
 
   if (p_OP->bIsCard(CK_HAVING))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz);
-  else
-  if (p_OP->bIsCard(CK_HASH))
+  else if (p_OP->bIsCard(CK_HASH))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz);
   else if (p_OP->bIsCard(CK_TABLE))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"scan"_Stz);
@@ -176,14 +168,13 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz);
   else
     m_pOpDef = new OpDef(m_pStageDef->nItems(),p_OP->szCardNm());
+
   m_pStageDef->vAppend(m_pOpDef);
 
   vCraftStreamDefs(p_OP);
   vCraftIndexes(p_OP);
   vCraftIndexDefs(p_OP);
-
   vCraftArgDefs(p_OP);
-
   vUpdateColsReq(p_OP);
 }
 
