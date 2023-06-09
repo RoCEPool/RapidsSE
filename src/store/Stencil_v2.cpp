@@ -595,12 +595,7 @@ void Stencil_v2::vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
-  pDynamic->aDynamicT()->
-
-
-
-
-  m_nCols = pTable->pStreamDef()->nColumns();
+  pDynamic->aDynamicT()->m_nCols = pTable->pStreamDef()->nColumns();
 
   i8 iIndexNo = pIndexScan->iIndexNo();
 
@@ -935,6 +930,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   pOpSketch->vStreamDefRht(pTable->pStreamDef());
 
   // set the indexDef
+  pOpSketch->vTable(pTable);
   pOpSketch->vIndex(pIndex);
   pOpSketch->vIndexDef(pIndex->pIndexDef());
   pOpSketch->vIndexPositionLower(IP_GE);
@@ -1196,7 +1192,10 @@ OpSketch* Stencil_v2::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef, eHK eHand
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  RASSERT(pStreamDefLft);
+
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving;
+  RASSERT(pStreamDefOut);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new opSketch for this OP
