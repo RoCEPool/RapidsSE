@@ -971,11 +971,9 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
         if (CK_STAGE == xCI.G.e_MainCard)
           break;
 
-        if (CK_INDEXJOIN == xCI.G.e_MainCard ||
-            CK_INDEXSCAN == xCI.G.e_MainCard ||
-            CK_LIMIT == xCI.G.e_MainCard ||
-            CK_SCAN == xCI.G.e_MainCard ||
-            CK_TABLE == xCI.G.e_MainCard) {
+        if (xCI.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
+                                     CK_LIMIT , CK_SCAN     , CK_TABLE,
+                                     CK_NONE)) {
           vOp(xCI.G.p_MainCard);
         }
         else

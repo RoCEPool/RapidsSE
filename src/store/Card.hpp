@@ -298,6 +298,7 @@ namespace STORE
     bool bHasType(void);
 
     bool bIsCard(eCK eCard);
+    bool bIsOne(eCK eCard, ...);
     bool bIsSymbol(char cSymbol);
     bool bIsSymbol(Stz* szSymbol);
 

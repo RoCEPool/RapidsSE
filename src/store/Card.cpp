@@ -893,6 +893,30 @@ bool Card::bIsCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOne(eCK eCard, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  va_list xArgs;
+
+  va_start(xArgs, eCard);
+  eCK eCard_mayBe = eCard;
+  while (CK_NONE != eCard_mayBe) {
+
+    if (this->bIsCard(eCard_mayBe))
+      return true;
+
+    eCard_mayBe = (eCK) va_arg(xArgs, eCK);
+  }
+
+  va_end(xArgs);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSymbol(char cSymbol)

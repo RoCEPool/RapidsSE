@@ -5,8 +5,10 @@ _nation
 create index IxN_NATIONKEY on nation (n_nationkey);
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-/weaved
 /weaver2
+/glean_interactive
+/transliterated
+/weaved
 /optimise_passthru
 pipeline unamed
 begin
