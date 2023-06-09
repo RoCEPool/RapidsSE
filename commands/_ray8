@@ -1,37 +1,40 @@
 /*============================================================================*/
 /* _ray8 : testing of add node 15 Nov 2020                                    */
 /*============================================================================*/
+_nation
+create index IxN_NATIONKEY on nation (n_nationkey);
+/time load nation   "<tpch_dir>/nation.<suffix>";
 
+/weaver2
+/glean_interactive
+/transliterated
+/weaved
+/optimise_passthru
+pipeline _unnamed_
+begin
 
-lsnodes;
+ stage S00 on origin :
+     start
+   | pulse     once
+   | next
 
-add node nodeZ "127.0.0.1" 5549 ;
+ stage S01 on all partitions :
+     scan Nation
+   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | combined  0
+   | next
 
-lsnodes;
+ stage S02 on all partitions :
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+   | combined  0
+   | next
 
-spawn node nodeZ ;
+ stage S04 on origin :
+     output
+   | sink
+   | first
 
-sleep 10;
-
-adjust partitions;
-
-
-print "Create Tables";
-_lineitem_dates
-
-status;
-
-space;
-
-lsptn lineitem;
-
-print "Loading";
-
-dload lineitem
-  paths "/Users/Shared/tpch/SF0/lineitem_10k_chunk0.csv"
-        "/Users/Shared/tpch/SF0/lineitem_10k_chunk1.csv"
-        "/Users/Shared/tpch/SF0/lineitem_10k_chunk2.csv"
-;
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
