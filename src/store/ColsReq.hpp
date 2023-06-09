@@ -35,7 +35,7 @@ namespace STORE
 
     void vAddCol(i8 i_Col_base1, Stz* szColNm, bool bPayLoad=false);
 
-    void vDump(void);
+    void vDump(i8 i_Tab=0);
 
     void vValidate(void);
 

@@ -69,7 +69,7 @@ void ColsReq::vAddCol(i8 i_Col_base1, Stz *szColNm, bool bPayLoad)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ColsReq::vDump(void)
+void ColsReq::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 

@@ -256,7 +256,7 @@ void IndexDef::vDetermineKeyKind(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void IndexDef::vDump(void)
+void IndexDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_INDEXDEF, _FOOTER_);
 

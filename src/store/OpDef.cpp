@@ -185,48 +185,50 @@ void OpDef::vDump(i8 i_Tab)
   vTrace("%sOpDef: [%lld] %s\n"_Stz,
          Stz::szTab(i_Tab),m_i_Op,m_sOpNm.szStz());
 
+  i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {
-    vTrace("%s     : StreamDef_arriving %p\n"_Stz,
-           Stz::szTab(i_Tab), m_pStreamDef_arriving);
-    m_pStreamDef_arriving->vDump();
+    vTrace("%s%s : StreamDef_arriving %p\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pStreamDef_arriving);
+    m_pStreamDef_arriving->vDump(i_Tab+4);
   }
 
   if (m_pStreamDef_emitted) {
-    vTrace("%s     : StreamDef_emitted  %p\n"_Stz,
-           Stz::szTab(i_Tab), m_pStreamDef_emitted);
-    m_pStreamDef_emitted->vDump();
+    vTrace("%s%s : StreamDef_emitted  %p\n"_Stz,
+           Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pStreamDef_emitted);
+    m_pStreamDef_emitted->vDump(i_Tab+4);
   }
 
-  vTrace("%s     : Index_indexScan    %p\n"_Stz,
-         Stz::szTab(i_Tab),m_pIndex_indexScan);
-  vTrace("%s     : m_pIndex_indexJoin    %p\n"_Stz,
-         Stz::szTab(i_Tab),m_pIndex_indexJoin);
-  vTrace("%s     : IndexDef_gbyAgg    %p\n"_Stz,
-         Stz::szTab(i_Tab),m_pIndexDef_gbyAgg);
+  vTrace("%s%s : Index_indexScan %p\n"_Stz,
+         Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndex_indexScan);
+  vTrace("%s%s : Index_indexJoin %p\n"_Stz,
+         Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndex_indexJoin);
+  vTrace("%s%s : IndexDef_gbyAgg %p\n"_Stz,
+         Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_gbyAgg);
   if (m_pIndexDef_gbyAgg)
-    m_pIndexDef_gbyAgg->vDump();
+    m_pIndexDef_gbyAgg->vDump(i_Tab+1);
 
-  vTrace("%s     : ColLocs_gbyAgg  %p\n"_Stz,
-         Stz::szTab(i_Tab), m_pColMap_gbyAgg);
+  vTrace("%s%s : ColLocs_gbyAgg  %p\n"_Stz,
+         Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_gbyAgg);
   if (m_pColMap_gbyAgg)
-    m_pColMap_gbyAgg->vDump();
+    m_pColMap_gbyAgg->vDump(i_Tab+1);
 
-
-
-  vTrace("%s     : m_pIndexDef_sort   %p\n"_Stz,
-         Stz::szTab(i_Tab),m_pIndexDef_sort);
+  vTrace("%s%s : IndexDef_sort   %p\n"_Stz,
+         Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_sort);
   if (m_pIndexDef_sort)
-    m_pIndexDef_sort->vDump();
+    m_pIndexDef_sort->vDump(i_Tab+1);
 
-  vTrace("%s     : m_pColsReq         %p\n"_Stz,
-         Stz::szTab(i_Tab),m_pColsReq);
+  vTrace("%s%s : ColsReq         %p\n"_Stz,
+         Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq);
   if (m_pColsReq)
-    m_pColsReq->vDump();
+    m_pColsReq->vDump(i_Tab+1);
+
+  // - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nArgs = nItems();
   for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
     ArgDef* pArgDef = pGet(i_Arg);
-    pArgDef->vDump();
+
+    pArgDef->vDump(i_Tab+1);
   }
 }
 

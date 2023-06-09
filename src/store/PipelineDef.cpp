@@ -74,13 +74,20 @@ void PipelineDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINEDEF,_FOOTER_);
 
   vTrace("%sPipelineDef: %s\n"_Stz,
-         Stz::szTab(i_Tab),m_sPipelineNm.szStz());
+         Stz::szTab(i_Tab),
+         m_sPipelineNm.szStz());
+
+  // - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nStages = nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     StageDef* pStageDef = pGet(i_Stage);
-    pStageDef->vDump();
+
+    pStageDef->vDump(i_Tab+1);
   }
+
+  vTrace("%sEnd PipelineDef\n"_Stz,
+         Stz::szTab(i_Tab));
 
   vDebugPoint();
 }
