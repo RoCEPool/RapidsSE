@@ -84,7 +84,6 @@ struct Dynamic_T
   struct IndexInfo m_xIndexInfoT;
 
   // index join with J
-  i8 m_iIndexJoinInit;
   i8 m_iJoinedRows;
   struct IndexInfo m_xIndexInfoJ;
 

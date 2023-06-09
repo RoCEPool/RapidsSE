@@ -190,7 +190,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xIndexInfoT.m_aEntInt     = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();
 
   // index join with J
-  m_xDynamicT.m_iIndexJoinInit = 0;
   m_xDynamicT.m_iJoinedRows    = 0;
   m_xDynamicT.m_xIndexInfoJ.m_iInitialize   = 1;
 
