@@ -2,44 +2,49 @@
 /* _rayB                                                                      */
 /*============================================================================*/
 
-trackMemory;
+_lineitem
+_orders
 
-create table datums (
-  int_col0   INTEGER NOT NULL,
-  int_col1   INTEGER,
-  bol_col2   BOOLEAN,
-  bol_col3   BOOLEAN,
-  dte_col4   DATE,
-  dte_col5   DATE,
-  dec_col6   DECIMAL(19,2),
-  dec_col7   DECIMAL(19,2),
-  flt_col8   FLOAT,
-  flt_col9   FLOAT,
-  tme_col10  TIME,
-  tme_col11  TIME,
-  tsp_col12  TIMESTAMP,
-  tsp_col13  TIMESTAMP,
-  vch_col14  VARCHAR(32),
-  vch_col15  VARCHAR(32)
-);
+create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
+create index IxO_ORDERKEY  on Orders   (O_ORDERKEY);
 
-load datums "../DATA/DataTypes/dataTypes.csv" ;
+load lineitem "../tpch/SF_0001/lineitem.csv" ;
+load orders   "../tpch/SF_0001/orders.csv" ;
 
-///transliterated
-//select * from datums;
+
+/weaver2
+/optimise_passthru
+pipeline _unnamed_
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Lineitem
+    | hash "type INTEGER $1"
+    | combined  0
+    | next hashcast
+
+  stage S02 on all partitions :
+      indexJoin orders IxO_ORDERKEY " BOUND $I1 $1 == "
+    | combined  0
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
 
 /*
-/jobTags
+ rows:
+   (5996)
 */
-/transliterated
-/optimise
-/glean_interactive
-/weaved
-select int_col1, sum(int_col0) from datums group by int_col1;
-
-drop table datums;
-
-memoryLeaks;
 
 /*============================================================================*/
 /* end                                                                        */
