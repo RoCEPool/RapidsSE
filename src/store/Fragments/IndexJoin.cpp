@@ -47,7 +47,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
   p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;
 
   // init indexJoin
-  if (aDynamicT->m_iIndexJoinInit == 0) {
+  if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
 #ifdef WITH_CLANG
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
@@ -60,7 +60,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
     iLeftOuterRow = 0;
-    aDynamicT->m_iIndexJoinInit = 1;
+    aDynamicT->m_xIndexInfoJ.m_iInitialize = 0;
   }
 
   if (!aDynamicT->m_iProcessRow) {
@@ -96,12 +96,20 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
   // init indexJoin
-  if (aDynamicT->m_iIndexJoinInit == 0) {
+  if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
 #ifdef WITH_CLANG
+    strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
+    strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
+
+    aDynamicT->m_xIndexInfoJ.m_aTable = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
+    aDynamicT->m_xIndexInfoJ.m_aIndex = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
+    aDynamicT->m_xIndexInfoJ.m_aIndexDef = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
+    aDynamicT->m_xIndexInfoJ.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_aIndex);
+
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
     iLeftOuterRow = 0;
-    aDynamicT->m_iIndexJoinInit = 1;
+    aDynamicT->m_xIndexInfoJ.m_iInitialize = 0;
   }
   else {
 #ifdef WITH_CLANG
