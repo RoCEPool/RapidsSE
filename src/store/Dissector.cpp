@@ -566,9 +566,21 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   // index bounds
 
   Card_Bounds* pCard_Bounds = new Card_Bounds;
-  pCard_Bounds->vTransferChildren(pCard_RpnTerms);
-
   p_index->vAppend(pCard_Bounds);
+
+  Card_Bound* pCard_Bound = new Card_Bound;
+
+
+  pCard_Bound->vTransferChildren(pCard_RpnTerms);
+  i8 nTerms = pCard_Bound->nChildCards();
+  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
+  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
+  pCard_Bound->vDeleteChild(p_term_last);
+  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
+  pCard_Bound->vDeleteChild(p_term_first);
+
+  pCard_Bounds->vAppend(pCard_Bound);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
