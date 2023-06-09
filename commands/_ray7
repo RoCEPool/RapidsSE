@@ -5,6 +5,8 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
+/glean_interactive
+/transliterated
 /weaved
 /weaver2
 select * from nation limit 3;
