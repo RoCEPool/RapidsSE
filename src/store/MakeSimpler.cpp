@@ -111,6 +111,7 @@ void MakeSimpler::vSimplify_passThru(void)
     m_pCI->vUsingBoard(m_pCI->G.i_Board);
 
     vTableAnalysis_passThru(&m_cTableSyn);
+    vIndexAnalysis_passThru();
 
     vProjectionAnalysis_passThru();
 
@@ -232,6 +233,25 @@ void MakeSimpler::vIndexAnalysis(void)
 
   m_pCI->G_vRestart();
   Card_Table::vAffixTableColOrd(m_pCI);
+
+  m_pCI->vEndTransform();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void MakeSimpler::vIndexAnalysis_passThru(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "index analysis"_Stz);
+
+  while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
+    m_pCI->G.p_indexScan->vUpdate_projection(m_pCI);
+
+    m_pCI->G.p_index = m_pCI->G.p_indexScan->pSub_index();
+    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
+  }
 
   m_pCI->vEndTransform();
 }

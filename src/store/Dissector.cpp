@@ -9,6 +9,7 @@
 #include "Job.hpp"
 #include "Index.hpp"
 #include "Table.hpp"
+#include "CardIter.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -519,21 +520,38 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
 
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0,szTableNm,szIndexNm);
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,2,szTableNm,szIndexNm);
+
+  pCard_RpnTerms->vDump();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  pCard_IndexScan->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
 
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
+  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
+
   pCard_IndexScan->vAppend(pCard_Table);
 
   Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_TableNm->vSymbol(szTableNm);
   pCard_Table->vAppend(pCard_TableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
+
+  Card_IndexList* p_indexList = new Card_IndexList;
+  pCard_IndexScan->vAppend(p_indexList);
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
 
@@ -542,17 +560,29 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   p_index->vAppend(p_indexNm);
   p_indexNm->vSymbol(pIndex->szIndexNm());
 
+  p_indexList->vAppend(p_index);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
 
   Card_Bounds* pCard_Bounds = new Card_Bounds;
   pCard_Bounds->vTransferChildren(pCard_RpnTerms);
-  pCard_IndexScan->vAppend(pCard_Bounds);
+
+  p_index->vAppend(pCard_Bounds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCard_RpnTerms;
-  
+
+
+//  CardIter xCI(pCard_IndexScan);
+//
+//  pCard_IndexScan->vDump();
+//  pCard_IndexScan->vUpdate_projection(&xCI);
+//  pCard_IndexScan->vDump();
+//
+//  pCard_IndexScan->vValidate(&xCI,0,nullptr);
+
   return pCard_IndexScan;
 }
 
@@ -1093,8 +1123,8 @@ Card_RpnTerms* Dissector::pArgCheckLast(TagSet* pArgTags, i8 i_Last,
   
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,i_Last);
   
-  szTableNm = pArgTags->szValue(1);
-  szIndexNm = pArgTags->szValue(2);
+  szTableNm = pArgTags->szValue((i8)0);
+  szIndexNm = pArgTags->szValue(1);
 
   return pCard_RpnTerms;
 }
@@ -1122,7 +1152,7 @@ void Dissector::vArgCheck(TagSet* pArgTags, i8 nArgs)
 
   i8 nTags = pArgTags->nItems();
     
-  if (nArgs != nTags) {
+  if (nTags < nArgs ) {
     Stz* szOpNm = m_pOpSpec->szOpNm();
     vTrace("Error: only %lld tags in %s argTags\n"_Stz,nTags,szOpNm);
     NEVER_REACH;

@@ -35,6 +35,7 @@ namespace STORE
     void vAsReview(void);
     void vDeleteUnneeded(void);
     void vIndexAnalysis(void);
+    void vIndexAnalysis_passThru(void);
     void vMoveOn(void);
     void vNotOps(void);
     void vProjectionAnalysis(void);
