@@ -131,6 +131,34 @@ void Card_Term::vConvertIf_stmOdn_To_colOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ensure all terms have a type                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Term::vEnsureTypeFor_stmOdn(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Expr *p_expr_found;
+
+  // rpnCalc is a set of terms
+  if (pSymbol()->Y_bHas(P_Type))
+    return;
+
+  i8 iOdn = iGetOdn();
+
+  if (bIsKeyOdn())
+    p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
+  else
+  if (bIsStmOdn())
+    p_expr_found = pCI->Analysis.m_pProjection_prior->pGetExpr(iOdn - 1);
+  else
+    return;
+
+  Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
+
+  vSetType(p_rpnCalc_found->szGetType());
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate bound                                                             */
 /*----------------------------------------------------------------------------*/
 ePB Card_Term::eEvalBound(void)

@@ -348,6 +348,15 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
         CK_INDEXJOIN == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
       pCI->G.p_table->vUpdate_projection(pCI);
+
+      pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
+
+      if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
+        if (pCI->Analysis.m_pProjection_prior) {
+          pCI->G.p_indexList->vTypes_For_stmColOdn(pCI);
+        }
+      }
+
       continue;
     }
 
@@ -360,7 +369,8 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
       //continue;
     }
 
-    if (CK_SORT == pCI->G.e_MainCard) {
+    if (CK_LIMIT == pCI->G.e_MainCard ||
+        CK_SORT == pCI->G.e_MainCard) {
       pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
     }
 

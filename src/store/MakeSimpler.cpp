@@ -253,6 +253,17 @@ void MakeSimpler::vIndexAnalysis_passThru(void)
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
   }
 
+  m_pCI->vRestart();
+  while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
+    m_pCI->G.p_indexJoin->vUpdate_projection(m_pCI);
+
+    m_pCI->G.p_index = m_pCI->G.p_indexJoin->pSub_index();
+    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
+
+    m_pCI->G.p_bound = m_pCI->G.p_index->pSub_bound();
+    m_pCI->G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
+  }
+
   m_pCI->vEndTransform();
 }
 
@@ -289,7 +300,7 @@ void MakeSimpler::vProjectionAnalysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
+  m_pCI->vTransform(__func__, "vProjectionAnalysis"_Stz);
 
   m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
 
@@ -303,7 +314,7 @@ void MakeSimpler::vProjectionAnalysis_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
+  m_pCI->vTransform(__func__, "vProjectionAnalysis_passThru"_Stz);
 
   m_pCI->G.pDeck->vProjectionAnalysis_passThru(m_pCI);
 

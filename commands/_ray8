@@ -1,9 +1,17 @@
 /*============================================================================*/
 /* _ray8 : testing of add node 15 Nov 2020                                    */
 /*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
 _nation
 create index IxN_NATIONKEY on nation (n_nationkey);
 /time load nation   "<tpch_dir>/nation.<suffix>";
+
+_region
+create index IxR_REGIONKEY on region (r_regionkey);
+/time load region   "<tpch_dir>/region.<suffix>";
 
 /weaver2
 /glean_interactive

@@ -86,6 +86,17 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vEnsureTypes_For_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
+    xKid.p_bound()->vEnsureTypes_For_stmOdn(pCI);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

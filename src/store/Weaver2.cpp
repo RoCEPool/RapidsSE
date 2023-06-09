@@ -967,7 +967,12 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 
       xCI.G_vMainResynch(p_stage);
       while (xCI.G_bEachMain()) {
-        if (CK_INDEXSCAN == xCI.G.e_MainCard ||
+
+        if (CK_STAGE == xCI.G.e_MainCard)
+          break;
+
+        if (CK_INDEXJOIN == xCI.G.e_MainCard ||
+            CK_INDEXSCAN == xCI.G.e_MainCard ||
             CK_LIMIT == xCI.G.e_MainCard ||
             CK_SCAN == xCI.G.e_MainCard ||
             CK_TABLE == xCI.G.e_MainCard) {

@@ -466,22 +466,35 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   Stz* szIndexNm = szArgsStz(pArgTags,1);
   Card_RpnTerms* pCard_RpnTerms = pArgsRpnTerms(pArgTags,2);
 
+  pCard_RpnTerms->vDump();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  pCard_IndexJoin->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // table
   
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
+  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
   pCard_IndexJoin->vAppend(pCard_Table);
 
   Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_TableNm->vSymbol(szTableNm);
   pCard_Table->vAppend(pCard_TableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
+
+  Card_IndexList* p_indexList = new Card_IndexList;
+  pCard_IndexJoin->vAppend(p_indexList);
 
   Index* pIndex = pTable->pFindIndex(szIndexNm);
 
@@ -490,23 +503,33 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
   p_index->vAppend(p_indexNm);
   p_indexNm->vSymbol(pIndex->szIndexNm());
 
-
-
-
-
-  pCard_IndexJoin->vAppend(p_index);
+  p_indexList->vAppend(p_index);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // index bounds????
+  // index bounds
 
   Card_Bounds* pCard_Bounds = new Card_Bounds;
-  pCard_Bounds->vTransferChildren(pCard_RpnTerms);
-  pCard_IndexJoin->vAppend(pCard_Bounds);
-  
+  p_index->vAppend(pCard_Bounds);
+
+  Card_Bound* pCard_Bound = new Card_Bound;
+
+
+  pCard_Bound->vTransferChildren(pCard_RpnTerms);
+  i8 nTerms = pCard_Bound->nChildCards();
+  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
+  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
+  pCard_Bound->vDeleteChild(p_term_last);
+  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
+  pCard_Bound->vDeleteChild(p_term_first);
+
+  pCard_Bounds->vAppend(pCard_Bound);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   delete pCard_RpnTerms;
-  
+
+  pCard_IndexJoin->vDump();
+
   return pCard_IndexJoin;
 }
 
@@ -540,7 +563,6 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   Table* pTable = AM::pTableFind(szTableNm);
   Card_Table* pCard_Table = new Card_Table;
   pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-
   pCard_IndexScan->vAppend(pCard_Table);
 
   Card_TableNm* pCard_TableNm = new Card_TableNm;
@@ -594,6 +616,8 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
 //  pCard_IndexScan->vDump();
 //
 //  pCard_IndexScan->vValidate(&xCI,0,nullptr);
+
+  pCard_IndexScan->vDump();
 
   return pCard_IndexScan;
 }

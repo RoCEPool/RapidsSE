@@ -20,6 +20,8 @@ namespace STORE
 
     Card_Bound* pFindChosenBound(void);
 
+    void vEnsureTypes_For_stmOdn(CardIter *pCI);
+
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

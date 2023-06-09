@@ -21,6 +21,8 @@ namespace STORE
                                            char cTblSyn_boundedTo);
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 
+    void vEnsureTypes_For_stmOdn(CardIter *pCI);
+
     Card_Term* pGetTerm(i8 i_Term);
 
     bool bIsEBound(void);

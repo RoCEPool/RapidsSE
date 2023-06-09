@@ -29,6 +29,7 @@ namespace STORE
     IndexDef* pGetIndexDef(Card_Table* p_Table);
     Index*    pGetIndex(Card_Table* p_Table);
 
+    void vEnsureTypes_For_stmOdn(CardIter *pCI);
   };
 
   Card_Index* _pCard_Index(void* aAddr);

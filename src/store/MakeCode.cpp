@@ -383,7 +383,8 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
   if (! m_pOpDef->m_pStreamDef_emitted && p_OP->bIsCard(CK_HASH))
     m_pOpDef->m_pStreamDef_emitted = m_pOpDef->m_pStreamDef_arriving->pDup();
 
-  m_pStreamDef_prior = m_pOpDef->m_pStreamDef_emitted;
+  if (m_pOpDef->m_pStreamDef_emitted)
+    m_pStreamDef_prior = m_pOpDef->m_pStreamDef_emitted;
 }
 
 /*----------------------------------------------------------------------------*/

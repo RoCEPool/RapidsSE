@@ -152,6 +152,20 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Bound::vEnsureTypes_For_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+    xKid.p_term()->vEnsureTypeFor_stmOdn(pCI);
+  }
+
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Term* Card_Bound::pGetTerm(i8 i_Term)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

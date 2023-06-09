@@ -47,8 +47,10 @@ namespace STORE
     eCK   eChild(void);
     i8    i_Child(void);
 
+    Card_Bound*  p_bound(void);
     Card_Expr*   p_expr(void);
     Card_IdxCol* p_idxCol(void);
+    Card_Index*  p_index(void);
     Card_OP*     p_OP(void);
     Card_Stage*  p_stage(void);
     Card_Term*   p_term(void);
