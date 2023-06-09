@@ -1,13 +1,28 @@
 /*============================================================================*/
-/* _rayA : test of class functions 24 Dec 2020                                */
+/* _rayA :                                                                    */
 /*============================================================================*/
 
+_lineitem
+_orders
 
-snapshotObjects;
+//create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
+create index IxO_ORDERKEY  on Orders   (O_ORDERKEY);
 
-create table T (a integer);
+load lineitem "../tpch/SF_0001/lineitem.csv" ;
+load orders   "../tpch/SF_0001/orders.csv" ;
 
-snapshotInspect;
+
+/weaved
+select count(*)
+   from Lineitem,
+        Orders
+  where L_ORDERKEY  = O_ORDERKEY;
+
+
+/*
+ rows:
+   (5996)
+*/
 
 /*============================================================================*/
 /* end                                                                        */
