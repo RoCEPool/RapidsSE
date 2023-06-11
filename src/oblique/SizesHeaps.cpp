@@ -267,6 +267,7 @@
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
 #include "XF_Eg.hpp"
+#include "CodeText.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -337,6 +338,7 @@ SizeHeap gxaSizeHeap[]
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
   { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,FILL },
+  { CN_CODETEXT,                 sizeof(CodeText),           HT_T_TINY    ,FILL },
   { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },

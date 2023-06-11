@@ -55,6 +55,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
+  /* */ CN_CODETEXT,
   /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
@@ -501,6 +502,7 @@ static Stz* aCN[]
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
+  /* */ "CODETEXT"_Stz,             // CN_CODETEXT
   /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
