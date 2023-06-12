@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CodeText.hpp -- Code Text                                                  */
+/* VlText.hpp -- Very Large Text                                              */
 /*============================================================================*/
 #pragma once
 
@@ -9,11 +9,11 @@
 
 namespace STORE
 {
-  class CodeText : public Object
+  class VlText : public Object
   {
   public:
     i8 m_nTextBlocks;
-    CodeTextBuffer* m_p_CodeTextBuffer;
+    CodeTextBuffer* m_p_VlTextBuffer;
 
   protected:
     // must be last
@@ -23,8 +23,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CodeText(void);
-    ~CodeText(void) noexcept(false);
+    VlText(void);
+    ~VlText(void) noexcept(false);
 
     void vAddSubStr(Stz* szSubStr);
 
@@ -35,7 +35,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  CodeText* _pCodeText(void* aAddr);
+  VlText* _pVlText(void* aAddr);
 
 }
 

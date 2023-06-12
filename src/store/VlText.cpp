@@ -1,29 +1,29 @@
 /*============================================================================*/
-/* CodeText.cpp -- Code Text                                                  */
+/* VlText.cpp -- Code Text                                                  */
 /*============================================================================*/
 
-#include "CodeText.hpp"
+#include "VlText.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,CodeText,CN_CODETEXT)
-__aNewFunction(CodeText,CN_CODETEXT)
-__vDeleteFunction(CodeText,CN_CODETEXT)
-__aFooterFunction(CodeText)
+__pCastFunction(STORE,VlText,CN_CODETEXT)
+__aNewFunction(VlText,CN_CODETEXT)
+__vDeleteFunction(VlText,CN_CODETEXT)
+__aFooterFunction(VlText)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CodeText::CodeText(void)
+VlText::VlText(void)
 : Object(CN_CODETEXT)
 {
   _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 
   m_nTextBlocks = 0;
-  m_p_CodeTextBuffer = nullptr;
+  m_p_VlTextBuffer = nullptr;
 
   _postcondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 }
@@ -31,11 +31,11 @@ CodeText::CodeText(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CodeText::~CodeText(void) noexcept(false)
+VlText::~VlText(void) noexcept(false)
 {
   _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 
-  delete m_p_CodeTextBuffer;
+  delete m_p_VlTextBuffer;
 
   _postcondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 }
@@ -53,23 +53,23 @@ CodeText::~CodeText(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-void CodeText::vAddSubStr(Stz* szSubStr)
+void VlText::vAddSubStr(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 
-  if (! m_p_CodeTextBuffer) {
-    m_p_CodeTextBuffer = new CodeTextBuffer;
+  if (! m_p_VlTextBuffer) {
+    m_p_VlTextBuffer = new CodeTextBuffer;
     m_nTextBlocks++;
   }
 
-  bool b = m_p_CodeTextBuffer->bAddSubStr(szSubStr);
+  bool b = m_p_VlTextBuffer->bAddSubStr(szSubStr);
   RASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-i8 CodeText::nTextBlocks(void)
+i8 VlText::nTextBlocks(void)
 {
   _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 
@@ -79,11 +79,11 @@ i8 CodeText::nTextBlocks(void)
 /*----------------------------------------------------------------------------*/
 /* get a text block                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* CodeText::szTextBlock(i8 i_TextBlock)
+Stz* VlText::szTextBlock(i8 i_TextBlock)
 {
   _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 
-  return m_p_CodeTextBuffer->szTextBlock();
+  return m_p_VlTextBuffer->szTextBlock();
 }
 
 /*============================================================================*/
