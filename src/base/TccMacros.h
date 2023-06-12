@@ -163,6 +163,14 @@
   szArg1 = (char*)*(--paW);                                                 \
   vEntWrk_appendElementEntStz(iArgTo,szArg1);
 
+#define _ASSIGN_TO_ENTINT_V2(iArgTo)                                        \
+  iArg1 = *(--paW);                                                         \
+  vExtern_EntWrkAppendElementInt(iArgTo,iArg1);
+
+#define _ASSIGN_TO_ENTSTZ_V2(iArgTo)                                        \
+  szArg1 = (char*)*(--paW);                                                 \
+  vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
+
 #define _COPYSTR_IFTRUE(szAreaTo, iArgTo)                                   \
   {                                                                         \
     iArg1 = *(--paW);                                                       \

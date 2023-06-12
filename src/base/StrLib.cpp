@@ -31,7 +31,7 @@ extern "C" i8 vExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) {
 /*----------------------------------------------------------------------------*/
 /* flip the bytes in each word of src string into dst                         */
 /*----------------------------------------------------------------------------*/
-extern "C" i8 vExtern_StrLibWordFlipBack(char* aDst, char* aSrc) {
+extern "C" i8 iExtern_StrLibWordFlipBack(char* aDst, char* aSrc) {
   _static_
 
   return StrLib::iWordFlipBack(aDst, aSrc);
