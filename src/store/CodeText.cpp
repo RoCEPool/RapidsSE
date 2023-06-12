@@ -18,6 +18,9 @@ CodeText::CodeText(void)
 {
   _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 
+  m_nTextBlocks = 0;
+  m_p_CodeTextBuffer = nullptr;
+
   _postcondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 }
 
@@ -25,9 +28,10 @@ CodeText::CodeText(void)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 CodeText::~CodeText(void) noexcept(false)
-
 {
   _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
+
+  delete m_p_CodeTextBuffer;
 
   _postcondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
 }
@@ -41,6 +45,42 @@ CodeText::~CodeText(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add sub-string to text                                                     */
+/*----------------------------------------------------------------------------*/
+void CodeText::vAddSubStr(Stz* szSubStr)
+{
+  _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
+
+  if (! m_p_CodeTextBuffer) {
+    m_p_CodeTextBuffer = new CodeTextBuffer;
+    m_nTextBlocks++;
+  }
+
+  bool b = m_p_CodeTextBuffer->bAddSubStr(szSubStr);
+  RASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add sub-string to text                                                     */
+/*----------------------------------------------------------------------------*/
+i8 CodeText::nTextBlocks(void)
+{
+  _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
+
+  return m_nTextBlocks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a text block                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* CodeText::szTextBlock(i8 i_TextBlock)
+{
+  _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
+
+  return m_p_CodeTextBuffer->szTextBlock();
+}
 
 /*============================================================================*/
 /* end                                                                        */

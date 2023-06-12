@@ -29,6 +29,8 @@ CodeTextBuffer::~CodeTextBuffer(void) noexcept(false)
 {
   _precondition_(_MAGIC_, CN_CODETEXTBUFFER, _FOOTER_);
 
+  MemLib::vZero(m_acTextBlock,sizeof(m_acTextBlock),CN_CODETEXTBUFFER);
+
   _postcondition_(_MAGIC_, CN_CODETEXTBUFFER, _FOOTER_);
 }
 
@@ -41,6 +43,30 @@ CodeTextBuffer::~CodeTextBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add sub string to text                                                     */
+/*----------------------------------------------------------------------------*/
+bool CodeTextBuffer::bAddSubStr(Stz* szSubStr)
+{
+  _precondition_(_MAGIC_, CN_CODETEXTBUFFER, _FOOTER_);
+
+  StrLib::vCopy(m_acTextBlock,szSubStr->azChar());
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get text block                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* CodeTextBuffer::szTextBlock(void)
+{
+  _precondition_(_MAGIC_, CN_CODETEXT, _FOOTER_);
+
+  return (Stz*)m_acTextBlock;
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

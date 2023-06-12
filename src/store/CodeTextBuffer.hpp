@@ -10,6 +10,7 @@ namespace STORE
   class CodeTextBuffer : public Object
   {
   public:
+    char m_acTextBlock[C_256KB];
 
   protected:
     // must be last
@@ -18,6 +19,10 @@ namespace STORE
   public:
     CodeTextBuffer(void);
    ~CodeTextBuffer(void) noexcept(false);
+
+    bool bAddSubStr(Stz* szSubStr);
+
+    Stz* szTextBlock(void);
 
   protected:
     Footer* aFooter(void);

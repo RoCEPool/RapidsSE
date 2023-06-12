@@ -5,11 +5,15 @@
 
 #include "BASE.h"
 
+#include "CodeTextBuffer.hpp"
+
 namespace STORE
 {
   class CodeText : public Object
   {
   public:
+    i8 m_nTextBlocks;
+    CodeTextBuffer* m_p_CodeTextBuffer;
 
   protected:
     // must be last
@@ -18,6 +22,11 @@ namespace STORE
   public:
     CodeText(void);
     ~CodeText(void) noexcept(false);
+
+    void vAddSubStr(Stz* szSubStr);
+
+    i8 nTextBlocks(void);
+    Stz* szTextBlock(i8 i_TextBlock);
 
   protected:
     Footer* aFooter(void);
