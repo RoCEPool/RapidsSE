@@ -8,7 +8,11 @@
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__pCastFunction(STORE,CodeText,CN_CODETEXT)
+__aNewFunction(CodeText,CN_CODETEXT)
+__vDeleteFunction(CodeText,CN_CODETEXT)
 __aFooterFunction(CodeText)
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

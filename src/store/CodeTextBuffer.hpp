@@ -17,6 +17,9 @@ namespace STORE
     Footer m_xFooter;
 
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+
     CodeTextBuffer(void);
    ~CodeTextBuffer(void) noexcept(false);
 
@@ -27,6 +30,9 @@ namespace STORE
   protected:
     Footer* aFooter(void);
   };
+
+  CodeTextBuffer* _pCodeTextBuffer(void* aAddr);
+
 }
 
 /*============================================================================*/

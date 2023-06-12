@@ -8,7 +8,12 @@
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+__pCastFunction(STORE,CodeTextBuffer,CN_CODETEXTBUFFER)
+__aNewFunction(CodeTextBuffer,CN_CODETEXTBUFFER)
+__vDeleteFunction(CodeTextBuffer,CN_CODETEXTBUFFER)
 __aFooterFunction(CodeTextBuffer)
+
+
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
