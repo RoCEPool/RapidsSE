@@ -13,16 +13,21 @@ CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
-/*
 /weaver2
 /glean_interactive
 /transliterated
 /weaved
 select n_nationkey, n_regionkey from nation, region where r_regionKey = n_regionkey;
 
-*/
 
-/optimise_passthru
+
+
+
+
+
+
+
+/*
 pipeline _unnamed_
 begin
 
@@ -32,15 +37,16 @@ begin
    | next
 
  stage S01 on all partitions :
-     scan Nation
+     indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
    | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-   | combined  0
+   | dynamic_v2  0
    | next
 
  stage S02 on all partitions :
      indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
-   | combined  0
+   | dynamic_v2  0
    | next
+
 
  stage S04 on origin :
      output
@@ -48,3 +54,5 @@ begin
    | first
 
 end ;
+
+*/
