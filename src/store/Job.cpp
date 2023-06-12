@@ -114,7 +114,7 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
   /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
   /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
 
-  /* 14 */ m_pCodeText = nullptr;
+  /* 14 */ m_pCmdText = nullptr;
 
   m_iTscParticipant = 0;
   
@@ -1597,7 +1597,7 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
-  /* 14 */ RASSERT(! m_pCodeText);
+  /* 14 */ RASSERT(! m_pCmdText);
 
   m_tJobId.vNextJobId();
 
