@@ -36,6 +36,7 @@ extern void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) __attribute__((we
 
 extern void* aExtern_PotAllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
 extern void  vExtern_PotRowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
+extern void  vExtern_PotRowPix(void* pPot, void* pRowPix);
 
 extern void* aExtern_StreamDefNew(i8 nNumCols, void* pColumnInfo) __attribute__((weak_import));
 

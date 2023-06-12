@@ -457,7 +457,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // begin new EOS handler
+        // begin new StreamDef handler
         vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -506,7 +506,47 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
+        break;
 
+      case SK_POT:
+
+        vAppendStencilTo(pOpSketch);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // TUB in EOS handler
+        if (pOpSketch->m_eHandlerKind == HK_EOS) {
+          if (pOpSketch->m_eStencilFrom == SR_PL) {
+            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+            vAppendCodePixCols(pOpSketch);
+            vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+            if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+              vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
+            else
+              vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPayLoadPot"_Stz);
+            vAppendCodeToTubCols(pOpSketch);
+            vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
+          }
+          else {
+            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+            vAppendCodePixCols(pOpSketch);
+            vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
+            vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPotBody"_Stz);
+            vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
+          }
+
+        }
+        else {
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // TUB in CRW/ROW/INDEX handler
+          vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+          vAppendCodePixCols(pOpSketch);
+          vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+          vAppendCodeFragment(pOpSketch, "iTubContinue2"_Stz);
+          vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
+        }
         break;
 
       default:

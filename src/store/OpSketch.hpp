@@ -111,6 +111,7 @@ namespace STORE
 
     void vCopyColsReq(ColsReq* pColsReq);
     void vCopyColsMap(ColsReq* pColsMap);
+    void vCopyInitStack(TypedStack* pInitStack);
 
     void vGenerateExprStacks(void);
 

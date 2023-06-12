@@ -31,7 +31,6 @@ struct stageOps_V2 {
   bool m_bScan;
   bool m_bIndexScan;
   bool m_bPayloadOp;
-  bool m_bGeneratePotTub;
 
   Op* m_pHavingFilterOp;
   Op* m_pLimitOp;
@@ -91,7 +90,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
     OpSketch* pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind);
-    OpSketch* pSketchTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop, TypedStack* pInitStack = nullptr);
+    OpSketch* pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop, bool bGeneratePot, Stz* sHashExpr);
 
     eEC eValidateStage(StageDef* pStageDef);
 

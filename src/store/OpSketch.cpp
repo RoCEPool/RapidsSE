@@ -338,6 +338,21 @@ bool OpSketch::bIsPayload(i8 i_Col)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy the InitStack                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vCopyInitStack(TypedStack* pInitStack)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  TypeValueArea xTypeValueArea;
+
+  for (i8 i = pInitStack->nValues() - 1; i >= 0; i--) {
+    pInitStack->vPeekTypeValueArea(i, &xTypeValueArea);
+    m_pInitStack->vPushStz(xTypeValueArea.szStz());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* set index                                                                  */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vIndex(Index* pIndex)
@@ -1088,7 +1103,7 @@ void OpSketch::vGenerateExprStacks(void)
   //if (pExprStack == m_pInitStack)
   //  pExprStack = m_pExprStack;
 
-  RASSERT(pExprStack = m_pExprStack);
+  //RASSERT(pExprStack == m_pExprStack);
 
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
     vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
@@ -2010,10 +2025,10 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
           if (pColumn->eColumnType() == CT_VARCHAR ||
               pColumn->eColumnType() == CT_CHAR) {
-            sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+            sPush.vSprint("_ASSIGN_TO_ENTSTZ_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
           }
           else {
-            sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+            sPush.vSprint("_ASSIGN_TO_ENTINT_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
           }
           pExprStack->vPushStz(sPush);
         }
@@ -2064,10 +2079,10 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         pColumn = m_pIndexDef->pGetColumn(i_Col);
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ_V2(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
         }
         else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTINT_V2(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
         }
         pExprStack->vPushStz(sPush);
       }
@@ -2097,10 +2112,10 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
         }
         else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTINT_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
         }
         pExprStack->vPushStz(sPush);
       }

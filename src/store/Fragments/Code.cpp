@@ -97,8 +97,8 @@ i8 iIndexInsertIntKey(Dynamic_T* aDynamicT) {
 /*----------------------------------------------------------------------------*/
 /*-- iIndexInsertVchKey ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iGbyAggInsertVchKey
-i8 iGbyAggInsertVchKey(Dynamic_T* aDynamicT) {
+// function-iIndexInsertVchKey
+i8 iIndexInsertVchKey(Dynamic_T* aDynamicT) {
 
   void* aEntInserted;
   void* aEntFound;
@@ -210,12 +210,12 @@ i8 iTubBegin2(Dynamic_T* aDynamicT) {
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // TUB
+  // TUB/POT
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   __L_LABEL__:
 
-  printf("TUB\n");
+  printf("TUB/POT\n");
 
     struct ColumnInfo xColumnInfo[] = {
         // marker-end
@@ -310,7 +310,7 @@ i8 iTubRowPix(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iTubRowPix2 --------------------------------------------------------------*/
+/*-- iTubRowPix2 -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iTubRowPix2
 i8 iTubRowPix2(Dynamic_T* aDynamicT) {
@@ -329,6 +329,25 @@ i8 iTubRowPix2(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iTubRowPix3 --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iTubRowPix3
+i8 iTubRowPix3(Dynamic_T* aDynamicT) {
+
+  // marker-start
+
+  printf("TUB initializing rowPix %p\n", aDynamicT);
+#ifdef WITH_CLANG
+  void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
+    vExtern_PotRowPix(aDynamicT->m_pPot, aRowPix);
+#endif
+
+  // marker-end
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- iTubContinue ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iTubContinue
@@ -338,6 +357,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
   ColumnInfo xColumnInfo;
 
   i8 __COLUMNS_OUT__;
+  RowInfo __ROW_INFO_TO__;
 
   __L_LABEL_LOOP__:
 
@@ -353,14 +373,54 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   // check for error
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoTO.m_aRowCellArray;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+
+  // marker-end
+
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iTubContinue2 ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iTubContinue2
+i8 iTubContinue2(Dynamic_T* aDynamicT) {
+
+  char* szStrArea;
+  ColumnInfo xColumnInfo;
+
+  i8 __COLUMNS_OUT__;
+  RowInfo __ROW_INFO_TO__;
+
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // process the row ?
+  if (!aDynamicT->m_iProcessRow) {
+    aDynamicT->m_iProcessRow = 1;
+    goto __L_LABEL_LOOP__;
+  }
+
+  // allocate a row from the tub
+#ifdef WITH_CLANG
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_PotAllotRow((void*)aDynamicT->m_pPot, iMixIn, &__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
+#endif
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
 
   // marker-end
 
@@ -393,6 +453,45 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
   }
 
   return 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iEosPotBody -------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosPotBody
+i8 iEosPotBody(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  {
+    // marker-start
+
+    // check for error
+    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+      return 0;
+    }
+
+    aDynamicT->m_iRowsProcessed = 1;
+    aDynamicT->m_iAggregInit = 0;
+  }
+
+  // any rows processed ?
+  if (!aDynamicT->m_iRowsProcessed)
+    goto L_Return;
+
+  // allocate a row from the pot
+#ifdef WITH_CLANG
+  aDynamicT->m_xRowInfoPO.m_aRowCellArray = (byte*)aExtern_PotAllotRow((void*)aDynamicT->m_pPot, iMixIn, &aDynamicT->m_xRowInfoPO.m_acStrArea,&aDynamicT->m_iErrorCode);
+#endif
+  if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+    return 0;
+  }
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoPO.m_aRowCellArray;
+
+  // marker-end
+  L_Return:
+    return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -431,8 +530,8 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
 
   // marker-end
   L_Return:
-    return 0;
-  }
+  return 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- iEosPayLoadTub ----------------------------------------------------------*/
@@ -441,6 +540,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
 i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
+  RowInfo __ROW_INFO_TO__;
 
   // marker-start
     if (!aDynamicT->m_iRowsProcessed)
@@ -448,14 +548,45 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-    aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
     // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
       return 0;
     }
 
-    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowCellArray;
+    p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
+
+  // marker-end
+  L_Return:
+  return 0;
+}
+
+// NOTE: con be combined with iEosPayLoadTub
+
+/*----------------------------------------------------------------------------*/
+/*-- iEosPayLoadPot ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iEosPayLoadPot
+i8 iEosPayLoadPot(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+  RowInfo __ROW_INFO_TO__;
+
+  // marker-start
+  if (!aDynamicT->m_iRowsProcessed)
+    goto L_Return;
+
+  // allocate a row from the tub
+#ifdef WITH_CLANG
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_PotAllotRow((void*)aDynamicT->m_pPot, iMixIn, &__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
+#endif
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
+    return 0;
+  }
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
 
   // marker-end
   L_Return:
@@ -629,7 +760,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     szDstStz = aDynamicT->m_xRowInfoTO.m_acStrArea;
 
 #ifdef WITH_CLANG
-    nSrcSize = StrLib_iWordFlipBack(szDstStz,szSrcStz);
+    nSrcSize = iExtern_StrLibWordFlipBack(szDstStz,szSrcStz);
     //for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
     //  printf("%c ", szDstStz[i_Byte]);
     //printf("\n");

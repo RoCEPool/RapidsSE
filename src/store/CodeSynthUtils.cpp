@@ -560,7 +560,7 @@ void CodeSynthUtils::vReplaceLabelLoop(Stz* sLine, OpSketch* pOpSketch)
   _static_
 
   if (StrLib::bContains(sLine->azChar(), "__L_LABEL_LOOP__")) {
-    RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
+    //RASSERT( ! pOpSketch->m_sLabelLoop.bSame(""_Stz) );
     bool bResult = StrLib::bReplace(sLine->azChar(), "__L_LABEL_LOOP__", pOpSketch->m_sLabelLoop.azChar());
     RASSERT(bResult);
   }

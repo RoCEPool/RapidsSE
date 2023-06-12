@@ -11,11 +11,16 @@ create index IxO_ORDERKEY  on Orders   (O_ORDERKEY);
 load lineitem "../tpch/SF_0001/lineitem.csv" ;
 load orders   "../tpch/SF_0001/orders.csv" ;
 
-
+/*
 /weaver2
 /glean_interactive
 /transliterated
 /weaved
+/optimise_passthru
+*/
+
+/weaved
+/weaver2
 /optimise_passthru
 pipeline _unnamed_
 begin

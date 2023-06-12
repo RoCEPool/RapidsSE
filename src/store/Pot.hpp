@@ -26,8 +26,9 @@ namespace STORE
   public:
 
     static void* aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode);
-    static void vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize);
+    static void  vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize);
     static void  vRepair(Object* pObject);
+    static void  vSetRowPix(Pot* pPot, RowPix* pRowPix);
 
     DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompleted(i8 i_Ptn);

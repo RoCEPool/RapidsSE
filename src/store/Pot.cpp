@@ -38,6 +38,12 @@ extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iMixIn, i8 nRowStrSize) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_PotRowPix(void* pPot, void* pRowPix) {
+  Pot::vSetRowPix((Pot*)pPot, (RowPix*)pRowPix);
+}
+/*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
 void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {
@@ -158,6 +164,18 @@ void Pot::vRepair(Object* pObject)
   delete pPot;
 }
 
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void Pot::vSetRowPix(Pot* pPot, RowPix* pRowPix)
+{
+  _static_
+
+  RASSERT(CN_POT == pPot->eGetClassNo());
+
+  pPot->vRowPix(pRowPix);
+
+}
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
