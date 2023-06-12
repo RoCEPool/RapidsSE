@@ -6,9 +6,12 @@ _nation
 create index IxN_NATIONKEY on nation (n_nationkey);
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-///weaved select n_nationkey from nation where n_nationkey < 2;
+///weaver2 select n_nationkey from nation where n_nationkey >= 2 and n_nationkey < 6;
 
-/ccode pipeline _unnamed_
+
+/weaver2
+/optimise_passthru
+pipeline _unnamed_
 begin
 
   stage S00 on origin :
