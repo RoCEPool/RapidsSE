@@ -1274,8 +1274,6 @@ i8 Dissector::iArgCheckLast(TagSet* pArgTags, i8 i_Last)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  vArgCheck(pArgTags,i_Last + 1);
-
   i8 iArg = pArgTags->iValue(i_Last);
 
   return iArg;
@@ -1288,8 +1286,6 @@ Card_RpnTerms* Dissector::pArgCheckLast(TagSet* pArgTags, i8 i_Last)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  vArgCheck(pArgTags,i_Last + 1);
-  
   Stz* szRpnExpr = pArgTags->szValue(i_Last);
   
   Card_RpnTerms* pCard_RpnTerms = pToRpnTerms(szRpnExpr);
@@ -1320,8 +1316,6 @@ Stz* Dissector::szArgCheckLast(TagSet* pArgTags, i8 i_Last)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  vArgCheck(pArgTags,i_Last + 1);
-  
   Stz* szRpnExpr = pArgTags->szValue(i_Last);
 
   return szRpnExpr;
