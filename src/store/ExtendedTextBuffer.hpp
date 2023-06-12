@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* VlTextBuffer.hpp -- Very-Large Text Buffer                                 */
+/* ExtendedTextBuffer.hpp -- Extended Text Buffer                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class VlTextBuffer : public Object
+  class ExtendedTextBuffer : public Object
   {
   public:
     char m_acTextBlock[C_256KB];
@@ -20,8 +20,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    VlTextBuffer(void);
-   ~VlTextBuffer(void) noexcept(false);
+    ExtendedTextBuffer(void);
+   ~ExtendedTextBuffer(void) noexcept(false);
 
     bool bAddSubStr(Stz* szSubStr);
 
@@ -31,7 +31,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  VlTextBuffer* _pVlTextBuffer(void* aAddr);
+  ExtendedTextBuffer* _pExtendedTextBuffer(void* aAddr);
 
 }
 

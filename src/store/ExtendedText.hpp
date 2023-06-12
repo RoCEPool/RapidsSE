@@ -1,19 +1,19 @@
 /*============================================================================*/
-/* VlText.hpp -- Very Large Text                                              */
+/* ExtendedText.hpp -- Extended (multi-buffer) Text                           */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "VlTextBuffer.hpp"
+#include "ExtendedTextBuffer.hpp"
 
 namespace STORE
 {
-  class VlText : public Object
+  class ExtendedText : public Object
   {
   public:
     i8 m_nTextBlocks;
-    VlTextBuffer* m_p_VlTextBuffer;
+    ExtendedTextBuffer* m_p_VlTextBuffer;
 
   protected:
     // must be last
@@ -23,8 +23,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    VlText(void);
-    ~VlText(void) noexcept(false);
+    ExtendedText(void);
+    ~ExtendedText(void) noexcept(false);
 
     void vAddSubStr(Stz* szSubStr);
 
@@ -35,7 +35,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  VlText* _pVlText(void* aAddr);
+  ExtendedText* _pExtendedText(void* aAddr);
 
 }
 

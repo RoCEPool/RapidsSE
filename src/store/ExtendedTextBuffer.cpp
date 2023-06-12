@@ -1,42 +1,42 @@
 /*============================================================================*/
-/* VlTextBufferBuffer.cpp -- Code Text Buffer                               */
+/* ExtendedBufferBuffer.cpp -- Extended Text Buffer                           */
 /*============================================================================*/
 
-#include "VlTextBuffer.hpp"
+#include "ExtendedTextBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,VlTextBuffer,CN_VLTEXTBUFFER)
-__aNewFunction(VlTextBuffer,CN_VLTEXTBUFFER)
-__vDeleteFunction(VlTextBuffer,CN_VLTEXTBUFFER)
-__aFooterFunction(VlTextBuffer)
+__pCastFunction(STORE, ExtendedTextBuffer, CN_EXTENDEDTEXTBUFFER)
+__aNewFunction(ExtendedTextBuffer, CN_EXTENDEDTEXTBUFFER)
+__vDeleteFunction(ExtendedTextBuffer, CN_EXTENDEDTEXTBUFFER)
+__aFooterFunction(ExtendedTextBuffer)
 
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-VlTextBuffer::VlTextBuffer(void)
-: Object(CN_VLTEXTBUFFER)
+ExtendedTextBuffer::ExtendedTextBuffer(void)
+: Object(CN_EXTENDEDTEXTBUFFER)
 {
-  _precondition_(_MAGIC_, CN_VLTEXTBUFFER, _FOOTER_);
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-  _postcondition_(_MAGIC_, CN_VLTEXTBUFFER, _FOOTER_);
+  _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-VlTextBuffer::~VlTextBuffer(void) noexcept(false)
+ExtendedTextBuffer::~ExtendedTextBuffer(void) noexcept(false)
 
 {
-  _precondition_(_MAGIC_, CN_VLTEXTBUFFER, _FOOTER_);
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-  MemLib::vZero(m_acTextBlock,sizeof(m_acTextBlock),CN_VLTEXTBUFFER);
+  MemLib::vZero(m_acTextBlock,sizeof(m_acTextBlock),CN_EXTENDEDTEXTBUFFER);
 
-  _postcondition_(_MAGIC_, CN_VLTEXTBUFFER, _FOOTER_);
+  _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 }
 
 
@@ -52,9 +52,9 @@ VlTextBuffer::~VlTextBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add sub string to text                                                     */
 /*----------------------------------------------------------------------------*/
-bool VlTextBuffer::bAddSubStr(Stz* szSubStr)
+bool ExtendedTextBuffer::bAddSubStr(Stz* szSubStr)
 {
-  _precondition_(_MAGIC_, CN_VLTEXTBUFFER, _FOOTER_);
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
   StrLib::vCopy(m_acTextBlock,szSubStr->azChar());
 
@@ -64,9 +64,9 @@ bool VlTextBuffer::bAddSubStr(Stz* szSubStr)
 /*----------------------------------------------------------------------------*/
 /* get text block                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* VlTextBuffer::szTextBlock(void)
+Stz* ExtendedTextBuffer::szTextBlock(void)
 {
-  _precondition_(_MAGIC_, CN_VLTEXT, _FOOTER_);
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
   return (Stz*)m_acTextBlock;
 }

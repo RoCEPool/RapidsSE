@@ -99,6 +99,8 @@ enum eCN : u2 // Class Number
   /* */ CN_EVMGR,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXITOPERAND,
+  /* */ CN_EXTENDEDTEXT,
+  /* */ CN_EXTENDEDTEXTBUFFER,
   /* */ CN_EXTRACTMAP,
 
   /* */ CN__F__,
@@ -436,8 +438,6 @@ enum eCN : u2 // Class Number
   /* */ CN_VERBOSE,
   /* */ CN_VERTEX,
   /* */ CN_VERTEXSPEC,
-  /* */ CN_VLTEXT,
-  /* */ CN_VLTEXTBUFFER,
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
@@ -547,7 +547,9 @@ static Stz* aCN[]
   /* */ "EVMGR"_Stz,                // CN_EVMGR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
   /* */ "EXITOPERAND"_Stz,          // CN_EXITOPERAND
-  /* */ "EXTRACTMAP"_Stz,          // CN_EXTRACTMAP
+  /* */ "EXTENDEDTEXT"_Stz,         // CN_EXTENDEDTEXT
+  /* */ "EXTENDEDTEXTBUFFER"_Stz,   // CN_EXTENDEDTEXTBUFFER
+  /* */ "EXTRACTMAP"_Stz,           // CN_EXTRACTMAP
 
   /* */ "_F__"_Stz,                 // CN__F__
   /* */ "FIFO"_Stz,                 // CN_FIFO
@@ -884,8 +886,6 @@ static Stz* aCN[]
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
   /* */ "VERTEX"_Stz,               // CN_VERTEX
   /* */ "VERTEXSPEC"_Stz,           // CN_VERTEXSPEC
-  /* */ "VLTEXT"_Stz,               // CN_VLTEXT
-  /* */ "VLTEXTBUFFER"_Stz,         // CN_VLTEXTBUFFER
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP
