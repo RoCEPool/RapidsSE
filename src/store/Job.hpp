@@ -13,6 +13,7 @@
 #include "Output.hpp"
 #include "Statement.hpp"
 #include "MarkerChain.hpp"
+#include "CodeText.hpp"
 
 namespace STORE
 {
@@ -84,6 +85,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 11 */ ObjectTracker* m_pObjectTracker;// Frequency count of object types allocated/freed by this Job
     /* 12 */ SkipNode* m_pJobsSkipNode;     // Jobs list skip node
     /* 13 */ SkipNode* m_pGenericSkipNode;  // generic list skip node
+
+    /* 14 */ CodeText* m_pCodeText;    // code text experiment
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
