@@ -235,6 +235,8 @@ Card* Dissector::pOp_AbsJoin(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
+  vArgCheck(pArgTags,1);
+
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_AbsJoin* pCard_AbsJoin = new Card_AbsJoin;
 
@@ -258,7 +260,9 @@ Card* Dissector::pOp_AbsJoin(TagSet* pArgTags)
 Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-     
+
+  vArgCheck(pArgTags,1);
+
   m_bSawAggOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
@@ -295,6 +299,8 @@ Card* Dissector::pOp_Aggreg(TagSet* pArgTags)
 Card* Dissector::pOp_Call(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  vArgCheck(pArgTags,1);
 
   pArgTags->vDumpSet(true);
 
@@ -357,7 +363,9 @@ Card* Dissector::pOp_Debug(TagSet* pArgTags)
 Card* Dissector::pOp_Filter(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-    
+
+  vArgCheck(pArgTags,1);
+
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Filter* pCard_Filter = new Card_Filter;
 
@@ -402,6 +410,8 @@ Card* Dissector::pOp_GbyAgg(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
+  vArgCheck(pArgTags,1);
+
   m_bSawAggOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
@@ -438,7 +448,9 @@ Card* Dissector::pOp_GbyAgg(TagSet* pArgTags)
 Card* Dissector::pOp_Hash(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-  
+
+  vArgCheck(pArgTags,1);
+
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Hash* pCard_Hash = new Card_Hash;
   
@@ -473,6 +485,8 @@ Card* Dissector::pOp_Hash(TagSet* pArgTags)
 Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  vArgCheck(pArgTags,3);
 
   vTrace("pCard_IndexJoin\n"_Stz);
   pArgTags->vDumpSet(true);
@@ -549,18 +563,20 @@ Card* Dissector::pOp_IndexJoin(TagSet* pArgTags)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : indexScan <szTblNm> <szIdxNm> <szRpnExpr: 0) idxPred>            */
+/* dissect : indexScan <szTblNm> <szIdxNm> <bounds>                           */
 /*----------------------------------------------------------------------------*/
 Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
+  vArgCheck(pArgTags,3);
+
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
 
-  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,2,szTableNm,szIndexNm);
+  Card_RpnTerms* p_rpnTerms_bounds = pArgCheckLast(pArgTags, 2, szTableNm, szIndexNm);
 
-  pCard_RpnTerms->vDump();
+  p_rpnTerms_bounds->vDump();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -608,7 +624,7 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   Card_Bound* pCard_Bound = new Card_Bound;
 
 
-  pCard_Bound->vTransferChildren(pCard_RpnTerms);
+  pCard_Bound->vTransferChildren(p_rpnTerms_bounds);
   i8 nTerms = pCard_Bound->nChildCards();
   Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
   pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
@@ -621,7 +637,7 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  delete pCard_RpnTerms;
+  delete p_rpnTerms_bounds;
 
 
 //  CardIter xCI(pCard_IndexScan);
@@ -643,6 +659,8 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
 Card* Dissector::pOp_KeyExists(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
+
+  vArgCheck(pArgTags,4);
 
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
@@ -749,6 +767,8 @@ Card* Dissector::pOp_Limit(TagSet* pArgTags)
 
   //pArgTags->vDumpSet(true);
 
+  vArgCheck(pArgTags,1);
+
   i8 nRows = iArgCheckLast(pArgTags,0);
 
   s32 sRows;
@@ -769,7 +789,9 @@ Card* Dissector::pOp_Limit(TagSet* pArgTags)
 Card* Dissector::pOp_OrdAgg(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-      
+
+  vArgCheck(pArgTags,1);
+
   m_bSawAggOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
@@ -822,6 +844,8 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
+  vArgCheck(pArgTags,1);
+
   m_bSawProjectOp = true;
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
@@ -857,7 +881,9 @@ Card* Dissector::pOp_Project(TagSet* pArgTags)
 Card* Dissector::pOp_Scan(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-    
+
+  vArgCheck(pArgTags,1);
+
   i8 nTags = pArgTags->nItems();
   
   Stz* szTableNm = nullptr;
@@ -894,7 +920,9 @@ Card* Dissector::pOp_Scan(TagSet* pArgTags)
 Card* Dissector::pOp_Send(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-    
+
+  vArgCheck(pArgTags,1);
+
   eXK eSendKind = (eXK)iArgCheckLast(pArgTags,0);
   Card_Send* pCard_Send = new Card_Send;
 
@@ -924,7 +952,9 @@ Card* Dissector::pOp_Sink(TagSet* pArgTags)
 Card* Dissector::pOp_Sort(TagSet* pArgTags)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-    
+
+  vArgCheck(pArgTags,1);
+
   Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
   Card_Sort* pCard_Sort = new Card_Sort;
 
