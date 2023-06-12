@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "CodeTextBuffer.hpp"
+#include "VlTextBuffer.hpp"
 
 namespace STORE
 {
@@ -13,7 +13,7 @@ namespace STORE
   {
   public:
     i8 m_nTextBlocks;
-    CodeTextBuffer* m_p_VlTextBuffer;
+    VlTextBuffer* m_p_VlTextBuffer;
 
   protected:
     // must be last

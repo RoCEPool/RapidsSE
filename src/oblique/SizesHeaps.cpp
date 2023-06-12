@@ -268,7 +268,7 @@
 #include "Weaver2.hpp"
 #include "XF_Eg.hpp"
 #include "VlText.hpp"
-#include "CodeTextBuffer.hpp"
+#include "VlTextBuffer.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -339,8 +339,6 @@ SizeHeap gxaSizeHeap[]
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
   { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,FILL },
-  { CN_CODETEXT,                 sizeof(VlText),             HT_T_TINY    ,FILL },
-  { CN_CODETEXTBUFFER,           sizeof(CodeTextBuffer),     HT_T_LARGE   ,FILL },
   { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
   { CN_COMBINED,                 sizeof(Combined),           HT_T_LARGE   ,FILL },
@@ -722,6 +720,8 @@ SizeHeap gxaSizeHeap[]
   { CN_VERBOSE,                  sizeof(Verbose),     HT_T_TINY    , FILL },
   { CN_VERTEX,                   sizeof(Vertex),      HT_T_SMALL   , FILL },
   { CN_VERTEXSPEC,               sizeof(VertexSpec),  HT_T_TINY    , FILL },
+  { CN_VLTEXT,                   sizeof(VlText),             HT_T_TINY    ,FILL },
+  { CN_VLTEXTBUFFER,             sizeof(VlTextBuffer),       HT_T_LARGE   ,FILL },
 
   {CN__W__,                     'W' - ('A' - 1),         HT_INVALID   , FILL },
   {CN_WAKEUP,                   sizeof(Wakeup),          HT_INVALID   , FILL },

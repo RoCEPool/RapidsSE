@@ -55,8 +55,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
-  /* */ CN_CODETEXT,
-  /* */ CN_CODETEXTBUFFER,
   /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
@@ -438,6 +436,8 @@ enum eCN : u2 // Class Number
   /* */ CN_VERBOSE,
   /* */ CN_VERTEX,
   /* */ CN_VERTEXSPEC,
+  /* */ CN_VLTEXT,
+  /* */ CN_VLTEXTBUFFER,
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
@@ -503,8 +503,6 @@ static Stz* aCN[]
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
-  /* */ "CODETEXT"_Stz,             // CN_CODETEXT
-  /* */ "CODETEXTBUFFER"_Stz,       // CN_CODETEXTBUFFER
   /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
@@ -886,6 +884,8 @@ static Stz* aCN[]
   /* */ "VERBOSE"_Stz,              // CN_VERBOSE
   /* */ "VERTEX"_Stz,               // CN_VERTEX
   /* */ "VERTEXSPEC"_Stz,           // CN_VERTEXSPEC
+  /* */ "VLTEXT"_Stz,               // CN_VLTEXT
+  /* */ "VLTEXTBUFFER"_Stz,         // CN_VLTEXTBUFFER
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP

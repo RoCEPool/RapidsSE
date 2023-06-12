@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CodeTextBuffer.hpp -- Code Text Buffer                                     */
+/* VlTextBuffer.hpp -- Very-Large Text Buffer                                 */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class CodeTextBuffer : public Object
+  class VlTextBuffer : public Object
   {
   public:
     char m_acTextBlock[C_256KB];
@@ -20,8 +20,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    CodeTextBuffer(void);
-   ~CodeTextBuffer(void) noexcept(false);
+    VlTextBuffer(void);
+   ~VlTextBuffer(void) noexcept(false);
 
     bool bAddSubStr(Stz* szSubStr);
 
@@ -31,7 +31,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  CodeTextBuffer* _pCodeTextBuffer(void* aAddr);
+  VlTextBuffer* _pVlTextBuffer(void* aAddr);
 
 }
 
