@@ -195,28 +195,30 @@ void Dissector::vOp(i8 i_OpSpec)
   //vTrace("Op %s\n"_Stz,szOpNm);
   //pArgTags->vDumpSet(true);
 
-       if (szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_AbsJoin  (pArgTags);
-  else if (szOpNm->bSame("aggreg"_Stz))       pCard = pOp_Aggreg   (pArgTags);
-  else if (szOpNm->bSame("call"_Stz))         pCard = pOp_Call     (pArgTags);
-  else if (szOpNm->bSame("combined"_Stz))     pCard = pOp_Combined (pArgTags);
-  else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_Consume  (pArgTags);
-  else if (szOpNm->bSame("debug"_Stz))        pCard = pOp_Debug    (pArgTags);
-  else if (szOpNm->bSame("filter"_Stz))       pCard = pOp_Filter   (pArgTags);
-  else if (szOpNm->bSame("gbyAgg"_Stz))       pCard = pOp_GbyAgg   (pArgTags);
-  else if (szOpNm->bSame("hash"_Stz))         pCard = pOp_Hash     (pArgTags);
-  else if (szOpNm->bSame("indexJoin"_Stz))    pCard = pOp_IndexJoin(pArgTags);
-  else if (szOpNm->bSame("indexScan"_Stz))    pCard = pOp_IndexScan(pArgTags);
-  else if (szOpNm->bSame("limit"_Stz))        pCard = pOp_Limit    (pArgTags);
-  else if (szOpNm->bSame("ordagg"_Stz))       pCard = pOp_OrdAgg   (pArgTags);
-  else if (szOpNm->bSame("orderBy"_Stz))      pCard = pOp_Sort     (pArgTags);
-  else if (szOpNm->bSame("output"_Stz))       pCard = pOp_Output   (pArgTags);
-  else if (szOpNm->bSame("pulse"_Stz))        pCard = pOp_Pulse    (pArgTags);
-  else if (szOpNm->bSame("project"_Stz))      pCard = pOp_Project  (pArgTags);
-  else if (szOpNm->bSame("scan"_Stz))         pCard = pOp_Scan     (pArgTags);
-  else if (szOpNm->bSame("sendSE"_Stz))       pCard = pOp_Send     (pArgTags);
-  else if (szOpNm->bSame("sink"_Stz))         pCard = pOp_Sink     (pArgTags);
-  else if (szOpNm->bSame("sort"_Stz))         pCard = pOp_Sort     (pArgTags);
-  else if (szOpNm->bSame("start"_Stz))        pCard = pOp_Start    (pArgTags);
+       if (szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_AbsJoin     (pArgTags);
+  else if (szOpNm->bSame("aggreg"_Stz))       pCard = pOp_Aggreg      (pArgTags);
+  else if (szOpNm->bSame("call"_Stz))         pCard = pOp_Call        (pArgTags);
+  else if (szOpNm->bSame("combined"_Stz))     pCard = pOp_Combined    (pArgTags);
+  else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_Consume     (pArgTags);
+  else if (szOpNm->bSame("debug"_Stz))        pCard = pOp_Debug       (pArgTags);
+  else if (szOpNm->bSame("filter"_Stz))       pCard = pOp_Filter      (pArgTags);
+  else if (szOpNm->bSame("gbyAgg"_Stz))       pCard = pOp_GbyAgg      (pArgTags);
+  else if (szOpNm->bSame("hash"_Stz))         pCard = pOp_Hash        (pArgTags);
+  else if (szOpNm->bSame("indexJoin"_Stz))    pCard = pOp_IndexJoin   (pArgTags);
+  else if (szOpNm->bSame("indexScan"_Stz))    pCard = pOp_IndexScan   (pArgTags);
+  else if (szOpNm->bSame("keyExists"_Stz))    pCard = pOp_KeyExists   (pArgTags);
+  else if (szOpNm->bSame("keyNotExists"_Stz)) pCard = pOp_KeyNotExists(pArgTags);
+  else if (szOpNm->bSame("limit"_Stz))        pCard = pOp_Limit       (pArgTags);
+  else if (szOpNm->bSame("ordagg"_Stz))       pCard = pOp_OrdAgg      (pArgTags);
+  else if (szOpNm->bSame("orderBy"_Stz))      pCard = pOp_Sort        (pArgTags);
+  else if (szOpNm->bSame("output"_Stz))       pCard = pOp_Output      (pArgTags);
+  else if (szOpNm->bSame("pulse"_Stz))        pCard = pOp_Pulse       (pArgTags);
+  else if (szOpNm->bSame("project"_Stz))      pCard = pOp_Project     (pArgTags);
+  else if (szOpNm->bSame("scan"_Stz))         pCard = pOp_Scan        (pArgTags);
+  else if (szOpNm->bSame("sendSE"_Stz))       pCard = pOp_Send        (pArgTags);
+  else if (szOpNm->bSame("sink"_Stz))         pCard = pOp_Sink        (pArgTags);
+  else if (szOpNm->bSame("sort"_Stz))         pCard = pOp_Sort        (pArgTags);
+  else if (szOpNm->bSame("start"_Stz))        pCard = pOp_Start       (pArgTags);
   else {
     vTrace("Skipping OpSpec %s\n"_Stz,szOpNm);
     pCard = nullptr;
@@ -633,6 +635,109 @@ Card* Dissector::pOp_IndexScan(TagSet* pArgTags)
   pCard_IndexScan->vDump();
 
   return pCard_IndexScan;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : keyExists <tableNm> <indexNm> <bounds> <constraint>              */
+/*----------------------------------------------------------------------------*/
+Card* Dissector::pOp_KeyExists(TagSet* pArgTags)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
+
+  Stz* szTableNm = nullptr;
+  Stz* szIndexNm = nullptr;
+
+  Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,2,szTableNm,szIndexNm);
+
+  pCard_RpnTerms->vDump();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_KeyExists* pCard_KeyExists = new Card_KeyExists;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  pCard_KeyExists->vAppend(p_level);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // table
+
+  Table* pTable = AM::pTableFind(szTableNm);
+  Card_Table* pCard_Table = new Card_Table;
+  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
+  pCard_KeyExists->vAppend(pCard_Table);
+
+  Card_TableNm* pCard_TableNm = new Card_TableNm;
+  pCard_TableNm->vSymbol(szTableNm);
+  pCard_Table->vAppend(pCard_TableNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // index
+
+  Card_IndexList* p_indexList = new Card_IndexList;
+  pCard_KeyExists->vAppend(p_indexList);
+
+  Index* pIndex = pTable->pFindIndex(szIndexNm);
+
+  Card_Index* p_index = new Card_Index;
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_index->vAppend(p_indexNm);
+  p_indexNm->vSymbol(pIndex->szIndexNm());
+
+  p_indexList->vAppend(p_index);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // index bounds
+
+  Card_Bounds* pCard_Bounds = new Card_Bounds;
+  p_index->vAppend(pCard_Bounds);
+
+  Card_Bound* pCard_Bound = new Card_Bound;
+
+
+  pCard_Bound->vTransferChildren(pCard_RpnTerms);
+  i8 nTerms = pCard_Bound->nChildCards();
+  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
+  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
+  pCard_Bound->vDeleteChild(p_term_last);
+  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
+  pCard_Bound->vDeleteChild(p_term_first);
+
+  pCard_Bounds->vAppend(pCard_Bound);
+
+
+
+  //Card_RpnTerms* pCard_RpnTerms = pArgCheckLast(pArgTags,0);
+  Card_Filter* pCard_Filter = new Card_Filter;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // filtElist : filter expression list
+
+  i8 i_Expr = 1;
+  Card_Expr* pCard_Expr = pExpr(pCard_RpnTerms,false,i_Expr);
+
+  Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
+  pCard_Expr->vRemoveSub(pCard_RpnCalc);
+  DELETE_CARD(pCard_Expr);
+
+  pCard_Filter->vAppend(pCard_RpnCalc);
+
+  delete pCard_RpnTerms;
+
+
+  return pCard_KeyExists;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : keyNotExists <tableNm> <indexNm> <bounds> <constraint>           */
+/*----------------------------------------------------------------------------*/
+Card* Dissector::pOp_KeyNotExists(TagSet* pArgTags)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

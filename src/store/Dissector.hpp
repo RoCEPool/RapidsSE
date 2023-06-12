@@ -39,27 +39,29 @@ namespace STORE
     void vStage(i8 i_StageSpec);
     void vOp(i8 i_OpSpec);
 
-    Card* pOp_AbsJoin  (TagSet* pArgTags);
-    Card* pOp_Aggreg   (TagSet* pArgTags);
-    Card* pOp_Call     (TagSet* pArgTags);
-    Card* pOp_Combined (TagSet* pArgTags);
-    Card* pOp_Consume  (TagSet* pArgTags);
-    Card* pOp_Debug    (TagSet* pArgTags);
-    Card* pOp_Filter   (TagSet* pArgTags);
-    Card* pOp_GbyAgg   (TagSet* pArgTags);
-    Card* pOp_Hash     (TagSet* pArgTags);
-    Card* pOp_IndexJoin(TagSet* pArgTags);
-    Card* pOp_IndexScan(TagSet* pArgTags);
-    Card* pOp_Limit    (TagSet* pArgTags);
-    Card* pOp_OrdAgg   (TagSet* pArgTags);
-    Card* pOp_Output   (TagSet* pArgTags);
-    Card* pOp_Pulse    (TagSet* pArgTags);
-    Card* pOp_Project  (TagSet* pArgTags);
-    Card* pOp_Scan     (TagSet* pArgTags);
-    Card* pOp_Send     (TagSet* pArgTags);
-    Card* pOp_Sink     (TagSet* pArgTags);
-    Card* pOp_Sort     (TagSet* pArgTags);
-    Card* pOp_Start    (TagSet* pArgTags);
+    Card* pOp_AbsJoin     (TagSet* pArgTags);
+    Card* pOp_Aggreg      (TagSet* pArgTags);
+    Card* pOp_Call        (TagSet* pArgTags);
+    Card* pOp_Combined    (TagSet* pArgTags);
+    Card* pOp_Consume     (TagSet* pArgTags);
+    Card* pOp_Debug       (TagSet* pArgTags);
+    Card* pOp_Filter      (TagSet* pArgTags);
+    Card* pOp_GbyAgg      (TagSet* pArgTags);
+    Card* pOp_Hash        (TagSet* pArgTags);
+    Card* pOp_IndexJoin   (TagSet* pArgTags);
+    Card* pOp_IndexScan   (TagSet* pArgTags);
+    Card* pOp_KeyExists   (TagSet* pArgTags);
+    Card* pOp_KeyNotExists(TagSet* pArgTags);
+    Card* pOp_Limit       (TagSet* pArgTags);
+    Card* pOp_OrdAgg      (TagSet* pArgTags);
+    Card* pOp_Output      (TagSet* pArgTags);
+    Card* pOp_Pulse       (TagSet* pArgTags);
+    Card* pOp_Project     (TagSet* pArgTags);
+    Card* pOp_Scan        (TagSet* pArgTags);
+    Card* pOp_Send        (TagSet* pArgTags);
+    Card* pOp_Sink        (TagSet* pArgTags);
+    Card* pOp_Sort        (TagSet* pArgTags);
+    Card* pOp_Start       (TagSet* pArgTags);
 
     Card_Key*        pKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
     Card_Projection* pProjection (Card_RpnTerms* pCard_RpnTerms);
@@ -69,7 +71,7 @@ namespace STORE
 
     Card_As*        pAs          (Card_RpnTerms* pCard_RpnTerms);
     Card_Direction* pDirection   (Card_RpnTerms* pCard_RpnTerms);
-    Stz*            szType        (Card_RpnTerms* pCard_RpnTerms);
+    Stz*            szType       (Card_RpnTerms* pCard_RpnTerms);
 
     Card_RpnTerms* pToRpnTerms   (Stz* szRpnExpr);
   
