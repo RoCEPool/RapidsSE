@@ -33,6 +33,7 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
   m_i_Stage    = 0;
   m_i_Op_stage = 0;
   m_bOpPrinted = false;
+  m_bSawHash   = false;
 
   m_pDeck = nullptr;
 
@@ -239,6 +240,7 @@ void Weaver2::vStageNext(Card_Stage* pCard_Stage)
   
   m_i_Op_stage = 0;
   m_bOpPrinted = false;
+  m_bSawHash   = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,6 +276,8 @@ void Weaver2::vDynamic(StageDef* pStageDef)
   //if (AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
     vTabOp();
     vConcat("next"_Stz);
+    if (m_bSawHash)
+      vConcat(" hashCast"_Stz);
     vEolOp();
     m_i_Op_stage++;
   //}
@@ -521,6 +525,8 @@ void Weaver2::vArgGbyAgg(Stz* szOpArgs, Card_GbyAgg* pCard_AggGby)
 void Weaver2::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  m_bSawHash = true;
 
   Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
 
@@ -1002,8 +1008,10 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
   vCppBlock();
   vSemicolon();
 
-  if (AM::JOB::bHasTag(C_WEAVED))
+  if (AM::JOB::bHasTag(C_WEAVED)) {
     vTrace("%s\n"_Stz, szOptStmt());
+    vDebugPoint();
+  }
 }
 
 

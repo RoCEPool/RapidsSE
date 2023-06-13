@@ -23,6 +23,7 @@ namespace STORE
     s48K m_sOptStmt;
     s48K m_sCppBlock;
 
+    bool m_bSawHash;
   private:
     // must be last
     Footer m_xFooter;
