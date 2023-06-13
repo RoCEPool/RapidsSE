@@ -724,13 +724,14 @@ Card* Dissector::pOp_KeyExists(void)
   // index list
 
   Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
+  pCard_KeyExists->vAppend(p_indexList);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
 
   Card_Bounds* pCard_Bounds = pPopBounds(p_rpnTerms_bounds);
   pCard_Bounds->vDump();
-  pCard_KeyExists->vAppend(pCard_Bounds);
+  p_indexList->pSub_index()->vAppend(pCard_Bounds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // constraint

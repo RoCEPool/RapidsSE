@@ -264,6 +264,14 @@ void MakeSimpler::vIndexAnalysis_passThru(void)
     m_pCI->G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
   }
 
+  m_pCI->vRestart();
+  while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
+    m_pCI->G.p_keyExists->vUpdate_projection(m_pCI);
+
+    m_pCI->G.p_index = m_pCI->G.p_keyExists->pSub_index();
+    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
+  }
+
   m_pCI->vEndTransform();
 }
 
