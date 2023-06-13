@@ -514,6 +514,8 @@ void Weaver::vArgKeyExists(Stz* szOpArgs, Card_KeyExists* pCard_KeyExists)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
 
+  //pCard_KeyExists->vDump();
+
   Card_TableNm* p_tableNm = pCard_KeyExists->pSub_tableNm();
   Card_IndexNm* p_indexNm = pCard_KeyExists->pSub_indexNm();
 

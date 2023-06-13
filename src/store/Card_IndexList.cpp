@@ -169,6 +169,17 @@ void Card_IndexList::vTypes_For_stmColOdn(CardIter *pCI)
     xKid.p_index()->vEnsureTypes_For_stmOdn(pCI);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+}
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

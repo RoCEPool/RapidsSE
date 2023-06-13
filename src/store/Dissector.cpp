@@ -36,8 +36,9 @@ Dissector::Dissector(Bench* pBench)
   m_pDeckSpec     = nullptr;
   m_pStageSpec    = nullptr;
   m_pOpSpec       = nullptr;
-  m_pOpArgs       = nullptr;
 
+  m_pOpArgs       = nullptr;
+  m_szOpNm        = nullptr;
   m_bSawAggOp     = false;
   m_bSawProjectOp = false;
 
@@ -190,39 +191,40 @@ void Dissector::vOp(i8 i_OpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
   
   Card* pCard;
-  Stz* szOpNm = m_pOpSpec->szOpNm();
+
+  m_szOpNm = m_pOpSpec->szOpNm();
 
   m_pOpArgs = m_pOpSpec->pArgTags();
 
-  //vTrace("Op %s\n"_Stz,szOpNm);
+  //vTrace("Op %s\n"_Stz,m_szOpNm);
   //m_pOpArgs->vDumpSet(true);
 
-       if (szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_AbsJoin     ();
-  else if (szOpNm->bSame("aggreg"_Stz))       pCard = pOp_Aggreg      ();
-  else if (szOpNm->bSame("call"_Stz))         pCard = pOp_Call        ();
-  else if (szOpNm->bSame("combined"_Stz))     pCard = pOp_Combined    ();
-  else if (szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_Consume     ();
-  else if (szOpNm->bSame("debug"_Stz))        pCard = pOp_Debug       ();
-  else if (szOpNm->bSame("filter"_Stz))       pCard = pOp_Filter      ();
-  else if (szOpNm->bSame("gbyAgg"_Stz))       pCard = pOp_GbyAgg      ();
-  else if (szOpNm->bSame("hash"_Stz))         pCard = pOp_Hash        ();
-  else if (szOpNm->bSame("indexJoin"_Stz))    pCard = pOp_IndexJoin   ();
-  else if (szOpNm->bSame("indexScan"_Stz))    pCard = pOp_IndexScan   ();
-  else if (szOpNm->bSame("keyExists"_Stz))    pCard = pOp_KeyExists   ();
-  else if (szOpNm->bSame("keyNotExists"_Stz)) pCard = pOp_KeyNotExists();
-  else if (szOpNm->bSame("limit"_Stz))        pCard = pOp_Limit       ();
-  else if (szOpNm->bSame("ordagg"_Stz))       pCard = pOp_OrdAgg      ();
-  else if (szOpNm->bSame("orderBy"_Stz))      pCard = pOp_Sort        ();
-  else if (szOpNm->bSame("output"_Stz))       pCard = pOp_Output      ();
-  else if (szOpNm->bSame("pulse"_Stz))        pCard = pOp_Pulse       ();
-  else if (szOpNm->bSame("project"_Stz))      pCard = pOp_Project     ();
-  else if (szOpNm->bSame("scan"_Stz))         pCard = pOp_Scan        ();
-  else if (szOpNm->bSame("sendSE"_Stz))       pCard = pOp_Send        ();
-  else if (szOpNm->bSame("sink"_Stz))         pCard = pOp_Sink        ();
-  else if (szOpNm->bSame("sort"_Stz))         pCard = pOp_Sort        ();
-  else if (szOpNm->bSame("start"_Stz))        pCard = pOp_Start       ();
+       if (m_szOpNm->bSame("abstractJoin"_Stz)) pCard = pOp_AbsJoin     ();
+  else if (m_szOpNm->bSame("aggreg"_Stz))       pCard = pOp_Aggreg      ();
+  else if (m_szOpNm->bSame("call"_Stz))         pCard = pOp_Call        ();
+  else if (m_szOpNm->bSame("combined"_Stz))     pCard = pOp_Combined    ();
+  else if (m_szOpNm->bSame("consumeOp"_Stz))    pCard = pOp_Consume     ();
+  else if (m_szOpNm->bSame("debug"_Stz))        pCard = pOp_Debug       ();
+  else if (m_szOpNm->bSame("filter"_Stz))       pCard = pOp_Filter      ();
+  else if (m_szOpNm->bSame("gbyAgg"_Stz))       pCard = pOp_GbyAgg      ();
+  else if (m_szOpNm->bSame("hash"_Stz))         pCard = pOp_Hash        ();
+  else if (m_szOpNm->bSame("indexJoin"_Stz))    pCard = pOp_IndexJoin   ();
+  else if (m_szOpNm->bSame("indexScan"_Stz))    pCard = pOp_IndexScan   ();
+  else if (m_szOpNm->bSame("keyExists"_Stz))    pCard = pOp_KeyExists   ();
+  else if (m_szOpNm->bSame("keyNotExists"_Stz)) pCard = pOp_KeyNotExists();
+  else if (m_szOpNm->bSame("limit"_Stz))        pCard = pOp_Limit       ();
+  else if (m_szOpNm->bSame("ordagg"_Stz))       pCard = pOp_OrdAgg      ();
+  else if (m_szOpNm->bSame("orderBy"_Stz))      pCard = pOp_Sort        ();
+  else if (m_szOpNm->bSame("output"_Stz))       pCard = pOp_Output      ();
+  else if (m_szOpNm->bSame("pulse"_Stz))        pCard = pOp_Pulse       ();
+  else if (m_szOpNm->bSame("project"_Stz))      pCard = pOp_Project     ();
+  else if (m_szOpNm->bSame("scan"_Stz))         pCard = pOp_Scan        ();
+  else if (m_szOpNm->bSame("sendSE"_Stz))       pCard = pOp_Send        ();
+  else if (m_szOpNm->bSame("sink"_Stz))         pCard = pOp_Sink        ();
+  else if (m_szOpNm->bSame("sort"_Stz))         pCard = pOp_Sort        ();
+  else if (m_szOpNm->bSame("start"_Stz))        pCard = pOp_Start       ();
   else {
-    vTrace("Skipping OpSpec %s\n"_Stz,szOpNm);
+    vTrace("Skipping OpSpec %s\n"_Stz, m_szOpNm);
     pCard = nullptr;
   }
   
@@ -535,13 +537,15 @@ Card* Dissector::pOp_IndexJoin(void)
   // table
   
   Table* pTable = AM::pTableFind(szTableNm);
-  Card_Table* pCard_Table = new Card_Table;
-  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-  pCard_IndexJoin->vAppend(pCard_Table);
+//  Card_Table* pCard_Table = new Card_Table;
+//  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
+//
+//  Card_TableNm* pCard_TableNm = new Card_TableNm;
+//  pCard_TableNm->vSymbol(szTableNm);
+//  pCard_Table->vAppend(pCard_TableNm);
 
-  Card_TableNm* pCard_TableNm = new Card_TableNm;
-  pCard_TableNm->vSymbol(szTableNm);
-  pCard_Table->vAppend(pCard_TableNm);
+  Card_Table* pCard_Table = pFormTable(szTableNm);
+  pCard_IndexJoin->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
@@ -618,13 +622,16 @@ Card* Dissector::pOp_IndexScan(void)
   // table
 
   Table* pTable = AM::pTableFind(szTableNm);
-  Card_Table* pCard_Table = new Card_Table;
-  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-  pCard_IndexScan->vAppend(pCard_Table);
+//  Card_Table* pCard_Table = new Card_Table;
+//  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
+//
+//  Card_TableNm* pCard_TableNm = new Card_TableNm;
+//  pCard_TableNm->vSymbol(szTableNm);
+//  pCard_Table->vAppend(pCard_TableNm);
 
-  Card_TableNm* pCard_TableNm = new Card_TableNm;
-  pCard_TableNm->vSymbol(szTableNm);
-  pCard_Table->vAppend(pCard_TableNm);
+  Card_Table* pCard_Table = pFormTable(szTableNm);
+
+  pCard_IndexScan->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
@@ -712,13 +719,15 @@ Card* Dissector::pOp_KeyExists(void)
   // table
 
   Table* pTable = AM::pTableFind(szTableNm);
-  Card_Table* pCard_Table = new Card_Table;
-  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-  pCard_KeyExists->vAppend(pCard_Table);
+//  Card_Table* pCard_Table = new Card_Table;
+//  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
+//  pCard_KeyExists->vAppend(pCard_Table);
+//
+//  Card_TableNm* pCard_TableNm = new Card_TableNm;
+//  pCard_TableNm->vSymbol(szTableNm);
+//  pCard_Table->vAppend(pCard_TableNm);
 
-  Card_TableNm* pCard_TableNm = new Card_TableNm;
-  pCard_TableNm->vSymbol(szTableNm);
-  pCard_Table->vAppend(pCard_TableNm);
+  Card_Table* pCard_Table = pFormTable(szTableNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index
@@ -738,21 +747,7 @@ Card* Dissector::pOp_KeyExists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
 
-  Card_Bounds* pCard_Bounds = new Card_Bounds;
-  p_index->vAppend(pCard_Bounds);
-
-  Card_Bound* pCard_Bound = new Card_Bound;
-
-
-  pCard_Bound->vTransferChildren(p_rpnTerms_bounds);
-  i8 nTerms = pCard_Bound->nChildCards();
-  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
-  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
-  pCard_Bound->vDeleteChild(p_term_last);
-  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
-  pCard_Bound->vDeleteChild(p_term_first);
-
-  pCard_Bounds->vAppend(pCard_Bound);
+  Card_Bounds* pCard_Bounds = pPopBounds(p_rpnTerms_bounds);
 
 
 
@@ -1042,6 +1037,28 @@ Card* Dissector::pOp_Start(void)
 /*----------------------------------------------------------------------------*/
 /* form table                                                                 */
 /*----------------------------------------------------------------------------*/
+Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm, Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Index* pIndex = pTable->pFindIndex(szIndexNm);
+
+  Card_IndexList* p_indexList = new Card_IndexList;
+
+  Card_Index* p_index = new Card_Index;
+
+  Card_IndexNm* p_indexNm = new Card_IndexNm;
+  p_indexNm->vSymbol(pIndex->szIndexNm());
+
+  p_index->vAppend(p_indexNm);
+  p_indexList->vAppend(p_index);
+
+  return p_indexList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* form table                                                                 */
+/*----------------------------------------------------------------------------*/
 Card_Table* Dissector::pFormTable(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
@@ -1056,6 +1073,7 @@ Card_Table* Dissector::pFormTable(Stz* szTableNm)
 
   return pCard_Table;
 }
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -1084,6 +1102,31 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* pCard_RpnTerms)
 
   return pCard_As;
 }
+
+/*----------------------------------------------------------------------------*/
+/* collect <as> terms : AS <name>                                             */
+/*----------------------------------------------------------------------------*/
+Card_Bounds* Dissector::pPopBounds(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_Bounds* pCard_Bounds = new Card_Bounds;
+
+  Card_Bound* pCard_Bound = new Card_Bound;
+
+  pCard_Bound->vTransferChildren(pCard_RpnTerms);
+  i8 nTerms = pCard_Bound->nChildCards();
+  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
+  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
+  pCard_Bound->vDeleteChild(p_term_last);
+  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
+  pCard_Bound->vDeleteChild(p_term_first);
+
+  pCard_Bounds->vAppend(pCard_Bound);
+
+  return pCard_Bounds;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* collect <sortDirn> terms :                                                 */

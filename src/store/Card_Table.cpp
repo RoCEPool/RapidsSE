@@ -580,10 +580,16 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_LEVEL,CK_TABLENM,CK_TABLEPTN,
-                     CK_TABLESIZE,CK_ROWSIZE,CK_ROWCOUNT,CK_PROJECTION,CK_NONE);
+  if (pParent->bIsCard(CK_DECK)) {
+    vValidate_mustHave(CK_LEVEL, CK_TABLENM, CK_TABLEPTN,
+                       CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_PROJECTION, CK_NONE);
+    pSub_level()->vValidate(pCI,iDepth+1,this);
+  }
+  else {
+    vValidate_mustHave(CK_TABLENM, CK_TABLEPTN,
+                       CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_NONE);
+  }
 
-  pSub_level()->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

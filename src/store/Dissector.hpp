@@ -17,6 +17,7 @@ namespace STORE
     DeckSpec*    m_pDeckSpec;
     StageSpec*   m_pStageSpec;
     OpSpec*      m_pOpSpec;
+    Stz*         m_szOpNm;
     TagSet*      m_pOpArgs;
 
     bool m_bSawAggOp;
@@ -64,10 +65,11 @@ namespace STORE
     Card* pOp_Sort        (void);
     Card* pOp_Start       (void);
 
-    Card_Index*      pFormIndex(i8 i_Arg);
+    Card_IndexList*  pFormIndex(Stz* szIndexNm, Table* pTable);
     Card_Table*      pFormTable(Stz* szTableNm);
 
     Card_As*         pPopAs         (Card_RpnTerms* pCard_RpnTerms);
+    Card_Bounds*     pPopBounds     (Card_RpnTerms* pCard_RpnTerms);
     Card_Direction*  pPopDirection  (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*       pPopExpr       (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);
     Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);

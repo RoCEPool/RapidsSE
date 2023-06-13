@@ -28,6 +28,8 @@ namespace STORE
     bool bHas_cmpPred_In_bounds(Card_CmpPred* p_cmpPred);
 
     void vTypes_For_stmColOdn(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_IndexList* _pCard_IndexList(void* aAddr);
