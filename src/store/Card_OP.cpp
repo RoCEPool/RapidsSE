@@ -1181,6 +1181,21 @@ void Card_OP::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
     szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
 
   }
+
+
+//  Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
+//  if (! pCard_constraint) {
+//    return;
+//  }
+//
+//  szRpnConstraint->vConcat(" type BOOLEAN"_Stz);
+//
+//  Card_RpnCalc *pCard_RpnCalc = pCard_Index->pSub_rpnCalc();
+//  CardIter xCI_rpnCalc(pCard_RpnCalc);
+//  while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+//    szRpnConstraint->vCatSprint(" %s"_Stz, xCI_rpnCalc.G.p_term->szSymbol());
+//  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1206,7 +1221,7 @@ void Card_OP::vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_Key
   szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
   Card* pCard_test = pCard_constraint->pSub_boolCalc();
-  if (CK_BOOLCALC == pCard_test->eCard()) {
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
     vBoolCalc(szRpnExpr, pCard_CalcBool);
   }

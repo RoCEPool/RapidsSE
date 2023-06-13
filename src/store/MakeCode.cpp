@@ -186,6 +186,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
 
   s2K sExpr;
+  s2K sConstraint;
 
   eCK eCard = p_OP->eCard();
 
@@ -271,15 +272,21 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
       break;
 
     case CK_KEYEXISTS:
+      p_OP->vRpnKeyExists_constraint(sConstraint, _pCard_KeyExists(p_OP));
+
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyExists(p_OP)->pSub_indexNm()->szSymbol()));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
 
     case CK_KEYNOTEXISTS:
+      p_OP->vRpnKeyExists_constraint(sConstraint, _pCard_KeyExists(p_OP));
+
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
-      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
+      m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szSymbol()));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(3, "constraint"_Stz, sConstraint));
       break;
 
     case CK_LIMIT:
