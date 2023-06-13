@@ -745,6 +745,8 @@ Card* Dissector::pOp_KeyExists(void)
   delete p_rpnTerms_bounds;
   delete p_rpnTerms_constraint;
 
+  pCard_KeyExists->vDump();
+
   return pCard_KeyExists;
 }
 

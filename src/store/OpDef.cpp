@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "OpDef.hpp"
+#include "Index.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -202,8 +203,18 @@ void OpDef::vDump(i8 i_Tab)
 
   vTrace("%s%s : Index_indexScan %p\n"_Stz,
          Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndex_indexScan);
+  if (m_pIndex_indexScan)
+    m_pIndex_indexScan->pIndexDef()->vDump(i_Tab+1);
   vTrace("%s%s : Index_indexJoin %p\n"_Stz,
          Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndex_indexJoin);
+  if (m_pIndex_indexJoin)
+    m_pIndex_indexJoin->pIndexDef()->vDump(i_Tab+1);
+  vTrace("%s%s : Index_indexSemi %p\n"_Stz,
+         Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndex_indexSemi);
+  if (m_pIndex_indexSemi)
+    m_pIndex_indexSemi->pIndexDef()->vDump(i_Tab+1);
+
+
   vTrace("%s%s : IndexDef_gbyAgg %p\n"_Stz,
          Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_gbyAgg);
   if (m_pIndexDef_gbyAgg)
