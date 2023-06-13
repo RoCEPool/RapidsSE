@@ -63,25 +63,21 @@ namespace STORE
     Card* pOp_Sort        (TagSet* pArgTags);
     Card* pOp_Start       (TagSet* pArgTags);
 
-    Card_Key*        pKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
-    Card_Projection* pProjection (Card_RpnTerms* pCard_RpnTerms);
+    Card_As*         pPopAs         (Card_RpnTerms* pCard_RpnTerms);
+    Card_Direction*  pPopDirection  (Card_RpnTerms* pCard_RpnTerms);
+    Card_Expr*       pPopExpr       (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);
+    Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
+    Card_Projection* pPopProjection (Card_RpnTerms* pCard_RpnTerms);
+    Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
+    Stz*             szPopType      (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_Expr*      pExpr        (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);
-    Card_RpnCalc*   pCalc        (Card_RpnTerms* pCard_RpnTerms);
+    void             vCheckArgs     (TagSet* pArgTags, i8 nArgs);
 
-    Card_As*        pAs          (Card_RpnTerms* pCard_RpnTerms);
-    Card_Direction* pDirection   (Card_RpnTerms* pCard_RpnTerms);
-    Stz*            szType       (Card_RpnTerms* pCard_RpnTerms);
+    i8               iGetInt        (TagSet* pArgTags, i8 i_Arg);
+    Card_RpnTerms*   pGetRpnTerms   (TagSet* pArgTags, i8 i_Arg);
+    Stz*             szGetStz       (TagSet* pArgTags, i8 i_Arg);
 
-    Card_RpnTerms* pToRpnTerms   (Stz* szRpnExpr);
-  
-    i8             iArgCheckLast (TagSet* pArgTags, i8 i_Last);
-    Card_RpnTerms* pGetRpnTerms (TagSet* pArgTags, i8 i_Last);
-    Card_RpnTerms* pArgCheckLast (TagSet* pArgTags, i8 i_Last,
-                                  Stz*& szTableNm, Stz*& szIndexNm);
-    Stz*           szGetStz(TagSet* pArgTags, i8 i_Last);
-    void           vArgCheck     (TagSet* pArgTags, i8 nArgs);
-
+    Card_RpnTerms*   pToRpnTerms    (Stz* szRpnExpr);
 
   private:
     Footer* aFooter(void);
