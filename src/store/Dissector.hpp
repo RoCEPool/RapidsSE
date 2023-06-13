@@ -70,12 +70,13 @@ namespace STORE
 
     Card_As*         pPopAs         (Card_RpnTerms* pCard_RpnTerms);
     Card_Bounds*     pPopBounds     (Card_RpnTerms* pCard_RpnTerms);
+    Card_Constraint* pPopConstraint (Card_RpnTerms* pCard_RpnTerms);
     Card_Direction*  pPopDirection  (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*       pPopExpr       (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);
     Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
     Card_Projection* pPopProjection (Card_RpnTerms* pCard_RpnTerms);
     Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
-    Stz*             szPopType      (Card_RpnTerms* pCard_RpnTerms);
+    Stz*             szPopType_char      (Card_RpnTerms* pCard_RpnTerms);
 
     void             vCheckArgs     (i8 nArgs);
 

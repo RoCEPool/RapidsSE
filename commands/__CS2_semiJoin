@@ -33,8 +33,9 @@ begin
    | next
 
  stage S02 on all partitions :
-   keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
-              "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+     keyExists Region IxR_REGIONKEY
+              " BOUND $I1 $3 == "
+              "type BOOLEAN R_REGIONKEY 3 <"
    | combined  0
    | next
 

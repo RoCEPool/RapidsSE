@@ -697,12 +697,10 @@ Card* Dissector::pOp_KeyExists(void)
   // op arguments
 
   vCheckArgs(4);
-
   Stz* szTableNm = szGetStz(0);
   Stz* szIndexNm = szGetStz(1);
   Card_RpnTerms* p_rpnTerms_bounds = pGetRpnTerms(2);
-
-  p_rpnTerms_bounds->vDump();
+  Card_RpnTerms* p_rpnTerms_constraint = pGetRpnTerms(3);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // keyExists
@@ -719,30 +717,11 @@ Card* Dissector::pOp_KeyExists(void)
   // table
 
   Table* pTable = AM::pTableFind(szTableNm);
-//  Card_Table* pCard_Table = new Card_Table;
-//  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-//  pCard_KeyExists->vAppend(pCard_Table);
-//
-//  Card_TableNm* pCard_TableNm = new Card_TableNm;
-//  pCard_TableNm->vSymbol(szTableNm);
-//  pCard_Table->vAppend(pCard_TableNm);
-
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
+  pCard_KeyExists->vAppend(pCard_Table);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index list
-
-//  Card_IndexList* p_indexList = new Card_IndexList;
-//  pCard_KeyExists->vAppend(p_indexList);
-//
-//  Index* pIndex = pTable->pFindIndex(szIndexNm);
-//
-//  Card_Index* p_index = new Card_Index;
-//  Card_IndexNm* p_indexNm = new Card_IndexNm;
-//  p_index->vAppend(p_indexNm);
-//  p_indexNm->vSymbol(pIndex->szIndexNm());
-//
-//  p_indexList->vAppend(p_index);
 
   Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
 
@@ -750,26 +729,20 @@ Card* Dissector::pOp_KeyExists(void)
   // index bounds
 
   Card_Bounds* pCard_Bounds = pPopBounds(p_rpnTerms_bounds);
-
-
-
-  //Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
-  Card_Filter* pCard_Filter = new Card_Filter;
+  pCard_Bounds->vDump();
+  pCard_KeyExists->vAppend(pCard_Bounds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // filtElist : filter expression list
+  // constraint
 
-  i8 i_Expr = 1;
-  Card_Expr* pCard_Expr = pPopExpr(p_rpnTerms_bounds, false, i_Expr);
+  Card_Constraint* pCard_Constraint = pPopConstraint(p_rpnTerms_constraint);
+  pCard_Constraint->vDump();
+  pCard_KeyExists->vAppend(pCard_Constraint);
 
-  Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
-  pCard_Expr->vRemoveSub(pCard_RpnCalc);
-  DELETE_CARD(pCard_Expr);
-
-  pCard_Filter->vAppend(pCard_RpnCalc);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_rpnTerms_bounds;
-
+  delete p_rpnTerms_constraint;
 
   return pCard_KeyExists;
 }
@@ -1128,6 +1101,26 @@ Card_Bounds* Dissector::pPopBounds(Card_RpnTerms* pCard_RpnTerms)
   return pCard_Bounds;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop constraint                                                             */
+/*----------------------------------------------------------------------------*/
+Card_Constraint* Dissector::pPopConstraint(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  Card_Constraint* pCard_Constraint = new Card_Constraint;
+
+  Stz* szType = szPopType_char(pCard_RpnTerms);
+
+  Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
+
+  pCard_RpnCalc->vSetType(szType);
+
+  pCard_Constraint->vAppend(pCard_RpnCalc);
+
+  return pCard_Constraint;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* collect <sortDirn> terms :                                                 */
@@ -1169,7 +1162,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
     pCard_Expr->vSymbol(xSymbol_stmColOdn);
   }
 
-  Stz* szP_Type = this->szPopType(pCard_RpnTerms);
+  Stz* szP_Type = this->szPopType_char(pCard_RpnTerms);
 
 
   // [ AS <as> ]
@@ -1206,8 +1199,8 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
       && (pCard_Term_head->bIsSymbol("ASC"_Stz) ||
           pCard_Term_head->bIsSymbol("DESC"_Stz))) {
 
-    Card_Direction* pCard_SortDirn = pPopDirection(pCard_RpnTerms);
-    pCard_Expr->vAppend(pCard_SortDirn);
+    Card_Direction* pCard_Direction = pPopDirection(pCard_RpnTerms);
+    pCard_Expr->vAppend(pCard_Direction);
   }
 
 
@@ -1354,7 +1347,7 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* collect <type> terms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Dissector::szPopType(Card_RpnTerms* pCard_RpnTerms)
+Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
