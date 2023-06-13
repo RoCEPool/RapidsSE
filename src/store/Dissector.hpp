@@ -17,6 +17,7 @@ namespace STORE
     DeckSpec*    m_pDeckSpec;
     StageSpec*   m_pStageSpec;
     OpSpec*      m_pOpSpec;
+    TagSet*      m_pOpArgs;
 
     bool m_bSawAggOp;
     bool m_bSawProjectOp;
@@ -39,29 +40,32 @@ namespace STORE
     void vStage(i8 i_StageSpec);
     void vOp(i8 i_OpSpec);
 
-    Card* pOp_AbsJoin     (TagSet* pArgTags);
-    Card* pOp_Aggreg      (TagSet* pArgTags);
-    Card* pOp_Call        (TagSet* pArgTags);
-    Card* pOp_Combined    (TagSet* pArgTags);
-    Card* pOp_Consume     (TagSet* pArgTags);
-    Card* pOp_Debug       (TagSet* pArgTags);
-    Card* pOp_Filter      (TagSet* pArgTags);
-    Card* pOp_GbyAgg      (TagSet* pArgTags);
-    Card* pOp_Hash        (TagSet* pArgTags);
-    Card* pOp_IndexJoin   (TagSet* pArgTags);
-    Card* pOp_IndexScan   (TagSet* pArgTags);
-    Card* pOp_KeyExists   (TagSet* pArgTags);
-    Card* pOp_KeyNotExists(TagSet* pArgTags);
-    Card* pOp_Limit       (TagSet* pArgTags);
-    Card* pOp_OrdAgg      (TagSet* pArgTags);
-    Card* pOp_Output      (TagSet* pArgTags);
-    Card* pOp_Pulse       (TagSet* pArgTags);
-    Card* pOp_Project     (TagSet* pArgTags);
-    Card* pOp_Scan        (TagSet* pArgTags);
-    Card* pOp_Send        (TagSet* pArgTags);
-    Card* pOp_Sink        (TagSet* pArgTags);
-    Card* pOp_Sort        (TagSet* pArgTags);
-    Card* pOp_Start       (TagSet* pArgTags);
+    Card* pOp_AbsJoin     (void);
+    Card* pOp_Aggreg      (void);
+    Card* pOp_Call        (void);
+    Card* pOp_Combined    (void);
+    Card* pOp_Consume     (void);
+    Card* pOp_Debug       (void);
+    Card* pOp_Filter      (void);
+    Card* pOp_GbyAgg      (void);
+    Card* pOp_Hash        (void);
+    Card* pOp_IndexJoin   (void);
+    Card* pOp_IndexScan   (void);
+    Card* pOp_KeyExists   (void);
+    Card* pOp_KeyNotExists(void);
+    Card* pOp_Limit       (void);
+    Card* pOp_OrdAgg      (void);
+    Card* pOp_Output      (void);
+    Card* pOp_Pulse       (void);
+    Card* pOp_Project     (void);
+    Card* pOp_Scan        (void);
+    Card* pOp_Send        (void);
+    Card* pOp_Sink        (void);
+    Card* pOp_Sort        (void);
+    Card* pOp_Start       (void);
+
+    Card_Index*      pFormIndex(i8 i_Arg);
+    Card_Table*      pFormTable(i8 i_Arg);
 
     Card_As*         pPopAs         (Card_RpnTerms* pCard_RpnTerms);
     Card_Direction*  pPopDirection  (Card_RpnTerms* pCard_RpnTerms);
@@ -71,11 +75,11 @@ namespace STORE
     Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
     Stz*             szPopType      (Card_RpnTerms* pCard_RpnTerms);
 
-    void             vCheckArgs     (TagSet* pArgTags, i8 nArgs);
+    void             vCheckArgs     (i8 nArgs);
 
-    i8               iGetInt        (TagSet* pArgTags, i8 i_Arg);
-    Card_RpnTerms*   pGetRpnTerms   (TagSet* pArgTags, i8 i_Arg);
-    Stz*             szGetStz       (TagSet* pArgTags, i8 i_Arg);
+    i8               iGetInt        (i8 i_Arg);
+    Card_RpnTerms*   pGetRpnTerms   (i8 i_Arg);
+    Stz*             szGetStz       (i8 i_Arg);
 
     Card_RpnTerms*   pToRpnTerms    (Stz* szRpnExpr);
 
