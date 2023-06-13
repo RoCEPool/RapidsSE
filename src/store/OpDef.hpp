@@ -27,6 +27,7 @@ namespace STORE
 
     Index*     m_pIndex_indexScan;
     Index*     m_pIndex_indexJoin;
+    Index*     m_pIndex_indexSemi;
 
     IndexDef*  m_pIndexDef_gbyAgg;
     ColsReq*   m_pColMap_gbyAgg;
