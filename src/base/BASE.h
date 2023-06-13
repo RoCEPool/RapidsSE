@@ -268,11 +268,14 @@ extern d8 C_D8_MID;
 #include "ListNL_t.hpp"
 #include "Location.hpp"
 
+
+
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
 
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
+#include "SkipListNode.hpp"
 #include "StackNL_t.hpp"
 
 #include "TextAbstract.hpp"
@@ -291,6 +294,10 @@ extern d8 C_D8_MID;
 
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
+
+// -- -- -- -- -- -- -- --
+
+#include "Pds.hpp"
 
 // -- -- -- -- -- -- -- --
 
