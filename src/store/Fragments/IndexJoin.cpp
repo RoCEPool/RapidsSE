@@ -261,7 +261,6 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
     aDynamicT->m_iProcessRow = 0;
     goto __L_LABEL_OUTER_LOOP__;
   }
-  aHeadLineSav = aHeadLine;
 
   // marker-end
 
