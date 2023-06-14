@@ -9,6 +9,8 @@
 #include "Steps.hpp"
 
 #include "LogicUnit.hpp"
+#include "Job.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -19,6 +21,7 @@ void Step::vAddSteps_Cmd(void)
   vAddStep("Cmd[].fetch"_Stz,  &Step::vCmdFetch);
   vAddStep("Cmd[].print"_Stz,  &Step::vCmdPrint);
   vAddStep("Cmd[].store"_Stz,  &Step::vCmdStore);
+  vAddStep("Cmd[].update"_Stz, &Step::vCmdUpdate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,10 +30,17 @@ void Step::vAddSteps_Cmd(void)
 void Step::vCmdFetch(void)
 {
   ENTRY();
-    
-  RASSERT(m_pLogicUnit->m_xpText.bIsNotNull());
-  
-  m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGet());
+
+  if (m_pJob) {
+    TagSet* pTags = m_pJob->pJobTags();
+    Stz* szValue = pTags->szValue(C_TAG_CMD);
+    if (! szValue)
+      THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+    m_pDataStack->vPushStz(szValue);
+  }
+  else {
+    THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+  }
 
   EXIT();
 }
@@ -51,6 +61,28 @@ void Step::vCmdPrint(void)
 void Step::vCmdStore(void)
 {
   ENTRY();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Cmd[].update -- update cmd[]                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCmdUpdate(void)
+{
+  ENTRY();
+
+  if (m_pJob) {
+    TagSet* pTags = m_pJob->pJobTags();
+    Stz* szValue = pTags->szValue(C_TAG_CMD);
+    if (! szValue)
+      THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+
+    m_pJob->vCmdText(szValue);
+  }
+  else {
+    THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+  }
 
   EXIT();
 }

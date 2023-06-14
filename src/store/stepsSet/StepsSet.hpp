@@ -221,6 +221,7 @@ public:
   void vCmdFetch(void);
   void vCmdPrint(void);
   void vCmdStore(void);
+  void vCmdUpdate(void);
 
   // column
   void vColumnIsNullableFetch(void);
