@@ -25,38 +25,50 @@ void Step::vAddSteps_Cmd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Cmd[].fetch -- get cmd[]                                                   */
+/* [Job.Cmd].fetch -- get cmd[]                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vCmdFetch(void)
 {
   ENTRY();
 
-  if (m_pJob) {
-    TagSet* pTags = m_pJob->pJobTags();
-    Stz* szValue = pTags->szValue(C_TAG_CMD);
-    if (! szValue)
-      THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+//  if (m_pJob) {
+//    TagSet* pTags = m_pJob->pJobTags();
+//    Stz* szValue = pTags->szValue(C_TAG_CMD);
+//    if (! szValue)
+//      THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+//    m_pDataStack->vPushStz(szValue);
+//  }
+//  else {
+//    THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+//  }
+
+  if (Stz* szValue = m_pJob->szCmdText()) {
     m_pDataStack->vPushStz(szValue);
   }
   else {
-    THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+    THROW("Step::vCmdFetch : unknown cmd text\n"_Stz);
   }
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Cmd[].print -- print cmd[]                                                 */
+/* [Job.Cmd].print -- print cmd[]                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vCmdPrint(void)
 {
   ENTRY();
 
+  if (m_pJob->szCmdText())
+    vTrace("%s\n"_Stz,(m_pJob->szCmdText()));
+  else
+    vTrace("<NO CMD TEXT>\n"_Stz);
+
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Cmd[].store -- set cmd[]                                                   */
+/* [Job.Cmd].store -- set cmd[]                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vCmdStore(void)
 {
@@ -66,23 +78,19 @@ void Step::vCmdStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Cmd[].update -- update cmd[]                                               */
+/* [Job.Cmd].update -- update cmd[]                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vCmdUpdate(void)
 {
   ENTRY();
 
-  if (m_pJob) {
-    TagSet* pTags = m_pJob->pJobTags();
-    Stz* szValue = pTags->szValue(C_TAG_CMD);
-    if (! szValue || ! szValue->nLength())
-      THROW("Step::vCmdFetch : unknown tag\n"_Stz);
+  s48K sCmdValue;
+  m_pDataStack->vPopStr(sCmdValue,__func__);
 
-    m_pJob->vCmdText(szValue);
-  }
-  else {
-    THROW("Step::vCmdFetch : unknown tag\n"_Stz);
-  }
+  TagSet* pTags = m_pJob->pJobTags();
+  pTags->vReplace(C_TAG_CMD,sCmdValue);
+
+  m_pJob->vCmdText(sCmdValue);
 
   EXIT();
 }

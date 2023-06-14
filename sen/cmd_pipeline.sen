@@ -171,9 +171,8 @@
 /* org_ org */
 /* org_ org */    Optimiser[].transform if
 /* org_ org */      // replace original cmd with weaved statement
-/* org_ org */      "<cmd>" Optimiser[].weave [job].tagSet@ tagSet.replaceStr
 
-/* ray      */      [Job.Cmd].update
+/* ray      */      Optimiser[].weave [Job.Cmd].update
 
 /* org_ org */      Optimiser[].delete
 /* org_ org */    else
