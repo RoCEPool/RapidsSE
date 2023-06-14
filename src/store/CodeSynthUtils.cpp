@@ -586,7 +586,8 @@ void CodeSynthUtils::vReplaceColumnsInflated(Stz* sLine, OpSketch* pOpSketch)
       RASSERT( pOpSketch->m_pStreamDefLft );
       StrLib::vSprint(sColumnsInflated,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
     }
-    else if (pOpSketch->m_eSketchKind == SK_SEMIJOIN) {
+    else if (pOpSketch->m_eSketchKind == SK_SEMIJOIN ||
+             pOpSketch->m_eSketchKind == SK_ANTIJOIN) {
       StrLib::vSprint(sColumnsInflated,"%lld"_Stz,0);
     }
     else {

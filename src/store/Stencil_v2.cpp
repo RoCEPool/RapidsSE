@@ -296,9 +296,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     if (pOpDef->szOpNm()->bSame("antiJoin"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupKeyExists(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchAntiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
       continue;
@@ -349,20 +346,17 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // generate code for indexScan OP
-//    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz)) {
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      //vSetupIndexJoin(pDynamic, pStream, pOp);
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      pOpSketch = pSketchIndexJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
-//      vAppend(pOpSketch);
-//
-//      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
-//
-//      ePrevStencil_v2 = SR_TJ;
-//      continue;
-//    }
+    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchIndexJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+
+      ePrevStencil_v2 = SR_TJ;
+      continue;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the limitOP
@@ -398,12 +392,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     if (pOpDef->szOpNm()->bSame("keyExists"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupKeyExists(pCombined, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchSemiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
-      //sLabelLoop = "L_AdvanceNextRow"_Stz;
 
       continue;
     }
@@ -411,9 +401,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the sort OP
     if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupSort(pDynamic, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchSort(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
@@ -543,159 +530,6 @@ void Stencil_v2::vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, St
       sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
     }
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for indexJoin                                                       */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  // get the joinIndex from the indexJoinOp
-  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndex = pIndex;
-
-  // get the index tree for the index
-  Table* pTable = pIndex->pTable();
-
-  LglPtn tLglPtn;
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  if (pStreamDef->bReplicated()) {
-
-    Stage*  pStage   = pOp->pStage();
-    Stream* pStream0 = pStage->pGet(0);
-    Op*     pOp0_0   = pStream0->pGet(0);
-
-    tLglPtn = pOp0_0->tLglPtn();
-  }
-  else {
-    tLglPtn = pOp->tLglPtn();
-  }
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-  i8 iIndexNo = pIndex->iIndexNo();
-
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexTree = pIndexTree;
-  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexDef = pIndex->pIndexDef();
-
-  // create join RowSingleTJ
-//  pDynamic->aDynamicT()->m_xRowInfoTJ.m_aRowSingle = new RowSingle(pStreamDefOut);
-//  pDynamic->aDynamicT()->m_xRowInfoTJ.m_aRowCellArray =
-//      (byte *) RowSingle::aGetCellArray((RowSingle *) pDynamic->aDynamicT()->m_xRowInfoTJ.m_aRowSingle,
-//                                        &pDynamic->aDynamicT()->m_xRowInfoTJ.m_acStrArea);
-//  pDynamic->aDynamicT()->m_xRowInfoTJ.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoTJ.m_acStrArea;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for indexScan                                                       */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-
-  // get streamDefLft
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-
-  // get the scanIndex from the indexScanOp
-  Index* pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
-  pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndex = pIndexScan;
-//
-//  // create RowSingleT
-//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle = new RowSingle(pStreamDefLft);
-//  pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowCellArray =
-//  (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIT.m_aRowSingle,
-//  &pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea);
-//  pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIT.m_acStrArea;
-
-  // get the index tree for the index
-  Table* pTable = pIndexScan->pTable();
-
-  LglPtn tLglPtn;
-
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  if (pStreamDef->bReplicated()) {
-
-    Stage*  pStage   = pOp->pStage();
-    Stream* pStream0 = pStage->pGet(0);
-    Op*     pOp0_0   = pStream0->pGet(0);
-
-    tLglPtn = pOp0_0->tLglPtn();
-  }
-  else {
-    tLglPtn = pOp->tLglPtn();
-  }
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-  pDynamic->aDynamicT()->m_nCols = pTable->pStreamDef()->nColumns();
-
-  i8 iIndexNo = pIndexScan->iIndexNo();
-
-  // COME BACK TO THIS
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  IndexDef* pIndexDef = pIndexTree->pIndexDef();
-  pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndexTree = pIndexTree;
-  pDynamic->aDynamicT()->m_xIndexInfoT.m_aIndexDef  = pIndexDef;
-  EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_xIndexInfoT.m_aEntWrk, 0, pIndexDef->eKeyKind());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for key exists                                                      */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
-
-  // create RowSingleJ
-  //pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowSingle = new RowSingle(pStreamDefRht);
-  //pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowCellArray =
-  //    (byte*)RowSingle::aGetCellArray((RowSingle*)pDynamic->aDynamicT()->m_xRowInfoIJ.m_aRowSingle,
-  //                                    &pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrArea);
-  //pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrAreaSav = pDynamic->aDynamicT()->m_xRowInfoIJ.m_acStrArea;
-
-  // get the joinIndex from the indexJoinOp
-  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndex = pIndex;
-
-  // get the index tree for the index
-  Table* pTable = pIndex->pTable();
-
-  LglPtn tLglPtn;
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  if (pStreamDef->bReplicated()) {
-
-    Stage*  pStage   = pOp->pStage();
-    Stream* pStream0 = pStage->pGet(0);
-    Op*     pOp0_0   = pStream0->pGet(0);
-
-    tLglPtn = pOp0_0->tLglPtn();
-  }
-  else {
-    tLglPtn = pOp->tLglPtn();
-  }
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tLglPtn);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-  i8 iIndexNo = pIndex->iIndexNo();
-
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexTree = pIndexTree;
-  pDynamic->aDynamicT()->m_xIndexInfoJ.m_aIndexDef  = pIndex->pIndexDef();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -968,7 +802,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   sLabelOuterLoop = sLabelLoop;
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
 
-  // HACK : should come from optimiser
+  // HACK : OPTIMISER
   // set the streamDefRht
   Table* pTable = pIndex->pTable();
   pOpSketch->vStreamDefRht(pTable->pStreamDef());
@@ -1011,8 +845,6 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
 
   // create a new opSketch for this OP
   pOpSketch = new OpSketch(i_Op,sIndexScanExpr, eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST, pStreamDefLft, pStreamDefOut);
-
-  //u8 uSelectColumns = uGetSelectColumns(pStream);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(),i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
@@ -1117,16 +949,9 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // get filter expr from OpDef
   Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  // HACK
-  // get the streamDefOut from previous OP
-  OpDef* pPreviousOpDef = pStageDef->pGet(pOpDef->i_Op() - 1);
-  StreamDef *pStreamDefLft = pPreviousOpDef->m_pStreamDef_emitted;
-  StreamDef *pStreamDefOut = pPreviousOpDef->m_pStreamDef_emitted;
-  // END HACK
-
   // get the streamDefOut
-  //StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-  //StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sFilterExpr, eHandlerKind, SK_FILTER, ePrevStencil_v2, SR_NONE, II_NONE, pStreamDefLft, pStreamDefOut);
@@ -1211,7 +1036,7 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
 
   //HACK-OPTIMISER
   // set the streamDefRht
-  //pOpSketch->vStreamDefRht(pStreamDefRht);
+  // pOpSketch->vStreamDefRht(pStreamDefRht);
   Table* pTable = pIndex->pTable();
   pOpSketch->vStreamDefRht(pTable->pStreamDef());
 
