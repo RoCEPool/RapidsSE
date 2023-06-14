@@ -169,9 +169,6 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   RowInfo __ROW_INFO_TO__;
 
-  struct __STRUCT_TO__ {
-    i8 iDummy;
-  };
 
   // marker-start
 
@@ -192,34 +189,6 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
         // marker-end
     };
   }
-
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vTubBegin2 ---------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iTubBegin2
-i8 iTubBegin2(Dynamic_T* aDynamicT) {
-
-  struct __STRUCT_TO__ {
-    i8 iDummy;
-  };
-
-  // marker-start
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // TUB/POT
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  __L_LABEL__:
-
-  printf("TUB/POT\n");
-
-    struct ColumnInfo xColumnInfo[] = {
-        // marker-end
-    };
 
   return 0;
 }
@@ -303,25 +272,6 @@ i8 iTubRowPix(Dynamic_T* aDynamicT) {
 #endif
     __ROW_INFO_TO__.m_iInitialize = 0;
   }
-
-  // marker-end
-
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- iTubRowPix2 -------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iTubRowPix2
-i8 iTubRowPix2(Dynamic_T* aDynamicT) {
-
-    // marker-start
-
-    printf("TUB initializing rowPix %p\n", aDynamicT);
-#ifdef WITH_CLANG
-    void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-    vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
-#endif
 
   // marker-end
 

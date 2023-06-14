@@ -88,6 +88,7 @@ OpSketch::OpSketch(void)
   m_eIndexInfo = II_NONE;
 
   // expression stacks
+  m_pConstraintStack = nullptr;
   m_pExprStack   = nullptr;
   m_pNullStack   = nullptr;
   m_pGbyStack    = nullptr;
@@ -151,6 +152,7 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_eIndexInfo = eIndexInfo;
 
   // expression stacks
+  m_pConstraintStack = new TypedStack(KK_DATA_STACK);
   m_pExprStack   = new TypedStack(KK_DATA_STACK);
   m_pNullStack   = nullptr;
   m_pLowerStack  = new TypedStack(KK_DATA_STACK);
@@ -198,6 +200,7 @@ OpSketch::~OpSketch(void) noexcept(false)
 
   delete m_pColsReq;
   delete m_pColsMap;
+  delete m_pConstraintStack;
   delete m_pExprStack;
   delete m_pInitStack;
   delete m_pGbyStack;
@@ -405,7 +408,7 @@ eSK OpSketch::eSketchKind(void)
 /*----------------------------------------------------------------------------*/
 /* generate the expression stacks                                             */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vGenerateExprStacks(void)
+void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
@@ -433,7 +436,7 @@ void OpSketch::vGenerateExprStacks(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
-  TokenVec* pTokenVec = AM::TOKENISE::pTokeniseSen((Stz *) m_sExprString);
+  TokenVec* pTokenVec = AM::TOKENISE::pTokeniseSen((Stz *) sExpr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the ExprType stack
@@ -445,8 +448,8 @@ void OpSketch::vGenerateExprStacks(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack
-  pExprStack = pWorkingStack(ePreExp);
-  RASSERT(m_pExprStack == pExprStack);
+  pExprStack = pWorkingStack(ePreExp, bConstraint);
+  RASSERT(m_pExprStack == pExprStack || m_pConstraintStack == pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
@@ -506,7 +509,7 @@ void OpSketch::vGenerateExprStacks(void)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(ePreExp);
+      pExprStack = pWorkingStack(ePreExp, bConstraint);
 
       continue;
     }
@@ -520,7 +523,7 @@ void OpSketch::vGenerateExprStacks(void)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(ePreExp);
+      pExprStack = pWorkingStack(ePreExp, bConstraint);
       RASSERT(pExprStack == m_pGbyStack);
 
       continue;
@@ -535,7 +538,7 @@ void OpSketch::vGenerateExprStacks(void)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(ePreExp);
+      pExprStack = pWorkingStack(ePreExp, bConstraint);
       RASSERT(pExprStack == m_pGbyStack);
 
       continue;
@@ -562,7 +565,7 @@ void OpSketch::vGenerateExprStacks(void)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack( ePreExp);
+      pExprStack = pWorkingStack( ePreExp, bConstraint);
       continue;
     }
 
@@ -841,7 +844,7 @@ void OpSketch::vGenerateExprStacks(void)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working expression stack
-      pExprStack = pWorkingStack(ePreExp);
+      pExprStack = pWorkingStack(ePreExp, bConstraint);
       continue;
     }
 
@@ -1106,7 +1109,7 @@ void OpSketch::vGenerateExprStacks(void)
   //RASSERT(pExprStack == m_pExprStack);
 
   if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
-    vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+    vPushAssignCol(pExprStack, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr, bConstraint);
 
 
 #ifdef WITH_DEBUG_VERSION
@@ -1598,10 +1601,17 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
 
   s256 sOperation;
   s256 sColumn;
+  Column *pColumn;
 
-  Column *pColumn = pStreamDef->pFindColumn(pTkn->szChars());
-
-  vMakeColumnNm(pStreamDef, sColumn, m_eStencilFrom, pColumn->iColumnNo());
+  pColumn = pStreamDef->pFindColumn(pTkn->szChars());
+  if ( pColumn) {
+    vMakeColumnNm(pStreamDef, sColumn, m_eStencilFrom, pColumn->iColumnNo());
+  }
+  else {
+    RASSERT(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN);
+    pColumn = m_pStreamDefRht->pFindColumn(pTkn->szChars());
+    vMakeColumnNm(m_pStreamDefRht, sColumn, m_eStencilTo, pColumn->iColumnNo());
+  }
 
   sOperation.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
 
@@ -1933,7 +1943,7 @@ void OpSketch::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push assign column on the exprStack                                        */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr) {
+void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 i_ColPL, i8& i_DupCtr, bool bConstraint) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -2054,19 +2064,26 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       pExprStack->vPushStz(sPush);
       break;
 
+    case SK_ANTIJOIN:
     case SK_INDEXJOIN:
-      if (m_pIndexDef->nColumns() > 1) {
-        vTrace("Warning: Multicolumn joins not supported\n"_Stz);
-        RASSERT(m_pIndexDef->nColumns() == 1);
-      }
-
-      if (m_pIndexDef->eKeyKind()) {
-        sPush.vSprint("_ASSIGN(*(i8*)aDynamicT->m_xIndexInfoJ.m_aEntKey)\n"_Stz);
-        pExprStack->vPushStz(sPush);
+    case SK_SEMIJOIN:
+      if ( bConstraint) {
+        RASSERT(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN);
+        pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       }
       else {
-        sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoJ.m_aEntWrkJ\n"_Stz);
-        pExprStack->vPushStz(sPush);
+        if (m_pIndexDef->nColumns() > 1) {
+          vTrace("Warning: Multicolumn joins not supported\n"_Stz);
+          RASSERT(m_pIndexDef->nColumns() == 1);
+        }
+
+        if (m_pIndexDef->eKeyKind()) {
+          sPush.vSprint("_ASSIGN(*(i8*)aDynamicT->m_xIndexInfoJ.m_aEntKey)\n"_Stz);
+          pExprStack->vPushStz(sPush);
+        } else {
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoJ.m_aEntWrkJ\n"_Stz);
+          pExprStack->vPushStz(sPush);
+        }
       }
       break;
 
@@ -2351,7 +2368,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
 /*----------------------------------------------------------------------------*/
 /* get working stack                                                          */
 /*----------------------------------------------------------------------------*/
-TypedStack* OpSketch::pWorkingStack( ePE ePreExp)
+TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
@@ -2382,6 +2399,10 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp)
     case SK_TOP:
       return m_pExprStack;
 
+    case SK_ANTIJOIN:
+    case SK_SEMIJOIN:
+      if (bConstraint)
+        return m_pConstraintStack;
     case SK_NONE:
       return m_pExprStack;
 

@@ -126,6 +126,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
   File* pCodeFile = new File(this);
   File* pIndexFile = new File(this);
   File* pInflateFile = new File(this);
+  File* pFilterFile = new File(this);
 
   bool bOpened;
 
@@ -314,6 +315,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         vAppendCodeFragment(pOpSketch, "vIndexReturn"_Stz, pIndexFile);
 
+        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+
         // close the indexScan code fragments file
         pInflateFile->vClose();
         pCodeFile->vClose();
@@ -426,6 +429,64 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         break;
 
+      case SK_SEMIJOIN:
+
+        bHasIndexInflate = true;
+
+        // open the indexJoin code fragments file
+        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        bOpened = pCodeFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        vAppendStencilTo(pOpSketch);
+        vAppendCodeFragmentKey(pOpSketch, "vSemiJoinBegin"_Stz, pCodeFile, (i8)KE_INT);
+
+        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
+          vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pCodeFile, (i8)KE_INT);
+        else
+          vAppendCodeFragmentKey(pOpSketch, "vIndexJoinGenKey"_Stz, pCodeFile, (i8)KE_GENERAL);
+
+        // generate expressions for populating the key
+        RASSERT(pOpSketch->m_pExprStack->nValues());
+        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
+        // position at lower bound
+        vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
+        vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
+
+
+        vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
+        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
+        //vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pCodeFile);
+
+
+
+        vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
+        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
+        RASSERT ( bOpened );
+        vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pFilterFile);
+
+        vAppendCodeFragment(pOpSketch, "vSemiJoinContinue"_Stz, pCodeFile);
+
+        //vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+
+
+
+        // close the indexJoin code fragments file
+        pInflateFile->vClose();
+        pCodeFile->vClose();
+        pIndexFile->vClose();
+        pFilterFile->vClose();
+
+        break;
+
       case SK_SORT:
 
         //vAppendStencilTo(pOpSketch);
@@ -475,9 +536,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           if (pOpSketch->m_eStencilFrom == SR_PL) {
-            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "iTubRowPix2"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
             if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
@@ -487,9 +548,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
-            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "iTubRowPix2"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
@@ -516,7 +577,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           if (pOpSketch->m_eStencilFrom == SR_PL) {
-            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
             vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
             if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
@@ -528,7 +589,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
-            vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
             vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
@@ -541,7 +602,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         else {
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // TUB in CRW/ROW/INDEX handler
-          vAppendCodeFragment(pOpSketch, "iTubBegin2"_Stz);
+          vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
           vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
           vAppendCodeFragment(pOpSketch, "iTubContinue2"_Stz);
@@ -996,18 +1057,25 @@ void CombinedSrc::vAppendStencilTo(OpSketch* pOpSketch) {
 
   s16KB sCode;
   File* pStencilFile = new File(this);
+  StreamDef* pStreamDef;
 
   bool bOpened = pStencilFile->bOpenRead("../src/store/Fragments/Stencil.cpp"_Stz);
   RASSERT ( bOpened );
 
+  if (pOpSketch->m_eSketchKind == SK_SEMIJOIN || pOpSketch->m_eSketchKind == SK_ANTIJOIN) {
+    pStreamDef = pOpSketch->m_pStreamDefRht;
+  }
+  else {
+    pStreamDef = pOpSketch->m_pStreamDefOut;
+  }
 
   sCode = ""_Stz;
   pStencilFile->vSeekStart();
   vAppendCodeFragment(pOpSketch, "vStencilToBegin"_Stz, pStencilFile);
 
-  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefOut->nColumns(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
 
-    Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
 
     sCode = ""_Stz;
     pStencilFile->vSeekStart();
