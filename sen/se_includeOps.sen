@@ -176,7 +176,6 @@ assert::stack_0
 
 "o" .verbose
 
-  "OP_optimise.sen"             include
   "OP_ordAgg.sen"               include
   "OP_output.sen"               include
 
