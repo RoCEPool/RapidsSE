@@ -134,7 +134,7 @@
 /* org_ org */  then
 /* org_ org */
 /* org_ org */  Dynamo[].new
-/* org_ org */  <cmd> Dynamo[].compile to ErrorCode[]
+/* org_ org */  [Job.Cmd] Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
 /* org_ org */    // + clean compile
 /* org_ org */    to PipeSpec[]
@@ -170,7 +170,7 @@
 /* org_ org */    PipeSpec[] Optimiser[].dissect
 /* org_ org */
 /* org_ org */    Optimiser[].transform if
-/* org_ org */      // replace original <cmd> with weaved statement
+/* org_ org */      // replace original cmd with weaved statement
 /* org_ org */      "<cmd>" Optimiser[].weave [job].tagSet@ tagSet.replaceStr
 
 /* ray      */      [Job.Cmd].update
@@ -199,10 +199,7 @@
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
 
 /* org_ org */  "<show_command>" sysargs::tagSet@ tagSet.hasName if
-/* org_ org */    <cmd> .
-/* org_ org */    //<cmd> "pipeline:origin: %v\n" .printf
-/* org_ org */    //jobs::seeRlist
-/* org_ org */    //[system].bpa
+/* org_ org */    [Job.Cmd].print
 /* org_ org */  then
 /* org_ org */
 /* org_ org */
@@ -509,7 +506,7 @@
 /* _ptp beg */  //   (should not expect an error)
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
 /* _ptp beg */  Dynamo[].new
-/* _ptp beg */  <cmd> Dynamo[].compile
+/* _ptp beg */  [Job.Cmd] Dynamo[].compile
 /* _ptp beg */    EC_NONE == assert
 /* _ptp beg */    to PipeSpec[]
 
