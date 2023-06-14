@@ -142,8 +142,6 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     eEC  eChildError(void);
     void vChildError(eEC eErrorCode);
     void vCleanupOutput(void);
-    Stz* szCmd(void);
-    void vCmd(Stz* szCmd);
     ExtendedText* pCmdText(void);
     Stz* szCmdText(void);
     void vCmdText(Stz* szCmdText);

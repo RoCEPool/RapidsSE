@@ -130,7 +130,7 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
   TagSet* pJobTagSet = p2PCJob->pJobTags();
   pJobTagSet->vCopy(pCmdTagSet);
 
-  p2PCJob->vCmd(sCmd);
+  p2PCJob->vCmdText(sCmd);
 
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   p2PCJob->vEntryPoint(szEntry);
@@ -278,7 +278,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // sCmd
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
-  pChildJob->vCmd(sCmd);
+  pChildJob->vCmdText(sCmd);
 
   // szEntry
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
@@ -414,7 +414,7 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
 
   sSTMT sCmd;
   pCmdTknVec->vVecToString(sCmd,0,true);
-  pChildJob->vCmd(sCmd);
+  pChildJob->vCmdText(sCmd);
 
   Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
   pChildJob->vEntryPoint(szEntry);

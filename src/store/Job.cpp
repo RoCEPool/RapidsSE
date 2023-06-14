@@ -454,31 +454,6 @@ void Job::vChildError(eEC eErrorCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Job::szCmd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  Stz* szCmd = m_oJobTags.szValue(C_TAG_CMD);
-  
-  return szCmd;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set command                                                                */
-/*----------------------------------------------------------------------------*/
-void Job::vCmd(Stz* szCmd)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-    
-  m_oJobTags.vReplace(C_TAG_CMD,szCmd);
-
-  if (szCmd)
-    vCmdText(szCmd);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get command text                                                           */
 /*----------------------------------------------------------------------------*/
 ExtendedText* Job::pCmdText(void)
@@ -1755,7 +1730,7 @@ void Job::vPrintJobContents(void)
          
          ,spJobId.sz(m_tJobId.iAsI8())     // 0
          ,m_sJobNm.szStz()           // 1
-         ,szCmd()                    // 3
+         ,szCmdText()                    // 3
          ,iOriginNodeId()            // 4
 
          ,m_tParentId.uJobNo()          // 6
