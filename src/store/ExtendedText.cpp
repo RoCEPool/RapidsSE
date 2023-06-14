@@ -67,6 +67,34 @@ void ExtendedText::vAddSubStr(Stz* szSubStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given extended text argument                                          */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vCopy(ExtendedText* pExtText_arg)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  vEmpty();
+
+  if (pExtText_arg->nTextBlocks()) {
+    vAddSubStr(pExtText_arg->szTextBlock(0));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* empty this extended text                                                   */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vEmpty(void)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  if (m_pExtTextBuffer)
+    delete m_pExtTextBuffer;
+
+  m_pExtTextBuffer = nullptr;
+  m_nTextBlocks = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get extended text buffer                                                   */
 /*----------------------------------------------------------------------------*/
 ExtendedTextBuffer* ExtendedText::pExtTextBuffer(i8 i_TextBuffer)
