@@ -401,6 +401,11 @@ Object* Socket::pObjectRecv(eCN eClass)
 
   m_pTotup->vAdd(eClass, nSize);
 
+  if (pReceivedObject->bIsClassNo(CN_JOB)) {
+    Job *pJob = _pJob(pReceivedObject);
+    pJob->vCmdText((ExtendedText*) nullptr);
+  }
+
   return pReceivedObject;
 }
 

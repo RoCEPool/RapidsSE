@@ -29,6 +29,7 @@ namespace STORE
     void vAddSubStr(Stz* szSubStr);
 
     ExtendedTextBuffer* pExtTextBuffer(i8 i_TextBuffer);
+    void vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextBuffer);
 
     i8 nTextBlocks(void);
     Stz* szTextBlock(i8 i_TextBlock);

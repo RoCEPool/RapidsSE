@@ -77,6 +77,16 @@ ExtendedTextBuffer* ExtendedText::pExtTextBuffer(i8 i_TextBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set extended text buffer                                                   */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextBuffer)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+   m_pExtTextBuffer = pExtTextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
 i8 ExtendedText::nTextBlocks(void)
