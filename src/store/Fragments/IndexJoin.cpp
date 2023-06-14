@@ -18,13 +18,39 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexJoinIntKey --------------------------------------------------------*/
+/*-- vAntiJoinBegin ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vIndexJoinIntKey
-void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
+// function-vAntiJoinBegin
+void vAntiJoinBegin(Dynamic_T* aDynamicT) {
 
-  i8 iLeftOuterRow;
-  i8 __KEY_KIND__;
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ANTIJOIN-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  __L_LABEL__:
+
+  printf("ANTIJOIN-OP\n");
+
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) __ROW_INFO_FROM__.m_aRowCellArray;
+
+  struct __STRUCT_TO__ *p__STRUCT_TO__;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoIJ.m_aRowCellArray;
+
+// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexJoinBegin ---------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinBegin
+void vIndexJoinBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   RowInfo __ROW_INFO_FROM__;
@@ -45,6 +71,86 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
   p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;
+
+// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vSemiJoinBegin ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vSemiJoinBegin
+void vSemiJoinBegin(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SEMIJOIN-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  __L_LABEL__:
+
+  printf("SEMIJOIN-OP\n");
+
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) __ROW_INFO_FROM__.m_aRowCellArray;
+
+  struct __STRUCT_TO__ *p__STRUCT_TO__;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoIJ.m_aRowCellArray;
+
+// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vSemiJoinContinue -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vSemiJoinContinue
+void vSemiJoinContinue(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+
+  __L_LABEL_INDEX_DEREF__:
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SEMIJOIN-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  //L_semiJoin_end:
+
+  if ( ! aDynamicT->m_iProcessRow ) {
+#ifdef WITH_CLANG
+    // move to next entry
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+        &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
+#endif
+    goto __L_LABEL_INDEX_DEREF__;
+ }
+
+// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexJoinIntKey --------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinIntKey
+void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
+
+  i8 iLeftOuterRow;
+  i8 __KEY_KIND__;
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
 
   // init indexJoin
   if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
@@ -83,17 +189,6 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INDEXJOIN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  printf("INDEXJOIN-OP\n");
-
-  struct __STRUCT_TO__ *p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;
-
-  __L_LABEL__:
 
   // init indexJoin
   if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
@@ -147,7 +242,6 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  printf("M1\n");
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
     aDynamicT->m_iProcessRow = 0;
@@ -162,21 +256,13 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
   __L_LABEL_INDEX_DEREF__:
   aDynamicT->m_iProcessRow = 1;
 
-  printf("M5\n");
   if (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper) {
 
     aDynamicT->m_iProcessRow = 0;
-    printf("M6\n");
     goto __L_LABEL_OUTER_LOOP__;
   }
-  printf("M7\n");
   aHeadLineSav = aHeadLine;
 
-  // dereference the entry
-//  iBufferJ = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uBuffer;
-//  iItemJ   = aDynamicT->m_xIndexInfoJ.m_aEntInt->Rrf.m_uItem;
-//  aCrwJ  = ( (char*)C_ADR_REGION + iBufferJ * C_1MB + C_CRW_FIRSTHEAD+ iItemJ * C_CRW_HEADBYTES );
-  printf("M2\n");
   // marker-end
 
   L_Return:
@@ -192,7 +278,6 @@ void vIndexJoinContinueLO0(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  printf("M1\n");
   // did we find the entry ?
   if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
 

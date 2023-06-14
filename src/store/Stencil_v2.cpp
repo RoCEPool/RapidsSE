@@ -288,6 +288,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -300,6 +301,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchAntiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -309,6 +311,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchFilter(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -333,6 +336,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -345,20 +349,20 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // generate code for indexScan OP
-    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      //vSetupIndexJoin(pDynamic, pStream, pOp);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchIndexJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
-      vAppend(pOpSketch);
-
-      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
-
-      ePrevStencil_v2 = SR_TJ;
-      continue;
-    }
+//    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz)) {
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      //vSetupIndexJoin(pDynamic, pStream, pOp);
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      pOpSketch = pSketchIndexJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+//      vAppend(pOpSketch);
+//
+//      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+//
+//      ePrevStencil_v2 = SR_TJ;
+//      continue;
+//    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the limitOP
@@ -374,6 +378,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchLimit(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -385,6 +390,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       ePrevStencil_v2 = SR_PT;
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -397,6 +403,9 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchSemiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
+      //sLabelLoop = "L_AdvanceNextRow"_Stz;
+
+      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -423,6 +432,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
+      continue;
     }
 
   }
@@ -944,6 +954,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
+  // get the index
   Index* pIndex = pOpDef->m_pIndex_indexJoin;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -969,7 +980,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sJoinExpr);
 
   return pOpSketch;
 }
@@ -1019,7 +1030,7 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK e
   pOpSketch->vIndexDef(pIndex->pIndexDef());
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sIndexScanExpr);
 
   return pOpSketch;
 }
@@ -1127,7 +1138,7 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sFilterExpr);
 
   return pOpSketch;
 }
@@ -1165,45 +1176,54 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
 
   s4K sLabel;
   s4K sLabelNext;
+  s4K sLabelOuterLoop;
 
   i8 i_Op = pOpDef->i_Op();
-
-  // get semi-join expr from OP
-  Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal(); // ????????
 
   // get join expr from OP
   Stz* sJoinExpr = pOpDef->pArgDef_expr()->szArgVal();
 
+  // get join constraint from OP
+  Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
+
   // get the streamDefLft
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+  //HACK-OPTIMISER
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving; // pOpDef->m_pStreamDef_emitted;
+
+  //HACK-OPTIMISER
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
   // get the index
-  //Index *pIndex = _pIndex(pDynamic->aDynamicT()->m_aIndexJ);
-
-  //u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+  Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the semi-join
-  pOpSketch = new OpSketch(i_Op, sJoinExpr, eHandlerKind, SK_SEMIJOIN, ePrevStencil_v2, SR_TJ, II_JJ, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op, sJoinExpr, eHandlerKind, SK_SEMIJOIN, ePrevStencil_v2, SR_IJ, II_JJ, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
-  //sLabelEnd.vSprint("L_%s_END_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AdvanceNextRow"_Stz);
+  //sLabelOuterLoop.vSprint("L_%s_END_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
   // set the labels in the opSketch
-  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelLoop);
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
+  //HACK-OPTIMISER
   // set the streamDefRht
-  pOpSketch->vStreamDefRht(pStreamDefRht);
+  //pOpSketch->vStreamDefRht(pStreamDefRht);
+  Table* pTable = pIndex->pTable();
+  pOpSketch->vStreamDefRht(pTable->pStreamDef());
 
   // set the indexDef
-  //pOpSketch->vIndexDef(pIndex->pIndexDef());
+  pOpSketch->vTable(pTable);
+  pOpSketch->vIndex(pIndex);
+  pOpSketch->vIndexDef(pIndex->pIndexDef());
   pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sJoinExpr);
+  pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
 
   return pOpSketch;
 }
@@ -1332,7 +1352,7 @@ OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sAggregExpr);
 
   return pOpSketch;
 }
@@ -1386,7 +1406,7 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
   pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sJoinExpr);
 
   return pOpSketch;
 }
@@ -1420,7 +1440,7 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHa
   pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // generate the expressißon stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sProjectExpr);
 
   return pOpSketch;
 }
@@ -1470,7 +1490,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   pOpSketch->vCopyColsMap(pColsMap);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sGbyAggExpr);
 
   return pOpSketch;
 }
@@ -1513,7 +1533,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
   pOpSketch->vPayloadBytes(nPayloadBytes);
 
   // generate the expression stacks
-  pOpSketch->vGenerateExprStacks();
+  pOpSketch->vGenerateExprStacks(sSortExpr);
 
   return pOpSketch;
 }

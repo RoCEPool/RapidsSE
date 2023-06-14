@@ -141,6 +141,16 @@ ArgDef* OpDef::pArgDef_expr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+ArgDef* OpDef::pArgDef_constraint(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return pArgDef("constraint"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 ColsReq* OpDef::pColsReq(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);

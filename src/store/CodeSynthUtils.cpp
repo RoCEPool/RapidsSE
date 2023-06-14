@@ -586,6 +586,9 @@ void CodeSynthUtils::vReplaceColumnsInflated(Stz* sLine, OpSketch* pOpSketch)
       RASSERT( pOpSketch->m_pStreamDefLft );
       StrLib::vSprint(sColumnsInflated,"%lld"_Stz,pOpSketch->m_pStreamDefLft->nColumns());
     }
+    else if (pOpSketch->m_eSketchKind == SK_SEMIJOIN) {
+      StrLib::vSprint(sColumnsInflated,"%lld"_Stz,0);
+    }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_INDEXSCAN);
       StrLib::vSprint(sColumnsInflated,"0"_Stz);
@@ -605,7 +608,7 @@ void CodeSynthUtils::vReplaceColumnsToInflate(Stz* sLine, OpSketch* pOpSketch)
   if (StrLib::bContains(sLine->azChar(), "__COLUMNS_TO_INFLATE_")) {
 
     s256 sColumnsToInflate;
-    if (pOpSketch->m_eSketchKind == SK_INDEXJOIN) {
+    if (pOpSketch->m_eSketchKind == SK_INDEXJOIN || pOpSketch->m_eSketchKind == SK_SEMIJOIN) {
       RASSERT(pOpSketch->m_pStreamDefRht);
       StrLib::vSprint(sColumnsToInflate, "%lld"_Stz, pOpSketch->m_pStreamDefRht->nColumns());
     }
