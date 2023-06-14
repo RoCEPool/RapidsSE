@@ -996,7 +996,7 @@ void Card_OP::vRpnHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
 
   Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
 
-  szOpArgs->vCatSprint("\"type %s %s\""_Stz,
+  szOpArgs->vCatSprint("type %s %s"_Stz,
                        aCT[Symbol::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))],
                        p_hshCol->szSymbol());
 }

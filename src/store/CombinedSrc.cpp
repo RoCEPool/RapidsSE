@@ -607,6 +607,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
           vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+          vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "iTubContinue2"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }

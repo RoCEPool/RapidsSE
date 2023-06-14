@@ -70,6 +70,7 @@ Stencil_v2::Stencil_v2(void)
   m_xStageOps.m_sHashExpr = ""_Stz;
 
   m_pOpSource    = nullptr;
+  m_sHashExpr    = ""_Stz;
 
   try {
     m_pOpSource    = new CombinedSrc;
@@ -196,7 +197,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       bGeneratePot = true;
 
       // get hash expr from OpDef
-      sHashExpr = pOpDef->pArgDef_expr()->szArgVal();
+      m_sHashExpr = pOpDef->pArgDef_expr()->szArgVal();
     }
   }
 
@@ -803,7 +804,7 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK e
   sLabelOuterLoop = sLabelLoop;
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
 
-  // HACK : OPTIMISER
+  // HACK-OPTIMISER
   // set the streamDefRht
   Table* pTable = pIndex->pTable();
   pOpSketch->vStreamDefRht(pTable->pStreamDef());
@@ -1338,7 +1339,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
   // get sort expr from OpDef
   Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  //HACK - OPTIMISER
+  //HACK-OPTIMISER
   // get the columns required
   ColsReq* pColsMap = nullptr; //pOpDef->m_pColMap_sort;
 
@@ -1455,6 +1456,9 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePr
   // create a new opSketch
   if (bGeneratePot) {
     pOpSketch = new OpSketch(C_UNKNOWN, sHashExpr, eHandlerKind, SK_POT, ePrevStencil_v2, SR_PO,  II_PL, pStreamDefOut, pStreamDefOut);
+
+    // generate the expression stack
+    pOpSketch->vGenerateExprStacks(m_sHashExpr);
   }
   else {
     pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, eHandlerKind, SK_TUB, ePrevStencil_v2, SR_TO,  II_PL, pStreamDefOut, pStreamDefOut);

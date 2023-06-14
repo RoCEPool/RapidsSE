@@ -2105,17 +2105,17 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       }
       break;
 
+    case SK_POT:
+      // assign to iMixIn
+      sPush.vSprint("_ASSIGN(iMixIn)\n"_Stz);
+      pExprStack->vPushStz(sPush);
+      break;
+
     case SK_PROJECT:
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
       sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xStencilRow[m_eStencilTo].m_szInclude, sColNm.azChar());
 
-      pExprStack->vPushStz(sPush);
-      break;
-
-    case SK_HASH:
-      // assign to iMixIn
-      sPush.vSprint("_ASSIGN(iMixIn)\n"_Stz);
       pExprStack->vPushStz(sPush);
       break;
 
@@ -2391,9 +2391,9 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
         return m_pExprStack;
 
     case SK_FILTER:
-    case SK_HASH:
     case SK_INDEXJOIN:
     case SK_INDEXSCAN:
+    case SK_POT:
     case SK_PROJECT:
     case SK_SORT:
     case SK_TOP:

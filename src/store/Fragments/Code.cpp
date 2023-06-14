@@ -284,13 +284,19 @@ i8 iTubRowPix(Dynamic_T* aDynamicT) {
 // function-iTubRowPix3
 i8 iTubRowPix3(Dynamic_T* aDynamicT) {
 
+  RowInfo __ROW_INFO_TO__;
+
+  {
   // marker-start
 
   printf("TUB initializing rowPix %p\n", aDynamicT);
 #ifdef WITH_CLANG
-  void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
+    void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
     vExtern_PotRowPix(aDynamicT->m_pPot, aRowPix);
 #endif
+    aDynamicT->m_iPot = 1;
+    __ROW_INFO_TO__.m_iInitialize = 0;
+  }
 
   // marker-end
 
