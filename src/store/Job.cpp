@@ -45,7 +45,8 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
+         TagSet* pCmdTagSet)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -472,6 +473,9 @@ void Job::vCmd(Stz* szCmd)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_oJobTags.vReplace(C_TAG_CMD,szCmd);
+
+  if (szCmd)
+    vCmdText(szCmd);
 }
 
 /*----------------------------------------------------------------------------*/

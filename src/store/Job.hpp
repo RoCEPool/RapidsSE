@@ -118,7 +118,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet = nullptr);
+    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
+        TagSet* pCmdTagSet=nullptr);
 
    ~Job(void) noexcept(false);
 
