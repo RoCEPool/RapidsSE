@@ -21,7 +21,7 @@
   
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
-    <cmd> "pipelineLocal::origin: %v\n" .printf
+    [Job.Cmd].print
     //[system].bpa
   then
 /*
@@ -48,7 +48,7 @@
   [job].addLocal
 
   Dynamo[].new
-  <cmd> Dynamo[].compile to ErrorCode[]
+  [Job.Cmd] Dynamo[].compile to ErrorCode[]
   ErrorCode[] EC_NONE == if
     // clean compile
     to PipeSpec[]

@@ -15,7 +15,7 @@
   
   tokenVec::new locals| pTknVec |
 
-  <cmd> pTknVec tokenVec.tokenise
+  [Job.Cmd] pTknVec tokenVec.tokenise
   //pTknVec tokenVec.dump
   
   0 pTknVec tokenVec.removeToken
