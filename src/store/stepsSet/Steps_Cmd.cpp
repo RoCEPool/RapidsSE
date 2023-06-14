@@ -20,8 +20,6 @@ void Step::vAddSteps_Cmd(void)
   vAddStep("[Job.Cmd]"_Stz,        &Step::vCmdFetch);
   vAddStep("[Job.Cmd].fetch"_Stz,  &Step::vCmdFetch);
   vAddStep("[Job.Cmd].print"_Stz,  &Step::vCmdPrint);
-  vAddStep("[Job.Cmd].store"_Stz,  &Step::vCmdStore);
-  vAddStep("[Job.Cmd].update"_Stz, &Step::vCmdUpdate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,31 +50,6 @@ void Step::vCmdPrint(void)
     vTrace("%s\n"_Stz,(m_pJob->szCmdText()));
   else
     vTrace("<NO CMD TEXT>\n"_Stz);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [Job.Cmd].store -- set cmd[]                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vCmdStore(void)
-{
-  ENTRY();
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [Job.Cmd].update -- update cmd[]                                           */
-/*----------------------------------------------------------------------------*/
-void Step::vCmdUpdate(void)
-{
-  ENTRY();
-
-  s48K sCmdValue;
-  m_pDataStack->vPopStr(sCmdValue,__func__);
-
-  m_pJob->vCmdText(sCmdValue);
 
   EXIT();
 }
