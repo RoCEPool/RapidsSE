@@ -65,12 +65,11 @@ void Step::vDynamoCodeFetch(void)
 void Step::vDynamoCompile(void)
 {
   ENTRY();
-    
-  s48K sPipelineStmt;
-  m_pDataStack->vPopStr(sPipelineStmt,__func__);
+
+  Stz* szPipelineStmt = m_pJob->szCmdText();
       
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  VertexSpec* pPipeSpec = pDynamo->pCompile(sPipelineStmt);
+  VertexSpec* pPipeSpec = pDynamo->pCompile(szPipelineStmt);
     
   if (pPipeSpec) {
     if (AM::TRACE::bVerbose(C_VB_PIPESPEC)) {

@@ -134,7 +134,7 @@
 /* org_ org */  then
 /* org_ org */
 /* org_ org */  Dynamo[].new
-/* org_ org */  [Job.Cmd] Dynamo[].compile to ErrorCode[]
+/* org_ org */  Dynamo[].compile to ErrorCode[]
 /* org_ org */  ErrorCode[] EC_NONE == if
 /* org_ org */    // + clean compile
 /* org_ org */    to PipeSpec[]
@@ -505,7 +505,7 @@
 /* _ptp beg */  //   (should not expect an error)
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
 /* _ptp beg */  Dynamo[].new
-/* _ptp beg */  [Job.Cmd] Dynamo[].compile
+/* _ptp beg */  Dynamo[].compile
 /* _ptp beg */    EC_NONE == assert
 /* _ptp beg */    to PipeSpec[]
 

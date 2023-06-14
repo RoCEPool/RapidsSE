@@ -48,7 +48,7 @@
   [job].addLocal
 
   Dynamo[].new
-  [Job.Cmd] Dynamo[].compile to ErrorCode[]
+  Dynamo[].compile to ErrorCode[]
   ErrorCode[] EC_NONE == if
     // clean compile
     to PipeSpec[]
