@@ -13,7 +13,7 @@ namespace STORE
   {
   public:
     i8 m_nTextBlocks;
-    ExtendedTextBuffer* m_p_VlTextBuffer;
+    ExtendedTextBuffer* m_pExtTextBuffer;
 
   protected:
     // must be last
@@ -27,6 +27,9 @@ namespace STORE
     ~ExtendedText(void) noexcept(false);
 
     void vAddSubStr(Stz* szSubStr);
+
+    ExtendedTextBuffer* pExtTextBuffer(i8 i_TextBuffer);
+    void vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextBuffer);
 
     i8 nTextBlocks(void);
     Stz* szTextBlock(i8 i_TextBlock);

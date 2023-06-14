@@ -23,7 +23,7 @@ ExtendedText::ExtendedText(void)
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
   m_nTextBlocks = 0;
-  m_p_VlTextBuffer = nullptr;
+  m_pExtTextBuffer = nullptr;
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 }
@@ -35,7 +35,7 @@ ExtendedText::~ExtendedText(void) noexcept(false)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  delete m_p_VlTextBuffer;
+  delete m_pExtTextBuffer;
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 }
@@ -57,13 +57,33 @@ void ExtendedText::vAddSubStr(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  if (! m_p_VlTextBuffer) {
-    m_p_VlTextBuffer = new ExtendedTextBuffer;
+  if (! m_pExtTextBuffer) {
+    m_pExtTextBuffer = new ExtendedTextBuffer;
     m_nTextBlocks++;
   }
 
-  bool b = m_p_VlTextBuffer->bAddSubStr(szSubStr);
+  bool b = m_pExtTextBuffer->bAddSubStr(szSubStr);
   RASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get extended text buffer                                                   */
+/*----------------------------------------------------------------------------*/
+ExtendedTextBuffer* ExtendedText::pExtTextBuffer(i8 i_TextBuffer)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  return m_pExtTextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set extended text buffer                                                   */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextBuffer)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+   m_pExtTextBuffer = pExtTextBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +103,7 @@ Stz* ExtendedText::szTextBlock(i8 i_TextBlock)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  return m_p_VlTextBuffer->szTextBlock();
+  return m_pExtTextBuffer->szTextBlock();
 }
 
 /*============================================================================*/

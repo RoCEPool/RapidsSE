@@ -8,6 +8,7 @@
 #include "Resources.hpp"
 #include "Marker.hpp"
 #include "AM.hpp"
+#include "ExtendedText.hpp"
 
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
@@ -243,7 +244,8 @@ Object* Socket::pRecvObject(void)
 bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
+
+
   roSysCall.vClear();
   
   eCN eClass = pObject->eGetClassNo();
@@ -255,7 +257,17 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
     m_pTotup->vAdd(eClass,nBytes);
     m_pWhyTot->vAdd(eSendWhy,nBytes);
   }
-  
+
+  if (pObject->bIsClassNo(CN_JOB)) {
+    Job* pJob = _pJob(pObject);
+    RASSERT(pJob->szCmdText());
+
+    ExtendedText* pExtText = pJob->pCmdText();
+    RASSERT(pExtText);
+    ExtendedTextBuffer* pExtTextBuffer = pExtText->pExtTextBuffer(0);
+    RASSERT(pExtTextBuffer);
+  }
+
   return bResult;
 }
 
@@ -388,6 +400,11 @@ Object* Socket::pObjectRecv(eCN eClass)
 #endif
 
   m_pTotup->vAdd(eClass, nSize);
+
+  if (pReceivedObject->bIsClassNo(CN_JOB)) {
+    Job *pJob = _pJob(pReceivedObject);
+    pJob->vCmdText((ExtendedText*) nullptr);
+  }
 
   return pReceivedObject;
 }

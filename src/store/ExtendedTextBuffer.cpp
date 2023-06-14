@@ -66,7 +66,7 @@ bool ExtendedTextBuffer::bAddSubStr(Stz* szSubStr)
 /*----------------------------------------------------------------------------*/
 Stz* ExtendedTextBuffer::szTextBlock(void)
 {
-  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
   return (Stz*)m_acTextBlock;
 }

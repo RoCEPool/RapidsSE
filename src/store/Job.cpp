@@ -45,7 +45,8 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
+         TagSet* pCmdTagSet)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -191,6 +192,11 @@ Job::~Job(void) noexcept(false)
     if (m_pMetricsPipeline) {
       delete m_pMetricsPipeline;
     }
+
+    if (m_pCmdText)
+      delete m_pCmdText;
+    if (m_pCodeBlock)
+      delete m_pCodeBlock;
 
     if (m_pTask) {
       m_pTask->vGrabTaskLock((Stz *) __func__);
@@ -467,7 +473,61 @@ void Job::vCmd(Stz* szCmd)
   _precondition_(_ADDRESS_,_MAGIC_);
     
   m_oJobTags.vReplace(C_TAG_CMD,szCmd);
+
+  if (szCmd)
+    vCmdText(szCmd);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get command text                                                           */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Job::pCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pCmdText;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command text                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (! m_pCmdText)
+    return nullptr;
+
+  Stz* szTextBlock_0 = m_pCmdText->szTextBlock(0);
+
+  return szTextBlock_0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set command text                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vCmdText(Stz* szCmdText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (! m_pCmdText)
+    m_pCmdText = new ExtendedText;
+
+  m_pCmdText->vAddSubStr(szCmdText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set command text                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vCmdText(ExtendedText* pCmdText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //ASSERT(! m_pCmdText);
+
+  m_pCmdText = pCmdText;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* disable object tracker                                                     */
@@ -1598,7 +1658,14 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
-  /* 14 */ RASSERT(! m_pCmdText);
+  /* 14 */ m_pCmdText = nullptr;
+
+  Stz* szValue = m_oJobTags.szValue(C_TAG_CMD);
+  if (! szValue)
+    THROW("Job::vPostRecv : unknown tag\n"_Stz);
+  vCmdText(szValue);
+
+
   /* 15 */ RASSERT(! m_pCodeBlock);
 
   m_tJobId.vNextJobId();
