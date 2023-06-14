@@ -17,26 +17,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Cmd(void)
 {
-  vAddStep("[Job.Cmd]"_Stz,        &Step::vCmdFetch);
-  vAddStep("[Job.Cmd].fetch"_Stz,  &Step::vCmdFetch);
   vAddStep("[Job.Cmd].print"_Stz,  &Step::vCmdPrint);
-}
-
-/*----------------------------------------------------------------------------*/
-/* [Job.Cmd].fetch -- get cmd[]                                               */
-/*----------------------------------------------------------------------------*/
-void Step::vCmdFetch(void)
-{
-  ENTRY();
-
-  if (Stz* szValue = m_pJob->szCmdText()) {
-    m_pDataStack->vPushStz(szValue);
-  }
-  else {
-    THROW("Step::vCmdFetch : unknown cmd text\n"_Stz);
-  }
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

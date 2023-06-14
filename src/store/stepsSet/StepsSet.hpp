@@ -218,7 +218,6 @@ public:
   void vClassPreSendWordStore(void);
 
   // cmd
-  void vCmdFetch(void);
   void vCmdPrint(void);
 
   // column
