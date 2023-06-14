@@ -336,6 +336,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         RASSERT ( bOpened );
 
         vAppendStencilTo(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vIndexJoinBegin"_Stz, pCodeFile);
+
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
           vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pCodeFile, (i8)KE_INT);
         else
@@ -441,7 +443,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         RASSERT ( bOpened );
 
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragmentKey(pOpSketch, "vSemiJoinBegin"_Stz, pCodeFile, (i8)KE_INT);
+        vAppendCodeFragment(pOpSketch, "vSemiJoinBegin"_Stz, pCodeFile);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
           vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pCodeFile, (i8)KE_INT);
@@ -605,6 +607,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
           vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+          vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "iTubContinue2"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
