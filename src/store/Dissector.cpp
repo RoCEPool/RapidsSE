@@ -268,27 +268,23 @@ Card* Dissector::pOp_Aggreg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
+  m_bSawAggOp = true;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // op arguments
 
   vCheckArgs(1);
 
-  m_bSawAggOp = true;
   Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
   
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
   Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
   pCard_Aggreg->vAppend(pCard_AggLevel);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // gbyElist : optional groupBy expression list
-
-//  if (pCard_RpnTerms->nItems()) {
-//    Card_Key* pCard_Key = pPopKey(pCard_RpnTerms,true);
-//    pCard_Aggreg->vAppend(pCard_Key);
-//    pCard_Aggreg->vCard(CK_GBYAGG);
-//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggElist : aggregate expression list
@@ -315,14 +311,17 @@ Card* Dissector::pOp_Call(void)
 
   vCheckArgs(1);
 
-  m_pOpArgs->vDumpSet(true);
-
   Stz* szSubPipeNm = szGetStz(0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeline
 
   StrLib::vStrip(szSubPipeNm->azChar(),' ');
 
   Card_Call* pCard_Call = new Card_Call;
   pCard_Call->vSymbol(szSubPipeNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return pCard_Call;
 }
@@ -364,6 +363,9 @@ Card* Dissector::pOp_Debug(void)
   // op arguments
 
   Stz* szOption = szGetStz(0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Card_Debug* pCard_Debug = new Card_Debug;
 
   pCard_Debug->pSymbol()->Y_vSet(P_DebugOption, szOption);
@@ -437,6 +439,10 @@ Card* Dissector::pOp_GbyAgg(void)
   vCheckArgs(1);
 
   Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //
+
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
 
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
@@ -478,15 +484,13 @@ Card* Dissector::pOp_Hash(void)
   vCheckArgs(1);
 
   Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Card_Hash* pCard_Hash = new Card_Hash;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // calcExpr : calculation expression list
-
-  //pCard_Hash->vTransferChildren(pCard_RpnTerms);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
   Card_HshCol* p_hshCol = new Card_HshCol;
 
@@ -537,13 +541,6 @@ Card* Dissector::pOp_IndexJoin(void)
   // table
   
   Table* pTable = AM::pTableFind(szTableNm);
-//  Card_Table* pCard_Table = new Card_Table;
-//  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-//
-//  Card_TableNm* pCard_TableNm = new Card_TableNm;
-//  pCard_TableNm->vSymbol(szTableNm);
-//  pCard_Table->vAppend(pCard_TableNm);
-
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
   pCard_IndexJoin->vAppend(pCard_Table);
 
@@ -622,13 +619,6 @@ Card* Dissector::pOp_IndexScan(void)
   // table
 
   Table* pTable = AM::pTableFind(szTableNm);
-//  Card_Table* pCard_Table = new Card_Table;
-//  pCard_Table->pSymbol()->Y_vSet(P_Pointer,pTable);
-//
-//  Card_TableNm* pCard_TableNm = new Card_TableNm;
-//  pCard_TableNm->vSymbol(szTableNm);
-//  pCard_Table->vAppend(pCard_TableNm);
-
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
 
   pCard_IndexScan->vAppend(pCard_Table);
@@ -671,15 +661,6 @@ Card* Dissector::pOp_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete p_rpnTerms_bounds;
-
-
-//  CardIter xCI(pCard_IndexScan);
-//
-//  pCard_IndexScan->vDump();
-//  pCard_IndexScan->vUpdate_projection(&xCI);
-//  pCard_IndexScan->vDump();
-//
-//  pCard_IndexScan->vValidate(&xCI,0,nullptr);
 
   pCard_IndexScan->vDump();
 
@@ -876,12 +857,6 @@ Card* Dissector::pOp_Project(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  Card_RpnCalc* p_rpnCalc = pCard_Project->pSub_rpnCalc();
-//  if (p_rpnCalc && p_rpnCalc->pSymbol()->Y_bHas(P_AggOp))
-//    pCard_Project->vCard(CK_AGGREG);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   delete pCard_RpnTerms;
 
   return pCard_Project;
@@ -992,7 +967,6 @@ Card* Dissector::pOp_Sort(void)
   Card_Key* pCard_Key = pPopKey(pCard_RpnTerms, false);
   pCard_Sort->vAppend(pCard_Key);
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   delete pCard_RpnTerms;
@@ -1052,7 +1026,6 @@ Card_Table* Dissector::pFormTable(Stz* szTableNm, Table* pTable)
 }
 
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1081,7 +1054,7 @@ Card_As* Dissector::pPopAs(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <as> terms : AS <name>                                             */
+/* pop bounds                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Bounds* Dissector::pPopBounds(Card_RpnTerms* pCard_RpnTerms)
 {
@@ -1126,7 +1099,7 @@ Card_Constraint* Dissector::pPopConstraint(Card_RpnTerms* pCard_RpnTerms)
 
 
 /*----------------------------------------------------------------------------*/
-/* collect <sortDirn> terms :                                                 */
+/* pop direction                                                              */
 /*----------------------------------------------------------------------------*/
 Card_Direction* Dissector::pPopDirection(Card_RpnTerms* pCard_RpnTerms)
 {
@@ -1146,7 +1119,7 @@ Card_Direction* Dissector::pPopDirection(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* eval typed calc expr : TYPE <type> [ AS <as> ] <rpnCalc> [ ASC | DESC ]    */
+/* pop expr                                                                   */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr)
 {
@@ -1217,7 +1190,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
+/* pop key                                                                    */
 /*----------------------------------------------------------------------------*/
 Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
 {
@@ -1252,12 +1225,6 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
     Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, true, i_Expr);
     pCard_Expr->v_Child(++i_CardNo);
 
-//    Card_As* p_as = pCard_Expr->pSub_as();
-//    if (p_as) {
-//      pCard_Expr->vRemoveChild(p_as);
-//      DELETE_CARD(p_as);
-//    }
-
     if (bAsc) {
       Card_Direction *p_direction = new Card_Direction("ASC"_Stz);
       pCard_Expr->vAppend(p_direction);
@@ -1270,7 +1237,7 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <agg> terms :                                                      */
+/* pop projection                                                             */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
 {
@@ -1286,7 +1253,6 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
     delete pCard_Term_head;
 
   }
-
 
   i8 i_Expr = 1;
 
@@ -1315,7 +1281,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <predicate>                                                        */
+/* pop rpnCalc                                                                */
 /*----------------------------------------------------------------------------*/
 Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
 {
@@ -1348,7 +1314,7 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <type> terms : TYPE <columnType>                                   */
+/* pop type (single char form)                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
 {
@@ -1377,7 +1343,23 @@ Stz* Dissector::szPopType_char(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* check number of args                                                       */
+/*----------------------------------------------------------------------------*/
+void Dissector::vCheckArgs(i8 nArgs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  i8 nTags = m_pOpArgs->nItems();
+
+  if (nTags < nArgs ) {
+    Stz* szOpNm = m_pOpSpec->szOpNm();
+    vTrace("Error: only %lld tags in %s argTags\n"_Stz,nTags,szOpNm);
+    NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get int arg                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Dissector::iGetInt(i8 i_Arg)
 {
@@ -1389,7 +1371,7 @@ i8 Dissector::iGetInt(i8 i_Arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get rpnTerms arg                                                           */
 /*----------------------------------------------------------------------------*/
 Card_RpnTerms* Dissector::pGetRpnTerms(i8 i_Arg)
 {
@@ -1403,7 +1385,7 @@ Card_RpnTerms* Dissector::pGetRpnTerms(i8 i_Arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get stz arg                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Dissector::szGetStz(i8 i_Arg)
 {
@@ -1412,22 +1394,6 @@ Stz* Dissector::szGetStz(i8 i_Arg)
   Stz* szRpnExpr = m_pOpArgs->szValue(i_Arg);
 
   return szRpnExpr;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Dissector::vCheckArgs(i8 nArgs)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-
-  i8 nTags = m_pOpArgs->nItems();
-    
-  if (nTags < nArgs ) {
-    Stz* szOpNm = m_pOpSpec->szOpNm();
-    vTrace("Error: only %lld tags in %s argTags\n"_Stz,nTags,szOpNm);
-    NEVER_REACH;
-  }
 }
 
 

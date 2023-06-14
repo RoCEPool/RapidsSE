@@ -217,6 +217,11 @@ public:
   void vClassPostRecvWordStore(void);
   void vClassPreSendWordStore(void);
 
+  // cmd
+  void vCmdFetch(void);
+  void vCmdPrint(void);
+  void vCmdStore(void);
+
   // column
   void vColumnIsNullableFetch(void);
   void vColumnIsPartitionKeyFetch(void);
