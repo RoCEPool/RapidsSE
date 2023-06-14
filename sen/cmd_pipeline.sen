@@ -172,7 +172,7 @@
 /* org_ org */    Optimiser[].transform if
 /* org_ org */      // replace original cmd with weaved statement
 
-/* ray      */      Optimiser[].weave [Job.Cmd].update
+/* ray      */      Optimiser[].weave
 
 /* org_ org */      Optimiser[].delete
 /* org_ org */    else

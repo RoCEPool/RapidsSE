@@ -135,10 +135,10 @@ void Step::vOptimiserWeave(void)
 {
   ENTRY();
     
-  Stz* szOptPlineStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
+  Stz* szOptStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
 
-  m_pDataStack->vPushStz(szOptPlineStmt);
-  
+  m_pJob->vCmdText(szOptStmt);
+
   EXIT();
 }
 

@@ -21120,7 +21120,7 @@ void Task::vAddMunged(Task* )
     "/* org_ org */    Optimiser[].transform if\n"
     "/* org_ org */      // replace original cmd with weaved statement\n"
     "\n"
-    "/* ray      */      Optimiser[].weave [Job.Cmd].update\n"
+    "/* ray      */      Optimiser[].weave\n"
     "\n"
     "/* org_ org */      Optimiser[].delete\n"
     "/* org_ org */    else\n"
