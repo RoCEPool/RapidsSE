@@ -1658,12 +1658,12 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
-  /* 14 */ m_pCmdText = nullptr;
+  /* 14 */// m_pCmdText = nullptr;
 
-  Stz* szValue = m_oJobTags.szValue(C_TAG_CMD);
-  if (! szValue)
-    THROW("Job::vPostRecv : unknown tag\n"_Stz);
-  vCmdText(szValue);
+//  Stz* szValue = m_oJobTags.szValue(C_TAG_CMD);
+//  if (! szValue)
+//    THROW("Job::vPostRecv : unknown tag\n"_Stz);
+//  vCmdText(szValue);
 
 
   /* 15 */ RASSERT(! m_pCodeBlock);

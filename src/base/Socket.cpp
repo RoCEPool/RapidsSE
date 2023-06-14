@@ -264,8 +264,18 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 
     ExtendedText* pExtText = pJob->pCmdText();
     RASSERT(pExtText);
+    eClass = pExtText->eGetClassNo();
+    nBytes = gxaSizeHeap[eClass].m_nClassSize;
+    bResult = bBytesSend(pExtText,nBytes,roSysCall);
+    RASSERT(bResult);
+
     ExtendedTextBuffer* pExtTextBuffer = pExtText->pExtTextBuffer(0);
     RASSERT(pExtTextBuffer);
+    eClass = pExtTextBuffer->eGetClassNo();
+    nBytes = gxaSizeHeap[eClass].m_nClassSize;
+    bResult = bBytesSend(pExtTextBuffer,nBytes,roSysCall);
+    RASSERT(bResult);
+
   }
 
   return bResult;
@@ -404,6 +414,21 @@ Object* Socket::pObjectRecv(eCN eClass)
   if (pReceivedObject->bIsClassNo(CN_JOB)) {
     Job *pJob = _pJob(pReceivedObject);
     pJob->vCmdText((ExtendedText*) nullptr);
+
+    Object* aCmdText = Heaps::pAllocate(CN_EXTENDEDTEXT, false);
+    nSize = gxaSizeHeap[CN_EXTENDEDTEXT].m_nClassSize;
+    bResult = bBytesRecv(aCmdText, nSize, oSysCall);
+    RASSERT(bResult);
+    ExtendedText* pCmdText = _pExtendedText(aCmdText);
+
+    Object* aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+    nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+    bResult = bBytesRecv(aCmdTextBuffer, nSize, oSysCall);
+    RASSERT(bResult);
+    ExtendedTextBuffer* pCmdTextBuffer = _pExtendedTextBuffer(aCmdTextBuffer);
+
+    pCmdText->vExtTextBuffer(0, pCmdTextBuffer);
+    pJob->vCmdText(pCmdText);
   }
 
   return pReceivedObject;
