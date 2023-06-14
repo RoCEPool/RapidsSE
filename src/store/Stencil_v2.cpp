@@ -416,6 +416,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchPotTub(pSortOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop,bGeneratePot, sHashExpr);
       pOpSketch->vIndexDef(pSortOpSketch->m_pIndexDef);
+      pOpSketch->vCopyColsMap(pSortOpSketch->m_pColsMap);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -1298,6 +1299,11 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sGbyAggExpr, eHandlerKind, SK_GBYAGG, ePrevStencil_v2, SR_AT, II_PL, pStreamDefLft, pStreamDefOut);
 
+  // set the labels in the opSketch
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
+  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+
   // set the indexDef
   IndexDef *pIndexDef = pOpDef->m_pIndexDef_gbyAgg; //_pIndexDef(pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef);
   pOpSketch->vIndexDef(pIndexDef);
@@ -1305,11 +1311,6 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   // set the payLoad bytes
   i8 nPayloadBytes = (pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
   pOpSketch->vPayloadBytes(nPayloadBytes);
-
-  // set the labels in the opSketch
-  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
-  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   // set the colsMap (payload information)
   pOpSketch->vCopyColsMap(pColsMap);
@@ -1337,6 +1338,10 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
   // get sort expr from OpDef
   Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
+  //HACK - OPTIMISER
+  // get the columns required
+  ColsReq* pColsMap = nullptr; //pOpDef->m_pColMap_sort;
+
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
@@ -1356,6 +1361,9 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
   // set the payLoad bytes
   i8 nPayloadBytes = (pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
   pOpSketch->vPayloadBytes(nPayloadBytes);
+
+  // set the colsMap (payload information)
+  pOpSketch->vCopyColsMap(pColsMap);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sSortExpr);
