@@ -17,11 +17,11 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Cmd(void)
 {
-  vAddStep("Cmd[]"_Stz,        &Step::vCmdFetch);
-  vAddStep("Cmd[].fetch"_Stz,  &Step::vCmdFetch);
-  vAddStep("Cmd[].print"_Stz,  &Step::vCmdPrint);
-  vAddStep("Cmd[].store"_Stz,  &Step::vCmdStore);
-  vAddStep("Cmd[].update"_Stz, &Step::vCmdUpdate);
+  vAddStep("[Job.Cmd]"_Stz,        &Step::vCmdFetch);
+  vAddStep("[Job.Cmd].fetch"_Stz,  &Step::vCmdFetch);
+  vAddStep("[Job.Cmd].print"_Stz,  &Step::vCmdPrint);
+  vAddStep("[Job.Cmd].store"_Stz,  &Step::vCmdStore);
+  vAddStep("[Job.Cmd].update"_Stz, &Step::vCmdUpdate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ void Step::vCmdUpdate(void)
   if (m_pJob) {
     TagSet* pTags = m_pJob->pJobTags();
     Stz* szValue = pTags->szValue(C_TAG_CMD);
-    if (! szValue)
+    if (! szValue || ! szValue->nLength())
       THROW("Step::vCmdFetch : unknown tag\n"_Stz);
 
     m_pJob->vCmdText(szValue);
