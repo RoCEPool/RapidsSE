@@ -431,7 +431,7 @@ SizeHeap gxaSizeHeap[]
   { CN_IVLVAL,                   sizeof(TypeValueArea),/*yes*/   HT_INVALID   , FILL },
 
   { CN__J__,                     'J' - ('A' - 1),                HT_INVALID   , FILL },
-  { CN_JOB,                      sizeof(Job),                    HT_T_LARGE  , FILL },
+  { CN_JOB,                      sizeof(Job),                    HT_T_MEDIUM  , FILL },
   { CN_JOBLIST,                  sizeof(JobList),                HT_T_TINY    , FILL },
   { CN_JOBMETRICS,               sizeof(JobMetrics),             HT_T_LARGE   , FILL },
   { CN_JOBREPORT,                sizeof(JobReport),              HT_T_TINY    , FILL },
@@ -673,7 +673,7 @@ SizeHeap gxaSizeHeap[]
   { CN_TABLEDEF,                 sizeof(Table),              HT_T_MEDIUM  ,FILL },
   { CN_TABLEPTN,                 sizeof(TablePtn),           HT_T_TINY    ,FILL },
   { CN_TABLEPTNVEC,              sizeof(TablePtnVec),        HT_T_TINY    ,FILL },
-  { CN_TAGSET,                   sizeof(TagSet),             HT_T_LARGE   ,FILL },
+  { CN_TAGSET,                   sizeof(TagSet),             HT_T_MEDIUM  ,FILL },
   { CN_TASK,                     sizeof(Task),               HT_T_SMALL   ,FILL },
   { CN_TASKLIST,                 sizeof(TaskList),           HT_T_TINY    ,FILL },
   { CN_TASKQUEUE,                sizeof(TaskQueue),          HT_T_TINY    ,FILL },
