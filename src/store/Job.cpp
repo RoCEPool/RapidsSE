@@ -192,6 +192,11 @@ Job::~Job(void) noexcept(false)
       delete m_pMetricsPipeline;
     }
 
+    if (m_pCmdText)
+      delete m_pCmdText;
+    if (m_pCodeBlock)
+      delete m_pCodeBlock;
+
     if (m_pTask) {
       m_pTask->vGrabTaskLock((Stz *) __func__);
       m_pTask->vState(TS_DELETING);
@@ -468,6 +473,57 @@ void Job::vCmd(Stz* szCmd)
     
   m_oJobTags.vReplace(C_TAG_CMD,szCmd);
 }
+
+/*----------------------------------------------------------------------------*/
+/* get command text                                                           */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Job::pCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pCmdText;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command text                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (! m_pCmdText)
+    return nullptr;
+
+  Stz* szTextBlock_0 = m_pCmdText->szTextBlock(0);
+
+  return szTextBlock_0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set command text                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vCmdText(Stz* szCmdText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (! m_pCmdText)
+    m_pCmdText = new ExtendedText;
+
+  m_pCmdText->vAddSubStr(szCmdText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set command text                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vCmdText(ExtendedText* pCmdText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  ASSERT(! m_pCmdText);
+
+  m_pCmdText = pCmdText;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* disable object tracker                                                     */
@@ -1598,7 +1654,7 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
-  /* 14 */ RASSERT(! m_pCmdText);
+  /* 14 */ m_pCmdText = nullptr;
   /* 15 */ RASSERT(! m_pCodeBlock);
 
   m_tJobId.vNextJobId();
