@@ -7,7 +7,6 @@ static Stz* C_TAGSET_NAME      = "<aTagSetNm>"_Stz;
 
 static Stz* C_TAG_BYPROMPT     = "<byPrompt>"_Stz;
 static Stz* C_TAG_CCODE        = "<ccode>"_Stz;
-static Stz* C_TAG_CMD          = "<cmd>"_Stz;
 static Stz* C_TAG_CMDFILE      = "<cmdFile>"_Stz;
 static Stz* C_TAG_CMDLINE      = "<cmdLine>"_Stz;
 static Stz* C_TAG_COUNT        = "<count>"_Stz;

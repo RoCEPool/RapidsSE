@@ -31,17 +31,6 @@ void Step::vCmdFetch(void)
 {
   ENTRY();
 
-//  if (m_pJob) {
-//    TagSet* pTags = m_pJob->pJobTags();
-//    Stz* szValue = pTags->szValue(C_TAG_CMD);
-//    if (! szValue)
-//      THROW("Step::vCmdFetch : unknown tag\n"_Stz);
-//    m_pDataStack->vPushStz(szValue);
-//  }
-//  else {
-//    THROW("Step::vCmdFetch : unknown tag\n"_Stz);
-//  }
-
   if (Stz* szValue = m_pJob->szCmdText()) {
     m_pDataStack->vPushStz(szValue);
   }
@@ -86,9 +75,6 @@ void Step::vCmdUpdate(void)
 
   s48K sCmdValue;
   m_pDataStack->vPopStr(sCmdValue,__func__);
-
-  TagSet* pTags = m_pJob->pJobTags();
-  pTags->vReplace(C_TAG_CMD,sCmdValue);
 
   m_pJob->vCmdText(sCmdValue);
 
