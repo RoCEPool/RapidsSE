@@ -86,7 +86,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 12 */ SkipNode* m_pJobsSkipNode;     // Jobs list skip node
     /* 13 */ SkipNode* m_pGenericSkipNode;  // generic list skip node
 
-    /* 14 */ ExtendedText* m_pCmdText;    // code text experiment
+    /* 14 */ ExtendedText* m_pCmdText;    // command text experiment
+    /* 15 */ ExtendedText* m_pCodeBlock;  // code block experiment
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 

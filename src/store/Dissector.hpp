@@ -76,7 +76,7 @@ namespace STORE
     Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
     Card_Projection* pPopProjection (Card_RpnTerms* pCard_RpnTerms);
     Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
-    Stz*             szPopType_char      (Card_RpnTerms* pCard_RpnTerms);
+    Stz*             szPopType_char (Card_RpnTerms* pCard_RpnTerms);
 
     void             vCheckArgs     (i8 nArgs);
 

@@ -281,7 +281,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
       break;
 
     case CK_KEYNOTEXISTS:
-      p_OP->vRpnKeyExists_constraint(sConstraint, _pCard_KeyExists(p_OP));
+      p_OP->vRpnKeyNotExists_constraint(sConstraint, _pCard_KeyNotExists(p_OP));
 
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_tableNm()->szSymbol()));
       m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_KeyNotExists(p_OP)->pSub_indexNm()->szSymbol()));
