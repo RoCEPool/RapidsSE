@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __CS2_semiJoin: Code Synthesizer V2                                        */
+/* __CS2_antiJoin: Code Synthesizer V2                                        */
 /*============================================================================*/
 _nation
 _region
@@ -20,7 +20,7 @@ CREATE INDEX IxR_NAME      on REGION (R_NAME);
 /transliterated
 /weaved
 /optimise_passthru
-pipeline __CS2_semiJoin
+pipeline __CS2_antiJoin
 begin
 
  stage S00 on origin :

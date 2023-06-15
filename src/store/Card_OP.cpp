@@ -1310,7 +1310,7 @@ void Card_OP::vRpnKeyNotExists_constraint(Stz* szRpnExpr, Card_KeyNotExists* p_k
   szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
 
   Card* pCard_test = pCard_constraint->pSub_boolCalc();
-  if (CK_BOOLCALC == pCard_test->eCard()) {
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
     Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
     vBoolCalc(szRpnExpr, pCard_CalcBool);
   }
