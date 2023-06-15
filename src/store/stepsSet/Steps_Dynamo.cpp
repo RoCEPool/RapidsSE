@@ -125,9 +125,9 @@ void Step::vDynamoHasCode(void)
 
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
   if (pDynamo->szCode())
-    m_pDataStack->vPushInt(false);
-  else
     m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
   EXIT();
 }
 
