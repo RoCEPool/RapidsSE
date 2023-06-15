@@ -638,7 +638,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SPMEDIUM,                 sizeof(SPmedium),           HT_INVALID   ,FILL },
   { CN_SPSMALL,                  sizeof(SPsmall),            HT_INVALID   ,FILL },
   { CN_SQLPLANNER,               sizeof(SqlPlanner),         HT_V_MEDIUM  ,FILL },
-  { CN_STACK,                    sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,FILL },
+  { CN_STACK,                    sizeof(TypedStack), /*yes*/ HT_T_LARGE   ,FILL },
   { CN_STAGE,                    sizeof(Stage),              HT_T_SMALL   ,FILL },
   { CN_STAGEDEF,                 sizeof(StageDef),           HT_T_MEDIUM  ,FILL },
   { CN_STAGEMETRICS,             sizeof(StageMetrics),       HT_T_TINY    ,FILL },

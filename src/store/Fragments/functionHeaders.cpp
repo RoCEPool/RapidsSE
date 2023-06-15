@@ -103,8 +103,25 @@ int vCrwContinue(struct Dynamic_T* aDynamicT) {
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
+  i8    iaPow10[15];
 
   printf("__FUNCTION_CRW__\n");
+
+  iaPow10[0] = 1;
+  iaPow10[1] = 10;
+  iaPow10[2] = 100;
+  iaPow10[3] = 1000;
+  iaPow10[4] = 10000;
+  iaPow10[5] = 100000;
+  iaPow10[6] = 1000000;
+  iaPow10[7] = 10000000;
+  iaPow10[8] = 100000000;
+  iaPow10[9] = 1000000000;
+  iaPow10[10] = 10000000000;
+  iaPow10[11] = 100000000000;
+  iaPow10[12] = 1000000000000;
+  iaPow10[13] = 10000000000000;
+  iaPow10[14] = 100000000000000;
 
   // marker-end
 
@@ -178,8 +195,25 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
+  i8    iaPow10[15];
 
   printf("__FUNCTION_EOS__\n");
+
+  iaPow10[0] = 1;
+  iaPow10[1] = 10;
+  iaPow10[2] = 100;
+  iaPow10[3] = 1000;
+  iaPow10[4] = 10000;
+  iaPow10[5] = 100000;
+  iaPow10[6] = 1000000;
+  iaPow10[7] = 10000000;
+  iaPow10[8] = 100000000;
+  iaPow10[9] = 1000000000;
+  iaPow10[10] = 10000000000;
+  iaPow10[11] = 100000000000;
+  iaPow10[12] = 1000000000000;
+  iaPow10[13] = 10000000000000;
+  iaPow10[14] = 100000000000000;
 
   // marker-end
 }
@@ -267,8 +301,25 @@ int vIndexContinue(struct Dynamic_T* aDynamicT) {
    void* aEntFound;
    void* aCrwJ;
    struct tm* pDateTime;
+  i8    iaPow10[15];
 
   printf("__FUNCTION_INDEX__\n");
+
+  iaPow10[0] = 1;
+  iaPow10[1] = 10;
+  iaPow10[2] = 100;
+  iaPow10[3] = 1000;
+  iaPow10[4] = 10000;
+  iaPow10[5] = 100000;
+  iaPow10[6] = 1000000;
+  iaPow10[7] = 10000000;
+  iaPow10[8] = 100000000;
+  iaPow10[9] = 1000000000;
+  iaPow10[10] = 10000000000;
+  iaPow10[11] = 100000000000;
+  iaPow10[12] = 1000000000000;
+  iaPow10[13] = 10000000000000;
+  iaPow10[14] = 100000000000000;
 
   // marker-end
 }
@@ -348,8 +399,25 @@ int vRowIndexContinue(struct Dynamic_T* aDynamicT) {
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
+  i8    iaPow10[15];
 
   printf("__FUNCTION_ROW__\n");
+
+  iaPow10[0] = 1;
+  iaPow10[1] = 10;
+  iaPow10[2] = 100;
+  iaPow10[3] = 1000;
+  iaPow10[4] = 10000;
+  iaPow10[5] = 100000;
+  iaPow10[6] = 1000000;
+  iaPow10[7] = 10000000;
+  iaPow10[8] = 100000000;
+  iaPow10[9] = 1000000000;
+  iaPow10[10] = 10000000000;
+  iaPow10[11] = 100000000000;
+  iaPow10[12] = 1000000000000;
+  iaPow10[13] = 10000000000000;
+  iaPow10[14] = 100000000000000;
 
   // marker-end
 
@@ -421,8 +489,26 @@ int vRowContinue(struct Dynamic_T* aDynamicT) {
   void *aEntInserted;
   void *aEntFound;
   void *aCrwJ;
+  i8    iaPow10[15];
 
   printf("__FUNCTION_ROW__\n");
+
+  iaPow10[0] = 1;
+  iaPow10[1] = 10;
+  iaPow10[2] = 100;
+  iaPow10[3] = 1000;
+  iaPow10[4] = 10000;
+  iaPow10[5] = 100000;
+  iaPow10[6] = 1000000;
+  iaPow10[7] = 10000000;
+  iaPow10[8] = 100000000;
+  iaPow10[9] = 1000000000;
+  iaPow10[10] = 10000000000;
+  iaPow10[11] = 100000000000;
+  iaPow10[12] = 1000000000000;
+  iaPow10[13] = 10000000000000;
+  iaPow10[14] = 100000000000000;
+
 
   // marker-end
 
