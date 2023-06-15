@@ -201,6 +201,24 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* as review                                                                  */
 /*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pPropagate(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Projection* p_projection_propagated = new Card_Projection;
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    Card_Expr* p_expr_propagated = xKid.p_expr()->pPropagate();
+    p_projection_propagated->vAppend(p_expr_propagated);
+  }
+
+  return p_projection_propagated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* as review                                                                  */
+/*----------------------------------------------------------------------------*/
 void Card_Projection::vReviewAs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

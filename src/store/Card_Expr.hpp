@@ -37,6 +37,7 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsExpressionOfKey(void);
     bool bOf(Symbol* pSymbol);
+    Card_Expr* pPropagate(void);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
     void vRenumberForm_keyOdn(i8 i_Expr);

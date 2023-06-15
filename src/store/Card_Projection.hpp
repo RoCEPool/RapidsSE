@@ -26,6 +26,7 @@ namespace STORE
     void vDeletePrjKey(CardIter* pCI);
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
+    Card_Projection* pPropagate(void);
     void vReviewAs(CardIter* pCI);
 
     StreamDef* pToStreamDef(ColsReq* pColMap=nullptr, Card_Key* p_key=nullptr);

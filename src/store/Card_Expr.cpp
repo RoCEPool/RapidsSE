@@ -266,6 +266,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   return p_expr_early;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -370,6 +371,43 @@ bool Card_Expr::bOf(Symbol* pSymbol)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft propagated version of this expression                                */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Expr::pPropagate(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_As*      p_as;
+  Card_RpnCalc* p_rpnCalc;
+  Card_Term*    p_term_0;
+
+  vDeconstruct(p_as,p_term_0);
+
+  p_rpnCalc = pSub_rpnCalc();
+
+  Card_Expr* p_expr_propagation = new Card_Expr;
+
+  if (p_as)
+    p_expr_propagation->vAppend(p_as->pClone());
+  else {
+    Card_As* p_as_new = new Card_As(this->szSymbol());
+    p_expr_propagation->vAppend(p_as_new);
+  }
+
+
+
+//  Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
+//  p_expr_propagation->vAppend(p_rpnCalc_early);
+//  p_expr_propagation->vSetType(p_rpnCalc_early);
+
+  Card_RpnCalc* p_rpnCalc_propagated = p_rpnCalc->pPropagate(p_expr_propagation);
+
+  p_expr_propagation->vAppend(p_rpnCalc_propagated);
+
+  return p_expr_propagation;
 }
 
 /*----------------------------------------------------------------------------*/
