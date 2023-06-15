@@ -488,7 +488,7 @@ void Job::vCmdText(Stz* szCmdText)
   if (! m_pCmdText)
     m_pCmdText = new ExtendedText;
 
-  m_pCmdText->vAddSubStr(szCmdText);
+  m_pCmdText->vCopy(szCmdText);
 }
 
 /*----------------------------------------------------------------------------*/

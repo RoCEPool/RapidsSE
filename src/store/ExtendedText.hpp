@@ -26,9 +26,9 @@ namespace STORE
     ExtendedText(void);
     ~ExtendedText(void) noexcept(false);
 
-    void vAddSubStr(Stz* szSubStr);
-
+    void vConcat(Stz* szSubStr);
     void vCopy(ExtendedText* pExtText_arg);
+    void vCopy(Stz* szStr);
 
     void vEmpty(void);
 

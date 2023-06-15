@@ -53,7 +53,7 @@ ExtendedText::~ExtendedText(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-void ExtendedText::vAddSubStr(Stz* szSubStr)
+void ExtendedText::vConcat(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
@@ -62,7 +62,7 @@ void ExtendedText::vAddSubStr(Stz* szSubStr)
     m_nTextBlocks++;
   }
 
-  bool b = m_pExtTextBuffer->bAddSubStr(szSubStr);
+  bool b = m_pExtTextBuffer->bConcat(szSubStr);
   RASSERT(b);
 }
 
@@ -76,9 +76,22 @@ void ExtendedText::vCopy(ExtendedText* pExtText_arg)
   vEmpty();
 
   if (pExtText_arg->nTextBlocks()) {
-    vAddSubStr(pExtText_arg->szTextBlock(0));
+    vConcat(pExtText_arg->szTextBlock(0));
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* copy given extended text argument                                          */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vCopy(Stz* szStr)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  vEmpty();
+
+  vConcat(szStr);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* empty this extended text                                                   */
