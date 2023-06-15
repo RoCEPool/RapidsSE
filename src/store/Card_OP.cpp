@@ -1723,7 +1723,7 @@ StreamDef* Card_OP::pCraftStreamDef_arriving(void)
 /*----------------------------------------------------------------------------*/
 /* craft emitted streamDef                                                    */
 /*----------------------------------------------------------------------------*/
-StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap_gbyAgg)
+StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1732,16 +1732,17 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap_gbyAgg)
     return nullptr;
 
   Card_Key* p_key = nullptr;
-  if (bIsCard(CK_GBYAGG)) {
-    *ppColMap_gbyAgg = new ColsReq;
+  if (bIsOne(CK_GBYAGG,CK_SORT,CK_NONE)) {
+    *ppColMap = new ColsReq;
     p_key = pSub_key();
     RASSERT(p_key);
   }
 
-  StreamDef* pStreamDef_emitted = p_projection->pToStreamDef(*ppColMap_gbyAgg,p_key);
+  StreamDef* pStreamDef_emitted =
+      p_projection->pToStreamDef(ppColMap? *ppColMap:nullptr, p_key);
 
-  if (*ppColMap_gbyAgg)
-    (*ppColMap_gbyAgg)->vValidate();
+  if (ppColMap)
+    (*ppColMap)->vValidate();
 
   return pStreamDef_emitted;
 }

@@ -233,7 +233,7 @@ void OpDef::vDump(i8 i_Tab)
   if (m_pIndexDef_gbyAgg)
     m_pIndexDef_gbyAgg->vDump(i_Tab+1);
 
-  vTrace("%s%s : ColLocs_gbyAgg  %p\n"_Stz,
+  vTrace("%s%s : ColMap_gbyAgg  %p\n"_Stz,
          Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_gbyAgg);
   if (m_pColMap_gbyAgg)
     m_pColMap_gbyAgg->vDump(i_Tab+1);
@@ -242,6 +242,11 @@ void OpDef::vDump(i8 i_Tab)
          Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_sort);
   if (m_pIndexDef_sort)
     m_pIndexDef_sort->vDump(i_Tab+1);
+
+  vTrace("%s%s : ColMap_sort     %p\n"_Stz,
+         Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_sort);
+  if (m_pColMap_sort)
+    m_pColMap_sort->vDump(i_Tab+1);
 
   vTrace("%s%s : ColsReq         %p\n"_Stz,
          Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq);
@@ -361,6 +366,9 @@ void OpDef::vValidate(void)
 
   if (m_pIndexDef_sort)
     m_pIndexDef_sort->vValidate();
+
+  if (m_pColMap_sort)
+    m_pColMap_sort->vValidate();
 
   if (m_pColsReq)
     m_pColsReq->vValidate();
