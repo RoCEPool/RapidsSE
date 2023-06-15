@@ -67,7 +67,7 @@ Stz* Weaver2::szOptStmt(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
   
-  return m_sOptStmt;
+  return p_pOptStmt->szTextBlock(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,8 +173,8 @@ void Weaver2::vCppBlock(void)
     vConcat("\n"_Stz);
     vConcat("__codeEnd__\n"_Stz);
 
-    vTrace("Code %s\n"_Stz, m_sOptStmt.szStz());
-    vTrace("Code %lld\n"_Stz, m_sOptStmt.nLength());
+    vTrace("Code %s\n"_Stz, p_pOptStmt->szTextBlock(0));
+    vTrace("Code %lld\n"_Stz, StrLib::nSize(p_pOptStmt->szTextBlock(0)->azChar()));
 
     vDebugPoint();
   }
@@ -828,9 +828,7 @@ void Weaver2::vConcat_vargs(Stz* aFormat, va_list xArgs)
 
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
- 
-  m_sOptStmt.vConcat((Stz*)caFormatted);
-  
+
   if (! p_pOptStmt)
     p_pOptStmt = new ExtendedText;
 
@@ -964,7 +962,6 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 
   m_i_Stage = 0;
   m_i_Op_stage = 0;
-  m_sOptStmt = ""_Stz;
 
   m_pBoard = pBoard;
 

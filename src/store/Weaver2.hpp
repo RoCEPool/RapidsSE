@@ -22,7 +22,6 @@ namespace STORE
     i8 m_i_Op_stage;
     bool m_bOpPrinted;
 
-    s48K m_sOptStmt;
     ExtendedText* p_pOptStmt;
 
     bool m_bSawHash;
