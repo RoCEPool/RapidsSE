@@ -348,8 +348,9 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
 
     if (CK_SCAN == pCI->G.e_MainCard ||
         CK_INDEXJOIN == pCI->G.e_MainCard ||
-        CK_KEYEXISTS == pCI->G.e_MainCard
-        ) {
+        CK_KEYEXISTS == pCI->G.e_MainCard ||
+        CK_KEYNOTEXISTS == pCI->G.e_MainCard
+    ) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
       pCI->G.p_table->vUpdate_projection(pCI);
 
@@ -382,7 +383,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
       //continue;
     }
 
-    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_LIMIT,CK_SORT,CK_NONE)) {
+    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_SORT,CK_NONE)) {
       pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
     }
 

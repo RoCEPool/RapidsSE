@@ -738,7 +738,61 @@ Card* Dissector::pOp_KeyNotExists(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DISSECTOR, _FOOTER_);
 
-  return nullptr;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // op arguments
+
+  vCheckArgs(4);
+  Stz* szTableNm = szGetStz(0);
+  Stz* szIndexNm = szGetStz(1);
+  Card_RpnTerms* p_rpnTerms_bounds = pGetRpnTerms(2);
+  Card_RpnTerms* p_rpnTerms_constraint = pGetRpnTerms(3);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // keyExists
+
+  Card_KeyNotExists* pCard_KeyNotExists = new Card_KeyNotExists;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  pCard_KeyNotExists->vAppend(p_level);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // table
+
+  Table* pTable = AM::pTableFind(szTableNm);
+  Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
+  pCard_KeyNotExists->vAppend(pCard_Table);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // index list
+
+  Card_IndexList* p_indexList = pFormIndex(szIndexNm,pTable);
+  pCard_KeyNotExists->vAppend(p_indexList);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // index bounds
+
+  Card_Bounds* pCard_Bounds = pPopBounds(p_rpnTerms_bounds);
+  pCard_Bounds->vDump();
+  p_indexList->pSub_index()->vAppend(pCard_Bounds);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // constraint
+
+  Card_Constraint* pCard_Constraint = pPopConstraint(p_rpnTerms_constraint);
+  pCard_Constraint->vDump();
+  pCard_KeyNotExists->vAppend(pCard_Constraint);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  delete p_rpnTerms_bounds;
+  delete p_rpnTerms_constraint;
+
+  pCard_KeyNotExists->vDump();
+
+  return pCard_KeyNotExists;
 }
 
 /*----------------------------------------------------------------------------*/

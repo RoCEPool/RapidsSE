@@ -347,6 +347,8 @@ void MakeCode::vCraftIndexes(Card_OP* p_OP)
   if (CK_KEYEXISTS == eCard)
     m_pOpDef->m_pIndex_indexSemi   = p_OP->pCraftIndex_indexScan();
 
+  if (CK_KEYNOTEXISTS == eCard)
+    m_pOpDef->m_pIndex_indexSemi   = p_OP->pCraftIndex_indexScan();
 }
 
 /*----------------------------------------------------------------------------*/
