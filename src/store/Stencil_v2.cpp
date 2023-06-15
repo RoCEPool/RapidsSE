@@ -293,16 +293,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the antiJoinOP
-    if (pOpDef->szOpNm()->bSame("antiJoin"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchAntiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
-      vAppend(pOpSketch);
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
     if (pOpDef->szOpNm()->bSame("filter"_Stz)) {
 
@@ -394,6 +384,17 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchSemiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the antiJoinOP
+    if (pOpDef->szOpNm()->bSame("keyNotExists"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchAntiJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
       vAppend(pOpSketch);
 
       continue;
@@ -1185,7 +1186,7 @@ OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch semiJoin                                                            */
+/* sketch antiJoin                                                            */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop) {
 
@@ -1198,25 +1199,30 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
 
   i8 i_Op = pOpDef->i_Op();
 
-  // get semi-join expr from OP
-  Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal(); // ????????
-
   // get join expr from OP
   Stz* sJoinExpr = pOpDef->pArgDef_expr()->szArgVal();
 
+  // get join constraint from OP
+  Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
+
+  // get semi-join expr from OP
+  Stz* sFilterExpr = pOpDef->pArgDef_expr()->szArgVal(); // ????????
+
   // get the streamDefLft
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
+
+  //HACK-OPTIMISER
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving; // pOpDef->m_pStreamDef_emitted;
+
+  //HACK-OPTIMISER
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
 
   // get the index
-  //Index *pIndex = _pIndex(pDynamic->aDynamicT()->m_aIndexJ);
-
-  //u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+  Index *pIndex = pOpDef->m_pIndex_indexSemi;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the semi-join
-  pOpSketch = new OpSketch(i_Op, sJoinExpr, eHandlerKind, SK_ANTIJOIN, ePrevStencil_v2, SR_TJ, II_JJ, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op, sJoinExpr, eHandlerKind, SK_ANTIJOIN, ePrevStencil_v2, SR_IJ, II_JJ, pStreamDefLft, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   //sLabelEnd.vSprint("L_%s_END_%d"_Stz, pOp->szOpNm(), i_Op);
@@ -1225,15 +1231,21 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelLoop);
 
+  //HACK-OPTIMISER
   // set the streamDefRht
-  pOpSketch->vStreamDefRht(pStreamDefRht);
+  // pOpSketch->vStreamDefRht(pStreamDefRht);
+  Table* pTable = pIndex->pTable();
+  pOpSketch->vStreamDefRht(pTable->pStreamDef());
 
   // set the indexDef
-  //pOpSketch->vIndexDef(pIndex->pIndexDef());
+  pOpSketch->vTable(pTable);
+  pOpSketch->vIndex(pIndex);
+  pOpSketch->vIndexDef(pIndex->pIndexDef());
   pOpSketch->vIndexPositionLower(IP_GE);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sJoinExpr);
+  pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
 
   return pOpSketch;
 }

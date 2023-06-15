@@ -14,6 +14,7 @@ CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
 //SELECT * FROM NATION WHERE N_REGIONKEY IN (SELECT R_REGIONKEY FROM REGION WHERE R_NAME = 'ASIA');
+//SELECT * FROM NATION WHERE N_REGIONKEY NOT IN (SELECT R_REGIONKEY FROM REGION WHERE R_REGIONKEY = N_NATIONKEY);
 
 /weaver2
 /glean_interactive
@@ -37,7 +38,8 @@ begin
  stage S02 on all partitions :
      keyNotExists Region IxR_REGIONKEY
               " BOUND $I1 $3 == "
-              "type BOOLEAN R_NAME 'ASIA' =="
+              "type BOOLEAN R_REGIONKEY N_NATIONKEY =="
+              //"type BOOLEAN R_NAME 'ASIA' =="
    | combined  0
    | next
 

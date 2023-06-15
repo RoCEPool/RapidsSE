@@ -122,8 +122,6 @@ void vSemiJoinContinue(Dynamic_T* aDynamicT) {
   // SEMIJOIN-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //L_semiJoin_end:
-
   if ( ! aDynamicT->m_iProcessRow ) {
 #ifdef WITH_CLANG
     // move to next entry
@@ -132,6 +130,42 @@ void vSemiJoinContinue(Dynamic_T* aDynamicT) {
 #endif
     goto __L_LABEL_INDEX_DEREF__;
  }
+
+// marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vAntiJoinContinue -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vAntiJoinContinue
+void vAntiJoinContinue(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+  RowInfo __ROW_INFO_FROM__;
+
+  __L_LABEL_INDEX_DEREF__:
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // SEMIJOIN-OP
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if ( aDynamicT->m_iProcessRow ) {
+#ifdef WITH_CLANG
+
+    aDynamicT->m_iProcessRow = 0;
+
+    // move to next entry
+    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+        &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
+#endif
+    goto __L_LABEL_INDEX_DEREF__;
+  }
+  else {
+    aDynamicT->m_iProcessRow = 1;
+  }
 
 // marker-end
 }
