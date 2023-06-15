@@ -2,7 +2,7 @@
 /* _ray2 :                                                                    */
 /*============================================================================*/
 
-// NOTE: Need a m_pColMap_sort for the sort OPDEF
+// NOTE: m_pColMap_sort : all cols are payload... no key
 
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";

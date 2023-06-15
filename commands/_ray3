@@ -2,6 +2,8 @@
 /* _ray3                                                                      */
 /*============================================================================*/
 
+// NOTE: Opdef for IndexJoin should have a StreamDef_joinTable.
+
 _nation
 _region
 tag default <tpch_dir> = "../tpch/sf_0001";
@@ -14,14 +16,12 @@ CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
-//SELECT * FROM NATION WHERE N_REGIONKEY NOT IN (SELECT R_REGIONKEY FROM REGION WHERE R_NAME = 'ASIA');
-
 /weaver2
 /glean_interactive
 /transliterated
 /weaved
 /optimise_passthru
-pipeline __CS2_semiJoin
+pipeline _ray3
 begin
 
  stage S00 on origin :
@@ -30,17 +30,16 @@ begin
    | next
 
  stage S01 on all partitions :
-     scan Nation
+     indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 >="
    | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-   | combined  0
+   | dynamic_v2  0
    | next
 
  stage S02 on all partitions :
-     keyNotExists Region IxR_REGIONKEY
-              " BOUND $I1 $3 == "
-              "type BOOLEAN R_NAME 'ASIA' =="
-   | combined  0
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+   | dynamic_v2  0
    | next
+
 
  stage S04 on origin :
      output
