@@ -198,7 +198,7 @@
 /* ---- --- */  // !!! org !!! org !!! org !!! org !!! org !!! org !!! org !!!
 
 /* org_ org */  "<show_command>" sysargs::tagSet@ tagSet.hasName if
-/* org_ org */    [Job.Cmd].print
+/* org_ org */    [job].cmdPrint
 /* org_ org */  then
 /* org_ org */
 /* org_ org */

@@ -217,9 +217,6 @@ public:
   void vClassPostRecvWordStore(void);
   void vClassPreSendWordStore(void);
 
-  // cmd
-  void vCmdPrint(void);
-
   // column
   void vColumnIsNullableFetch(void);
   void vColumnIsPartitionKeyFetch(void);
@@ -829,6 +826,7 @@ void vDdlLockAssertNone(void);
   void vJobAssertOriginator(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
+  void vJobCmdPrint(void);
 
   void vJobDisableAllocate(void);
   void vJobDisableJobMetrics(void);

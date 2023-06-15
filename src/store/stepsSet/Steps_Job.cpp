@@ -43,6 +43,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertReceived"_Stz,   &Step::vJobAssertReceived);
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
+  vAddStep("[job].cmdPrint"_Stz,         &Step::vJobCmdPrint);
+
   vAddStep("[job].disableAllocate"_Stz,  &Step::vJobDisableAllocate);
   vAddStep("[job].disableJobMetrics"_Stz, &Step::vJobDisableJobMetrics);
   vAddStep("[job].disableObjectTracker"_Stz,&Step::vJobDisableObjectTracker);
@@ -470,6 +472,22 @@ void Step::vJobAssertStructure(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* [Job.Cmd].print -- print cmd[]                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCmdPrint(void)
+{
+  ENTRY();
+
+  if (m_pJob->szCmdText())
+    vTrace("%s\n"_Stz,(m_pJob->szCmdText()));
+  else
+    vTrace("<NO CMD TEXT>\n"_Stz);
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* [job].disableAllocate -- disable memory allocation for the job             */

@@ -39,7 +39,6 @@ namespace STORE
     static void vAddSteps_Build(void);
 
     static void vAddSteps_Class(void);
-    static void vAddSteps_Cmd(void);
     static void vAddSteps_Column(void);
     static void vAddSteps_Combined(void);
     static void vAddSteps_CoreWords(void);

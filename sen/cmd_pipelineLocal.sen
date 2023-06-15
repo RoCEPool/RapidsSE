@@ -21,7 +21,7 @@
   
   "<show_command>" sysargs::tagSet@ tagSet.hasName
   if
-    [Job.Cmd].print
+    [job].cmdPrint
     //[system].bpa
   then
 /*
