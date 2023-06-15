@@ -6,6 +6,7 @@
 #include "Board.hpp"
 #include "OptimiserTool.hpp"
 #include "PipelineDef.hpp"
+#include "ExtendedText.hpp"
 
 namespace STORE
 {
@@ -20,8 +21,9 @@ namespace STORE
     i8 m_i_Stage;
     i8 m_i_Op_stage;
     bool m_bOpPrinted;
+
     s48K m_sOptStmt;
-    s48K m_sCppBlock;
+    ExtendedText* p_pOptStmt;
 
     bool m_bSawHash;
   private:
@@ -38,7 +40,8 @@ namespace STORE
     void vWeaveOptStmt(Board* pBoard);
     void vWeaveOptStmt2(Board* pBoard);
     Stz* szOptStmt(void);
-    Stz* szCppBlock(void);
+    ExtendedText* pOptStmt(void);
+    void vOptStmt(ExtendedText* pOptSmt);
 
   private:
   

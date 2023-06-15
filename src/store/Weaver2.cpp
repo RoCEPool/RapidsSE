@@ -25,6 +25,7 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
   m_pPipelineDef  = pPipelineDef;
+  m_pDeck = nullptr;
 
   m_pBench        = pBench;
   m_pOptimiser    = m_pBench->pOptimiser();
@@ -33,9 +34,9 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
   m_i_Stage    = 0;
   m_i_Op_stage = 0;
   m_bOpPrinted = false;
+  p_pOptStmt   = nullptr;
   m_bSawHash   = false;
 
-  m_pDeck = nullptr;
 
   _checkInitialised_(CN_WEAVER2);
 
@@ -48,6 +49,9 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
 Weaver2::~Weaver2(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  if (p_pOptStmt)
+    delete p_pOptStmt;
 }
 
 
@@ -67,14 +71,25 @@ Stz* Weaver2::szOptStmt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cpp code block                                                         */
+/* get optimised pipeline statement                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Weaver2::szCppBlock(void)
+ExtendedText* Weaver2::pOptStmt(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  return m_sCppBlock;
+  return p_pOptStmt;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set optimised pipeline statement                                           */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vOptStmt(ExtendedText* pOptSmt)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  p_pOptStmt = pOptSmt;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -816,7 +831,11 @@ void Weaver2::vConcat_vargs(Stz* aFormat, va_list xArgs)
  
   m_sOptStmt.vConcat((Stz*)caFormatted);
   
-  //vTraceing("%s"_Stz,caFormatted);
+  if (! p_pOptStmt)
+    p_pOptStmt = new ExtendedText;
+
+  p_pOptStmt->vConcat((Stz*)caFormatted);
+
 }
 
 /*----------------------------------------------------------------------------*/
