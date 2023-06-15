@@ -13,13 +13,13 @@ CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
-//SELECT * FROM NATION WHERE N_REGIONKEY NOT IN (SELECT R_REGIONKEY FROM REGION WHERE R_NAME = 'ASIA');
+//SELECT * FROM NATION WHERE N_REGIONKEY IN (SELECT R_REGIONKEY FROM REGION WHERE R_NAME = 'ASIA');
 
-///weaver2
-///glean_interactive
-///transliterated
-///weaved
-///optimise_passthru
+/weaver2
+/glean_interactive
+/transliterated
+/weaved
+/optimise_passthru
 pipeline __CS2_semiJoin
 begin
 
