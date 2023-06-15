@@ -33,6 +33,7 @@ namespace STORE
     ColsReq*   m_pColMap_gbyAgg;
 
     IndexDef*  m_pIndexDef_sort;
+    ColsReq*   m_pColMap_sort;
 
     ColsReq*   m_pColsReq;
 

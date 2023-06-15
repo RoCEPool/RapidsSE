@@ -10,7 +10,8 @@ _nation
 /weaved
 /weaver2
 /optimise_passThru
-pipeline unamed
+/glean_interactive
+pipeline _ray2
 begin
  stage S00 on origin :
    start

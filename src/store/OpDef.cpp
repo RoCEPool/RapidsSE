@@ -37,6 +37,7 @@ OpDef::OpDef(void)
   m_pIndexDef_gbyAgg    = nullptr;
   m_pColMap_gbyAgg      = nullptr;
   m_pIndexDef_sort      = nullptr;
+  m_pColMap_sort        = nullptr;
 
   m_pColsReq            = nullptr;
 
@@ -64,6 +65,7 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
   m_pIndexDef_gbyAgg    = nullptr;
   m_pColMap_gbyAgg      = nullptr;
   m_pIndexDef_sort      = nullptr;
+  m_pColMap_sort        = nullptr;
 
   m_pColsReq            = nullptr;
 
@@ -86,6 +88,7 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pIndexDef_gbyAgg;
   delete m_pColMap_gbyAgg;
   delete m_pIndexDef_sort;
+  delete m_pColMap_sort;
 
   delete m_pColsReq;
 }
