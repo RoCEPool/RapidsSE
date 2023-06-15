@@ -6,6 +6,7 @@
 #include "RootNode.hpp"
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
+#include "ExtendedText.hpp"
 
 namespace STORE
 {
@@ -30,7 +31,7 @@ namespace STORE
     ParamsSpec*  m_pParamsSpec;      // set of parameters
 
     bool         m_bHasCode;
-    s48K         m_sCode;
+    ExtendedText* m_pCode;
     
     // must be last
     Footer m_xFooter;

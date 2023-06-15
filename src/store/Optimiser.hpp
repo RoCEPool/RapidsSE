@@ -9,6 +9,7 @@
 #include "CardCtl.hpp"
 #include "PermGen.hpp"
 #include "PipelineDef.hpp"
+#include "ExtendedText.hpp"
 
 namespace STORE
 {
@@ -38,7 +39,7 @@ namespace STORE
 
     PipelineDef* m_pPipelineDef;
 
-    s48K m_sOptStmt;
+    ExtendedText* m_pOptStmt;
 
     // must be last
     Footer m_xFooter;

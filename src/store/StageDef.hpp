@@ -6,6 +6,7 @@
 #include "OpDef.hpp"
 #include "ListExo2_t.hpp"
 #include "Card_Stage.hpp"
+#include "ExtendedText.hpp"
 
 namespace STORE
 {
@@ -15,7 +16,7 @@ namespace STORE
   private:
     i8   m_i_Stage;
     s32  m_sStageNm;
-    s48K m_sCode;
+    ExtendedText* m_pCode;
 
     Card_Stage* m_pCard_Stage;
 

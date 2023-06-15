@@ -24,6 +24,7 @@ StageDef::StageDef(void)
 
   m_i_Stage = C_UNKNOWN;
   m_pCard_Stage = nullptr;
+  m_pCode = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 }
@@ -38,7 +39,8 @@ StageDef::StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage)
 
   vStage(i_Stage);
   vStageNm(szStageNm);
-  m_sCode = ""_Stz;
+
+  m_pCode = nullptr;
 
   vCard_Stage(p_stage);
 
@@ -52,6 +54,8 @@ StageDef::StageDef(i8 i_Stage, Stz* szStageNm, Card_Stage* p_stage)
 StageDef::~StageDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+
+  delete m_pCode;
 
   vDeleteAll();
 }
@@ -93,17 +97,23 @@ Stz* StageDef::szCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
-  return m_sCode;
+  if (! m_pCode)
+    return nullptr;
+
+  return m_pCode->szTextBlock(0);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void StageDef::vCode(Stz* sCode)
+void StageDef::vCode(Stz* szCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
-  m_sCode = sCode;
+  if (! m_pCode)
+    m_pCode = new ExtendedText;
+
+  m_pCode->vCopy(szCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +153,7 @@ void StageDef::vDump(i8 i_Tab)
          Stz::szTab(i_Tab),
          m_i_Stage,
          m_sStageNm.szStz(),
-         *szCode()->azChar() ? szCode() : nullptr);
+         szCode());
 
   // - - - - - - - - - - - - - - - - - - - - - -
 

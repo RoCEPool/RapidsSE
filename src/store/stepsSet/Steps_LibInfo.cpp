@@ -45,7 +45,7 @@ void Step::vLibInfoCompile(void)
   s4K szDynLibNm;
   m_pDataStack->vPopStr(szDynLibNm,__func__);
 
-  s48K szCode;
+  s256K szCode;
   m_pDataStack->vPopStr(szCode,__func__);
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;

@@ -2,7 +2,10 @@
 /* _rayA :                                                                    */
 /*============================================================================*/
 
-__TPCH_SCHEMA;
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA_LOAD_SF0001
 
 /weaver2
 /glean_interactive

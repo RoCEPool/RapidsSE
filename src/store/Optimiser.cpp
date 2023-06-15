@@ -64,6 +64,8 @@ Optimiser::Optimiser(TagSet* p_JobTags)
 
   m_pPipelineDef = nullptr;
 
+  m_pOptStmt = nullptr;
+
   _checkInitialised_(CN_OPTIMISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -85,6 +87,8 @@ Optimiser::~Optimiser(void) noexcept(false)
   delete m_pCI;
 
   delete m_pPipelineDef;
+
+  delete m_pOptStmt;
 
   Card::vCardLeaks();
 }
@@ -421,7 +425,9 @@ Stz* Optimiser::szWeave(void)
     Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
     pWeaver2->vWeaveOptStmt(pBoard_query);
 
-    m_sOptStmt = pWeaver2->szOptStmt();
+    if (! m_pOptStmt)
+      m_pOptStmt = new ExtendedText;
+    m_pOptStmt->vCopy(pWeaver2->szOptStmt());
 
     delete pWeaver2;
   }
@@ -431,12 +437,14 @@ Stz* Optimiser::szWeave(void)
     Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
     pWeaver->vWeaveOptStmt(pBoard_query);
 
-    m_sOptStmt = pWeaver->szOptStmt();
+    if (! m_pOptStmt)
+      m_pOptStmt = new ExtendedText;
+    m_pOptStmt->vCopy(pWeaver->szOptStmt());
 
     delete pWeaver;
   }
 
-  return m_sOptStmt;
+  return m_pOptStmt->szTextBlock(0);
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//

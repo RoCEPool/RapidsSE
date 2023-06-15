@@ -47,7 +47,9 @@ Dynamo::Dynamo(TagSet* p_JobTags)
   m_pParamsSpec = nullptr;
 
   m_bHasCode = false;
-  
+
+  m_pCode = nullptr;
+
   _checkInitialised_(CN_DYNAMO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -68,6 +70,8 @@ Dynamo::~Dynamo(void) noexcept(false)
   }
 
   delete m_pScanner;
+
+  delete m_pCode;
 
   delete m_pParamsSpec;
 }
@@ -1275,7 +1279,10 @@ Stz* Dynamo::szCode(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  return m_sCode.szStz();
+  if (! m_pCode)
+    return nullptr;
+
+  return m_pCode->szTextBlock(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1285,7 +1292,10 @@ void Dynamo::vCode(Stz* szCode)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  m_sCode = szCode;
+  if (! m_pCode)
+    m_pCode = new ExtendedText;
+
+  m_pCode->vCopy(szCode);
 }
 
 /*----------------------------------------------------------------------------*/

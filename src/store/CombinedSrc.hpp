@@ -16,7 +16,7 @@
 
 namespace STORE {
 
-  static const i8 C_FLATTEN_SOURCE_V2 = C_48K; //C_SIZE_LARGE_OBJECT - C_1KB;
+  static const i8 C_FLATTEN_SOURCE_V2 = C_256K; //C_SIZE_LARGE_OBJECT - C_1KB;
 
   class Stencil_v2;
 

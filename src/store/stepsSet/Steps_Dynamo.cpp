@@ -50,10 +50,11 @@ void Step::vDynamoCodeFetch(void)
 {
   ENTRY();
 
-  s48K szCode;
+  s512K szCode;
 
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  szCode = pDynamo->szCode();
+  if (pDynamo->szCode())
+    szCode = pDynamo->szCode();
   m_pDataStack->vPushStr(szCode);
 
   EXIT();
@@ -67,7 +68,8 @@ void Step::vDynamoCompile(void)
   ENTRY();
 
   Stz* szPipelineStmt = m_pJob->szCmdText();
-      
+  //vTraceM("%s\n"_Stz,szPipelineStmt);
+
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
   VertexSpec* pPipeSpec = pDynamo->pCompile(szPipelineStmt);
     
@@ -122,7 +124,7 @@ void Step::vDynamoHasCode(void)
   ENTRY();
 
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  if (pDynamo->szCode()->bSame(""_Stz))
+  if (pDynamo->szCode())
     m_pDataStack->vPushInt(false);
   else
     m_pDataStack->vPushInt(true);
