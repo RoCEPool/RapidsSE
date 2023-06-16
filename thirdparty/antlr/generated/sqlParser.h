@@ -250,6 +250,7 @@ public:
     ExplainStatementContext *explainStatement();
     LstblContext *lstbl();
     LsidxContext *lsidx();
+    CreateQueryContext *createQuery();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -906,9 +907,6 @@ public:
     antlr4::tree::TerminalNode *TABLE();
     TableReferenceContext *tableReference();
     TableDefinitionContext *tableDefinition();
-    antlr4::tree::TerminalNode *IF();
-    antlr4::tree::TerminalNode *NOT();
-    antlr4::tree::TerminalNode *EXISTS();
     antlr4::tree::TerminalNode *REFERENCE();
     AsSubqueryContext *asSubquery();
     ColumnNameListContext *columnNameList();

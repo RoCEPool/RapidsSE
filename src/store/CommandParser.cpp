@@ -217,11 +217,15 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   // Determine which procedure/pipeline needs to be invoked for a given command.
   // Note that we partially descend the parse tree for any commands that have parameters.
 
-  if (pCtx->queryStatement() ||
-      pCtx->explainStatement()) { m_szProcName = "sqlCompiler"_Stz;   return visitChildren(pCtx); }
+  if (pCtx->queryStatement() || pCtx->explainStatement())
+                                { m_szProcName = "sqlCompiler"_Stz;   return visitChildren(pCtx); }
 
-  else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;         return nullptr; }
-  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;  return nullptr; }
+  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;  return visitChildren(pCtx); }
+  else if (pCtx->createQuery() && pCtx->createQuery()->createTableQuery())
+                                { m_szProcName = "create__table"_Stz;  return visitChildren(pCtx); }
+  else if (pCtx->createQuery() && pCtx->createQuery()->createIndexQuery())
+                                { m_szProcName = "create__index"_Stz;  return visitChildren(pCtx); }
 
   else                          { NOT_IMPLEMENTED_YET }
 
@@ -306,6 +310,26 @@ antlrcpp::Any CommandParser::visitLsidx(Parser::sqlParser::LsidxContext *pCtx)
   s256 sIdentifier;
   vCleanString(pCtx->tableName()->identifier(), sIdentifier);
   m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an CREATE TABLE statement                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitCreateTableQuery(Parser::sqlParser::CreateTableQueryContext *pCtx)
+{
+  // TODO
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an CREATE INDEX statement                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitCreateIndexQuery(Parser::sqlParser::CreateIndexQueryContext *pCtx)
+{
+  // TODO
 
   return nullptr; // No need to visit any further down the tree
 }

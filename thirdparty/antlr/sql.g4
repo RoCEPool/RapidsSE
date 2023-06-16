@@ -13,6 +13,12 @@ statementChoice   :   queryStatement
                     | explainStatement
                     | lstbl
                     | lsidx
+                    | createQuery
+//                    | dropQuery
+//                    | insertQuery
+//                    | deleteQuery
+//                    | updateQuery
+//                    | truncateQuery
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
@@ -37,12 +43,6 @@ queryStatement    : query ;
 query             : (queryHint)*
                     ( selectQuery
                     | setQuery
-//                    | insertQuery
-//                    | deleteQuery
-//                    | updateQuery
-//                    | createQuery
-//                    | dropQuery
-//                    | truncateQuery
                     ) ;
 
 queryHint         : HINT_START (hint)? (',' hint)* HINT_END ;
@@ -134,7 +134,7 @@ updateQuery       : (WITH withQuery (',' withQuery)*)?
 
 createQuery           : createTableQuery | createIndexQuery ;
 
-createTableQuery      : CREATE reference = REFERENCE? TABLE (IF NOT EXISTS)? ref = tableReference
+createTableQuery      : CREATE reference = REFERENCE? TABLE /*(IF NOT EXISTS)?*/ ref = tableReference
                         (
                             tableDefinition
                           | ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
