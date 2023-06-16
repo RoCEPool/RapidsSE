@@ -90,6 +90,24 @@ Card_Projection* Card_Projection::pClone(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    if (Card_BoolCalc* p_boolCalc = xKid.p_expr()->pSub_boolCalc())
+      p_boolCalc->vCorrectStmOdn(p_projection_prior);
+    else
+    if (Card_RpnCalc* p_rpnCalc = xKid.p_expr()->pSub_rpnCalc())
+      p_rpnCalc->vCorrectStmOdn(p_projection_prior);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* craft factored-column-set this projection needs for early-projects         */
 /*----------------------------------------------------------------------------*/
 Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
@@ -196,6 +214,52 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
     xKid.p_expr()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFindExprOfSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bHasTerm(pSymbol))
+      return xKid.p_expr();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Projection::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/)
+    if (xKid.p_expr()->bHasTerm(pSymbol))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a reduced copy of this projection                                   */
+/*----------------------------------------------------------------------------*/
+Card_Projection* Card_Projection::pReducedCopy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Projection* p_projection_reduced = new Card_Projection;
+
+  i8 i_Expr = 0;
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+    Card_Expr* p_expr_copy = xKid.p_expr()->pReducedCopy(i_Expr++);
+    p_projection_reduced->vAppend(p_expr_copy);
+  }
+
+  return p_projection_reduced;
 }
 
 /*----------------------------------------------------------------------------*/

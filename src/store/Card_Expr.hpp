@@ -33,9 +33,12 @@ namespace STORE
     void vEnsureTypes_For_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Card_Term* pGetTerm(i8 i_Term);
+    bool bHasTerm(Symbol* pSymbol);
     bool bOf(Symbol* pSymbol);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
+    Card_Expr *pReducedCopy(i8 i_Expr);
+
     void vRenumberForm_keyOdn(i8 i_Expr);
     void vRenumberForm_stmOdn(i8 i_Expr);
 

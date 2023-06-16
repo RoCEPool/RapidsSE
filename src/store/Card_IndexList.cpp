@@ -155,6 +155,22 @@ bool Card_IndexList::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_IndexList::bUsesSqyRsl(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/) {
+    if (xKid.p_index()->bUsesSqlRsl())
+      return true;
+  }
+
+  return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

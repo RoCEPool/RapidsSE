@@ -113,11 +113,14 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+
   pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
 
   pCI->vPrintBoard();
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;

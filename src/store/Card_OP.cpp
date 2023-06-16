@@ -295,6 +295,23 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! p_projection_prior)
+    return;
+
+  if (Card_Filter* p_filter = pSub_filter())
+    p_filter->vCorrectStmOdn(p_projection_prior);
+
+  if (Card_Projection* p_projection = pSub_projection())
+    p_projection->vCorrectStmOdn(p_projection_prior);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_OP::vDeleteFilterIfEmpty(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -725,7 +742,8 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   StreamDef* pStreamDef = pTable->pStreamDef();
 
   if (pCI->Analysis.m_pProjection_prior)
-    p_projection = pCI->Analysis.m_pProjection_prior->pClone();
+//    p_projection = pCI->Analysis.m_pProjection_prior->pClone();
+    p_projection = pCI->Analysis.m_pProjection_prior->pReducedCopy();
   else
     p_projection = new Card_Projection;
 

@@ -223,7 +223,7 @@ void CmdLineArgs::vEnvironmentVariables(void)
 bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
-    
+
   if (argv[1].bSame("apiDemo"_Stz)) {
     m_xSysArgs.m_eUtility = UT_APIDEMO;
     return true;
@@ -982,6 +982,53 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--sysMetrics"_Stz)) {
       m_xSysArgs.m_bSysMetrics = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--tag"_Stz)) {
+
+      // --tag name = "value"
+      // --tag name
+
+      i8 i_SysArg = i_Arg + 1;
+
+      if (i_SysArg >= argc) {
+        vTrace("Incorrect argument: --tag with nothing after\n"_Stz);
+        vTrace("Usage: --tag name or --tag name = value\n"_Stz);
+        return false;
+      }
+
+      s32 sTagName;
+
+      sTagName.vSprint("<%s>"_Stz, (Stz*)argv[++i_Arg]);
+
+      i_SysArg++;
+
+      if (i_SysArg >= argc) {
+        m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
+        continue;
+      }
+
+      Stz* szTagEqual = argv[i_SysArg];
+      if ('=' != * szTagEqual->azChar()) {
+        m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
+        continue;
+      }
+
+      // consume name
+      i_Arg++;
+
+      // consume =
+      i_Arg++;
+
+      Stz* szTagValue = argv[i_Arg];
+
+      if (szTagValue->bIsInteger())
+        m_xSysArgs.m_oSysTags.vInsert(sTagName,szTagValue->iToI8());
+      else
+        m_xSysArgs.m_oSysTags.vInsert(sTagName,szTagValue);
+
       continue;
     }
 
