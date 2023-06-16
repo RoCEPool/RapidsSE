@@ -302,13 +302,16 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       //continue;
     }
 
-    if (CK_LIMIT == pCI->G.e_MainCard) {
+    if (CK_LIMIT == pCI->G.e_MainCard || CK_SORT == pCI->G.e_MainCard) {
       pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
     }
-    else
-    if (CK_SORT == pCI->G.e_MainCard) {
-      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
-    }
+//    if (CK_SORT == pCI->G.e_MainCard) {
+//      Card_Projection* p_projection_propagated =
+//          pCI->Analysis.m_pProjection_prior->pPropagate();
+//      p_projection_propagated->vAdjust(pCI->G.p_MainCard->pSub_key());
+//
+//      pCI->G.p_MainCard->vAppend(p_projection_propagated);
+//    }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Analysis.m_pProjection_prior) {
@@ -386,8 +389,16 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
       //continue;
     }
 
-    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_SORT,CK_NONE)) {
+    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_NONE)) {
       pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    }
+    else
+    if (CK_SORT == pCI->G.e_MainCard) {
+      Card_Projection* p_projection_propagated =
+          pCI->Analysis.m_pProjection_prior->pPropagate();
+      p_projection_propagated->vAdjust(pCI->G.p_MainCard->pSub_key());
+
+      pCI->G.p_MainCard->vAppend(p_projection_propagated);
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {

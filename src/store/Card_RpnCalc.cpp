@@ -271,6 +271,23 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsSoleCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return false;
+
+  Card_Term* p_term_0 = pGetTerm(0);
+  if (! p_term_0->bIsValOdn())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bNeedsBrace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

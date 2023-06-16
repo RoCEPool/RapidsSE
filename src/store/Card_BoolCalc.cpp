@@ -281,6 +281,27 @@ Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bIsSoleCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return false;
+
+  Card* p_card_0 = pGetChild(0);
+  if (! p_card_0->bIsCard(CK_TERM))
+    return  false;
+
+  Card_Term* p_term_0 = _pCard_Term(p_card_0);
+  if (! p_term_0->bIsColOdn())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* inspect <boolCalc>> and mark any <pred> which could be moved               */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)

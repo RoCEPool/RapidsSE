@@ -346,6 +346,25 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsSoleCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bSoleCol = false;
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc()) {
+    bSoleCol = p_boolCalc->bIsSoleCol();
+  }
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
+    bSoleCol = p_rpnCalc->bIsSoleCol();
+  }
+
+  return bSoleCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsExpressionOfKey(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -403,7 +422,7 @@ Card_Expr* Card_Expr::pPropagate(void)
 //  p_expr_propagation->vAppend(p_rpnCalc_early);
 //  p_expr_propagation->vSetType(p_rpnCalc_early);
 
-  Card_RpnCalc* p_rpnCalc_propagated = p_rpnCalc->pPropagate(p_expr_propagation);
+  Card_RpnCalc* p_rpnCalc_propagated = p_rpnCalc->pPropagate(this);
 
   p_expr_propagation->vAppend(p_rpnCalc_propagated);
 

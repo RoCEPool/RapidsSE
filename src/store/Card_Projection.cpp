@@ -80,6 +80,32 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* adjust this projection given key                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Projection::vAdjust(Card_Key* p_key)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  p_key->vDump();
+
+  for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
+
+    xKid.p_expr()->vDump();
+
+    if (! xKid.p_expr()->bIsSoleCol())
+      continue;
+
+    Symbol* pSymbol_expr_sole = xKid.p_expr()->pGetSymbol(0);
+
+    Card_Expr* p_expr_sole_key = p_key->pFindExpr(pSymbol_expr_sole);
+    if (! p_expr_sole_key)
+      continue;
+
+    pSymbol_expr_sole->vSet(p_expr_sole_key->pSymbol());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pClone(void)
@@ -199,7 +225,7 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/* as review                                                                  */
+/* propagate this projection                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Projection* Card_Projection::pPropagate(void)
 {
