@@ -11,7 +11,9 @@ statements        :  statement+ ;
 statement         :  tags statementChoice ';' ;
 statementChoice   :   queryStatement
                     | explainStatement
-                    | lstbl ;
+                    | lstbl
+                    | lsidx
+                    ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
 keyValueTag       : '<' keyName=IDENTIFIER '>' '=' (STRING_LITERAL | INTEGER_LITERAL);
@@ -461,6 +463,10 @@ dayTimeInterval   :
 // lstbl statement ------------------------------------------------------------
 lstbl : LSTBL ;
 
+// lsidx statement ------------------------------------------------------------
+lsidx : LSIDX tableName ;
+
+
 
 // ============================================================================
 // lexer ----------------------------------------------------------------------
@@ -475,7 +481,7 @@ nonReservedWord   :
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX
                   | KEY
-                  | LIMIT | LOOP | LSTBL
+                  | LIMIT | LOOP | LSIDX | LSTBL
                   | MINUTES | MONOTONIC | MONTHS
                   | NODE | NOW
                   | OFFSET
@@ -578,6 +584,7 @@ LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
 LOOP                  : L O O P;
+LSIDX                 : L S I D X;
 LSTBL                 : L S T B L;
 MAX                   : M A X;
 MIN                   : M I N;

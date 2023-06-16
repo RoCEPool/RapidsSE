@@ -326,6 +326,8 @@ public:
 
     virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *context) = 0;
 
+    virtual antlrcpp::Any visitLsidx(sqlParser::LsidxContext *context) = 0;
+
     virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
 
 

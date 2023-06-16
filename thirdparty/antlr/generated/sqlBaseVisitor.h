@@ -629,6 +629,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitLsidx(sqlParser::LsidxContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *ctx) override {
     return visitChildren(ctx);
   }

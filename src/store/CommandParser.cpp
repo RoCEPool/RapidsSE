@@ -218,12 +218,18 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   // Note that for most commands we don't need to descend the parse tree any further
   // than this. Some others we do.
 
+  s256 sIdentifier;
+
   if (pCtx->queryStatement() ||
       pCtx->explainStatement()) { m_szProcName = "sqlCompiler"_Stz;
                                   m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
                                   return nullptr; }
 
   else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;         return nullptr; }
+  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;
+                                  vCleanString(pCtx->lsidx()->tableName()->identifier(), sIdentifier);
+                                  m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
+                                  return nullptr; }
 
   else                          { NOT_IMPLEMENTED_YET }
 
