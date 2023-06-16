@@ -215,21 +215,13 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
 antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementChoiceContext *pCtx)
 {
   // Determine which procedure/pipeline needs to be invoked for a given command.
-  // Note that for most commands we don't need to descend the parse tree any further
-  // than this. Some others we do.
-
-  s256 sIdentifier;
+  // Note that we partially descend the parse tree for any commands that have parameters.
 
   if (pCtx->queryStatement() ||
-      pCtx->explainStatement()) { m_szProcName = "sqlCompiler"_Stz;
-                                  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
-                                  return nullptr; }
+      pCtx->explainStatement()) { m_szProcName = "sqlCompiler"_Stz;   return visitChildren(pCtx); }
 
   else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;         return nullptr; }
-  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;
-                                  vCleanString(pCtx->lsidx()->tableName()->identifier(), sIdentifier);
-                                  m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
-                                  return nullptr; }
+  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;         return visitChildren(pCtx); }
 
   else                          { NOT_IMPLEMENTED_YET }
 
@@ -279,6 +271,43 @@ antlrcpp::Any CommandParser::visitKeyValueTag(Parser::sqlParser::KeyValueTagCont
   }
 
   return visitChildren(pCtx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a query statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitQueryStatement(Parser::sqlParser::QueryStatementContext *pCtx)
+{
+  UNUSED(pCtx);
+
+  // Add command parameters
+  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an explain statement                            */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitExplainStatement(Parser::sqlParser::ExplainStatementContext *pCtx)
+{
+  UNUSED(pCtx);
+
+  // Add command parameters
+  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an ldidx statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLsidx(Parser::sqlParser::LsidxContext *pCtx)
+{
+  // Add command parameters
+  s256 sIdentifier;
+  vCleanString(pCtx->tableName()->identifier(), sIdentifier);
+  m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
 }
 
 /*----------------------------------------------------------------------------*/
