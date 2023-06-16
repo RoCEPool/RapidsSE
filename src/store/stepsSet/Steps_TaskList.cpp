@@ -80,6 +80,11 @@ void Step::vTaskListIsEmpty(void)
 {
   ENTRY();
 
+  if (m_pLogicUnit->m_xpTaskList.bIsNull()) {
+    m_pDataStack->vPushBol(true);
+    return;
+  }
+
   TaskList* pTaskList = * m_pLogicUnit->m_xpTaskList;
 
   pTaskList->vGrabLock();

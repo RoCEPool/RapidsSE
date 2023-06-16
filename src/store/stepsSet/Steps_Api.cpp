@@ -79,8 +79,8 @@ void Step::vApiParseCommand(void)
     m_pDataStack->vPushInt(true);
   }
   else {
-    m_pDataStack->vPushStz(sErrStr.szStz());
     m_pDataStack->vPushInt(eErrCode);
+    m_pDataStack->vPushStz(sErrStr.szStz());
     m_pDataStack->vPushInt(false);
   }
 
