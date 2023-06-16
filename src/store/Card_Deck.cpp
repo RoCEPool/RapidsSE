@@ -302,9 +302,12 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       //continue;
     }
 
-    if (CK_LIMIT == pCI->G.e_MainCard ||
-        CK_SORT == pCI->G.e_MainCard) {
+    if (CK_LIMIT == pCI->G.e_MainCard) {
       pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    }
+    else
+    if (CK_SORT == pCI->G.e_MainCard) {
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
     }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
