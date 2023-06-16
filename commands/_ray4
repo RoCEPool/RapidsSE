@@ -24,7 +24,7 @@ CREATE INDEX IxR_NAME      on REGION (R_NAME);
 /transliterated
 /weaved
 /optimise_passthru
-pipeline __CS2_semiJoin
+pipeline _ray4
 begin
 
  stage S00 on origin :

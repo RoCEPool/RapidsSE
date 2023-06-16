@@ -408,6 +408,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   p_rpnCalc = pSub_rpnCalc();
 
   Card_Expr* p_expr_propagation = new Card_Expr;
+  p_expr_propagation->vSetType(this);
 
   if (p_as)
     p_expr_propagation->vAppend(p_as->pClone());
