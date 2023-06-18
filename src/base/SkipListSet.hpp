@@ -11,7 +11,7 @@ namespace BASE
   {
   public:
     SkipListNode  m_xNode;
-    i16 m_iItem;
+    i16 m_iItem;//key
 
   public:
     SkipListSet(eCN eClassNo, i8 nSizeEnt);

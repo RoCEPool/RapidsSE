@@ -12,6 +12,7 @@ namespace BASE
               public MiniHeap_t<SkipListSet>
   {
   public:
+    i8 m_nItemSize; // Size of item in bytes
     u2 m_uFreeListRootOffset;
 
     u2 m_uInUseRootOffset;
@@ -32,6 +33,7 @@ namespace BASE
     void vDelete(i16 iKey);
     void vDump(u2 uOffset);
 
+    SkipListSet* pFind(i16 iKey);
     void* pGetAddrFromOffset(u2 uOffset);
     u2 uGetOffsetFromBase(void* aAddress);
 
@@ -42,6 +44,8 @@ namespace BASE
 
     void vPriorVecToKey(i8 iKey, SkipListSet* aPriorVec[]);
 
+    // Add search()
+    //
   public:
     Footer* aFooter(void);
   };

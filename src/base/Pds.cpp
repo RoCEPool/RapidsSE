@@ -53,6 +53,8 @@ Pds::Pds(void)
 
   ASSERT(CacheLine::bOnCacheLineBoundary(this));
 
+  m_nItemSize = 64;
+
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListSet(0, 32));
   // add dummy node to in use skip list
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListSet(0, 32));
@@ -163,17 +165,21 @@ void Pds::vDump(u2 uOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  vTrace("--------------------------------------------------"
-         "--------------------------------------------------\n"_Stz);
+  vTrace("=================================================="
+         "===================================================\n"_Stz);
   if((SkipListSet*) pGetAddrFromOffset(uOffset) == nullptr) {
     vTrace("Invalid offset given\n"_Stz);
     return;
   }
 
+  vTrace("| %5s | %6s | %s\n"_Stz, "Level", "# Ents", "Items");
+
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     SkipListSet* pCursor = (SkipListSet*) pGetAddrFromOffset(uOffset);
 
-    vTrace("Level %lld, No. of entries: %lld\n"_Stz, i_Level, m_iNumEntries[i_Level]);
+    vTrace("| %5lld | %6lld | "_Stz, i_Level, m_iNumEntries[i_Level]);
 
     for(i8 iNumEntries = 0; iNumEntries < m_iNumEntries[i_Level] + 1; iNumEntries++) {
       vTrace("%hu-->"_Stz, pCursor->m_iItem);
@@ -183,11 +189,43 @@ void Pds::vDump(u2 uOffset)
         break;
       }
     }
-    vTrace("END\n\n"_Stz);
+    vTrace("END\n"_Stz);
+    vTrace("--------------------------------------------------"
+           "--------------------------------------------------\n"_Stz);
   }
 
-  vTrace("--------------------------------------------------"
-         "--------------------------------------------------\n"_Stz);
+  vTrace("=================================================="
+         "===================================================\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* find key                                                                   */
+/*----------------------------------------------------------------------------*/
+SkipListSet* Pds::pFind(i16 iKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  u2 uOffset = m_uInUseRootOffset;
+  for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
+    if(m_iNumEntries[i_Level] == 0)
+      continue;
+
+    SkipListSet* pCursor = (SkipListSet*) pGetAddrFromOffset(uOffset);
+
+    SkipListSet* pNext = pNextSLSet(pCursor, i_Level);
+    while(pNext != nullptr) {
+      if(pNext->m_iItem == iKey) {
+        return pNext;
+      } else if(pNext->m_iItem > iKey) {
+        uOffset = uGetOffsetFromBase(pCursor);
+        break;
+      }
+      pCursor = pNext;
+      pNext = pNextSLSet(pNext, i_Level);
+    }
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,63 +252,6 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
   ASSERT((iBytes >= 0) && (iBytes < USHRT_MAX));
   return (u2) iBytes;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-//void Pds::vDelete(i16 iVal)
-//{
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  //bVerifyItems();
-//
-//  Ent* aEnt = *aaEnt;
-//
-//  Ent* xPriorVec[C_MAX_LVL_LEVELS];
-//
-//  vPosVecPriorToEntry(aEnt, aEnt->aKey(), xPriorVec);
-//
-//  vCutEntry(aEnt,xPriorVec);
-//
-//  i8 nEntSize = aEnt->nSizeBytes();
-//
-//#ifdef __ENT_HEADER
-//  vFreeItem(aEnt,nEntSize);
-//  //vGiveSpace(nEntSize);
-//
-//#else
-//  //if (aEnt->bPayload()) {
-//  aEnt->rxRef().vFree(true);
-//  aEnt->rxRef().vFreeSize(nEntSize);
-//
-//  if (! m_aFreeSpare) {
-//    m_aFreeSpare = aEnt;
-//    m_nFreeSize  = nEntSize;
-//  }
-//  vDecItems();
-//  //}
-//  //else {
-//  //  vFreeItem(aEnt,nEntSize);
-//  //}
-//
-//#endif
-//
-//  m_nDelete++;
-//
-//#ifdef EB_TRACE_INSERT
-//  SP_Ref spRef;
-//  SP_Key spKey;
-//  vTraceWhere();
-//  vTrace("-- delete d%lld %s %s\n"_Stz,
-//         m_nDelete,spRef.sz(aEnt->wRef()),spKey.sz(aEnt->aKey(),m_pIndexDef));
-//#endif
-//
-//  // entry no longer exists, set the pointer to be null
-//  *aaEnt = nullptr;
-//
-//  //bVerifyItems();
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
@@ -344,6 +325,7 @@ SkipListSet* Pds::pNextSLSet(SkipListSet* pSLSet ,i8 iLevel)
 
   return (SkipListSet*) pGetAddrFromOffset(uNext);
 }
+
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for insert key, such that next of PriorVec[0] is      */
 /* specifically the point to insert at                                        */
