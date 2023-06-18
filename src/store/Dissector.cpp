@@ -569,12 +569,24 @@ Card* Dissector::pOp_IndexJoin(void)
 
 
   pCard_Bound->vTransferChildren(pCard_RpnTerms);
+
+  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
+  if (p_term_first->bIsSymbol("LEFT_OUTER"_Stz)) {
+    Card_OuterJoin* pCard_OuterJoin = new Card_OuterJoin;
+    pCard_OuterJoin->vSymbol(p_term_first);
+    pCard_IndexJoin->vAppend(pCard_OuterJoin);
+  }
+  pCard_Bound->vDeleteChild(p_term_first);
+
+  p_term_first = pCard_Bound->pGetTerm(0);
+  if (p_term_first->bIsSymbol("BOUND"_Stz))
+    pCard_Bound->vDeleteChild(p_term_first);
+
   i8 nTerms = pCard_Bound->nChildCards();
+
   Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
   pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
   pCard_Bound->vDeleteChild(p_term_last);
-  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
-  pCard_Bound->vDeleteChild(p_term_first);
 
   pCard_Bounds->vAppend(pCard_Bound);
 
