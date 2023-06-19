@@ -1,0 +1,21 @@
+/*============================================================================*/
+/* _opt_reduce_key_gbyagg                                                     */
+/*============================================================================*/
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/glean_interactive
+/weaver2
+/weaved
+select O_OrderKey, O_CUSTKEY, sum(L_QUANTITY)
+  from Lineitem, Orders
+ where L_OrderKey = O_OrderKey
+ group by O_OrderKey, O_CUSTKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
