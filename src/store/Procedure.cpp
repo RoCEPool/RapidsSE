@@ -157,16 +157,19 @@ bool Procedure::bTranslateToPipeline(Stz* szProcedureName,
       pEtcTknVec = TokenVec::pGetSubVec(pArgValues, i_Etc, pArgValues->nTokens() - 1);
       dPV("pEtcTknVec"_Stz,pEtcTknVec);
 
-      sSTMT sEtcSubStr;
-      pEtcTknVec->vToTknString(sEtcSubStr);
-      //vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
+      if (pEtcTknVec->nTokens() > 1) {
 
-      if (i_Etc < pArgValues->nItems())
-        pArgValues->vTrimTokens(i_Etc);
-      dPV("pInpArgVec(t)"_Stz, pArgValues);
+        sSTMT sEtcSubStr;
+        pEtcTknVec->vToTknString(sEtcSubStr);
+        //vTrace("sEtcSubStr=%s\n"_Stz,sEtcSubStr.szStz());
 
-      pArgValues->vAppendToken(sEtcSubStr, TN_STRING);
-      dPV("pInpArgVec(+)"_Stz, pArgValues);
+        if (i_Etc < pArgValues->nItems())
+          pArgValues->vTrimTokens(i_Etc);
+        dPV("pInpArgVec(t)"_Stz, pArgValues);
+
+        pArgValues->vAppendToken(sEtcSubStr, TN_STRING);
+        dPV("pInpArgVec(+)"_Stz, pArgValues);
+      }
 
       vDebugPoint();
     }

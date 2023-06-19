@@ -134,11 +134,11 @@ updateQuery       : (WITH withQuery (',' withQuery)*)?
 
 createQuery           : createTableQuery | createIndexQuery ;
 
-createTableQuery      : CREATE reference = REFERENCE? TABLE /*(IF NOT EXISTS)?*/ ref = tableReference
+createTableQuery      : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS)?*/ /*ref = tableReference*/ tableName
                         (
                             tableDefinition
-                          | ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
-                          | ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
+                          //| ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
+                          //| ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
                         ) ;
 
 createIndexQuery      : CREATE UNIQUE? (INDEX | KEY) (IF NOT EXISTS)? idxName = indexName
@@ -156,33 +156,33 @@ truncateQuery     : TRUNCATE (TABLE)? name = tableReference ;
 
 
 // table/column definition ------------------------------------------------------------
+
+// Note that CREATE TABLE statements get parsed again in StreamDefBase. So the rules
+// here must match that manual parsing.
 tableDefinition   : '('
-                        (     columnDefinition | tableConstraint | indexDefinition)
-                        (',' (columnDefinition | tableConstraint | indexDefinition))*
+                        (     columnDefinition | /*tableConstraint | indexDefinition*/)
+                        (',' (columnDefinition | /*tableConstraint | indexDefinition*/))*
                     ')'
-                    REFERENCE ?
-                    tablePartitioning?
-                    (WITH props = propertyList)?
+
+                    ( tablePartitioning | REPLICATED | ROWSIZE integerLiteral | TABLESIZE integerLiteral )*
                   ;
 
-tablePartitioning : PARTITION BY? method=(HASH | VALUE)? ON? '(' expr (',' expr)* ')' ;
+tablePartitioning : PARTITION BY '(' expr (',' expr)* ')' ;
 
 columnDefinition  : name = columnName
                     type = dataType
                     (
-                        (notNullable = NOT? nullable = SQL_NULL)
-                      | (primary = PRIMARY KEY)
-                      | (unique  = UNIQUE KEY?)
-                      | (unique  = UNIQUE mono = MONOTONIC KEY?)
+                        (notNullable = NOT /*?*/ nullable = SQL_NULL)
+//                      | (primary = PRIMARY KEY)
+//                      | (unique  = UNIQUE KEY?)
                     )*
-                    (WITH props = propertyList)?
                   ;
 
 columnNameList    : '(' columnName (',' columnName)* ')' ;
 
-tableConstraint   : (primary = PRIMARY KEY  ( expr | ('(' expr (',' expr)* ')') ))
-                  | (unique = UNIQUE? mono = MONOTONIC KEY ( expr | ('(' expr (',' expr)* ')') ))
-                  ;
+//tableConstraint   : (primary = PRIMARY KEY  ( expr | ('(' expr (',' expr)* ')') ))
+//                  | (unique = UNIQUE? mono = MONOTONIC KEY ( expr | ('(' expr (',' expr)* ')') ))
+//                  ;
 
 indexDefinition   : unique = UNIQUE? (INDEX | KEY) name = indexName?
                     ON? ( expr | ('(' expr (',' expr)* ')') )
@@ -487,10 +487,10 @@ nonReservedWord   :
                   | OFFSET
                   | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE
+                  | REFERENCE | REPLICATED | ROWSIZE
                   | SCHEMA | SECONDS | SKIPLIST | STAGE | STATS | STATISTICS
                   | STATISTICS |SUBSTR
-                  | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
+                  | TABLESIZE | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
                   | XOR
@@ -616,8 +616,10 @@ QUARTER               : Q U A R T E R;
 QUARTERS              : Q U A R T E R S;
 RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
+REPLICATED            : R E P L I C A T E D;
 RIGHT                 : R I G H T;
 ROW                   : R O W;
+ROWSIZE               : R O W S I Z E;
 SCHEMA                : S C H E M A;
 SECOND                : S E C O N D;
 SECONDS               : S E C O N D S;
@@ -632,6 +634,7 @@ SUBSTR                : S U B S T R;
 SUBSTRING             : S U B S T R I N G;
 SUM                   : S U M;
 TABLE                 : T A B L E;
+TABLESIZE             : T A B L E S I Z E;
 TEXT                  : T E X T;
 THEN                  : T H E N;
 TIME                  : T I M E;

@@ -114,8 +114,6 @@ public:
 
     virtual antlrcpp::Any visitColumnNameList(sqlParser::ColumnNameListContext *context) = 0;
 
-    virtual antlrcpp::Any visitTableConstraint(sqlParser::TableConstraintContext *context) = 0;
-
     virtual antlrcpp::Any visitIndexDefinition(sqlParser::IndexDefinitionContext *context) = 0;
 
     virtual antlrcpp::Any visitIndexMethod(sqlParser::IndexMethodContext *context) = 0;

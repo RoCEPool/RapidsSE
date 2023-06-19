@@ -205,10 +205,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTableConstraint(sqlParser::TableConstraintContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitIndexDefinition(sqlParser::IndexDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -319,7 +319,62 @@ antlrcpp::Any CommandParser::visitLsidx(Parser::sqlParser::LsidxContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitCreateTableQuery(Parser::sqlParser::CreateTableQueryContext *pCtx)
 {
-  // TODO
+  // The first parameter must be the table name.
+
+  // After that is $etc, which is 1 or more parameters. It represents the rest
+  // of the CREATE TABLE statement after the initial "CREATE TABLE <tablename>"
+  // prefix. This must be represented as tokens, but not just any old tokens.
+  //
+  // Indeed it is here that downstream complexity reaches upstream and dirties
+  // the waters, for $etc must be represented as tokens that have been tokenised
+  // as C++ code and not tokenised as SEN code. So we can't just call
+  // AM::TOKENISE::vTokeniseSen(), pass it the string and get back a token vector.
+  // Instead we need to emulate parts of the SE Prompt to ensure that the command
+  // is tokenised properly.
+  //
+  // Specifically, doing it this way ensures that characters like open/close
+  // parentheses and commas are not considered part of the token that follows them,
+  // particularly when they are NOT separated by whitespace.
+  // e.g. this string doesn't get parsed correctly for downstream code because there
+  // is no whitespace between the parentheses and commas:
+  //   (colA INTEGER,colB VARCHAR)
+  //
+  // The token vector that represents this could be built manually, but then this
+  // code will always break whenever the grammar for CREATE TABLE is changed.
+  // So instead we will try to reuse code from the SE Prompt to parse this string
+  // and produce a token vector.
+  //
+  // Of course, all this is really unnecessary because the statement has already
+  // been parsed. It's really the limitations of the underlying pipeline/operator
+  // (pp_create.sen and OP_syntaxTable.sen) but we cannot change that just yet.
+  //
+  // The text of the create table statement currently gets parsed again as
+  // part of OP_syntaxTable.sen, in the class StreamDefBase.
+
+  // First append a token for the table name
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName, TN_STRING);
+
+  // Now reconstitute a string for the rest of the statement.
+  // We also need to add a ';' to make the parsing of this string work. :-(
+  antlr4::misc::Interval interval(pCtx->tableDefinition()->start->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string sCreateTableCmd = pCtx->start->getInputStream()->getText(interval);
+  sCreateTableCmd.append(";");  // Needed to be tokenised as C++ tokens...
+
+  // Now parse this reconstituted string into a token vector
+  Input* pInput = new Input(nullptr);
+  pInput->vUseString((Stz*) sCreateTableCmd.c_str());
+  eEC eInputErr = EC_NONE;
+  pInput->vFormCppTokens();
+  pInput->vUseBegin();
+  bool bResult = pInput->bReadCommand(eInputErr);
+  ASSERT(bResult);
+
+  // Append these tokens and clean up
+  m_pArgValues->vAppendVector(pInput->pInpTknVec());
+  pInput->vUseEnd();
+  delete pInput;
 
   return nullptr; // No need to visit any further down the tree
 }
