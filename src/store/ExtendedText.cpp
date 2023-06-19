@@ -128,6 +128,18 @@ void ExtendedText::vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextB
 }
 
 /*----------------------------------------------------------------------------*/
+/* retrieve text as a single string (false if it doesn't fit)                 */
+/*----------------------------------------------------------------------------*/
+bool ExtendedText::bRetrieve(String* pString)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  pString->vCopy(szTextBlock(0));
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
 i8 ExtendedText::nTextBlocks(void)

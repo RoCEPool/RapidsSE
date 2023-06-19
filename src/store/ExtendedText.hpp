@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "ExtendedTextBuffer.hpp"
+#include "String.hpp"
 
 namespace STORE
 {
@@ -34,6 +35,8 @@ namespace STORE
 
     ExtendedTextBuffer* pExtTextBuffer(i8 i_TextBuffer);
     void vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextBuffer);
+
+    bool bRetrieve(String* pString);
 
     i8 nTextBlocks(void);
     Stz* szTextBlock(i8 i_TextBlock);
