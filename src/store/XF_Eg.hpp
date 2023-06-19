@@ -17,7 +17,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Eg(void);
+    XF_Eg(CardIter* pCI);
    ~XF_Eg(void) noexcept(false);
 
   private:

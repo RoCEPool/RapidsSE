@@ -10,6 +10,7 @@
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Optimiser.hpp"
+#include "XF_Reduce_key_gbyAgg.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -85,6 +86,10 @@ void MakeOptimal::vOptimise(void)
   Bench::vValidate(m_pCI);
 
   vEarlyProjections();
+  Bench::vValidate(m_pCI);
+
+
+  XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
   Bench::vValidate(m_pCI);
 
   vDebugPoint();

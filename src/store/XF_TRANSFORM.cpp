@@ -12,10 +12,14 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_TRANSFORM::XF_TRANSFORM(eCN eClass)
+XF_TRANSFORM::XF_TRANSFORM(eCN eClass, CardIter* pCI)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+
+  m_pCI = pCI;
+
+  _checkInitialised_(eClass);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
 }

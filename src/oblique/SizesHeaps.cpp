@@ -255,7 +255,6 @@
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
 #include "OuterQuery.hpp"
-//#include "Kid.hpp"
 
 #include "ArgDef.hpp"
 #include "ColsReq.hpp"
@@ -267,6 +266,7 @@
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
 #include "XF_Eg.hpp"
+#include "XF_Reduce_key_gbyAgg.hpp"
 #include "ExtendedText.hpp"
 #include "ExtendedTextBuffer.hpp"
 
@@ -732,7 +732,8 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,          0,                           HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),              HT_INVALID   , FILL },
-  {CN_XF_EG,                    sizeof(XF_Eg),           HT_T_TINY    , FILL },
+  {CN_XF_EG,                    sizeof(XF_Eg),               HT_T_TINY    , FILL },
+  {CN_XF_REDUCE_KEY_GBYAGG,     sizeof(XF_Reduce_key_gbyAgg), HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),          HT_INVALID   , FILL },
 

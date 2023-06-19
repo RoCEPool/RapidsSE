@@ -18,8 +18,8 @@ __aFooterFunction(XF_Eg)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Eg::XF_Eg(void)
-: XF_TRANSFORM(CN_XF_EG)
+XF_Eg::XF_Eg(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_EG,pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_EG,_FOOTER_);
 
