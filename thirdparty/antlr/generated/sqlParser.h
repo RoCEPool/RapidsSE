@@ -914,27 +914,16 @@ public:
   class  CreateIndexQueryContext : public antlr4::ParserRuleContext {
   public:
     sqlParser::IndexNameContext *idxName = nullptr;;
-    sqlParser::TableReferenceContext *tblName = nullptr;;
-    sqlParser::IndexMethodContext *method = nullptr;;
-    sqlParser::PropertyListContext *props = nullptr;;
     CreateIndexQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *CREATE();
+    antlr4::tree::TerminalNode *INDEX();
     antlr4::tree::TerminalNode *ON();
+    TableNameContext *tableName();
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *INDEX();
-    antlr4::tree::TerminalNode *KEY();
     IndexNameContext *indexName();
-    TableReferenceContext *tableReference();
     antlr4::tree::TerminalNode *UNIQUE();
-    antlr4::tree::TerminalNode *IF();
-    antlr4::tree::TerminalNode *NOT();
-    antlr4::tree::TerminalNode *EXISTS();
-    antlr4::tree::TerminalNode *USING();
-    antlr4::tree::TerminalNode *WITH();
-    IndexMethodContext *indexMethod();
-    PropertyListContext *propertyList();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

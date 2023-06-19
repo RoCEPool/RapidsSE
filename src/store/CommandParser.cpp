@@ -350,6 +350,11 @@ antlrcpp::Any CommandParser::visitCreateTableQuery(Parser::sqlParser::CreateTabl
   //
   // The text of the create table statement currently gets parsed again as
   // part of OP_syntaxTable.sen, in the class StreamDefBase.
+  //
+  // PS: The reason why the create table can be parsed as sen code later on is
+  // because it has been reconstituted back to a string form where there is
+  // whitespace around special characters such as parentheses and commas. This
+  // ensures that they are treated as separate tokens when parsed as sen code.
 
   // First append a token for the table name
   s256 sTableName;
@@ -384,7 +389,38 @@ antlrcpp::Any CommandParser::visitCreateTableQuery(Parser::sqlParser::CreateTabl
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitCreateIndexQuery(Parser::sqlParser::CreateIndexQueryContext *pCtx)
 {
-  // TODO
+  // See above comments in visitCreateTableQuery regarding why this is done the
+  // way it is.
+
+  // First append a token for the table name
+  s256 sIndexName;
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  m_pArgValues->vAppendToken(sIndexName, TN_STRING);
+
+  // Now reconstitute a string for the rest of the statement.
+  // We also need to add a ';' to make the parsing of this string work. :-(
+  antlr4::misc::Interval interval(pCtx->ON()->getSymbol()->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string sCreateIndexCmd = pCtx->start->getInputStream()->getText(interval);
+  sCreateIndexCmd.append(";");  // Needed to be tokenised as C++ tokens...
+
+  // Now parse this reconstituted string into a token vector
+  Input* pInput = new Input(nullptr);
+  pInput->vUseString((Stz*) sCreateIndexCmd.c_str());
+  eEC eInputErr = EC_NONE;
+  pInput->vFormCppTokens();
+  pInput->vUseBegin();
+  bool bResult = pInput->bReadCommand(eInputErr);
+  ASSERT(bResult);
+
+  // Append these tokens and clean up
+  m_pArgValues->vAppendVector(pInput->pInpTknVec());
+  pInput->vUseEnd();
+  delete pInput;
+
+  // If it is a CREATE UNIQUE INDEX then we need to set a <unique> tag.
+  if (pCtx->UNIQUE()) {
+    m_pCommonTagSet->vAppend("<unique>"_Stz);
+  }
 
   return nullptr; // No need to visit any further down the tree
 }

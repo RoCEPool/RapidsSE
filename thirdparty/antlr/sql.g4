@@ -141,11 +141,10 @@ createTableQuery      : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS
                           //| ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
                         ) ;
 
-createIndexQuery      : CREATE UNIQUE? (INDEX | KEY) (IF NOT EXISTS)? idxName = indexName
-                        ON tblName = tableReference
-                        ( USING method = indexMethod )?
+createIndexQuery      : CREATE UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ idxName = indexName
+                        ON /*tblName = tableReference*/ tableName
+                        /*( USING method = indexMethod )?*/
                         '(' expr (',' expr)* ')'
-                        (WITH props = propertyList)?
                         ;
 
 dropQuery         : DROP TABLE         (IF EXISTS)? name = tableReference  # dropTable
