@@ -7,8 +7,6 @@
 
 #include "Stream.hpp"
 #include "StreamDef.hpp"
-#include "TokenVec.hpp"
-#include "Token.hpp"
 #include "LogicUnit.hpp"
 #include "Index.hpp"
 #include "SN_Dte.hpp"
@@ -17,7 +15,6 @@
 #include "SN_Bol.hpp"
 #include "SN_Flt.hpp"
 #include "SN_Bcd.hpp"
-#include "eFM.h"
 #include "CodeSynthUtils.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +196,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         RASSERT ( bOpened );
         vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pFilterFile);
 
-        vAppendCodeFragment(pOpSketch, "vAntiJoinContinue"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vAntiJoinEnd"_Stz, pCodeFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the indexJoin code fragments file
@@ -541,7 +538,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         RASSERT ( bOpened );
         vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pFilterFile);
 
-        vAppendCodeFragment(pOpSketch, "vSemiJoinContinue"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vSemiJoinEnd"_Stz, pCodeFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the indexJoin code fragments file
@@ -554,7 +551,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
       case SK_SORT:
 
-        //vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "iSortBegin"_Stz);
         vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
@@ -695,6 +691,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
   delete pCodeFile;
   delete pIndexFile;
   delete pInflateFile;
+  delete pFilterFile;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Close the code fragment files
