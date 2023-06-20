@@ -795,6 +795,86 @@ rows: 39
 */
 
 //------------------------------------------------------------------------------
+// HASH CAST
+//------------------------------------------------------------------------------
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create table orders (
+O_ORDERKEY        INTEGER NOT NULL,
+O_CUSTKEY         INTEGER NOT NULL,
+O_ORDERSTATUS     CHAR(1) NOT NULL,
+O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+O_ORDERDATE       DATE NOT NULL,
+O_ORDERPRIORITY   CHAR(15) NOT NULL,
+O_CLERK           CHAR(15) NOT NULL,
+O_SHIPPRIORITY    INTEGER NOT NULL,
+O_COMMENT         VARCHAR(79) NOT NULL
+) partition by (O_CUSTKEY) ;
+success
+
+create index IxL_ORDERKEY  on Lineitem (L_ORDERKEY);
+success
+
+create index IxO_ORDERKEY  on Orders   (O_ORDERKEY);
+success
+
+load lineitem "../tpch/SF_0001/lineitem.csv" ;
+success
+
+load orders   "../tpch/SF_0001/orders.csv" ;
+success
+
+/weaver2
+/optimise_passthru
+pipeline unnamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Lineitem
+    | project "type INTEGER $1"
+    | hash "type INTEGER $1"
+    | combined  0
+    | next hashcast
+
+  stage S02 on all partitions :
+      indexJoin orders IxO_ORDERKEY " BOUND $I1 $1 == "
+    | project "type INTEGER $1 , type INTEGER $2"
+    | combined  0
+    | next
+
+  stage S06 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+rows: 5996
+
+//------------------------------------------------------------------------------
 // drop the tables
 
 drop table L;
@@ -807,6 +887,12 @@ drop table nation;
 success
 
 drop table region;
+success
+
+drop table lineitem;
+success
+
+drop table orders;
 success
 
 MemoryLeaks;
@@ -824,6 +910,12 @@ CLEANUP {
   mute
 
   drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table orders;
   mute
 
   bye;
