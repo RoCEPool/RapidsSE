@@ -82,12 +82,12 @@ void MakeOptimal::vOptimise(void)
   vCullUsedBoundsFromFilter();
   Bench::vValidate(m_pCI);
 
-  vIndividuateFilter();
-  Bench::vValidate(m_pCI);
 
   vEarlyProjections();
   Bench::vValidate(m_pCI);
 
+  vIndividuateFilter();
+  Bench::vValidate(m_pCI);
 
   XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
   Bench::vValidate(m_pCI);
