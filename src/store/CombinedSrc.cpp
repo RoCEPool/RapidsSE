@@ -695,6 +695,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
   delete pCodeFile;
   delete pIndexFile;
   delete pInflateFile;
+  delete pFilterFile;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Close the code fragment files
