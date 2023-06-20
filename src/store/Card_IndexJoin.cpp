@@ -197,7 +197,8 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
     return C_CONTINUE_RECURSION;
   };
 
-  pCI->G.p_filter = pSub_filter();
+  if (! (pCI->G.p_filter = pSub_filter()))
+    return;
 
   CardIter xCI_filter(pCI->G.p_filter);
   while (xCI_filter.G_bEachMain(CK_BOOLCALC)) {
