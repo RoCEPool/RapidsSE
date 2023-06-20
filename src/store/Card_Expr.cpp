@@ -474,6 +474,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
 
   Card_Expr* p_expr_reduced = new Card_Expr;
   p_expr_reduced->vSymbol(xExprNo);
+  p_expr_reduced->vSetType(this);
 
   if (Card_As* p_as = pSub_as())
     p_expr_reduced->vAppend(p_as->pClone());
