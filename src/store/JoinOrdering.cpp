@@ -87,6 +87,13 @@ void JoinOrdering::vJoinOrdering(void)
   m_pCI->vEndTransform();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fix position of table which uses subquery result as pos 0
+  m_pCI->vTransform(__func__, "fix position of table which uses subquery result"_Stz);
+  Card_Table::vFixTablePos(m_pCI);
+  m_pCI->vEndTransform();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join Ordering Proper
 
   if (AM::JOB::bHasTag(C_JO_DISABLE)) {
@@ -157,21 +164,29 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 1) Extract tableList from pipeline
 
-  m_pCI->G.p_tableList = Card_TableList::pExtract(pPipeline);
+  m_pCI->G.p_tableList = Card_TableList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_tableList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
   // 2) Extract joinPredList from pipeline
 
-  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtract(pPipeline);
+  m_pCI->G.p_joinPredList = Card_JoinPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_joinPredList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  if (! m_pCI->G.p_joinPredList->nChildCards()) {
+    s4K sTableList;
+    Card_JoinPredList::vTablesWithNoIndexes(pPipeline,sTableList);
+
+    Error xError(EC_MISSING_JOIN_INDEX,sTableList.szStz());
+    throw xError;
+  }
+
   // 3) Extract filtPredList from pipeline
 
-  m_pCI->G.p_filtPredList = Card_FiltPredList::pExtract(pPipeline);
+  m_pCI->G.p_filtPredList = Card_FiltPredList::pExtractList(pPipeline);
   m_pCI->G.pDeck->vAppend(m_pCI->G.p_filtPredList);
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
@@ -200,6 +215,13 @@ void JoinOrdering::vReorderTables(void)
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);
 
+  if (! p_streamPrmAll->nChildCards()) {
+    s4K sTableList;
+    Card_JoinPredList::vTablesWithNoIndexes(pPipeline,sTableList);
+
+    Error xError(EC_MISSING_JOIN_INDEX,sTableList.szStz());
+    throw xError;
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 5) Calculate join load
 
@@ -251,12 +273,19 @@ void JoinOrdering::vReorderTables(void)
 
   }
 
-  if ( ! p_joinOrdering ) {
+  if (! p_joinOrdering) {
     p_joinOrdering =
         Card_JoinOrdering::pPick(p_streamPrmAll,true);
   }
 
-  m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
+  if (! p_joinOrdering)  {
+
+    Error xError(EC_MISSING_JOIN_INDEX,"Missing INDEX on TABLE"_Stz);
+
+    throw xError;
+  }
+
+    m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
   m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardRecursive());
   m_pCI->G.pDeck->vRenumberRecursive();
   m_pCI->vPrintBoard(__LINE__);

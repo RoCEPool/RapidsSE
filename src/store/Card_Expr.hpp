@@ -37,10 +37,13 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsSoleCol(void);
     bool bIsExpressionOfKey(void);
+    bool bHasTerm(Symbol* pSymbol);
     bool bOf(Symbol* pSymbol);
     Card_Expr* pPropagate(void);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);
+    Card_Expr *pReducedCopy(i8 i_Expr);
+
     void vRenumberForm_keyOdn(i8 i_Expr);
     void vRenumberForm_stmOdn(i8 i_Expr);
 

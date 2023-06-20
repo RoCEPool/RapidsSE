@@ -246,6 +246,8 @@ void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
 
@@ -325,6 +327,8 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 

@@ -22,11 +22,15 @@ namespace STORE
 
     void vAdjust(Card_Key* p_key);
     Card_Projection* pClone(void);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
     void vDeletePrjKey(CardIter* pCI);
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
     Card_Projection* pPropagate(void);
+    Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
+    bool bHasTerm(Symbol* pSymbol);
+    Card_Projection* pReducedCopy(void);
     void vReviewAs(CardIter* pCI);
 
     StreamDef* pToStreamDef(ColsReq* pColMap=nullptr, Card_Key* p_key=nullptr);

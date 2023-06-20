@@ -150,6 +150,34 @@ void Card_Index::vDeleteBounds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this index have a bound logically equivalent to given compare?        */
+/*----------------------------------------------------------------------------*/
+bool Card_Index::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSub_bounds())
+    if (pSub_bounds()->bHasEquivalentBound(p_cmpPred))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Index::bUsesSqlRsl(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Bounds* p_bounds = pSub_bounds())
+    return p_bounds->bUsesSqyRsl();
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Index::vSet_Choose_index(void)

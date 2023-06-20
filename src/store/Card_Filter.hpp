@@ -26,6 +26,7 @@ namespace STORE
 
     void vComputeProjection(CardIter* pCI); // prototype
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
 
     void vCullPred(char cWithMark);
 

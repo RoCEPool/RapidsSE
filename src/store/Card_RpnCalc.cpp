@@ -101,6 +101,14 @@ eCT Card_RpnCalc::eColumnType(void)
 
   return CT_NONE;
 }
+
+Card_RpnCalc* Card_RpnCalc::pClone(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  return _pCard_RpnCalc(pDupCardRecursive());
+}
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -177,6 +185,17 @@ void Card_RpnCalc::vConvertAll_stmOdn_To_colOdn(CardIter* pCI)
   while (xCI.G_bEachMain(CK_TERM)) {
     xCI.G.p_term->vConvertIf_stmOdn_To_colOdn(pCI);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    xKid.p_term()->vCorrectStmOdn(p_projection_prior);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -311,6 +330,32 @@ void Card_RpnCalc::vOntoStzList(StzList* pStzList)
   pStzList->vAppend(":"_Stz);
 
   ChildCards::vOntoStzList(pStzList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a reduced copy of this rpnCalc                                      */
+/*----------------------------------------------------------------------------*/
+Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (1 == nChildCards()) {
+    Card_RpnCalc* p_rpnCalc_reduced = pClone();
+    return p_rpnCalc_reduced;
+  }
+
+  Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
+  p_rpnCalc_reduced->vSetType(this);
+
+  Symbol xExprNo;
+  xExprNo.vSetStreamOrdinal(i_Expr + 1);
+
+  Card_Term* p_term = new Card_Term(xExprNo);
+  p_term->vSetType(this);
+
+  p_rpnCalc_reduced->vAppend(p_term);
+
+  return p_rpnCalc_reduced;
 }
 
 /*----------------------------------------------------------------------------*/

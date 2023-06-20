@@ -53,6 +53,7 @@ namespace STORE
     Card_Index*  p_index(void);
     Card_OP*     p_OP(void);
     Card_Stage*  p_stage(void);
+    Card_Table*  p_table(void);
     Card_Term*   p_term(void);
 
     i8 iGetOdn(void);

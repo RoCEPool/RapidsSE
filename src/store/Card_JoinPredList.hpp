@@ -16,11 +16,11 @@ namespace STORE
     Card_JoinPredList(void);
    ~Card_JoinPredList(void) noexcept(false);
 
-    static Card_JoinPredList* pExtract(Card_Deck* p_deck);
+    static Card_JoinPredList* pExtractList(Card_Deck* p_deck);
 
-    void vConcat(Card_BoolCalc* p_boolCalc, Card_IndexList* p_indexList, Card_Bounds* p_bounds);
+    static void vTablesWithNoIndexes(Card_Deck* p_deck, String* pString);
 
-    Card_CmpPred* pFindCmpPred(char cTblSyn);
+    void vBuildList(Card_Filter* pCard_cmpPred, Card_IndexList* p_indexList);
 
   };
 

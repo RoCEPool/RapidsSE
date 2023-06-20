@@ -1574,7 +1574,10 @@ EOF
       if isVersionGreaterThanOrEqualTo "${output}" "${compilerMinVer}" ; then
 
         # So far so good. Now compile a simple program
-        remoteCmd="${compiler} -x c -ldl -o /tmp/compilerTest - 2>&1"
+        # Position of "-ldl" is significant on some versions of gcc.
+        # This affects Ubuntu 18 (gcc 7.5) and 20.
+        # Refer: https://stackoverflow.com/questions/956640/linux-c-error-undefined-reference-to-dlopen
+        remoteCmd="${compiler} -x c -o /tmp/compilerTest - -ldl 2>&1"
         sshArgs=("${SSH_COMMON_OPTIONS[@]}" "${host}" "bash -c '${remoteCmd}'")
 
         if output="$(ssh "${sshArgs[@]}" <<< "${sampleProgram}")" ; then
@@ -1582,7 +1585,7 @@ EOF
           return
         else
           debugPrint "\nCompilation of sample program with ${compiler} failed:\n${output}\n\n"
-          lastError="${lastError} Compilation of a sample program with ${compiler} failed. Rerun with --debug to see details."
+          lastError="${lastError} Compilation of a sample program with ${compiler} failed. Rerun with arguments \"-- --debug\" to see details."
         fi
       else
         lastError="${lastError} Version of ${compiler} is too old - found: ${output}, required: ${compilerMinVer}"

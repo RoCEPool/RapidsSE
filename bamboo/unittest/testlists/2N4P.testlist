@@ -11,6 +11,7 @@
 //../../../seth/tests/tests2N4P/Transliterate/testList
 #../../../seth/tests/tests1N4P/BackEnd/testList
 //../../../seth/tests/tests1N4P/BackEnd_SF0001/testList
+
 #../../../seth/tests/tests1N4P/Compiler/testList
 #../../../seth/tests/tests2N4P/Datums/testList
 #../../../seth/tests/tests1N4P/Ddl/testList
@@ -19,3 +20,4 @@
 #../../../seth/tests/tests1N4P/Misc/testList
 #../../../seth/tests/tests2N4P/Misc/testList
 #../../../seth/tests/tests1N4P/Table/testList
+//../../../seth/tests/tests1N4P/Optimiser_SF0001/testList

@@ -91,9 +91,12 @@ void Card_CrossJoin::vEarlyProject_recurse_update(CardIter* pCI)
 
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
+
   pCI->vPrintBoard();
 
   vUpdate_projection(pCI);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 

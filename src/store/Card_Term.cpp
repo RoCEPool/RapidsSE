@@ -374,9 +374,22 @@ bool Card_Term::bSameAs(Card_Term* p_term_arg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
-{
+void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+}
+
+void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! bIsStmOdn())
+    return;
+
+  Symbol* pSym = pSymbol();
+  if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
+    pSym->vSet(p_expr->pSymbol());
+  }
 }
 
 /*============================================================================*/

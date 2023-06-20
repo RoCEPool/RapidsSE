@@ -24,6 +24,8 @@ namespace STORE
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
     void vConvert_tblColOdn_To_stmColOdn(CardIter* pCI);
 
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
+
     void vDeleteFilterIfEmpty(Card_Filter* p_filter);
 
     void vEarlyProject_root(CardIter* pCI);

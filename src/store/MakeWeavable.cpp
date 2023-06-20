@@ -65,8 +65,6 @@ void MakeWeavable::vWeavable(void)
   vTblColToStmCol();
   vStmColToColNmOfKeyExists();
 
-  vRenumberAll_syntheticAs();
-
 //  vEndSeries(BK_SUBQUERY, 0);
 }
 
@@ -109,35 +107,13 @@ void MakeWeavable::vReinstateStages(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* final renumbering all synthetic as                                         */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vRenumberAll_syntheticAs(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "renumber all synthetic as"_Stz);
-
-  m_pCI->vRestart();
-
-  while (m_pCI->G_bEachSubOfMain_reverse(CK_PROJECTION)) {
-     i8 nSynthAs = m_pCI->G.p_projection->nRenumberAll_syntheticAs();
-     if (nSynthAs && m_pCI->G.p_MainCard->bIsCard(CK_PROJECT))
-       break;
-  }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void MakeWeavable::vStmColToColNmOfKeyExists(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "vStmColToColNmOfKeyExists"_Stz);
+  m_pCI->vTransform(__func__, "((20))))"_Stz);
 
   m_pCI->vRestart();
 

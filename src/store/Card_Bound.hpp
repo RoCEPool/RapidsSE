@@ -22,8 +22,11 @@ namespace STORE
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
+    bool bEquivalent(Card_CmpPred* p_cmpPred);
 
     Card_Term* pGetTerm(i8 i_Term);
+
+    bool bUsesSqyRsl(void);
 
     bool bIsEBound(void);
     bool bIsLBound(void);

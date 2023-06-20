@@ -49,7 +49,7 @@ Card_FiltPredList::~Card_FiltPredList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_FiltPredList* Card_FiltPredList::pExtract(Card_Deck* p_deck)
+Card_FiltPredList* Card_FiltPredList::pExtractList(Card_Deck* p_deck)
 {
   _static_
 

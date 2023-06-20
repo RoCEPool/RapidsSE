@@ -365,16 +365,30 @@ bool Card_Expr::bIsSoleCol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsExpressionOfKey(void)
-{
+bool Card_Expr::bIsExpressionOfKey(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* pSymbol_0 = pGetSymbol(0);
+  Symbol *pSymbol_0 = pGetSymbol(0);
 
   if (pSymbol_0->bIsKeyOrdinal())
     return true;
 
   return false;
+}
+
+bool Card_Expr::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bHas = false;
+
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc())
+    bHas = p_boolCalc->bHasTerm(pSymbol);
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc())
+    bHas = p_rpnCalc->bHasTerm(pSymbol);
+
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,6 +460,29 @@ void Card_Expr::vReconstruct(Card_As*    p_as_arg,
   vAppend(p_as_arg);
   vAppend(p_rpnCalc);
   p_rpnCalc->vAppend(p_term);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a reduced copy of this expr                                         */
+/*----------------------------------------------------------------------------*/
+Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol xExprNo;
+  xExprNo.vSetStreamOrdinal(i_Expr + 1);
+
+  Card_Expr* p_expr_reduced = new Card_Expr;
+  p_expr_reduced->vSymbol(xExprNo);
+
+  if (Card_As* p_as = pSub_as())
+    p_expr_reduced->vAppend(p_as->pClone());
+
+  Card_RpnCalc* p_rpnCalc_reduced = pSub_rpnCalc()->pReducedCopy(i_Expr);
+
+  p_expr_reduced->vAppend(p_rpnCalc_reduced);
+
+  return p_expr_reduced;
 }
 
 /*----------------------------------------------------------------------------*/

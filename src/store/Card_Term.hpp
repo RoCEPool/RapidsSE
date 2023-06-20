@@ -27,6 +27,7 @@ namespace STORE
     Card_Term* pClone(Symbol* pDiffSymbol);
     void vConvertIf_stmOdn_To_colOdn(CardIter* pCI);
     void vEnsureTypeFor_stmOdn(CardIter* pCI);
+    void vCorrectStmOdn(Card_Projection* p_projection_prior);
     ePB  eEvalBound(void);
     eRO  eEvalRelOp(void);
     eTE  eEvalTerm(void);

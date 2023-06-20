@@ -3772,6 +3772,82 @@ rows: (*,'explainPlan','
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cast of a literal is translated in the SQL compiler
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Cast of a date, time or timestamp literal to a string should be replaced by that string value.
+EXPLAIN WITH_TYPES
+SELECT
+  CAST(TIMESTAMP '2022-01-02 03:04:05.006' AS CHAR),
+  CAST(DATE '2022-01-02' AS CHAR),
+  CAST(TIME '01:02:03' AS CHAR)
+FROM castTest
+LIMIT 1;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   CAST(TIMESTAMP ''2022-01-02 03:04:05.006'' AS CHAR),   CAST(DATE ''2022-01-02'' AS CHAR),   CAST(TIME ''01:02:03'' AS CHAR) FROM castTest LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = ''2022-01-02 03:04:05.006000'' ; Ordinal Expr = ''2022-01-02 03:04:05.006000'') ; type: VARCHAR
+         » column: (Expr = ''2022-01-02'' ; Ordinal Expr = ''2022-01-02'') ; type: VARCHAR
+         » column: (Expr = ''01:02:03'' ; Ordinal Expr = ''01:02:03'') ; type: VARCHAR
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.castTest)')
+
+
+
+// Casting a timestamp literal to a date
+EXPLAIN WITH_TYPES SELECT CAST('2020-11-12 11:12:13.123456',DATE) FROM castTest LIMIT 1;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(''2020-11-12 11:12:13.123456'',DATE) FROM castTest LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = DATE ''2020-11-12'' ; Ordinal Expr = DATE ''2020-11-12'') ; type: DATE
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.castTest)')
+
+
+// Casting a timestamp literal to a time
+EXPLAIN WITH_TYPES SELECT CAST('2020-11-12 11:12:13.123456',TIME) FROM castTest LIMIT 1;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CAST(''2020-11-12 11:12:13.123456'',TIME) FROM castTest LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = TIME ''11:12:13'' ; Ordinal Expr = TIME ''11:12:13'') ; type: TIME
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.castTest)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

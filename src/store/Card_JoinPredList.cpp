@@ -49,58 +49,75 @@ Card_JoinPredList::~Card_JoinPredList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_JoinPredList* Card_JoinPredList::pExtract(Card_Deck* p_deck)
+Card_JoinPredList* Card_JoinPredList::pExtractList(Card_Deck* p_deck)
 {
   _static_
 
   Card_JoinPredList* p_joinPredList = new Card_JoinPredList;
 
   CardIter xCI(p_deck);
-  while (xCI.G_bEachMain()) {
+  while (xCI.G_bEachMain(CK_TABLE)) {
     if (! (xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList()) )
-      continue;
-    if (! (xCI.G.p_bounds = xCI.G.p_MainCard->pSub_bounds()) )
       continue;
     if (! (xCI.G.p_filter = xCI.G.p_MainCard->pSub_filter()) )
       continue;
 
-    xCI.G.p_boolCalc = xCI.G.p_filter->pSub_boolCalc();
-    p_joinPredList->vConcat(xCI.G.p_boolCalc,xCI.G.p_indexList, xCI.G.p_bounds);
+    p_joinPredList->vBuildList(xCI.G.p_filter,xCI.G.p_indexList);
   }
 
   return p_joinPredList;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_JoinPredList::vTablesWithNoIndexes(Card_Deck* p_deck, String* pString)
+{
+  _static_
+
+  CardIter xCI(p_deck);
+  while (xCI.G_bEachMain(CK_TABLE)) {
+    if ((xCI.G.p_indexList = xCI.G.p_table->pSub_indexList()) &&
+        xCI.G.p_indexList->nChildCards())
+      continue;
+
+    if (! pString->nLength())
+      pString->vSprint("Tables: %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+    else
+      pString->vCatSprint(", %s"_Stz,xCI.G.p_table->pSub_tableNm()->szSymbol());
+  }
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* build the join predicate list from given filter & indexList                */
 /*----------------------------------------------------------------------------*/
-void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc,
-                                Card_IndexList* p_indexList, Card_Bounds* p_bounds)
+void Card_JoinPredList::vBuildList(Card_Filter*    p_filter,
+                                   Card_IndexList* p_indexList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  auto bConcat = [this, p_indexList, p_bounds](Card *pCard) {
-    Card_CmpPred* p_cmpPred = _pCard_CmpPred(pCard);
-    if (! p_cmpPred->bIsEqOp())
+  auto bfConcat = [this, p_indexList](Card *pCard_cmpPred) {
+    Card_CmpPred* p_cmpPred_tst = _pCard_CmpPred(pCard_cmpPred);
+
+    if (! p_cmpPred_tst->bIsEqOp())
       return C_CONTINUE_RECURSION;
 
-    if (! p_indexList->bHas_cmpPred_In_bounds(p_cmpPred))
-      return C_CONTINUE_RECURSION;
-
-    Card_Term* p_term_0 = p_cmpPred->pGetTerm(0);
-    Card_Term* p_term_1 = p_cmpPred->pGetTerm(1);
-
+    Card_Term* p_term_0 = p_cmpPred_tst->pGetTerm(0);
+    Card_Term* p_term_1 = p_cmpPred_tst->pGetTerm(1);
     if ( ! (p_term_0->bIsColOdn() && p_term_1->bIsColOdn()))
       return C_CONTINUE_RECURSION;
 
-    Card_CmpPred* p_cmpPred_new = _pCard_CmpPred(p_cmpPred->pDupCardRecursive());
+    if (!p_indexList->bHasEquivalentBound(p_cmpPred_tst))
+      return C_CONTINUE_RECURSION;
+
+    Card_CmpPred* p_cmpPred_new = p_cmpPred_tst->pClone();
     this->vAppend(p_cmpPred_new);
 
     return C_CONTINUE_RECURSION;
@@ -108,23 +125,8 @@ void Card_JoinPredList::vConcat(Card_BoolCalc* p_boolCalc,
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-  p_boolCalc->bApplyRecursive(CK_CMPPRED, bConcat);
-}
-
-/*----------------------------------------------------------------------------*/
-/* find the first cmpPred which uses given table                              */
-/*----------------------------------------------------------------------------*/
-Card_CmpPred* Card_JoinPredList::pFindCmpPred(char cTblSyn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_CMPPRED)) {
-    if (xCI.G.p_cmpPred->bUsesTable(cTblSyn))
-      return xCI.G.p_cmpPred;
-  }
-
-  return nullptr;
+  Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
+  p_boolCalc->bApplyRecursive(CK_CMPPRED, bfConcat);
 }
 
 /*============================================================================*/

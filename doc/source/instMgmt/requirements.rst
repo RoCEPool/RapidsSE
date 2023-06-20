@@ -29,6 +29,9 @@ RapidsSE is formally supported on the following operating systems:
 •	Red Hat Enterprise Linux 8
 •	Ubuntu 18, 20 and 22
 •	Amazon AWS Linux 2
+•	OpenEuler 22.03 LTS
+•	Rocky Linux 8 and 9
+•	Alma Linux 8 and 9
 
 RapidsSE has not been tested on other operating systems, though it may work
 if the target system has a compatible version of glibc and all of the
@@ -59,7 +62,10 @@ RapidsSE has the following minimum system requirements:
    * CentOS 7,
    * CentOS Stream 8 or 9,
    * Red Hat Enterprise Linux 8,
-   * Ubuntu 18, 20 or 22"
+   * Ubuntu 18, 20 or 22,
+   * openEuler 22.03 LTS,
+   * Rocky Linux 8 or 9,
+   * AlmaLinux 8 or 9"
    "**Software Dependencies:**", "The following software is required on each node in the cluster:
 
    * Either ``gcc`` >= 4.8.5 or ``clang`` >= 4.2.0
@@ -70,7 +76,8 @@ RapidsSE has the following minimum system requirements:
    * ``ss`` (socket statistics)
    * ``bc``
    * ``awk``
-   * ``python`` (either 2.7 or 3.x) is required during installation"
+   * ``python`` (either 2.7 or 3.x) is required during installation
+   * GNU ``parallel`` is required for the TPC-H data generation script only"
    "**Other requirements:**", "Password-less public key SSH authentication is required
    between all nodes in the cluster, including each node to itself, for the desired
    operating system user account that RapidsSE will operate under."
@@ -87,14 +94,31 @@ RapidsSE has the following minimum system requirements:
 
 The RapidsSE dependencies can be installed with the following command:
 
-  On CentOS 7, CentOS Stream 8 & 9, Red Hat Enterprise Linux 8:
+  On CentOS 7, CentOS Stream 8 & 9, Red Hat Enterprise Linux 8, Rocky Linux 8 & 9
+  and AlmaLinux 8 & 9:
 
-  ``sudo yum install bash gcc libatomic tar nmap-ncat iproute bc python3 gawk ncurses parallel``
+    ``sudo yum install bash gcc libatomic tar nmap-ncat iproute bc python3 gawk ncurses parallel``
 
   On Ubuntu 18, 20 & 22:
 
-  ``sudo apt install bash gcc libatomic1 tar netcat iproute2 bc python3 gawk ncurses-bin parallel``
+    ``sudo apt install bash gcc libatomic1 tar netcat iproute2 bc python3 gawk ncurses-bin parallel``
 
+  On openEuler 22.03:
+
+    ``sudo yum install bash gcc libatomic tar nmap-ncat iproute bc python3 gawk ncurses``
+
+    .. note::
+
+      The openEuler package manager does not include the GNU parallel utility.
+      This utility is only needed when using the ``generateData.sh`` script to
+      create TPC-H data in parallel. It is not required to run RapidsSE.
+
+      A compatible GNU parallel package can be downloaded and installed from an
+      alternative source. Binary packages compatible with CentOS 7 will likely work.
+      For example:
+
+      ``wget https://linuxsoft.cern.ch/cern/centos/7/cern/x86_64/Packages/parallel-20150522-1.el7.cern.noarch.rpm``
+      ``yum install parallel-20150522-1.el7.cern.noarch.rpm``
 
 Recommended Requirements
 ------------------------

@@ -114,6 +114,8 @@ void Card_KeyNotExists::vEarlyProject_recurse_add(CardIter* pCI)
 
   vUpdate_projection(pCI);
 
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+
   pCI->vPrintBoard();
 
   // restore needed

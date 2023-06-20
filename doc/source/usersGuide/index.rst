@@ -12,5 +12,6 @@ User's Guide
    queries
    dataTypes
    expressions
+   optimisation
    constraints
 

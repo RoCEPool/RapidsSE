@@ -80,7 +80,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
+  if (pCI->pPrevChild()->bIsCard(CK_GBYAGG) ||
+      pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
     pCI->Analysis.m_pProjection_prior = pSub_projection();
@@ -114,6 +115,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
 
   vUpdate_projection(pCI);
 
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+
   pCI->vPrintBoard();
 
   // restore needed
@@ -121,6 +124,8 @@ void Card_IndexJoin::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->Early.m_pNeeded_later = p_needed_save;
 
   pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+
 
   pCI->vPrintBoard();
 
@@ -184,7 +189,7 @@ void Card_IndexJoin::vEarlyProject_add_transients(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
+  //vDump(0,(Stz*)__func__);
 
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -219,6 +224,8 @@ void Card_IndexJoin::vEarlyProject_root(CardIter* pCI)
   /// ... arrived back ... ... ... ... ... ... ... ... ... ... ... ... ... ...
 
   RASSERT(pCI->Early.m_pOP_leaf);
+
+  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
 
   pCI->vPrintBoard();
 

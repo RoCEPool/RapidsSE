@@ -77,7 +77,7 @@ class SubProcessError(TracebackError):
 
 class SshError(TracebackError):
     """Errors that come up from running commands over SSH"""
-    def __init__(self, msg: str, stdout: str, stderr: str):
+    def __init__(self, msg: str, stdout: str = None, stderr: str = None):
         super(SshError, self).__init__(msg)
         self.stdout = stdout
         self.stderr = stderr

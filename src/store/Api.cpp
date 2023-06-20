@@ -24,6 +24,7 @@
 
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
+extern CmdLineArgs   gxCmdLineArgs;
 
 extern pthread_key_t giTLS_ThreadKey;
 extern pthread_key_t giTLS_TaskKey;
@@ -128,6 +129,7 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
   p2PCJob = new Job(szJobNm,tParentId,tOriginId,tDistId);
 
   TagSet* pJobTagSet = p2PCJob->pJobTags();
+  pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
 
   p2PCJob->vCmdText(sCmd);
@@ -270,6 +272,7 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   // copy CmdTagSet to the child job tags
 
   TagSet* pJobTagSet = pChildJob->pJobTags();
+  pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -410,6 +413,7 @@ eEC Api::eForkJob2PC(JobId& rtChildJobId,
   rtChildJobId = pChildJob->tJobId();
 
   TagSet* pJobTagSet = pChildJob->pJobTags();
+  pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
 
   sSTMT sCmd;

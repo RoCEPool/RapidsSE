@@ -17,11 +17,12 @@ namespace STORE
    ~Card_Bounds(void) noexcept(false);
 
     void vCullBound(char cWithMark);
-
     Card_Bound* pFindChosenBound(void);
 
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
 
+    bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
+    bool bUsesSqyRsl(void);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

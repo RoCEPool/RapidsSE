@@ -182,6 +182,29 @@ void Card_BoolCalc::vCopyMarkedPredsToTable(Card_Deck* p_deck)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolCalc::vCorrectStmOdn(Card_Projection* p_projection_prior)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [p_projection_prior](Card* p_card)
+  {
+    if (p_card->pSymbol()->bIsStreamOrdinal())
+      _pCard_Term(p_card)->vCorrectStmOdn(p_projection_prior);
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given predicate                                                     */
 /*----------------------------------------------------------------------------*/
 void Card_BoolCalc::vCullPred(char cWithMark)
@@ -283,22 +306,45 @@ Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bIsSoleCol(void)
-{
+bool Card_BoolCalc::bIsSoleCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (nChildCards() > 1)
     return false;
 
-  Card* p_card_0 = pGetChild(0);
-  if (! p_card_0->bIsCard(CK_TERM))
-    return  false;
+  Card *p_card_0 = pGetChild(0);
+  if (!p_card_0->bIsCard(CK_TERM))
+    return false;
 
-  Card_Term* p_term_0 = _pCard_Term(p_card_0);
-  if (! p_term_0->bIsColOdn())
+  Card_Term *p_term_0 = _pCard_Term(p_card_0);
+  if (!p_term_0->bIsColOdn())
     return false;
 
   return true;
+}
+
+bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  bool bHas = false;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bLambdaFn = [pSymbol, &bHas](Card* p_card)
+  {
+    if (p_card->pSymbol()->bSameAs(pSymbol)) {
+      bHas = true;
+      return C_TERMINATE_RECURSION;
+    }
+
+    return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  bool bIgnore = bApplyRecursive(CK_TERM,bLambdaFn);
+
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/

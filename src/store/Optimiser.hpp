@@ -7,7 +7,9 @@
 
 #include "Bench.hpp"
 #include "CardCtl.hpp"
+#include "Weaver.hpp"
 #include "PermGen.hpp"
+#include "Error.hpp"
 #include "PipelineDef.hpp"
 #include "ExtendedText.hpp"
 
@@ -35,11 +37,10 @@ namespace STORE
 
     s256         m_sJoinOrder; // join order string
 
-    CardIter*    m_pCI;
-
-    PipelineDef* m_pPipelineDef;
-
+    CardIter*     m_pCI;
+    PipelineDef*  m_pPipelineDef;
     ExtendedText* m_pOptStmt;
+
 
     // must be last
     Footer m_xFooter;
@@ -54,7 +55,7 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    bool bApplyTransformationMatrix(eEC* peErrorCode);
+    bool bApplyTransformationMatrix(Error& rxError);
     void vApplyTransformationMatrix(void);
 
     Bench* pBench(void);
@@ -76,7 +77,7 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
-    bool bTransform(eEC* peErrorCode, InfoSet* pInfoSet);
+    bool bTransform(Error& rxError, InfoSet* pInfoSet);
 
     PipelineDef* pPipelineDef(void);
     void vPipelineDef(PipelineDef* pPipelineDef);
