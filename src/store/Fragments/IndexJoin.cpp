@@ -105,10 +105,10 @@ void vSemiJoinBegin(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vSemiJoinContinue -------------------------------------------------------*/
+/*-- vSemiJoinEnd ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vSemiJoinContinue
-void vSemiJoinContinue(Dynamic_T* aDynamicT) {
+// function-vSemiJoinEnd
+void vSemiJoinEnd(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   RowInfo __ROW_INFO_FROM__;
@@ -135,10 +135,10 @@ void vSemiJoinContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vAntiJoinContinue -------------------------------------------------------*/
+/*-- vAntiJoinEnd ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vAntiJoinContinue
-void vAntiJoinContinue(Dynamic_T* aDynamicT) {
+// function-vAntiJoinEnd
+void vAntiJoinEnd(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   RowInfo __ROW_INFO_FROM__;

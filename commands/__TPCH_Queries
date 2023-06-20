@@ -11,7 +11,7 @@ QUERY 1
 //SF1:    2703ms       //
 /////////////////////////
 
-/time /jobMetrics pipeline Query1
+/time pipeline Query1
 begin
   stage S00 on origin :
     start
@@ -21,17 +21,17 @@ begin
   stage S01 on all partitions :
     scan rapidsse public lineitem
     | filter " type BOOLEAN  $11 DATE '1998-10-01'  <=  "
-    | aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL ) as SUM_QTY L_QUANTITY sum  , type DECIMAL ) as SUM_BASE_PRICE L_EXTENDEDPRICE sum  , type DECIMAL ) as SUM_DISC_PRICE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  , type DECIMAL ) as SUM_CHARGE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  , type INTEGER ) L_EXTENDEDPRICE count  , type INTEGER ) L_QUANTITY count  , type DECIMAL ) L_DISCOUNT sum  , type INTEGER ) L_DISCOUNT count  , type INTEGER ) countAll  "
+    | gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL ) as SUM_QTY L_QUANTITY sum  , type DECIMAL ) as SUM_BASE_PRICE L_EXTENDEDPRICE sum  , type DECIMAL ) as SUM_DISC_PRICE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  , type DECIMAL ) as SUM_CHARGE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  , type INTEGER ) L_EXTENDEDPRICE count  , type INTEGER ) L_QUANTITY count  , type DECIMAL ) L_DISCOUNT sum  , type INTEGER ) L_DISCOUNT count  , type INTEGER ) countAll  "
     | combined 0
     | next
 
   stage S02 on all nodes :
-    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER ) $11 sum "
+    gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER ) $11 sum "
     | combined 0
     | next
 
   stage S03 on origin :
-    aggreg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER as COUNT_ORDER ) $11 sum"
+    gbyAgg " groupBy  type VARCHAR L_RETURNFLAG , type VARCHAR L_LINESTATUS aggregates type VARCHAR as L_RETURNFLAG $K1 , type VARCHAR as L_LINESTATUS $K2 , type DECIMAL as SUM_QTY ) SUM_QTY sum , type DECIMAL as SUM_BASE_PRICE ) SUM_BASE_PRICE sum , type DECIMAL as SUM_DISC_PRICE ) SUM_DISC_PRICE sum , type DECIMAL as SUM_CHARGE ) SUM_CHARGE sum , type INTEGER ) $7 sum , type INTEGER ) $8 sum , type DECIMAL ) $9 sum , type INTEGER ) $10 sum , type INTEGER as COUNT_ORDER ) $11 sum"
     | combined 0
     | next
 
