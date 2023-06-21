@@ -869,10 +869,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   // create the rowPix
   if (pCombined->aCombinedT()->m_iHashRows) {
-    RowPix* pRowPix = new RowPix(pStreamDefOut->pRowPix(), true);
+    RowPix* pRowPix = new RowPix(pRowPixStream, true);
     pPot->vRowPix(pRowPix);
   } else {
-    RowPix* pRowPix = new RowPix(pStreamDefOut->pRowPix(), false);
+    RowPix* pRowPix = new RowPix(pRowPixStream, false);
     pTub->vRowPix(pRowPix);
     //pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
