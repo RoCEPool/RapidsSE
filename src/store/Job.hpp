@@ -256,6 +256,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     bool bRecvCmdText(void);
     bool bRecvCodeBlock(void);
 
+    bool bSendCmdText(void);
+    bool bSendCodeBlock(void);
+
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);
 

@@ -1520,7 +1520,7 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if command text is to be retrieved?                                   */
+/* test if command text is to be received?                                    */
 /*----------------------------------------------------------------------------*/
 bool Job::bRecvCmdText(void)
 {
@@ -1535,7 +1535,7 @@ bool Job::bRecvCmdText(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if code block is to be retrieved?                                      */
+/* test if code block is to be received?                                      */
 /*----------------------------------------------------------------------------*/
 bool Job::bRecvCodeBlock(void)
 {
@@ -1545,6 +1545,32 @@ bool Job::bRecvCodeBlock(void)
     m_pCodeBlock = nullptr;
     return true;
   }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if command text is to be sent?                                        */
+/*----------------------------------------------------------------------------*/
+bool Job::bSendCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCmdText)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if code block is to be sent?                                          */
+/*----------------------------------------------------------------------------*/
+bool Job::bSendCodeBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCodeBlock)
+    return true;
 
   return false;
 }

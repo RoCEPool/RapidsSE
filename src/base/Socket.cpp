@@ -260,21 +260,38 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 
   if (pObject->bIsClassNo(CN_JOB)) {
     Job* pJob = _pJob(pObject);
-    RASSERT(pJob->szCmdText());
 
-    ExtendedText* pExtText = pJob->pCmdText();
-    RASSERT(pExtText);
-    eClass = pExtText->eGetClassNo();
-    nBytes = gxaSizeHeap[eClass].m_nClassSize;
-    bResult = bBytesSend(pExtText,nBytes,roSysCall);
-    RASSERT(bResult);
+    if (pJob->bSendCmdText()) {
+      ExtendedText *pExtText = pJob->pCmdText();
+      RASSERT(pExtText);
+      eClass = pExtText->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = bBytesSend(pExtText, nBytes, roSysCall);
+      RASSERT(bResult);
 
-    ExtendedTextBuffer* pExtTextBuffer = pExtText->pExtTextBuffer(0);
-    RASSERT(pExtTextBuffer);
-    eClass = pExtTextBuffer->eGetClassNo();
-    nBytes = gxaSizeHeap[eClass].m_nClassSize;
-    bResult = bBytesSend(pExtTextBuffer,nBytes,roSysCall);
-    RASSERT(bResult);
+      ExtendedTextBuffer *pExtTextBuffer = pExtText->pExtTextBuffer(0);
+      RASSERT(pExtTextBuffer);
+      eClass = pExtTextBuffer->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+      RASSERT(bResult);
+    }
+
+    if (pJob->bSendCodeBlock()) {
+      ExtendedText *pExtText = pJob->pCodeBlock();
+      RASSERT(pExtText);
+      eClass = pExtText->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = bBytesSend(pExtText, nBytes, roSysCall);
+      RASSERT(bResult);
+
+      ExtendedTextBuffer *pExtTextBuffer = pExtText->pExtTextBuffer(0);
+      RASSERT(pExtTextBuffer);
+      eClass = pExtTextBuffer->eGetClassNo();
+      nBytes = gxaSizeHeap[eClass].m_nClassSize;
+      bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+      RASSERT(bResult);
+    }
 
   }
 
