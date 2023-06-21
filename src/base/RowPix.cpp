@@ -127,7 +127,7 @@ RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
   if (bAddPtnHash) {
 
     //pRowPixDst->vPrint();
-    ASSERT(! pRowPixDst->m_nExtraCols);
+    ASSERT(! m_nExtraCols);
 
     m_nColumns++;
     m_nExtraCols = 1;
