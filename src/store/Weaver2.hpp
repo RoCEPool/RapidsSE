@@ -23,6 +23,7 @@ namespace STORE
     bool m_bOpPrinted;
 
     ExtendedText* p_pOptStmt;
+    ExtendedText* p_pCodeBlock;
 
     bool m_bSawHash;
   private:
@@ -42,13 +43,17 @@ namespace STORE
     ExtendedText* pOptStmt(void);
     void vOptStmt(ExtendedText* pOptSmt);
 
+    Stz* szCodeBlock(void);
+    ExtendedText* pCodeBlock(void);
+    void vCodeBlock(ExtendedText* pCodeBlock);
+
   private:
   
     void vPipeline    (void);
     void vTags        (void);
     void vBegin       (void);
     void vEnd         (void);
-    void vCppBlock   (void);
+    void vCppBlock    (void);
     void vSemicolon   (void);
 
     void vCard        (Card* pCard);
@@ -82,8 +87,11 @@ namespace STORE
     void vArgTable       (Stz* szOpArgs,  Card_Table*     pCard_Table);
     void vArgWhere       (Stz* szOpArgs,  Card_Where*     pCard_Where);
 
-    void vConcat(Stz* aFormat, ...);
-    void vConcat_vargs(Stz* aFormat, va_list xArgs);
+    void vConcat_cmd(Stz* aFormat, ...);
+    void vConcat_cmd_vargs(Stz* aFormat, va_list xArgs);
+
+    void vConcat_code(Stz* aFormat, ...);
+    void vConcat_code_vargs(Stz* aFormat, va_list xArgs);
 
     void vEolOp(void);
     void vEolStage(void);
