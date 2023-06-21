@@ -15,6 +15,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_BKTMAP,
 
   /*  */ LR_CHILDEXIT,
+  /*  */ LR_CODEBLOCK,
   /*  */ LR_COMBINED,
   /*  */ LR_CRWBUFFER,
   /*  */ LR_CRWTOROW,
@@ -130,6 +131,7 @@ static Stz* aLR[]
   /*  */ "LR_BKTMAP"_Stz,
   
   /*  */ "LR_CHILDEXIT"_Stz,
+  /*  */ "LR_CODEBLOCK"_Stz,
   /*  */ "LR_COMBINED"_Stz,
   /*  */ "LR_CRWBUFFER"_Stz,
   /*  */ "LR_CRWTOROW"_Stz,

@@ -89,6 +89,7 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,      IntStack::vRepair,   LR_AGGTYPESTACK)
 ,       m_xpAnswerWL(this,RF_REPAIR_DELETE,      AnswerWL::vRepair,       LR_ANSWERWL)
 
+,      m_xpCodeBlock(this,RF_REPAIR_DELETE,  ExtendedText::vRepair,       LR_CODEBLOCK)
 ,       m_xpCombined(this,RF_REPAIR_DELETE,      Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,     CrwBuffer::vRepairList,  LR_CRWBUFFER)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,      CrwToRow::vRepair,       LR_CRWTOROW)
@@ -297,6 +298,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   // registers should have been repaired
   RASSERT(m_xpAggTimer.bIsNull());
 
+  RASSERT(m_xpCodeBlock.bIsNull());
   RASSERT(m_xpCrwBuffer.bIsNull());
   RASSERT(m_xpCrwToRow.bIsNull());
   RASSERT(m_xpCsvBuffer.bIsNull());
