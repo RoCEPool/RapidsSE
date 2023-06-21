@@ -7,6 +7,15 @@
 #include "SP_ColPix.hpp"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(BASE,RowPix,CN_ROWPIX)
+__aNewFunction(RowPix,CN_ROWPIX)
+__vDeleteFunction(RowPix,CN_ROWPIX)
+__aFooterFunction(RowPix)
+
+/*----------------------------------------------------------------------------*/
 /* new row pix                                                                */
 /*----------------------------------------------------------------------------*/
 extern "C" void* aExtern_RowPixNew(i8 nColumns, void* pColumnInfo) {
@@ -21,39 +30,11 @@ void* aRowPix_new(i8 nColumns, void* pColumnInfo) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                   */
-/*----------------------------------------------------------------------------*/
-RowPix* BASE::_pRowPix(void* aAddr)
-{
-  RowPix* pRowPix = reinterpret_cast<RowPix*>(aAddr);
-  
-  return pRowPix;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* RowPix::operator new(size_t)
-{
-  RowPix* pRowPix = (RowPix*)Heaps::pAllocate(CN_ROWPIX);
-
-  return pRowPix;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* RowPix::operator new(size_t, RowPix* aInfoPix)
 {
   return aInfoPix;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void RowPix::operator delete(void* aAddress)
-{
-  UNUSED(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,11 +65,39 @@ RowPix::RowPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowPix::RowPix(RowPix* pRowPix)
+    : Object(CN_ROWPIX)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+
+  m_bInitialised = pRowPix->m_bInitialised;
+  m_bShortForm   = pRowPix->m_bShortForm;
+  m_nColumns     = pRowPix->m_nColumns;
+  m_nExtraCols   = pRowPix->m_nExtraCols;
+  m_bPtnHash     = pRowPix->m_bPtnHash;
+  m_nMaxRowSize  = pRowPix->m_nMaxRowSize;
+  m_nNameOffset  = pRowPix->m_nNameOffset;
+  m_nTotalChars  = pRowPix->m_nTotalChars;
+
+  for (i8 i_Col = 0; i_Col < pRowPix->m_nColumns; i_Col++)
+    m_xaColPix[i_Col].m_uAsU8 = pRowPix->m_xaColPix[i_Col].m_uAsU8;
+
+  MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
+
+  _checkInitialised_(CN_ROWPIX);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 RowPix::~RowPix(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
+
 }
 
 /*----------------------------------------------------------------------------*/

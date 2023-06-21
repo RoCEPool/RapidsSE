@@ -81,6 +81,8 @@ Pot::Pot(void)
 Pot::~Pot(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+
+  delete m_pRowPix;
 }
 
 /*----------------------------------------------------------------------------*/

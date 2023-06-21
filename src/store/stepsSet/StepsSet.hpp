@@ -1465,7 +1465,6 @@ void vDdlLockAssertNone(void);
   void vPotIsNull(void);
   void vPotNew(void);
   void vPotPushBuffer(void);
-  void vPotRowPixStore(void);
 
   // pot Rlu
   void vPotRluCompleted(void);
