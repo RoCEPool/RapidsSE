@@ -98,6 +98,9 @@ Stz* Weaver2::szCodeBlock(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
+  if (! p_pCodeBlock)
+    return nullptr;
+
   return p_pCodeBlock->szTextBlock(0);
 }
 
