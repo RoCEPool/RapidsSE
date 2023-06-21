@@ -249,7 +249,7 @@ namespace STORE
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 
-    RowPix     m_oRowPix;    // condensed stream def
+    //RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
     EntWrk     m_oEntWrkPL;
     EntWrk     m_oEntWrkJ;

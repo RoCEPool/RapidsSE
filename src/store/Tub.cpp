@@ -88,6 +88,8 @@ Tub::~Tub(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
 
+  delete m_pRowPix;
+
   // assert we don't have any dangling buffers
   RASSERT(! m_pBufferChain);
 }

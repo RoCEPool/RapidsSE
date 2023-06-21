@@ -29,8 +29,8 @@ namespace BASE
     ColPix m_xaColPix[C_ROWPIX_COLUMNS]; // column pix array
     byte m_baPixArea[C_ROWPIX_AREA];     // see if this reproduces problem on Linux
   
-//    // must be last
-//    Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
 
   public:
   
@@ -39,6 +39,7 @@ namespace BASE
     void operator delete(void*);
 
     RowPix(void);
+    RowPix(RowPix* pRowPix);
    ~RowPix(void) noexcept(false);
 
     static void* aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo);
@@ -62,7 +63,7 @@ namespace BASE
   
     void vRemovePtnHash(void);
 
-    //Footer* aFooter(void);
+    Footer* aFooter(void);
   };
 
   RowPix* _pRowPix(void* aAddr);
