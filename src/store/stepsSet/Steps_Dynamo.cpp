@@ -35,6 +35,7 @@ void Step::vAddSteps_Dynamo(void)
 {
   vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
   vAddStep("Dynamo[].code@"_Stz,    &Step::vDynamoCodeFetch);
+  vAddStep("Dynamo[].codeBlock@"_Stz,&Step::vDynamoCodeBlockFetch);
   vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
   vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
   vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
@@ -56,6 +57,22 @@ void Step::vDynamoCodeFetch(void)
   if (pDynamo->szCode())
     szCode = pDynamo->szCode();
   m_pDataStack->vPushStr(szCode);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].codeBlock@ -- fetch the code block                                */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoCodeBlockFetch(void)
+{
+  ENTRY();
+
+  ExtendedText* pCodeBlock;
+
+  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
+  pCodeBlock = pDynamo->pCodeBlock();
+  m_pDataStack->vPushPtr(pCodeBlock);
 
   EXIT();
 }

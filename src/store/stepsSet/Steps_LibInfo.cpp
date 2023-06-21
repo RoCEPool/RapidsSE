@@ -14,6 +14,7 @@
 #include "TailLine.hpp"
 #include "CrwBuffer.hpp"
 #include "RowInflator.hpp"
+#include "ExtendedText.hpp"
 
 #include "LogicUnit.hpp"
 #include "CompileLib.hpp"
@@ -45,10 +46,13 @@ void Step::vLibInfoCompile(void)
   s4K szDynLibNm;
   m_pDataStack->vPopStr(szDynLibNm,__func__);
 
-  s256K szCode;
-  m_pDataStack->vPopStr(szCode,__func__);
+  ExtendedText* pCodeBlock;
+  pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
+
+  s48K szCode;
+  pCodeBlock->bRetrieve(szCode);
 
   bool bClean = CompileLib::bCompile(szCode.szStz(), szDynLibNm, pLibInfo, "clang"_Stz);
   if (bClean)

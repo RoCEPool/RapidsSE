@@ -114,6 +114,19 @@ VertexSpec* Dynamo::pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Dynamo::pCodeBlock(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
+
+  if (! m_pCode)
+    return nullptr;
+
+  return m_pCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
 /*----------------------------------------------------------------------------*/
 

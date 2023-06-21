@@ -472,6 +472,7 @@ void vDdlLockAssertNone(void);
   void vDynamicStreamDefOut(void);
 
   void vDynamoCodeFetch(void);
+  void vDynamoCodeBlockFetch(void);
   void vDynamoCompile(void);
   void vDynamoDelete(void);
   void vDynamoGet(void);

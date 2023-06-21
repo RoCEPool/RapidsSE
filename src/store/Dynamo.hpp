@@ -46,7 +46,10 @@ namespace STORE
     static void vRepair(Object* pObject);
     static VertexSpec* pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
+    ExtendedText* pCodeBlock(void);
+
     VertexSpec* pCompile(Stz* szPipelineStmt);
+
     Stz* szCode(void);
     Stz* szName(void);
 
