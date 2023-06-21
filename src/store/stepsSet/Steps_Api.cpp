@@ -13,6 +13,7 @@
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
@@ -53,6 +54,9 @@ void Step::vAddSteps_Api(void)
 void Step::vApiForkChild(void)
 {
   ENTRY();
+
+  ExtendedText* pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
+  RASSERT(! pCodeBlock);
 
   s48K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
@@ -125,6 +129,7 @@ void Step::vApiForkChild(void)
 
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
+                                   pCodeBlock,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
                                    true,
@@ -201,6 +206,7 @@ void Step::vApiForkDemon(void)
   bool bIsPipeline;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
+                                  nullptr,
                                   tParentId,tOriginId,tDistId,
                                   pOuterJob,
                                   false,

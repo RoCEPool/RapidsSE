@@ -87,7 +87,7 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 13 */ SkipNode* m_pGenericSkipNode;  // generic list skip node
 
     /* 14 */ ExtendedText* m_pCmdText;    // command text experiment
-    /* 15 */ ExtendedText* m_pCodeBlock;  // code block experiment
+    /* 15 */ ExtendedText* m_pCodeBlock;   // code block experiment
 
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
@@ -146,6 +146,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     Stz* szCmdText(void);
     void vCmdText(Stz* szCmdText);
     void vCmdText(ExtendedText* pCmdText);
+    ExtendedText* pCodeBlock(void);
+    void vCodeBlock(ExtendedText* pCodeBlock);
     void vDisableObjectTracker(void);
     JobId tDistId(void);
     void vDistIdGenerate(void);
@@ -250,6 +252,12 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vProcessOutput(void);
     Timer* pProgressTimer(void);
     void vPtpJobNodeFailure(void);
+
+    bool bRecvCmdText(void);
+    bool bRecvCodeBlock(void);
+
+    bool bSendCmdText(void);
+    bool bSendCodeBlock(void);
 
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);

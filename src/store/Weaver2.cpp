@@ -35,6 +35,7 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
   m_i_Op_stage = 0;
   m_bOpPrinted = false;
   p_pOptStmt   = nullptr;
+  p_pCodeBlock = nullptr;
   m_bSawHash   = false;
 
 
@@ -90,6 +91,39 @@ void Weaver2::vOptStmt(ExtendedText* pOptSmt)
   p_pOptStmt = pOptSmt;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get code block                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Weaver2::szCodeBlock(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  if (! p_pCodeBlock)
+    return nullptr;
+
+  return p_pCodeBlock->szTextBlock(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get code block                                                             */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Weaver2::pCodeBlock(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  return p_pCodeBlock;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code block                                                             */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vCodeBlock(ExtendedText* pCodeBlock)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  p_pCodeBlock = pCodeBlock;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -103,8 +137,8 @@ void Weaver2::vOptStmt(ExtendedText* pOptSmt)
 void Weaver2::vPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-  
-  vConcat("pipeline %s\n"_Stz,m_pOptimiser->szQueryNm());
+
+  vConcat_cmd("pipeline %s\n"_Stz, m_pOptimiser->szQueryNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,8 +147,8 @@ void Weaver2::vPipeline(void)
 void Weaver2::vTags(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-  
-  vConcat("  tag <optimised> = 1 endTag\n"_Stz);
+
+  vConcat_cmd("  tag <optimised> = 1 endTag\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,7 +158,7 @@ void Weaver2::vBegin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  vConcat("begin\n"_Stz);
+  vConcat_cmd("begin\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,8 +168,8 @@ void Weaver2::vEnd(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  vConcat("\n"_Stz);
-  vConcat("end\n"_Stz);
+  vConcat_cmd("\n"_Stz);
+  vConcat_cmd("end\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,22 +195,30 @@ void Weaver2::vCppBlock(void)
 
   if (bHasCode) {
 
-    vConcat("\n"_Stz);
-    vConcat("__cpp_code__\n"_Stz);
+    vConcat_cmd("\n"_Stz);
+    vConcat_cmd("__cpp_code__\n"_Stz);
 
     for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
       StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
-      vConcat("\n"_Stz);
-      vConcat(pStageDef->szCode());
+      vConcat_cmd("\n"_Stz);
+      vConcat_cmd(pStageDef->szCode());
     }
 
-    vConcat("\n"_Stz);
-    vConcat("__codeEnd__\n"_Stz);
+    vConcat_cmd("\n"_Stz);
+    vConcat_cmd("__codeEnd__\n"_Stz);
 
     vTrace("Code %s\n"_Stz, p_pOptStmt->szTextBlock(0));
     vTrace("Code %lld\n"_Stz, StrLib::nSize(p_pOptStmt->szTextBlock(0)->azChar()));
 
     vDebugPoint();
+
+    for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+      StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
+      if (i_Stage)
+        vConcat_code("\n"_Stz);
+      vConcat_code(pStageDef->szCode());
+    }
+
   }
 }
 
@@ -188,8 +230,8 @@ void Weaver2::vSemicolon(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  vConcat("\n"_Stz);
-  vConcat(";\n"_Stz);
+  vConcat_cmd("\n"_Stz);
+  vConcat_cmd(";\n"_Stz);
 }
 
 
@@ -225,12 +267,15 @@ void Weaver2::vStageFirst(void)
   
   vPreStage();
   vTabStage();
-  vConcat("stage S%02lld on origin : "_Stz,m_i_Stage++);
+  vConcat_cmd("stage S%02lld on origin : "_Stz, m_i_Stage++);
   vEolStage();
   
-  vTabOp();  vConcat("start"_Stz);           vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("pulse     once"_Stz);  vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("next"_Stz);            vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("start"_Stz);           vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("pulse     once"_Stz);  vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("next"_Stz);            vEolOp();  m_i_Op_stage++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,13 +287,11 @@ void Weaver2::vStageNext(Card_Stage* pCard_Stage)
   
   eYG eStageTopo = (eYG) pCard_Stage->pSub_topology()->pSymbol()->Y_iGet(P_StageTopo);
   
-  //vTabOp();  vConcat("next"_Stz);  vEolOp();
+  //vTabOp();  vConcat_cmd("next"_Stz);  vEolOp();
 
   vPreStage();
   vTabStage();
-  vConcat("stage %s on %s : "_Stz
-          , pCard_Stage->szSymbol()
-          ,aYG_weave[eStageTopo]);
+  vConcat_cmd("stage %s on %s : "_Stz, pCard_Stage->szSymbol(), aYG_weave[eStageTopo]);
   vEolStage();
 
   m_i_Stage++;
@@ -265,18 +308,21 @@ void Weaver2::vStageLast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
   
-  //vTabOp();  vConcat("next"_Stz);  vEolOp();
+  //vTabOp();  vConcat_cmd("next"_Stz);  vEolOp();
   
   vPreStage();
   vTabStage();
-  vConcat("stage S%02lld on origin :"_Stz,m_i_Stage++);
+  vConcat_cmd("stage S%02lld on origin :"_Stz, m_i_Stage++);
   vEolStage();
   
   m_i_Op_stage = 0;
   
-  vTabOp();  vConcat("output"_Stz);       vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("sink"_Stz);         vEolOp();  m_i_Op_stage++;
-  vTabOp();  vConcat("first"_Stz);        vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("output"_Stz);       vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("sink"_Stz);         vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("first"_Stz);        vEolOp();  m_i_Op_stage++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,13 +332,14 @@ void Weaver2::vDynamic(StageDef* pStageDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  vTabOp();  vConcat("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
+  vTabOp();
+  vConcat_cmd("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
 
   //if (AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
     vTabOp();
-    vConcat("next"_Stz);
+  vConcat_cmd("next"_Stz);
     if (m_bSawHash)
-      vConcat(" hashCast"_Stz);
+      vConcat_cmd(" hashCast"_Stz);
     vEolOp();
     m_i_Op_stage++;
   //}
@@ -360,9 +407,9 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
       {;}
 
   vTabOp(bCommented);
-  vConcat("%-9s %s"_Stz,
-          sOpNm.azChar(),
-          sOpArgs.szStz());
+  vConcat_cmd("%-9s %s"_Stz,
+              sOpNm.azChar(),
+              sOpArgs.szStz());
   vEolOp();
 
   m_i_Op_stage++;
@@ -412,7 +459,7 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
 //  else                             sOpNm = aCK_short[eCard];
 //
 //  vTabOp();
-//  vConcat("%-9s %s"_Stz,
+//  vConcat_cmd("%-9s %s"_Stz,
 //          sOpNm.azChar(),
 //          sOpArgs.szStz());
 //  vEolOp();
@@ -808,13 +855,13 @@ void Weaver2::vArgWhere(Stz* szOpArgs, Card_Where* pCard_Where)
 /*----------------------------------------------------------------------------*/
 /* concat formatted string                                                    */
 /*----------------------------------------------------------------------------*/
-void Weaver2::vConcat(Stz* aFormat, ...)
+void Weaver2::vConcat_cmd(Stz* aFormat, ...)
 {
   va_list xVarArgs;
 
   va_start(xVarArgs,aFormat);
 
-  vConcat_vargs(aFormat,xVarArgs);
+  vConcat_cmd_vargs(aFormat, xVarArgs);
   
   va_end(xVarArgs);
 }
@@ -822,7 +869,7 @@ void Weaver2::vConcat(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* concat formatted string                                                    */
 /*----------------------------------------------------------------------------*/
-void Weaver2::vConcat_vargs(Stz* aFormat, va_list xArgs)
+void Weaver2::vConcat_cmd_vargs(Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
 
@@ -833,7 +880,36 @@ void Weaver2::vConcat_vargs(Stz* aFormat, va_list xArgs)
     p_pOptStmt = new ExtendedText;
 
   p_pOptStmt->vConcat((Stz*)caFormatted);
+}
 
+/*----------------------------------------------------------------------------*/
+/* concat formatted string                                                    */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vConcat_code(Stz* aFormat, ...)
+{
+  va_list xVarArgs;
+
+  va_start(xVarArgs,aFormat);
+
+  vConcat_code_vargs(aFormat, xVarArgs);
+
+  va_end(xVarArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat formatted string                                                    */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vConcat_code_vargs(Stz* aFormat, va_list xArgs)
+{
+  static char caFormatted[C_1MB] = {'\0'};
+
+  // produce formatted line
+  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
+
+  if (! p_pCodeBlock)
+    p_pCodeBlock = new ExtendedText;
+
+  p_pCodeBlock->vConcat((Stz*)caFormatted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -842,8 +918,8 @@ void Weaver2::vConcat_vargs(Stz* aFormat, va_list xArgs)
 void Weaver2::vEolStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-  
-  vConcat("\n"_Stz);
+
+  vConcat_cmd("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -852,8 +928,8 @@ void Weaver2::vEolStage(void)
 void Weaver2::vEolOp(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-  
-  vConcat("\n"_Stz);
+
+  vConcat_cmd("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -862,8 +938,8 @@ void Weaver2::vEolOp(void)
 void Weaver2::vPreStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-  
-  vConcat("\n"_Stz);
+
+  vConcat_cmd("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -875,18 +951,18 @@ void Weaver2::vTabOp(bool bCommented)
   
   if (m_i_Op_stage) {
     if (bCommented)
-      vConcat("  //| "_Stz);
+      vConcat_cmd("  //| "_Stz);
     else
     if (m_bOpPrinted)
-      vConcat("    | "_Stz);
+      vConcat_cmd("    | "_Stz);
     else
-      vConcat("      "_Stz);
+      vConcat_cmd("      "_Stz);
   }
   else {
     if (bCommented)
-      vConcat("  //  "_Stz);
+      vConcat_cmd("  //  "_Stz);
     else
-      vConcat("      "_Stz);
+      vConcat_cmd("      "_Stz);
   }
 
   if (! bCommented)
@@ -899,8 +975,8 @@ void Weaver2::vTabOp(bool bCommented)
 void Weaver2::vTabStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-  
-  vConcat("  "_Stz);
+
+  vConcat_cmd("  "_Stz);
 }
 
 

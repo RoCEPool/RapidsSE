@@ -100,6 +100,9 @@
 #include "Predicate.hpp"
 #include "PredicateVec.hpp"
 
+#include "ExtendedText.hpp"
+#include "ExtendedTextBuffer.hpp"
+
 #include "AccessPath.hpp"
 #include "Api.hpp"
 #include "AttachMap.hpp"
@@ -266,8 +269,6 @@
 #include "Weaver2.hpp"
 #include "XF_Eg.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
-#include "ExtendedText.hpp"
-#include "ExtendedTextBuffer.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"

@@ -157,7 +157,7 @@ void Weaver::vStageNext(Card_Stage* pCard_Stage)
   
   eYG eStageTopo = (eYG) pCard_Stage->pSub_topology()->pSymbol()->Y_iGet(P_StageTopo);
   
-  //vTabOp();  vConcat("next"_Stz);  vEolOp();
+  //vTabOp();  vConcat_cmd("next"_Stz);  vEolOp();
 
   vPreStage();
   vTabStage();
@@ -178,7 +178,7 @@ void Weaver::vStageLast(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER, _FOOTER_);
   
-  //vTabOp();  vConcat("next"_Stz);  vEolOp();
+  //vTabOp();  vConcat_cmd("next"_Stz);  vEolOp();
   
   vPreStage();
   vTabStage();
@@ -296,7 +296,7 @@ void Weaver::vOp(Card* pCard)
 //  else                             sOpNm = aCK_short[eCard];
 //
 //  vTabOp();
-//  vConcat("%-9s %s"_Stz,
+//  vConcat_cmd("%-9s %s"_Stz,
 //          sOpNm.azChar(),
 //          sOpArgs.szStz());
 //  vEolOp();

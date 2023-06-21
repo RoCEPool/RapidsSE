@@ -40,6 +40,7 @@ namespace STORE
     CardIter*     m_pCI;
     PipelineDef*  m_pPipelineDef;
     ExtendedText* m_pOptStmt;
+    ExtendedText* m_pCodeBlock;
 
 
     // must be last
@@ -61,7 +62,9 @@ namespace STORE
     Bench* pBench(void);
 
     CardCtl* pCardCtl(void);
-  
+
+    ExtendedText* pCodeBlock(void);
+
     void vDissect(VertexSpec* pm_pUnOptPipeSpec);
 
     TagSet* pJobTags(void);
