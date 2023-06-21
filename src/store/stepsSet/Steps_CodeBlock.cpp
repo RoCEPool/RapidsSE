@@ -22,21 +22,24 @@ void Step::vAddSteps_CodeBlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* CodeBlock[].get -- get CodeBlock[]                                                   */
+/* CodeBlock[].get -- get CodeBlock[]                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vCodeBlockGet(void)
 {
   ENTRY();
     
-  RASSERT(m_pLogicUnit->m_xpText.bIsNotNull());
-  
-  m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGet());
+//  RASSERT(m_pLogicUnit->m_xpText.bIsNotNull());
+//
+//  m_pDataStack->vPushStz(m_pLogicUnit->m_xpText->szGet());
+
+
+  m_pDataStack->vPushPtr(nullptr);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* CodeBlock[].set -- set CodeBlock[]                                                   */
+/* CodeBlock[].set -- set CodeBlock[]                                         */
 /*----------------------------------------------------------------------------*/
 void Step::vCodeBlockSet(void)
 {
