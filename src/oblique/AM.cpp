@@ -82,6 +82,7 @@
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"

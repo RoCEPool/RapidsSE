@@ -8,6 +8,7 @@
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "SeApi.hpp"
 #include "Output.hpp"
@@ -204,6 +205,7 @@ void SeDeputy::vDeputyLoop(void)
 
       m_eError = Api::eForkJobChild(tChildJobId,
                                     pInpTknVec, pInpTagSet,
+                                    nullptr,
                                     tParentId, tOriginId, tDistId,
                                     m_pRootJob,
                                     true, /* update parent */

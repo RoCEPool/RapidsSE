@@ -13,6 +13,7 @@
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Op.hpp"
 #include "OpSpec.hpp"
@@ -125,6 +126,7 @@ void Step::vApiForkChild(void)
 
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
+                                   nullptr,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
                                    true,
@@ -201,6 +203,7 @@ void Step::vApiForkDemon(void)
   bool bIsPipeline;
   eEC eError = Api::eForkJobChild(tChildJobId,
                                   pCmdTknVec,pCmdTagSet,
+                                  nullptr,
                                   tParentId,tOriginId,tDistId,
                                   pOuterJob,
                                   false,

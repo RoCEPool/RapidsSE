@@ -6,6 +6,7 @@
 
 #include "eYX.h"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Job.hpp"
 #include "JobList.hpp"
@@ -156,12 +157,15 @@ Job* Api::pCreateJob2PC(Job* pParentJob, Stz* sCmd)
 /*----------------------------------------------------------------------------*/
 eEC Api::eForkJobChild(JobId& rtChildJobId,
                         TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                        ExtendedText* pCodeBlock,
                         JobId tParentId, JobId tOriginId, JobId tDistId,
                         Job*  pParentJob,
                         bool  bUpdateParent,
                         bool& bIsPipeline)
 {
   _static_
+
+  RASSERT(! pCodeBlock);
 
   if ( AM::pGrid() &&
       ! AM::pGrid()->bHealthy()) {

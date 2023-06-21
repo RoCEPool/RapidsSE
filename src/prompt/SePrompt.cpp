@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 
 #include "CmdLineArgs.hpp"
