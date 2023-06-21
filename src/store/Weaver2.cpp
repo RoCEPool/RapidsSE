@@ -208,6 +208,14 @@ void Weaver2::vCppBlock(void)
     vTrace("Code %lld\n"_Stz, StrLib::nSize(p_pOptStmt->szTextBlock(0)->azChar()));
 
     vDebugPoint();
+
+    for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+      StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
+      if (i_Stage)
+        vConcat_code("\n"_Stz);
+      vConcat_code(pStageDef->szCode());
+    }
+
   }
 }
 
