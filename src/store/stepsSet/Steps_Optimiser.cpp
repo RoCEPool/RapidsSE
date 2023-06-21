@@ -143,6 +143,15 @@ void Step::vOptimiserWeave(void)
 
   m_pJob->vCmdText(szOptStmt);
 
+  ExtendedText* pCodeBlock = m_pLogicUnit->m_xpOptimiser->pCodeBlock();
+  if (pCodeBlock) {
+    delete pCodeBlock;
+    pCodeBlock = nullptr;
+    m_pLogicUnit->m_xpOptimiser->vCodeBlock(nullptr);
+  }
+
+  m_pJob->vCodeBlock(pCodeBlock);
+
   EXIT();
 }
 

@@ -262,6 +262,17 @@ ExtendedText* Optimiser::pCodeBlock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set code block                                                             */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vCodeBlock(ExtendedText* pCodeBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_pCodeBlock = pCodeBlock;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* dissect                                                                    */
 /*----------------------------------------------------------------------------*/
 void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)

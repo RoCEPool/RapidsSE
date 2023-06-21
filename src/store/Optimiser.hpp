@@ -64,6 +64,7 @@ namespace STORE
     CardCtl* pCardCtl(void);
 
     ExtendedText* pCodeBlock(void);
+    void vCodeBlock(ExtendedText* pCodeBlock);
 
     void vDissect(VertexSpec* pm_pUnOptPipeSpec);
 

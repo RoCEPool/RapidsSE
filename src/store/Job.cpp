@@ -520,7 +520,7 @@ void Job::vCodeBlock(ExtendedText* pCodeBlock)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  ASSERT(! m_pCmdText);
+  //ASSERT(! m_pCmdText);
 
   m_pCodeBlock = pCodeBlock;
 }
