@@ -18,7 +18,7 @@ SkipListSet::SkipListSet(eCN eClassNo, i8 nSizeEnt)
 {
   UNUSED(eClassNo);
   UNUSED(nSizeEnt);
-  m_iItem = 0;
+  vSetKey(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,11 +34,37 @@ SkipListSet::~SkipListSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* Get start addr of body in item                                             */
+/*----------------------------------------------------------------------------*/
+void* SkipListSet::aItemBody(void)
+{
+  return (void*) aAdd<void*>(m_xItem, member_size(conceptual__item, iKey));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get start addr of key in item                                              */
+/*----------------------------------------------------------------------------*/
+void* SkipListSet::aItemKey(void)
+{
+  return (void*) m_xItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get key as i8                                                              */
+/*----------------------------------------------------------------------------*/
+i8 SkipListSet::iKey(void)
+{
+  conceptual__item* pItem = (conceptual__item*) m_xItem;
+  return pItem->iKey;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set key                                                                    */
 /*----------------------------------------------------------------------------*/
-void SkipListSet::vSetKey(i16 iKey)
+void SkipListSet::vSetKey(i8 iKey)
 {
-  m_iItem = iKey;
+  conceptual__item* pItem = (conceptual__item*) m_xItem;
+  pItem->iKey = (i8) iKey;
 }
 
 /*============================================================================*/

@@ -5,19 +5,32 @@
 
 #include "SkipListNode.hpp"
 
+#define member_size(type, member) sizeof(((type *)0)->member)
+
 namespace BASE
 {
+  struct conceptual__item{
+    i8 iKey;
+
+    //body start here
+  };
+
+  // mini-block
   class SkipListSet
   {
   public:
     SkipListNode  m_xNode;
-    i16 m_iItem;//key
+    char m_xItem[1];
 
   public:
     SkipListSet(eCN eClassNo, i8 nSizeEnt);
     ~SkipListSet(void) noexcept(false);
 
-    void vSetKey(i16 iKey);
+    void* aItemBody(void);
+    void* aItemKey(void);
+    i8 iKey(void);
+
+    void vSetKey(i8 iKey);
 
   };
 }
