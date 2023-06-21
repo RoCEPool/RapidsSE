@@ -922,10 +922,18 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
 
     Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
 
-    // is the column part of the aggregate group by key ?
-    Column* pIndexColumn = pOpSketch->m_pIndexDef->pFindColumn(i_Col);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is column in the payload ?
+    bool bIsPayload = pOpSketch->bIsPayload(pColumn->iColumnNo());
 
-    if (pIndexColumn) {
+//    // is the column part of the aggregate group by key ?
+//    Column* pIndexColumn = pOpSketch->m_pIndexDef->pFindColumn(i_Col);
+//
+//    if (pIndexColumn) {
+//      continue;
+//    }
+
+    if ( ! bIsPayload ) {
       continue;
     }
 

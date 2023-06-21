@@ -635,7 +635,6 @@ rows:
 //------------------------------------------------------------------------------
 // SORT - INTEGER
 //------------------------------------------------------------------------------
-/*
 /weaver2
 /optimise_passthru
 pipeline unamed
@@ -734,7 +733,7 @@ rows:
   (23,'UNITED KINGDOM')
   (24,'UNITED STATES')
   (21,'VIETNAM')
-*/
+
 
 create table L (l_int_col0 integer);
 create table R(r_int_col0 integer, r_vch_col1 varchar);

@@ -1353,7 +1353,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
 
   //HACK-OPTIMISER
   // get the columns required
-  ColsReq* pColsMap = nullptr; //pOpDef->m_pColMap_sort;
+  ColsReq* pColsMap = pOpDef->m_pColMap_sort;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
