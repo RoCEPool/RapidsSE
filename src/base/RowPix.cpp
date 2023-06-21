@@ -13,7 +13,6 @@
 __pCastFunction(BASE,RowPix,CN_ROWPIX)
 __aNewFunction(RowPix,CN_ROWPIX)
 __vDeleteFunction(RowPix,CN_ROWPIX)
-__aFooterFunction(RowPix)
 
 /*----------------------------------------------------------------------------*/
 /* new row pix                                                                */

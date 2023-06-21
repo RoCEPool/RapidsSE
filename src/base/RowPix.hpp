@@ -28,9 +28,12 @@ namespace BASE
 
     ColPix m_xaColPix[C_ROWPIX_COLUMNS]; // column pix array
     byte m_baPixArea[C_ROWPIX_AREA];     // see if this reproduces problem on Linux
-  
+
+    // NOTE: Cannot have footer here because this object gets
+    // allocated in the RowBox_t Wsp varying in size depending on the columns etc.
+
     // must be last
-    Footer m_xFooter;
+    //Footer m_xFooter;
 
   public:
   
@@ -62,8 +65,6 @@ namespace BASE
     void vPrint(void);
   
     void vRemovePtnHash(void);
-
-    Footer* aFooter(void);
   };
 
   RowPix* _pRowPix(void* aAddr);
