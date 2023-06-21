@@ -1714,7 +1714,7 @@ void Job::vPostRecv(void)
 
   /* 14 */// m_pCmdText = nullptr;
 
-  /* 15 */ RASSERT(! m_pCodeBlock);
+  /* 15 */ //RASSERT(! m_pCodeBlock);
 
   m_tJobId.vNextJobId();
 

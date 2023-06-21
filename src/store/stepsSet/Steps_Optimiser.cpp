@@ -145,8 +145,8 @@ void Step::vOptimiserWeave(void)
 
   ExtendedText* pCodeBlock = m_pLogicUnit->m_xpOptimiser->pCodeBlock();
   if (pCodeBlock) {
-    delete pCodeBlock;
-    pCodeBlock = nullptr;
+//    delete pCodeBlock;
+//    pCodeBlock = nullptr;
     m_pLogicUnit->m_xpOptimiser->vCodeBlock(nullptr);
   }
 
