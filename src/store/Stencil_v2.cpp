@@ -1018,7 +1018,7 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
   //HACK-OPTIMISER
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving; // pOpDef->m_pStreamDef_emitted;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   //HACK-OPTIMISER
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
@@ -1210,9 +1210,7 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eH
 
   // get the streamDefLft
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
-
-  //HACK-OPTIMISER
-  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_arriving; // pOpDef->m_pStreamDef_emitted;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   //HACK-OPTIMISER
   StreamDef *pStreamDefRht = nullptr; //pOpDef->m_pStreamDef_joinTable;
