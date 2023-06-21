@@ -42,7 +42,7 @@ namespace BASE
     void operator delete(void*);
 
     RowPix(void);
-    RowPix(RowPix* pRowPix);
+    RowPix(RowPix* pRowPix, bool bAddPtnHash);
    ~RowPix(void) noexcept(false);
 
     static void* aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo);

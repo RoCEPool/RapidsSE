@@ -66,26 +66,100 @@ RowPix::RowPix(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowPix::RowPix(RowPix* pRowPix)
+RowPix::RowPix(RowPix* pRowPix, bool bAddPtnHash)
     : Object(CN_ROWPIX)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 
+  i8 nNameSize;
+  i8 nStzOfs;
+
+  m_sPixNm       = ""_Stz;
   m_bInitialised = pRowPix->m_bInitialised;
   m_bShortForm   = pRowPix->m_bShortForm;
   m_nColumns     = pRowPix->m_nColumns;
   m_nExtraCols   = pRowPix->m_nExtraCols;
   m_bPtnHash     = pRowPix->m_bPtnHash;
   m_nMaxRowSize  = pRowPix->m_nMaxRowSize;
-  m_nNameOffset  = pRowPix->m_nNameOffset;
-  m_nTotalChars  = pRowPix->m_nTotalChars;
+  m_nTotalChars  = 0;
 
-  for (i8 i_Col = 0; i_Col < pRowPix->m_nColumns; i_Col++)
-    m_xaColPix[i_Col].m_uAsU8 = pRowPix->m_xaColPix[i_Col].m_uAsU8;
+  m_nNameOffset = sizeof(ColPix)
+                           * ( m_nColumns + (bAddPtnHash ? 1 : 0) );
 
   MemLib::vZero(m_baPixArea,sizeof(m_baPixArea),CN_ROWPIX);
 
-  _checkInitialised_(CN_ROWPIX);
+  ColPix* axaColPixDst = m_xaColPix;
+
+  char* azNames = aAdd<char*>(axaColPixDst,m_nNameOffset);
+  char* azColNmDst = azNames;
+  i8 i_Col;
+
+  for (i_Col = 0; i_Col < pRowPix->m_nColumns; i_Col++) {
+
+    m_xaColPix[i_Col].m_uAsU8 = 0;
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
+
+    axColPixDst->m_uNumber   = (u8)i_Col;
+    // name
+    axColPixDst->m_uKind     = (u8)CX_USERCOL;
+    axColPixDst->m_uType     = (u8)pRowPix->m_xaColPix[i_Col].m_uType;
+    axColPixDst->m_uDatum    = (u8)pRowPix->m_xaColPix[i_Col].m_uDatum;
+    axColPixDst->m_uLength   = (u8)pRowPix->m_xaColPix[i_Col].m_uLength;
+    axColPixDst->m_uScale    = (u8)pRowPix->m_xaColPix[i_Col].m_uScale;
+    axColPixDst->m_bNullable = (u8)pRowPix->m_xaColPix[i_Col].m_bNullable;
+    axColPixDst->m_bPtnKey   = (u8)pRowPix->m_xaColPix[i_Col].m_bPtnKey;
+    axColPixDst->m_uSpare    = (u8)0;
+
+    ColPix* pColPix = pRowPix->axColPix(i_Col);
+
+    StrLib::vCopy(azColNmDst,aAdd<char*>(pColPix,pColPix->m_uName));
+    nNameSize = StrLib::nSize(azColNmDst);
+
+    nStzOfs = nDifference(axColPixDst,azColNmDst);
+    axColPixDst->m_uName = nStzOfs;
+
+    azColNmDst += nNameSize;
+    m_nTotalChars += nNameSize;
+  }
+
+  // i_Col falls thru
+
+  if (bAddPtnHash) {
+
+    //pRowPixDst->vPrint();
+    ASSERT(! pRowPixDst->m_nExtraCols);
+
+    m_nColumns++;
+    m_nExtraCols = 1;
+    m_bPtnHash = true;
+
+    ColPix* axColPixDst = &axaColPixDst[i_Col];
+
+    axColPixDst->m_uNumber   = (u8)i_Col;
+    // name
+    axColPixDst->m_uKind     = (u8)CX_PTNHASH;
+    axColPixDst->m_uType     = (u8)CT_INTEGER;
+    axColPixDst->m_uDatum    = (u8)DM_INT;
+    axColPixDst->m_uLength   = (u8)C_MAX_INT_PRECISION;
+    axColPixDst->m_uScale    = (u8)0;
+    axColPixDst->m_bNullable = (u8)false;
+    axColPixDst->m_bPtnKey   = (u8)false;
+    axColPixDst->m_uSpare    = (u8)0;
+
+    StrLib::vCopy(azColNmDst,"__keyHash");
+    nNameSize = StrLib::nSize(azColNmDst);
+
+    nStzOfs = nDifference(axColPixDst,azColNmDst);
+    axColPixDst->m_uName = nStzOfs;
+
+    azColNmDst += nNameSize;
+    m_nTotalChars += nNameSize;
+
+    //pRowPixDst->vPrint();
+  }
+
+  m_nTotalChars++;
+  * azColNmDst = '\0';
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWPIX);
 }
@@ -110,6 +184,7 @@ void* RowPix::aRowPixNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
 
   RowPix* pRowPix = new RowPix;
 
+  pRowPix->m_sPixNm       = ""_Stz;
   pRowPix->m_bInitialised = true;
   pRowPix->m_bShortForm   = false;
   pRowPix->m_nColumns = nNumCols;
