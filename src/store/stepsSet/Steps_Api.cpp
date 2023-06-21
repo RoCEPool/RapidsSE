@@ -55,6 +55,9 @@ void Step::vApiForkChild(void)
 {
   ENTRY();
 
+  ExtendedText* pCodeBlock = _pExtendedText(m_pDataStack->pPopPtr(__func__));
+  RASSERT(! pCodeBlock);
+
   s48K sCmd;
   m_pDataStack->vPopStr(sCmd,__func__);
 
@@ -126,7 +129,7 @@ void Step::vApiForkChild(void)
 
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
-                                   nullptr,
+                                   pCodeBlock,
                                    tParentId,tOriginId,tDistId,
                                    pOuterJob,
                                    true,
