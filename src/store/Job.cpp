@@ -498,10 +498,33 @@ void Job::vCmdText(ExtendedText* pCmdText)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  //ASSERT(! m_pCmdText);
+  ASSERT(! m_pCmdText);
 
   m_pCmdText = pCmdText;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get code text                                                              */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Job::pCodeBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pCodeBlock;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code block                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vCodeBlock(ExtendedText* pCodeBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  ASSERT(! m_pCmdText);
+
+  m_pCodeBlock = pCodeBlock;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -1494,6 +1517,36 @@ Pipeline* Job::pPipeline(void)
   Pipeline* pPipeline = (* pLogicUnit->m_xpPipeline);
     
   return pPipeline;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if command text is to be retrieved?                                   */
+/*----------------------------------------------------------------------------*/
+bool Job::bRecvCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCmdText) {
+    m_pCmdText = nullptr;
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if code block is to be retrieved?                                      */
+/*----------------------------------------------------------------------------*/
+bool Job::bRecvCodeBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCodeBlock) {
+    m_pCodeBlock = nullptr;
+    return true;
+  }
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
