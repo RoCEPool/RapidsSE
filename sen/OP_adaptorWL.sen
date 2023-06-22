@@ -179,12 +179,37 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CompileErrors \handler
 
-  "adaptorWL_CompileErrors - EV_I_COMPILEERRORS" .
+  "adaptorWL_CompileErrors - EV_I_COMPILEERRORS" .verbose
 
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
   AdaptorWL[].compilerError
+
+  // now delete the InfoSet[]
+  InfoSet[].delete
+
+  // Pipeout any payloads that were just generated so they can be sent straight away
+  adaptorWL_sendAnyWLResponses not if
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_I_EXECERRORS                                                */
+/* Called when there is an error from a sub command.                          */
+/*----------------------------------------------------------------------------*/
+: adaptorWL_ExecErrors \handler
+
+  "adaptorWL_ExecErrors - EV_I_EXECERRORS" .verbose
+
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
+
+  adaptorWL[].executionError
 
   // now delete the InfoSet[]
   InfoSet[].delete
@@ -371,6 +396,7 @@
   find: adaptorWL_StartMarker   EV_M_START          [op].handler!
   find: adaptorWL_Payload       EV_D_PAYLOAD        [op].handler!
   find: adaptorWL_CompileErrors EV_I_COMPILEERRORS  [op].handler!
+  find: adaptorWL_ExecErrors    EV_I_EXECERRORS     [op].handler!
   find: adaptorWL_CrwBuffer     EV_D_CRWBUFFER      [op].handler!
   find: adaptorWL_RowBuffer     EV_D_ROWBUFFER      [op].handler!
   find: adaptorWL_StreamSet     EV_D_STREAMSET      [op].handler!
