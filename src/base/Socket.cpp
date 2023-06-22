@@ -262,14 +262,16 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
     Job* pJob = _pJob(pObject);
 
     if (pJob->bSendCmdText()) {
-      ExtendedText *pExtText = pJob->pCmdText();
-      RASSERT(pExtText);
-      eClass = pExtText->eGetClassNo();
+      ExtendedText *pCmdText = pJob->pCmdText();
+      RASSERT(pCmdText);
+      eClass = pCmdText->eGetClassNo();
       nBytes = gxaSizeHeap[eClass].m_nClassSize;
-      bResult = bBytesSend(pExtText, nBytes, roSysCall);
+      bResult = bBytesSend(pCmdText, nBytes, roSysCall);
       RASSERT(bResult);
 
-      ExtendedTextBuffer *pExtTextBuffer = pExtText->pExtTextBuffer(0);
+      RASSERT(1 == pCmdText->nTextBlocks());
+
+      ExtendedTextBuffer *pExtTextBuffer = pCmdText->pExtTextBuffer(0);
       RASSERT(pExtTextBuffer);
       eClass = pExtTextBuffer->eGetClassNo();
       nBytes = gxaSizeHeap[eClass].m_nClassSize;
@@ -278,14 +280,16 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
     }
 
     if (pJob->bSendCodeBlock()) {
-      ExtendedText *pExtText = pJob->pCodeBlock();
-      RASSERT(pExtText);
-      eClass = pExtText->eGetClassNo();
+      ExtendedText *pCodeBlock = pJob->pCodeBlock();
+      RASSERT(pCodeBlock);
+      eClass = pCodeBlock->eGetClassNo();
       nBytes = gxaSizeHeap[eClass].m_nClassSize;
-      bResult = bBytesSend(pExtText, nBytes, roSysCall);
+      bResult = bBytesSend(pCodeBlock, nBytes, roSysCall);
       RASSERT(bResult);
 
-      ExtendedTextBuffer *pExtTextBuffer = pExtText->pExtTextBuffer(0);
+      RASSERT(1 == pCodeBlock->nTextBlocks());
+
+      ExtendedTextBuffer *pExtTextBuffer = pCodeBlock->pExtTextBuffer(0);
       RASSERT(pExtTextBuffer);
       eClass = pExtTextBuffer->eGetClassNo();
       nBytes = gxaSizeHeap[eClass].m_nClassSize;
@@ -441,6 +445,8 @@ Object* Socket::pObjectRecv(eCN eClass)
     RASSERT(bResult);
     ExtendedText* pCmdText = _pExtendedText(aCmdText);
 
+    RASSERT(1 == pCmdText->nTextBlocks());
+
     Object* aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
     nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
     bResult = bBytesRecv(aCmdTextBuffer, nSize, oSysCall);
@@ -458,6 +464,8 @@ Object* Socket::pObjectRecv(eCN eClass)
       bResult = bBytesRecv(aCodeBlock, nSize, oSysCall);
       RASSERT(bResult);
       ExtendedText* pCodeBlock = _pExtendedText(aCodeBlock);
+
+      RASSERT(1 == pCodeBlock->nTextBlocks());
 
       Object* aCodeBlockBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
       nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
