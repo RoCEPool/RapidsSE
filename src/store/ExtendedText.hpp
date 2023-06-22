@@ -14,7 +14,7 @@ namespace STORE
   {
   public:
     i8 m_nTextBlocks;
-    ExtendedTextBuffer* m_pExtTextBuffer;
+    ExtendedTextBuffer* m_paExtTextBuffer[1];
 
   protected:
     // must be last

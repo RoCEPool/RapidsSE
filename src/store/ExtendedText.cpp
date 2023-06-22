@@ -23,7 +23,7 @@ ExtendedText::ExtendedText(void)
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
   m_nTextBlocks = 0;
-  m_pExtTextBuffer = nullptr;
+  m_paExtTextBuffer[0] = nullptr;
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 }
@@ -35,7 +35,7 @@ ExtendedText::~ExtendedText(void) noexcept(false)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  delete m_pExtTextBuffer;
+  delete m_paExtTextBuffer[0];
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 }
@@ -67,12 +67,12 @@ void ExtendedText::vConcat(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  if (! m_pExtTextBuffer) {
-    m_pExtTextBuffer = new ExtendedTextBuffer;
+  if (! m_paExtTextBuffer[0]) {
+    m_paExtTextBuffer[0] = new ExtendedTextBuffer;
     m_nTextBlocks++;
   }
 
-  bool b = m_pExtTextBuffer->bConcat(szSubStr);
+  bool b = m_paExtTextBuffer[0]->bConcat(szSubStr);
   RASSERT(b);
 }
 
@@ -110,10 +110,10 @@ void ExtendedText::vEmpty(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  if (m_pExtTextBuffer)
-    delete m_pExtTextBuffer;
+  if (m_paExtTextBuffer[0])
+    delete m_paExtTextBuffer[0];
 
-  m_pExtTextBuffer = nullptr;
+  m_paExtTextBuffer[0] = nullptr;
   m_nTextBlocks = 0;
 }
 
@@ -124,7 +124,7 @@ ExtendedTextBuffer* ExtendedText::pExtTextBuffer(i8 i_TextBuffer)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  return m_pExtTextBuffer;
+  return m_paExtTextBuffer[0];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ void ExtendedText::vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextB
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-   m_pExtTextBuffer = pExtTextBuffer;
+  m_paExtTextBuffer[0] = pExtTextBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +166,7 @@ Stz* ExtendedText::szTextBlock(i8 i_TextBlock)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  return m_pExtTextBuffer->szTextBlock();
+  return m_paExtTextBuffer[0]->szTextBlock();
 }
 
 /*============================================================================*/
