@@ -37,6 +37,7 @@ namespace BASE
 
     void vAppend(const char cChar);
     void vAppend(char** aazCursor, Stz* szArg);
+    i8   nArea(void);
     bool bBeginsWith(Stz* szArg);
     bool bBreak(i8 iBreakAt, i8& iPrevBreak);
     byte* ayByte(void);
@@ -45,11 +46,13 @@ namespace BASE
     char* azChar(void);
     void vClip(i8 i_Char);
     void vConcat(Stz* szArg);
+    bool bConcat(Stz* szArg);
     bool bContains(Stz* szArg);
     void vCopy(Stz* szArg);
     void vCopy(Stz* szArg, i8 iLen);
     void vCopyTill(Stz* szArg, char cTill);
     bool bEqual(Stz* szArg);
+    i8   nFreeBytes(void);
     bool bIsEmpty(void);
     bool bIsInteger(void);
     i8   nLength(void);
@@ -100,6 +103,8 @@ String_t<AREA>::String_t(void)
   m_caCharArea[0] = '\0';
 #endif
 
+  ASSERT(AREA == nFreeBytes());
+
   _checkInitialisedSize_(AREA);
 }
 
@@ -119,6 +124,8 @@ String_t<AREA>::String_t(i8 iArg)
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
 #endif
+
+  ASSERT(AREA == nFreeBytes());
 
   StrLib::wToString(iArg,m_caCharArea);
 
@@ -142,6 +149,8 @@ String_t<AREA>::String_t(char* azArg)
   MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
 #endif
 
+  ASSERT(AREA == nFreeBytes());
+
   StrLib::vCopyLen(m_caCharArea,azArg,AREA-1);
 
   _checkInitialisedSize_(AREA);
@@ -163,7 +172,9 @@ String_t<AREA>::String_t(Stz* szArg)
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
 #endif
-  
+
+  ASSERT(AREA == nFreeBytes());
+
   StrLib::vCopyLen(m_caCharArea,szArg->azChar(),AREA-1);
   
   _checkInitialisedSize_(AREA);
@@ -291,6 +302,17 @@ void String_t<AREA>::vAppend(char** aazCursor, Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of data area                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 String_t<AREA>::nArea(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return AREA;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if arg is a leading sub-string of this string                         */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -412,6 +434,25 @@ void String_t<AREA>::vConcat(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* conditionally concat given stz*                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+bool String_t<AREA>::bConcat(Stz* szArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  i8 nBytes_free = this->nFreeBytes();
+  i8 nBytes_need = szArg->nSize();
+
+  if (nBytes_need > nBytes_free)
+    return false;
+
+  vConcat(szArg);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if arg is a sub-string in this string                                 */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -472,6 +513,19 @@ bool String_t<AREA>::bEqual(Stz* szArg)
   bool b = StrLib::bEqualTo(m_caCharArea,(const char*)szArg);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of data area                                                      */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 String_t<AREA>::nFreeBytes(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  i8 nFreeBytes = AREA - nLength();
+
+  return nFreeBytes;
 }
 
 

@@ -56,11 +56,11 @@ bool ExtendedTextBuffer::bConcat(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-  m_sTextBlock.vConcat(szSubStr);
+  bool b = m_sTextBlock.bConcat(szSubStr);
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-  return true;
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
