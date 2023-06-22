@@ -2,7 +2,7 @@
 /* _ray2 :                                                                    */
 /*============================================================================*/
 
-// NOTE: m_pColMap_sort : all cols are payload... no key
+// NOTE: m_pColMap_sort : passthru colMap for sort is ok, but non-passthru it is not
 
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
@@ -29,7 +29,124 @@ begin
    | first
 end ;
 
+/weaver2 select n_regionkey, n_nationkey from nation order by n_nationkey;
 
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*
+ArgDef: [0] tableNm Nation
+ArgDef: [0] expr    type INTEGER as n_regionkey $3
+, type INTEGER as n_nationkey $1
+ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    ArgDef: [0] tableNm Nation
+ArgDef: [0] expr    type INTEGER as n_regionkey $3
+, type INTEGER as n_nationkey $1
+ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    StageDef: [0] S01 (Code 0x0)
+OpDef: [0] scan
+: StreamDef_emitted  0x2048b0100040
+Col 0: N_NATIONKEY INTEGER
+Col 1: N_NAME VARCHAR
+Col 2: N_REGIONKEY INTEGER
+Col 3: N_COMMENT VARCHAR
+: Index_indexScan 0x0
+: Index_indexJoin 0x0
+: Index_indexSemi 0x0
+: IndexDef_gbyAgg 0x0
+: ColMap_gbyAgg  0x0
+: IndexDef_sort   0x0
+: ColMap_sort     0x0
+: ColsReq         0x2048ace60040
+Col 0: N_REGIONKEY key
+Col 1: N_NATIONKEY key
+ArgDef: [0] tableNm Nation
+OpDef: [1] project
+: StreamDef_arriving 0x2048b9c00040
+Col 0: N_NATIONKEY INTEGER
+Col 1: N_NAME VARCHAR
+Col 2: N_REGIONKEY INTEGER
+Col 3: N_COMMENT VARCHAR
+: StreamDef_emitted  0x2048aea00040
+Col 0: n_regionkey INTEGER
+Col 1: n_nationkey INTEGER
+: Index_indexScan 0x0
+: Index_indexJoin 0x0
+: Index_indexSemi 0x0
+: IndexDef_gbyAgg 0x0
+: ColMap_gbyAgg  0x0
+: IndexDef_sort   0x0
+: ColMap_sort     0x0
+: ColsReq         0x0
+ArgDef: [0] expr    type INTEGER as n_regionkey $3
+, type INTEGER as n_nationkey $1
+StageDef: [1] S02 (Code 0x0)
+OpDef: [0] sort
+: StreamDef_arriving 0x2048b5a00040
+Col 0: n_regionkey INTEGER
+Col 1: n_nationkey INTEGER
+: StreamDef_emitted  0x2048b1d00040
+Col 0: n_regionkey INTEGER
+Col 1: n_nationkey INTEGER
+: Index_indexScan 0x0
+: Index_indexJoin 0x0
+: Index_indexSemi 0x0
+: IndexDef_gbyAgg 0x0
+: ColMap_gbyAgg  0x0
+: IndexDef_sort   0x204877d2b040
+IndexDef --NO_NAME--
+Column 00 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+: ColMap_sort     0x2048a80a0040
+Col 0: n_regionkey payload
+Col 1: n_nationkey payload
+: ColsReq         0x0
+ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    StageDef: [2] S03 (Code 0x0)
+OpDef: [0] sort
+: StreamDef_arriving 0x2048b4e00040
+Col 0: n_regionkey INTEGER
+Col 1: n_nationkey INTEGER
+: StreamDef_emitted  0x2048b4c00040
+Col 0: n_regionkey INTEGER
+Col 1: n_nationkey INTEGER
+: Index_indexScan 0x0
+: Index_indexJoin 0x0
+: Index_indexSemi 0x0
+: IndexDef_gbyAgg 0x0
+: ColMap_gbyAgg  0x0
+: IndexDef_sort   0x204877d40040
+IndexDef --NO_NAME--
+Column 00 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+: ColMap_sort     0x2048a8010040
+Col 0: n_regionkey payload
+Col 1: n_nationkey payload
+: ColsReq         0x0
+ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+    StageDef: [3] S04 (Code 0x0)
+OpDef: [0] sort
+: StreamDef_arriving 0x2048aff00040
+Col 0: n_regionkey INTEGER
+Col 1: n_nationkey INTEGER
+: StreamDef_emitted  0x2048aeb00040
+Col 0: n_regionkey INTEGER
+Col 1: n_nationkey INTEGER
+: Index_indexScan 0x0
+: Index_indexJoin 0x0
+: Index_indexSemi 0x0
+: IndexDef_gbyAgg 0x0
+: ColMap_gbyAgg  0x0
+: IndexDef_sort   0x204877d3e040
+IndexDef --NO_NAME--
+Column 00 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+: ColMap_sort     0x2048a8030040
+Col 0: n_regionkey payload
+Col 1: n_nationkey payload
+: ColsReq         0x0
+ArgDef: [0] expr  type INTEGER as n_nationkey $2 ASC
+
+*/
