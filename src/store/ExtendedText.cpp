@@ -23,7 +23,11 @@ ExtendedText::ExtendedText(void)
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
   m_nTextBlocks = 0;
-  m_paExtTextBuffer[0] = nullptr;
+
+  for (i8 i_Block = 0; i_Block < C_EXTENDEDTEXTBUFFER; i_Block++)
+    m_paExtTextBuffer[i_Block] = nullptr;
+
+  _checkInitialised_(CN_EXTENDEDTEXT);
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 }
@@ -35,7 +39,10 @@ ExtendedText::~ExtendedText(void) noexcept(false)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  delete m_paExtTextBuffer[0];
+  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++) {
+    delete m_paExtTextBuffer[i_Block];
+    m_paExtTextBuffer[i_Block] = nullptr;
+  }
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 }
@@ -110,10 +117,10 @@ void ExtendedText::vEmpty(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  if (m_paExtTextBuffer[0])
-    delete m_paExtTextBuffer[0];
-
-  m_paExtTextBuffer[0] = nullptr;
+  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++) {
+    delete m_paExtTextBuffer[i_Block];
+    m_paExtTextBuffer[i_Block] = nullptr;
+  }
   m_nTextBlocks = 0;
 }
 
@@ -124,7 +131,7 @@ ExtendedTextBuffer* ExtendedText::pExtTextBuffer(i8 i_TextBuffer)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  return m_paExtTextBuffer[0];
+  return m_paExtTextBuffer[i_TextBuffer];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +141,7 @@ void ExtendedText::vExtTextBuffer(i8 i_TextBuffer, ExtendedTextBuffer* pExtTextB
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  m_paExtTextBuffer[0] = pExtTextBuffer;
+  m_paExtTextBuffer[i_TextBuffer] = pExtTextBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +173,7 @@ Stz* ExtendedText::szTextBlock(i8 i_TextBlock)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  return m_paExtTextBuffer[0]->szTextBlock();
+  return m_paExtTextBuffer[i_TextBlock]->szTextBlock();
 }
 
 /*============================================================================*/

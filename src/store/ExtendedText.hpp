@@ -12,9 +12,11 @@ namespace STORE
 {
   class ExtendedText : public Object
   {
+    static const i8 C_EXTENDEDTEXTBUFFER = 96;
+
   public:
     i8 m_nTextBlocks;
-    ExtendedTextBuffer* m_paExtTextBuffer[1];
+    ExtendedTextBuffer* m_paExtTextBuffer[C_EXTENDEDTEXTBUFFER];
 
   protected:
     // must be last

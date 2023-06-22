@@ -23,7 +23,7 @@ ExtendedTextBuffer::ExtendedTextBuffer(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-  MemLib::vZero(m_acTextBlock,sizeof(m_acTextBlock),CN_EXTENDEDTEXTBUFFER);
+  _checkInitialised_(CN_EXTENDEDTEXTBUFFER);
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 }
@@ -56,7 +56,7 @@ bool ExtendedTextBuffer::bConcat(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-  StrLib::vConcat(m_acTextBlock,szSubStr->azChar());
+  m_sTextBlock.vConcat(szSubStr);
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
@@ -70,7 +70,7 @@ Stz* ExtendedTextBuffer::szTextBlock(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-  return (Stz*)m_acTextBlock;
+  return m_sTextBlock.szStz();
 }
 
 /*============================================================================*/

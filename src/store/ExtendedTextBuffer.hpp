@@ -10,7 +10,8 @@ namespace STORE
   class ExtendedTextBuffer : public Object
   {
   public:
-    char m_acTextBlock[C_1M];
+
+    s1M m_sTextBlock;
 
   protected:
     // must be last
