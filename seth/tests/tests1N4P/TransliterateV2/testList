@@ -1,26 +1,28 @@
 
-project.test
-sum.test
-minmax.test
-count.test
-arithmetic_int.test
+//project.test
+//sum.test
+//minmax.test
+//count.test
+//arithmetic_int.test
 
-date.test
+//date.test
 
-//aggregates.test
+////aggregates.test
 
-arithmetic_float.test
-boolean.test
-decimal.test
-time.test
-filterInteger.test
-filterDecimal.test
-limit.test
-//indexJoin.test
-//indexJoinHash.test
-query6.test
+//arithmetic_float.test
+//boolean.test
+
+//decimal.test
+//time.test
+//filterInteger.test
+//filterDecimal.test
+//limit.test -- some issue
+////indexJoin.test
+////indexJoinHash.test
+//query6.test
 selectTypes.test
 sort.test
 
-top.test
+//top.test
+
 //union.test

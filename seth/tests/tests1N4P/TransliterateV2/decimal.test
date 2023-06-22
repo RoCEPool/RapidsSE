@@ -27,7 +27,7 @@ load datums "../DATA/Transliterate/decimal.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select dec_col6 from datums;
+/weaver2 select dec_col6 from datums;
 rows:
 (41.04)
 (47.04)
@@ -42,7 +42,7 @@ rows:
 (477.04)
 
 //------------------------------------------------------------------------------
-select dec_col6 + null from datums;
+/weaver2 select dec_col6 + null from datums;
 rows:
  (null)
  (null)
@@ -57,7 +57,7 @@ rows:
  (null)
 
 //------------------------------------------------------------------------------
-select null + dec_col6 from datums;
+/weaver2 select null + dec_col6 from datums;
 rows:
  (null)
  (null)
@@ -72,7 +72,7 @@ rows:
  (null)
 
 //------------------------------------------------------------------------------
-select dec_col6 + dec_col7 from datums;
+/weaver2 select dec_col6 + dec_col7 from datums;
 rows:
 (1082.08)
 (57.08)
@@ -87,7 +87,7 @@ rows:
 (487.08)
 
 //------------------------------------------------------------------------------
-select -dec_col6 from datums;
+/weaver2 select -dec_col6 from datums;
 rows:
 (-41.04)
 (-47.04)

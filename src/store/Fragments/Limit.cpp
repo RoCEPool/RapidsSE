@@ -26,6 +26,7 @@ void vLimit(Dynamic_T* aDynamicT) {
   i8 __LIMIT_ROWS__;
 
   __L_LABEL_LOOP__:
+  __L_LABEL_NEXT__:
 
   // marker-start
 
@@ -44,7 +45,7 @@ void vLimit(Dynamic_T* aDynamicT) {
 
   if (aDynamicT->m_iLimitRows <= __LIMIT_ROWS__) {
     aDynamicT->m_iLimitRows++;
-    goto __L_LABEL__;
+    goto __L_LABEL_NEXT__;
   }
   else
     goto L_Return;

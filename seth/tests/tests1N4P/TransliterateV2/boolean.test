@@ -27,7 +27,7 @@ load datums "../DATA/Transliterate/date.csv" ;
 success
 
 //------------------------------------------------------------------------------
-select bol_col2 from datums;
+/weaver2 select bol_col2 from datums;
 rows:
 (FALSE)
 (NULL)
@@ -41,7 +41,7 @@ rows:
 (TRUE)
 (TRUE)
 
-select bol_col2 from datums where bol_col2='true';
+/weaver2 select bol_col2 from datums where bol_col2='true';
 rows:
 (TRUE)
 (TRUE)
@@ -49,7 +49,7 @@ rows:
 (TRUE)
 (TRUE)
 
-select bol_col2 from datums where bol_col2='false';
+/weaver2 select bol_col2 from datums where bol_col2='false';
 rows:
 (FALSE)
 (FALSE)
@@ -58,7 +58,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND TRUE from datums;
+/weaver2 select bol_col2 AND TRUE from datums;
 rows:
 (FALSE)
 (NULL)
@@ -73,7 +73,7 @@ rows:
 (TRUE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND FALSE from datums;
+/weaver2  select bol_col2 AND FALSE from datums;
 rows:
 (FALSE)
 (FALSE)
@@ -88,7 +88,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 OR TRUE from datums;
+/weaver2  select bol_col2 OR TRUE from datums;
 rows:
 (TRUE)
 (TRUE)
@@ -103,7 +103,7 @@ rows:
 (TRUE)
 
 //------------------------------------------------------------------------------
-select bol_col2 OR FALSE from datums;
+/weaver2 select bol_col2 OR FALSE from datums;
 rows:
 (FALSE)
 (NULL)
@@ -118,7 +118,7 @@ rows:
 (TRUE)
  
 //------------------------------------------------------------------------------
-select NOT bol_col2 from datums;
+/weaver2 select NOT bol_col2 from datums;
 rows:
 (TRUE)
 (NULL)
@@ -133,7 +133,7 @@ rows:
 (FALSE)
 /*
 //------------------------------------------------------------------------------
-select bol_col2 XOR TRUE from datums;
+/weaver2 select bol_col2 XOR TRUE from datums;
 rows:
 (TRUE)
 (NULL)
@@ -149,7 +149,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
-select bol_col2 XOR FALSE from datums;
+/weaver2 select bol_col2 XOR FALSE from datums;
 rows:
 (FALSE)
 (NULL)
@@ -164,7 +164,7 @@ rows:
 (TRUE)
 */
 //------------------------------------------------------------------------------
-select bol_col2 AND bol_col3 from datums;
+/weaver2 select bol_col2 AND bol_col3 from datums;
 rows:
 (FALSE)
 (FALSE)
@@ -179,67 +179,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND bol_col3 OR bol_col2 from datums;
-rows:
-(FALSE)
-(NULL)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(FALSE)
-(TRUE)
-(TRUE)
-
-//------------------------------------------------------------------------------
-select NOT(bol_col2 AND bol_col3) from datums;
-rows:
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-(TRUE)
-
-//------------------------------------------------------------------------------
-select NOT(bol_col2 OR bol_col3) from datums;
-rows:
-(TRUE)
-(NULL)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(TRUE)
-(FALSE)
-(FALSE)
-
-//------------------------------------------------------------------------------
-select NOT bol_col2 AND NOT bol_col3 from datums;
-rows:
-(TRUE)
-(NULL)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(FALSE)
-(TRUE)
-(TRUE)
-(FALSE)
-(FALSE)
-
-//------------------------------------------------------------------------------
-select bol_col2 AND (NOT bol_col3 OR bol_col3) from datums;
+/weaver2 select bol_col2 AND bol_col3 OR bol_col2 from datums;
 rows:
 (FALSE)
 (NULL)
@@ -254,7 +194,67 @@ rows:
 (TRUE)
 
 //------------------------------------------------------------------------------
-select bol_col2 AND (bol_col3 OR bol_col3) from datums;
+/weaver2 select NOT(bol_col2 AND bol_col3) from datums;
+rows:
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+(TRUE)
+
+//------------------------------------------------------------------------------
+/weaver2 select NOT(bol_col2 OR bol_col3) from datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+//------------------------------------------------------------------------------
+/weaver2 select NOT bol_col2 AND NOT bol_col3 from datums;
+rows:
+(TRUE)
+(NULL)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(TRUE)
+(FALSE)
+(FALSE)
+
+//------------------------------------------------------------------------------
+/weaver2 select bol_col2 AND (NOT bol_col3 OR bol_col3) from datums;
+rows:
+(FALSE)
+(NULL)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(TRUE)
+(FALSE)
+(FALSE)
+(TRUE)
+(TRUE)
+
+//------------------------------------------------------------------------------
+/weaver2 select bol_col2 AND (bol_col3 OR bol_col3) from datums;
 rows:
 (FALSE)
 (FALSE)
@@ -269,7 +269,7 @@ rows:
 (FALSE)
 
 //------------------------------------------------------------------------------
-select bol_col2 OR bol_col3 OR bol_col2 from datums;
+/weaver2 select bol_col2 OR bol_col3 OR bol_col2 from datums;
 rows:
 (FALSE)
 (NULL)

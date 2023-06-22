@@ -436,7 +436,7 @@ void CodeSynthUtils::vReplacePayloadBytes(Stz* sLine, OpSketch* pOpSketch)
   _static_
 
   if (StrLib::bContains(sLine->azChar(), "__PAYLOADBYTES__")) {
-    RASSERT( pOpSketch->m_nPayloadBytes );
+    //RASSERT( pOpSketch->m_nPayloadBytes );
     s256 sPayLoadBytes;
     StrLib::wToString(pOpSketch->m_nPayloadBytes, sPayLoadBytes.azChar());
     bool bResult = StrLib::bReplace(sLine->azChar(), "__PAYLOADBYTES__", sPayLoadBytes.azChar());

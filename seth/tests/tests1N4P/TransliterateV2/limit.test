@@ -26,7 +26,7 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-select l_discount from lineitem limit 3;
+/weaver2 select l_discount from lineitem limit 3;
 rows: 0
 
 // load data
@@ -34,41 +34,41 @@ load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 //------------------------------------------------------------------------------
-select l_partkey from lineitem limit 3;
+/weaver2 select l_partkey from lineitem limit 3;
 rows: 3
 
 //------------------------------------------------------------------------------
-select l_returnflag from lineitem limit 5;
+/weaver2 select l_returnflag from lineitem limit 5;
 rows: 5
 
 //------------------------------------------------------------------------------
-select SUM(l_discount) FROM lineitem WHERE l_orderkey < 20 limit 3;
+/weaver2 select SUM(l_discount) FROM lineitem WHERE l_orderkey < 20 limit 3;
 rows:
   (84.16)
 
 //------------------------------------------------------------------------------
-SELECT l_orderkey, SUM(l_discount) FROM lineitem GROUP BY l_orderkey limit 3;
+/weaver2 select l_orderkey, SUM(l_discount) FROM lineitem GROUP BY l_orderkey limit 3;
 rows:
   (0,4.24)
   (1,4.13)
   (2,4.22)
 
 //------------------------------------------------------------------------------
-SELECT l_discount FROM lineitem order by l_discount limit 3;
+/weaver2 select l_discount FROM lineitem order by l_discount limit 3;
 rows:
   (1.00)
   (1.00)
   (1.00)
 
 //------------------------------------------------------------------------------
-SELECT L_QUANTITY FROM lineitem where L_QUANTITY > 10.0 order by L_QUANTITY limit 3;
+/weaver2 select L_QUANTITY FROM lineitem where L_QUANTITY > 10.0 order by L_QUANTITY limit 3;
 rows:
   (11.00)
   (11.00)
   (11.00)
 
 //------------------------------------------------------------------------------
-SELECT L_QUANTITY FROM lineitem order by L_ORDERKEY limit 8;
+/weaver2 select L_QUANTITY FROM lineitem order by L_ORDERKEY limit 8;
 rows:
   (6.00)
   (30.00)

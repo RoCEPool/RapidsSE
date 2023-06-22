@@ -51,7 +51,7 @@ void Step::vLibInfoCompile(void)
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
 
-  s48K szCode;
+  s1M szCode;
   pCodeBlock->bRetrieve(szCode);
 
   bool bClean = CompileLib::bCompile(szCode.szStz(), szDynLibNm, pLibInfo, "clang"_Stz);

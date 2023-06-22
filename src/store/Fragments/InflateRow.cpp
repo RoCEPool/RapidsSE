@@ -24,8 +24,9 @@
 void vInflateRowBegin(Dynamic_T* aDynamicT) {
 
   i8* paW;
-  i8 i_CurrentRow;
+  i8  i_CurrentRow;
   i8* piColumn;
+  i8  iaPow10[15];
 
   // marker-start
 
@@ -39,6 +40,22 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
   L_InflateRowT:
 
   printf("INFLATE-ROW\n");
+
+  iaPow10[0] = 1;
+  iaPow10[1] = 10;
+  iaPow10[2] = 100;
+  iaPow10[3] = 1000;
+  iaPow10[4] = 10000;
+  iaPow10[5] = 100000;
+  iaPow10[6] = 1000000;
+  iaPow10[7] = 10000000;
+  iaPow10[8] = 100000000;
+  iaPow10[9] = 1000000000;
+  iaPow10[10] = 10000000000;
+  iaPow10[11] = 100000000000;
+  iaPow10[12] = 1000000000000;
+  iaPow10[13] = 10000000000000;
+  iaPow10[14] = 100000000000000;
 
   paW = &aDynamicT->m_aW[0];
 
