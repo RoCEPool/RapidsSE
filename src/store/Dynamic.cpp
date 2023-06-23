@@ -121,8 +121,6 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
 
   // aggregate T (SR_AT)
-  m_xDynamicT.m_iAggregInit = 1;
-
   m_xDynamicT.m_xRowInfoAT.m_iInitialize = 1;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoAT.m_iCell[i] = 0;
