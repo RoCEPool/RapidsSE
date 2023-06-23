@@ -432,6 +432,11 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 {
+  if (!m_pStmtCtx) {
+    // This handler is called when a client disconnects. If a statement isn't running then it can be ignored.
+    return;
+  }
+
   ASSERT(m_pStmtCtx);
 
   if (m_pStmtCtx->bGotError()) {

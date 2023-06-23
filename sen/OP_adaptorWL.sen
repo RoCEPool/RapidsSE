@@ -200,7 +200,8 @@
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_I_EXECERRORS                                                */
-/* Called when there is an error from a sub command.                          */
+/* Called when there is an error from a sub command but also when the         */
+/* client disconnects.                                                        */
 /*----------------------------------------------------------------------------*/
 : adaptorWL_ExecErrors \handler
 

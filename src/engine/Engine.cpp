@@ -630,6 +630,7 @@ void Engine::vCloseTrace(void)
       gpAttachMap->vTraceLockGrab();
 
     gpTraceFile->vClose();
+    gpTraceFile = nullptr; // To stop the next vTrace message writing to a closed file handle
 
     if(gpAttachMap)
       gpAttachMap->vTraceLockDrop();
