@@ -48,8 +48,6 @@ int vCrwContinue(struct Dynamic_T* aDynamicT) {
   #include "../src/store/vFLAT_PreliminaryCrw_v2.h"
   #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
-  printf("__FUNCTION_CRW__\n");
-
   // marker-end
 
   L_InflateCrwT:
@@ -67,9 +65,7 @@ int vCrwContinue(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 
-#include "../src/store/Fragments/vFLAT_FunctionLocals.h"
-
-  printf("__FUNCTION_EOS__\n");
+  #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
 }
@@ -94,10 +90,8 @@ int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 int vIndexContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-start
-#include "../src/store/vFLAT_Parameters_v2.h"
-#include "../src/store/Fragments/vFLAT_FunctionLocals.h"
-
-  printf("__FUNCTION_INDEX__\n");
+  #include "../src/store/vFLAT_Parameters_v2.h"
+  #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
 }
@@ -122,8 +116,7 @@ int vRowIndexContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-start
 
-#include "../src/store/Fragments/vFLAT_FunctionLocals.h"
-  printf("__FUNCTION_ROW__\n");
+  #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
 
@@ -138,10 +131,8 @@ int vRowContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-start
 
-#include "../src/store/vFLAT_Parameters_v2.h"
-#include "../src/store/Fragments/vFLAT_FunctionLocals.h"
-
-  printf("__FUNCTION_ROW__\n");
+  #include "../src/store/vFLAT_Parameters_v2.h"
+  #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
 
