@@ -3,15 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
-#include "Combined.hpp"
-#include "IndexDef.hpp"
-#include "CodeSynthCommon.h"
-#include "ClangStuff.h"
 #include "ClangDynamic.h"
-#include "Pay.hpp"
-#include "Key.hpp"
-#include "Ent.hpp"
-#include "Ent_int.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- Code Fragments ----------------------------------------------------------*/
