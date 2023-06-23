@@ -43,7 +43,6 @@ namespace STORE
     ExtendedText* pOptStmt(void);
     void vOptStmt(ExtendedText* pOptSmt);
 
-    Stz* szCodeBlock(void);
     ExtendedText* pCodeBlock(void);
     void vCodeBlock(ExtendedText* pCodeBlock);
 
