@@ -445,9 +445,8 @@ Stz* Optimiser::szWeave(void)
     Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
     pWeaver2->vWeaveOptStmt(pBoard_query);
 
-    if (! m_pOptStmt)
-      m_pOptStmt = new ExtendedText;
-    m_pOptStmt->vCopy(pWeaver2->szOptStmt());
+    m_pOptStmt = pWeaver2->pOptStmt();
+    pWeaver2->vOptStmt(nullptr);
 
     if (pWeaver2->pCodeBlock()) {
       m_pCodeBlock = pWeaver2->pCodeBlock();

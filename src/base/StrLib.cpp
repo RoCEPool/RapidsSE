@@ -2628,45 +2628,56 @@ i8 StrLib::iGleanInt(char* azArg)
 /*----------------------------------------------------------------------------*/
 /* find end of (line/record) group given separator and max length             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& nGroupLen)
+char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& rnGroupLen)
 {
   _static_
-
-  nGroupLen = 0;
 
   ASSERT(*azArg);
   ASSERT(nMaxLength);
 
+  rnGroupLen = 0;
+
+
   char* szGroupEnd = azArg;
-  i8 nCrsLen = 0;
+  i8 nLen_crs = 0;
 
-  char* azCrs;
-  for (azCrs = azArg; nCrsLen < nMaxLength; azCrs++) {
+  char* azCrs_arg;
+  for (azCrs_arg = azArg; nLen_crs < nMaxLength; azCrs_arg++) {
 
-    if (! *azCrs) {
-      szGroupEnd = azCrs;
-      nGroupLen = nCrsLen;
+    // increment length of potential group
+    nLen_crs++;
+
+    if (! *azCrs_arg) {
+      // + end of arg string
+      // add final group
+      szGroupEnd = azCrs_arg;
+      rnGroupLen = nLen_crs;
       break;
     }
 
-    nCrsLen++;
-
-    if (*azCrs == cSep) {
-      szGroupEnd = azCrs;
-      nGroupLen = nCrsLen;
+    if (*azCrs_arg == cSep) {
+      // + group separator
+      // add to group
+      szGroupEnd = azCrs_arg;
+      rnGroupLen = nLen_crs;
     }
 
   }
 
-  if (szGroupEnd == azArg) {
-    RASSERT(! nGroupLen);
-  }
-  if (! nGroupLen) {
-    RASSERT(szGroupEnd == azArg);
-  }
+  // nb. may have exited because last potential group didn't fit max length
 
-  if (nSize(azArg) != nGroupLen+1)
-    vDebugPoint();
+  // we must have had one line/record in group
+  //  (otherwise this routine doesn't work)
+  ASSERT(rnGroupLen);
+
+  // *szGroupEnd will be cSep or \0
+  ASSERT(*szGroupEnd == cSep || ! *szGroupEnd);
+
+  // byte length of group is (chars of group) plus (cSep or \0)
+  ASSERT(szGroupEnd - azArg + 1 == rnGroupLen);
+
+  // group will not be longer than nMaxLength
+  ASSERT(rnGroupLen <= nMaxLength);
 
   return szGroupEnd;
 }

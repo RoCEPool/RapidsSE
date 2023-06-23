@@ -192,6 +192,8 @@ void Weaver2::vCppBlock(void)
       if (i_Stage)
         vConcat_code("\n"_Stz);
       vConcat_code(pStageDef->szCode());
+
+      p_pCodeBlock->vConcat(pStageDef->pCode());
     }
 
   }

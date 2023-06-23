@@ -139,6 +139,24 @@ void ExtendedText::vConcat(Stz* szSubStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add sub-string to text                                                     */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vConcat(ExtendedText* pArg)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  i8 nBlocks_arg = pArg->nTextBlocks();
+  for (i8 i_Block = 0; i_Block < nBlocks_arg; i_Block++) {
+
+    ExtendedTextBuffer* pBuffer_arg  = pArg->pExtTextBuffer(i_Block);
+
+    Stz* szTextBlock = pBuffer_arg->szTextBlock();
+
+    vConcat(szTextBlock);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy given extended text argument                                          */
 /*----------------------------------------------------------------------------*/
 void ExtendedText::vCopy(ExtendedText* pExtText_arg)

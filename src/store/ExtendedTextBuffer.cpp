@@ -96,10 +96,10 @@ i8 ExtendedTextBuffer::nFreeBytes(void)
   if (nTextSize > 1)
     vDebugPoint();
 
-  if (nTextSize >= C_16K)
+  if (nTextSize >= C_4K)
     return 0;
   else
-    return C_16K - nTextSize;
+    return C_4K - nTextSize;
 
 //  return m_sTextBlock.nFreeBytes();
 }
