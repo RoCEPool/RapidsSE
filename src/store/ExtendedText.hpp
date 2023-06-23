@@ -29,8 +29,6 @@ namespace STORE
     ExtendedText(void);
     ~ExtendedText(void) noexcept(false);
 
-    static void vRepair(Object* pObject);
-
     void vConcat(Stz* szSubStr);
     void vCopy(ExtendedText* pExtText_arg);
     void vCopy(Stz* szStr);
