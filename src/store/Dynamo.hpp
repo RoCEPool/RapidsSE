@@ -30,8 +30,6 @@ namespace STORE
 
     ParamsSpec*  m_pParamsSpec;      // set of parameters
 
-    ExtendedText* m_pCode;
-    
     // must be last
     Footer m_xFooter;
 
@@ -45,11 +43,7 @@ namespace STORE
     static void vRepair(Object* pObject);
     static VertexSpec* pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
-    ExtendedText* pCodeBlock(void);
-
     VertexSpec* pCompile(Stz* szPipelineStmt);
-
-    bool bHasCode(void);
 
      Stz* szName(void);
 

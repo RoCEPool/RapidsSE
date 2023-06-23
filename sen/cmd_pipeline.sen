@@ -515,11 +515,11 @@
                   // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
                   //---------------------------------------------------------
 
-                  Dynamo[].hasCode if
-                   "DYNAMO HAS CODE" .
+                  [job].hasCodeBlock if
+                   "JOB HAS CODE" .
 
                     LibInfo[].new
-                    Dynamo[].codeBlock@
+                    [job].codeBlock@
                       Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
                         LibInfo[].compile not if
                       "COMPILATION FAILED" .

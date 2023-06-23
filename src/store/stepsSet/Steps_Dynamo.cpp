@@ -34,29 +34,11 @@
 void Step::vAddSteps_Dynamo(void)
 {
   vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
-  vAddStep("Dynamo[].codeBlock@"_Stz,&Step::vDynamoCodeBlockFetch);
   vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
   vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
   vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
-  vAddStep("Dynamo[].hasCode"_Stz,  &Step::vDynamoHasCode);
   vAddStep("Dynamo[].name@"_Stz,    &Step::vDynamoNameFetch);
   vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Dynamo[].codeBlock@ -- fetch the code block                                */
-/*----------------------------------------------------------------------------*/
-void Step::vDynamoCodeBlockFetch(void)
-{
-  ENTRY();
-
-  ExtendedText* pCodeBlock;
-
-  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  pCodeBlock = pDynamo->pCodeBlock();
-  m_pDataStack->vPushPtr(pCodeBlock);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,21 +94,6 @@ void Step::vDynamoGet(void)
   else
     m_pDataStack->vPushPtr(nullptr);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Dynamo[].hasCode -- does the dynamo have code ?                            */
-/*----------------------------------------------------------------------------*/
-void Step::vDynamoHasCode(void)
-{
-  ENTRY();
-
-  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  if (pDynamo->bHasCode())
-    m_pDataStack->vPushInt(true);
-  else
-    m_pDataStack->vPushInt(false);
   EXIT();
 }
 

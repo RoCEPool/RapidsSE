@@ -467,11 +467,9 @@ void vDdlLockAssertNone(void);
   void vDynamicNew(void);
   void vDynamicStreamDefOut(void);
 
- void vDynamoCodeBlockFetch(void);
   void vDynamoCompile(void);
   void vDynamoDelete(void);
   void vDynamoGet(void);
-  void vDynamoHasCode(void);
   void vDynamoNameFetch(void);
   void vDynamoNew(void);
 

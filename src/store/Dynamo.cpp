@@ -46,8 +46,6 @@ Dynamo::Dynamo(TagSet* p_JobTags)
 
   m_pParamsSpec = nullptr;
 
-  m_pCode = nullptr;
-
   _checkInitialised_(CN_DYNAMO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -68,8 +66,6 @@ Dynamo::~Dynamo(void) noexcept(false)
   }
 
   delete m_pScanner;
-
-  delete m_pCode;
 
   delete m_pParamsSpec;
 }
@@ -110,19 +106,6 @@ VertexSpec* Dynamo::pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-ExtendedText* Dynamo::pCodeBlock(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
-
-  if (! m_pCode)
-    return nullptr;
-
-  return m_pCode;
-}
 
 /*----------------------------------------------------------------------------*/
 /* recursively compile the tokenised pipeline statement                       */
@@ -1229,19 +1212,6 @@ void Dynamo::vTokenAccept(void)
   m_pScanner->vTokenAccept();
 }
 
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bHasCode(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
-
-  return m_pCode ? true : false;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
