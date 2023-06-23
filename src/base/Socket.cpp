@@ -289,7 +289,11 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 
       //RASSERT(1 == pCodeBlock->nTextBlocks());
 
-      for (i8 i_Block = 0; i_Block < pCodeBlock->nTextBlocks(); i_Block++) {
+      i8 nBlocks = pCodeBlock->nTextBlocks();
+      if (nBlocks > 1)
+        vDebugPoint();
+
+      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
         ExtendedTextBuffer *pExtTextBuffer = pCodeBlock->pExtTextBuffer(i_Block);
         RASSERT(pExtTextBuffer);
         eClass = pExtTextBuffer->eGetClassNo();
@@ -478,8 +482,15 @@ Object* Socket::pObjectRecv(eCN eClass)
         ExtendedTextBuffer *pCodeBlockBuffer = _pExtendedTextBuffer(aCodeBlockBuffer);
 
         pCodeBlock->vExtTextBuffer(i_Block, pCodeBlockBuffer);
+
       }
 
+      if (nBlocks > 1) {
+        vTrace("~~CodeBlock\n"_Stz);
+        pCodeBlock->vDump();
+        vTrace("~~~~~~~~~~~\n"_Stz);
+        vDebugPoint();
+      }
       pJob->vCodeBlock(pCodeBlock);
     }
 

@@ -449,10 +449,10 @@ Stz* Optimiser::szWeave(void)
       m_pOptStmt = new ExtendedText;
     m_pOptStmt->vCopy(pWeaver2->szOptStmt());
 
-    if (pWeaver2->szCodeBlock()) {
+    if (pWeaver2->pCodeBlock()) {
       if (!m_pCodeBlock)
         m_pCodeBlock = new ExtendedText;
-      m_pCodeBlock->vCopy(pWeaver2->szCodeBlock());
+      m_pCodeBlock->vCopy(pWeaver2->pCodeBlock());
     }
 
     delete pWeaver2;

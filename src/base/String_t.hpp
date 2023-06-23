@@ -443,7 +443,7 @@ void String_t<AREA>::vConcat(Stz* szArg, i8 nLen)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea,szArg->azChar(),nLen);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

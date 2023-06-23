@@ -75,6 +75,7 @@ bool ExtendedTextBuffer::bConcat(Stz* szSubStr, i8 nLen)
   ASSERT(szSubStr->nSize() <= m_sTextBlock.nSpace());
 
   bool b = m_sTextBlock.bConcat(szSubStr,nLen);
+  RASSERT(b);
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
@@ -89,15 +90,18 @@ i8 ExtendedTextBuffer::nFreeBytes(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
-//  i8 nBytesFree = m_sTextBlock.nFreeBytes();
-//  i8 nTextSize = m_sTextBlock.nSize();
-//
-//  if (nTextSize >= C_16K)
-//    return 0;
-//  else
-//    return C_16K - nTextSize;
+  i8 nBytesFree = m_sTextBlock.nFreeBytes();
+  i8 nTextSize = m_sTextBlock.nSize();
 
-  return m_sTextBlock.nFreeBytes();
+  if (nTextSize > 1)
+    vDebugPoint();
+
+  if (nTextSize >= C_16K)
+    return 0;
+  else
+    return C_16K - nTextSize;
+
+//  return m_sTextBlock.nFreeBytes();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -547,6 +547,7 @@ void StrLib::vConcat(char* psDst, const char* psArg, i8 nLen)
   _static_
 
   strncat(psDst,psArg,nLen);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2627,34 +2628,45 @@ i8 StrLib::iGleanInt(char* azArg)
 /*----------------------------------------------------------------------------*/
 /* find end of (line/record) group given separator and max length             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& nLen)
+char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& nGroupLen)
 {
   _static_
 
-  nLen = 0;
+  nGroupLen = 0;
 
   ASSERT(*azArg);
+  ASSERT(nMaxLength);
 
   char* szGroupEnd = azArg;
-  i8 nGroupLen = 0;
+  i8 nCrsLen = 0;
 
   char* azCrs;
-  for (azCrs = azArg; nGroupLen < nMaxLength; azCrs++) {
+  for (azCrs = azArg; nCrsLen < nMaxLength; azCrs++) {
 
     if (! *azCrs) {
       szGroupEnd = azCrs;
-      nLen = nGroupLen;
+      nGroupLen = nCrsLen;
       break;
     }
 
-    nGroupLen++;
+    nCrsLen++;
 
     if (*azCrs == cSep) {
       szGroupEnd = azCrs;
-      nLen = nGroupLen;
+      nGroupLen = nCrsLen;
     }
 
   }
+
+  if (szGroupEnd == azArg) {
+    RASSERT(! nGroupLen);
+  }
+  if (! nGroupLen) {
+    RASSERT(szGroupEnd == azArg);
+  }
+
+  if (nSize(azArg) != nGroupLen+1)
+    vDebugPoint();
 
   return szGroupEnd;
 }
