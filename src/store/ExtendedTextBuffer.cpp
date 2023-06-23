@@ -56,6 +56,8 @@ bool ExtendedTextBuffer::bConcat(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
+  ASSERT(szSubStr->nSize() <= m_sTextBlock.nSpace());
+
   bool b = m_sTextBlock.bConcat(szSubStr);
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);

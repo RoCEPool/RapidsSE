@@ -45,6 +45,11 @@ namespace STORE
     i8 nTextBlocks(void);
     Stz* szTextBlock(i8 i_TextBlock);
 
+  private:
+    bool bAddBuffer(void);
+    void vEnsureBuffer(void);
+    ExtendedTextBuffer* pTailBuffer(void);
+
   protected:
     Footer* aFooter(void);
   };
