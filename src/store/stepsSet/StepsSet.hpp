@@ -216,10 +216,6 @@ public:
   void vClassPostRecvWordStore(void);
   void vClassPreSendWordStore(void);
 
-  // code block
-  void vCodeBlockGet(void);
-  void vCodeBlockSet(void);
-
 // column
   void vColumnIsNullableFetch(void);
   void vColumnIsPartitionKeyFetch(void);

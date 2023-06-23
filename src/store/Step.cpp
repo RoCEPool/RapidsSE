@@ -60,7 +60,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
   Step::vAddSteps_Combined();
-  Step::vAddSteps_CodeBlock();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_CrwBuffer();
   Step::vAddSteps_CrwToRow();
