@@ -79,6 +79,8 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   // Now we tokenise the command tags passed in and populate the common command tag set.
   TokenVec* pCommonTagTknVec = AM::TOKENISE::pTokeniseSen(szCommandTags);
   CmdHelper::vPopulateTagSet(pCommonTagSet, pCommonTagTknVec);
+  delete pCommonTagTknVec;
+  pCommonTagTknVec = nullptr;
 
   // We add to this common tag set any inherited tags from the current job
   TagSet* pParentJobTags = pParentTask->pOuterJobOfTask()->pJobTags();
@@ -203,8 +205,12 @@ Task* Api::pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId, 
     // All commands that come this way should have been parsed by ANTLR
     // and then resolved to a pipeline statement already. The only exception
     // is if/when the system accepts raw pipeline commands through ANTLR.
+    delete pCmdTknVec;
     return nullptr;
   }
+
+  delete pCmdTknVec;
+  pCmdTknVec = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify tags
@@ -212,31 +218,31 @@ Task* Api::pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId, 
   // C_TAG_JOBNM
   if (! pCmdTagSet->bHasName(C_TAG_JOBNM)) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_JOBNM"_Stz);
+    THROW("Api::pCreateTask: no C_TAG_JOBNM"_Stz);
   }
 
   // C_TAG_ENTRYPOINT
   if (! pCmdTagSet->bHasName(C_TAG_ENTRYPOINT)) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_ENTRYPOINT"_Stz);
+    THROW("Api::pCreateTask: no C_TAG_ENTRYPOINT"_Stz);
   }
 
   // C_TAG_PATH
   if (! pCmdTagSet->bHasName(C_TAG_PATH)) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJob: no C_TAG_PATH"_Stz);
+    THROW("Api::pCreateTask: no C_TAG_PATH"_Stz);
   }
 
   // C_TAG_NOWAIT / C_TAG_WAIT
   if ((! pCmdTagSet->bHasName(C_TAG_NOWAIT)) &&
       (! pCmdTagSet->bHasName(C_TAG_WAIT))) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJobChild: neither C_TAG_NOWAIT or C_TAG_WAIT"_Stz);
+    THROW("Api::pCreateTask: neither C_TAG_NOWAIT or C_TAG_WAIT"_Stz);
   }
   if (pCmdTagSet->bHasName(C_TAG_NOWAIT) &&
       pCmdTagSet->bHasName(C_TAG_WAIT)) {
     pCmdTagSet->vDumpSet();
-    THROW("Api::eForkJobOld: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
+    THROW("Api::pCreateTask: both C_TAG_NOWAIT and C_TAG_WAIT"_Stz);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

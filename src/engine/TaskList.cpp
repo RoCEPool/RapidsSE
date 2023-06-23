@@ -71,6 +71,11 @@ TaskList::~TaskList(void) noexcept(false)
   Task* pTask;
   vGrabLock();
   while ((pTask = pPopTask()) != nullptr) {
+
+    pTask->vGrabTaskLock((Stz *) __func__);
+    pTask->vState(TS_DELETING);
+    pTask->vDropTaskLock((Stz *) __func__);
+
     delete pTask;
   }
   vDropLock();

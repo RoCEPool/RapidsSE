@@ -187,6 +187,14 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
 
   Task* pTask = Api::pCreateTask(sStmt.szStz(), m_pCurStmtTagSet, tParentId, m_sCurStmtStr.szStz());
 
+  // cleanup
+  delete m_pCurStmtTagSet;
+  m_pCurStmtTagSet = nullptr;
+  m_sCurStmtStr.vReset();
+  m_szProcName = nullptr;
+  delete m_pArgValues;
+  m_pArgValues = nullptr;
+
   if (!pTask) {
     i8 iLine = pCtx->start->getLine();
     i8 iColumn = pCtx->start->getCharPositionInLine();
@@ -196,14 +204,6 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
   m_pTaskList->vGrabLock();
   m_pTaskList->vAddTask(pTask);
   m_pTaskList->vDropLock();
-
-  // TODO: post-statement cleanup.
-
-  m_pCurStmtTagSet = nullptr;   // TODO: check where this gets deleted.
-  m_sCurStmtStr.vReset();
-  m_szProcName = nullptr;
-  delete m_pArgValues;
-  m_pArgValues = nullptr;
 
   return nullptr;
 }

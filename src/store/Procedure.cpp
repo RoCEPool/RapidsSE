@@ -185,8 +185,12 @@ bool Procedure::bTranslateToPipeline(Stz* szProcedureName,
       pPrdTxtVec->vListTokens();
 
     bool bResult = TokenVec::bReplace(pPrdTxtVec, pPrdPrmVec, pArgValues);
-    if ( ! bResult )
+    if ( ! bResult ) {
+      delete pPrdTxtVec;
+      delete pPrdPrmVec;
+      delete pEtcTknVec;
       return bResult;
+    }
 
     dPV("pPrdTxtVec(r)"_Stz,pPrdTxtVec);
 
