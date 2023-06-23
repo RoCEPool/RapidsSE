@@ -30,7 +30,6 @@ namespace STORE
 
     ParamsSpec*  m_pParamsSpec;      // set of parameters
 
-    bool         m_bHasCode;
     ExtendedText* m_pCode;
     
     // must be last
@@ -50,8 +49,9 @@ namespace STORE
 
     VertexSpec* pCompile(Stz* szPipelineStmt);
 
-    Stz* szCode(void);
-    Stz* szName(void);
+    bool bHasCode(void);
+
+     Stz* szName(void);
 
   private:
     Footer* aFooter(void);
@@ -74,7 +74,6 @@ namespace STORE
     bool bCollectTag(void);
     bool bCollectParams(void);
     bool bCollectBeginEnd(void);
-    bool bCollectCode(void);
     bool bCollectSubPipeline(void);
     bool bCollectStage(void);
     bool bCollectTopology(StageSpec* p_StageSpec);
@@ -144,10 +143,6 @@ namespace STORE
 
 
 
-    bool bHasCode(void);
-    void vHasCode(bool bHasCode);
-
-    void vCode(Stz* szCode);
 
 
   };

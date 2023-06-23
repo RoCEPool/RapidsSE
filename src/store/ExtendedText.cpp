@@ -103,7 +103,6 @@ void ExtendedText::vConcat(Stz* szSubStr)
   vEnsureBuffer();
 
   // get tail buffer
-  ExtendedTextBuffer* pExtTextBuffer = pTailBuffer();
 
   char* azCrs = szSubStr->azChar();
   i8 nLen;
@@ -112,6 +111,7 @@ void ExtendedText::vConcat(Stz* szSubStr)
   char* azGrpEnd;
   while (*azCrs) {
 
+    ExtendedTextBuffer* pExtTextBuffer = pTailBuffer();
     azGrpEnd = StrLib::azEndOfGroup(azCrs, '\n', pExtTextBuffer->nFreeBytes(), nLen);
     if (! nLen) {
       b = bAddBuffer();

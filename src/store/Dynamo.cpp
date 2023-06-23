@@ -46,8 +46,6 @@ Dynamo::Dynamo(TagSet* p_JobTags)
 
   m_pParamsSpec = nullptr;
 
-  m_bHasCode = false;
-
   m_pCode = nullptr;
 
   _checkInitialised_(CN_DYNAMO);
@@ -216,11 +214,7 @@ bool Dynamo::bPass1_collect(void)
   if (! bCollectBeginEnd())
     return false;
 
-  bool bSawCode= bCollectCode();
-  if (bSawCode) {
-    vTrace("SawCode:\n %s\n"_Stz,szCode());
-  }
-  return true;
+   return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,32 +313,6 @@ bool Dynamo::bCollectBeginEnd(void)
   if (! pTkn()->bSame("END"_Stz))
     return false;
   vTokenAccept();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect a __code__ ... __endCode__ sequence                                */
-/*----------------------------------------------------------------------------*/
-bool Dynamo::bCollectCode(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
-
-  Token* pToken = pTkn();
-
-  if (! pToken->bSame("__cpp_code__"_Stz))
-    return false;
-
-  vTokenAccept();
-  pToken = pTkn();
-
-  if (pToken->eToken() != TN_STRING)
-    return false;
-
-  vCode(pToken->szChars());
-
-  vTokenAccept();
-  pToken = pTkn();
 
   return true;
 }
@@ -1272,43 +1240,7 @@ bool Dynamo::bHasCode(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
 
-  return m_bHasCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vHasCode(bool bHasCode)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
-
-  m_bHasCode = bHasCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Dynamo::szCode(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
-
-  if (! m_pCode)
-    return nullptr;
-
-  return m_pCode->szTextBlock(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vCode(Stz* szCode)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_DYNAMO, _FOOTER_);
-
-  if (! m_pCode)
-    m_pCode = new ExtendedText;
-
-  m_pCode->vCopy(szCode);
+  return m_pCode ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

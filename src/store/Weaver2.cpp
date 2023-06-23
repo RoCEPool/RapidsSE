@@ -173,7 +173,7 @@ void Weaver2::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* weave : __cpp_code__ ... __codeEnd__                                       */
+/* weave : code block                _                                       */
 /*----------------------------------------------------------------------------*/
 void Weaver2::vCppBlock(void)
 {
@@ -194,18 +194,6 @@ void Weaver2::vCppBlock(void)
   }
 
   if (bHasCode) {
-
-    vConcat_cmd("\n"_Stz);
-    vConcat_cmd("__cpp_code__\n"_Stz);
-
-    for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-      StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
-      vConcat_cmd("\n"_Stz);
-      vConcat_cmd(pStageDef->szCode());
-    }
-
-    vConcat_cmd("\n"_Stz);
-    vConcat_cmd("__codeEnd__\n"_Stz);
 
     vTrace("Code %s\n"_Stz, p_pOptStmt->szTextBlock(0));
     vTrace("Code %lld\n"_Stz, StrLib::nSize(p_pOptStmt->szTextBlock(0)->azChar()));

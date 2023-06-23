@@ -89,6 +89,14 @@ i8 ExtendedTextBuffer::nFreeBytes(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
 
+//  i8 nBytesFree = m_sTextBlock.nFreeBytes();
+//  i8 nBytesSize = m_sTextBlock.nSize();
+//
+//  if (nBytesSize >= C_16K)
+//    return 0;
+//  else
+//    return C_16K - nBytesSize;
+
   return m_sTextBlock.nFreeBytes();
 }
 

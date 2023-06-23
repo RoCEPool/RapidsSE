@@ -45,6 +45,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].assertStructure"_Stz,  &Step::vJobAssertStructure);
 
   vAddStep("[job].cmdPrint"_Stz,         &Step::vJobCmdPrint);
+  vAddStep("[job].CodeBlock@"_Stz,       &Step::vJobCodeBlockFetch);
 
   vAddStep("[job].disableAllocate"_Stz,  &Step::vJobDisableAllocate);
   vAddStep("[job].disableJobMetrics"_Stz, &Step::vJobDisableJobMetrics);
@@ -60,8 +61,11 @@ void Step::vAddSteps_Job(void)
   vAddStep("[job].error@"_Stz,           &Step::vJobErrorFetch);
   vAddStep("[job].error!"_Stz,           &Step::vJobErrorStore);
 
-  vAddStep("[job].labelObjectTracker"_Stz,&Step::vJobLabelObjectTracker);
+  vAddStep("[job].hasCodeBlock"_Stz,     &Step::vJobHasCodeBlock);
+
   vAddStep("[job].jobList@"_Stz,         &Step::vJobListFetch);
+
+  vAddStep("[job].labelObjectTracker"_Stz,&Step::vJobLabelObjectTracker);
 
   vAddStep("[job].masterJobId"_Stz,      &Step::vJobMasterJobId);
   vAddStep("[job].mutex@"_Stz,           &Step::vJobMutexFetch);
@@ -489,6 +493,19 @@ void Step::vJobCmdPrint(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* [job].codeBlock@ -- fetch the code block                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJobCodeBlockFetch(void)
+{
+  ENTRY();
+
+  ExtendedText* pCodeBlock = m_pJob->pCodeBlock();
+
+  m_pDataStack->vPushPtr(pCodeBlock);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* [job].disableAllocate -- disable memory allocation for the job             */
@@ -659,6 +676,21 @@ void Step::vJobGet(void)
   m_pDataStack->vPushPtr(pJob);
 
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [job].hasCodeBlock -- does the job have code ?                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJobHasCodeBlock(void)
+{
+  ENTRY();
+
+  Job* pJob = * m_pJob;
+  if (pJob->pCodeBlock())
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
   EXIT();
 }
 

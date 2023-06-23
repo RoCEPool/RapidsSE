@@ -467,8 +467,7 @@ void vDdlLockAssertNone(void);
   void vDynamicNew(void);
   void vDynamicStreamDefOut(void);
 
-  void vDynamoCodeFetch(void);
-  void vDynamoCodeBlockFetch(void);
+ void vDynamoCodeBlockFetch(void);
   void vDynamoCompile(void);
   void vDynamoDelete(void);
   void vDynamoGet(void);
@@ -826,7 +825,9 @@ void vDdlLockAssertNone(void);
   void vJobAssertOriginator(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
+
   void vJobCmdPrint(void);
+  void vJobCodeBlockFetch(void);
 
   void vJobDisableAllocate(void);
   void vJobDisableJobMetrics(void);
@@ -852,7 +853,9 @@ void vDdlLockAssertNone(void);
 
   void vJobGet(void);
 
-  void vJobIdLastJobIdFetch(void);
+  void vJobHasCodeBlock(void);
+
+void vJobIdLastJobIdFetch(void);
 
   void vJobLabelObjectTracker(void);
   void vJobListFetch(void);

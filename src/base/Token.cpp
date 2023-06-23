@@ -143,19 +143,6 @@ bool Token::bEndCppString(char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of code block                                               */
-/*----------------------------------------------------------------------------*/
-bool Token::bStartCodeBlock(char *azArg)
-{
-  _static_
-
-  if (StrLib::bBeginsWith(azArg,"__cpp_code__"))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for start of Sen integer                                              */
 /*----------------------------------------------------------------------------*/
 bool Token::bStartSenInteger(char cArg)

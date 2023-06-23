@@ -34,7 +34,6 @@
 void Step::vAddSteps_Dynamo(void)
 {
   vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
-  vAddStep("Dynamo[].code@"_Stz,    &Step::vDynamoCodeFetch);
   vAddStep("Dynamo[].codeBlock@"_Stz,&Step::vDynamoCodeBlockFetch);
   vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
   vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
@@ -42,23 +41,6 @@ void Step::vAddSteps_Dynamo(void)
   vAddStep("Dynamo[].hasCode"_Stz,  &Step::vDynamoHasCode);
   vAddStep("Dynamo[].name@"_Stz,    &Step::vDynamoNameFetch);
   vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Dynamo[].code@ -- fetch the code string                                    */
-/*----------------------------------------------------------------------------*/
-void Step::vDynamoCodeFetch(void)
-{
-  ENTRY();
-
-  s512K szCode;
-
-  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  if (pDynamo->szCode())
-    szCode = pDynamo->szCode();
-  m_pDataStack->vPushStr(szCode);
-
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +123,7 @@ void Step::vDynamoHasCode(void)
   ENTRY();
 
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
-  if (pDynamo->szCode())
+  if (pDynamo->bHasCode())
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
