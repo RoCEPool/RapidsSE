@@ -2631,20 +2631,29 @@ char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& nLen)
 {
   _static_
 
-  if (! *azArg)
-    return nullptr;
-
-  char* szGroupEnd = nullptr;
-  i8 nGroupLen = 0;
-
   nLen = 0;
 
-  for (char* acCrs = azArg; *acCrs && nGroupLen < nMaxLength; acCrs++) {
+  ASSERT(*azArg);
+
+  char* szGroupEnd = azArg;
+  i8 nGroupLen = 0;
+
+  char* azCrs;
+  for (azCrs = azArg; nGroupLen < nMaxLength; azCrs++) {
+
+    if (! *azCrs) {
+      szGroupEnd = azCrs;
+      nLen = nGroupLen;
+      break;
+    }
+
     nGroupLen++;
-    if (*acCrs == cSep) {
-      szGroupEnd = acCrs;
+
+    if (*azCrs == cSep) {
+      szGroupEnd = azCrs;
       nLen = nGroupLen;
     }
+
   }
 
   return szGroupEnd;

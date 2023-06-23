@@ -60,7 +60,7 @@ ExtendedText::~ExtendedText(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-void ExtendedText::vConcat(Stz* szSubStr)
+void ExtendedText::vConcat2(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
@@ -90,7 +90,7 @@ void ExtendedText::vConcat(Stz* szSubStr)
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-void ExtendedText::vConcat2(Stz* szSubStr)
+void ExtendedText::vConcat(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
@@ -107,14 +107,25 @@ void ExtendedText::vConcat2(Stz* szSubStr)
 
   char* azCrs = szSubStr->azChar();
   i8 nLen;
+  bool b;
 
-  do {
-    while ((azCrs = StrLib::azEndOfGroup(azCrs, '\n', pExtTextBuffer->nFreeBytes(), nLen))) {
-      bool b = pExtTextBuffer->bConcat((Stz*)azCrs, nLen);
+  char* azGrpEnd;
+  while (*azCrs) {
+
+    azGrpEnd = StrLib::azEndOfGroup(azCrs, '\n', pExtTextBuffer->nFreeBytes(), nLen);
+    if (! nLen) {
+      b = bAddBuffer();
+      continue;
     }
-    if (azCrs)
-      bool b = bAddBuffer();
-  } while (azCrs);
+
+    b = pExtTextBuffer->bConcat((Stz*)azCrs, nLen);
+    
+    if (*azGrpEnd)
+      azGrpEnd++;
+    azCrs = azGrpEnd;
+    if (*azCrs)
+      b = bAddBuffer();
+  }
 
 
 
