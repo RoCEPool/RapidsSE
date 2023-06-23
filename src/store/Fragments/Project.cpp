@@ -33,7 +33,6 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // PROJECT-OP
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,15 +41,20 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
 
 __L_LABEL__:
 
+#ifdef WITH_DEBUG
   printf("  // PROJECT-OP\n");
+#endif
 
+  // Process row ?
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
+  // PROJECT FROM
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 
+  // PROJECT TO
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
   __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
   szStrArea = __ROW_INFO_TO__.m_acStrArea;

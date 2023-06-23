@@ -16,6 +16,8 @@
 void vStencilToBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // STENCIL-TO STRUCTURE
   struct __STRUCT_TO__ {
     // marker-end
   };
@@ -44,6 +46,7 @@ void vStencilToCol(Dynamic_T* aDynamicT) {
   {
     // marker-start
   };
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // marker-end
 }
