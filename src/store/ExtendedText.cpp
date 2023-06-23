@@ -64,6 +64,10 @@ void ExtendedText::vConcat(Stz* szSubStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
+  if (szSubStr->nSize() > C_4K) {
+    vTrace("%s : %lld\n"_Stz,__func__ ,szSubStr->nSize());
+    vDebugPoint();
+  }
   // at least a first extended text buffer
   vEnsureBuffer();
 
@@ -82,6 +86,52 @@ void ExtendedText::vConcat(Stz* szSubStr)
 
   RASSERT(b);
 }
+
+/*----------------------------------------------------------------------------*/
+/* add sub-string to text                                                     */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vConcat2(Stz* szSubStr)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  if (szSubStr->nSize() > C_4K) {
+    vTrace("%s : %lld\n"_Stz,__func__ ,szSubStr->nSize());
+    vDebugPoint();
+  }
+
+  // at least a first extended text buffer
+  vEnsureBuffer();
+
+  // get tail buffer
+  ExtendedTextBuffer* pExtTextBuffer = pTailBuffer();
+
+  char* azCrs = szSubStr->azChar();
+  i8 nLen;
+
+  do {
+    while ((azCrs = StrLib::azEndOfGroup(azCrs, '\n', pExtTextBuffer->nFreeBytes(), nLen))) {
+      bool b = pExtTextBuffer->bConcat((Stz*)azCrs, nLen);
+    }
+    if (azCrs)
+      bool b = bAddBuffer();
+  } while (azCrs);
+
+
+
+
+//  bool b = pExtTextBuffer->bConcat(szSubStr);
+//
+//  if (!b) {
+//    b = bAddBuffer();
+//    if (b) {
+//      pExtTextBuffer = pTailBuffer();
+//      b = pExtTextBuffer->bConcat(szSubStr);
+//    }
+//  }
+//
+//  RASSERT(b);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* copy given extended text argument                                          */

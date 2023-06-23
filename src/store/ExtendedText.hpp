@@ -30,6 +30,7 @@ namespace STORE
     ~ExtendedText(void) noexcept(false);
 
     void vConcat(Stz* szSubStr);
+    void vConcat2(Stz* szSubStr);
     void vCopy(ExtendedText* pExtText_arg);
     void vCopy(Stz* szStr);
 

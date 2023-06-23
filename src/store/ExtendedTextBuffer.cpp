@@ -66,6 +66,33 @@ bool ExtendedTextBuffer::bConcat(Stz* szSubStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* concat sub string to text                                                  */
+/*----------------------------------------------------------------------------*/
+bool ExtendedTextBuffer::bConcat(Stz* szSubStr, i8 nLen)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
+
+  ASSERT(szSubStr->nSize() <= m_sTextBlock.nSpace());
+
+  bool b = m_sTextBlock.bConcat(szSubStr,nLen);
+
+  _postcondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
+
+  return b;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* concat sub string to text                                                  */
+/*----------------------------------------------------------------------------*/
+i8 ExtendedTextBuffer::nFreeBytes(void)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXTBUFFER, _FOOTER_);
+
+  return m_sTextBlock.nFreeBytes();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get text block                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* ExtendedTextBuffer::szTextBlock(void)

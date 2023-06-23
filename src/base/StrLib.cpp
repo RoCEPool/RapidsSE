@@ -540,6 +540,16 @@ void StrLib::vConcat(char* psDst, const char* psArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vConcat: concatenate arg onto dst string                                   */
+/*----------------------------------------------------------------------------*/
+void StrLib::vConcat(char* psDst, const char* psArg, i8 nLen)
+{
+  _static_
+
+  strncat(psDst,psArg,nLen);
+}
+
+/*----------------------------------------------------------------------------*/
 /* vConcat: concatenate arg1 & arg2 onto dst string                           */
 /*----------------------------------------------------------------------------*/
 void StrLib::vConcat(char* psDst, const char* psArg1, const char* psArg2)
@@ -2612,6 +2622,32 @@ i8 StrLib::iGleanInt(char* azArg)
     iVal = iVal * 10 + iDigitToI8(*aSrc++);
 
   return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find end of (line/record) group given separator and max length             */
+/*----------------------------------------------------------------------------*/
+char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& nLen)
+{
+  _static_
+
+  if (! *azArg)
+    return nullptr;
+
+  char* szGroupEnd = nullptr;
+  i8 nGroupLen = 0;
+
+  nLen = 0;
+
+  for (char* acCrs = azArg; *acCrs && nGroupLen < nMaxLength; acCrs++) {
+    nGroupLen++;
+    if (*acCrs == cSep) {
+      szGroupEnd = acCrs;
+      nLen = nGroupLen;
+    }
+  }
+
+  return szGroupEnd;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,6 +25,9 @@ namespace STORE
    ~ExtendedTextBuffer(void) noexcept(false);
 
     bool bConcat(Stz* szSubStr);
+    bool bConcat(Stz* szSubStr, i8 nLen);
+
+    i8 nFreeBytes(void);
 
     Stz* szTextBlock(void);
 

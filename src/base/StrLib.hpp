@@ -46,6 +46,7 @@ namespace BASE
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 iCase);
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);
     static void  vConcat(char* pWS, char cChar);
+    static void  vConcat(char* psDst, const char* psArg, i8 nLen);
     static void  vConcat(char* psDst, const char* psArg);
     static void  vConcat(char* psDst, const char* psArg1, const char* psArg2);
     static char* wConcat(const char* s1, const char* s2);
@@ -140,7 +141,8 @@ namespace BASE
     static void  vFree(char** ps);
     
     static i8    iGleanInt(char* azArg);
-  
+    static char* azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& nLen);
+
     static i8    iHexToInw(const char c);
 
     static void  vInsertChar(char* azAt, char cArg);

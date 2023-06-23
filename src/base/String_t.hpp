@@ -46,7 +46,9 @@ namespace BASE
     char* azChar(void);
     void vClip(i8 i_Char);
     void vConcat(Stz* szArg);
+    void vConcat(Stz* szArg, i8 nLen);
     bool bConcat(Stz* szArg);
+    bool bConcat(Stz* szArg, i8 nLen);
     bool bContains(Stz* szArg);
     void vCopy(Stz* szArg);
     void vCopy(Stz* szArg, i8 iLen);
@@ -434,6 +436,19 @@ void String_t<AREA>::vConcat(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* concat given stz*                                                          */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::vConcat(Stz* szArg, i8 nLen)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  StrLib::vConcat(m_caCharArea,szArg->azChar());
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* conditionally concat given stz*                                            */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
@@ -448,6 +463,25 @@ bool String_t<AREA>::bConcat(Stz* szArg)
     return false;
 
   vConcat(szArg);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* conditionally concat given stz*                                            */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+bool String_t<AREA>::bConcat(Stz* szArg, i8 nLen)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  i8 nBytes_free = this->nFreeBytes();
+  i8 nBytes_need = szArg->nSize();
+
+  if (nBytes_need > nBytes_free)
+    return false;
+
+  vConcat(szArg, nLen);
 
   return true;
 }
