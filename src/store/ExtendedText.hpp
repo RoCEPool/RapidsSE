@@ -34,6 +34,8 @@ namespace STORE
     void vCopy(ExtendedText* pExtText_arg);
     void vCopy(Stz* szStr);
 
+    void vDump(void);
+
     void vEmpty(void);
 
     ExtendedTextBuffer* pExtTextBuffer(i8 i_TextBuffer);

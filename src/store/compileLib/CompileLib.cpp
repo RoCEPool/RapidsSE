@@ -711,7 +711,7 @@ bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
 
   i8 nBlocks = pSource->nTextBlocks();
   for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
-    Stz *szSource = pSource->szTextBlock(0);
+    Stz *szSource = pSource->szTextBlock(i_Block);
 
     if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
       pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;

@@ -119,7 +119,7 @@ void ExtendedText::vConcat(Stz* szSubStr)
     }
 
     b = pExtTextBuffer->bConcat((Stz*)azCrs, nLen);
-    
+
     if (*azGrpEnd)
       azGrpEnd++;
     azCrs = azGrpEnd;
@@ -127,22 +127,9 @@ void ExtendedText::vConcat(Stz* szSubStr)
       b = bAddBuffer();
   }
 
-
-
-
-//  bool b = pExtTextBuffer->bConcat(szSubStr);
-//
-//  if (!b) {
-//    b = bAddBuffer();
-//    if (b) {
-//      pExtTextBuffer = pTailBuffer();
-//      b = pExtTextBuffer->bConcat(szSubStr);
-//    }
-//  }
-//
-//  RASSERT(b);
+  vDump();
+  vDebugPoint();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* copy given extended text argument                                          */
@@ -179,6 +166,19 @@ void ExtendedText::vCopy(Stz* szStr)
   vEmpty();
 
   vConcat(szStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vDump(void)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++) {
+    ExtendedTextBuffer* pBuffer = pExtTextBuffer(i_Block);
+    vTrace("%s\n"_Stz,pBuffer->szTextBlock());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
