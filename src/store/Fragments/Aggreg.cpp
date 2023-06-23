@@ -23,11 +23,6 @@ i8 iAggregBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // AGGREG-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:

@@ -33,10 +33,6 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // PROJECT-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
 __L_LABEL__:

@@ -23,10 +23,6 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   i8 iaPow10[15];
 
   // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-CRW
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:

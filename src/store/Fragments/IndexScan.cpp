@@ -32,18 +32,13 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INDEXSCAN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
 
+#ifdef WITH_DEBUG
   printf("INDEXSCAN-OP\n");
+#endif
 
   iaPow10[0] = 1;
   iaPow10[1] = 10;

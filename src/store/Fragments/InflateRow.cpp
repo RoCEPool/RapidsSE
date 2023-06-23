@@ -29,17 +29,13 @@ void vInflateRowBegin(Dynamic_T* aDynamicT) {
   i8  iaPow10[15];
 
   // marker-start
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-ROW
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
-  L_InflateRowT:
+  __L_LABEL__:
 
+#ifdef WITH_DEBUG
   printf("INFLATE-ROW\n");
+#endif
 
   iaPow10[0] = 1;
   iaPow10[1] = 10;

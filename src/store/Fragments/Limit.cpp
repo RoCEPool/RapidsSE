@@ -29,11 +29,6 @@ void vLimit(Dynamic_T* aDynamicT) {
   __L_LABEL_NEXT__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // LIMIT-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   __L_LABEL__:
 
   printf("LIMIT-OP\n");

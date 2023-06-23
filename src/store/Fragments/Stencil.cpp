@@ -46,7 +46,6 @@ void vStencilToCol(Dynamic_T* aDynamicT) {
   {
     // marker-start
   };
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // marker-end
 }

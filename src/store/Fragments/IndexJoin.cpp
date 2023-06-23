@@ -29,11 +29,6 @@ void vAntiJoinBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ANTIJOIN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   __L_LABEL__:
 
   printf("ANTIJOIN-OP\n");
@@ -58,11 +53,6 @@ void vIndexJoinBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INDEXJOIN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   __L_LABEL__:
 
   printf("INDEXJOIN-OP\n");
@@ -87,11 +77,6 @@ void vSemiJoinBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // SEMIJOIN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   __L_LABEL__:
 
   printf("SEMIJOIN-OP\n");

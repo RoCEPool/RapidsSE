@@ -28,11 +28,6 @@ void vFilterBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FILTER-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 __L_LABEL__:
 
   printf("FILTER-OP\n");
