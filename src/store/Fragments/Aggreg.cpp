@@ -27,7 +27,9 @@ i8 iAggregBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-  printf("AGGREG-OP\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 

@@ -38,7 +38,7 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
 __L_LABEL__:
 
 #ifdef WITH_DEBUG
-  printf("  // PROJECT-OP\n");
+  printf("__OPERATOR_NAME__\n");
 #endif
 
   // Process row ?

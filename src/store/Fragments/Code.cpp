@@ -18,10 +18,10 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vOperatorStart-----------------------------------------------------------*/
+/*-- vOperatorStub -----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vOperatorStart
-void vOperatorStart(Dynamic_T* aDynamicT) {
+// function-vOperatorStub
+void vOperatorStub(Dynamic_T* aDynamicT) {
 
   // marker-start
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -163,7 +163,9 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
   // marker-start
   __L_LABEL__:
 
-  printf("SORT-OP\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   // marker-end
 
@@ -184,7 +186,7 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   __L_LABEL__:
 
 #ifdef WITH_DEBUG
-  printf("TUB\n");
+  printf("__OPERATOR_NAME__\n");
 #endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1112,7 +1114,9 @@ void vStreamDefBegin(Dynamic_T* aDynamicT) {
   // STREAMDEF
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  printf("STREAMDEF\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   struct ColumnInfo xColumnInfo[] = {
       // marker-end

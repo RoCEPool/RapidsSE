@@ -80,6 +80,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
     else {
       if (bFoundStart) {
 
+        vReplaceOperatorName(sLine, pOpSketch);
+
         if (pColumn)
           vReplaceColumnName(sLine, pColumn);
 

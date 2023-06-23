@@ -31,7 +31,9 @@ void vLimit(Dynamic_T* aDynamicT) {
   // marker-start
   __L_LABEL__:
 
-  printf("LIMIT-OP\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;

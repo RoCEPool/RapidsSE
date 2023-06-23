@@ -18,73 +18,28 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vAntiJoinBegin ----------------------------------------------------------*/
+/*-- vJoinBegin --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-vAntiJoinBegin
-void vAntiJoinBegin(Dynamic_T* aDynamicT) {
+// function-vJoinBegin
+void vJoinBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   RowInfo __ROW_INFO_FROM__;
+  RowInfo __ROW_INFO_TO__;
 
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
   __L_LABEL__:
 
-  printf("ANTIJOIN-OP\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) __ROW_INFO_FROM__.m_aRowCellArray;
 
   struct __STRUCT_TO__ *p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoIJ.m_aRowCellArray;
-
-// marker-end
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexJoinBegin ---------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexJoinBegin
-void vIndexJoinBegin(Dynamic_T* aDynamicT) {
-
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  RowInfo __ROW_INFO_FROM__;
-
-  __L_LABEL_OUTER_LOOP__:
-
-  // marker-start
-  __L_LABEL__:
-
-  printf("INDEXJOIN-OP\n");
-
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) __ROW_INFO_FROM__.m_aRowCellArray;
-
-  struct __STRUCT_TO__ *p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTJ.m_aRowCellArray;
-
-// marker-end
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vSemiJoinBegin ----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vSemiJoinBegin
-void vSemiJoinBegin(Dynamic_T* aDynamicT) {
-
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  RowInfo __ROW_INFO_FROM__;
-
-  __L_LABEL_OUTER_LOOP__:
-
-  // marker-start
-  __L_LABEL__:
-
-  printf("SEMIJOIN-OP\n");
-
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) __ROW_INFO_FROM__.m_aRowCellArray;
-
-  struct __STRUCT_TO__ *p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoIJ.m_aRowCellArray;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
 
 // marker-end
 }
@@ -102,11 +57,6 @@ void vSemiJoinEnd(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // SEMIJOIN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   if ( ! aDynamicT->m_iProcessRow ) {
 #ifdef WITH_CLANG
     // move to next entry
@@ -132,11 +82,6 @@ void vAntiJoinEnd(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // SEMIJOIN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   if ( aDynamicT->m_iProcessRow ) {
 #ifdef WITH_CLANG
 
