@@ -10,6 +10,8 @@
 #include "Shell.hpp"
 #include "SysCall.hpp"
 
+#include "ExtendedText.hpp"
+
 using namespace STORE;
 
 static Stz* C_QUERYLIBS_PATH = "../queryLibs"_Stz;
@@ -159,6 +161,68 @@ bool CompileLib::bCompile(Stz* szSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz
 
   // Write the source file to disk
   if (!bWriteSrcToFile(szSource, pLibInfo)) {
+    return false;
+  }
+
+  // Build the compile command
+  switch (pLibInfo->m_eCompilerType) {
+    case CB_GCC:        vBuildGccCompileCommand(pLibInfo);    break;
+    case CB_CLANG:      vBuildClangCompileCommand(pLibInfo);  break;
+    case CB_TCC:        vBuildTccCompileCommand(pLibInfo);    break;
+    case CB_SCL_GCC:    vBuildSclGccCompileCommand(pLibInfo); break;
+    case CB_SCL_CLANG:  vBuildSclClangCompileCommand(pLibInfo); break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Execute the compile command
+  if (!bCompileSrc(pLibInfo)) {
+    return false;
+  }
+
+  // Check that the library exists
+  ASSERT(File::bExists(pLibInfo->m_sDynLibPath.szStz()));
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uCompileNanos = Hardware::uReadClock() - uStartTime;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Compiler source code to a dynamic library. Returns true on success.        */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bCompile(ExtendedText* pSource, Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler)
+{
+  ASSERT(pSource);
+  ASSERT(szDynLibNm);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
+  ASSERT(!szCompiler || !szCompiler->bIsEmpty());
+  pLibInfo->vClearErrors();
+
+  u8 uStartTime;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
+  // Choose or validate a compiler, if necessary
+  if (!bValidateCompiler(szCompiler, pLibInfo)) {
+    return false;
+  }
+
+  // Save the base name
+  pLibInfo->m_sBaseName.vCopy(szDynLibNm);
+
+  // Come up with file path for the source file and output file
+  pLibInfo->m_sSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.%s"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz(), C_LIB_EXT);
+  pLibInfo->m_sLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+
+  // Write the source file to disk
+  if (!bWriteSrcToFile(pSource, pLibInfo)) {
     return false;
   }
 
@@ -618,6 +682,47 @@ bool CompileLib::bWriteSrcToFile(Stz* szSource, LibInfo* pLibInfo)
     pSrcFile->vClose();
     delete pSrcFile;
     return false;
+  }
+
+  pSrcFile->vClose();
+  delete pSrcFile;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Write the source string to a file as designated in pLibInfo                */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
+{
+  ASSERT(pSource);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_sSrcFilePath.bIsEmpty());
+
+  File* pSrcFile = new File(pLibInfo);
+  if (!pSrcFile->bOpenWrite(pLibInfo->m_sSrcFilePath.szStz())) {
+    pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+
+    strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+    pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
+
+    delete pSrcFile;
+    return false;
+  }
+
+  i8 nBlocks = pSource->nTextBlocks();
+  for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+    Stz *szSource = pSource->szTextBlock(0);
+
+    if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
+      pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
+
+      strerror_r(pSrcFile->oSysCall().iError(), pLibInfo->m_sErrDetails.azChar(), pLibInfo->m_sErrDetails.nSpace());
+      pLibInfo->m_sErrDetails.vCatSprint(" : %s"_Stz, pLibInfo->m_sSrcFilePath.szStz());
+
+      pSrcFile->vClose();
+      delete pSrcFile;
+      return false;
+    }
   }
 
   pSrcFile->vClose();
