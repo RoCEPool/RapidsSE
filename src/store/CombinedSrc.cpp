@@ -575,11 +575,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
       case SK_STREAMDEF:
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // end previous handler
+        // end previous handler function
         vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // begin new StreamDef handler
+        // begin new StreamDef handler function
         vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1356,7 +1356,7 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
             break;
 
           default:
-            RASSERT(0);
+            vAppendCodeFragment(pOpSketch, "vPLIntKeyToTub"_Stz, pColumn);
             break;
         }
       }

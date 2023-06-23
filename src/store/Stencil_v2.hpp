@@ -74,7 +74,7 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
   private:
 
-    eEC eSynthesise(StageDef* pStageDef);
+    eEC  eSynthesise(StageDef* pStageDef);
     void vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault);
 
     OpSketch* pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
@@ -95,16 +95,8 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     eEC eValidateStage(StageDef* pStageDef);
 
-
-
-    void vSetupIndexJoin(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSetupIndexScan(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSetupKeyExists(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-
-
 
     void vSketchEosSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     void vSketchEosTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);

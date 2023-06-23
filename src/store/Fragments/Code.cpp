@@ -676,6 +676,36 @@ void vPayLoadKeyToTub(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vPLIntKeyToTub ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPLIntKeyToTub
+void vPLIntKeyToTub(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_FROM__ {
+    union Vch_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Vch_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  i8 iElemSize;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iElemSize);
+  iElemSize += 8;
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vPLVchKeyToTub ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vPLVchKeyToTub

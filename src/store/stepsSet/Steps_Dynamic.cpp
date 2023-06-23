@@ -129,10 +129,6 @@ void Step::vDynamicExecute(void)
   }
   *******************************************************/
 
-  if ( afFun ==  m_pLogicUnit->m_afFun3 )
-    vTrace("Stage: %s TUB init %p %lld\n"_Stz, m_pOp->pStage()->szStageNm(), aDynamicT, aDynamicT->m_xRowInfoTO.m_iInitialize);
-
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the dynamic function
   iResult = afFun(aDynamicT);
