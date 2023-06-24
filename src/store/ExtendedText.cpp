@@ -254,7 +254,9 @@ bool ExtendedText::bRetrieve(String* pString)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  pString->vCopy(szTextBlock(0));
+  pString->vCopy(""_Stz);
+  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++)
+    pString->vConcat(szTextBlock(i_Block));
 
   return true;
 }

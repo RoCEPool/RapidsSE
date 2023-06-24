@@ -269,14 +269,17 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
       bResult = bBytesSend(pCmdText, nBytes, roSysCall);
       RASSERT(bResult);
 
-      RASSERT(1 == pCmdText->nTextBlocks());
+      //RASSERT(1 == pCmdText->nTextBlocks());
+      i8 nBlocks = pCmdText->nTextBlocks();
 
-      ExtendedTextBuffer *pExtTextBuffer = pCmdText->pExtTextBuffer(0);
-      RASSERT(pExtTextBuffer);
-      eClass = pExtTextBuffer->eGetClassNo();
-      nBytes = gxaSizeHeap[eClass].m_nClassSize;
-      bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
-      RASSERT(bResult);
+      for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+        ExtendedTextBuffer *pExtTextBuffer = pCmdText->pExtTextBuffer(i_Block);
+        RASSERT(pExtTextBuffer);
+        eClass = pExtTextBuffer->eGetClassNo();
+        nBytes = gxaSizeHeap[eClass].m_nClassSize;
+        bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
+        RASSERT(bResult);
+      }
     }
 
     if (pJob->bSendCodeBlock()) {
@@ -459,16 +462,26 @@ Object* Socket::pObjectRecv(eCN eClass)
     RASSERT(bResult);
     ExtendedText* pCmdText = _pExtendedText(aCmdText);
 
-    RASSERT(1 == pCmdText->nTextBlocks());
+    //RASSERT(1 == pCmdText->nTextBlocks());
 
-    Object* aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
-    nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
-    bResult = bBytesRecv(aCmdTextBuffer, nSize, oSysCall);
-    RASSERT(bResult);
-    ExtendedTextBuffer* pCmdTextBuffer = _pExtendedTextBuffer(aCmdTextBuffer);
+    i8 nBlocks = pCmdText->nTextBlocks();
+    for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
+      Object *aCmdTextBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
+      nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
+      bResult = bBytesRecv(aCmdTextBuffer, nSize, oSysCall);
+      RASSERT(bResult);
+      ExtendedTextBuffer *pCmdTextBuffer = _pExtendedTextBuffer(aCmdTextBuffer);
 
-    pCmdText->vExtTextBuffer(0, pCmdTextBuffer);
+      pCmdText->vExtTextBuffer(i_Block, pCmdTextBuffer);
+    }
     pJob->vCmdText(pCmdText);
+
+    if (nBlocks > 1) {
+      vTrace("~~Recv CmdText\n"_Stz);
+      pCmdText->vDump();
+      vTrace("~~~~~~~~~~~\n"_Stz);
+      vDebugPoint();
+    }
 
     // - - - - - - - - - - - - - - - - - - - - -
 
@@ -481,7 +494,7 @@ Object* Socket::pObjectRecv(eCN eClass)
 
       //RASSERT(1 == pCodeBlock->nTextBlocks());
 
-      i8 nBlocks = pCodeBlock->nTextBlocks();
+      nBlocks = pCodeBlock->nTextBlocks();
       for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
         Object *aCodeBlockBuffer = Heaps::pAllocate(CN_EXTENDEDTEXTBUFFER, false);
         nSize = gxaSizeHeap[CN_EXTENDEDTEXTBUFFER].m_nClassSize;
@@ -493,12 +506,12 @@ Object* Socket::pObjectRecv(eCN eClass)
 
       }
 
-//      if (nBlocks) {
-//        vTrace("~~Recv CodeBlock\n"_Stz);
-//        pCodeBlock->vDump();
-//        vTrace("~~~~~~~~~~~\n"_Stz);
-//        vDebugPoint();
-//      }
+      if (nBlocks) {
+        vTrace("~~Recv CodeBlock\n"_Stz);
+        pCodeBlock->vDump();
+        vTrace("~~~~~~~~~~~\n"_Stz);
+        vDebugPoint();
+      }
 
       pJob->vCodeBlock(pCodeBlock);
     }
