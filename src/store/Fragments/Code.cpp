@@ -18,6 +18,21 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*-- vOperatorStub -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vOperatorStub
+void vOperatorStub(Dynamic_T* aDynamicT) {
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // __OPERATOR_NAME__
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // marker-end
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vExprCheck---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vExprCheck
@@ -146,14 +161,11 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // SORT-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   __L_LABEL__:
 
-  printf("SORT-OP\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   // marker-end
 
@@ -171,15 +183,11 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
 
   // marker-start
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // TUB
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   __L_LABEL__:
 
-  printf("TUB\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the RowPix
@@ -404,7 +412,7 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
 
   p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoAT.m_acStrArea;
-  if ( aDynamicT->m_iAggregInit == 1 ) {
+  if ( aDynamicT->m_xRowInfoAT.m_iInitialize == 1 ) {
     // marker-end
   }
 
@@ -428,7 +436,7 @@ i8 iEosPotBody(Dynamic_T* aDynamicT) {
     }
 
     aDynamicT->m_iRowsProcessed = 1;
-    aDynamicT->m_iAggregInit = 0;
+    aDynamicT->m_xRowInfoAT.m_iInitialize = 0;
   }
 
   // any rows processed ?
@@ -467,7 +475,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
     }
 
     aDynamicT->m_iRowsProcessed = 1;
-    aDynamicT->m_iAggregInit = 0;
+    aDynamicT->m_xRowInfoAT.m_iInitialize = 0;
   }
 
   // any rows processed ?
@@ -671,6 +679,36 @@ void vPayLoadKeyToTub(Dynamic_T* aDynamicT) {
     // column __COLUMN_NO__
 
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = ((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0 + iElemSize;
+
+  // marker-end
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vPLIntKeyToTub ----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vPLIntKeyToTub
+void vPLIntKeyToTub(Dynamic_T* aDynamicT) {
+
+  struct __STRUCT_FROM__ {
+    union Vch_T __COLUMN_FROM__;
+  };
+
+  struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  struct __STRUCT_TO__ {
+    union Vch_T __COLUMN_TO__;
+  };
+
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  i8 iElemSize;
+
+  // marker-start
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // column __COLUMN_NO__
+
+  p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = *(i8*)((char*)(&((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0) + 8 + iElemSize);
+  iElemSize += 8;
 
   // marker-end
 }
@@ -1076,7 +1114,9 @@ void vStreamDefBegin(Dynamic_T* aDynamicT) {
   // STREAMDEF
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  printf("STREAMDEF\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   struct ColumnInfo xColumnInfo[] = {
       // marker-end

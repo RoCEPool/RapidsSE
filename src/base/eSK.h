@@ -12,7 +12,6 @@ enum eSK // sketch kind
   /*   */ SK_EOS,         // eos
   /*   */ SK_FILTER,      // filter
   /*   */ SK_GBYAGG,      // aggregate with group by
-  /*   */ SK_HASH,        // hash
   /*   */ SK_INDEXJOIN,   // index join
   /*   */ SK_INDEXSCAN,   // index scan
   /*   */ SK_INFLATE_CRW, // inflate CRW
@@ -36,7 +35,6 @@ static Stz* aSK[]
   /*   */ "EOS"_Stz,
   /*   */ "FILTER"_Stz,
   /*   */ "GBYAGG"_Stz,
-  /*   */ "HASH"_Stz,
   /*   */ "INDEXJOIN"_Stz,
   /*   */ "INDEXSCAN"_Stz,
   /*   */ "INFLATE_CRW"_Stz,

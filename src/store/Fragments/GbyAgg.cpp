@@ -31,16 +31,13 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // GBYAGG-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
 
-  printf("GBYAGG-OP\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
   szStrArea = __ROW_INFO_FROM__.m_acStrArea;

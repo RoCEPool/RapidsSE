@@ -146,7 +146,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
     vAppendFileHeaders();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // sketch code for each operator
+  // generate code for each operator
   for (i8 iOpSketch = 0; iOpSketch < pStencil->nItems(); iOpSketch++) {
 
     OpSketch* pOpSketch = pStencil->pGet(iOpSketch);
@@ -160,15 +160,25 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bHasIndexInflate = true;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // open the indexJoin code fragments file
+        // open the index, indexJoin, inflate  and filter code fragments file
         bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
         RASSERT ( bOpened );
 
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
         RASSERT ( bOpened );
 
+        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vSemiJoinBegin"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pCodeFile);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
           vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pCodeFile, (i8)KE_INT);
@@ -185,15 +195,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
 
         vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
-        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
-        RASSERT ( bOpened );
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
-        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
-        RASSERT ( bOpened );
         vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pFilterFile);
 
         vAppendCodeFragment(pOpSketch, "vAntiJoinEnd"_Stz, pCodeFile);
@@ -224,6 +230,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Aggreg.cpp"_Stz);
         RASSERT ( bOpened );
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "iAggregBegin"_Stz, pCodeFile);
 
@@ -247,6 +257,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
         RASSERT ( bOpened );
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendCodeFragment(pOpSketch, "vFilterBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
@@ -263,6 +277,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // open the gbyagg code fragments file
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/GbyAgg.cpp"_Stz);
         RASSERT ( bOpened );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         // stencil to
         vAppendStencilTo(pOpSketch);
@@ -315,6 +333,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Project.cpp"_Stz);
         RASSERT ( bOpened );
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendStencilTo(pOpSketch);
 
         vAppendCodeFragment(pOpSketch, "vProjectBegin"_Stz, pCodeFile);
@@ -336,14 +358,20 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
         RASSERT ( bOpened );
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // open the index code fragments file
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/IndexScan.cpp"_Stz);
         RASSERT ( bOpened );
         
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // new INDEXBUFFER handler
         vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
-        vAppendStencilTo(pOpSketch);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
+        vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pCodeFile);
 
         // No lower bound
@@ -395,8 +423,12 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
         RASSERT ( bOpened );
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vIndexJoinBegin"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pCodeFile);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
           vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pCodeFile, (i8)KE_INT);
@@ -446,12 +478,17 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
       case SK_INFLATE_CRW:
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // new CRWBUFFER handler
-        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
-
         // open the inflateCrw code fragments file
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
         RASSERT ( bOpened );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // new CRWBUFFER handler
+        vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz, pCodeFile);
@@ -473,6 +510,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // new ROWBUFFER handler
         vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz, pCodeFile);
         vAppendCodeInflateRowCols(pOpSketch, "vInflateRowCol"_Stz, pCodeFile);
@@ -489,6 +530,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/Limit.cpp"_Stz);
         RASSERT ( bOpened );
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendCodeFragment(pOpSketch, "vLimit"_Stz, pCodeFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -501,16 +546,25 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         bHasIndexInflate = true;
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // open the indexJoin code fragments file
+        // open the index, indexJoin, inflate  and filter code fragments file
         bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
         RASSERT ( bOpened );
 
         bOpened = pCodeFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
         RASSERT ( bOpened );
 
+        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vSemiJoinBegin"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pCodeFile);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
           vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pCodeFile, (i8)KE_INT);
@@ -527,21 +581,17 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pCodeFile);
 
         vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pCodeFile);
-        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
-        RASSERT ( bOpened );
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
-        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
-        RASSERT ( bOpened );
         vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pFilterFile);
 
         vAppendCodeFragment(pOpSketch, "vSemiJoinEnd"_Stz, pCodeFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // close the indexJoin code fragments file
+        // close the code fragments file
         pInflateFile->vClose();
         pCodeFile->vClose();
         pIndexFile->vClose();
@@ -550,6 +600,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         break;
 
       case SK_SORT:
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         vAppendCodeFragment(pOpSketch, "iSortBegin"_Stz);
         vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
@@ -575,12 +629,16 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
       case SK_STREAMDEF:
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // end previous handler
+        // end previous handler function
         vAppendFunctionFooter(pOpSketch, ePreviousHandler, bHasIndexInflate);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // begin new StreamDef handler
+        // begin new StreamDef handler function
         vAppendFunctionHeader(pOpSketch, eCurrentHandler, pStencil->szStageNm(), bHasIndexInflate);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // StreamDefOut generation
@@ -590,6 +648,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         break;
 
       case SK_TUB:
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         vAppendStencilTo(pOpSketch);
 
@@ -631,6 +693,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         break;
 
       case SK_POT:
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         vAppendStencilTo(pOpSketch);
 
@@ -1356,7 +1422,7 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
             break;
 
           default:
-            RASSERT(0);
+            vAppendCodeFragment(pOpSketch, "vPLIntKeyToTub"_Stz, pColumn);
             break;
         }
       }

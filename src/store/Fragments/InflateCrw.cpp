@@ -22,19 +22,14 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
   i8 __COLUMNS_IN__;
   i8 iaPow10[15];
 
-
   // marker-start
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-CRW
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
 
-  printf("INFLATE-CRW\n");
+#ifdef WITH_DEBUG
+  printf("__OPERATOR_NAME__\n");
+#endif
 
   iaPow10[0] = 1;
   iaPow10[1] = 10;
@@ -56,11 +51,10 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   i_CurrentRow = -1;
 
-  aDynamicT->m_nCols = __COLUMNS_IN__;
-
   // process the row
   aDynamicT->m_iProcessRow = 1;
 
+  // set the string area
   __ROW_INFO_TO__.m_acStrArea  = __ROW_INFO_TO__.m_acStrAreaSav;
 
   // marker-end
@@ -153,8 +147,8 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
   L_InflateCrwRet:
 
   aDynamicT->m_xRowInfoIT.m_acStrArea = acStrArea;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
+  //p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  //szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
 
   // marker-end
 

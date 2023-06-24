@@ -524,14 +524,8 @@ void Stencil_v2::vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, St
   else {
     OpDef *pOpNext = pStageDef->pGet(iNextOp);
 
-    if (pOpNext->szOpNm()->bSame("dynamic_v2"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
-      // if nextOp is combined/hash, then next label is sDefault
-      sLabelNext->vCopy(sDefault);
-    }
-    else {
-      // form next label using next op
-      sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
-    }
+    // form next label using next op
+    sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
   }
 }
 
@@ -567,36 +561,6 @@ void Stencil_v2::vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
   pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
   EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
-
-  // delete the indexdef in the LU of OP
-  // not the correct place... will come back to it
-  delete *pLogicUnit->m_xpIndexDef;
-  pLogicUnit->m_xpIndexDef = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for sort                                                            */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupSort(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  eKE eKind;
-  bool bPayload = true;
-
-  // get the indexDef
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  // do we have a payload ?
-  if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
-    bPayload = false;
-
-  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
-  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
-  EntWrk::vEntDesc((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk,pIndexDef);
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it

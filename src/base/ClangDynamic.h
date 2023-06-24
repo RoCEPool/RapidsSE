@@ -68,7 +68,6 @@ struct Dynamic_T
   struct RowInfo m_xRowInfoTJ;
 
   // aggregate T (SR_AT)
-  i8 m_iAggregInit;
   struct RowInfo m_xRowInfoAT;
 
   // Tub Output (SR_TO)
