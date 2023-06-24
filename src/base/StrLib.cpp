@@ -547,6 +547,7 @@ void StrLib::vConcat(char* psDst, const char* psArg, i8 nLen)
   _static_
 
   strncat(psDst,psArg,nLen);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2627,33 +2628,59 @@ i8 StrLib::iGleanInt(char* azArg)
 /*----------------------------------------------------------------------------*/
 /* find end of (line/record) group given separator and max length             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& nLen)
+char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& rnGroupLen)
 {
   _static_
 
-  nLen = 0;
-
   ASSERT(*azArg);
+  ASSERT(nMaxLength);
+
+  rnGroupLen = 0;
+
 
   char* szGroupEnd = azArg;
-  i8 nGroupLen = 0;
+  i8 nLen_crs = 0;
 
-  char* azCrs;
-  for (azCrs = azArg; nGroupLen < nMaxLength; azCrs++) {
+  char* azCrs_arg;
+  for (azCrs_arg = azArg; nLen_crs < nMaxLength; azCrs_arg++) {
 
-    if (! *azCrs) {
-      szGroupEnd = azCrs;
-      nLen = nGroupLen;
+    // increment length of potential group
+    nLen_crs++;
+
+    if (! *azCrs_arg) {
+      // + end of arg string
+      // add final group
+      szGroupEnd = azCrs_arg;
+      rnGroupLen = nLen_crs;
       break;
     }
 
-    nGroupLen++;
-
-    if (*azCrs == cSep) {
-      szGroupEnd = azCrs;
-      nLen = nGroupLen;
+    if (*azCrs_arg == cSep) {
+      // + group separator
+      // add to group
+      szGroupEnd = azCrs_arg;
+      rnGroupLen = nLen_crs;
     }
 
+  }
+
+  // nb. may have exited because last potential group didn't fit max length
+
+  if (rnGroupLen) {
+    // + subgroup which fits
+
+    // *szGroupEnd will be cSep or \0
+    ASSERT(*szGroupEnd == cSep || !*szGroupEnd);
+
+    // byte length of group is (chars of group) plus (cSep or \0)
+    ASSERT(szGroupEnd - azArg + 1 == rnGroupLen);
+
+    // group will not be longer than nMaxLength
+    ASSERT(rnGroupLen <= nMaxLength);
+  }
+  else {
+    // - no subgroup fits
+    ASSERT(szGroupEnd == azArg);
   }
 
   return szGroupEnd;

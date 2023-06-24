@@ -22,8 +22,8 @@ namespace STORE
     i8 m_i_Op_stage;
     bool m_bOpPrinted;
 
-    ExtendedText* p_pOptStmt;
-    ExtendedText* p_pCodeBlock;
+    ExtendedText* m_pOptStmt;
+    ExtendedText* m_pCodeBlock;
 
     bool m_bSawHash;
   private:
@@ -43,7 +43,6 @@ namespace STORE
     ExtendedText* pOptStmt(void);
     void vOptStmt(ExtendedText* pOptSmt);
 
-    Stz* szCodeBlock(void);
     ExtendedText* pCodeBlock(void);
     void vCodeBlock(ExtendedText* pCodeBlock);
 

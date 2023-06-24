@@ -384,7 +384,7 @@ SizeHeap gxaSizeHeap[]
   {CN_EXEMPLAR,                  sizeof(Exemplar),               HT_T_TINY    , FILL },
   {CN_EXITOPERAND,               sizeof(ExitOperand),            HT_T_TINY    , FILL },
   { CN_EXTENDEDTEXT,             sizeof(ExtendedText),           HT_T_TINY    , FILL },
-  { CN_EXTENDEDTEXTBUFFER,       sizeof(ExtendedTextBuffer),     HT_T_LARGE   , FILL },
+  { CN_EXTENDEDTEXTBUFFER,       sizeof(ExtendedTextBuffer),     HT_T_SMALL   , FILL },
   {CN_EXTRACTMAP,                sizeof(ExtractMap),             HT_T_TINY    , FILL },
 
   {CN__F__,                     'F' - ('A' - 1),                HT_INVALID   , FILL },

@@ -90,45 +90,77 @@ void ExtendedText::vConcat2(Stz* szSubStr)
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-void ExtendedText::vConcat(Stz* szSubStr)
+void ExtendedText::vConcat(Stz* szStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  if (szSubStr->nSize() > C_4K) {
-    vTrace("%s : %lld\n"_Stz,__func__ ,szSubStr->nSize());
-    vDebugPoint();
-  }
+//  if (szStr->nSize() > C_4K) {
+//    vTrace("%s : %lld\n"_Stz, __func__ , szStr->nSize());
+//    vDebugPoint();
+//  }
 
   // at least a first extended text buffer
   vEnsureBuffer();
 
-  // get tail buffer
 
-  char* azCrs = szSubStr->azChar();
-  i8 nLen;
+  char* azCrs_str = szStr->azChar();
+  char* azEnd_substr;
+  i8 nLen_substr;
+  i8 nMaxLength;
   bool b;
 
-  char* azGrpEnd;
-  while (*azCrs) {
+  for (;;) {
 
-    ExtendedTextBuffer* pExtTextBuffer = pTailBuffer();
-    azGrpEnd = StrLib::azEndOfGroup(azCrs, '\n', pExtTextBuffer->nFreeBytes(), nLen);
-    if (! nLen) {
+    // get tail buffer
+    ExtendedTextBuffer* pEtBuffer = pTailBuffer();
+    nMaxLength = pEtBuffer->nFreeBytes() - 1;
+
+//    vTrace("+++++++\n"_Stz);
+//    vTrace("%s\n"_Stz, azCrs_str);
+
+    azEnd_substr = StrLib::azEndOfGroup(azCrs_str, '\n', nMaxLength, nLen_substr);
+
+    if (! nLen_substr) {
       b = bAddBuffer();
+      RASSERT(b);
       continue;
     }
 
-    b = pExtTextBuffer->bConcat((Stz*)azCrs, nLen);
+    b = pEtBuffer->bConcat((Stz*)azCrs_str, nLen_substr);
+    RASSERT(b);
 
-    if (*azGrpEnd)
-      azGrpEnd++;
-    azCrs = azGrpEnd;
-    if (*azCrs)
-      b = bAddBuffer();
+    if (! *azEnd_substr)
+      break;
+
+    azCrs_str = azEnd_substr + 1;
+    b = bAddBuffer();
+    RASSERT(b);
   }
 
-  vDump();
-  vDebugPoint();
+//  if (nTextBlocks() > 1) {
+//    vTrace("-------\n"_Stz);
+//    vDump();
+//    vTrace("=======\n"_Stz);
+//    vDebugPoint();
+//  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add sub-string to text                                                     */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vConcat(ExtendedText* pArg)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  i8 nBlocks_arg = pArg->nTextBlocks();
+  for (i8 i_Block = 0; i_Block < nBlocks_arg; i_Block++) {
+
+    ExtendedTextBuffer* pBuffer_arg  = pArg->pExtTextBuffer(i_Block);
+
+    Stz* szTextBlock = pBuffer_arg->szTextBlock();
+
+    vConcat(szTextBlock);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

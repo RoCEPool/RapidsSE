@@ -443,7 +443,7 @@ void String_t<AREA>::vConcat(Stz* szArg, i8 nLen)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  StrLib::vConcat(m_caCharArea,szArg->azChar());
+  StrLib::vConcat(m_caCharArea,szArg->azChar(),nLen);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -476,9 +476,8 @@ bool String_t<AREA>::bConcat(Stz* szArg, i8 nLen)
   _precondition_(_MAGIC_,_FOOTER_);
 
   i8 nBytes_free = this->nFreeBytes();
-  i8 nBytes_need = szArg->nSize();
 
-  if (nBytes_need > nBytes_free)
+  if (nLen >= nBytes_free)
     return false;
 
   vConcat(szArg, nLen);

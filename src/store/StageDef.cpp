@@ -117,6 +117,27 @@ void StageDef::vCode(Stz* szCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+ExtendedText* StageDef::pCode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+
+  return m_pCode;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void StageDef::vCode(ExtendedText* pCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
+
+  m_pCode = pCode;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* collapse one or more operators into one                                    */
 /*----------------------------------------------------------------------------*/
 void StageDef::vCollapseOps(void)

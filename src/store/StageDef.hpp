@@ -38,6 +38,9 @@ namespace STORE
     Stz* szCode(void);
     void vCode(Stz* szCode);
 
+    ExtendedText* pCode(void);
+    void vCode(ExtendedText* pCode);
+
     void vCollapseOps(void);
 
     void vDump(i8 i_Tab=1);

@@ -34,8 +34,8 @@ Weaver2::Weaver2(Bench* pBench, PipelineDef* pPipelineDef)
   m_i_Stage    = 0;
   m_i_Op_stage = 0;
   m_bOpPrinted = false;
-  p_pOptStmt   = nullptr;
-  p_pCodeBlock = nullptr;
+  m_pOptStmt   = nullptr;
+  m_pCodeBlock = nullptr;
   m_bSawHash   = false;
 
 
@@ -51,8 +51,8 @@ Weaver2::~Weaver2(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  if (p_pOptStmt)
-    delete p_pOptStmt;
+  if (m_pOptStmt)
+    delete m_pOptStmt;
 }
 
 
@@ -68,7 +68,7 @@ Stz* Weaver2::szOptStmt(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
   
-  return p_pOptStmt->szTextBlock(0);
+  return m_pOptStmt->szTextBlock(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ ExtendedText* Weaver2::pOptStmt(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  return p_pOptStmt;
+  return m_pOptStmt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,20 +88,7 @@ void Weaver2::vOptStmt(ExtendedText* pOptSmt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  p_pOptStmt = pOptSmt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get code block                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Weaver2::szCodeBlock(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-
-  if (! p_pCodeBlock)
-    return nullptr;
-
-  return p_pCodeBlock->szTextBlock(0);
+  m_pOptStmt = pOptSmt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,7 +98,7 @@ ExtendedText* Weaver2::pCodeBlock(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  return p_pCodeBlock;
+  return m_pCodeBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +108,7 @@ void Weaver2::vCodeBlock(ExtendedText* pCodeBlock)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  p_pCodeBlock = pCodeBlock;
+  m_pCodeBlock = pCodeBlock;
 }
 
 
@@ -195,18 +182,30 @@ void Weaver2::vCppBlock(void)
 
   if (bHasCode) {
 
-    vTrace("Code %s\n"_Stz, p_pOptStmt->szTextBlock(0));
-    vTrace("Code %lld\n"_Stz, StrLib::nSize(p_pOptStmt->szTextBlock(0)->azChar()));
+    vTrace("Code %s\n"_Stz, m_pOptStmt->szTextBlock(0));
+    vTrace("Code %lld\n"_Stz, StrLib::nSize(m_pOptStmt->szTextBlock(0)->azChar()));
 
     vDebugPoint();
 
     for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
       StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
-      if (i_Stage)
-        vConcat_code("\n"_Stz);
-      vConcat_code(pStageDef->szCode());
+//      if (i_Stage)
+//        vConcat_code("\n"_Stz);
+      //vConcat_code(pStageDef->szCode());
+//      vTrace("~~Stage %lld CodeBlock\n"_Stz,i_Stage);
+//      vTrace("%s\n"_Stz,pStageDef->szCode());
+//      vTrace("~~~~~~~~~~~\n"_Stz);
+//      vDebugPoint();
+
+      if (! m_pCodeBlock)
+        m_pCodeBlock = new ExtendedText;
+      m_pCodeBlock->vConcat(pStageDef->pCode());
     }
 
+//    vTrace("~~Weaver2 CodeBlock\n"_Stz);
+//    m_pCodeBlock->vDump();
+//    vTrace("~~~~~~~~~~~\n"_Stz);
+    vDebugPoint();
   }
 }
 
@@ -864,10 +863,10 @@ void Weaver2::vConcat_cmd_vargs(Stz* aFormat, va_list xArgs)
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
 
-  if (! p_pOptStmt)
-    p_pOptStmt = new ExtendedText;
+  if (! m_pOptStmt)
+    m_pOptStmt = new ExtendedText;
 
-  p_pOptStmt->vConcat((Stz*)caFormatted);
+  m_pOptStmt->vConcat((Stz*)caFormatted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -894,10 +893,10 @@ void Weaver2::vConcat_code_vargs(Stz* aFormat, va_list xArgs)
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
 
-  if (! p_pCodeBlock)
-    p_pCodeBlock = new ExtendedText;
+  if (! m_pCodeBlock)
+    m_pCodeBlock = new ExtendedText;
 
-  p_pCodeBlock->vConcat((Stz*)caFormatted);
+  m_pCodeBlock->vConcat((Stz*)caFormatted);
 }
 
 /*----------------------------------------------------------------------------*/
