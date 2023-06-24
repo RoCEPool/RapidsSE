@@ -235,7 +235,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "iAggregBegin"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
 
         vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
@@ -339,7 +339,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
 
         vAppendStencilTo(pOpSketch);
 
-        vAppendCodeFragment(pOpSketch, "vProjectBegin"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "iProjectEnd"_Stz, pCodeFile);
 

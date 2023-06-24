@@ -10,40 +10,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vAggregBegin -----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iAggregBegin
-i8 iAggregBegin(Dynamic_T* aDynamicT) {
-
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  RowInfo __ROW_INFO_FROM__;
-  RowInfo __ROW_INFO_TO__;
-
-  char* szStrArea;
-
-  __L_LABEL_LOOP__:
-
-  // marker-start
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-
-  __L_LABEL__:
-
-#ifdef WITH_DEBUG
-  printf("__OPERATOR_NAME__\n");
-#endif
-
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
-
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
-  szStrArea = __ROW_INFO_TO__.m_acStrArea;
-
-  // marker-end
-
-  return 0;
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vAggregInit -------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vAggregInitBegin
