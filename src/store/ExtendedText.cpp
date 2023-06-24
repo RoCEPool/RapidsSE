@@ -90,52 +90,59 @@ void ExtendedText::vConcat2(Stz* szSubStr)
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-void ExtendedText::vConcat(Stz* szSubStr)
+void ExtendedText::vConcat(Stz* szStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  if (szSubStr->nSize() > C_4K) {
-    vTrace("%s : %lld\n"_Stz,__func__ ,szSubStr->nSize());
-    vDebugPoint();
-  }
+//  if (szStr->nSize() > C_4K) {
+//    vTrace("%s : %lld\n"_Stz, __func__ , szStr->nSize());
+//    vDebugPoint();
+//  }
 
   // at least a first extended text buffer
   vEnsureBuffer();
 
-  // get tail buffer
 
-  char* azCrs = szSubStr->azChar();
-  i8 nGrpLen;
+  char* azCrs_str = szStr->azChar();
+  char* azEnd_substr;
+  i8 nLen_substr;
+  i8 nMaxLength;
   bool b;
 
-  char* azGrpEnd;
-  while (*azCrs) {
+  for (;;) {
 
-    ExtendedTextBuffer* pExtTextBuffer = pTailBuffer();
+    // get tail buffer
+    ExtendedTextBuffer* pEtBuffer = pTailBuffer();
+    nMaxLength = pEtBuffer->nFreeBytes() - 1;
 
-    vTrace("+++++++\n"_Stz);
-    vTrace("%s\n"_Stz,azCrs);
-    azGrpEnd = StrLib::azEndOfGroup(azCrs, '\n', pExtTextBuffer->nFreeBytes(), nGrpLen);
-    if (! nGrpLen) {
+//    vTrace("+++++++\n"_Stz);
+//    vTrace("%s\n"_Stz, azCrs_str);
+
+    azEnd_substr = StrLib::azEndOfGroup(azCrs_str, '\n', nMaxLength, nLen_substr);
+
+    if (! nLen_substr) {
       b = bAddBuffer();
+      RASSERT(b);
       continue;
     }
 
-    b = pExtTextBuffer->bConcat((Stz*)azCrs, nGrpLen);
+    b = pEtBuffer->bConcat((Stz*)azCrs_str, nLen_substr);
+    RASSERT(b);
 
-    if (*azGrpEnd)
-      azGrpEnd++;
-    azCrs = azGrpEnd;
-    if (*azCrs)
-      b = bAddBuffer();
+    if (! *azEnd_substr)
+      break;
+
+    azCrs_str = azEnd_substr + 1;
+    b = bAddBuffer();
+    RASSERT(b);
   }
 
-  if (nTextBlocks() > 1) {
-    vTrace("-------\n"_Stz);
-    vDump();
-    vTrace("=======\n"_Stz);
-    vDebugPoint();
-  }
+//  if (nTextBlocks() > 1) {
+//    vTrace("-------\n"_Stz);
+//    vDump();
+//    vTrace("=======\n"_Stz);
+//    vDebugPoint();
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

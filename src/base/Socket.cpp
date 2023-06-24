@@ -301,6 +301,14 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
         bResult = bBytesSend(pExtTextBuffer, nBytes, roSysCall);
         RASSERT(bResult);
       }
+
+//      if (nBlocks) {
+//        vTrace("~~Send CodeBlock\n"_Stz);
+//        pCodeBlock->vDump();
+//        vTrace("~~~~~~~~~~~\n"_Stz);
+//        vDebugPoint();
+//      }
+
     }
 
   }
@@ -485,12 +493,13 @@ Object* Socket::pObjectRecv(eCN eClass)
 
       }
 
-      if (nBlocks > 1) {
-        vTrace("~~CodeBlock\n"_Stz);
-        pCodeBlock->vDump();
-        vTrace("~~~~~~~~~~~\n"_Stz);
-        vDebugPoint();
-      }
+//      if (nBlocks) {
+//        vTrace("~~Recv CodeBlock\n"_Stz);
+//        pCodeBlock->vDump();
+//        vTrace("~~~~~~~~~~~\n"_Stz);
+//        vDebugPoint();
+//      }
+
       pJob->vCodeBlock(pCodeBlock);
     }
 

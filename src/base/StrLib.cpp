@@ -2666,18 +2666,22 @@ char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& rnGroupLen
 
   // nb. may have exited because last potential group didn't fit max length
 
-  // we must have had one line/record in group
-  //  (otherwise this routine doesn't work)
-  ASSERT(rnGroupLen);
+  if (rnGroupLen) {
+    // + subgroup which fits
 
-  // *szGroupEnd will be cSep or \0
-  ASSERT(*szGroupEnd == cSep || ! *szGroupEnd);
+    // *szGroupEnd will be cSep or \0
+    ASSERT(*szGroupEnd == cSep || !*szGroupEnd);
 
-  // byte length of group is (chars of group) plus (cSep or \0)
-  ASSERT(szGroupEnd - azArg + 1 == rnGroupLen);
+    // byte length of group is (chars of group) plus (cSep or \0)
+    ASSERT(szGroupEnd - azArg + 1 == rnGroupLen);
 
-  // group will not be longer than nMaxLength
-  ASSERT(rnGroupLen <= nMaxLength);
+    // group will not be longer than nMaxLength
+    ASSERT(rnGroupLen <= nMaxLength);
+  }
+  else {
+    // - no subgroup fits
+    ASSERT(szGroupEnd == azArg);
+  }
 
   return szGroupEnd;
 }

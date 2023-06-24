@@ -709,15 +709,19 @@ bool CompileLib::bWriteSrcToFile(ExtendedText* pSource, LibInfo* pLibInfo)
     return false;
   }
 
+//  vTrace("~~pSource\n"_Stz);
+//  pSource->vDump();
+//  vTrace("~~~~~~~~~~~\n"_Stz);
+
   i8 nBlocks = pSource->nTextBlocks();
   for (i8 i_Block = 0; i_Block < nBlocks; i_Block++) {
     Stz *szSource = pSource->szTextBlock(i_Block);
 
-    if (nBlocks > 1) {
-      vTrace("~~pSource\n"_Stz);
-      pSource->vDump();
-      vTrace("~~~~~~~~~~~\n"_Stz);
-    }
+//    if (nBlocks > 1) {
+//      vTrace("~~szSource\n"_Stz);
+//      vTrace("%s\n"_Stz,szSource);
+//      vTrace("~~~~~~~~~~~\n"_Stz);
+//    }
 
     if (!pSrcFile->bWriteBytes(szSource, szSource->nLength())) {
       pLibInfo->m_eErrCode = EC_COMPILATION_FAILED;
