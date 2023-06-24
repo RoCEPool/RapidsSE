@@ -39,7 +39,6 @@ namespace STORE
   
     void vWeaveOptStmt(Board* pBoard);
     void vWeaveOptStmt2(Board* pBoard);
-    Stz* szOptStmt(void);
     ExtendedText* pOptStmt(void);
     void vOptStmt(ExtendedText* pOptSmt);
 

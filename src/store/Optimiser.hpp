@@ -78,6 +78,9 @@ namespace STORE
     i8 nJoinPermutations(void);
     void vJoinPermutations(i8 iJoinPermutations);
 
+    ExtendedText* pOptStmt(void);
+    void vOptStmt(ExtendedText* pOptSmt);
+
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 

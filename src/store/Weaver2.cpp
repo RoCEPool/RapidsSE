@@ -64,16 +64,6 @@ Weaver2::~Weaver2(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get optimised pipeline statement                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Weaver2::szOptStmt(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-  
-  return m_pOptStmt->szTextBlock(0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get optimised pipeline statement                                           */
-/*----------------------------------------------------------------------------*/
 ExtendedText* Weaver2::pOptStmt(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
@@ -1088,7 +1078,7 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
   vSemicolon();
 
   if (AM::JOB::bHasTag(C_WEAVED)) {
-    vTrace("%s\n"_Stz, szOptStmt());
+    m_pOptStmt->vDump();
     vDebugPoint();
   }
 }

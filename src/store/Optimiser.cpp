@@ -364,6 +364,26 @@ void Optimiser::vJoinOrder(Stz* szJoinOrder)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get code block                                                             */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Optimiser::pOptStmt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  return m_pOptStmt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code block                                                             */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vOptStmt(ExtendedText* pOptStmt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+
+  m_pOptStmt = pOptStmt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* retrieve m_pPipelineDef                                                    */
 /*----------------------------------------------------------------------------*/
 PipelineDef* Optimiser::pPipelineDef(void)
