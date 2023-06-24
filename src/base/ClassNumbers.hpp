@@ -328,7 +328,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SINCE,
   /* */ CN_SKIPLIST,
   /* */ CN_SKIPLISTNODE,
-  /* */ CN_SKIPLISTSET,
+  /* */ CN_SKIPLISTBLOCK,
   /* */ CN_SKIPNODE,
   /* */ CN_SLAB,
   /* */ CN_SLABALLOCATOR,
@@ -773,7 +773,7 @@ static Stz* aCN[]
   /* */ "SINCE"_Stz,                // CN_SINCE
   /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST
   /* */ "SKIPLISTNODE"_Stz,         // CN_SKIPLISTNODE
-  /* */ "SKIPLISTSET"_Stz,         // CN_SKIPLISTSET
+  /* */ "SKIPLISTBLOCK"_Stz,        // CN_SKIPLISTBLOCK
   /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE
   /* */ "SLAB"_Stz,                 // CN_SLAB
   /* */ "SLABALLOCATOR"_Stz,        // CN_SLABALLOCATOR

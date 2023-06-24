@@ -5,7 +5,7 @@
 
 #include "Pds.hpp"
 #include "SkipListNode.hpp"
-#include "SkipListSet.hpp"
+#include "SkipListBlock.hpp"
 
 namespace BASE
 {
@@ -62,7 +62,7 @@ Pds_t<ITEM>::~Pds_t(void) noexcept(false)
 template <class ITEM>
 ITEM* Pds_t<ITEM>::aAllotEntry(i8 iKey)
 {
-  return (ITEM*) Pds::aAllotSkipListSet(iKey);
+  return (ITEM*) Pds::aAllotSkipListBlock(iKey);
 }
 
 /*============================================================================*/

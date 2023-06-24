@@ -57,10 +57,10 @@ Pds::Pds(i8 nBytes)
 
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
 
-  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListSet(0));
+  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock(0));
   m_iFreeListEntries = 0;
   // add dummy node to in use skip list
-  m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListSet(0));
+  m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock(0));
 
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
@@ -82,19 +82,19 @@ Pds::~Pds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot a skip list set in this buffer                                       */
+/* allot a skip list block in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-SkipListSet* Pds::aAllotSkipListSet(i8 iKey)
+SkipListBlock* Pds::aAllotSkipListBlock(i8 iKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  SkipListSet* pReturnSet = nullptr;
-  SkipListSet* pFreeListHead = (SkipListSet*) pGetAddrFromOffset(m_uFreeListRootOffset);
-  SkipListSet* pNextFree = pNextSLSet(pFreeListHead,0);
+  SkipListBlock* pReturnSet = nullptr;
+  SkipListBlock* pFreeListHead = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
+  SkipListBlock* pNextFree = pNextSLSet(pFreeListHead, 0);
 
   if(pNextFree != nullptr) {
     pReturnSet = pNextFree;
-    SkipListSet* pNextNext = pNextSLSet(pNextFree,0);
+    SkipListBlock* pNextNext = pNextSLSet(pNextFree, 0);
     if(pNextNext != nullptr) {
       pFreeListHead->m_xNode.vNext(0, uGetOffsetFromBase(pNextNext));
       m_iFreeListEntries--;
@@ -106,7 +106,7 @@ SkipListSet* Pds::aAllotSkipListSet(i8 iKey)
       RASSERT(m_iFreeListEntries == 0);
     }
   } else {
-    pReturnSet = aAllotItem(CN_SKIPLISTSET, m_nBlockSize);
+    pReturnSet = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
   }
 
   if (! pReturnSet)
@@ -126,14 +126,14 @@ void Pds::vDelete(i8 iKey)
 
   // Add an assert to check that all the entries are deleted where
   // the entry to delete has a non-zero value in it's respective level.
-  SkipListSet* pDeleteEntry = nullptr;
+  SkipListBlock* pDeleteEntry = nullptr;
   for( i8 i_Level = C_MAX_LVL_LEVELS -1; i_Level >= 0; i_Level--) {
     if(m_iNumEntries[i_Level] == 0)
       continue;
 
-    SkipListSet* pCursor = (SkipListSet*) pGetAddrFromOffset(m_uInUseRootOffset);
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
 
-    SkipListSet* pNext = pNextSLSet(pCursor, i_Level);
+    SkipListBlock* pNext = pNextSLSet(pCursor, i_Level);
     while(pNext != nullptr) {
       i8 iNextKey = pNext->iKey();
       if(iNextKey== iKey) {
@@ -164,7 +164,7 @@ void Pds::vDump(u2 uOffset)
 
   vTrace("=================================================="
          "===================================================\n"_Stz);
-  if((SkipListSet*) pGetAddrFromOffset(uOffset) == nullptr) {
+  if((SkipListBlock*) pGetAddrFromOffset(uOffset) == nullptr) {
     vTrace("Invalid offset given\n"_Stz);
     return;
   }
@@ -174,7 +174,7 @@ void Pds::vDump(u2 uOffset)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-    SkipListSet* pCursor = (SkipListSet*) pGetAddrFromOffset(uOffset);
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
 
     vTrace("| %5lld | %6lld | "_Stz, i_Level, m_iNumEntries[i_Level]);
 
@@ -218,7 +218,7 @@ void Pds::vDumpInUse(void) {
 /*----------------------------------------------------------------------------*/
 /* find key                                                                   */
 /*----------------------------------------------------------------------------*/
-SkipListSet* Pds::pFind(i8 iKey)
+SkipListBlock* Pds::pFind(i8 iKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -227,9 +227,9 @@ SkipListSet* Pds::pFind(i8 iKey)
     if(m_iNumEntries[i_Level] == 0)
       continue;
 
-    SkipListSet* pCursor = (SkipListSet*) pGetAddrFromOffset(uOffset);
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
 
-    SkipListSet* pNext = pNextSLSet(pCursor, i_Level);
+    SkipListBlock* pNext = pNextSLSet(pCursor, i_Level);
     while(pNext != nullptr) {
       i8 iNextKey = pNext->iKey();
       if(iNextKey == iKey) {
@@ -280,10 +280,10 @@ void Pds::vInsert(i8 iKey)
 
   // Check free list first before allocation
 //  if(m_pFreeListRoot != nullptr)
-  SkipListSet* pNewSLSet = aAllotSkipListSet(iKey);
+  SkipListBlock* pNewSLSet = aAllotSkipListBlock(iKey);
   u2 uNewOffset = uGetOffsetFromBase(pNewSLSet);
 
-  SkipListSet* xPriorVec[C_MAX_LVL_LEVELS];
+  SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
 
   vPriorVecToKey(iKey, xPriorVec);
 
@@ -294,7 +294,7 @@ void Pds::vInsert(i8 iKey)
       break;
     }
 
-    SkipListSet* pCursor = xPriorVec[i_Level];
+    SkipListBlock* pCursor = xPriorVec[i_Level];
 
     u2 uTmpOffset = pCursor->m_xNode.uNext(i_Level);
     pCursor->m_xNode.vNext(i_Level, uNewOffset);
@@ -305,9 +305,9 @@ void Pds::vInsert(i8 iKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot a skip list set in this buffer                                       */
+/* allot a skip list block in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-void Pds::vMoveToFreeList(SkipListSet* pSLSet)
+void Pds::vMoveToFreeList(SkipListBlock* pSLSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -315,9 +315,9 @@ void Pds::vMoveToFreeList(SkipListSet* pSLSet)
   for(i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     pSLSet->m_xNode.vNext(i_Level, 0);
   }
-  SkipListSet* pCursor = (SkipListSet*) pGetAddrFromOffset(m_uFreeListRootOffset);
+  SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 
-  SkipListSet* pNext = pNextSLSet(pCursor, 0);
+  SkipListBlock* pNext = pNextSLSet(pCursor, 0);
 
   if(pNext != nullptr) {
     pSLSet->m_xNode.vNext(0, uGetOffsetFromBase(pNext));
@@ -330,9 +330,9 @@ void Pds::vMoveToFreeList(SkipListSet* pSLSet)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Get next SkipListSet node pointer                                          */
+/* Get next SkipListBlock node pointer                                        */
 /*----------------------------------------------------------------------------*/
-SkipListSet* Pds::pNextSLSet(SkipListSet* pSLSet ,i8 iLevel)
+SkipListBlock* Pds::pNextSLSet(SkipListBlock* pSLSet , i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -344,18 +344,18 @@ SkipListSet* Pds::pNextSLSet(SkipListSet* pSLSet ,i8 iLevel)
   if(uNext == 0)
     return nullptr;
 
-  return (SkipListSet*) pGetAddrFromOffset(uNext);
+  return (SkipListBlock*) pGetAddrFromOffset(uNext);
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for insert key, such that next of PriorVec[0] is      */
 /* specifically the point to insert at                                        */
 /*----------------------------------------------------------------------------*/
-void Pds::vPriorVecToKey(i8 iKey, SkipListSet* aPriorVec[])
+void Pds::vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  SkipListSet* pCurr = (SkipListSet*) pGetAddrFromOffset(m_uInUseRootOffset);
+  SkipListBlock* pCurr = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
 
   for (i8 i_Level = C_MAX_LVL_LEVELS - 1; i_Level >= 0; i_Level--) {
 
@@ -364,7 +364,7 @@ void Pds::vPriorVecToKey(i8 iKey, SkipListSet* aPriorVec[])
       continue;
     }
 
-    SkipListSet* pNext = pNextSLSet(pCurr, i_Level);
+    SkipListBlock* pNext = pNextSLSet(pCurr, i_Level);
 
     i8 iNextKey = 0;
     if(pNext != nullptr) {

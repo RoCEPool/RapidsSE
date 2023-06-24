@@ -4,12 +4,12 @@
 #pragma once
 
 #include "SkipListNode.hpp"
-#include "SkipListSet.hpp"
+#include "SkipListBlock.hpp"
 
 namespace BASE
 {
   class Pds : public Object,
-              public MiniHeap_t<SkipListSet>
+              public MiniHeap_t<SkipListBlock>
   {
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
@@ -31,23 +31,23 @@ namespace BASE
     Pds(i8 nBytes);
     ~Pds(void) noexcept(false);
 
-    SkipListSet* aAllotSkipListSet(i8 iKey);
+    SkipListBlock* aAllotSkipListBlock(i8 iKey);
 
     void vDelete(i8 iKey);
     void vDump(u2 uOffset);
     void vDumpFree(void);
     void vDumpInUse(void);
 
-    SkipListSet* pFind(i8 iKey);
+    SkipListBlock* pFind(i8 iKey);
     void* pGetAddrFromOffset(u2 uOffset);
     u2 uGetOffsetFromBase(void* aAddress);
 
     void vInsert(i8 iKey);
 
-    void vMoveToFreeList(SkipListSet* pSLSet);
-    SkipListSet* pNextSLSet(SkipListSet* pSLSet ,i8 iLevel);
+    void vMoveToFreeList(SkipListBlock* pSLSet);
+    SkipListBlock* pNextSLSet(SkipListBlock* pSLSet , i8 iLevel);
 
-    void vPriorVecToKey(i8 iKey, SkipListSet* aPriorVec[]);
+    void vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
 
   public:
     Footer* aFooter(void);

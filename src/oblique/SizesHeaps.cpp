@@ -605,7 +605,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
   { CN_SKIPLIST,        sizeof(SkipListNL),         HT_T_TINY    , FILL },
   { CN_SKIPLISTNODE,    sizeof(SkipListNode),       HT_INVALID   , FILL },
-  { CN_SKIPLISTSET,     sizeof(SkipListSet),        HT_INVALID   , FILL },
+  { CN_SKIPLISTBLOCK,   sizeof(SkipListBlock),      HT_INVALID   , FILL },
   { CN_SKIPNODE,        sizeof(SkipNode),           HT_T_TINY    , FILL },
   { CN_SLAB,            sizeof(Slab),               HT_T_LARGE   , FILL },
   { CN_SLABALLOCATOR,   sizeof(SlabAllocator),      HT_T_TINY    , FILL },
