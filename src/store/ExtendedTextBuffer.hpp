@@ -11,7 +11,7 @@ namespace STORE
   {
   public:
 
-    s1M m_sTextBlock;
+    s2K m_sTextBlock;
 
   protected:
     // must be last
