@@ -498,7 +498,7 @@ void Job::vCmdText(ExtendedText* pCmdText)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  ASSERT(! m_pCmdText);
+  ASSERT(! pCmdText || ! m_pCmdText);
 
   m_pCmdText = pCmdText;
 }

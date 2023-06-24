@@ -141,7 +141,14 @@ void Step::vOptimiserWeave(void)
     
   Stz* szOptStmt = m_pLogicUnit->m_xpOptimiser->szWeave();
 
-  m_pJob->vCmdText(szOptStmt);
+  //m_pJob->vCmdText(szOptStmt);
+
+  // CAREFUL RAY
+  ExtendedText* pCmdText = m_pJob->pCmdText();
+  m_pJob->vCmdText((ExtendedText*)nullptr);
+  delete pCmdText;
+
+  m_pJob->vCmdText(m_pLogicUnit->m_xpOptimiser->pOptStmt());
 
   ExtendedText* pCodeBlock = m_pLogicUnit->m_xpOptimiser->pCodeBlock();
   if (pCodeBlock) {
