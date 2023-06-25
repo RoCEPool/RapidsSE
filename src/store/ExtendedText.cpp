@@ -26,6 +26,9 @@ ExtendedText::ExtendedText(void)
   for (i8 i_Block = 0; i_Block < C_EXTENDEDTEXTBUFFER; i_Block++)
     m_paExtTextBuffer[i_Block] = nullptr;
 
+  m_nBytes = 0;
+  m_nLines = 0;
+
   _checkInitialised_(CN_EXTENDEDTEXT);
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
@@ -60,36 +63,6 @@ ExtendedText::~ExtendedText(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add sub-string to text                                                     */
 /*----------------------------------------------------------------------------*/
-void ExtendedText::vConcat2(Stz* szSubStr)
-{
-  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
-
-  if (szSubStr->nSize() > C_4K) {
-    vTrace("%s : %lld\n"_Stz,__func__ ,szSubStr->nSize());
-    vDebugPoint();
-  }
-  // at least a first extended text buffer
-  vEnsureBuffer();
-
-  // get tail buffer
-  ExtendedTextBuffer* pExtTextBuffer = pTailBuffer();
-
-  bool b = pExtTextBuffer->bConcat(szSubStr);
-
-  if (!b) {
-    b = bAddBuffer();
-    if (b) {
-      pExtTextBuffer = pTailBuffer();
-      b = pExtTextBuffer->bConcat(szSubStr);
-    }
-  }
-
-  RASSERT(b);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add sub-string to text                                                     */
-/*----------------------------------------------------------------------------*/
 void ExtendedText::vConcat(Stz* szStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
@@ -99,43 +72,65 @@ void ExtendedText::vConcat(Stz* szStr)
 //    vDebugPoint();
 //  }
 
+  if (! szStr || ! StrLib::nLength(szStr->azChar()))
+    return;
+
   // at least a first extended text buffer
   vEnsureBuffer();
 
 
+  i8 nBytes_str = 0;
   char* azCrs_str = szStr->azChar();
-  char* azEnd_substr;
-  i8 nLen_substr;
-  i8 nMaxLength;
+  char* azEnd_group;
+  i8 nMaxBytes;
+  i8 nBytes_group;
+  i8 nLines_group;
   bool b;
 
   for (;;) {
 
     // get tail buffer
-    ExtendedTextBuffer* pEtBuffer = pTailBuffer();
-    nMaxLength = pEtBuffer->nFreeBytes() - 1;
+    ExtendedTextBuffer* pEtxtBuffer = pTailBuffer();
+    nMaxBytes = pEtxtBuffer->nFreeBytes() - 1;
 
 //    vTrace("+++++++\n"_Stz);
 //    vTrace("%s\n"_Stz, azCrs_str);
 
-    azEnd_substr = StrLib::azEndOfGroup(azCrs_str, '\n', nMaxLength, nLen_substr);
+    azEnd_group = StrLib::azGroupEnd(azCrs_str, '\n', nMaxBytes,
+                                     nBytes_group, nLines_group);
 
-    if (! nLen_substr) {
+    if (! nBytes_group) {
+      // next line group didn't fit into current buffer
       b = bAddBuffer();
       RASSERT(b);
       continue;
     }
 
-    b = pEtBuffer->bConcat((Stz*)azCrs_str, nLen_substr);
+    // concat line group into current buffer
+    b = pEtxtBuffer->bConcat((Stz*)azCrs_str, nBytes_group);
     RASSERT(b);
 
-    if (! *azEnd_substr)
+    m_nBytes += nBytes_group;
+    m_nLines += nLines_group;
+
+    nBytes_str += nBytes_group;
+
+    // - - - - - - - - - - - - - - -
+    // end loop detection
+
+    if (! *azEnd_group)
       break;
 
-    azCrs_str = azEnd_substr + 1;
+    // - - - - - - - - - - - - - - -
+    // still more line groups
+    //   continue with another buffer
+
+    azCrs_str = azEnd_group + 1;
     b = bAddBuffer();
     RASSERT(b);
   }
+
+  RASSERT(szStr->nSize() == nBytes_str);
 
 //  if (nTextBlocks() > 1) {
 //    vTrace("-------\n"_Stz);

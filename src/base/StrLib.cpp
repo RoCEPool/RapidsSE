@@ -2626,60 +2626,60 @@ i8 StrLib::iGleanInt(char* azArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find end of (line/record) group given separator and max length             */
+/* find end of next line group given line separator and max bytes             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azEndOfGroup(char* azArg, char cSep, i8 nMaxLength, i8& rnGroupLen)
+char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nMaxBytes,
+                         i8& rnBytesInGroup, i8& rnLinesInGroup)
 {
   _static_
 
   ASSERT(*azArg);
-  ASSERT(nMaxLength);
-
-  rnGroupLen = 0;
-
+  ASSERT(nMaxBytes);
 
   char* szGroupEnd = azArg;
-  i8 nLen_crs = 0;
+  rnLinesInGroup   = 0;
+  rnBytesInGroup   = 0;
+  i8 nCrs_bytes    = 0;
 
-  char* azCrs_arg;
-  for (azCrs_arg = azArg; nLen_crs < nMaxLength; azCrs_arg++) {
+  for (char* azCrs_arg = azArg; nCrs_bytes < nMaxBytes; azCrs_arg++) {
 
     // increment length of potential group
-    nLen_crs++;
+    nCrs_bytes++;
 
-    if (! *azCrs_arg) {
-      // + end of arg string
-      // add final group
-      szGroupEnd = azCrs_arg;
-      rnGroupLen = nLen_crs;
-      break;
-    }
+    if (*azCrs_arg == cItemSep || ! *azCrs_arg) {
+      // + line separator (or \0 end)
+      // add line to group
+      szGroupEnd     = azCrs_arg;
+      rnBytesInGroup = nCrs_bytes;
+      rnLinesInGroup++;
 
-    if (*azCrs_arg == cSep) {
-      // + group separator
-      // add to group
-      szGroupEnd = azCrs_arg;
-      rnGroupLen = nLen_crs;
+      if (! *azCrs_arg)
+        break;
     }
 
   }
 
-  // nb. may have exited because last potential group didn't fit max length
+  // nb. may have exited because last potential line didn't fit within max bytes
 
-  if (rnGroupLen) {
-    // + subgroup which fits
+  if (rnBytesInGroup) {
+    // + subset of items which fit
 
-    // *szGroupEnd will be cSep or \0
-    ASSERT(*szGroupEnd == cSep || !*szGroupEnd);
+    ASSERT(rnLinesInGroup);
 
-    // byte length of group is (chars of group) plus (cSep or \0)
-    ASSERT(szGroupEnd - azArg + 1 == rnGroupLen);
+    // *szGroupEnd will be cItemSep or \0
+    ASSERT(*szGroupEnd == cItemSep || !*szGroupEnd);
 
-    // group will not be longer than nMaxLength
-    ASSERT(rnGroupLen <= nMaxLength);
+    // byte length of group is (chars of group) plus (cItemSep or \0)
+    ASSERT(szGroupEnd - azArg + 1 == rnBytesInGroup);
+
+    // group will not be longer than nMaxBytes
+    ASSERT(rnBytesInGroup <= nMaxBytes);
   }
   else {
-    // - no subgroup fits
+    // - no subset of lines fits into max bytes
+
+    ASSERT(! rnLinesInGroup);
+
     ASSERT(szGroupEnd == azArg);
   }
 

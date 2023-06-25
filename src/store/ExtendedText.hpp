@@ -18,6 +18,9 @@ namespace STORE
     i8 m_nTextBlocks;
     ExtendedTextBuffer* m_paExtTextBuffer[C_EXTENDEDTEXTBUFFER];
 
+    i8 m_nBytes;
+    i8 m_nLines;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -30,7 +33,6 @@ namespace STORE
     ~ExtendedText(void) noexcept(false);
 
     void vConcat(Stz* szStr);
-    void vConcat2(Stz* szSubStr);
     void vConcat(ExtendedText* pExtText_arg);
     void vCopy(ExtendedText* pExtText_arg);
     void vCopy(Stz* szStr);
