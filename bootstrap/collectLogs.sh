@@ -215,6 +215,9 @@ function collectLogs() {
   remoteCmd+="echo \"Output of: bash --version\"; "
   remoteCmd+="bash --version; "
   remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Contents of: /cloud-init-output.log\"; "
+  remoteCmd+="cat /cloud-init-output.log; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
   remoteCmd+="'"
 
   # Copy logs for each node
