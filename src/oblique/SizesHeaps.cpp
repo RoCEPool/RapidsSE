@@ -448,7 +448,7 @@ SizeHeap gxaSizeHeap[]
   { CN_LARGEVIRTUAL,             sizeof(Heap), /*correct*/   HT_INVALID   ,     FILL },
   { CN_LGLBUFSET,                sizeof(LglBufSet),              HT_T_LARGE   , FILL },
   { CN_LGLPTNMAP,                sizeof(LglPtnMap),              HT_T_LARGE   , FILL },
-  { CN_LIBINFO,                  sizeof(LibInfo),                HT_T_SMALL   , FILL },
+  { CN_LIBINFO,                  sizeof(LibInfo),                HT_T_MEDIUM   , FILL },
   { CN_LICENCE,                  sizeof(Licence),            HT_T_TINY    ,FILL },
   { CN_LIMITS,                   sizeof(Limits),             HT_T_TINY    ,FILL },
   { CN_LISTEXONODE_t,            sizeof(ListExoNode_t<Object>), HT_T_TINY ,FILL },
