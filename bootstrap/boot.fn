@@ -1269,6 +1269,14 @@ function stopCurrentNode() {
     pid="$(cat "${PIDFILE}")" 2>/dev/null
 
     declare -a stopCmd=()
+
+    if which timeout &>/dev/null; then
+      # Set a 10s timeout after which a SIGTERM and then a SIGKILL is
+      # applied to the SE prompt process.
+      # This is to prevent the SE prompt from hanging.
+      stopCmd+=("timeout" "--kill-after=20" "10s")
+    fi
+
     stopCmd+=("${EXE}")
     stopCmd+=("--name")
     stopCmd+=("${CURRENT_NODE_NAME}")
