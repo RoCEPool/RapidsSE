@@ -45,6 +45,8 @@ namespace STORE
 
     void vDump(i8 i_Tab=1);
 
+    bool bHasCode(void);
+
     i8 i_Stage(void);
     void vStage(i8 i_Stage);
 

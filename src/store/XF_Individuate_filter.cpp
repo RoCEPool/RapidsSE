@@ -88,6 +88,8 @@ bool XF_Individuate_filter::vXF_Individuate_filter(void)
 
   m_pCI->vEndTransform();
 
+  vValidate();
+
   return true;
 }
 

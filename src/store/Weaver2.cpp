@@ -164,7 +164,7 @@ void Weaver2::vCppBlock(void)
 
     //vTrace("Code %s:\n%s\n"_Stz,pStageDef->szStageNm(),pStageDef->szCode());
 
-    if (*pStageDef->szCode()->azChar()) {
+    if (pStageDef->bHasCode()) {
       bHasCode = true;
       break;
     }
@@ -1038,7 +1038,7 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 
     vStageNext(p_stage);
 
-    if (* pStageDef->szCode()->azChar()) {
+    //if (pStageDef->bHasCode()) {
 
       xCI.G_vMainResynch(p_stage);
       while (xCI.G_bEachMain()) {
@@ -1067,7 +1067,7 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 //        vOp(xCI.G.p_MainCard);
 //      }
     }
-  }
+  //}
 
   vStageLast();
 

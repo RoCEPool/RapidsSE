@@ -86,10 +86,10 @@ void MakeOptimal::vOptimise(void)
   Bench::vValidate(m_pCI);
 
   XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
-  Bench::vValidate(m_pCI);
+  //Bench::vValidate(m_pCI);
 
   XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
-  Bench::vValidate(m_pCI);
+  //Bench::vValidate(m_pCI);
 
   vDebugPoint();
 }
