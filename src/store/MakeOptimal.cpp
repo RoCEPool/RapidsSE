@@ -11,6 +11,7 @@
 #include "XF_Delete_flat.hpp"
 #include "XF_Early_projection.hpp"
 #include "XF_Individuate_filter.hpp"
+#include "XF_Morph_scan_To_indexScan.hpp"
 #include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 
@@ -64,10 +65,9 @@ void MakeOptimal::vOptimise(void)
 
   XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(m_pCI);
 
+  XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
 
 
-  vMorph_scan_To_indexScan();
-  Bench::vValidate(m_pCI);
 
   vDerive_Projection_Keys();
   Bench::vValidate(m_pCI);
@@ -507,31 +507,6 @@ void MakeOptimal::vDerive_Projection_Keys(void)
 
   m_pCI->vEndTransform();
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeOptimal::vMorph_scan_To_indexScan(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((replace with an explanation))"_Stz);
-
-  m_pCI->G_vRestart();
-  if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {
-
-    if (m_pCI->G.p_bounds->pSub_bound()->bIsLBound() ||
-        m_pCI->G.p_bounds->pSub_bound()->bIsUBound()) {
-
-
-      m_pCI->G.p_scan->vCard(CK_INDEXSCAN);
-
-      m_pCI->G.p_indexList->vChoose_index_For_indexScan();
-    }
-  }
-
-  m_pCI->vEndTransform();
 }
 
 /*----------------------------------------------------------------------------*/

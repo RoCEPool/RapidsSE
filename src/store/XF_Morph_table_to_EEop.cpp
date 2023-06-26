@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Morph_table_To_EEop, CN_XF_DELETE_FLAT)
-__aNewFunction(XF_Morph_table_To_EEop, CN_XF_DELETE_FLAT)
-__vDeleteFunction(XF_Morph_table_To_EEop, CN_XF_DELETE_FLAT)
+__pCastFunction(STORE, XF_Morph_table_To_EEop, CN_XF_MORPH_TABLE_TO_EEOP)
+__aNewFunction(XF_Morph_table_To_EEop, CN_XF_MORPH_TABLE_TO_EEOP)
+__vDeleteFunction(XF_Morph_table_To_EEop, CN_XF_MORPH_TABLE_TO_EEOP)
 __aFooterFunction(XF_Morph_table_To_EEop)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Morph_table_To_EEop)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Morph_table_To_EEop::XF_Morph_table_To_EEop(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_DELETE_FLAT, pCI)
+: XF_TRANSFORM(CN_XF_MORPH_TABLE_TO_EEOP, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_TABLE_TO_EEOP, _FOOTER_);
 
-  _checkInitialised_(CN_XF_DELETE_FLAT);
+  _checkInitialised_(CN_XF_MORPH_TABLE_TO_EEOP);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_TABLE_TO_EEOP, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Morph_table_To_EEop::XF_Morph_table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Morph_table_To_EEop::~XF_Morph_table_To_EEop(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_TABLE_TO_EEOP, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_FLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_TABLE_TO_EEOP, _FOOTER_);
 
   m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
 
