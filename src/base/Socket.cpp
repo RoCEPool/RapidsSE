@@ -476,12 +476,12 @@ Object* Socket::pObjectRecv(eCN eClass)
     }
     pJob->vCmdText(pCmdText);
 
-    if (nBlocks > 1) {
-      vTrace("~~Recv CmdText\n"_Stz);
-      pCmdText->vDump();
-      vTrace("~~~~~~~~~~~\n"_Stz);
-      vDebugPoint();
-    }
+//    if (nBlocks > 1) {
+//      vTrace("~~Recv CmdText\n"_Stz);
+//      pCmdText->vDump();
+//      vTrace("~~~~~~~~~~~\n"_Stz);
+//      vDebugPoint();
+//    }
 
     // - - - - - - - - - - - - - - - - - - - - -
 
@@ -506,12 +506,12 @@ Object* Socket::pObjectRecv(eCN eClass)
 
       }
 
-      if (nBlocks) {
-        vTrace("~~Recv CodeBlock\n"_Stz);
-        pCodeBlock->vDump();
-        vTrace("~~~~~~~~~~~\n"_Stz);
-        vDebugPoint();
-      }
+//      if (nBlocks) {
+//        vTrace("~~Recv CodeBlock\n"_Stz);
+//        pCodeBlock->vDump();
+//        vTrace("~~~~~~~~~~~\n"_Stz);
+//        vDebugPoint();
+//      }
 
       pJob->vCodeBlock(pCodeBlock);
     }

@@ -1077,6 +1077,11 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
   vCppBlock();
   vSemicolon();
 
+  if (m_pOptStmt)
+    m_pOptStmt->vVerify();
+  if (m_pCodeBlock)
+    m_pCodeBlock->vVerify();
+
   if (AM::JOB::bHasTag(C_WEAVED)) {
     m_pOptStmt->vDump();
     vDebugPoint();

@@ -52,7 +52,7 @@ void Step::vDynamoCompile(void)
   m_pJob->pCmdText()->bRetrieve(sCmdText);
 
   Stz* szPipelineStmt = sCmdText.szStz();
-  vTraceM("%s\n"_Stz,szPipelineStmt);
+  //vTraceM("%s\n"_Stz,szPipelineStmt);
 
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
   VertexSpec* pPipeSpec = pDynamo->pCompile(szPipelineStmt);

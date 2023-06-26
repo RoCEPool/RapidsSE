@@ -15,7 +15,7 @@ namespace STORE
     static const i8 C_EXTENDEDTEXTBUFFER = 96;
 
   public:
-    i8 m_nTextBlocks;
+    i8 m_nBlocks;
     ExtendedTextBuffer* m_paExtTextBuffer[C_EXTENDEDTEXTBUFFER];
 
     i8 m_nBytes;
@@ -48,6 +48,8 @@ namespace STORE
 
     i8 nTextBlocks(void);
     Stz* szTextBlock(i8 i_TextBlock);
+
+    void vVerify(void);
 
   private:
     bool bAddBuffer(void);

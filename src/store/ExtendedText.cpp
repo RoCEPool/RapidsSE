@@ -22,7 +22,7 @@ ExtendedText::ExtendedText(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  m_nTextBlocks = 0;
+  m_nBlocks = 0;
   for (i8 i_Block = 0; i_Block < C_EXTENDEDTEXTBUFFER; i_Block++)
     m_paExtTextBuffer[i_Block] = nullptr;
 
@@ -41,11 +41,11 @@ ExtendedText::~ExtendedText(void) noexcept(false)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++) {
+  for (i8 i_Block = 0; i_Block < m_nBlocks; i_Block++) {
     delete m_paExtTextBuffer[i_Block];
     m_paExtTextBuffer[i_Block] = nullptr;
   }
-  m_nTextBlocks = 0;
+  m_nBlocks = 0;
 
   _postcondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 }
@@ -79,7 +79,7 @@ void ExtendedText::vConcat(Stz* szStr)
   vEnsureBuffer();
 
 
-  i8 nBytes_str = 0;
+  i8 nBytes_allGroups = 0;
   char* azCrs_str = szStr->azChar();
   char* azEnd_group;
   i8 nMaxBytes;
@@ -113,7 +113,7 @@ void ExtendedText::vConcat(Stz* szStr)
     m_nBytes += nBytes_group;
     m_nLines += nLines_group;
 
-    nBytes_str += nBytes_group;
+    nBytes_allGroups += nBytes_group;
 
     // - - - - - - - - - - - - - - -
     // end loop detection
@@ -130,7 +130,9 @@ void ExtendedText::vConcat(Stz* szStr)
     RASSERT(b);
   }
 
-  RASSERT(szStr->nSize() == nBytes_str);
+  RASSERT(szStr->nSize() == nBytes_allGroups);
+
+  vVerify();
 
 //  if (nTextBlocks() > 1) {
 //    vTrace("-------\n"_Stz);
@@ -202,10 +204,19 @@ void ExtendedText::vDump(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++) {
+  vTrace("~~ExtendedText : %lld blocks %lld lines %lld bytes\n"_Stz,
+         m_nBlocks,m_nLines,m_nBytes);
+
+  for (i8 i_Block = 0; i_Block < m_nBlocks; i_Block++) {
     ExtendedTextBuffer* pBuffer = pExtTextBuffer(i_Block);
-    vTrace("%s\n"_Stz,pBuffer->szTextBlock());
+    vTrace("~~TextBlock[%lld] : %lld bytes \n%s\n"_Stz,
+           i_Block,
+           StrLib::nSize(pBuffer->szTextBlock()->azChar()),
+           pBuffer->szTextBlock());
   }
+
+  vTrace("~~End ExtendedText\n"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,11 +226,15 @@ void ExtendedText::vEmpty(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++) {
+  for (i8 i_Block = 0; i_Block < C_EXTENDEDTEXTBUFFER; i_Block++) {
     delete m_paExtTextBuffer[i_Block];
     m_paExtTextBuffer[i_Block] = nullptr;
   }
-  m_nTextBlocks = 0;
+
+  m_nBlocks = 0;
+
+  m_nBytes = 0;
+  m_nLines = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +265,7 @@ bool ExtendedText::bRetrieve(String* pString)
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
   pString->vCopy(""_Stz);
-  for (i8 i_Block = 0; i_Block < m_nTextBlocks; i_Block++)
+  for (i8 i_Block = 0; i_Block < m_nBlocks; i_Block++)
     pString->vConcat(szTextBlock(i_Block));
 
   return true;
@@ -263,7 +278,7 @@ i8 ExtendedText::nTextBlocks(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  return m_nTextBlocks;
+  return m_nBlocks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -277,6 +292,32 @@ Stz* ExtendedText::szTextBlock(i8 i_TextBlock)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify                                                                     */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vVerify(void)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  return;
+
+  i8 nBytes_sum = 0;
+  i8 nBytes_block;
+
+  i8 i_Block;
+  for (i_Block = 0; i_Block < C_EXTENDEDTEXTBUFFER; i_Block++) {
+    if (!m_paExtTextBuffer[i_Block])
+      break;
+
+    nBytes_block = szTextBlock(i_Block)->nSize();
+    nBytes_sum += nBytes_block;
+  }
+
+  RASSERT(i_Block == m_nBlocks);
+
+  RASSERT(nBytes_sum == m_nBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -287,10 +328,10 @@ bool ExtendedText::bAddBuffer(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  if (m_nTextBlocks >= C_EXTENDEDTEXTBUFFER)
+  if (m_nBlocks >= C_EXTENDEDTEXTBUFFER)
     return false;
 
-  m_paExtTextBuffer[m_nTextBlocks++] = new ExtendedTextBuffer;
+  m_paExtTextBuffer[m_nBlocks++] = new ExtendedTextBuffer;
 
   return true;
 }
@@ -305,7 +346,7 @@ void ExtendedText::vEnsureBuffer(void)
   // at least a first extended text buffer
   if (! m_paExtTextBuffer[0]) {
     m_paExtTextBuffer[0] = new ExtendedTextBuffer;
-    m_nTextBlocks++;
+    m_nBlocks++;
   }
 
 }
@@ -317,7 +358,7 @@ ExtendedTextBuffer* ExtendedText::pTailBuffer(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  ExtendedTextBuffer* pTailBuffer = m_paExtTextBuffer[m_nTextBlocks - 1];
+  ExtendedTextBuffer* pTailBuffer = m_paExtTextBuffer[m_nBlocks - 1];
 
   return pTailBuffer;
 }
