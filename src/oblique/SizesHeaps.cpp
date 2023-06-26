@@ -269,6 +269,7 @@
 #include "Weaver2.hpp"
 #include "XF_Eg.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
+#include "XF_Individuate_filter.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -732,7 +733,8 @@ SizeHeap gxaSizeHeap[]
 
   {CN__X__,                    'X' - ('A' - 1),              HT_INVALID   , FILL },
   {CN_XF_EG,                    sizeof(XF_Eg),               HT_T_TINY    , FILL },
-  {CN_XF_REDUCE_KEY_GBYAGG,     sizeof(XF_Reduce_key_gbyAgg), HT_T_TINY    , FILL },
+  {CN_XF_INDIVIDUATE_FILTER,    sizeof(XF_Individuate_filter), HT_T_TINY    , FILL },
+  {CN_XF_REDUCE_KEY_GBYAGG,     sizeof(XF_Reduce_key_gbyAgg),  HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),          HT_INVALID   , FILL },
 

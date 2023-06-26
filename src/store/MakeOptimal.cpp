@@ -6,10 +6,9 @@
 
 #include "Board.hpp"
 #include "CardIter.hpp"
-#include "Fold.hpp"
-#include "Smoosh.hpp"
-#include "Smooth.hpp"
 #include "Optimiser.hpp"
+
+#include "XF_Individuate_filter.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +85,7 @@ void MakeOptimal::vOptimise(void)
   vEarlyProjections();
   Bench::vValidate(m_pCI);
 
-  vIndividuateFilter();
+  XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
   Bench::vValidate(m_pCI);
 
   XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
@@ -766,38 +765,6 @@ void MakeOptimal::vCullUsedBoundsFromFilter(void)
 //  }
 
   m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* individuate <scan|indexJoin>/<filter> as main <filter>                     */
-/*----------------------------------------------------------------------------*/
-void MakeOptimal::vIndividuateFilter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEOPTIMAL,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-    Card_Filter::vIndividuate_filter(m_pCI);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
-    Card_Filter::vIndividuate_filter(m_pCI);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
-    Card_Filter::vIndividuate_filter(m_pCI);
-  }
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
-    Card_Filter::vIndividuate_filter(m_pCI);
-  }
 
   m_pCI->vEndTransform();
 }

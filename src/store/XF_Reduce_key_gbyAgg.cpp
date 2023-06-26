@@ -62,7 +62,7 @@ void XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 bool XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(void)
 {
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_XF_REDUCE_KEY_GBYAGG,_FOOTER_);
 
   return true;
 }

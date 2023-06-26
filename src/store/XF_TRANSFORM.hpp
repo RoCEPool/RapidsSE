@@ -9,7 +9,7 @@ namespace STORE
 {
   class XF_TRANSFORM : public Object
   {
-  private:
+  protected:
     CardIter* m_pCI;
 
     // must be last

@@ -53,7 +53,6 @@ namespace STORE
 
     void vCullNonusedBounds(void);
     void vCullUsedBoundsFromFilter(void);
-    void vIndividuateFilter(void);
 
   protected:
     Footer* aFooter(void);

@@ -448,6 +448,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__X__,
   /* */ CN_XF_EG,
+  /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_REDUCE_KEY_GBYAGG,
 
   /* */ CN__Y__,
@@ -897,6 +898,7 @@ static Stz* aCN[]
 
   /* */ "_X__"_Stz,                 // CN__X__
   /* */ "XF_EG"_Stz,                // CN_XF_EG
+  /* */ "XF_INDIVIDUATE_FILTER"_Stz,// CN_XF_INDIVIDUATE_FILTER
   /* */ "XF_REDUCE_KEY_GBYAGG"_Stz, // CN_XF_REDUCE_KEY_GBYAGG
 
   /* */ "_Y__"_Stz,                 // CN__Y__
