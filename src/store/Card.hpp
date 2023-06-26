@@ -188,9 +188,10 @@ static Stz* C_FILTERPRED = "<filterPred>"_Stz;
 static Stz* C_JO_DISABLE = "<jo_disable>"_Stz;
 static Stz* C_JO_PICK    = "<jo_pick>"_Stz;
 static Stz* C_JOWRITE    = "<joWrite>"_Stz;
-static Stz* C_WEAVER2    = "<weaver2>"_Stz;
 static Stz* C_OPTIMISE_PASSTHRU = "<optimise_passThru>"_Stz;
+static Stz* C_PIPELINE_DEF = "<pipeline_def>"_Stz;
 static Stz* C_WEAVED     = "<weaved>"_Stz;
+static Stz* C_WEAVER2    = "<weaver2>"_Stz;
 
 static d8 C_EXPANSION_COEFF = 1.60;  // crw -> row buffer
 static d8 C_FILTER_COEFF    = 0.30;

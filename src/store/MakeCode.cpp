@@ -121,13 +121,13 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
     }
     else {
       RASSERT(m_pStageDef);
-      vTrace("Op %s\n"_Stz, xDeck.p_OP()->szCardNm());
+      //vTrace("Op %s\n"_Stz, xDeck.p_OP()->szCardNm());
       vCraftOpDef(xDeck.p_OP());
     }
 
   }
 
-  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
+  if (AM::JOB::bHasTag(C_PIPELINE_DEF))
     m_pPipelineDef->vDump();
 
   m_pPipelineDef->vValidate();
