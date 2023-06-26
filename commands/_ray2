@@ -7,10 +7,11 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
+// /glean_interactive
 /weaved
 /weaver2
 /optimise_passThru
-/glean_interactive
+/pipeline_def
 pipeline _ray2
 begin
  stage S00 on origin :

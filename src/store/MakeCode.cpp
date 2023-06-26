@@ -127,8 +127,10 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 
   }
 
-  if (AM::JOB::bHasTag(C_PIPELINE_DEF))
+  if (AM::JOB::bHasTag(C_PIPELINE_DEF)) {
     m_pPipelineDef->vDump();
+    vDebugPoint();
+  }
 
   m_pPipelineDef->vValidate();
   m_pPipelineDef->vCollapseOps();
