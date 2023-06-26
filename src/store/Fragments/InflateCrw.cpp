@@ -147,8 +147,8 @@ void vInflateCrwReturn(Dynamic_T* aDynamicT) {
   L_InflateCrwRet:
 
   aDynamicT->m_xRowInfoIT.m_acStrArea = acStrArea;
-  //p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
-  //szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
 
   // marker-end
 

@@ -337,7 +337,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     }
 
     // generate code for indexScan OP
-    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz)) {
+    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz) ||
+        pOpDef->szOpNm()->bSame("crossJoin"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchIndexJoin(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);

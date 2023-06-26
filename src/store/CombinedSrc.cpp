@@ -517,6 +517,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz, pCodeFile);
         vAppendCodeInflateRowCols(pOpSketch, "vInflateRowCol"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vInflateRowReturn"_Stz, pCodeFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the inflateRow code fragments file

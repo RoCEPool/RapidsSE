@@ -108,7 +108,24 @@ void vInflateRowCol(Dynamic_T* aDynamicT) {
   // marker-end
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- vInflateRowReturn -------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vInflateRowReturn
+void vInflateRowReturn(Dynamic_T* aDynamicT) {
 
+  char* szStrArea;
+  struct __STRUCT_TO__* p__STRUCT_TO__;
+
+  // marker-start
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  szStrArea = aDynamicT->m_xRowInfoIT.m_acStrArea;
+
+  // marker-end
+
+  return;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
