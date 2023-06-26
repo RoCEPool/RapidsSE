@@ -11,6 +11,7 @@
 #include "XF_Delete_flat.hpp"
 #include "XF_Early_projection.hpp"
 #include "XF_Individuate_filter.hpp"
+#include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -59,13 +60,11 @@ void MakeOptimal::vOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
-//  vDelete_flat();
-//  Bench::vValidate(m_pCI);
-
   XF_Delete_flat::vXF_Delete_flat(m_pCI);
 
-  vMorph_table_To_EEop();
-  Bench::vValidate(m_pCI);
+  XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(m_pCI);
+
+
 
   vMorph_scan_To_indexScan();
   Bench::vValidate(m_pCI);
@@ -86,14 +85,12 @@ void MakeOptimal::vOptimise(void)
   Bench::vValidate(m_pCI);
 
 
+
   XF_Early_projection::vXF_Early_projection(m_pCI);
-  //Bench::vValidate(m_pCI);
 
   XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
-  //Bench::vValidate(m_pCI);
 
   XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
-  //Bench::vValidate(m_pCI);
 
   vDebugPoint();
 }
@@ -451,18 +448,6 @@ void MakeOptimal::vCut_sort(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeOptimal::vDelete_flat(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
-
-  m_pCI->vRestart();
-  while (m_pCI->G_bEachMain(CK_FLAT))
-    m_pCI->G.pDeck->vDeleteChild(m_pCI->G.p_flat);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void MakeOptimal::vDerive_Projection_Keys(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
@@ -527,55 +512,6 @@ void MakeOptimal::vDerive_Projection_Keys(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeOptimal::vEarlyProjections(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
-
-//  if (! AM::JOB::bHasTag(C_EP_ENABLE))
-//    return;
-  if (AM::JOB::bHasTag(C_EP_DISABLE))
-    return;
-
-  m_pCI->vTransform(__func__, "Early projections"_Stz);
-
-  m_pCI->G_vRestart();
-
-  m_pCI->G.pDeck->vRenumberRecursive();
-
-  m_pCI->vPrintBoard();
-
-  RASSERT(nullptr == m_pCI->Early.m_pNeeded_later);
-
-  for (;;) {
-
-    m_pCI->Early.m_pOP_root = nullptr;
-    m_pCI->Early.m_pOP_leaf = nullptr;
-
-    bool bEarlyRoot = false;
-    while (m_pCI->G_bEachMain_reverse()) {
-      if (Card_OP::bIsOp(m_pCI->G.p_MainCard) && m_pCI->G.p_OP->bIsEarlyRoot()) {
-        bEarlyRoot = true;
-        break;
-      }
-    }
-    if (! bEarlyRoot)
-      break;
-
-    m_pCI->G.p_OP->vEarlyProject_root(m_pCI);
-
-    if (m_pCI->Early.m_pNeeded_later) {
-      DELETE_CARD(m_pCI->Early.m_pNeeded_later);
-    }
-
-    m_pCI->G_vMainResynch(m_pCI->Early.m_pOP_leaf);
-  }
-
-  m_pCI->vEndTransform();
-  vDebugPoint();
-}
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void MakeOptimal::vMorph_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
@@ -594,20 +530,6 @@ void MakeOptimal::vMorph_scan_To_indexScan(void)
       m_pCI->G.p_indexList->vChoose_index_For_indexScan();
     }
   }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert all <table> into either <scan> , <indexJoin> or <keyExists>        */
-/*----------------------------------------------------------------------------*/
-void MakeOptimal::vMorph_table_To_EEop(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "convert all <table> into either <scan> or <indexJoin>"_Stz);
-
-  Board::vMorphAll_table_To_EEop(m_pCI);
 
   m_pCI->vEndTransform();
 }

@@ -44,10 +44,7 @@ namespace STORE
     bool bOptimise_RplSortLimitOnOriginByAllLevels(void);
 
     void vCut_sort(void);
-    void vDelete_flat(void);
     void vDerive_Projection_Keys(void);
-    void vEarlyProjections(void);
-    void vMorph_table_To_EEop(void);
     void vMorph_scan_To_indexScan(void);
     void vPromote_gbyAgg_To_ordAgg(void);
 

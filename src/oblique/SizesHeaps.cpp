@@ -271,6 +271,7 @@
 #include "XF_Reduce_key_gbyAgg.hpp"
 #include "XF_Individuate_filter.hpp"
 #include "XF_Early_projection.hpp"
+#include "XF_Morph_table_To_EEop.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -736,6 +737,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_DELETE_FLAT,           sizeof(XF_Delete_flat),        HT_T_TINY    , FILL },
   {CN_XF_EARLY_PROJECTION,      sizeof(XF_Early_projection),   HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,    sizeof(XF_Individuate_filter), HT_T_TINY    , FILL },
+  {CN_XF_MORPH_TABLE_TO_EEOP,   sizeof(XF_Morph_table_To_EEop),HT_T_TINY    , FILL },
   {CN_XF_REDUCE_KEY_GBYAGG,     sizeof(XF_Reduce_key_gbyAgg),  HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),                HT_INVALID   , FILL },
