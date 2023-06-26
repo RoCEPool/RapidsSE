@@ -447,7 +447,8 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
-  /* */ CN_XF_EG,
+  /* */ CN_XF_DELETE_FLAT,
+  /* */ CN_XF_EARLY_PROJECTION,
   /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_REDUCE_KEY_GBYAGG,
 
@@ -897,7 +898,8 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
   /* */ "_X__"_Stz,                 // CN__X__
-  /* */ "XF_EG"_Stz,                // CN_XF_EG
+  /* */ "XF_DELETE_FLAT"_Stz,       // CN_XF_DELETE_FLAT
+  /* */ "XF_EARLY_PROJECTION"_Stz,  // CN_XF_EARLY_PROJECTION
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,// CN_XF_INDIVIDUATE_FILTER
   /* */ "XF_REDUCE_KEY_GBYAGG"_Stz, // CN_XF_REDUCE_KEY_GBYAGG
 

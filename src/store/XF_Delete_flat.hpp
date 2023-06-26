@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Eg.hpp -- Transform Example                                             */
+/* XF_Delete_flat.hpp -- Delete flat                                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Eg : public XF_TRANSFORM
+  class XF_Delete_flat : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,14 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Eg(CardIter* pCI);
-   ~XF_Eg(void) noexcept(false);
+    XF_Delete_flat(CardIter* pCI);
+   ~XF_Delete_flat(void) noexcept(false);
+
+    static void vXF_Delete_flat(CardIter* pCI);
+
+    void vXF_Delete_flat(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Eg* _pXF_Eg(void* aAddr);
+  XF_Delete_flat* _pXF_Delete_flat(void* aAddr);
 }
 
 /*============================================================================*/

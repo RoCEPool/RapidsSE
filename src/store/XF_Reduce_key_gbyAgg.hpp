@@ -22,7 +22,7 @@ namespace STORE
 
     static void vXF_Reduce_key_gbyAgg(CardIter* pCI);
 
-    bool vXF_Reduce_key_gbyAgg(void);
+    void vXF_Reduce_key_gbyAgg(void);
 
   private:
     Footer* aFooter(void);

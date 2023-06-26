@@ -49,6 +49,8 @@ void XF_Individuate_filter::vXF_Individuate_filter(CardIter* pCI)
 
   XF_Individuate_filter* pXF_Individuate_filter = new XF_Individuate_filter(pCI);
 
+  pXF_Individuate_filter->vXF_Individuate_filter();
+
   delete pXF_Individuate_filter;
 }
 
@@ -60,7 +62,7 @@ void XF_Individuate_filter::vXF_Individuate_filter(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool XF_Individuate_filter::vXF_Individuate_filter(void)
+void XF_Individuate_filter::vXF_Individuate_filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_XF_INDIVIDUATE_FILTER,_FOOTER_);
 
@@ -89,8 +91,6 @@ bool XF_Individuate_filter::vXF_Individuate_filter(void)
   m_pCI->vEndTransform();
 
   vValidate();
-
-  return true;
 }
 
 /*============================================================================*/

@@ -8,6 +8,8 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
+#include "XF_Delete_flat.hpp"
+#include "XF_Early_projection.hpp"
 #include "XF_Individuate_filter.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 
@@ -57,8 +59,10 @@ void MakeOptimal::vOptimise(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
 
-  vDelete_flat();
-  Bench::vValidate(m_pCI);
+//  vDelete_flat();
+//  Bench::vValidate(m_pCI);
+
+  XF_Delete_flat::vXF_Delete_flat(m_pCI);
 
   vMorph_table_To_EEop();
   Bench::vValidate(m_pCI);
@@ -82,8 +86,8 @@ void MakeOptimal::vOptimise(void)
   Bench::vValidate(m_pCI);
 
 
-  vEarlyProjections();
-  Bench::vValidate(m_pCI);
+  XF_Early_projection::vXF_Early_projection(m_pCI);
+  //Bench::vValidate(m_pCI);
 
   XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
   //Bench::vValidate(m_pCI);

@@ -267,9 +267,10 @@
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
-#include "XF_Eg.hpp"
+#include "XF_Delete_flat.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 #include "XF_Individuate_filter.hpp"
+#include "XF_Early_projection.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -723,24 +724,25 @@ SizeHeap gxaSizeHeap[]
   { CN_VERTEX,                   sizeof(Vertex),             HT_T_SMALL   , FILL },
   { CN_VERTEXSPEC,               sizeof(VertexSpec),         HT_T_TINY    , FILL },
 
-  {CN__W__,                     'W' - ('A' - 1),             HT_INVALID   , FILL },
-  {CN_WAKEUP,                   sizeof(Wakeup),              HT_INVALID   , FILL },
-  {CN_WEAVER,                   sizeof(Weaver),              HT_T_LARGE   , FILL },
-  {CN_WEAVER2,                  sizeof(Weaver2),             HT_T_LARGE   , FILL },
-  {CN_WILDERNESS,               sizeof(Wilderness),          HT_INVALID   , FILL },
-  {CN_WORD,                     sizeof(Word),                HT_T_TINY    , FILL },
-  {CN_WSPCONVERGENT_t,          0,                           HT_INVALID   , FILL },
+  {CN__W__,                     'W' - ('A' - 1),               HT_INVALID   , FILL },
+  {CN_WAKEUP,                   sizeof(Wakeup),                HT_INVALID   , FILL },
+  {CN_WEAVER,                   sizeof(Weaver),                HT_T_LARGE   , FILL },
+  {CN_WEAVER2,                  sizeof(Weaver2),               HT_T_LARGE   , FILL },
+  {CN_WILDERNESS,               sizeof(Wilderness),            HT_INVALID   , FILL },
+  {CN_WORD,                     sizeof(Word),                  HT_T_TINY    , FILL },
+  {CN_WSPCONVERGENT_t,          0,                             HT_INVALID   , FILL },
 
-  {CN__X__,                    'X' - ('A' - 1),              HT_INVALID   , FILL },
-  {CN_XF_EG,                    sizeof(XF_Eg),               HT_T_TINY    , FILL },
+  {CN__X__,                    'X' - ('A' - 1),                HT_INVALID   , FILL },
+  {CN_XF_DELETE_FLAT,           sizeof(XF_Delete_flat),        HT_T_TINY    , FILL },
+  {CN_XF_EARLY_PROJECTION,      sizeof(XF_Early_projection),   HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,    sizeof(XF_Individuate_filter), HT_T_TINY    , FILL },
   {CN_XF_REDUCE_KEY_GBYAGG,     sizeof(XF_Reduce_key_gbyAgg),  HT_T_TINY    , FILL },
 
-  {CN__Y__,                    'Y' - ('A' - 1),          HT_INVALID   , FILL },
+  {CN__Y__,                    'Y' - ('A' - 1),                HT_INVALID   , FILL },
 
-  {CN__Z__,                    'Z' - ('A' - 1),          HT_INVALID   , FILL },
+  {CN__Z__,                    'Z' - ('A' - 1),                HT_INVALID   , FILL },
 
-  {CN_ENUMS,                    C_VARGS_END,             HT_INVALID   , FILL }
+  {CN_ENUMS,                    C_VARGS_END,                   HT_INVALID   , FILL }
 };
 
 #undef FILL

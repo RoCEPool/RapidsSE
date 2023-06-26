@@ -22,7 +22,7 @@ namespace STORE
 
     static void vXF_Individuate_filter(CardIter* pCI);
 
-    bool vXF_Individuate_filter(void);
+    void vXF_Individuate_filter(void);
 
   private:
     Footer* aFooter(void);
