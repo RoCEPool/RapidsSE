@@ -90,16 +90,13 @@ void ExtendedText::vConcat(Stz* szStr)
   for (;;) {
 
     // get tail buffer
-    ExtendedTextBuffer* pEtxtBuffer = pTailBuffer();
+    ExtendedTextBuffer *pEtxtBuffer = pTailBuffer();
     nMaxBytes = pEtxtBuffer->nFreeBytes() - 1;
-
-//    vTrace("+++++++\n"_Stz);
-//    vTrace("%s\n"_Stz, azCrs_str);
 
     azEnd_group = StrLib::azGroupEnd(azCrs_str, '\n', nMaxBytes,
                                      nBytes_group, nLines_group);
 
-    if (! nBytes_group) {
+    if (!nBytes_group) {
       // next line group didn't fit into current buffer
       b = bAddBuffer();
       RASSERT(b);
@@ -107,10 +104,9 @@ void ExtendedText::vConcat(Stz* szStr)
     }
 
     // concat line group into current buffer
-    b = pEtxtBuffer->bConcat((Stz*)azCrs_str, nBytes_group);
+    b = pEtxtBuffer->bConcat((Stz *) azCrs_str, nBytes_group);
     RASSERT(b);
 
-    m_nBytes += nBytes_group;
     m_nLines += nLines_group;
 
     nBytes_allGroups += nBytes_group;
@@ -118,28 +114,23 @@ void ExtendedText::vConcat(Stz* szStr)
     // - - - - - - - - - - - - - - -
     // end loop detection
 
-    if (! *azEnd_group)
+    if (!*azEnd_group) {
       break;
+    }
 
     // - - - - - - - - - - - - - - -
     // still more line groups
     //   continue with another buffer
+
 
     azCrs_str = azEnd_group + 1;
     b = bAddBuffer();
     RASSERT(b);
   }
 
-  RASSERT(szStr->nSize() == nBytes_allGroups);
+  vResum();
 
   vVerify();
-
-//  if (nTextBlocks() > 1) {
-//    vTrace("-------\n"_Stz);
-//    vDump();
-//    vTrace("=======\n"_Stz);
-//    vDebugPoint();
-//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,8 +289,6 @@ void ExtendedText::vVerify(void)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-  return;
-
   i8 nBytes_sum = 0;
   i8 nBytes_block;
 
@@ -350,6 +339,26 @@ void ExtendedText::vEnsureBuffer(void)
   }
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* ensure at least buffer 0                                                   */
+/*----------------------------------------------------------------------------*/
+void ExtendedText::vResum(void)
+{
+  _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
+
+  m_nBytes = 0;
+
+  for (i8 i_Block = 0; i_Block < m_nBlocks; i_Block++) {
+    if (!m_paExtTextBuffer[i_Block])
+      break;
+
+    i8 nBytes_block = szTextBlock(i_Block)->nSize();
+    m_nBytes += nBytes_block;
+  }
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get tail/last buffer                                                       */

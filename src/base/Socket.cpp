@@ -264,6 +264,9 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
     if (pJob->bSendCmdText()) {
       ExtendedText *pCmdText = pJob->pCmdText();
       RASSERT(pCmdText);
+
+      pCmdText->vVerify();
+
       eClass = pCmdText->eGetClassNo();
       nBytes = gxaSizeHeap[eClass].m_nClassSize;
       bResult = bBytesSend(pCmdText, nBytes, roSysCall);
@@ -285,6 +288,9 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
     if (pJob->bSendCodeBlock()) {
       ExtendedText *pCodeBlock = pJob->pCodeBlock();
       RASSERT(pCodeBlock);
+
+      pCodeBlock->vVerify();
+
       eClass = pCodeBlock->eGetClassNo();
       nBytes = gxaSizeHeap[eClass].m_nClassSize;
       bResult = bBytesSend(pCodeBlock, nBytes, roSysCall);
@@ -474,6 +480,7 @@ Object* Socket::pObjectRecv(eCN eClass)
 
       pCmdText->vExtTextBuffer(i_Block, pCmdTextBuffer);
     }
+    pCmdText->vVerify();
     pJob->vCmdText(pCmdText);
 
 //    if (nBlocks > 1) {
@@ -513,6 +520,7 @@ Object* Socket::pObjectRecv(eCN eClass)
 //        vDebugPoint();
 //      }
 
+      pCodeBlock->vVerify();
       pJob->vCodeBlock(pCodeBlock);
     }
 
