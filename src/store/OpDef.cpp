@@ -373,11 +373,11 @@ void OpDef::vValidate(void)
   if (m_pColsReq)
     m_pColsReq->vValidate();
 
-  i8 nArgs = nItems();
-  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
-    ArgDef* pArgDef = pGet(i_Arg);
-    pArgDef->vDump();
-  }
+//  i8 nArgs = nItems();
+//  for (i8 i_Arg = 0; i_Arg < nArgs; i_Arg++) {
+//    ArgDef* pArgDef = pGet(i_Arg);
+//    pArgDef->vDump();
+//  }
 }
 
 

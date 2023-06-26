@@ -54,6 +54,7 @@ namespace STORE
   private:
     bool bAddBuffer(void);
     void vEnsureBuffer(void);
+    void vResum(void);
     ExtendedTextBuffer* pTailBuffer(void);
 
   protected:
