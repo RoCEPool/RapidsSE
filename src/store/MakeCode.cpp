@@ -121,7 +121,7 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
     }
     else {
       RASSERT(m_pStageDef);
-      vTrace("Op %s\n"_Stz, xDeck.p_OP()->szCardNm());
+      //vTrace("Op %s\n"_Stz, xDeck.p_OP()->szCardNm());
       vCraftOpDef(xDeck.p_OP());
     }
 
