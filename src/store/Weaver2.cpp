@@ -172,8 +172,8 @@ void Weaver2::vCppBlock(void)
 
   if (bHasCode) {
 
-    vTrace("Code %s\n"_Stz, m_pOptStmt->szTextBlock(0));
-    vTrace("Code %lld\n"_Stz, StrLib::nSize(m_pOptStmt->szTextBlock(0)->azChar()));
+//    vTrace("Code %s\n"_Stz, m_pOptStmt->szTextBlock(0));
+//    vTrace("Code %lld\n"_Stz, StrLib::nSize(m_pOptStmt->szTextBlock(0)->azChar()));
 
     vDebugPoint();
 
@@ -1086,8 +1086,12 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
     m_pOptStmt->vDump();
     vDebugPoint();
   }
+  if (AM::JOB::bHasTag(C_CODE_BLOCK)) {
+    if (m_pCodeBlock)
+      m_pCodeBlock->vDump();
+    vDebugPoint();
+  }
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

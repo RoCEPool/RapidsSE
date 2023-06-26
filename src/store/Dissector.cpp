@@ -525,7 +525,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Stz* szIndexNm = szGetStz(1);
   Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(2);
 
-  pCard_RpnTerms->vDump();
+  //pCard_RpnTerms->vDump();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -594,7 +594,7 @@ Card* Dissector::pOp_IndexJoin(void)
   
   delete pCard_RpnTerms;
 
-  pCard_IndexJoin->vDump();
+  //pCard_IndexJoin->vDump();
 
   return pCard_IndexJoin;
 }
@@ -615,7 +615,7 @@ Card* Dissector::pOp_IndexScan(void)
   Stz* szIndexNm = szGetStz(1);
   Card_RpnTerms* p_rpnTerms_bounds = pGetRpnTerms(2);
 
-  p_rpnTerms_bounds->vDump();
+  //p_rpnTerms_bounds->vDump();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -674,7 +674,7 @@ Card* Dissector::pOp_IndexScan(void)
 
   delete p_rpnTerms_bounds;
 
-  pCard_IndexScan->vDump();
+  //pCard_IndexScan->vDump();
 
   return pCard_IndexScan;
 }

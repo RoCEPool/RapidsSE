@@ -16,10 +16,11 @@ CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
+// /glean_interactive
+// /transliterated
+// /weaved
+// /code_block
 /weaver2
-/glean_interactive
-/transliterated
-/weaved
 /optimise_passthru
 pipeline _ray3
 begin
