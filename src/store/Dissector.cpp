@@ -224,7 +224,8 @@ void Dissector::vOp(i8 i_OpSpec)
   else if (m_szOpNm->bSame("sort"_Stz))         pCard = pOp_Sort        ();
   else if (m_szOpNm->bSame("start"_Stz))        pCard = pOp_Start       ();
   else {
-    vTrace("Skipping OpSpec %s\n"_Stz, m_szOpNm);
+    if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
+      vTrace("Skipping OpSpec %s\n"_Stz, m_szOpNm);
     pCard = nullptr;
   }
   

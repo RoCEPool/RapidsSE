@@ -516,7 +516,7 @@
                   //---------------------------------------------------------
 
                   [job].hasCodeBlock if
-                   "JOB HAS CODE" .
+                   // "JOB HAS CODE" .
 
                     LibInfo[].new
                     [job].codeBlock@
