@@ -103,7 +103,7 @@ i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
 
 // marker-end
 
-  return 0; // ray-alka
+  return 0;
 
 }
 

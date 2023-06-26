@@ -200,7 +200,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
-        vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pFilterFile);
+        vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pFilterFile);
 
         vAppendCodeFragment(pOpSketch, "vAntiJoinEnd"_Stz, pCodeFile);
 
@@ -264,7 +264,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vAppendCodeFragment(pOpSketch, "vFilterBegin"_Stz, pCodeFile);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-        vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pCodeFile);
+        vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pCodeFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the filter code fragments file
@@ -587,7 +587,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
-        vAppendCodeFragment(pOpSketch, "iFilterEnd"_Stz, pFilterFile);
+        vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pFilterFile);
 
         vAppendCodeFragment(pOpSketch, "vSemiJoinEnd"_Stz, pCodeFile);
 

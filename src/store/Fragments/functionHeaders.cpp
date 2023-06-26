@@ -21,7 +21,7 @@ int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT) {
 
   // marker-end
 
-  return 0; // ray-alka
+  return 0;
 
 }
 
@@ -37,7 +37,7 @@ int vSetColumns(struct Dynamic_T* aDynamicT) {
   aDynamicT->m_nCols = __COLUMNS_IN__;
 
   // marker-end
-  return 0; // ray-alka
+  return 0;
 
 }
 
@@ -45,7 +45,7 @@ int vSetColumns(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 /* vCrwContinue --                                                    */
 /*--------------------------------------------------------------------*/
-int vCrwContinue(struct Dynamic_T* aDynamicT) {
+void vCrwContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-start
   #include "../src/store/vFLAT_Parameters_v2.h"
@@ -56,7 +56,7 @@ int vCrwContinue(struct Dynamic_T* aDynamicT) {
 
   L_InflateCrwT:
   L_Return:
-    return 0;
+    return;
 }
 
 
@@ -73,7 +73,7 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 
   // marker-end
 
-  return 0; // ray-alka
+  return 0;
 
 }
 
@@ -88,7 +88,7 @@ int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 
   // marker-end
 
-  return 0; // ray-alka
+  return 0;
 
 }
 
@@ -96,15 +96,13 @@ int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 /*--------------------------------------------------------------------*/
 /* vIndexContinue --                                                  */
 /*--------------------------------------------------------------------*/
-int vIndexContinue(struct Dynamic_T* aDynamicT) {
+void vIndexContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-start
   #include "../src/store/vFLAT_Parameters_v2.h"
   #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
-
-  return 0; // ray-alka
 
 }
 
@@ -119,14 +117,14 @@ int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
 {
   // marker-end
 
-  return 0; // ray-alka
+  return 0;
 }
 
 // function-vRowIndexContinue
 /*--------------------------------------------------------------------*/
 /* vRowIndexContinue --                                               */
 /*--------------------------------------------------------------------*/
-int vRowIndexContinue(struct Dynamic_T* aDynamicT) {
+void vRowIndexContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-start
 
@@ -134,14 +132,13 @@ int vRowIndexContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-end
 
-  return 0;
 }
 
 // function-vRowContinue
 /*--------------------------------------------------------------------*/
 /* vRowContinue --                                                    */
 /*--------------------------------------------------------------------*/
-int vRowContinue(struct Dynamic_T* aDynamicT) {
+void vRowContinue(struct Dynamic_T* aDynamicT) {
 
   // marker-start
 
@@ -149,8 +146,6 @@ int vRowContinue(struct Dynamic_T* aDynamicT) {
   #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
-
-  return 0;
 }
 
 // function-__FUNCTION_STREAMDEF__
@@ -164,6 +159,5 @@ int __FUNCTION_STREAMDEF__(struct Dynamic_T* aDynamicT) {
 
   // marker-end
 
-  return 0; // ray-alka
-
+  return 0;
 }

@@ -21,7 +21,7 @@
 /*-- vOperatorBegin ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vOperatorBegin
-i8 vOperatorBegin(Dynamic_T* aDynamicT) {
+void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
   RowInfo __ROW_INFO_FROM__;
@@ -55,8 +55,6 @@ i8 vOperatorBegin(Dynamic_T* aDynamicT) {
   }
 
   // marker-end
-
-  return 0; // ray-alka
 }
 
 /*----------------------------------------------------------------------------*/

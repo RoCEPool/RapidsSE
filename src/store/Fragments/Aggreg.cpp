@@ -48,7 +48,7 @@ i8 iAggregInitEnd(Dynamic_T* aDynamicT) {
 /*-- vAggregColsBegin --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vAggregColsBegin
-i8 vAggregColsBegin(Dynamic_T* aDynamicT) {
+void vAggregColsBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
 
@@ -56,8 +56,6 @@ i8 vAggregColsBegin(Dynamic_T* aDynamicT) {
     aDynamicT->m_iRowsProcessed++;
     // marker-end
   }
-
-  return 0; // ray-alka
 
 }
 

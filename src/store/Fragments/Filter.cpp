@@ -42,10 +42,10 @@ __L_LABEL__:
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iFilterEnd --------------------------------------------------------------*/
+/*-- vFilterEnd --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iFilterEnd
-i8 iFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
+// function-vFilterEnd
+void vFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
 
   // marker-start
   if (bFilterResult && bFilterResult != C_DATUM_NULL) {
@@ -54,8 +54,6 @@ i8 iFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
     aDynamicT->m_iProcessRow = 0;
   }
   // marker-end
-
-  return 0; // ray-alka
 
 }
 
