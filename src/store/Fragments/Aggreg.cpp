@@ -57,6 +57,8 @@ i8 vAggregColsBegin(Dynamic_T* aDynamicT) {
     // marker-end
   }
 
+  return 0; // ray-alka
+
 }
 
 /*----------------------------------------------------------------------------*/

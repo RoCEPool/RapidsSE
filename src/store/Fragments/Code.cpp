@@ -55,6 +55,8 @@ i8 vOperatorBegin(Dynamic_T* aDynamicT) {
   }
 
   // marker-end
+
+  return 0; // ray-alka
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,6 +88,8 @@ i8 vExprCheck(Dynamic_T* aDynamicT) {
   }
 
   // marker-end
+
+  return 0; // ray-alka
 }
 
 
@@ -146,6 +150,7 @@ i8 iIndexInsertIntKey(Dynamic_T* aDynamicT) {
 
 // marker-end
 
+  return 0; // ray-alka
 
 }
 
@@ -186,6 +191,7 @@ i8 iIndexInsertVchKey(Dynamic_T* aDynamicT) {
 
 // marker-end
 
+  return 0; // ray-alka
 
 }
 
@@ -259,6 +265,9 @@ i8 vIndexDefBegin(Dynamic_T* aDynamicT) {
         // marker-end
     };
   }
+
+  return 0; // ray-alka
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -299,6 +308,8 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
   }
 
   // marker-end
+
+  return 0; // ray-alka
 
 }
 
@@ -653,6 +664,8 @@ i8 vEosPLIntKeyTraversal(Dynamic_T* aDynamicT) {
     // marker-end
   }
 
+  return 0; // ray-alka
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -691,6 +704,8 @@ i8 vEosPLGenKeyTraversal(Dynamic_T* aDynamicT) {
 
     // marker-end
   }
+
+  return 0; // ray-alka
 
 }
 

@@ -21,6 +21,8 @@ int __FUNCTION_CRW__(struct Dynamic_T* aDynamicT) {
 
   // marker-end
 
+  return 0; // ray-alka
+
 }
 
 // function-vSetColumns
@@ -35,6 +37,8 @@ int vSetColumns(struct Dynamic_T* aDynamicT) {
   aDynamicT->m_nCols = __COLUMNS_IN__;
 
   // marker-end
+  return 0; // ray-alka
+
 }
 
 // function-vCrwContinue
@@ -68,6 +72,9 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
   #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
+
+  return 0; // ray-alka
+
 }
 
 //function-__FUNCTION_INDEX__
@@ -80,6 +87,8 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 int __FUNCTION_INDEX__(struct Dynamic_T* aDynamicT) {
 
   // marker-end
+
+  return 0; // ray-alka
 
 }
 
@@ -94,6 +103,9 @@ int vIndexContinue(struct Dynamic_T* aDynamicT) {
   #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
   // marker-end
+
+  return 0; // ray-alka
+
 }
 
 //function-__FUNCTION_ROW__
@@ -106,6 +118,8 @@ int vIndexContinue(struct Dynamic_T* aDynamicT) {
 int __FUNCTION_ROW__(struct Dynamic_T* aDynamicT)
 {
   // marker-end
+
+  return 0; // ray-alka
 }
 
 // function-vRowIndexContinue
@@ -149,5 +163,7 @@ int vRowContinue(struct Dynamic_T* aDynamicT) {
 int __FUNCTION_STREAMDEF__(struct Dynamic_T* aDynamicT) {
 
   // marker-end
+
+  return 0; // ray-alka
 
 }
