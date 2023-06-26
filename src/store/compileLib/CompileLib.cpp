@@ -34,12 +34,12 @@ static Stz* C_LIB_EXT = "dylib"_Stz;
 static eCB C_DEFAULT_COMPILER = CB_NONE;
 static Stz* C_DEFAULT_COMPILER_PATH = nullptr;
 
-static Stz* C_GCC_COMPILER_FLAGS = "-g -Wl,--unresolved-symbols=ignore-all -I../src -O3 -fpic -shared"_Stz;
+static Stz* C_GCC_COMPILER_FLAGS = "-g -Wall -Wextra -Wno-unused-function -Wl,--unresolved-symbols=ignore-all  -Werror=return-type -I../src -O3 -fpic -shared"_Stz;
 
 #ifdef WITH_DEBUG_VERSION
-  static Stz* C_CLANG_COMPILER_FLAGS = "-DWITH_DEBUG_VERSION -g -Wl,-undefined,dynamic_lookup -I../src -O0 -fpic -shared"_Stz;
+  static Stz* C_CLANG_COMPILER_FLAGS = "-DWITH_DEBUG_VERSION -g -Wall -Wextra -Wno-unused-function -Wl,-undefined,dynamic_lookup -Werror=return-type -I../src -O0 -fpic -shared"_Stz;
 #else
-  static Stz* C_CLANG_COMPILER_FLAGS = "-g -Wl,-undefined,dynamic_lookup -I../src -O3 -fpic -shared"_Stz;
+  static Stz* C_CLANG_COMPILER_FLAGS = "-g -Wall -Wextra -Wno-unused-function -Wl,-undefined,dynamic_lookup -Werror=return-type -I../src -O3 -fpic -shared"_Stz;
 #endif
 
 static Stz* C_TCC_PATH = "../thirdparty/tcc/bin/tcc"_Stz;
