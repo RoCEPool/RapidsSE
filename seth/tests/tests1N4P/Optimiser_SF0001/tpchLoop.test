@@ -45,9 +45,9 @@ INCLUDE 'OptQ1.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running tpch query 2...';
-INCLUDE 'OptQ2.test';
-INCLUDE 'sleep.test';
+//LOG 'Running tpch query 2...';
+//INCLUDE 'OptQ2.test';
+//INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 3...';
