@@ -187,6 +187,7 @@ namespace ENGINE
     void vSeeLockSets(void);
     void vSeeLogicUnitRegisters(void);
     SenCompiler* pSenCompiler(void);
+    void vSetSenInternalErrorContext(void);
     void vSetSenLowMemContext(void);
     void vSetSenRecoverContext(void);
     void vSetInxPtr(Stz* szEntry);

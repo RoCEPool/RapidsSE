@@ -441,6 +441,7 @@ void Task::vInternalErrorHandler(void)
 {
   _noPreconditions_
 
+  //vSetSenInternalErrorContext();
   vSetSenLowMemContext();
 
 }
@@ -1268,6 +1269,52 @@ void Task::vSetSenRecoverContext(void)
     Process::vExitFailure();
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset sen execution context for internal error                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSetSenInternalErrorContext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+
+  //Task::vSeeFrameStack();
+
+  while (m_pReturnStack->nValues() > 2) {
+
+#ifdef WITH_LOCALS_OOM
+
+    if (m_pLocalVars) {
+      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
+        m_pLocalVars->vFramePop(aDiscardPoint_return);
+      }
+    }
+
+#else
+
+    if (m_pLocalFrame
+        && m_pLocalFrame->aDiscardPoint() ==
+           (TypeValueArea*)m_pReturnStack->aTopVal())
+      vLocalsPop();
+
+#endif
+
+    m_pReturnStack->vDiscardTop();
+  }
+
+  //Task::vSeeFrameStack();
+
+
+  if (MY::pOp())
+    m_aInxPtr = m_pOpLowMemWord->aFirstCell();
+  else
+    m_aInxPtr = m_pJobLowMemWord->aFirstCell();
+
+  //Task::vSeeFrameStack();
 }
 
 /*----------------------------------------------------------------------------*/
