@@ -141,7 +141,7 @@ i8 iIndexInsertIntKey(Dynamic_T* aDynamicT) {
       aDynamicT->m_iRowsProcessed++;
       aDynamicT->m_aiPayload = (i8 *) ((char *) aEntInserted
           + sizeof(struct Ent_int)
-          + __PAYLOADBYTES__);
+          + 8);
      }
 
      aEntFound = aEntInserted;
@@ -182,7 +182,7 @@ i8 iIndexInsertVchKey(Dynamic_T* aDynamicT) {
     aDynamicT->m_aiPayload = (i8 *) ((char *) aEntInserted
         + sizeof(struct Ent_int)
         + ((struct Ent_int*)aEntInserted)->m_iIntElm0
-        + __PAYLOADBYTES__);
+        + 8);
   }
 
   aEntFound = aEntInserted;

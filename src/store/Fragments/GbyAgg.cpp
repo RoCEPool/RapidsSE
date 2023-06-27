@@ -96,7 +96,7 @@ i8 iGbyAggInsertIntKey(Dynamic_T* aDynamicT) {
       aDynamicT->m_iRowsProcessed++;
       aDynamicT->m_aiPayload = (i8 *) ((char *) aEntInserted
           + sizeof(struct Ent_int)
-          + __PAYLOADBYTES__);
+          + 8);
      }
 
      aEntFound = aEntInserted;
