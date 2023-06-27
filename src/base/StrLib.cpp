@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-extern "C" i8 vExtern_StrLibLike2(char* azStr, char* azRegExp) {
+extern "C" i8 iExtern_StrLibLike2(char* azStr, char* azRegExp) {
   _static_
 
   i8 i = StrLib::iLike2(azStr, azRegExp);
@@ -21,7 +21,7 @@ extern "C" i8 vExtern_StrLibLike2(char* azStr, char* azRegExp) {
 /*----------------------------------------------------------------------------*/
 /* like: search for regexp anywhere in given string                           */
 /*----------------------------------------------------------------------------*/
-extern "C" i8 vExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) {
+extern "C" i8 iExtern_StrLibLike3(char* azStr, char* azRegExp, char cEsc) {
   _static_
 
   i8 i = StrLib::iLike3(azStr, azRegExp, cEsc);

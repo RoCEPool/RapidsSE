@@ -40,7 +40,7 @@ void vLimit(Dynamic_T* aDynamicT) {
     goto __L_LABEL_LOOP__;
   }
 
-  if (aDynamicT->m_iLimitRows <= __LIMIT_ROWS__) {
+  if (aDynamicT->m_iLimitRows < __LIMIT_ROWS__) {
     aDynamicT->m_iLimitRows++;
     goto __L_LABEL_NEXT__;
   }

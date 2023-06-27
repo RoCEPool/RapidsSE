@@ -935,6 +935,34 @@
     }                                                                       \
   }
 
+#define _LIKE2_V2(eErrorCode)                                               \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      *(paW++) = iExtern_StrLibLike2(szArg2, szArg1);                       \
+    }                                                                       \
+  }
+
+#define _LIKE3_V2(eErrorCode)                                               \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    szArg3 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      *(paW++) = iExtern_StrLibLike3(szArg3, szArg2, *szArg1);              \
+    }                                                                       \
+  }
 
 #define _MATCH_STRSTR(str,substr,len,bMatch)                                \
   {                                                                         \

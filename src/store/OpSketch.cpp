@@ -2214,7 +2214,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_LK2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_LIKE2(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_LIKE2_V2(aDynamicT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
@@ -2225,7 +2225,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
       eExpr3 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_LIKE3(aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_LIKE3_V2(aDynamicT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_BOL);
       break;
