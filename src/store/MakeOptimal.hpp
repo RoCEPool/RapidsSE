@@ -45,7 +45,6 @@ namespace STORE
 
     void vPromote_gbyAgg_To_ordAgg(void);
 
-    void vCullNonusedBounds(void);
     void vCullUsedBoundsFromFilter(void);
 
   protected:

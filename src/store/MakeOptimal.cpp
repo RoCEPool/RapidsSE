@@ -8,6 +8,7 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
+#include "XF_Cull_NonUsed_bound.hpp"
 #include "XF_Cut_sort.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Derive_projection_key.hpp"
@@ -76,10 +77,8 @@ void MakeOptimal::vOptimise(void)
 
   XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
+  XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(m_pCI);
 
-
-  vCullNonusedBounds();
-  Bench::vValidate(m_pCI);
 
   vCullUsedBoundsFromFilter();
   Bench::vValidate(m_pCI);
@@ -444,42 +443,6 @@ void MakeOptimal::vPromote_gbyAgg_To_ordAgg(void)
 
   m_pCI->vEndTransform();
   vDebugPoint();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect filters and remove cmp predicates which are in bounds              */
-/*----------------------------------------------------------------------------*/
-void MakeOptimal::vCullNonusedBounds(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "((desc))"_Stz);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMain()) {
-
-    if (!(m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
-          m_pCI->G.p_MainCard->bIsCard(CK_INDEXSCAN)))
-      continue;
-    if (!(m_pCI->G.p_indexList = m_pCI->G.p_MainCard->pSub_indexList()))
-      continue;
-
-    // have <bounds> & <filter> under <main>
-    Card_Index::vCullNonusedBounds(m_pCI);
-
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_pCI->vPrintBoard();
-
-  m_pCI->vEndTransform();
 }
 
 
