@@ -279,6 +279,11 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pJobTagSet->vCopy(& gxCmdLineArgs.m_xSysArgs.m_oSysTags);
   pJobTagSet->vCopy(pCmdTagSet);
 
+  if (pJobTagSet->bHasName(C_SHOW_CMD_TAGS)) {
+    pJobTagSet->vDumpSet();
+    vDebugPoint();
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // setup the child job
 

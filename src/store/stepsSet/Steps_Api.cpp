@@ -99,6 +99,15 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_WEAVER2))
     pCmdTagSet->vInsert(C_TAG_WEAVER2);
 
+  if (pJobTags->bHasName(C_CODE_BLOCK))
+    pCmdTagSet->vInsert(C_CODE_BLOCK);
+
+  if (pJobTags->bHasName(C_PIPELINE_DEF))
+    pCmdTagSet->vInsert(C_PIPELINE_DEF);
+
+  if (pJobTags->bHasName(C_SHOW_CMD_TAGS))
+    pCmdTagSet->vInsert(C_SHOW_CMD_TAGS);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
   Stz* szJobNm = pCmdTknVec->pGet(0)->szChars();

@@ -14,6 +14,8 @@
 #include "Table.hpp"
 #include "StreamDef.hpp"
 
+#include "Job.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -127,15 +129,10 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 
   }
 
-//  if (AM::JOB::bHasTag(C_PIPELINE_DEF)) {
-//    m_pPipelineDef->vDump();
-//    vDebugPoint();
-//  }
-
-#ifdef WITH_DEBUG_VERSION
-  m_pPipelineDef->vDump();
-  vDebugPoint();
-#endif
+  if (AM::JOB::bHasTag(C_PIPELINE_DEF)) {
+    m_pPipelineDef->vDump();
+    vDebugPoint();
+  }
 
   m_pPipelineDef->vValidate();
   m_pPipelineDef->vCollapseOps();

@@ -268,6 +268,7 @@
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
 #include "XF_Cull_NonUsed_bound.hpp"
+#include "XF_Cull_Used_bound.hpp"
 #include "XF_Cut_sort.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Derive_projection_key.hpp"
@@ -740,6 +741,7 @@ SizeHeap gxaSizeHeap[]
 
   {CN__X__,                    'X' - ('A' - 1),                HT_INVALID   , FILL },
   {CN_XF_CULL_NONUSED_BOUND,        sizeof(XF_Cull_NonUsed_bound),        HT_T_TINY    , FILL },
+  {CN_XF_CULL_USED_BOUND,           sizeof(XF_Cull_Used_bound),           HT_T_TINY    , FILL },
   {CN_XF_CUT_SORT,                  sizeof(XF_Cut_sort),                  HT_T_TINY    , FILL },
   {CN_XF_DELETE_FLAT,               sizeof(XF_Delete_flat),               HT_T_TINY    , FILL },
   {CN_XF_DERIVE_PROJECTION_KEY,     sizeof(XF_Derive_projection_key),     HT_T_TINY    , FILL },

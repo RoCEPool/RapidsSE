@@ -9,6 +9,7 @@
 #include "Optimiser.hpp"
 
 #include "XF_Cull_NonUsed_bound.hpp"
+#include "XF_Cull_Used_bound.hpp"
 #include "XF_Cut_sort.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Derive_projection_key.hpp"
@@ -79,11 +80,7 @@ void MakeOptimal::vOptimise(void)
 
   XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(m_pCI);
 
-
-  vCullUsedBoundsFromFilter();
-  Bench::vValidate(m_pCI);
-
-
+  XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
 
   XF_Early_projection::vXF_Early_projection(m_pCI);
 

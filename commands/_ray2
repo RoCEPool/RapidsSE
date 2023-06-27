@@ -35,6 +35,7 @@ end ;
 /weaver2
 /weaved
 /pipeline_def
+/show_cmd_tags
 /pipelineName = "_ray2"
 select n_nationkey
   from nation
