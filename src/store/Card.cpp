@@ -910,7 +910,7 @@ bool Card::bIsOne(eCK eCard, ...)
     if (this->bIsCard(eCard_mayBe))
       return true;
 
-    eCard_mayBe = (eCK) va_arg(xArgs, eCK);
+    eCard_mayBe = (eCK) va_arg(xArgs, i8);
   }
 
   va_end(xArgs);
