@@ -646,7 +646,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SPMEDIUM,                 sizeof(SPmedium),           HT_INVALID   ,FILL },
   { CN_SPSMALL,                  sizeof(SPsmall),            HT_INVALID   ,FILL },
   { CN_SQLPLANNER,               sizeof(SqlPlanner),         HT_V_MEDIUM  ,FILL },
-  { CN_STACK,                    sizeof(TypedStack), /*yes*/ HT_T_LARGE   ,FILL },
+  { CN_STACK,                    sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,FILL },
   { CN_STAGE,                    sizeof(Stage),              HT_T_SMALL   ,FILL },
   { CN_STAGEDEF,                 sizeof(StageDef),           HT_T_MEDIUM  ,FILL },
   { CN_STAGEMETRICS,             sizeof(StageMetrics),       HT_T_TINY    ,FILL },
@@ -764,3 +764,102 @@ SizeHeap gxaSizeHeap[]
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
+
+/*
+
+ MASTER as at 27th June 2023
+
+Transient Tiny Heap 1KB Object Summary:
+CRWTABLEPTN 12     (size      64B sum   768B use  6%)  *half again!
+DECKSPEC 13     (size      96B sum    1KB use  9%)  *half again!
+DIC 383    (size     336B sum  125KB use 32%)  *half again!
+EVENTHANDLERS 41     (size     608B sum   24KB use 59%)
+EVMGR 41     (size     632B sum   25KB use 61%)
+FILE 4      (size     496B sum    1KB use 48%)  *half again!
+GRID 1      (size     376B sum   376B use 36%)  *half again!
+INDEXTREEVEC 12     (size     160B sum    1KB use 15%)  *half again!
+IDXVEC 55     (size     160B sum    8KB use 15%)  *half again!
+INPUT 1      (size     192B sum   192B use 18%)  *half again!
+INTERNALTABLES 1      (size     144B sum   144B use 14%)  *half again!
+INTSTACK 1      (size      32B sum    32B use  3%)  *half again!
+JOBLIST 6      (size     232B sum    1KB use 22%)  *half again!
+JOBS 1      (size      72B sum    72B use  7%)  *half again!
+LISTEXONODE_t 1167   (size      48B sum   54KB use  4%)  *half again!
+MARKER 39     (size     104B sum    3KB use 10%)  *half again!
+MARKERCHAIN 13     (size     240B sum    3KB use 23%)  *half again!
+MARKERMGR 1      (size     344B sum   344B use 33%)  *half again!
+MUTEX 14     (size     528B sum    7KB use 51%)
+NODE 1      (size     736B sum   736B use 71%)
+NODE_I 54     (size      48B sum    2KB use  4%)  *half again!
+NOW 54     (size      72B sum    3KB use  7%)  *half again!
+OUTPUT 1      (size     464B sum   464B use 45%)  *half again!
+OP 41     (size     520B sum   20KB use 50%)
+OPERANDQUEUE 123    (size     256B sum   30KB use 25%)  *half again!
+PIPEIN 41     (size      48B sum    1KB use  4%)  *half again!
+PIPELINE 13     (size     448B sum    5KB use 43%)  *half again!
+PLANNODEBUILDER 585    (size     968B sum  553KB use 94%)
+PLANNODEBUILDERLIST 370    (size     232B sum   83KB use 22%)  *half again!
+PLANNODELIST 377    (size     232B sum   85KB use 22%)  *half again!
+PSXTHD 22     (size     376B sum    8KB use 36%)  *half again!
+QUEUE 1      (size     232B sum   232B use 22%)  *half again!
+REJECTJOB 16     (size      48B sum   768B use  4%)  *half again!
+SCHEDULE 1      (size     320B sum   320B use 31%)  *half again!
+SENCOMPILER 54     (size     192B sum   10KB use 18%)  *half again!
+SKIPLIST 393    (size      88B sum   33KB use  8%)  *half again!
+SKIPNODE 5459   (size      48B sum  255KB use  4%)  *half again!
+SOCKET 2      (size     856B sum    1KB use 83%)
+STAGESPEC 13     (size     224B sum    2KB use 21%)  *half again!
+STARTER 1      (size     248B sum   248B use 24%)  *half again!
+STATS 41     (size     240B sum    9KB use 23%)  *half again!
+TABLE 55     (size     552B sum   29KB use 53%)
+TABLEPTN 12     (size     256B sum    3KB use 25%)  *half again!
+TABLEPTNVEC 55     (size     544B sum   29KB use 53%)
+TASKLIST 6      (size     272B sum    1KB use 26%)  *half again!
+TASKQUEUE 1      (size     224B sum   224B use 21%)  *half again!
+TEXT 342    (size      40B sum   13KB use  3%)  *half again!
+TEXTTINY 342    (size     992B sum  331KB use 96%)
+THREAD 22     (size     720B sum   15KB use 70%)
+THREADQUEUE 1      (size     264B sum   264B use 25%)  *half again!
+THREADSCRATCH 22     (size     216B sum    4KB use 21%)  *half again!
+TUB 1      (size      56B sum    56B use  5%)  *half again!
+TXSET 2      (size     280B sum   560B use 27%)  *half again!
+VERTEXSPEC 13     (size     192B sum    2KB use 18%)  *half again!
+WORD 5093   (size     320B sum    1MB use 31%)  *half again!
+[15436 objects ; 15MB of blocks]
+
+Transient Small Heap 4KB Object Summary:
+DECK 13     (size    2112B sum   26KB use 51%)
+OBJECTSNAPSHOT 2      (size    3288B sum    6KB use 80%)
+OPERANDWATCH 41     (size    1784B sum   71KB use 43%)
+STAGE 13     (size    2120B sum   26KB use 51%)
+STREAM 13     (size    2216B sum   28KB use 54%)
+TASK 54     (size    3360B sum  177KB use 82%)
+VERTEX 13     (size    2128B sum   27KB use 51%)
+[149 objects ; 596KB of blocks]
+
+Transient Medium Heap 64KB Object Summary:
+CODEBLOCK 5038   (size   65496B sum  314MB use 99%)
+JOB 14     (size   43360B sum  592KB use 66%)
+LOCALSTRS 54     (size   65320B sum    3MB use 99%)
+LOCALVARS 54     (size   65416B sum    3MB use 99%)
+LOGICUNIT 54     (size   26032B sum    1MB use 39%)
+NUMBERING 1      (size   13048B sum   12KB use 19%)
+OPSPEC 41     (size   38552B sum    1MB use 58%)
+PTNDEF 55     (size   51880B sum    2MB use 79%)
+SEDEPUTY 1      (size    4144B sum    4KB use  6%)
+SEPROMPT 1      (size   46752B sum   45KB use 71%)
+STACK 162    (size   65368B sum   10MB use 99%)
+TAGSET 596    (size   38216B sum   21MB use 58%)
+THREADVEC 2      (size   33000B sum   64KB use 50%)
+TOTUP 6      (size    6536B sum   38KB use  9%)
+[6079 objects ; 379MB of blocks]
+
+Transient Large Heap 1020KB Object Summary:
+CHARSER 4      (size   96728B sum  377KB use  9%)
+LGLPTNMAP 1      (size   65776B sum   64KB use  6%)
+PORT 1      (size     728B sum   728B use  0%)  *into medium
+STREAMDEF 55     (size   84776B sum    4MB use  8%)
+TOKENVEC 55     (size  403552B sum   21MB use 38%)
+[116 objects ; 115MB of blocks]
+
+*/
