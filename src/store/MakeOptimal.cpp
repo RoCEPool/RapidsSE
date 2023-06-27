@@ -8,6 +8,7 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
+#include "XF_Cut_sort.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Derive_projection_key.hpp"
 #include "XF_Early_projection.hpp"
@@ -70,9 +71,9 @@ void MakeOptimal::vOptimise(void)
 
   XF_Derive_projection_key::vXF_Derive_projection_key(m_pCI);
 
+  XF_Cut_sort::vXF_Cut_sort(m_pCI);
 
-  vCut_sort();
-  Bench::vValidate(m_pCI);
+
 
   vPromote_gbyAgg_To_ordAgg();
   Bench::vValidate(m_pCI);
@@ -407,42 +408,6 @@ bool MakeOptimal::bOptimise_RplSortLimitOnOriginByAllLevels(void) {
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeOptimal::vCut_sort(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEOPTIMAL, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "Cut sort"_Stz);
-
-  m_pCI->G_vRestart();
-
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
-
-  while (m_pCI->G_bEachMain()) {
-
-    switch (m_pCI->G.e_MainCard) {
-
-      case CK_SORT:
-        m_pCI->G.p_sort->vCut_sort(m_pCI);
-        break;
-
-      default:
-        if (m_pCI->G.p_MainCard->pSub_projection()) {
-          m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_MainCard->pSub_projection();
-          m_pCI->StreamOrder.m_pKey_running = m_pCI->StreamOrder.m_pProjection_running->pSub_key();
-        }
-        break;
-    }
-
-    m_pCI->vPrintBoard(__LINE__);
-  }
-
-  m_pCI->vEndTransform();
-  vDebugPoint();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

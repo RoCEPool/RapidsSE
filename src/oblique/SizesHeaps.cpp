@@ -267,6 +267,7 @@
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
+#include "XF_Cut_sort.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Derive_projection_key.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
@@ -736,6 +737,7 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,          0,                             HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),                HT_INVALID   , FILL },
+  {CN_XF_CUT_SORT,                 sizeof(XF_Cut_sort),                HT_T_TINY    , FILL },
   {CN_XF_DELETE_FLAT,              sizeof(XF_Delete_flat),             HT_T_TINY    , FILL },
   {CN_XF_DERIVE_PROJECTION_KEY,    sizeof(XF_Derive_projection_key),   HT_T_TINY    , FILL },
   {CN_XF_EARLY_PROJECTION,         sizeof(XF_Early_projection),        HT_T_TINY    , FILL },

@@ -43,7 +43,6 @@ namespace STORE
     bool bOptimise_RplSortDescLimitByTop(void);
     bool bOptimise_RplSortLimitOnOriginByAllLevels(void);
 
-    void vCut_sort(void);
     void vPromote_gbyAgg_To_ordAgg(void);
 
     void vCullNonusedBounds(void);
