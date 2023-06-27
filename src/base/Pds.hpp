@@ -15,6 +15,7 @@ namespace BASE
 
   public:
     i8 m_nBlockSize; // Size of SLN + Item in bytes
+    i8 m_nPadding; // Size of free space
     u2 m_uFreeListRootOffset;
     i8 m_iFreeListEntries;
 
@@ -37,7 +38,6 @@ namespace BASE
     void vDump(u2 uOffset);
     void vDumpFree(void);
     void vDumpInUse(void);
-
     SkipListBlock* pFind(i8 iKey);
     void* pGetAddrFromOffset(u2 uOffset);
     u2 uGetOffsetFromBase(void* aAddress);
@@ -45,7 +45,7 @@ namespace BASE
     void vInsert(i8 iKey);
 
     void vMoveToFreeList(SkipListBlock* pSLSet);
-    SkipListBlock* pNextSLSet(SkipListBlock* pSLSet , i8 iLevel);
+    SkipListBlock* pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel);
 
     void vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
 

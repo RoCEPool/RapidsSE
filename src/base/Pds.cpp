@@ -56,6 +56,15 @@ Pds::Pds(i8 nBytes)
   RASSERT(nBytes >= C_MIN_KEY_LEN);
 
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
+  m_nPadding = 0;
+
+  // Ensure block size is a multiple of 16 bytes
+  i8 iMod = m_nBlockSize % 16;
+  if(iMod != 0) {
+    m_nPadding = 16 - iMod;
+    m_nBlockSize += m_nPadding;
+  }
+
 
   m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock(0));
   m_iFreeListEntries = 0;
@@ -88,13 +97,13 @@ SkipListBlock* Pds::aAllotSkipListBlock(i8 iKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  SkipListBlock* pReturnSet = nullptr;
+  SkipListBlock* pReturnBlock = nullptr;
   SkipListBlock* pFreeListHead = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
-  SkipListBlock* pNextFree = pNextSLSet(pFreeListHead, 0);
+  SkipListBlock* pNextFree = pNextSLBlock(pFreeListHead, 0);
 
   if(pNextFree != nullptr) {
-    pReturnSet = pNextFree;
-    SkipListBlock* pNextNext = pNextSLSet(pNextFree, 0);
+    pReturnBlock = pNextFree;
+    SkipListBlock* pNextNext = pNextSLBlock(pNextFree, 0);
     if(pNextNext != nullptr) {
       pFreeListHead->m_xNode.vNext(0, uGetOffsetFromBase(pNextNext));
       m_iFreeListEntries--;
@@ -106,15 +115,16 @@ SkipListBlock* Pds::aAllotSkipListBlock(i8 iKey)
       RASSERT(m_iFreeListEntries == 0);
     }
   } else {
-    pReturnSet = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
+    pReturnBlock = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
   }
 
-  if (! pReturnSet)
+  if (! pReturnBlock)
     return nullptr;
 
-  pReturnSet->vSetKey(iKey);
+  pReturnBlock->vSetKey(iKey);
 
-  return pReturnSet;
+  vTrace("Block addr: %p\n"_Stz, pReturnBlock);
+  return pReturnBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +143,7 @@ void Pds::vDelete(i8 iKey)
 
     SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
 
-    SkipListBlock* pNext = pNextSLSet(pCursor, i_Level);
+    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
     while(pNext != nullptr) {
       i8 iNextKey = pNext->iKey();
       if(iNextKey== iKey) {
@@ -145,7 +155,7 @@ void Pds::vDelete(i8 iKey)
       } else if(iNextKey > iKey)
         break;
       pCursor = pNext;
-      pNext = pNextSLSet(pNext, i_Level);
+      pNext = pNextSLBlock(pNext, i_Level);
     }
   }
 
@@ -181,7 +191,7 @@ void Pds::vDump(u2 uOffset)
     for(i8 iNumEntries = 0; iNumEntries < m_iNumEntries[i_Level] + 1; iNumEntries++) {
       vTrace("%lld-->"_Stz, pCursor->iKey());
 
-      pCursor = pNextSLSet(pCursor, i_Level);
+      pCursor = pNextSLBlock(pCursor, i_Level);
       if(pCursor == nullptr) {
         break;
       }
@@ -229,7 +239,7 @@ SkipListBlock* Pds::pFind(i8 iKey)
 
     SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
 
-    SkipListBlock* pNext = pNextSLSet(pCursor, i_Level);
+    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
     while(pNext != nullptr) {
       i8 iNextKey = pNext->iKey();
       if(iNextKey == iKey) {
@@ -239,7 +249,7 @@ SkipListBlock* Pds::pFind(i8 iKey)
         break;
       }
       pCursor = pNext;
-      pNext = pNextSLSet(pNext, i_Level);
+      pNext = pNextSLBlock(pNext, i_Level);
     }
   }
 
@@ -317,7 +327,7 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLSet)
   }
   SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 
-  SkipListBlock* pNext = pNextSLSet(pCursor, 0);
+  SkipListBlock* pNext = pNextSLBlock(pCursor, 0);
 
   if(pNext != nullptr) {
     pSLSet->m_xNode.vNext(0, uGetOffsetFromBase(pNext));
@@ -332,14 +342,14 @@ void Pds::vMoveToFreeList(SkipListBlock* pSLSet)
 /*----------------------------------------------------------------------------*/
 /* Get next SkipListBlock node pointer                                        */
 /*----------------------------------------------------------------------------*/
-SkipListBlock* Pds::pNextSLSet(SkipListBlock* pSLSet , i8 iLevel)
+SkipListBlock* Pds::pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  if(pSLSet == nullptr)
+  if(pSLBlock == nullptr)
     return nullptr;
 
-  u2 uNext = pSLSet->m_xNode.uNext(iLevel);
+  u2 uNext = pSLBlock->m_xNode.uNext(iLevel);
 
   if(uNext == 0)
     return nullptr;
@@ -364,7 +374,7 @@ void Pds::vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[])
       continue;
     }
 
-    SkipListBlock* pNext = pNextSLSet(pCurr, i_Level);
+    SkipListBlock* pNext = pNextSLBlock(pCurr, i_Level);
 
     i8 iNextKey = 0;
     if(pNext != nullptr) {
@@ -373,7 +383,7 @@ void Pds::vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[])
 
     while(iNextKey != 0 && iNextKey < iKey) {
       pCurr = pNext;
-      pNext = pNextSLSet(pCurr, i_Level);
+      pNext = pNextSLBlock(pCurr, i_Level);
       if(pNext != nullptr) {
         iNextKey = pNext->iKey();
       } else {
