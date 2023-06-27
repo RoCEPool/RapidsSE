@@ -108,6 +108,16 @@ public:
 
     virtual antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *context) = 0;
 
+    virtual antlrcpp::Any visitCount(sqlParser::CountContext *context) = 0;
+
+    virtual antlrcpp::Any visitSpace(sqlParser::SpaceContext *context) = 0;
+
+    virtual antlrcpp::Any visitStatus(sqlParser::StatusContext *context) = 0;
+
+    virtual antlrcpp::Any visitSzidx(sqlParser::SzidxContext *context) = 0;
+
+    virtual antlrcpp::Any visitSztbl(sqlParser::SztblContext *context) = 0;
+
     virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *context) = 0;
 
     virtual antlrcpp::Any visitTablePartitioning(sqlParser::TablePartitioningContext *context) = 0;

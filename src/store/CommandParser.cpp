@@ -232,6 +232,11 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
                                 { m_szProcName = "drop__table"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->dropQuery() && pCtx->dropQuery()->dropIndexQuery())
                                 { m_szProcName = "drop__index"_Stz;     return visitChildren(pCtx); }
+  else if (pCtx->count())       { m_szProcName = "count"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->space())       { m_szProcName = "space"_Stz;           return nullptr; }
+  else if (pCtx->status())      { m_szProcName = "status"_Stz;          return nullptr; }
+  else if (pCtx->szidx())       { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->sztbl())       { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
 
   else                          { NOT_IMPLEMENTED_YET }
 
@@ -490,6 +495,50 @@ antlrcpp::Any CommandParser::visitDropIndexQuery(Parser::sqlParser::DropIndexQue
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a COUNT statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitCount(Parser::sqlParser::CountContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SZIDX statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitSzidx(Parser::sqlParser::SzidxContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sIndexName;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SZTBL statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitSztbl(Parser::sqlParser::SztblContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }

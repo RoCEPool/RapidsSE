@@ -21,6 +21,11 @@ statementChoice   :   queryStatement
 //                    | deleteQuery
 //                    | updateQuery
 //                    | truncateQuery
+                    | count
+                    | space
+                    | status
+                    | szidx
+                    | sztbl
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
@@ -158,6 +163,11 @@ dropIndexQuery    : DROP INDEX /*(IF EXISTS)?*/ (
 
 truncateQuery     : TRUNCATE (TABLE)? name = tableReference ;
 
+count             : COUNT tableName ;
+space             : SPACE ;
+status            : STATUS ;
+szidx             : SZIDX tableName indexName ;
+sztbl             : SZTBL tableName ;
 
 // table/column definition ------------------------------------------------------------
 
@@ -499,8 +509,8 @@ nonReservedWord   :
                   | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | REPLICATED | ROWSIZE
-                  | SCHEMA | SECONDS | SKIPLIST | STAGE | STATS | STATISTICS
-                  | STATISTICS |SUBSTR
+                  | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
+                  | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
@@ -640,12 +650,16 @@ SELECT                : S E L E C T;
 SEMI                  : S E M I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
 SET                   : S E T;
 SKIPLIST              : S K I P L I S T;
+SPACE                 : S P A C E;
 STAGE                 : S T A G E;
 STATS                 : S T A T S;
 STATISTICS            : S T A T I S T I C S;
+STATUS                : S T A T U S;
 SUBSTR                : S U B S T R;
 SUBSTRING             : S U B S T R I N G;
 SUM                   : S U M;
+SZIDX                 : S Z I D X;
+SZTBL                 : S Z T B L;
 TABLE                 : T A B L E;
 TABLESIZE             : T A B L E S I Z E;
 TEXT                  : T E X T;
