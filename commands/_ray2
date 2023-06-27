@@ -7,7 +7,7 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-// /glean_interactive
+/glean_interactive
 /weaved
 /weaver2
 /optimise_passThru
@@ -30,7 +30,15 @@ begin
    | first
 end ;
 
-/weaver2 select n_nationkey from nation order by n_nationkey;
+/glean_interactive
+/transliterated
+/weaver2
+/weaved
+/pipeline_def
+/pipelineName = "_ray2"
+select n_nationkey
+  from nation
+ order by n_nationkey;
 
 /*============================================================================*/
 /* end                                                                        */
