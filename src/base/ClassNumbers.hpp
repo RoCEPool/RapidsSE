@@ -454,6 +454,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_MORPH_SCAN_TO_INDEXSCAN,
   /* */ CN_XF_MORPH_TABLE_TO_EEOP,
+  /* */ CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,
   /* */ CN_XF_REDUCE_KEY_GBYAGG,
 
   /* */ CN__Y__,
@@ -902,14 +903,15 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
   /* */ "_X__"_Stz,                 // CN__X__
-  /* */ "XF_CUT_SORT"_Stz,               // CN_XF_CUT_SORT
-  /* */ "XF_DELETE_FLAT"_Stz,            // CN_XF_DELETE_FLAT
-  /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,  // CN_XF_DERIVE_PROJECTION_KEY
-  /* */ "XF_EARLY_PROJECTION"_Stz,       // CN_XF_EARLY_PROJECTION
-  /* */ "XF_INDIVIDUATE_FILTER"_Stz,     // CN_XF_INDIVIDUATE_FILTER
-  /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,// CN_XF_MORPH_SCAN_TO_INDEXSCAN
-  /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,    // CN_XF_MORPH_TABLE_TO_EEOP
-  /* */ "XF_REDUCE_KEY_GBYAGG"_Stz,      // CN_XF_REDUCE_KEY_GBYAGG
+  /* */ "XF_CUT_SORT"_Stz,                  // CN_XF_CUT_SORT
+  /* */ "XF_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT
+  /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,     // CN_XF_DERIVE_PROJECTION_KEY
+  /* */ "XF_EARLY_PROJECTION"_Stz,          // CN_XF_EARLY_PROJECTION
+  /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
+  /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,   // CN_XF_MORPH_SCAN_TO_INDEXSCAN
+  /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
+  /* */ "XF_PROMOTE_GBYAGG_TO_ORDAGG"_Stz,  // CN_XF_PROMOTE_GBYAGG_TO_ORDAGG
+  /* */ "XF_REDUCE_KEY_GBYAGG"_Stz,         // CN_XF_REDUCE_KEY_GBYAGG
 
   /* */ "_Y__"_Stz,                 // CN__Y__
 

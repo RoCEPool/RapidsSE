@@ -15,6 +15,7 @@
 #include "XF_Individuate_filter.hpp"
 #include "XF_Morph_scan_To_indexScan.hpp"
 #include "XF_Morph_table_To_EEop.hpp"
+#include "XF_Promote_gbyAgg_To_ordAgg.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -73,10 +74,9 @@ void MakeOptimal::vOptimise(void)
 
   XF_Cut_sort::vXF_Cut_sort(m_pCI);
 
+  XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
 
-  vPromote_gbyAgg_To_ordAgg();
-  Bench::vValidate(m_pCI);
 
   vCullNonusedBounds();
   Bench::vValidate(m_pCI);
