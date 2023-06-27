@@ -272,6 +272,25 @@
   false
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/* default handler for EV_M_INTERNALERROR operand                 (pipes out) */
+/*----------------------------------------------------------------------------*/
+: EV_M_INTERNALERROR_handler \handler
+
+  //"EV_M_INTERNALERROR_handler" .verbose
+
+  //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+  "default_abnormalHandlers" FIND execute
+  "default_lowMemHandlers" FIND execute
+  //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
+
+
+  PipeIn[].pipeOut
+
+  true
+;
+
 /*----------------------------------------------------------------------------*/
 /* default handler for EV_M_INVOKE operand                                    */
 /*----------------------------------------------------------------------------*/
@@ -413,6 +432,7 @@
   defaultHandler EV_M_FINISHED          [op].handler!
   defaultHandler EV_M_FLUSH             [op].handler!
   abnormalHandlerEnd    EV_M_HARDABORT  [op].handler!
+  defaultHandler EV_M_INTERNALERROR         [op].handler!
   defaultHandler EV_M_LOWMEMORY         [op].handler!
   defaultHandler EV_M_NEXTBUFFER        [op].handler!
   defaultHandler EV_M_START             [op].handler!

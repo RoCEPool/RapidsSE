@@ -115,6 +115,7 @@ namespace ENGINE
     void vExceptionHandler(void);
     void vExceptionTrace(void);
     void vLowMemoryHandler(void);
+    void vInternalErrorHandler(void);
     void vDumpOnException(void);
 
     // - - - - - - - - - - - - - -  - - - - - -

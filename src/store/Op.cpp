@@ -638,6 +638,14 @@ bool Op::bIsEventValid(i8 i_OperandKind)
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
+
+      // should have received a EV_M_CANCEL
+      if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&
+           ! m_pEvMgr->m_naEventCount[EV_M_INTERNALERROR]) {
+        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_INTERNALERROR\n"_Stz,
+               szOpNm(), aEV[i_OperandKind]);
+        return false;
+      }
       
       // should have received a EV_M_CANCEL
       if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&

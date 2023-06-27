@@ -311,20 +311,6 @@ void Step::vStreamSetAddListIndex(void)
 {
   ENTRY();
 
-  // Violations
-  printf("\nDivide by zero\n");
-  int i = 114;
-  int j = 0;
-  i = i / j;
-
-
-
-  // Segmentation Violation
-  //printf("\nSegmentation Violation\n");
-  int *p = (int *) 0x12345678;  // some unknown address, to cause seg fault
-  //*p = 0;
-
-
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   

@@ -1731,15 +1731,15 @@ void Engine::vSignalHandler(int iSignal)
       break;
     case SIGFPE:
       vTrace("Caught SIGFPE: arithmetic exception, such as divide by zero or overflow\n"_Stz);
-      BASE::vThrowLowMemory(FK_LOWMEMORY,\
+      BASE::vThrowLowMemory(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
-                        "RUNNING LOW ON MEMORY"_Stz);
+                        "INTERNAL ERROR"_Stz);
       break;
     case SIGILL:
       fputs("Caught SIGILL: illegal instruction, corruption in the code or to an attempt to execute data\n", stdout);
-      BASE::vThrowLowMemory(FK_LOWMEMORY,\
+      BASE::vThrowLowMemory(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
-                        "RUNNING LOW ON MEMORY"_Stz);
+                        "INTERNAL ERROR"_Stz);
       //siglongjmp (contextThread3, 1); // restore stack context
       break;
     case SIGINT:
@@ -1749,9 +1749,9 @@ void Engine::vSignalHandler(int iSignal)
     case SIGSEGV:
       vTrace("\nCaught SIGSEGV: segfault: Invalid access to storage\n"_Stz);
 
-      BASE::vThrowLowMemory(FK_LOWMEMORY,\
+      BASE::vThrowLowMemory(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
-                        "RUNNING LOW ON MEMORY"_Stz);
+                        "INTERNAL ERROR"_Stz);
       break;
     case SIGUSR1:
       vTrace("Caught SIGUSR1: \n"_Stz);
@@ -1770,16 +1770,12 @@ void Engine::vSignalHandler(int iSignal)
 
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* Register Signal Handler                                                    */
+/*----------------------------------------------------------------------------*/
 void Engine::vRegisterSignalHandler() {
   struct sigaction sa = {0};
   sigemptyset(&sa.sa_mask);
-
-  /*
-  sigaddset(&sa.sa_mask, SIGSEGV);
-  sigaddset(&sa.sa_mask, SIGFPE);
-  sigaddset(&sa.sa_mask, SIGILL);
-  sigaddset(&sa.sa_mask, SIGBUS);*/
 
   sa.sa_handler = vSignalHandler;
   sa.sa_flags = SA_RESETHAND;

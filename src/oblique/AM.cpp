@@ -1813,6 +1813,9 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
     if (pMarker->eOpMarker() == OM_HARDABORT)
       return true;
 
+    if (pMarker->eOpMarker() == OM_INTERNALERROR)
+      return true;
+
     if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
       return true;
 
@@ -4325,6 +4328,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
         case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
         case OM_HARDABORT:          eOperand = EV_M_HARDABORT;    break;
+        case OM_INTERNALERROR:      eOperand = EV_M_INTERNALERROR; break;
         case OM_INVOKEMARKER:       eOperand = EV_M_INVOKE;       break;
         case OM_LEAVEMARKER:        eOperand = EV_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;

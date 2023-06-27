@@ -311,9 +311,14 @@ void Task::vTaskLoop(void)
       //
     }
 
-      // catch lowMemory exception
+    // catch lowMemory exception
     catch (LowMemory xLowMemory) {
       vLowMemoryHandler();
+    }
+
+    // catch internal error exception
+    catch (InternalError xInternalError) {
+      vInternalErrorHandler();
     }
 
     // catch exception
@@ -422,6 +427,17 @@ void Task::vExceptionHandler(void)
 /* caught a low memory exception in vTaskLoop catch(LowMemory...)             */
 /*----------------------------------------------------------------------------*/
 void Task::vLowMemoryHandler(void)
+{
+  _noPreconditions_
+
+  vSetSenLowMemContext();
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* caught an internal error exception in vTaskLoop catch(InternalError...)    */
+/*----------------------------------------------------------------------------*/
+void Task::vInternalErrorHandler(void)
 {
   _noPreconditions_
 
