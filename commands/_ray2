@@ -20,8 +20,8 @@ begin
    | next
  stage S01 on all partitions :
    scan rapidsse public Nation
-   | project " type INTEGER as n_regionkey $3 , type INTEGER as n_nationkey $1 "
-   | sort " type INTEGER as n_nationkey $2 ASC  "
+   | project " type INTEGER as n_nationkey $1 "
+   | sort " type INTEGER as n_nationkey $1 ASC  "
    | combined 0
    | next
  stage S02 on origin :
@@ -30,7 +30,7 @@ begin
    | first
 end ;
 
-/weaver2 select n_regionkey, n_nationkey from nation order by n_nationkey;
+/weaver2 select n_nationkey from nation order by n_nationkey;
 
 /*============================================================================*/
 /* end                                                                        */
