@@ -654,22 +654,9 @@ Card* Dissector::pOp_IndexScan(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // index bounds
 
-  Card_Bounds* pCard_Bounds = new Card_Bounds;
-  p_index->vAppend(pCard_Bounds);
-
-  Card_Bound* pCard_Bound = new Card_Bound;
-
-
-  pCard_Bound->vTransferChildren(p_rpnTerms_bounds);
-  i8 nTerms = pCard_Bound->nChildCards();
-  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
-  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
-  pCard_Bound->vDeleteChild(p_term_last);
-  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
-  pCard_Bound->vDeleteChild(p_term_first);
-
-  pCard_Bounds->vAppend(pCard_Bound);
-
+  Card_Bounds* pCard_Bounds = pPopBounds(p_rpnTerms_bounds);
+  if (pCard_Bounds)
+    p_index->vAppend(pCard_Bounds);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1145,17 +1132,39 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
 
   Card_Bound* pCard_Bound = new Card_Bound;
 
+  Card_Term* p_term_bound = pCard_RpnTerms->pPop_term();
+  RASSERT(p_term_bound->pSymbol()->bIsBound());
+
   pCard_Bound->vTransferChildren(pCard_RpnTerms);
+
   i8 nTerms = pCard_Bound->nChildCards();
   Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
   pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
+
+  delete p_term_bound;
   pCard_Bound->vDeleteChild(p_term_last);
-  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
-  pCard_Bound->vDeleteChild(p_term_first);
+
+  pCard_Bound->vDump();
 
   return pCard_Bound;
 }
-
+/*----------------------------------------------------------------------------*/
+//Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+//
+//  Card_Bound* pCard_Bound = new Card_Bound;
+//
+//  pCard_Bound->vTransferChildren(pCard_RpnTerms);
+//  i8 nTerms = pCard_Bound->nChildCards();
+//  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
+//  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
+//  pCard_Bound->vDeleteChild(p_term_last);
+//  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
+//  pCard_Bound->vDeleteChild(p_term_first);
+//
+//  return pCard_Bound;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* pop constraint                                                             */

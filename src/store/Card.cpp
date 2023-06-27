@@ -547,6 +547,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
   if (szTitle)
     vTrace("%s %p:\n"_Stz,szTitle,this);
   else
+  if (! iDepth)
     vTrace("~~Card Dump\n"_Stz);
 
   s48K sProperties;
