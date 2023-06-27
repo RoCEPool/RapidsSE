@@ -1129,6 +1129,20 @@ Card_Bounds* Dissector::pPopBounds(Card_RpnTerms* pCard_RpnTerms)
 
   Card_Bounds* pCard_Bounds = new Card_Bounds;
 
+  Card_Bound* pCard_Bound = pPopBound(pCard_RpnTerms);
+
+  pCard_Bounds->vAppend(pCard_Bound);
+
+  return pCard_Bounds;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop bound                                                                  */
+/*----------------------------------------------------------------------------*/
+Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
   Card_Bound* pCard_Bound = new Card_Bound;
 
   pCard_Bound->vTransferChildren(pCard_RpnTerms);
@@ -1139,10 +1153,9 @@ Card_Bounds* Dissector::pPopBounds(Card_RpnTerms* pCard_RpnTerms)
   Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
   pCard_Bound->vDeleteChild(p_term_first);
 
-  pCard_Bounds->vAppend(pCard_Bound);
-
-  return pCard_Bounds;
+  return pCard_Bound;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* pop constraint                                                             */

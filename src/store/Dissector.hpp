@@ -70,6 +70,7 @@ namespace STORE
 
     Card_As*         pPopAs         (Card_RpnTerms* pCard_RpnTerms);
     Card_Bounds*     pPopBounds     (Card_RpnTerms* pCard_RpnTerms);
+    Card_Bound*      pPopBound      (Card_RpnTerms* pCard_RpnTerms);
     Card_Constraint* pPopConstraint (Card_RpnTerms* pCard_RpnTerms);
     Card_Direction*  pPopDirection  (Card_RpnTerms* pCard_RpnTerms);
     Card_Expr*       pPopExpr       (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);
