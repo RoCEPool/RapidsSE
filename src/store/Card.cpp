@@ -1715,7 +1715,7 @@ void Card::vValidate_mayHave(eCK eCard, ...)
     va_start(xArgs,eCard);
     eCK eCard_mayHave = eCard;
     while (CK_NONE != eCard_mayHave) {
-      eCard_mayHave = va_arg(xArgs, eCK);
+      eCard_mayHave = (eCK)va_arg(xArgs, i8);
       if (eCard_test == eCard_mayHave) {
         bMayHave = true;
         break;
@@ -1760,7 +1760,7 @@ void Card::vValidate_mustHave(eCK eCard, ...)
       vDump();
     RASSERT(bMustHave);
 
-    eCard_mustHave = (eCK)va_arg(xArgs, eCK);
+    eCard_mustHave = (eCK)va_arg(xArgs, i8);
   }
 
   va_end(xArgs);
@@ -1795,7 +1795,7 @@ eCK Card::eValidate_mustEither(eCK eCard, ...)
     }
 
 
-    eCard_mustHave = (eCK)va_arg(xArgs, eCK);
+    eCard_mustHave = (eCK)va_arg(xArgs, i8);
   }
 
   if (1 != nHas)
@@ -1838,7 +1838,7 @@ void Card::vValidate_notHave(eCK eCard, ...)
       vDump();
     RASSERT(! bNotHave);
 
-    eCard_mustHave = (eCK)va_arg(xArgs, eCK);
+    eCard_mustHave = (eCK)va_arg(xArgs, i8);
   }
 
   va_end(xArgs);
