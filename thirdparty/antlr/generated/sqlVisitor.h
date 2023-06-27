@@ -100,9 +100,11 @@ public:
 
     virtual antlrcpp::Any visitCreateIndexQuery(sqlParser::CreateIndexQueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropTable(sqlParser::DropTableContext *context) = 0;
+    virtual antlrcpp::Any visitDropQuery(sqlParser::DropQueryContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropIndex(sqlParser::DropIndexContext *context) = 0;
+    virtual antlrcpp::Any visitDropTableQuery(sqlParser::DropTableQueryContext *context) = 0;
+
+    virtual antlrcpp::Any visitDropIndexQuery(sqlParser::DropIndexQueryContext *context) = 0;
 
     virtual antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *context) = 0;
 
@@ -322,9 +324,13 @@ public:
 
     virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
 
-    virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *context) = 0;
+    virtual antlrcpp::Any visitLscol(sqlParser::LscolContext *context) = 0;
 
     virtual antlrcpp::Any visitLsidx(sqlParser::LsidxContext *context) = 0;
+
+    virtual antlrcpp::Any visitLsidxcol(sqlParser::LsidxcolContext *context) = 0;
+
+    virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *context) = 0;
 
     virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
 

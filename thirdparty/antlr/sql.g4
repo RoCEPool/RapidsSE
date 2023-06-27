@@ -11,10 +11,12 @@ statements        :  statement+ ;
 statement         :  tags statementChoice ';' ;
 statementChoice   :   queryStatement
                     | explainStatement
-                    | lstbl
+                    | lscol
                     | lsidx
+                    | lsidxcol
+                    | lstbl
                     | createQuery
-//                    | dropQuery
+                    | dropQuery
 //                    | insertQuery
 //                    | deleteQuery
 //                    | updateQuery
@@ -146,10 +148,13 @@ createIndexQuery      : CREATE UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ 
                         /*( USING method = indexMethod )?*/
                         '(' expr (',' expr)* ')'
                         ;
+dropQuery         : dropTableQuery | dropIndexQuery ;
 
-dropQuery         : DROP TABLE         (IF EXISTS)? name = tableReference  # dropTable
-                  | DROP (INDEX | KEY) (IF EXISTS)? idxName = indexName ON tblName = tableReference # dropIndex
-                  ;
+dropTableQuery    : DROP TABLE /*(IF EXISTS)?*/ name = tableName /*tableReference*/ ;
+dropIndexQuery    : DROP INDEX /*(IF EXISTS)?*/ (
+                      (idxName = indexName ON tblName = tableName /*tableReference*/)
+                    | (tblName = tableName idxName = indexName)
+                    );
 
 truncateQuery     : TRUNCATE (TABLE)? name = tableReference ;
 
@@ -459,11 +464,18 @@ dayTimeInterval   :
                   ) ;
 
 
-// lstbl statement ------------------------------------------------------------
-lstbl : LSTBL ;
+
+// lscol statement ------------------------------------------------------------
+lscol : LSCOL tableName ;
 
 // lsidx statement ------------------------------------------------------------
 lsidx : LSIDX tableName ;
+
+// lsidx statement ------------------------------------------------------------
+lsidxcol : LSIDXCOL tableName indexName;
+
+// lstbl statement ------------------------------------------------------------
+lstbl : LSTBL ;
 
 
 
@@ -583,7 +595,9 @@ LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
 LOOP                  : L O O P;
+LSCOL                 : L S C O L;
 LSIDX                 : L S I D X;
+LSIDXCOL              : L S I D X C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;
 MIN                   : M I N;

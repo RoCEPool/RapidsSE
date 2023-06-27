@@ -177,11 +177,15 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropTable(sqlParser::DropTableContext *ctx) override {
+  virtual antlrcpp::Any visitDropQuery(sqlParser::DropQueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropIndex(sqlParser::DropIndexContext *ctx) override {
+  virtual antlrcpp::Any visitDropTableQuery(sqlParser::DropTableQueryContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDropIndexQuery(sqlParser::DropIndexQueryContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -621,11 +625,19 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *ctx) override {
+  virtual antlrcpp::Any visitLscol(sqlParser::LscolContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual antlrcpp::Any visitLsidx(sqlParser::LsidxContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLsidxcol(sqlParser::LsidxcolContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *ctx) override {
     return visitChildren(ctx);
   }
 

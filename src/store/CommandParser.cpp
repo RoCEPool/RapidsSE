@@ -218,14 +218,20 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   // Note that we partially descend the parse tree for any commands that have parameters.
 
   if (pCtx->queryStatement() || pCtx->explainStatement())
-                                { m_szProcName = "sqlCompiler"_Stz;   return visitChildren(pCtx); }
+                                { m_szProcName = "sqlCompiler"_Stz;     return visitChildren(pCtx); }
 
-  else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;  return nullptr; }
-  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;  return visitChildren(pCtx); }
+  else if (pCtx->lscol())       { m_szProcName = "lscol"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->lsidxcol())    { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
+  else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;           return nullptr; }
   else if (pCtx->createQuery() && pCtx->createQuery()->createTableQuery())
-                                { m_szProcName = "create__table"_Stz;  return visitChildren(pCtx); }
+                                { m_szProcName = "create__table"_Stz;   return visitChildren(pCtx); }
   else if (pCtx->createQuery() && pCtx->createQuery()->createIndexQuery())
-                                { m_szProcName = "create__index"_Stz;  return visitChildren(pCtx); }
+                                { m_szProcName = "create__index"_Stz;   return visitChildren(pCtx); }
+  else if (pCtx->dropQuery() && pCtx->dropQuery()->dropTableQuery())
+                                { m_szProcName = "drop__table"_Stz;     return visitChildren(pCtx); }
+  else if (pCtx->dropQuery() && pCtx->dropQuery()->dropIndexQuery())
+                                { m_szProcName = "drop__index"_Stz;     return visitChildren(pCtx); }
 
   else                          { NOT_IMPLEMENTED_YET }
 
@@ -302,6 +308,19 @@ antlrcpp::Any CommandParser::visitExplainStatement(Parser::sqlParser::ExplainSta
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an lscol statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLscol(Parser::sqlParser::LscolContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an ldidx statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitLsidx(Parser::sqlParser::LsidxContext *pCtx)
@@ -310,6 +329,23 @@ antlrcpp::Any CommandParser::visitLsidx(Parser::sqlParser::LsidxContext *pCtx)
   s256 sIdentifier;
   vCleanString(pCtx->tableName()->identifier(), sIdentifier);
   m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an ldidx statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLsidxcol(Parser::sqlParser::LsidxcolContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sIndexName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }
@@ -421,6 +457,39 @@ antlrcpp::Any CommandParser::visitCreateIndexQuery(Parser::sqlParser::CreateInde
   if (pCtx->UNIQUE()) {
     m_pCommonTagSet->vAppend("<unique>"_Stz);
   }
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an DROP TABLE statement                         */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitDropTableQuery(Parser::sqlParser::DropTableQueryContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an DROP INDEX statement                         */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitDropIndexQuery(Parser::sqlParser::DropIndexQueryContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sIndexName;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }
