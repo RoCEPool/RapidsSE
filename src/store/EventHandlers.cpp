@@ -69,13 +69,12 @@ void EventHandlers::vInitialise(void)
     sHandlerNm.vConcat("_handler"_Stz);
 
     printf("vInitialise   %s\n", (char*)sHandlerNm.szStz());
-        
-    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
-    //if (! pHandler)
-      //vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-      //       "Unable to find operand handler for: %s"_Stz,
-      //       sHandlerNm.szStz());
-    if ( pHandler)
+
+    Word *pHandler = pDicRoot->pFindWord(sHandlerNm);
+    if (!pHandler)
+      vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
+             "Unable to find operand handler for: %s"_Stz,
+             sHandlerNm.szStz());
     m_paEventHandler[i_Event] = pHandler;
   }
 }
