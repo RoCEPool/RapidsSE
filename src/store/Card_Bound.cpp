@@ -203,6 +203,23 @@ Card_Term* Card_Bound::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Term* Card_Bound::pGetTerm_last(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Term = nChildCards() - 1;
+  if (i_Term < 0)
+    return nullptr;
+
+  Card_Term* p_term = _pCard_Term(pGetChild((i_Term)));
+
+  return p_term;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Bound::bIsEBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

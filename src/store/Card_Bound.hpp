@@ -25,6 +25,7 @@ namespace STORE
     bool bEquivalent(Card_CmpPred* p_cmpPred);
 
     Card_Term* pGetTerm(i8 i_Term);
+    Card_Term* pGetTerm_last(void);
 
     bool bUsesSqyRsl(void);
 
