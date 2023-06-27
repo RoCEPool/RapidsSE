@@ -86,11 +86,11 @@ void Card_Projection::vAdjust(Card_Key* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  p_key->vDump();
+  //p_key->vDump();
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
-    xKid.p_expr()->vDump();
+    //xKid.p_expr()->vDump();
 
     if (! xKid.p_expr()->bIsSoleCol())
       continue;

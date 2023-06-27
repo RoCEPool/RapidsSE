@@ -4,6 +4,9 @@
 
 // NOTE: m_pColMap_sort : passthru colMap for sort is ok, but non-passthru it is not
 
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
