@@ -287,6 +287,17 @@
 
   EV_M_LEAVE_handler
 ;
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR operand                                     */
+/*----------------------------------------------------------------------------*/
+: transliterate_internalError \handler
+
+  //"INTERNALERROR_handler" .verbose
+
+  PipeIn[].pipeToOutput
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_LOWMEMORY operand                                         */
@@ -330,6 +341,7 @@
   find: transliterate_StartMarker   EV_M_START         [op].handler!
 
   find: transliterate_StreamSet     EV_D_STREAMSET     [op].handler!
+  find: transliterate_InternalError     EV_M_INTERNALERROR     [op].handler!
   find: transliterate_LeaveMarker   EV_M_LEAVE         [op].handler!
   find: transliterate_LowMemory     EV_M_LOWMEMORY     [op].handler!
   find: transliterate_ChildExit     EV_X_CHILDEXIT     [op].handler!

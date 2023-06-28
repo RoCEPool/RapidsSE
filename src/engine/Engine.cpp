@@ -1725,19 +1725,19 @@ void Engine::vSignalHandler(int iSignal)
   {
     case SIGABRT:
       vTrace("Caught SIGABRT: usually caused by an abort() or assert()\n"_Stz);
-      BASE::vThrowLowMemory(FK_LOWMEMORY,\
+      BASE::vThrowLowMemory(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
-                        "RUNNING LOW ON MEMORY"_Stz);
+                        "INTERNAL ERROR"_Stz);
       break;
     case SIGFPE:
       vTrace("Caught SIGFPE: arithmetic exception, such as divide by zero or overflow\n"_Stz);
-      BASE::vThrowLowMemory(FK_INTERNALERROR,\
+      BASE::vThrowInternalError(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
                         "INTERNAL ERROR"_Stz);
       break;
     case SIGILL:
       fputs("Caught SIGILL: illegal instruction, corruption in the code or to an attempt to execute data\n", stdout);
-      BASE::vThrowLowMemory(FK_INTERNALERROR,\
+      BASE::vThrowInternalError(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
                         "INTERNAL ERROR"_Stz);
       //siglongjmp (contextThread3, 1); // restore stack context
@@ -1749,7 +1749,7 @@ void Engine::vSignalHandler(int iSignal)
     case SIGSEGV:
       vTrace("\nCaught SIGSEGV: segfault: Invalid access to storage\n"_Stz);
 
-      BASE::vThrowLowMemory(FK_INTERNALERROR,\
+      BASE::vThrowInternalError(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
                         "INTERNAL ERROR"_Stz);
       break;

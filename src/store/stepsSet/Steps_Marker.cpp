@@ -65,7 +65,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newExitedMarker"_Stz,      &Step::vMarkerNewExitedMarker);
   vAddStep("Marker[].newFinishedMarker"_Stz,    &Step::vMarkerNewFinishedMarker);
   vAddStep("Marker[].newFlushMarker"_Stz,       &Step::vMarkerNewFlushMarker);
-  vAddStep("Marker[].newInternalErrorMarker"_Stz,      &Step::vMarkerNewInternalErrorMarker);
+  vAddStep("Marker[].newInternalError"_Stz,      &Step::vMarkerNewInternalError);
   vAddStep("Marker[].newInvokeMarker"_Stz,      &Step::vMarkerNewInvokeMarker);
   vAddStep("Marker[].newLeaveMarker"_Stz,       &Step::vMarkerNewLeaveMarker);
   vAddStep("Marker[].newLeavingMarker"_Stz,     &Step::vMarkerNewLeavingMarker);
@@ -418,7 +418,7 @@ void Step::vMarkerNewFlushMarker(void)
 /*----------------------------------------------------------------------------*/
 /* Marker[].newInternalError -- new a InternalError marker                    */
 /*----------------------------------------------------------------------------*/
-void Step::vMarkerNewInternalErrorMarker(void)
+void Step::vMarkerNewInternalError(void)
 {
   ENTRY();
 

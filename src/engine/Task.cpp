@@ -190,6 +190,9 @@ void Task::vTask(void)
   m_pOpLowMemWord  = nullptr;
   m_pJobLowMemWord = nullptr;
 
+  m_pOpInternalErrorWord  = nullptr;
+  m_pJobInternalErrorWord = nullptr;
+
   // m_oDicStack
   // m_oSaveDicStack
   m_pSearchWord = new(nullptr) Word(""_Stz);
@@ -313,11 +316,13 @@ void Task::vTaskLoop(void)
 
     // catch lowMemory exception
     catch (LowMemory xLowMemory) {
+      vTrace("Got xLowMemory\n"_Stz);
       vLowMemoryHandler();
     }
 
     // catch internal error exception
     catch (InternalError xInternalError) {
+      vTrace("Got INTERNAL ERROR\n"_Stz);
       vInternalErrorHandler();
     }
 
@@ -441,8 +446,7 @@ void Task::vInternalErrorHandler(void)
 {
   _noPreconditions_
 
-  //vSetSenInternalErrorContext();
-  vSetSenLowMemContext();
+  vSetSenInternalErrorContext();
 
 }
 
@@ -1282,7 +1286,7 @@ void Task::vSetSenInternalErrorContext(void)
   m_pDataStack->vReset();
 
   //Task::vSeeFrameStack();
-
+  //WHY: why > 2
   while (m_pReturnStack->nValues() > 2) {
 
 #ifdef WITH_LOCALS_OOM
@@ -1310,9 +1314,9 @@ void Task::vSetSenInternalErrorContext(void)
 
 
   if (MY::pOp())
-    m_aInxPtr = m_pOpLowMemWord->aFirstCell();
+    m_aInxPtr = m_pOpInternalErrorWord->aFirstCell();
   else
-    m_aInxPtr = m_pJobLowMemWord->aFirstCell();
+    m_aInxPtr = m_pJobInternalErrorWord->aFirstCell();
 
   //Task::vSeeFrameStack();
 }
@@ -1565,6 +1569,17 @@ void Task::vSetInxPtr(Word* pEntryWord)
   Word* pJobLowMemWord = pDicRoot->pFindWord("JobLowMemory_recoveryWord"_Stz);
   if (pJobLowMemWord) {
     m_pJobLowMemWord = pJobLowMemWord;
+  }
+
+  Word* pOpInternalErrorWord = pDicRoot->pFindWord("OpInternalError_recoveryWord"_Stz);
+  if (pOpInternalErrorWord) {
+    m_pOpInternalErrorWord = pOpInternalErrorWord;
+  }
+
+
+  Word* pJobInternalErrorWord = pDicRoot->pFindWord("JobInternalError_recoveryWord"_Stz);
+  if (pJobInternalErrorWord) {
+    m_pJobInternalErrorWord = pJobInternalErrorWord;
   }
 }
 

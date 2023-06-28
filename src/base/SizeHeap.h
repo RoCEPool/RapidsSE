@@ -17,13 +17,15 @@ struct SizeHeap
 
   b8  m_bIgnoreMemoryLeak;  // 04 ignore during memory leak tracking ?
 
-  b8  m_bLowMemoryDiscard;  // 05 discard received object when low memory?
+  b8  m_bInternalErrorDiscard;  // 05 discard received object when low memory?
 
-  Word* m_pPreSendWord;     // 06 word to execute prior to sending the object
+  b8  m_bLowMemoryDiscard;  // 06 discard received object when low memory?
 
-  fpPOSTFN* m_fpPostRecvFn; // 07 post receive cpp function
+  Word* m_pPreSendWord;     // 07 word to execute prior to sending the object
 
-  Word* m_pPostRecvWord;    // 08 word to execute after receiving the object
+  fpPOSTFN* m_fpPostRecvFn; // 08 post receive cpp function
+
+  Word* m_pPostRecvWord;    // 09 word to execute after receiving the object
 };
 
 /*============================================================================*/

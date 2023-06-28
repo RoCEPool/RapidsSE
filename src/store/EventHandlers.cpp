@@ -68,8 +68,6 @@ void EventHandlers::vInitialise(void)
     sHandlerNm = aEV[i_Event];
     sHandlerNm.vConcat("_handler"_Stz);
 
-    printf("vInitialise   %s\n", (char*)sHandlerNm.szStz());
-
     Word *pHandler = pDicRoot->pFindWord(sHandlerNm);
     if (!pHandler)
       vThrow(FK_FATAL, __func__, __FILE__, __LINE__,

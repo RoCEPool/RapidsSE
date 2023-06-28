@@ -77,6 +77,9 @@ namespace ENGINE
     Word*        m_pOpLowMemWord;   // sen word called to recover from low memory in OP
     Word*        m_pJobLowMemWord;  // sen word called to recover from low memory in JOB
 
+    Word*        m_pOpInternalErrorWord;   // sen word called to recover from Internal Error in OP
+    Word*        m_pJobInternalErrorWord;  // sen word called to recover from Internal Error in JOB
+
     DicStack     m_oDicStack;     // dictionary stack
     DicStack     m_oSaveDicStack; // save dictionary stack
     Word*        m_pSearchWord;   // word used for searching for a word

@@ -7,8 +7,15 @@
 
 namespace BASE
 {
-  class InternalError : public LowMemory
+  class InternalError //: public LowMemory
   {
+  private:
+    eFK  m_eFailure;      // kind of failure
+    char m_zText[1024];   // descriptive text
+
+    char m_zFuncNm[256];  // function name
+    char m_zFileNm[256];  // file name/path
+    i8   m_iLineNo;       // line number
 
   public:
     InternalError(void);
@@ -21,7 +28,14 @@ namespace BASE
 
     ~InternalError(void) noexcept(false);
 
+    eFK   eFailure(void);
+    char* azFileNm(void);
+    char* azFuncNm(void);
+    i8    iLineNo(void);
+    char* azText(void);
 
+    void  vPrint(void);
+    void  vSprint(char* azText);
 
   };
 }

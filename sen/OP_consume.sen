@@ -144,6 +144,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR ...                                         */
+/*----------------------------------------------------------------------------*/
+: consumeOp_InternalError \handler
+
+  PipeIn[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_LEAVING ...                                               */
 /*----------------------------------------------------------------------------*/
 : consumeOp_LeavingMarker \handler
@@ -245,6 +255,7 @@
   find: consumeOp_ErrorMarker    EV_M_ERROR      [op].handler!
   find: consumeOp_ErroringMarker EV_M_ERRORING   [op].handler!
   find: consumeOp_Exiting        EV_M_EXITING    [op].handler!
+  find: consumeOp_InternalError      EV_M_INTERNALERROR  [op].handler!
   find: consumeOp_LeavingMarker  EV_M_LEAVING    [op].handler!
   find: consumeOp_LowMemory      EV_M_LOWMEMORY  [op].handler!
   find: consumeOp_StartMarker    EV_M_START      [op].handler!

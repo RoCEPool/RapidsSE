@@ -201,6 +201,79 @@
   then
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/* internal error exception recovery                                          */
+/*----------------------------------------------------------------------------*/
+: OpInternalError_recoveryWord
+
+  "OpInternalError_recoveryWord" .
+
+  //[task].exception .
+
+  AM::SYSTEM::Ready@ if
+    [ddlLock].testDrop
+
+
+    Pipein[].isNull not if
+      Pipein[].isMarker if
+        //Pipein[].pipeOut
+        PipeIn[]
+            nullptr to PipeIn[]
+
+          [op].pipeout
+      else
+        //"deleting pipein!!!" .
+        Pipein[].delete
+        nullptr to Pipein[]
+      then
+    then
+
+    [op].isSend not assert
+
+    //[op].isSend if
+    //  Parcel[].reset
+    //  true
+    //  exit
+    //then
+
+    [op].isRecv not assert
+
+    //[op].isRecv if
+    //  true
+    //  exit
+    //then
+
+    // not already detected internal error ?
+    [pipeline].internalError@ not if
+
+      //[job] >str "%v PIPELINE DETECTED INTERNAL ERROR!!!" str.format .
+
+      Marker[].newInternalError
+      Marker[]
+          nullptr to Marker[]
+
+      [op].pipeout
+      //"PIPED OUT LOW MEMORY!!!" .
+    else
+      [job] >str "%v PIPELINE ALREADY DETECTED INTERNAL ERROR!!!" str.format .
+    then
+
+    // toggle to default abnormal handlers
+    //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+    "default_abnormalHandlers" FIND execute
+    "default_internalErrorHandlers" FIND execute
+    //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
+
+    true
+
+  else
+    process::quit
+    HAZARD
+  then
+;
+
+
 /*----------------------------------------------------------------------------*/
 /* low memory exception recovery                                              */
 /*----------------------------------------------------------------------------*/
@@ -283,6 +356,85 @@
    [job].signalParent assert
    [task].retire
    HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/* standard exception recovery                                                */
+/*----------------------------------------------------------------------------*/
+: JobInternalError_recoveryWord
+
+  "JobInternalError_recoveryWord" .
+
+  //[task].exception .
+
+  AM::SYSTEM::Ready@ if
+
+    EC_INTERNAL_ERROR [job].error!
+
+    //[job].jobList@ [job].phase@ [job] >str "JOB %v phase %v list %v" str.format .
+
+    [job].phase@ JP_NONE == if
+
+     // local job
+     [job].jobList@ JL_LOCAL == if
+       //"removing job from loacl list" .
+       [job].removeLocal
+       Path[].discardAll
+       [task].grabLock
+       [job].addExited
+       [job].updateParent assert
+       //"Notifying parent" .
+       [job].signalParent assert
+       [task].retire
+       HAZARD
+     then
+
+      // originating job
+      [job].jobList@ JL_ORIGINATING == if
+        //"removing job from originator list" .
+        [job].removeOriginator
+        Path[].discardAll
+        [task].grabLock
+        [job].addExited
+        [job].updateParent assert
+        //"Notifying parent" .
+        [job].signalParent assert
+        [task].retire
+        HAZARD
+      then
+
+      // participant job
+      [job].jobList@ JL_NONE == assert
+      [job].rejectJobSetup
+      EC_LOW_MEMORY [job].rejectJobError!
+      //"SENDING REJECT" .
+      job.sendRejectJob
+      Path[].discardAll
+      [task].grabLock
+      [job].addExited
+      [task].retire
+      HAZARD
+    then
+
+    [job].phase@ JP_BEGINNING == if
+
+      //participant job
+      [job].jobList@ JL_NONE == assert
+      [job].rejectJobSetup
+      EC_INTERNAL_ERROR [job].rejectJobError!
+      //"JP_BEGINNING SENDING REJECT" .
+      job.sendRejectJob
+      Path[].discardAll
+      [task].grabLock
+      [job].addExited
+      [task].retire
+      HAZARD
+    then
+
+  else
+    process::quit
+    HAZARD
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

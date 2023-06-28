@@ -53,6 +53,12 @@ namespace BASE
                                    i8    iLineNo,
                                    Stz*  szCondition,...);
 
+  [[ noreturn ]] void vThrowInternalError(eFK   eKind,
+                                      const char* azFunc,
+                                      const char* azFilePath,
+                                      i8    iLineNo,
+                                      Stz*  szFormat,...);
+
   [[ noreturn ]] void vThrowLowMemory(eFK   eKind,
                                       const char* azFunc,
                                       const char* azFilePath,
