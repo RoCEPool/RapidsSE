@@ -47,68 +47,6 @@ __aNewFunction(OpSketch,CN_OPSKETCH)
 __vDeleteFunction(OpSketch,CN_OPSKETCH)
 __aFooterFunction(OpSketch)
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-OpSketch::OpSketch(void)
-: Object(CN_OPSKETCH)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-
-  m_iOperatorNo = C_UNKNOWN;
-
-  m_eSketchKind = SK_NONE;
-  m_eHandlerKind = HK_NONE;
-
-  m_sExprString  = ""_Stz;
-
-  // definitions
-  m_pStreamDefLft = nullptr;
-  m_pStreamDefOut= nullptr;
-  m_pStreamDefRht = nullptr;
-  m_pTable        = nullptr;
-  m_pIndex        = nullptr;
-  m_pIndexDef     = nullptr;
-
-  m_pColsReq      = nullptr;
-  m_pColsMap      = nullptr;
-
-  // labels
-  m_sLabel     = ""_Stz;
-  m_sLabelNext = ""_Stz;
-  m_sLabelLoop = ""_Stz;
-  m_sLabelOuterLoop = ""_Stz;
-
-  // stencils
-  m_eStencilFrom = SR_NONE;
-  m_eStencilTo   = SR_NONE;
-
-  m_sStencilFrom = ""_Stz;
-
-  m_eIndexInfo = II_NONE;
-
-  // expression stacks
-  m_pConstraintStack = nullptr;
-  m_pExprStack   = nullptr;
-  m_pNullStack   = nullptr;
-  m_pGbyStack    = nullptr;
-  m_pOrdAggStack = nullptr;
-  m_pLowerStack  = nullptr;
-  m_pUpperStack  = nullptr;
-  m_pInitStack   = nullptr;
-
-  m_bLeftOuter = false;
-
-  m_eLowerIP = IP_NONE;
-  m_eUpperIP = IP_NONE;
-
-  m_nPayloadBytes = 0;
-  m_iLimitRows = 0;
-
-  _checkInitialised_(CN_OPSKETCH);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -125,6 +63,7 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_eHandlerKind = eHandlerKind;
 
   m_sExprString  = sExprStr;
+  m_sLimitExpr   = ""_Stz;
 
   // definitions
   m_pStreamDefLft = pStreamDefIn;
@@ -383,6 +322,16 @@ void OpSketch::vIndexPositionLower(eIP eIndexPosition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_eLowerIP = eIndexPosition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set limit expr                                                             */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vLimitExpr(Stz* sLimitExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_sLimitExpr = sLimitExpr;
 }
 
 /*----------------------------------------------------------------------------*/

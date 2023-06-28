@@ -389,29 +389,34 @@ void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
 
   _static_
 
+  bool bResult;
+
   if (StrLib::bContains(sLine->azChar(), "__LIMIT_ROWS__")) {
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__LIMIT_ROWS__", pOpSketch->m_sExprString.azChar());
+    if (pOpSketch->m_eSketchKind == SK_LIMIT)
+      bResult = StrLib::bReplace(sLine->azChar(), "__LIMIT_ROWS__", pOpSketch->m_sExprString.azChar());
+    else
+      bResult = StrLib::bReplace(sLine->azChar(), "__LIMIT_ROWS__", pOpSketch->m_sLimitExpr.azChar());
     RASSERT(bResult);
   }
 
   if (StrLib::bContains(sLine->azChar(), "__COLUMNS_IN__")) {
     s256 sColumn;
     StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefLft->nColumns());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_IN__", sColumn.azChar());
+    bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_IN__", sColumn.azChar());
     RASSERT(bResult);
   }
 
   if (StrLib::bContains(sLine->azChar(), "__COLUMNS_OUT__")) {
     s256 sColumn;
     StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pStreamDefOut->nColumns());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_OUT__", sColumn.azChar());
+    bResult = StrLib::bReplace(sLine->azChar(), "__COLUMNS_OUT__", sColumn.azChar());
     RASSERT(bResult);
   }
 
   if (StrLib::bContains(sLine->azChar(), "__INDEX_COLUMNS__")) {
     s256 sColumn;
     StrLib::vSprint(sColumn, "%lld"_Stz, pOpSketch->m_pIndexDef->nColumns());
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_COLUMNS__", sColumn.azChar());
+    bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_COLUMNS__", sColumn.azChar());
     RASSERT(bResult);
   }
 }
