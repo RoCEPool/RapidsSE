@@ -322,7 +322,6 @@ i8 iTubRowPix(Dynamic_T* aDynamicT) {
   {
     // marker-start
 
-    printf("TUB initializing rowPix %p\n", aDynamicT);
 #ifdef WITH_CLANG
     void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
     vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);

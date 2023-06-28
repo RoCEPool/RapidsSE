@@ -523,9 +523,11 @@
                       Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
                         LibInfo[].compile not if
                       "COMPILATION FAILED" .
+                      [job]:retireAndExit
                     else
                       LibInfo[].link not if
                         "DYNAMIC LINKING OF LIBRARY FAILED" .
+                        [job]:retireAndExit
                       then
                     then
                   then
@@ -650,10 +652,6 @@
 /* _ptp exe */  nullptr to Deck[]
 
 /* ---- --- */  // !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!!
-
-                //TinyC[].isNotNull if
-                //  TinyC[].delete
-                //then
 
                 LibInfo[].isNotNull if
                   LibInfo[].Unlink assert

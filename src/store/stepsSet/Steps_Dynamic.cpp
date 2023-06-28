@@ -67,7 +67,7 @@ void Step::vDynamicExecute(void)
   Dynamic* pDynamic = * m_pLogicUnit->m_xpDynamic;
   Dynamic_T* aDynamicT = pDynamic->aDynamicT();
 
-  vTrace("Stage: %s %p \n"_Stz, m_pOp->pStage()->szStageNm(), aDynamicT);
+  //vTrace("Stage: %s %p \n"_Stz, m_pOp->pStage()->szStageNm(), aDynamicT);
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

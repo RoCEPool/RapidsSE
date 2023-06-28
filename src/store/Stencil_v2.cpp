@@ -459,7 +459,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("OpSketch's generated for stage %s to be synthesised: \n"_Stz, pStageDef->szStageNm());
+  //vTrace("OpSketch's generated for stage %s to be synthesised: \n"_Stz, pStageDef->szStageNm());
 
   for (i8 i_OpSketch = 0; i_OpSketch < nItems(); i_OpSketch++) {
     OpSketch* pOpSketch = pGet(i_OpSketch);
