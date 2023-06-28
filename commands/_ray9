@@ -2,38 +2,26 @@
 /* _ray9 :                                                                    */
 /*============================================================================*/
 _nation
-create index IxN_NATIONKEY on nation (n_nationkey);
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
 /weaver2
-/glean_interactive
-/transliterated
-/weaved
 /optimise_passthru
 pipeline unamed
 begin
-  stage S00 on origin :
+  stage stageStart on origin :
     start
     | pulse once
-    | next
-  stage S01 on all partitions :
+    | stageMarker0559
+  stage stageMarker0559 on all partitions :
     scan rapidsse public Nation
-    | filter " type BOOLEAN  $1 5  <  "
-    | aggreg " type INTEGER )  $1 sum  "
-    | combined 0
-    | next
-  stage S02 on all nodes :
-    aggreg " type INTEGER )  $1 sum  "
-    | combined 0
-    | next
-  stage S03 on origin :
-    aggreg " type INTEGER )  $1 sum  "
-    | combined 0
-    | next
-  stage S04 on origin :
+    | filter " type BOOLEAN  $1 2  <  "
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | dynamic
+    | stageLast
+  stage stageLast on origin :
     output
     | sink
-    | first
+    | stageStart
 end ;
 
 /*============================================================================*/
