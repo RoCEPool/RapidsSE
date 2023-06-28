@@ -108,6 +108,12 @@ public:
 
     virtual antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *context) = 0;
 
+    virtual antlrcpp::Any visitLoad(sqlParser::LoadContext *context) = 0;
+
+    virtual antlrcpp::Any visitLoadOption(sqlParser::LoadOptionContext *context) = 0;
+
+    virtual antlrcpp::Any visitLoadOptionKeys(sqlParser::LoadOptionKeysContext *context) = 0;
+
     virtual antlrcpp::Any visitCount(sqlParser::CountContext *context) = 0;
 
     virtual antlrcpp::Any visitSpace(sqlParser::SpaceContext *context) = 0;

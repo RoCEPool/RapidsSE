@@ -20,7 +20,8 @@ statementChoice   :   queryStatement
 //                    | insertQuery
 //                    | deleteQuery
 //                    | updateQuery
-//                    | truncateQuery
+                    | truncateQuery
+                    | load
                     | count
                     | space
                     | status
@@ -29,9 +30,9 @@ statementChoice   :   queryStatement
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
-keyValueTag       : '<' keyName=IDENTIFIER '>' '=' (STRING_LITERAL | INTEGER_LITERAL);
-keyOnlyTag        : '/' IDENTIFIER |
-                    '<' IDENTIFIER '>' ;
+keyValueTag       : '<' keyName=PLAIN_IDENTIFIER '>' '=' (stringLiteral | INTEGER_LITERAL);
+keyOnlyTag        : '/' PLAIN_IDENTIFIER |
+                    '<' PLAIN_IDENTIFIER '>' ;
 
 // explain statement ----------------------------------------------------------
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
@@ -161,7 +162,11 @@ dropIndexQuery    : DROP INDEX /*(IF EXISTS)?*/ (
                     | (tblName = tableName idxName = indexName)
                     );
 
-truncateQuery     : TRUNCATE (TABLE)? name = tableReference ;
+truncateQuery     : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
+
+load              : LOAD tableName filePath=stringLiteral loadOption* ;
+loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
+loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
 
 count             : COUNT tableName ;
 space             : SPACE ;
@@ -411,7 +416,7 @@ exprHint          : (HASHKEY) ;   // The names of hints whose values must be exp
 propertyValue     : (lit = simpleLiteral | id = identifier) ;
 hintValue         : (lit = simpleLiteral | id = identifier | expression = expr) ;
 
-identifier        : IDENTIFIER | nonReservedWord ;
+identifier        : PLAIN_IDENTIFIER | BAKTIKD_IDENTIFIER | DUBLQUOTED_IDENTIFIER | nonReservedWord ;
 qualifier         : id = identifier ;
 
 precision         : integerLiteral ;
@@ -448,7 +453,7 @@ signedFloatLiteral : ('+' | neg='-')? FLOAT_LITERAL ;
 dateLiteral       : DATE str = stringLiteral ;
 timeLiteral       : TIME str = stringLiteral ;
 timestampLiteral  : TIMESTAMP stringLiteral ;
-stringLiteral     : STRING_LITERAL ;
+stringLiteral     : SINGLQUOTED_STRING | DUBLQUOTED_STRING | DUBLQUOTED_IDENTIFIER ;
 intervalLiteral   : ( yearMonthInterval | dayTimeInterval /* | looseInterval */ ) ;
 
 // looseInterval     : INTERVAL str=expr ;
@@ -496,13 +501,13 @@ nonReservedWord   :
                     ASC
                   | BIT | BITS | BLOCK | BLOOM | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | CONCAT
-                  | DATA | DAYS | DECODE | DESC | DETAIL | DIGITS
-                  | EXPLAIN
-                  | SQL_FALSE | FEDERATION | FORMAT
+                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
+                  | ESCAPE_CHAR | EXPLAIN
+                  | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX
                   | KEY
-                  | LIMIT | LOOP | LSIDX | LSTBL
+                  | LIMIT | LOAD | LOOP | LSIDX | LSTBL
                   | MINUTES | MONOTONIC | MONTHS
                   | NODE | NOW
                   | OFFSET
@@ -557,6 +562,7 @@ CURRENT_TIMESTAMP     : C U R R E N T '_' T I M E S T A M P;
 CURRENT_USER          : C U R R E N T '_' U S E R;
 DATA                  : D A T A;
 DATE                  : D A T E;
+DATE_FORMAT           : D A T E '_' F O R M A T;
 DAY                   : D A Y;
 DAYS                  : D A Y S;
 DECIMAL               : D E C I M A L;
@@ -566,16 +572,19 @@ DESC                  : D E S C;
 DETAIL                : D E T A I L;
 DIGITS                : D I G I T S ;
 DISTINCT              : D I S T I N C T;
+DLOAD                 : D L O A D;
 DROP                  : D R O P;
 ELSE                  : E L S E;
 END                   : E N D;
 ESCAPE                : E S C A P E;
+ESCAPE_CHAR           : E S C A P E '_' C H A R;
 EXCEPT                : E X C E P T;
 EXISTS                : E X I S T S;
 EXPLAIN               : E X P L A I N;
 EXTRACT               : E X T R A C T;
 SQL_FALSE             : F A L S E;
 FEDERATION            : F E D E R A T I O N;
+FIELD_DELIMITER       : F I E L D '_' D E L I M I T E R;
 FLOAT                 : F L O A T;
 FOR                   : F O R;
 FORMAT                : F O R M A T;
@@ -604,6 +613,7 @@ LEADING               : L E A D I N G;
 LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
+LOAD                  : L O A D;
 LOOP                  : L O O P;
 LSCOL                 : L S C O L;
 LSIDX                 : L S I D X;
@@ -730,14 +740,15 @@ fragment DIGIT        : '0' .. '9' ;
 fragment DUBLSINGL    : '\'\'' ;
 fragment DUBLDUBL     : '""' ;
 
-IDENTIFIER            : PLAIN_IDENTIFIER | BAKTIKD_IDENTIFIER | DUBLQUOTED_IDENTIFIER ;
 PLAIN_IDENTIFIER      : LETTER (LETTER | DIGIT | '_')* ;
 BAKTIKD_IDENTIFIER    : '`' (~[`\r\n])+ '`';
 DUBLQUOTED_IDENTIFIER : { isDublQuoteId }?  ( '"' (DUBLDUBL | ~["\r\n])+ '"' );
 
-STRING_LITERAL        : SINGLQUOTED_STRING | DUBLQUOTED_STRING ;
 SINGLQUOTED_STRING    : '\'' (DUBLSINGL | (~'\''))* '\'' ;
-DUBLQUOTED_STRING     : '"' (DUBLDUBL | (~'"'))* '"' ;    // NB: not matched if { isDublQuotedId }
+DUBLQUOTED_STRING     : '"' (DUBLDUBL | (~'"'))* '"' ;    // NB: this token is not matched if
+                                                          // { isDublQuotedId } is true. Instead
+                                                          // a DUBLQUOTED_IDENTIFIER will likely
+                                                          // be created.
 
 FLOAT_LITERAL         : (DECIMAL_LITERAL | DIGIT+) ('e' | 'E') ('+' | '-')? DIGIT+ ;
 DECIMAL_LITERAL       : (DIGIT+ '.' DIGIT*) | '.' DIGIT+ ;

@@ -220,23 +220,25 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   if (pCtx->queryStatement() || pCtx->explainStatement())
                                 { m_szProcName = "sqlCompiler"_Stz;     return visitChildren(pCtx); }
 
-  else if (pCtx->lscol())       { m_szProcName = "lscol"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->lsidx())       { m_szProcName = "lsidx"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->lsidxcol())    { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
-  else if (pCtx->lstbl())       { m_szProcName = "lstbl"_Stz;           return nullptr; }
+  else if (pCtx->lscol())         { m_szProcName = "lscol"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->lsidx())         { m_szProcName = "lsidx"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->lsidxcol())      { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
+  else if (pCtx->lstbl())         { m_szProcName = "lstbl"_Stz;           return nullptr; }
   else if (pCtx->createQuery() && pCtx->createQuery()->createTableQuery())
-                                { m_szProcName = "create__table"_Stz;   return visitChildren(pCtx); }
+                                  { m_szProcName = "create__table"_Stz;   return visitChildren(pCtx); }
   else if (pCtx->createQuery() && pCtx->createQuery()->createIndexQuery())
-                                { m_szProcName = "create__index"_Stz;   return visitChildren(pCtx); }
+                                  { m_szProcName = "create__index"_Stz;   return visitChildren(pCtx); }
   else if (pCtx->dropQuery() && pCtx->dropQuery()->dropTableQuery())
-                                { m_szProcName = "drop__table"_Stz;     return visitChildren(pCtx); }
+                                  { m_szProcName = "drop__table"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->dropQuery() && pCtx->dropQuery()->dropIndexQuery())
-                                { m_szProcName = "drop__index"_Stz;     return visitChildren(pCtx); }
-  else if (pCtx->count())       { m_szProcName = "count"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->space())       { m_szProcName = "space"_Stz;           return nullptr; }
-  else if (pCtx->status())      { m_szProcName = "status"_Stz;          return nullptr; }
-  else if (pCtx->szidx())       { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->sztbl())       { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
+                                  { m_szProcName = "drop__index"_Stz;     return visitChildren(pCtx); }
+  else if (pCtx->truncateQuery()) { m_szProcName = "truncate"_Stz;        return visitChildren(pCtx); }
+  else if (pCtx->load())          { m_szProcName = "load"_Stz;            return visitChildren(pCtx); }
+  else if (pCtx->count())         { m_szProcName = "count"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->space())         { m_szProcName = "space"_Stz;           return nullptr; }
+  else if (pCtx->status())        { m_szProcName = "status"_Stz;          return nullptr; }
+  else if (pCtx->szidx())         { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->sztbl())         { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
 
   else                          { NOT_IMPLEMENTED_YET }
 
@@ -256,8 +258,8 @@ antlrcpp::Any CommandParser::visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContex
 {
   std::string sTagName;
 
-  ASSERT(pCtx->IDENTIFIER());
-  sTagName = pCtx->IDENTIFIER()->getText();
+  ASSERT(pCtx->PLAIN_IDENTIFIER());
+  sTagName = pCtx->PLAIN_IDENTIFIER()->getText();
   m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str());
 
   return visitChildren(pCtx);
@@ -274,9 +276,9 @@ antlrcpp::Any CommandParser::visitKeyValueTag(Parser::sqlParser::KeyValueTagCont
   std::string s = pCtx->keyName->getText();
   sTagName = s.substr(1, s.length() - 2);
 
-  if (pCtx->STRING_LITERAL()) {
+  if (pCtx->stringLiteral()) {
     // Get value without quotes
-    std::string sValue = pCtx->STRING_LITERAL()->getText().substr(1, pCtx->STRING_LITERAL()->getText().length() - 2);
+    std::string sValue = pCtx->stringLiteral()->getText().substr(1, pCtx->stringLiteral()->getText().length() - 2);
     m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str(), (Stz*) sValue.c_str());
 
   } else {
@@ -495,6 +497,61 @@ antlrcpp::Any CommandParser::visitDropIndexQuery(Parser::sqlParser::DropIndexQue
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an TRUNCATE statement                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitTruncateQuery(Parser::sqlParser::TruncateQueryContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an LOAD statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLoad(Parser::sqlParser::LoadContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sFilePath;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->filePath, sFilePath);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
+
+  // We need to visit children here to extract out any load options
+  // and add them to the tag vector
+  visitChildren(pCtx);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Extract any load options and values and add them as tags                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLoadOption(Parser::sqlParser::LoadOptionContext *pCtx)
+{
+  s256 sOptionName;
+  s256 sOptionValue;
+
+  vCleanString(pCtx->loadOptionKeys()->start, sOptionName);
+  vCleanString(pCtx->loadValue, sOptionValue);
+
+  // load option should be lower case
+  sOptionName.vToLower();
+
+  m_pCurStmtTagSet->vAppend(sOptionName.szStz(), sOptionValue.szStz());
 
   return nullptr; // No need to visit any further down the tree
 }
