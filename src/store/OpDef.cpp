@@ -344,13 +344,65 @@ void OpDef::vStreamDef_emitted(StreamDef* pStreamDef_emitted)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate the op def                                                        */
 /*----------------------------------------------------------------------------*/
 void OpDef::vValidate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
   RASSERT(StrLib::bIsSqlName(m_sOpNm.azChar()));
+
+  if (m_sOpNm.bSame("AGGREG"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("CROSSJOIN"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("FILTER"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("GBYAGG"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("HASH"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("INDEXJOIN"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("INDEXSCAN"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("LIMIT"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("PROJECT"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("SCAN"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("SORT"_Stz)) {
+    vDebugPoint();
+  }
+  else
+  if (m_sOpNm.bSame("TOP"_Stz)) {
+    vDebugPoint();
+  }
+  else {
+    vDebugPoint();
+    NEVER_REACH
+  }
 
   if (m_pStreamDef_arriving)
     m_pStreamDef_arriving->vValidate();
