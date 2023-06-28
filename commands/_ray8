@@ -18,6 +18,7 @@ create index IxR_REGIONKEY on region (r_regionkey);
 /weaver2
 /weaved
 /optimise_passthru
+/show_cmd_tags
 pipeline __semiJoin
 begin
 
