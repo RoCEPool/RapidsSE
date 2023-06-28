@@ -13,12 +13,12 @@ _region
 create index IxR_REGIONKEY on region (r_regionkey);
 /time load region   "<tpch_dir>/region.<suffix>";
 
-/weaver2
 /glean_interactive
 /transliterated
+/weaver2
 /weaved
 /optimise_passthru
-pipeline _unnamed_
+pipeline __semiJoin
 begin
 
  stage S00 on origin :
@@ -33,7 +33,9 @@ begin
    | next
 
  stage S02 on all partitions :
-     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+     keyExists Region IxR_REGIONKEY
+              " BOUND $I1 $3 == "
+              "type BOOLEAN R_REGIONKEY N_NATIONKEY =="
    | combined  0
    | next
 
@@ -43,6 +45,7 @@ begin
    | first
 
 end ;
+
 
 /*============================================================================*/
 /* end                                                                        */

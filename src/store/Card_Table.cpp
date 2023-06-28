@@ -613,6 +613,10 @@ void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
                        CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_PROJECTION, CK_NONE);
     pSub_level()->vValidate(pCI,iDepth+1,this);
   }
+  else
+  if (pParent->bIsCard(CK_KEYEXISTS) || pParent->bIsCard(CK_KEYNOTEXISTS)) {
+    vValidate_mustHave(CK_TABLENM, CK_NONE);
+  }
   else {
     vValidate_mustHave(CK_TABLENM, CK_TABLEPTN,
                        CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_NONE);
