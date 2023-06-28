@@ -1693,14 +1693,14 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_wit
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                 */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_mayHave(eCK eCard, ...)
+void Card::vValidate_mayHave(eCK eCard_first, ...)
 {
   va_list xArgs;
 
-//  va_start(xArgs,eCard);
+//  va_start(xArgs,eCard_first);
 //
-//  while (CK_NONE != eCard) {
-//    eCard = va_arg(xArgs, eCK);
+//  while (CK_NONE != eCard_first) {
+//    eCard_first = va_arg(xArgs, eCK);
 //  }
 //
 //  va_end(xArgs);
@@ -1713,8 +1713,8 @@ void Card::vValidate_mayHave(eCK eCard, ...)
 
     bool bMayHave = false;
 
-    va_start(xArgs,eCard);
-    eCK eCard_mayHave = eCard;
+    va_start(xArgs, eCard_first);
+    eCK eCard_mayHave = eCard_first;
     while (CK_NONE != eCard_mayHave) {
       eCard_mayHave = (eCK)va_arg(xArgs, i8);
       if (eCard_test == eCard_mayHave) {
@@ -1735,14 +1735,14 @@ void Card::vValidate_mayHave(eCK eCard, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vValidate_mustHave(eCK eCard, ...)
+void Card::vValidate_mustHave(eCK eCard_first, ...)
 {
   va_list xArgs;
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
-  va_start(xArgs, eCard);
-  eCK eCard_mustHave = eCard;
+  va_start(xArgs, eCard_first);
+  eCK eCard_mustHave = eCard_first;
   while (CK_NONE != eCard_mustHave) {
 
     bool bMustHave = false;
@@ -1757,9 +1757,11 @@ void Card::vValidate_mustHave(eCK eCard, ...)
       }
     }
 
-    if (! bMustHave)
+    if (! bMustHave) {
+      vTrace("vValidate_mustHave: missing %lld %lls\n"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
       vDump();
-    RASSERT(bMustHave);
+      RASSERT(bMustHave);
+    }
 
     eCard_mustHave = (eCK)va_arg(xArgs, i8);
   }
@@ -1772,7 +1774,7 @@ void Card::vValidate_mustHave(eCK eCard, ...)
 /*----------------------------------------------------------------------------*/
 /* validate set of child cards                                                */
 /*----------------------------------------------------------------------------*/
-eCK Card::eValidate_mustEither(eCK eCard, ...)
+eCK Card::eValidate_mustEither(eCK eCard_first, ...)
 {
   va_list xArgs;
 
@@ -1781,8 +1783,8 @@ eCK Card::eValidate_mustEither(eCK eCard, ...)
   i8 nHas = 0;
   eCK eFound = CK_NONE;
 
-  va_start(xArgs, eCard);
-  eCK eCard_mustHave = eCard;
+  va_start(xArgs, eCard_first);
+  eCK eCard_mustHave = eCard_first;
   while (CK_NONE != eCard_mustHave) {
 
     pSubCard_I->vBeforeFirst();
