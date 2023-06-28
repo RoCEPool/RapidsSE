@@ -470,6 +470,10 @@ void Pipeline::vSpawnOpTasks(void)
     m_pVertexRoot->vUnspawnOpTasks();
     throw xLowMemory;
   }
+  catch (InternalError xInternalError) {
+    m_pVertexRoot->vUnspawnOpTasks();
+    throw xInternalError;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

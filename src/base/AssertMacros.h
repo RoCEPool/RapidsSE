@@ -99,10 +99,10 @@ EndDefine
 EndDefine
 
 /*----------------------------------------------------------------------------*/
-/* THROW_INTERNALERROR macro                                                      */
+/* THROW_INTERNALERROR macro                                                  */
 /*----------------------------------------------------------------------------*/
 #define THROW_INTERNALERROR(void) \
-  BASE::vThrowLowMemory(FK_INTERNALERROR,\
+  BASE::vThrowInternalError(FK_INTERNALERROR,\
                         __func__,__FILE__,__LINE__,\
                         "INTERNAL ERROR"_Stz); \
 EndDefine

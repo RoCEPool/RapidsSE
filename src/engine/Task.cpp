@@ -1573,12 +1573,14 @@ void Task::vSetInxPtr(Word* pEntryWord)
 
   Word* pOpInternalErrorWord = pDicRoot->pFindWord("OpInternalError_recoveryWord"_Stz);
   if (pOpInternalErrorWord) {
+    //vTrace(" found OpInternalError_recoveryWord\n"_Stz);
     m_pOpInternalErrorWord = pOpInternalErrorWord;
   }
 
 
   Word* pJobInternalErrorWord = pDicRoot->pFindWord("JobInternalError_recoveryWord"_Stz);
   if (pJobInternalErrorWord) {
+    //vTrace(" found JobInternalError_recoveryWord\n"_Stz);
     m_pJobInternalErrorWord = pJobInternalErrorWord;
   }
 }

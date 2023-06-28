@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 : execOnEnd_internalError \handler
 
-  //"EV_M_INTERNALERROR_handler" .verbose
+  "EV_M_INTERNALERROR_handler" .verbose
 
   PipeIn[].pipeToOutput
 
@@ -87,7 +87,7 @@
 
   find: execOnEnd_EndMarker     EV_M_END           [op].handler!
 
-  find: execOnEnd_InternalError     EV_M_INTERNALERROR     [op].handler!
+  find: execOnEnd_InternalError EV_M_INTERNALERROR [op].handler!
   find: execOnEnd_LowMemory     EV_M_LOWMEMORY     [op].handler!
   find: execOnEnd_ChildExit     EV_X_CHILDEXIT     [op].handler!
 

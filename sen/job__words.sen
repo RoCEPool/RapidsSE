@@ -254,7 +254,7 @@
           nullptr to Marker[]
 
       [op].pipeout
-      //"PIPED OUT LOW MEMORY!!!" .
+      //"PIPED OUT INTERNAL ERROR!!!" .
     else
       [job] >str "%v PIPELINE ALREADY DETECTED INTERNAL ERROR!!!" str.format .
     then

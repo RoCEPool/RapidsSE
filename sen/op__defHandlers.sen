@@ -278,9 +278,9 @@
 /*----------------------------------------------------------------------------*/
 : EV_M_INTERNALERROR_handler \handler
 
-  //"EV_M_INTERNALERROR_handler" .verbose
+  "EV_M_INTERNALERROR_handler" .verbose
 
-  //[op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
+  [op].opName@ "TOGGLING TO ABNORMAL HANDLERS FOR OP %v" str.format .
   "default_abnormalHandlers" FIND execute
   "default_internalErrorHandlers" FIND execute
   //[op].opName@ "TOGGLED TO ABNORMAL HANDLERS FOR OP %v" str.format .
@@ -432,7 +432,7 @@
   defaultHandler EV_M_FINISHED          [op].handler!
   defaultHandler EV_M_FLUSH             [op].handler!
   abnormalHandlerEnd    EV_M_HARDABORT  [op].handler!
-  defaultHandler EV_M_INTERNALERROR         [op].handler!
+  defaultHandler EV_M_INTERNALERROR     [op].handler!
   defaultHandler EV_M_LOWMEMORY         [op].handler!
   defaultHandler EV_M_NEXTBUFFER        [op].handler!
   defaultHandler EV_M_START             [op].handler!
@@ -464,7 +464,7 @@
 /*----------------------------------------------------------------------------*/
 : default_internalErrorHandlers
 
-  //[op].opName@ "SETTING default_internalErrorHandlers for OP %v" str.format .
+  [op].opName@ "SETTING default_internalErrorHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
   abnormalHandler EV_I_COMMAND          [op].handler!
@@ -484,7 +484,7 @@
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
 
-  //[op].opName@ "DONE SETTING default_internalErrorHandlers for OP %v" str.format .
+  [op].opName@ "DONE SETTING default_internalErrorHandlers for OP %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -151,7 +151,7 @@
 /*----------------------------------------------------------------------------*/
 : start_InternalError \handler
 
-  //"Operand:- EV_M_INTERNALERROR" .verbose
+  "Operand:- start_InternalError EV_M_INTERNALERROR" .verbose
   PipeIn[].delete
 
   // toggle to default abnormal handlers for all data operands
@@ -244,7 +244,7 @@
   find: start_EndedMarker       EV_M_ENDED       [op].handler!
   find: start_ErroredMarker     EV_M_ERRORED     [op].handler!
   find: start_ExitedMarker      EV_M_EXITED      [op].handler!
-  find: start_InternalError         EV_M_INTERNALERROR   [op].handler!
+  find: start_InternalError     EV_M_INTERNALERROR   [op].handler!
   find: start_LeavingMarker     EV_M_LEAVING     [op].handler!
   find: start_LeftMarker        EV_M_LEFT        [op].handler!
   find: start_LowMemory         EV_M_LOWMEMORY   [op].handler!

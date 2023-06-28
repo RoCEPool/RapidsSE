@@ -250,8 +250,11 @@ void Step::vOpIsEventValid(void)
   if ( ! m_pOp->szOpNm()->bSame("consumeOP"_Stz))
     bValid = m_pOp->bIsEventValid(i_OperandKind);
   
-  if ( ! bValid )
+  if ( ! bValid ) {
+    vTrace("Steps_Op  vOpIsEventValid:   %s\n"_Stz, m_pOp->szOpNm());
     RASSERT(0);
+
+  }
   
   m_pDataStack->vPushInt(bValid);
   
