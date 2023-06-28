@@ -9,7 +9,7 @@ _nation
 /transliterated
 /weaved
 /weaver2
-select * from nation limit 3;
+SELECT n_nationkey AS nationkey, n_name AS name FROM nation;
 
 /*============================================================================*/
 /* end                                                                        */
