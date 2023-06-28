@@ -892,6 +892,20 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
       continue;
     }
 
+    if (pTkn->bSame("INTERVAL_DT"_Stz)) {
+      i_Tkn++;
+      pTkn = pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_IVD);
+      continue;
+    }
+
+    if (pTkn->bSame("INTERVAL_YM"_Stz)) {
+      i_Tkn++;
+      pTkn = pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, DM_IVY);
+      continue;
+    }
+
     if (pTkn->bSame("TIME"_Stz)) {
       i_Tkn++;
       pTkn = pTokenVec->pGet(i_Tkn);
@@ -1642,6 +1656,14 @@ void OpSketch::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token*
       pExprStack->vPushStz(sOperation);
       break;
     case DM_INT:
+      sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
+      break;
+    case DM_IVD:
+      sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      pExprStack->vPushStz(sOperation);
+      break;
+    case DM_IVY:
       sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
       pExprStack->vPushStz(sOperation);
       break;

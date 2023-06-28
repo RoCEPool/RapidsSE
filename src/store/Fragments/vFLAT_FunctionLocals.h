@@ -47,6 +47,10 @@
   union Flt_T fltArg1;
   union Flt_T fltArg2;
   union Flt_T fltArg3;
+  union Ivl_T ivlArg1;
+  union Ivl_T ivlArg2;
+  union Ivl_T ivlArg3;
+  union Ivl_T wIvlResult;
   union Tsp_T xTsp1;
   union Tsp_T xTsp2;
   union Tsp_T xTsp3;
