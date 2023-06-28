@@ -28,11 +28,11 @@ namespace STORE
 
     void vTypes_For_stmColOdn(CardIter* pCI);
 
-    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
     bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
     bool bUsesSqyRsl(void);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_IndexList* _pCard_IndexList(void* aAddr);

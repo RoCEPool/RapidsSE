@@ -217,6 +217,8 @@ void Optimiser::vApplyTransformationMatrix(void)
     delete pMakeSimpler;
     m_pCI->m_pBench->vMadeSimpler(true);
 
+    Bench::vValidate(m_pCI);
+
     //m_pCI->vPrintBoard();
 
     MakeCode* pMakeCode = new MakeCode(m_pCI);

@@ -369,6 +369,20 @@ Stz* Card_Bound::szGet_tblColOdn(void)
   return nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(pSymbol()->bIsRelnOp());
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+    xKid.p_term()->vValidate(pCI, iDepth + 1, pParent);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

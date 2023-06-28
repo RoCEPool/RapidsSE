@@ -256,6 +256,18 @@ void Card_Index::vEnsureTypes_For_stmOdn(CardIter *pCI)
     pCI->G.p_bounds->vEnsureTypes_For_stmOdn(pCI);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Bounds* p_bounds = pSub_bounds())
+    p_bounds->vValidate(pCI,iDepth+1,this);
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

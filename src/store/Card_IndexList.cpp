@@ -188,6 +188,9 @@ void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  for (Kid xCI(this); xCI.bEach(CK_INDEX); /**/) {
+    xCI.p_index()->vValidate(pCI, iDepth + 1, this);
+  }
 }
 
 /*============================================================================*/

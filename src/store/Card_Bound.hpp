@@ -42,6 +42,7 @@ namespace STORE
     Card_Term* pGet_tblColOdn(void);
     Stz* szGet_tblColOdn(void);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Bound* _pCard_Bound(void* aAddr);
