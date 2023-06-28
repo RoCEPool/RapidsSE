@@ -65,6 +65,8 @@ void Bench::vValidate(CardIter* pCI)
 {
   _static_
 
+  return;
+
   //Board::vValidate(pCI);
 
   Bench* pBench = pCI->m_pBench;
