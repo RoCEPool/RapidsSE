@@ -2,16 +2,65 @@
 /* _ray2 :                                                                    */
 /*============================================================================*/
 
-// NOTE: m_pColMap_sort : passthru colMap for sort is ok, but non-passthru it is not
+_nation;
+load nation "../TPCH/SF_0001/nation.csv";
 
-tag default <tpch_dir> = "../tpch/sf_0001";
-tag default <suffix>   = "csv";
-
-_nation
-/time load nation   "<tpch_dir>/nation.<suffix>";
-
-/glean_interactive
-/weaved
-/weaver2
 /pipeline_def
-SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '#' FROM NATION LIMIT 1;
+/weaver
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+FROM nation
+GROUP BY region
+HAVING nationcount > 1;
+
+/*
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Nation
+    | project   "   type INTEGER as N_NATIONKEY $1
+                  , type INTEGER as N_REGIONKEY $3 "
+    | combined  0
+    | next
+
+  stage S02 on all partitions :
+      gbyAgg    " groupBy
+                    type INTEGER as region $2
+                  aggregates
+                    type INTEGER as region $K1
+                  , type INTEGER as __COL3 ) $1 count "
+    | combined  0
+    | next
+
+  stage S03 on all nodes :
+      gbyAgg    " groupBy
+                    type INTEGER as region $1
+                  aggregates
+                    type INTEGER as region $K1
+                  , type INTEGER as __COL3 ) $2 sum "
+    | combined  0
+    | next
+
+  stage S04 on origin :
+      gbyAgg    " groupBy
+                    type INTEGER as region $1
+                  aggregates
+                    type INTEGER as region $K1
+                  , type INTEGER as nationcount ) $2 sum "
+    | filter    " type BOOLEAN $2 1 > "
+    | combined  0
+    | next
+
+  stage S05 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/
