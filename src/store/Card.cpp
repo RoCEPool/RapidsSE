@@ -103,6 +103,13 @@ Card::Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, Stz* szPpy)
 /*----------------------------------------------------------------------------*/
 void Card::vInit(eCK eCard)
 {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (CK_CROSSJOIN == eCard)
+    vDebugPoint();
+
+  if (CK_BOUNDS == eCard)
+    vDebugPoint();
 
   MemLib::vZero(md_Bearing, sizeof(md_Bearing), CN_CARD);
 

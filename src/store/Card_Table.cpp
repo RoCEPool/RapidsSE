@@ -374,6 +374,9 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (pSymbol()->bSameAs('I'))
+    vDebugPoint();
+
   Card_IndexList* p_indexList = this->pSub_indexList();
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();

@@ -105,6 +105,28 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_IndexList::vChoose_index_For_crossJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_INDEX)) {
+    xCI.G.p_bounds = xCI.G.p_index->pSub_bounds();
+    if (! xCI.G.p_bounds)
+      continue;
+    xCI.G.p_bound = xCI.G.p_bounds->pSub_bound();
+    if (! xCI.G.p_bound)
+      continue;
+    xCI.G.p_index->vSet_Choose_index();
+    xCI.G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
+    return;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_IndexList::vChoose_index_For_indexJoin(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

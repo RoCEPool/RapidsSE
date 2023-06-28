@@ -48,6 +48,8 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
   _static_
     //Board::vChoose_index_For_crossJoin(pCI);
 
+  pCI->G.p_indexList = pCI->G.p_table->pSub_indexList();
+
   pCI->G_vNewMember(CK_CROSSJOIN);
   pCI->G.p_table->vRelegate_table(pCI, pCI->G.p_crossJoin);
 
@@ -65,6 +67,8 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
 
   pCI->G_vNewMember(CK_TERM,xSymbol_idxColOdn);
   pCI->G.p_bound->vAppend(pCI->G.p_term);
+
+  pCI->G.p_indexList->vChoose_index_For_crossJoin();
 }
 
 /*----------------------------------------------------------------------------*/
