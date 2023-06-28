@@ -2,8 +2,9 @@
 /* _ray9 :                                                                    */
 /*============================================================================*/
 _nation
-/time load nation   "<tpch_dir>/nation.<suffix>";
+load nation "../TPCH/SF_0001/nation.csv";
 
+/glean_interactive
 /weaver2
 /optimise_passthru
 pipeline unamed
