@@ -667,6 +667,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
               vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
+
+            if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
+              vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
+            }
+
             vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
             vAppendCodeToTubCols(pOpSketch);
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
@@ -712,6 +717,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
               vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
+
+            if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
+              vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
+            }
+
             vAppendCodeFragment(pOpSketch, "iEosPayLoadPot"_Stz);
             vAppendCodeToTubCols(pOpSketch);
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);

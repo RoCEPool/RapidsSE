@@ -49,7 +49,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
   private:
 
     s256         m_szStageNm;
-    s256         m_sHashExpr;
     stageOps_V2  m_xStageOps;
     CombinedSrc* m_pOpSource;
 
@@ -91,7 +90,8 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
     OpSketch* pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
     OpSketch* pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind);
-    OpSketch* pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop, bool bGeneratePot, Stz* sHashExpr);
+    OpSketch* pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2,
+                            Stz* sLabelLoop, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr);
 
     eEC eValidateStage(StageDef* pStageDef);
 

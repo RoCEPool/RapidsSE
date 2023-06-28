@@ -46,6 +46,8 @@ namespace STORE
     // expression string
     s4K m_sExprString;
 
+    s4K m_sLimitExpr;
+
     // definitions
     StreamDef* m_pStreamDefLft;
     StreamDef* m_pStreamDefRht;
@@ -100,7 +102,6 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    OpSketch(void);
     OpSketch(i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, eII eIndexInfo,
              StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack = nullptr);
 
@@ -121,6 +122,7 @@ namespace STORE
     void vIndex(Index* pIndex);
     void vIndexDef(IndexDef* pIndexDef);
     void vIndexPositionLower(eIP eIndexPosition);
+    void vLimitExpr(Stz* sLimitExpr);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
     void vStreamDefRht(StreamDef* pStreamDefRht);
