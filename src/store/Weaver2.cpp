@@ -1047,8 +1047,7 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
           break;
 
         if (xCI.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
-                                     CK_KEYEXISTS, CK_KEYNOTEXISTS,
-                                     CK_LIMIT, CK_SCAN, CK_TABLE,
+                                     CK_LIMIT , CK_SCAN     , CK_TABLE,
                                      CK_NONE)) {
           vOp(xCI.G.p_MainCard);
         }
