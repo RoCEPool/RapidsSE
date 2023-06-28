@@ -232,7 +232,7 @@ void Step::vPipelineOfOpInternalErrorFetch(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  m_pDataStack->vPushInt(pPipeline->bLowMemory());
+  m_pDataStack->vPushInt(pPipeline->bInternalError());
 
   EXIT();
 }
@@ -246,7 +246,7 @@ void Step::vPipelineOfOpInternalErrorStore(void)
 
   Pipeline* pPipeline = m_pOp->pPipeline();
 
-  pPipeline->vLowMemory(m_pDataStack->iPopBol(__func__));
+  pPipeline->vInternalError(m_pDataStack->iPopBol(__func__));
 
   EXIT();
 }
