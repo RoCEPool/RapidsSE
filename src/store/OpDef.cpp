@@ -113,12 +113,21 @@ OpDef::~OpDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+i8 OpDef::nArgs(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return nItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 ArgDef* OpDef::pArgDef(i8 i_Arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   return _pArgDef(pGet(i_Arg));
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -360,11 +369,19 @@ void OpDef::vValidate(void)
   RASSERT(StrLib::bIsSqlName(m_sOpNm.azChar()));
 
   if (m_sOpNm.bSame("AGGREG"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("CROSSJOIN"_Stz)) {
+    RASSERT(3 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+    RASSERT(pArgDef("indexNm"_Stz));
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexJoin);
@@ -372,11 +389,17 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("FILTER"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("GBYAGG"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndexDef_gbyAgg);
@@ -384,11 +407,19 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("HASH"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("INDEXJOIN"_Stz)) {
+    RASSERT(3 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+    RASSERT(pArgDef("indexNm"_Stz));
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexJoin);
@@ -396,6 +427,11 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("INDEXSCAN"_Stz)) {
+    RASSERT(3 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+    RASSERT(pArgDef("indexNm"_Stz));
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexScan);
@@ -403,6 +439,12 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("KEYEXISTS"_Stz)) {
+    RASSERT(4 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+    RASSERT(pArgDef("indexNm"_Stz));
+    RASSERT(pArgDef("constraint"_Stz));
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexSemi);
@@ -410,6 +452,12 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("KEYNOTEXISTS"_Stz)) {
+    RASSERT(4 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+    RASSERT(pArgDef("indexNm"_Stz));
+    RASSERT(pArgDef("constraint"_Stz));
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexSemi);
@@ -417,22 +465,34 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("LIMIT"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("PROJECT"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("SCAN"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("tableNm"_Stz));
+
     RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("SORT"_Stz)) {
+    RASSERT(1 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndexDef_sort);
@@ -440,10 +500,14 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("TOP"_Stz)) {
+    RASSERT(2 == nArgs());
+    RASSERT(pArgDef("expr"_Stz));
+    RASSERT(pArgDef("count"_Stz));
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
   }
   else {
+    vDump();
     vDebugPoint();
     // NEVER_REACH
   }

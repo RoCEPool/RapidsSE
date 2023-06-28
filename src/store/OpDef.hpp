@@ -49,6 +49,7 @@ namespace STORE
     OpDef(i8 i_Op, Stz* szOpNm);
     ~OpDef(void) noexcept(false);
 
+    i8      nArgs(void);
     ArgDef* pArgDef(i8 i_Arg);
     ArgDef* pArgDef(Stz* szArgNm);
     ArgDef* pArgDef_expr(void);
