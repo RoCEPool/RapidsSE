@@ -17,10 +17,12 @@ namespace BASE
     i8 m_nBlockSize; // Size of SLN + Item in bytes
     i8 m_nPadding; // Size of free space
     u2 m_uFreeListRootOffset;
-    i8 m_iFreeListEntries;
+    i8 m_iFreeListEntries; // Number of free entries available (Does not include dummy root node)
 
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
+
+    // Save the last usable offset for asserts
 
     // must be last
     Footer m_xFooter;
@@ -34,20 +36,26 @@ namespace BASE
 
     SkipListBlock* aAllotSkipListBlock(i8 iKey);
 
-    void vDelete(i8 iKey);
+    bool bDelete(i8 iKey);
     void vDump(u2 uOffset);
-    void vDumpFree(void);
-    void vDumpInUse(void);
+    void vDumpFreeList(void);
+    void vDumpInUseList(void);
+
     SkipListBlock* pFind(i8 iKey);
+
     void* pGetAddrFromOffset(u2 uOffset);
     u2 uGetOffsetFromBase(void* aAddress);
 
-    void vInsert(i8 iKey);
+    bool bInsert(i8 iKey);
 
     void vMoveToFreeList(SkipListBlock* pSLSet);
+
     SkipListBlock* pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel);
 
     void vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
+
+    bool bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
+    bool bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
 
   public:
     Footer* aFooter(void);
