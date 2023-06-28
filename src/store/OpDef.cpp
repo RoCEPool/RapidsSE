@@ -41,6 +41,8 @@ OpDef::OpDef(void)
 
   m_pColsReq            = nullptr;
 
+  _checkInitialised_(CN_OPDEF);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 }
 
@@ -55,6 +57,9 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
   vOp(i_Op);
   vOpNm(szOpNm);
 
+  m_nCollapses = 0;
+  m_bCollapsed = false;
+
   m_pStreamDef_arriving = nullptr;
   m_pStreamDef_emitted  = nullptr;
 
@@ -68,6 +73,8 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
   m_pColMap_sort        = nullptr;
 
   m_pColsReq            = nullptr;
+
+  _checkInitialised_(CN_OPDEF);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 }
@@ -353,55 +360,92 @@ void OpDef::vValidate(void)
   RASSERT(StrLib::bIsSqlName(m_sOpNm.azChar()));
 
   if (m_sOpNm.bSame("AGGREG"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("CROSSJOIN"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pIndex_indexJoin);
+    RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("FILTER"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("GBYAGG"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pIndexDef_gbyAgg);
+    RASSERT(m_pColMap_gbyAgg);
   }
   else
   if (m_sOpNm.bSame("HASH"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("INDEXJOIN"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pIndex_indexJoin);
+    RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("INDEXSCAN"_Stz)) {
-    vDebugPoint();
+    RASSERT(! m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pIndex_indexScan);
+    RASSERT(m_pColsReq);
+  }
+  else
+  if (m_sOpNm.bSame("KEYEXISTS"_Stz)) {
+    RASSERT(! m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pIndex_indexSemi);
+    RASSERT(m_pColsReq);
+  }
+  else
+  if (m_sOpNm.bSame("KEYNOTEXISTS"_Stz)) {
+    RASSERT(! m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pIndex_indexSemi);
+    RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("LIMIT"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("PROJECT"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
   }
   else
   if (m_sOpNm.bSame("SCAN"_Stz)) {
-    vDebugPoint();
+    RASSERT(! m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("SORT"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
+    RASSERT(m_pIndexDef_sort);
+    RASSERT(m_pColMap_sort);
   }
   else
   if (m_sOpNm.bSame("TOP"_Stz)) {
-    vDebugPoint();
+    RASSERT(m_pStreamDef_arriving);
+    RASSERT(m_pStreamDef_emitted);
   }
   else {
     vDebugPoint();
-    NEVER_REACH
+    // NEVER_REACH
   }
 
   if (m_pStreamDef_arriving)
