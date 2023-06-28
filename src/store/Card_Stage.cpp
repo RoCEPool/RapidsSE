@@ -294,23 +294,22 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
     eCK      e_card_OP = p_card_OP->eCard();
     eAL      e_level   = (eAL) p_card_OP->pSub_level()->pSymbol()->Y_iGet(P_Level);
 
-
     RASSERT(Card_OP::bIsOp(p_card_OP));
 
-    if (pStager->bAddCombined(e_card_OP))
+    if (pStager->bAddCombined(p_card_OP))
       vAddCombined(pCI, p_card_OP, i_Main);
 
-    if (pStager->bAddNext(e_card_OP))
+    if (pStager->bAddNext(p_card_OP))
       vAddNext(pCI, p_card_OP, i_Main, ""_Stz);
 
-    if (pStager->bAddStage(e_card_OP)) {
+    if (pStager->bAddStage(p_card_OP)) {
       vAddStage(pCI, p_card_OP, i_Main, e_level_running, nStages);
       pStager->vClearAll();
     }
 
    //pSawOpCards->vSaw(p_card_OP);
 
-    pStager->vSaw(e_card_OP);
+    pStager->vSaw(p_card_OP);
   }
 
   //delete pSawOpCards;

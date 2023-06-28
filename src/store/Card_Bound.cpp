@@ -156,6 +156,12 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
 {
   _static_
 
+  if (pBound->bSameAs("BOUND"_Stz))
+    if (pRelnOp->bSameAs("="_Stz) || pRelnOp->bSameAs("=="_Stz))
+      return true;
+    else
+      return false;
+  else
   if (pBound->bSameAs("LBOUND"_Stz))
     if (pRelnOp->bSameAs(">"_Stz) || pRelnOp->bSameAs(">="_Stz))
       return true;

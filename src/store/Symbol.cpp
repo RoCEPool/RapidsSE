@@ -284,7 +284,8 @@ bool Symbol::bIsBound(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("LBOUND"_Stz))  return true;
+       if (m_sSymbol.bSame("BOUND"_Stz))   return true;
+  else if (m_sSymbol.bSame("LBOUND"_Stz))  return true;
   else if (m_sSymbol.bSame("UBOUND"_Stz))  return true;
 
   return false;

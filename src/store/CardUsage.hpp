@@ -5,6 +5,9 @@
 
 #include "BASE.h"
 
+#include "Card_OP.hpp"
+
+#include "eAL.h"
 #include "eCK.h"
 
 namespace STORE
@@ -12,6 +15,8 @@ namespace STORE
   class CardUsage : public Object
   {
   private:
+
+    eAL  m_eLevel;
 
     bool m_baSawCard[CK_ENUMS];
 
@@ -26,16 +31,16 @@ namespace STORE
     CardUsage(void);
    ~CardUsage(void) noexcept(false);
 
-    bool bAddCombined(eCK eCard);
-    bool bAddNext(eCK eCard);
-    bool bAddStage(eCK eCard);
+    bool bAddCombined(Card_OP* p_OP);
+    bool bAddNext(Card_OP* p_OP);
+    bool bAddStage(Card_OP* p_OP);
 
     void vClear(eCK eCard);
     void vClearAll(void);
 
     bool bSaw(eCK eCard);
     i8   nSaw(void);
-    void vSaw(eCK eCard, bool bUsed=true);
+    void vSaw(Card_OP* p_OP);
 
   protected:
     Footer* aFooter(void);
