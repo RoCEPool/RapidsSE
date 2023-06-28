@@ -150,6 +150,28 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if relnOp is valid for bound                                          */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
+{
+  _static_
+
+  if (pBound->bSameAs("LBOUND"_Stz))
+    if (pRelnOp->bSameAs(">"_Stz) || pRelnOp->bSameAs(">="_Stz))
+      return true;
+    else
+      return false;
+  else
+  if (pBound->bSameAs("UBOUND"_Stz))
+    if (pRelnOp->bSameAs("<="_Stz) || pRelnOp->bSameAs("<"_Stz))
+      return true;
+    else
+      return false;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this bound logically equivalent to given compare?                       */
 /*----------------------------------------------------------------------------*/
 bool Card_Bound::bEquivalent(Card_CmpPred* p_cmpPred)
@@ -199,6 +221,23 @@ Card_Term* Card_Bound::pGetTerm(i8 i_Term)
 
   return p_term;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card_Bound::pGetTerm_last(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 i_Term = nChildCards() - 1;
+  if (i_Term < 0)
+    return nullptr;
+
+  Card_Term* p_term = _pCard_Term(pGetChild((i_Term)));
+
+  return p_term;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -328,6 +367,20 @@ Stz* Card_Bound::szGet_tblColOdn(void)
       return xCI.G.p_term->szSymbol();
 
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(pSymbol()->bIsRelnOp());
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
+    xKid.p_term()->vValidate(pCI, iDepth + 1, pParent);
+  }
 }
 
 /*============================================================================*/

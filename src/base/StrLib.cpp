@@ -2628,20 +2628,20 @@ i8 StrLib::iGleanInt(char* azArg)
 /*----------------------------------------------------------------------------*/
 /* find end of next line group given line separator and max bytes             */
 /*----------------------------------------------------------------------------*/
-char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nMaxBytes,
+char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
                          i8& rnBytesInGroup, i8& rnLinesInGroup)
 {
   _static_
 
   ASSERT(*azArg);
-  ASSERT(nMaxBytes);
+  ASSERT(nAvailBytes);
 
   char* szGroupEnd = azArg;
   rnLinesInGroup   = 0;
   rnBytesInGroup   = 0;
   i8 nCrs_bytes    = 0;
 
-  for (char* azCrs_arg = azArg; nCrs_bytes < nMaxBytes; azCrs_arg++) {
+  for (char* azCrs_arg = azArg; nCrs_bytes < nAvailBytes; azCrs_arg++) {
 
     // increment length of potential group
     nCrs_bytes++;
@@ -2672,8 +2672,8 @@ char* StrLib::azGroupEnd(char* azArg, char cItemSep, i8 nMaxBytes,
     // byte length of group is (chars of group) plus (cItemSep or \0)
     ASSERT(szGroupEnd - azArg + 1 == rnBytesInGroup);
 
-    // group will not be longer than nMaxBytes
-    ASSERT(rnBytesInGroup <= nMaxBytes);
+    // group will not be longer than nAvailBytes
+    ASSERT(rnBytesInGroup <= nAvailBytes);
   }
   else {
     // - no subset of lines fits into max bytes

@@ -67,63 +67,86 @@ void ExtendedText::vConcat(Stz* szStr)
 {
   _precondition_(_MAGIC_, CN_EXTENDEDTEXT, _FOOTER_);
 
-//  if (szStr->nSize() > C_4K) {
-//    vTrace("%s : %lld\n"_Stz, __func__ , szStr->nSize());
-//    vDebugPoint();
-//  }
-
-  if (! szStr || ! StrLib::nLength(szStr->azChar()))
+  // anything to concat?
+  if (! szStr || ! *szStr->azChar())
     return;
 
   // at least a first extended text buffer
   vEnsureBuffer();
 
-
   i8 nBytes_allGroups = 0;
-  char* azCrs_str = szStr->azChar();
-  char* azEnd_group;
-  i8 nMaxBytes;
+  i8 nAvailBytes;
   i8 nBytes_group;
   i8 nLines_group;
   bool b;
 
-  for (;;) {
+  char* azEnd_group;
+  char* azBegin_group = szStr->azChar();
 
-    // get tail buffer
+  for (i8 i_Loop=0; ; i_Loop++) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get tail buffer with usable free space
+
     ExtendedTextBuffer *pEtxtBuffer = pTailBuffer();
-    nMaxBytes = pEtxtBuffer->nFreeBytes() - 1;
 
-    azEnd_group = StrLib::azGroupEnd(azCrs_str, '\n', nMaxBytes,
-                                     nBytes_group, nLines_group);
+    // determine available bytes in tail buffer
+    nAvailBytes = pEtxtBuffer->nFreeBytes() - 1;
 
-    if (!nBytes_group) {
-      // next line group didn't fit into current buffer
+    // is the tail buffer fully exhausted?
+    if (nAvailBytes < 1) {
       b = bAddBuffer();
       RASSERT(b);
       continue;
     }
 
-    // concat line group into current buffer
-    b = pEtxtBuffer->bConcat((Stz *) azCrs_str, nBytes_group);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // find end of maximum-sized line group which will fit into tail buffer
+
+    azEnd_group = StrLib::azGroupEnd(azBegin_group, '\n', nAvailBytes,
+                                     nBytes_group, nLines_group);
+
+    if (! nBytes_group) {
+      // the line group didn't fit into tail buffer
+      //   (this would be a single line that is longer than avail bytes)
+      b = bAddBuffer();
+      RASSERT(b);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // concat line group onto tail buffer
+
+    b = pEtxtBuffer->bConcat((Stz *) azBegin_group, nBytes_group);
     RASSERT(b);
 
     m_nLines += nLines_group;
 
     nBytes_allGroups += nBytes_group;
 
-    // - - - - - - - - - - - - - - -
-    // end loop detection
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // end detection
+    //                                     ^
 
-    if (!*azEnd_group) {
+    // if last line group ended : "...xyz\0"
+    //                                    ^
+    //   then there are no more line groups
+    if (! *azEnd_group)
       break;
-    }
 
-    // - - - - - - - - - - - - - - -
+    // advance to next group
+    azBegin_group = azEnd_group + 1;
+
+    // if next line group begins : "...\n\0"
+    //                                    ^
+    //   then there are no more line groups
+    if (! *azBegin_group)
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // still more line groups
-    //   continue with another buffer
 
-
-    azCrs_str = azEnd_group + 1;
+    // continue processing next line group with another buffer
     b = bAddBuffer();
     RASSERT(b);
   }

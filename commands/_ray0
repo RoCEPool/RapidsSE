@@ -6,6 +6,8 @@
 
 _nation;
 
+CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
+
 /glean_interactive
 /weaver2
 /weaved

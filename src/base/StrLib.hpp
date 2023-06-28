@@ -141,7 +141,7 @@ namespace BASE
     static void  vFree(char** ps);
     
     static i8    iGleanInt(char* azArg);
-    static char* azGroupEnd(char* azArg, char cItemSep, i8 nMaxBytes,
+    static char* azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
                             i8& rnBytesInGroup, i8& rnLinesInGroup);
 
     static i8    iHexToInw(const char c);

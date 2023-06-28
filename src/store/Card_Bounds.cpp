@@ -128,6 +128,18 @@ bool Card_Bounds::bUsesSqyRsl(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xCI(this); xCI.bEach(CK_BOUND); /**/) {
+    xCI.p_bound()->vValidate(pCI, iDepth + 1, this);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -356,6 +356,8 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
 
   pSub_level()->vValidate(pCI,iDepth+1,this);
+
+  pSub_indexList()->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

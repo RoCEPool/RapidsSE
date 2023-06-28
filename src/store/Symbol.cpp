@@ -278,6 +278,19 @@ bool Symbol::bIsBoolFn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a bound?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsBound(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+       if (m_sSymbol.bSame("LBOUND"_Stz))  return true;
+  else if (m_sSymbol.bSame("UBOUND"_Stz))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsColumnOrdinal(void)

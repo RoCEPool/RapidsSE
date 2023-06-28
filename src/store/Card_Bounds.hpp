@@ -23,6 +23,8 @@ namespace STORE
 
     bool bHasEquivalentBound(Card_CmpPred* p_cmpPred);
     bool bUsesSqyRsl(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Bounds* _pCard_Bounds(void* aAddr);

@@ -256,6 +256,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
       case CK_ORDAGG:       xCI.G.p_ordAgg->vValidate       (&xCI,0,pDeck); break;
       case CK_PROJECT:      xCI.G.p_project->vValidate      (&xCI,0,pDeck); break;
       case CK_SCAN:         xCI.G.p_scan->vValidate         (&xCI,0,pDeck); break;
+      case CK_SEND:         break;
       case CK_SORT:         xCI.G.p_sort->vValidate         (&xCI,0,pDeck); break;
       case CK_STAGE:        xCI.G.p_stage->vValidate        (&xCI,0,pDeck); break;
       case CK_TABLE:        xCI.G.p_table->vValidate        (&xCI,0,pDeck); break;

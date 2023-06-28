@@ -41,21 +41,22 @@ namespace STORE
     i8   iExtractOrdinal(void);
     char cExtractTableSynonym(void);
 
-    bool bIsAggOp(void);          // avg, count, ... sum
-    bool bIsBoolFn(void);         // between, case ... matchTrailing
+    bool bIsAggOp(void);            // avg, count, ... sum
+    bool bIsBoolFn(void);           // between, case ... matchTrailing
+    bool bIsBound(void);            // LBOUND, UBOUND
     bool bIsColumnOrdinal(void);    // $c.n
-    bool bIsComma(void);          // ,
-    bool bIsIndexColumn(void);    // $In
-    bool bIsKeyOrdinal(void);            // $Kn
-    bool bIsParameterOrdinal(void);      // %n
-    bool bIsRelnOp(void);         // <, <=, ... >
-    bool bIsStreamOrdinal(void);   // $n
-    bool bIsSubQueryOp(void);     // exists, in, notExists, notIn
-    bool bIsSubQueryColumn(void); // __n
-    bool bIsSyntheticAs(void); // __n
-    bool bIsValueOrdinal(void);         // $n or $c.n
+    bool bIsComma(void);            // ,
+    bool bIsIndexColumn(void);      // $In
+    bool bIsKeyOrdinal(void);       // $Kn
+    bool bIsParameterOrdinal(void); // %n
+    bool bIsRelnOp(void);           // <, <=, ... >
+    bool bIsStreamOrdinal(void);    // $n
+    bool bIsSubQueryOp(void);       // exists, in, notExists, notIn
+    bool bIsSubQueryColumn(void);   // __n
+    bool bIsSyntheticAs(void);      // __n
+    bool bIsValueOrdinal(void);     // $n or $c.n
 
-    bool bNeedsBrace(void);       // between, case, ... matchTrailing
+    bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
     bool bSameAs(char cArg);
     bool bSameAs(Stz* szArg);
