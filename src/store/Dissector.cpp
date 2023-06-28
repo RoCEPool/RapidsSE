@@ -1129,7 +1129,7 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  pCard_RpnTerms->vDump();
+  //pCard_RpnTerms->vDump();
 
   // is there a bound term sequence at the top of rpnTerms?
   Card_Term* p_term_first = _pCard_Term(pCard_RpnTerms->pPeek(0));
@@ -1156,68 +1156,23 @@ Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
     pCard_Bound->vAppend(p_term_xfr);
   }
 
-  // todo: cross-check validity of bound symbol
-  // ...
 
   // use last term to set bound symbol
   Card_Term* p_term_last = pCard_Bound->pGetTerm_last();
   pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
 
+  // cross-check validity of bound symbol
+  RASSERT(Card_Bound::bValidBoundForRelnOp(p_term_bound->pSymbol(),
+                                           p_term_last->pSymbol()));
+
   delete p_term_bound;
   pCard_Bound->vDeleteChild(p_term_last);
 
-  pCard_Bound->vDump();
-  pCard_RpnTerms->vDump();
+  //pCard_Bound->vDump();
+  //pCard_RpnTerms->vDump();
 
   return pCard_Bound;
 }
-/*----------------------------------------------------------------------------*/
-//Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-//
-//  // is there a bound at the top of rpn term?
-//  Card_Term* p_term_first = _pCard_Term(pCard_RpnTerms->pPeek(0));
-//  if (! p_term_first || ! p_term_first->pSymbol()->bIsBound())
-//    return nullptr;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // pop one (l/u) bound as a card bound
-//
-//  Card_Bound* pCard_Bound = new Card_Bound;
-//
-//  Card_Term* p_term_bound = pCard_RpnTerms->pPop_term();
-//  RASSERT(p_term_bound->pSymbol()->bIsBound());
-//
-//  pCard_Bound->vTransferChildren(pCard_RpnTerms);
-//
-//  Card_Term* p_term_last = pCard_Bound->pGetTerm_last();
-//  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
-//
-//  delete p_term_bound;
-//  pCard_Bound->vDeleteChild(p_term_last);
-//
-//  pCard_Bound->vDump();
-//
-//  return pCard_Bound;
-//}
-/*----------------------------------------------------------------------------*/
-//Card_Bound* Dissector::pPopBound(Card_RpnTerms* pCard_RpnTerms)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
-//
-//  Card_Bound* pCard_Bound = new Card_Bound;
-//
-//  pCard_Bound->vTransferChildren(pCard_RpnTerms);
-//  i8 nTerms = pCard_Bound->nChildCards();
-//  Card_Term* p_term_last = pCard_Bound->pGetTerm(nTerms-1);
-//  pCard_Bound->pSymbol()->vSet(p_term_last->pSymbol());
-//  pCard_Bound->vDeleteChild(p_term_last);
-//  Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
-//  pCard_Bound->vDeleteChild(p_term_first);
-//
-//  return pCard_Bound;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* pop constraint                                                             */
@@ -1238,7 +1193,6 @@ Card_Constraint* Dissector::pPopConstraint(Card_RpnTerms* pCard_RpnTerms)
 
   return pCard_Constraint;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* pop direction                                                              */

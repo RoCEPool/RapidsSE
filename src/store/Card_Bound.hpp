@@ -21,6 +21,8 @@ namespace STORE
                                            char cTblSyn_boundedTo);
     static Card_Bound*    pBound_New(Stz* szRelnOp);
 
+    static bool bValidBoundForRelnOp(Symbol* pBound, Symbol* pRelnOp);
+
     void vEnsureTypes_For_stmOdn(CardIter *pCI);
     bool bEquivalent(Card_CmpPred* p_cmpPred);
 

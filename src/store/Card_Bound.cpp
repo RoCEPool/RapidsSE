@@ -150,6 +150,28 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if relnOp is valid for bound                                          */
+/*----------------------------------------------------------------------------*/
+bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
+{
+  _static_
+
+  if (pBound->bSameAs("LBOUND"_Stz))
+    if (pRelnOp->bSameAs(">"_Stz) || pRelnOp->bSameAs(">="_Stz))
+      return true;
+    else
+      return false;
+  else
+  if (pBound->bSameAs("UBOUND"_Stz))
+    if (pRelnOp->bSameAs("<="_Stz) || pRelnOp->bSameAs("<"_Stz))
+      return true;
+    else
+      return false;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this bound logically equivalent to given compare?                       */
 /*----------------------------------------------------------------------------*/
 bool Card_Bound::bEquivalent(Card_CmpPred* p_cmpPred)
