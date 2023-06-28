@@ -5,8 +5,10 @@
 _nation;
 load nation "../TPCH/SF_0001/nation.csv";
 
+/glean_interactive
 /pipeline_def
 /weaver
+/weaved
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
 FROM nation
 GROUP BY region
