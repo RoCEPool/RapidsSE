@@ -7,6 +7,8 @@
 #include "CardIter.hpp"
 #include "SawOpCards.hpp"
 
+#include "CardUsage.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -95,6 +97,13 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
     p_main = pCI->G.pDeck->pGetChild(i_Main);
     e_main = p_main->eCard();
+
+
+
+    //RASSERT(Card_OP::bIsOp(p_main));
+
+
+
     eAL e_level_main = (eAL) p_main->pSub_level()->pSymbol()->Y_iGet(P_Level);
 
     // change of level
@@ -272,6 +281,8 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
 {
   _static_
 
+  CardUsage* pUsage = new CardUsage;
+
   i8 nStages = 0;
   SawOpCards* pSawOpCards = new SawOpCards;
   eAL e_level_running = Card::eStageTopologyToAggrLevel(YG_ALL_PARTITIONS);
@@ -297,6 +308,8 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
   }
 
   delete pSawOpCards;
+
+  delete pUsage;
 }
 
 /*----------------------------------------------------------------------------*/
