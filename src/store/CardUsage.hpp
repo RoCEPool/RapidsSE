@@ -13,7 +13,7 @@ namespace STORE
   {
   private:
 
-    bool m_baUsed[CK_ENUMS];
+    bool m_baSawCard[CK_ENUMS];
 
   protected:
     // must be last
@@ -26,11 +26,16 @@ namespace STORE
     CardUsage(void);
    ~CardUsage(void) noexcept(false);
 
+    bool bAddCombined(eCK eCard);
+    bool bAddNext(eCK eCard);
+    bool bAddStage(eCK eCard);
+
     void vClear(eCK eCard);
     void vClearAll(void);
 
-    bool bUsed(eCK eCard);
-    void vUsed(eCK eCard, bool bUsed=true);
+    bool bSaw(eCK eCard);
+    i8   nSaw(void);
+    void vSaw(eCK eCard, bool bUsed=true);
 
   protected:
     Footer* aFooter(void);

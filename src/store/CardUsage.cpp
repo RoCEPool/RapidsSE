@@ -46,11 +46,42 @@ CardUsage::~CardUsage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool CardUsage::bAddCombined(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardUsage::bAddNext(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool CardUsage::bAddStage(eCK eCard)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void CardUsage::vClear(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
 
-    m_baUsed[eCard] = false;
+  m_baSawCard[eCard] = false;
 }
 
 
@@ -62,27 +93,42 @@ void CardUsage::vClearAll(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
 
   for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
-    m_baUsed[i_Card] = false;
+    m_baSawCard[i_Card] = false;
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool CardUsage::bUsed(eCK eCard)
+bool CardUsage::bSaw(eCK eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
 
-  return m_baUsed[eCard];
+  return m_baSawCard[eCard];
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardUsage::vUsed(eCK eCard, bool bUsed)
+i8 CardUsage::nSaw(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
 
-  m_baUsed[eCard] = bUsed;
+  i8 nUsed = 0;
+  for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
+    if (m_baSawCard[i_Card])
+      nUsed++;
+
+  return nUsed;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void CardUsage::vSaw(eCK eCard, bool bUsed)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDUSAGE, _FOOTER_);
+
+  m_baSawCard[eCard] = bUsed;
 }
 
 /*============================================================================*/
