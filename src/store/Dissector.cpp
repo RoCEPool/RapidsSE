@@ -951,17 +951,17 @@ Card* Dissector::pOp_Scan(void)
   Card_Scan* pOp_Scan = new Card_Scan;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // level
+
+  Card_Level* p_level = new Card_Level(AL_PARTITION);
+  pOp_Scan->vAppend(p_level);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form table
   Table* pTable = AM::pTableFind(szTableNm);
 
   Card_Table* pCard_Table = pFormTable(szTableNm,pTable);
   pOp_Scan->vAppend(pCard_Table);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // level
-
-  Card_Level* p_level = new Card_Level(AL_PARTITION);
-  pOp_Scan->vAppend(p_level);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
