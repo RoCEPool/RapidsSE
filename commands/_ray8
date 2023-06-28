@@ -18,7 +18,8 @@ create index IxR_REGIONKEY on region (r_regionkey);
 /transliterated
 /weaved
 /optimise_passthru
-pipeline _unnamed_
+/weaver2
+pipeline __semiJoin
 begin
 
  stage S00 on origin :
@@ -33,7 +34,9 @@ begin
    | next
 
  stage S02 on all partitions :
-     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+     keyExists Region IxR_REGIONKEY
+              " BOUND $I1 $3 == "
+              "type BOOLEAN R_REGIONKEY N_NATIONKEY =="
    | combined  0
    | next
 
@@ -43,6 +46,7 @@ begin
    | first
 
 end ;
+
 
 /*============================================================================*/
 /* end                                                                        */
