@@ -937,7 +937,7 @@ void Step::vStreamSetNew(void)
   // Segmentation Violation
   //vTrace("\n====>>>  Segmentation Violation\n\n"_Stz);
   int *p = (int *) 0x22345678;  // some unknown address, to cause seg fault
-  *p = 0;
+  //*p = 0;
 
 //raise(SIGILL);
 // End experiment code
