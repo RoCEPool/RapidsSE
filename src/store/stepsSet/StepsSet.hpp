@@ -760,6 +760,8 @@ void vDdlLockAssertNone(void);
   void vInjectSigsegv(void);
   void vInjectSigsegv_dbg(void);
   void vInjectThrow(void);
+  void vInjectSegViolation(void);
+  void vInjectFPE(void);
 
   // input
   void vInputChars(void);

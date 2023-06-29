@@ -316,13 +316,13 @@ void Task::vTaskLoop(void)
 
     // catch lowMemory exception
     catch (LowMemory xLowMemory) {
-      vTrace("Got xLowMemory\n"_Stz);
+      //vTrace("Got xLowMemory\n"_Stz);
       vLowMemoryHandler();
     }
 
     // catch internal error exception
     catch (InternalError xInternalError) {
-      vTrace("Got INTERNAL ERROR\n"_Stz);
+      //vTrace("Got INTERNAL ERROR\n"_Stz);
       vInternalErrorHandler();
     }
 

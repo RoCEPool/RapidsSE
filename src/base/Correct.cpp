@@ -718,7 +718,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
   va_end(xArgs);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  vTrace("vThrowInternalError\n"_Stz);
+  //vTrace("vThrowInternalError\n"_Stz);
   InternalError xInternalError(eFailure,azFunc,zCondition,zFileNm,iLineNo);
 
   throw xInternalError;

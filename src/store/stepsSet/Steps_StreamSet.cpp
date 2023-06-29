@@ -925,22 +925,6 @@ void Step::vStreamSetName(void)
 void Step::vStreamSetNew(void)
 {
   ENTRY();
-
-  // Experiment code
-  // Violations
-  //vTrace("\n====>>>  nDivide by zero\n"_Stz);
-  int i = 114;
-  int j = 0;
-  int k = 0;
-  //k = i / j;
-
-  // Segmentation Violation
-  //vTrace("\n====>>>  Segmentation Violation\n\n"_Stz);
-  int *p = (int *) 0x22345678;  // some unknown address, to cause seg fault
-  *p = 0;
-
-//raise(SIGILL);
-// End experiment code
   
   ASSERT(m_pLogicUnit->m_xpStreamSet.bIsNull());
   

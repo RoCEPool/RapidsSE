@@ -1725,9 +1725,7 @@ void Engine::vSignalHandler(int iSignal)
   {
     case SIGABRT:
       vTrace("Caught SIGABRT: usually caused by an abort() or assert()\n"_Stz);
-      BASE::vThrowLowMemory(FK_LOWMEMORY,\
-                        __func__,__FILE__,__LINE__,\
-                        "INTERNAL ERROR"_Stz);
+      THROW_INTERNALERROR();
       break;
     case SIGFPE:
       vTrace("Caught SIGFPE: arithmetic exception, such as divide by zero or overflow\n"_Stz);
@@ -1744,11 +1742,7 @@ void Engine::vSignalHandler(int iSignal)
     case SIGBUS:
     case SIGSEGV:
       vTrace("\nCaught SIGSEGV: segfault: Invalid access to storage\n"_Stz);
-
       THROW_INTERNALERROR();
-
-      //THROW_LOWMEMORY();
-
       break;
     case SIGUSR1:
       vTrace("Caught SIGUSR1: \n"_Stz);
@@ -1771,7 +1765,8 @@ void Engine::vSignalHandler(int iSignal)
 /* Register Signal Handler                                                    */
 /*----------------------------------------------------------------------------*/
 void Engine::vRegisterSignalHandler() {
-  struct sigaction sa = {0};
+  struct sigaction sa ;
+  memset(&sa, 0, sizeof(sa));
   sigemptyset(&sa.sa_mask);
 
   sa.sa_handler = vSignalHandler;

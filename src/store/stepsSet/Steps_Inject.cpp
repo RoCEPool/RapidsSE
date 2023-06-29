@@ -24,6 +24,8 @@ void Step::vAddSteps_Inject(void)
   vAddStep("inject::sigsegv"_Stz,      &Step::vInjectSigsegv);
   vAddStep("inject::sigsegv_dbg"_Stz,  &Step::vInjectSigsegv_dbg);
   vAddStep("inject::throw"_Stz,        &Step::vInjectThrow);
+  vAddStep("inject::segV"_Stz,         &Step::vInjectSegViolation);
+  vAddStep("inject::fpe"_Stz,          &Step::vInjectFPE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,6 +115,52 @@ void Step::vInjectThrow(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* inject::segV -- display segV message                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vInjectSegViolation(void)
+{
+  ENTRY();
+
+  s16KB pDumpBuffer = ">>>> Error <<<<<";
+
+  m_pDataStack->vPushStr(pDumpBuffer);
+
+  // Segmentation Violation
+  //vTrace("\n====>>>  Segmentation Violation\n\n"_Stz);
+  int *p = (int *) 0x22345678;  // some unknown address, to cause seg fault
+  *p = 0;
+
+//raise(SIGILL);
+// End experiment code
+
+  EXIT();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* inject::fpe -- floating-point exception                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vInjectFPE(void)
+{
+  ENTRY();
+
+  s16KB pDumpBuffer = ">>>> Error <<<<<";
+
+  m_pDataStack->vPushStr(pDumpBuffer);
+
+  // Experiment code
+  // Violations
+  //vTrace("\n====>>>  nDivide by zero\n"_Stz);
+  int i = 114;
+  int j = 0;
+  int k = 0;
+  k = i / j;
+
+
+  EXIT();
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
