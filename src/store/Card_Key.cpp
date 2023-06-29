@@ -185,11 +185,13 @@ Stz* Card_Key::szP_Type(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert key to indexDef                                                    */
 /*----------------------------------------------------------------------------*/
 IndexDef* Card_Key::pToIndexDef(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bHasDescending = false;
 
   IndexDef* pIndexDef = new IndexDef;
 
@@ -209,8 +211,16 @@ IndexDef* Card_Key::pToIndexDef(void)
     if (! szColNm || CT_NONE == eColType)
       continue;
 
-    pIndexDef->vAddColumn(szColNm,eColType);
+    bool bAscending = true;
+    if (p_expr->bIsDescending()) {
+      bAscending = false;
+      bHasDescending = true;
+    }
+    pIndexDef->vAddColumn(szColNm,eColType,bAscending);
   }
+
+  if (bHasDescending)
+    pIndexDef->vHasDescending(true);
 
   if (pIndexDef->nColumns())
     return pIndexDef;

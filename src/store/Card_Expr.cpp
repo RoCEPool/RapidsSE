@@ -346,6 +346,20 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsDescending(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Direction* p_direction = pSub_direction())
+    if (p_direction->pSymbol()->bSameAs("DESC"_Stz))
+      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsSoleCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

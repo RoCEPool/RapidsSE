@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _ray7 : testing of nested pipelines 3 Nov 2020                             */
+/* _ray7 :                                                                    */
 /*============================================================================*/
 
 // need the columnn n_nationkey in indexDef_sort to pColumn->vIsAscending(false)
