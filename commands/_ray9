@@ -1,29 +1,16 @@
 /*============================================================================*/
 /* _ray9 :                                                                    */
 /*============================================================================*/
-_nation
-load nation "../TPCH/SF_0001/nation.csv";
+
+// NOTE: having clause filter in same stage as gbyagg
+
+create table interval6(a date,b timestamp,c time);
+load interval6 "../DATA/QA/interval/interval6.csv";
 
 /glean_interactive
 /weaver2
-/optimise_passthru
-pipeline unamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0559
-  stage stageMarker0559 on all partitions :
-    scan rapidsse public Nation
-    | filter " type BOOLEAN  $1 2  <  "
-    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | dynamic
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
+/pipeline_def
+select a+interval '1' month,count(*) from interval6 group by a+interval '1' month having extract(month from a+interval '1' month)=2;
 
 /*============================================================================*/
 /* end                                                                        */
