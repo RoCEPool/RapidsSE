@@ -34,6 +34,8 @@ namespace STORE
     char m_cQuoteSingle;
     char m_cRecordTerminator;    // record terminator
 
+    bool m_bIsSetFieldDelimiter; // has this option been explicitly set or just default value?
+
     i8   m_bAllowNonPrintable;   // allow non-printable
     i8   m_nMaxErrors;           // maximum number of allowable errors
   

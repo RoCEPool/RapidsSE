@@ -78,7 +78,7 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
   char* aRecordStart;
   
   // which record end are we looking for?
-  switch (m_pFmt->m_eLineEnd) {
+  switch (m_pFmt->eLineEnd()) {
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case LE_NL: // advance to next [<terminator>]\n
@@ -98,11 +98,11 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
           return false;
         
         // if no record terminator we have found record end (ie. \n)
-        if (! m_pFmt->m_cRecordTerminator)
+        if (! m_pFmt->cRecordTerminator())
           break;
         
         // we have found ending \n if prior character is the record terminator
-        if (m_pFmt->m_cRecordTerminator == *(*aazRecordEnd-1))
+        if (m_pFmt->cRecordTerminator() == *(*aazRecordEnd-1))
           break;
         
         // did not see [terminator>\n... move on
@@ -132,11 +132,11 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
           return false;
         
         // if no record terminator we have found record end (ie. \r)
-        if (! m_pFmt->m_cRecordTerminator)
+        if (! m_pFmt->cRecordTerminator())
           break;
         
         // we have found ending \r if prior character is the record terminator
-        if (m_pFmt->m_cRecordTerminator == *(*aazRecordEnd-1))
+        if (m_pFmt->cRecordTerminator() == *(*aazRecordEnd-1))
           break;
         
         // did not see [terminator>\r... move on
@@ -166,11 +166,11 @@ bool RecordChunk::bFindRecordEnd(char** aazRecordEnd)
           return false;
         
         // if no record terminator we have found record end (ie. \r\n)
-        if (! m_pFmt->m_cRecordTerminator)
+        if (! m_pFmt->cRecordTerminator())
           break;
         
         // we have found ending \r\n if prior character is the record terminator
-        if (m_pFmt->m_cRecordTerminator == *(*aazRecordEnd-1))
+        if (m_pFmt->cRecordTerminator() == *(*aazRecordEnd-1))
           break;
         
         // did not see [terminator>\r\n... move on

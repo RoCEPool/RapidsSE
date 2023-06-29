@@ -5101,9 +5101,9 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_RECORD_TERMINATOR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cRecordTerminator = *sTagValue.azChar();
-    if (pFormat->m_cRecordTerminator == '0')
-      pFormat->m_cRecordTerminator = '\0';
+    pFormat->vRecordTerminator(*sTagValue.azChar());
+    if (pFormat->cRecordTerminator() == '0')
+      pFormat->vRecordTerminator('\0');
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5120,10 +5120,10 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
         return false;
       }
       else if (cRecordEnds == '\n') {
-        pFormat->m_eLineEnd = LE_NL;
+        pFormat->vLineEnd(LE_NL);
       }
       else if (cRecordEnds == '\r') {
-        pFormat->m_eLineEnd = LE_CR;
+        pFormat->vLineEnd(LE_CR);
       }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
@@ -5134,7 +5134,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     else if (sTagValue.nLength() == 2) {
       
       if (sTagValue.bSame("\r\n"_Stz)) {
-        pFormat->m_eLineEnd = LE_CRNL;
+        pFormat->vLineEnd(LE_CRNL);
       }
       else {
         vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
@@ -5153,11 +5153,11 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     if (sTagValue.bSame("\\t"_Stz))
-      pFormat->m_cFieldDelimiter = '\t';
+      pFormat->vFieldDelimiter('\t');
     else
-      pFormat->m_cFieldDelimiter = *sTagValue.azChar();
-    if (pFormat->m_cFieldDelimiter == '0')
-      pFormat->m_cFieldDelimiter = '\0';
+      pFormat->vFieldDelimiter(*sTagValue.azChar());
+    if (pFormat->cFieldDelimiter() == '0')
+      pFormat->vFieldDelimiter('\0');
   }
 
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5165,13 +5165,12 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_ENCLOSED_BY_LEADING);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cEnclosedBy_Leading = *sTagValue.azChar();
-    if (pFormat->m_cEnclosedBy_Leading == '0')
-      pFormat->m_cEnclosedBy_Leading = '\0';
+    pFormat->vEnclosedBy_Leading(*sTagValue.azChar());
+    if (pFormat->cEnclosedBy_Leading() == '0')
+      pFormat->vEnclosedBy_Leading('\0');
         
     // default set trailing same as leading
-    pFormat->m_cEnclosedBy_Trailing =
-    pFormat->m_cEnclosedBy_Leading;
+    pFormat->vEnclosedBy_Trailing(pFormat->cEnclosedBy_Leading());
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5180,14 +5179,14 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
     // if trailing is specified, leading should also have been specified
-    if (pFormat->m_cEnclosedBy_Trailing == '\0') {
+    if (!pFormat->bIsSetEnclosedBy_Leading()) {
       if (! AM::bMetadata())
         vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
       return false;
     }
-    pFormat->m_cEnclosedBy_Trailing = *sTagValue.azChar();
-    if (pFormat->m_cEnclosedBy_Trailing == '0')
-      pFormat->m_cEnclosedBy_Trailing = '\0';
+    pFormat->vEnclosedBy_Trailing(*sTagValue.azChar());
+    if (pFormat->cEnclosedBy_Trailing() == '0')
+      pFormat->vEnclosedBy_Trailing('\0');
   }
   //
   //    DATE_FORMAT='YYYY.MM.DD’
@@ -5211,9 +5210,9 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   i_Tag = pTagSet->i_Find(C_TAG_LD_ESCAPE_CHAR);
   if (i_Tag != C_UNKNOWN) {
     sTagValue = pTagSet->szValue(i_Tag);
-    pFormat->m_cEscapeChar = *sTagValue.azChar();
-    if (pFormat->m_cEscapeChar == '0')
-      pFormat->m_cEscapeChar = '\0';
+    pFormat->vEscapeChar(*sTagValue.azChar());
+    if (pFormat->cEscapeChar() == '0')
+      pFormat->vEscapeChar('\0');
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -5222,7 +5221,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
   if (i_Tag != C_UNKNOWN) {
     iTagValue = pTagSet->iValue(i_Tag);
     
-    pFormat->m_nMaxErrors = iTagValue;
+    pFormat->vMaxErrors(iTagValue);
   }
         
   return true;

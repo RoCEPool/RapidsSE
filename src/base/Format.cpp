@@ -39,6 +39,15 @@ Format::Format(void)
   m_cFieldDelimiter      = D_FIELD_DELIMITER;      //  ',';
   m_eLineEnd             = LE_NL;
   m_cRecordTerminator    = D_RECORD_TERMINATOR;    //  '\0';
+
+  m_bIsSetDateComponent       = false;
+  m_bIsSetDateSeparator       = false;
+  m_bIsSetEnclosedBy_Leading  = false;
+  m_bIsSetEnclosedBy_Trailing = false;
+  m_bIsSetEscapeChar          = false;
+  m_bIsSetFieldDelimiter      = false;
+  m_bIsSetLineEnd             = false;
+  m_bIsSetRecordTerminator    = false;
   
   m_nMaxErrors           = 0;
   
@@ -114,6 +123,15 @@ void Format::vReset(void)
   m_cRecordTerminator    = AM::pFmt()->m_cRecordTerminator;
   m_eLineEnd             = AM::pFmt()->m_eLineEnd;
   m_nMaxErrors           = AM::pFmt()->m_nMaxErrors;
+
+  m_bIsSetDateComponent       = false;
+  m_bIsSetDateSeparator       = false;
+  m_bIsSetEnclosedBy_Leading  = false;
+  m_bIsSetEnclosedBy_Trailing = false;
+  m_bIsSetEscapeChar          = false;
+  m_bIsSetFieldDelimiter      = false;
+  m_bIsSetLineEnd             = false;
+  m_bIsSetRecordTerminator    = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +153,15 @@ void Format::vSet(Format* pFmt)
   m_cRecordTerminator    = pFmt->m_cRecordTerminator;
   m_eLineEnd             = pFmt->m_eLineEnd;
   m_nMaxErrors           = pFmt->m_nMaxErrors;
+
+  m_bIsSetDateComponent       = true;
+  m_bIsSetDateSeparator       = true;
+  m_bIsSetEnclosedBy_Leading  = true;
+  m_bIsSetEnclosedBy_Trailing = true;
+  m_bIsSetEscapeChar          = true;
+  m_bIsSetFieldDelimiter      = true;
+  m_bIsSetLineEnd             = true;
+  m_bIsSetRecordTerminator    = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -372,9 +399,229 @@ bool Format::bExtractDateFormat(Stz* dateFormat)
   }
   else
     return false;
-  
+
+  m_bIsSetDateComponent = true;
+  m_bIsSetDateSeparator = true;
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Set the enclosedby leading character                                       */
+/*----------------------------------------------------------------------------*/
+void Format::vEnclosedBy_Leading(char c)
+{
+  m_cEnclosedBy_Leading = c;
+  m_bIsSetEnclosedBy_Leading = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the enclosedby trailing character                                      */
+/*----------------------------------------------------------------------------*/
+void Format::vEnclosedBy_Trailing(char c)
+{
+  m_cEnclosedBy_Trailing = c;
+  m_bIsSetEnclosedBy_Trailing = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the escape character                                                   */
+/*----------------------------------------------------------------------------*/
+void Format::vEscapeChar(char c)
+{
+  m_cEscapeChar = c;
+  m_bIsSetEscapeChar = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the field delimiter character                                          */
+/*----------------------------------------------------------------------------*/
+void Format::vFieldDelimiter(char c)
+{
+  m_cFieldDelimiter = c;
+  m_bIsSetFieldDelimiter = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the line ending character                                              */
+/*----------------------------------------------------------------------------*/
+void Format::vLineEnd(eLE eEnding)
+{
+  m_eLineEnd = eEnding;
+  m_bIsSetLineEnd = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the record terminator character                                        */
+/*----------------------------------------------------------------------------*/
+void Format::vRecordTerminator(char c)
+{
+  m_cRecordTerminator = c;
+  m_bIsSetRecordTerminator = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set whether non printable characters are allowed                           */
+/*----------------------------------------------------------------------------*/
+void Format::vAllowNonPrintable(bool bAllow)
+{
+  m_bAllowNonPrintable = bAllow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Set the max allowed errors                                                 */
+/*----------------------------------------------------------------------------*/
+void Format::vMaxErrors(i8 iVal)
+{
+  m_nMaxErrors = iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get a pointer to the array of date components                              */
+/*----------------------------------------------------------------------------*/
+eDC* Format::pDateComponents()
+{
+  return m_eDateComponent;
+}
+/*----------------------------------------------------------------------------*/
+/* Get the date component                                                     */
+/*----------------------------------------------------------------------------*/
+eDC Format::eDateComponent(BASE::i8 iIdx)
+{
+  ASSERT(iIdx >= 0);
+  ASSERT(iIdx < 3);
+  return m_eDateComponent[iIdx];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the date separator character                                           */
+/*----------------------------------------------------------------------------*/
+char Format::cDateSeparator()
+{
+  return m_cDateSeparator;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the enclosedby leading character                                       */
+/*----------------------------------------------------------------------------*/
+char Format::cEnclosedBy_Leading()
+{
+  return m_cEnclosedBy_Leading;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the enclosedby trailing character                                      */
+/*----------------------------------------------------------------------------*/
+char Format::cEnclosedBy_Trailing()
+{
+  return m_cEnclosedBy_Trailing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the escape character                                                   */
+/*----------------------------------------------------------------------------*/
+char Format::cEscapeChar()
+{
+  return m_cEscapeChar;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the field delimiter character                                          */
+/*----------------------------------------------------------------------------*/
+char Format::cFieldDelimiter()
+{
+  return m_cFieldDelimiter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the line ending character                                              */
+/*----------------------------------------------------------------------------*/
+eLE  Format::eLineEnd()
+{
+  return m_eLineEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the record terminator character                                        */
+/*----------------------------------------------------------------------------*/
+char Format::cRecordTerminator()
+{
+  return m_cRecordTerminator;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get whether non printable characters are allowed                            */
+/*----------------------------------------------------------------------------*/
+bool Format::bAllowNonPrintable()
+{
+  return m_bAllowNonPrintable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Get the max allowed errors                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Format::nMaxErrors()
+{
+  return m_nMaxErrors;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Has the date separator character been set?                                 */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetDateSeparator()
+{
+  return m_bIsSetDateSeparator;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the enclosedby leading character been set?                             */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetEnclosedBy_Leading()
+{
+  return m_bIsSetEnclosedBy_Leading;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the enclosedby trailing character been set?                            */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetEnclosedBy_Trailing()
+{
+  return m_bIsSetEnclosedBy_Trailing;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the escape character been set?                                         */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetEscapeChar()
+{
+  return m_bIsSetEscapeChar;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the field delimiter character been set?                                */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetFieldDelimiter()
+{
+  return m_bIsSetFieldDelimiter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the line ending character been set?                                    */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetLineEnd()
+{
+  return m_bIsSetLineEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Has the record terminator character been set?                              */
+/*----------------------------------------------------------------------------*/
+bool Format::bIsSetRecordTerminator()
+{
+  return m_bIsSetRecordTerminator;
+}
+
+
         
 /*============================================================================*/
 /* end                                                                        */

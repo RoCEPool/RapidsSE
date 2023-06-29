@@ -150,8 +150,7 @@ void Step::vToKeyHshRowNew(void)
   //pJobTags->vContentDump();
 
   Format* pFmt = new Format;
-  pFmt->vSet(pFmt);
-  
+
   bool b = AM::bFormatSetFromTagSet(pFmt,pJobTags);
   UNUSED(b);
 

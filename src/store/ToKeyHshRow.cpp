@@ -52,15 +52,15 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
 
   //--
   
-  m_eDateComponent[0]    = pFmt->m_eDateComponent[0];
-  m_eDateComponent[1]    = pFmt->m_eDateComponent[1];
-  m_eDateComponent[2]    = pFmt->m_eDateComponent[2];
-  m_cDateSeparator       = pFmt->m_cDateSeparator;
-  m_cEnclosedBy_Leading  = pFmt->m_cEnclosedBy_Leading;
-  m_cEnclosedBy_Trailing = pFmt->m_cEnclosedBy_Trailing;
-  m_cEscapeChar          = pFmt->m_cEscapeChar;
-  m_cFieldDelimiter      = pFmt->m_cFieldDelimiter;
-  switch (pFmt->m_eLineEnd) {
+  m_eDateComponent[0]    = pFmt->eDateComponent(0);
+  m_eDateComponent[1]    = pFmt->eDateComponent(1);
+  m_eDateComponent[2]    = pFmt->eDateComponent(2);
+  m_cDateSeparator       = pFmt->cDateSeparator();
+  m_cEnclosedBy_Leading  = pFmt->cEnclosedBy_Leading();
+  m_cEnclosedBy_Trailing = pFmt->cEnclosedBy_Trailing();
+  m_cEscapeChar          = pFmt->cEscapeChar();
+  m_cFieldDelimiter      = pFmt->cFieldDelimiter();
+  switch (pFmt->eLineEnd()) {
     case LE_CR:   m_cLineEnd = '\r'; m_cLineEnd2nd = '\0'; break;
     case LE_CRNL: m_cLineEnd = '\r'; m_cLineEnd2nd = '\n'; break;
     case LE_NL:   m_cLineEnd = '\n'; m_cLineEnd2nd = '\0'; break;
@@ -69,10 +69,12 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   }
   m_cQuoteDouble         = '"';
   m_cQuoteSingle         = '\'';
-  m_cRecordTerminator    = pFmt->m_cRecordTerminator;
+  m_cRecordTerminator    = pFmt->cRecordTerminator();
+
+  m_bIsSetFieldDelimiter = pFmt->bIsSetFieldDelimiter();
   
-  m_bAllowNonPrintable   = pFmt->m_bAllowNonPrintable;
-  m_nMaxErrors           = pFmt->m_nMaxErrors;
+  m_bAllowNonPrintable   = pFmt->bAllowNonPrintable();
+  m_nMaxErrors           = pFmt->nMaxErrors();
 
   m_iRowsProcessed = 0;
   m_iRowsInvalid   = 0;
@@ -829,7 +831,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // ---- ---- ---- ---- ---- ---- ---- ----
   // determine field separator
 
-  if (m_bFirst) {
+  if (!m_bIsSetFieldDelimiter && m_bFirst) {
     m_bFirst = false;
     
     for (char* acTest = azCsvCrs; *acTest; acTest++) {

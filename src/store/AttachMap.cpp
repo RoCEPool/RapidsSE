@@ -298,24 +298,24 @@ void AttachMap::vPrintAttachMap(void)
 
   vTrace("\n"_Stz);
   vTrace("Enclosed_by_leading  : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cEnclosedBy_Leading ? gpAttachMap->m_oFormat.m_cEnclosedBy_Leading : '0');
+        gpAttachMap->m_oFormat.cEnclosedBy_Leading() ? gpAttachMap->m_oFormat.cEnclosedBy_Leading() : '0');
   vTrace("Enclosed_by_trailing : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cEnclosedBy_Trailing ? gpAttachMap->m_oFormat.m_cEnclosedBy_Trailing : '0');
+        gpAttachMap->m_oFormat.cEnclosedBy_Trailing() ? gpAttachMap->m_oFormat.cEnclosedBy_Trailing() : '0');
   
   vTrace("Escape_char          : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cEscapeChar ? gpAttachMap->m_oFormat.m_cEscapeChar : '0');
+        gpAttachMap->m_oFormat.cEscapeChar() ? gpAttachMap->m_oFormat.cEscapeChar() : '0');
   vTrace("Delimiter            : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cFieldDelimiter ? gpAttachMap->m_oFormat.m_cFieldDelimiter : '0');
+        gpAttachMap->m_oFormat.cFieldDelimiter() ? gpAttachMap->m_oFormat.cFieldDelimiter() : '0');
   vTrace("Record_terminator    : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cRecordTerminator ? gpAttachMap->m_oFormat.m_cRecordTerminator : '0');
-  vTrace("Record_end           : %s\n"_Stz, aLE[gpAttachMap->m_oFormat.m_eLineEnd]);
+        gpAttachMap->m_oFormat.cRecordTerminator() ? gpAttachMap->m_oFormat.cRecordTerminator() : '0');
+  vTrace("Record_end           : %s\n"_Stz, aLE[gpAttachMap->m_oFormat.eLineEnd()]);
   
-  vTrace("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[0]]);
-  vTrace("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[1]]);
-  vTrace("Date_component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[2]]);
+  vTrace("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.eDateComponent(0)]);
+  vTrace("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.eDateComponent(1)]);
+  vTrace("Date_component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.eDateComponent(2)]);
   
   vTrace("Date_separator       : %c\n"_Stz,
-        gpAttachMap->m_oFormat.m_cDateSeparator ? gpAttachMap->m_oFormat.m_cDateSeparator : '0');
+        gpAttachMap->m_oFormat.cDateSeparator() ? gpAttachMap->m_oFormat.cDateSeparator() : '0');
   
   vTrace("\n"_Stz);
   gpAttachMap->m_xSysArgs.m_oArgTags.vDumpSet();
@@ -421,7 +421,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   
   m_iEpoch      = 0;
   
-  m_oFormat.m_nMaxErrors = m_xSysArgs.m_nMaxLoadErrors;
+  m_oFormat.vMaxErrors(m_xSysArgs.m_nMaxLoadErrors);
   
   ASSERT(m_xHeaps.Transient.m_pTiny);
   ASSERT(m_xHeaps.Transient.m_pSmall);
