@@ -234,6 +234,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
                                   { m_szProcName = "drop__index"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->truncateQuery()) { m_szProcName = "truncate"_Stz;        return visitChildren(pCtx); }
   else if (pCtx->load())          { m_szProcName = "load"_Stz;            return visitChildren(pCtx); }
+  else if (pCtx->dload())         { m_szProcName = "dload"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->count())         { m_szProcName = "count"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->space())         { m_szProcName = "space"_Stz;           return nullptr; }
   else if (pCtx->status())        { m_szProcName = "status"_Stz;          return nullptr; }
@@ -529,6 +530,39 @@ antlrcpp::Any CommandParser::visitLoad(Parser::sqlParser::LoadContext *pCtx)
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
+
+  // We need to visit children here to extract out any load options
+  // and add them to the tag vector
+  visitChildren(pCtx);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an DLOAD statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitDload(Parser::sqlParser::DloadContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sFilePath;
+  s256 sPathTag;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  // There can be one or more file paths. These need to be added as tags
+  // to the tagSet instead of as parameters to the command.
+  i8 i = 0;
+  for (auto pStrLitCtx : pCtx->stringLiteral()) {
+    sPathTag.vSprint("<path%lld>"_Stz, i);
+    vCleanString(pStrLitCtx, sFilePath);
+    m_pCurStmtTagSet->vAppend(sPathTag.szStz(), sFilePath.szStz());
+    ++i;
+  }
+
+  // Add a tag with the total number of file paths
+  m_pCurStmtTagSet->vAppend("<paths>"_Stz, i);
 
   // We need to visit children here to extract out any load options
   // and add them to the tag vector

@@ -74,6 +74,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     antlrcpp::Any visitDropIndexQuery(Parser::sqlParser::DropIndexQueryContext *pCtx)     override;
     antlrcpp::Any visitTruncateQuery(Parser::sqlParser::TruncateQueryContext *pCtx)       override;
     antlrcpp::Any visitLoad(Parser::sqlParser::LoadContext *pCtx)                         override;
+    antlrcpp::Any visitDload(Parser::sqlParser::DloadContext *pCtx)                       override;
     antlrcpp::Any visitLoadOption(Parser::sqlParser::LoadOptionContext *pCtx)             override;
     antlrcpp::Any visitCount(Parser::sqlParser::CountContext *pCtx)                       override;
     antlrcpp::Any visitSzidx(Parser::sqlParser::SzidxContext *pCtx)                       override;

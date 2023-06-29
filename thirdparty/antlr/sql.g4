@@ -22,6 +22,7 @@ statementChoice   :   queryStatement
 //                    | updateQuery
                     | truncateQuery
                     | load
+                    | dload
                     | count
                     | space
                     | status
@@ -165,6 +166,7 @@ dropIndexQuery    : DROP INDEX /*(IF EXISTS)?*/ (
 truncateQuery     : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
 
 load              : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
+dload             : DLOAD tableName PATHS stringLiteral+  ( loadOption (','? loadOption)* )? ;
 loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
 loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
 
@@ -511,7 +513,7 @@ nonReservedWord   :
                   | MINUTES | MONOTONIC | MONTHS
                   | NODE | NOW
                   | OFFSET
-                  | PLACING | PRETTY
+                  | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | REPLICATED | ROWSIZE
                   | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
@@ -641,6 +643,7 @@ OUTER                 : O U T E R;
 OVER                  : O V E R;
 OVERLAY               : O V E R L A Y;
 PARTITION             : P A R T I T I O N;
+PATHS                 : P A T H S;
 PLACING               : P L A C I N G;
 POSITION              : P O S I T I O N;
 PRETTY                : P R E T T Y;

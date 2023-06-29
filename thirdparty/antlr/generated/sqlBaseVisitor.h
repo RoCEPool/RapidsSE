@@ -197,6 +197,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitDload(sqlParser::DloadContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitLoadOption(sqlParser::LoadOptionContext *ctx) override {
     return visitChildren(ctx);
   }

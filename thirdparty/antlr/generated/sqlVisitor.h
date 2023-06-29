@@ -110,6 +110,8 @@ public:
 
     virtual antlrcpp::Any visitLoad(sqlParser::LoadContext *context) = 0;
 
+    virtual antlrcpp::Any visitDload(sqlParser::DloadContext *context) = 0;
+
     virtual antlrcpp::Any visitLoadOption(sqlParser::LoadOptionContext *context) = 0;
 
     virtual antlrcpp::Any visitLoadOptionKeys(sqlParser::LoadOptionKeysContext *context) = 0;
