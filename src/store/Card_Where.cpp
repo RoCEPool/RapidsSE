@@ -170,18 +170,8 @@ Card_Where* Card_Where::pNewWhereConstruct(void)
 
   Card_Where* p_where = new Card_Where;
 
-  Card_Constraint* p_constraint = new Card_Constraint;
-  p_where->vAppend(p_constraint);
-
-  Card_Expr* p_expr = new Card_Expr;
-  Symbol x_Symbol_stmCol1;
-  x_Symbol_stmCol1.vSetStreamOrdinal(1);
-
-  p_expr->vSymbol(x_Symbol_stmCol1);
-  p_constraint->vAppend(p_expr);
-
   Card_RpnCalc* p_rpnCalc = new Card_RpnCalc;
-  p_expr->vAppend(p_rpnCalc);
+  p_where->vAppend(p_rpnCalc);
 
   return p_where;
 }
@@ -299,10 +289,14 @@ void Card_Where::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  vValidate_mustHave(CK_LEVEL,CK_CONSTRAINT,CK_NONE);
-//
+//  vValidate_mustHave(CK_LEVEL,CK_NONE);
 //  pSub_level()->vValidate(pCI,iDepth+1,this);
-//  pSub_constraint()->vValidate(pCI,iDepth+1,this);
+
+  if (CK_BOOLCALC == eValidate_mustEither(CK_BOOLCALC,CK_RPNCALC,CK_NONE))
+    pSub_boolCalc()->vValidate(pCI,iDepth+1,this);
+  else
+    pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
+
 }
 
 /*============================================================================*/

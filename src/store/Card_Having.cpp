@@ -165,10 +165,13 @@ void Card_Having::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//  vValidate_mustHave(CK_LEVEL,CK_CONSTRAINT,CK_NONE);
-//
+//  vValidate_mustHave(CK_LEVEL,CK_NONE);
 //  pSub_level()->vValidate(pCI,iDepth+1,this);
-//  pSub_constraint()->vValidate(pCI,iDepth+1,this);
+
+  if (CK_BOOLCALC == eValidate_mustEither(CK_BOOLCALC,CK_RPNCALC,CK_NONE))
+    pSub_boolCalc()->vValidate(pCI,iDepth+1,this);
+  else
+    pSub_rpnCalc()->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

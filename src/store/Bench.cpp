@@ -65,7 +65,7 @@ void Bench::vValidate(CardIter* pCI)
 {
   _static_
 
-  return;
+  //return;
 
   //Board::vValidate(pCI);
 
