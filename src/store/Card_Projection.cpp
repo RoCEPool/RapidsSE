@@ -449,6 +449,7 @@ i8 Card_Projection::nAsBefore(Card_As* p_as)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  Stz* szSep = "__"_Stz;
   i8 nBefore = 0;
 
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
@@ -457,13 +458,15 @@ i8 Card_Projection::nAsBefore(Card_As* p_as)
     if (p_as_test == p_as)
       return nBefore;
 
-    if (p_as_test->pSymbol()->bSameAs(p_as->pSymbol()))
+    Stz* szArg  = p_as->szSymbol();
+    Stz* szTest = p_as_test->szSymbol();
+
+    if (StrLib::bSimilar(szArg->azChar(),szTest->azChar(),szSep->azChar()))
       nBefore++;
   }
 
   NEVER_REACH
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

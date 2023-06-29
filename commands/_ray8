@@ -14,7 +14,7 @@ _nation
 /weaver2
 /pipeline_def
 /weaved
-select n_nationkey, n_nationkey, n_nationkey from nation;
+select n_nationkey, N_REGIONKEY, n_nationkey, N_REGIONKEY, n_nationkey from nation;
 
 
 /*============================================================================*/

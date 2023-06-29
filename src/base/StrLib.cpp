@@ -340,7 +340,7 @@ bool StrLib::bBackward(char** ps, char* pBegin, const char c)
 /*----------------------------------------------------------------------------*/
 /* bBeginsWith: test if arg is a leading subset of s                          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bBeginsWith(char* s, const char* sArg)
+bool StrLib::bBeginsWith(const char* s, const char* sArg)
 {
   _static_
   i8 nBytes = nLength(sArg);
@@ -4426,6 +4426,22 @@ void StrLib::vRuler(char* azDst, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* are two arguments equal (no case)                                          */
 /*----------------------------------------------------------------------------*/
+bool StrLib::bSame(const char c1, const char c2)
+{
+  _static_
+
+  char c1_lower = cToLower(c1);
+  char c2_lower = cToLower(c2);
+
+  if (c1_lower == c2_lower)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* are two arguments equal (no case)                                          */
+/*----------------------------------------------------------------------------*/
 bool StrLib::bSame(const char* pArg1, const char* pArg2)
 {
   _static_
@@ -4519,6 +4535,40 @@ void StrLib::vShuffleLeft(char* azDst, i8 i_Right)
   _static_
 
   vShuffleLeft(azDst, azDst + i_Right);
+}
+
+/*----------------------------------------------------------------------------*/
+/* do the two arguments have similar leading sequences (no case)              */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bSimilar(const char* azArg1, const char* azArg2, const char* azSep)
+{
+  _static_
+
+  const char* azCrs_Arg1 = azArg1;
+  const char* azCrs_Arg2 = azArg2;
+
+  for (i8 i_Loop = 0; ; i_Loop++) {
+
+    vTrace("%s : %s : %s\n"_Stz,azCrs_Arg1,azCrs_Arg2,azSep);
+
+    if ((! bSame(*azCrs_Arg1,*azCrs_Arg2)) ||
+        (! *azCrs_Arg1 && ! *azCrs_Arg2))
+      break;
+
+    if (bBeginsWith(azCrs_Arg1,azSep) && bBeginsWith(azCrs_Arg2,azSep))
+      return true;
+
+    azCrs_Arg1++;
+    azCrs_Arg2++;
+  }
+
+  if (! *azCrs_Arg1 && ! *azCrs_Arg2)
+    return true;
+
+  if (bBeginsWith(azCrs_Arg1,azSep) || bBeginsWith(azCrs_Arg2,azSep))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

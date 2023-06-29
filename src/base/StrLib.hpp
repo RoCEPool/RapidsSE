@@ -34,7 +34,7 @@ namespace BASE
     static char* azAscii(i8 i_Char);
     
     static bool  bBackward(char** ps, char* pBegin, const char c);
-    static bool  bBeginsWith(char* s, const char* sArg);
+    static bool  bBeginsWith(const char* s, const char* sArg);
     static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
     static Stz*  szCharToStr(char cArg);
@@ -246,10 +246,12 @@ namespace BASE
     static void  vRotate(char* zArg, i8 nby);
     static void  vRuler(char* azDst, i8 iLength);
 
+    static bool  bSame(const char c1, const char c2);
     static bool  bSame(const char* s1, const char* s2);
     static void  vShortHand(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, i8 i_Right);
+    static bool  bSimilar(const char* azArg1, const char* azArg2, const char* sSep);
     static i8    nSize(const char* s);
     static void  vSkipCommentBlock(char** ps);
     static void  vSkipCommentLine(char** ps);
