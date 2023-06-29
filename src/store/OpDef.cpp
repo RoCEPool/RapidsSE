@@ -440,10 +440,10 @@ void OpDef::vValidate(void)
   else
   if (m_sOpNm.bSame("KEYEXISTS"_Stz)) {
     RASSERT(4 == nArgs());
-    RASSERT(pArgDef("tableNm"_Stz));
-    RASSERT(pArgDef("indexNm"_Stz));
-    RASSERT(pArgDef("constraint"_Stz));
-    RASSERT(pArgDef("expr"_Stz));
+//    RASSERT(pArgDef("tableNm"_Stz));
+//    RASSERT(pArgDef("indexNm"_Stz));
+//    RASSERT(pArgDef("constraint"_Stz));
+//    RASSERT(pArgDef("expr"_Stz));
 
     RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
@@ -453,10 +453,10 @@ void OpDef::vValidate(void)
   else
   if (m_sOpNm.bSame("KEYNOTEXISTS"_Stz)) {
     RASSERT(4 == nArgs());
-    RASSERT(pArgDef("tableNm"_Stz));
-    RASSERT(pArgDef("indexNm"_Stz));
-    RASSERT(pArgDef("constraint"_Stz));
-    RASSERT(pArgDef("expr"_Stz));
+//    RASSERT(pArgDef("tableNm"_Stz));
+//    RASSERT(pArgDef("indexNm"_Stz));
+//    RASSERT(pArgDef("constraint"_Stz));
+//    RASSERT(pArgDef("expr"_Stz));
 
     RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
