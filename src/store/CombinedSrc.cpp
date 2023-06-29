@@ -1290,23 +1290,25 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch)
     Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
 
     if (i_Col == nColumns - 1)
-      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld}\n };\n"_Stz,
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s}\n };\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
                     pColumn->eColumnType(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
-                    pColumn->bIsNullable(),
-                    pColumn->bIsPtnKey());
+                    pColumn->bIsNullable() ? "true" : "false",
+                    pColumn->bIsPtnKey() ? "true" : "false",
+                    pColumn->bIsAscending() ? "true" : "false");
     else
-      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld},\n"_Stz,
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s},\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
                     pColumn->eColumnType(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
-                    pColumn->bIsNullable(),
-                    pColumn->bIsPtnKey());
+                    pColumn->bIsNullable() ? "true" : "false",
+                    pColumn->bIsPtnKey() ? "true" : "false",
+                    pColumn->bIsAscending() ? "true" : "false");
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
 
@@ -1329,25 +1331,25 @@ void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
     Column *pColumn = pOpSketch->m_pIndexDef->pGetColumn(i_Col);
 
     if (i_Col == nColumns - 1)
-      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld, %lld}\n   };\n"_Stz,
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s}\n   };\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
                     pColumn->eColumnType(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
-                    pColumn->bIsNullable(),
-                    pColumn->bIsPtnKey(),
-                    pColumn->bIsAscending());
+                    pColumn->bIsNullable() ? "true" : "false",
+                    pColumn->bIsPtnKey() ? "true" : "false",
+                    pColumn->bIsAscending() ? "true" : "false");
     else
-      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld, %lld},\n"_Stz,
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s},\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
                     pColumn->eColumnType(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
-                    pColumn->bIsNullable(),
-                    pColumn->bIsPtnKey(),
-                    pColumn->bIsAscending());
+                    pColumn->bIsNullable() ? "true" : "false",
+                    pColumn->bIsPtnKey() ? "true" : "false",
+                    pColumn->bIsAscending() ? "true" : "false");
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
 

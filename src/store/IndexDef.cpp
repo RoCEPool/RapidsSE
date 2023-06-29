@@ -32,7 +32,7 @@ extern "C" void* aExtern_IndexDefNew(i8 nNumCols, ColumnInfo* pColumnInfo) {
   for (i8 i_Col = 0; i_Col < nNumCols; i_Col++) {
     pIndexDef->vAddColumn((Stz*)&pColumnInfo[i_Col].m_cColumnNm[0],
                            (eCT)pColumnInfo[i_Col].m_iColumnType,
-                          (bool)pColumnInfo[i_Col].m_bIsAscending);
+                           pColumnInfo[i_Col].m_bIsAscending);
 
     if (pColumnInfo[i_Col].m_bIsAscending == 0)
       pIndexDef->vHasDescending(true);

@@ -211,8 +211,8 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      bcdArg2.m_iMantissa = - bcdArg1.m_iMantissa;                         \
-      *paW++ = bcdArg2.m_iAsI8;                                            \
+      bcdArg1.m_iMantissa = - bcdArg1.m_iMantissa;                         \
+      *paW++ = bcdArg1.m_iAsI8;                                            \
     }                                                                      \
   }
 

@@ -3,6 +3,17 @@
 /*============================================================================*/
 #pragma once
 
+struct ColumnInfo {
+  i8    m_iColumnNo;      // this columns subscript
+  char  m_cColumnNm[32];  // name of the column
+  i8    m_iColumnType;    // column type (CT_INTEGER etc) // ALKA COME BACK TO THIS
+  i8    m_iColumnLength;  // logical length of the column
+  i8    m_iColumnScale;   // logical scale of the column
+  bool  m_bIsNullable;    // is column nullable?
+  bool  m_bPtnKey;        // is partition key
+  bool  m_bIsAscending;   // is ascending
+};
+
 struct RowInfo {
   i8   m_iInitialize;
   i8   m_iCell[256];

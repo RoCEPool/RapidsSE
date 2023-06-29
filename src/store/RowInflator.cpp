@@ -28,7 +28,7 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8**       _aaCellArray,
   _static_
 
   //#include "TccStuff.h"
-#include "CodeSynthCommon.h"
+  #include "CodeSynthCommon.h"
 
   #include "vFLAT_Preliminary.h"
   #include "vFLAT_DrivingLoop.h"
