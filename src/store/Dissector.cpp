@@ -420,8 +420,15 @@ Card* Dissector::pOp_Filter(void)
   }
   else {
     delete pCard_RpnTerms;
+
     pCard_Filter->vCard(CK_WHERE);
-    return pCard_Filter;
+    Card_Where* p_where = _pCard_Where(pCard_Filter);
+
+    eAL eAggLevel = m_pStageSpec->eAggegLevel();
+    Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+    p_where->vPush(pCard_AggLevel);
+
+    return p_where;
   }
 }
 
