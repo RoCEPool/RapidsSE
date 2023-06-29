@@ -53,7 +53,7 @@
   Table[] StreamDefRht[].newFromTable
 
   // generate selectColumns bitmap from filter expr and streamDefRht
-  <keyExpr> StreamDefLft[].selectColumns to eError
+  <bounds> StreamDefLft[].selectColumns to eError
 
   // check for error
     eError EC_NONE == not if
@@ -62,7 +62,7 @@
       exit
     then
 
-  <expr> nullptr StreamDefRht[] StreamDefOut[].generate to eError
+  <constraint> nullptr StreamDefRht[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -114,7 +114,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: top :: KeyNotExists <tableNm> <indexNm> <keyExpr> <expr> ;
+cmdSyntax: top :: KeyNotExists <tableNm> <indexNm> <bounds> <constraint> ;
 
 : KeyNotExists_cmdTags _cmdTags tagCopy: op_tags
   tags{
