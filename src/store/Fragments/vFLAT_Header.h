@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "../src/primitives/BaseTypes_tcc.h"
 #include "../src/base/CodeSynthCommon.h"
@@ -44,7 +45,12 @@ static const tET C_ENT_END_TICKET = 0xFFFF;
 static const d8 C_FLT_MAX = 1.797693134862315708145274237317043567981e+308;
 static const d8 C_FLT_MIN = -1.797693134862315708145274237317043567981e+308;
 static const u8 C_YEAR_BASE  = 1900;
+static const u8 C_YEAR_RANGE = 255;
+static const u8 C_YEAR_MAX   = 2155;
 static const i8 TMP_TBLCOL_SCALE  = 2;
+
+static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
+static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
 
 #define C_BITS_PER_WORD 64
 #define C_MAX_LVL_LEVELS 6
@@ -58,28 +64,6 @@ static const i8 TMP_TBLCOL_SCALE  = 2;
 #include "../src/base/RelationalMacros.h"
 #include "../src/base/MathMacros.h"
 #include "../src/base/TccMacros.h"
-
-/* time.h */
-typedef long                    __darwin_time_t;
-typedef __darwin_time_t         time_t;
-
-struct tm {
-  int tm_sec; /* seconds after the minute [0-60] */
-  int tm_min; /* minutes after the hour [0-59] */
-  int tm_hour; /* hours since midnight [0-23] */
-  int tm_mday; /* day of the month [1-31] */
-  int tm_mon; /* months since January [0-11] */
-  int tm_year; /* years since 1900 */
-  int tm_wday; /* days since Sunday [0-6] */
-  int tm_yday; /* days since January 1 [0-365] */
-  int tm_isdst; /* Daylight Savings Time flag */
-  long tm_gmtoff; /* offset from UTC in seconds */
-  char *tm_zone; /* timezone abbreviation */
-};
-
-time_t time(time_t *time);
-struct tm *localtime(const time_t *time);
-
 
 /*============================================================================*/
 /* end                                                                        */
