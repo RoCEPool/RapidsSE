@@ -272,6 +272,7 @@
 #include "XF_Cull_NonUsed_bound.hpp"
 #include "XF_Cull_Used_bound.hpp"
 #include "XF_Cut_sort.hpp"
+#include "XF_Dedupe_colNm.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Derive_projection_key.hpp"
@@ -759,6 +760,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_CULL_NONUSED_BOUND,        sizeof(XF_Cull_NonUsed_bound),        HT_T_TINY    , FILL },
   {CN_XF_CULL_USED_BOUND,           sizeof(XF_Cull_Used_bound),           HT_T_TINY    , FILL },
   {CN_XF_CUT_SORT,                  sizeof(XF_Cut_sort),                  HT_T_TINY    , FILL },
+  {CN_XF_DEDUPE_COLNM,              sizeof(XF_Dedupe_colNm),              HT_T_TINY    , FILL },
   {CN_XF_DELETE_FLAT,               sizeof(XF_Delete_flat),               HT_T_TINY    , FILL },
   {CN_XF_DELETE_UNNEEDED,           sizeof(XF_Delete_Unneeded),           HT_T_TINY    , FILL },
   {CN_XF_DERIVE_PROJECTION_KEY,     sizeof(XF_Derive_projection_key),     HT_T_TINY    , FILL },

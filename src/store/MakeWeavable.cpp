@@ -6,10 +6,10 @@
 
 #include "Board.hpp"
 #include "CardIter.hpp"
-#include "Fold.hpp"
-#include "Smoosh.hpp"
-#include "Smooth.hpp"
 #include "Optimiser.hpp"
+
+#include "XF_Dedupe_colNm.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -56,8 +56,6 @@ void MakeWeavable::vWeavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 
-//  vSeries(BK_SUBQUERY, 0, __func__);
-
   vReinstateStages();
 
   vAddStageCasts();
@@ -65,7 +63,7 @@ void MakeWeavable::vWeavable(void)
   vTblColToStmCol();
   vStmColToColNmOfKeyExists();
 
-//  vEndSeries(BK_SUBQUERY, 0);
+  XF_Dedupe_colNm::vXF_Dedupe_colNm(m_pCI);
 }
 
 
