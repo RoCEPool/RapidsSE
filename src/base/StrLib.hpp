@@ -199,6 +199,8 @@ namespace BASE
     static bool  bIsSlash(const char c);
     static bool  bIsSqlName(char* ps);
     static bool  bIsTilde(const char c);
+    static bool  bIsTypical(const char c);
+    static bool  bIsTypical(char* azArg);
     static bool  bIsUnderscore(const char c);
     static bool  bIsUpperCase(const char c);
     static bool  bIsWhite(const char c);

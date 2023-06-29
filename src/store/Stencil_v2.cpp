@@ -499,7 +499,14 @@ Stz* Stencil_v2::szOpSource(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
   
   char* azCode = m_pOpSource->azCode();
-  
+
+  if (! StrLib::bIsTypical(azCode)) {
+    vTrace("~~~~\n"_Stz);
+    vTrace("%s\n"_Stz, azCode);
+    vTrace("~~~~\n"_Stz);
+    vDebugPoint();
+  }
+
   return (Stz*)azCode;
 }
 
