@@ -2,6 +2,9 @@
 /* _ray7 : testing of nested pipelines 3 Nov 2020                             */
 /*============================================================================*/
 
+// need the columnn n_nationkey in indexDef_sort to pColumn->vIsAscending(false)
+// and pIndexDef->vHasDescending(true)
+
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
@@ -9,7 +12,7 @@ _nation
 /transliterated
 /weaved
 /weaver2
-SELECT n_nationkey AS nationkey, n_name AS name FROM nation;
+SELECT n_regionkey, n_nationkey FROM nation order by n_regionkey, n_nationkey desc;
 
 /*============================================================================*/
 /* end                                                                        */
