@@ -105,6 +105,15 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_PIPELINE_DEF))
     pCmdTagSet->vInsert(C_PIPELINE_DEF);
 
+//  if (pJobTags->bHasName(C_JOINORDER))
+//    pCmdTagSet->vInsert(C_JOINORDER);
+//
+//  if (pJobTags->bHasName(C_JOINPERMUTATIONS))
+//    pCmdTagSet->vInsert(C_JOINPERMUTATIONS);
+
+  if (pJobTags->bHasName(C_PIPELINE_DEF))
+    pCmdTagSet->vInsert(C_PIPELINE_DEF);
+
   if (pJobTags->bHasName(C_SHOW_CMD_TAGS))
     pCmdTagSet->vInsert(C_SHOW_CMD_TAGS);
 
