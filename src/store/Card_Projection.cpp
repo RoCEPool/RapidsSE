@@ -192,6 +192,21 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 void Card_Projection::vDedupe_as(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+    Card_As* p_as = xProjection.p_expr()->pSub_as();
+
+    i8 nBefore = nAsBefore(p_as);
+
+    if (! nBefore)
+      continue;
+
+    Symbol xDeduped;
+    xDeduped.vSprint("%s__%lld"_Stz,p_as->pSymbol()->szSymbol(),nBefore+1);
+    p_as->pSymbol()->vSet(&xDeduped);
+  }
+
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -411,7 +426,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap, Card_Key* p_key)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
@@ -420,6 +435,33 @@ void Card_Projection::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   vValidate_mustHave(CK_EXPR,CK_NONE);
 
   pSub_expr()->vValidate(pCI,iDepth+1,this);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* number of similar as's befor given as (by symbol)                          */
+/*----------------------------------------------------------------------------*/
+i8 Card_Projection::nAsBefore(Card_As* p_as)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nBefore = 0;
+
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+    Card_As *p_as_test = xProjection.p_expr()->pSub_as();
+
+    if (p_as_test == p_as)
+      return nBefore;
+
+    if (p_as_test->pSymbol()->bSameAs(p_as->pSymbol()))
+      nBefore++;
+  }
+
+  NEVER_REACH
 }
 
 

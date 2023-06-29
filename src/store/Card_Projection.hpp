@@ -38,6 +38,9 @@ namespace STORE
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
+  private:
+    i8 nAsBefore(Card_As* p_as);
+
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);
