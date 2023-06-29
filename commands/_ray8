@@ -2,49 +2,19 @@
 /* _ray8 : testing of add node 15 Nov 2020                                    */
 /*============================================================================*/
 
+// NOTE: same column select twice
+
 tag default <tpch_dir> = "../tpch/sf_0001";
 tag default <suffix>   = "csv";
 
 _nation
-create index IxN_NATIONKEY on nation (n_nationkey);
-/time load nation   "<tpch_dir>/nation.<suffix>";
-
-_region
-create index IxR_REGIONKEY on region (r_regionkey);
-/time load region   "<tpch_dir>/region.<suffix>";
 
 /glean_interactive
 /transliterated
 /weaver2
+/pipeline_def
 /weaved
-/optimise_passthru
-pipeline __semiJoin
-begin
-
- stage S00 on origin :
-     start
-   | pulse     once
-   | next
-
- stage S01 on all partitions :
-     scan Nation
-   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-   | combined  0
-   | next
-
- stage S02 on all partitions :
-     keyExists Region IxR_REGIONKEY
-              " BOUND $I1 $3 == "
-              "type BOOLEAN R_REGIONKEY N_NATIONKEY =="
-   | combined  0
-   | next
-
- stage S04 on origin :
-     output
-   | sink
-   | first
-
-end ;
+select n_nationkey, n_nationkey from nation;
 
 
 /*============================================================================*/
