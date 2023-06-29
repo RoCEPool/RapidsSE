@@ -3550,6 +3550,37 @@ bool StrLib::bIsTilde(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsTypical: is char a typical char?                                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTypical(const char c)
+{
+  _static_
+
+  if ('\n' == c)
+    return true;
+
+  if (c >= ' ' && c <= '~')
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsTypical: is char a typical string?                                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsTypical(char* azArg)
+{
+  _static_
+
+  for (char* azTest = azArg; *azTest; azTest++)
+    if (! StrLib::bIsTypical(*azTest))
+      return false;
+
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsUnderscore: is char an underscore?                                      */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsUnderscore(const char c)
