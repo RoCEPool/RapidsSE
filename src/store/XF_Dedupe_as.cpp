@@ -1,51 +1,51 @@
 /*============================================================================*/
-/* XF_Dedupe_colNm.cpp -- De-Duplicate Column Name                            */
+/* XF_Dedupe_as.cpp -- De-Duplicate As (column name)                          */
 /*============================================================================*/
 
-#include "XF_Dedupe_colNm.hpp"
+#include "XF_Dedupe_as.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Dedupe_colNm, CN_XF_DEDUPE_COLNM)
-__aNewFunction(XF_Dedupe_colNm, CN_XF_DEDUPE_COLNM)
-__vDeleteFunction(XF_Dedupe_colNm, CN_XF_DEDUPE_COLNM)
-__aFooterFunction(XF_Dedupe_colNm)
+__pCastFunction(STORE, XF_Dedupe_as, CN_XF_DEDUPE_AS)
+__aNewFunction(XF_Dedupe_as, CN_XF_DEDUPE_AS)
+__vDeleteFunction(XF_Dedupe_as, CN_XF_DEDUPE_AS)
+__aFooterFunction(XF_Dedupe_as)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Dedupe_colNm::XF_Dedupe_colNm(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_DEDUPE_COLNM, pCI)
+XF_Dedupe_as::XF_Dedupe_as(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_DEDUPE_AS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_COLNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_DEDUPE_COLNM);
+  _checkInitialised_(CN_XF_DEDUPE_AS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_COLNM, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Dedupe_colNm::~XF_Dedupe_colNm(void) noexcept(false)
+XF_Dedupe_as::~XF_Dedupe_as(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_COLNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* de-duplicate column names                                                  */
+/* de-duplicate as (column names)                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Dedupe_colNm::vXF_Dedupe_colNm(CardIter* pCI)
+void XF_Dedupe_as::vXF_Dedupe_as(CardIter* pCI)
 {
   _static_
 
-  XF_Dedupe_colNm* pXF_Dedupe_colNm = new XF_Dedupe_colNm(pCI);
+  XF_Dedupe_as* pXF_Dedupe_colNm = new XF_Dedupe_as(pCI);
 
-  pXF_Dedupe_colNm->vXF_Dedupe_colNm();
+  pXF_Dedupe_colNm->vXF_Dedupe_as();
 
   delete pXF_Dedupe_colNm;
 }
@@ -56,13 +56,13 @@ void XF_Dedupe_colNm::vXF_Dedupe_colNm(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* de-duplicate column names                                                  */
+/* de-duplicate as (column names)                                             */
 /*----------------------------------------------------------------------------*/
-void XF_Dedupe_colNm::vXF_Dedupe_colNm(void)
+void XF_Dedupe_as::vXF_Dedupe_as(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_COLNM, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "de-duplicate column names"_Stz);
+  m_pCI->vTransform(__func__, "de-duplicate as (column names)"_Stz);
 
   m_pCI->G_vRestart();
 

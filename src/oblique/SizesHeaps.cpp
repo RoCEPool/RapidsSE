@@ -272,7 +272,7 @@
 #include "XF_Cull_NonUsed_bound.hpp"
 #include "XF_Cull_Used_bound.hpp"
 #include "XF_Cut_sort.hpp"
-#include "XF_Dedupe_colNm.hpp"
+#include "XF_Dedupe_as.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Derive_projection_key.hpp"
@@ -750,27 +750,27 @@ SizeHeap gxaSizeHeap[]
   {CN_WAKEUP,                   sizeof(Wakeup),                HT_INVALID   , FILL },
   {CN_WEAVER,                   sizeof(Weaver),                HT_T_LARGE   , FILL },
   {CN_WEAVER2,                  sizeof(Weaver2),               HT_T_LARGE   , FILL },
-  {CN_WILDERNESS,               sizeof(Wilderness),            HT_INVALID   , FILL },
-  {CN_WORD,                     sizeof(Word),                  HT_T_TINY    , FILL },
-  {CN_WSPCONVERGENT_t,          0,                             HT_INVALID   , FILL },
+  {CN_WILDERNESS,                 sizeof(Wilderness),                 HT_INVALID   , FILL },
+  {CN_WORD,                       sizeof(Word),                       HT_T_TINY    , FILL },
+  {CN_WSPCONVERGENT_t,            0,                                  HT_INVALID   , FILL },
 
-  {CN__X__,                    'X' - ('A' - 1),                HT_INVALID   , FILL },
-  {CN_XF_ADD_LEVEL,                 sizeof(XF_Add_level),                 HT_T_TINY    , FILL },
-  {CN_XF_AS_REVIEW,                 sizeof(XF_as_Review),                 HT_T_TINY    , FILL },
-  {CN_XF_CULL_NONUSED_BOUND,        sizeof(XF_Cull_NonUsed_bound),        HT_T_TINY    , FILL },
-  {CN_XF_CULL_USED_BOUND,           sizeof(XF_Cull_Used_bound),           HT_T_TINY    , FILL },
-  {CN_XF_CUT_SORT,                  sizeof(XF_Cut_sort),                  HT_T_TINY    , FILL },
-  {CN_XF_DEDUPE_COLNM,              sizeof(XF_Dedupe_colNm),              HT_T_TINY    , FILL },
-  {CN_XF_DELETE_FLAT,               sizeof(XF_Delete_flat),               HT_T_TINY    , FILL },
-  {CN_XF_DELETE_UNNEEDED,           sizeof(XF_Delete_Unneeded),           HT_T_TINY    , FILL },
-  {CN_XF_DERIVE_PROJECTION_KEY,     sizeof(XF_Derive_projection_key),     HT_T_TINY    , FILL },
-  {CN_XF_EARLY_PROJECTION,          sizeof(XF_Early_projection),          HT_T_TINY    , FILL },
-  {CN_XF_INDEX_ANALYSIS,            sizeof(XF_index_Analysis),            HT_T_TINY    , FILL },
-  {CN_XF_INDIVIDUATE_FILTER,        sizeof(XF_Individuate_filter),        HT_T_TINY    , FILL },
-  {CN_XF_MORPH_SCAN_TO_INDEXSCAN,   sizeof(XF_Morph_scan_To_indexScan),   HT_T_TINY    , FILL },
-  {CN_XF_MORPH_TABLE_TO_EEOP,       sizeof(XF_Morph_table_To_EEop),       HT_T_TINY    , FILL },
-  {CN_XF_MOVE_ON,                   sizeof(XF_Move_on),                   HT_T_TINY    , FILL },
-  {CN_XF_NOT_OPS,                   sizeof(XF_not_Ops),                   HT_T_TINY    , FILL },
+  {CN__X__,                    'X' - ('A' - 1),                       HT_INVALID   , FILL },
+  {CN_XF_ADD_LEVEL,               sizeof(XF_Add_level),               HT_T_TINY    , FILL },
+  {CN_XF_AS_REVIEW,               sizeof(XF_as_Review),               HT_T_TINY    , FILL },
+  {CN_XF_CULL_NONUSED_BOUND,      sizeof(XF_Cull_NonUsed_bound),      HT_T_TINY    , FILL },
+  {CN_XF_CULL_USED_BOUND,         sizeof(XF_Cull_Used_bound),         HT_T_TINY    , FILL },
+  {CN_XF_CUT_SORT,                sizeof(XF_Cut_sort),                HT_T_TINY    , FILL },
+  {CN_XF_DEDUPE_AS,               sizeof(XF_Dedupe_as),               HT_T_TINY    , FILL },
+  {CN_XF_DELETE_FLAT,             sizeof(XF_Delete_flat),             HT_T_TINY    , FILL },
+  {CN_XF_DELETE_UNNEEDED,         sizeof(XF_Delete_Unneeded),         HT_T_TINY    , FILL },
+  {CN_XF_DERIVE_PROJECTION_KEY,   sizeof(XF_Derive_projection_key),   HT_T_TINY    , FILL },
+  {CN_XF_EARLY_PROJECTION,        sizeof(XF_Early_projection),        HT_T_TINY    , FILL },
+  {CN_XF_INDEX_ANALYSIS,          sizeof(XF_index_Analysis),          HT_T_TINY    , FILL },
+  {CN_XF_INDIVIDUATE_FILTER,      sizeof(XF_Individuate_filter),      HT_T_TINY    , FILL },
+  {CN_XF_MORPH_SCAN_TO_INDEXSCAN, sizeof(XF_Morph_scan_To_indexScan), HT_T_TINY    , FILL },
+  {CN_XF_MORPH_TABLE_TO_EEOP,     sizeof(XF_Morph_table_To_EEop),     HT_T_TINY    , FILL },
+  {CN_XF_MOVE_ON,                 sizeof(XF_Move_on),                 HT_T_TINY    , FILL },
+  {CN_XF_NOT_OPS,                 sizeof(XF_not_Ops),                 HT_T_TINY    , FILL },
   {CN_XF_PROJECTION_ANALYSIS,       sizeof(XF_projection_Analysis),       HT_T_TINY    , FILL },
   {CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,  sizeof(XF_Promote_gbyAgg_To_ordAgg),  HT_T_TINY    , FILL },
   {CN_XF_REDUCE_KEY_GBYAGG,         sizeof(XF_Reduce_key_gbyAgg),         HT_T_TINY    , FILL },

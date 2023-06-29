@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Dedupe_colNm.hpp -- De-Duplicate Column Name                            */
+/* XF_Dedupe_as.hpp -- De-Duplicate As (column name)                          */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Dedupe_colNm : public XF_TRANSFORM
+  class XF_Dedupe_as : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Dedupe_colNm(CardIter* pCI);
-   ~XF_Dedupe_colNm(void) noexcept(false);
+    XF_Dedupe_as(CardIter* pCI);
+   ~XF_Dedupe_as(void) noexcept(false);
 
-    static void vXF_Dedupe_colNm(CardIter* pCI);
+    static void vXF_Dedupe_as(CardIter* pCI);
 
-    void vXF_Dedupe_colNm(void);
+    void vXF_Dedupe_as(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Dedupe_colNm* _pXF_Dedupe_colNm(void* aAddr);
+  XF_Dedupe_as* _pXF_Dedupe_as(void* aAddr);
 }
 
 /*============================================================================*/

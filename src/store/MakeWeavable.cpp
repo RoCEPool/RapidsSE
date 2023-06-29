@@ -8,7 +8,7 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
-#include "XF_Dedupe_colNm.hpp"
+#include "XF_Dedupe_as.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +63,7 @@ void MakeWeavable::vWeavable(void)
   vTblColToStmCol();
   vStmColToColNmOfKeyExists();
 
-  XF_Dedupe_colNm::vXF_Dedupe_colNm(m_pCI);
+  XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
 }
 
 
