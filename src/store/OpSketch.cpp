@@ -2260,7 +2260,7 @@ void OpSketch::vPushFunc(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePreE
     case PE_SS2:
       eExpr1 = (eDM)pTypeStack->iPop();
       eExpr2 = (eDM)pTypeStack->iPop();
-      sOperation.vConcat("_STR_SUBSTRING2((char*)szStrArea, aDynamicT->m_iErrorCode)"_Stz);
+      sOperation.vConcat("_STR_SUBSTRING2(szStrArea, aDynamicT->m_iErrorCode)"_Stz);
       pExprStack->vPushStz(sOperation);
       pTypeStack->vPush(DM_VCH);
       break;

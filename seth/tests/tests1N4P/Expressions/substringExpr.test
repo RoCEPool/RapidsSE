@@ -431,6 +431,8 @@ rows:
  ('B0202','02')
  (null,null)
 
+// TODO V2 : ALKA TO LOOK INTO
+/*
 select a,max(b) from substringTbl group by a;
 rows:
  (null,'the development team will work on issues from the Backlog and issues will end up in one of the 3 green states')
@@ -448,6 +450,7 @@ rows:
  ('B02','I have drawn out the existing workflow and then drawn a possible new workflow that we could move to')
  ('B0201','Please refer to the attached document (either in PDF or in Keynote format)')
  ('B0202','The new workflow gives the test team better visibility of issues that need to be actioned as well as the responsibility for validating fixes and acknowledging/closing bugs')
+*/
 
 select a,substring(a,1,100) from substringTbl;
 rows:

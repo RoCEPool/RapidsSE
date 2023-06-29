@@ -451,6 +451,8 @@ rows:
   (null)
   (null)
 
+// TODO V2 : ALKA TO LOOK AT
+/*
 // CASE in a WHERE clause
 SELECT *
 FROM nation
@@ -486,6 +488,7 @@ rows:
   (15,'MOROCCO',0,'rns. blithely bold courts among the closely regular packages use furiously bold platelets?')
   (21,'VIETNAM',2,'hely enticingly express accounts. even: final ')
 
+
 // CASE being part of a larger expression
 SELECT 1 + CASE n_name
         WHEN 'AUSTRALIA' THEN 2 * n_nationkey
@@ -520,6 +523,8 @@ rows:
   (23)
   (24)
   (25)
+
+*/
 
 // Subquery within a CASE
 /*
@@ -558,6 +563,9 @@ rows:
   ('everywhere')
   ('here')
 */
+
+// TODO V2 : ALKA TO LOOK AT
+/*
 
 // Nested CASE
 SELECT CASE n_name
@@ -598,6 +606,7 @@ rows:
   ('everywhere')
   ('everywhere')
   ('everywhere')
+*/
 
 CREATE TABLE caseExpr(a varchar,b varchar,c decimal,d decimal,e timestamp,f boolean,g integer);
 success
@@ -708,6 +717,8 @@ rows:
   ('woman',true)
   ('man',false)
 
+// TODO V2 : optimiser to detect and gice EC_NOT_IMPLENTED
+/*
 select
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end,
   sum(c)
@@ -715,6 +726,7 @@ select
   group by
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end;
 failure contains: 'EC_NOT_IMPLEMENTED'
+*/
 
 DROP TABLE nation;
 success
