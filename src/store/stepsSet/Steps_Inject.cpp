@@ -123,7 +123,7 @@ void Step::vInjectSegViolation(void)
 {
   ENTRY();
 
-  s16KB pDumpBuffer = ">>>> Segmentation Violation <<<<<";
+  s256 pDumpBuffer = (char*)">>>> Segmentation Violation <<<<<";
 
   m_pDataStack->vPushStr(pDumpBuffer);
 
@@ -132,8 +132,7 @@ void Step::vInjectSegViolation(void)
   int *p = (int *) 0x12345678;  // some unknown address, to cause seg fault
   *p = 0;
 
-//raise(SIGILL);
-// End experiment code
+
 
   EXIT();
 }
@@ -147,19 +146,20 @@ void Step::vInjectFPE(void)
 {
   ENTRY();
 
-  s16KB pDumpBuffer = ">>>> Divide by zero <<<<<";
+  s256 pDumpBuffer = (char*)">>>> Divide by zero <<<<<";
 
   m_pDataStack->vPushStr(pDumpBuffer);
 
   // Experiment code
   // Violations
-  //vTrace("\n====>>>  nDivide by zero\n"_Stz);
+  //vTrace("\n====>>>  Divide by zero\n"_Stz);
   int i = 114;
   int j = 1;
   int k = 0;
-  //k = i / (j-j);
+  k = i / (j-j);
 
-  raise(SIGFPE);
+  //raise(SIGFPE);
+
 
   EXIT();
 }
@@ -171,14 +171,21 @@ void Step::vInjectILL(void)
 {
   ENTRY();
 
-  s16KB pDumpBuffer = ">>>> Illegal Instruction <<<<<";
+  s256 pDumpBuffer = (char*)">>>> Illegal Instruction <<<<<";
 
   m_pDataStack->vPushStr(pDumpBuffer);
 
   // Experiment code
 
+  // this would cause ILL
+  //BUT: after a few tries, m_xpInfoSetTable.bIsNull(); thrown in ~LogicUnit (LogicUnit.cpp:315)
+  char* pC=nullptr;
+  strcpy(pC,"abc");
+  printf("%s\n", pC);
 
-  raise(SIGILL);
+  //raise(SIGILL);
+
+
 
   EXIT();
 }

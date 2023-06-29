@@ -484,7 +484,7 @@
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
 
-  [op].opName@ "DONE SETTING default_internalErrorHandlers for OP %v" str.format .
+  //[op].opName@ "DONE SETTING default_internalErrorHandlers for OP %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -512,7 +512,7 @@
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
 
-  //[op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
+  [op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
 ;
 
 /*----------------------------------------------------------------------------*/
