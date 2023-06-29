@@ -28,6 +28,8 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     Card_Projection* pCraft_projection_early(CardIter* pCI);
 
+    void vDedupe_as(void);
+
     void vDerive_Projection_Key(CardIter* pCI);
 
     void vEarlyProject_given_leaf(CardIter* pCI);

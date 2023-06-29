@@ -186,6 +186,17 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
   return p_projection_early;
 }
 
+/*----------------------------------------------------------------------------*/
+/* dedupe as                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Project::vDedupe_as(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Projection* p_projection = pSub_projection())
+    p_projection->vDedupe_as();
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */

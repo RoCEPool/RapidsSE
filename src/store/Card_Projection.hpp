@@ -24,6 +24,7 @@ namespace STORE
     Card_Projection* pClone(void);
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     Card_Needed* pCraftRoot_needed(CardIter* pCI);
+    void vDedupe_as(void);
     void vDeletePrjKey(CardIter* pCI);
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);

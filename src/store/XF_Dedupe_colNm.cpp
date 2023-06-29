@@ -64,6 +64,12 @@ void XF_Dedupe_colNm::vXF_Dedupe_colNm(void)
 
   m_pCI->vTransform(__func__, "de-duplicate column names"_Stz);
 
+  m_pCI->G_vRestart();
+
+  while (m_pCI->G_bEachMain(CK_PROJECT)) {
+    m_pCI->G.p_project->vDedupe_as();
+  }
+
   m_pCI->vEndTransform();
 
   vValidate();
