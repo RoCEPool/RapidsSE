@@ -1044,7 +1044,10 @@ void CombinedSrc::vAppendFileHeaders(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   i8 nFileSize;
-  s16KB sCode;
+  s4K sCode;
+
+  // zero the string area as reading into it and will not be null terminated
+  sCode.vZero();
 
   StrLib::vAppendString(&m_azCodeCrs, "#define WITH_CLANG");
 

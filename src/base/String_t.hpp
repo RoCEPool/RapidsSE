@@ -78,6 +78,7 @@ namespace BASE
     i8   iToI8(void);
     void vToLower(void);
     void vToUpper(void);
+    void vZero(void);
 
     Footer* aFooter(void);
   };
@@ -836,6 +837,19 @@ void String_t<AREA>::vToUpper(void)
   _precondition_(_MAGIC_,_FOOTER_);
 
   StrLib::vToUpper(m_caCharArea);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* zero the string area                                                       */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+void String_t<AREA>::vZero(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  MemLib::vZero(m_caCharArea,AREA,CN_STRING_T);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
