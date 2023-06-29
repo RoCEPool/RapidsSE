@@ -1326,23 +1326,25 @@ void CombinedSrc::vAppendCodeIndexCols(OpSketch* pOpSketch)
     Column *pColumn = pOpSketch->m_pIndexDef->pGetColumn(i_Col);
 
     if (i_Col == nColumns - 1)
-      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld}\n   };\n"_Stz,
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld, %lld}\n   };\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
                     pColumn->eColumnType(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
                     pColumn->bIsNullable(),
-                    pColumn->bIsPtnKey());
+                    pColumn->bIsPtnKey(),
+                    pColumn->bIsAscending());
     else
-      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld},\n"_Stz,
+      sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %lld, %lld, %lld},\n"_Stz,
                     pColumn->iColumnNo(),
                     pColumn->szColNm(),
                     pColumn->eColumnType(),
                     pColumn->iColumnLength(),
                     pColumn->iColumnScale(),
                     pColumn->bIsNullable(),
-                    pColumn->bIsPtnKey());
+                    pColumn->bIsPtnKey(),
+                    pColumn->bIsAscending());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
 

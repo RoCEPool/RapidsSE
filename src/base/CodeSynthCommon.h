@@ -279,7 +279,8 @@ struct ColumnInfo {
   i8    m_iColumnLength;  // logical length of the column
   i8    m_iColumnScale;   // logical scale of the column
   i8    m_bIsNullable;    // is column nullable?
-  i8    m_bPtnKey;
+  i8    m_bPtnKey;        // is partition key
+  i8    m_bIsAscending;   // is ascending
 };
 
 static const i8 C_HEADLINE_QUANTA  = C_BYTES_PER_WORD;
