@@ -762,6 +762,7 @@ void vDdlLockAssertNone(void);
   void vInjectThrow(void);
   void vInjectSegViolation(void);
   void vInjectFPE(void);
+  void vInjectILL(void);
 
   // input
   void vInputChars(void);
