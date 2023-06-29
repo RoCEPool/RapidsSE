@@ -448,17 +448,28 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
+  /* */ CN_XF_ADD_LEVEL,
+  /* */ CN_XF_AS_REVIEW,
   /* */ CN_XF_CULL_NONUSED_BOUND,
   /* */ CN_XF_CULL_USED_BOUND,
   /* */ CN_XF_CUT_SORT,
   /* */ CN_XF_DELETE_FLAT,
+  /* */ CN_XF_DELETE_UNNEEDED,
   /* */ CN_XF_DERIVE_PROJECTION_KEY,
   /* */ CN_XF_EARLY_PROJECTION,
+  /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_MORPH_SCAN_TO_INDEXSCAN,
   /* */ CN_XF_MORPH_TABLE_TO_EEOP,
+  /* */ CN_XF_MOVE_ON,
+  /* */ CN_XF_NOT_OPS,
+  /* */ CN_XF_PROJECTION_ANALYSIS,
   /* */ CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,
   /* */ CN_XF_REDUCE_KEY_GBYAGG,
+  /* */ CN_XF_RPNCALC_TO_BOOLCALC,
+  /* */ CN_XF_SCAN_BECOMES_TABLE,
+  /* */ CN_XF_SHORTEN_QUERYNAMES,
+  /* */ CN_XF_TABLE_ANALYSIS,
 
   /* */ CN__Y__,
 
@@ -907,17 +918,28 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
   /* */ "_X__"_Stz,                 // CN__X__
+  /* */ "XF_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
+  /* */ "XF_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
   /* */ "XF_CULL_NONUSED_BOUND"_Stz,        // CN_XF_CULL_NONUSED_BOUND
   /* */ "XF_CULL_USED_BOUND"_Stz,           // CN_XF_CULL_USED_BOUND
   /* */ "XF_CUT_SORT"_Stz,                  // CN_XF_CUT_SORT
   /* */ "XF_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT
+  /* */ "XF_DELETE_UNNEEDED"_Stz,           // CN_XF_DELETE_UNNEEDED
   /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,     // CN_XF_DERIVE_PROJECTION_KEY
   /* */ "XF_EARLY_PROJECTION"_Stz,          // CN_XF_EARLY_PROJECTION
+  /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
   /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,   // CN_XF_MORPH_SCAN_TO_INDEXSCAN
   /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
+  /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
+  /* */ "XF_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
+  /* */ "XF_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
   /* */ "XF_PROMOTE_GBYAGG_TO_ORDAGG"_Stz,  // CN_XF_PROMOTE_GBYAGG_TO_ORDAGG
   /* */ "XF_REDUCE_KEY_GBYAGG"_Stz,         // CN_XF_REDUCE_KEY_GBYAGG
+  /* */ "XF_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
+  /* */ "XF_SCAN_BECOMES_TABLE"_Stz,        // CN_XF_SCAN_BECOMES_TABLE
+  /* */ "XF_SHORTEN_QUERYNAMES"_Stz,        // CN_XF_SHORTEN_QUERYNAMES
+  /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
 
   /* */ "_Y__"_Stz,                 // CN__Y__
 
