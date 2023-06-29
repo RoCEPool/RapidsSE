@@ -201,6 +201,7 @@ Task* Api::pCreateTask(Stz* szPipelineCmd, TagSet* pCmdTagSet, JobId tParentId, 
   // Tokenise the pipeline command
   TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(szPipelineCmd);
 
+  // Parse the command and copy the command's default tags into pCmdTagSet.
   if (! CmdHelper::bParseCmd(pCmdTknVec, pCmdTagSet)) {
     // All commands that come this way should have been parsed by ANTLR
     // and then resolved to a pipeline statement already. The only exception

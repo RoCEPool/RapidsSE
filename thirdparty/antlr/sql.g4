@@ -164,7 +164,7 @@ dropIndexQuery    : DROP INDEX /*(IF EXISTS)?*/ (
 
 truncateQuery     : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
 
-load              : LOAD tableName filePath=stringLiteral loadOption* ;
+load              : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
 loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
 loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
 

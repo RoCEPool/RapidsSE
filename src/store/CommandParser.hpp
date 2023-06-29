@@ -90,6 +90,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     static void  vCleanString(Parser::sqlParser::IdentifierContext* pCtx, s256& sBuf);
     static void  vCleanString(antlr4::Token* pToken, s256& sBuf);
     static void  vCleanString(std::string& sStr, s256& sBuf);
+    static void  vCleanTag(antlr4::Token* pToken, s256& sBuf);
     static i8    iCleanInt(Parser::sqlParser::SignedIntegerLiteralContext* pCtx);
     static i8    iCleanInt(Parser::sqlParser::IntegerLiteralContext* pCtx);
     static i8    iCleanInt(antlr4::Token* pToken);

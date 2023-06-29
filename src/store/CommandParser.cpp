@@ -256,11 +256,12 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContext *pCtx)
 {
-  std::string sTagName;
+  s256 sTagName;
 
   ASSERT(pCtx->PLAIN_IDENTIFIER());
-  sTagName = pCtx->PLAIN_IDENTIFIER()->getText();
-  m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str());
+
+  vCleanTag(pCtx->PLAIN_IDENTIFIER()->getSymbol(), sTagName);
+  m_pCurStmtTagSet->vAppend((Stz*) sTagName.szStz());
 
   return visitChildren(pCtx);
 }
@@ -270,21 +271,20 @@ antlrcpp::Any CommandParser::visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContex
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitKeyValueTag(Parser::sqlParser::KeyValueTagContext *pCtx)
 {
-  std::string sTagName;
+  s256 sTagName;
 
   ASSERT(pCtx->keyName);
-  std::string s = pCtx->keyName->getText();
-  sTagName = s.substr(1, s.length() - 2);
+  vCleanTag(pCtx->keyName, sTagName);
 
   if (pCtx->stringLiteral()) {
     // Get value without quotes
     std::string sValue = pCtx->stringLiteral()->getText().substr(1, pCtx->stringLiteral()->getText().length() - 2);
-    m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str(), (Stz*) sValue.c_str());
+    m_pCurStmtTagSet->vAppend((Stz*) sTagName.szStz(), (Stz*) sValue.c_str());
 
   } else {
     ASSERT(pCtx->INTEGER_LITERAL());
     i8 iValue = iCleanInt(pCtx->INTEGER_LITERAL()->getSymbol());
-    m_pCurStmtTagSet->vAppend((Stz*) sTagName.c_str(), iValue);
+    m_pCurStmtTagSet->vAppend((Stz*) sTagName.szStz(), iValue);
   }
 
   return visitChildren(pCtx);
@@ -545,7 +545,7 @@ antlrcpp::Any CommandParser::visitLoadOption(Parser::sqlParser::LoadOptionContex
   s256 sOptionName;
   s256 sOptionValue;
 
-  vCleanString(pCtx->loadOptionKeys()->start, sOptionName);
+  vCleanTag(pCtx->loadOptionKeys()->start, sOptionName);
   vCleanString(pCtx->loadValue, sOptionValue);
 
   // load option should be lower case
@@ -770,6 +770,27 @@ void CommandParser::vCleanString(std::string& sStr, s256& sBuf)
     // No quotes. Just copy the string
     sBuf.vCopy((Stz*) sStr.c_str());
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a string literal. Returned string is written to the given buffer  */
+/*----------------------------------------------------------------------------*/
+void CommandParser::vCleanTag(antlr4::Token* pToken, s256& sBuf)
+{
+  if (!pToken) {
+    return;
+  }
+
+  std::string sStr = pToken->getText();
+
+  sBuf.vReset();
+
+  // Tags are always specified in angle brackets
+  sBuf.vAppend('<');
+  sBuf.vConcat((Stz*) sStr.c_str());
+  sBuf.vAppend('>');
+
+  sBuf.vToLower();
 }
 
 /*----------------------------------------------------------------------------*/
