@@ -205,13 +205,13 @@
 
 #define _NEG_BCD(eErrorCode)                                               \
   {                                                                        \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
     if (eErrorCode != EC_NONE ||                                           \
        bcdArg1.m_iAsI8 == C_DATUM_NULL) {                                  \
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      bcdArg2.m_iMantissa = - bcdArg2.m_iMantissa;                         \
+      bcdArg2.m_iMantissa = - bcdArg1.m_iMantissa;                         \
       *paW++ = bcdArg2.m_iAsI8;                                            \
     }                                                                      \
   }
