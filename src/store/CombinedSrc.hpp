@@ -46,7 +46,7 @@ namespace STORE {
 
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
-    void vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader);
+    void vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool bLastStage);
 
     char *azCode(void);
 
@@ -71,7 +71,7 @@ namespace STORE {
     void vAppendCodeNullRightCols(OpSketch* pOpSketch, Stz* szFunction);
     void vAppendCodePopulatePayloadCols(OpSketch* pOpSketch);
     void vAppendCodeToTubCols(OpSketch* pOpSketch);
-    void vAppendCodePixCols(OpSketch* pOpSketch, bool bStreamDef = false);
+    void vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage = false);
     void vAppendCodeIndexCols(OpSketch* pOpSketch);
     void vCloseCodeFiles(void);
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);

@@ -116,7 +116,7 @@ void CombinedSrc::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i
 /*----------------------------------------------------------------------------*/
 /* Synthesize code for the combined operators                                 */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
+void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool bLastStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
@@ -644,7 +644,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // StreamDefOut generation
         vAppendCodeFragment(pOpSketch, "iStreamDefBegin"_Stz);
-        vAppendCodePixCols(pOpSketch, true /* streamDef */);
+        vAppendCodePixCols(pOpSketch, bLastStage );
         vAppendCodeFragment(pOpSketch, "vStreamDefEnd"_Stz);
         break;
 
@@ -1276,7 +1276,7 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 /*----------------------------------------------------------------------------*/
 /* append code fragment for copying columns                                   */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bStreamDef)
+void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bLastStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -1289,7 +1289,7 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bStreamDef)
 
     Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
 
-    if (bStreamDef)
+    if (bLastStage)
       StrLib::vRemoveHead(pColumn->szColNm()->azChar(), '_');
 
     if (i_Col == nColumns - 1)
