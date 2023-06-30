@@ -2,29 +2,16 @@
 /* _rayZ :                                                                    */
 /*============================================================================*/
 
-create table TABLE9 (
-  pcol9   INTEGER NOT NULL,
-  scol9   INTEGER NOT NULL,
-  tcol9   INTEGER NOT NULL,
-  colb9   VARCHAR(20),
-  cold9   FLOAT,
-  cole9   DECIMAL,
-  colf9   INTEGER,
-  colg9   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
-
-create index table9_ucol on table9(ucol);
-
-create index table9_pcol9 on table9(pcol9);
-
-Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+_nation
+load nation "../TPCH/SF_0001/nation.csv";
 
 /glean_interactive
-select count(ucol) - max(cold9) from table9 where ucol > 0;
-
-//select * from table9;
+/transliterated
+/weaved
+/weaver2
+SELECT n_nationkey+1
+  FROM nation
+;
 
 /*============================================================================*/
 /* end                                                                        */

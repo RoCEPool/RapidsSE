@@ -93,6 +93,9 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_GLEAN_INTERACTIVE))
     pCmdTagSet->vInsert(C_TAG_GLEAN_INTERACTIVE);
 
+  if (pJobTags->bHasName(C_TAG_TRANSLITERATED))
+    pCmdTagSet->vInsert(C_TAG_TRANSLITERATED);
+
   if (pJobTags->bHasName(C_TAG_WEAVED))
     pCmdTagSet->vInsert(C_TAG_WEAVED);
 

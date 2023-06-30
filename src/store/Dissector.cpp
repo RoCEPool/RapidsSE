@@ -1337,7 +1337,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
 
 
   if (! pCard_Expr->pSub_as()) {
-    Card_As* pCard_As = new Card_As(ri_Expr+1);
+    Card_As* pCard_As = new Card_As(ri_Expr);
     pCard_Expr->vInsert(pCard_As);
   }
 
