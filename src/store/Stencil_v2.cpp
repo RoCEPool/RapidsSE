@@ -123,10 +123,12 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
 
   i8 nStages = pPipelineDef->nItems();
 
+#ifdef WITH_DEBUG_VERSION
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     StageDef *pStageDef = pPipelineDef->pGet(i_Stage);
     pStageDef->vDump();
   }
+#endif
 
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stencil_v2* pStencil = new Stencil_v2;
@@ -461,10 +463,10 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //vTrace("OpSketch's generated for stage %s to be synthesised: \n"_Stz, pStageDef->szStageNm());
 
-  for (i8 i_OpSketch = 0; i_OpSketch < nItems(); i_OpSketch++) {
-    OpSketch* pOpSketch = pGet(i_OpSketch);
-    vTrace("  %s\n"_Stz, aSK[pOpSketch->m_eSketchKind]);
-  }
+//  for (i8 i_OpSketch = 0; i_OpSketch < nItems(); i_OpSketch++) {
+//    OpSketch* pOpSketch = pGet(i_OpSketch);
+//    vTrace("  %s\n"_Stz, aSK[pOpSketch->m_eSketchKind]);
+//  }
 
   return EC_NONE;
 }
