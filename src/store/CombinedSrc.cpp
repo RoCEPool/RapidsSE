@@ -644,7 +644,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // StreamDefOut generation
         vAppendCodeFragment(pOpSketch, "iStreamDefBegin"_Stz);
-        vAppendCodePixCols(pOpSketch);
+        vAppendCodePixCols(pOpSketch, true /* streamDef */);
         vAppendCodeFragment(pOpSketch, "vStreamDefEnd"_Stz);
         break;
 
@@ -662,7 +662,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           if (pOpSketch->m_eStencilFrom == SR_PL) {
             vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
+            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
             if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
@@ -679,7 +679,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           else {
             vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
+            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
@@ -692,7 +692,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           // TUB in CRW/ROW/INDEX handler
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
-          vAppendCodeFragment(pOpSketch, "iTubRowPix"_Stz);
+          vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
           vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
@@ -712,7 +712,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           if (pOpSketch->m_eStencilFrom == SR_PL) {
             vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
             if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
@@ -722,14 +722,14 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
               vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
             }
 
-            vAppendCodeFragment(pOpSketch, "iEosPayLoadPot"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
             vAppendCodeToTubCols(pOpSketch);
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
             vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
             vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosPotBody"_Stz);
@@ -742,7 +742,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader)
           // TUB in CRW/ROW/INDEX handler
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
-          vAppendCodeFragment(pOpSketch, "iTubRowPix3"_Stz);
+          vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
           vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "iTubContinue2"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
@@ -1276,7 +1276,7 @@ void CombinedSrc::vAppendCodeCopyCols(OpSketch* pOpSketch, Stz* szFunction)
 /*----------------------------------------------------------------------------*/
 /* append code fragment for copying columns                                   */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch)
+void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch, bool bStreamDef)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
@@ -1288,6 +1288,9 @@ void CombinedSrc::vAppendCodePixCols(OpSketch* pOpSketch)
     m_pCommonCode->vSeekStart();
 
     Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
+
+    if (bStreamDef)
+      StrLib::vRemoveHead(pColumn->szColNm()->azChar(), '_');
 
     if (i_Col == nColumns - 1)
       sCopy.vSprint("      {%lld, \"%s\", %lld, %lld, %lld, %s, %s, %s}\n };\n"_Stz,
