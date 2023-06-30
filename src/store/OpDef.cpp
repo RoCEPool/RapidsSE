@@ -36,8 +36,12 @@ OpDef::OpDef(void)
 
   m_pIndexDef_gbyAgg    = nullptr;
   m_pColMap_gbyAgg      = nullptr;
+
   m_pIndexDef_sort      = nullptr;
   m_pColMap_sort        = nullptr;
+
+  m_pIndexDef_top       = nullptr;
+  m_pColMap_top         = nullptr;
 
   m_pColsReq            = nullptr;
 
@@ -69,8 +73,12 @@ OpDef::OpDef(i8 i_Op, Stz* szOpNm)
 
   m_pIndexDef_gbyAgg    = nullptr;
   m_pColMap_gbyAgg      = nullptr;
+
   m_pIndexDef_sort      = nullptr;
   m_pColMap_sort        = nullptr;
+
+  m_pIndexDef_top       = nullptr;
+  m_pColMap_top         = nullptr;
 
   m_pColsReq            = nullptr;
 
@@ -507,9 +515,10 @@ void OpDef::vValidate(void)
     RASSERT(m_pStreamDef_emitted);
   }
   else {
+    // an operator is missing
     vDump();
     vDebugPoint();
-    // NEVER_REACH
+    NEVER_REACH
   }
 
   if (m_pStreamDef_arriving)
@@ -529,6 +538,12 @@ void OpDef::vValidate(void)
 
   if (m_pColMap_sort)
     m_pColMap_sort->vValidate();
+
+  if (m_pIndexDef_top)
+    m_pIndexDef_top->vValidate();
+
+  if (m_pColMap_top)
+    m_pColMap_top->vValidate();
 
   if (m_pColsReq)
     m_pColsReq->vValidate();

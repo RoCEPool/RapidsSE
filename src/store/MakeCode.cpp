@@ -375,9 +375,12 @@ void MakeCode::vCraftIndexDefs(Card_OP* p_OP)
 
   if (CK_GBYAGG == eCard)
     m_pOpDef->m_pIndexDef_gbyAgg = p_OP->pCraftIndexDef_gbyAgg();
-
+  else
   if (CK_SORT == eCard)
     m_pOpDef->m_pIndexDef_sort = p_OP->pCraftIndexDef_sort();
+  else
+  if (CK_TOP == eCard)
+    m_pOpDef->m_pIndexDef_top = p_OP->pCraftIndexDef_top();
 }
 
 /*----------------------------------------------------------------------------*/
