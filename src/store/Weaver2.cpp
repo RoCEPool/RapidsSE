@@ -363,6 +363,7 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
     case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
     case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
     case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));        break;
+    case CK_TOP:          vArgTop          (sOpArgs,_pCard_Top(pCard));          break;
     case CK_WHERE:        vArgWhere        (sOpArgs,_pCard_Where(pCard));        break;
 
     default:
@@ -806,6 +807,24 @@ void Weaver2::vArgTable(Stz* szOpArgs, Card_Table* pCard_Table)
   //m_i_Op_stage++;
 
   szOpArgs->vCatSprint("%s"_Stz,szTableNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : top <expr> <count>                                                 */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vArgTop(Stz* szOpArgs, Card_Top* pCard_Top)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  //
+
+  s4K sRpnExpr;
+
+  pCard_Top->vRpnTop(sRpnExpr,pCard_Top);
+
+  szOpArgs->vCatSprint("\"%s\" %s"_Stz,
+                       sRpnExpr.szStz(),
+                       pCard_Top->pSub_count()->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/

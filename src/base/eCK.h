@@ -26,6 +26,7 @@ enum eCK : i8 // card kind
   /* */ CK_COSTNETWORK,
   /* */ CK_COSTSTREAM,
   /* */ CK_COSTUNICAST,
+  /* */ CK_COUNT,
   /* */ CK_CROSSJOIN,
 
   /* */ CK_DEBUG,
@@ -142,8 +143,9 @@ static Stz* aCK[]
   /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
   /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
   /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
-  /* */ "CK_COSTSTREAM"_Stz,    // CK_COSTSTREAM
+  /* */ "CK_COSTSTREAM"_Stz,   // CK_COSTSTREAM
   /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
+  /* */ "CK_COUNT"_Stz,        // CK_COUNT
   /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
 
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
@@ -262,6 +264,7 @@ static Stz* aCK_short[]
   /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
   /* */ "costQuery"_Stz,       // CK_COSTSTREAM
   /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
+  /* */ "count"_Stz,           // CK_COUNT
   /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
   /* */ "debug"_Stz,           // CK_DEBUG

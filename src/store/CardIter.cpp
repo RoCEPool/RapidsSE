@@ -265,6 +265,7 @@ void CardIter::G_vClearMembers(void)
   G.p_costNetwork      = nullptr;
   G.p_costQuery        = nullptr;
   G.p_costUnicast      = nullptr;
+  G.p_count            = nullptr;
   G.p_crossJoin        = nullptr;
   G.p_direction        = nullptr;
   G.p_expr             = nullptr;
@@ -1204,6 +1205,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COSTNETWORK:      return G.p_costNetwork;
     case CK_COSTSTREAM:       return G.p_costQuery;
     case CK_COSTUNICAST:      return G.p_costUnicast;
+    case CK_COUNT:            return G.p_count;
     case CK_CROSSJOIN:        return G.p_crossJoin;
     case CK_DIRECTION:        return G.p_direction;
     case CK_EXPR:             return G.p_expr;
@@ -1400,6 +1402,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COSTNETWORK:      *((Card**)&G.p_costNetwork)      = pCard; break;
     case CK_COSTSTREAM:       *((Card**)&G.p_costQuery)        = pCard; break;
     case CK_COSTUNICAST:      *((Card**)&G.p_costUnicast)      = pCard; break;
+    case CK_COUNT:            *((Card**)&G.p_count)            = pCard; break;
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
@@ -1518,6 +1521,7 @@ Stz* CardIter::szMemberNm(eCK eMember)
     case CK_COSTSTREAM:       return "G.p_costQuery"_Stz;
     case CK_COSTUNICAST:      return "G.p_costUnicast"_Stz;
     case CK_CORRELATION:      return "G.p_correlation"_Stz;
+    case CK_COUNT:            return "G.p_count"_Stz;
     case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
     case CK_DIRECTION:        return "G.p_direction"_Stz;
     case CK_EXPR:             return "G.p_expr"_Stz;

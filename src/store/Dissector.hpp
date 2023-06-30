@@ -64,6 +64,7 @@ namespace STORE
     Card* pOp_Sink        (void);
     Card* pOp_Sort        (void);
     Card* pOp_Start       (void);
+    Card* pOp_Top         (void);
 
     Card_IndexList*  pFormIndex(Stz* szIndexNm, Table* pTable);
     Card_Table*      pFormTable(Stz* szTableNm, Table* pTable);

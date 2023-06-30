@@ -2449,6 +2449,19 @@ Card_Correlation* Card::pSub_correlation(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_Count.hpp"
+Card_Count* Card::pSub_count(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Count* p_count =
+      _pCard_Count(pFindSubCard(CK_COUNT));
+  return p_count;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_Projection.hpp"
 Card_Projection* Card::pSub_projection(void)
 {

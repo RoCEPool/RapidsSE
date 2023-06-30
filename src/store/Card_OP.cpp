@@ -1503,6 +1503,24 @@ void Card_OP::vRpnTable(Stz* szRpnExpr, Card_Table* pCard_Table)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for top op                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnTop(Stz* szRpnExpr, Card_Top* pCard_Top)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_RpnCalc *pCard_Calc = pCard_Top->pSub_rpnCalc();
+
+  eCT eColumnType = Symbol::eTo_eCT_char(pCard_Calc->szP_Type());
+
+  Stz* szColType = aCT[eColumnType];
+
+  szRpnExpr->vCatSprint(" type %s "_Stz,szColType->azChar());
+
+  vRpnCalc(szRpnExpr, pCard_Calc);
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for filter op                                               */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)

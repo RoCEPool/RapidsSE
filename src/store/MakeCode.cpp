@@ -124,7 +124,6 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
     }
     else {
       RASSERT(m_pStageDef);
-      //vTrace("Op %s\n"_Stz, xDeck.p_OP()->szCardNm());
       vCraftOpDef(xDeck.p_OP());
     }
 
@@ -218,6 +217,7 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
     case CK_SEND:         break;
     case CK_SORT:         p_OP->vRpnSort        (sExpr, _pCard_Sort        (p_OP)); break;
     case CK_TABLE:        break;
+    case CK_TOP:          p_OP->vRpnTop         (sExpr, _pCard_Top         (p_OP)); break;
     case CK_WHERE:        p_OP->vRpnWhere       (sExpr, _pCard_Where       (p_OP)); break;
 
     default:
@@ -319,6 +319,11 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
 
     case CK_TABLE:
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_Table(p_OP)->pSub_tableNm()->szSymbol()));
+      break;
+
+    case CK_TOP:
+      m_pOpDef->vAppend(new ArgDef(0, "expr"_Stz, sExpr));
+      m_pOpDef->vAppend(new ArgDef(0, "count"_Stz, _pCard_Top(p_OP)->pSub_count()->szSymbol()));
       break;
 
     case CK_WHERE:

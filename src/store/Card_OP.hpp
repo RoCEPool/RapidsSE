@@ -71,6 +71,7 @@ namespace STORE
     void vRpnScan        (Stz* szRpnExpr, Card_Scan*      pCard_Scan);
     void vRpnSort        (Stz* szRpnExpr, Card_Sort*      pCard_Sort);
     void vRpnTable       (Stz* szRpnExpr, Card_Table*     pCard_Table);
+    void vRpnTop         (Stz* szRpnExpr, Card_Top*       pCard_Top);
     void vRpnWhere       (Stz* szRpnExpr, Card_Where*     pCard_Where);
 
     void vExpr        (Stz* szRpnExpr, Card_Expr*      pCard_Expr);

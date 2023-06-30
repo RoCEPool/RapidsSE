@@ -31,6 +31,7 @@
 #include "Card_CostNetwork.hpp"  //
 #include "Card_CostStream.hpp"   //
 #include "Card_CostUnicast.hpp"  //
+#include "Card_Count.hpp"        //
 #include "Card_CrossJoin.hpp"
 
 #include "Card_Debug.hpp"

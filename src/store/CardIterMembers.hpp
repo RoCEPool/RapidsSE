@@ -131,6 +131,7 @@ namespace STORE
     Card_CostNetwork *   p_costNetwork;
     Card_CostStream *    p_costQuery;
     Card_CostUnicast *   p_costUnicast;
+    Card_Count *         p_count;
     Card_CrossJoin *     p_crossJoin;
 
     Card_Direction *     p_direction;

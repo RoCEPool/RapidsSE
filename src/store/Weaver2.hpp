@@ -83,6 +83,7 @@ namespace STORE
     void vArgScan        (Stz* szOpArgs,  Card_Scan*      pCard_Scan);
     void vArgSort        (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
     void vArgTable       (Stz* szOpArgs,  Card_Table*     pCard_Table);
+    void vArgTop         (Stz* szOpArgs,  Card_Top*       pCard_op);
     void vArgWhere       (Stz* szOpArgs,  Card_Where*     pCard_Where);
 
     void vConcat_cmd(Stz* aFormat, ...);

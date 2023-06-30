@@ -31,7 +31,6 @@ namespace STORE
   class Card_Bound;
   class Card_Bounds;
 
-  class Card_JoinCast;
   class Card_CmpPred;
   class Card_Combined;
   class Card_Constraint;
@@ -41,6 +40,7 @@ namespace STORE
   class Card_CostNetwork;
   class Card_CostStream;
   class Card_CostUnicast;
+  class Card_Count;
   class Card_CrossJoin;
 
   class Card_StreamHead;
@@ -73,7 +73,7 @@ namespace STORE
   class Card_IndexNm;
   class Card_IndexScan;
 
-  class Card_StreamJoin;
+  class Card_JoinCast;
   class Card_JoinOrder;
   class Card_JoinOrdering;
   class Card_StreamSet;
@@ -114,6 +114,7 @@ namespace STORE
   class Card_Send;
   class Card_Sort;
   class Card_Stage;
+  class Card_StreamJoin;
   class Card_StreamPtn;
   class Card_SubSet;
 
@@ -366,12 +367,12 @@ namespace STORE
     Card_BoolCalc*      pSub_boolCalc(void);
     Card_Bound*         pSub_bound(void);
     Card_Bounds*        pSub_bounds(void);
-    Card_JoinCast*      pSub_locusCast(void);
     Card_CmpPred*       pSub_cmpPred(void);
     Card_Constraint*    pSub_constraint(void);
     Card_Correlation*   pSub_correlation(void);
+    Card_Count*         pSub_count(void);
     Card_CrossJoin*     pSub_crossJoin(void);
-    Card_StreamHead*     pSub_dataStart(void);
+    Card_StreamHead*    pSub_dataStart(void);
     Card_Direction*     pSub_direction(void);
     Card_Expr*          pSub_expr(void);
     Card_Filter*        pSub_filter(void);
@@ -388,6 +389,7 @@ namespace STORE
     Card_IndexJoin*     pSub_indexJoin(void);
     Card_IndexList*     pSub_indexList(void);
     Card_IndexNm*       pSub_indexNm(void);
+    Card_JoinCast*      pSub_locusCast(void);
     Card_StreamJoin*     pSub_joinLocus(void);
     Card_StreamSet*   pSub_joinPermAll(void);
     Card_StreamPer*   pSub_joinPermList(void);

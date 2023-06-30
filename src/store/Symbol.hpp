@@ -23,6 +23,7 @@ namespace STORE
     Symbol(void);
     Symbol(Stz* szSymbol);
 
+    void operator =(i8 iArg);
     void operator =(Stz* szArg);
     void operator =(Symbol* pSymbol);
     void operator =(Symbol& rxSymbol);

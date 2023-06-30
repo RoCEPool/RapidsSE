@@ -21,15 +21,15 @@ begin
   stage stageA on all partitions :
     scan lineitem
     | project " type integer as orderkey l_orderkey "
-    | top "TOP type integer orderkey" 2
+    | top "type integer orderkey" 2
     | combined 0
     | next
 stage stageA on all nodes :
-    top "TOP type integer orderkey" 2
+    top "type integer orderkey" 2
     | combined 0
     | next
 stage stageA on origin :
-    top "TOP type integer orderkey" 2
+    top "type integer orderkey" 2
     | combined 0
     | next
   stage stageLast on origin :

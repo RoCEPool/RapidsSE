@@ -223,6 +223,7 @@ void Dissector::vOp(i8 i_OpSpec)
   else if (m_szOpNm->bSame("sink"_Stz))         pCard = pOp_Sink        ();
   else if (m_szOpNm->bSame("sort"_Stz))         pCard = pOp_Sort        ();
   else if (m_szOpNm->bSame("start"_Stz))        pCard = pOp_Start       ();
+  else if (m_szOpNm->bSame("top"_Stz))          pCard = pOp_Top         ();
   else {
     if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
       vTrace("Skipping OpSpec %s\n"_Stz, m_szOpNm);
@@ -1049,6 +1050,47 @@ Card* Dissector::pOp_Start(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
       
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect : top                                                              */
+/*----------------------------------------------------------------------------*/
+Card* Dissector::pOp_Top(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // op arguments
+
+  vCheckArgs(2);
+
+
+  i8 i_Expr = 1;
+  Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+  Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr);
+
+  i8 iCount = iGetInt(1);
+
+  s32 sCount;
+  sCount = iCount;
+  Card_Top* pCard_Top = new Card_Top(sCount);
+
+  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+  pCard_Top->vPush(pCard_AggLevel);
+
+  pCard_Top->vAppend(pCard_Expr);
+
+  Symbol xSymbol;
+  xSymbol = iCount;
+  Card_Count* pCard_Count = new Card_Count;
+  pCard_Count->pSymbol()->vSet(&xSymbol);
+  pCard_Top->vAppend(pCard_Count);
+
+  pCard_Top->vDump();
+
+
+  return pCard_Top;
 }
 
 /*----------------------------------------------------------------------------*/
