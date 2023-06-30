@@ -276,6 +276,8 @@
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
+  "OP_DYNAMIC executing" .
+
   Tub[].new
   Pot[].new
   dynamic[].new
