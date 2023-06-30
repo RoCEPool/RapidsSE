@@ -8,9 +8,16 @@ create table interval6(a date,b timestamp,c time);
 load interval6 "../DATA/QA/interval/interval6.csv";
 
 /glean_interactive
+/transliterated
 /weaver2
+/weaved
 /pipeline_def
-select a+interval '1' month,count(*) from interval6 group by a+interval '1' month having extract(month from a+interval '1' month)=2;
+select a+interval '1' month,
+       count(*)
+  from interval6
+ group by a+interval '1' month
+having extract(month from a+interval '1' month)=2
+;
 
 /*============================================================================*/
 /* end                                                                        */

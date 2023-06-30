@@ -223,7 +223,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
     if (CK_FILTER == e_main || CK_HAVING == e_main) {
 
       bSawFilterOp = true;
-      if (! bSawAggOp)
+      if (CK_FILTER == e_main && ! bSawAggOp)
        continue;
 
       vAddNext(pCI, p_main, i_Main,""_Stz);
