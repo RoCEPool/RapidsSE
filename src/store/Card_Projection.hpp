@@ -34,7 +34,9 @@ namespace STORE
     Card_Projection* pReducedCopy(void);
     void vReviewAs(CardIter* pCI);
 
-    StreamDef* pToStreamDef(ColsReq* pColMap=nullptr, Card_Key* p_key=nullptr);
+    StreamDef* pToStreamDef(ColsReq* pColMap=nullptr,
+                            Card_Key* p_key=nullptr,
+                            bool bIsTop=false);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

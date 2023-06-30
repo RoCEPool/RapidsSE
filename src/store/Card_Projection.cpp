@@ -398,7 +398,9 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
-StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap, Card_Key* p_key)
+StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
+                                         Card_Key* p_key,
+                                         bool bIsTop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -434,8 +436,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap, Card_Key* p_key)
       RASSERT(p_key);
 
       bool bPayload = false;
-//    if (! p_expr->pSymbol()->bIsKeyOrdinal())
-      if (! p_expr->bIsExpressionOfKey())
+      if (! bIsTop && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
       pColMap->vAddCol(i_Col++, sColNm, bPayload);

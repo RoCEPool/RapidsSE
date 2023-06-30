@@ -35,6 +35,9 @@ namespace STORE
     IndexDef*  m_pIndexDef_sort;
     ColsReq*   m_pColMap_sort;
 
+    IndexDef*  m_pIndexDef_top;
+    ColsReq*   m_pColMap_top;
+
     ColsReq*   m_pColsReq;
 
   protected:
