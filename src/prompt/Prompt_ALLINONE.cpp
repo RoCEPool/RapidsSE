@@ -1582,6 +1582,7 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_NUMBERS);
   gxPromptCatalog.vFuns(PF_OLIST);
   gxPromptCatalog.vFuns(PF_OPSYS);
+  gxPromptCatalog.vFuns(PF_PDSTEST);
   gxPromptCatalog.vFuns(PF_PLIST);
   gxPromptCatalog.vFuns(PF_PMC);
   gxPromptCatalog.vFuns(PF_POW2);
@@ -2306,27 +2307,27 @@ bool PROMPT::bPrompt_ls(SePrompt* pPrompt)
   s256 sDirPath;
   s256 sEntryNm;
   i8 iEntryType;
-                   
+
   TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
   ASSERT(pInpTknVec->pGet(0)->bSame("ls"_Stz));
   UNUSED(pInpTknVec);
-  
+
   // get the current directory
   if (!Dir::bGetCurrent(sDirPath))
     return false;
-  
+
   // open the current directory
   if (!oDir.bOpen(sDirPath))
     return false;
-  
+
   // read the current directory and list contents
   while (oDir.bRead()) {
     sEntryNm = oDir.szEntryNm();
     iEntryType = oDir.iEntryType();
     vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryNm.azChar());
   }
-  
+
   // close the current directory
   oDir.vClose();
                    
@@ -3031,6 +3032,259 @@ bool PROMPT::bPrompt_opsys(SePrompt* pPrompt)
   OpSys::vGetInfo();
   OpSys::vTraceInfo();
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_plist.cpp -- participant list report                                */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_pdsTest (
+    PF_PDSTEST,             // prompt function
+    "Prompt_pdsTest"_Stz,   // name of the prompt function
+    "comment"_Stz,        // comment about the function
+    "pdsTest"_Stz,          // the prompt command
+    nullptr,              // the second word
+    bPrompt_pdsTest,        // prompt function
+    true,                 // enabled
+
+    true,                 // visible
+    "pdsTest"_Stz,          // help
+    ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  //  Pds* pPDS = new Pds(16);
+
+//struct xTest {
+//  i8 iKey;
+//  char cArr[23];
+//}typedef TestStruct;
+//
+//  TestStruct Pds_TestStruct;
+//  Pds_t<TestStruct>* a = new Pds_t<TestStruct>();
+
+  typedef Pds_t<i16> Pds_i16;
+  Pds_i16* PDS_i16;
+
+/*----------------------------------------------------------------------------*/
+  // Test Case - Basic single element tests
+/*----------------------------------------------------------------------------*/
+
+  bool bResult = false;
+  PDS_i16 = new Pds_i16();
+
+  // Insert single element
+  bResult = PDS_i16->bInsert(1);
+  RASSERT(bResult);
+
+//  PDS_i16->vDumpInUseList();
+//  PDS_i16->vDumpFreeList();
+
+  RASSERT(PDS_i16->m_iNumEntries[0] == 1);
+  RASSERT(PDS_i16->m_iFreeListEntries == 0);
+
+
+  // Find existing element
+  SkipListBlock* pSearchBlock = PDS_i16->pFind(1);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 1);
+
+
+  // Find non-existent element
+  pSearchBlock = PDS_i16->pFind(2);
+  RASSERT(pSearchBlock == nullptr);
+
+
+  // Delete single existing element
+  bResult = PDS_i16->bDelete(1);
+  RASSERT(bResult);
+
+//  PDS_i16->vDumpInUseList();
+//  PDS_i16->vDumpFreeList();
+
+  RASSERT(PDS_i16->m_iNumEntries[0] == 0);
+  RASSERT(PDS_i16->m_iFreeListEntries == 1);
+
+
+  // Find deleted element
+  pSearchBlock = PDS_i16->pFind(1);
+  RASSERT(pSearchBlock == nullptr);
+
+
+  // Delete non-existent element
+  bResult = PDS_i16->bDelete(1);
+  RASSERT( ! bResult);
+  RASSERT(PDS_i16->m_iNumEntries[0] == 0);
+  RASSERT(PDS_i16->m_iFreeListEntries == 1);
+
+
+
+  delete PDS_i16;
+
+/*----------------------------------------------------------------------------*/
+  // Test Case - 10 element tests
+/*----------------------------------------------------------------------------*/
+
+  PDS_i16 = new Pds_i16();
+
+  // Insert 10 elements out of order
+  bResult = PDS_i16->bInsert(10);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(3);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(1);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(7);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(6);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(9);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(4);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(8);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(2);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(5);
+  RASSERT(bResult);
+
+  RASSERT(PDS_i16->m_iNumEntries[0] == 10);
+  RASSERT(PDS_i16->m_iFreeListEntries == 0);
+
+
+  // Ensure elements are stored in order at each level
+  for(i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++)
+  {
+    SkipListBlock* pCursor = (SkipListBlock*) PDS_i16->pGetAddrFromOffset(PDS_i16->m_uInUseRootOffset);
+    i8 iPrevKey = 0;
+
+    while(pCursor) {
+      RASSERT(pCursor->iKey() >= iPrevKey);
+      iPrevKey = pCursor->iKey();
+      pCursor = PDS_i16->pNextSLBlock(pCursor, i_Level);
+    }
+  }
+
+
+  // Find 5 existing elements
+  pSearchBlock = PDS_i16->pFind(1);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 1);
+
+  pSearchBlock = PDS_i16->pFind(8);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 8);
+
+  pSearchBlock = PDS_i16->pFind(10);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 10);
+
+  pSearchBlock = PDS_i16->pFind(3);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 3);
+
+  pSearchBlock = PDS_i16->pFind(2);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 2);
+
+
+  // Delete 5 existing elements
+  bResult = PDS_i16->bDelete(1);
+  RASSERT(bResult);
+  bResult = PDS_i16->bDelete(8);
+  RASSERT(bResult);
+  bResult = PDS_i16->bDelete(10);
+  RASSERT(bResult);
+  bResult = PDS_i16->bDelete(3);
+  RASSERT(bResult);
+  bResult = PDS_i16->bDelete(2);
+  RASSERT(bResult);
+
+//  PDS_i16->vDumpInUseList();
+//  PDS_i16->vDumpFreeList();
+
+  RASSERT(PDS_i16->m_iNumEntries[0] == 5);
+  RASSERT(PDS_i16->m_iFreeListEntries == 5);
+
+  // Delete same 5 elements again
+  bResult = PDS_i16->bDelete(1);
+  RASSERT( ! bResult);
+  bResult = PDS_i16->bDelete(8);
+  RASSERT( ! bResult);
+  bResult = PDS_i16->bDelete(10);
+  RASSERT( ! bResult);
+  bResult = PDS_i16->bDelete(3);
+  RASSERT( ! bResult);
+  bResult = PDS_i16->bDelete(2);
+  RASSERT( ! bResult);
+
+
+  // Find 5 deleted elements
+  pSearchBlock = PDS_i16->pFind(1);
+  RASSERT(pSearchBlock == nullptr);
+
+  pSearchBlock = PDS_i16->pFind(8);
+  RASSERT(pSearchBlock == nullptr);
+
+  pSearchBlock = PDS_i16->pFind(10);
+  RASSERT(pSearchBlock == nullptr);
+
+  pSearchBlock = PDS_i16->pFind(3);
+  RASSERT(pSearchBlock == nullptr);
+
+  pSearchBlock = PDS_i16->pFind(2);
+  RASSERT(pSearchBlock == nullptr);
+
+
+  // Find existing element
+  pSearchBlock = PDS_i16->pFind(9);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 9);
+
+
+  delete PDS_i16;
+
+/*----------------------------------------------------------------------------*/
+  // Test Case - Insert till buffer is full
+/*----------------------------------------------------------------------------*/
+//  PDS_i16 = new Pds_i16();
+//
+//  for(i8 iInsert = 0; iInsert < C_I8_MAX; iInsert++)
+//  {
+//    bResult = PDS_i16->bInsert(rand());
+//    if(!bResult) {
+//     break;
+//    }
+//  }
+//  delete PDS_i16;
+//ASSERT`(iBytes >= 0) && (iBytes < USHRT_MAX)` Fails. Bytes exceeds ushrt_max
+
+///*----------------------------------------------------------------------------*/
+//                  // Test Case - Insert duplicate key
+///*----------------------------------------------------------------------------*/
+  PDS_i16 = new Pds_i16();
+  bResult = PDS_i16->bInsert(10);
+  RASSERT(bResult);
+  bResult = PDS_i16->bInsert(10);
+  RASSERT( ! bResult);
+
+//  PDS_i16->vDumpInUseList();
+//  PDS_i16->vDumpFreeList();
+
+  RASSERT(PDS_i16->m_iNumEntries[0] == 1);
+  RASSERT(PDS_i16->m_iFreeListEntries == 1);
+
+  delete PDS_i16;
+
+  vTrace("Success!\n"_Stz);
   return true;
 }
 

@@ -15,7 +15,7 @@ namespace BASE
 
   public:
     i8 m_nBlockSize; // Size of SLN + Item in bytes
-    i8 m_nPadding; // Size of free space
+    i8 m_nPaddingPerBlk; // Size of padding for each Skip List Block
     u2 m_uFreeListRootOffset;
     i8 m_iFreeListEntries; // Number of free entries available (Does not include dummy root node)
 
@@ -37,7 +37,6 @@ namespace BASE
     SkipListBlock* aAllotSkipListBlock(i8 iKey);
 
     bool bDelete(i8 iKey);
-    void vDump(u2 uOffset);
     void vDumpFreeList(void);
     void vDumpInUseList(void);
 
@@ -52,7 +51,7 @@ namespace BASE
 
     SkipListBlock* pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel);
 
-    void vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
+    bool bPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
 
     bool bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
     bool bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);

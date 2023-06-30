@@ -56,21 +56,24 @@ Pds::Pds(i8 nBytes)
   RASSERT(nBytes >= C_MIN_KEY_LEN);
 
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
-  m_nPadding = 0;
+  m_nPaddingPerBlk = 0;
 
   // Ensure block size is a multiple of 16 bytes
   i8 iMod = m_nBlockSize % 16;
   if(iMod != 0) {
-    m_nPadding = 16 - iMod;
-    m_nBlockSize += m_nPadding;
+    m_nPaddingPerBlk = 16 - iMod;
+    m_nBlockSize += m_nPaddingPerBlk;
   }
 
 
-  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock(0));
   m_iFreeListEntries = 0;
-  // add dummy node to in use skip list
+
+  // Add dummy root nodes to the Free and In Use skip lists
+  m_uFreeListRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock(0));
   m_uInUseRootOffset = uGetOffsetFromBase((void*)aAllotSkipListBlock(0));
 
+  // Reset the number of entries in both the lists
+  m_iFreeListEntries = 0;
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
     m_iNumEntries[i_Level] = 0;
   }
@@ -130,7 +133,7 @@ SkipListBlock* Pds::aAllotSkipListBlock(i8 iKey)
 
   pAllocBlock->vSetKey(iKey);
 
-  vTrace("Block addr: %p\n"_Stz, pAllocBlock);
+//  vTrace("Block addr: %p\n"_Stz, pAllocBlock);
   return pAllocBlock;
 }
 
@@ -187,15 +190,55 @@ bool Pds::bDelete(i8 iKey)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print the skip list                                                        */
+/* print the skip list of free entries                                        */
 /*----------------------------------------------------------------------------*/
-void Pds::vDump(u2 uOffset)
-{
+void Pds::vDumpFreeList(void) {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
+  vTrace("Free List\n"_Stz);
   vTrace("=================================================="
          "===================================================\n"_Stz);
-  if((SkipListBlock*) pGetAddrFromOffset(uOffset) == nullptr) {
+  if((SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset) == nullptr) {
+    vTrace("Invalid offset given\n"_Stz);
+    return;
+  }
+
+  vTrace("| %5s | %6s | %s\n"_Stz, "Level", "# Ents", "Items");
+
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
+
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
+
+    vTrace("| %5lld | %6lld | "_Stz, 0, m_iFreeListEntries);
+
+    for(i8 iNumEntries = 0; iNumEntries < m_iFreeListEntries + 1; iNumEntries++) {
+      vTrace("%lld-->"_Stz, pCursor->iKey());
+
+      pCursor = pNextSLBlock(pCursor, 0);
+      if(pCursor == nullptr) {
+        break;
+      }
+    }
+    vTrace("END\n"_Stz);
+    vTrace("--------------------------------------------------"
+           "--------------------------------------------------\n"_Stz);
+
+
+  vTrace("=================================================="
+         "===================================================\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print the skip list of in use entries                                      */
+/*----------------------------------------------------------------------------*/
+void Pds::vDumpInUseList(void) {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  vTrace("In Use List\n"_Stz);
+  vTrace("=================================================="
+         "===================================================\n"_Stz);
+  if((SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset) == nullptr) {
     vTrace("Invalid offset given\n"_Stz);
     return;
   }
@@ -205,7 +248,7 @@ void Pds::vDump(u2 uOffset)
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(uOffset);
+    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
 
     vTrace("| %5lld | %6lld | "_Stz, i_Level, m_iNumEntries[i_Level]);
 
@@ -224,26 +267,6 @@ void Pds::vDump(u2 uOffset)
 
   vTrace("=================================================="
          "===================================================\n\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print the skip list of free entries                                        */
-/*----------------------------------------------------------------------------*/
-void Pds::vDumpFreeList(void) {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-
-  vTrace("Free List\n"_Stz);
-  vDump(m_uFreeListRootOffset);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print the skip list of in use entries                                      */
-/*----------------------------------------------------------------------------*/
-void Pds::vDumpInUseList(void) {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-
-  vTrace("In Use List\n"_Stz);
-  vDump(m_uInUseRootOffset);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -325,7 +348,14 @@ bool Pds::bInsert(i8 iKey)
   // Get the prior vector at all levels for this key, i.e
   // the elements at each level of the skip list after which
   // we want to insert this key.
-  vPriorVecToKey(iKey, xPriorVec);
+  bool bResult = bPriorVecToKey(iKey, xPriorVec);
+
+  if( ! bResult) {
+    // Got duplicate key, error
+    vMoveToFreeList(pNewSLSet);
+//    vTrace("Pds Skip List attempting to insert a duplicate key %lld\nAborting insert...\n"_Stz, iKey);
+    return false;
+  }
 
   // Iterate this vector for each level, and we may or may not
   // insert the key
@@ -420,7 +450,7 @@ SkipListBlock* Pds::pNextSLBlock(SkipListBlock* pSLBlock, i8 iLevel)
 /* compute prior vector for insert key, such that next of PriorVec[0] is      */
 /* specifically the point to insert at                                        */
 /*----------------------------------------------------------------------------*/
-void Pds::vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[])
+bool Pds::bPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
@@ -450,9 +480,13 @@ void Pds::vPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[])
       }
     }
 
+    if(iNextKey == iKey) {
+      return false;
+    }
     aPriorVec[i_Level] = pCurr;
   }
 
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
