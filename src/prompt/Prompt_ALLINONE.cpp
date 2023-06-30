@@ -3060,16 +3060,6 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  //  Pds* pPDS = new Pds(16);
-
-//struct xTest {
-//  i8 iKey;
-//  char cArr[23];
-//}typedef TestStruct;
-//
-//  TestStruct Pds_TestStruct;
-//  Pds_t<TestStruct>* a = new Pds_t<TestStruct>();
-
   typedef Pds_t<i16> Pds_i16;
   Pds_i16* PDS_i16;
 
@@ -3123,8 +3113,6 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT( ! bResult);
   RASSERT(PDS_i16->m_iNumEntries[0] == 0);
   RASSERT(PDS_i16->m_iFreeListEntries == 1);
-
-
 
   delete PDS_i16;
 
@@ -3267,9 +3255,9 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 //  delete PDS_i16;
 //ASSERT`(iBytes >= 0) && (iBytes < USHRT_MAX)` Fails. Bytes exceeds ushrt_max
 
-///*----------------------------------------------------------------------------*/
-//                  // Test Case - Insert duplicate key
-///*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+                  // Test Case - Insert duplicate key
+/*----------------------------------------------------------------------------*/
   PDS_i16 = new Pds_i16();
   bResult = PDS_i16->bInsert(10);
   RASSERT(bResult);
@@ -3283,6 +3271,62 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT(PDS_i16->m_iFreeListEntries == 1);
 
   delete PDS_i16;
+
+/*----------------------------------------------------------------------------*/
+                  // Test Case - PDS for Char array
+/*----------------------------------------------------------------------------*/
+
+  struct xTest {
+    i8 iKey;
+    char cArr[23];
+  }typedef TestStruct;
+
+  Pds_t<TestStruct>* PDS_CharArr;
+  PDS_CharArr = new Pds_t<TestStruct>();
+
+  // Insert single element
+  bResult = PDS_CharArr->bInsert(1);
+  RASSERT(bResult);
+
+  PDS_CharArr->vDumpInUseList();
+  PDS_CharArr->vDumpFreeList();
+
+  RASSERT(PDS_CharArr->m_iNumEntries[0] == 1);
+  RASSERT(PDS_CharArr->m_iFreeListEntries == 0);
+
+
+  // Find existing element
+  pSearchBlock = PDS_CharArr->pFind(1);
+  RASSERT(pSearchBlock != nullptr);
+  RASSERT(pSearchBlock->iKey() == 1);
+
+
+  // Find non-existent element
+  pSearchBlock = PDS_CharArr->pFind(2);
+  RASSERT(pSearchBlock == nullptr);
+
+
+  // Delete single existing element
+  bResult = PDS_CharArr->bDelete(1);
+  RASSERT(bResult);
+
+  PDS_CharArr->vDumpInUseList();
+  PDS_CharArr->vDumpFreeList();
+
+  RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
+  RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
+
+
+  // Find deleted element
+  pSearchBlock = PDS_CharArr->pFind(1);
+  RASSERT(pSearchBlock == nullptr);
+
+
+  // Delete non-existent element
+  bResult = PDS_CharArr->bDelete(1);
+  RASSERT( ! bResult);
+  RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
+  RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
 
   vTrace("Success!\n"_Stz);
   return true;
