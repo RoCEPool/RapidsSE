@@ -31,7 +31,6 @@ namespace STORE
 
     void vAddStageCasts(void);
     void vStmColToColNmOfKeyExists(void);
-    void vTblColToStmCol(void);
 
   protected:
     Footer* aFooter(void);

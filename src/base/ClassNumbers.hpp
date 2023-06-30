@@ -472,6 +472,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_SCAN_BECOMES_TABLE,
   /* */ CN_XF_SHORTEN_QUERYNAMES,
   /* */ CN_XF_TABLE_ANALYSIS,
+  /* */ CN_XF_TBLCOL_TO_STMCOL,
 
   /* */ CN__Y__,
 
@@ -944,6 +945,7 @@ static Stz* aCN[]
   /* */ "XF_SCAN_BECOMES_TABLE"_Stz,        // CN_XF_SCAN_BECOMES_TABLE
   /* */ "XF_SHORTEN_QUERYNAMES"_Stz,        // CN_XF_SHORTEN_QUERYNAMES
   /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
+  /* */ "XF_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
 
   /* */ "_Y__"_Stz,                 // CN__Y__
 

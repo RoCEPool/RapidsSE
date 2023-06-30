@@ -291,6 +291,7 @@
 #include "XF_scan_Becomes_table.hpp"
 #include "XF_Shorten_QueryNames.hpp"
 #include "XF_table_Analysis.hpp"
+#include "XF_tblCol_To_stmCol.hpp"
 
 #include "CardUsage.hpp"
 
@@ -780,6 +781,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_SCAN_BECOMES_TABLE,        sizeof(XF_scan_Becomes_table),        HT_T_TINY    , FILL },
   {CN_XF_SHORTEN_QUERYNAMES,        sizeof(XF_Shorten_QueryNames),        HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,            sizeof(XF_table_Analysis),            HT_T_TINY    , FILL },
+  {CN_XF_TBLCOL_TO_STMCOL,          sizeof(XF_tblCol_To_stmCol),          HT_T_TINY    , FILL },
 
   {CN__Y__,                    'Y' - ('A' - 1),                HT_INVALID   , FILL },
 

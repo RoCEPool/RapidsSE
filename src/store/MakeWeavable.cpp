@@ -10,6 +10,7 @@
 
 #include "XF_Dedupe_as.hpp"
 #include "XF_Reinstate_stage.hpp"
+#include "XF_tblCol_To_stmCol.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +63,8 @@ void MakeWeavable::vWeavable(void)
 
   vAddStageCasts();
 
-  vTblColToStmCol();
+   XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+
   vStmColToColNmOfKeyExists();
 
   XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
@@ -109,29 +111,6 @@ void MakeWeavable::vStmColToColNmOfKeyExists(void)
     m_pCI->G.p_constraint->vConvert_stmColOdn_To_stmColNm(m_pCI);
   }
 
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vTblColToStmCol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MAKEWEAVABLE,_FOOTER_);
-
-  m_pCI->vTransform(__func__, "vTblColToStmCol"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain_reverse()) {
-
-    m_pCI->Analysis.m_pProjection_prior = Card_Projection::pResolvePriorProjection(m_pCI);
-
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
-
-//    if (m_pCI->G.p_OP->pSub_projection())
-//      m_pCI->Analysis.m_pProjection_prior =
-//          m_pCI->G.p_OP->pSub_projection();
-  }
   m_pCI->vEndTransform();
 }
 
