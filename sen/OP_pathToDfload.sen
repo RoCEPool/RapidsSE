@@ -32,11 +32,49 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // temp debug
-  //true exit
+  // We need to pass any load-specific tags to the child command that we're
+  // going to fork. That way it will read the CSV file with the appropriate options.
+
+  ""          locals| sTags |
+  tagSet::new locals| pCmdTagSet |
+
+  "<field_delimiter>" [op].tagSet@ tagSet.hasName if
+    "<field_delimiter>" <field_delimiter> pCmdTagSet tagSet.appendStr
+  then
+
+  "<escape_char>" [op].tagSet@ tagSet.hasName if
+    "<escape_char>" <escape_char> pCmdTagSet tagSet.appendStr
+  then
+
+  "<date_format>" [op].tagSet@ tagSet.hasName if
+    "<date_format>" <date_format> pCmdTagSet tagSet.appendStr
+  then
+
+  "<enclosed_by_leading>" [op].tagSet@ tagSet.hasName if
+    "<enclosed_by_leading>" <enclosed_by_leading> pCmdTagSet tagSet.appendStr
+  then
+
+  "<enclosed_by_trailing>" [op].tagSet@ tagSet.hasName if
+    "<enclosed_by_trailing>" <enclosed_by_trailing> pCmdTagSet tagSet.appendStr
+  then
+
+  "<max_errors>" [op].tagSet@ tagSet.hasName if
+    "<max_errors>" <max_errors> pCmdTagSet tagSet.appendStr
+  then
+
+  "<record_terminator>" [op].tagSet@ tagSet.hasName if
+    "<record_terminator>" <record_terminator> pCmdTagSet tagSet.appendStr
+  then
+
+  "<record_ends>" [op].tagSet@ tagSet.hasName if
+    "<record_ends>" <record_ends> pCmdTagSet tagSet.appendStr
+  then
+
+  // Convert this tag set to a sen parsable string
+  pCmdTagSet tagSet.asSenStr to sTags
 
   C_TDEF_COMMAND InfoSet:discover
-  sCmd 1 OI_COMMAND InfoSet:pipeoutRow
+  sTags sCmd 2 OI_COMMAND InfoSet:pipeoutRow
 
   true
 ;

@@ -24,8 +24,6 @@
   InfoSet[].firstRow to infoSetRow[]
 
   i_Col InfoSet[].colVal@
-  
-  InfoSet[].delete
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -70,6 +70,42 @@ Stz* SP_TagSet::sz(TagSet* pTagSet)
   return (Stz*) &m_caResult[0];
 }
 
+/*----------------------------------------------------------------------------*/
+/* sprint SP_TagSet as a sen parsable string and return Stz* to result        */
+/*----------------------------------------------------------------------------*/
+Stz* SP_TagSet::szSenStr(TagSet* pTagSet)
+{
+  _precondition_(_MAGIC_,CN_SPMEDIUM,_FOOTER_);
+
+  for (i8 i_Ename = 0; i_Ename < pTagSet->nItems(); i_Ename++) {
+
+    if (i_Ename)
+      StrLib::vSprintCat((Stz*)m_caResult," "_Stz);
+
+    if (TN_INTEGER == pTagSet->eToken(i_Ename)) {
+
+      StrLib::vSprintCat((Stz*)m_caResult,"%s = %lld"_Stz,
+
+                         pTagSet->szName(i_Ename),
+                         pTagSet->iValue(i_Ename),
+
+                         C_VARGS_END
+      );
+      continue;
+    }
+
+    StrLib::vSprintCat((Stz*)m_caResult,"%s = \"%s\""_Stz,
+
+                       pTagSet->szName(i_Ename),
+                       pTagSet->szValue(i_Ename),
+
+                       C_VARGS_END
+    );
+  }
+
+  return (Stz*) &m_caResult[0];
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
