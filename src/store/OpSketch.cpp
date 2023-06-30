@@ -204,10 +204,14 @@ void OpSketch::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_Du
   sUpper = pColumn->szColNm();
   StrLib::vToUpper((char *) sUpper.azChar());
 
-  if (pStreamDef->bIsDuplicateName(pColumn))
-    sColNm.vSprint("%s%lld.m_iAsI8"_Stz, sUpper.azChar(), i_DupCtr++);
-  else
+//  if (pStreamDef->bIsDuplicateName(pColumn))
+//    sColNm.vSprint("%s%lld.m_iAsI8"_Stz, sUpper.azChar(), i_DupCtr++);
+//  else
     sColNm.vSprint("%s.m_iAsI8"_Stz, sUpper.azChar());
+
+    if (sColNm.bSame("__COL2"_Stz)) {
+      i8 i = 1;
+    }
 
 }
 

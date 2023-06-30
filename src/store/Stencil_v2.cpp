@@ -137,7 +137,7 @@ eEC Stencil_v2::eSynthesise(PipelineDef *pPipelineDef) {
     }
 
     // synthesise the code for the stage
-    pStencil->vSynthesise(i_Stage);
+    pStencil->vSynthesise(i_Stage, i_Stage == nStages - 1 ? true : false /* lastStage */);
 
     // add the synthesised code to the stageDef
     pStageDef->vCode(pStencil->szOpSource());
@@ -477,7 +477,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 /*----------------------------------------------------------------------------*/
 /* synthesizecode for all operators for given stage                           */
 /*----------------------------------------------------------------------------*/
-void Stencil_v2::vSynthesise(i8 i_Stage)
+void Stencil_v2::vSynthesise(i8 i_Stage, bool bLastStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
@@ -488,7 +488,7 @@ void Stencil_v2::vSynthesise(i8 i_Stage)
   if ( i_Stage == 0)
     bPrependHeaders = true;
 
-    m_pOpSource->vSynthesizeCode(this, bPrependHeaders);
+    m_pOpSource->vSynthesizeCode(this, bPrependHeaders, bLastStage);
 }
 
 /*----------------------------------------------------------------------------*/
