@@ -30,8 +30,6 @@ namespace STORE
   private:
 
     void vAddStageCasts(void);
-    void vReinstateStages(void);
-    void vRenumberAll_syntheticAs(void);
     void vStmColToColNmOfKeyExists(void);
     void vTblColToStmCol(void);
 

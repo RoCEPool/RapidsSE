@@ -286,6 +286,7 @@
 #include "XF_projection_Analysis.hpp"
 #include "XF_Promote_gbyAgg_To_ordAgg.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
+#include "XF_Reinstate_stage.hpp"
 #include "XF_rpnCalc_To_boolCalc.hpp"
 #include "XF_scan_Becomes_table.hpp"
 #include "XF_Shorten_QueryNames.hpp"
@@ -755,25 +756,26 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,            0,                                  HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),                       HT_INVALID   , FILL },
-  {CN_XF_ADD_LEVEL,               sizeof(XF_Add_level),               HT_T_TINY    , FILL },
-  {CN_XF_AS_REVIEW,               sizeof(XF_as_Review),               HT_T_TINY    , FILL },
-  {CN_XF_CULL_NONUSED_BOUND,      sizeof(XF_Cull_NonUsed_bound),      HT_T_TINY    , FILL },
-  {CN_XF_CULL_USED_BOUND,         sizeof(XF_Cull_Used_bound),         HT_T_TINY    , FILL },
-  {CN_XF_CUT_SORT,                sizeof(XF_Cut_sort),                HT_T_TINY    , FILL },
-  {CN_XF_DEDUPE_AS,               sizeof(XF_Dedupe_as),               HT_T_TINY    , FILL },
-  {CN_XF_DELETE_FLAT,             sizeof(XF_Delete_flat),             HT_T_TINY    , FILL },
-  {CN_XF_DELETE_UNNEEDED,         sizeof(XF_Delete_Unneeded),         HT_T_TINY    , FILL },
-  {CN_XF_DERIVE_PROJECTION_KEY,   sizeof(XF_Derive_projection_key),   HT_T_TINY    , FILL },
-  {CN_XF_EARLY_PROJECTION,        sizeof(XF_Early_projection),        HT_T_TINY    , FILL },
-  {CN_XF_INDEX_ANALYSIS,          sizeof(XF_index_Analysis),          HT_T_TINY    , FILL },
-  {CN_XF_INDIVIDUATE_FILTER,      sizeof(XF_Individuate_filter),      HT_T_TINY    , FILL },
-  {CN_XF_MORPH_SCAN_TO_INDEXSCAN, sizeof(XF_Morph_scan_To_indexScan), HT_T_TINY    , FILL },
-  {CN_XF_MORPH_TABLE_TO_EEOP,     sizeof(XF_Morph_table_To_EEop),     HT_T_TINY    , FILL },
-  {CN_XF_MOVE_ON,                 sizeof(XF_Move_on),                 HT_T_TINY    , FILL },
-  {CN_XF_NOT_OPS,                 sizeof(XF_not_Ops),                 HT_T_TINY    , FILL },
+  {CN_XF_ADD_LEVEL,                 sizeof(XF_Add_level),                 HT_T_TINY    , FILL },
+  {CN_XF_AS_REVIEW,                 sizeof(XF_as_Review),                 HT_T_TINY    , FILL },
+  {CN_XF_CULL_NONUSED_BOUND,        sizeof(XF_Cull_NonUsed_bound),        HT_T_TINY    , FILL },
+  {CN_XF_CULL_USED_BOUND,           sizeof(XF_Cull_Used_bound),           HT_T_TINY    , FILL },
+  {CN_XF_CUT_SORT,                  sizeof(XF_Cut_sort),                  HT_T_TINY    , FILL },
+  {CN_XF_DEDUPE_AS,                 sizeof(XF_Dedupe_as),                 HT_T_TINY    , FILL },
+  {CN_XF_DELETE_FLAT,               sizeof(XF_Delete_flat),               HT_T_TINY    , FILL },
+  {CN_XF_DELETE_UNNEEDED,           sizeof(XF_Delete_Unneeded),           HT_T_TINY    , FILL },
+  {CN_XF_DERIVE_PROJECTION_KEY,     sizeof(XF_Derive_projection_key),     HT_T_TINY    , FILL },
+  {CN_XF_EARLY_PROJECTION,          sizeof(XF_Early_projection),          HT_T_TINY    , FILL },
+  {CN_XF_INDEX_ANALYSIS,            sizeof(XF_index_Analysis),            HT_T_TINY    , FILL },
+  {CN_XF_INDIVIDUATE_FILTER,        sizeof(XF_Individuate_filter),        HT_T_TINY    , FILL },
+  {CN_XF_MORPH_SCAN_TO_INDEXSCAN,   sizeof(XF_Morph_scan_To_indexScan),   HT_T_TINY    , FILL },
+  {CN_XF_MORPH_TABLE_TO_EEOP,       sizeof(XF_Morph_table_To_EEop),       HT_T_TINY    , FILL },
+  {CN_XF_MOVE_ON,                   sizeof(XF_Move_on),                   HT_T_TINY    , FILL },
+  {CN_XF_NOT_OPS,                   sizeof(XF_not_Ops),                   HT_T_TINY    , FILL },
   {CN_XF_PROJECTION_ANALYSIS,       sizeof(XF_projection_Analysis),       HT_T_TINY    , FILL },
   {CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,  sizeof(XF_Promote_gbyAgg_To_ordAgg),  HT_T_TINY    , FILL },
   {CN_XF_REDUCE_KEY_GBYAGG,         sizeof(XF_Reduce_key_gbyAgg),         HT_T_TINY    , FILL },
+  {CN_XF_REINSTATE_STAGE,           sizeof(XF_Reinstate_stage),           HT_T_TINY    , FILL },
   {CN_XF_RPNCALC_TO_BOOLCALC,       sizeof(XF_rpnCalc_To_boolCalc),       HT_T_TINY    , FILL },
   {CN_XF_SCAN_BECOMES_TABLE,        sizeof(XF_scan_Becomes_table),        HT_T_TINY    , FILL },
   {CN_XF_SHORTEN_QUERYNAMES,        sizeof(XF_Shorten_QueryNames),        HT_T_TINY    , FILL },

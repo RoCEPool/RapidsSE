@@ -9,6 +9,7 @@
 #include "Optimiser.hpp"
 
 #include "XF_Dedupe_as.hpp"
+#include "XF_Reinstate_stage.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +57,8 @@ void MakeWeavable::vWeavable(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
 
-  vReinstateStages();
+  //vReinstateStages();
+  XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
 
   vAddStageCasts();
 
@@ -81,25 +83,6 @@ void MakeWeavable::vAddStageCasts(void)
   m_pCI->vTransform(__func__, "add stage casts"_Stz);
 
   m_pCI->G.pDeck->vAddStageCasts(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* reinstate stages                                                           */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vReinstateStages(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "reinstate stages"_Stz);
-
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_PROJECTION,0);
-  //m_pCI->m_pCardCtl->vPrintSubCards(true,CK_RPNCALC,0);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  Card_Stage::vReinstate_stages(m_pCI);
 
   m_pCI->vEndTransform();
 }
