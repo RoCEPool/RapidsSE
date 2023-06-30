@@ -647,7 +647,7 @@ void Symbol::vSetSyntheticAs(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vSprint("__COL%lld"_Stz, iAsNo);
+  vSprint("COL%lld"_Stz, iAsNo);
 }
 
 /*----------------------------------------------------------------------------*/
