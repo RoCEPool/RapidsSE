@@ -102,6 +102,9 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
 
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
+
+        vReplaceTubPot(sLine, pOpSketch);
+
         // cater to multiple replaces of IndexInfo
         if (bReplaceRowInfoTo(sLine, sReplacedLine, pOpSketch) )
           sLine = sReplacedLine;
@@ -208,6 +211,77 @@ void CodeSynthUtils::vReplaceColumnNo(Stz* sLine, Column* pColumn) {
     bool bResult = StrLib::bReplace(sLine->azChar(), "__COLUMN_NO__", sColumn.azChar());
     RASSERT(bResult);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch) {
+
+  _static_
+
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ROWPIX__")) {
+    if (pOpSketch->m_eSketchKind == SK_TUB) {
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWPIX__", "vExtern_TubRowPix");
+      RASSERT(bResult);
+   }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_POT);
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWPIX__", "vExtern_PotRowPix");
+      RASSERT(bResult);
+    }
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ALLOTROW__")) {
+    if (pOpSketch->m_eSketchKind == SK_TUB) {
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__", "aExtern_TubAllotRow");
+      RASSERT(bResult);
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_POT);
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__", "aExtern_PotAllotRow");
+      RASSERT(bResult);
+    }
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ROWSTRSIZE")) {
+    if (pOpSketch->m_eSketchKind == SK_TUB) {
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWSTRSIZE__", "vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize)");
+      RASSERT(bResult);
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_POT);
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ROWSTRSIZE__", "vExtern_PotRowStrSize(aDynamicT->m_pPot,iMixIn, nSrcSize)");
+      RASSERT(bResult);
+    }
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__TUB_POT__")) {
+    if (pOpSketch->m_eSketchKind == SK_TUB) {
+      bResult = StrLib::bReplace(sLine->azChar(), "__TUB_POT__", "aDynamicT->m_pTub");
+      RASSERT(bResult);
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_POT);
+      bResult = StrLib::bReplace(sLine->azChar(), "__TUB_POT__", "aDynamicT->m_pPot");
+      RASSERT(bResult);
+    }
+  }
+
+  if (StrLib::bContains(sLine->azChar(), "__POT__")) {
+    if (pOpSketch->m_eSketchKind == SK_TUB) {
+      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "0");
+      RASSERT(bResult);
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_POT);
+      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "1");
+      RASSERT(bResult);
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

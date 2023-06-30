@@ -36,6 +36,7 @@ namespace STORE {
     static void vReplaceColumnsToInflate(Stz *sLine, OpSketch *pOpSketch);
     static bool bReplaceRowInfoFrom(Stz* sLine, Stz* sReplacedLine, OpSketch* pOpSketch);
     static bool bReplaceRowInfoTo(Stz* sLine, Stz* sReplacedLine, OpSketch* pOpSketch);
+    static void vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch);
 
   };
 }

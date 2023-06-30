@@ -312,51 +312,27 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iTubRowPix --------------------------------------------------------------*/
+/*-- vTubRowPix --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iTubRowPix
-i8 iTubRowPix(Dynamic_T* aDynamicT) {
+// function-vTubRowPix
+void vTubRowPix(Dynamic_T* aDynamicT) {
 
   RowInfo __ROW_INFO_TO__;
+  i8 __POT__;
 
   {
     // marker-start
 
 #ifdef WITH_CLANG
     void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-    vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
+    //vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
+    __EXTERN_ROWPIX__(__TUB_POT__, aRowPix);
 #endif
     __ROW_INFO_TO__.m_iInitialize = 0;
+    aDynamicT->m_iPot = __POT__;
   }
 
   // marker-end
-
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- iTubRowPix3 --------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iTubRowPix3
-i8 iTubRowPix3(Dynamic_T* aDynamicT) {
-
-  RowInfo __ROW_INFO_TO__;
-
-  {
-  // marker-start
-
-  printf("TUB initializing rowPix %p\n", aDynamicT);
-#ifdef WITH_CLANG
-    void* aRowPix = aExtern_RowPixNew(__COLUMNS_OUT__, &xColumnInfo);
-    vExtern_PotRowPix(aDynamicT->m_pPot, aRowPix);
-#endif
-    aDynamicT->m_iPot = 1;
-    __ROW_INFO_TO__.m_iInitialize = 0;
-  }
-
-  // marker-end
-
-  return 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -560,7 +536,8 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
+  //__ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__((void*)__TUB_POT__,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
     // check for error
     if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
@@ -575,35 +552,6 @@ i8 iEosPayLoadTub(Dynamic_T* aDynamicT) {
 }
 
 // NOTE: con be combined with iEosPayLoadTub
-
-/*----------------------------------------------------------------------------*/
-/*-- iEosPayLoadPot ----------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iEosPayLoadPot
-i8 iEosPayLoadPot(Dynamic_T* aDynamicT) {
-
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-  RowInfo __ROW_INFO_TO__;
-
-  // marker-start
-  if (!aDynamicT->m_iRowsProcessed)
-    goto L_Return;
-
-  // allocate a row from the tub
-#ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_PotAllotRow((void*)aDynamicT->m_pPot, iMixIn, &__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
-#endif
-  // check for error
-  if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
-    return 0;
-  }
-
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
-
-  // marker-end
-  L_Return:
-  return 0;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- vEosPayLoadTubEnd -------------------------------------------------------*/
@@ -820,7 +768,8 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
     i8 iDstLen = strlen(szDstStz) + 1;
     aDynamicT->m_xRowInfoTO.m_acStrArea += iDstLen;
 #ifdef WITH_CLANG
-    vExtern_TubRowStrSize(aDynamicT->m_pTub,iDstLen);
+    //vExtern_TubRowStrSize(aDynamicT->m_pTub,iDstLen);
+    __EXTERN_ROWSTRSIZE__;
 #endif
 
     iElemSize += nSrcSize;
@@ -929,7 +878,8 @@ void vTubVchCol(Dynamic_T* aDynamicT) {
     __ROW_INFO_TO__.m_acStrArea += nSrcSize;
 
 #ifdef WITH_CLANG
-    vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
+    //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
+    __EXTERN_ROWSTRSIZE__;
 #endif
   }
 
@@ -996,7 +946,8 @@ void vTubRowStr(Dynamic_T* aDynamicT) {
   {
   // marker-start
 #ifdef WITH_CLANG
-    vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
+    //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
+    __EXTERN_ROWSTRSIZE__;
 #endif
   }
   // marker-end
@@ -1082,7 +1033,8 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
      // update the tub string size
      aDynamicT->m_xRowInfoTO.m_acStrArea += nSrcSize;
 #ifdef WITH_CLANG
-     vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
+     //vExtern_TubRowStrSize(aDynamicT->m_pTub,nSrcSize);
+     __EXTERN_ROWSTRSIZE__;
 #endif
   }
 
