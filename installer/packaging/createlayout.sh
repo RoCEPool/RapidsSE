@@ -36,6 +36,7 @@ cp "${ROOT_DIR}/bootstrap/generateData.sh"  "${LAYOUT_DIR}/dbgen"
 # Refer to #includes in LogicCompiler::v_DynPreliminary()
 mkdir -p "${LAYOUT_DIR}/src"
 mkdir -p "${LAYOUT_DIR}/src/store"
+mkdir -p "${LAYOUT_DIR}/src/store/Fragments"
 mkdir -p "${LAYOUT_DIR}/src/base"
 mkdir -p "${LAYOUT_DIR}/src/primitives"
 cp "${ROOT_DIR}/src/store/LogicUnit.cpp"    "${LAYOUT_DIR}/src/store"
