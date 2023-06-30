@@ -94,7 +94,7 @@ namespace STORE
     IndexDef* pCraftIndexDef_top(void);
 
     StreamDef* pCraftStreamDef_arriving(void);
-    StreamDef* pCraftStreamDef_emitted(ColsReq** ppColMap);
+    StreamDef* pCraftStreamDef_emitted(ColsReq** ppColMap, bool bIsTop);
   };
 
   Card_OP* _pCard_OP(void* aAddr);

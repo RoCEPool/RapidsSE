@@ -132,7 +132,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (   CK_AGGREG  == pCI->G.e_MainCard
+  if (! (      CK_AGGREG  == pCI->G.e_MainCard
             || CK_FILTER  == pCI->G.e_MainCard
             || CK_GBYAGG  == pCI->G.e_MainCard
             || CK_PROJECT == pCI->G.e_MainCard
@@ -1509,7 +1509,8 @@ void Card_OP::vRpnTop(Stz* szRpnExpr, Card_Top* pCard_Top)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_RpnCalc *pCard_Calc = pCard_Top->pSub_rpnCalc();
+  Card_Key *pCard_key = pCard_Top->pSub_key();
+  Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
 
   eCT eColumnType = Symbol::eTo_eCT_char(pCard_Calc->szP_Type());
 
@@ -1759,7 +1760,7 @@ StreamDef* Card_OP::pCraftStreamDef_arriving(void)
 /*----------------------------------------------------------------------------*/
 /* craft emitted streamDef                                                    */
 /*----------------------------------------------------------------------------*/
-StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap)
+StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap, bool bIsTop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1768,14 +1769,14 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap)
     return nullptr;
 
   Card_Key* p_key = nullptr;
-  if (bIsOne(CK_GBYAGG,CK_SORT,CK_NONE)) {
+  if (bIsOne(CK_GBYAGG,CK_SORT,CK_TOP,CK_NONE)) {
     *ppColMap = new ColsReq;
     p_key = pSub_key();
     RASSERT(p_key);
   }
 
   StreamDef* pStreamDef_emitted =
-      p_projection->pToStreamDef(ppColMap? *ppColMap:nullptr, p_key);
+      p_projection->pToStreamDef(ppColMap? *ppColMap:nullptr, p_key, bIsTop);
 
   if (ppColMap)
     (*ppColMap)->vValidate();

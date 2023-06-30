@@ -1081,6 +1081,11 @@ Card* Dissector::pOp_Top(void)
 
   pCard_Top->vAppend(pCard_Expr);
 
+  Card_Key* p_key = new Card_Key;
+
+  p_key->vAppend(pCard_Expr->pClone());
+  pCard_Top->vAppend(p_key);
+
   Symbol xSymbol;
   xSymbol = iCount;
   Card_Count* pCard_Count = new Card_Count;

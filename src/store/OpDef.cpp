@@ -272,6 +272,16 @@ void OpDef::vDump(i8 i_Tab)
   if (m_pColMap_sort)
     m_pColMap_sort->vDump(i_Tab+1);
 
+  vTrace("%s%s : IndexDef_top    %p\n"_Stz,
+         Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pIndexDef_top);
+  if (m_pIndexDef_top)
+    m_pIndexDef_top->vDump(i_Tab+1);
+
+  vTrace("%s%s : ColMap_top      %p\n"_Stz,
+         Stz::szTab(i_Tab), Stz::szSpaces(nSpaces), m_pColMap_top);
+  if (m_pColMap_top)
+    m_pColMap_top->vDump(i_Tab+1);
+
   vTrace("%s%s : ColsReq         %p\n"_Stz,
          Stz::szTab(i_Tab),Stz::szSpaces(nSpaces), m_pColsReq);
   if (m_pColsReq)

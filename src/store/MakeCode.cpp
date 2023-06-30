@@ -399,8 +399,11 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
   else
   if (p_OP->bIsCard(CK_SORT))
     ppColMap = &m_pOpDef->m_pColMap_sort;
+  else
+  if (p_OP->bIsCard(CK_TOP))
+    ppColMap = &m_pOpDef->m_pColMap_top;
 
-  m_pOpDef->m_pStreamDef_emitted = p_OP->pCraftStreamDef_emitted(ppColMap);
+  m_pOpDef->m_pStreamDef_emitted = p_OP->pCraftStreamDef_emitted(ppColMap,p_OP->bIsCard(CK_TOP));
 //  m_pOpDef->m_pColMap_gbyAgg =
 //      p_OP->pCraftColMap_gbyAgg(m_pOpDef->m_pStreamDef_emitted,
 //                                m_pOpDef->m_pIndexDef_gbyAgg);
