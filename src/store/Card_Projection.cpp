@@ -400,7 +400,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
                                          Card_Key* p_key,
-                                         bool bIsTop)
+                                         eCK eOP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -419,6 +419,13 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
     else
       sColNm = p_expr->pGetTerm(0)->szSymbol();
 
+    if (CK_PROJECT != eOP) {
+      s32 sColNm_modified;
+      sColNm_modified.vSprint("C%lld_%s"_Stz,
+                              xExpr.i_Child(),
+                              sColNm.azChar());
+      sColNm = sColNm_modified;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream def column
@@ -436,7 +443,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       RASSERT(p_key);
 
       bool bPayload = false;
-      if (! bIsTop && ! p_expr->bIsExpressionOfKey())
+      if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
       pColMap->vAddCol(i_Col++, sColNm, bPayload);

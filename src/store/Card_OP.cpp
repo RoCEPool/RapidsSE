@@ -1742,25 +1742,9 @@ ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
 }
 
 /*----------------------------------------------------------------------------*/
-/* craft arriving streamDef                                                   */
-/*----------------------------------------------------------------------------*/
-StreamDef* Card_OP::pCraftStreamDef_arriving(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-  
-  Card_Projection* p_projection = pSub_projection();
-  if (! p_projection)
-    return nullptr;
-
-  StreamDef* pStreamDef_arriving = p_projection->pToStreamDef();
-
-  return pStreamDef_arriving;
-}
-
-/*----------------------------------------------------------------------------*/
 /* craft emitted streamDef                                                    */
 /*----------------------------------------------------------------------------*/
-StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap, bool bIsTop)
+StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1776,7 +1760,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap, bool bIsTop)
   }
 
   StreamDef* pStreamDef_emitted =
-      p_projection->pToStreamDef(ppColMap? *ppColMap:nullptr, p_key, bIsTop);
+      p_projection->pToStreamDef(ppColMap? *ppColMap:nullptr, p_key, eCard());
 
   if (ppColMap)
     (*ppColMap)->vValidate();

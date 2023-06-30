@@ -403,7 +403,7 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
   if (p_OP->bIsCard(CK_TOP))
     ppColMap = &m_pOpDef->m_pColMap_top;
 
-  m_pOpDef->m_pStreamDef_emitted = p_OP->pCraftStreamDef_emitted(ppColMap,p_OP->bIsCard(CK_TOP));
+  m_pOpDef->m_pStreamDef_emitted = p_OP->pCraftStreamDef_emitted(ppColMap);
 //  m_pOpDef->m_pColMap_gbyAgg =
 //      p_OP->pCraftColMap_gbyAgg(m_pOpDef->m_pStreamDef_emitted,
 //                                m_pOpDef->m_pIndexDef_gbyAgg);
@@ -527,7 +527,11 @@ void MakeCode::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card
     if (Table* pTable = _pTable(p_table->pSymbol()->Y_pGet(P_Pointer))) {
       StreamDef* pStreamDef = pTable->pStreamDef();
       Column* pColumn = pStreamDef->pGetColumn(i_Col-1);
-      sColNm = pColumn->szColNm();
+
+      sColNm.vSprint("C%lld_%s"_Stz,
+                     i_Col-1,
+                     pColumn->szColNm());
+
     }
     else
       sColNm = "??"_Stz;
