@@ -4077,6 +4077,20 @@ void StrLib::vRemoveChar(char* azDst, char* azSrc, const char cChr)
 
   *azTo = '\0';
 }
+
+/*----------------------------------------------------------------------------*/
+/* remove any occurance of given character                                    */
+/*----------------------------------------------------------------------------*/
+void StrLib::vRemoveHead(char* azArg, const char cSep)
+{
+  _static_
+
+  i8 i_Sep = iFind(azArg,cSep);
+  if (C_UNKNOWN == i_Sep)
+    return;
+
+  vShuffleLeft(azArg,i_Sep+1);
+}
   
 /*----------------------------------------------------------------------------*/
 /* remove prefix from arg (where prefix is introduced by given char)          */

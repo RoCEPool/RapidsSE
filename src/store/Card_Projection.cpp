@@ -196,18 +196,38 @@ void Card_Projection::vDedupe_as(void)
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
     Card_As* p_as = xProjection.p_expr()->pSub_as();
 
-    i8 nBefore = nAsBefore(p_as);
-
-    if (! nBefore)
-      continue;
-
     Symbol xDeduped;
-    xDeduped.vSprint("%s__%lld"_Stz,p_as->pSymbol()->szSymbol(),nBefore+1);
+    xDeduped.vSprint("C%lld_%s"_Stz,
+                     xProjection.i_Child(),
+                     p_as->pSymbol()->szSymbol());
     p_as->pSymbol()->vSet(&xDeduped);
+
+
+    //StrLib::vRemoveHead(xDeduped.szSymbol()->azChar(),'_');
+    //vTrace("%s\n"_Stz,xDeduped.szSymbol());
+
   }
 
-
+  vDebugPoint();
 }
+/*----------------------------------------------------------------------------*/
+//void Card_Projection::vDedupe_as(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+//    Card_As* p_as = xProjection.p_expr()->pSub_as();
+//
+//    i8 nBefore = nAsBefore(p_as);
+//
+//    if (! nBefore)
+//      continue;
+//
+//    Symbol xDeduped;
+//    xDeduped.vSprint("%s__%lld"_Stz,p_as->pSymbol()->szSymbol(),nBefore+1);
+//    p_as->pSymbol()->vSet(&xDeduped);
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

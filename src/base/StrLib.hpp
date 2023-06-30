@@ -230,6 +230,7 @@ namespace BASE
   
     static void  vRemove(char* azArg, const char cLeading);
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
+    static void  vRemoveHead(char* azArg, const char cSep);
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
     static void  vRemoveTail(char* azArg, const char* pTail);
