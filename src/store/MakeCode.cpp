@@ -91,13 +91,13 @@ void MakeCode::vSynthesise(void)
 
   Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
 
-  if (AM::JOB::bHasTag(C_WEAVER2)) {
+  if (AM::JOB::bHasTag(C_WEAVER1))
+    return;
 
-    vCraftPipelineDef(pBoard);
+  vCraftPipelineDef(pBoard);
 
-    eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
-    UNUSED(eError);
-  }
+  eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
+  UNUSED(eError);
 
 }
 

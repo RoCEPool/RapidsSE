@@ -99,8 +99,8 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_WEAVED))
     pCmdTagSet->vInsert(C_TAG_WEAVED);
 
-  if (pJobTags->bHasName(C_TAG_WEAVER2))
-    pCmdTagSet->vInsert(C_TAG_WEAVER2);
+  if (pJobTags->bHasName(C_TAG_WEAVER1))
+    pCmdTagSet->vInsert(C_TAG_WEAVER1);
 
   if (pJobTags->bHasName(C_CODE_BLOCK))
     pCmdTagSet->vInsert(C_CODE_BLOCK);
@@ -113,9 +113,6 @@ void Step::vApiForkChild(void)
 //
 //  if (pJobTags->bHasName(C_JOINPERMUTATIONS))
 //    pCmdTagSet->vInsert(C_JOINPERMUTATIONS);
-
-  if (pJobTags->bHasName(C_PIPELINE_DEF))
-    pCmdTagSet->vInsert(C_PIPELINE_DEF);
 
   if (pJobTags->bHasName(C_SHOW_CMD_TAGS))
     pCmdTagSet->vInsert(C_SHOW_CMD_TAGS);

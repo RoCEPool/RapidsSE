@@ -461,31 +461,32 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  if (AM::JOB::bHasTag(C_WEAVER2)) {
-    Weaver2 *pWeaver2 = new Weaver2(m_pBench,m_pPipelineDef);
+  if (AM::JOB::bHasTag(C_WEAVER1)) {
+    Weaver *pWeaver1 = new Weaver(m_pBench);
 
     Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
-    pWeaver2->vWeaveOptStmt(pBoard_query);
+    pWeaver1->vWeaveOptStmt(pBoard_query);
 
-    m_pOptStmt = pWeaver2->pOptStmt();
-    pWeaver2->vOptStmt(nullptr);
+    if (! m_pOptStmt)
+      m_pOptStmt = new ExtendedText;
+    m_pOptStmt->vCopy(pWeaver1->szOptStmt());
 
-    if (pWeaver2->pCodeBlock()) {
-      m_pCodeBlock = pWeaver2->pCodeBlock();
-      pWeaver2->vCodeBlock(nullptr);
-    }
-
-    delete pWeaver2;
+    delete pWeaver1;
   }
   else {
-    Weaver *pWeaver = new Weaver(m_pBench);
+
+    Weaver2 *pWeaver = new Weaver2(m_pBench,m_pPipelineDef);
 
     Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
     pWeaver->vWeaveOptStmt(pBoard_query);
 
-    if (! m_pOptStmt)
-      m_pOptStmt = new ExtendedText;
-    m_pOptStmt->vCopy(pWeaver->szOptStmt());
+    m_pOptStmt = pWeaver->pOptStmt();
+    pWeaver->vOptStmt(nullptr);
+
+    if (pWeaver->pCodeBlock()) {
+      m_pCodeBlock = pWeaver->pCodeBlock();
+      pWeaver->vCodeBlock(nullptr);
+    }
 
     delete pWeaver;
   }
