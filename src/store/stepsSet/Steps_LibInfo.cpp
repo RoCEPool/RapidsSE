@@ -85,8 +85,11 @@ void Step::vLibInfoError(void)
 {
   ENTRY();
 
+  s2K sErrDetails;
+
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
-  m_pDataStack->vPushStr((String*)pLibInfo->szErrDetails());
+  sErrDetails = pLibInfo->szErrDetails();
+  m_pDataStack->vPushStr(sErrDetails);
 
   EXIT();
 }
