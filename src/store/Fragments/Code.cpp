@@ -746,7 +746,7 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
   szSrcStz = ((char*)(&(((struct Ent_int*)aDynamicT->m_xIndexInfoPL.m_aEntInt)->m_iIntElm0)) + 8 + iElemSize);
 
-  if ((i8)szSrcStz == C_DATUM_NULL) {
+  if (*(i8*)szSrcStz == C_DATUM_NULL) {
     p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
     iElemSize += 8;
   }
@@ -755,9 +755,9 @@ void vPLVchKeyToTub(Dynamic_T* aDynamicT) {
 
 #ifdef WITH_CLANG
     nSrcSize = iExtern_StrLibWordFlipBack(szDstStz,szSrcStz);
-    //for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
-    //  printf("%c ", szDstStz[i_Byte]);
-    //printf("\n");
+//    for (i8 i_Byte = 0; i_Byte < 16; i_Byte++)
+//      printf("%c ", szDstStz[i_Byte]);
+//    printf("\n");
 #endif
     amCellAddress = (m8*) &p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8;
 
