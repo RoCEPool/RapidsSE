@@ -523,10 +523,12 @@
                       Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
                         LibInfo[].compile not if
                       "COMPILATION FAILED" .
+                      LibInfo[].error .
                       [job]:retireAndExit
                     else
                       LibInfo[].link not if
                         "DYNAMIC LINKING OF LIBRARY FAILED" .
+                        LibInfo[].error .
                         [job]:retireAndExit
                       then
                     then

@@ -27,6 +27,7 @@ void Step::vAddSteps_LibInfo(void)
 {
   vAddStep("LibInfo[].compile"_Stz,      &Step::vLibInfoCompile);
   vAddStep("LibInfo[].delete"_Stz,       &Step::vLibInfoDelete);
+  vAddStep("LibInfo[].error"_Stz,        &Step::vLibInfoError);
   vAddStep("LibInfo[].find"_Stz,         &Step::vLibInfoFind);
   vAddStep("LibInfo[].get"_Stz,          &Step::vLibInfoGet);
   vAddStep("LibInfo[].isNotNull"_Stz,    &Step::vLibInfoIsNotNull);
@@ -73,6 +74,19 @@ void Step::vLibInfoDelete(void)
   CompileLib::vDelete(pLibInfo);
 
   delete pLibInfo;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LibInfo[].error -- get error from LibInfo                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vLibInfoError(void)
+{
+  ENTRY();
+
+  LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
+  m_pDataStack->vPushStr((String*)pLibInfo->szErrDetails());
 
   EXIT();
 }
