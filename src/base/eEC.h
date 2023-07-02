@@ -3,17 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#ifdef __TINYC__
-
-// when being included by the tcc compiler
 typedef enum eEC // error codes
-
-#else
-
-// when not being included by the tcc compiler
-enum eEC : u2 // error codes
-
-#endif
 
 {
   EC_NONE = 0,

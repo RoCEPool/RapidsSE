@@ -52,7 +52,13 @@ void Step::vLibInfoCompile(void)
 
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
 
+#ifdef WITH_APPLE
   bool bClean = CompileLib::bCompile(pCodeBlock, szDynLibNm, pLibInfo, "clang"_Stz);
+#else
+  bool bClean = CompileLib::bCompile(pCodeBlock, szDynLibNm, pLibInfo, "gcc"_Stz);
+#endif
+
+
   if (bClean)
     m_pDataStack->vPushInt(true);
   else
