@@ -56,11 +56,17 @@ void XF_projection_Analysis::vXF_projection_Analysis(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* projection analysis                                                        */
 /*----------------------------------------------------------------------------*/
 void XF_projection_Analysis::vXF_projection_Analysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "projection analysis"_Stz);
+
+  m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
+
+  m_pCI->vEndTransform();
 
 
   vValidate();

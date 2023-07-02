@@ -34,7 +34,6 @@ namespace STORE
     void vAsReview(void);
     void vIndexAnalysis(void);
     void vIndexAnalysis_passThru(void);
-    void vProjectionAnalysis(void);
     void vProjectionAnalysis_passThru(void);
     void vRpnCalcToBoolCalc(void);
     void vTableAnalysis(char* acTableSyn);

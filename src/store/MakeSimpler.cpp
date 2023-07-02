@@ -13,6 +13,7 @@
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_not_Ops.hpp"
+#include "XF_projection_Analysis.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_scan_To_table.hpp"
 
@@ -82,7 +83,7 @@ void MakeSimpler::vSimplify(void)
 
     //vGroup_MetaAnalysis();
     vTableAnalysis(&m_cTableSyn);
-    vProjectionAnalysis();
+    XF_projection_Analysis::vXF_projection_Analysis(m_pCI);
     vIndexAnalysis();
 
     //vGroup_PreliminaryConversions();
@@ -247,19 +248,6 @@ void MakeSimpler::vIndexAnalysis_passThru(void)
   m_pCI->vEndTransform();
 }
 
-/*----------------------------------------------------------------------------*/
-/* Projection Analysis                                                        */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vProjectionAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "vProjectionAnalysis"_Stz);
-
-  m_pCI->G.pDeck->vProjectionAnalysis(m_pCI);
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /* Projection Analysis                                                        */
