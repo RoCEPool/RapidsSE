@@ -29,8 +29,6 @@ namespace STORE
 
   private:
 
-    void vStmColToColNmOfKeyExists(void);
-
   protected:
     Footer* aFooter(void);
   };
