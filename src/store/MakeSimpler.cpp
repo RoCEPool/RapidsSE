@@ -14,6 +14,7 @@
 
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Move_on.hpp"
+#include "XF_scan_To_table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -75,7 +76,7 @@ void MakeSimpler::vSimplify(void)
 
     //vGroup_CondenseInfo();
     XF_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
-    vScanBecomesTable();
+    XF_scan_To_table::vXF_scan_To_table(m_pCI);
     vAddLevel();
     vNotOps();
 
@@ -319,22 +320,6 @@ void MakeSimpler::vRpnCalcToBoolCalc(void)
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC))
     ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Condense Info                                                              */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vScanBecomesTable(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain(CK_SCAN))
-    Card_Scan::vScanBecomesTable(m_pCI);
 
   m_pCI->vEndTransform();
 }

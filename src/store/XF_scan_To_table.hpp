@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_scan_Becomes_table.hpp -- Scan Becomes Table                            */
+/* XF_scan_To_table.hpp -- Scan Becomes Table                            */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_scan_Becomes_table : public XF_TRANSFORM
+  class XF_scan_To_table : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_scan_Becomes_table(CardIter* pCI);
-   ~XF_scan_Becomes_table(void) noexcept(false);
+    XF_scan_To_table(CardIter* pCI);
+   ~XF_scan_To_table(void) noexcept(false);
 
-    static void vXF_scan_Becomes_table(CardIter* pCI);
+    static void vXF_scan_To_table(CardIter* pCI);
 
-    void vXF_scan_Becomes_table(void);
+    void vXF_scan_To_table(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_scan_Becomes_table* _pXF_scan_Becomes_table(void* aAddr);
+  XF_scan_To_table* _pXF_scan_To_table(void* aAddr);
 }
 
 /*============================================================================*/

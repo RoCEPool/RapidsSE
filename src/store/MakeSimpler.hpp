@@ -39,7 +39,6 @@ namespace STORE
     void vProjectionAnalysis(void);
     void vProjectionAnalysis_passThru(void);
     void vRpnCalcToBoolCalc(void);
-    void vScanBecomesTable(void);
     void vShortenQueryNames(void);
     void vTableAnalysis(char* acTableSyn);
     void vTableAnalysis_passThru(char* acTableSyn);
