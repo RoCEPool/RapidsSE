@@ -17,12 +17,14 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_table_Analysis(CardIter* pCI);
+    XF_table_Analysis(CardIter* pCI, char* acTableSyn);
    ~XF_table_Analysis(void) noexcept(false);
 
-    static void vXF_table_Analysis(CardIter* pCI);
+    static void vXF_table_Analysis(CardIter* pCI, char* acTableSyn);
+    static void vXF_table_Analysis_passThru(CardIter* pCI, char* acTableSyn);
 
-    void vXF_table_Analysis(void);
+    void vXF_table_Analysis(char* acTableSyn);
+    void vXF_table_Analysis_passThru(char* acTableSyn);
 
   private:
     Footer* aFooter(void);

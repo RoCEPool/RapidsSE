@@ -19,6 +19,7 @@
 #include "XF_rpnCalc_To_boolCalc.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_scan_To_table.hpp"
+#include "XF_table_Analysis.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -85,7 +86,7 @@ void MakeSimpler::vSimplify(void)
     XF_not_Ops::vXF_not_Ops(m_pCI);
 
     //vGroup_MetaAnalysis();
-    vTableAnalysis(&m_cTableSyn);
+    XF_table_Analysis::vXF_table_Analysis(m_pCI,&m_cTableSyn);
     XF_projection_Analysis::vXF_projection_Analysis(m_pCI);
     XF_index_Analysis::vXF_index_Analysis(m_pCI);
 
@@ -118,7 +119,7 @@ void MakeSimpler::vSimplify_passThru(void)
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(m_pCI->G.i_Board);
 
-    vTableAnalysis_passThru(&m_cTableSyn);
+    XF_table_Analysis::vXF_table_Analysis_passThru(m_pCI,&m_cTableSyn);
     XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
     XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
@@ -138,49 +139,6 @@ void MakeSimpler::vSimplify_passThru(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* Table Analysis                                                             */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vTableAnalysis(char* acTableSyn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Affix Table Syntax To All Table
-  Card_Table::vAffixTableSyn(m_pCI, acTableSyn);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Table Partition Under All Table
-  m_pCI->G_vRestart();
-  Card_Table::vProduceTablePtns(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Table Analysis                                                             */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vTableAnalysis_passThru(char* acTableSyn)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "add a <tableSyn> to all <table>'s"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Affix Table Syntax To All Table
-  Card_Table::vAffixTableSyn_passThru(m_pCI, acTableSyn);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Produce Table Partition Under All Table
-//  m_pCI->G_vRestart();
-//  Card_Table::vProduceTablePtns(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

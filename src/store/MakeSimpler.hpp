@@ -31,8 +31,6 @@ namespace STORE
     void vSimplify_passThru(void);
 
   private:
-    void vTableAnalysis(char* acTableSyn);
-    void vTableAnalysis_passThru(char* acTableSyn);
 
   protected:
     Footer* aFooter(void);
