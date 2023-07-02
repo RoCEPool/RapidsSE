@@ -50,6 +50,20 @@ void XF_projection_Analysis::vXF_projection_Analysis(CardIter* pCI)
   delete pXF_projection_Analysis;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_projection_Analysis::vXF_projection_Analysis_passThru(CardIter* pCI)
+{
+  _static_
+
+  XF_projection_Analysis* pXF_projection_Analysis = new XF_projection_Analysis(pCI);
+
+  pXF_projection_Analysis->vXF_projection_Analysis_passThru();
+
+  delete pXF_projection_Analysis;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- public ------------------------------------------------------------------*/
@@ -68,6 +82,22 @@ void XF_projection_Analysis::vXF_projection_Analysis(void)
 
   m_pCI->vEndTransform();
 
+
+  vValidate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* projection analysis                                                        */
+/*----------------------------------------------------------------------------*/
+void XF_projection_Analysis::vXF_projection_Analysis_passThru(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROJECTION_ANALYSIS, _FOOTER_);
+
+  m_pCI->vTransform(__func__, "vProjectionAnalysis_passThru"_Stz);
+
+  m_pCI->G.pDeck->vProjectionAnalysis_passThru(m_pCI);
+
+  m_pCI->vEndTransform();
 
   vValidate();
 }

@@ -118,7 +118,7 @@ void MakeSimpler::vSimplify_passThru(void)
     vTableAnalysis_passThru(&m_cTableSyn);
     vIndexAnalysis_passThru();
 
-    vProjectionAnalysis_passThru();
+    XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
     m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
 
@@ -247,22 +247,6 @@ void MakeSimpler::vIndexAnalysis_passThru(void)
 
   m_pCI->vEndTransform();
 }
-
-
-/*----------------------------------------------------------------------------*/
-/* Projection Analysis                                                        */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vProjectionAnalysis_passThru(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "vProjectionAnalysis_passThru"_Stz);
-
-  m_pCI->G.pDeck->vProjectionAnalysis_passThru(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
