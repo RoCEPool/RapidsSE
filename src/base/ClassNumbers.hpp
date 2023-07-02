@@ -228,7 +228,6 @@ enum eCN : u2 // Class Number
   /* */ CN_OPSPEC,
   /* */ CN_OPTIMISER,
   /* */ CN_OTHEROPERAND,
-  /* */ CN_OUTERQUERY,
 
   /* */ CN__P__,
   /* */ CN_PAGEFILE,
@@ -704,7 +703,6 @@ static Stz* aCN[]
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
   /* */ "OPTIMISER"_Stz,            // CN_OPTIMISER
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
-  /* */ "OUTERQUERY"_Stz,           // CN_OUTERQUERY
 
   /* */ "_P__"_Stz,                 // CN__P__
   /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE

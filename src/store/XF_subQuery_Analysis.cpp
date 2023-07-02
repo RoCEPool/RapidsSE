@@ -142,7 +142,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
 /*----------------------------------------------------------------------------*/
 void XF_subQuery_Analysis::vAnalysis_Of_from_call(CardIter* m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OUTERQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
   Stz* szBoardNm = m_pCI->G.p_call->szSymbol();
   Board* pBoard = m_pCI->m_pBench->pGetBoard(szBoardNm);
@@ -157,7 +157,7 @@ void XF_subQuery_Analysis::vAnalysis_Of_from_call(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 void XF_subQuery_Analysis::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OUTERQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
   Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(m_pCI->G.p_boolCalc->pGetChild(0));
 
@@ -204,7 +204,7 @@ void XF_subQuery_Analysis::vAnalysis_Of_having_boolCalc(CardIter* m_pCI)
 /*----------------------------------------------------------------------------*/
 void XF_subQuery_Analysis::vAnalysis_Of_where_boolCalc(CardIter* m_pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OUTERQUERY, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SUBQUERY_ANALYSIS, _FOOTER_);
 
   Card_PRED* p_pred_ROOT = static_cast<Card_PRED*>(m_pCI->G.p_boolCalc->pGetChild(0));
 

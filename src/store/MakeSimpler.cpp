@@ -98,10 +98,6 @@ void MakeSimpler::vSimplify(void)
   }
 
   XF_subQuery_Analysis::vXF_subQuery_Analysis(m_pCI);
-
-//  OuterQuery* pOuterQuery = new OuterQuery;
-//  pOuterQuery->vQueryAnalysis(m_pCI);
-//  delete pOuterQuery;
 }
 
 /*----------------------------------------------------------------------------*/
