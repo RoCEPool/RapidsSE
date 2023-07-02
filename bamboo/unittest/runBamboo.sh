@@ -137,6 +137,7 @@ function copyLogs() {
     installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     cp "${installDir}/se.log" "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}/se.${nodeName}.log" || true
+    cp "${installDir}/queryLibs/src/*" "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}/ || true
   done
 
   mv "${BAMBOO_RESULTS_DIR}"/log-* "${BAMBOO_LOGS_DIR}/${buildType}/${buildConfig}/seth.log" || true
