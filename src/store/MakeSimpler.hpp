@@ -31,9 +31,7 @@ namespace STORE
     void vSimplify_passThru(void);
 
   private:
-    void vIndexAnalysis(void);
-    void vIndexAnalysis_passThru(void);
-   void vTableAnalysis(char* acTableSyn);
+    void vTableAnalysis(char* acTableSyn);
     void vTableAnalysis_passThru(char* acTableSyn);
 
   protected:

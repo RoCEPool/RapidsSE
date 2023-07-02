@@ -12,6 +12,7 @@
 #include "XF_Add_level.hpp"
 #include "XF_as_Review.hpp"
 #include "XF_Delete_Unneeded.hpp"
+#include "XF_index_Analysis.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_not_Ops.hpp"
 #include "XF_projection_Analysis.hpp"
@@ -86,7 +87,7 @@ void MakeSimpler::vSimplify(void)
     //vGroup_MetaAnalysis();
     vTableAnalysis(&m_cTableSyn);
     XF_projection_Analysis::vXF_projection_Analysis(m_pCI);
-    vIndexAnalysis();
+    XF_index_Analysis::vXF_index_Analysis(m_pCI);
 
     //vGroup_PreliminaryConversions();
     XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
@@ -118,7 +119,7 @@ void MakeSimpler::vSimplify_passThru(void)
     m_pCI->vUsingBoard(m_pCI->G.i_Board);
 
     vTableAnalysis_passThru(&m_cTableSyn);
-    vIndexAnalysis_passThru();
+    XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
     XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
@@ -137,76 +138,6 @@ void MakeSimpler::vSimplify_passThru(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vIndexAnalysis(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "index analysis"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Append Index List Under All Table
-  Card_Table::vAppendIndexList(m_pCI);
-
-  m_pCI->vPrintBoard();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Affix TblColOdn To All IdxCol
-
-  m_pCI->G_vRestart();
-  Card_Table::vAffixTableColOrd(m_pCI);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vIndexAnalysis_passThru(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "index analysis"_Stz);
-
-  while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
-    m_pCI->G.p_indexScan->vUpdate_projection(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_indexScan->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-  }
-
-  m_pCI->vRestart();
-  while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
-    m_pCI->G.p_indexJoin->vUpdate_projection(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_indexJoin->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-
-    m_pCI->G.p_bound = m_pCI->G.p_index->pSub_bound();
-    m_pCI->G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
-  }
-
-  m_pCI->vRestart();
-  while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
-    m_pCI->G.p_keyExists->vUpdate_projection(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_keyExists->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-  }
-
-  m_pCI->vRestart();
-  while (m_pCI->G_bEachMain(CK_KEYNOTEXISTS)) {
-    m_pCI->G.p_keyNotExists->vUpdate_projection(m_pCI);
-
-    m_pCI->G.p_index = m_pCI->G.p_keyNotExists->pSub_index();
-    m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
-  }
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /* Table Analysis                                                             */

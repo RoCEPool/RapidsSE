@@ -21,8 +21,10 @@ namespace STORE
    ~XF_index_Analysis(void) noexcept(false);
 
     static void vXF_index_Analysis(CardIter* pCI);
+    static void vXF_index_Analysis_passThru(CardIter* pCI);
 
     void vXF_index_Analysis(void);
+    void vXF_index_Analysis_passThru(void);
 
   private:
     Footer* aFooter(void);
