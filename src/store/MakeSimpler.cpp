@@ -12,6 +12,8 @@
 #include "Optimiser.hpp"
 #include "OuterQuery.hpp"
 
+#include "XF_Move_on.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -68,7 +70,7 @@ void MakeSimpler::vSimplify(void)
     m_pCI->vUsingBoard(m_pCI->G.i_Board);
 
     //vGroup_InitialAdjustments();
-    vMoveOn();
+     XF_Move_on::vXF_Move_on(m_pCI);
 
     //vGroup_CondenseInfo();
     vDeleteUnneeded();
@@ -286,20 +288,6 @@ void MakeSimpler::vIndexAnalysis_passThru(void)
     m_pCI->G.p_index = m_pCI->G.p_keyNotExists->pSub_index();
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
   }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* move all <absJoin>/<on> to <where>                                         */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vMoveOn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "move <on> in <absJoin>'s to <where>"_Stz);
-
-  Card_Where::vMove_All_on_To_where(m_pCI);
 
   m_pCI->vEndTransform();
 }
