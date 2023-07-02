@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_scan_To_table, CN_XF_SCAN_BECOMES_TABLE)
-__aNewFunction(XF_scan_To_table, CN_XF_SCAN_BECOMES_TABLE)
-__vDeleteFunction(XF_scan_To_table, CN_XF_SCAN_BECOMES_TABLE)
+__pCastFunction(STORE, XF_scan_To_table, CN_XF_SCAN_TO_TABLE)
+__aNewFunction(XF_scan_To_table, CN_XF_SCAN_TO_TABLE)
+__vDeleteFunction(XF_scan_To_table, CN_XF_SCAN_TO_TABLE)
 __aFooterFunction(XF_scan_To_table)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_scan_To_table)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_scan_To_table::XF_scan_To_table(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_SCAN_BECOMES_TABLE, pCI)
+: XF_TRANSFORM(CN_XF_SCAN_TO_TABLE, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_BECOMES_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
 
-  _checkInitialised_(CN_XF_SCAN_BECOMES_TABLE);
+  _checkInitialised_(CN_XF_SCAN_TO_TABLE);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_BECOMES_TABLE, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_scan_To_table::XF_scan_To_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_scan_To_table::~XF_scan_To_table(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_BECOMES_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_scan_To_table::vXF_scan_To_table(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_scan_To_table::vXF_scan_To_table(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_BECOMES_TABLE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
 
   m_pCI->vTransform(__func__, "scan to table"_Stz);
 

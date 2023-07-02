@@ -283,7 +283,7 @@
 #include "XF_Promote_gbyAgg_To_ordAgg.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 #include "XF_Reinstate_stage.hpp"
-#include "XF_Shorten_QueryNames.hpp"
+#include "XF_Shorten_queryNm.hpp"
 #include "XF_as_Review.hpp"
 #include "XF_index_Analysis.hpp"
 #include "XF_not_Ops.hpp"
@@ -771,27 +771,27 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_EARLY_PROJECTION,          sizeof(XF_Early_projection),          HT_T_TINY    , FILL },
   {CN_XF_INDEX_ANALYSIS,            sizeof(XF_index_Analysis),            HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,        sizeof(XF_Individuate_filter),       HT_T_TINY    , FILL },
-  {CN_XF_MORPH_SCAN_TO_INDEXSCAN,   sizeof(XF_Morph_scan_To_indexScan),  HT_T_TINY    , FILL },
-  {CN_XF_MORPH_TABLE_TO_EEOP,       sizeof(XF_Morph_table_To_EEop),      HT_T_TINY    , FILL },
-  {CN_XF_MOVE_ON,                   sizeof(XF_Move_on),                  HT_T_TINY    , FILL },
-  {CN_XF_NOT_OPS,                   sizeof(XF_not_Ops),                  HT_T_TINY    , FILL },
-  {CN_XF_PROJECTION_ANALYSIS,       sizeof(XF_projection_Analysis),      HT_T_TINY    , FILL },
-  {CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,  sizeof(XF_Promote_gbyAgg_To_ordAgg), HT_T_TINY    , FILL },
-  {CN_XF_REDUCE_KEY_GBYAGG,         sizeof(XF_Reduce_key_gbyAgg),        HT_T_TINY    , FILL },
-  {CN_XF_REINSTATE_STAGE,           sizeof(XF_Reinstate_stage),          HT_T_TINY    , FILL },
-  {CN_XF_RPNCALC_TO_BOOLCALC,       sizeof(XF_rpnCalc_To_boolCalc),      HT_T_TINY    , FILL },
-  {CN_XF_SCAN_BECOMES_TABLE,        sizeof(XF_scan_To_table),            HT_T_TINY    , FILL },
-  {CN_XF_SHORTEN_QUERYNAMES,        sizeof(XF_Shorten_QueryNames),       HT_T_TINY    , FILL },
-  {CN_XF_STAGE_CAST,                sizeof(XF_stage_cast),               HT_T_TINY    , FILL },
-  {CN_XF_STMCOL_TO_COLNM,           sizeof(XF_stmCol_to_colNm),          HT_T_TINY    , FILL },
-  {CN_XF_TABLE_ANALYSIS,            sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },
-  {CN_XF_TBLCOL_TO_STMCOL,          sizeof(XF_tblCol_To_stmCol),         HT_T_TINY    , FILL },
+  {CN_XF_MORPH_SCAN_TO_INDEXSCAN,  sizeof(XF_Morph_scan_To_indexScan),  HT_T_TINY    , FILL },
+  {CN_XF_MORPH_TABLE_TO_EEOP,      sizeof(XF_Morph_table_To_EEop),      HT_T_TINY    , FILL },
+  {CN_XF_MOVE_ON,                  sizeof(XF_Move_on),                  HT_T_TINY    , FILL },
+  {CN_XF_NOT_OPS,                  sizeof(XF_not_Ops),                  HT_T_TINY    , FILL },
+  {CN_XF_PROJECTION_ANALYSIS,      sizeof(XF_projection_Analysis),      HT_T_TINY    , FILL },
+  {CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, sizeof(XF_Promote_gbyAgg_To_ordAgg), HT_T_TINY    , FILL },
+  {CN_XF_REDUCE_KEY_GBYAGG,        sizeof(XF_Reduce_key_gbyAgg),        HT_T_TINY    , FILL },
+  {CN_XF_REINSTATE_STAGE,          sizeof(XF_Reinstate_stage),          HT_T_TINY    , FILL },
+  {CN_XF_RPNCALC_TO_BOOLCALC,      sizeof(XF_rpnCalc_To_boolCalc),      HT_T_TINY    , FILL },
+  {CN_XF_SCAN_TO_TABLE,       sizeof(XF_scan_To_table),            HT_T_TINY    , FILL },
+  {CN_XF_SHORTEN_QUERYNM,          sizeof(XF_Shorten_queryNm),          HT_T_TINY    , FILL },
+  {CN_XF_STAGE_CAST,               sizeof(XF_stage_cast),               HT_T_TINY    , FILL },
+  {CN_XF_STMCOL_TO_COLNM,          sizeof(XF_stmCol_to_colNm),          HT_T_TINY    , FILL },
+  {CN_XF_TABLE_ANALYSIS,           sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },
+  {CN_XF_TBLCOL_TO_STMCOL,         sizeof(XF_tblCol_To_stmCol),         HT_T_TINY    , FILL },
 
-  {CN__Y__,                    'Y' - ('A' - 1),                          HT_INVALID   , FILL },
+  {CN__Y__,                    'Y' - ('A' - 1),                         HT_INVALID   , FILL },
 
-  {CN__Z__,                    'Z' - ('A' - 1),                          HT_INVALID   , FILL },
+  {CN__Z__,                    'Z' - ('A' - 1),                         HT_INVALID   , FILL },
 
-  {CN_ENUMS,                    C_VARGS_END,                   HT_INVALID   , FILL }
+  {CN_ENUMS,                       C_VARGS_END,                         HT_INVALID   , FILL }
 };
 
 #undef FILL

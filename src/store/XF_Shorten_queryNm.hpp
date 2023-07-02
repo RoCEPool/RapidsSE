@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Shorten_QueryNames.hpp -- Shorten Query Names                           */
+/* XF_Shorten_queryNm.hpp -- Shorten Query Names                           */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_Shorten_QueryNames : public XF_TRANSFORM
+  class XF_Shorten_queryNm : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_Shorten_QueryNames(CardIter* pCI);
-   ~XF_Shorten_QueryNames(void) noexcept(false);
+    XF_Shorten_queryNm(CardIter* pCI);
+   ~XF_Shorten_queryNm(void) noexcept(false);
 
-    static void vXF_Shorten_QueryNames(CardIter* pCI);
+    static void vXF_Shorten_queryNm(CardIter* pCI);
 
-    void vXF_Shorten_QueryNames(void);
+    void vXF_Shorten_queryNm(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_Shorten_QueryNames* _pXF_Shorten_QueryNames(void* aAddr);
+  XF_Shorten_queryNm* _pXF_Shorten_queryNm(void* aAddr);
 }
 
 /*============================================================================*/
