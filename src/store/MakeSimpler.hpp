@@ -33,8 +33,7 @@ namespace STORE
   private:
     void vIndexAnalysis(void);
     void vIndexAnalysis_passThru(void);
-    void vRpnCalcToBoolCalc(void);
-    void vTableAnalysis(char* acTableSyn);
+   void vTableAnalysis(char* acTableSyn);
     void vTableAnalysis_passThru(char* acTableSyn);
 
   protected:

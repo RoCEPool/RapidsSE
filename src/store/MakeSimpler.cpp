@@ -15,6 +15,7 @@
 #include "XF_Move_on.hpp"
 #include "XF_not_Ops.hpp"
 #include "XF_projection_Analysis.hpp"
+#include "XF_rpnCalc_To_boolCalc.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_scan_To_table.hpp"
 
@@ -88,7 +89,7 @@ void MakeSimpler::vSimplify(void)
     vIndexAnalysis();
 
     //vGroup_PreliminaryConversions();
-    vRpnCalcToBoolCalc();
+    XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
     XF_as_Review::vXF_as_Review(m_pCI);
 
     vDebugPoint();
@@ -203,26 +204,6 @@ void MakeSimpler::vIndexAnalysis_passThru(void)
     m_pCI->G.p_index = m_pCI->G.p_keyNotExists->pSub_index();
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
   }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vRpnCalcToBoolCalc(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))
-    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC))
-    ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
 
   m_pCI->vEndTransform();
 }
