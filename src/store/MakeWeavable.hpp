@@ -29,7 +29,6 @@ namespace STORE
 
   private:
 
-    void vAddStageCasts(void);
     void vStmColToColNmOfKeyExists(void);
 
   protected:

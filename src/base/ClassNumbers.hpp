@@ -471,6 +471,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_RPNCALC_TO_BOOLCALC,
   /* */ CN_XF_SCAN_BECOMES_TABLE,
   /* */ CN_XF_SHORTEN_QUERYNAMES,
+  /* */ CN_XF_STAGE_CAST,
   /* */ CN_XF_TABLE_ANALYSIS,
   /* */ CN_XF_TBLCOL_TO_STMCOL,
 
@@ -944,6 +945,7 @@ static Stz* aCN[]
   /* */ "XF_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
   /* */ "XF_SCAN_BECOMES_TABLE"_Stz,        // CN_XF_SCAN_BECOMES_TABLE
   /* */ "XF_SHORTEN_QUERYNAMES"_Stz,        // CN_XF_SHORTEN_QUERYNAMES
+  /* */ "XF_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
   /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
   /* */ "XF_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
 

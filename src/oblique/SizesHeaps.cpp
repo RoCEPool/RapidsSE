@@ -268,28 +268,29 @@
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
 #include "XF_Add_level.hpp"
-#include "XF_as_Review.hpp"
 #include "XF_Cull_NonUsed_bound.hpp"
 #include "XF_Cull_Used_bound.hpp"
 #include "XF_Cut_sort.hpp"
 #include "XF_Dedupe_as.hpp"
-#include "XF_Delete_flat.hpp"
 #include "XF_Delete_Unneeded.hpp"
+#include "XF_Delete_flat.hpp"
 #include "XF_Derive_projection_key.hpp"
 #include "XF_Early_projection.hpp"
-#include "XF_index_Analysis.hpp"
 #include "XF_Individuate_filter.hpp"
-#include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Morph_scan_To_indexScan.hpp"
+#include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Move_on.hpp"
-#include "XF_not_Ops.hpp"
-#include "XF_projection_Analysis.hpp"
 #include "XF_Promote_gbyAgg_To_ordAgg.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
 #include "XF_Reinstate_stage.hpp"
+#include "XF_Shorten_QueryNames.hpp"
+#include "XF_as_Review.hpp"
+#include "XF_index_Analysis.hpp"
+#include "XF_not_Ops.hpp"
+#include "XF_projection_Analysis.hpp"
 #include "XF_rpnCalc_To_boolCalc.hpp"
 #include "XF_scan_Becomes_table.hpp"
-#include "XF_Shorten_QueryNames.hpp"
+#include "XF_stage_cast.hpp"
 #include "XF_table_Analysis.hpp"
 #include "XF_tblCol_To_stmCol.hpp"
 
@@ -780,6 +781,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_RPNCALC_TO_BOOLCALC,       sizeof(XF_rpnCalc_To_boolCalc),       HT_T_TINY    , FILL },
   {CN_XF_SCAN_BECOMES_TABLE,        sizeof(XF_scan_Becomes_table),        HT_T_TINY    , FILL },
   {CN_XF_SHORTEN_QUERYNAMES,        sizeof(XF_Shorten_QueryNames),        HT_T_TINY    , FILL },
+  {CN_XF_STAGE_CAST,                sizeof(XF_stage_cast),                HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,            sizeof(XF_table_Analysis),            HT_T_TINY    , FILL },
   {CN_XF_TBLCOL_TO_STMCOL,          sizeof(XF_tblCol_To_stmCol),          HT_T_TINY    , FILL },
 

@@ -10,6 +10,7 @@
 
 #include "XF_Dedupe_as.hpp"
 #include "XF_Reinstate_stage.hpp"
+#include "XF_stage_cast.hpp"
 #include "XF_tblCol_To_stmCol.hpp"
 
 
@@ -61,9 +62,9 @@ void MakeWeavable::vWeavable(void)
   //vReinstateStages();
   XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
 
-  vAddStageCasts();
+  XF_stage_cast::vXF_stage_cast(m_pCI);
 
-   XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+  XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
   vStmColToColNmOfKeyExists();
 
@@ -74,20 +75,6 @@ void MakeWeavable::vWeavable(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add stage next casts                                                       */
-/*----------------------------------------------------------------------------*/
-void MakeWeavable::vAddStageCasts(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEWEAVABLE, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "add stage casts"_Stz);
-
-  m_pCI->G.pDeck->vAddStageCasts(m_pCI);
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
