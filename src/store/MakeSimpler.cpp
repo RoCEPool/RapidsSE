@@ -12,6 +12,7 @@
 #include "Optimiser.hpp"
 #include "OuterQuery.hpp"
 
+#include "XF_Add_level.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_scan_To_table.hpp"
@@ -77,7 +78,7 @@ void MakeSimpler::vSimplify(void)
     //vGroup_CondenseInfo();
     XF_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
     XF_scan_To_table::vXF_scan_To_table(m_pCI);
-    vAddLevel();
+    XF_Add_level::vXF_Add_level(m_pCI);
     vNotOps();
 
     //vGroup_MetaAnalysis();
@@ -134,22 +135,6 @@ void MakeSimpler::vSimplify_passThru(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* Add Levels                                                                 */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vAddLevel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /* As review                                                                  */

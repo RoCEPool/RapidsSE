@@ -31,7 +31,6 @@ namespace STORE
     void vSimplify_passThru(void);
 
   private:
-    void vAddLevel(void);
     void vAsReview(void);
     void vIndexAnalysis(void);
     void vIndexAnalysis_passThru(void);

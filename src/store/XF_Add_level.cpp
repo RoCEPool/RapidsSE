@@ -56,12 +56,19 @@ void XF_Add_level::vXF_Add_level(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add level to op                                                            */
 /*----------------------------------------------------------------------------*/
 void XF_Add_level::vXF_Add_level(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
+  m_pCI->vTransform(__func__, "add level to op"_Stz);
+
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain())
+    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
+
+  m_pCI->vEndTransform();
 
   vValidate();
 }
