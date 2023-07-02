@@ -6,15 +6,13 @@
 
 #include "Board.hpp"
 #include "CardIter.hpp"
-#include "Fold.hpp"
-#include "Smoosh.hpp"
-#include "Smooth.hpp"
 #include "Optimiser.hpp"
 #include "OuterQuery.hpp"
 
 #include "XF_Add_level.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Move_on.hpp"
+#include "XF_not_Ops.hpp"
 #include "XF_scan_To_table.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +77,8 @@ void MakeSimpler::vSimplify(void)
     XF_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
     XF_scan_To_table::vXF_scan_To_table(m_pCI);
     XF_Add_level::vXF_Add_level(m_pCI);
-    vNotOps();
+    XF_not_Ops::vXF_not_Ops(m_pCI);
+    //vNotOps();
 
     //vGroup_MetaAnalysis();
     vTableAnalysis(&m_cTableSyn);
@@ -246,18 +245,6 @@ void MakeSimpler::vIndexAnalysis_passThru(void)
   }
 
   m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Not Ops                                                                    */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vNotOps(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
-    m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
 }
 
 /*----------------------------------------------------------------------------*/
