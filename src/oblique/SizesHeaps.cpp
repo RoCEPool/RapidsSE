@@ -292,6 +292,7 @@
 #include "XF_scan_To_table.hpp"
 #include "XF_stage_cast.hpp"
 #include "XF_stmCol_To_colNm.hpp"
+#include "XF_subQuery_Analysis.hpp"
 #include "XF_table_Analysis.hpp"
 #include "XF_tblCol_To_stmCol.hpp"
 
@@ -780,10 +781,11 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_REDUCE_KEY_GBYAGG,        sizeof(XF_Reduce_key_gbyAgg),        HT_T_TINY    , FILL },
   {CN_XF_REINSTATE_STAGE,          sizeof(XF_Reinstate_stage),          HT_T_TINY    , FILL },
   {CN_XF_RPNCALC_TO_BOOLCALC,      sizeof(XF_rpnCalc_To_boolCalc),      HT_T_TINY    , FILL },
-  {CN_XF_SCAN_TO_TABLE,       sizeof(XF_scan_To_table),            HT_T_TINY    , FILL },
+  {CN_XF_SCAN_TO_TABLE,            sizeof(XF_scan_To_table),            HT_T_TINY    , FILL },
   {CN_XF_SHORTEN_QUERYNM,          sizeof(XF_Shorten_queryNm),          HT_T_TINY    , FILL },
   {CN_XF_STAGE_CAST,               sizeof(XF_stage_cast),               HT_T_TINY    , FILL },
   {CN_XF_STMCOL_TO_COLNM,          sizeof(XF_stmCol_to_colNm),          HT_T_TINY    , FILL },
+  {CN_XF_SUBQUERY_ANALYSIS,        sizeof(XF_subQuery_Analysis),        HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,           sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_TBLCOL_TO_STMCOL,         sizeof(XF_tblCol_To_stmCol),         HT_T_TINY    , FILL },
 

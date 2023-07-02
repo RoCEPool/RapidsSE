@@ -7,7 +7,6 @@
 #include "Board.hpp"
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
-#include "OuterQuery.hpp"
 
 #include "XF_Add_level.hpp"
 #include "XF_as_Review.hpp"
@@ -19,6 +18,7 @@
 #include "XF_rpnCalc_To_boolCalc.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_scan_To_table.hpp"
+#include "XF_subQuery_Analysis.hpp"
 #include "XF_table_Analysis.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -97,9 +97,11 @@ void MakeSimpler::vSimplify(void)
     vDebugPoint();
   }
 
-  OuterQuery* pOuterQuery = new OuterQuery;
-  pOuterQuery->vQueryAnalysis(m_pCI);
-  delete pOuterQuery;
+  XF_subQuery_Analysis::vXF_subQuery_Analysis(m_pCI);
+
+//  OuterQuery* pOuterQuery = new OuterQuery;
+//  pOuterQuery->vQueryAnalysis(m_pCI);
+//  delete pOuterQuery;
 }
 
 /*----------------------------------------------------------------------------*/
