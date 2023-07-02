@@ -10,6 +10,7 @@
 #include "OuterQuery.hpp"
 
 #include "XF_Add_level.hpp"
+#include "XF_as_Review.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Move_on.hpp"
 #include "XF_not_Ops.hpp"
@@ -88,7 +89,7 @@ void MakeSimpler::vSimplify(void)
 
     //vGroup_PreliminaryConversions();
     vRpnCalcToBoolCalc();
-    vAsReview();
+    XF_as_Review::vXF_as_Review(m_pCI);
 
     vDebugPoint();
   }
@@ -135,48 +136,6 @@ void MakeSimpler::vSimplify_passThru(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* As review                                                                  */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vAsReview(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "as review"_Stz);
-
-  m_pCI->G_vRestart();
-
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
-  RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);
-
-  while (m_pCI->G_bEachMain()) {
-
-    switch (m_pCI->G.e_MainCard) {
-
-      case CK_GBYAGG:
-        m_pCI->G.p_gbyAgg->vAs_Review(m_pCI);
-        break;
-
-      case CK_INDEXJOIN:  break;
-      case CK_INDEXSCAN:  break;
-      case CK_PROJECT:    break;
-      case CK_SORT:       break;
-
-      case CK_TABLE:
-        m_pCI->StreamOrder.m_pProjection_running = m_pCI->G.p_table->pSub_projection();
-        m_pCI->StreamOrder.m_pKey_running = nullptr;
-        break;
-
-      default:
-        break;
-    }
-
-    m_pCI->vPrintBoard(__LINE__);
-  }
-
-  m_pCI->vEndTransform();
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

@@ -31,7 +31,6 @@ namespace STORE
     void vSimplify_passThru(void);
 
   private:
-    void vAsReview(void);
     void vIndexAnalysis(void);
     void vIndexAnalysis_passThru(void);
     void vRpnCalcToBoolCalc(void);
