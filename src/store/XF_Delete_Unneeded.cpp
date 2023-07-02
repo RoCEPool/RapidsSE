@@ -56,12 +56,34 @@ void XF_Delete_Unneeded::vXF_Delete_Unneeded(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* delete superfluous <absJoin>'s                                             */
 /*----------------------------------------------------------------------------*/
 void XF_Delete_Unneeded::vXF_Delete_Unneeded(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_UNNEEDED, _FOOTER_);
 
+  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All AbsJoin
+  Card_AbsJoin::vDeleteAllAbsJoin(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Combined
+  m_pCI->G_vRestart();
+  Card_Combined::vDeleteAllCombined(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Send
+  m_pCI->G_vRestart();
+  Card_Send::vDeleteAllSend(m_pCI);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Delete All Stage
+  m_pCI->G_vRestart();
+  Card_Stage::vDeleteAllStage(m_pCI);
+
+  m_pCI->vEndTransform();
 
   vValidate();
 }

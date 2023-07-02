@@ -33,7 +33,6 @@ namespace STORE
   private:
     void vAddLevel(void);
     void vAsReview(void);
-    void vDeleteUnneeded(void);
     void vIndexAnalysis(void);
     void vIndexAnalysis_passThru(void);
     void vNotOps(void);

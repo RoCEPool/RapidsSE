@@ -12,6 +12,7 @@
 #include "Optimiser.hpp"
 #include "OuterQuery.hpp"
 
+#include "XF_Delete_Unneeded.hpp"
 #include "XF_Move_on.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +74,7 @@ void MakeSimpler::vSimplify(void)
      XF_Move_on::vXF_Move_on(m_pCI);
 
     //vGroup_CondenseInfo();
-    vDeleteUnneeded();
+    XF_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
     vScanBecomesTable();
     vAddLevel();
     vNotOps();
@@ -187,37 +188,6 @@ void MakeSimpler::vAsReview(void)
 
     m_pCI->vPrintBoard(__LINE__);
   }
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Condense Info                                                              */
-/*----------------------------------------------------------------------------*/
-void MakeSimpler::vDeleteUnneeded(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKESIMPLER, _FOOTER_);
-
-  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All AbsJoin
-  Card_AbsJoin::vDeleteAllAbsJoin(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All Combined
-  m_pCI->G_vRestart();
-  Card_Combined::vDeleteAllCombined(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All Send
-  m_pCI->G_vRestart();
-  Card_Send::vDeleteAllSend(m_pCI);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete All Stage
-  m_pCI->G_vRestart();
-  Card_Stage::vDeleteAllStage(m_pCI);
 
   m_pCI->vEndTransform();
 }
