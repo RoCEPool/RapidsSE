@@ -267,6 +267,7 @@
 #include "Weaver2.hpp"
 #include "XF.hpp"
 #include "XF_Add_level.hpp"
+#include "XF_colNm_To_stmCol.hpp"
 #include "XF_Cull_NonUsed_bound.hpp"
 #include "XF_Cull_Used_bound.hpp"
 #include "XF_Cut_sort.hpp"
@@ -759,6 +760,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF,                          sizeof(XF),                          HT_T_TINY    , FILL },
   {CN_XF_ADD_LEVEL,                sizeof(XF_Add_level),                HT_T_TINY    , FILL },
   {CN_XF_AS_REVIEW,                sizeof(XF_as_Review),                HT_T_TINY    , FILL },
+  {CN_XF_COLNM_TO_STMCOL,          sizeof(XF_colNm_to_stmCol),          HT_T_TINY    , FILL },
   {CN_XF_CULL_NONUSED_BOUND,       sizeof(XF_Cull_NonUsed_bound),       HT_T_TINY    , FILL },
   {CN_XF_CULL_USED_BOUND,          sizeof(XF_Cull_Used_bound),          HT_T_TINY    , FILL },
   {CN_XF_CUT_SORT,                 sizeof(XF_Cut_sort),                 HT_T_TINY    , FILL },

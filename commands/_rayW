@@ -11,10 +11,11 @@ _nation
 // STYLE 1
 ///////////
 
+/*
 /glean_interactive
 /weaved
 /optimise_passthru
-pipeline unamed
+pipeline _rayW
 begin
   stage stageStart on origin :
     start
@@ -31,14 +32,17 @@ begin
     | sink
     | stageStart
 end ;
+*/
 
-/*
 
 ///////////
 // STYLE 2
 ///////////
 
-/optimise_passthru pipeline unamed
+/glean_interactive
+/weaved
+/optimise_passthru
+pipeline _rayW
 begin
   stage stageStart on origin :
     start
@@ -56,4 +60,6 @@ begin
     | stageStart
 end ;
 
-*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
