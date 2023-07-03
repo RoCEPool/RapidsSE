@@ -214,7 +214,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
   auto bfLambdaFn = [pCI,this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
-    
+
     if (pSymbol()->Y_bHas(P_BreakPt)) {
       vDebugPoint();
     }

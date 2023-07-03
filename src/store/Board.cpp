@@ -264,6 +264,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
       case CK_WHERE:        xCI.G.p_where->vValidate        (&xCI,0,pDeck); break;
 
       default:
+        xCI.G.p_MainCard->vDump();
         vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
         NEVER_REACH
     }
@@ -519,10 +520,11 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprint("Transform: %02lld Board %lld %s Query %s"_Stz,
+  pRibbon->vSprint("Transform: %02lld Board %lld %s %p Query %s"_Stz,
                    m_iXform,
                    m_i_Board,
                    m_sBoardNm.szStz(),
+                   this,
                    m_pBench->pOptimiser()->szQueryNm()
                    );
 
