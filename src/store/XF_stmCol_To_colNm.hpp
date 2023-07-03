@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_stmCol_to_colNm.hpp -- Stream-Column to Column-Name                     */
+/* XF_stmCol_To_colNm.hpp -- Stream-Column to Column-Name                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class XF_stmCol_to_colNm : public XF_TRANSFORM
+  class XF_stmCol_To_colNm : public XF_TRANSFORM
   {
   private:
     // must be last
@@ -17,18 +17,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    XF_stmCol_to_colNm(CardIter* pCI);
-   ~XF_stmCol_to_colNm(void) noexcept(false);
+    XF_stmCol_To_colNm(CardIter* pCI);
+   ~XF_stmCol_To_colNm(void) noexcept(false);
 
-    static void vXF_stmCol_to_colNm(CardIter* pCI);
+    static void vXF_stmCol_To_colNm(CardIter* pCI);
 
-    void vXF_stmCol_to_colNm(void);
+    void vXF_stmCol_To_colNm(void);
 
   private:
     Footer* aFooter(void);
   };
 
-  XF_stmCol_to_colNm* _pXF_stmCol_to_colNm(void* aAddr);
+  XF_stmCol_To_colNm* _pXF_stmCol_To_colNm(void* aAddr);
 }
 
 /*============================================================================*/

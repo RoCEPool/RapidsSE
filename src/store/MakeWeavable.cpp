@@ -66,7 +66,7 @@ void MakeWeavable::vWeavable(void)
 
   XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
-  XF_stmCol_to_colNm::vXF_stmCol_to_colNm(m_pCI);
+  XF_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
 
   XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
 }

@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* XF_colNm_to_stmCol.cpp -- Table-Column to Stream-Column                   */
+/* XF_colNm_To_stmCol.cpp -- Table-Column to Stream-Column                   */
 /*============================================================================*/
 
-#include "XF_colNm_to_stmCol.hpp"
+#include "XF_colNm_To_stmCol.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_colNm_to_stmCol, CN_XF_TBLCOL_TO_STMCOL)
-__aNewFunction(XF_colNm_to_stmCol, CN_XF_TBLCOL_TO_STMCOL)
-__vDeleteFunction(XF_colNm_to_stmCol, CN_XF_TBLCOL_TO_STMCOL)
-__aFooterFunction(XF_colNm_to_stmCol)
+__pCastFunction(STORE, XF_colNm_To_stmCol, CN_XF_TBLCOL_TO_STMCOL)
+__aNewFunction(XF_colNm_To_stmCol, CN_XF_TBLCOL_TO_STMCOL)
+__vDeleteFunction(XF_colNm_To_stmCol, CN_XF_TBLCOL_TO_STMCOL)
+__aFooterFunction(XF_colNm_To_stmCol)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_colNm_to_stmCol::XF_colNm_to_stmCol(CardIter* pCI)
+XF_colNm_To_stmCol::XF_colNm_To_stmCol(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_TBLCOL_TO_STMCOL, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
@@ -31,7 +31,7 @@ XF_colNm_to_stmCol::XF_colNm_to_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_colNm_to_stmCol::~XF_colNm_to_stmCol(void) noexcept(false)
+XF_colNm_To_stmCol::~XF_colNm_To_stmCol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
 }
@@ -39,13 +39,13 @@ XF_colNm_to_stmCol::~XF_colNm_to_stmCol(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_colNm_to_stmCol::vXF_colNm_to_stmCol(CardIter* pCI)
+void XF_colNm_To_stmCol::vXF_colNm_To_stmCol(CardIter* pCI)
 {
   _static_
 
-  XF_colNm_to_stmCol* pXF_colNm_to_stmCol = new XF_colNm_to_stmCol(pCI);
+  XF_colNm_To_stmCol* pXF_colNm_to_stmCol = new XF_colNm_To_stmCol(pCI);
 
-  pXF_colNm_to_stmCol->vXF_colNm_to_stmCol();
+  pXF_colNm_to_stmCol->vXF_colNm_To_stmCol();
 
   delete pXF_colNm_to_stmCol;
 }
@@ -58,7 +58,7 @@ void XF_colNm_to_stmCol::vXF_colNm_to_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* transform column-name to stream-column                                     */
 /*----------------------------------------------------------------------------*/
-void XF_colNm_to_stmCol::vXF_colNm_to_stmCol(void)
+void XF_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
 
