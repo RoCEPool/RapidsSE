@@ -108,7 +108,6 @@ void XF::vTransform(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
-  //vSimplify();
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(m_pCI->G.i_Board);
@@ -201,66 +200,6 @@ void XF::vTransform_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
-  vSimplify_passThru();
-
-  Bench::vValidate(m_pCI);
-
-  XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
-
-  XF_Make_Code::vXF_Make_Code(m_pCI);
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void XF::vSimplify(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(m_pCI->G.i_Board);
-    XF_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
-  }
-
-  m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(m_pCI->G.i_Board);
-
-    //vGroup_InitialAdjustments();
-     XF_Move_on::vXF_Move_on(m_pCI);
-
-    //vGroup_CondenseInfo();
-    XF_Delete_Unneeded::vXF_Delete_Unneeded(m_pCI);
-    XF_scan_To_table::vXF_scan_To_table(m_pCI);
-    XF_Add_level::vXF_Add_level(m_pCI);
-    XF_not_Ops::vXF_not_Ops(m_pCI);
-
-    //vGroup_MetaAnalysis();
-    XF_table_Analysis::vXF_table_Analysis(m_pCI,&m_cTableSyn);
-    XF_projection_Analysis::vXF_projection_Analysis(m_pCI);
-    XF_index_Analysis::vXF_index_Analysis(m_pCI);
-
-    //vGroup_PreliminaryConversions();
-    XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
-    XF_as_Review::vXF_as_Review(m_pCI);
-
-    vDebugPoint();
-  }
-
-  XF_subQuery_Analysis::vXF_subQuery_Analysis(m_pCI);
-
-  m_pCI->m_pBench->vMadeSimpler(true);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the reducePipeline set of transformations to all subPipe boards      */
-/*----------------------------------------------------------------------------*/
-void XF::vSimplify_passThru(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
-
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
     m_pCI->vUsingBoard(m_pCI->G.i_Board);
@@ -295,7 +234,11 @@ void XF::vSimplify_passThru(void)
 
   m_pCI->m_pBench->vMadeSimpler(true);
 
+  Bench::vValidate(m_pCI);
 
+  XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+
+  XF_Make_Code::vXF_Make_Code(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/
