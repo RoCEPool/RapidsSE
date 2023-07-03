@@ -186,7 +186,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LOGICUNIT,
 
   /* */ CN__M__,
-  /* */ CN_MAKECODE,
   /* */ CN_MARKER,
   /* */ CN_MARKERCHAIN,
   /* */ CN_MARKERMGR,
@@ -458,6 +457,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_FLATTEN,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
+  /* */ CN_XF_MAKE_CODE,
   /* */ CN_XF_MORPH_SCAN_TO_INDEXSCAN,
   /* */ CN_XF_MORPH_TABLE_TO_EEOP,
   /* */ CN_XF_MOVE_ON,
@@ -660,7 +660,6 @@ static Stz* aCN[]
   /* */ "LOGICUNIT"_Stz,            // CN_LOGICUNIT
 
   /* */ "_M__"_Stz,                 // CN__M__
-  /* */ "MAKECODE"_Stz,             // CN_MAKECODE
   /* */ "MARKER"_Stz,               // CN_MARKER
   /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
   /* */ "MARKERMGR"_Stz,            // CN_MARKERMGR
@@ -929,9 +928,10 @@ static Stz* aCN[]
   /* */ "XF_DELETE_UNNEEDED"_Stz,           // CN_XF_DELETE_UNNEEDED
   /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,     // CN_XF_DERIVE_PROJECTION_KEY
   /* */ "XF_EARLY_PROJECTION"_Stz,          // CN_XF_EARLY_PROJECTION
-  /* */ "_XF_FLATTEN"_Stz,                  // CN_XF_FLATTEN
+  /* */ "XF_FLATTEN"_Stz,                   // CN_XF_FLATTEN
   /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
+  /* */ "XF_MAKE_CODE"_Stz,                 // CN_XF_MAKE_CODE
   /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,   // CN_XF_MORPH_SCAN_TO_INDEXSCAN
   /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
   /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON

@@ -259,7 +259,7 @@
 #include "OpDef.hpp"
 #include "PipelineDef.hpp"
 #include "StageDef.hpp"
-#include "MakeCode.hpp"
+#include "XF_Make_Code.hpp"
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
@@ -486,7 +486,7 @@ SizeHeap gxaSizeHeap[]
   { CN_LOCALCHAIN,               sizeof(LocalFrame),         HT_T_LARGE   ,FILL },
   { CN_LOCALDIR,                 sizeof(LocalDir),           HT_INVALID   ,FILL },
   { CN_LOCALFILE,                sizeof(LocalFile),          HT_INVALID   ,FILL },
-  { CN_LOCALSTRS,                sizeof(LocalStrs),          HT_T_MEDIUM  ,FILL },
+  { CN_LOCALSTRS,                sizeof(LocalStrs),         HT_T_MEDIUM  , FILL },
   {CN_LOCALVARS,                sizeof(LocalVars),          HT_T_MEDIUM  , FILL },
   {CN_LOCATION,                 sizeof(BASE::Location),     HT_T_TINY    , FILL },
   {CN_LOCATOR,                  sizeof(Locator),            HT_T_TINY    , FILL },
@@ -496,7 +496,6 @@ SizeHeap gxaSizeHeap[]
   {CN_LOGICUNIT,                sizeof(LogicUnit),          HT_T_MEDIUM  , FILL },
 
   {CN__M__,                     'M' - ('A' - 1),            HT_INVALID   , FILL },
-  {CN_MAKECODE,                 sizeof(MakeCode),           HT_T_TINY    , FILL },
   {CN_MARKER,                   sizeof(Marker),             HT_T_TINY    , FILL },
   {CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    , FILL },
   {CN_MARKERMGR,                sizeof(MarkerMgr),          HT_T_TINY    , FILL },
@@ -768,6 +767,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN,                  sizeof(XF_Flatten),               HT_T_TINY    , FILL },
   {CN_XF_INDEX_ANALYSIS,           sizeof(XF_index_Analysis),        HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,       sizeof(XF_Individuate_filter),       HT_T_TINY    , FILL },
+  {CN_XF_MAKE_CODE,                sizeof(XF_Make_Code),                HT_T_TINY    , FILL },
   {CN_XF_MORPH_SCAN_TO_INDEXSCAN,  sizeof(XF_Morph_scan_To_indexScan),  HT_T_TINY    , FILL },
   {CN_XF_MORPH_TABLE_TO_EEOP,      sizeof(XF_Morph_table_To_EEop),      HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                  sizeof(XF_Move_on),                  HT_T_TINY    , FILL },

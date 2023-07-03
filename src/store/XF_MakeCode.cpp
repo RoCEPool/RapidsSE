@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* MakeCode.cpp -- Make Simpler                                            */
+/* XF_Make_Code.cpp -- Make Simpler                                            */
 /*============================================================================*/
 
-#include "MakeCode.hpp"
+#include "XF_Make_Code.hpp"
 
 #include "Bench.hpp"
 #include "Board.hpp"
@@ -20,18 +20,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, MakeCode, CN_MAKECODE)
-__aNewFunction(MakeCode, CN_MAKECODE)
-__vDeleteFunction(MakeCode, CN_MAKECODE)
-__aFooterFunction(MakeCode)
+__pCastFunction(STORE, XF_Make_Code, CN_XF_MAKE_CODE)
+__aNewFunction(XF_Make_Code, CN_XF_MAKE_CODE)
+__vDeleteFunction(XF_Make_Code, CN_XF_MAKE_CODE)
+__aFooterFunction(XF_Make_Code)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MakeCode::MakeCode(CardIter* pCI)
-: Object(CN_MAKECODE)
+XF_Make_Code::XF_Make_Code(CardIter* pCI)
+: Object(CN_XF_MAKE_CODE)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   m_pCI = pCI;
 
@@ -41,17 +41,17 @@ MakeCode::MakeCode(CardIter* pCI)
 
   m_pStreamDef_prior = nullptr;
 
-  _checkInitialised_(CN_MAKECODE);
+  _checkInitialised_(CN_XF_MAKE_CODE);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MakeCode::~MakeCode(void) noexcept(false)
+XF_Make_Code::~XF_Make_Code(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   delete m_pPipelineDef;
 }
@@ -64,9 +64,9 @@ MakeCode::~MakeCode(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* retrieve m_pPipelineDef                                                    */
 /*----------------------------------------------------------------------------*/
-PipelineDef* MakeCode::pPipelineDef(void)
+PipelineDef* XF_Make_Code::pPipelineDef(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   return m_pPipelineDef;
 }
@@ -74,9 +74,9 @@ PipelineDef* MakeCode::pPipelineDef(void)
 /*----------------------------------------------------------------------------*/
 /* store m_pPipelineDef                                                       */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vPipelineDef(PipelineDef* pPipelineDef)
+void XF_Make_Code::vPipelineDef(PipelineDef* pPipelineDef)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   m_pPipelineDef = pPipelineDef;
 }
@@ -85,9 +85,9 @@ void MakeCode::vPipelineDef(PipelineDef* pPipelineDef)
 /*----------------------------------------------------------------------------*/
 /* call synthesiser                                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vSynthesise(void)
+void XF_Make_Code::vSynthesise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
 
@@ -108,9 +108,9 @@ void MakeCode::vSynthesise(void)
 /*----------------------------------------------------------------------------*/
 /* craft pipeline def                                                         */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftPipelineDef(Board* pBoard)
+void XF_Make_Code::vCraftPipelineDef(Board* pBoard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   s32 sQueryNm = pBoard->pBench()->pOptimiser()->szQueryNm();
 
@@ -142,9 +142,9 @@ void MakeCode::vCraftPipelineDef(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* craft stage def                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftStageDef(Card_Stage* p_stage)
+void XF_Make_Code::vCraftStageDef(Card_Stage* p_stage)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
                              p_stage->szSymbol(),
@@ -155,9 +155,9 @@ void MakeCode::vCraftStageDef(Card_Stage* p_stage)
 /*----------------------------------------------------------------------------*/
 /* craft op def                                                               */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftOpDef(Card_OP* p_OP)
+void XF_Make_Code::vCraftOpDef(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   if (p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;
@@ -185,9 +185,9 @@ void MakeCode::vCraftOpDef(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft arg def                                                              */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftArgDefs(Card_OP* p_OP)
+void XF_Make_Code::vCraftArgDefs(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   s2K sExpr;
   s2K sConstraint;
@@ -342,9 +342,9 @@ void MakeCode::vCraftArgDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft indexes                                                              */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftIndexes(Card_OP* p_OP)
+void XF_Make_Code::vCraftIndexes(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   eCK eCard = p_OP->eCard();
 
@@ -367,9 +367,9 @@ void MakeCode::vCraftIndexes(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft index def's                                                          */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftIndexDefs(Card_OP* p_OP)
+void XF_Make_Code::vCraftIndexDefs(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   eCK eCard = p_OP->eCard();
 
@@ -386,9 +386,9 @@ void MakeCode::vCraftIndexDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft stream def's                                                         */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
+void XF_Make_Code::vCraftStreamDefs(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
@@ -419,9 +419,9 @@ void MakeCode::vCraftStreamDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vUpdateColsReq(Card_OP* p_OP)
+void XF_Make_Code::vUpdateColsReq(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   eCK eCard_OP = p_OP->eCard();
 
@@ -480,9 +480,9 @@ void MakeCode::vUpdateColsReq(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq, Card_Filter* p_filter)
+void XF_Make_Code::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq, Card_Filter* p_filter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
   vUpdateColsReq_terms(p_table, pColsReq,p_boolCalc);
@@ -491,9 +491,9 @@ void MakeCode::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq, Car
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq, Card_Project* p_project)
+void XF_Make_Code::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq, Card_Project* p_project)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   Card_Projection* p_projection = p_project->pSub_projection();
   vUpdateColsReq_terms(p_table, pColsReq,p_projection);
@@ -502,9 +502,9 @@ void MakeCode::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq, Ca
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void MakeCode::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card* pSubCard)
+void XF_Make_Code::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card* pSubCard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKECODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
