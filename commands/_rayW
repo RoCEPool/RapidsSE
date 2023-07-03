@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* _rayW : Code Synthesizer V2                                                */
+/*============================================================================*/
+
+// NOTE: We need to get both styles of the pipeline working with passthru !!!
+
+_nation
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+///////////
+// STYLE 1
+///////////
+
+/optimise_passthru pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0559
+  stage stageMarker0559 on all partitions :
+    scan rapidsse public Nation
+    | filter " type BOOLEAN  $1 2  <  "
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*
+
+///////////
+// STYLE 2
+///////////
+
+/optimise_passthru pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0559
+  stage stageMarker0559 on all partitions :
+    scan rapidsse public Nation
+    | filter " type BOOLEAN  n_nationkey 2  <  "
+    | project " type INTEGER as n_nationkey n_nationkey , type VARCHAR as n_name n_name "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/

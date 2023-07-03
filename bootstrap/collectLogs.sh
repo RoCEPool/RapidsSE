@@ -215,6 +215,9 @@ function collectLogs() {
   remoteCmd+="echo \"Output of: bash --version\"; "
   remoteCmd+="bash --version; "
   remoteCmd+="echo -e \"\n*******************************************************\n\"; "
+  remoteCmd+="echo \"Contents of: /cloud-init-output.log\"; "
+  remoteCmd+="cat /cloud-init-output.log; "
+  remoteCmd+="echo -e \"\n*******************************************************\n\"; "
   remoteCmd+="'"
 
   # Copy logs for each node
@@ -227,15 +230,18 @@ function collectLogs() {
     installDir="$(nodeCfgGetValue "${nodeName}" "${NODE_CFG_DIR_KEY}")"
 
     # Create a subdirectory of the output dir for each node
-    local outputDir="${workingDir}/${nodeName}"  
+    local outputDir="${workingDir}/${nodeName}"
+    local queryLibsDir="${outputDir}/queryLibs"
     mkdir -p "${outputDir}"
+    mkdir -p "${queryLibsDir}"
 
     # Copy some files
     echo "Copying logs from ${nodeName} [host ${host}]"
-    scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/se*.log"         "${outputDir}" &>/dev/null || true
+    scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/se*.log"        "${outputDir}" &>/dev/null || true
     scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/version"        "${outputDir}" &>/dev/null || true
     scp    "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/cluster.config" "${outputDir}" &>/dev/null || true
     scp -r "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/tmp"            "${outputDir}" &>/dev/null || true
+    scp -r "${SSH_COMMON_OPTIONS[@]}" "${host}:${installDir}/queryLibs/src"  "${queryLibsDir}" &>/dev/null || true
     ssh    "${SSH_COMMON_OPTIONS[@]}" "${host}" bash -c "${remoteCmd}"    &> "${outputDir}/machine.txt" || true
   done
 
