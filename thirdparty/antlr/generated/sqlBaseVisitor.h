@@ -229,6 +229,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitTrackmemory(sqlParser::TrackmemoryContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitMemoryleaks(sqlParser::MemoryleaksContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }

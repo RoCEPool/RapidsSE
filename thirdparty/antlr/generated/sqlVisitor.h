@@ -126,6 +126,10 @@ public:
 
     virtual antlrcpp::Any visitSztbl(sqlParser::SztblContext *context) = 0;
 
+    virtual antlrcpp::Any visitTrackmemory(sqlParser::TrackmemoryContext *context) = 0;
+
+    virtual antlrcpp::Any visitMemoryleaks(sqlParser::MemoryleaksContext *context) = 0;
+
     virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *context) = 0;
 
     virtual antlrcpp::Any visitTablePartitioning(sqlParser::TablePartitioningContext *context) = 0;

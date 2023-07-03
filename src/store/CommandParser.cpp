@@ -216,14 +216,10 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
 {
   // Determine which procedure/pipeline needs to be invoked for a given command.
   // Note that we partially descend the parse tree for any commands that have parameters.
+  // This if statement is ordered in roughly relative order of statement commonality.
 
   if (pCtx->queryStatement() || pCtx->explainStatement())
-                                { m_szProcName = "sqlCompiler"_Stz;     return visitChildren(pCtx); }
-
-  else if (pCtx->lscol())         { m_szProcName = "lscol"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->lsidx())         { m_szProcName = "lsidx"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->lsidxcol())      { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
-  else if (pCtx->lstbl())         { m_szProcName = "lstbl"_Stz;           return nullptr; }
+                                  { m_szProcName = "sqlCompiler"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->createQuery() && pCtx->createQuery()->createTableQuery())
                                   { m_szProcName = "create__table"_Stz;   return visitChildren(pCtx); }
   else if (pCtx->createQuery() && pCtx->createQuery()->createIndexQuery())
@@ -232,14 +228,21 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
                                   { m_szProcName = "drop__table"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->dropQuery() && pCtx->dropQuery()->dropIndexQuery())
                                   { m_szProcName = "drop__index"_Stz;     return visitChildren(pCtx); }
-  else if (pCtx->truncateQuery()) { m_szProcName = "truncate"_Stz;        return visitChildren(pCtx); }
   else if (pCtx->load())          { m_szProcName = "load"_Stz;            return visitChildren(pCtx); }
   else if (pCtx->dload())         { m_szProcName = "dload"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->truncateQuery()) { m_szProcName = "truncate"_Stz;        return visitChildren(pCtx); }
+
+  else if (pCtx->lscol())         { m_szProcName = "lscol"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->lsidx())         { m_szProcName = "lsidx"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->lsidxcol())      { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
+  else if (pCtx->lstbl())         { m_szProcName = "lstbl"_Stz;           return nullptr; }
   else if (pCtx->count())         { m_szProcName = "count"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->space())         { m_szProcName = "space"_Stz;           return nullptr; }
   else if (pCtx->status())        { m_szProcName = "status"_Stz;          return nullptr; }
   else if (pCtx->szidx())         { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->sztbl())         { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return nullptr; }
+  else if (pCtx->memoryleaks())   { m_szProcName = "memoryleaks"_Stz;     return nullptr; }
 
   else                          { NOT_IMPLEMENTED_YET }
 

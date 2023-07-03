@@ -11,23 +11,28 @@ statements        :  statement+ ;
 statement         :  tags statementChoice ';' ;
 statementChoice   :   queryStatement
                     | explainStatement
-                    | lscol
-                    | lsidx
-                    | lsidxcol
-                    | lstbl
                     | createQuery
                     | dropQuery
 //                    | insertQuery
 //                    | deleteQuery
 //                    | updateQuery
                     | truncateQuery
-                    | load
+
                     | dload
+                    | load
+
+                    | lscol
+                    | lsidx
+                    | lsidxcol
+                    | lstbl
                     | count
                     | space
                     | status
                     | szidx
                     | sztbl
+
+                    | trackmemory
+                    | memoryleaks
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
@@ -175,6 +180,9 @@ space             : SPACE ;
 status            : STATUS ;
 szidx             : SZIDX tableName indexName ;
 sztbl             : SZTBL tableName ;
+
+trackmemory       : TRACKMEMORY ;
+memoryleaks       : MEMORYLEAKS ;
 
 // table/column definition ------------------------------------------------------------
 
@@ -510,7 +518,7 @@ nonReservedWord   :
                   | IF | IFNULL | INDEX
                   | KEY
                   | LIMIT | LOAD | LOOP | LSIDX | LSTBL
-                  | MINUTES | MONOTONIC | MONTHS
+                  | MEMORYLEAKS | MINUTES | MONOTONIC | MONTHS
                   | NODE | NOW
                   | OFFSET
                   | PATHS | PLACING | PRETTY
@@ -518,7 +526,7 @@ nonReservedWord   :
                   | REFERENCE | REPLICATED | ROWSIZE
                   | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
-                  | TABLESIZE | TEXT | TOP | TREE | TRUNCATE | TYPE | TYPEOF
+                  | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
                   | XOR
@@ -622,6 +630,7 @@ LSIDX                 : L S I D X;
 LSIDXCOL              : L S I D X C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;
+MEMORYLEAKS           : M E M O R Y L E A K S;
 MIN                   : M I N;
 MINUTE                : M I N U T E;
 MINUTES               : M I N U T E S;
@@ -681,6 +690,7 @@ TIME                  : T I M E;
 TIMESTAMP             : T I M E S T A M P;
 TO                    : T O;
 TOP                   : T O P;
+TRACKMEMORY           : T R A C K M E M O R Y;
 TREE                  : T R E E;
 TRIM                  : T R I M;
 TRAILING              : T R A I L I N G;
