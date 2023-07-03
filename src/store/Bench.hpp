@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class MakeFlat;
+  class XF_Flatten;
   class Fold;
 
   class Bench : public Object

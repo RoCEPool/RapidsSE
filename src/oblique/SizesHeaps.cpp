@@ -246,7 +246,7 @@
 #include "Scope.hpp"
 #include "Fold.hpp"
 #include "Smooth.hpp"
-#include "MakeFlat.hpp"
+#include "XF_Flatten.hpp"
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
 #include "Smoosh.hpp"
@@ -488,17 +488,16 @@ SizeHeap gxaSizeHeap[]
   { CN_LOCALDIR,                 sizeof(LocalDir),           HT_INVALID   ,FILL },
   { CN_LOCALFILE,                sizeof(LocalFile),          HT_INVALID   ,FILL },
   { CN_LOCALSTRS,                sizeof(LocalStrs),          HT_T_MEDIUM  ,FILL },
-  { CN_LOCALVARS,                sizeof(LocalVars),          HT_T_MEDIUM  ,FILL },
-  { CN_LOCATION,                 sizeof(BASE::Location),     HT_T_TINY    ,FILL },
-  { CN_LOCATOR,                  sizeof(Locator),            HT_T_TINY    ,FILL },
-  { CN_LOCK,                     sizeof(Lock),               HT_INVALID   ,FILL },
-  { CN_LOCKS,                    sizeof(Locks),              HT_T_MEDIUM  ,FILL },
-  { CN_LOCKSET,                  0,                          HT_INVALID   ,FILL },
-  { CN_LOGICUNIT,                sizeof(LogicUnit),          HT_T_MEDIUM  ,FILL },
+  {CN_LOCALVARS,                sizeof(LocalVars),          HT_T_MEDIUM  , FILL },
+  {CN_LOCATION,                 sizeof(BASE::Location),     HT_T_TINY    , FILL },
+  {CN_LOCATOR,                  sizeof(Locator),            HT_T_TINY    , FILL },
+  {CN_LOCK,                     sizeof(Lock),               HT_INVALID   , FILL },
+  {CN_LOCKS,                    sizeof(Locks),              HT_T_MEDIUM  , FILL },
+  {CN_LOCKSET,                  0,                          HT_INVALID   , FILL },
+  {CN_LOGICUNIT,                sizeof(LogicUnit),          HT_T_MEDIUM  , FILL },
 
-  { CN__M__,                     'M' - ('A' - 1),            HT_INVALID   ,FILL },
-  { CN_MAKECODE,                 sizeof(MakeCode),           HT_T_TINY    , FILL },
-  { CN_MAKEFLAT,                 sizeof(MakeFlat),           HT_T_TINY    , FILL },
+  {CN__M__,                     'M' - ('A' - 1),            HT_INVALID   , FILL },
+  {CN_MAKECODE,                 sizeof(MakeCode),           HT_T_TINY    , FILL },
   {CN_MAKEOPTIMAL,              sizeof(MakeOptimal),        HT_T_TINY    , FILL },
   {CN_MAKEWEAVABLE,             sizeof(MakeWeavable),       HT_T_TINY    , FILL },
   {CN_MARKER,                   sizeof(Marker),             HT_T_TINY    , FILL },
@@ -768,6 +767,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_DELETE_UNNEEDED,          sizeof(XF_Delete_Unneeded),          HT_T_TINY    , FILL },
   {CN_XF_DERIVE_PROJECTION_KEY,    sizeof(XF_Derive_projection_key),    HT_T_TINY    , FILL },
   {CN_XF_EARLY_PROJECTION,         sizeof(XF_Early_projection),         HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN,                  sizeof(XF_Flatten),                  HT_T_TINY    , FILL },
   {CN_XF_INDEX_ANALYSIS,           sizeof(XF_index_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,       sizeof(XF_Individuate_filter),       HT_T_TINY    , FILL },
   {CN_XF_MORPH_SCAN_TO_INDEXSCAN,  sizeof(XF_Morph_scan_To_indexScan),  HT_T_TINY    , FILL },

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* MakeFlat.cpp -- Flatten SubQueries                                */
+/* XF_Flatten.cpp -- Flatten SubQueries                                */
 /*============================================================================*/
 
-#include "MakeFlat.hpp"
+#include "XF_Flatten.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
@@ -17,36 +17,36 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, MakeFlat, CN_MAKEFLAT)
-__aNewFunction(MakeFlat, CN_MAKEFLAT)
-__vDeleteFunction(MakeFlat, CN_MAKEFLAT)
-__aFooterFunction(MakeFlat)
+__pCastFunction(STORE, XF_Flatten, CN_XF_FLATTEN)
+__aNewFunction(XF_Flatten, CN_XF_FLATTEN)
+__vDeleteFunction(XF_Flatten, CN_XF_FLATTEN)
+__aFooterFunction(XF_Flatten)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-MakeFlat::MakeFlat(CardIter* pCI)
-: XF_TRANSFORM(CN_MAKEFLAT)
+XF_Flatten::XF_Flatten(CardIter* pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI = pCI;
 
-  _checkInitialised_(CN_MAKEFLAT);
+  _checkInitialised_(CN_XF_FLATTEN);
 
   m_pCI->vUsingBoard((i8)0);
   m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
 
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-MakeFlat::~MakeFlat(void) noexcept(false)
+XF_Flatten::~XF_Flatten(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,11 +56,11 @@ MakeFlat::~MakeFlat(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten(CardIter* pCI)
+void XF_Flatten::vFlatten(CardIter* pCI)
 {
   _static_
 
-  MakeFlat* pMakeFlat = new MakeFlat(pCI);
+  XF_Flatten* pMakeFlat = new XF_Flatten(pCI);
 
   pMakeFlat->vFlatten();
 
@@ -76,9 +76,9 @@ void MakeFlat::vFlatten(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten(void)
+void XF_Flatten::vFlatten(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->G.pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
   m_pCI->Sqy.m_pSubQuery = m_pCI->G.pBoard->pSubQuery();
@@ -94,9 +94,9 @@ void MakeFlat::vFlatten(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_recurse(i8 iDepth)
+void XF_Flatten::vFlatten_recurse(i8 iDepth)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   // things before sub-queries
 
@@ -243,9 +243,9 @@ void MakeFlat::vFlatten_recurse(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlattenByDecisionTree(void)
+void XF_Flatten::vFlattenByDecisionTree(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vTransform(__func__, "Flatten by decision tree (recursive model)"_Stz);
 
@@ -328,9 +328,9 @@ void MakeFlat::vFlattenByDecisionTree(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_10_F(void)
+void XF_Flatten::vFlatten_10_F(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -395,9 +395,9 @@ void MakeFlat::vFlatten_10_F(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_24_W_A_C_ro(void)
+void XF_Flatten::vFlatten_24_W_A_C_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -438,9 +438,9 @@ void MakeFlat::vFlatten_24_W_A_C_ro(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_32_W_A_NC_I(void)
+void XF_Flatten::vFlatten_32_W_A_NC_I(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -490,9 +490,9 @@ void MakeFlat::vFlatten_32_W_A_NC_I(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_34_W_A_NC_ro(void)
+void XF_Flatten::vFlatten_34_W_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -545,9 +545,9 @@ void MakeFlat::vFlatten_34_W_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_40_W_L_C_E(void)
+void XF_Flatten::vFlatten_40_W_L_C_E(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -582,9 +582,9 @@ void MakeFlat::vFlatten_40_W_L_C_E(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_52_W_L_NC_I_exists(void)
+void XF_Flatten::vFlatten_52_W_L_NC_I_exists(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   vFlatten_53_W_L_NC_NI_exists();
 }
@@ -592,9 +592,9 @@ void MakeFlat::vFlatten_52_W_L_NC_I_exists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_52_W_L_NC_I_join(void)
+void XF_Flatten::vFlatten_52_W_L_NC_I_join(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   i8 nTables = pFold->nTables_In_SubQuery(m_pCI,"52_W_L_NC_I_join"_Stz,CK_WHERE);
@@ -611,9 +611,9 @@ void MakeFlat::vFlatten_52_W_L_NC_I_join(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_53_W_L_NC_NI_exists(void)
+void XF_Flatten::vFlatten_53_W_L_NC_NI_exists(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -687,9 +687,9 @@ void MakeFlat::vFlatten_53_W_L_NC_NI_exists(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_53_W_L_NC_NI_join(void)
+void XF_Flatten::vFlatten_53_W_L_NC_NI_join(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -754,9 +754,9 @@ void MakeFlat::vFlatten_53_W_L_NC_NI_join(void)
 /*----------------------------------------------------------------------------*/
 /* Folding a non-correlated aggregate subquery (via having clause)            */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vFlatten_74_H_A_NC_ro(void)
+void XF_Flatten::vFlatten_74_H_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -804,9 +804,9 @@ void MakeFlat::vFlatten_74_H_A_NC_ro(void)
 /*----------------------------------------------------------------------------*/
 /* convert all <stmColOdn> to <tblColOdn>                                     */
 /*----------------------------------------------------------------------------*/
-void MakeFlat::vStmColToTblCol(void)
+void XF_Flatten::vStmColToTblCol(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
   m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
 

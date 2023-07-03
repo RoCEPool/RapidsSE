@@ -8,7 +8,7 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
-#include "MakeFlat.hpp"
+#include "XF_Flatten.hpp"
 
 #include "XF_Add_level.hpp"
 #include "XF_as_Review.hpp"
@@ -87,14 +87,18 @@ void XF::vTransform(void)
   if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
 
     vSimplify();
+    Bench::vValidate(m_pCI);
 
 
-    MakeFlat::vFlatten(m_pCI);
+    XF_Flatten::vFlatten(m_pCI);
+    Bench::vValidate(m_pCI);
 
   }
   else {
 
     vSimplify_passThru();
+
+    Bench::vValidate(m_pCI);
 
   }
 }

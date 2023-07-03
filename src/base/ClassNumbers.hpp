@@ -187,7 +187,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__M__,
   /* */ CN_MAKECODE,
-  /* */ CN_MAKEFLAT,
   /* */ CN_MAKEOPTIMAL,
   /* */ CN_MAKEWEAVABLE,
   /* */ CN_MARKER,
@@ -457,6 +456,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_DELETE_UNNEEDED,
   /* */ CN_XF_DERIVE_PROJECTION_KEY,
   /* */ CN_XF_EARLY_PROJECTION,
+  /* */ CN_XF_FLATTEN,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_MORPH_SCAN_TO_INDEXSCAN,
@@ -662,7 +662,6 @@ static Stz* aCN[]
 
   /* */ "_M__"_Stz,                 // CN__M__
   /* */ "MAKECODE"_Stz,             // CN_MAKECODE
-  /* */ "MAKEFLAT"_Stz,             // CN_MAKEFLAT
   /* */ "MAKEOPTIMAL"_Stz,          // CN_MAKEOPTIMAL
   /* */ "MAKEWEAVABLE"_Stz,         // CN_MAKEWEAVABLE
   /* */ "MARKER"_Stz,               // CN_MARKER
@@ -932,6 +931,7 @@ static Stz* aCN[]
   /* */ "XF_DELETE_UNNEEDED"_Stz,           // CN_XF_DELETE_UNNEEDED
   /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,     // CN_XF_DERIVE_PROJECTION_KEY
   /* */ "XF_EARLY_PROJECTION"_Stz,          // CN_XF_EARLY_PROJECTION
+  /* */ "_XF_FLATTEN"_Stz,                  // CN_XF_FLATTEN
   /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
   /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,   // CN_XF_MORPH_SCAN_TO_INDEXSCAN

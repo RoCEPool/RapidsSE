@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MakeFlat.hpp -- Flatten SubQueries                                         */
+/* XF_Flatten.hpp -- Flatten SubQueries                                         */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class MakeFlat : public XF_TRANSFORM
+  class XF_Flatten : public XF_TRANSFORM
   {
   private:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    MakeFlat(CardIter* pCI);
-   ~MakeFlat(void) noexcept(false);
+    XF_Flatten(CardIter* pCI);
+   ~XF_Flatten(void) noexcept(false);
 
     static void vFlatten(CardIter* pCI);
 
@@ -52,7 +52,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  MakeFlat* _pMakeFlat(void* aAddr);
+  XF_Flatten* _pXF_Flatten(void* aAddr);
 }
 
 /*============================================================================*/

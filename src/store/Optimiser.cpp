@@ -11,7 +11,7 @@
 #include "Job.hpp"
 #include "InfoSet.hpp"
 #include "MakeCode.hpp"
-#include "MakeFlat.hpp"
+#include "XF_Flatten.hpp"
 #include "MakeOptimal.hpp"
 #include "MakeWeavable.hpp"
 #include "CardIter.hpp"
@@ -168,20 +168,7 @@ void Optimiser::vApplyTransformationMatrix(void)
 
   if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
 
-//    MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
-//    pMakeSimpler->vSimplify();
-//    delete pMakeSimpler;
-
     XF::vXF(m_pCI);
-
-    Bench::vValidate(m_pCI);
-
-
-//    MakeFlat *pMakeFlat = new MakeFlat(m_pCI);
-//    pMakeFlat->vFlatten();
-//    delete pMakeFlat;
-//    m_pCI->m_pBench->vMadeFlat(true);
-
     Bench::vValidate(m_pCI);
 
     MakeOptimal *pMakeOptimal = new MakeOptimal(m_pCI);
