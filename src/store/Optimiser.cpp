@@ -116,28 +116,19 @@ bool Optimiser::bApplyTransformationMatrix(Error& rxError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  bool bClean = true;
-
-  //m_pCardCtl->vReset();
-  //m_pCardCtl->vPrintSubCards(false,CK_AGGELIST,CK_KEY,CK_PROJECTION,0);
-  //m_pCardCtl->vPrintSubCards(CK_AGGELIST, true);
-  //m_pCardCtl->vPrintSubCards(CK_KEY, true);
+  bool bClean = false;
 
   try {
-    //m_pOptimiser->pCardCtl()->vPrintSubCards(false, //CK_AGGELIST,
-    //CK_KEY, //CK_PROJECTION,
-    //CK_RPNCALC,
-    //                                          0);
 
     if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE)) {
       vTrace("JobTags\n"_Stz);
       MY::pJob()->pJobTags()->vDumpSet(true);
     }
+
     pCardCtl()->vSaveShorter();
     pCardCtl()->vSaveXhand();
 
-    vApplyTransformationMatrix();
-
+    XF::vXF(m_pCI);
 
     bClean = true;
   }
@@ -153,48 +144,6 @@ bool Optimiser::bApplyTransformationMatrix(Error& rxError)
   }
 
   return bClean;
-}
-
-/*----------------------------------------------------------------------------*/
-/* apply the recursive transformation matrix                                  */
-/*----------------------------------------------------------------------------*/
-void Optimiser::vApplyTransformationMatrix(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPTIMISER, _FOOTER_);
-
-  if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
-
-    XF::vXF(m_pCI);
-    Bench::vValidate(m_pCI);
-
-//    XF_Make_Code::vXF_Make_Code(m_pCI);
-//    XF_Make_Code* pMakeCode = new XF_Make_Code(m_pCI);
-//    pMakeCode->vSynthesise();
-//    m_pPipelineDef = pMakeCode->pPipelineDef();
-//    pMakeCode->vPipelineDef(nullptr);
-//    m_pCI->m_pBench->vMadeCode(true);
-//    delete pMakeCode;
-
-    Bench::vValidate(m_pCI);
-
-  }
-  else {
-
-    XF::vXF(m_pCI);
-
-    Bench::vValidate(m_pCI);
-
-//    XF_Make_Code::vXF_Make_Code(m_pCI);
-//
-//    XF_Make_Code* pMakeCode = new XF_Make_Code(m_pCI);
-//    pMakeCode->vSynthesise();
-//    m_pPipelineDef = pMakeCode->pPipelineDef();
-//    pMakeCode->vPipelineDef(nullptr);
-//    m_pCI->m_pBench->vMadeCode(true);
-//    delete pMakeCode;
-
-  }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,7 +185,6 @@ void Optimiser::vCodeBlock(ExtendedText* pCodeBlock)
 
   m_pCodeBlock = pCodeBlock;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* dissect                                                                    */
@@ -474,8 +422,6 @@ bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
 
   bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
   bool bJoinPermutations = pJobTags->bHasName("<JoinPermutations>"_Stz);
-
-  Board* pBoard = m_pBench->pHead();
 
   bool bClean = bApplyTransformationMatrix(rxError);
 

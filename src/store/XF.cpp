@@ -86,6 +86,8 @@ void XF::vXF(CardIter* pCI)
 
   pXF->vTransform();
 
+  Bench::vValidate(pCI);
+
   delete pXF;
 }
 
@@ -147,6 +149,7 @@ void XF::vTransform(void)
 
     XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
     m_pCI->m_pBench->vMadeWeavable(true);
+
 
     XF_Make_Code::vXF_Make_Code(m_pCI);
 
