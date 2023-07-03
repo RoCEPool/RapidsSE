@@ -12,6 +12,7 @@ _orders_by_O_CUSTKEY
 create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
 load orders "../tpch/SF_0001/orders.csv" ;
 
+/glean_interactive
 /weaved
 /pipeline_def
 select count(*)
