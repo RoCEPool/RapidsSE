@@ -162,7 +162,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert tblColOdn to stmColOdn                                             */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
@@ -303,7 +303,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
 {
@@ -320,7 +320,7 @@ void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* delete filter if it's empty                                                */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vDeleteFilterIfEmpty(Card_Filter* p_filter)
 {

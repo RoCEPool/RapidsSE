@@ -64,6 +64,15 @@ void XF_colNm_to_stmCol::vXF_colNm_to_stmCol(void)
 
   m_pCI->vTransform(__func__, "transform column-name to stream-column"_Stz);
 
+  m_pCI->G_vRestart();
+  while (m_pCI->G_bEachMain_reverse()) {
+
+    m_pCI->Analysis.m_pProjection_prior = Card_Projection::pResolvePriorProjection(m_pCI);
+
+    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
+
+  }
+
   m_pCI->vEndTransform();
 
   vValidate();

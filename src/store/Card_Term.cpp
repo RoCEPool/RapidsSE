@@ -372,12 +372,16 @@ bool Card_Term::bSameAs(Card_Term* p_term_arg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* correct stmOdn                                                             */
+/*----------------------------------------------------------------------------*/
 
 void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
 {
