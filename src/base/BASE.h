@@ -292,6 +292,7 @@ extern d8 C_D8_MID;
 
 // -- -- -- -- -- -- -- --
 
+#include "InternalHeap_t.hpp"
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
 

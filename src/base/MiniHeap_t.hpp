@@ -20,7 +20,7 @@ namespace BASE
     void* m_aFreeSpare; // free item
     i8    m_nFreeSize; // its size
   
-    PadWord m__PadToCacheLine[2]; // padding to cache line
+    PadWord m__PadToCacheLine[3]; // padding to cache line
 
     Wsp_t<C_WSP_MINIHEAP> m_xWsp; // workspace
   

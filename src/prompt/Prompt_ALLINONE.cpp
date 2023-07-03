@@ -3074,8 +3074,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   bResult = PDS_i16->bInsert(1);
   RASSERT(bResult);
 
-  PDS_i16->vDumpInUseList();
-  PDS_i16->vDumpFreeList();
+//  PDS_i16->vDumpInUseList();
+//  PDS_i16->vDumpFreeList();
 
   RASSERT(PDS_i16->m_iNumEntries[0] == 1);
   RASSERT(PDS_i16->m_iFreeListEntries == 0);

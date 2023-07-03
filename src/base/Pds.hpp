@@ -9,7 +9,7 @@
 namespace BASE
 {
   class Pds : public Object,
-              public MiniHeap_t<SkipListBlock>
+              public InternalHeap_t<SkipListBlock>
   {
     static const i8 C_MIN_KEY_LEN = sizeof(i8);
 
