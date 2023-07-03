@@ -10,9 +10,6 @@
 #include "SP_PipeSpec.hpp"
 #include "Job.hpp"
 #include "InfoSet.hpp"
-#include "Smoosh.hpp"
-#include "Smooth.hpp"
-#include "Fold.hpp"
 #include "MakeCode.hpp"
 #include "MakeFlat.hpp"
 #include "MakeOptimal.hpp"
@@ -25,6 +22,7 @@
 
 #include "Weaver.hpp"
 #include "Weaver2.hpp"
+#include "XF.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -171,10 +169,11 @@ void Optimiser::vApplyTransformationMatrix(void)
 
   if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
 
-    MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
-    pMakeSimpler->vSimplify();
-    delete pMakeSimpler;
-    m_pCI->m_pBench->vMadeSimpler(true);
+//    MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
+//    pMakeSimpler->vSimplify();
+//    delete pMakeSimpler;
+
+    XF::vXF(m_pCI);
 
     Bench::vValidate(m_pCI);
 
@@ -212,10 +211,7 @@ void Optimiser::vApplyTransformationMatrix(void)
   }
   else {
 
-    MakeSimpler* pMakeSimpler = new MakeSimpler(m_pCI);
-    pMakeSimpler->vSimplify_passThru();
-    delete pMakeSimpler;
-    m_pCI->m_pBench->vMadeSimpler(true);
+    XF::vXF(m_pCI);
 
     Bench::vValidate(m_pCI);
 
