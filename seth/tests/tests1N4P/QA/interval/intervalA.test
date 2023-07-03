@@ -20,8 +20,6 @@ rows:
 (date '2021-12-12',1)
 (date '2000-03-28',1)
 
-// TODO V2 having without aggregate
-/*
 select a+interval '1' month,count(*) from interval6 group by a+interval '1' month having extract(month from a+interval '1' month)=2;
 rows:
 (date '2000-02-29',2)
@@ -36,7 +34,6 @@ select a+interval '1' month,count(*) from interval6 group by a+interval '1' mont
 rows:
 (date '2023-02-28',1)
 (date '2000-02-29',2)
-*/
 
 select m.*,case when a+interval '1' month>date '2022-12-31' then 1 else 0 end flag from interval6 m;
 rows:
