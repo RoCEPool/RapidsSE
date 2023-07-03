@@ -11,7 +11,10 @@ _nation
 // STYLE 1
 ///////////
 
-/optimise_passthru pipeline unamed
+/glean_interactive
+/weaved
+/optimise_passthru
+pipeline unamed
 begin
   stage stageStart on origin :
     start

@@ -22,6 +22,8 @@
 #include "XF_scan_To_table.hpp"
 #include "XF_subQuery_Analysis.hpp"
 #include "XF_table_Analysis.hpp"
+#include "XF_tblCol_To_stmCol.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -99,6 +101,9 @@ void XF::vTransform(void)
     vSimplify_passThru();
 
     Bench::vValidate(m_pCI);
+
+    XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+
 
   }
 }

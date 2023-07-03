@@ -237,8 +237,11 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   }
 
   if (bIsCard(CK_FILTER) || bIsCard(CK_WHERE) || bIsCard(CK_HAVING)) {
-    pCI->G.p_boolCalc = pSub_boolCalc();
-    pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bLambdaFn);
+    if (pCI->G.p_boolCalc = pSub_boolCalc())
+      pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bLambdaFn);
+    else
+    if (pCI->G.p_rpnCalc = pSub_rpnCalc())
+      pCI->G.p_rpnCalc->bApplyRecursive(CK_TERM, bLambdaFn);
   }
 
   if (bIsCard(CK_AGGREG) && bIsPartitionLevel()) {
