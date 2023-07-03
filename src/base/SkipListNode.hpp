@@ -11,7 +11,7 @@ namespace BASE
   class SkipListNode
   {
   public:
-    tSO m_taNextSkipNode[C_MAX_LVL_LEVELS]; // offsets to next entry by level
+    tSO m_taNextSkipNode[C_MAX_LVL_LEVELS]; // offsets to next entry by level (note: next entry = offset * 16 to get # of bytes
 
     char m_cPadding[C_SLN_PADDING];
 

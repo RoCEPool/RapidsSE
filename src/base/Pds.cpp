@@ -127,7 +127,7 @@ SkipListBlock* Pds::aAllotSkipListBlock(i8 iKey)
   }
 
   if (! pAllocBlock) {
-    vTrace("Unable to allocate new entry in PDS SkipList\n"_Stz);
+//    vTrace("Unable to allocate new entry in PDS SkipList\n"_Stz);
     return nullptr;
   }
 
@@ -307,7 +307,7 @@ void* Pds::pGetAddrFromOffset(u2 uOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  return aAdd<void*>(this,uOffset);
+  return aAdd<void*>(this,uOffset*16);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,10 +323,11 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
   char* aAddr0 = reinterpret_cast<char*>(this);
   char* aAddr1 = reinterpret_cast<char*>(aAddress);
 
-  i8 iBytes = aAddr1 - aAddr0;
-  ASSERT((iBytes >= 0) && (iBytes < USHRT_MAX));
+  ASSERT((aAddr1 - aAddr0)%16 == 0);
+  i8 iOffset = (aAddr1 - aAddr0)/16; // offset is in multiples of 2 words
+  ASSERT((iOffset >= 0) && (iOffset < USHRT_MAX));
   // TODO: Assert offset is in the range [0, LastUsableOffset];
-  return (u2) iBytes;
+  return (u2) iOffset;
 }
 
 /*----------------------------------------------------------------------------*/

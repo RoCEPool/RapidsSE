@@ -3064,7 +3064,7 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   Pds_i16* PDS_i16;
 
 /*----------------------------------------------------------------------------*/
-  // Test Case - Basic single element tests
+                  // Test Case - Basic single element tests
 /*----------------------------------------------------------------------------*/
 
   bool bResult = false;
@@ -3074,8 +3074,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   bResult = PDS_i16->bInsert(1);
   RASSERT(bResult);
 
-//  PDS_i16->vDumpInUseList();
-//  PDS_i16->vDumpFreeList();
+  PDS_i16->vDumpInUseList();
+  PDS_i16->vDumpFreeList();
 
   RASSERT(PDS_i16->m_iNumEntries[0] == 1);
   RASSERT(PDS_i16->m_iFreeListEntries == 0);
@@ -3243,17 +3243,25 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 /*----------------------------------------------------------------------------*/
   // Test Case - Insert till buffer is full
 /*----------------------------------------------------------------------------*/
-//  PDS_i16 = new Pds_i16();
-//
-//  for(i8 iInsert = 0; iInsert < C_I8_MAX; iInsert++)
-//  {
-//    bResult = PDS_i16->bInsert(rand());
-//    if(!bResult) {
-//     break;
-//    }
-//  }
-//  delete PDS_i16;
-//ASSERT`(iBytes >= 0) && (iBytes < USHRT_MAX)` Fails. Bytes exceeds ushrt_max
+  PDS_i16 = new Pds_i16();
+
+  i8 iFreeBytes = PDS_i16->nFreeBytes();
+
+  i8 iInsert = 0;
+
+  for(; iInsert < C_I8_MAX; iInsert++)
+  {
+    bResult = PDS_i16->bInsert(rand());
+    if(!bResult) {
+     break;
+    }
+  }
+
+  i8 iBlockSize = PDS_i16->m_nBlockSize;
+  i8 iMaxElements = iFreeBytes/iBlockSize;
+
+  RASSERT(iInsert == iMaxElements);
+  delete PDS_i16;
 
 /*----------------------------------------------------------------------------*/
                   // Test Case - Insert duplicate key
@@ -3283,13 +3291,14 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 
   Pds_t<TestStruct>* PDS_CharArr;
   PDS_CharArr = new Pds_t<TestStruct>();
+  iFreeBytes = PDS_CharArr->nFreeBytes();
 
   // Insert single element
   bResult = PDS_CharArr->bInsert(1);
   RASSERT(bResult);
 
-  PDS_CharArr->vDumpInUseList();
-  PDS_CharArr->vDumpFreeList();
+//  PDS_CharArr->vDumpInUseList();
+//  PDS_CharArr->vDumpFreeList();
 
   RASSERT(PDS_CharArr->m_iNumEntries[0] == 1);
   RASSERT(PDS_CharArr->m_iFreeListEntries == 0);
@@ -3310,8 +3319,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   bResult = PDS_CharArr->bDelete(1);
   RASSERT(bResult);
 
-  PDS_CharArr->vDumpInUseList();
-  PDS_CharArr->vDumpFreeList();
+//  PDS_CharArr->vDumpInUseList();
+//  PDS_CharArr->vDumpFreeList();
 
   RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
   RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
@@ -3327,6 +3336,24 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   RASSERT( ! bResult);
   RASSERT(PDS_CharArr->m_iNumEntries[0] == 0);
   RASSERT(PDS_CharArr->m_iFreeListEntries == 1);
+
+  // Insert till buffer is full
+
+  iInsert = 0;
+
+  for(; iInsert < C_I8_MAX; iInsert++)
+  {
+    bResult = PDS_CharArr->bInsert(rand());
+    if(!bResult) {
+      break;
+    }
+  }
+
+  iBlockSize = PDS_CharArr->m_nBlockSize;
+  iMaxElements = iFreeBytes/iBlockSize;
+
+  RASSERT(iInsert == iMaxElements);
+  delete PDS_CharArr;
 
   vTrace("Success!\n"_Stz);
   return true;
