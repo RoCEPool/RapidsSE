@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Bench.hpp"
+#include "XF_TRANSFORM.hpp"
 
 
 namespace STORE
 {
-  class MakeFlat : public Object
+  class MakeFlat : public XF_TRANSFORM
   {
   private:
 
@@ -24,6 +24,8 @@ namespace STORE
     
     MakeFlat(CardIter* pCI);
    ~MakeFlat(void) noexcept(false);
+
+    static void vFlatten(CardIter* pCI);
 
     void vFlatten(void);
 

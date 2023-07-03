@@ -177,10 +177,10 @@ void Optimiser::vApplyTransformationMatrix(void)
     Bench::vValidate(m_pCI);
 
 
-    MakeFlat *pMakeFlat = new MakeFlat(m_pCI);
-    pMakeFlat->vFlatten();
-    delete pMakeFlat;
-    m_pCI->m_pBench->vMadeFlat(true);
+//    MakeFlat *pMakeFlat = new MakeFlat(m_pCI);
+//    pMakeFlat->vFlatten();
+//    delete pMakeFlat;
+//    m_pCI->m_pBench->vMadeFlat(true);
 
     Bench::vValidate(m_pCI);
 

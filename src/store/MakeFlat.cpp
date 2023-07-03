@@ -26,7 +26,7 @@ __aFooterFunction(MakeFlat)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MakeFlat::MakeFlat(CardIter* pCI)
-: Object(CN_MAKEFLAT)
+: XF_TRANSFORM(CN_MAKEFLAT)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 
@@ -49,6 +49,25 @@ MakeFlat::~MakeFlat(void) noexcept(false)
   _precondition_(_ADDRESS_, _MAGIC_, CN_MAKEFLAT, _FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void MakeFlat::vFlatten(CardIter* pCI)
+{
+  _static_
+
+  MakeFlat* pMakeFlat = new MakeFlat(pCI);
+
+  pMakeFlat->vFlatten();
+
+  delete pMakeFlat;
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -66,6 +85,10 @@ void MakeFlat::vFlatten(void)
 
 //  vFlatten_recurse();
   vFlatten_recurse(0);
+
+
+  m_pCI->m_pBench->vMadeFlat(true);
+
 }
 
 /*----------------------------------------------------------------------------*/

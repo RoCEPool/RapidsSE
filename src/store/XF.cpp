@@ -8,6 +8,8 @@
 #include "CardIter.hpp"
 #include "Optimiser.hpp"
 
+#include "MakeFlat.hpp"
+
 #include "XF_Add_level.hpp"
 #include "XF_as_Review.hpp"
 #include "XF_Delete_Unneeded.hpp"
@@ -85,6 +87,9 @@ void XF::vTransform(void)
   if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
 
     vSimplify();
+
+
+    MakeFlat::vFlatten(m_pCI);
 
   }
   else {
