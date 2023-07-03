@@ -14,7 +14,6 @@
 #include "MakeFlat.hpp"
 #include "MakeOptimal.hpp"
 #include "MakeWeavable.hpp"
-#include "MakeSimpler.hpp"
 #include "CardIter.hpp"
 
 #include "CarryForward.hpp"
