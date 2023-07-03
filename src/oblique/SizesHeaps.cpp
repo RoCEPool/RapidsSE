@@ -251,7 +251,6 @@
 #include "Equivalence.hpp"
 #include "Smoosh.hpp"
 #include "JoinOrdering.hpp"
-#include "MakeOptimal.hpp"
 #include "MakeWeavable.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
@@ -499,7 +498,6 @@ SizeHeap gxaSizeHeap[]
 
   {CN__M__,                     'M' - ('A' - 1),            HT_INVALID   , FILL },
   {CN_MAKECODE,                 sizeof(MakeCode),           HT_T_TINY    , FILL },
-  {CN_MAKEOPTIMAL,              sizeof(MakeOptimal),        HT_T_TINY    , FILL },
   {CN_MAKEWEAVABLE,             sizeof(MakeWeavable),       HT_T_TINY    , FILL },
   {CN_MARKER,                   sizeof(Marker),             HT_T_TINY    , FILL },
   {CN_MARKERCHAIN,              sizeof(MarkerChain),        HT_T_TINY    , FILL },

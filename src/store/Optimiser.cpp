@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Optimiser.hpp"
-#include "Cue.hpp"
 
 #include "Dynamo.hpp"
 
@@ -11,8 +10,6 @@
 #include "Job.hpp"
 #include "InfoSet.hpp"
 #include "MakeCode.hpp"
-#include "XF_Flatten.hpp"
-#include "MakeOptimal.hpp"
 #include "MakeWeavable.hpp"
 #include "CardIter.hpp"
 
@@ -170,13 +167,6 @@ void Optimiser::vApplyTransformationMatrix(void)
 
     XF::vXF(m_pCI);
     Bench::vValidate(m_pCI);
-
-//    MakeOptimal *pMakeOptimal = new MakeOptimal(m_pCI);
-//    pMakeOptimal->vOptimise();
-//    delete pMakeOptimal;
-//    m_pCI->m_pBench->vMadeOptimal(true);
-//
-//    Bench::vValidate(m_pCI);
 
     MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
     pMakeWeavable->vWeavable();

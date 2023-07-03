@@ -187,8 +187,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__M__,
   /* */ CN_MAKECODE,
-  /* */ CN_MAKEOPTIMAL,
-  /* */ CN_MAKEWEAVABLE,
+   /* */ CN_MAKEWEAVABLE,
   /* */ CN_MARKER,
   /* */ CN_MARKERCHAIN,
   /* */ CN_MARKERMGR,
@@ -663,7 +662,6 @@ static Stz* aCN[]
 
   /* */ "_M__"_Stz,                 // CN__M__
   /* */ "MAKECODE"_Stz,             // CN_MAKECODE
-  /* */ "MAKEOPTIMAL"_Stz,          // CN_MAKEOPTIMAL
   /* */ "MAKEWEAVABLE"_Stz,         // CN_MAKEWEAVABLE
   /* */ "MARKER"_Stz,               // CN_MARKER
   /* */ "MARKERCHAIN"_Stz,          // CN_MARKERCHAIN
