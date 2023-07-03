@@ -30,6 +30,7 @@ namespace STORE
     static void vXF(CardIter* pCI);
 
     void vTransform(void);
+    void vTransform_passThru(void);
 
     void vSimplify(void);
     void vSimplify_passThru(void);

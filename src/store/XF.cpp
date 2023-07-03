@@ -84,7 +84,12 @@ void XF::vXF(CardIter* pCI)
 
   XF* pXF = new XF(pCI);
 
-  pXF->vTransform();
+  if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
+    pXF->vTransform();
+  }
+  else {
+    pXF->vTransform_passThru();
+  }
 
   Bench::vValidate(pCI);
 
@@ -103,69 +108,70 @@ void XF::vTransform(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
-  if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
-
-    vSimplify();
-    Bench::vValidate(m_pCI);
+  vSimplify();
+  Bench::vValidate(m_pCI);
 
 
-    XF_Flatten::vFlatten(m_pCI);
-    Bench::vValidate(m_pCI);
+  XF_Flatten::vFlatten(m_pCI);
+  Bench::vValidate(m_pCI);
 
 
-    XF_Delete_flat::vXF_Delete_flat(m_pCI);
+  XF_Delete_flat::vXF_Delete_flat(m_pCI);
 
-    XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(m_pCI);
+  XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(m_pCI);
 
-    XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
+  XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(m_pCI);
 
-    XF_Derive_projection_key::vXF_Derive_projection_key(m_pCI);
+  XF_Derive_projection_key::vXF_Derive_projection_key(m_pCI);
 
-    XF_Cut_sort::vXF_Cut_sort(m_pCI);
+  XF_Cut_sort::vXF_Cut_sort(m_pCI);
 
-    XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
+  XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(m_pCI);
 
-    XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(m_pCI);
+  XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(m_pCI);
 
-    XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
+  XF_Cull_Used_bound::vXF_Cull_Used_bound(m_pCI);
 
-    XF_Early_projection::vXF_Early_projection(m_pCI);
+  XF_Early_projection::vXF_Early_projection(m_pCI);
 
-    XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
+  XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
 
-    XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
-    m_pCI->m_pBench->vMadeOptimal(true);
+  XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
+  m_pCI->m_pBench->vMadeOptimal(true);
 
 
 
 
-    XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
+  XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
 
-    XF_stage_cast::vXF_stage_cast(m_pCI);
+  XF_stage_cast::vXF_stage_cast(m_pCI);
 
-    XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+  XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
-    XF_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
+  XF_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
 
-    XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
-    m_pCI->m_pBench->vMadeWeavable(true);
-
-
-    XF_Make_Code::vXF_Make_Code(m_pCI);
-
-  }
-  else {
-
-    vSimplify_passThru();
-
-    Bench::vValidate(m_pCI);
-
-    XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
-
-    XF_Make_Code::vXF_Make_Code(m_pCI);
+  XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
+  m_pCI->m_pBench->vMadeWeavable(true);
 
 
-  }
+  XF_Make_Code::vXF_Make_Code(m_pCI);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* apply transformations                                                      */
+/*----------------------------------------------------------------------------*/
+void XF::vTransform_passThru(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
+
+  vSimplify_passThru();
+
+  Bench::vValidate(m_pCI);
+
+  XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+
+  XF_Make_Code::vXF_Make_Code(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/
