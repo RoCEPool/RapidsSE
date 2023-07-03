@@ -181,6 +181,13 @@ void XF::vSimplify_passThru(void)
 
     m_pCI->vEndTransform();
 
+    m_pCI->vTransform(__func__, "all colNm become $c.n"_Stz);
+
+    while (m_pCI->G_bEachMain())
+      ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_colNm_To_stmCol(m_pCI);
+
+    m_pCI->vEndTransform();
+
     vDebugPoint();
   }
 
