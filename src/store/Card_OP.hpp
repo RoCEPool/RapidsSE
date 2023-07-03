@@ -19,6 +19,8 @@ namespace STORE
 
     void vAddLevel(void);
     void vAdd_Pred_Under_filter(Card_PRED *p_PRED);
+    void vApply_lambdaFn_To_term(CardIter* pCI,
+                               std::function<bool(Card* pCard)> bfLambdaFn);
 
     void vConvert_rpnCalc_To_boolCalc(CardIter* pCI);
     void vConvert_stmColOdn_To_tblColOdn(CardIter* pCI);
