@@ -12,6 +12,7 @@
 #include "XF_Cull_NonUsed_bound.hpp"
 #include "XF_Cull_Used_bound.hpp"
 #include "XF_Cut_sort.hpp"
+#include "XF_Dedupe_as.hpp"
 #include "XF_Delete_Unneeded.hpp"
 #include "XF_Delete_flat.hpp"
 #include "XF_Derive_projection_key.hpp"
@@ -23,6 +24,7 @@
 #include "XF_Move_on.hpp"
 #include "XF_Promote_gbyAgg_To_ordAgg.hpp"
 #include "XF_Reduce_key_gbyAgg.hpp"
+#include "XF_Reinstate_stage.hpp"
 #include "XF_Shorten_queryNm.hpp"
 #include "XF_as_Review.hpp"
 #include "XF_index_Analysis.hpp"
@@ -30,9 +32,12 @@
 #include "XF_projection_Analysis.hpp"
 #include "XF_rpnCalc_To_boolCalc.hpp"
 #include "XF_scan_To_table.hpp"
+#include "XF_stage_cast.hpp"
+#include "XF_stmCol_To_colNm.hpp"
 #include "XF_subQuery_Analysis.hpp"
 #include "XF_table_Analysis.hpp"
 #include "XF_tblCol_To_stmCol.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -126,7 +131,21 @@ void XF::vTransform(void)
     XF_Individuate_filter::vXF_Individuate_filter(m_pCI);
 
     XF_Reduce_key_gbyAgg::vXF_Reduce_key_gbyAgg(m_pCI);
+    m_pCI->m_pBench->vMadeOptimal(true);
 
+
+
+
+    XF_Reinstate_stage::vXF_Reinstate_stage(m_pCI);
+
+    XF_stage_cast::vXF_stage_cast(m_pCI);
+
+    XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
+
+    XF_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
+
+    XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
+    m_pCI->m_pBench->vMadeWeavable(true);
 
   }
   else {

@@ -10,7 +10,6 @@
 #include "Job.hpp"
 #include "InfoSet.hpp"
 #include "MakeCode.hpp"
-#include "MakeWeavable.hpp"
 #include "CardIter.hpp"
 
 #include "CarryForward.hpp"
@@ -168,12 +167,12 @@ void Optimiser::vApplyTransformationMatrix(void)
     XF::vXF(m_pCI);
     Bench::vValidate(m_pCI);
 
-    MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
-    pMakeWeavable->vWeavable();
-    delete pMakeWeavable;
-    m_pCI->m_pBench->vMadeWeavable(true);
+//    MakeWeavable* pMakeWeavable = new MakeWeavable(m_pCI);
+//    pMakeWeavable->vWeavable();
+//    delete pMakeWeavable;
+//    m_pCI->m_pBench->vMadeWeavable(true);
 
-    Bench::vValidate(m_pCI);
+//    Bench::vValidate(m_pCI);
 
     MakeCode* pMakeCode = new MakeCode(m_pCI);
     pMakeCode->vSynthesise();
