@@ -2,63 +2,87 @@
 /* _rayW : Code Synthesizer V2                                                */
 /*============================================================================*/
 
-// NOTE: We need to get both styles of the pipeline working with passthru !!!
+// NOTE: Their should be a hash and hashcast from stage S01 to S02.
 
-_nation
-/time load nation   "<tpch_dir>/nation.<suffix>";
+_lineitem
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+load lineitem "../tpch/SF_0001/lineitem.csv" ;
 
-///////////
-// STYLE 1
-///////////
+_orders_by_O_CUSTKEY
+create index IxO_ORDERKEY  ON Orders  (O_ORDERKEY)  ;
+load orders "../tpch/SF_0001/orders.csv" ;
+
+/weaved
+/pipeline_def
+select count(*)
+  from Lineitem,
+       Orders
+ where L_ORDERKEY  = O_ORDERKEY;
 
 /*
-/glean_interactive
-/weaved
-/optimise_passthru
-pipeline _rayW
+
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
 begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0559
-  stage stageMarker0559 on all partitions :
-    scan rapidsse public Nation
-    | filter " type BOOLEAN  $1 2  <  "
-    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
+
+  stage S00 on origin : 
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      Lineitem
+  //| project   "   type INTEGER as C0_L_ORDERKEY $1
+  //              , type INTEGER as C1_L_PARTKEY $2
+  //              , type INTEGER as C2_L_SUPPKEY $3
+  //              , type INTEGER as C3_L_LINENUMBER $4
+  //              , type DECIMAL as C4_L_QUANTITY $5
+  //              , type DECIMAL as C5_L_EXTENDEDPRICE $6
+  //              , type DECIMAL as C6_L_DISCOUNT $7
+  //              , type DECIMAL as C7_L_TAX $8
+  //              , type VARCHAR as C8_L_RETURNFLAG $9
+  //              , type VARCHAR as C9_L_LINESTATUS $10
+  //              , type DATE as C10_L_SHIPDATE $11
+  //              , type DATE as C11_L_COMMITDATE $12
+  //              , type DATE as C12_L_RECEIPTDATE $13
+  //              , type VARCHAR as C13_L_SHIPINSTRUCT $14
+  //              , type VARCHAR as C14_L_SHIPMODE $15
+  //              , type VARCHAR as C15_L_COMMENT $16 "
+  //| combined  0
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+      indexJoin orders IxO_ORDERKEY " BOUND $I1 $1 == "
+  //| combined  0
+    | dynamic
+    | next
+
+  stage S03 on all partitions :
+      aggreg    "   type INTEGER as COL1 ) countAll "
+  //| combined  0
+    | dynamic
+    | next
+
+  stage S04 on all nodes :
+      aggreg    "   type INTEGER as COL1 ) $1 sum "
+  //| combined  0
+    | dynamic
+    | next
+
+  stage S05 on origin :
+      aggreg    "   type INTEGER as COL1 ) $1 sum "
+  //| combined  0
+    | dynamic
+    | next
+
+  stage S06 on origin :
+      output
     | sink
-    | stageStart
-end ;
+    | first
+
+end
 */
-
-
-///////////
-// STYLE 2
-///////////
-
-/glean_interactive
-/weaved
-/optimise_passthru
-pipeline _rayW
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker0559
-  stage stageMarker0559 on all partitions :
-    scan rapidsse public Nation
-    | filter " type BOOLEAN  n_nationkey 2  <  "
-    | project " type INTEGER as n_nationkey n_nationkey , type VARCHAR as n_name n_name "
-    | combined 0
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
 
 /*============================================================================*/
 /* end                                                                        */
