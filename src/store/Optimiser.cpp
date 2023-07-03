@@ -167,13 +167,14 @@ void Optimiser::vApplyTransformationMatrix(void)
     XF::vXF(m_pCI);
     Bench::vValidate(m_pCI);
 
-    XF_Make_Code* pMakeCode = new XF_Make_Code(m_pCI);
-    pMakeCode->vSynthesise();
-    m_pPipelineDef = pMakeCode->pPipelineDef();
-    pMakeCode->vPipelineDef(nullptr);
-    m_pCI->m_pBench->vMadeCode(true);
+//    XF_Make_Code::vXF_Make_Code(m_pCI);
+//    XF_Make_Code* pMakeCode = new XF_Make_Code(m_pCI);
+//    pMakeCode->vSynthesise();
+//    m_pPipelineDef = pMakeCode->pPipelineDef();
+//    pMakeCode->vPipelineDef(nullptr);
+//    m_pCI->m_pBench->vMadeCode(true);
+//    delete pMakeCode;
 
-    delete pMakeCode;
     Bench::vValidate(m_pCI);
 
   }
@@ -183,14 +184,14 @@ void Optimiser::vApplyTransformationMatrix(void)
 
     Bench::vValidate(m_pCI);
 
-
-    XF_Make_Code* pMakeCode = new XF_Make_Code(m_pCI);
-    pMakeCode->vSynthesise();
-    m_pPipelineDef = pMakeCode->pPipelineDef();
-    pMakeCode->vPipelineDef(nullptr);
-    m_pCI->m_pBench->vMadeCode(true);
-
-    delete pMakeCode;
+//    XF_Make_Code::vXF_Make_Code(m_pCI);
+//
+//    XF_Make_Code* pMakeCode = new XF_Make_Code(m_pCI);
+//    pMakeCode->vSynthesise();
+//    m_pPipelineDef = pMakeCode->pPipelineDef();
+//    pMakeCode->vPipelineDef(nullptr);
+//    m_pCI->m_pBench->vMadeCode(true);
+//    delete pMakeCode;
 
   }
 

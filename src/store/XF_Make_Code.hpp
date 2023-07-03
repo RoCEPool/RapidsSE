@@ -33,6 +33,8 @@ namespace STORE
     XF_Make_Code(CardIter* pCI);
    ~XF_Make_Code(void) noexcept(false);
 
+    static void vXF_Make_Code(CardIter* pCI);
+
     PipelineDef* pPipelineDef(void);
     void vPipelineDef(PipelineDef* pPipelineDef);
 

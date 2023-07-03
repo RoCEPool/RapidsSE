@@ -56,6 +56,32 @@ XF_Make_Code::~XF_Make_Code(void) noexcept(false)
   delete m_pPipelineDef;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void XF_Make_Code::vXF_Make_Code(CardIter* pCI)
+{
+  _static_
+
+  XF_Make_Code* pXF_Make_Code = new XF_Make_Code(pCI);
+  pXF_Make_Code->vSynthesise();
+
+  PipelineDef* pPipelineDef = pXF_Make_Code->pPipelineDef();
+  pXF_Make_Code->vPipelineDef(nullptr);
+  pCI->m_pBench->pOptimiser()->vPipelineDef(pPipelineDef);
+
+  delete pXF_Make_Code;
+
+  pCI->m_pBench->vMadeCode(true);
+}
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
