@@ -1633,6 +1633,50 @@ bool AM::MEMORY::bIsRunningLowDist(void)
   return bIsLow;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* AM::MEMORY::pSnapshotAtTrackingMemory(void)
+{
+  _static_
+
+  return gpAttachMap->m_pSnapshotAtTrackingMemory;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with trackingMemory command)                  */
+/*----------------------------------------------------------------------------*/
+void AM::MEMORY::vSnapshotAtTrackingMemory(ObjectSnapshot* pSnapshot)
+{
+  _static_
+
+  ASSERT(!pSnapshot || !gpAttachMap->m_pSnapshotAtTrackingMemory);
+
+  gpAttachMap->m_pSnapshotAtTrackingMemory = pSnapshot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+ObjectSnapshot* AM::MEMORY::pSnapshotAtMemoryLeaks(void)
+{
+  _static_
+
+  return gpAttachMap->m_pSnapshotAtMemoryLeaks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set object snapshot (for use with memoryLeaks command)                     */
+/*----------------------------------------------------------------------------*/
+void AM::MEMORY::vSnapshotAtMemoryLeaks(ObjectSnapshot* pSnapshot)
+{
+  _static_
+
+  ASSERT(!pSnapshot || !gpAttachMap->m_pSnapshotAtMemoryLeaks);
+
+  gpAttachMap->m_pSnapshotAtMemoryLeaks = pSnapshot;
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                METRICS                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

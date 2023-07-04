@@ -92,6 +92,8 @@ AttachMap::AttachMap(bool bNoFree)
   m_pMarkerMgr      = new MarkerMgr;
   m_pNumbering      = new Numbering;
   m_pLglPtnMap      = nullptr;
+  m_pSnapshotAtTrackingMemory = nullptr;
+  m_pSnapshotAtMemoryLeaks = nullptr;
   m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;
   

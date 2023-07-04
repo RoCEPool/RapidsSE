@@ -112,6 +112,7 @@ public:
   void vAM_WakerDemonJobIdStore(void);
   void vAM_SuperDemonJobIdFetch(void);
   void vAM_SuperDemonJobIdStore(void);
+  void vAM_TrackMemory(void);
 
   void vAM_No_Free(void);
   void vAM_Show_Boot(void);

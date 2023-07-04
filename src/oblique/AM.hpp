@@ -444,6 +444,10 @@ namespace OBLIQUE
       static void vAssertAllocate(void);
       static bool bIsRunningLow(void);
       static bool bIsRunningLowDist(void);
+      static ObjectSnapshot* pSnapshotAtTrackingMemory(void);
+      static void vSnapshotAtTrackingMemory(ObjectSnapshot* pSnapshot);
+      static ObjectSnapshot* pSnapshotAtMemoryLeaks(void);
+      static void vSnapshotAtMemoryLeaks(ObjectSnapshot* pSnapshot);
     };
   
     class METRICS

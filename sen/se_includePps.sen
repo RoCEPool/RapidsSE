@@ -33,7 +33,8 @@ assert::stack_0
   "pp_rload.sen"            include
   "pp_nextHB.sen"           include 
   "pp_export.sen"           include 
-  "pp_jobRep.sen"           include 
+  "pp_jobRep.sen"           include
+  "pp_trackmemory.sen"      include
 
   "pp_sqlCompiler.sen"      include 
  

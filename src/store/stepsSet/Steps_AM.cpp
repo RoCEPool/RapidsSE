@@ -61,6 +61,8 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::DEMON::tSuperDemonJobId@"_Stz,     &Step::vAM_SuperDemonJobIdFetch);
   vAddStep("AM::DEMON::tSuperDemonJobId!"_Stz,     &Step::vAM_SuperDemonJobIdStore);
 
+  vAddStep("AM::MEMORY::trackmemory"_Stz,          &Step::vAM_TrackMemory);
+
   vAddStep("AM::SHOW::bBoot"_Stz,                  &Step::vAM_Show_Boot);
   vAddStep("AM::SHOW::bDir"_Stz,                   &Step::vAM_Show_Dir);
   vAddStep("AM::SHOW::bDir_Failure"_Stz,           &Step::vAM_Show_Dir_Failure);
@@ -503,6 +505,40 @@ void Step::vAM_SuperDemonJobIdStore(void)
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   AM::DEMON::vSuperDemonJobId(tJobId);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::vAM_TrackMemory -- track memory allocations                    */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_TrackMemory(void)
+{
+  ENTRY();
+
+  if (AM::MEMORY::pSnapshotAtTrackingMemory() ||
+      AM::MEMORY::pSnapshotAtMemoryLeaks()) {
+    // push error string and error code on stack
+    eEC eErr = EC_MEMORY_ALREADY_TRACKED;
+    s2K sBuf;
+    sBuf.vSprint("%s : run memoryleaks to close current analysis"_Stz, aErrorMsg[eErr]);
+
+    m_pDataStack->vPushStz(sBuf.szStz());
+    m_pDataStack->vPushInt(eErr);
+    m_pDataStack->vPushBol(false);
+    return;
+  }
+
+  // Create the object snapshots for both trackingmemory time and memoryleaks time
+  AM::MEMORY::vSnapshotAtTrackingMemory(new ObjectSnapshot);
+  AM::MEMORY::vSnapshotAtMemoryLeaks(new ObjectSnapshot);
+
+  // Now record the trackmemory object counts
+  AM::MEMORY::pSnapshotAtTrackingMemory()->vTakeSnapshot();
+
+  i8 nJobs = AM::JOBS::nJobsActive();
+  AM::JOBS::vJobsThreshold(nJobs);
+
+  m_pDataStack->vPushBol(true);
   EXIT();
 }
 

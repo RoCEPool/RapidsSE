@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* OP_trackmemory.sen -- Track memory allocations                             */
+/*============================================================================*/
+
+" OP_trackmemory.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: trackmemory_DataMarker \handler
+
+
+  //"Operand:- EV_M_DATAPULSE" .verbose
+  PipeIn[].pipeOut
+
+  // Record the memory object allocations
+  AM::MEMORY::trackmemory not if
+    // Note: Error code and string are on stack
+    op__execErrMsg
+  then
+
+//  Marker[].newEosMarker
+//  Marker[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for trackmemory req                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : trackmemory_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: trackmemory_DataMarker EV_M_DATAPULSE [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: trackmemory :: trackmemory ;
+
+: trackmemory_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "track memory allocations"
+    <opEntry> = "trackmemory_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

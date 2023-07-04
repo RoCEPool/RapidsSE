@@ -33,6 +33,7 @@
   start::defProc_ScanTables
   start::defProc_JobRep
   start::defProc_SqlCompiler
+  start::defProc_Trackmemory
 
   // define the system tables
   "define the iternal system tables" .verbose

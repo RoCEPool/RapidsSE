@@ -176,6 +176,7 @@ enum eEC : u2 // error codes
   EC_MAX_COLUMNS,
   EC_MAX_ROW_LENGTH,
   EC_MAX_TABLE_NAME_LENGTH,
+  EC_MEMORY_ALREADY_TRACKED,
   EC_MISSING_JOIN_INDEX,
 
   /* _N_ */
@@ -459,6 +460,7 @@ static Stz* aEC[] =
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
+  /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"EC_MEMORY_ALREADY_TRACKED",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
 
   /* _N_ */
@@ -735,6 +737,7 @@ static Stz* aEC2[] = // error code
   /* EC_MAX_COLUMNS                   */ (Stz*)"EC_MAX_COLUMNS",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"EC_MAX_ROW_LENGTH",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"EC_MAX_TABLE_NAME_LENGTH",
+  /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"EC_MEMORY_ALREADY_TRACKED",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"EC_MISSING_JOIN_INDEX",
 
   /* _N_ */
@@ -1021,6 +1024,7 @@ static Stz* aErrorMsg[] =
   /* EC_MAX_COLUMNS                   */ (Stz*)"max 48 columns supported in a table",
   /* EC_MAX_ROW_LENGTH                */ (Stz*)"max row length allowed is 16k bytes",
   /* EC_MAX_TABLE_NAME_LENGTH         */ (Stz*)"max table name length allowed is 31 bytes",
+  /* EC_MEMORY_ALREADY_TRACKED        */ (Stz*)"memory is already being tracked",
   /* EC_MISSING_JOIN_INDEX            */ (Stz*)"missing suitable index for join",
 
   /* _N_ */
