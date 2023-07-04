@@ -311,16 +311,7 @@ void Weaver2::vDynamic(StageDef* pStageDef)
 
   vTabOp();
   vConcat_cmd("dynamic"_Stz);      vEolOp();  m_i_Op_stage++;
-
-  //if (AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU)) {
-    vTabOp();
-  vConcat_cmd("next"_Stz);
-    if (m_bSawHash)
-      vConcat_cmd(" hashCast"_Stz);
-    vEolOp();
-    m_i_Op_stage++;
-  //}
-
+  //vTabOp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1062,8 +1053,13 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
       xCI.G_vMainResynch(p_stage);
       while (xCI.G_bEachMain()) {
 
-        if (CK_STAGE == xCI.G.e_MainCard)
+        if (CK_STAGE == xCI.G.e_MainCard) {
+//          vConcat_cmd("next"_Stz);
+//          if (m_bSawHash)
+//            vConcat_cmd(" hashCast"_Stz);
+//          vEolOp();
           break;
+        }
 
         if (xCI.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
                                      CK_LIMIT , CK_SCAN     , CK_TABLE,
@@ -1082,9 +1078,9 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 
       vDynamic(pStageDef);
 
-//      if (xCI.bIsActive() && xCI.G_bEachMain(CK_CAST)) {
-//        vOp(xCI.G.p_MainCard);
-//      }
+      if (xCI.bIsActive() && CK_CAST == xCI.G.e_MainCard) {
+        vOp(xCI.G.p_MainCard);
+      }
     }
   //}
 
