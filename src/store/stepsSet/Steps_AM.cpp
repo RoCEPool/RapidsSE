@@ -8,6 +8,8 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+extern SizeHeap  gxaSizeHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -61,7 +63,12 @@ void Step::vAddSteps_AM(void)
   vAddStep("AM::DEMON::tSuperDemonJobId@"_Stz,     &Step::vAM_SuperDemonJobIdFetch);
   vAddStep("AM::DEMON::tSuperDemonJobId!"_Stz,     &Step::vAM_SuperDemonJobIdStore);
 
-  vAddStep("AM::MEMORY::trackmemory"_Stz,          &Step::vAM_TrackMemory);
+  vAddStep("AM::MEMORY::hasMemoryLeaks"_Stz,       &Step::vAM_HasMemoryLeaks);
+  vAddStep("AM::MEMORY::isNotFreeing"_Stz,         &Step::vAM_IsNotFreeing);
+  vAddStep("AM::MEMORY::isTracking"_Stz,           &Step::vAM_IsTracking);
+  vAddStep("AM::MEMORY::stopTracking"_Stz,         &Step::vAM_StopTracking);
+  vAddStep("AM::MEMORY::leaksSnapshot"_Stz,        &Step::vAM_TakeLeaksSnapshot);
+  vAddStep("AM::MEMORY::trackingSnapshot"_Stz,     &Step::vAM_TakeTrackingSnapshot);
 
   vAddStep("AM::SHOW::bBoot"_Stz,                  &Step::vAM_Show_Boot);
   vAddStep("AM::SHOW::bDir"_Stz,                   &Step::vAM_Show_Dir);
@@ -509,9 +516,108 @@ void Step::vAM_SuperDemonJobIdStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* AM::MEMORY::vAM_TrackMemory -- track memory allocations                    */
+/* AM::MEMORY::hasMemoryLeaks -- return true if there are memory leaks        */
 /*----------------------------------------------------------------------------*/
-void Step::vAM_TrackMemory(void)
+void Step::vAM_HasMemoryLeaks(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnapshotThen = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnapshotNow  = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  ASSERT(pSnapshotThen);
+  ASSERT(pSnapshotNow);
+
+  for (i8 i_Class = 0 ; i_Class < CN_ENUMS; i_Class++) {
+
+    eCN eClass = (eCN)i_Class;
+
+    if (eClass == CN_FREEPOOLBUFFER || eClass == CN_HEAPBUFFER)
+      continue;
+
+    // check if this class to be ignored for memory leak detection
+    if (gxaSizeHeap[eClass].m_bIgnoreMemoryLeak)
+      continue;
+
+    i8 nDelta = pSnapshotNow->m_nObjects[eClass] -
+                pSnapshotThen->m_nObjects[eClass];
+
+    if (nDelta > 0) {
+      m_pDataStack->vPushBol(true);
+      return;
+    }
+  }
+
+  m_pDataStack->vPushBol(false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::isNotFreeing -- returns true if allocations aren't being freed */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_IsNotFreeing(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushBol(gpBufferPool->bDontFree() || AM::pHeaps()->m_bNoFree);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::isTracking -- returns true if allocations are being tracked    */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_IsTracking(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnap1 = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnap2 = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  m_pDataStack->vPushBol(pSnap1 && pSnap2);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::stopTracking -- stop tracking memory allocations               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_StopTracking(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnap1 = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnap2 = AM::MEMORY::pSnapshotAtMemoryLeaks();
+  delete pSnap1;
+  delete pSnap2;
+
+  AM::MEMORY::vSnapshotAtMemoryLeaks(nullptr);
+  AM::MEMORY::vSnapshotAtTrackingMemory(nullptr);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::takeLeaksSnapshot -- track memory allocations                  */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_TakeLeaksSnapshot(void)
+{
+  ENTRY();
+
+  ObjectSnapshot* pSnapshotThen = AM::MEMORY::pSnapshotAtTrackingMemory();
+  ObjectSnapshot* pSnapshotNow  = AM::MEMORY::pSnapshotAtMemoryLeaks();
+
+  ASSERT(pSnapshotThen);
+  ASSERT(pSnapshotNow);
+
+  pSnapshotNow->vTakeSnapshot();
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* AM::MEMORY::takeTrackingSnapshot -- track memory allocations               */
+/*----------------------------------------------------------------------------*/
+void Step::vAM_TakeTrackingSnapshot(void)
 {
   ENTRY();
 

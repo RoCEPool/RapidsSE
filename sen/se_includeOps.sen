@@ -153,6 +153,7 @@ assert::stack_0
 
 "m" .verbose
 
+  "OP_memoryleaks.sen"          include
   "OP_metaGet.sen"              include
   "OP_metaRecv.sen"             include
   "OP_metaScan.sen"             include

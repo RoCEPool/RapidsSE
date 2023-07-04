@@ -35,6 +35,7 @@ assert::stack_0
   "pp_export.sen"           include 
   "pp_jobRep.sen"           include
   "pp_trackmemory.sen"      include
+  "pp_memoryleaks.sen"      include
 
   "pp_sqlCompiler.sen"      include 
  

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* pp_trackmemory.sen -- define trackmemory related procedures                        */
+/* pp_trackmemory.sen -- define trackmemory related procedures                */
 /*============================================================================*/
 
 " pp_trackmemory.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/
-/* trackmemory related procedures                                                 */
+/* trackmemory related procedures                                             */
 /*----------------------------------------------------------------------------*/
 
 "  start::defProc_Trackmemory" .verbose

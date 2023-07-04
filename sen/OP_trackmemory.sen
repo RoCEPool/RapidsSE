@@ -14,13 +14,14 @@
   PipeIn[].pipeOut
 
   // Record the memory object allocations
-  AM::MEMORY::trackmemory not if
+  AM::MEMORY::trackingSnapshot not if
     // Note: Error code and string are on stack
     op__execErrMsg
-  then
 
-//  Marker[].newEosMarker
-//  Marker[].pipeOut
+  else
+    Marker[].newEosMarker
+    Marker[].pipeOut
+  then
 
   true
 ;

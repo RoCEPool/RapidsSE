@@ -112,7 +112,12 @@ public:
   void vAM_WakerDemonJobIdStore(void);
   void vAM_SuperDemonJobIdFetch(void);
   void vAM_SuperDemonJobIdStore(void);
-  void vAM_TrackMemory(void);
+  void vAM_HasMemoryLeaks(void);
+  void vAM_IsNotFreeing(void);
+  void vAM_IsTracking(void);
+  void vAM_StopTracking(void);
+  void vAM_TakeLeaksSnapshot(void);
+  void vAM_TakeTrackingSnapshot(void);
 
   void vAM_No_Free(void);
   void vAM_Show_Boot(void);
@@ -1060,12 +1065,15 @@ void vDdlLockAssertNone(void);
   void vJob_SortExecute(void);
 
   // jobs
+  void vJobsAnyExited(void);
+  void vJobsNumActive(void);
   void vJobsSeeDlist(void);
   void vJobsSeeLlist(void);
   void vJobsSeeOlist(void);
   void vJobsSeePlist(void);
   void vJobsSeeRlist(void);
   void vJobsSeeSqueue(void);
+  void vJobsNumThreshold(void);
 
   // list
   void vListAddRowBuffer(void);
@@ -2023,6 +2031,7 @@ void vDdlLockAssertNone(void);
   void vStreamSetAddListFolder(void);
   void vStreamSetAddListIndex(void);
   void vStreamSetAddListPartitions(void);
+  void vStreamSetAddMemoryLeaks(void);
   void vStreamSetAddNodeHeartbeat(void);
   void vStreamSetAddNodeStatus(void);
   void vStreamSetAddPingInfo(void);

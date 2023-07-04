@@ -34,6 +34,7 @@
   start::defProc_JobRep
   start::defProc_SqlCompiler
   start::defProc_Trackmemory
+  start::defProc_Memoryleaks
 
   // define the system tables
   "define the iternal system tables" .verbose
@@ -66,6 +67,7 @@
   start::it_lookupIndex
   start::it_lookupSchema
   start::it_lookupTable
+  start::it_memoryLeaks
   start::it_memoryLog
   start::it_nodeInfo
   start::it_operandLog

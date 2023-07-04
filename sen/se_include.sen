@@ -143,6 +143,7 @@ cmd::fillOut_allCmds
   "it_lookupIndex.sen"      include
   "it_lookupSchema.sen"     include
   "it_lookupTable.sen"      include
+  "it_memoryLeaks.sen"      include
   "it_memoryLog.sen"        include
   "it_nodeInfo.sen"         include
   "it_operandLog.sen"       include

@@ -229,6 +229,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LOOKUPINDEX"_Stz,   C_TDEF_LOOKUPINDEX);
   vAddConstant("C_TDEF_LOOKUPSCHEMA"_Stz,  C_TDEF_LOOKUPSCHEMA);
   vAddConstant("C_TDEF_LOOKUPTABLE"_Stz,   C_TDEF_LOOKUPTABLE);
+  vAddConstant("C_TDEF_MEMORYLEAKS"_Stz,   C_TDEF_MEMORYLEAKS);
   vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);
   vAddConstant("C_TDEF_PATH"_Stz,          C_TDEF_PATH);
   vAddConstant("C_TDEF_PARTITIONKEY"_Stz,  C_TDEF_PARTITIONKEY);
@@ -375,7 +376,9 @@ void Constants::vAddConstantsCpp(void)
   /*    */ vAddConstant("EC_MAX_COLUMNS"_Stz,        EC_MAX_COLUMNS);
   /*    */ vAddConstant("EC_MAX_ROW_LENGTH"_Stz,     EC_MAX_ROW_LENGTH);
   /*    */ vAddConstant("EC_MAX_TABLE_NAME_LENGTH"_Stz,EC_MAX_TABLE_NAME_LENGTH);
-  
+  /*    */ vAddConstant("EC_MEMORY_ALREADY_TRACKED"_Stz,EC_MEMORY_ALREADY_TRACKED);
+  /*    */ vAddConstant("EC_MEMORY_NOT_BEING_TRACKED"_Stz,EC_MEMORY_NOT_BEING_TRACKED);
+
   /* 25 */ vAddConstant("EC_NO_COLUMNS_DIC"_Stz,     EC_NO_COLUMNS_DIC);
   /* 26 */ vAddConstant("EC_NO_SUCH_CATALOG"_Stz,    EC_NO_SUCH_CATALOG);
   /* 27 */ vAddConstant("EC_NO_SUCH_DIRECTORY"_Stz,  EC_NO_SUCH_DIRECTORY);
