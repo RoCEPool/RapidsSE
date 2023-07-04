@@ -1773,83 +1773,55 @@ Card* CardIter::pPrevChildIf(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print all boards of bench                                                   */
-/*----------------------------------------------------------------------------*/
-void CardIter::vPrintBench(eBK eBoard, i8 i_Board)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (! m_pCardCtl->bBenchPrint())
-    return;
-
-  char cPrefix = m_pBench->cPrefix();
-
-  s256 sPrompt;
-
-  i8 nBoards = m_pBench->nItems();
-
-  for (;;) {
-    if (C_UNKNOWN != i_Board) {
-      Board *pBoard = m_pBench->pGetBoard(i_Board);
-      pBoard->vPrintBoard(szXhand());
-    }
-    else {
-      for (i8 i_Each = 0; m_pBench->bBoardExists(i_Each); i_Each++) {
-        Board *pBoard = m_pBench->pGetBoard(i_Each);
-        pBoard->vPrintBoard(szXhand());
-      }
-    }
-
-    if (! m_pCardCtl->bCueUser(szXhand(), C_NA)) {
-      m_pCardCtl->vFormPrompt(sPrompt,
-                              cPrefix, szXhand(), C_NA,
-                              i_Board, nBoards, C_UNKNOWN);
-      printf("%s\n", sPrompt.azChar());
-      break;
-    }
-
-    m_pCardCtl->vFormPrompt(sPrompt,
-                            cPrefix, szXhand(), C_NA,
-                            i_Board, nBoards, C_UNKNOWN);
-    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* print the board                                                            */
 /*----------------------------------------------------------------------------*/
 void CardIter::vPrintBoard(i8 iLineNo)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  _precondition_(_MAGIC_, _FOOTER_);
 
-  if (! m_pCardCtl->bBoardPrint())
+  if (!m_pCardCtl->bBoardPrint())
     return;
 
-  char cPrefix = m_pBench->cPrefix();
+  G.pBoard->vPrintBoard(szXdesc());
 
-  s256 sPrompt;
+  s256 sWhere;
+  sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXform());
 
-  i8 nBoards = m_pBench->nItems();
-
-  for (;;) {
-    G.pBoard->vPrintBoard(szXdesc());
-
-    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
-      m_pCardCtl->vFormPrompt(sPrompt,
-                              cPrefix, szXhand(), szXform(),
-                              G.pBoard->i_Board(), nBoards, iLineNo);
-      printf("%s\n", sPrompt.azChar());
-      break;
-    }
-
-    m_pCardCtl->vFormPrompt(sPrompt,
-                            cPrefix, szXhand(), szXform(),
-                            G.pBoard->i_Board(), nBoards, iLineNo);
-    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
-      break;
-  }
+  vTrace("%s\n"_Stz, sWhere.azChar());
 }
+/*----------------------------------------------------------------------------*/
+//void CardIter::vPrintBoard(i8 iLineNo)
+//{
+//  _precondition_(_MAGIC_,_FOOTER_);
+//
+//  if (! m_pCardCtl->bBoardPrint())
+//    return;
+//
+//  char cPrefix = m_pBench->cPrefix();
+//
+//  s256 sPrompt;
+//
+//  i8 nBoards = m_pBench->nItems();
+//
+//  for (;;) {
+//    G.pBoard->vPrintBoard(szXdesc());
+//
+//    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
+//      m_pCardCtl->vFormPrompt(sPrompt,
+//                              cPrefix, szXhand(), szXform(),
+//                              G.pBoard->i_Board(), nBoards, iLineNo);
+//      printf("%s\n", sPrompt.azChar());
+//      break;
+//    }
+//
+//    m_pCardCtl->vFormPrompt(sPrompt,
+//                            cPrefix, szXhand(), szXform(),
+//                            G.pBoard->i_Board(), nBoards, iLineNo);
+//    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
+//      break;
+//  }
+//}
+
 
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */

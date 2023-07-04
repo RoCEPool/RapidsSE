@@ -153,7 +153,6 @@ namespace STORE
     void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
-    void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN);
     void G_vPushBoard(Board* pBoard);
     void G_vPushBoard(Stz* szBoardNm);
