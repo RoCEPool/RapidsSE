@@ -1,0 +1,43 @@
+/*============================================================================*/
+/* __JME : Load Job Metrics from csv files                                    */
+/*============================================================================*/
+
+print "Job Metrics Load";
+
+load se__jobMetrics    "../tmp/jobMetricsOld.csv";
+load se__jobOperands   "../tmp/jobOperandsOld.csv";
+load se__jobOperators  "../tmp/jobOperatorsOld.csv";
+load se__jobNetwork    "../tmp/jobNetworkOld.csv";
+load se__jobNetDissect "../tmp/jobNetDissectOld.csv";
+load se__sysMetrics    "../tmp/sysMetricsOld.csv";
+load se__sysLocks      "../tmp/sysLocksOld.csv";
+
+select count(*) from se__jobMetrics;
+select count(*) from se__jobOperands;
+select count(*) from se__jobOperators;
+select count(*) from se__jobNetwork;
+select count(*) from se__jobNetDissect;
+select count(*) from se__sysMetrics;
+select count(*) from se__sysLocks;
+
+/*
+load se__jobMetrics    "../tmp/jobMetricsNew.csv";
+load se__jobOperands   "../tmp/jobOperandsNew.csv";
+load se__jobOperators  "../tmp/jobOperatorsNew.csv";
+load se__jobNetwork    "../tmp/jobNetworkNew.csv";
+load se__jobNetDissect "../tmp/jobNetDissectNew.csv";
+load se__sysMetrics    "../tmp/sysMetricsNew.csv";
+load se__sysLocks      "../tmp/sysLocksNew.csv";
+
+select count(*) from se__jobMetrics;
+select count(*) from se__jobOperands;
+select count(*) from se__jobOperators;
+select count(*) from se__jobNetwork;
+select count(*) from se__jobNetDissect;
+select count(*) from se__sysMetrics;
+select count(*) from se__sysLocks;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

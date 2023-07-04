@@ -29,6 +29,282 @@ select sum(l_extendedprice * (1 - l_discount) ) as revenue
 
 */
 
+//------------------------------------------------------------------------------
+// Pipeline Generated
+//------------------------------------------------------------------------------
+
+/*
+EXPLAIN STAGE TRANSLITERATE
+select sum(l_extendedprice * (1 - l_discount) ) as revenue
+     from lineitem, part
+     where ( p_partkey = l_partkey
+     and p_brand = 'Brand#12'
+     and p_container in ( 'SM CASE', 'M BOX', 'SM PACK', 'SM PKG')
+     and l_quantity >= 1 and l_quantity <= 1 + 10
+     and p_size between 1 and 5
+     and l_shipmode in ('AIR', 'AIR REG')
+     and l_shipinstruct = 'DELIVER IN PERSON' )
+     or ( p_partkey = l_partkey
+     and p_brand = 'Brand#23'
+     and p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+     and l_quantity >= 10 and l_quantity <= 10 + 10
+     and p_size between 1 and 10
+     and l_shipmode in ('AIR', 'AIR REG')
+     and l_shipinstruct = 'DELIVER IN PERSON' )
+     or ( p_partkey = l_partkey
+     and p_brand = 'Brand#34'
+     and p_container in ( 'LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+     and l_quantity >= 20 and l_quantity <= 20 + 10
+     and p_size between 1 and 15
+     and l_shipmode in ('AIR', 'AIR REG')
+     and l_shipinstruct = 'DELIVER IN PERSON' );
+
+
+select * from part
+     where (p_brand = 'Brand#12'
+     and p_container in ( 'SM CASE', 'M BOX', 'SM PACK', 'SM PKG')
+     and p_size between 1 and 5
+     )
+     or (
+      p_brand = 'Brand#23'
+     and p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+
+     and p_size between 1 and 10
+     )
+     or (
+      p_brand = 'Brand#34'
+     and p_container in ( 'LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+
+     and p_size between 1 and 15
+      );
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker2359
+  stage stageMarker2359 on all partitions :
+    scan rapidsse public LineItem
+    | stageMarker2362 broadcast
+  stage stageMarker2362 on all partitions :
+    scan rapidsse public part
+    | abstractJoin "CROSS true  "
+    | stageMarker2365
+  stage stageMarker2365 on all partitions :
+    filter " type BOOLEAN  $17 $2 ==  $20 ''Brand#12''  ==  and  }  ''SM CASE''  ''M BOX''  ''SM PACK''  ''SM PKG''  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL CAST  <=  and  }  1  5  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  $17 $2 ==  $20 ''Brand#23''  ==  and  }  ''MED BAG''  ''MED BOX''  ''MED PKG''  ''MED PACK''  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL CAST  <=  and  }  1  10  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  $17 $2 ==  $20 ''Brand#34''  ==  and  }  ''LG CASE''  ''LG BOX''  ''LG PACK''  ''LG PKG''  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL CAST  <=  and  }  1  15  $22 between  and  }  ''AIR''  ''AIR REG''  #2  $15 in  and  $14 ''DELIVER IN PERSON''  ==  and  or  "
+    | aggreg " type DECIMAL )  $6 1.00  $7 -  *  sum  "
+    | combined 0
+    | stageMarker2368
+  stage stageMarker2368 on all nodes :
+    aggreg " type DECIMAL )  $1 sum  "
+    | combined 0
+    | stageMarker2371
+  stage stageMarker2371 on origin :
+    aggreg " type DECIMAL as revenue )  $1 sum  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+*/
+
+// SF10: 56secs
+pipeline unamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageMarker2359
+   stage stageMarker2359 on all partitions :
+     scan rapidsse public LineItem
+     | hash "type INTEGER l_partkey"
+     | combined 0
+     | next hashcast
+
+   stage stageMarker2362 on all partitions :
+     indexJoin part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
+     | filter " type BOOLEAN
+                  $20 'Brand#12'  == }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  $23 in  and  $5 1.00  >=  and  $5 1  10  +  casttype DECIMAL CAST  <=  and  }  1  5  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and
+                  $20 'Brand#23'  == }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4  $23 in  and  $5 10.00  >=  and  $5 10  10  +  casttype DECIMAL CAST  <=  and  }  1  10  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or
+                  $20 'Brand#34'  == }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  $23 in  and  $5 20.00  >=  and  $5 20  10  +  casttype DECIMAL CAST  <=  and  }  1  15  $22 between  and  }  'AIR'  'AIR REG'  #2  $15 in  and  $14 'DELIVER IN PERSON'  ==  and  or  "
+     | aggreg " type DECIMAL )  $6 1.00  $7 -  *  sum  "
+     | combined 0
+     | next
+
+   stage stageMarker2368 on all nodes :
+     aggreg " type DECIMAL )  $1 sum  "
+     | combined 0
+     | next
+
+   stage stageMarker2371 on origin :
+     aggreg " type DECIMAL as revenue )  $1 sum  "
+     | combined 0
+     | next
+
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+
+rows:
+  (-257.45)
+
+// added filters earlier
+// SF10: 2.9 secs
+pipeline unamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+
+   stage stageMarker2359 on all partitions :
+     scan rapidsse public LineItem
+     | filter "type BOOLEAN l_quantity 1.00 >= l_quantity 30.00 <= and
+               }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and"
+     | project " type INTEGER as l_partkey l_partkey , type DECIMAL as l_quantity l_quantity , type DECIMAL as l_discount l_discount , type DECIMAL as l_extendedprice l_extendedprice , type VARCHAR as l_shipmode l_shipmode , type VARCHAR as l_shipinstruct l_shipinstruct"
+     | hash "type INTEGER l_partkey"
+     | combined 0
+     | next hashcast
+
+   stage stageMarker2362 on all partitions :
+     indexJoin part IxP_PARTKEY "BOUND $I1 l_partkey ==" //J1
+     | project " type INTEGER as l_partkey l_partkey , type DECIMAL as l_quantity l_quantity , type DECIMAL as l_discount l_discount , type DECIMAL as l_extendedprice l_extendedprice  , type VARCHAR as l_shipmode l_shipmode , type VARCHAR as l_shipinstruct l_shipinstruct ,
+                 type INTEGER as p_size j1_p_size , type VARCHAR as p_brand j1_p_brand , type varchar as p_container j1_p_container"
+     | filter " type BOOLEAN
+                  P_BRAND 'Brand#12'  ==
+                  }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
+                  }  L_QUANTITY 1.0 >= L_QUANTITY 11.0 <= and and
+                  }  1  5  P_SIZE between  and
+                  }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                  L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and
+
+                  P_BRAND 'Brand#23'  ==
+                  }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4 P_CONTAINER in and
+                  }  L_QUANTITY 10.0 >= L_QUANTITY 20.0 <= and and
+                  }  1  10  P_SIZE between  and
+                  }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                  L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or
+
+                  P_BRAND 'Brand#34'  ==
+                  }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and
+                  }  L_QUANTITY 20.0 >= L_QUANTITY 30.0 <= and and
+                  }  1  15  P_SIZE between  and
+                  }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                  L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or  "
+
+     | combined 0
+     | next
+
+  stage stageMarker2368 on all partitions :
+     aggreg " type DECIMAL )  l_extendedprice 1.00  l_discount -  *  sum  "
+     | combined 0
+     | next
+
+   stage stageMarker2368_a on all nodes :
+     aggreg " type DECIMAL )  $1 sum  "
+     | combined 0
+     | next
+
+   stage stageMarker2371 on origin :
+     aggreg " type DECIMAL as revenue )  $1 sum  "
+     | combined 0
+     | next
+
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (-257.45)
+
+// best performance SF10: 258ms
+// changed join order and broadcast
+pipeline Query19
+begin
+ stage S00 on origin :
+   start
+   | pulse once
+   | next
+
+ stage S01 on all partitions :
+   scan rapidsse public part
+   | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
+                } 'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
+                }  1  5  P_SIZE between  and
+                P_BRAND 'Brand#23'  ==
+                }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4 P_CONTAINER in and
+                }  1  10  P_SIZE between  and  or P_BRAND 'Brand#34'  ==
+                }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and
+                }  1  15  P_SIZE between  and or  "
+   | project " type INTEGER as P_PARTKEY P_PARTKEY ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type VARCHAR as P_CONTAINER P_CONTAINER ,
+               type INTEGER AS P_SIZE P_SIZE"
+   | combined 0
+   | next broadcast
+
+ stage S02 on all partitions :
+   indexJoin lineitem IxL_PARTKEY "BOUND $I1 p_partkey ==" //J1
+   | project " type INTEGER as L_PARTKEY j1_l_partkey ,
+               type DECIMAL as L_QUANTITY J1_L_QUANTITY ,
+               type DECIMAL as L_DISCOUNT J1_L_DISCOUNT ,
+               type DECIMAL as l_extendedprice j1_l_extendedprice  ,
+               type VARCHAR as L_SHIPMODE J1_L_SHIPMODE ,
+               type VARCHAR as L_SHIPINSTRUCT J1_L_SHIPINSTRUCT ,
+               type INTEGER as P_SIZE P_SIZE ,
+               type VARCHAR as P_BRAND P_BRAND ,
+               type varchar as P_CONTAINER P_CONTAINER"
+   | filter " type BOOLEAN P_BRAND 'Brand#12'  ==
+                }  'SM CASE'  'M BOX'  'SM PACK'  'SM PKG'  #4  P_CONTAINER in  and
+                }  L_QUANTITY 1.0 >= L_QUANTITY 11.0 <= and and
+                }  1  5  P_SIZE between  and
+                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and
+                P_BRAND 'Brand#23'  ==
+                }  'MED BAG'  'MED BOX'  'MED PKG'  'MED PACK'  #4 P_CONTAINER in and
+                }  L_QUANTITY 10.0 >= L_QUANTITY 20.0 <= and and
+                }  1  10  P_SIZE between  and
+                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or
+                P_BRAND 'Brand#34'  ==
+                }  'LG CASE'  'LG BOX'  'LG PACK'  'LG PKG'  #4  P_CONTAINER in  and
+                }  L_QUANTITY 20.0 >= L_QUANTITY 30.0 <= and and }  1  15  P_SIZE between  and
+                }  'AIR'  'AIR REG'  #2  L_SHIPMODE in  and
+                L_SHIPINSTRUCT 'DELIVER IN PERSON'  ==  and  or  "
+   | combined 0
+   | next
+
+stage S03 on all partitions :
+   aggreg " type DECIMAL )  L_EXTENDEDPRICE 1.00  L_DISCOUNT - * sum  "
+   | combined 0
+   | next
+
+ stage S04 on all nodes :
+   aggreg " type DECIMAL )  $1 sum  "
+   | combined 0
+   | next
+
+ stage S05 on origin :
+   aggreg " type DECIMAL as revenue )  $1 sum  "
+   | combined 0
+   | next
+
+ stage S06 on origin :
+   output
+   | sink
+   | first
+end ;
+
+ rows:
+   (-257.45)
+
 CLEANUP {
   bye;
   mute

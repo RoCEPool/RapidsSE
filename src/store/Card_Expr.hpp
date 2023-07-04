@@ -1,33 +1,55 @@
 /*============================================================================*/
-/* Card_Expr.hpp -- Typed Expression                                     */
+/* Card_Expr.hpp -- Typed Expression                                          */
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
-#include "Card_PRED.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_Expr : public Card_SUB
+  class Card_Expr : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_Expr(void);
-    Card_Expr(Column* pColumn);
+    Card_Expr(Symbol* pSymbol);
+    Card_Expr(Card_As*   p_as_arg,
+              Card_Term* p_term_0_arg);
    ~Card_Expr(void) noexcept(false);
-    
-    void vAsEnsure(void);
-    Card_PredCmp* pFindBound(Index* pIndex, eBK eBound);
-    bool bHasBounds(Index* pIndex);
-    void vReduceBoolExpr(void);
+
+    //-----------------------------------------------------------
+   static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
+    static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
+    static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
+
+    void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
+    Card_Expr* pClone(void);
+    void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
+    Card_Expr* pCraft_expr_early(CardIter* pCI);
+    void vDeconstruct(Card_As*&   rp_as,
+                      Card_Term*& rp_term_0);
+    void vEnsureTypes_For_stmOdn(CardIter* pCI);
+    void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
+    Card_Term* pGetTerm(i8 i_Term);
+    bool bHasTerm(Symbol* pSymbol);
+    bool bOf(Symbol* pSymbol);
+    void vReconstruct(Card_As*    p_as,
+                      Card_Term*  p_term_0);
+    Card_Expr *pReducedCopy(i8 i_Expr);
+
+    void vRenumberForm_keyOdn(i8 i_Expr);
+    void vRenumberForm_stmOdn(i8 i_Expr);
+
+    bool bSameAs(Card_Expr* pExpr_arg);
+
+
+    Stz* szP_Type(void);
+
   };
 
   Card_Expr* _pCard_Expr(void* aAddr);
-  bool _bIsCard_Expr(void* aAddr);
 }
 
 /*============================================================================*/

@@ -2,7 +2,9 @@
 /*  _lineitem - create TPC-H Lineitem table                                   */
 /*============================================================================*/
 
-create table lineitem (
+// SF=6m rows
+
+create table Lineitem (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B
   L_PARTKEY       INTEGER       NOT NULL,  //  1)  8B   3B
   L_SUPPKEY       INTEGER       NOT NULL,  //  2)  8B   3B
@@ -38,7 +40,9 @@ create table lineitem (
   // SF10 :  60M rows ;  16.4GB used
   // SF30 : 180M rows ;  48.6GB used
   // SF100: 600M rows ; 161.9GB used
-);
+)
+tablesize 630
+;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -2,35 +2,18 @@
 /* _ray                                                                       */
 /*============================================================================*/
 
-_nation
+_r_schema
 
-load nation "/Users/Shared/rapidsse/tpch/SF1/nation.csv" ;
-
-/*
-/jobTags
-/optimise
-/weave
 /transliterated
-/optimised
-/todo
-select *
-  from nation
- where N_NATIONKEY > 1
- order by N_NAME
+/glean_interactive
+/weaved
+/pipelineName = "_ray"
+select substring(c_phone from 1 for 2) as cntrycode
+  from Customer
+ where
+       substring (c_phone from 1 for 2)
+         in ('13','31','23','29','30','18','17')
 ;
-*/
-
-
-/jobTags
-/optimise
-/weave
-/transliterated
-/optimised
-select sum(n_nationKey) from nation;
-
-
-
-drop table nation;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* __flatL1_s1 -- flattening with 1 level of subquery                         */
+/*============================================================================*/
+
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+load C "../DATA/Select/select.csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select * from dummy;
+
+trackMemory;
+
+explain stage aggregateSplit
+select count(*)
+  from (
+   select * from A,B
+   where A.A_COL0 = B.B_COL0) as T1
+ ;
+
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "__flatL1_s1"
+select count(*)
+  from (
+   select * from A,B
+   where A.A_COL0 = B.B_COL0) as T1
+ ;
+
+MemoryLeaks;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+drop table A;
+drop table B;
+drop table C;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+Expected Result:
+  row: (34)
+  success: 1 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

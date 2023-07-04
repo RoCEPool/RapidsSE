@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* __TPCH_SCHEMA_INDEX-- create and load TPC-H tables                         */
+/*============================================================================*/
+
+_lineitem
+_orders_orderkey
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+// Lineitem (partitioned on l_orderkey)
+create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
+create        index IxO_ORDERKEY    on Orders   (O_ORDERKEY);
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/time load orders             "<tpch_dir>/orders.<suffix>"   ;
+/time load lineitem           "<tpch_dir>/lineitem.<suffix>" ;
+
+tablesizes;
+
+bpa;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

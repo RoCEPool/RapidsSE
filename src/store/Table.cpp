@@ -301,19 +301,22 @@ void Table::vAddIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* analyze table                                                              */
 /*----------------------------------------------------------------------------*/
-void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
+void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   i8 nRowsTotal    = 0;
   i8 nBuffersTotal = 0;
-  
+  i8 jSumRowBytes  = 0;
   TablePtn* pTablePtn = this->pTablePtn(i_TablePtn);
 
-  pTablePtn->vAnalyze(nBuffers, nRows);
+  pTablePtn->vAnalyze(nBuffers, nRows, jSumRowBytes);
   
   nRowsTotal += nRows;
   nBuffersTotal += nBuffers;
+
+  if (nRows)
+    jRowSize = jSumRowBytes / nRows;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,6 +329,8 @@ void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
   UNUSED(pDataBuffer);
   
   TablePtn* pTblPtn = pTablePtn(0);
+
+  pDataBuffer->vLglPtn((LglPtn)0);
 
   pTblPtn->vAppendBuffer(pDataBuffer);
 }
@@ -615,6 +620,38 @@ PtnDef* Table::pPtnDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_pPtnDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get estimates for the table based on partition 0                           */
+/*----------------------------------------------------------------------------*/
+void Table::vGetGridEstimates(i8 &jTableSize, i8 &jRowSize, i8& nRowCount)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  i8 nPtnsInGrid = AM::PTNMAP::nPtnsInGrid();
+
+  jTableSize = 0;
+  jRowSize   = 0;
+  nRowCount  = 0;
+
+  i8 nBuffersPerPtn = 0;
+  i8 i_TablePtn = iPtnNoToTablePtn(0);
+  vAnalyze(i_TablePtn, nBuffersPerPtn, nRowCount, jRowSize);
+
+  if (! bIsReplicated())
+    nRowCount *= nPtnsInGrid;
+
+  if (nBuffersPerPtn > 1)
+    if (bIsReplicated())
+      jTableSize = nBuffersPerPtn;
+    else
+      jTableSize = nBuffersPerPtn * nPtnsInGrid;
+  else
+  if (m_pStreamDef->jTableSize())
+    jTableSize = m_pStreamDef->jTableSize();
+  else
+    jTableSize = 1;
 }
 
 /*----------------------------------------------------------------------------*/

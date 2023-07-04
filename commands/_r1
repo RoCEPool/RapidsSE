@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* _r1 -- tpch query 1                                                        */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_cue_trace = "x"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r1"
+select
+  count(*)
+  from lineitem
+  where l_orderKey < 100
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -9,6 +9,8 @@
 
 namespace STORE
 {
+  class ParamsSpec;
+
   class Dynamo : public ListNL_t<VertexSpec>
   {  
     friend class STORE::VertexSpec;
@@ -24,6 +26,11 @@ namespace STORE
     Scanner*     m_pScanner;         // statement token scanner
  
     VertexSpec*  m_pCurrVertexSpec;  // current/working spec
+
+    ParamsSpec*  m_pParamsSpec;      // set of parameters
+
+    bool         m_bHasCode;
+    s48K         m_sCode;
     
     // must be last
     Footer m_xFooter;
@@ -39,6 +46,7 @@ namespace STORE
     static VertexSpec* pToVertexSpec(Stz* szPipelineStmt, TagSet* p_JobTags);
 
     VertexSpec* pCompile(Stz* szPipelineStmt);
+    Stz* szCode(void);
 
   private:
     Footer* aFooter(void);
@@ -59,7 +67,9 @@ namespace STORE
 
     bool bCollectPipeline(void);
     bool bCollectTag(void);
+    bool bCollectParams(void);
     bool bCollectBeginEnd(void);
+    bool bCollectCode(void);
     bool bCollectSubPipeline(void);
     bool bCollectStage(void);
     bool bCollectTopology(StageSpec* p_StageSpec);
@@ -126,6 +136,14 @@ namespace STORE
     TokenVec*  pTknVec(void);
 
     void vTokenAccept(void);
+
+
+
+    bool bHasCode(void);
+    void vHasCode(bool bHasCode);
+
+    void vCode(Stz* szCode);
+
 
   };
 

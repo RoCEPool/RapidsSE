@@ -5,7 +5,6 @@
 
 #include "json5BaseVisitor.h"
 #include "PlanNodeBuilderStack.hpp"
-#include "PlannerLock.hpp"
 
 namespace Parser
 {
@@ -21,14 +20,14 @@ namespace Parser
     // The plan graph template
     static PlanNode* s_pGraphTemplate;
 
-    // The lock for accessing the plan graph template
-    static PlannerLock s_okLock;
-
     PlanNodeBuilderStack * m_pNodeBuilderStack; // A stack of PlanNodeBuilder objects
     Footer m_xFooter;
     
    public:
-    // Get the plan graph template, creating it if it doesn't yet exist.
+    // Create the plan graph template
+    static bool bInit();
+
+    // Get the plan graph template
     static const PlanNode* pGraphTemplate();
 
 

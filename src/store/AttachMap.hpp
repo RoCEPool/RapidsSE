@@ -71,7 +71,6 @@ namespace STORE
     Atomic        m_ixQueryNo;
     i8            m_iQuit;
     b8            m_bReady;
-    b8            m_bReapEnabled;
     ReapLock      m_oReapLock;
     Timer         m_oReferenceTimer;
     Resources     m_oResources;
@@ -144,9 +143,7 @@ namespace STORE
     i8   iSePid(void);
     void vPrintAttachMap(void);
     void vPrintStartupInfo(void);
-  
-    bool bReapEnabled(void);
-    void vReapEnabled(bool bReapEnabled);
+
     void vReapLockDrop(void);
     void vReapLockGrab(void);
     void vRecordArguments(CmdLineArgs* CmdLineArgs);

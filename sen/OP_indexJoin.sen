@@ -81,14 +81,28 @@
     exit
   then
 
-  // generate selectColumns bitmap from expr and streamDefIn
-  <expr> StreamDefLft[].selectColumns to eError
+  // generate selectColumns bitmap from keyExpr and streamDefRht
+  <keyExpr> StreamDefOut[].selectColumns to eError
 
   // check for error
   eError EC_NONE == not if
     eError op__execErr
     true
     exit
+  then
+
+  "<expr>" [op].tagSet@ tagSet.hasName if
+
+    // generate selectColumns bitmap from expr and streamDefRht
+    <expr> StreamDefOut[].selectColumns to eError
+
+    // check for error
+    eError EC_NONE == not if
+      eError op__execErr
+      true
+      exit
+    then
+
   then
 
   // pipeout the streamDefOut
@@ -127,7 +141,8 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: indexJoin :: indexJoin <tableNm> <indexNm> <expr> ;
+cmdSyntax: indexJoin :: indexJoin <tableNm> <indexNm> <keyExpr> ;
+cmdSyntax: indexJoin :: indexJoin <tableNm> <indexNm> <keyExpr> <expr> ;
 
 : indexJoin_cmdTags _cmdTags tagCopy: op_tags
   tags{

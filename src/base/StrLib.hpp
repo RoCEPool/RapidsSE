@@ -67,6 +67,7 @@ namespace BASE
   
     static bool  bEachLine(char** ps, char* caLine);
     static bool  bEqualTo(const char* s1, const char* s2);
+    static bool  bEqualTo(const char* s1, i8 nLen2, const char* s2);
     static bool  bEqualTo(const char* s1, const char* s2, i8 iCase);
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(char* sArg, char* sEnd);
@@ -176,6 +177,7 @@ namespace BASE
     static bool  bIsInteger(char* azArg);
     static bool  bIsIPAddr(const char* azArg);
     static bool  bIsLessThan(const char c);
+    static bool  bIsLowerCase(const char c);
     static bool  bIsMinus(const char c);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
@@ -194,6 +196,7 @@ namespace BASE
     static bool  bIsSlash(const char c);
     static bool  bIsTilde(const char c);
     static bool  bIsUnderscore(const char c);
+    static bool  bIsUpperCase(const char c);
     static bool  bIsWhite(const char c);
     static bool  bIsX(const char c);
 
@@ -223,6 +226,8 @@ namespace BASE
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
+    static void  vRemoveTail(char* azArg, const char* pTail);
+    static void  vRemoveTailBy(char* azArg, i8 nChars);
     static void  vRemoveTailInt(char* azArg);
     static void  vRemoveTill(char* azArg, const char cTill, bool bRemoveTheTill=false);
     static void  vRemoveToken(char* azArg);
@@ -236,6 +241,7 @@ namespace BASE
     static void  vRuler(char* azDst, i8 iLength);
 
     static bool  bSame(const char* s1, const char* s2);
+    static void  vShortHand(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, i8 i_Right);
     static i8    nSize(const char* s);
@@ -261,6 +267,7 @@ namespace BASE
     static void  vStrip(char* s, char cTrailing);
     static void  vSubPath(char* azDst, char* azSrc);
 
+    static bool  bTailIs(const char* z, char* ss);
     static char* aczTabLoc(char* azArg, i8 i_Tab, char cPad);
     static i8    iToBcd(const char* s);
     static bool  bToBool(const char* s);
@@ -268,7 +275,9 @@ namespace BASE
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);
     static i8    iToI8(const char* s, bool* bInvalidValue, bool* bOverflowed);
+    static char  cToLower(char c);
     static void  vToLower(char* s);
+    static char  cToUpper(char c);
     static void  vToUpper(char* s);
     static void  vTopTail(char* azArg, char cIntro);
     static char* wToPointer(void* pArg, char* w);

@@ -9,6 +9,8 @@ namespace BASE
 {
   class Rrf : public NonProper
   {
+    friend class STORE::IndexTree;
+
   private:
     union {
       struct {
@@ -18,7 +20,8 @@ namespace BASE
         u8 m_uPayload :  1; // is there is a payload? (not used yet)
         u8 m_uKind    :  4; // entry kind
         u8 m_uFree    :  1; // free entry?
-        u8 m_uSpare   :  7; // spare
+        u8 m_uDesc    :  1; // has descending key?
+        u8 m_uSpare   :  6; // spare
       };             // 64b
       
       i8 m_iAsI8;
@@ -34,6 +37,8 @@ namespace BASE
     i8    iAsI8(void);
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
+    void  vDesc(bool bDesc);
+    bool  bDesc(void);
     bool  bFree(void);
     void  vFree(bool bFree);
     i8    nFreeSize(void);

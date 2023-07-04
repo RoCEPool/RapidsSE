@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* _jo1_C_L_O_eg1 -- join order: Orders, Lineitem                             */
+/*============================================================================*/
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+drop  index Customer IxC_CUSTKEY;
+
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+select c_nationkey, l_returnflag, l_linestatus, count(*)
+  from Lineitem, Orders, Customer
+ where l_orderkey = o_orderkey
+   and o_custkey  = c_custkey
+ group by c_nationkey, l_returnflag, l_linestatus
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

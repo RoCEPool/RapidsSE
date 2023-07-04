@@ -143,6 +143,19 @@ bool Token::bEndCppString(char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for start of code block                                               */
+/*----------------------------------------------------------------------------*/
+bool Token::bStartCodeBlock(char *azArg)
+{
+  _static_
+
+  if (StrLib::bBeginsWith(azArg,"__cpp_code__"))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for start of Sen integer                                              */
 /*----------------------------------------------------------------------------*/
 bool Token::bStartSenInteger(char cArg)
@@ -213,6 +226,44 @@ bool Token::bEndSenString(char cArg)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen code                                                           */
+/*----------------------------------------------------------------------------*/
+eTN Token::eCollectCodeBlock(char** aazCrs, Stz* szString)
+{
+  _static_
+
+  char *azChars = StrLib::azNullTerminator(szString->azChar());
+  char *z = azChars;
+
+  // collect the characters of the code
+  while ( **aazCrs ) {
+
+    if (StrLib::bBeginsWith(*aazCrs,"__codeEnd__")) {
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('c' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('o' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('d' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('e' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('E' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('n' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('d' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+//      *z = **aazCrs; ASSERT('_' == *z); z++; (*aazCrs)++;
+      break;
+    }
+
+    *z++ = **aazCrs;
+    (*aazCrs)++;
+  }
+
+  // terminate name
+  *z = '\0';
+
+  return TN_STRING;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,7 +528,12 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
     return TN_NONE;
   
   eTN eToken = TN_NONE;
-  
+
+//  if (bStartCodeBlock(*aazCrs)) {
+//    eToken = eCollectCodeBlock(aazCrs,szString);
+//    return eToken;
+//  }
+
   if (bStartSenInteger(**aazCrs)) {
     eToken = eCollectSenNumber(aazCrs,szString);
     return eToken;
@@ -494,6 +550,7 @@ eTN Token::eCollectSenToken(char** aazCrs, Stz* szString)
   }
 
   eToken = eCollectSenName(aazCrs,szString);
+
   return eToken;
 }
 

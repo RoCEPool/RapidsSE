@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_ChildExit \handler
 
-  //"EV_X_CHILDEXIT" .verbose
+  "EV_X_CHILDEXIT" .verbose
 
   true LogicUnit[].RcvdChildExit!
 
@@ -55,7 +55,7 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_End \handler
 
-  //"EV_M_END_handler" .verbose
+  "EV_M_END_handler" .verbose
 
   true LogicUnit[].RcvdEnd!
 
@@ -73,9 +73,14 @@
 /*----------------------------------------------------------------------------*/
 : _Call_Optimiser
 
-  "_Call_Optimiser" .
+  // "_Call_Optimiser" .
 
-  Text[] .
+  0 locals| bJoinOrder |
+  0 locals| bJoinPermutations |
+
+  "<CallingOptimiser>" 1 [job].tagSet@ tagSet.appendInt
+
+  //Text[] .
 
   Dynamo[].new
 
@@ -85,6 +90,7 @@
   ErrorCode[] EC_NONE == not if
     // - error compile
     //"Error Compile" .
+    false
     exit
   then
 
@@ -94,14 +100,54 @@
 
   Optimiser[].new
 
-  PipeSpec[] Optimiser[].dissect
-
-  "<optimise>" [job].tagSet@ tagSet.hasName if
-    Optimiser[].optimise
+  "<joinOrder>" [job].tagSet@ tagSet.hasName if
+    1 to bJoinOrder
   then
 
-  "<weave>" [job].tagSet@ tagSet.hasName if
+  "<joinPermutations>" [job].tagSet@ tagSet.hasName if
+    1 to bJoinPermutations
+  then
+
+  // invalid to execute with both /joinOrder and /joinPermutations
+  bJoinOrder bJoinPermutations and if
+    EC_INVALID_COMMAND op__execErr
+    Optimiser[].delete
+    PipeSpec[].delete
+    false
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // JoinOrder or JoinPermutations
+
+  bJoinOrder bJoinPermutations or if
+
+     // find the <streamDef> table (--joinOrder)
+     <streamDef> op__tableDef_streamSet assert
+
+     // create a new streamDef
+     streamSetTable[] StreamDefLft[].new
+
+     // pipeout the streamDef
+     StreamDefLft[].pipeOut
+
+     // create an infoSet operand where joinOrder will be added
+     streamSetTable[] StreamSet[].new
+
+  then
+
+  PipeSpec[] Optimiser[].dissect
+
+  Optimiser[].transform if
+
     Optimiser[].weave to Text[] // discard
+
+  else
+    op__execErrMsg
+    Optimiser[].delete
+    PipeSpec[].delete
+    false
+    exit
   then
 
   Optimiser[].delete
@@ -109,9 +155,10 @@
   PipeSpec[].delete
 
   "<weaved>"  [job].tagSet@ tagSet.hasName if
-    Text[] "Weaved: %v"  str.format .
+    Text[] "Weaved: \n%v"  str.format .
   then
 
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -119,11 +166,17 @@
 /*----------------------------------------------------------------------------*/
 : transliterate_PlanOperand \handler
 
-  0 locals| sOperatorName |
+  0 0 locals| sOperatorName sPipeline |
 
   PipeIn[]\clear to PlanOperand[]
 
-  PlanOperand[] sqlCompiler::transliterate to Text[]
+  "<pipelineName>" [job].tagSet@ tagSet.hasName if
+    <pipelineName> to sPipeline
+  else
+    "unamed" to sPipeline
+  then
+
+  sPipeline PlanOperand[] sqlCompiler::transliterate to Text[]
 
   "transliterate" to sOperatorName
   PlanOperand[] sOperatorName sqlCompiler::hasExplain if
@@ -159,18 +212,47 @@
     Text[] "Tranliterated: \n%v"  str.format .
   then
 
-  //"<dissect>"  1 [job].tagSet@ tagSet.appendInt
-  //"<optimise>" 1 [job].tagSet@ tagSet.appendInt
-  //"<weave>"    1 [job].tagSet@ tagSet.appendInt
+  //Text[] .
 
-  "<dissect>"  [job].tagSet@ tagSet.hasName
-  "<optimise>" [job].tagSet@ tagSet.hasName or
-  "<weave>"    [job].tagSet@ tagSet.hasName or if
-    "HAS optimisation tag" .
-    _Call_Optimiser
+  _Call_Optimiser not if
+    true
+    exit
   then
 
+  //Text[] .
 
+
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // JoinOrder
+
+  "<joinOrder>" [job].tagSet@ tagSet.hasName if
+
+    // pipeout join order information (which should be in the StreamSet[]
+    StreamSet[].isNull not assert
+    StreamSet[].pipeout
+
+    // exit as no need to execute the statement
+    Marker[].newLeaveMarker
+    Marker[].pipeout
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - -
+  // JoinPermutations
+
+  "<joinPermutations>" [job].tagSet@ tagSet.hasName if
+
+    // pipeout join permutations information (which should be in the StreamSet[]
+    StreamSet[].isNull not assert
+    StreamSet[].pipeout
+
+    // exit as no need to execute the statement
+    Marker[].newLeaveMarker
+    Marker[].pipeout
+    true
+    exit
+  then
 
   [Op] [job].responseOp!
   STD_NORMALFORK_TAG Text[] api::forkChild not if
@@ -269,6 +351,7 @@ cmdSyntax: transliterate :: transliterate ;
 : transliterate_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc>    = "--desc for op--"
+    <streamDef> = __joinOrder
     <opEntry> = "transliterate_op"
   }
 ;

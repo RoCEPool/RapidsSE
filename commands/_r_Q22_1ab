@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* _r_Q22_1ab -- TCPH query 22 test                                           */
+/*============================================================================*/
+
+// --initial _r_Q22_1ab
+
+_r_schema
+
+create index C_idx0  on Customer (C_CUSTKEY);
+create index O_idx0  on Orders   (O_CUSTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q22_1ab"
+select c_phone,
+       c_acctbal
+  from Customer
+ where
+       c_acctbal >
+                   ( /* Q22_1_1: */
+                     select avg(c_acctbal)
+                       from Customer
+                      where
+                            substring (c_phone from 1 for 2)
+                              in ('13','31','23','29','30','18','17')
+                    )
+   and
+        exists
+                   ( /* Q22_1_2: */
+                     select *
+                       from Orders
+                      where O_CUSTKEY = C_CUSTKEY
+                        and O_SHIPPRIORITY > 0
+                   )
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -728,6 +728,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* compile source code in tinyC                                               */
+/*----------------------------------------------------------------------------*/
+: TinyC[].compileCode_v2 params| pStencil |
+
+  TinyC[].new
+
+  pStencil TinyC[].compile_v2 if
+    1 TinyC[].symbols
+    TinyC[].relocate assert
+    "iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
+    "iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
+    "iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
+    "iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
+    true
+  else
+    false
+  then
+
+  TinyC[].delete
+;
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : Tub[].pipeOutCompleted

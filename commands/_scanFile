@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _scanFile                                                                  */
+/*============================================================================*/
+
+__TPCH_SCHEMA
+
+// explain stage transliterate select * from lineitem;
+
+pipeline scanFile
+
+  begin
+
+    stage S00 on origin :
+        start
+      | pulse once
+      | checkTable lineitem
+      | chunk      "<tpch_dir>/lineitem.<suffix>"   // read chunks of file => (seekOffset)
+      | rdCsvChunk "<tpch_dir>/lineitem.<suffix>"   // (seekOffset) => (csvBuffer)
+      | next localrobin
+
+    stage S01 on all partitions on origin :
+        toKeyHshRow_sf lineitem // (csvBuffer) => (rowBuffer w row+keyHash)
+      //| toLglPtnRow lineitem // (rowBuffer) => (rowBuffer x logical partitions)
+      //| toLglPtnNst          // (rowBuffer) => (rowBuffer w normalised strings)
+      //| toLglPtnCrw          // (rowBuffer) => (crwBuffer x logical partitions)
+      | next
+
+   stage S02 on all partitions :
+      project " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
+      | combined 0
+      | next
+
+    stage S03 on origin :
+      output
+      | sink
+      | first
+ end ;

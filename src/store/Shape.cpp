@@ -24,8 +24,7 @@ Shape::Shape(void)
 : Object(CN_SHAPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
-  
-  m_eShape        = LS_NONE;
+
   m_pStructSynthA = nullptr;
   m_pStructSynthB = nullptr;
   m_pCodeSynthA   = nullptr;
@@ -60,16 +59,6 @@ Shape::~Shape(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get Shape kind                                                              */
-/*----------------------------------------------------------------------------*/
-eLS Shape::eShape(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
-
-  return m_eShape;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get structA synthesiser                                                    */

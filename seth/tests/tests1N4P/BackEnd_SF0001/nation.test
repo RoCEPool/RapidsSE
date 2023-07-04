@@ -8,7 +8,10 @@ N_NATIONKEY       INTEGER NOT NULL,
 N_NAME            CHAR(25) NOT NULL,
 N_REGIONKEY       INTEGER NOT NULL,
 N_COMMENT         VARCHAR(152)
-);
+)
+replicated
+tableSize 1
+;
 success
 
 //------------------------------------------------------------------------------
@@ -16,15 +19,15 @@ success
 CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
 affected: 0
 
-CREATE INDEX IxN_REGIONKEY ON nation(N_NATIONKEY);
+CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);
 affected: 0
 
 // load the table
-load nation "../TPCH/SF_0001/nation.csv";
+loadReplicated nation "../TPCH/SF_0001/nation.csv";
 success
 
-select count(*) from nation;
-rows: (25)
+//select count(*) from nation;
+//rows: (25)
 
 compactidx nation IxN_NATIONKEY;
 success

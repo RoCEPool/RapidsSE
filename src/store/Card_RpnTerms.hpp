@@ -3,14 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_OTHER.hpp"
-#include "eTE.h"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_RpnTerms : public Card_OTHER
+  class Card_RpnTerms : public Card
   {  
   public:
     void* operator new(size_t);
@@ -18,13 +15,11 @@ namespace STORE
   
     Card_RpnTerms(void);
    ~Card_RpnTerms(void) noexcept(false);
-    
-    eTE eTopTermEval(void);
 
+    bool bIsInList(void);
   };
 
   Card_RpnTerms* _pCard_RpnTerms(void* aAddr);
-  bool _bIsCard_RpnTerms(void* aAddr);
 }
 
 /*============================================================================*/

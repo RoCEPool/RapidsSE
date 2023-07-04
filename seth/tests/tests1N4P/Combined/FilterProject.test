@@ -239,15 +239,15 @@ begin
   stage stageA on all partitions :
     scan rapidsse public LineItem
     | filter "type BOOLEAN L_ORDERKEY 2 >="
-    | project "type INTEGER as SUM1 ) L_ORDERKEY sum , type INTEGER as SUM2 ) L_PARTKEY sum"
+    | aggreg "type INTEGER as SUM1 ) L_ORDERKEY sum , type INTEGER as SUM2 ) L_PARTKEY sum"
     | combined 0
     | stageB
  stage stageB on all nodes :
-   project "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
+   aggreg "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
    | combined 0
    | stageC
  stage stageC on origin :
-    project "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
+    aggreg "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -267,15 +267,15 @@ begin
   stage stageA on all partitions :
     scan rapidsse public LineItem
     | filter "type BOOLEAN $1 2 >="
-    | project "type INTEGER ) $1 sum , type INTEGER ) $2 sum"
+    | aggreg "type INTEGER ) $1 sum , type INTEGER ) $2 sum"
     | combined 0
     | stageB
  stage stageB on all nodes :
-   project "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
+   aggreg "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
    | combined 0
    | stageC
  stage stageC on origin :
-    project "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
+    aggreg "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
     | combined 0
     | stageLast
   stage stageLast on origin :

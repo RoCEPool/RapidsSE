@@ -1,19 +1,16 @@
 
 // Source file: ../queries/alias/ralias-1.sql
 // Result file: ../queries/alias/results/alias-1.res
-//TODO: ENABLE WHEN JOINS
-/*
 select m_qualitycode as QualCode from manufacturer m join returnitems r on m.m_mfgkey = r.m_mfgkey where r_returndate >= '2013-12-26 00:00:00' and r_returndate <= '2014-12-31 00:00:00' and m_specialorders = 'Y'order by m.m_mfgkey;
 ordered rows:
-  (79)
-  (37)
-  (37)
-  (19)
-  */
+  ('79')
+  ('37')
+  ('37')
+  ('19')
 
 // Source file: ../queries/alias/ralias-6.sql
 // Result file: ../queries/alias/results/alias-6.res
-//TODO: ENABLE WHEN JOINS ANS SUBQUERIES
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
 /*
 select * from ( select a.pcol9, a.colb9 from table9 a join table9 b on a.pcol9=b.scol9) as col3, table1 where col3.colb9 = table1.colb1 and col3.pcol9 = table1.pcol1;
 rows:
@@ -22,7 +19,7 @@ rows:
 
 // Source file: ../queries/alias/ralias-2.sql
 // Result file: ../queries/alias/results/alias-2.res
-//TODO: ENABLE WHEN SUBQUERIES
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
 /*
 select count(m_qualitycode) as "NumCodesBiggernThan50" from (select m_qualitycode from manufacturer m, returnitems r where m.m_mfgkey = r.m_mfgkey and cast(m_qualitycode as integer) > 50);
 rows:
@@ -47,7 +44,7 @@ ordered rows:
 
 // Source file: ../queries/alias/ralias-3.sql
 // Result file: ../queries/alias/results/alias-3.res
-//TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND IN-SUBQUERIES)
 /*
 select a.ucolvc, b.ucolvc from table1 a, table9 b where a.pcol1 = b.pcol9 and b.ucolvc in (select b.ucolvc from table9 a join table4 b on pcol9=pcol4 and b.ucolvc between 'ddd' and 'fff') order by b.ucolvc, a.ucolvc;
 ordered rows:
@@ -67,7 +64,7 @@ ordered rows:
 
 // Source file: ../queries/alias/ralias-7.sql
 // Result file: ../queries/alias/results/alias-7.res
-//TODO: ENABLE WHEN JOINS AND SUBQUERIES
+// TODO: ENABLE WHEN OPTIMISER (JOINS AND SUBQUERIES)
 /*
 select * from ( select a.pcol9, a.colb9 from table9 a join table9 b on a.pcol9=b.scol9) as col3, table1 t where col3.colb9 = t.colb1 and t.colb1 = 'grey' and col3.pcol9 > 300;
 rows:
@@ -86,7 +83,7 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/alias/ralias-5.sql
 // Result file: ../queries/alias/results/alias-5.res
-//TODO: ENABLE WHEN JOINS AND SUBQUERIES
+// TODO: ENABLE WHEN DISTINCT
 /*
 select distinct a.pcol9 from table9 a join table9 b on a.pcol9=b.scol9 order by a.pcol9 limit 15;
 ordered rows:

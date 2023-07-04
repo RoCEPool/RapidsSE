@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* _r_NATION_ALIAS -- alias test                                              */
+/*============================================================================*/
+
+// --initial _r_NATION_ALIAS
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+select * from dummy;
+
+trackMemory;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_NATION_ALIAS"
+select n_name ,
+       n_regionkey
+  from nation
+ where n_nationkey < 10
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_NATION_ALIAS"
+SELECT n_regionkey        AS region ,
+       COUNT(n_nationkey) AS nationcount
+  FROM nation
+ GROUP BY region
+HAVING region > 1
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+MemoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -25,8 +25,7 @@ void BASE::vDebugPoint(void)
 /*----------------------------------------------------------------------------*/
 void BASE::vThreadCallStackDump(void)
 {
-//  vThreadCallStackDump_Mangled();
-  vThreadCallStackDump_Demangled();
+//  vThreadCallStackDump_Mangled(); vThreadCallStackDump_Demangled();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -542,7 +541,7 @@ b1 BASE::bParseBacktraceSymbol(const char* pBtLine, s256& sModule, s2K& sFuncNam
     vThreadCallStackDump();
   }
 
-  throw xException;
+   throw xException;
 }
 
 /*----------------------------------------------------------------------------*/

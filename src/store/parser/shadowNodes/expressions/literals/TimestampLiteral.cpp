@@ -83,6 +83,31 @@ void TimestampLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode
 }
 
 /*----------------------------------------------------------------------------*/
+/* Appends a basic, single line description of the object value into a buffer */
+/*----------------------------------------------------------------------------*/
+void TimestampLiteral::vDescribeValueOnly(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->eValueType() == Value::VT_TIMESTAMP);
+  UNUSED(pRootNode);
+
+  if (pNode->bIsNullValue()) {
+    sBuf.vConcat("NULL"_Stz);
+  } else {
+    Tsp xTsp = pNode->xTspVal();
+
+    if (bHasMicros(pNode)) {
+      sBuf.vCatSprint("%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%06lld"_Stz,
+                      xTsp.iYear(), xTsp.iMonth(), xTsp.iDay(), xTsp.iHour(), xTsp.iMin(), xTsp.iSec(), xTsp.iMicro());
+    } else {
+      sBuf.vCatSprint("%04lld-%02lld-%02lld %02lld:%02lld:%02lld"_Stz,
+                      xTsp.iYear(), xTsp.iMonth(), xTsp.iDay(), xTsp.iHour(), xTsp.iMin(), xTsp.iSec());
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Gets the timestamp of this expression. NB: call bIsNull() to check if the    */
 /* value is null first.                                                       */
 /*----------------------------------------------------------------------------*/

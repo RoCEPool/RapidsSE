@@ -25,6 +25,8 @@ namespace BASE
     i8    m_iColumnScale;   // logical scale of the column
     bool  m_bIsNullable;    // is column nullable?
     bool  m_bIsPtnKey;      // is part of partition key?
+
+    bool m_bIsAscending;    // is this column in ascending order ?
     
     ColPix m_xColPix;
   
@@ -45,7 +47,10 @@ namespace BASE
     static bool bValidBcd(i8 iPrecision, i8 iScale);
     static bool bValidFlt(i8 iSize);
     static bool bValidVch(i8 iSize);
-    
+
+    void vIsAscending(bool bIsAscending);
+    bool bIsAscending(void);
+
     i8   iColumnLength(void);
     void vColumnLength(i8 iColumnLength);
   

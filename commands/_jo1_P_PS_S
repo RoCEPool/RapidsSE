@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _jo1_P_PS_S -- join order test                                             */
+/*============================================================================*/
+
+/jobMetrics
+/joWrite
+/filterPred
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo1_P_PS_S"
+select
+       count(*)
+  from
+       Part,     //  29
+       PartSupp, // 131
+       Supplier  //   2
+ where
+        P_PARTKEY = PS_PARTKEY
+   and PS_SUPPKEY = S_SUPPKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

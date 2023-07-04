@@ -34,12 +34,29 @@
 void Step::vAddSteps_Dynamo(void)
 {
   vAddStep("Dynamo[]"_Stz,          &Step::vDynamoGet);
+  vAddStep("Dynamo[].code@"_Stz,    &Step::vDynamoCodeFetch);
   vAddStep("Dynamo[].compile"_Stz,  &Step::vDynamoCompile);
   vAddStep("Dynamo[].delete"_Stz,   &Step::vDynamoDelete);
   vAddStep("Dynamo[].get"_Stz,      &Step::vDynamoGet);
+  vAddStep("Dynamo[].hasCode"_Stz,  &Step::vDynamoHasCode);
   vAddStep("Dynamo[].new"_Stz,      &Step::vDynamoNew);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].code@ -- fetch the code string                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoCodeFetch(void)
+{
+  ENTRY();
+
+  s48K szCode;
+
+  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
+  szCode = pDynamo->szCode();
+  m_pDataStack->vPushStr(szCode);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Dynamo[].compile -- compile pipeline statement into a pipeline spec        */
@@ -48,7 +65,7 @@ void Step::vDynamoCompile(void)
 {
   ENTRY();
     
-  s4K sPipelineStmt;
+  s48K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
       
   Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
@@ -59,7 +76,16 @@ void Step::vDynamoCompile(void)
       SP_PipeSpec spPipeSpec(pPipeSpec);
       vTraceM("%s\n"_Stz,spPipeSpec.sz());
     }
-    
+
+//    if ( ! pDynamo->szCode()->bSame(""_Stz)) {
+//      TinyC* pTinyC = new TinyC;
+//      m_pLogicUnit->m_xpTinyC = pTinyC;
+//      pTinyC->vBegin();
+//      pTinyC->vAcquire(pTinyC,TinyC::vTinyError);
+//      bool bClean = pTinyC->bCompile((char*)pDynamo->szCode());
+//      RASSERT(bClean);
+//    }
+
     m_pDataStack->vPushPtr(pPipeSpec);
     m_pDataStack->vPushInt(EC_NONE);
   }
@@ -94,6 +120,21 @@ void Step::vDynamoGet(void)
   else
     m_pDataStack->vPushPtr(nullptr);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Dynamo[].hasCode -- does the dynamo have code ?                            */
+/*----------------------------------------------------------------------------*/
+void Step::vDynamoHasCode(void)
+{
+  ENTRY();
+
+  Dynamo* pDynamo = (* m_pLogicUnit->m_xpDynamo);
+  if (pDynamo->szCode()->bSame(""_Stz))
+    m_pDataStack->vPushInt(false);
+  else
+    m_pDataStack->vPushInt(true);
   EXIT();
 }
 

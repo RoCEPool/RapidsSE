@@ -57,7 +57,7 @@ void SysReport::vSysLocks(Tub* pTub)
   _static_
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the internal jobOperators table
+  // find the internal systemLocks table
   
   Table* pSysLocksTable = AM::pTableFind(C_TDEF_SYSLOCKS);
   StreamDef* pStreamDef = pSysLocksTable->pStreamDef();
@@ -153,7 +153,7 @@ void SysReport::vSysMetrics(Tub* pTub)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the internal jobOperators table
+  // find the internal sysMetrics table
   
   Table* pSysMetricsTable = AM::pTableFind(C_TDEF_SYSMETRICS);
   StreamDef* pStreamDef = pSysMetricsTable->pStreamDef();

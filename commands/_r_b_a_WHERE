@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* _r_b_a_WHERE -- where sub-query test : pattern a/b -> b|a                  */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+_orders
+_supplier
+create index L_idx0 on lineitem(L_ORDERKEY);
+create index O_idx0 on orders  (O_ORDERKEY);
+create index S_idx0 on supplier(S_SUPPKEY) ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vH36_T20_Transfer_whereB_To_whereA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_b_a_WHERE"
+select count(*)
+  from orders, lineitem
+ where L_ORDERKEY = O_ORDERKEY
+   and exists (select *
+                 from supplier
+                where S_SUPPKEY = L_SUPPKEY)
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+bSQ | aMQ
+
+==02 P--------------
+  WHERE *2
+  0]level
+        AL_PARTITION
+  1]rpnCalc
+                 $10
+                  $1
+                  ==
+                 $12
+      __subquery0002
+              exists
+                 and
+*/
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

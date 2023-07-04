@@ -4,7 +4,7 @@
 --              (else we run low on memory on a 2N4Ptest with 6GB on each node)
 --------------------------------------------------------------------------------
 
-sleep 1;
+sleep 4;
 success
 
 CLEANUP {

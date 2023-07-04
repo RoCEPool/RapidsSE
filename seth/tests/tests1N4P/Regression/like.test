@@ -79,7 +79,7 @@ ordered rows:
 // Source file: ../queries/like/rlike12.sql
 // Result file: ../queries/like/results/like12.res
 /*
-TODO: ENABLE WHEN UPPER
+// TODO: ENABLE WHEN UPPER
 select colb4, pcol4 from table4 where (lower(colb4) not like '%ea%' and upper(colb4) not like '%ea%') and pcol4 between 37 and 52 order by pcol4;
 ordered rows:
   ('PINK', 37)
@@ -176,7 +176,7 @@ failure contains: 'Expression type combination is invalid'
 
 // Source file: ../queries/like/rlike10.sql
 // Result file: ../queries/like/results/like10.res
-// TODO: ENABLE WHEN JOINS
+// TODO: ENABLE WHEN LOWER
 /*
 select colb4, pcol4, colb9, pcol9 from table4 join table9 on pcol4 = pcol9 where colb4 like 'bl%' and colb9 like lower('bl%') order by colb4, pcol4;
 ordered rows:

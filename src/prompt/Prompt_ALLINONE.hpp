@@ -108,6 +108,7 @@ namespace PROMPT
   bool bPrompt_opdq(SePrompt* pPrompt);
   bool bPrompt_opsys(SePrompt* pPrompt);
 
+  bool bPrompt_pdsTest(SePrompt* pPrompt);
   bool bPrompt_plist(SePrompt* pPrompt);
   bool bPrompt_pmc(SePrompt* pPrompt);
   bool bPrompt_pow2(SePrompt* pPrompt);
@@ -122,7 +123,6 @@ namespace PROMPT
 
   bool bPrompt_rassert(SePrompt* pPrompt);
   bool bPrompt_ready(SePrompt* pPrompt);
-  bool bPrompt_reap(SePrompt* pPrompt);
   bool bPrompt_resources(SePrompt* pPrompt);
   bool bPrompt_retired(SePrompt* pPrompt);
   bool bPrompt_rmfifo(SePrompt* pPrompt);

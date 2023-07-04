@@ -63,7 +63,7 @@ namespace BASE
     static bool bAccess(Stz* szFilePath, i8 iPermission);
     static bool bExists(Stz* szFilePath, bool bWarning=true);
     static bool bModTime(Stz* szFilePath, time_t& tTime);
-    static bool bRemove(Stz* szFilePath);
+    static bool bRemove(Stz* szFilePath, bool bIgnoreMissing=false);
     static bool bRename(Stz* szOldPath, Stz* szNewPath);
     static void vRepair(Object* pObject);
     static i8   nSize(Stz* szFilePath);

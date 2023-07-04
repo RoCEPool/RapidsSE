@@ -48,6 +48,8 @@
 #include "StageMarkers.hpp"
 #include "MainSubquery.hpp"
 
+#include "TagConstants.h"
+
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "ExplainOp.hpp"
 
@@ -870,7 +872,7 @@ void Step::vSqlCompilerParser(void)
     pPlanRoot = pPlanner->plan(sSqlStatement.szStz(), pGraphTemplate);
 
   } catch (Parser::SyntaxException& e) {
-    //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.iLine(), e.iColumn(), e.szError());
+    //vTrace("SyntaxException at %lld:%lld : %s\n"_Stz, e.i_Line(), e.iColumn(), e.szError());
     InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
     Grid* pGrid = AM::pGrid();
     Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
@@ -1216,13 +1218,17 @@ void Step::vSqlCompilerStageMarkers(void)
 void Step::vSqlCompilerTransliterate(void)
 {
   ENTRY();
-  
+
+  s256 sPipelineName;
+
   //vTrace("\nStep::vSqlCompilerTransliterate\n"_Stz);
 
   PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
   Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
   ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
 
+  // get the pipeline name
+  m_pDataStack->vPopStr(sPipelineName, __func__);
 
   // Walk the graph and produce a pipeline statement.
   //bool bTransliterate = Dynamo::bPlanToPipeline(sPipelineStmt,pPlanRoot);
@@ -1230,7 +1236,7 @@ void Step::vSqlCompilerTransliterate(void)
   s48K sPipelineStmt;
 
   Backend* pBackend = new Backend(pPlanRoot);
-  bool bTransliterate = pBackend->bTransliterate(sPipelineStmt);
+  bool bTransliterate = pBackend->bTransliterate(sPipelineName, sPipelineStmt);
   ASSERT(bTransliterate);
   UNUSED(bTransliterate);
 

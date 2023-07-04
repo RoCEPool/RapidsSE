@@ -35,6 +35,8 @@ Column::Column(void)
   m_bIsNullable   = true;
   m_bIsPtnKey     = false;
 
+  m_bIsAscending  = true;
+
   m_xColPix.m_uAsU8 = 0;
   
   _checkInitialised_(CN_COLUMN);
@@ -166,6 +168,26 @@ bool Column::bValidVch(i8 iSize)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* set column ascending                                                       */
+/*----------------------------------------------------------------------------*/
+void Column::vIsAscending(bool bIsAscending)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+  m_bIsAscending = bIsAscending;
+}
+
+/*----------------------------------------------------------------------------*/
+/* iscolumn ascending                                                         */
+/*----------------------------------------------------------------------------*/
+bool Column::bIsAscending(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+
+  return m_bIsAscending;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set column no                                                              */
 /*----------------------------------------------------------------------------*/
 void Column::vColumnNo(i8 iColumnNo)
@@ -270,6 +292,7 @@ void Column::vCopy(Column* pCol)
   m_eDatum          = pCol->m_eDatum;
   m_bIsNullable     = pCol->m_bIsNullable;
   m_bIsUnique       = pCol->m_bIsUnique;
+  m_bIsAscending    = pCol->m_bIsAscending;
   m_bIsPtnKey       = pCol->m_bIsPtnKey;
   m_bIsLastColumn   = pCol->m_bIsLastColumn;
   

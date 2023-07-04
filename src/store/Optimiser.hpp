@@ -3,31 +3,40 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
+#include "Dissector.hpp"
 
 #include "Bench.hpp"
 #include "CardCtl.hpp"
-#include "Dissect.hpp"
-#include "Drafter.hpp"
-#include "Weave.hpp"
+#include "Weaver.hpp"
+#include "PermGen.hpp"
+#include "Error.hpp"
 
 namespace STORE
 {
   class Optimiser : public Object
   {
+  public:
+    static const i8 C_PERMUTATIONS = 1024;
+
   private:
-    TagSet* m_p_JobTags;
+    s32          m_sQueryNm;
+
+    TagSet*      m_p_JobTags;
+
+    VertexSpec*  m_pUnOptPipeSpec;
+
+    CardCtl*     m_pCardCtl;
   
-    VertexSpec* m_pUnOptPipeSpec;
-  
-    CardCtl* m_pCardCtl;
-  
-    Bench*   m_pBench;
-    Dissect* m_pDissect;
-    Drafter* m_pDrafter;
-    Weave*   m_pWeave;
-  
-    Card_SubSet* m_pPaste;
+    Bench*       m_pBench;
+    Dissector*   m_pDissector;
+    Weaver*      m_pWeaver;
+
+    i8           m_nJoinPermutations;
+    s256         m_sJoinPermutation[C_PERMUTATIONS]; // join permutation string
+
+    s256         m_sJoinOrder; // join order string
+
+    CardIter*    m_pCI;
 
     // must be last
     Footer m_xFooter;
@@ -42,23 +51,32 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
+    bool bApplyTransformationMatrix(Error& rxError);
+    void vApplyTransformationMatrix(void);
+
+    Bench* pBench(void);
+
     CardCtl* pCardCtl(void);
   
     void vDissect(VertexSpec* pm_pUnOptPipeSpec);
-  
-    Drafter* pDrafter(void);
-
-    Board* pHeadBoard(void);
 
     TagSet* pJobTags(void);
-  
-    void vOptimise(void);
-  
-    Card_SubSet* pPaste(void);
+
+    Stz* szJoinOrder(void);
+    void vJoinOrder(Stz* szJoinOrder);
+
+    Stz* szJoinPermutation(i8 iJoinPermutation);
+    void vJoinPermutation(i8 iJoinPermutation, Stz* szJoinOrder);
+    i8 nJoinPermutations(void);
+    void vJoinPermutations(i8 iJoinPermutations);
+
+    Stz* szQueryNm(void);
+    void vQueryNm(Stz* szQueryNm);
+
+    bool bTransform(Error& rxError, InfoSet* pInfoSet);
+
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
-    void vPopBoard(void);
-    void vPushBoard(Board* pBoard);
- 
+
     void vToPipeSpec(VertexSpec* pPipeSpec);
   
     Stz* szWeave(void);

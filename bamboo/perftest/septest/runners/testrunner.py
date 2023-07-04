@@ -104,11 +104,15 @@ class TestRunner:
         if not self.abnormal_exit:
             # An abnormal exit could occur if the test hung and the machines got shut down, for instance.
             # In that case we don't want to run the operations below.
-            self.__cleanup_test()
-            self.__collect_metrics()
+            self.collect_test_artifacts()
 
         LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
                  f"Result = {'SUCCESS' if self.result.test_passed else 'FAILURE'}")
+
+    def collect_test_artifacts(self):
+        """Copies logs and artifacts back to artifact directory"""
+        self.__cleanup_test()
+        self.__collect_metrics()
 
     @staticmethod
     def get_test_name_from_path(test_path: string) -> string:

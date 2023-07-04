@@ -32,7 +32,6 @@
 #include "eAT.h"
 #include "eDL.h"
 #include "ePD.h"
-#include "ePY.h"
 #include "eRG.h"
 #include "eUF.h"
 #include "eUK.h"
@@ -217,6 +216,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_EXECERRORS"_Stz,    C_TDEF_EXECERRORS);
   vAddConstant("C_TDEF_EXPLAIN"_Stz,       C_TDEF_EXPLAIN);
   vAddConstant("C_TDEF_INDEXCOLUMNDEFS"_Stz, C_TDEF_INDEXCOLUMNDEFS);
+  vAddConstant("C_TDEF_JOINORDER"_Stz,     C_TDEF_JOINORDER);
   vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,   C_TDEF_LISTCOLUMNS);
   vAddConstant("C_TDEF_LISTCONTENTS"_Stz,  C_TDEF_LISTCONTENTS);
   vAddConstant("C_TDEF_LISTFOLDER"_Stz,    C_TDEF_LISTFOLDER);
@@ -450,7 +450,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_CC"_Stz,   EG_CC);
   vAddConstant("EG_CM"_Stz,   EG_CM);
   vAddConstant("EG_CN"_Stz,   EG_CN);
-  vAddConstant("EG_CP"_Stz,   EG_CP);
   vAddConstant("EG_CS"_Stz,   EG_CS);
   vAddConstant("EG_CT"_Stz,   EG_CT);
   vAddConstant("EG_CX"_Stz,   EG_CX);
@@ -496,7 +495,6 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_PF"_Stz,   EG_PF);
   vAddConstant("EG_PK"_Stz,   EG_PK);
   vAddConstant("EG_PT"_Stz,   EG_PT);
-  vAddConstant("EG_PY"_Stz,   EG_PY);
   vAddConstant("EG_QK"_Stz,   EG_QK);
   vAddConstant("EG_RA"_Stz,   EG_RA);
   vAddConstant("EG_RE"_Stz,   EG_RE);
@@ -582,11 +580,6 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
   /*  0 */ vAddConstant("PD_PIPE_IN"_Stz,   PD_PIPE_IN);
   /*  0 */ vAddConstant("PD_PIPE_OUT"_Stz,  PD_PIPE_OUT);
-    
-  // PY_ : priority
-  /*  0 */ vAddConstant("PY_NONE"_Stz,      PY_NONE);
-  /*  0 */ vAddConstant("PY_LOW"_Stz,       PY_LOW);
-  /*  0 */ vAddConstant("PY_NORMAL"_Stz,    PY_NORMAL);
 
   // RG_ : register
   /*  0 */ vAddConstant("dir[0]"_Stz,       RG_DIR0);

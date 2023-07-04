@@ -921,18 +921,18 @@ functionality will be enabled in subsequent releases.
    * - Index scans
      - Enabled
    * - Subqueries
-     - **DISABLED**
+     - Enabled
    * - Joins
-     - **DISABLED**
+     - Enabled
    * - Projections
      - Enabled, but with expression limitations documented
        :ref:`below <supportedSelectExprs>`
    * - Aggregations
      - Enabled
    * - Limits
-     - **DISABLED**
+     - Enabled
    * - Order By
-     - **DISABLED**
+     - Enabled
    * - Filters (``WHERE``, ``HAVING``)
      - Enabled, but with expression limitations documented
        :ref:`below <supportedSelectExprs>`
@@ -1103,9 +1103,9 @@ enabled in subsequent releases.
    * - Operator
      - Comment
    * - ``EXISTS``
-     - **DISABLED**
+     - Enabled
    * - ``IN``
-     - **DISABLED**
+     - Enabled
 
 
 

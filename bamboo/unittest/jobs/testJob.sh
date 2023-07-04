@@ -124,16 +124,22 @@ function copyLogs() {
 
     mkdir -p "${nodeDir}"
 
-    cp "${installDir}"/se*.log "${nodeDir}" || true
+    cp "${installDir}"/se*.log "${nodeDir}" &>/dev/null || true
 
     for f in "${nodeDir}"/se*.log; do
-      mv "$f" "$(echo "$f" | sed s/.log/.${nodeName}.log/)" || true
+      mv "$f" "$(echo "$f" | sed s/.log/.${nodeName}.log/)" &>/dev/null || true
     done
 
-    cp "${installDir}/clusterStatus.log" "${outputDir}/clusterStatus.${nodeName}.log" || true
+    cp "${installDir}/clusterStatus.log" "${outputDir}/clusterStatus.${nodeName}.log" &>/dev/null || true
+
+    # Copy any queryLib source and log files
+    local queryLibDir="${nodeDir}/queryLibs"
+    mkdir -p "${queryLibDir}"
+    cp -r "${installDir}/queryLibs/src" "${queryLibDir}"
+
   done
 
-  mv "${BAMBOO_RESULTS_DIR}"/log-* "${outputDir}/seth.log" &>/dev/null || true
+  mv "${BAMBOO_RESULTS_DIR}"/log-* "${outputDir}/seth.log" &>/dev/null &>/dev/null || true
 }
 
 

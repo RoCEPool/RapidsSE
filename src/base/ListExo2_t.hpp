@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "BASE.h"
+
 namespace BASE { template <class ITEM> class ListExoIter2_t; }
 
 namespace BASE
@@ -27,6 +29,7 @@ namespace BASE
     ITEM* pGet(i8 nThItem);
     ITEM* pHead(void);
     ListExoNode_t<ITEM>* pHeadNode(void);
+    void  vInsert(ITEM* pInsertItem);
     void  vInsertAfter(ITEM* pInsertItem, ITEM* pAfterItem);
     void  vInsertAfter(ITEM* pInsertItem, ListExoNode_t<ITEM>* pAfterNode);
     void  vInsertBefore(ITEM* pInsertItem, ITEM* pBeforeItem);
@@ -112,6 +115,8 @@ template <class ITEM>
 void ListExo2_t<ITEM>::vAppend(ITEM* pItem)
 {
   // ?validate item is a sound object
+
+  RASSERT(pItem);
 
   ListExoNode_t<ITEM>* pAppendingNode = pNewNode(pItem);
   ASSERT(! pAppendingNode->pNextNode());
@@ -213,6 +218,27 @@ template <class ITEM>
 ListExoNode_t<ITEM>* ListExo2_t<ITEM>::pHeadNode(void)
 {
   return m_pHeadNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert item after given item                                               */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExo2_t<ITEM>::vInsert(ITEM* pInsertThisItem)
+{
+
+  ListExoNode_t<ITEM>* pBeforeThisNode = pHeadNode();
+
+  if (pBeforeThisNode) {
+    ListExoNode_t<ITEM>* pInsertThisNode = pNewNode(pInsertThisItem);
+    ASSERT(! pInsertThisNode->pNextNode());
+    ASSERT(! pInsertThisNode->pPrevNode());
+    vInsertNodeBefore(pInsertThisNode,pBeforeThisNode);
+  }
+  else {
+    vAppend(pInsertThisItem);
+  }
+  vValidateList();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -322,7 +348,10 @@ ITEM* ListExo2_t<ITEM>::pPeek(i8 nThItem)
 {
   ListExoNode_t<ITEM>* pScanNode = nullptr;
   ITEM* pScanItem = nullptr;
-  
+
+  if (! nItems())
+    return nullptr;
+
   i8 i_Scan = 0;
   for (pScanNode = m_pHeadNode;
        pScanNode;

@@ -55,7 +55,7 @@ namespace STORE
     PhyPtn  tTablePtnToPhyPtn(i8 i_TablePtn);
 
     void    vAddIndex(Index* pIndex);
-    void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
+    void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize);
     void    vAppendBuffer_replicated(DataBuffer* pDataBuffer);
 
     i8      nBuffers(void);
@@ -75,6 +75,7 @@ namespace STORE
     void    vListContents(i8 i_Depth);
     bool    bPopulateIndex(i8 iIndexNo);
     PtnDef*  pPtnDef(void);
+    void    vGetGridEstimates(i8& jTableSize, i8& jRowSize, i8& nRowCount);
     void    vRemoveIndex(Index* pIndex);
     void    vResetPointers(void);
     EntBuffer* pRootBuffer(i8 i_TablePtn, i8 i_Index);

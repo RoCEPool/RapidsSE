@@ -12,7 +12,6 @@
 #include "GraphNav.hpp"
 #include "GraphValidator.hpp"
 
-#include "PlannerLock.hpp"
 
 using namespace Parser;
 
@@ -36,33 +35,29 @@ Stz* PlanDefinitionParser::s_definitionPaths[] = {
 
 PlanNode* PlanDefinitionParser::s_pGraphTemplate = nullptr;
 
-PlannerLock PlanDefinitionParser::s_okLock;
-
 
 /*----------------------------------------------------------------------------*/
-/* Returns the cached plan graph template. If it doesn't exist yet then       */
-/* it is read in from file, parsed and created.                               */
+/* Reads in the cached plan graph template from file.                         */
 /*----------------------------------------------------------------------------*/
-const PlanNode* PlanDefinitionParser::pGraphTemplate()
+bool PlanDefinitionParser::bInit()
 {
-  if (s_pGraphTemplate) {
-    return s_pGraphTemplate;
-  }
-
-  s_okLock.vGrabWrite();
-
-  // Check again if someone got in before us
-  if (s_pGraphTemplate) {
-    s_okLock.vDropWrite();
-    return s_pGraphTemplate;
-  }
+  ASSERT(!s_pGraphTemplate);
 
   // Read it in from file and parse it
   PlanDefinitionParser* pPlanDefinitionParser = new PlanDefinitionParser();
   s_pGraphTemplate = pPlanDefinitionParser->pParse();
-  s_okLock.vDropWrite();
 
   delete pPlanDefinitionParser;
+
+  return (s_pGraphTemplate != nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the cached plan graph template.                                    */
+/*----------------------------------------------------------------------------*/
+const PlanNode* PlanDefinitionParser::pGraphTemplate()
+{
+  ASSERT(s_pGraphTemplate); // It should have been initialised. See bInit() above.
   return s_pGraphTemplate;
 }
 

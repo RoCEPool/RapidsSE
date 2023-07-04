@@ -14,6 +14,7 @@ namespace BASE
   class IntLib
   {
   public:
+    static i8 iAbs(i8 iVal);
     static u8 uBits(u8 uArg, i8 i_Bit, i8 nBits);
     static u8 uByte(u8 uArg, i8 i_Byte);
     //static i8 iByteMagnitude(u8 uArg);
@@ -24,16 +25,18 @@ namespace BASE
     static i8 iDecaIndex(i8 iArg, i8& i_Magn, i8 &i_Group);
     static i8 iDecile(i8 iArg, i8 iMax);
     static i8 iDecimalMagnitude(i8 iArg);
+    static i8 iFactorial(i8 iArg);
     static i8 iFlipEndian(i8 iArg);
     static i8 iIntToVlq(i8 iInt, byte yVlqVec[16]);
+    static i8 iLog10(i8 iVal);
     static i8 iPercent(i8 iNumerator, i8 iDenominator);
     static i8 iPow(i8 iArg, i8 iRaisedTo);
     static i8 iPrime_10k(i8 i_Prime);
+    static void vPrint(i8 iaArray[], i8 nElements);
     static i8 iQuartile(i8 iNumerator, i8 iDenominator);
+    static void vRotate(i8 iaArray[], i8 nElements, i8 i_at);
     static i8 iTenToPow(i8 iPower);
     static i8 iVlqToInt(byte yVlqVec[16]);
-    static i8 iLog10(i8 iVal);
-    static i8 iAbs(i8 iVal);
 
     static char* sAsText(i8 iValue);
   

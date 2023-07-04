@@ -1,0 +1,43 @@
+/*============================================================================*/
+/* _r_FORM_6 -- sub-query form 6 analysis : refer Q11                         */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS26_T10_SubQuery_Analysis_Of_Main_Query"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_FORM_6"
+select PS_PARTKEY,
+       sum(ps_supplycost * ps_availqty) as value
+  from partsupp, supplier
+ where PS_SUPPKEY = S_SUPPKEY
+ group by PS_PARTKEY
+having sum(ps_supplycost * ps_availqty) >
+         (select sum(ps_supplycost * ps_availqty) * 0.0000010000
+            from partsupp, supplier
+           where PS_SUPPKEY = S_SUPPKEY)
+;
+// mq:
+// having  " type BOOLEAN  $2 __subquery0002  >  "
+
+// sq:
+// params (none)
+// where  (n/a)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

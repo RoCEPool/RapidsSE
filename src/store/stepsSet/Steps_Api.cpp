@@ -41,6 +41,9 @@ void Step::vAddSteps_Api(void)
 
   vAddStep("api::deleteJob"_Stz,       &Step::vApiDeleteJob);
   vAddStep("api::reapableJob@"_Stz,    &Step::vApiReapableJobFetch);
+  vAddStep("api::reapableJobIsOriginator"_Stz,      &Step::vApiReapableIsOriginator);
+  vAddStep("api::reapableJobMetricsEnabled"_Stz,    &Step::vApiReapableJobMetricsEnabled);
+  vAddStep("api::reapableJobTags@"_Stz,&Step::vApiReapableJobTagsFetch);
   vAddStep("api::spawnJob"_Stz,        &Step::vApiSpawnJob);
 }
 
@@ -67,7 +70,21 @@ void Step::vApiForkChild(void)
   TokenVec* pCmdTknVec = AM::TOKENISE::pTokeniseSen(sCmd);
   TokenVec* pTagTknVec = AM::TOKENISE::pTokeniseSen(sCmdTagStr);
   TagSet*   pCmdTagSet = new TagSet;
+
+
+  TagSet* pJobTags = pOuterJobOfTask()->pJobTags();
+  //pJobTags->vContentDump();
+
   CmdHelper::vPopulateTagSet(pCmdTagSet,pTagTknVec);
+
+  if (pJobTags->bHasName(C_TAG_CCODE))
+    pCmdTagSet->vInsert(C_TAG_CCODE);
+
+  if (pJobTags->bHasName(C_TAG_JOBMETRICS))
+    pCmdTagSet->vInsert(C_TAG_JOBMETRICS);
+
+  if (pJobTags->bHasName(C_TAG_PIPELINENAME))
+    pCmdTagSet->vInsert(C_TAG_PIPELINENAME);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // replace the C_TAG_JOBNM
@@ -96,6 +113,7 @@ void Step::vApiForkChild(void)
 
   JobId tChildJobId;
   bool bIsPipeline;
+
   eEC eError = Api::eForkJobChild(tChildJobId,
                                    pCmdTknVec,pCmdTagSet,
                                    tParentId,tOriginId,tDistId,
@@ -287,6 +305,48 @@ void Step::vApiReapableJobFetch(void)
   Job* pJob = gpAttachMap->pJobs()->pReapableJob();
 
   m_pDataStack->vPushPtr(pJob);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapableJobIsOriginator@ -- is reapable job an originator job?        */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapableIsOriginator(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pJob->bOriginatorJob());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapableJobMetricsEnabledr -- is reapable job metrics enabled?        */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapableJobMetricsEnabled(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pJob->bJobMetrics());
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
+/* api::reapableJobTags@ -- fetch tagSet of reapable job                      */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapableJobTagsFetch(void)
+{
+  ENTRY();
+
+  TagSet* pTagSet = nullptr;
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushPtr(pJob->pJobTags());
 
   EXIT();
 }

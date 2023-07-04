@@ -1,0 +1,197 @@
+--------------------------------------------------------------------------------
+-- tpch queries in a loop
+--------------------------------------------------------------------------------
+
+// Logging a message
+LOG 'Running tpchQueries (SF_0001) test in a loop.';
+
+LOOP 1 {
+
+//------------------------------------------------------------------------------
+LOG 'Create customer ...';
+INCLUDE 'customer.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create lineitem ...';
+INCLUDE 'lineitem.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create nation ...';
+INCLUDE 'nation.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create orders ...';
+INCLUDE 'orders.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create part ...';
+INCLUDE 'part.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create partsupp ...';
+INCLUDE 'partsupp.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create region ...';
+INCLUDE 'region.test';
+
+//------------------------------------------------------------------------------
+LOG 'Create supplier ...';
+INCLUDE 'supplier.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 1...';
+INCLUDE 'OptQ1.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 2...';
+INCLUDE 'OptQ2.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 3...';
+INCLUDE 'OptQ3.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 4...';
+INCLUDE 'OptQ4.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 5...';
+INCLUDE 'OptQ5.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 6...';
+INCLUDE 'OptQ6.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 7...';
+INCLUDE 'OptQ7.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 8...';
+INCLUDE 'OptQ8.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 9...';
+INCLUDE 'OptQ9.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 10...';
+INCLUDE 'OptQ10.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 11...';
+INCLUDE 'OptQ11.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 12...';
+INCLUDE 'OptQ12.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running tpch query 13...';
+//INCLUDE 'OptQ13.test';
+//INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 14...';
+INCLUDE 'OptQ14.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+//
+// VIEW
+//
+//LOG 'Running tpch query 15...';
+//INCLUDE 'OptQ15.test';
+//INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+//
+// COUNT DISTINCT changed to COUNT
+//
+LOG 'Running tpch query 16...';
+INCLUDE 'OptQ16.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 17...';
+INCLUDE 'OptQ17.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 18...';
+INCLUDE 'OptQ18.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+LOG 'Running tpch query 19...';
+INCLUDE 'OptQ19.test';
+INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running tpch query 20...';
+//INCLUDE 'OptQ20.test';
+//INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running tpch query 21...';
+//INCLUDE 'OptQ21.test';
+//INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Running tpch query 22...';
+//INCLUDE 'OptQ22.test';
+//INCLUDE 'sleep.test';
+
+//------------------------------------------------------------------------------
+// 'truncating tpch tables...';
+INCLUDE 'tpchTruncate.test';
+
+//------------------------------------------------------------------------------
+//LOG 'Dropping tpch schema...';
+INCLUDE 'tpchSchemaDrop.test';
+
+} -- end of loop
+
+CLEANUP {
+
+  drop table customer;
+  mute
+
+  drop table supplier;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table partsupp;
+  mute
+
+  drop table part;
+  mute
+
+  drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table nation;
+  mute
+
+  bye;
+  mute
+}
+

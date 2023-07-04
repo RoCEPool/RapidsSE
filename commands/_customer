@@ -2,7 +2,9 @@
 /* _customer - create TPC-H Customer table                                    */
 /*============================================================================*/
 
-create table customer (
+// SF=150k rows
+
+create table Customer (
 	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
 	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
 	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
@@ -11,7 +13,9 @@ create table customer (
 	C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
 	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
 	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
-);
+)
+tablesize 29
+;
 
 /*============================================================================*/
 /* end                                                                        */

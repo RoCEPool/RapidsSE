@@ -200,8 +200,9 @@ void Index::vIndexDef(IndexDef* pIndexDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_pIndexDef = pIndexDef;
-  
-  m_pIndexDef->pLocation()->vSet();
+
+  if (m_pIndexDef->pLocation())
+    m_pIndexDef->pLocation()->vSet();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

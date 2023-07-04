@@ -1,0 +1,99 @@
+/*============================================================================*/
+/* __WQNew -- query alka is working on                                           */
+/*============================================================================*/
+
+_part;
+_partsupp;
+_supplier;
+
+create index IxPS_PARTKEY ON partsupp(PS_PARTKEY);
+create index IxS_SUPPKEY ON supplier(S_SUPPKEY);
+
+/time load part "<tpch_dir>/part.<suffix>";
+/time load partsupp "<tpch_dir>/partsupp.<suffix>";
+/time load supplier "<tpch_dir>/supplier.<suffix>";
+
+__JMBegin
+
+/time /jobMetrics pipeline Query16
+begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter " type BOOLEAN }  49  14  23  45  19  3  36  9  #8  P_SIZE in"
+    | filter " type BOOLEAN  P_BRAND 'Brand#45' !="
+    | filter " type BOOLEAN }  P_TYPE 'MEDIUM POLISHED%'  16 matchLeading not"
+    | project "type INTEGER as P_PARTKEY P_PARTKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexjoin PartSupp IxPS_PARTKEY "BOUND $I1 P_PARTKEY =="
+    | project "type INTEGER as PS_SUPPKEY J1_PS_SUPPKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE"
+    | combined 0
+    | next
+
+  stage S03 on all partitions :
+    aggreg " groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type INTEGER  as PS_SUPPKEY $K1 , type VARCHAR  as P_BRAND $K2 , type VARCHAR  as P_TYPE $K3 , type INTEGER  as P_SIZE $K4 "
+    | combined 0
+    | next
+
+  stage S04 on all nodes :
+    aggreg " groupBy type INTEGER as PS_SUPPKEY PS_SUPPKEY , type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type INTEGER  as PS_SUPPKEY $K1 , type VARCHAR  as P_BRAND $K2 , type VARCHAR  as P_TYPE $K3 , type INTEGER  as P_SIZE $K4 "
+    | hash " type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S05 on all partitions :
+     keyNotExists SUPPLIER IxS_SUPPKEY  "BOUND $I1 PS_SUPPKEY =="
+               "type BOOLEAN  }  S_COMMENT '%Customer%Complaints%'  8 10 matchMiddle1"
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) PS_SUPPKEY COUNT"
+    | combined 0
+    | next
+
+  stage S07 on all nodes :
+    aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt SUM"
+    | combined 0
+    | next
+
+  stage S08 on origin :
+    aggreg " groupBy  type VARCHAR as P_BRAND P_BRAND , type VARCHAR as P_TYPE P_TYPE , type INTEGER as P_SIZE P_SIZE aggregates type VARCHAR  as P_BRAND $K1 , type VARCHAR  as P_TYPE $K2 , type INTEGER  as P_SIZE $K3 , type INTEGER  as supplier_cnt ) supplier_cnt SUM"
+    | combined 0
+    | next
+
+  stage S09 on origin :
+    sort " type INTEGER $4 DESC  , type VARCHAR as P_BRAND P_BRAND ASC , type VARCHAR as P_TYPE P_TYPE ASC , type INTEGER as P_SIZE P_SIZE ASC "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+__JMEnd;
+
+select count(*) from se__jobMetrics;
+select count(*) from se__jobOperands;
+select count(*) from se__jobOperators;
+select count(*) from se__jobNetwork;
+select count(*) from se__jobNetDissect;
+select count(*) from se__sysMetrics;
+select count(*) from se__sysLocks;
+
+export se__jobMetrics    "../tmp/jobMetricsNew.csv";
+export se__jobOperands   "../tmp/jobOperandsNew.csv";
+export se__jobOperators  "../tmp/jobOperatorsNew.csv";
+export se__jobNetwork    "../tmp/jobNetworkNew.csv";
+export se__jobNetDissect "../tmp/jobNetDissectNew.csv";
+export se__sysMetrics    "../tmp/sysMetricsNew.csv";
+export se__sysLocks      "../tmp/sysLocksNew.csv";

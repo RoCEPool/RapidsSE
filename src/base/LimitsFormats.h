@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_COLUMNS       = 48;     // max columns per table
+static const i8 C_MAX_COLUMNS       = 64;     // max columns per table
 static const i8 C_MAX_CONN_RETRIES  = 5;      // max connection retries on node failure
 static const i8 C_MAX_DECKS         = 256;
 static const i8 C_MAX_ENTRY         = C_1KB;  // max index entry size
@@ -17,8 +17,8 @@ static const i8 C_MAX_LOCKS         = 128;     // max locks a task can hold
 static const i8 C_MAX_LOG_ENTRIES   = C_10MB * 2;
 static const i8 C_MAX_LOG_FILES     = 4;
 static const i8 C_MAX_LOG_NOTE      = C_1K;
-static const i8 C_MAX_LVL_LEVELS    = 6;
-static const i8 C_MAX_LVL_RATIO     = 6;
+static const i8 C_MAX_LVL_LEVELS    = 7;
+static const i8 C_MAX_LVL_RATIO     = 8;
 static const d8 C_MAX_MEMORY_LIMIT  = 60;     // max memory usage % before page out demon kicks in (must be greater than 50%)
 static const i8 C_MAX_NESTED_WORDS  = 16;
 static const i8 C_MAX_NODES         = 128;    // max nodes in a grid
@@ -120,7 +120,7 @@ static Stz* C_TDEF_JOBNETDISSECT    = "SE__jobNetDissect"_Stz;
 static Stz* C_TDEF_JOBNETWORK       = "SE__jobNetwork"_Stz;
 static Stz* C_TDEF_JOBOPERANDS      = "SE__jobOperands"_Stz;
 static Stz* C_TDEF_JOBOPERATORS     = "SE__jobOperators"_Stz;
-static Stz* C_TDEF_JOBREPORT        = "SE__jobReport"_Stz;
+static Stz* C_TDEF_JOINORDER        = "__joinOrder"_Stz;
 static Stz* C_TDEF_LISTCOLUMNS      = "__listColumns"_Stz;
 static Stz* C_TDEF_LISTCONTENTS     = "__listContents"_Stz;
 static Stz* C_TDEF_LISTFOLDER       = "__listFolder"_Stz;

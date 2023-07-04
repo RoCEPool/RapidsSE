@@ -77,8 +77,8 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
   for(i8 i = 0; i < iSize; i++)
     azBuffer[i] = RndLib::iInteger(0,100);
 
-  i8 start;
-  start = Hardware::iReadClock();
+  u8 start;
+  start = Hardware::uReadClock();
 
   Timer oTimer;
   oTimer.vStart();
@@ -114,7 +114,7 @@ void PersistenceHelper::vWriteDiskTest(Stz* sFilePath, i8 iNoOfGb)
 
   vTrace("New Timer: Partition %lld took %lld ms to write to disk\n"_Stz,
          iPtnOfNode,
-         (Hardware::iReadClock() - start)/1000000);
+         (Hardware::uReadClock() - start) / 1000000);
 
 }
 

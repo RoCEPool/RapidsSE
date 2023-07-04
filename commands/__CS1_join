@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* __CS1_join: Code Synthesizer V1                                            */
+/*============================================================================*/
+_nation
+_region
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+/time load nation   "<tpch_dir>/nation.<suffix>";
+/time load region   "<tpch_dir>/region.<suffix>";
+
+CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
+CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
+CREATE INDEX IxR_NAME      on REGION (R_NAME);
+
+/transliterated
+/glean_interactive
+/weaved
+select * from nation, region where n_regionkey = r_regionkey;
+
+/ccode pipeline _unnamed_
+       begin
+
+         stage S00 on origin :
+             start
+           | pulse     once
+           | next
+
+         stage S01 on all partitions :
+             scan      Nation
+           | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+           | combined  0
+           | next
+
+         stage S02 on all partitions :
+             indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+           | combined  0
+           | next
+
+         stage S04 on origin :
+             output
+           | sink
+           | first
+
+       end ;
+

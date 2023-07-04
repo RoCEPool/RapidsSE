@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* _r_Q20b -- TCPH query 20 (part b) test                                     */
+/*============================================================================*/
+
+// --initial _r_Q20b
+
+_r_schema
+
+create index P_idx0  on Part     (P_PARTKEY);
+create index PS_idx0 on PartSupp (PS_PARTKEY);
+create index S_idx0  on Supplier (S_SUPPKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_r_Q20b"
+select
+  s_name,
+  s_address
+  from Supplier
+ where s_suppkey in ( /* Q20_1 */
+                      select ps_suppkey
+                        from PartSupp
+                       where
+                             ps_availqty > ( /* Q20_1_2 */
+                                             select 0.5 * sum(l_quantity)
+                                               from LineItem
+                                              where L_PARTKEY = PS_PARTKEY
+                                              //and L_SUPPKEY = PS_SUPPKEY
+                                                and l_shipdate >= '1994-01-01'
+                                                and l_shipdate <  '1995-01-01'
+                                             )
+                      )
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

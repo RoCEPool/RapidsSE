@@ -1,0 +1,142 @@
+/*============================================================================*/
+/* _jm_ray -- run all queries                                                 */
+/*============================================================================*/
+
+__TPCH_SCHEMA_LOAD_SF1
+
+// -- -- -- -- -- --
+// Q1
+print "#Q1";
+_metrics_begin
+_jm_q1
+_metrics_end
+
+// -- -- -- -- -- --
+// Q2
+//print "#Q2";
+//_metrics_begin
+//_jm_q2
+//_metrics_end
+
+// -- -- -- -- -- --
+// Q3
+print "#Q3";
+_metrics_begin
+_jm_q3
+_metrics_end
+
+// -- -- -- -- -- --
+// Q4
+print "#Q4";
+_metrics_begin
+_jm_q4
+_metrics_end
+
+// -- -- -- -- -- --
+// Q5
+print "#Q5";
+_metrics_begin
+_jm_q5
+_metrics_end
+
+// -- -- -- -- -- --
+// Q6
+print "#Q6";
+_metrics_begin
+_jm_q6
+_metrics_end
+
+// -- -- -- -- -- --
+// Q7
+print "#Q7";
+_metrics_begin
+_jm_q7
+_metrics_end
+
+// -- -- -- -- -- --
+// Q8
+print "#Q8";
+_metrics_begin
+_jm_q8
+_metrics_end
+
+// -- -- -- -- -- --
+// Q9
+print "#Q9";
+_metrics_begin
+_jm_q9
+_metrics_end
+
+// -- -- -- -- -- --
+// Q10
+print "#Q10";
+_metrics_begin
+_jm_q10
+_metrics_end
+
+// -- -- -- -- -- --
+// Q11
+print "#Q11";
+_metrics_begin
+_jm_q11
+_metrics_end
+
+// -- -- -- -- -- --
+// Q12
+print "#Q12";
+_metrics_begin
+_jm_q12
+_metrics_end
+
+// -- -- -- -- -- --
+// Q13
+print "#Q13";
+_metrics_begin
+_jm_q13
+_metrics_end
+
+// -- -- -- -- -- --
+// Q14
+print "#Q14";
+_metrics_begin
+_jm_q14
+_metrics_end
+
+// -- -- -- -- -- --
+// Q15
+//
+//
+//
+//
+
+// -- -- -- -- -- --
+// Q16
+print "#Q16";
+_metrics_begin
+_jm_q16
+_metrics_end
+
+// -- -- -- -- -- --
+// Q17
+print "#Q17";
+_metrics_begin
+_jm_q17
+_metrics_end
+
+// -- -- -- -- -- --
+// Q18
+print "#Q18";
+_metrics_begin
+_jm_q18
+_metrics_end
+
+// -- -- -- -- -- --
+// Q19
+//print "#Q19";
+//_metrics_begin
+//_jm_q19
+//_metrics_end
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

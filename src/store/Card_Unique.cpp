@@ -12,13 +12,12 @@ __pCastFunction_Card(STORE,Card_Unique,CK_UNIQUE)
 __aNewFunction(Card_Unique,CN_CARD)
 __vDeleteFunction(Card_Unique,CN_CARD)
 
-__bIsCard(STORE,Card_Unique,CK_UNIQUE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Unique::Card_Unique(void)
-: Card_SUB(CK_UNIQUE)
+: Card(CK_UNIQUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

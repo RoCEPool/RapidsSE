@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _rayB                                                                      */
+/* _rayC                                                                      */
 /*============================================================================*/
 
 trackMemory;
@@ -18,11 +18,11 @@ load nation "../DATA/Transliterate/nationAgg.tbl";
 */
 /transliterated
 /optimise
-/weave
+/glean_interactive
 /weaved
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
 
-//drop table nation;
+drop table nation;
 
 memoryLeaks;
 

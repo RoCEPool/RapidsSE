@@ -26,7 +26,12 @@ Combined::Combined(LogicUnit* pLogicUnit)
 : Object(CN_COMBINED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
-  
+
+  m_xCombinedT.m_xRowInfoT.m_aRowSingle    = nullptr;
+  m_xCombinedT.m_xRowInfoT.m_aRowCellArray = nullptr;
+  m_xCombinedT.m_xRowInfoT.m_racStrArea = nullptr;
+  m_xCombinedT.m_xRowInfoT.m_racStrAreaSav = nullptr;
+
   m_xCombinedT.m_pTub        = nullptr;
   m_xCombinedT.m_pPot        = nullptr;
   m_xCombinedT.m_bTrace      = false;
@@ -66,6 +71,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
 
   // index join with J
   m_xCombinedT.m_iIndexJoinInit = 0;
+  m_xCombinedT.m_iJoinedRows = 0;
   m_xCombinedT.m_aRowSingleJ = nullptr;
   m_xCombinedT.m_aRowCellArrayJ = nullptr;
   m_xCombinedT.m_racStrAreaJ    = nullptr;
@@ -132,7 +138,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowTub          = nullptr;
   m_xCombinedT.m_aRowTubCellArray = nullptr;
   m_xCombinedT.m_racTubStrArea    = nullptr;
-  m_xCombinedT.m_iTubRowSize      = 0;
+  //m_xCombinedT.m_iTubRowSize      = 0;
 
   // pot
   m_xCombinedT.m_aRowPot          = nullptr;
@@ -152,6 +158,15 @@ Combined::~Combined(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
   RowSingle* pRowSingle;
+
+  if (m_xCombinedT.m_aIndexTreePL) {
+    IndexTree* pIndexTree = _pIndexTree(m_xCombinedT.m_aIndexTreePL);
+    delete pIndexTree;
+  }
+  if (m_xCombinedT.m_aIndexDefPL) {
+    IndexDef* pIndexDef = _pIndexDef(m_xCombinedT.m_aIndexDefPL);
+    delete pIndexDef;
+  }
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
   delete pRowSingle;

@@ -1,0 +1,360 @@
+/*============================================================================*/
+/* OP_dynamic.sen -- Operator dynamic                                       */
+/*============================================================================*/
+
+" OP_dynamic.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_CANCELLINGMARKER ...                                        */
+/*----------------------------------------------------------------------------*/
+: dynamic_CancellingMarker \handler
+
+  Pipein[]\clear to Marker[]
+
+  //PipeIn[].drain
+
+  Tub[].isNull not if
+    Tub[].deleteAllBuffers
+  then
+
+  Pot[].isNull not if
+    Pot[].deleteAllBuffers
+  then
+
+  Marker[].pipeOut
+
+  "default_abnormalHandlers" FIND execute
+  "default_lowMemHandlers" FIND execute
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: dynamic_Cleaning \handler
+
+  0 EV_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  Tub[].delete
+  Pot[].delete
+  Stencil[].delete
+  combined[].delete
+
+  EV_M_CLEANING EG_ZK PD_PIPE_OUT 0 EV_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  EV_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_CRWBUFFER ...                                            CRWBUFFER */
+/*----------------------------------------------------------------------------*/
+: dynamic_CrwBuffer \handler
+
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
+
+  0 locals| errorCode |
+
+  //"OP_dynamic got a CRWBUFFER" .
+
+  Pipein[]\clear to CrwBuffer[]
+  CrwBuffer[] Fun0[] 0 combined[].execute not if
+    to errorCode
+
+    // cleanup
+    CrwBuffer[].delete
+    Tub[].deleteAllBuffers
+    Pot[].deleteAllBuffers
+
+    errorCode EC_LOW_MEMORY == if
+
+      // not already detected low memory ?
+      [pipeline].lowMemory@ not if
+
+        Marker[].newLowMemory
+        Marker[]
+            nullptr to Marker[]
+
+        [op].pipeout
+        //"dynamicOP PIPED OUT LOW MEMORY!!!" .
+      else
+        "dynamicOP ALREADY DETECTED LOW MEMORY!!!" .
+      then
+
+      //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
+      "default_abnormalHandlers" FIND execute
+      "default_lowMemHandlers" FIND execute
+      //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
+    else
+      errorCode op__execErr
+    then
+
+    true
+    exit
+  then
+
+  CrwBuffer[].delete
+
+  // pipeout all completed Tub[]/Pot[]
+  combined[].hashRows@ if
+    Pot[].pipeOutCompletedPtns
+  else
+    Tub[].pipeOutCompleted
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_M_DATAPULSE ...                                            DATAPULSE */
+/*----------------------------------------------------------------------------*/
+: dynamic_DataPulse \handler
+
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
+
+  //"OP_dynamic got a DATAPULSE" .
+
+  Pipein[].pipeout
+/*
+  // if index is set then must be an indexScan OP
+  combined[].IndexT to Index[]
+  Index[].isNull not if
+
+    // execute the indexScan and dynamicOp's
+    nullptr Fun2[] 0 combined[].execute assert
+
+    // execute EOS handling
+    nullptr Fun3[] 1 combined[].execute assert
+
+    // pipeout all Tub[]/Pot[]
+    combined[].hashRows@ if
+      Pot[].pipeOutRemainderPtns
+    else
+      Tub[].pipeOutRemainder
+    then
+
+    Marker[].newEosMarker
+    Marker[].pipeOut
+  then
+*/
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: dynamic_EosMarker \handler
+
+  0 EV_M_EOS EG_ZK LogicUnit[].diaryNote
+
+ 0 locals| errorCode |
+
+  nullptr Fun3[] 0 combined[].execute not if
+    to errorCode
+    Pipein[].delete
+    Tub[].deleteAllBuffers
+    Pot[].deleteAllBuffers
+    errorCode op__execErr
+    true
+    exit
+  then
+
+  // pipeout all Tub[]/Pot[]
+  combined[].hashRows@ if
+    Pot[].pipeOutRemainderPtns
+  else
+    Tub[].pipeOutRemainder
+  then
+
+  EV_M_EOS EG_ZK PD_PIPE_OUT 0 EV_M_EOS EG_ZK LogicUnit[].diaryAction
+
+  EV_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_ERRORING ...                                              */
+/*----------------------------------------------------------------------------*/
+: dynamic_ErroringMarker \handler
+
+  Pipein[]\clear to Marker[]
+
+  //"dynamic_ErroringMarker DRAINING PIPEIN" .
+  //PipeIn[].drain
+
+  Marker[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_ROWBUFFER ...                                            ROWBUFFER */
+/*----------------------------------------------------------------------------*/
+: dynamic_RowBuffer \handler
+
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
+
+  0 locals| errorCode |
+
+  //"OP_dynamic got a ROWBUFFER" .
+
+  Pipein[]\clear to RowBuffer[]
+  RowBuffer[] Fun1[] 0 combined[].execute not if
+    to errorCode
+
+    // cleanup
+    RowBuffer[].delete
+    Tub[].deleteAllBuffers
+    Pot[].deleteAllBuffers
+
+    errorCode EC_LOW_MEMORY == if
+
+      // not already detected low memory ?
+      [pipeline].lowMemory@ not if
+
+        Marker[].newLowMemory
+        Marker[]
+            nullptr to Marker[]
+
+        [op].pipeout
+        "dynamicOP PIPED OUT LOW MEMORY!!!" .
+      else
+        "dynamicOP ALREADY DETECTED LOW MEMORY!!!" .
+      then
+
+      //"dynamicOP TOGGLING TO ABNORMAL HANDLERS FOR OP"  .
+      "default_abnormalHandlers" FIND execute
+      "default_lowMemHandlers" FIND execute
+      //"dynamicOP TOGGLED TO ABNORMAL HANDLERS FOR OP" .
+    else
+      errorCode op__execErr
+    then
+
+    true
+    exit
+  then
+
+  RowBuffer[].delete
+
+  // pipeout all completed Tub[]/Pot[]
+  combined[].hashRows@ if
+    Pot[].pipeOutCompletedPtns
+  else
+    Tub[].pipeOutCompleted
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: dynamic_StreamDef \handler
+
+  0 EV_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // synthesize the code for the combined OP's
+  Combined[] Stencil_v2[].setup
+/*
+  // set up the function pointers
+  Fun0[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun1[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun2[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun3[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+*/
+
+  // pipeout the streamDef
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on EV_M_START ...                                                    START */
+/*----------------------------------------------------------------------------*/
+: dynamic_StartMarker \handler
+
+  0 EV_M_START EG_ZK LogicUnit[].diaryNote
+
+  Tub[].new
+  Pot[].new
+  Stencil_v2[].new
+  combined[].new
+
+  //"iFun0_" [op].stageNm@ str.cat TinyC[].find to Fun0[]
+  //"iFun1_" [op].stageNm@ str.cat TinyC[].find to Fun1[]
+  //"iFun2_" [op].stageNm@ str.cat TinyC[].find to Fun2[]
+  //"iFun3_" [op].stageNm@ str.cat TinyC[].find to Fun3[]
+
+  // pipeout the start marker
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for dynamic req                                                   */
+/*----------------------------------------------------------------------------*/
+ : dynamic_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: dynamic_CancellingMarker  EV_M_CANCELLING [op].handler!
+  find: dynamic_Cleaning      EV_M_CLEANING      [op].handler!
+  find: dynamic_CrwBuffer     EV_D_CRWBUFFER     [op].handler!
+  find: dynamic_DataPulse     EV_M_DATAPULSE     [op].handler!
+  find: dynamic_EosMarker     EV_M_EOS           [op].handler!
+  find: dynamic_ErroringMarker EV_M_ERRORING     [op].handler!
+  find: dynamic_RowBuffer     EV_D_ROWBUFFER     [op].handler!
+  find: dynamic_StartMarker   EV_M_START         [op].handler!
+
+  find: dynamic_StreamDef     EV_D_STREAMDEF     [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dynamic :: dynamic ;
+
+: dynamic_cmdTags _cmdTags tagCopy: Op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+ 
+    <opEntry> = "dynamic_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

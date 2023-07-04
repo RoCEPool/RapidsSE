@@ -1,0 +1,51 @@
+--------------------------------------------------------------------------------
+-- tpch query15 (SF_0001)
+--------------------------------------------------------------------------------
+trackMemory;
+success
+
+create table revenue (supplier_no, total_revenue) as
+  select l_suppkey,
+         sum(l_extendedprice * (1 - l_discount))
+    from lineitem
+    where l_shipdate >= date '1996-01-01'
+      and l_shipdate <  date '1996-04-01'
+    group by l_suppkey;
+success
+
+/pipelineName = "_r_Q15"
+select
+	s_suppkey,
+	s_name,
+	s_address,
+	s_phone,
+	rv_revenue
+from
+	Supplier,
+	RevenueV
+where
+	S_SUPPKEY = RV_SUPPKEY
+	and rv_revenue = (select max(rv_revenue)
+                        from RevenueV)
+order by
+	s_suppkey;
+
+ rows:
+  (3,-28367.82,3,'Supplier#000000003','q1:G3Pj6OjIuUYfUoH18BFTKP5aU9bEV3',1,'11-383-516-1199',4192.40,*)
+
+drop table revenue;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table revenue;
+  mute
+
+  bye;
+  mute
+}
+
+

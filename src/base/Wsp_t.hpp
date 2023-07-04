@@ -9,7 +9,8 @@ namespace BASE
   template<int LENGTH>
   class Wsp_t
   {
-  private:
+    friend class STORE::IndexTree;
+  protected:
     byte m_yaByteArea[LENGTH]; // fixed byte area
     i8   m_nAreaUsed;          // bytes used in the area
                                //  (must be after m_yaByteArea)

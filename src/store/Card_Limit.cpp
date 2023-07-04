@@ -12,16 +12,17 @@ __pCastFunction_Card(STORE,Card_Limit,CK_LIMIT)
 __aNewFunction(Card_Limit,CN_CARD)
 __vDeleteFunction(Card_Limit,CN_CARD)
 
-__bIsCard(STORE,Card_Limit,CK_LIMIT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(void)
-: Card_MAIN(CK_LIMIT)
+Card_Limit::Card_Limit(Stz* szRows)
+: Card_OP(CK_LIMIT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
+
+  vSymbol(szRows);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -31,6 +32,18 @@ Card_Limit::Card_Limit(void)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Limit::~Card_Limit(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* apply stream                                                               */
+/*----------------------------------------------------------------------------*/
+void Card_Limit::vComputeProjection(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

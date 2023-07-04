@@ -7,6 +7,8 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Job.hpp"
+#include "Pipeline.hpp"
 
 #include "JobMetrics.hpp"
 
@@ -31,11 +33,9 @@ void Step::vJobMetricsCollect(void)
 {
   ENTRY();
 
-  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
-
-  bool bCollected = pJobMetrics->bCollect();
-  
-  m_pDataStack->vPushInt(bCollected);
+  i8 iJobNo = m_pDataStack->iPopInt(__func__);
+  JobId tDistId = iJobNo;
+  JobMetrics::vCollect(tDistId);
 
   EXIT();
 }
@@ -48,6 +48,9 @@ void Step::vJobMetricsDelete(void)
   ENTRY();
 
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+
+  //Pipeline* pPipeline = pJobMetrics->pJob()->pMetricsPipeline();
+  //delete pPipeline;
 
   delete pJobMetrics;
   
@@ -79,9 +82,9 @@ void Step::vJobMetricsNew(void)
 
   JobId tJobId;
   tJobId = iJob;
-  
-  JobMetrics* pJobMetrics = new JobMetrics(tJobId);
-  
+
+ JobMetrics* pJobMetrics = new JobMetrics(tJobId);
+
   m_pDataStack->vPushPtr(pJobMetrics);
 
   EXIT();
@@ -93,10 +96,10 @@ void Step::vJobMetricsNew(void)
 void Step::vJobMetricsUpdate(void)
 {
   ENTRY();
-
+/*
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
 
-  bool bReaping = AM::SYSTEM::bReapEnabled();
+  ? bool bReaping = AM::SYSTEM::bReapEnabled();
 
   bool bAppendList = ! bReaping;
   
@@ -106,7 +109,7 @@ void Step::vJobMetricsUpdate(void)
     delete pJobMetrics;
   
   m_pDataStack->vPushInt(bUpdated);
-
+*/
   EXIT();
 }
 

@@ -445,7 +445,8 @@ bool EntBuffer::bVerifyFirstKeys(void)
    */
   
   ASSERT(m_iBufferHeight >= 1);
-  
+  IndexDef* pIndexDef = this->pIndexDef();
+
   //vShow();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
@@ -461,7 +462,7 @@ bool EntBuffer::bVerifyFirstKeys(void)
     
    // the two keys should match
     if (KE_GENERAL == m_eEntKind) {
-      bool bEqual = Key::bEqualTo(aChildFirstEntry->aKey(), aEnt->aKey());
+      bool bEqual = Key::bEqualTo(pIndexDef,aChildFirstEntry->aKey(), aEnt->aKey());
       if (! bEqual) {
         vVerifyFault(__func__,__FILE__,__LINE__);
         return false;
@@ -631,6 +632,7 @@ bool EntBuffer::bVerifyKeyOrder(void)
    */
   
   bool bGreaterEqual;
+  IndexDef* pIndexDef = this->pIndexDef();
   
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
     
@@ -638,13 +640,14 @@ bool EntBuffer::bVerifyKeyOrder(void)
     Ent* aNextEntry = this->aNextEntry(aEnt,0);
     if (! aNextEntry)
       break;
-        
+
+
     // next key should be greater than or equal to curr key
     if (KE_GENERAL == m_eEntKind) {
       Key* aCurrKey = aEnt->aKey();
       Key* aNextKey = aNextEntry->aKey();
       
-      bGreaterEqual = Key::bGreaterEqual(aNextKey, aCurrKey);
+      bGreaterEqual = Key::bGreaterEqual(pIndexDef, aNextKey, aCurrKey);
       if (! bGreaterEqual) {
         vDump();
         vVerifyFault(__func__,__FILE__,__LINE__);
@@ -662,7 +665,6 @@ bool EntBuffer::bVerifyKeyOrder(void)
         return false;
       }
     }
-    
 
   }
   
@@ -735,13 +737,23 @@ bool EntBuffer::bVerifyRowRefs(void)
    */
   
   ASSERT(0 == m_iBufferHeight);
-  
+
+  i8 nEnt = 0;
   for (Ent* aEnt = aLeadEntry(); aEnt; aEnt = aNextEntry(aEnt,0)) {
-    
+
+    nEnt++;
+
     // get the row buffer that this H0 key leaf references
     Rrf xRef = aEnt->rxRef();
     //CrwBuffer* pCrwBuffer = CrwBuffer::pRefdCrwBuffer(xRef);
-    
+
+    i8 i_PoolBuffer = xRef.iBuffer();
+
+    // skip this step if no row references.
+    // e.g Payload entry buffers
+    if (i_PoolBuffer == 0)
+      return true;
+
     DataBuffer* pDataBuffer = DataBuffer::pRefdDataBuffer(xRef);
     
     // get the row entry from referenced entry buffer

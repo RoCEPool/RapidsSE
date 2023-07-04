@@ -22,8 +22,6 @@ failure contains: 'Nested aggregate expressions are not permitted'
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
-//TODO: ENABLE WHEN OPTIMIZER (SORT)
-/*
 select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 2270.38)
@@ -43,7 +41,6 @@ ordered rows:
   ('gold', 700.38)
   ('green', 1295.38)
   ('grey', 260.38)
-*/
 
 // Source file: ../queries/aggs/sum/rsum14.sql
 // Result file: ../queries/aggs/sum/results/sum14.res
@@ -103,7 +100,7 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum23.sql
 // Result file: ../queries/aggs/sum/results/rsum23.res
-//TODO: WHEN OPTIMISER (SUBQUERIES) AND UPPER
+//TODO: WHEN OPTIMISER (JOINS AND SUBQUERIES AND UPPER)
 /*
 select x, y from (select sum(cola1) as x, colb1 as y from table1 where colb1 = upper('pink') group by colb1) as OuterQry;
 rows:
@@ -112,12 +109,10 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum22.sql
 // Result file: ../queries/aggs/sum/results/rsum22.res
-//TODO: ENABLE WHEN OPTIMISER (JOINS)
-/*
 select x, y from (select sum(colf1) as x, sum(colg9) as y from table1 join table9 using (ucol)) as TwoTbs;
 rows:
-  (NULL, NULL)
-*/
+  (379,393)
+ // (NULL, NULL)
 
 // Source file: ../queries/aggs/sum/rnsum1.sql
 // Result file: ../queries/aggs/sum/results/nsum1.res
@@ -127,10 +122,13 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/aggs/sum/rsum20.sql
 // Result file: ../queries/aggs/sum/results/sum20.res
-//TODO: ENABLE WHEN OPTIMIZER (SORT)
-/*
 select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
+ ('BLACK',4.501200000e+02)
+ ('BLUE',-5.893000000e+02)
+ ('GREEN',9.210000000e+01)
+
+ /*
   ('BLACK', 450.1200000000001)
   ('BLUE', -589.3)
   ('GREEN', 92.09999999999991)
@@ -186,10 +184,13 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum18.sql
 // Result file: ../queries/aggs/sum/results/sum18.res
-//TODO: ENABLE WHEN OPTIMIZER (SORT)
-/*
 select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
+ ('BLACK',1.180120000e+03)
+ ('BLUE',1.407000000e+02)
+ ('GREEN',8.221000000e+02)
+
+/*
   ('BLACK', 1180.1200000000001)
   ('BLUE', 140.7)
   ('GREEN', 822.0999999999999)
@@ -205,14 +206,17 @@ unordered rows:
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
-//TODO: ENABLE WHEN OPTIMIZER (SORT)
-/*
 select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
+ ('BLACK',3.000300000e+02)
+ ('BLUE',4.017500000e+01)
+ ('GREEN',2.105250000e+02)
+
+ /*
   ('BLACK', 300.03)
   ('BLUE', 40.175)
   ('GREEN', 210.52499999999998)
-*/
+ */
 
 // Source file: ../queries/aggs/sum/rsum15.sql
 // Result file: ../queries/aggs/sum/results/sum15.res
@@ -231,14 +235,11 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum11.sql
 // Result file: ../queries/aggs/sum/results/sum11.res
-//TODO: EANBLE WHEN OPTIMISER (SORT)
-/*
 select colb1, sum(cola1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 567)
   ('BLUE', 136)
   ('GREEN', 297)
-*/
 
 // Source file: ../queries/aggs/sum/rsum11.sql
 // Result file: ../queries/aggs/sum/results/sum11.res
@@ -250,28 +251,25 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum13.sql
 // Result file: ../queries/aggs/sum/results/sum13.res
-//TODO: EANBLE WHEN OPTIMISER (SORT)
-/*
 select colb1, sum(cola1) - 44.5 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
-  ('BLACK', 2225.5)
-  ('BLUE', 502.5)
-  ('GREEN', 1143.5)
-  ('ORANGE', 325.5)
-  ('PINK', 1223.5)
-  ('PURPLE', 1465.5)
-  ('RED', 168.5)
-  ('TEAL', 1410.5)
-  ('WHITE', 1399.5)
-  ('YELLOW', 1482.5)
-  ('aqua', 149.5)
-  ('black', 319.5)
-  ('blue', 615.5)
-  ('brown', 518.5)
-  ('gold', 655.5)
-  ('green', 1250.5)
-  ('grey', 215.5)
-*/
+  ('BLACK', 2225.50)
+  ('BLUE', 502.50)
+  ('GREEN', 1143.50)
+  ('ORANGE', 325.50)
+  ('PINK', 1223.50)
+  ('PURPLE', 1465.50)
+  ('RED', 168.50)
+  ('TEAL', 1410.50)
+  ('WHITE', 1399.50)
+  ('YELLOW', 1482.50)
+  ('aqua', 149.50)
+  ('black', 319.50)
+  ('blue', 615.50)
+  ('brown', 518.50)
+  ('gold', 655.50)
+  ('green', 1250.50)
+  ('grey', 215.50)
 
 // Source file: ../queries/aggs/sum/rsum13.sql
 // Result file: ../queries/aggs/sum/results/sum13.res
@@ -300,14 +298,11 @@ ordered rows:
 
 // Source file: ../queries/aggs/sum/rsum17.sql
 // Result file: ../queries/aggs/sum/results/sum17.res
-//TODO: EANBLE WHEN OPTIMISER (SORT)
-/*
 select colb1, sum(cold1) - -500 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
-  ('BLACK', 1700.1200000000001)
-  ('BLUE', 660.7)
-  ('GREEN', 1342.1)
-*/
+  ('BLACK',1.700120000e+03)
+  ('BLUE',6.607000000e+02)
+  ('GREEN',1.342100000e+03)
 
 // Source file: ../queries/aggs/sum/rsum17.sql
 // Result file: ../queries/aggs/sum/results/sum17.res
@@ -328,8 +323,6 @@ failure contains: 'EC_SEMANTIC_ERROR'
 
 // Source file: ../queries/aggs/sum/rsum12.sql
 // Result file: ../queries/aggs/sum/results/sum12.res
-//TODO: EANBLE WHEN OPTIMISER (SORT)
-/*
 select colb1, sum(cola1) * 4 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 9080)
@@ -349,7 +342,6 @@ ordered rows:
   ('gold', 2800)
   ('green', 5180)
   ('grey', 1040)
-*/
 
 // Source file: ../queries/aggs/sum/rsum12.sql
 // Result file: ../queries/aggs/sum/results/sum12.res
@@ -382,14 +374,11 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum19.sql
 // Result file: ../queries/aggs/sum/results/sum19.res
-//TODO: EANBLE WHEN OPTIMISER (SORT)
-/*
 select colb1, sum(cold1) - 500 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
-  ('BLACK', 700.1200000000001)
-  ('BLUE', -339.3)
-  ('GREEN', 342.0999999999999)
-*/
+  ('BLACK',7.001200000e+02)
+  ('BLUE',-3.393000000e+02)
+  ('GREEN',3.421000000e+02)
 
 // Source file: ../queries/aggs/sum/rsum19.sql
 // Result file: ../queries/aggs/sum/results/sum19.res
@@ -415,14 +404,11 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum16.sql
 // Result file: ../queries/aggs/sum/results/sum16.res
-//TODO: EANBLE WHEN OPTIMISER (SORT)
-/*
 select colb1, sum(cold1) * 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 ordered rows:
-  ('BLACK', 4800.4800000000005)
-  ('BLUE', 642.8)
-  ('GREEN', 3368.4)
-*/
+  ('BLACK',4.800480000e+03)
+  ('BLUE',6.428000000e+02)
+  ('GREEN',3.368400000e+03)
 
 // Source file: ../queries/aggs/sum/rsum16.sql
 // Result file: ../queries/aggs/sum/results/sum16.res
@@ -458,8 +444,6 @@ rows:
 
 // Source file: ../queries/aggs/sum/rsum6.sql
 // Result file: ../queries/aggs/sum/results/sum6.res
-//TODO: WHN OPTIMISER (SORT)
-/*
 select colb1, sum(cola1) from table1 where colb1 < 'gre' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 2270)
@@ -477,7 +461,6 @@ ordered rows:
   ('blue', 660)
   ('brown', 563)
   ('gold', 700)
-*/
 
 // Source file: ../queries/aggs/sum/rsum6.sql
 // Result file: ../queries/aggs/sum/results/sum6.res

@@ -69,7 +69,8 @@ bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
   _static_
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // extract leading job control tags (such as /time or /nowait)
+  // extract leading job control tags
+  // /ccode, /jobMetrics /nowait, /pipelineName, /time
   
   Token* pTkn0 = pSrcCmdTknVec->pGet(0,true);
   
@@ -79,11 +80,27 @@ bool CmdHelper::bExtractCmdTags(TagSet* pDstCmdTagSet, TokenVec* pSrcCmdTknVec)
     
     Token* pTkn1 = pSrcCmdTknVec->pGet(1,true);
     sTag.vSprint("<%s>"_Stz,pTkn1->szChars());
-    
-    pDstCmdTagSet->vInsert(sTag,1);
-    
-    pSrcCmdTknVec->vRemoveToken(0);
-    pSrcCmdTknVec->vRemoveToken(0);
+
+    Token* pTkn2 = pSrcCmdTknVec->pGet(2,true);
+    if (pTkn2->bSame("="_Stz)) {
+
+      Token* pTkn3 = pSrcCmdTknVec->pGet(3,true);
+
+      pDstCmdTagSet->vInsert(sTag,pTkn3->szChars());
+
+      pSrcCmdTknVec->vRemoveToken(0);
+      pSrcCmdTknVec->vRemoveToken(0);
+      pSrcCmdTknVec->vRemoveToken(0);
+      pSrcCmdTknVec->vRemoveToken(0);
+      //pSrcCmdTknVec->vDumpVec(0);
+    }
+    else {
+      pDstCmdTagSet->vInsert(sTag,1);
+
+      pSrcCmdTknVec->vRemoveToken(0);
+      pSrcCmdTknVec->vRemoveToken(0);
+    }
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

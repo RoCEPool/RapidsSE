@@ -275,6 +275,7 @@ extern d8 C_D8_MID;
 
 #include "SkipNode.hpp"
 #include "SkipListNL.hpp"
+#include "SkipListNode.hpp"
 #include "StackNL_t.hpp"
 
 #include "TextAbstract.hpp"
@@ -291,9 +292,14 @@ extern d8 C_D8_MID;
 
 // -- -- -- -- -- -- -- --
 
+#include "InternalHeap_t.hpp"
 #include "MiniHeap_t.hpp"
 #include "TrayNL_t.hpp"
 
+// -- -- -- -- -- -- -- --
+
+#include "Pds.hpp"
+#include "Pds_t.hpp"
 // -- -- -- -- -- -- -- --
 
 #include "Dir.hpp"

@@ -56,6 +56,12 @@
 #include "Heart.h"
 
 #include "PromptHelper.hpp"
+#include "CompileLib.hpp"
+#include "PlanDefinitionParser.hpp"
+
+
+#include "Test.hpp"
+
 
 CmdLineArgs  gxCmdLineArgs;
 EnvFlags     gxEnvFlags;
@@ -114,6 +120,8 @@ void Engine::vMainEntry(void)
   }
 
   vPreliminary();
+
+  //PermGen::vTest_Permutation_v2(5);
 
   vRunCommandLine();
   
@@ -319,6 +327,23 @@ void Engine::vRunCommandLine(void)
         
       case BO_START_PROMPT:
         vStartSystem();
+
+
+
+
+        if (C_UNKNOWN != gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+          switch (gxCmdLineArgs.m_xSysArgs.m_iTest) {
+
+            case 0: vCmdLineTest0(); break;
+            case 1: vCmdLineTest1(); break;
+            case 2: vCmdLineTest2(); break;
+
+          }
+        }
+
+
+
         //AM::SYSTEM::vSystemReady(); // Process has completed the boot sequence
         vTrace("\nNodeId %lld\n\n"_Stz,AM::NODE::iThisNodeId());
 #ifdef WITH_APPLE
@@ -796,9 +821,6 @@ void Engine::vInternalTables(void)
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_JOBOPERATORS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBOPERATORS,pStreamDef);
-
-  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBREPORT);
-  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBREPORT,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_MEMORYLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_MEMORYLOG,pStreamDef);
@@ -1685,6 +1707,16 @@ void Engine::vStartSystem(void)
     vTrace("\n+\n+ %lld) System Start\n+\n"_Stz,giProgressPoint++);
     
   //ASSERT( ! AM::DIC::pRoot()->bHasWords() );
+
+  // Initialise and check for system compilers
+  if (!CompileLib::bInit()) {
+    Process::vExitStartup();
+  }
+
+  // Initialise the SQL Compiler plan graph template
+  if (!Parser::PlanDefinitionParser::bInit()) {
+    Process::vExitStartup();
+  }
 
   gpAttachMap->vRecordArguments(&gxCmdLineArgs);
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT)) {

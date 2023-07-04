@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* _r3 -- tpch query 3                                                        */
+/*============================================================================*/
+
+trackMemory;
+
+_lineItem
+create index L_idx0 on lineitem(L_ORDERKEY);
+
+_orders
+create index O_idx0 on orders(O_ORDERKEY);
+
+_customer
+create index C_idx0 on customer(C_CUSTKEY);
+
+load lineItem "../tpch/sf_0001/lineItem.csv" ;
+//select * from lineitem;
+
+load orders "../tpch/sf_0001/orders.csv" ;
+//select * from orders;
+
+load customer "../tpch/sf_0001/customer.csv" ;
+//select * from customer;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vSeries_10_Make_Runnable"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r3"
+select
+  l_orderkey,
+  sum(l_extendedprice * (1 - l_discount)) as Revenue,
+  o_orderdate,
+  o_shippriority
+  from orders, lineItem, customer
+ where l_orderKey = o_orderKey
+   and c_custKey  = o_custKey
+   and c_mktsegment = 'BUILDING'
+
+   and o_orderKey < 1000
+
+ group by l_orderkey,
+          o_orderdate,
+          o_shippriority
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table part;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

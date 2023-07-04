@@ -12,17 +12,16 @@ __pCastFunction_Card(STORE,Card_As,CK_AS)
 __aNewFunction(Card_As,CN_CARD)
 __vDeleteFunction(Card_As,CN_CARD)
 
-__bIsCard(STORE,Card_As,CK_AS)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(Stz* szAs)
-: Card_SUB(CK_AS)
+: Card(CK_AS,szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAs(szAs);
+  //vSymbol(szAs);
     
   _checkInitialised_(CN_CARD);
   
@@ -32,17 +31,16 @@ Card_As::Card_As(Stz* szAs)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_As::Card_As(Column* pColumn)
-: Card_SUB(CK_AS)
+Card_As::Card_As(Card_As* p_as_arg)
+: Card(CK_AS, p_as_arg->szSymbol())
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vAs(pColumn->szColNm());
-    
   _checkInitialised_(CN_CARD);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -51,6 +49,17 @@ Card_As::~Card_As(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_As* Card_As::pClone(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  return _pCard_As(pDupCardRecursive());
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -47,9 +47,9 @@ Timer::Timer(void)
 : Object(CN_TIMER)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  m_iStart  = 0;
-  m_iUpdate = 0;
+
+  m_uStart  = 0;
+  m_uUpdate = 0;
 
   _checkInitialised_(CN_TIMER);
 
@@ -69,8 +69,8 @@ Timer::~Timer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Timer::operator =(Timer xTimer)
 {
-  m_iStart = xTimer.m_iStart;
-  m_iUpdate = xTimer.m_iUpdate;
+  m_uStart = xTimer.m_uStart;
+  m_uUpdate = xTimer.m_uUpdate;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,9 +101,9 @@ void Timer::vRepair(Object* pObject)
 void Timer::vReset(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  m_iStart  = 0;
-  m_iUpdate = 0;
+
+  m_uStart  = 0;
+  m_uUpdate = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,20 +112,20 @@ void Timer::vReset(void)
 void Timer::vStart(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  m_iStart  = Hardware::iReadClock();
-  m_iUpdate = 0;
+
+  m_uStart  = Hardware::uReadClock();
+  m_uUpdate = 0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set                                                                        */
 /*----------------------------------------------------------------------------*/
-void Timer::vSet(i8 iStart, i8 iUpdate)
+void Timer::vSet(u8 uStart, u8 uUpdate)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
-  
-  m_iStart  = iStart;
-  m_iUpdate = iUpdate;
+
+  m_uStart  = uStart;
+  m_uUpdate = uUpdate;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,8 +135,8 @@ void Timer::vUpdate(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  ASSERT(m_iStart);
-  m_iUpdate = Hardware::iReadClock();
+  ASSERT(m_uStart);
+  m_uUpdate = Hardware::uReadClock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ i8 Timer::iDelta(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
 
-  return (m_iUpdate - m_iStart);
+  return (m_uUpdate - m_uStart);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +229,7 @@ i8 Timer::iStart(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  return m_iStart;
+  return m_uStart;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,7 +239,7 @@ i8 Timer::iUpdate(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  return m_iUpdate;
+  return m_uUpdate;
 }
 
 /*----------------------------------------------------------------------------*/

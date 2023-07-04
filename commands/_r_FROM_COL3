@@ -1,0 +1,65 @@
+/*============================================================================*/
+/* _r_FROM_COL3                                                               */
+/*============================================================================*/
+
+// --initial _r_FROM_COL3
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+create index TABLE1_PCOL1 on table1(pcol1);
+create index TABLE1_UCOL on table1(ucol);
+create index TABLE1_UCOLVC on table1(ucolvc);
+create index TABLE1_COLA1 on table1(cola1);
+
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,  //1
+  scol9   INTEGER NOT NULL,  //2
+  tcol9   INTEGER NOT NULL,  //3
+  colb9   VARCHAR(20),       //4
+  cold9   FLOAT,             //5
+  cole9   DECIMAL,           //6
+  colf9   INTEGER,           //7
+  colg9   INTEGER,           //8
+  ucol    INTEGER,           //9
+  ucolvc  VARCHAR(5)         //10
+);
+
+create index table9_pcol9  on table9(pcol9);
+create index table9_ucolvc on table9(ucolvc);
+create index table9_colb9  on table9(colb9);
+create index table9_ucol   on table9(ucol);
+
+Load TABLE9 "../DATA/Load/tbl9data.csv";
+
+
+
+/glean_cue_from = "vH60_T10_Produce_maybeIndexJoin_Under_filter"
+/glean_cue_trace = "x"
+/glean_interactive
+/transliterated
+/weaved
+  select *
+    from ( select a.pcol9, a.colb9
+             from table9 a
+             join table9 b on a.pcol9=b.scol9) as col3,
+         table1
+   where col3.colb9 = table1.colb1
+     and col3.pcol9 = table1.pcol1
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

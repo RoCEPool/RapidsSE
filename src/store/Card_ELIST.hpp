@@ -3,20 +3,27 @@
 /*============================================================================*/
 #pragma once
 
-#include "BASE.h"
-
-#include "Card_SUB.hpp"
-#include "Card_StreamColList.hpp"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_ELIST : public Card_SUB
+  class Card_ELIST : public Card
   {  
   public:
     Card_ELIST(eCK eCard);
    ~Card_ELIST(void) noexcept(false);
 
-   Card_StreamColList* pDerive_StreamColList(void);
+    void vBump_keyOdn_In_rpnCalc(CardIter* pCI);
+    void vBump_stmOdn_In_rpnCalc(CardIter* pCI);
+    void vBump_Rightwards(i8 nBumpBy);
+    Card_Expr* pContains(Card_Expr* p_expr_arg);
+    void vConvertAll_stmOdn_To_colOdn(CardIter* pCI);
+    Card_Expr* pDecodeExpr(Symbol* pSymbol);
+    i8 nExpr(void);
+    Card_Expr* pFindExpr(Symbol* pSymbol);
+    Card_Expr* pGetExpr(i8 i_Expr);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
+    void vRenumberAll_expr(void);
   };
 
   Card_ELIST* _pCard_ELIST(void* aAddr);

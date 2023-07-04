@@ -110,8 +110,6 @@ public:
   void vAM_DerefMetricsEnable(void);
   void vAM_JobMetricsDisable(void);
   void vAM_JobMetricsEnable(void);
-  void vAM_ReapDisable(void);
-  void vAM_ReapEnable(void);
   void vAM_SysMetricsDisable(void);
   void vAM_SysMetricsEnable(void);
   void vAM_System_ReadyFetch(void);
@@ -123,6 +121,9 @@ public:
   void vApiForkDemon(void);
   void vApiForkChild2PC(void);
   void vApiReapableJobFetch(void);
+  void vApiReapableIsOriginator(void);
+  void vApiReapableJobMetricsEnabled(void);
+  void vApiReapableJobTagsFetch(void);
   void vApiSpawnJob(void);
 
   // arrange
@@ -235,6 +236,7 @@ public:
   // Combined
   void vCombinedDelete(void);
   void vCombinedExecute(void);
+  void vCombinedExecute_v2(void);
   void vCombinedHashRowsFetch(void);
   void vCombinedGet(void);
   void vCombinedIndexT(void);
@@ -467,9 +469,19 @@ void vDdlLockAssertNone(void);
   void vDstackSwap(void);
   void vDstackTuck(void);
 
+  // Dynamic
+  void vDynamicDelete(void);
+  void vDynamicExecute(void);
+  void vDynamicHashRowsFetch(void);
+  void vDynamicGet(void);
+  void vDynamicIndexT(void);
+  void vDynamicNew(void);
+
+  void vDynamoCodeFetch(void);
   void vDynamoCompile(void);
   void vDynamoDelete(void);
   void vDynamoGet(void);
+  void vDynamoHasCode(void);
   void vDynamoNew(void);
 
   // encode
@@ -726,6 +738,7 @@ void vDdlLockAssertNone(void);
   void vInfoSetChunkFile(void);
   void vInfoSetColValFetch(void);
   void vInfoSetDelete(void);
+  void vInfoSetDetectLineEnding(void);
   void vInfoSetFirstRow(void);
   void vInfoSetGet(void);
   void vInfoSetInfoRows(void);
@@ -819,6 +832,7 @@ void vDdlLockAssertNone(void);
   void vJobAssertReceived(void);
 
   void vJobDisableAllocate(void);
+  void vJobDisableJobMetrics(void);
   void vJobDisableObjectTracker(void);
   void vJobDistIdFetch(void);
   void vJobDistIdGenerate(void);
@@ -1315,8 +1329,8 @@ void vDdlLockAssertNone(void);
   void vOptimiserDelete(void);
   void vOptimiserDissect(void);
   void vOptimiserGet(void);
-  void vOptimiserOptimise(void);
   void vOptimiserNew(void);
+  void vOptimiserTransform(void);
   void vOptimiserWeave(void);
 
   // operand
@@ -1412,6 +1426,7 @@ void vDdlLockAssertNone(void);
   void vPipeSpecGet(void);
   void vPipeSpecOptimisable(void);
   void vPipeSpecSet(void);
+  void vPipeSpecIsSqlCompiler(void);
 
 
   // plan
@@ -1663,6 +1678,8 @@ void vDdlLockAssertNone(void);
   void vRowBufferPtnId(void);
   void vRowBufferRows(void);
   void vRowBufferSet(void);
+  void vRowBufferSetDeciderCopies(void);
+  void vRowBufferSetLglPtn(void);
   void vRowBufferToCsv(void);
   void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);
@@ -1856,6 +1873,13 @@ void vDdlLockAssertNone(void);
   void vStencilSketch(void);
   void vStencilSourceFetch(void);
 
+  void vStencilDelete_v2(void);
+  void vStencilGet_v2(void);
+  void vStencilNew_v2(void);
+  void vStencilSetup_v2(void);
+  void vStencilSketch_v2(void);
+  void vStencilSourceFetch_v2(void);
+
   // steps
   void vStepsReset(void);
   void vStepsStart(void);
@@ -1949,7 +1973,10 @@ void vDdlLockAssertNone(void);
   void vStreamDefOutNew(void);
   void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
+  void vStreamDefOutSelectColumns(void);
   void vStreamDefOutSet(void);
+
+  void vStreamDefOutGenerate_V2(void);
 
   // stream def Right
   void vStreamDefRhtDelete(void);
@@ -1960,7 +1987,6 @@ void vDdlLockAssertNone(void);
   void vStreamDefRhtNew(void);
   void vStreamDefRhtNewFromTable(void);
   void vStreamDefRhtPrint(void);
-  void vStreamDefRhtSelectColumns(void);
   void vStreamDefRhtSet(void);
 
   // reg stream set
@@ -2291,9 +2317,14 @@ void vDdlLockAssertNone(void);
   void vTinyCCompile(void);
   void vTinyCDelete(void);
   void vTinyCFind(void);
+  void vTinyCGet(void);
+  void vTinyCIsNotNull(void);
   void vTinyCNew(void);
   void vTinyCRelocate(void);
   void vTinyCSymbols(void);
+
+  void vTinyCCompile_v2(void);
+  void vTinyCCompiledynamoCode(void);
 
   // to
   void vToBcd(void);

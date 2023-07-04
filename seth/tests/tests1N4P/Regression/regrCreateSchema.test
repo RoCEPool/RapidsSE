@@ -18,6 +18,21 @@ create table TABLE1 (
 );
 success
 
+create index TABLE1_PCOL1 on table1(pcol1);
+success
+
+create index TABLE1_COLA1 on table1(cola1);
+success
+
+create index TABLE1_COLB1 on table1(colb1);
+success
+
+create index TABLE1_UCOL on table1(ucol);
+success
+
+create index TABLE1_UCOLVC on table1(ucolvc);
+success
+
 create table TABLE2 (
   pcol2   INTEGER NOT NULL,
   scol2   INTEGER NOT NULL,
@@ -27,6 +42,12 @@ create table TABLE2 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
+success
+
+create index TABLE2_COLA2 on TABLE2 (cola2);
+success
+
+create index TABLE2_PCOL2 on TABLE2 (pcol2);
 success
 
 create table TABLE3 (
@@ -53,6 +74,12 @@ create table TABLE4 (
   colc4   TIMESTAMP,
   cole4   DECIMAL(15, 2)
 );
+success
+
+create index table4_cola4 on table4(cola4);
+success
+
+create index table4_ucol on table4(ucol);
 success
 
 create table TABLE5 (
@@ -88,6 +115,9 @@ create table TABLE7 (
 );
 success
 
+create index table7_pcol7 on table7(pcol7);
+success
+
 create table TABLE8 (
   pcol8   INTEGER NOT NULL,
   tcol8   INTEGER NOT NULL,
@@ -98,6 +128,12 @@ create table TABLE8 (
   colh8   INTEGER,
   coli8   VARCHAR(5)
 );
+success
+
+create index table8_pcol8 on table8(pcol8);
+success
+
+create index table8_colb8 on table8(colb8);
 success
 
 create table TABLE9 (
@@ -112,6 +148,18 @@ create table TABLE9 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
+success
+
+create index table9_colb9 on table9(colb9);
+success
+
+create index table9_ucol on table9(ucol);
+success
+
+create index table9_ucolvc on table9(ucolvc);
+success
+
+create index table9_pcol9 on table9(pcol9);
 success
 
 create table CUSTOMERH (
@@ -185,6 +233,9 @@ create table SUPPLIER (
 );
 success
 
+create index SUPPLIER_S_NATIONKEY on SUPPLIER(s_nationkey);
+success
+
 create table PARTSUPP (
   ps_partkey INTEGER NOT NULL,
   ps_suppkey INTEGER NOT NULL,
@@ -202,11 +253,20 @@ create table NATION (
 );
 success
 
+create index NATION_N_NATIONKEY on NATION(n_nationkey);
+success
+
+create index NATION_N_REGIONKEY on NATION(n_regionkey);
+success
+
 create table REGION (
   r_regionkey INTEGER NOT NULL,
   r_name VARCHAR(25),
   r_comment VARCHAR(152)
 );
+success
+
+create index NATION_R_REGIONKEY on REGION(r_regionkey);
 success
 
 create table SHIPPING (
@@ -247,6 +307,9 @@ create table MANUFACTURER (
 );
 success
 
+create index MANUFACTURER_M_MFGKEY on MANUFACTURER(m_mfgkey);
+success
+
 create table RETURNITEMS (
   l_orderkey INTEGER NOT NULL,
   l_linenumber INTEGER NOT NULL,
@@ -260,6 +323,9 @@ create table RETURNITEMS (
   r_returndate TIMESTAMP,
   r_comments VARCHAR(75)
 );
+success
+
+create index RETURNITEMS_M_MFGKEY on RETURNITEMS(m_mfgkey);
 success
 
 CLEANUP {

@@ -3,8 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLP.h"
-#include "eLS.h"
+#include "eSK.h"
 #include "CodeSynth.hpp"
 #include "Shape.hpp"
 #include "Combined.hpp"
@@ -51,9 +50,6 @@ static const i8 C_MAX_SHAPES = 32;
   class Stencil : public VectorNL_t<CN_STENCIL,Shape,C_MAX_SHAPES>
   {
   private:
-  
-    eLP         m_ePattern;
-
     s256        m_szStageNm;
     bool        m_bScan;
     bool        m_bRowBuffer;
@@ -96,12 +92,10 @@ static const i8 C_MAX_SHAPES = 32;
 
     static void vRepair(Object* pObject);
 
-    void vCombine(void);
+    void vCombine(bool bGenerateCCode);
   
     Stz* szOpSource(void);
 
-    eLP  ePattern(void);
-    void vPattern(eLP ePattern);
     void vPrint(void);
     void vSetup(Combined* pCombined, Stream* pStream);
     eEC  eSketch(Combined* pCombined, Stream* pStream);
@@ -119,9 +113,8 @@ static const i8 C_MAX_SHAPES = 32;
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
 
-    void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupEosAgg(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupEosPayload(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupAggreg(Combined* pCombined, Op* pOp);
+    void vSetupEosPayload(Combined* pCombined, Op* pOp);
     void vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -129,11 +122,9 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
-    void vSetupSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupSort(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
-    void vSketchEosFilter(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, TypedStack* pInitStack);
     void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSketchEosSort(Combined* pCombined, Stream* pStream, Op* pOp);
@@ -151,18 +142,17 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchSort(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* szLabelLoop);
     Shape* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                          eSR ePrevStencil, Stz* sLabelLoop);
-    Shape* pSketchOrderBy(Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp,
                                       eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil, Stz* sLabelLoop);
-    Shape* pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
+    Shape* pSketchPot(Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
                       Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
     Shape* pSketchReturn(void);
-    Shape* pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
+    Shape* pSketchTub(Op* pLastOp, eSR ePrevStencil, IntStack* pPreExpStack,
                       Stz* szLabel, Stz* sLabelLoop, Stz* sLabelOrdAgg);
-    Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
+    Shape* pSketchTop(Combined* pCombined, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
 
 
     Footer* aFooter(void);

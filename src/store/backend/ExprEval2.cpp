@@ -51,6 +51,13 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // inList
+    if (pTkn->bSame("inList"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // in
     if (pTkn->bSame("in"_Stz)) {
       pTkn = pTknVec->pNextToken();
@@ -84,11 +91,34 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ignore index related keywords
     if (pTkn->bIsName() &&
-        (pTkn->bSame("LEFTOUTER"_Stz) ||
+        (pTkn->bSame("LEFT_OUTER"_Stz) ||
          pTkn->bSame("BOUND"_Stz) ||
          pTkn->bSame("UBOUND"_Stz) ||
-         pTkn->bSame("LBOUND"_Stz))
+         pTkn->bSame("LBOUND"_Stz) ||
+         pTkn->bSame("!f"_Stz) ||
+         pTkn->bSame("!t"_Stz))
         ) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ignore functions
+    if (pTkn->bSame("EXTRACT_MINUTE"_Stz) || pTkn->bSame("EXTRACT_MONTH"_Stz) || pTkn->bSame("EXTRACT_SECOND"_Stz) ||
+        pTkn->bSame("EXTRACT_YEAR"_Stz)   || pTkn->bSame("INLIST"_Stz)        || pTkn->bSame("IN"_Stz)             ||
+        pTkn->bSame("LIKE2"_Stz)          || pTkn->bSame("LIKE3"_Stz)          || pTkn->bSame("MATCHLEADING"_Stz)  ||
+        pTkn->bSame("MATCHMIDDLE"_Stz)    || pTkn->bSame("MATCHMIDDLE1"_Stz)   || pTkn->bSame("MATCHMIDDLE2"_Stz)  ||
+        pTkn->bSame("MATCHTRAILING"_Stz)  || pTkn->bSame("SUBSTRING2"_Stz)     || pTkn->bSame("SUBSTRING3"_Stz)    ||
+        pTkn->bSame("EXTRACT_DAY"_Stz)    || pTkn->bSame("EXTRACT_HOUR"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ignore other keywords
+    if (pTkn->bSame("casttype"_Stz) || pTkn->bSame("isNull"_Stz) || pTkn->bSame("null"_Stz) ||
+        pTkn->bSame("BETWEEN"_Stz) || pTkn->bSame("CASE"_Stz) || pTkn->bSame("CAST"_Stz) ||
+        pTkn->bSame("ELSE"_Stz) || pTkn->bSame("ENDIF"_Stz) ) {
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -237,13 +267,13 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
 
-      eExprKind = EK_AGGGBY;
+      eExprKind = EK_GBYAGG;
       bGroupBy = true;
       ePreExp = PE_GBY;
       pIndexDef->vIndexNm("gby_idx"_Stz);
 
       // start with idx_col1 as the first column for indexes
-      // else it can class with COL1 of streamDefOut
+      // else it can clash with COL1 of streamDefOut
       sColumnNm.vSprint("IDX_COL%lld"_Stz, iProjectColumn-1);
       pColumnExpr->vColumnNm(sColumnNm);
 
@@ -429,6 +459,13 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip !f / !t (early exit from logical)
+    if (pTkn->bSame("!f"_Stz) || pTkn->bSame("!t"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip decimal no
     if (pTkn->bIsDecimal()) {
       pTkn = pTknVec->pNextToken();
@@ -457,12 +494,29 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // skip ascending/ descending
-    if (pTkn->bSame("ASC"_Stz) || pTkn->bSame("DESC"_Stz)) {
+    // ascending
+    if (pTkn->bSame("ASC"_Stz)) {
       vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
       // set the column no in the indexDef w.r to the streamDef
       pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+
       pPreExpStack->vPush(ePreExp);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // descending
+    if (pTkn->bSame("DESC"_Stz)) {
+      vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+      // set the column no in the indexDef w.r to the streamDef
+      pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
+
+      // set the column as descending
+      pIndexDef->pGetColumn(pIndexDef->nColumns() - 1)->vIsAscending(false);
+      pIndexDef->vHasDescending(true);
+
+        pPreExpStack->vPush(ePreExp);
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -616,7 +670,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
       continue;
     }
 
-    if (pTkn->bSame("IN"_Stz)) {
+    if (pTkn->bSame("INLIST"_Stz) || pTkn->bSame("IN"_Stz)) {
       if (bGroupBy) {
         eError = EC_NOT_IMPLEMENTED;
         goto L_RETURN;
@@ -836,51 +890,24 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     pTkn = pTknVec->pNextToken();
   }
 
-  if (eExprKind != EK_FILTER) {
+  // push the predicate expression
+  pPreExpStack->vPush(ePreExp);
 
-    // push the predicate expression
-    pPreExpStack->vPush(ePreExp);
+  // add the last column to the indexDef
+  if (ePreExp == PE_TOP) {
+    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
 
-    // add the last column to the indexDef
-    if (ePreExp == PE_TOP) {
-      vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-
-      // set the column no in the indexDef w.r to the streamDef
-      pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
-    }
-
-    RASSERT(pColumnExpr->eColumnType() != CT_NONE);
-
-    // add the last column to the streamDefOut
-    if (ePreExp != PE_SRT && ePreExp != PE_TOP)
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    // set the column no in the indexDef w.r to the streamDef
+    pIndexDef->vSetColSet(pIndexDef->nColumns() - 1, i_ColumnOrdinal);
   }
 
-  L_RETURN:
+  RASSERT(pColumnExpr->eColumnType() != CT_NONE);
 
-//#ifdef WITH_DEBUG_VERSION
-//  // dump the PreExp stack
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("PREEXPSTACK:\n"_Stz);
-//  i8 nExpr = pPreExpStack->nItems() - 1;
-//
-//  while ( nExpr >= 0) {
-//    i8 iValue = pPreExpStack->iPeek(nExpr--);
-//    vTrace("%s\n"_Stz, aPE[iValue]);
-//  }
-//
-//  // dump the streamDefOut
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("STREAMDEFOUT:\n"_Stz);
-//  pStreamDefOut->vPrint();
-//
-//  // dump the indexDef
-//  vTrace("--------------------------------------\n"_Stz);
-//  vTrace("INDEXDEF:\n"_Stz);
-//  if (pIndexDef) {
-//    pIndexDef->vPrint();
-//  }
-//#endif
+  // add the last column to the streamDefOut
+  if (ePreExp != PE_SRT && ePreExp != PE_TOP)
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+
+  L_RETURN:
 
   delete pColumnExpr;
   delete pTknVec;
@@ -903,9 +930,7 @@ eEC ExprEval2::eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht
 
   // generate right table column prefix
   s32 sColPrefix;
-  Column* pColumn = pStreamDefLft->pGetColumn(pStreamDefLft->nColumns() - 1);
-  Stz* szColumnNm = pColumn->szColNm();
-  vGenerateColPrefix(szColumnNm, sColPrefix);
+  vGenerateColPrefix(pStreamDefLft, sColPrefix);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add columns from StreamDefRht to StreamDefOut using colPrefix for right tablecolumns
@@ -949,24 +974,35 @@ void ExprEval2::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* p
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void ExprEval2::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
+void ExprEval2::vGenerateColPrefix(StreamDefBase* pStreamDef, Stz* szColPrefix)
 {
 
   _static_
 
-  i8 iTableNo = 1;
+  i8 iTableNo = 0;
+  i8 iTablePrefix = C_UNKNOWN;
 
-  // extract the column name prefix upto .
-  StrLib::vCopyTill(szColPrefix->azChar(), szColNm->azChar(), '.');
+  for (i8 iCol = 0; iCol < pStreamDef->nColumns(); iCol++) {
 
-  // extract the table no from the column name prefix if any
-  if (!szColPrefix->bIsEmpty() && szColPrefix->bBeginsWith("J"_Stz)) {
-    iTableNo = StrLib::iToI8(szColPrefix->azChar() + 1);
-    iTableNo++;
+    // get the column
+    Column* pColumn = pStreamDef->pGetColumn(iCol);
+
+    // get the column name
+    Stz* szColNm = pColumn->szColNm();
+
+    // extract the column name prefix upto .
+    StrLib::vCopyTill(szColPrefix->azChar(), szColNm->azChar(), '.');
+
+    // extract the table no from the column name prefix if any
+    if (!szColPrefix->bIsEmpty() && szColPrefix->bBeginsWith("J"_Stz)) {
+      iTablePrefix = StrLib::iToI8(szColPrefix->azChar() + 1);
+      if (iTablePrefix > iTableNo )
+        iTableNo = iTablePrefix;
+    }
+
   }
-
   // generate the new column prefix
-  StrLib::vSprint(szColPrefix, "J%d_"_Stz, iTableNo);
+  StrLib::vSprint(szColPrefix, "J%d_"_Stz, iTableNo+1);
 }
 
 /*============================================================================*/

@@ -1,0 +1,148 @@
+/*============================================================================*/
+/* _alka                                                                      */
+/*============================================================================*/
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 1000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+load C "../DATA/Select/select.csv";
+
+
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_alka"
+/joinOrder
+select count(*)
+ from A
+  join B on A.A_COL0 = B.B_COL0
+  join C on B.B_COL0 = C.C_COL1
+;
+
+/*
+Expected result:
+rows: ('C HASHCAST B UNICAST A')
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+
+create table TABLE1 (
+  pcol1   INTEGER NOT NULL,
+  tcol1   INTEGER NOT NULL,
+  cola1   INTEGER,
+  colb1   VARCHAR(20),
+  colc1   TIMESTAMP,
+  cold1   FLOAT,
+  cole1   DECIMAL(15, 2),
+  colf1   INTEGER,
+  colg1   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+Load TABLE1 "../DATA/Load/tbl1data.csv" ;
+
+create table TABLE3 (
+  pcol3   INTEGER NOT NULL,
+  scol3   INTEGER NOT NULL,
+  tcol3   INTEGER NOT NULL,
+  unicol3 INTEGER NOT NULL,
+  cola2   INTEGER,
+  cola1   INTEGER,
+  ucol    INTEGER,
+  cola3   INTEGER,
+  colb3   VARCHAR(25),
+  colc3   TIMESTAMP
+);
+
+Load TABLE3 "../DATA/Load/tbl3data.csv" ;
+
+create table TABLE4 (
+  pcol4   INTEGER NOT NULL,
+  scol4   INTEGER NOT NULL,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5),
+  cola4   INTEGER,
+  colb4   VARCHAR(10),
+  colc4   TIMESTAMP,
+  cole4   DECIMAL(15, 2)
+);
+Load TABLE4 "../DATA/Load/tbl4data.csv" ;
+
+create table TABLE9 (
+  pcol9   INTEGER NOT NULL,
+  scol9   INTEGER NOT NULL,
+  tcol9   INTEGER NOT NULL,
+  colb9   VARCHAR(20),
+  cold9   FLOAT,
+  cole9   DECIMAL,
+  colf9   INTEGER,
+  colg9   INTEGER,
+  ucol    INTEGER,
+  ucolvc  VARCHAR(5)
+);
+Load TABLE9 "../DATA/Load/tbl9data.csv";
+
+
+//explain stage transliterate select dec_col6 from datums;
+//explain stage transliterate select min(dec_col6) from datums;
+explain stage transliterate select min(dec_col6) from datums group by int_col0;
+
+*/

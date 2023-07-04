@@ -12,8 +12,16 @@
 
   //"Operand:- EV_M_DATAPULSE" .verbose
 
-  // truncate the buffers of the tablePtn
-  TablePtn[].truncate
+  // check for replicated table
+  Table[].isReplicated if
+    // truncate the buffers of the table only on partition 0
+    [op].partition@ 0 == if
+      TablePtn[].truncate
+    then
+  else
+    // truncate the buffers of the tablePtn
+    TablePtn[].truncate
+  then
 
   PipeIn[].pipeout
 

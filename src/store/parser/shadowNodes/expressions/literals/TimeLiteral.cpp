@@ -76,6 +76,24 @@ void TimeLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Appends a basic, single line description of the object value into a buffer */
+/*----------------------------------------------------------------------------*/
+void TimeLiteral::vDescribeValueOnly(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->eValueType() == Value::VT_TIME);
+  UNUSED(pRootNode);
+
+  if (pNode->bIsNullValue()) {
+    sBuf.vConcat("NULL"_Stz);
+  } else {
+    Tme xTme = pNode->xTimeVal();
+    sBuf.vCatSprint("%02lld:%02lld:%02lld"_Stz, xTme.iHour(), xTme.iMin(), xTme.iSec());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Gets the time of this expression. NB: call bIsNull() to check if the    */
 /* value is null first.                                                       */
 /*----------------------------------------------------------------------------*/

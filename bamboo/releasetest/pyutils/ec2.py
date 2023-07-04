@@ -409,6 +409,10 @@ def __check_image_id(client, image_id: str, ctx: str = ""):
     response = client.describe_images(**kwargs)
     # LOG.debug(f"{ctx}Response of describe_images command:\n{pprint.pformat(response)}")
 
+    if len(response['Images']) != 1:
+        msg = f"{ctx}Image ID does not exist: {image_id}"
+        raise errors.Ec2Error(msg)
+
     image_desc = response["Images"][0]["Description"]
     LOG.info(f"{ctx}Using AMI: {image_desc} (image-id: {image_id})")
     # pprint.pp(response)

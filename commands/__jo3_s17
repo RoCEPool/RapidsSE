@@ -1,0 +1,83 @@
+/*============================================================================*/
+/* __jo3_s17 -- optimiser join ordering 3-way join statement 17               */
+/*============================================================================*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 1
+//  Partitions = 4
+//  size(A) < size(B) , size(B) > size(C)
+//  A            ->  B               B           ->  C
+//  cola == ptn  ->  colb == ptn     colb == ptn ->  colc == ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;
+create table B(B_COL0 integer, B_COL1 integer, B_COL2 integer) tablesize 10000;
+create table C(C_COL0 integer, C_COL1 integer, C_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+create index C_COL0  on C (C_COL0  );
+create index C_COL1  on C (C_COL1  );
+create index C_COL2  on C (C_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+load C "../DATA/Select/select.csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select * from dummy;
+
+trackMemory;
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_o_s15"
+select count(*)
+  from A
+   join B on A.A_COL0 = B.B_COL0
+   join C on B.B_COL0 = C.C_COL0
+ ;
+
+MemoryLeaks;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+drop table A;
+drop table B;
+drop table C;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+Join Permutations:
+                                     Network Total    Unicast Total
+  A->B (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  1000+(1000*10000)
+  B->A (UNICAST)(0) ->C (UNICAST)(0) Total=(0+0)   ,  10000+(10000*1000)
+  B->C (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  10000+(10000*1000)
+  C->B (UNICAST)(0) ->A (UNICAST)(0) Total=(0+0)   ,  1000+(1000*10000)
+
+Expected join order:
+  Either A->B->C or C->B->A
+
+Expected Result:
+  row: (138)
+  success: 1 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

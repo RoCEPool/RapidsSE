@@ -9,6 +9,8 @@
 #include "Steps.hpp"
 #include "Op.hpp"
 #include "Stream.hpp"
+#include "Job.hpp"
+#include "TagConstants.h"
 
 #include "LogicUnit.hpp"
 
@@ -112,7 +114,18 @@ void Step::vStencilSketch(void)
   eEC eError = pStencil->eSketch(pCombined, pStream);
 
   if (eError == EC_NONE) {
-    pStencil->vCombine();
+
+    Job* pJob = pOuterJobOfTask();
+    TagSet* pTagSet = pJob->pJobTags();
+
+    //pTagSet->vContentDump();
+
+    bool bGenerateCCode = false;
+
+    if (pTagSet->bHasName(C_TAG_CCODE))
+      bGenerateCCode = true;
+
+    pStencil->vCombine(bGenerateCCode);
     pStencil->vPrint();
   }
 

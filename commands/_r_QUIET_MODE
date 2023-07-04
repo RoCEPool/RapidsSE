@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* _r_QUIET_MODE -- quiet mode test                                           */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index O_idx0  on Orders   (O_ORDERKEY );
+create index L_idx0  on Lineitem (L_ORDERKEY );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/pipelineName = "_r_QUIET_MODE"
+select o_orderkey, avg(l_extendedprice)
+  from Orders, Lineitem
+ where
+       O_ORDERKEY = L_ORDERKEY
+   and o_orderkey < 100
+   and o_orderkey > 3
+   and o_totalPrice > 0.0
+   and o_orderStatus = 'F'
+ group by O_ORDERKEY
+ order by O_ORDERKEY
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

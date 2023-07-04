@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* _jo1_C_L_O_P -- join order test                                            */
+/*============================================================================*/
+
+/jobMetrics
+/joWrite
+/jo=12
+/filterPred
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_jo1_C_L_O_P"
+select
+       count(*)
+  from
+       Customer, //  29
+       Lineitem, // 630
+       Orders,   // 181
+       Part      //  29
+ where
+       C_CUSTKEY  = O_CUSTKEY
+   and O_ORDERKEY = L_ORDERKEY
+   and L_PARTKEY  = P_PARTKEY
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

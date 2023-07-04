@@ -56,12 +56,6 @@ void EntBuffer::vBuildSkipList(void)
       
     }
 
-    
-    
-    
-    
-    
-    
   }
   
   Ent* aRevisedEntry = aNextEntry(aSkipRoots(),0);
@@ -407,7 +401,7 @@ void EntBuffer::vDeleteUpwards(eDU eReason, Ent* aDeleteEntry, i8 iRefdBufferNo,
     goto L_Return;
 
   if (KE_GENERAL == m_eEntKind) {
-    if ( ! Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) )
+    if ( ! Key::bEqualTo(pIndexDef(),aEntryToBeDeleted->aKey(), aDeleteEntry->aKey()) )
       goto L_Return;
   }
   else {
@@ -457,7 +451,7 @@ void EntBuffer::vHandleFirstInsert(Ent* aInsertedKeyEntry,
 
     if (KE_GENERAL == m_eEntKind) {
     
-      if (Key::bNotEqual(aInsertedKeyEntry->aKey(), aOriginalFirstEntry->aKey()))
+      if (Key::bNotEqual(pIndexDef(),aInsertedKeyEntry->aKey(), aOriginalFirstEntry->aKey()))
         vHandleLeftInsert(aInsertedKeyEntry,
                           aOriginalFirstEntry,
                           ppRootBuffer);
@@ -642,7 +636,7 @@ Ent* EntBuffer::aInsertEntAbs(Ent* aEnt)
   //EntBuffer::vShowEntry(aInsertedEntry);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the new entry into the skip list
-  
+
   Ent* aPrevEnt = aInsertEntSkipList(aInsertedEntry);
   UNUSED(aPrevEnt);
 
@@ -942,10 +936,13 @@ Ent* EntBuffer::aInsertEntSkipList(Ent* aEntry)
   Key* aKey = aEntry->aKey();
   
   if (0 == m_iBufferHeight) {
-    if (KE_GENERAL == m_eEntKind)
+    if (KE_GENERAL == m_eEntKind) {
       vPosVecPriorToEntry(nullptr, aKey, xPriorVec);
-    else
+    }
+    else {
       vPosVecPriorToEntry_int(aKey, xPriorVec);
+    }
+
   }
   else {
     EntBuffer* pToBuffer = EntBuffer::pRefdEntBuffer(aEntry);
@@ -1093,11 +1090,11 @@ bool EntBuffer::bKeyBeforeBuffer(Key* aKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   Ent* aFirstEntry = this->aLeadEntry();
-  
+
   bool bLessEqual;
   
   if (KE_GENERAL == m_eEntKind) {
-    bLessEqual = Key::bLessEqual(aKey,aFirstEntry->aKey());
+    bLessEqual = Key::bLessEqual(pIndexDef(),aKey,aFirstEntry->aKey());
   }
   else {
     i8 iVal = *(i8*)aKey;
@@ -1472,7 +1469,7 @@ EntBuffer* EntBuffer::pNewNextBuffer(void)
 void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
-    
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // position to entry prior to the entry to be deleted
   Ent* aPriorEntry = aFindEntryBefore(aDeleteEntry->aKey());
@@ -1493,7 +1490,7 @@ void EntBuffer::vPurgeUpwards(Ent* aDeleteEntry, EntBuffer** ppRootBuffer)
   
   bool bEqualTo;
   if (KE_GENERAL == m_eEntKind) {
-    bEqualTo = Key::bEqualTo(aEntryToBeDeleted->aKey(), aDeleteEntry->aKey());
+    bEqualTo = Key::bEqualTo(pIndexDef(), aEntryToBeDeleted->aKey(), aDeleteEntry->aKey());
   }
   else {
     i8 iValTbd = *(i8*)aEntryToBeDeleted->aKey();

@@ -9,13 +9,27 @@ create table decTest (
 success
 
 load decTest "../DATA/Load/decTest.csv" ;
-failure contains: '8 invalid'
+failure contains: '9 invalid'
+
+select -360287970189639.68 from decTest where dec1 = 0.1;
+failure contains: 'EC_SYNTAX_ERROR'
+
+select -360287970189639.67 from decTest where dec1 = 0.1;
+rows:
+  (-360287970189639.67)
+
+select 360287970189639.67 from decTest where dec1 = 0.1;
+rows:
+  (360287970189639.67)
+
+select 360287970189639.68 from decTest where dec1 = 0.1;
+failure contains: 'EC_SYNTAX_ERROR'
 
 select dec1 from decTest;
 rows:
  (-0.67)
  (0.00)
- (0.00)
+ (0.01)
  (0.79)
  (null)
  (0.10)
@@ -25,8 +39,8 @@ rows:
 select dec2 from decTest;
 rows:
  (4.05)
- (-1407374883553.28)
- (1407374883553.27)
+ (-360287970189639.67)
+ (360287970189639.67)
  (4.05)
  (4.05)
  (4.05)

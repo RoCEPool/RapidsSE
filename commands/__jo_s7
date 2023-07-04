@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* __jo_s7 -- optimiser join ordering statement 7                             */
+/*============================================================================*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TEST CASE 7
+//
+//  A > B
+//  A                 B
+//  cola != ptn       colb == ptn
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+create table A(A_COL0 integer, A_COL1 integer,  A_COL2 integer) tablesize 10000;
+create table B(B_COL0 integer, B_COL1 integer,  B_COL2 integer) tablesize 1000;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index A_COL0  on A (A_COL0  );
+create index A_COL1  on A (A_COL1  );
+create index A_COL2  on A (A_COL2  );
+
+create index B_COL0  on B (B_COL0  );
+create index B_COL1  on B (B_COL1  );
+create index B_COL2  on B (B_COL2  );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+load A "../DATA/Select/select.csv";
+load B "../DATA/Select/select.csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select * from dummy;
+
+trackMemory;
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_o_s15"
+
+select count(*)
+  from A
+   join B on A.A_COL1 = B.B_COL0
+ ;
+
+MemoryLeaks;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+drop table A;
+drop table B;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+
+Join Permutations:
+  A->B (HASHCAST)
+  B->A (BROADCAST)
+
+Expected join order: (depends on the no. of partitions also)
+  A->B (HASHCAST)
+
+Expected Result:
+  row: (19)
+  success: 1 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

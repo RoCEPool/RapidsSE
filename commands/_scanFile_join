@@ -1,0 +1,38 @@
+/*============================================================================*/
+/* _scanFile_join                                                             */
+/*============================================================================*/
+
+__TPCH_SCHEMA
+
+//select * from lineitem, orders where l_orderkey = o_orderkey;
+
+
+pipeline scanFile
+
+  begin
+
+    stage S00 on origin :
+        start
+      | pulse once
+      | checkTable lineitem
+      | chunk      "<tpch_dir>/lineitem.<suffix>"   // read chunks of file => (seekOffset)
+      | rdCsvChunk "<tpch_dir>/lineitem.<suffix>"   // (seekOffset) => (csvBuffer)
+      | next localrobin
+
+    stage S01 on all partitions on origin :
+        toKeyHshRow_sf lineitem // (csvBuffer) => (rowBuffer w row+keyHash)
+      //| toLglPtnRow lineitem // (rowBuffer) => (rowBuffer x logical partitions)
+      //| toLglPtnNst          // (rowBuffer) => (rowBuffer w normalised strings)
+      //| toLglPtnCrw          // (rowBuffer) => (crwBuffer x logical partitions)
+      | next broadcast
+
+   stage S02 on all partitions :
+       indexJoin Orders IxO_ORDERKEY " BOUND $I1 $1 == "
+       | combined  0
+       | next
+
+    stage S04 on origin :
+      output
+      | sink
+      | first
+ end ;

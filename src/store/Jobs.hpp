@@ -39,10 +39,8 @@ namespace STORE
     JobList* pOriginatingJobs(void);
     JobList* pParticipatingJobs(void);
 
-    void vReapAllJobs(bool bForce = false);
     Job* pReapableJob(void);
     bool bReapJob(void);
-    void vReapJobsOnce(bool bForce = false);
 
     JobList* pExitedJobs(void);
 

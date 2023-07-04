@@ -1,0 +1,86 @@
+/*============================================================================*/
+/* _r_a_b_17 -- 17 sub-query test : pattern a/b -> a|b                        */
+/*============================================================================*/
+
+trackMemory;
+
+_customer
+_lineItem
+_orders
+_part
+_supplier
+_partsupp
+_region
+_nation
+
+create index C_idx0 on customer(C_CUSTKEY) ;
+create index IxC_CUSTKEY on customer(C_CUSTKEY) ;
+create index IxC_NATIONKEY on customer(C_NATIONKEY) ;
+
+create index L_idx0 on lineitem(L_ORDERKEY);
+create index IxL_SHIPDATE on lineitem(L_SHIPDATE) ;
+create index IxL_ORDERKEY on lineitem(L_ORDERKEY) ;
+create index IxL_PARTKEY on lineitem(L_PARTKEY) ;
+create index IxL_RECEIPTDATE on lineitem(L_RECEIPTDATE) ;
+
+create index O_idx0 on orders  (O_ORDERKEY);
+create index IxO_CUSTKEY on orders  (O_CUSTKEY);
+create index IxO_ORDERDATE on orders  (O_ORDERDATE);
+create index IxO_ORDERKEY on orders  (O_ORDERKEY);
+
+create index P_idx0 on part    (P_PARTKEY) ;
+create index IxP_PARTKEY on part(P_PARTKEY);
+
+create index IxPS_PARTKEY on partsupp(PS_PARTKEY);
+create index IxPS_SUPPKEY on partsupp(PS_SUPPKEY);
+
+create index S_idx0 on supplier(S_SUPPKEY) ;
+create index IxS_SUPPKEY on supplier(S_SUPPKEY);
+create index IxS_NATIONKEY on supplier(S_NATIONKEY);
+
+create index IxN_NATIONKEY on nation(N_NATIONKEY);
+create index IxN_REGIONKEY on nation(N_REGIONKEY);
+
+create index IxR_REGIONKEY on region (R_REGIONKEY);
+create index IxR_NATIONKEY on region (R_NATIONKEY);
+create index IxR_NAME on region (R_NAME);
+
+
+load customer "../tpch/sf_0001/customer.csv" ;
+load lineitem "../tpch/sf_0001/lineItem.csv" ;
+load orders   "../tpch/sf_0001/orders.csv"   ;
+load part     "../tpch/sf_0001/part.csv"     ;
+load supplier "../tpch/sf_0001/supplier.csv" ;
+load partsupp "../tpch/sf_0001/partsupp.csv" ;
+load region "../tpch/sf_0001/region.csv" ;
+load nation "../tpch/sf_0001/nation.csv" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vSeries_22_Stream_Analysis"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_a_b_15"
+select sum(l_extendedprice) / 7.0 as avg_yearly
+  from lineitem, part
+ where     p_partkey   = l_partkey
+       and p_brand     = 'Brand#23'
+       and p_container = 'MED BOX'
+       and l_quantity  < (select 0.2 * avg(l_quantity)
+                            from LineItem
+                           where L_PARTKEY = P_PARTKEY )
+;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

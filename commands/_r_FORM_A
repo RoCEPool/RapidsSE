@@ -1,0 +1,38 @@
+/*============================================================================*/
+/* _r_FORM_A -- sub-query form 1 analysis : refer Q7                         */
+/*============================================================================*/
+
+trackMemory;
+
+_r_init
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_cue_from = "vS35X_T10_Push_sqB_Into_mqA"
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "r_FORM_A"
+select count(*)
+  from (select *
+          from orders, lineitem
+         where O_ORDERKEY = L_ORDERKEY)
+;
+// mq:
+// having  " type BOOLEAN  $2 __subquery0002  >  "
+
+// sq:
+// params (none)
+// where  (n/a)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//drop table lineItem;
+//drop table orders;
+
+//memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

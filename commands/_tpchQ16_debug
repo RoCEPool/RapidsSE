@@ -1,0 +1,66 @@
+/*============================================================================*/
+/* _tpchQ16_debug                                                             */
+/*============================================================================*/
+
+
+// --initial _tpchQ16_debug
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+__TPCH_SCHEMA
+
+select * from dummy;
+
+////////////////////////////////////////////////////////////////
+// QUERY 16 :  MEMORY LEAKS
+//             row: ('SMOOSH',  1)
+///////////////////////////////////////////////////////////////
+
+trackMemory;
+
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_tpchQ16_debug"
+select
+  p_brand,
+  p_type,
+  p_size,
+  count(*) as supplier_cnt
+from
+  partsupp,
+  part
+where p_partkey = ps_partkey
+   and p_brand <> 'Brand#45'
+   and p_type not like 'MEDIUM POLISHED%'
+   and p_size in (49,14,23,45,19,3,36,9)
+   and ps_suppkey not in
+  (
+    select
+      s_suppkey
+    from
+      supplier
+    where
+      s_comment like '%Customer%Complaints%'
+  )
+group by
+  p_brand,
+  p_type,
+  p_size
+order by
+  supplier_cnt desc,
+  p_brand, p_type,
+  p_size;
+
+MemoryLeaks;
+
+/*
+Expected Result:
+
+ rows: 34
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

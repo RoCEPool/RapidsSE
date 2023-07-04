@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* __o_s9 -- optimiser statement 9                                            */
+/*============================================================================*/
+
+trackMemory;
+
+_r_schema
+
+create index P_idx0  on part     (P_PARTKEY  );
+create index PS_idx0 on partsupp (PS_PARTKEY );
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/optimise
+/glean_interactive
+/transliterated
+/weaved
+/pipelineName = "_o_s1"
+select avg(ps_supplycost)
+  from Part,
+       PartSupp
+ where p_partkey  = ps_partkey
+    and p_brand = 'Brand#44'
+ group by p_partkey;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+Expected Result:
+  row: (586.13)
+  row: (576.57)
+  row: (524.94)
+  row: (661.55)
+  row: (366.30)
+  row: (327.33)
+  row: (422.15)
+  success: 7 rows fetched
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

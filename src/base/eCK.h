@@ -6,337 +6,353 @@
 enum eCK // card kind
 {
   /* */ CK_NONE=0,
-    
-  /* */ CK_AGGELIST,
-  /* */ CK_AGGLEVEL,
+
+  /* */ CK_ABSJOIN,
   /* */ CK_AGGREG,
-  /* */ CK_AGGREGATES,
+  /* */ CK_ANDPRED,
   /* */ CK_AS,
 
-  /* */ CK_BOARD,
+  /* */ CK_BOOLCALC,
+  /* */ CK_BOUND,
+  /* */ CK_BOUNDS,
 
-  /* */ CK_CALC,
-  /* */ CK_CANDINDEX,
-  /* */ CK_COMBINE,
-  
+  /* */ CK_CALL,
+  /* */ CK_CAST,
+  /* */ CK_CMPPRED,
+  /* */ CK_COMBINED,
+  /* */ CK_CONSTRAINT,
+  /* */ CK_CORRELATION,
+  /* */ CK_COSTJOINING,
+  /* */ CK_COSTNETWORK,
+  /* */ CK_COSTSTREAM,
+  /* */ CK_COSTUNICAST,
+  /* */ CK_CROSSJOIN,
+
   /* */ CK_DEBUG,
+  /* */ CK_DECK,
   /* */ CK_DIRECTION,
 
-  /* */ CK_EBOUND,
-  /* */ CK_EXISTS,
   /* */ CK_EXPR,
-  /* */ CK_EXPRBOOL,
 
   /* */ CK_FILTER,
-  /* */ CK_FILTELIST,
+  /* */ CK_FILTPRED,
+  /* */ CK_FILTPREDLIST,
+  /* */ CK_FLAT,
+  /* */ CK_FOLD,
+  /* */ CK_FOLDELIST,
+  /* */ CK_FROM,
 
-  /* */ CK_GBYELIST,
-  /* */ CK_GENERATE,
+  /* */ CK_GBYAGG,
 
   /* */ CK_HASH,
   /* */ CK_HAVING,
-  
+  /* */ CK_HSHCOL,
+
+  /* */ CK_IDXCOL,
+  /* */ CK_IDXCOLLIST,
   /* */ CK_INDEX,
   /* */ CK_INDEXJOIN,
-  /* */ CK_INDEXPRED,
+  /* */ CK_INDEXLIST,
+  /* */ CK_INDEXNM,
   /* */ CK_INDEXSCAN,
 
-  /* */ CK_LBOUND,
+  /* */ CK_JOINCAST,
+  /* */ CK_JOINESTIMATE,
+  /* */ CK_JOINORDER,
+  /* */ CK_JOINORDERING,
+  /* */ CK_JOINPREDLIST,
+
+  /* */ CK_KEY,
+  /* */ CK_KEYEXISTS,
+  /* */ CK_KEYNOTEXISTS,
+
+  /* */ CK_LEVEL,
   /* */ CK_LIMIT,
-  
-  /* */ CK_MODE,
 
-  /* */ CK_NAME,
+  /* */ CK_NCORRCOLS,
+  /* */ CK_NEEDED,
+  /* */ CK_NOTE,
+  /* */ CK_NOTPRED,
 
-  /* */ CK_OBYELIST,
   /* */ CK_ON,
-  /* */ CK_OPTION,
   /* */ CK_ORDAGG,
+  /* */ CK_ORPRED,
+  /* */ CK_OUTERCOLNM,
+  /* */ CK_OUTERJOIN,
 
-  /* */ CK_PREDAND,
-  /* */ CK_PREDCMP,
-  /* */ CK_PREDOR,
   /* */ CK_PROJECT,
-  /* */ CK_PROJELIST,
+  /* */ CK_PROJECTION,
 
-  /* */ CK_RBOUND,
-  /* */ CK_ROWS,
+  /* */ CK_ROWCOUNT,
+  /* */ CK_ROWSIZE,
+  /* */ CK_RPNCALC,
   /* */ CK_RPNTERMS,
 
-  /* */ CK_SBYELIST,
   /* */ CK_SCAN,
+  /* */ CK_SECTION,
   /* */ CK_SEND,
   /* */ CK_SENDKIND,
-  /* */ CK_SENDS,
   /* */ CK_SORT,
   /* */ CK_STAGE,
-  /* */ CK_STAGETOPO,
-  /* */ CK_STREAM,
-  /* */ CK_STREAMCOL,
-  /* */ CK_STREAMCOLLIST,
-  /* */ CK_STREAMELIST,
+  /* */ CK_STREAMHEAD,
+  /* */ CK_STREAMJOIN,
+  /* */ CK_STREAMKEY,
+  /* */ CK_STREAMPER,
+  /* */ CK_STREAMPTN,
+  /* */ CK_STREAMSET,
   /* */ CK_SUBSET,
 
   /* */ CK_TABLE,
+  /* */ CK_TABLELIST,
+  /* */ CK_TABLENM,
+  /* */ CK_TABLEPTN,
+  /* */ CK_TABLESIZE,
+  /* */ CK_TBLSYN,
   /* */ CK_TERM,
-  /* */ CK_TYPE,
+  /* */ CK_TOP,
+  /* */ CK_TOPOLOGY,
 
-  /* */ CK_UBOUND,
   /* */ CK_UNIQUE,
+
+  /* */ CK_WHERE,
 
   /* */ CK_ENUMS
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 static Stz* aCK[]
 {
   /* */ "NONE"_Stz,
-  
-  /* */ "CK_AGGELIST"_Stz,     // CK_AGGELIST
-  /* */ "CK_AGGLEVEL"_Stz,     // CK_AGGLEVEL
-  /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
-  /* */ "CK_AGGREGATES"_Stz,   // CK_AGGREGATES
-  /* */ "CK_AS"_Stz,           // CK_AS
-  
-  /* */ "CK_BOARD"_Stz,        // CK_BOARD
 
-  /* */ "CK_CALC"_Stz,         // CK_CALC
-  /* */ "CK_CANDINDEX"_Stz,    // CK_CANDINDEX
-  /* */ "CK_COMBINE"_Stz,      // CK_COMBINE
-  
+  /* */ "CK_ABSJOIN"_Stz,      // CK_ABSJOIN
+  /* */ "CK_AGGREG"_Stz,       // CK_AGGREG
+  /* */ "CK_ANDPRED"_Stz,      // CK_ANDPRED
+  /* */ "CK_AS"_Stz,           // CK_AS
+
+  /* */ "CK_BOOLCALC"_Stz,     // CK_BOOLCALC
+  /* */ "CK_BOUND"_Stz,        // CK_BOUND
+  /* */ "CK_BOUNDS"_Stz,       // CK_BOUNDS
+
+  /* */ "CK_CALL"_Stz,         // CK_CALL
+  /* */ "CK_CAST"_Stz,         // CK_CAST
+  /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
+  /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
+  /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
+  /* */ "CK_CORRELATION"_Stz,  // CK_CORRELATION
+  /* */ "CK_COSTJOINING"_Stz,  // CK_COSTJOINING
+  /* */ "CK_COSTNETWORK"_Stz,  // CK_COSTNETWORK
+  /* */ "CK_COSTSTREAM"_Stz,    // CK_COSTSTREAM
+  /* */ "CK_COSTUNICAST"_Stz,  // CK_COSTUNICAST
+  /* */ "CK_CROSSJOIN"_Stz,    // CK_CROSSJOIN
+
   /* */ "CK_DEBUG"_Stz,        // CK_DEBUG
+  /* */ "CK_DECK"_Stz,         // CK_DECK
   /* */ "CK_DIRECTION"_Stz,    // CK_DIRECTION
 
-  /* */ "CK_EBOUND"_Stz,       // CK_EBOUND
-  /* */ "CK_EXISTS"_Stz,       // CK_EXISTS
   /* */ "CK_EXPR"_Stz,         // CK_EXPR
-  /* */ "CK_EXPRBOOL"_Stz,     // CK_EXPRBOOL
 
   /* */ "CK_FILTER"_Stz,       // CK_FILTER
-  /* */ "CK_FILTELIST"_Stz,    // CK_FILTELIST
+  /* */ "CK_FILTPRED"_Stz,     // CK_FILTPRED
+  /* */ "CK_FILTPREDLIST"_Stz, // CK_FILTPREDLIST
+  /* */ "CK_FLAT"_Stz,         // CK_FLAT
+  /* */ "CK_FOLD"_Stz,         // CK_FOLD
+  /* */ "CK_FOLDELIST"_Stz,    // CK_FOLDELIST
+  /* */ "CK_FROM"_Stz,         // CK_FROM
 
-  /* */ "CK_GBYELIST"_Stz,     // CK_GBYELIST
-  /* */ "CK_GENERATE"_Stz,     // CK_GENERATE
+  /* */ "CK_GBYAGG"_Stz,       // CK_GBYAGG
 
   /* */ "CK_HASH"_Stz,         // CK_HASH
   /* */ "CK_HAVING"_Stz,       // CK_HAVING
-  
+  /* */ "CK_HSHCOL"_Stz,       // CK_HSHCOL
+
+  /* */ "CK_IDXCOL"_Stz,       // CK_IDXCOL
+  /* */ "CK_IDXCOLLIST"_Stz,   // CK_IDXCOLLIST
   /* */ "CK_INDEX"_Stz,        // CK_INDEX
   /* */ "CK_INDEXJOIN"_Stz,    // CK_INDEXJOIN
-  /* */ "CK_INDEXPRED"_Stz,    // CK_INDEXPRED
+  /* */ "CK_INDEXLIST"_Stz,    // CK_INDEXLIST
+  /* */ "CK_INDEXNM"_Stz,      // CK_INDEXNM
   /* */ "CK_INDEXSCAN"_Stz,    // CK_INDEXSCAN
 
-  /* */ "CK_LBOUND"_Stz,       // CK_LBOUND
+  /* */ "CK_JOINCAST"_Stz,     // CK_JOINCAST
+  /* */ "CK_JOINESTIMATE"_Stz, // CK_JOINESTIMATE
+  /* */ "CK_JOINORDER"_Stz,    // CK_JOINORDER
+  /* */ "CK_JOINORDERING"_Stz, // CK_JOINORDERING
+  /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
+
+  /* */ "CK_KEY"_Stz,          // CK_KEY
+  /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
+  /* */ "CK_KEYNOTEXISTS"_Stz, // CK_KEYNOTEXISTS
+
+  /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
 
-  /* */ "CK_MODE"_Stz,         // CK_MODE
+  /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
+  /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
+  /* */ "CK_NOTE"_Stz,         // CK_NOTE
+  /* */ "CK_NOTPRED"_Stz,      // CK_NOTPRED
 
-  /* */ "CK_NAME"_Stz,         // CK_NAME
-
-  /* */ "CK_OBYELIST"_Stz,     // CK_OBYELIST
   /* */ "CK_ON"_Stz,           // CK_ON
-  /* */ "CK_OPTION"_Stz,       // CK_OPTION
   /* */ "CK_ORDAGG"_Stz,       // CK_ORDAGG
+  /* */ "CK_ORPRED"_Stz,       // CK_ORPRED
+  /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
+  /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
 
-  /* */ "CK_PREDAND"_Stz,      // CK_PREDAND
-  /* */ "CK_PREDCMP"_Stz,      // CK_PREDCMP
-  /* */ "CK_PREDOR"_Stz,       // CK_PREDOR
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
-  /* */ "CK_PROJELIST"_Stz,    // CK_PROJELIST
+  /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
-  /* */ "CK_RBOUND"_Stz,       // CK_RBOUND
-  /* */ "CK_ROWS"_Stz,         // CK_ROWS
+  /* */ "CK_ROWCOUNT"_Stz,     // CK_ROWCOUNT
+  /* */ "CK_ROWSIZE"_Stz,      // CK_ROWSIZE
+  /* */ "CK_RPNCALC"_Stz,      // CK_RPNCALC
   /* */ "CK_RPNTERMS"_Stz,     // CK_RPNTERMS
 
-  /* */ "CK_SBYELIST"_Stz,     // CK_SBYELIST
   /* */ "CK_SCAN"_Stz,         // CK_SCAN
+  /* */ "CK_SECTION"_Stz,      // CK_SECTION
   /* */ "CK_SEND"_Stz,         // CK_SEND
   /* */ "CK_SENDKIND"_Stz,     // CK_SENDKIND
-  /* */ "CK_SENDS"_Stz,        // CK_SENDS
   /* */ "CK_SORT"_Stz,         // CK_SORT
   /* */ "CK_STAGE"_Stz,        // CK_STAGE
-  /* */ "CK_STAGETOPO"_Stz,    // CK_STAGETOPO
-  /* */ "CK_STREAM"_Stz,       // CK_STREAM
-  /* */ "CK_STREAMCOL"_Stz,    // CK_STREAMCOL
-  /* */ "CK_STREAMCOLLIST"_Stz, // CK_STREAMCOLLIST
-  /* */ "CK_STREAMELIST"_Stz,  // CK_STREAMELIST
+  /* */ "CK_STREAMHEAD"_Stz,   // CK_STREAMHEAD
+  /* */ "CK_STREAMJOIN"_Stz,   // CK_STREAMJOIN
+  /* */ "CK_STREAMKEY"_Stz,    // CK_STREAMKEY
+  /* */ "CK_STREAMPER"_Stz,    // CK_STREAMPER
+  /* */ "CK_STREAMPTN"_Stz,    // CK_STREAMPTN
+  /* */ "CK_STREAMSET"_Stz,    // CK_STREAMSET
   /* */ "CK_SUBSET"_Stz,       // CK_SUBSET
 
   /* */ "CK_TABLE"_Stz,        // CK_TABLE
+  /* */ "CK_TABLELIST"_Stz,    // CK_TABLELIST
+  /* */ "CK_TABLENM"_Stz,      // CK_TABLENM
+  /* */ "CK_TABLEPTN"_Stz,     // CK_TABLEPTN
+  /* */ "CK_TABLESIZE"_Stz,    // CK_TABLESIZE
+  /* */ "CK_TBLSYN"_Stz,       // CK_TBLSYN
   /* */ "CK_TERM"_Stz,         // CK_TERM
-  /* */ "CK_TYPE"_Stz,         // CK_TYPE
+  /* */ "CK_TOP"_Stz,          // CK_TOP
+  /* */ "CK_TOPOLOGY"_Stz,     // CK_TOPOLOGY
 
-  /* */ "CK_UBOUND"_Stz,       // CK_UBOUND
   /* */ "CK_UNIQUE"_Stz,       // CK_UNIQUE
+
+  /* */ "CK_WHERE"_Stz,        // CK_WHERE
 
   /* */ "ENUMS"_Stz
 };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 static Stz* aCK_short[]
 {
   /* */ "NONE"_Stz,
-    
-  /* */ "aggElist"_Stz,        // CK_AGGELIST
-  /* */ "aggLevel"_Stz,        // CK_AGGLEVEL
-  /* */ "aggreg"_Stz,          // CK_AGGREG
-  /* */ "aggregates"_Stz,      // CK_AGGREGATES
-  /* */ "as"_Stz,              // CK_AS
-  
-  /* */ "board"_Stz,           // CK_BOARD
 
-  /* */ "calc"_Stz,            // CK_CALC
-  /* */ "candIndex"_Stz,       // CK_CANDINDEX
-  /* */ "combine"_Stz,         // CK_COMBINE
+  /* */ "absJoin"_Stz,         // CK_ABSJOIN
+  /* */ "aggreg"_Stz,          // CK_AGGREG
+  /* */ "andPred"_Stz,         // CK_ANDPRED
+  /* */ "as"_Stz,              // CK_AS
+
+  /* */ "boolCalc"_Stz,        // CK_BOOLCALC
+  /* */ "bound"_Stz,           // CK_BOUND
+  /* */ "bounds"_Stz,          // CK_BOUNDS
+
+  /* */ "call"_Stz,            // CK_CALL
+  /* */ "cast"_Stz,            // CK_CAST
+  /* */ "cmpPred"_Stz,         // CK_CMPPRED
+  /* */ "combined"_Stz,        // CK_COMBINED
+  /* */ "constraint"_Stz,      // CK_CONSTRAINT
+  /* */ "correlation"_Stz,     // CK_CORRELATION
+  /* */ "costJoining"_Stz,     // CK_COSTJOINING
+  /* */ "costNetwork"_Stz,     // CK_COSTNETWORK
+  /* */ "costQuery"_Stz,       // CK_COSTSTREAM
+  /* */ "costUnicast"_Stz,     // CK_COSTUNICAST
+  /* */ "crossJoin"_Stz,       // CK_CROSSJOIN
 
   /* */ "debug"_Stz,           // CK_DEBUG
+  /* */ "deck"_Stz,            // CK_DECK
   /* */ "direction"_Stz,       // CK_DIRECTION
 
-  /* */ "ebound"_Stz,          // CK_EBOUND
-  /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
-  /* */ "exprBool"_Stz,        // CK_EXPRBOOL
 
   /* */ "filter"_Stz,          // CK_FILTER
-  /* */ "filtElist"_Stz,       // CK_FILTELIST
+  /* */ "filtPred"_Stz,        // CK_FILTPRED
+  /* */ "filtPredList"_Stz,    // CK_FILTPREDLIST
+  /* */ "flat"_Stz,            // CK_FLAT
+  /* */ "fold"_Stz,            // CK_FOLD
+  /* */ "foldElist"_Stz,       // CK_FOLDELIST
+  /* */ "from"_Stz,            // CK_FROM
 
-  /* */ "gbyElist"_Stz,        // CK_GBYELIST
-  /* */ "generate"_Stz,        // CK_GENERATE
+  /* */ "gbyAgg"_Stz,          // CK_GBYAGG
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "having"_Stz,          // CK_HAVING
-  
-  /* */ "{index}"_Stz,         // CK_INDEX
+  /* */ "hshCol"_Stz,          // CK_HSHCOL
+
+  /* */ "idxCol"_Stz,          // CK_IDXCOL
+  /* */ "idxColList"_Stz,      // CK_IDXCOLLIST
+  /* */ "index"_Stz,           // CK_INDEX
   /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
-  /* */ "indexPred"_Stz,       // CK_INDEXPRED
+  /* */ "indexList"_Stz,       // CK_INDEXLIST
+  /* */ "indexNm"_Stz,         // CK_INDEXNM
   /* */ "indexScan"_Stz,       // CK_INDEXSCAN
-  
-  /* */ "lbound"_Stz,          // CK_LBOUND
+
+  /* */ "joinCast"_Stz,        // CK_JOINCAST
+  /* */ "joinEstimate"_Stz,    // CK_JOINESTIMATE
+  /* */ "joinOrder"_Stz,       // CK_JOINORDER
+  /* */ "joinOrdering"_Stz,    // CK_JOINORDERING
+  /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
+
+  /* */ "key"_Stz,             // CK_KEY
+  /* */ "keyExists"_Stz,       // CK_KEYEXISTS
+  /* */ "keyNotExists"_Stz,    // CK_KEYNOTEXISTS
+
+  /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
 
-  /* */ "mode"_Stz,            // CK_MODE
+  /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
+  /* */ "needed"_Stz,          // CK_NEEDED
+  /* */ "note"_Stz,            // CK_NOTE
+  /* */ "notPred"_Stz,         // CK_NOTPRED
 
-  /* */ "name"_Stz,            // CK_NAME
-
-  /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
-  /* */ "option"_Stz,          // CK_OPTION
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
+  /* */ "orPred"_Stz,          // CK_ORPRED
+  /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
+  /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 
-  /* */ "predAnd"_Stz,         // CK_PREDAND
-  /* */ "predCmp"_Stz,         // CK_PREDCMP
-  /* */ "predOr"_Stz,          // CK_PREDOR
   /* */ "project"_Stz,         // CK_PROJECT
-  /* */ "projElist"_Stz,       // CK_PROJELIST
+  /* */ "projection"_Stz,      // CK_PROJECTION
 
-  /* */ "rbound"_Stz,          // CK_RBOUND
-  /* */ "rows"_Stz,            // CK_ROWS
+  /* */ "rowCount"_Stz,        // CK_ROWCOUNT
+  /* */ "rowSize"_Stz,         // CK_ROWSIZE
+  /* */ "rpnCalc"_Stz,         // CK_RPNCALC
   /* */ "rpnTerms"_Stz,        // CK_RPNTERMS
 
-  /* */ "sbyElist"_Stz,        // CK_SBYELIST
   /* */ "scan"_Stz,            // CK_SCAN
+  /* */ "section"_Stz,         // CK_SECTION
   /* */ "sendSE"_Stz,          // CK_SEND
   /* */ "sendKind"_Stz,        // CK_SENDKIND
-  /* */ "sends"_Stz,           // CK_SENDS
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "stageTopo"_Stz,       // CK_STAGETOPO
-  /* */ "stream"_Stz,          // CK_STREAM
-  /* */ "streamCol"_Stz,       // CK_STREAMCOL
-  /* */ "streamColList"_Stz,   // CK_STREAMCOLLIST
-  /* */ "streamElist"_Stz,     // CK_STREAMELIST
+  /* */ "streamHead"_Stz,      // CK_STREAMHEAD
+  /* */ "streamJoin"_Stz,      // CK_STREAMJOIN
+  /* */ "streamKey"_Stz,       // CK_STREAMKEY
+  /* */ "streamPer"_Stz,       // CK_STREAMPER
+  /* */ "streamPtn"_Stz,       // CK_STREAMPTN
+  /* */ "streamPrmAll"_Stz,    // CK_STREAMSET
   /* */ "subSet"_Stz,          // CK_SUBSET
 
-  /* */ "{table}"_Stz,         // CK_TABLE
+  /* */ "table"_Stz,           // CK_TABLE
+  /* */ "tableList"_Stz,       // CK_TABLELIST
+  /* */ "tableNm"_Stz,         // CK_TABLENM
+  /* */ "tablePtn"_Stz,        // CK_TABLEPTN
+  /* */ "tableSize"_Stz,       // CK_TABLESIZE
+  /* */ "tblSyn"_Stz,          // CK_TBLSYN
   /* */ "term"_Stz,            // CK_TERM
-  /* */ "type"_Stz,            // CK_TYPE
+  /* */ "top"_Stz,             // CK_TOP
+  /* */ "topology"_Stz,        // CK_TOPOLOGY
 
-  /* */ "ubound"_Stz,          // CK_UBOUND
   /* */ "unique"_Stz,          // CK_UNIQUE
 
+  /* */ "where"_Stz,           // CK_WHERE
+
   /* */ "ENUMS"_Stz
-};
-
-static Stz* aCK_op[]
-{
-  /* */ "NONE"_Stz,
-    
-  /* */ "(none)"_Stz,          // CK_AGGELIST
-  /* */ "(none)"_Stz,          // CK_AGGLEVEL
-  /* */ "aggreg   "_Stz,       // CK_AGGREG
-  /* */ "(none)"_Stz,          // CK_AGGREGATES
-  /* */ "(none)"_Stz,          // CK_AS
-
-  /* */ "(none)"_Stz,          // CK_BOARD
-
-  /* */ "(none)"_Stz,          // CK_CALC
-  /* */ "(none)"_Stz,          // CK_CANDINDEX
-  /* */ "combined  0"_Stz,     // CK_COMBINE
-
-  /* */ "(none)"_Stz,          // CK_DEBUG
-  /* */ "(none)"_Stz,          // CK_DIRECTION
-
-  /* */ "(none)"_Stz,          // CK_EBOUND
-  /* */ "(none)"_Stz,          // CK_EXISTS
-  /* */ "(none)"_Stz,          // CK_EXPR
-  /* */ "(none)"_Stz,          // CK_EXPRBOOL
-
-  /* */ "filter   "_Stz,       // CK_FILTER
-  /* */ "(none)"_Stz,          // CK_FILTELIST
-
-  /* */ "(none)"_Stz,          // CK_GBYELIST
-  /* */ "(none)"_Stz,          // CK_GENERATE
-
-  /* */ "(none)"_Stz,          // CK_HASH
-  /* */ "filter   "_Stz,       // CK_HAVING
-  
-  /* */ "(none)"_Stz,          // CK_INDEX
-  /* */ "indexJoin "_Stz,      // CK_INDEXJOIN
-  /* */ "(none)"_Stz,          // CK_INDEXPRED
-  /* */ "indexScan "_Stz,      // CK_INDEXSCAN
-  
-  /* */ "(none)"_Stz,          // CK_LBOUND
-  /* */ "limit     "_Stz,      // CK_LIMIT
-    
-  /* */ "(none)"_Stz,          // CK_MODE
-
-  /* */ "(none)"_Stz,          // CK_NAME
-
-  /* */ "(none)"_Stz,          // CK_OBYELIST
-  /* */ "(none)"_Stz,          // CK_ON
-  /* */ "(none)"_Stz,          // CK_OPTION
-  /* */ "ordagg    "_Stz,      // CK_ORDAGG
-
-  /* */ "(none)"_Stz,          // CK_PREDAND
-  /* */ "(none)"_Stz,          // CK_PREDCMP
-  /* */ "(none)"_Stz,          // CK_PREDOR
-  /* */ "project   "_Stz,      // CK_PROJECT
-  /* */ "(none)"_Stz,          // CK_PROJELIST
-
-  /* */ "(none)"_Stz,          // CK_RBOUND
-  /* */ "(none)"_Stz,          // CK_ROWS
-  /* */ "(none)"_Stz,          // CK_RPNTERMS
-
-  /* */ "(none)"_Stz,          // CK_SBYELIST
-  /* */ "scan       "_Stz,     // CK_SCAN
-  /* */ "(none)"_Stz,          // CK_SEND
-  /* */ "(none)"_Stz,          // CK_SENDKIND
-  /* */ "(none)"_Stz,          // CK_SENDS
-  /* */ "sort       "_Stz,     // CK_SORT
-  /* */ "(none)"_Stz,          // CK_STAGE
-  /* */ "(none)"_Stz,          // CK_STAGETOPO
-  /* */ "(none)"_Stz,          // CK_STREAM
-  /* */ "(none)"_Stz,          // CK_STREAMCOL
-  /* */ "(none)"_Stz,          // CK_STREAMCOLLIST
-  /* */ "(none)"_Stz,          // CK_STREAMELIST
-  /* */ "(none)"_Stz,          // CK_SUBSET
-
-  /* */ "(none)"_Stz,          // CK_TABLE
-  /* */ "(none)"_Stz,          // CK_TERM
-  /* */ "(none)"_Stz,          // CK_TYPE
-
-  /* */ "(none)"_Stz,          // CK_UBOUND
-  /* */ "(none)"_Stz,          // CK_UNIQUE
-
-  /* */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

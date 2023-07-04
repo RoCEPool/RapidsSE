@@ -75,6 +75,24 @@ void DateLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Appends a basic, single line description of the object value into a buffer */
+/*----------------------------------------------------------------------------*/
+void DateLiteral::vDescribeValueOnly(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->eValueType() == Value::VT_DATE);
+  UNUSED(pRootNode);
+
+  if (pNode->bIsNullValue()) {
+    sBuf.vConcat("NULL"_Stz);
+  } else {
+    Dte xDte = pNode->xDateVal();
+    sBuf.vCatSprint("%04lld-%02lld-%02lld"_Stz, xDte.iYear(), xDte.iMonth(), xDte.iDay());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* Gets the date of this expression. NB: call bIsNull() to check if the    */
 /* value is null first.                                                       */
 /*----------------------------------------------------------------------------*/

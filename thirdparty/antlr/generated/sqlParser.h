@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/arjun/Boray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -2643,6 +2643,7 @@ public:
     antlr4::tree::TerminalNode *TRUNCATE();
     antlr4::tree::TerminalNode *TYPE();
     antlr4::tree::TerminalNode *TYPEOF();
+    antlr4::tree::TerminalNode *VALUE();
     antlr4::tree::TerminalNode *WEEK();
     antlr4::tree::TerminalNode *WEEKS();
     antlr4::tree::TerminalNode *WITH_NAMES();
