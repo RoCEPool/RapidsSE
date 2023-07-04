@@ -193,7 +193,7 @@ bool Card_IndexList::bUsesSqyRsl(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* ensure types for all stream-columns                                        */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vTypes_For_stmColOdn(CardIter *pCI)
 {
@@ -204,15 +204,21 @@ void Card_IndexList::vTypes_For_stmColOdn(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  i8 nChosenIndexes = 0;
+
   for (Kid xCI(this); xCI.bEach(CK_INDEX); /**/) {
     xCI.p_index()->vValidate(pCI, iDepth + 1, this);
+    if (xCI.p_index()->pSymbol()->Y_bHas(P_ChosenIndex))
+      nChosenIndexes++;
   }
+
+  RASSERT(nChosenIndexes <= 1);
 }
 
 /*============================================================================*/

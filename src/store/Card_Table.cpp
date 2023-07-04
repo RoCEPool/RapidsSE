@@ -414,8 +414,8 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
 
       p_pred_Of_filter->vMark1(MARK_UP);
 
-      if (p_bound->bIsEBound())
-        p_index->vSet_Choose_index();
+//      if (p_bound->bIsEBound())
+//        p_index->vSet_Choose_index();
 
       return C_CONTINUE_RECURSION;
     };

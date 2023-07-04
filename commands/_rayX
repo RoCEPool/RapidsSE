@@ -15,6 +15,8 @@ CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_partkey);
 
 load partsupp "../TPCH/SF_0001/partsupp.csv";
 
+/glean_interactive
+/weaved
 select p_partkey, p_mfgr, ps_suppkey, ps_supplycost
   from Part,
        PartSupp
