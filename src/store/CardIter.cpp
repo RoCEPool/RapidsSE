@@ -535,8 +535,10 @@ bool CardIter::bEachBoard(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  if (pEachBoard())
+  if (pEachBoard()) {
+    vUsingBoard(G.i_Board);
     return true;
+  }
 
   return false;
 }

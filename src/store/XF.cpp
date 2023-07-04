@@ -109,14 +109,12 @@ void XF::vTransform(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
   m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(m_pCI->G.i_Board);
+  while (m_pCI->bEachBoard())
     XF_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
-  }
+
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(m_pCI->G.i_Board);
 
     //vGroup_InitialAdjustments();
     XF_Move_on::vXF_Move_on(m_pCI);
@@ -201,14 +199,11 @@ void XF::vTransform_passThru(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);
 
   m_pCI->vBoardIteration();
-  while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(m_pCI->G.i_Board);
+  while (m_pCI->bEachBoard())
     XF_Shorten_queryNm::vXF_Shorten_queryNm(m_pCI);
-  }
 
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
-    m_pCI->vUsingBoard(m_pCI->G.i_Board);
 
     XF_table_Analysis::vXF_table_Analysis_passThru(m_pCI,&m_cTableSyn);
     XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
