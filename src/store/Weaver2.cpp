@@ -146,7 +146,7 @@ void Weaver2::vEnd(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
   vConcat_cmd("\n"_Stz);
-  vConcat_cmd("end\n"_Stz);
+  vConcat_cmd("end"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,44 +161,25 @@ void Weaver2::vCppBlock(void)
   i8 nStages = m_pPipelineDef->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
-
-    //vTrace("Code %s:\n%s\n"_Stz,pStageDef->szStageNm(),pStageDef->szCode());
-
     if (pStageDef->bHasCode()) {
       bHasCode = true;
       break;
     }
   }
 
-  if (bHasCode) {
+  if (! bHasCode)
+    return;
 
-//    vTrace("Code %s\n"_Stz, m_pOptStmt->szTextBlock(0));
-//    vTrace("Code %lld\n"_Stz, StrLib::nSize(m_pOptStmt->szTextBlock(0)->azChar()));
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    vDebugPoint();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
 
-    for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
-      StageDef *pStageDef = m_pPipelineDef->pGet(i_Stage);
-//      if (i_Stage)
-//        vConcat_code("\n"_Stz);
-      //vConcat_code(pStageDef->szCode());
-//      vTrace("~~Stage %lld CodeBlock\n"_Stz,i_Stage);
-//      vTrace("%s\n"_Stz,pStageDef->szCode());
-//      vTrace("~~~~~~~~~~~\n"_Stz);
-//      vDebugPoint();
-
-      if (! m_pCodeBlock)
-        m_pCodeBlock = new ExtendedText;
-      m_pCodeBlock->vConcat(pStageDef->pCode());
-    }
-
-//    vTrace("~~Weaver2 CodeBlock\n"_Stz);
-//    m_pCodeBlock->vDump();
-//    vTrace("~~~~~~~~~~~\n"_Stz);
-    vDebugPoint();
+    if (! m_pCodeBlock)
+      m_pCodeBlock = new ExtendedText;
+    m_pCodeBlock->vConcat(pStageDef->pCode());
   }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* weave : ;                                                                  */
@@ -207,8 +188,8 @@ void Weaver2::vSemicolon(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  vConcat_cmd("\n"_Stz);
-  vConcat_cmd(";\n"_Stz);
+  //vConcat_cmd("\n"_Stz);
+  vConcat_cmd(" ;\n"_Stz);
 }
 
 
