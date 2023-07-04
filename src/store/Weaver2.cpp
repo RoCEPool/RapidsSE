@@ -330,6 +330,8 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
 
   if (CK_SEND == eCard)
     return;
+  if (CK_COMBINED == eCard)
+    return;
 
   Card_OP* p_OP = (Card_OP*)pCard;
 
@@ -1048,41 +1050,29 @@ void Weaver2::vWeaveOptStmt2(Board* pBoard)
 
     vStageNext(p_stage);
 
-    //if (pStageDef->bHasCode()) {
+    xCI.G_vMainResynch(p_stage);
+    while (xCI.G_bEachMain()) {
 
-      xCI.G_vMainResynch(p_stage);
-      while (xCI.G_bEachMain()) {
+      if (CK_STAGE == xCI.G.e_MainCard)
+        break;
+      if (CK_CAST == xCI.G.e_MainCard)
+        break;
 
-        if (CK_STAGE == xCI.G.e_MainCard) {
-//          vConcat_cmd("next"_Stz);
-//          if (m_bSawHash)
-//            vConcat_cmd(" hashCast"_Stz);
-//          vEolOp();
-          break;
-        }
+      bool bCommented = true;
+      if (xCI.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
+                                   CK_LIMIT , CK_SCAN     , CK_TABLE,
+                                   CK_NONE))
+        bCommented = false;
 
-        if (xCI.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
-                                     CK_LIMIT , CK_SCAN     , CK_TABLE,
-                                     CK_NONE)) {
-          vOp(xCI.G.p_MainCard);
-        }
-        else
-        if (CK_CAST == xCI.G.e_MainCard ) {
-          //xCI.G_vMainResynch(xCI.pPrevChild());
-          break;
-        }
-        else {
-          vOp(xCI.G.p_MainCard,/*commented*/true);
-        }
-      }
-
-      vDynamic(pStageDef);
-
-      if (xCI.bIsActive() && CK_CAST == xCI.G.e_MainCard) {
-        vOp(xCI.G.p_MainCard);
-      }
+      vOp(xCI.G.p_MainCard,bCommented);
     }
-  //}
+
+    vDynamic(pStageDef);
+
+    RASSERT(xCI.bIsActive());
+    if (CK_CAST == xCI.G.e_MainCard)
+      vOp(xCI.G.p_MainCard);
+  }
 
   vStageLast();
 
