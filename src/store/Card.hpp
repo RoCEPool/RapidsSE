@@ -328,7 +328,7 @@ namespace STORE
     void vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks=false);
 
     void vRenumberRoot(i8 i_Parent);
-    void vRenumberRecursive(Card* pParent=nullptr);
+    void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSameSymbol(Card* pArg);

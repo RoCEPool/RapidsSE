@@ -1037,8 +1037,8 @@ void Weaver2::vWeaveOptStmt(Board* pBoard)
     vDebugPoint();
   }
 
-  //m_pDeck->vDump();
-  vDebugPoint();
+//  m_pDeck->vDump();
+//  vDebugPoint();
 }
 
 /*============================================================================*/

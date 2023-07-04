@@ -1055,7 +1055,7 @@ void CardIter::vEndTransform(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.pDeck->vRenumberRecursive();
+  vRenumberCards();
 
   //m_pCardCtl->vUseXform();
   // UNDO: Card::vConsistencyCheck(m_pDeck, m_iXform);

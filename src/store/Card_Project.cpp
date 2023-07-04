@@ -329,7 +329,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 //  pCI->G_vMainResynch();
   vAppend(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
 

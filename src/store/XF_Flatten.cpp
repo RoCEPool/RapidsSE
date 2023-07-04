@@ -365,7 +365,7 @@ void XF_Flatten::vFlatten_10_F(void)
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
-  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vRenumberCards();
   m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->G.pDeck->vClearMarksRecursive();

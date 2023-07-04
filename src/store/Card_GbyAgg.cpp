@@ -143,7 +143,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
 
@@ -236,7 +236,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
 
   pCI->Analysis.m_pProjection_prior = pSub_projection();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +262,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCarryForward->GbyAgg.m_nBumpBy = 0;
   }
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 
   pCI->vPrintBoard(__LINE__);
 }

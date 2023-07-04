@@ -487,7 +487,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
     Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
   }
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 
@@ -587,7 +587,7 @@ void Card_Table::vSmooth(CardIter* pCI)
   pCI->G.p_table->pSymbol()->Y_vSet(P_Smoothed);
 
   pCI->G.p_table->vUpdate_projection(pCI);
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,7 +601,7 @@ void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   RASSERT(pCarryForward->Table.m_bReproject);
   pCI->G.p_table->vUpdate_projection(pCI);
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -75,7 +75,7 @@ void XF_Early_projection::vXF_Early_projection(void)
 
   m_pCI->G_vRestart();
 
-  m_pCI->G.pDeck->vRenumberRecursive();
+  m_pCI->vRenumberCards();
 
   m_pCI->vPrintBoard();
 

@@ -65,7 +65,7 @@ void Card_Having::vSmooth(CardIter* pCI, bool bSawProject)
   bool bBump = ! bSawProject;
 
   vCorrect_After_Inject(pCI, bBump);
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->Analysis.m_pProjection_prior = pSub_projection();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

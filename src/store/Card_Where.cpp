@@ -264,7 +264,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     pCI->Sqy.m_pTerm_sqCall->vSymbol(x_Symbol_stmCol1);
   }
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

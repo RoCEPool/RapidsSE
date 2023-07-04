@@ -1368,6 +1368,8 @@ void Card::vRenumberRoot(i8 i_Board)
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
+  m_i_Child = i_Board;
+
   vBearing(nullptr);
 
   i8 iSubCardNo = 0;
@@ -1390,6 +1392,7 @@ void Card::vRenumberRecursive(Card* pParent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+  RASSERT(pParent);
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
   vBearing(pParent);
