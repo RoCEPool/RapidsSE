@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* XF_Make_Code.cpp -- Make Simpler                                            */
+/* XF_Synthesise_Code.cpp -- Make Simpler                                            */
 /*============================================================================*/
 
-#include "XF_Make_Code.hpp"
+#include "XF_Synthesise_Code.hpp"
 
 #include "Bench.hpp"
 #include "Board.hpp"
@@ -20,18 +20,18 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Make_Code, CN_XF_MAKE_CODE)
-__aNewFunction(XF_Make_Code, CN_XF_MAKE_CODE)
-__vDeleteFunction(XF_Make_Code, CN_XF_MAKE_CODE)
-__aFooterFunction(XF_Make_Code)
+__pCastFunction(STORE, XF_Synthesise_Code, CN_XF_SYNTHESISE_CODE)
+__aNewFunction(XF_Synthesise_Code, CN_XF_SYNTHESISE_CODE)
+__vDeleteFunction(XF_Synthesise_Code, CN_XF_SYNTHESISE_CODE)
+__aFooterFunction(XF_Synthesise_Code)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_Make_Code::XF_Make_Code(CardIter* pCI)
-: Object(CN_XF_MAKE_CODE)
+XF_Synthesise_Code::XF_Synthesise_Code(CardIter* pCI)
+: Object(CN_XF_SYNTHESISE_CODE)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   m_pCI = pCI;
 
@@ -41,17 +41,17 @@ XF_Make_Code::XF_Make_Code(CardIter* pCI)
 
   m_pStreamDef_prior = nullptr;
 
-  _checkInitialised_(CN_XF_MAKE_CODE);
+  _checkInitialised_(CN_XF_SYNTHESISE_CODE);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-XF_Make_Code::~XF_Make_Code(void) noexcept(false)
+XF_Synthesise_Code::~XF_Synthesise_Code(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   delete m_pPipelineDef;
 }
@@ -63,11 +63,11 @@ XF_Make_Code::~XF_Make_Code(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vXF_Make_Code(CardIter* pCI)
+void XF_Synthesise_Code::vXF_Make_Code(CardIter* pCI)
 {
   _static_
 
-  XF_Make_Code* pXF_Make_Code = new XF_Make_Code(pCI);
+  XF_Synthesise_Code* pXF_Make_Code = new XF_Synthesise_Code(pCI);
   pXF_Make_Code->vSynthesise();
 
   PipelineDef* pPipelineDef = pXF_Make_Code->pPipelineDef();
@@ -90,9 +90,9 @@ void XF_Make_Code::vXF_Make_Code(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* retrieve m_pPipelineDef                                                    */
 /*----------------------------------------------------------------------------*/
-PipelineDef* XF_Make_Code::pPipelineDef(void)
+PipelineDef* XF_Synthesise_Code::pPipelineDef(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   return m_pPipelineDef;
 }
@@ -100,9 +100,9 @@ PipelineDef* XF_Make_Code::pPipelineDef(void)
 /*----------------------------------------------------------------------------*/
 /* store m_pPipelineDef                                                       */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vPipelineDef(PipelineDef* pPipelineDef)
+void XF_Synthesise_Code::vPipelineDef(PipelineDef* pPipelineDef)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   m_pPipelineDef = pPipelineDef;
 }
@@ -111,9 +111,9 @@ void XF_Make_Code::vPipelineDef(PipelineDef* pPipelineDef)
 /*----------------------------------------------------------------------------*/
 /* call synthesiser                                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vSynthesise(void)
+void XF_Synthesise_Code::vSynthesise(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
 
@@ -134,9 +134,9 @@ void XF_Make_Code::vSynthesise(void)
 /*----------------------------------------------------------------------------*/
 /* craft pipeline def                                                         */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vCraftPipelineDef(Board* pBoard)
+void XF_Synthesise_Code::vCraftPipelineDef(Board* pBoard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   s32 sQueryNm = pBoard->pBench()->pOptimiser()->szQueryNm();
 
@@ -168,9 +168,9 @@ void XF_Make_Code::vCraftPipelineDef(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* craft stage def                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vCraftStageDef(Card_Stage* p_stage)
+void XF_Synthesise_Code::vCraftStageDef(Card_Stage* p_stage)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   m_pStageDef = new StageDef(m_pPipelineDef->nItems(),
                              p_stage->szSymbol(),
@@ -181,9 +181,9 @@ void XF_Make_Code::vCraftStageDef(Card_Stage* p_stage)
 /*----------------------------------------------------------------------------*/
 /* craft op def                                                               */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vCraftOpDef(Card_OP* p_OP)
+void XF_Synthesise_Code::vCraftOpDef(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   if (p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;
@@ -211,9 +211,9 @@ void XF_Make_Code::vCraftOpDef(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft arg def                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vCraftArgDefs(Card_OP* p_OP)
+void XF_Synthesise_Code::vCraftArgDefs(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   s2K sExpr;
   s2K sConstraint;
@@ -368,9 +368,9 @@ void XF_Make_Code::vCraftArgDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft indexes                                                              */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vCraftIndexes(Card_OP* p_OP)
+void XF_Synthesise_Code::vCraftIndexes(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   eCK eCard = p_OP->eCard();
 
@@ -393,9 +393,9 @@ void XF_Make_Code::vCraftIndexes(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft index def's                                                          */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vCraftIndexDefs(Card_OP* p_OP)
+void XF_Synthesise_Code::vCraftIndexDefs(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   eCK eCard = p_OP->eCard();
 
@@ -412,9 +412,9 @@ void XF_Make_Code::vCraftIndexDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* craft stream def's                                                         */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vCraftStreamDefs(Card_OP* p_OP)
+void XF_Synthesise_Code::vCraftStreamDefs(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
@@ -445,9 +445,9 @@ void XF_Make_Code::vCraftStreamDefs(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vUpdateColsReq(Card_OP* p_OP)
+void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   eCK eCard_OP = p_OP->eCard();
 
@@ -506,9 +506,9 @@ void XF_Make_Code::vUpdateColsReq(Card_OP* p_OP)
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq, Card_Filter* p_filter)
+void XF_Synthesise_Code::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq, Card_Filter* p_filter)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
   vUpdateColsReq_terms(p_table, pColsReq,p_boolCalc);
@@ -517,9 +517,9 @@ void XF_Make_Code::vUpdateColsReq_filter(Card_Table* p_table, ColsReq* pColsReq,
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq, Card_Project* p_project)
+void XF_Synthesise_Code::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq, Card_Project* p_project)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   Card_Projection* p_projection = p_project->pSub_projection();
   vUpdateColsReq_terms(p_table, pColsReq,p_projection);
@@ -528,9 +528,9 @@ void XF_Make_Code::vUpdateColsReq_project(Card_Table* p_table, ColsReq* pColsReq
 /*----------------------------------------------------------------------------*/
 /* update the current cols required                                           */
 /*----------------------------------------------------------------------------*/
-void XF_Make_Code::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card* pSubCard)
+void XF_Synthesise_Code::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pColsReq, Card* pSubCard)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MAKE_CODE, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -19,7 +19,7 @@
 #include "XF_Early_projection.hpp"
 #include "XF_Flatten.hpp"
 #include "XF_Individuate_filter.hpp"
-#include "XF_Make_Code.hpp"
+#include "XF_Synthesise_Code.hpp"
 #include "XF_Morph_scan_To_indexScan.hpp"
 #include "XF_Morph_table_To_EEop.hpp"
 #include "XF_Move_on.hpp"
@@ -187,7 +187,7 @@ void XF::vTransform(void)
   m_pCI->m_pBench->vMadeWeavable(true);
 
 
-  XF_Make_Code::vXF_Make_Code(m_pCI);
+  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 
 }
 
@@ -233,7 +233,7 @@ void XF::vTransform_passThru(void)
 
   XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
-  XF_Make_Code::vXF_Make_Code(m_pCI);
+  XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 }
 
 /*----------------------------------------------------------------------------*/

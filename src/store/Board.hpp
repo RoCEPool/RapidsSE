@@ -200,6 +200,7 @@ namespace STORE
 
     SubQuery* pSubQuery(void);
 
+    void vRenumberCards(void);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);

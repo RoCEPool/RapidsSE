@@ -607,6 +607,16 @@ void Board::vBoardNo(i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* get sub-query                                                              */
 /*----------------------------------------------------------------------------*/
+void Board::vRenumberCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_pCard_Deck->vRenumberRoot(m_i_Board);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-query                                                              */
+/*----------------------------------------------------------------------------*/
 SubQuery* Board::pSubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);

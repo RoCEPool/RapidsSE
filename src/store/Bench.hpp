@@ -72,6 +72,7 @@ namespace STORE
     bool bMadeCode(void);
     void vMadeCode(bool bMadeCode);
 
+    void vRenumberCards(void);
 
   private:
     Footer* aFooter(void);

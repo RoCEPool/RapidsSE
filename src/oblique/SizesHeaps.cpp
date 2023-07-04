@@ -259,7 +259,7 @@
 #include "OpDef.hpp"
 #include "PipelineDef.hpp"
 #include "StageDef.hpp"
-#include "XF_Make_Code.hpp"
+#include "XF_Synthesise_Code.hpp"
 #include "Ppy.hpp"
 #include "Symbol.hpp"
 #include "Weaver2.hpp"
@@ -757,17 +757,16 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_AS_REVIEW,                sizeof(XF_as_Review),             HT_T_TINY    , FILL },
   {CN_XF_COLNM_TO_STMCOL,          sizeof(XF_colNm_To_stmCol),       HT_T_TINY    , FILL },
   {CN_XF_CULL_NONUSED_BOUND,       sizeof(XF_Cull_NonUsed_bound),    HT_T_TINY    , FILL },
-  {CN_XF_CULL_USED_BOUND,          sizeof(XF_Cull_Used_bound),       HT_T_TINY    , FILL },
-  {CN_XF_CUT_SORT,                 sizeof(XF_Cut_sort),              HT_T_TINY    , FILL },
-  {CN_XF_DEDUPE_AS,                sizeof(XF_Dedupe_as),             HT_T_TINY    , FILL },
-  {CN_XF_DELETE_FLAT,              sizeof(XF_Delete_flat),           HT_T_TINY    , FILL },
-  {CN_XF_DELETE_UNNEEDED,          sizeof(XF_Delete_Unneeded),       HT_T_TINY    , FILL },
-  {CN_XF_DERIVE_PROJECTION_KEY,    sizeof(XF_Derive_projection_key), HT_T_TINY    , FILL },
-  {CN_XF_EARLY_PROJECTION,         sizeof(XF_Early_projection),      HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN,                  sizeof(XF_Flatten),               HT_T_TINY    , FILL },
-  {CN_XF_INDEX_ANALYSIS,           sizeof(XF_index_Analysis),        HT_T_TINY    , FILL },
+  {CN_XF_CULL_USED_BOUND,          sizeof(XF_Cull_Used_bound),          HT_T_TINY    , FILL },
+  {CN_XF_CUT_SORT,                 sizeof(XF_Cut_sort),                 HT_T_TINY    , FILL },
+  {CN_XF_DEDUPE_AS,                sizeof(XF_Dedupe_as),                HT_T_TINY    , FILL },
+  {CN_XF_DELETE_FLAT,              sizeof(XF_Delete_flat),              HT_T_TINY    , FILL },
+  {CN_XF_DELETE_UNNEEDED,          sizeof(XF_Delete_Unneeded),          HT_T_TINY    , FILL },
+  {CN_XF_DERIVE_PROJECTION_KEY,    sizeof(XF_Derive_projection_key),    HT_T_TINY    , FILL },
+  {CN_XF_EARLY_PROJECTION,         sizeof(XF_Early_projection),         HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN,                  sizeof(XF_Flatten),                  HT_T_TINY    , FILL },
+  {CN_XF_INDEX_ANALYSIS,           sizeof(XF_index_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,       sizeof(XF_Individuate_filter),       HT_T_TINY    , FILL },
-  {CN_XF_MAKE_CODE,                sizeof(XF_Make_Code),                HT_T_TINY    , FILL },
   {CN_XF_MORPH_SCAN_TO_INDEXSCAN,  sizeof(XF_Morph_scan_To_indexScan),  HT_T_TINY    , FILL },
   {CN_XF_MORPH_TABLE_TO_EEOP,      sizeof(XF_Morph_table_To_EEop),      HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                  sizeof(XF_Move_on),                  HT_T_TINY    , FILL },
@@ -782,6 +781,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_STAGE_CAST,               sizeof(XF_stage_cast),               HT_T_TINY    , FILL },
   {CN_XF_STMCOL_TO_COLNM,          sizeof(XF_stmCol_To_colNm),          HT_T_TINY    , FILL },
   {CN_XF_SUBQUERY_ANALYSIS,        sizeof(XF_subQuery_Analysis),        HT_T_TINY    , FILL },
+  {CN_XF_SYNTHESISE_CODE,          sizeof(XF_Synthesise_Code),          HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,           sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_TBLCOL_TO_STMCOL,         sizeof(XF_tblCol_To_stmCol),         HT_T_TINY    , FILL },
 

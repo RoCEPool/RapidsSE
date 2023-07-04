@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Make_Code.hpp -- Call Synthesiser                                           */
+/* XF_Synthesise_Code.hpp -- Call Synthesiser                                           */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  class XF_Make_Code : public Object
+  class XF_Synthesise_Code : public Object
   {
   private:
 
@@ -30,8 +30,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    XF_Make_Code(CardIter* pCI);
-   ~XF_Make_Code(void) noexcept(false);
+    XF_Synthesise_Code(CardIter* pCI);
+   ~XF_Synthesise_Code(void) noexcept(false);
 
     static void vXF_Make_Code(CardIter* pCI);
 
@@ -66,7 +66,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  XF_Make_Code* _pXF_Make_Code(void* aAddr);
+  XF_Synthesise_Code* _pXF_Synthesise_Code(void* aAddr);
 }
 
 /*============================================================================*/

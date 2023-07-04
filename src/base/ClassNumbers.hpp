@@ -457,7 +457,6 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_FLATTEN,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
-  /* */ CN_XF_MAKE_CODE,
   /* */ CN_XF_MORPH_SCAN_TO_INDEXSCAN,
   /* */ CN_XF_MORPH_TABLE_TO_EEOP,
   /* */ CN_XF_MOVE_ON,
@@ -472,6 +471,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_STAGE_CAST,
   /* */ CN_XF_STMCOL_TO_COLNM,
   /* */ CN_XF_SUBQUERY_ANALYSIS,
+  /* */ CN_XF_SYNTHESISE_CODE,
   /* */ CN_XF_TABLE_ANALYSIS,
   /* */ CN_XF_TBLCOL_TO_STMCOL,
 
@@ -931,7 +931,6 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN"_Stz,                   // CN_XF_FLATTEN
   /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
-  /* */ "XF_MAKE_CODE"_Stz,                 // CN_XF_MAKE_CODE
   /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,   // CN_XF_MORPH_SCAN_TO_INDEXSCAN
   /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
   /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
@@ -943,9 +942,10 @@ static Stz* aCN[]
   /* */ "XF_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
   /* */ "XF_SCAN_TO_TABLE"_Stz,             // CN_XF_SCAN_TO_TABLE
   /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_SHORTEN_QUERYNM
-  /* */ "XF_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
   /* */ "XF_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
   /* */ "XF_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
+  /* */ "XF_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
+  /* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
   /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
   /* */ "XF_TBLCOL_TO_STMCOL"_Stz,          // CN_XF_TBLCOL_TO_STMCOL
 

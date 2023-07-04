@@ -1362,6 +1362,30 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 /*----------------------------------------------------------------------------*/
 /* renumber subCard's                                                         */
 /*----------------------------------------------------------------------------*/
+void Card::vRenumberRoot(i8 i_Board)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+
+  vBearing(nullptr);
+
+  i8 iSubCardNo = 0;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+
+    pSubCard->v_Child(iSubCardNo++);
+    pSubCard->vRenumberRecursive(this);
+  }
+
+  delete pSubCard_I;
+
+  vBearing();
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber subCard's                                                         */
+/*----------------------------------------------------------------------------*/
 void Card::vRenumberRecursive(Card* pParent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
