@@ -38,8 +38,7 @@ namespace STORE
    ~Weaver2(void) noexcept(false);
   
     void vWeaveOptStmt(Board* pBoard);
-    void vWeaveOptStmt2(Board* pBoard);
-    ExtendedText* pOptStmt(void);
+     ExtendedText* pOptStmt(void);
     void vOptStmt(ExtendedText* pOptSmt);
 
     ExtendedText* pCodeBlock(void);

@@ -981,48 +981,6 @@ void Weaver2::vWeaveOptStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-#if 1
-  vWeaveOptStmt2(pBoard);
-  return;
-#else
-  RASSERT(BK_SUBQUERY == pBoard->eBoardKind());
-
-  m_i_Stage = 0;
-  m_i_Op_stage = 0;
-  m_sOptStmt = ""_Stz;
-  
-  m_pBoard = pBoard;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  vPipeline();
-  vTags();
-  vBegin();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vStageFirst();
-
-  CardIter xCI(m_pBoard->pDeck());
-  while (xCI.G_bEachMain())
-    vCard(xCI.G.p_MainCard);
-
-  vStageLast();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  vEnd();
-  vCppBlock();
-  vSemicolon();
-
-  //vTrace("%s\n"_Stz, szOptStmt());
-#endif
-}
-/*----------------------------------------------------------------------------*/
-void Weaver2::vWeaveOptStmt2(Board* pBoard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
-
   RASSERT(BK_SUBQUERY == pBoard->eBoardKind());
 
   m_i_Stage = 0;
