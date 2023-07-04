@@ -3500,6 +3500,20 @@ bool StrLib::bIsSlash(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is string all whitespace                                                   */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsWhiteSpaces(char* ps)
+{
+  _static_
+
+  for (char* azCrs = ps; *azCrs; azCrs++)
+    if (! bIsWhite(*azCrs))
+      return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsSignleQuote: is char a single quote?                                    */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsSingleQuote(const char c)

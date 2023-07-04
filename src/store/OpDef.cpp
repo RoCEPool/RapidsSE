@@ -156,6 +156,29 @@ ArgDef* OpDef::pArgDef(Stz* szArgNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get arg def by name (provided it has a value)                              */
+/*----------------------------------------------------------------------------*/
+ArgDef* OpDef::pArgDef_expectingVal(Stz* szArgNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  ArgDef *pArgDef = this->pArgDef(szArgNm);
+  if (! pArgDef)
+    return nullptr;
+
+  Stz* szArgVal = pArgDef->szArgVal();
+  if (! szArgVal)
+    return nullptr;
+
+  if (StrLib::bIsEmpty(szArgVal->azChar()) ||
+      StrLib::bIsWhiteSpaces(szArgVal->azChar()))
+    return nullptr;
+
+  return pArgDef;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 ArgDef* OpDef::pArgDef_expr(void)
@@ -436,7 +459,7 @@ void OpDef::vValidate(void)
     RASSERT(3 == nArgs());
     RASSERT(pArgDef("tableNm"_Stz));
     RASSERT(pArgDef("indexNm"_Stz));
-    RASSERT(pArgDef("expr"_Stz));
+    RASSERT(pArgDef_expectingVal("expr"_Stz));
 
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);

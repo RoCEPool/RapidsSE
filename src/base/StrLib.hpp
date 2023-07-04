@@ -204,6 +204,7 @@ namespace BASE
     static bool  bIsUnderscore(const char c);
     static bool  bIsUpperCase(const char c);
     static bool  bIsWhite(const char c);
+    static bool  bIsWhiteSpaces(char* ps);
     static bool  bIsX(const char c);
 
     static char* acLast(const char* s);

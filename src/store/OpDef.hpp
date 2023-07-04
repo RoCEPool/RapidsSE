@@ -55,6 +55,7 @@ namespace STORE
     i8      nArgs(void);
     ArgDef* pArgDef(i8 i_Arg);
     ArgDef* pArgDef(Stz* szArgNm);
+    ArgDef* pArgDef_expectingVal(Stz* szArgNm);
     ArgDef* pArgDef_expr(void);
     ArgDef* pArgDef_constraint(void);
 
