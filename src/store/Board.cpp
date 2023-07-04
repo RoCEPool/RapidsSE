@@ -556,7 +556,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szDescription)
+void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 

@@ -1782,7 +1782,7 @@ void CardIter::vPrintBoard(i8 iLineNo)
   if (!m_pCardCtl->bBoardPrint())
     return;
 
-  G.pBoard->vPrintBoard(szXdesc());
+  G.pBoard->vPrintBoard(this,szXdesc());
 
   s256 sWhere;
   sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXform());

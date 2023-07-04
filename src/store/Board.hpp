@@ -196,7 +196,7 @@ namespace STORE
     void vPinTitle(Ribbon* pRibbon,
                    i8 iTransformNo,
                    Stz* szExplain=nullptr);
-    void vPrintBoard(Stz* szDescription=nullptr);
+    void vPrintBoard(CardIter* pCI, Stz* szDescription=nullptr);
 
     SubQuery* pSubQuery(void);
 
