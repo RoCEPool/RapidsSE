@@ -2104,6 +2104,16 @@ void CardIter::G_vRemoveMain(eCK eCrossCheck)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove main card from deck (do not clear M members or registers)           */
+/*----------------------------------------------------------------------------*/
+void CardIter::vRenumberCards(void)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  m_pBench->vRenumberCards();
+}
+
+/*----------------------------------------------------------------------------*/
 /* resolve prior expr of given term (find right-to-left)                      */
 /*----------------------------------------------------------------------------*/
 Card_Expr* CardIter::pResolvePrior_expr(Card_Term* p_term)

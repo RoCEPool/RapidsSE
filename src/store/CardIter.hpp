@@ -171,6 +171,7 @@ namespace STORE
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
     void G_vRemoveMain(eCK eCrossCheck);
+    void vRenumberCards(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Projection* pResolvePrior_projection(void);
     void vRestart(void);

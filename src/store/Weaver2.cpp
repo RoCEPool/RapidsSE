@@ -1036,6 +1036,9 @@ void Weaver2::vWeaveOptStmt(Board* pBoard)
       m_pCodeBlock->vDump();
     vDebugPoint();
   }
+
+  //m_pDeck->vDump();
+  vDebugPoint();
 }
 
 /*============================================================================*/
