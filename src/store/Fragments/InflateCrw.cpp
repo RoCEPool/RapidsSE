@@ -27,9 +27,9 @@ void vInflateCrwBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-#ifdef WITH_DEBUG_VERSION
-  printf("__OPERATOR_NAME__\n");
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   iaPow10[0] = 1;
   iaPow10[1] = 10;

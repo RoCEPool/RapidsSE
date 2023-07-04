@@ -71,10 +71,11 @@ int __FUNCTION_EOS__(struct Dynamic_T* aDynamicT) {
 
   #include "../src/store/Fragments/vFLAT_FunctionLocals.h"
 
+  paW = &aDynamicT->m_aW[0];
+
   // marker-end
 
   return 0;
-
 }
 
 //function-__FUNCTION_INDEX__

@@ -36,9 +36,9 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-#ifdef WITH_DEBUG_VERSION
-  printf("__OPERATOR_NAME__\n");
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   // FROM
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
@@ -207,9 +207,9 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
   // marker-start
   __L_LABEL__:
 
-#ifdef WITH_DEBUG_VERSION
-  printf("__OPERATOR_NAME__\n");
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   // marker-end
 
@@ -230,9 +230,9 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   // marker-start
   __L_LABEL__:
 
-#ifdef WITH_DEBUG_VERSION
-  printf("__OPERATOR_NAME__\n");
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   iaPow10[0] = 1;
   iaPow10[1] = 10;
@@ -249,8 +249,6 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
   iaPow10[12] = 1000000000000;
   iaPow10[13] = 10000000000000;
   iaPow10[14] = 100000000000000;
-
-  paW = &aDynamicT->m_aW[0];
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the RowPix
@@ -1137,9 +1135,9 @@ void vStreamDefBegin(Dynamic_T* aDynamicT) {
   // STREAMDEF
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#ifdef WITH_DEBUG_VERSION
-  printf("__OPERATOR_NAME__\n");
-#endif
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   struct ColumnInfo xColumnInfo[] = {
       // marker-end
@@ -1198,6 +1196,7 @@ i8 iResetPLKey(Dynamic_T* aDynamicT) {
 void vEosLimit(Dynamic_T* aDynamicT) {
 
   i8 __LIMIT_ROWS__;
+  i8*   paW;
 
   // marker-start
   L_Limit:
@@ -1211,6 +1210,8 @@ void vEosLimit(Dynamic_T* aDynamicT) {
   // marker-end
 
   L_Return:
+  if (paW != &aDynamicT->m_aW[0])
+    NEVER_REACH;
   return;
 }
 

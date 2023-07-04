@@ -13,11 +13,16 @@
 #include "../src/base/ClangDynamic.h"
 
 void vNeverReachCode(i8 iLine) {
-  printf("NEVER_REACH_CODE point in synthesised code was reached at line %lld !!!\n", iLine);
+
   //exit(0);
 }
 
-#define NEVER_REACH vNeverReachCode(__LINE__)
+#define NEVER_REACH  { \
+  printf("NEVER_REACH CODE point in synthesised code was reached at line %lld !!!\n", __LINE__); \
+  aDynamicT->m_iErrorCode = (i8)EC_INTERNAL_ERROR;                                               \
+  printf("%x %x\n", paW, &aDynamicT->m_aW[0]);                                                  \
+  return 0; \
+}
 
 typedef char i1;
 typedef unsigned short u2;

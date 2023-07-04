@@ -320,13 +320,13 @@
       iArg3 = ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
                                                                             \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+        iArg1 = (-1) * iArg1;                                               \
                                                                             \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+        iArg2 = (-1) * iArg2;                                               \
                                                                             \
       if (ivlArg3.m_xIvl.m_bIsNeg)                                          \
-        iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+        iArg3 = (-1) * iArg3;                                               \
                                                                             \
       if (iArg1 > iArg2) {                                                  \
         *(paW++) = 0;                                                       \
@@ -357,13 +357,13 @@
       iArg3 = ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
                                                                             \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+        iArg1 = (-1) * iArg1;                                               \
                                                                             \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+        iArg2 = (-1) * iArg2;                 \
                                                                             \
      if (ivlArg3.m_xIvl.m_bIsNeg)                                           \
-       iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                  \
+       iArg3 = (-1) * iArg3;                  \
                                                                             \
       if (iArg1 > iArg2) {                                                  \
         *(paW++) = 0;                                                       \
@@ -477,6 +477,7 @@
 
 #define _BET_UNKANY(eErrorCode)                                            \
   {                                                                        \
+    iArg3 = *(--paW);                                                      \
     iArg2 = *(--paW);                                                      \
     iArg1 = *(--paW);                                                      \
     *paW++ = C_DATUM_NULL;                                                 \
@@ -484,8 +485,9 @@
 
 #define _BET_ANYUNK(eErrorCode)                                            \
   {                                                                        \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    iArg3 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
     *paW++ = C_DATUM_NULL;                                                 \
   }
 

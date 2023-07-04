@@ -14,6 +14,7 @@
 int vInflateCrwEnd(struct Dynamic_T* aDynamicT)
 {
   {
+    i8* paW;
 
     #include "vFLAT_Parameters_v2.h"
 
@@ -25,6 +26,9 @@ int vInflateCrwEnd(struct Dynamic_T* aDynamicT)
   goto __L_LABEL_LOOP__;
 
   L_Return:
+    if (paW != &aDynamicT->m_aW[0])
+      NEVER_REACH;
+
     goto L_ReturnFinal;
 
 #include "../src/store/vFLAT_InflateColumn.h"
@@ -44,6 +48,8 @@ int vInflateRowIndexEnd(struct Dynamic_T* aDynamicT)
 {
   {
 
+    i8* paW;
+
     #include "vFLAT_Parameters_v2.h"
 
     __L_LABEL_LOOP__:
@@ -54,6 +60,8 @@ int vInflateRowIndexEnd(struct Dynamic_T* aDynamicT)
     goto __L_LABEL_LOOP__;
 
     L_Return:
+    if (paW != &aDynamicT->m_aW[0])
+      NEVER_REACH;
     goto L_ReturnFinal;
 
 #include "../src/store/vFLAT_InflateColumn.h"
@@ -73,12 +81,16 @@ int vInflateRowEnd(struct Dynamic_T* aDynamicT)
 {
   {
 
+    i8* paW;
+
     __L_LABEL_LOOP__:
 
     // marker-start
     goto __L_LABEL_LOOP__;
 
     L_Return:
+    if (paW != &aDynamicT->m_aW[0])
+      NEVER_REACH;
     goto L_ReturnFinal;
 
     L_ReturnFinal:
@@ -96,6 +108,8 @@ int vIndexScanEnd(struct Dynamic_T* aDynamicT)
 {
   {
 
+    i8* paW;
+
 #include "vFLAT_Parameters_v2.h"
 
     __L_LABEL_LOOP__:
@@ -106,6 +120,8 @@ int vIndexScanEnd(struct Dynamic_T* aDynamicT)
     goto __L_LABEL_LOOP__;
 
     L_Return:
+    if (paW != &aDynamicT->m_aW[0])
+      NEVER_REACH;
     goto L_ReturnFinal;
 
 #include "../src/store/vFLAT_InflateColumn.h"
@@ -123,8 +139,12 @@ int vIndexScanEnd(struct Dynamic_T* aDynamicT)
 /*--------------------------------------------------------------------*/
 int iEosEnd(struct Dynamic_T* aDynamicT)
 {
+  i8* paW;
+
   // marker-start
   L_Return:
+    //if (paW != &aDynamicT->m_aW[0])
+    //  NEVER_REACH;
     return 1;
 }
 // marker-end
