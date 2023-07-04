@@ -99,6 +99,8 @@ void Card_IndexScan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pSub_level()->vValidate(pCI,iDepth+1,this);
 
   pSub_indexList()->vValidate(pCI,iDepth+1,this);
+
+  RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
 }
 
 /*============================================================================*/

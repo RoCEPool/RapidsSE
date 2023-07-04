@@ -263,10 +263,18 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  vValidate_mustHave(CK_INDEXNM,CK_IDXCOLLIST,CK_NONE);
+
   if (Card_Bounds* p_bounds = pSub_bounds())
     p_bounds->vValidate(pCI,iDepth+1,this);
-}
 
+  if (pSymbol()->Y_bHas(P_ChosenIndex)) {
+    RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));
+  }
+  else {
+    RASSERT(! pFindPpyRecursive(P_ChosenBound, CK_BOUND));
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */
