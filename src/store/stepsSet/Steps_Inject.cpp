@@ -123,7 +123,7 @@ void Step::vInjectSegViolation(void)
 {
   ENTRY();
 
-  s256 pDumpBuffer = (char*)">>>> Segmentation Violation <<<<<";
+  s256 pDumpBuffer = ">>>> Segmentation Violation <<<<<"_Stz;
 
   m_pDataStack->vPushStr(pDumpBuffer);
 
@@ -146,7 +146,7 @@ void Step::vInjectFPE(void)
 {
   ENTRY();
 
-  s256 pDumpBuffer = (char*)">>>> Divide by zero <<<<<";
+  s256 pDumpBuffer = ">>>> Divide by zero <<<<<"_Stz;
 
   m_pDataStack->vPushStr(pDumpBuffer);
 
@@ -171,7 +171,7 @@ void Step::vInjectILL(void)
 {
   ENTRY();
 
-  s256 pDumpBuffer = (char*)">>>> Illegal Instruction <<<<<";
+  s256 pDumpBuffer = ">>>> Illegal Instruction <<<<<"_Stz;
 
   m_pDataStack->vPushStr(pDumpBuffer);
 
