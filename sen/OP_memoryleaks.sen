@@ -4,15 +4,13 @@
 
 " OP_memoryleaks.sen" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* handler for EV_M_DATAPULSE ...                                             */
-/*----------------------------------------------------------------------------*/
-: memoryleaks_DataMarker \handler
 
-  2 trace!
+/*----------------------------------------------------------------------------*/
+/* Create and pipe out the stream definition                                  */
+/*----------------------------------------------------------------------------*/
+: memoryleaks_sendStreamDef
 
-  //"Operand:- EV_M_DATAPULSE" .verbose
-  PipeIn[].pipeOut
+  "memoryleaks_sendStreamDef" .verbose
 
   // find the C_TDEF_MEMORYLEAKS
   C_TDEF_MEMORYLEAKS op__tableDef_infoSet assert
@@ -22,12 +20,28 @@
 
   // pipeout the streamDef
   StreamDefLft[].pipeOut
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: memoryleaks_DataMarker \handler
+
+//  2 trace!
+
+  //"Operand:- EV_M_DATAPULSE" .verbose
+  PipeIn[].pipeOut
 
   // Check that we're actually tracking memory
   AM::MEMORY::isTracking not if
     EC_MEMORY_NOT_BEING_TRACKED op__execErr
     true
-    traceOff
+//    traceOff
     exit
   then
 
@@ -35,8 +49,9 @@
   // case calling memoryleaks should not report any errors.
   AM::MEMORY::isNotFreeing if
     AM::MEMORY::stopTracking
+    memoryleaks_sendStreamDef   // so that the wireline protocol knows its an empty resultset
     true
-    traceOff
+//    traceOff
     exit
   then
 
@@ -53,14 +68,11 @@
   12 to Counter0[]
 
   begin
-    Counter0[] numAttempts < jobs::numThreshold jobs::numActive <= and
+    numAttempts Counter0[] > jobs::numActive jobs::numThreshold >= and
   while
     numAttempts 1 + to numAttempts
     200 [task].sleepMsec
   repeat
-
-  // Take the second snapshot
-  AM::MEMORY::leaksSnapshot
 
   // If there are no memory leaks then we can exit. Otherwise sleep
   // a little bit and try again until we run out of attempts.
@@ -68,14 +80,18 @@
   12 to Counter0[]
 
   begin
-    Counter0[] numAttempts <
+    numAttempts Counter0[] >
   while
     numAttempts 1 + to numAttempts
 
+    // Take the second object count snapshot
+    AM::MEMORY::leaksSnapshot
+
     AM::MEMORY::hasMemoryLeaks not if
       AM::MEMORY::stopTracking
+      memoryleaks_sendStreamDef   // so that the wireline protocol knows its an empty resultset
       true
-      traceOff
+//      traceOff
       exit
     then
 
@@ -85,12 +101,17 @@
 
   // Time to report the memory leaks
 
+  // Create and send the stream definition. This will populate infoSetTable[].
+  memoryleaks_sendStreamDef
+
   // create a streamSet operand
-  streamSetTable[] streamSet[].new
+  infoSetTable[] streamSet[].new
 
   // Record the memory object allocations
-  StreamSet[].addMemoryLeaks if
-    StreamSet[].Pipeout
+  infoSetTable[] StreamSet[].addMemoryLeaks if
+    StreamSet[].pipeOut
+  else
+    StreamSet[].delete
   then
 
   // Stop tracking memory
@@ -100,7 +121,7 @@
   Marker[].pipeOut
 
   true
-  traceOff
+//  traceOff
 ;
 
 /*----------------------------------------------------------------------------*/

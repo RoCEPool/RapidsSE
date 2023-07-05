@@ -11,8 +11,8 @@
   STD_BOOTFORK_TAG
   "
   define table __memoryLeaks (
-    objectName VARCHAR NOT NULL ,
-    count      INTEGER NOT NULL
+    objectName   VARCHAR NOT NULL ,
+    objectCount  INTEGER NOT NULL
   ) < infoSet > = 1 ;
   "
   api::forkChild  api:executeCheck
