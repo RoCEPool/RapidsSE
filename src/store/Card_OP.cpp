@@ -1105,10 +1105,14 @@ void Card_OP::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexJoin op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpnIndexJoin(Stz* szRpnExpr,
-                           Card_Index* pCard_Index)
+void Card_OP::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_IndexList* pCard_IndexList = pCard_IndexJoin->pSub_indexList();
+
+  Card_Index* pCard_Index =
+    _pCard_Index(pCard_IndexList->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
 
   Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
   if (! pCard_bounds)
@@ -1156,9 +1160,14 @@ void Card_OP::vRpnIndexJoin(Stz* szRpnExpr,
 /*----------------------------------------------------------------------------*/
 /* produce <expr> for indexScan op                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vRpnIndexScan(Stz* szRpnExpr, Card_Index* pCard_Index)
+void Card_OP::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_IndexList* pCard_IndexList = pCard_IndexScan->pSub_indexList();
+
+  Card_Index* pCard_Index =
+      _pCard_Index(pCard_IndexList->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
 
 
   Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();

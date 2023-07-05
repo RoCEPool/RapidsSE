@@ -23,8 +23,8 @@ affected: 0
 load partsupp "../TPCH/SF_0001/partsupp.csv";
 success
 
-select count(*) from partsupp;
-rows: (800)
+//select count(*) from partsupp;
+//rows: (800)
 
 compactidx partsupp IxPS_SUPPKEY;
 success

@@ -584,7 +584,7 @@ void Weaver2::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
   }
   Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
 
-  pCard_IndexJoin->vRpnIndexJoin(sRpnExpr, p_index);
+  pCard_IndexJoin->vRpnIndexJoin(sRpnExpr, pCard_IndexJoin);
 
   if (Card_OuterJoin* p_outerJoin = pCard_IndexJoin->pSub_outerJoin()) {
     if (p_outerJoin->bIsSymbol("left_outer"_Stz))
@@ -617,7 +617,7 @@ void Weaver2::vArgIndexScan(Stz* szOpArgs, Card_IndexScan* pCard_IndexScan)
   Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
   s4K sRpnExpr;
 
-  pCard_IndexScan->vRpnIndexScan(sRpnExpr, p_index);
+  pCard_IndexScan->vRpnIndexScan(sRpnExpr, pCard_IndexScan);
   
   szOpArgs->vCatSprint("%s %s\n"_Stz, p_tableNm->szSymbol(), p_indexNm->szSymbol());
   szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnExpr.szStz());
