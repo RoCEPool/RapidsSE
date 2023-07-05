@@ -220,7 +220,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
       bInflateCrw = true;
       pOpDefScan = pOpDef;
-      continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -239,6 +238,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       bInflateCrw = false;
       bInflateGenerated = true;
       ePrevStencil_v2 = SR_IT;
+      continue;
     }
 
     // generate code for indexScan OP
@@ -1795,11 +1795,11 @@ eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // any OP's to combine ?
-  if (iOpsToCombine == 0) {
-    vTrace("Error: Zero OP's to combine (%s)!!!\n"_Stz,
-           m_szStageNm.azChar());
-    return EC_INVALID_PIPELINE;
-  }
+//  if (iOpsToCombine == 0) {
+//    vTrace("Error: Zero OP's to combine (%s)!!!\n"_Stz,
+//           m_szStageNm.azChar());
+//    return EC_INVALID_PIPELINE;
+//  }
 
   return EC_NONE;
 }
