@@ -62,7 +62,7 @@ void XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_NONUSED_BOUND, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "cull non-used bounds"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "cull non-used bounds"_Stz);
 
   m_pCI->vPrintBoard(__LINE__);
 

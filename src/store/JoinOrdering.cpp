@@ -59,22 +59,22 @@ void JoinOrdering::vJoinOrdering(void)
   // Predicate Pull Up : move suitable where predicates to table filter
 
   // @ mark where predicates wrt. table
-  m_pCI->vTransform(__func__, "put a table @c against where pred"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "put a table @c against where pred"_Stz);
   Card_Where::vMarkWherePredWrtTable(m_pCI);
   m_pCI->vEndTransform();
 
   // move @ marked where predicates to table filter
-  m_pCI->vTransform(__func__, "move @ marked where predicates to table filter"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "move @ marked where predicates to table filter"_Stz);
   Card_Where::vMoveWherePredsToTableFilter(m_pCI);
   m_pCI->vEndTransform();
 
   // cull @ marked where predicates
-  m_pCI->vTransform(__func__, "cull @ marked where predicates"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "cull @ marked where predicates"_Stz);
   Card_Where::vCullMarkedCmpPred(m_pCI);
   m_pCI->vEndTransform();
 
   // delete empty where
-  m_pCI->vTransform(__func__, "delete empty where"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "delete empty where"_Stz);
   Card_Where::vDeleteEmpyWhere(m_pCI);
   m_pCI->vEndTransform();
 
@@ -82,13 +82,13 @@ void JoinOrdering::vJoinOrdering(void)
   // Index Bounds : move table filter predicates to table index bounds
 
   // derive index bounds from table filter
-  m_pCI->vTransform(__func__, "derive index bounds from table filter"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "derive index bounds from table filter"_Stz);
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
   m_pCI->vEndTransform();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix position of table which uses subquery result as pos 0
-  m_pCI->vTransform(__func__, "fix position of table which uses subquery result"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "fix position of table which uses subquery result"_Stz);
   Card_Table::vFixTablePos(m_pCI);
   m_pCI->vEndTransform();
 
@@ -110,7 +110,7 @@ void JoinOrdering::vJoinOrdering(void)
   vPredicateReposition();
 
   // re-derive bounds from filter after join ordering
-  m_pCI->vTransform(__func__, "re-derive bounds from filter after join ordering"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "re-derive bounds from filter after join ordering"_Stz);
   Card_Table::vDeriveBoundsFromFilter(m_pCI);
   m_pCI->vEndTransform();
 }
@@ -127,7 +127,7 @@ void JoinOrdering::vReorderTables(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "join ordering"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "join ordering"_Stz);
 
   File* pFile = nullptr;
 
@@ -340,7 +340,7 @@ void JoinOrdering::vPredicateReposition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 
-  m_pCI->vTransform(__func__, "predicate repositioning post join ordering"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "predicate repositioning post join ordering"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // At Mark Where Pred Wrt Table

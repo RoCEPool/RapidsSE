@@ -157,7 +157,7 @@ namespace STORE
     i8          m_iXform;
     s256        m_sXdesc;
 
-    eXF         m_eXF;
+    eXF         m_eTransform;
 
   private:
     // must be last
@@ -204,6 +204,9 @@ namespace STORE
     SubQuery* pSubQuery(void);
 
     void vRenumberCards(void);
+
+    eXF eTransform(void);
+    void vTransform(eXF eTransform);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);

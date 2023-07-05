@@ -67,7 +67,7 @@ void XF_scan_To_table::vXF_scan_To_table(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SCAN_TO_TABLE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "scan to table"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "scan to table"_Stz);
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain(CK_SCAN))
