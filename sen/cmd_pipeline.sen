@@ -521,14 +521,16 @@
                     LibInfo[].new
                     [job].codeBlock@
                       Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
-                        LibInfo[].compile not if
-                      "COMPILATION FAILED" .
-                      LibInfo[].error .
-                      [job]:retireAndExit
-                    else
-                      LibInfo[].link not if
-                        "DYNAMIC LINKING OF LIBRARY FAILED" .
+                      LibInfo[].compile not if
                         LibInfo[].error .
+                        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
+                        job.sendRejectJob
+                        [job]:retireAndExit
+                      else
+                        LibInfo[].link not if
+                        LibInfo[].error .
+                        EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+                        job.sendRejectJob
                         [job]:retireAndExit
                       then
                     then

@@ -232,6 +232,8 @@ typedef enum eEC // error codes
   EC_SUBQUERY_SELF_REFERENCE,       // SQL Compiler Subsystem
   EC_SUBQUERY_PROJ_TOO_MANY_COLS,   // SQL Compiler Subsystem
   EC_SYNTAX_ERROR,                  // SQL Compiler Subsystem
+  EC_SYNTHCODE_COMPILATION_ERROR,
+  EC_SYNTHCODE_LINKING_ERROR,
   EC_SYSTEM_CLOSED,
 
   /* _T_ */
@@ -504,6 +506,8 @@ static Stz* aEC[] =
   /* EC_SUBQUERY_SELF_REFERENCE       */ (Stz*)"EC_SUBQUERY_SELF_REFERENCE",  // SQL Compiler Subsystem
   /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ (Stz*)"EC_SUBQUERY_PROJ_TOO_MANY_COLS", // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ (Stz*)"syntax error",                // SQL Compiler Subsystem
+  /* EC_SYNTHCODE_COMPILATION_ERROR   */ (Stz*)"Synthesised Code compilation error",
+  /* EC_SYNTHCODE_LINKING_ERROR       */ (Stz*)"Synthesised Code linking error",
   /* EC_SYSTEM_CLOSED                 */ (Stz*)"system is closed",
 
   /* _T_ */
@@ -771,6 +775,8 @@ static Stz* aEC2[] = // error code
   /* EC_SUBQUERY_SELF_REFERENCE       */ (Stz*)"EC_SUBQUERY_SELF_REFERENCE",        // SQL Compiler Subsystem
   /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ (Stz*)"EC_SUBQUERY_PROJ_TOO_MANY_COLS",    // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ (Stz*)"EC_SYNTAX_ERROR",                   // SQL Compiler Subsystem
+  /* EC_SYNTHCODE_COMPILATION_ERROR   */ (Stz*)"EC_SYNTHCODE_COMPILATION_ERROR",
+  /* EC_SYNTHCODE_LINKING_ERROR       */ (Stz*)"EC_SYNTHCODE_LINKING_ERROR",
   /* EC_SYSTEM_CLOSED                 */ (Stz*)"EC_SYSTEM_CLOSED",
 
   /* _T_ */
@@ -1047,6 +1053,8 @@ static Stz* aErrorMsg[] =
   /* EC_SUBQUERY_SELF_REFERENCE       */ (Stz*)"Non-recursive subquery cannot refer to itself",  // SQL Compiler Subsystem
   /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ (Stz*)"Subquery cannot project more than one column",   // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ (Stz*)"syntax error",                // SQL Compiler Subsystem. Custom error string from ANTLR.
+  /* EC_SYNTHCODE_COMPILATION_ERROR   */ (Stz*)"synthesised code compilation error",
+  /* EC_SYNTHCODE_LINKING_ERROR       */ (Stz*)"Synthesised Code linking error",
   /* EC_SYSTEM_CLOSED                 */ (Stz*)"system closed",
 
   /* _T_ */

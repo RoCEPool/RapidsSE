@@ -418,6 +418,8 @@ void Constants::vAddConstantsCpp(void)
   /* 52 */ vAddConstant("EC_SE_NOT_RUNNING"_Stz,     EC_SE_NOT_RUNNING);
   /* 53 */ vAddConstant("EC_SE_UNKNOWN_ERROR"_Stz,   EC_SE_UNKNOWN_ERROR);
   /* 54 */ vAddConstant("EC_SEND_FAILURE"_Stz,       EC_SEND_FAILURE);
+  /*    */ vAddConstant("EC_SYNTHCODE_COMPILATION_ERROR"_Stz, EC_SYNTHCODE_COMPILATION_ERROR);
+  /*    */ vAddConstant("EC_SYNTHCODE_LINKING_ERROR"_Stz,     EC_SYNTHCODE_LINKING_ERROR);
   /*    */ vAddConstant("EC_SYSTEM_CLOSED"_Stz,      EC_SYSTEM_CLOSED);
 
   /*    */ vAddConstant("EC_TABLE_ALREADY_LOADED"_Stz, EC_TABLE_ALREADY_LOADED);

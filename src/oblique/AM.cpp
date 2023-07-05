@@ -1031,12 +1031,15 @@ void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
   // get the error
   eEC eError = pRejectJob->eError();
 
+  AM::vJob_DumpOriginating();
+
   Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
 
   //may not be able to find the job if node loss
-  vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
-  if ( ! pJobFound )
+  if ( ! pJobFound ) {
+    vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
     return;
+  }
 
   // set the error
   pJobFound->vJobError(eError);
