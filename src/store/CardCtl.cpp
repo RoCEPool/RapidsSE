@@ -46,6 +46,8 @@ CardCtl::CardCtl(void)
 //
 //  MemLib::vCopy(m_xaCardCtl_save,    m_xaCardCtl,sizeof(m_xaCardCtl),BASE::CN_CARDCTL);
 
+  m_iPrintNo = 0;
+
   _checkInitialised_(CN_CARDCTL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
@@ -375,6 +377,27 @@ void CardCtl::vPrintNo(i8 i_Card, bool bPrintNo)
   for (i_Card = 1; i_Card < CK_ENUMS; i_Card++)
     m_xaCardCtl[i_Card].m_bPrintNo = bPrintNo;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get print                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 CardCtl::iPrintNo(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  return m_iPrintNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment print                                                            */
+/*----------------------------------------------------------------------------*/
+void CardCtl::vPrintNoInc(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+
+  m_iPrintNo++;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get bPrintValue for card                                                   */
