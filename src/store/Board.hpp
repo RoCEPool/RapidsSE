@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eBK.h"
+#include "eXF.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -155,6 +156,8 @@ namespace STORE
     s256        m_sXform;
     i8          m_iXform;
     s256        m_sXdesc;
+
+    eXF         m_eXF;
 
   private:
     // must be last

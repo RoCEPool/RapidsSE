@@ -46,6 +46,8 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 
   m_pSubQuery = new SubQuery(this);
 
+  m_eXF = XF_NONE;
+
   _checkInitialised_(CN_BOARD);
 
   pBench->vAddBoard(this);
