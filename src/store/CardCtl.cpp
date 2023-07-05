@@ -383,7 +383,7 @@ void CardCtl::vPrintNo(i8 i_Card, bool bPrintNo)
 /*----------------------------------------------------------------------------*/
 i8 CardCtl::iPrintNo(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
 
   return m_iPrintNo;
 }
@@ -393,7 +393,7 @@ i8 CardCtl::iPrintNo(void)
 /*----------------------------------------------------------------------------*/
 void CardCtl::vPrintNoInc(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BENCH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDCTL, _FOOTER_);
 
   m_iPrintNo++;
 }

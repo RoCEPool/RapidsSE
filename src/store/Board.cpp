@@ -556,9 +556,11 @@ void Board::vPinTitle(Ribbon* pRibbon,
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
+void Board::vPrintBoard(Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
 
   Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
 
@@ -568,7 +570,9 @@ void Board::vPrintBoard(CardIter* pCI, Stz* szDescription)
 
   vPinBanners(pRibbon);
 
-  pRibbon->vPrintRibbon();
+  i8 iPrintNo = pCardCtl->iPrintNo();
+  pRibbon->vPrintRibbon(iPrintNo);
+  pCardCtl->vPrintNoInc();
 
   delete pRibbon;
 }
