@@ -2,20 +2,34 @@
 /* _rayY :                                                                    */
 /*============================================================================*/
 
-_nation
+__TPCH_SCHEMA;
 
-load nation "../TPCH/SF_0001/nation.csv";
+// TPCH QUERY 4
+// validate failing
 
-CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
-CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);
-
-/glean_interactive
-/transliterated
 /weaved
-select n_name , n_regionkey
-  from nation
- where n_nationkey < 10
-;
+/glean_interactive
+select o_orderpriority,
+  count(*) as order_count
+from
+  orders
+where o_orderdate >= DATE '1993-07-01'
+  and o_orderdate < DATE '1993-10-01'
+  and
+exists (
+  select
+    *
+  from
+    lineitem
+  where
+    l_orderkey = o_orderkey
+    and l_commitdate < l_receiptdate
+  )
+group by
+  o_orderpriority
+order by
+  o_orderpriority;
+
 
 /*============================================================================*/
 /* end                                                                        */
