@@ -196,7 +196,7 @@ void Optimiser::vDissect(VertexSpec* pm_pUnOptPipeSpec)
   m_pUnOptPipeSpec = pm_pUnOptPipeSpec;
   
   SP_PipeSpec spPipeSpec(m_pUnOptPipeSpec);
-  //vTrace("Optimiser: \n%s\n"_Stz,spPipeSpec.sz());
+  vTrace("Optimiser: \n%s\n"_Stz,spPipeSpec.sz());
       
   m_pDissector->vDissectSpec(m_pUnOptPipeSpec);
 

@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "StageDef.hpp"
+#include "Card_Topology.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -170,11 +171,16 @@ void StageDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGEDEF,_FOOTER_);
 
-  vTrace("%sStageDef: [%lld] %s (Code %p)\n"_Stz,
+  Card_Topology* p_topology = m_pCard_Stage->pSub_topology();
+
+  vTrace("%sStageDef: [%lld] %s Code %p (%s)\n"_Stz,
          Stz::szTab(i_Tab),
          m_i_Stage,
          m_sStageNm.szStz(),
-         szCode());
+         szCode(),
+
+         aYG[p_topology->pSymbol()->Y_iGet(P_StageTopo)]
+         );
 
   // - - - - - - - - - - - - - - - - - - - - - -
 

@@ -17,6 +17,8 @@ load partsupp "../TPCH/SF_0001/partsupp.csv";
 
 /glean_interactive
 /weaved
+/transliterated
+/pipeline_def
 select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_brand, p_mfgr;
 
 /*
