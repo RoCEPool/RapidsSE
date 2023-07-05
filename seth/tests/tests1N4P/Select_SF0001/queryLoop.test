@@ -6,7 +6,7 @@
 LOG 'Running tpchQueries (SF_0001) test in a loop.';
 
 LOOP 1 {
-/*
+
 //------------------------------------------------------------------------------
 LOG 'Create customer ...';
 INCLUDE 'customer.test';
@@ -22,7 +22,7 @@ INCLUDE 'nation.test';
 //------------------------------------------------------------------------------
 LOG 'Create orders ...';
 INCLUDE 'orders.test';
-*/
+
 //------------------------------------------------------------------------------
 LOG 'Create part ...';
 INCLUDE 'part.test';
@@ -30,7 +30,7 @@ INCLUDE 'part.test';
 //------------------------------------------------------------------------------
 LOG 'Create partsupp ...';
 INCLUDE 'partsupp.test';
-/*
+
 //------------------------------------------------------------------------------
 LOG 'Create region ...';
 INCLUDE 'region.test';
@@ -58,7 +58,7 @@ INCLUDE 'selectAgg.test';
 //------------------------------------------------------------------------------
 LOG 'Running selectAggGby...';
 INCLUDE 'selectAggGby.test';
-*/
+
 //------------------------------------------------------------------------------
 LOG 'Running selectJoin...';
 INCLUDE 'selectJoin.test';
