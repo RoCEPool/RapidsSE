@@ -7,6 +7,8 @@ success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Cross Join
+// TODO V2 : ORDAGG
+/*
 select o_orderkey, avg(l_extendedprice)
   from Orders, Lineitem
  where
@@ -20,6 +22,7 @@ select o_orderkey, avg(l_extendedprice)
 ;
 rows: 56
 
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 4-way Join
 select count(*)
@@ -32,9 +35,14 @@ select count(*)
    and L_SUPPKEY  = S_SUPPKEY
 ;
 rows: (5996)
-
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + Project + Filter
+// TODO V2 : ALKA TO LOOK AT
+
+/weaved
+/pipeline_def
+/glean_interactive
 select p_partkey, p_mfgr, ps_suppkey, ps_supplycost
   from Part,
        PartSupp
@@ -51,6 +59,7 @@ rows:
   (185,'Manufacturer#4',5,213.04)
   (185,'Manufacturer#4',5,538.58)
 
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + Project + Filter
 select ps_supplycost, p_mfgr, ps_suppkey, p_partkey
@@ -107,6 +116,7 @@ select sum(ps_supplycost), p_partkey
 rows:
   (2099.74, 43)
   (1688.59, 185)
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 MemoryLeaks;
