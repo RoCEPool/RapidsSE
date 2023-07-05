@@ -2,16 +2,20 @@
 /* _rayY :                                                                    */
 /*============================================================================*/
 
-print "... _rayY";
+_nation
 
-start _rayZ;
+load nation "../TPCH/SF_0001/nation.csv";
 
-print "... startline";
-startline;
+CREATE INDEX IxN_NATIONKEY ON nation(N_NATIONKEY);
+CREATE INDEX IxN_REGIONKEY ON nation(N_REGIONKEY);
 
-//sleep 30;
-
-print "... SHOULD BE RUNNING";
+/glean_interactive
+/transliterated
+/weaved
+select n_name , n_regionkey
+  from nation
+ where n_nationkey < 10
+;
 
 /*============================================================================*/
 /* end                                                                        */
