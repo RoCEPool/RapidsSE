@@ -62,7 +62,7 @@ void XF_Morph_table_To_EEop::vXF_Morph_table_To_EEop(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_TABLE_TO_EEOP, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "morph table to EE op"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "morph table to EE op"_Stz);
 
   Board::vMorphAll_table_To_EEop(m_pCI);
 

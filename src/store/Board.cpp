@@ -46,6 +46,8 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 
   m_pSubQuery = new SubQuery(this);
 
+  m_eTransform = XF_NONE;
+
   _checkInitialised_(CN_BOARD);
 
   pBench->vAddBoard(this);
@@ -627,6 +629,28 @@ SubQuery* Board::pSubQuery(void)
 
   return m_pSubQuery;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get transform                                                              */
+/*----------------------------------------------------------------------------*/
+eXF Board::eTransform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eTransform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transform                                                              */
+/*----------------------------------------------------------------------------*/
+void Board::vTransform(eXF eTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_eTransform = eTransform;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */

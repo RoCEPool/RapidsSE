@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eBK.h"
+#include "eXF.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
@@ -156,6 +157,8 @@ namespace STORE
     i8          m_iXform;
     s256        m_sXdesc;
 
+    eXF         m_eTransform;
+
   private:
     // must be last
     Footer m_xFooter;
@@ -201,6 +204,9 @@ namespace STORE
     SubQuery* pSubQuery(void);
 
     void vRenumberCards(void);
+
+    eXF eTransform(void);
+    void vTransform(eXF eTransform);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);

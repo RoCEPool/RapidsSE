@@ -62,7 +62,7 @@ void XF_Reinstate_stage::vXF_Reinstate_stage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_REINSTATE_STAGE, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "reinstate stages"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "reinstate stages"_Stz);
 
   Card_Stage::vReinstate_stages(m_pCI);
 

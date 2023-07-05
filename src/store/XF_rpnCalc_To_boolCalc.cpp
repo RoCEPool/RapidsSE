@@ -62,7 +62,7 @@ void XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_RPNCALC_TO_BOOLCALC, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "all $n become $c.n"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "all $n become $c.n"_Stz);
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))

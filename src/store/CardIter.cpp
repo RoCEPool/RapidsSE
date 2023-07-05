@@ -2355,7 +2355,7 @@ void CardIter::vTracer(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vTransform(const char* azFunc, Stz* szXdesc)
+void CardIter::vTransform(const char* azFunc, eXF eTransform, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
@@ -2365,6 +2365,7 @@ void CardIter::vTransform(const char* azFunc, Stz* szXdesc)
 
   m_iXform++;
   G.pBoard->vXform(m_iXform);
+  G.pBoard->vTransform(eTransform);
 
   //m_pCardCtl->vUseXform();
 

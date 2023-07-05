@@ -74,7 +74,7 @@ Card_IndexList* Card_IndexList::pDerive(Table* pTable)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* delete all bounds (within this indexList)                                  */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vDeleteAll_bounds(void)
 {
@@ -87,7 +87,7 @@ void Card_IndexList::vDeleteAll_bounds(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* find chosen index                                                          */
 /*----------------------------------------------------------------------------*/
 Card_Index* Card_IndexList::pFindChosenIndex(void)
 {
@@ -103,7 +103,7 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* choose appropriate index for crossJoin                                     */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vChoose_index_For_crossJoin(void)
 {
@@ -125,7 +125,7 @@ void Card_IndexList::vChoose_index_For_crossJoin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* choose appropriate index for indexJoin                                     */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vChoose_index_For_indexJoin(void)
 {
@@ -147,7 +147,7 @@ void Card_IndexList::vChoose_index_For_indexJoin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* choose appropriate index for indexScan                                     */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vChoose_index_For_indexScan(void)
 {
@@ -199,7 +199,7 @@ bool Card_IndexList::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* does an index in this indexList use sql result?                            */
 /*----------------------------------------------------------------------------*/
 bool Card_IndexList::bUsesSqyRsl(void)
 {

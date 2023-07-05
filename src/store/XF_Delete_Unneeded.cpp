@@ -62,7 +62,7 @@ void XF_Delete_Unneeded::vXF_Delete_Unneeded(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DELETE_UNNEEDED, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "delete superfluous <absJoin>'s"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "delete superfluous <absJoin>'s"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin

@@ -8,6 +8,7 @@
 #include "PermGen.hpp"
 #include "Index.hpp"
 #include "Bench.hpp"
+#include "eXF.h"
 
 namespace STORE
 {
@@ -190,7 +191,7 @@ namespace STORE
     void vSubQueryIteration(void);
 
     void vTracer(Stz* szFormat, ...);
-    void vTransform(const char* azFunc, Stz* szXdesc);
+    void vTransform(const char* azFunc, eXF eTransform, Stz* szXdesc);
     i8   iTransformDepth(void);
 
     void vUsingBoard(i8 i_Board);

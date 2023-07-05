@@ -67,7 +67,7 @@ void XF_not_Ops::vXF_not_Ops(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "not ops"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "not ops"_Stz);
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))

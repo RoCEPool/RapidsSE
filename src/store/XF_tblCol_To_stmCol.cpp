@@ -62,7 +62,7 @@ void XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, "transform table-columns to stream-columns"_Stz);
+  m_pCI->vTransform(__func__, XF_NONE, "transform table-columns to stream-columns"_Stz);
 
   m_pCI->G_vRestart();
   while (m_pCI->G_bEachMain_reverse()) {

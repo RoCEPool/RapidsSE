@@ -74,8 +74,6 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->Early.m_pOP_leaf = this;
