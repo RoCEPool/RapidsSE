@@ -237,6 +237,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitBpa(sqlParser::BpaContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }

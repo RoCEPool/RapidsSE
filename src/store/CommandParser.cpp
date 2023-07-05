@@ -243,8 +243,9 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->sztbl())         { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return nullptr; }
   else if (pCtx->memoryleaks())   { m_szProcName = "memoryleaks"_Stz;     return nullptr; }
+  else if (pCtx->bpa())           { m_szProcName = "bpa"_Stz;             return visitChildren(pCtx); }
 
-  else                          { NOT_IMPLEMENTED_YET }
+  else                            { NOT_IMPLEMENTED_YET }
 
   // NOTE:
   // the load/dload commands that accept multiple paths need to convert these
@@ -633,6 +634,29 @@ antlrcpp::Any CommandParser::visitSztbl(Parser::sqlParser::SztblContext *pCtx)
   s256 sTableName;
   vCleanString(pCtx->tableName()->identifier(), sTableName);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a BPA statement                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitBpa(Parser::sqlParser::BpaContext *pCtx)
+{
+  // Add command parameters
+  Stz* szAnalysisType;
+  s256 sBuf;
+
+  if (pCtx->type) {
+    vCleanString(pCtx->type, sBuf);
+    szAnalysisType = sBuf.szStz();
+
+  } else {
+    // The default if no bpa parameter is given
+    szAnalysisType = "region"_Stz;
+  }
+
+  m_pArgValues->vAppendToken(szAnalysisType, TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }

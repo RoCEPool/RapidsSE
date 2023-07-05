@@ -33,6 +33,7 @@ statementChoice   :   queryStatement
 
                     | trackmemory
                     | memoryleaks
+                    | bpa
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
@@ -183,6 +184,7 @@ sztbl             : SZTBL tableName ;
 
 trackmemory       : TRACKMEMORY ;
 memoryleaks       : MEMORYLEAKS ;
+bpa               : BPA type=(REGION | OBJECT)?;
 
 // table/column definition ------------------------------------------------------------
 
@@ -509,7 +511,7 @@ lstbl : LSTBL ;
 
 nonReservedWord   :
                     ASC
-                  | BIT | BITS | BLOCK | BLOOM | BTREE | BYTE | BYTES
+                  | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
                   | ESCAPE_CHAR | EXPLAIN
@@ -520,10 +522,10 @@ nonReservedWord   :
                   | LIMIT | LOAD | LOOP | LSIDX | LSTBL
                   | MEMORYLEAKS | MINUTES | MONOTONIC | MONTHS
                   | NODE | NOW
-                  | OFFSET
+                  | OBJECT | OFFSET
                   | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE | REPLICATED | ROWSIZE
+                  | REFERENCE | REGION | REPLICATED | ROWSIZE
                   | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
@@ -549,6 +551,7 @@ BLOCK                 : B L O C K;
 BLOOM                 : B L O O M;
 BOTH                  : B O T H;
 BOOLEAN               : B O O L E A N;
+BPA                   : B P A;
 BTREE                 : B T R E E;
 BY                    : B Y;
 BYTE                  : B Y T E;
@@ -604,6 +607,7 @@ GROUP                 : G R O U P;
 HASH                  : H A S H;
 HASHKEY               : H A S H K E Y;
 HAVING                : H A V I N G;
+HEAP                  : H E A P;
 HOUR                  : H O U R;
 HOURS                 : H O U R S;
 IF                    : I F;
@@ -644,6 +648,7 @@ NOT                   : N O T;
 NOW                   : N O W;
 SQL_NULL              : N U L L;
 NULLIF                : N U L L I F;
+OBJECT                : O B J E C T;
 OFFSET                : O F F S E T;
 ON                    : O N;
 OR                    : O R;
@@ -661,6 +666,7 @@ QUARTER               : Q U A R T E R;
 QUARTERS              : Q U A R T E R S;
 RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
+REGION                : R E G I O N;
 REPLICATED            : R E P L I C A T E D;
 RIGHT                 : R I G H T;
 ROW                   : R O W;

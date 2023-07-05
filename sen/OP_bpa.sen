@@ -1,0 +1,87 @@
+/*============================================================================*/
+/* OP_bpa.sen -- Buffer Pool Analysis operator                                */
+/*============================================================================*/
+
+" OP_bpa.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: bpa_DataMarker \handler
+
+  //"Operand:- EV_M_DATAPULSE" .verbose
+  PipeIn[].pipeOut
+
+  <bpaType> "region" str.same if
+    // find the C_TDEF_BPA_REGION table definition, create a streamDef and pipe it out
+    //C_TDEF_BPA_REGION op__tableDef_infoSet assert
+    //infoSetTable[] StreamDefLft[].new
+    //StreamDefLft[].pipeOut
+
+    // create streamset
+    //infoSetTable[] streamSet[].new
+
+    // TODO: populate streamset
+    //infoSetTable[] StreamSet[].addBpaRegion
+    //StreamSet[].pipeOut
+
+  else <bpaType> "object" str.same if
+    // find the C_TDEF_BPA_OBJECT table definition, create a streamDef and pipe it out
+    //C_TDEF_BPA_OBJECT op__tableDef_infoSet assert
+    //infoSetTable[] StreamDefLft[].new
+    //StreamDefLft[].pipeOut
+
+    // create streamset
+    //infoSetTable[] streamSet[].new
+
+    // TODO: populate streamset
+    //infoSetTable[] StreamSet[].addBpaObject
+    //StreamSet[].pipeOut
+
+  else
+    <bpaType> EC_INVALID_PARAMETER attachmap::errorText@ "%v: %v" str.format EC_INVALID_PARAMETER op__execErrMsg
+    true
+    exit
+  then then
+
+  Marker[].newEosMarker
+  Marker[].pipeOut
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bpa req                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : bpa_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: bpa_DataMarker EV_M_DATAPULSE [op].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bpa :: bpa <bpaType> ;
+
+: bpa_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "buffer pool analysis"
+    <opEntry> = "bpa_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

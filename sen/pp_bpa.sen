@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* pp_bpa.sen -- define buffer pool analysis related procedures               */
+/*============================================================================*/
+
+" pp_bpa.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* bpa related procedures                                                     */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Bpa" .verbose
+
+: start::defProc_Bpa
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // bpa
+
+  STD_PATH_TAG
+  "
+  procedure bpa
+  parameters $type
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on origin :
+      bpa $type | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  procedure::add
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

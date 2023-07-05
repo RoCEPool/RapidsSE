@@ -35,6 +35,7 @@
   start::defProc_SqlCompiler
   start::defProc_Trackmemory
   start::defProc_Memoryleaks
+  start::defProc_Bpa
 
   // define the system tables
   "define the iternal system tables" .verbose
