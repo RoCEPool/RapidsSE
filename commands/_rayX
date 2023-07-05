@@ -17,12 +17,27 @@ load partsupp "../TPCH/SF_0001/partsupp.csv";
 
 /glean_interactive
 /weaved
-select p_partkey, p_mfgr, ps_suppkey, ps_supplycost
-  from Part,
-       PartSupp
- where p_partkey  = ps_partkey
-   and p_brand = 'Brand#44'
-   and p_size < 10;
+select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_brand, p_mfgr;
+
+/*
+
+ordered rows:
+ ('Brand#11','Manufacturer#1',1)
+ ('Brand#13','Manufacturer#1',1)
+ ('Brand#21','Manufacturer#2',1)
+ ('Brand#22','Manufacturer#2',1)
+ ('Brand#24','Manufacturer#2',2)
+ ('Brand#25','Manufacturer#2',1)
+ ('Brand#32','Manufacturer#3',2)
+ ('Brand#33','Manufacturer#3',2)
+ ('Brand#43','Manufacturer#4',1)
+ ('Brand#44','Manufacturer#4',1)
+ ('Brand#45','Manufacturer#4',2)
+ ('Brand#52','Manufacturer#5',2)
+ ('Brand#53','Manufacturer#5',2)
+ ('Brand#55','Manufacturer#5',2)
+
+ */
 
 
 /*============================================================================*/
