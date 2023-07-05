@@ -237,6 +237,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PATHVEC,
   /* */ CN_PAYSTR,
   /* */ CN_PAYSTRBUFFER,
+  /* */ CN_PDS,
   /* */ CN_PERMGEN,
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
@@ -326,6 +327,8 @@ enum eCN : u2 // Class Number
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
   /* */ CN_SKIPLIST,
+  /* */ CN_SKIPLISTNODE,
+  /* */ CN_SKIPLISTBLOCK,
   /* */ CN_SKIPNODE,
   /* */ CN_SLAB,
   /* */ CN_SLABALLOCATOR,
@@ -679,6 +682,7 @@ static Stz* aCN[]
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
   /* */ "PAYSTR"_Stz,               // CN_PATHSTR
   /* */ "PAYSTRBUFFER"_Stz,         // CN_PATHSTRBUFFER
+  /* */ "PDS"_Stz,                  // CN_PDS
   /* */ "PERMGEN"_Stz,              // CN_PERMGEN
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
@@ -768,6 +772,8 @@ static Stz* aCN[]
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
   /* */ "SKIPLIST"_Stz,             // CN_SKIPLIST
+  /* */ "SKIPLISTNODE"_Stz,         // CN_SKIPLISTNODE
+  /* */ "SKIPLISTBLOCK"_Stz,        // CN_SKIPLISTBLOCK
   /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE
   /* */ "SLAB"_Stz,                 // CN_SLAB
   /* */ "SLABALLOCATOR"_Stz,        // CN_SLABALLOCATOR

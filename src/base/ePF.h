@@ -93,7 +93,8 @@ enum ePF // prompt function
   /*    */ PF_OPCAT,
   /*    */ PF_OPS,
   /*    */ PF_OPSYS,
-  
+
+  /*    */ PF_PDSTEST,
   /*    */ PF_PLIST,
   /*    */ PF_PMC,
   /*    */ PF_POW2,
@@ -256,7 +257,8 @@ static Stz* aPF[]
   /*    */ "PF_OPCAT"_Stz,
   /*    */ "PF_OPS"_Stz,
   /*    */ "PF_OPSYS"_Stz,
-  
+
+  /*    */ "PF_PDSTEST"_Stz,
   /*    */ "PF_PLIST"_Stz,
   /*    */ "PF_PMC"_Stz,
   /*    */ "PF_POW2"_Stz,
