@@ -25,11 +25,12 @@ MacOS Dependencies:
    of bison before the inbuilt MacOS bison. You can do this by adding the following command
    to your ~/.bash_profile file:
    export PATH="$(brew --prefix bison)/bin:$PATH"
-3. Thrift depends on headers and libraries for openssl. MacOS should provide a version of
+3. Thrift depends on headers and libraries for openssl. MacOS may provide a version of
    openssl (libreSsl I believe), but it's headers are not found in the usual /usr/local/include
-   path. Instead the headers are likely found in /usr/local/opt/openssl/include instead and
-   the library in /usr/local/opt/openssl/lib. The build environment will adjust the CPPFLAGS
-   and LD_FLAGS environment variables to also search in these locations.
+   path. The easiest approach is to install openssl via brew so that the headers are found in
+   /usr/local/opt/openssl/include and the library in /usr/local/opt/openssl/lib. The build
+   environment will adjust the CPPFLAGS and LD_FLAGS environment variables to also search in
+   these locations.
 
 
 CentOS 7 Dependencies:

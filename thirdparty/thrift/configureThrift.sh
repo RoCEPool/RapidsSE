@@ -83,11 +83,15 @@ function checkDependenciesMacOs() {
 
   # 3. Check for OpenSSL headers and library
   if [ ! -d /usr/local/opt/openssl/include ]; then
-    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed."
+    errorExit "The Thrift pre-requisite OpenSSL headers do not appear to be installed.\n"\
+              "(Looking for: /usr/local/opt/openssl/include).\n"\
+              "Install with the command:  brew install openssl"
   fi
 
   if [ ! -d /usr/local/opt/openssl/lib ]; then
-    errorExit "The Thrift pre-requisite OpenSSL libraries do not appear to be installed."
+    errorExit "The Thrift pre-requisite OpenSSL library does not appear to be installed.\n"\
+              "(Looking for: /usr/local/opt/openssl/lib).\n"\
+              "Install with the command:  brew install openssl"
   fi
 }
 
