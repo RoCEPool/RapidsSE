@@ -409,6 +409,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
   i8 i_Col = 1;
   s32 sColNm;
+  s32 sColNm_mapped;
   eCT eColType;
 
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_Col++) {
@@ -419,6 +420,9 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
         sColNm = p_expr->pSub_as()->szSymbol();
       else
         sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      sColNm_mapped = sColNm;
+
     }
     else
     if (CK_GBYAGG == eOP) {
@@ -430,18 +434,6 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
       p_key->vX();
 
-//      Symbol* pSymbol = p_expr->pGetSymbol(0);
-//      i8 i_Key = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
-//      vTrace("%s %lld\n"_Stz,pSymbol->szSymbol(),i_Key);
-//
-//      s32 sNm_modified;
-//      sNm_modified.vSprint("C%lld_COL%lld"_Stz,
-//                           xProjection.i_Child(),
-//                           i_Key);
-//      sColNm = sNm_modified;
-//
-//      vTrace("%s %s %lld\n"_Stz,sColNm.azChar(),pSymbol->szSymbol(),i_Key);
-
       vDebugPoint();
 
       s32 sNm_modified;
@@ -449,6 +441,25 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
                            xProjection.i_Child(),
                            sColNm.azChar());
       sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
+
+
+      Symbol* pSymbol = p_expr->pGetSymbol(0);
+      i8 i_Key = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
+      if (i_Key) {
+        vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_Key);
+
+
+        sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                             xProjection.i_Child(),
+                             i_Key);
+        sColNm_mapped = sNm_modified;
+      }
+
+      vTrace("%s %s %lld\n"_Stz,sColNm.azChar(),pSymbol->szSymbol(),i_Key);
+
+
+      vDebugPoint();
 
     }
     else {
@@ -462,6 +473,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
                            xProjection.i_Child(),
                            sColNm.azChar());
       sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
     }
 
 
@@ -484,7 +496,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
-      pColMap->vAddCol(i_Col, sColNm, bPayload);
+      pColMap->vAddCol(i_Col, sColNm_mapped, bPayload);
     }
   }
 
