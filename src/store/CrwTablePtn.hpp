@@ -5,6 +5,11 @@
 
 namespace STORE
 {
+  struct xBufferId {
+    i8 iKey;
+    BufferId oBufferId;
+  };
+
   class CrwTablePtn : public Object
   {
   private:
@@ -16,6 +21,7 @@ namespace STORE
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
 
     BufferId m_oRootBufferId;
+    Pds_t<xBufferId>* m_pPdsBufferId;
 
     // Note that the IndexTreeVec gets moved upto TablePtn
     //IndexTreeVec* m_pIndexTreeVec;  // vector of index trees

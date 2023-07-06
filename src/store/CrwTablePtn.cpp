@@ -43,6 +43,7 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
   m_oRootBufferId.m_pvAsAddress = nullptr;
+  m_pPdsBufferId = new Pds_t<xBufferId>();
 
   //m_pIndexTreeVec  = new IndexTreeVec;
 
@@ -100,6 +101,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
     ASSERT( ! m_pCurrentBuffer )
 #ifdef WITH_PAGING
     m_oRootBufferId = pCrwBuffer->oGetBufferId();
+    RASSERT(nBuffers() == 0);
 #endif
     m_pRootBuffer = pCrwBuffer;
   }
@@ -117,6 +119,16 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   }
 
 #ifdef WITH_PAGING
+
+  // Append a new Skip List Block to the PDS
+  SkipListBlock* pSLBlock = m_pPdsBufferId->pAppendWithSynthKey();
+
+  // Get the start address of it's body after the key in ITEM
+  BufferId* pItem = (BufferId*) pSLBlock->aItemBody();
+
+  // Update the contents of it's body with the BufferId
+  *pItem = pCrwBuffer->oGetBufferId();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are done with the current buffer, allow it to be paged out by dropping
   // the lock
@@ -138,12 +150,7 @@ i8 CrwTablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  i8 nBufferCount = 0;
-
-  if (m_pRootBuffer)
-    nBufferCount = m_pRootBuffer->nLinkedBufferCount();
-
-  return nBufferCount;
+  return m_pPdsBufferId->iNumEntries();
 }
 
 /*----------------------------------------------------------------------------*/
