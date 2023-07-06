@@ -56,7 +56,7 @@ void XF_Derive_bounds::vXF_Derive_bounds(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
+/* derive index bounds from table filter                                      */
 /*----------------------------------------------------------------------------*/
 void XF_Derive_bounds::vXF_Derive_bounds(void)
 {

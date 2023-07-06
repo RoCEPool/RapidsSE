@@ -231,6 +231,7 @@ void XF::vTransform_passThru(void)
 
   Bench::vValidate(m_pCI);
 
+  m_pCI->vUsingBoard((i8)0);
   XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);

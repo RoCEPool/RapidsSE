@@ -80,6 +80,7 @@ namespace STORE
     void vArgOrdAgg      (Stz* szOpArgs,  Card_OrdAgg*    pCard_OrdAgg);
     void vArgProject     (Stz* szOpArgs,  Card_Project*   pCard_Project);
     void vArgScan        (Stz* szOpArgs,  Card_Scan*      pCard_Scan);
+    void vArgSend        (Stz* szOpArgs,  Card_Send*      pCard_send);
     void vArgSort        (Stz* szOpArgs,  Card_Sort*      pCard_Sort);
     void vArgTable       (Stz* szOpArgs,  Card_Table*     pCard_Table);
     void vArgTop         (Stz* szOpArgs,  Card_Top*       pCard_op);

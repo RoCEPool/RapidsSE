@@ -310,7 +310,8 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
   eCK eCard = pCard->eCard();
 
   if (CK_SEND == eCard)
-    return;
+    if (! AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU))
+      return;
   if (CK_COMBINED == eCard)
     return;
 
@@ -335,6 +336,7 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
     case CK_ORDAGG:       vArgOrdAgg       (sOpArgs,_pCard_OrdAgg(pCard));       break;
     case CK_PROJECT:      vArgProject      (sOpArgs,_pCard_Project(pCard));      break;
     case CK_SCAN:         vArgScan         (sOpArgs,_pCard_Scan(pCard));         break;
+    case CK_SEND:         vArgSend         (sOpArgs,_pCard_Send(pCard));         break;
     case CK_SORT:         vArgSort         (sOpArgs,_pCard_Sort(pCard));         break;
     case CK_TABLE:        vArgTable        (sOpArgs,_pCard_Table(pCard));        break;
     case CK_TOP:          vArgTop          (sOpArgs,_pCard_Top(pCard));          break;
@@ -351,6 +353,7 @@ void Weaver2::vOp(Card* pCard, bool bCommented)
   else if (CK_CROSSJOIN == eCard)  sOpNm = "indexJoin"_Stz;
   else if (CK_HAVING == eCard)     sOpNm = "filter"_Stz;
   else if (CK_TABLE == eCard)      sOpNm = "scan"_Stz;
+  else if (CK_SEND == eCard)       sOpNm = "next"_Stz;
   else if (CK_WHERE == eCard)      sOpNm = "filter"_Stz;
   else                             sOpNm = aCK_short[eCard];
 
@@ -747,6 +750,16 @@ void Weaver2::vArgScan(Stz* szOpArgs, Card_Scan* pCard_Scan)
 }
 
 /*----------------------------------------------------------------------------*/
+/* weave :send ?                                                              */
+/*----------------------------------------------------------------------------*/
+void Weaver2::vArgSend(Stz* szOpArgs, Card_Send* pCard_Send)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
+
+  szOpArgs->vCatSprint("%s"_Stz, pCard_Send->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
 /* weave : sort ???                                                           */
 /*----------------------------------------------------------------------------*/
 void Weaver2::vArgSort(Stz* szOpArgs, Card_Sort* pCard_Sort)
@@ -996,6 +1009,8 @@ void Weaver2::vWeaveOptStmt(Board* pBoard)
         break;
       if (CK_CAST == xCI.G.e_MainCard)
         break;
+      if (CK_SEND == xCI.G.e_MainCard)
+        break;
 
       bool bCommented = true;
 //      if (xCI.G.p_MainCard->bIsOne(CK_AGGREG, CK_INDEXJOIN, CK_INDEXSCAN,
@@ -1009,9 +1024,13 @@ void Weaver2::vWeaveOptStmt(Board* pBoard)
 
     vDynamic(pStageDef);
 
-    RASSERT(xCI.bIsActive());
+    //RASSERT(xCI.bIsActive());
     if (CK_CAST == xCI.G.e_MainCard)
       vOp(xCI.G.p_MainCard);
+    else
+    if (CK_SEND == xCI.G.e_MainCard)
+      vOp(xCI.G.p_MainCard);
+
   }
 
   vStageLast();

@@ -5,7 +5,10 @@
 _nation
 load nation "../TPCH/SF_0001/nation.tbl";
 
+/glean_interactive
 /optimise_passthru
+/pipeline_def
+/weaved
 pipeline _unnamed_
   begin
 
