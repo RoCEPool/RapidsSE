@@ -393,46 +393,6 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iTubContinue2 ------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iTubContinue2
-i8 iTubContinue2(Dynamic_T* aDynamicT) {
-
-  char* szStrArea;
-  ColumnInfo xColumnInfo;
-
-  i8 __COLUMNS_OUT__;
-  RowInfo __ROW_INFO_TO__;
-
-  __L_LABEL_LOOP__:
-
-  // marker-start
-
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-
-  // process the row ?
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
-  }
-
-  // allocate a row from the tub
-#ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_PotAllotRow((void*)aDynamicT->m_pPot, iMixIn, &__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
-#endif
-  // check for error
-  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
-    return 0;
-  }
-
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
-
-  // marker-end
-
-  return 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- iEosTubBegin ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iEosTubBegin
@@ -458,45 +418,6 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
   }
 
   return 0;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- iEosPotBody -------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-iEosPotBody
-i8 iEosPotBody(Dynamic_T* aDynamicT) {
-
-  struct __STRUCT_TO__* p__STRUCT_TO__;
-
-  {
-    // marker-start
-
-    // check for error
-    if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
-      return 0;
-    }
-
-    aDynamicT->m_iRowsProcessed = 1;
-    aDynamicT->m_xRowInfoAT.m_iInitialize = 0;
-  }
-
-  // any rows processed ?
-  if (!aDynamicT->m_iRowsProcessed)
-    goto L_Return;
-
-  // allocate a row from the pot
-#ifdef WITH_CLANG
-  aDynamicT->m_xRowInfoPO.m_aRowCellArray = (byte*)aExtern_PotAllotRow((void*)aDynamicT->m_pPot, iMixIn, &aDynamicT->m_xRowInfoPO.m_acStrArea,&aDynamicT->m_iErrorCode);
-#endif
-  if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
-    return 0;
-  }
-
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoPO.m_aRowCellArray;
-
-  // marker-end
-  L_Return:
-    return 0;
 }
 
 /*----------------------------------------------------------------------------*/

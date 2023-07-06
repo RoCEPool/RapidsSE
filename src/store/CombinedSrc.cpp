@@ -701,57 +701,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         break;
 
       case SK_TUB:
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // to stencil
-        vAppendStencilTo(pOpSketch);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // TUB in EOS handler
-        if (pOpSketch->m_eHandlerKind == HK_EOS) {
-          if (pOpSketch->m_eStencilFrom == SR_PL) {
-            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-            vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
-            if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
-              vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
-            else
-              vAppendCodeFragment(pOpSketch, "vEosPLGenKeyTraversal"_Stz);
-
-            if ( ! pOpSketch->m_sLimitExpr.bSame(""_Stz)) {
-              vAppendCodeFragment(pOpSketch, "vEosLimit"_Stz);
-            }
-
-            vAppendCodeFragment(pOpSketch, "iEosPayLoadTub"_Stz);
-            vAppendCodeToTubCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
-          }
-          else {
-            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-            vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
-            vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
-            vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-            vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
-            vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
-          }
-
-        }
-        else {
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // TUB in CRW/ROW/INDEX handler
-          vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-          vAppendCodePixCols(pOpSketch);
-          vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
-          vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
-          vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
-        }
-        break;
-
       case SK_POT:
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -799,7 +748,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
           vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
-          vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+          //vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
           vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
