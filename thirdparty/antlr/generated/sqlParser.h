@@ -35,11 +35,11 @@ public:
     LOAD = 112, LOOP = 113, LSCOL = 114, LSIDX = 115, LSIDXCOL = 116, LSTBL = 117, 
     MAX = 118, MEMORYLEAKS = 119, MIN = 120, MINUTE = 121, MINUTES = 122, 
     MONOTONIC = 123, MONTH = 124, MONTHS = 125, NATURAL = 126, NO = 127, 
-    NODE = 128, NOT = 129, NOW = 130, SQL_NULL = 131, NULLIF = 132, OBJECT = 133, 
+    NODE = 128, NOT = 129, NOW = 130, SQL_NULL = 131, NULLIF = 132, OBJECTS = 133, 
     OFFSET = 134, ON = 135, OR = 136, ORDER = 137, OUTER = 138, OVER = 139, 
     OVERLAY = 140, PARTITION = 141, PATHS = 142, PLACING = 143, POSITION = 144, 
     PRETTY = 145, PRIMARY = 146, QUARTER = 147, QUARTERS = 148, RECURSIVE = 149, 
-    REFERENCE = 150, REGION = 151, REPLICATED = 152, RIGHT = 153, ROW = 154, 
+    REFERENCE = 150, REGIONS = 151, REPLICATED = 152, RIGHT = 153, ROW = 154, 
     ROWSIZE = 155, SCHEMA = 156, SECOND = 157, SECONDS = 158, SELECT = 159, 
     SEMI = 160, SET = 161, SKIPLIST = 162, SPACE = 163, STAGE = 164, STATS = 165, 
     STATISTICS = 166, STATUS = 167, SUBSTR = 168, SUBSTRING = 169, SUM = 170, 
@@ -1203,8 +1203,8 @@ public:
     BpaContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *BPA();
-    antlr4::tree::TerminalNode *REGION();
-    antlr4::tree::TerminalNode *OBJECT();
+    antlr4::tree::TerminalNode *REGIONS();
+    antlr4::tree::TerminalNode *OBJECTS();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -2916,7 +2916,7 @@ public:
     antlr4::tree::TerminalNode *MONTHS();
     antlr4::tree::TerminalNode *NODE();
     antlr4::tree::TerminalNode *NOW();
-    antlr4::tree::TerminalNode *OBJECT();
+    antlr4::tree::TerminalNode *OBJECTS();
     antlr4::tree::TerminalNode *OFFSET();
     antlr4::tree::TerminalNode *PATHS();
     antlr4::tree::TerminalNode *PLACING();
@@ -2924,7 +2924,7 @@ public:
     antlr4::tree::TerminalNode *QUARTER();
     antlr4::tree::TerminalNode *QUARTERS();
     antlr4::tree::TerminalNode *REFERENCE();
-    antlr4::tree::TerminalNode *REGION();
+    antlr4::tree::TerminalNode *REGIONS();
     antlr4::tree::TerminalNode *REPLICATED();
     antlr4::tree::TerminalNode *ROWSIZE();
     antlr4::tree::TerminalNode *SCHEMA();

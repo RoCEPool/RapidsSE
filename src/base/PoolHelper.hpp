@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE
+{
+  class StreamSet;
+}
+
 namespace BASE
 {
   class PoolHelper
@@ -14,12 +19,14 @@ namespace BASE
     static void vObjectDump(i8 iAfter);
     static void vObjectDump(i8 iAfter, Heap* pHeap);
     static void vObjectSummary(void);
+    static void vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef);
     static void vObjectSnapshot(ObjectSnapshot* pPoolSnapshot);
     static void vObjectValidate(void);
     static void vPoolAnalyze(void);
     static void vPoolDump(void);
     static i8   iPoolFree(void);
     static void vRegionSummary(void);
+    static void vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef);
     static void vValidateEnums(void);
     static void vWordList(i8 iEpoch);
   };

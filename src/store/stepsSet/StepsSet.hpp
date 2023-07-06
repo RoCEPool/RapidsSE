@@ -2025,6 +2025,8 @@ void vDdlLockAssertNone(void);
   // reg stream set
   void vStreamSetAddAnalyzeIndex(void);
   void vStreamSetAddAnalyzeTable(void);
+  void vStreamSetAddBpaObjects(void);
+  void vStreamSetAddBpaRegions(void);
   void vStreamSetAddColumnDef(void);
   void vStreamSetAddGridSanity(void);
   void vStreamSetAddListContents(void);

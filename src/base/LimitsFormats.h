@@ -103,6 +103,8 @@ static Stz* C_SE_PATH_ROOT = "/"_Stz;
 
 static Stz* C_TDEF_ANALYZEINDEX     = "__analyzeIndex"_Stz;
 static Stz* C_TDEF_ANALYZETABLE     = "__analyzeTable"_Stz;
+static Stz* C_TDEF_BPAOBJECTS       = "__bpaObjects"_Stz;
+static Stz* C_TDEF_BPAREGIONS       = "__bpaRegions"_Stz;
 static Stz* C_TDEF_CALLPIPELINE     = "__callPipeline"_Stz;
 static Stz* C_TDEF_COLUMNDEFS       = "__columnDefs"_Stz;
 static Stz* C_TDEF_COMMAND          = "__command"_Stz;

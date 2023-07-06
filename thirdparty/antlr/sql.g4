@@ -184,7 +184,7 @@ sztbl             : SZTBL tableName ;
 
 trackmemory       : TRACKMEMORY ;
 memoryleaks       : MEMORYLEAKS ;
-bpa               : BPA type=(REGION | OBJECT)?;
+bpa               : BPA type=(REGIONS | OBJECTS);
 
 // table/column definition ------------------------------------------------------------
 
@@ -522,10 +522,10 @@ nonReservedWord   :
                   | LIMIT | LOAD | LOOP | LSIDX | LSTBL
                   | MEMORYLEAKS | MINUTES | MONOTONIC | MONTHS
                   | NODE | NOW
-                  | OBJECT | OFFSET
+                  | OBJECTS | OFFSET
                   | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE | REGION | REPLICATED | ROWSIZE
+                  | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
@@ -648,7 +648,7 @@ NOT                   : N O T;
 NOW                   : N O W;
 SQL_NULL              : N U L L;
 NULLIF                : N U L L I F;
-OBJECT                : O B J E C T;
+OBJECTS               : O B J E C T S;
 OFFSET                : O F F S E T;
 ON                    : O N;
 OR                    : O R;
@@ -666,7 +666,7 @@ QUARTER               : Q U A R T E R;
 QUARTERS              : Q U A R T E R S;
 RECURSIVE             : R E C U R S I V E;
 REFERENCE             : R E F E R E N C E;
-REGION                : R E G I O N;
+REGIONS               : R E G I O N S;
 REPLICATED            : R E P L I C A T E D;
 RIGHT                 : R I G H T;
 ROW                   : R O W;

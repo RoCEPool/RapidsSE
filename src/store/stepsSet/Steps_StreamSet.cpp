@@ -41,6 +41,8 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[]"_Stz,                &Step::vStreamSetGet);
   vAddStep("StreamSet[].addAnalyzeIndex"_Stz,&Step::vStreamSetAddAnalyzeIndex);
   vAddStep("StreamSet[].addAnalyzeTable"_Stz,&Step::vStreamSetAddAnalyzeTable);
+  vAddStep("StreamSet[].addBpaObjects"_Stz,  &Step::vStreamSetAddBpaObjects);
+  vAddStep("StreamSet[].addBpaRegions"_Stz,  &Step::vStreamSetAddBpaRegions);
   vAddStep("StreamSet[].addColumnDef"_Stz,   &Step::vStreamSetAddColumnDef);
   vAddStep("StreamSet[].addGridSanity"_Stz,  &Step::vStreamSetAddGridSanity);
   vAddStep("StreamSet[].addListContents"_Stz,&Step::vStreamSetAddListContents);
@@ -154,6 +156,46 @@ void Step::vStreamSetAddAnalyzeTable(void)
   //pRow->vDump(pStreamDef);
   
   m_pDataStack->vPushInt(pRow ? true : false);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addBpaObjects -- add rows about bpa object analysis            */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddBpaObjects(void)
+{
+  ENTRY();
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+
+  PoolHelper::vObjectSummary(pStreamSet, pStreamDef);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addBpaRegions -- add rows about bpa region analysis            */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddBpaRegions(void)
+{
+  ENTRY();
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+
+  PoolHelper::vRegionSummary(pStreamSet, pStreamDef);
+
   EXIT();
 }
 

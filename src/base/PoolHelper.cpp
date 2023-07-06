@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "TagConstants.h"
+#include "StreamSet.hpp"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
@@ -610,6 +611,398 @@ void PoolHelper::vObjectSummary(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* summary report on objects in the pool and heaps                            */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
+{
+  _static_
+
+  s32 sFlag;
+  s32 sMagObj;
+  s32 sMagHeap;
+  s32 sMagBlocks;
+  i8  nObjInHeap;
+
+  i8 iCountObjects[CN_ENUMS];
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nBlockSize =0;
+
+  nBlockSize = C_SIZE_TINY_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pTiny->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "persistent"_Stz,
+                          "tiny"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          false,    // tiny heap is always the smallest
+                          C_VARGS_END);
+  }
+
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_SMALL_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pSmall->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "persistent"_Stz,
+                          "small"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          bChgHeap,
+                          C_VARGS_END);
+
+  }
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_MEDIUM_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pMedium->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "persistent"_Stz,
+                          "medium"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          bChgHeap,
+                          C_VARGS_END);
+
+  }
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_LARGE_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Persistent.m_pLarge->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "persistent"_Stz,
+                          "large"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          bChgHeap,
+                          C_VARGS_END);
+  }
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_TINY_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pTiny->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "transient"_Stz,
+                          "tiny"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          false,      // tiny heap is the smallest
+                          C_VARGS_END);
+  }
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Transient.m_pTiny->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_SMALL_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pSmall->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "transient"_Stz,
+                          "small"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          bChgHeap,
+                          C_VARGS_END);
+  }
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Transient.m_pSmall->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_MEDIUM_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pMedium->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "transient"_Stz,
+                          "medium"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          bChgHeap,
+                          C_VARGS_END);
+  }
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Transient.m_pMedium->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  nBlockSize = C_SIZE_LARGE_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pLarge->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
+
+    pStreamSet->pAllotRow(pStreamDef,
+                          C_VARGS_BEGIN,
+                          "transient"_Stz,
+                          "large"_Stz,
+                          aCN[eClass],
+                          nCntObj,
+                          nObjSize,
+                          nSumObjSize,
+                          sMagObj.szStz(),
+                          iPctUse,
+                          bChgHeap,
+                          C_VARGS_END);
+  }
+//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+//
+//  if(nObjInHeap != AM::pHeaps()->Transient.m_pLarge->nCurrAllocated())
+//  {
+//    vTrace("  ******************************************************************\n"_Stz);
+//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
+//           nObjInHeap, AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
+//    vTrace("  ******************************************************************\n"_Stz);
+//  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool                                      */
 /*----------------------------------------------------------------------------*/
 HACK(PoolHelper,"vObjectSnapshot() is ignoring tiny heap : Ray 28-Dec-2020)");
@@ -919,6 +1312,100 @@ void PoolHelper::vRegionSummary()
          AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
          AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Persistent.m_pLarge->nFreeChunks());
+}
+
+/*----------------------------------------------------------------------------*/
+/* report on shm region                                                       */
+/*----------------------------------------------------------------------------*/
+void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
+{
+  _static_
+
+  // get MagLib of the various buffer pools
+  s32 sMagTiny;   MagLib::vByteMag(C_SIZE_TINY_OBJECT,  sMagTiny);
+  s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
+  s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
+  s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "tiny"_Stz,
+                        C_SIZE_TINY_OBJECT / 1024,
+                        AM::pHeaps()->Transient.m_pTiny->nBufferCount(),
+                        AM::pHeaps()->Transient.m_pTiny->nCurrAllocated(),
+                        AM::pHeaps()->Transient.m_pTiny->nFreeChunks(),
+                        C_VARGS_END);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "small"_Stz,
+                        C_SIZE_SMALL_OBJECT / 1024,
+                        AM::pHeaps()->Transient.m_pSmall->nBufferCount(),
+                        AM::pHeaps()->Transient.m_pSmall->nCurrAllocated(),
+                        AM::pHeaps()->Transient.m_pSmall->nFreeChunks(),
+                        C_VARGS_END);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "medium"_Stz,
+                        C_SIZE_MEDIUM_OBJECT / 1024,
+                        AM::pHeaps()->Transient.m_pMedium->nBufferCount(),
+                        AM::pHeaps()->Transient.m_pMedium->nCurrAllocated(),
+                        AM::pHeaps()->Transient.m_pMedium->nFreeChunks(),
+                        C_VARGS_END);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "transient"_Stz,
+                        "large"_Stz,
+                        C_SIZE_SMALL_OBJECT / 1024,
+                        AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
+                        AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
+                        AM::pHeaps()->Transient.m_pLarge->nFreeChunks(),
+                        C_VARGS_END);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "tiny"_Stz,
+                        C_SIZE_TINY_OBJECT / 1024,
+                        AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
+                        AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
+                        AM::pHeaps()->Persistent.m_pTiny->nFreeChunks(),
+                        C_VARGS_END);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "small"_Stz,
+                        C_SIZE_SMALL_OBJECT / 1024,
+                        AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
+                        AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
+                        AM::pHeaps()->Persistent.m_pSmall->nFreeChunks(),
+                        C_VARGS_END);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "medium"_Stz,
+                        C_SIZE_MEDIUM_OBJECT / 1024,
+                        AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
+                        AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
+                        AM::pHeaps()->Persistent.m_pMedium->nFreeChunks(),
+                        C_VARGS_END);
+
+  pStreamSet->pAllotRow(pStreamDef,
+                        C_VARGS_BEGIN,
+                        "persistent"_Stz,
+                        "large"_Stz,
+                        C_SIZE_SMALL_OBJECT / 1024,
+                        AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
+                        AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
+                        AM::pHeaps()->Persistent.m_pLarge->nFreeChunks(),
+                        C_VARGS_END);
 }
 
 /*----------------------------------------------------------------------------*/
