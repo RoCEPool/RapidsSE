@@ -22,6 +22,8 @@ namespace BASE
     u2 m_uInUseRootOffset;
     i8 m_iNumEntries[C_MAX_LVL_LEVELS];
 
+    i8 m_iSyntheticKey; // Synthetic key used when we only append to the Skip List
+
     // Save the last usable offset for asserts
 
     // must be last
@@ -34,27 +36,27 @@ namespace BASE
     Pds(i8 nBytes);
     ~Pds(void) noexcept(false);
 
-    SkipListBlock* aAllotSkipListBlock(i8 iKey);
 
-    bool bDelete(i8 iKey);
-    void vDumpFreeList(void);
-    void vDumpInUseList(void);
 
-    SkipListBlock* pFind(i8 iKey);
+    // Note: Only the public functions grab a lock
+    // public:
+    SkipListBlock*  pAppendWithSynthKey(void);
+    bool            bDelete(i8 iKey);
+    void            vDumpFreeList(void);
+    void            vDumpInUseList(void);
+    SkipListBlock*  pInsert(i8 iKey);
+    SkipListBlock*  pFind(i8 iKey);
+    i8              iNumEntries(void);
 
-    void* pGetAddrFromOffset(u2 uOffset);
-    u2 uGetOffsetFromBase(void* aAddress);
-
-    bool bInsert(i8 iKey);
-
-    void vMoveToFreeList(SkipListBlock* pSLSet);
-
-    SkipListBlock* pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel);
-
-    bool bPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
-
-    bool bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
-    bool bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
+    // private:
+    SkipListBlock*  aAllotSkipListBlock(i8 iKey);
+    void*           pGetAddrFromOffset(u2 uOffset);
+    u2              uGetOffsetFromBase(void* aAddress);
+    void            vMoveToFreeList(SkipListBlock* pSLBlock);
+    SkipListBlock*  pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel);
+    bool            bPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
+    bool            bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
+    bool            bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
 
   public:
     Footer* aFooter(void);
