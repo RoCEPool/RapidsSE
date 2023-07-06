@@ -65,7 +65,7 @@ cp "${ROOT_DIR}/src/store/vFLAT_Parameters_v2.h"      "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/vFLAT_PreliminaryCrw_v2.h"  "${LAYOUT_DIR}/src/store"
 
 cp "${ROOT_DIR}/src/store/Fragments/Aggreg.cpp"          "${LAYOUT_DIR}/src/store/Fragments"
-cp "${ROOT_DIR}/src/store/Fragments/Code.cpp"            "${LAYOUT_DIR}/src/store/Fragments"
+cp "${ROOT_DIR}/src/store/Fragments/CommonCode.cpp"      "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/fileHeader.cpp"      "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/Filter.cpp"          "${LAYOUT_DIR}/src/store/Fragments"
 cp "${ROOT_DIR}/src/store/Fragments/functionFooters.cpp" "${LAYOUT_DIR}/src/store/Fragments"
