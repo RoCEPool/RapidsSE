@@ -38,7 +38,6 @@ success
 //------------------------------------------------------------------------------
 // PROJECT
 //------------------------------------------------------------------------------
-/weaver2
 /optimise_passthru
 pipeline unamed
 begin
@@ -50,7 +49,7 @@ begin
     scan rapidsse public Nation
     | filter " type BOOLEAN  $1 2  <  "
     | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | dynamic
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
@@ -64,7 +63,7 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXSCAN -
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -92,7 +91,7 @@ rows:
   (1,'ARGENTINA',1,'al foxes promise slyly according to the regular accounts. bold requests alon')
 
 
-/weaver2
+
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -138,7 +137,7 @@ rows:
   (23,'UNITED KINGDOM',3,'eans boost carefully special requests. accounts are. carefull')
   (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. quickly silent platelets breach ironic accounts. unusual pinto be')
 
-/weaver2
+
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -170,7 +169,7 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXJOIN -
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -228,7 +227,7 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXSCAN + INDEXJOIN
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline _unnamed_
   begin
@@ -262,7 +261,7 @@ rows:
   (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. quickly silent platelets breach ironic accounts. unusual pinto be',1,'AMERICA','hs use ironic, even requests. s')
 
 
-/weaver2
+
 /optimise_passthru
 pipeline _unnamed_
   begin
@@ -293,7 +292,7 @@ rows:
 // SEMI-JOIN
 //------------------------------------------------------------------------------
 
-/weaver2
+
 /optimise_passthru
 pipeline __CS2_semiJoin
 begin
@@ -328,7 +327,7 @@ rows:
  (1,'ARGENTINA',1)
  (4,'EGYPT',4)
 
- /weaver2
+ 
  /optimise_passthru
  pipeline __CS2_semiJoin
  begin
@@ -369,7 +368,7 @@ rows:
 // AGGREGATE - INTEGER
 //------------------------------------------------------------------------------
 /weaved
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -403,7 +402,7 @@ rows:
 //------------------------------------------------------------------------------
 // AGGREGATE - VARCHAR
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -435,7 +434,7 @@ rows:
 //------------------------------------------------------------------------------
 // GROUP BY AGGREGATE - INTEGER
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -475,7 +474,7 @@ rows:
 //------------------------------------------------------------------------------
 // GROUP BY AGGREGATE - VARCHAR
 //------------------------------------------------------------------------------
- /weaver2
+ 
  /optimise_passthru
  pipeline unamed
  begin
@@ -516,7 +515,7 @@ rows:
 //------------------------------------------------------------------------------
 // GROUP BY AGGREGATE - KEY VARCHAR
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -576,7 +575,7 @@ rows:
 //------------------------------------------------------------------------------
 // PROJECT - ROW BUFFER
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -631,7 +630,7 @@ rows:
 //------------------------------------------------------------------------------
 // SORT - INTEGER
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -682,7 +681,7 @@ rows:
 //------------------------------------------------------------------------------
 // SORT - VARCHAR
 //------------------------------------------------------------------------------
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -744,7 +743,7 @@ load R "../DATA/Joins/R.csv";
 //------------------------------------------------------------------------------
 /*
 // LEFT_OUTER with scan
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -767,7 +766,7 @@ rows: 48
 
 
 // LEFT_OUTER with indexscan
-/weaver2
+
 /optimise_passthru
 pipeline unamed
 begin
@@ -837,7 +836,7 @@ success
 load orders   "../tpch/SF_0001/orders.csv" ;
 success
 
-/weaver2
+
 /optimise_passthru
 pipeline unnamed
 begin

@@ -18,7 +18,7 @@ select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -35,6 +35,7 @@ select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue,
      group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment
      order by revenue desc limit 20;
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -91,6 +92,7 @@ end ;
 // Modified DESC to ASC as DESC not yet supported
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -224,6 +226,7 @@ rows:
   (27,'Customer#000000027',-2753.25,5679.84,'CANADA','IS8GIyxpBrLpMT0u7','13-137-193-2709',' about the carefully ironic pinto beans. accoun')
   (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
 
+/optimise_passthru 
 pipeline unnamed
     begin
 
@@ -353,6 +356,7 @@ sleep 4;
 success
 
 //SF0001: 93ms
+/optimise_passthru 
 pipeline Query10
 begin
 
@@ -471,6 +475,7 @@ rows:
   (25,'Customer#000000025',-2643.40,7133.70,'JAPAN','Hp8GyFQgGHFYSilH5tBfe','22-603-468-3533','y. accounts sleep ruthlessly according to the regular theodolites. unusual instructions sleep. ironic: final')
 
 // with ordAgg and sort; is slower
+/optimise_passthru 
 pipeline Query10
 begin
 
@@ -569,6 +574,7 @@ rows:
  (13,'Customer#000000013',0.00,3857.34,'CANADA','nsXQu0oVjD7PM659uC3SRSp','13-761-547-5974','ounts sleep carefully after the close frays. carefully bold notornis use ironic requests. blithely')
 
 
+/optimise_passthru 
 pipeline Query10
 begin
 

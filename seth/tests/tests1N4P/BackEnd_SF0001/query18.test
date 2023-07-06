@@ -31,7 +31,7 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
 
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -121,6 +121,7 @@ end ;
 
 */
 
+/optimise_passthru 
 pipeline Query18
 begin
    stage S00 on origin :
@@ -319,6 +320,7 @@ ordered rows:
  ('Customer#000000080',80,680,  DATE '1993-06-08',259281.51,154.00)
 
 // same
+/optimise_passthru 
 pipeline Query18
 begin
    stage S00 on origin :

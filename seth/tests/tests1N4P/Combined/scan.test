@@ -29,6 +29,7 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -44,9 +45,11 @@ begin
     | sink
     | stageStart
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_/optimise_passthru 
+pipeline'
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -71,6 +74,7 @@ rows:
 
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -91,6 +95,7 @@ rows:
  (3,190355,65359,2,49.00,70822.15,0.10,0.00,'R','F',DATE '1993-11-09',DATE '1993-12-20',DATE '1993-11-24','TAKE BACK RETURN','RAIL',' unusual accounts. eve')
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -113,6 +118,7 @@ rows:
   (3,DATE '1993-11-09')
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -136,6 +142,7 @@ rows:
 
 //------------------------------------------------------------------------------
 /*
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -157,6 +164,7 @@ pipeline unnamed
 failure contains: 'invalid command'
 */
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -185,6 +193,7 @@ pipeline unnamed
   (17)
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -216,6 +225,7 @@ rows:
   (17,10)
 
 //------------------------------------------------------------------------------
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :

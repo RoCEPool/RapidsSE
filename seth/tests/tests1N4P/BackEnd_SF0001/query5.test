@@ -35,7 +35,7 @@ select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 /*
 
@@ -118,6 +118,7 @@ end ;
 trackMemory
 success;
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -207,9 +208,11 @@ success
 
 //------------------------------------------------------------------------------
 // OPTIMIZED Q5_v2
-// Pushed predicates up in the pipeline
+// Pushed predicates up in the /optimise_passthru 
+pipeline
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -292,6 +295,7 @@ success
 // switched customer and orders join order
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline Query5
 begin
   stage stageStart on origin :
@@ -401,6 +405,7 @@ success
 // added projections to reduce data flow
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline Query5
 begin
   stage stageStart on origin :

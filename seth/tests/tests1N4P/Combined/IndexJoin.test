@@ -30,6 +30,7 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -75,6 +76,7 @@ create index R_idx on R(r_int_col0);
 success
 
 // join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -95,6 +97,7 @@ end ;
 rows: 0
 
 // left outer join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -130,6 +133,7 @@ load R "../DATA/Joins/R.csv";
 success
 
 // join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -194,6 +198,7 @@ rows:
  (5,5,'a')
 
 // left outer join
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -321,6 +326,7 @@ create table part (
 success
 
 // no data in lineitem and orders
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -344,6 +350,7 @@ load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
 // no data in orders
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -371,6 +378,7 @@ success
 load part "../TPCH/SF_0001/part.csv";
 success
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -392,6 +400,7 @@ end ;
 
 rows: 5996
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -413,6 +422,7 @@ end ;
 
 rows: 1160
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -436,6 +446,7 @@ end ;
 rows: 36
 
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -457,6 +468,7 @@ end ;
 
 rows: 76
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -490,6 +502,7 @@ end ;
 
 rows: (3240)
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -525,6 +538,7 @@ rows:
   (53,820.00,30)
   (55,773.00,30)
 
+/optimise_passthru 
 pipeline unnamed
 begin
 

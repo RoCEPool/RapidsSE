@@ -28,6 +28,7 @@ success
 load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -60,6 +61,7 @@ rows:
  (2,38.00)
  (3,116.00)
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -93,6 +95,7 @@ rows:
  (3,116.00)
 
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :

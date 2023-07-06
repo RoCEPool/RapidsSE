@@ -27,6 +27,7 @@ load rt "../DATA/Joins/rightTable.csv" ;
 success
 
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -49,6 +50,7 @@ rows:
  (1,'C',1,'B')
  (2,'X',2,'F')
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -70,6 +72,7 @@ rows:
  (1,'C',1,'D')
  (1,'C',1,'B')
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -88,6 +91,7 @@ end ;
 rows:
  (2,'X',2,'F')
 
+/optimise_passthru 
 pipeline indexJoinExp
 begin
   stage stageA on origin :

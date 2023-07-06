@@ -34,6 +34,7 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -58,6 +59,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -84,6 +86,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -107,6 +110,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru /optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -132,6 +136,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -156,6 +161,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -182,6 +188,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -205,6 +212,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -230,6 +238,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -255,6 +264,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -282,6 +292,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -308,6 +319,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -336,6 +348,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -363,6 +376,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -425,6 +439,7 @@ success
 create index T2_idx on T2 (a);
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -450,6 +465,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -484,6 +500,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -511,6 +528,7 @@ end ;
 rows: 0
 
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -541,6 +559,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -565,6 +584,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -591,6 +611,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -614,6 +635,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -639,6 +661,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -665,6 +688,7 @@ end ;
 rows: 0
 
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -698,6 +722,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -723,6 +748,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -750,6 +776,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -775,6 +802,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -832,6 +860,7 @@ success
 create index T2_idx on T2 (a);
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -856,6 +885,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -882,6 +912,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -905,6 +936,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -930,6 +962,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -954,6 +987,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -980,6 +1014,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1003,6 +1038,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1028,6 +1064,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1053,6 +1090,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1080,6 +1118,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1105,6 +1144,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1132,6 +1172,7 @@ rows: 0
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1157,6 +1198,7 @@ end ;
 
 rows: 0
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1221,6 +1263,7 @@ success
 load T2 "../DATA/Joins/T2.csv" ;
 success
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1251,6 +1294,7 @@ rows:
   (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
   (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1284,6 +1328,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1310,6 +1355,7 @@ rows:
   (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
   (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1340,6 +1386,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1366,6 +1413,7 @@ rows:
   (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
   (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1394,6 +1442,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1418,6 +1467,7 @@ end ;
 rows:
  (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1444,6 +1494,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1472,6 +1523,7 @@ rows:
   (7,'T-ROW7',7,7347,null,'J-ROW7')
   (1,'T-ROW1',1,181,111,'J-ROW1')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1504,6 +1556,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1531,6 +1584,7 @@ rows:
   (3,303,33993,'T-ROW3',3,'J-ROW3a')
   (7,727,7377,'T-ROW7',7,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1560,6 +1614,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // LEFT and RIGHT FILTER & PROJECT
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :
@@ -1586,6 +1641,7 @@ end ;
 rows:
   (7,'T-ROW7',7,'J-ROW7')
 
+/optimise_passthru 
 pipeline indexJoinTest
 begin
   stage stageA on origin :

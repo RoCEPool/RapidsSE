@@ -52,7 +52,7 @@ verified
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -331,6 +331,7 @@ rows:
   (4641.08,'Supplier#000000004','MOROCCO',24,'Manufacturer#5','Bk7ah4CK8SYQTepEmvMkkgMwg','25-843-787-7479', *)
 */
 
+/optimise_passthru 
 pipeline Query2
 begin
   stage S00 on origin :
