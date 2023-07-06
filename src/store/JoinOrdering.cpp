@@ -12,6 +12,7 @@
 #include "Optimiser.hpp"
 
 #include "XF_Fix_table_Pos.hpp"
+#include "XF_Derive_bounds.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -84,9 +85,7 @@ void JoinOrdering::vJoinOrdering(void)
   // Index Bounds : move table filter predicates to table index bounds
 
   // derive index bounds from table filter
-  m_pCI->vTransform(__func__, XF_NONE, "derive index bounds from table filter"_Stz);
-  Card_Table::vDeriveBoundsFromFilter(m_pCI);
-  m_pCI->vEndTransform();
+  XF_Derive_bounds::vXF_Derive_bounds(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fix position of table which uses subquery result as pos 0
@@ -109,9 +108,7 @@ void JoinOrdering::vJoinOrdering(void)
   vPredicateReposition();
 
   // re-derive bounds from filter after join ordering
-  m_pCI->vTransform(__func__, XF_NONE, "re-derive bounds from filter after join ordering"_Stz);
-  Card_Table::vDeriveBoundsFromFilter(m_pCI);
-  m_pCI->vEndTransform();
+  XF_Derive_bounds::vXF_Derive_bounds(m_pCI);
 }
 
 
