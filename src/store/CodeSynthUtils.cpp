@@ -243,7 +243,7 @@ void CodeSynthUtils::vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch) {
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
       bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__()",
-                                 "aExtern_PotAllotRow((void*)aDynamicT->m_pPot,iMixIn,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode)");
+                                 "aExtern_PotAllotRow((void*)aDynamicT->m_pPot,iMixIn,&aDynamicT->m_xRowInfoPO.m_acStrArea,&aDynamicT->m_iErrorCode)");
 
       RASSERT(bResult);
     }
