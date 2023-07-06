@@ -263,7 +263,7 @@ void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  vValidate_mustHave(CK_INDEXNM,CK_IDXCOLLIST,CK_NONE);
+  vValidate_mustHave(CK_INDEXNM,CK_NONE);
 
   if (Card_Bounds* p_bounds = pSub_bounds())
     p_bounds->vValidate(pCI,iDepth+1,this);

@@ -382,7 +382,8 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
     }
 
     if (CK_SCAN == pCI->G.e_MainCard ||
-        CK_INDEXJOIN == pCI->G.e_MainCard) {
+        CK_INDEXJOIN == pCI->G.e_MainCard ||
+        CK_INDEXSCAN == pCI->G.e_MainCard) {
       pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
       pCI->G.p_table->vUpdate_projection(pCI);
 
