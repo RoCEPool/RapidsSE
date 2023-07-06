@@ -13,6 +13,8 @@
 #include "Optimiser.hpp"
 #include "JoinOrdering.hpp"
 
+#include "XF_stmCol_To_tblCol.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -102,7 +104,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
   SubQuery* pOuterQuery = m_pCI->Sqy.m_pSubQuery;
 
-  vStmColToTblCol();
+  XF_stmCol_To_tblCol::vXF_stmCol_To_tblCol(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // flatten the sub-queries of this outer query
@@ -800,21 +802,6 @@ void XF_Flatten::vFlatten_74_H_A_NC_ro(void)
   m_pCI->vEndTransform();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* convert all <stmColOdn> to <tblColOdn>                                     */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten::vStmColToTblCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_NONE, "all $n become $c.n"_Stz);
-
-  while (m_pCI->G_bEachMain())
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
-
-  m_pCI->vEndTransform();
-}
 
 /*============================================================================*/
 /* end                                                                        */

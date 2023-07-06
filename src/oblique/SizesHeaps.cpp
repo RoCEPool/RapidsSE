@@ -295,6 +295,7 @@
 #include "XF_tblCol_To_stmCol.hpp"
 #include "XF_Fix_table_Pos.hpp"
 #include "XF_Derive_bounds.hpp"
+#include "XF_stmCol_To_tblCol.hpp"
 
 #include "CardUsage.hpp"
 
@@ -784,6 +785,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_SHORTEN_QUERYNM,          sizeof(XF_Shorten_queryNm),          HT_T_TINY    , FILL },
   {CN_XF_STAGE_CAST,               sizeof(XF_stage_cast),               HT_T_TINY    , FILL },
   {CN_XF_STMCOL_TO_COLNM,          sizeof(XF_stmCol_To_colNm),          HT_T_TINY    , FILL },
+  {CN_XF_STMCOL_TO_TBLCOL,         sizeof(XF_stmCol_To_tblCol),         HT_T_TINY    , FILL },
   {CN_XF_SUBQUERY_ANALYSIS,        sizeof(XF_subQuery_Analysis),        HT_T_TINY    , FILL },
   {CN_XF_SYNTHESISE_CODE,          sizeof(XF_Synthesise_Code),          HT_T_TINY    , FILL },
   {CN_XF_TABLE_ANALYSIS,           sizeof(XF_table_Analysis),           HT_T_TINY    , FILL },

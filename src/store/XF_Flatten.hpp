@@ -46,8 +46,6 @@ namespace STORE
     void vFlatten_53_W_L_NC_NI_join(void);
     void vFlatten_74_H_A_NC_ro(void);
 
-    void vStmColToTblCol(void);
-
   protected:
     Footer* aFooter(void);
   };

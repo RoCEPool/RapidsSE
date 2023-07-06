@@ -472,6 +472,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_SHORTEN_QUERYNM,
   /* */ CN_XF_STAGE_CAST,
   /* */ CN_XF_STMCOL_TO_COLNM,
+  /* */ CN_XF_STMCOL_TO_TBLCOL,
   /* */ CN_XF_SUBQUERY_ANALYSIS,
   /* */ CN_XF_SYNTHESISE_CODE,
   /* */ CN_XF_TABLE_ANALYSIS,
@@ -948,6 +949,7 @@ static Stz* aCN[]
   /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_SHORTEN_QUERYNM
   /* */ "XF_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
   /* */ "XF_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
+  /* */ "XF_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL
   /* */ "XF_SUBQUERY_ANALYSIS"_Stz,         // CN_XF_SUBQUERY_ANALYSIS
   /* */ "XF_SYNTHESISE_CODE"_Stz,           // CN_XF_SYNTHESISE_CODE
   /* */ "XF_TABLE_ANALYSIS"_Stz,            // CN_XF_TABLE_ANALYSIS
