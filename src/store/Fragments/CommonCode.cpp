@@ -378,7 +378,7 @@ i8 iTubContinue(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  __ROW_INFO_TO__.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
+  __ROW_INFO_TO__.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__((void*)__TUB_POT__,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   // check for error
   if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
@@ -506,6 +506,7 @@ i8 iEosPotBody(Dynamic_T* aDynamicT) {
 i8 iEosTubBody(Dynamic_T* aDynamicT) {
 
   struct __STRUCT_TO__* p__STRUCT_TO__;
+  RowInfo __ROW_INFO_TO__;
 
   {
     // marker-start
@@ -525,13 +526,13 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
 
   // allocate a row from the tub
 #ifdef WITH_CLANG
-  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode);
+  aDynamicT->m_xRowInfoTO.m_aRowCellArray = (byte*)__EXTERN_ALLOTROW__((void*)__TUB_POT__,&__ROW_INFO_TO__.m_acStrArea,&aDynamicT->m_iErrorCode);
 #endif
   if (aDynamicT->m_iErrorCode != (i8) EC_NONE) {
     return 0;
   }
 
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) aDynamicT->m_xRowInfoTO.m_aRowCellArray;
+  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
 
   // marker-end
   L_Return:

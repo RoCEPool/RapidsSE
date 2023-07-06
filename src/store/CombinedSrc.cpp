@@ -208,7 +208,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // generate code for the contraint
+        // generate code for the constraint
         vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pFilterFile);
@@ -439,6 +439,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
         RASSERT ( bOpened );
 
+        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
+        RASSERT ( bOpened );
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
@@ -446,12 +449,20 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // initialize with key kind
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
           vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pOperatorFile, (i8)KE_INT);
         else
           vAppendCodeFragmentKey(pOpSketch, "vIndexJoinGenKey"_Stz, pOperatorFile, (i8)KE_GENERAL);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // generate expressions for populating the key
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // posisition the index
         if (pOpSketch->m_pExprStack->nValues()) {
           vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
         }
@@ -459,6 +470,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           // cross join
           vAppendCodeFragment(pOpSketch, "vIndexPositionBegin"_Stz, pIndexFile);
         }
+
         if (pOpSketch->m_bLeftOuter) {
           vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO0"_Stz, pOperatorFile);
           vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
@@ -478,9 +490,12 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
         }
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // dereference the join
         vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pOperatorFile);
-        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
-        RASSERT ( bOpened );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // inflate the right table columns
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
         vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
 
@@ -506,7 +521,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append to stencil
         vAppendStencilTo(pOpSketch);
+
         vAppendCodeFragment(pOpSketch, "vInflateCrwBegin"_Stz, pOperatorFile);
         vAppendCodeInflateCols(pOpSketch, "L_RetT_ColT"_Stz, pOperatorFile);
         vAppendCodeFragment(pOpSketch, "vInflateCrwReturn"_Stz, pOperatorFile);
@@ -530,7 +548,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append to stencil
         vAppendStencilTo(pOpSketch);
+
         vAppendCodeFragment(pOpSketch, "vInflateRowBegin"_Stz, pOperatorFile);
         vAppendCodeInflateRowCols(pOpSketch, "vInflateRowCol"_Stz, pOperatorFile);
         vAppendCodeFragment(pOpSketch, "vInflateRowReturn"_Stz, pOperatorFile);
@@ -643,6 +664,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // create the pay load
         if (pOpSketch->m_nPayloadBytes)
           vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
 
@@ -683,6 +706,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // to stencil
         vAppendStencilTo(pOpSketch);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -733,6 +758,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // to stencil
         vAppendStencilTo(pOpSketch);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -761,7 +788,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
             vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
-            vAppendCodeFragment(pOpSketch, "iEosPotBody"_Stz);
+            vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
             vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
           }
 
@@ -773,7 +800,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodePixCols(pOpSketch);
           vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
           vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-          vAppendCodeFragment(pOpSketch, "iTubContinue2"_Stz);
+          vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
         break;
