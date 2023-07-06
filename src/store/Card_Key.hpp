@@ -29,6 +29,8 @@ namespace STORE
 
     IndexDef* pToIndexDef(void);
 
+    void vX(void);
+
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 
   };
