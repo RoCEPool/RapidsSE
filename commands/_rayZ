@@ -3,32 +3,35 @@
 /*============================================================================*/
 
 _nation
-load nation "../TPCH/SF_0001/nation.tbl";
+create index IxN_NATIONKEY on nation (n_nationkey);
+
+load nation "../DATA/TPCH/nation.tbl";
 
 /glean_interactive
 /optimise_passthru
 /pipeline_def
 /weaved
+/optimise_passthru
 pipeline _unnamed_
-  begin
+begin
 
-    stage S00 on origin :
-        start
-      | pulse     once
-      | next
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
 
-    stage S01 on all partitions :
-        scan      Nation
-      | project   " type INTEGER as C0_n_nationkey $1 "
-      | combined  0
-      | next
+  stage S01 on all partitions :
+    indexScan Nation IxN_NATIONKEY "UBOUND $I1 2 < "
+    | project   "type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 "
+    | dynamic
+    | next
 
-    stage S02 on origin :
-        output
-      | sink
-      | first
+  stage S02 on origin :
+      output
+    | sink
+    | first
 
-  end ;
+end ;
 
 
 /*============================================================================*/
