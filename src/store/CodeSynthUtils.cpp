@@ -234,14 +234,17 @@ void CodeSynthUtils::vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch) {
     }
   }
 
-  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ALLOTROW__")) {
+  if (StrLib::bContains(sLine->azChar(), "__EXTERN_ALLOTROW__()")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__", "aExtern_TubAllotRow");
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__()",
+                                 "aExtern_TubAllotRow((void*)aDynamicT->m_pTub,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode)");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__", "aExtern_PotAllotRow");
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_ALLOTROW__()",
+                                 "aExtern_PotAllotRow((void*)aDynamicT->m_pPot,iMixIn,&aDynamicT->m_xRowInfoTO.m_acStrArea,&aDynamicT->m_iErrorCode)");
+
       RASSERT(bResult);
     }
   }

@@ -748,7 +748,11 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
           vAppendCodePixCols(pOpSketch);
           vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
-          //vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+
+          // generate code for the hash value
+          if (pOpSketch->eSketchKind() == SK_POT)
+            vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
+
           vAppendCodeFragment(pOpSketch, "iTubContinue"_Stz);
           vAppendCodeCopyCols(pOpSketch, "vTubVchCol"_Stz);
         }
