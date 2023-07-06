@@ -220,7 +220,13 @@ void XF::vTransform_passThru(void)
       ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_colNm_To_stmCol(m_pCI);
     m_pCI->vEndTransform();
 
-    m_pCI->vTransform(__func__, XF_NONE, "index scan tidy"_Stz);
+    m_pCI->vTransform(__func__, XF_NONE, "tweak index join"_Stz);
+    while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
+      m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
+      m_pCI->G.p_indexJoin->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+    }
+    m_pCI->vEndTransform();
+    m_pCI->vTransform(__func__, XF_NONE, "tweak index scan"_Stz);
     while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
       m_pCI->G.p_indexScan->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
       m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);

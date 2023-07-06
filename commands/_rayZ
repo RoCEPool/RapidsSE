@@ -15,8 +15,6 @@ load Region "../DATA/TPCH/region.tbl";
 /optimise_passthru
 /pipeline_def
 /weaved
-/optimise_passthru
-/optimise_passthru
 pipeline _unnamed_
 begin
 
