@@ -408,33 +408,57 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
   i8 i_Col = 1;
   s32 sColNm;
-  eCT eColumnType;
+  eCT eColType;
 
-  Kid xExpr(this);
-  while (xExpr.bEach(CK_EXPR)) {
-    Card_Expr* p_expr = xExpr.p_expr();
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_Col++) {
+    Card_Expr *p_expr = xProjection.p_expr();
 
-    if (p_expr->pSub_as())
-      sColNm = p_expr->pSub_as()->szSymbol();
-    else
-      sColNm = p_expr->pGetTerm(0)->szSymbol();
-
-    if (CK_PROJECT != eOP) {
-      s32 sColNm_modified;
-      sColNm_modified.vSprint("C%lld_%s"_Stz,
-                              xExpr.i_Child(),
-                              sColNm.azChar());
-      sColNm = sColNm_modified;
+    if (CK_PROJECT == eOP) {
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
     }
+    else
+    if (CK_GBYAGG == eOP) {
+
+
+
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+    }
+    else {
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+    }
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // stream def column
 
-    eColumnType = p_expr->eColumnType();
+    eColType = p_expr->eColumnType();
 
-    //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumnType]);
+    //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColType]);
 
-    pStreamDef->vAddColumn(sColNm,eColumnType,C_UNKNOWN,C_UNKNOWN);
+    pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // col map (gbyagg) column
@@ -446,7 +470,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
-      pColMap->vAddCol(i_Col++, sColNm, bPayload);
+      pColMap->vAddCol(i_Col, sColNm, bPayload);
     }
   }
 
