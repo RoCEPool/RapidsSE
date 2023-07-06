@@ -454,6 +454,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_DELETE_UNNEEDED,
   /* */ CN_XF_DERIVE_PROJECTION_KEY,
   /* */ CN_XF_EARLY_PROJECTION,
+  /* */ CN_XF_FIX_TABLE_POS,
   /* */ CN_XF_FLATTEN,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
@@ -928,6 +929,7 @@ static Stz* aCN[]
   /* */ "XF_DELETE_UNNEEDED"_Stz,           // CN_XF_DELETE_UNNEEDED
   /* */ "XF_DERIVE_PROJECTION_KEY"_Stz,     // CN_XF_DERIVE_PROJECTION_KEY
   /* */ "XF_EARLY_PROJECTION"_Stz,          // CN_XF_EARLY_PROJECTION
+  /* */ "XF_FIX_TABLE_POS"_Stz,             // CN_XF_FIX_TABLE_POS
   /* */ "XF_FLATTEN"_Stz,                   // CN_XF_FLATTEN
   /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER

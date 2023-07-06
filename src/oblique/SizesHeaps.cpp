@@ -293,6 +293,7 @@
 #include "XF_subQuery_Analysis.hpp"
 #include "XF_table_Analysis.hpp"
 #include "XF_tblCol_To_stmCol.hpp"
+#include "XF_Fix_table_Pos.hpp"
 
 #include "CardUsage.hpp"
 
@@ -764,6 +765,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_DELETE_UNNEEDED,          sizeof(XF_Delete_Unneeded),          HT_T_TINY    , FILL },
   {CN_XF_DERIVE_PROJECTION_KEY,    sizeof(XF_Derive_projection_key),    HT_T_TINY    , FILL },
   {CN_XF_EARLY_PROJECTION,         sizeof(XF_Early_projection),         HT_T_TINY    , FILL },
+  {CN_XF_FIX_TABLE_POS,            sizeof(XF_Fix_table_Pos),            HT_T_TINY    , FILL },
   {CN_XF_FLATTEN,                  sizeof(XF_Flatten),                  HT_T_TINY    , FILL },
   {CN_XF_INDEX_ANALYSIS,           sizeof(XF_index_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,       sizeof(XF_Individuate_filter),       HT_T_TINY    , FILL },
