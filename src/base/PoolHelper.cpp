@@ -1372,84 +1372,188 @@ void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 {
   _static_
 
+  Heap* pHeap;
+  i8 iChunkSize;
+  i8 iSumBufsUsed;
+  i8 iSumChunksUsed;
+  i8 iWastageKb;
+  i8 iWastagePct;
+
+  pHeap = AM::pHeaps()->Transient.m_pTiny;
+  iChunkSize = C_SIZE_TINY_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
+  // Wastage is the size of the extra buffers that were needed when the chunks could have been packed
+  // into a smaller number of buffers.
+
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "tiny"_Stz,
-                        C_SIZE_TINY_OBJECT / 1024,
-                        AM::pHeaps()->Transient.m_pTiny->nBufferCount(),
-                        AM::pHeaps()->Transient.m_pTiny->nCurrAllocated(),
-                        AM::pHeaps()->Transient.m_pTiny->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Transient.m_pSmall;
+  iChunkSize = C_SIZE_SMALL_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "small"_Stz,
-                        C_SIZE_SMALL_OBJECT / 1024,
-                        AM::pHeaps()->Transient.m_pSmall->nBufferCount(),
-                        AM::pHeaps()->Transient.m_pSmall->nCurrAllocated(),
-                        AM::pHeaps()->Transient.m_pSmall->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Transient.m_pMedium;
+  iChunkSize = C_SIZE_MEDIUM_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "medium"_Stz,
-                        C_SIZE_MEDIUM_OBJECT / 1024,
-                        AM::pHeaps()->Transient.m_pMedium->nBufferCount(),
-                        AM::pHeaps()->Transient.m_pMedium->nCurrAllocated(),
-                        AM::pHeaps()->Transient.m_pMedium->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Transient.m_pLarge;
+  iChunkSize = C_SIZE_LARGE_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "transient"_Stz,
                         "large"_Stz,
-                        C_SIZE_SMALL_OBJECT / 1024,
-                        AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
-                        AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
-                        AM::pHeaps()->Transient.m_pLarge->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pTiny;
+  iChunkSize = C_SIZE_TINY_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "tiny"_Stz,
-                        C_SIZE_TINY_OBJECT / 1024,
-                        AM::pHeaps()->Persistent.m_pTiny->nBufferCount(),
-                        AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated(),
-                        AM::pHeaps()->Persistent.m_pTiny->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pSmall;
+  iChunkSize = C_SIZE_SMALL_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "small"_Stz,
-                        C_SIZE_SMALL_OBJECT / 1024,
-                        AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
-                        AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated(),
-                        AM::pHeaps()->Persistent.m_pSmall->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pMedium;
+  iChunkSize = C_SIZE_MEDIUM_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "medium"_Stz,
-                        C_SIZE_MEDIUM_OBJECT / 1024,
-                        AM::pHeaps()->Persistent.m_pMedium->nBufferCount(),
-                        AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated(),
-                        AM::pHeaps()->Persistent.m_pMedium->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
+
+
+  pHeap = AM::pHeaps()->Persistent.m_pLarge;
+  iChunkSize = C_SIZE_LARGE_OBJECT;
+  iSumBufsUsed = pHeap->nBufferCount() * C_SIZE_POOL_BUFFER / C_1KB;
+  iSumChunksUsed = pHeap->nCurrAllocated() * iChunkSize / C_1KB;
+  iWastageKb = (iSumChunksUsed == 0 ? 0 : (pHeap->nBufferCount() - (iSumChunksUsed * C_1KB / C_SIZE_POOL_BUFFER) - 1) * C_SIZE_POOL_BUFFER / C_1KB);
+  iWastagePct = (iSumBufsUsed  == 0 ? 0 : 100 * iWastageKb / iSumBufsUsed);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
                         "persistent"_Stz,
                         "large"_Stz,
-                        C_SIZE_SMALL_OBJECT / 1024,
-                        AM::pHeaps()->Persistent.m_pLarge->nBufferCount(),
-                        AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated(),
-                        AM::pHeaps()->Persistent.m_pLarge->nFreeChunks(),
+                        iChunkSize / C_1KB,
+                        pHeap->nBufferCount(),
+                        iSumBufsUsed,
+                        pHeap->nCurrAllocated(),
+                        pHeap->nFreeChunks(),
+                        iSumChunksUsed,
+                        iWastageKb,
+                        iWastagePct,
                         C_VARGS_END);
 }
 
