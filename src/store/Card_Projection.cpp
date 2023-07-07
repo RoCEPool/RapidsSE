@@ -468,6 +468,22 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       vDebugPoint();
 
     }
+    else
+    if (CK_SORT == eOP) {
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
+
+      i_Key = i_Col;
+    }
     else {
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol();
