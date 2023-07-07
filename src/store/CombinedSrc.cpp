@@ -1391,6 +1391,7 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   s16KB sCode;
+
   bool bExtracted;
 
   IndexDef* pIndexDef = pOpSketch->m_pIndexDef;
@@ -1403,7 +1404,8 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
-    Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
+    i8 i_ColMap = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Col2_base1;
+    Column *pColumn = pStreamDefOut->pGetColumn(i_ColMap)-1;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the payload ?
@@ -1412,7 +1414,7 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
     if (bIsPayload) {
 
       // make the column name
-      vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_Col);
+      vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_ColMap);
 
     switch (pColumn->eColumnType()) {
 

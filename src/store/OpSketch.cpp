@@ -235,6 +235,7 @@ void OpSketch::vCopyColsMap(ColsReq* pColsMap)
     if (pColsMap->m_axCols[i_Col].m_i_Col_base1 != C_UNKNOWN) {
       nCols++;
       m_pColsMap->m_axCols[i_Col].m_i_Col_base1 = pColsMap->m_axCols[i_Col].m_i_Col_base1;
+      m_pColsMap->m_axCols[i_Col].m_i_Col2_base1 = pColsMap->m_axCols[i_Col].m_i_Col2_base1;
       m_pColsMap->m_axCols[i_Col].m_sColNm = pColsMap->m_axCols[i_Col].m_sColNm;
       m_pColsMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
     }
