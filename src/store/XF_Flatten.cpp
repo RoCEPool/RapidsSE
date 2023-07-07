@@ -11,7 +11,7 @@
 #include "Smoosh.hpp"
 #include "Smooth.hpp"
 #include "Optimiser.hpp"
-#include "JoinOrdering.hpp"
+#include "XF_Join_Ordering.hpp"
 
 #include "XF_stmCol_To_tblCol.hpp"
 
@@ -226,7 +226,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
 
-  JoinOrdering::vJoinOrdering(m_pCI);
+  XF_Join_Ordering::vJoinOrdering(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sub-query has been flattened

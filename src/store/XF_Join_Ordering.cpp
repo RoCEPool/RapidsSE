@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* JoinOrdering.cpp -- JoinOrdering                                           */
+/* XF_Join_Ordering.cpp -- XF_Join_Ordering                                           */
 /*============================================================================*/
 
-#include "JoinOrdering.hpp"
+#include "XF_Join_Ordering.hpp"
 
 #include "Board.hpp"
 #include "CardIter.hpp"
@@ -21,15 +21,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, JoinOrdering, CN_JOINORDERING)
-__aNewFunction(JoinOrdering, CN_JOINORDERING)
-__vDeleteFunction(JoinOrdering, CN_JOINORDERING)
-__aFooterFunction(JoinOrdering)
+__pCastFunction(STORE, XF_Join_Ordering, CN_JOINORDERING)
+__aNewFunction(XF_Join_Ordering, CN_JOINORDERING)
+__vDeleteFunction(XF_Join_Ordering, CN_JOINORDERING)
+__aFooterFunction(XF_Join_Ordering)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JoinOrdering::JoinOrdering(CardIter* pCI)
+XF_Join_Ordering::XF_Join_Ordering(CardIter* pCI)
 : Object(CN_JOINORDERING)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
@@ -44,7 +44,7 @@ JoinOrdering::JoinOrdering(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-JoinOrdering::~JoinOrdering(void) noexcept(false)
+XF_Join_Ordering::~XF_Join_Ordering(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
 }
@@ -57,11 +57,11 @@ JoinOrdering::~JoinOrdering(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vJoinOrdering(CardIter* pCI)
+void XF_Join_Ordering::vJoinOrdering(CardIter* pCI)
 {
   _static_
 
-  JoinOrdering* pXF_Join_Ordering = new JoinOrdering(pCI);
+  XF_Join_Ordering* pXF_Join_Ordering = new XF_Join_Ordering(pCI);
 
   pXF_Join_Ordering->vJoinOrdering();
 
@@ -76,7 +76,7 @@ void JoinOrdering::vJoinOrdering(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vJoinOrdering(void)
+void XF_Join_Ordering::vJoinOrdering(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOINORDERING, _FOOTER_);
 
@@ -126,7 +126,7 @@ void JoinOrdering::vJoinOrdering(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void JoinOrdering::vReorderTables(void)
+void XF_Join_Ordering::vReorderTables(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
 

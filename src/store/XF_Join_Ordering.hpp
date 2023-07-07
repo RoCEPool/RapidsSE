@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* JoinOrdering.hpp -- Join Ordering                                          */
+/* XF_Join_Ordering.hpp -- Join Ordering                                          */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class JoinOrdering : public Object
+  class XF_Join_Ordering : public Object
   {
   private:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    JoinOrdering(CardIter* pCI);
-   ~JoinOrdering(void) noexcept(false);
+    XF_Join_Ordering(CardIter* pCI);
+   ~XF_Join_Ordering(void) noexcept(false);
 
     static void vJoinOrdering(CardIter* pCI);
 
@@ -37,7 +37,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  JoinOrdering* _pJoinOrdering(void* aAddr);
+  XF_Join_Ordering* _pXF_Join_Ordering(void* aAddr);
 }
 
 /*============================================================================*/

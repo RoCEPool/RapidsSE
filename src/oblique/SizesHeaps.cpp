@@ -250,7 +250,7 @@
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
 #include "Smoosh.hpp"
-#include "JoinOrdering.hpp"
+#include "XF_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
 
@@ -469,7 +469,7 @@ SizeHeap gxaSizeHeap[]
   { CN_JOBMETRICS,               sizeof(JobMetrics),             HT_T_LARGE   , FILL },
   { CN_JOBREPORT,                sizeof(JobReport),              HT_T_TINY    , FILL },
   { CN_JOBS,                     sizeof(Jobs),                   HT_T_TINY    , FILL },
-  { CN_JOINORDERING,             sizeof(JoinOrdering),           HT_T_TINY    , FILL },
+  { CN_JOINORDERING,             sizeof(XF_Join_Ordering),       HT_T_TINY    , FILL },
 
   { CN__K__,                     'K' - ('A' - 1),                HT_INVALID   , FILL },
   { CN_KEY,                      sizeof(Key),                    HT_INVALID   , FILL },
