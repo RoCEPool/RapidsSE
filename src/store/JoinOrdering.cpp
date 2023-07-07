@@ -14,6 +14,7 @@
 #include "XF_Fix_table_Pos.hpp"
 #include "XF_Derive_bounds.hpp"
 #include "XF_Delete_Empty_where.hpp"
+#include "XF_Predicate_Pull_Up.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -62,20 +63,7 @@ void JoinOrdering::vJoinOrdering(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Predicate Pull Up : move suitable where predicates to table filter
 
-  // @ mark where predicates wrt. table
-  m_pCI->vTransform(__func__, XF_NONE, "put a table @c against where pred"_Stz);
-  Card_Where::vMarkWherePredWrtTable(m_pCI);
-  m_pCI->vEndTransform();
-
-  // move @ marked where predicates to table filter
-  m_pCI->vTransform(__func__, XF_NONE, "move @ marked where predicates to table filter"_Stz);
-  Card_Where::vMoveWherePredsToTableFilter(m_pCI);
-  m_pCI->vEndTransform();
-
-  // cull @ marked where predicates
-  m_pCI->vTransform(__func__, XF_NONE, "cull @ marked where predicates"_Stz);
-  Card_Where::vCullMarkedCmpPred(m_pCI);
-  m_pCI->vEndTransform();
+  XF_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
 
   // delete empty where
   XF_Delete_Empty_where::vXF_Delete_Empty_where(m_pCI);

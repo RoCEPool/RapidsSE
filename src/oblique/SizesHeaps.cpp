@@ -297,6 +297,7 @@
 #include "XF_Derive_bounds.hpp"
 #include "XF_stmCol_To_tblCol.hpp"
 #include "XF_Delete_Empty_where.hpp"
+#include "XF_Predicate_Pull_Up.hpp"
 
 #include "CardUsage.hpp"
 
@@ -778,6 +779,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_MORPH_TABLE_TO_EEOP,      sizeof(XF_Morph_table_To_EEop),      HT_T_TINY    , FILL },
   {CN_XF_MOVE_ON,                  sizeof(XF_Move_on),                  HT_T_TINY    , FILL },
   {CN_XF_NOT_OPS,                  sizeof(XF_not_Ops),                  HT_T_TINY    , FILL },
+  {CN_XF_PREDICATE_PULL_UP,        sizeof(XF_Predicate_Pull_Up),        HT_T_TINY    , FILL },
   {CN_XF_PROJECTION_ANALYSIS,      sizeof(XF_projection_Analysis),      HT_T_TINY    , FILL },
   {CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, sizeof(XF_Promote_gbyAgg_To_ordAgg), HT_T_TINY    , FILL },
   {CN_XF_REDUCE_KEY_GBYAGG,        sizeof(XF_Reduce_key_gbyAgg),        HT_T_TINY    , FILL },

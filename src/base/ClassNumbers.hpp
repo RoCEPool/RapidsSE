@@ -464,6 +464,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_MORPH_TABLE_TO_EEOP,
   /* */ CN_XF_MOVE_ON,
   /* */ CN_XF_NOT_OPS,
+  /* */ CN_XF_PREDICATE_PULL_UP,
   /* */ CN_XF_PROJECTION_ANALYSIS,
   /* */ CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,
   /* */ CN_XF_REDUCE_KEY_GBYAGG,
@@ -942,6 +943,7 @@ static Stz* aCN[]
   /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
   /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
   /* */ "XF_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
+  /* */ "XF_PREDICATE_PULL_UP"_Stz,         // CN_XF_PREDICATE_PULL_UP
   /* */ "XF_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
   /* */ "XF_PROMOTE_GBYAGG_TO_ORDAGG"_Stz,  // CN_XF_PROMOTE_GBYAGG_TO_ORDAGG
   /* */ "XF_REDUCE_KEY_GBYAGG"_Stz,         // CN_XF_REDUCE_KEY_GBYAGG
