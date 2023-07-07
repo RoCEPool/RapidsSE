@@ -465,6 +465,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_MOVE_ON,
   /* */ CN_XF_NOT_OPS,
   /* */ CN_XF_PREDICATE_PULL_UP,
+  /* */ CN_XF_PREDICATE_REPOSITION,
   /* */ CN_XF_PROJECTION_ANALYSIS,
   /* */ CN_XF_PROMOTE_GBYAGG_TO_ORDAGG,
   /* */ CN_XF_REDUCE_KEY_GBYAGG,
@@ -944,6 +945,7 @@ static Stz* aCN[]
   /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
   /* */ "XF_NOT_OPS"_Stz,                   // CN_XF_NOT_OPS
   /* */ "XF_PREDICATE_PULL_UP"_Stz,         // CN_XF_PREDICATE_PULL_UP
+  /* */ "XF_PREDICATE_REPOSITION"_Stz,      // CN_XF_PREDICATE_REPOSITION
   /* */ "XF_PROJECTION_ANALYSIS"_Stz,       // CN_XF_PROJECTION_ANALYSIS
   /* */ "XF_PROMOTE_GBYAGG_TO_ORDAGG"_Stz,  // CN_XF_PROMOTE_GBYAGG_TO_ORDAGG
   /* */ "XF_REDUCE_KEY_GBYAGG"_Stz,         // CN_XF_REDUCE_KEY_GBYAGG

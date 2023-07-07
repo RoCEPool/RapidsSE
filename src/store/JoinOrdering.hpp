@@ -29,8 +29,6 @@ namespace STORE
 
   private:
 
-    void vPredicateReposition(void);
-
     void vReorderTables(void);
 
   protected:

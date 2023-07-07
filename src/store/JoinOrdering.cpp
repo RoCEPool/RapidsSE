@@ -15,6 +15,7 @@
 #include "XF_Derive_bounds.hpp"
 #include "XF_Delete_Empty_where.hpp"
 #include "XF_Predicate_Pull_Up.hpp"
+#include "XF_Predicate_Reposition.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -92,7 +93,7 @@ void JoinOrdering::vJoinOrdering(void)
   // reorder the tables
   vReorderTables();
 
-  vPredicateReposition();
+  XF_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
 
   // re-derive bounds from filter after join ordering
   XF_Derive_bounds::vXF_Derive_bounds(m_pCI);
@@ -310,60 +311,6 @@ void JoinOrdering::vReorderTables(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->vEndTransform();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Predicate repositioning post join ordering                                 */
-/*----------------------------------------------------------------------------*/
-void JoinOrdering::vPredicateReposition(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOINORDERING,_FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_NONE, "predicate repositioning post join ordering"_Stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // At Mark Where Pred Wrt Table
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vMarkWrt_table(m_pCI);
-  }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Move At Marked Where Pred To Table Filter
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCopyMarkedPredsToTable(m_pCI->G.pDeck);
-  }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_BOOLCALC)) {
-    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);
-  }
-
-  m_pCI->vPrintBoard(__LINE__);
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Delete Empty Where
-
-  m_pCI->G_vRestart();
-
-  while (m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_TABLE, CK_FILTER)) {
-    m_pCI->G.p_table->vDeleteFilterIfEmpty(m_pCI->G.p_filter);
-  }
 
   m_pCI->vPrintBoard(__LINE__);
 
