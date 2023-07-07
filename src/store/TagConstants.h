@@ -71,7 +71,7 @@ static Stz* C_TAG_SENDS        = "<sends>"_Stz;
 static Stz* C_TAG_WAIT         = "<wait>"_Stz;
 static Stz* C_TAG_WEAVED       = "<weaved>"_Stz;
 static Stz* C_TAG_WEAVER1      = "<weaver1>"_Stz;
-
+static Stz* C_TAG_WEAVER2      = "<weaver2>"_Stz;
 
 static Stz* C_TAG_LD_DATE_FORMAT          = "<date_format>"_Stz;
 static Stz* C_TAG_LD_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;

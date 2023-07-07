@@ -172,6 +172,9 @@ then
 "<optimise_passThru>" [job].tagSet@ tagSet.hasName if
    "<optimise_passThru>" .
 then
+"<weaver1>" [job].tagSet@ tagSet.hasName if
+   "<weaver1>" .
+then
 "<weaver2>" [job].tagSet@ tagSet.hasName if
    "<weaver2>" .
 then
