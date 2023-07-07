@@ -458,6 +458,9 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
                              i_Key);
         sColNm_mapped = sNm_modified;
       }
+      else {
+        i_Key = i_Col;
+      }
 
       vTrace("%s %s %lld\n"_Stz,sColNm.azChar(),pSymbol->szSymbol(),i_Key);
 
