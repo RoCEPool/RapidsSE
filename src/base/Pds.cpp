@@ -57,6 +57,7 @@ Pds::Pds(i8 nBytes)
 
   m_nBlockSize = sizeof(SkipListNode) + nBytes;
   m_nPaddingPerBlk = 0;
+  m_iSyntheticKey = 0;
 
   // Ensure block size is a multiple of 16 bytes
   i8 iMod = m_nBlockSize % 16;
@@ -94,55 +95,33 @@ Pds::~Pds(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot a skip list block in its mini-heap buffer                            */
+/* Append to the end of the skip list. Uses it's own internal synthetic key   */
 /*----------------------------------------------------------------------------*/
-SkipListBlock* Pds::aAllotSkipListBlock(i8 iKey)
+SkipListBlock* Pds::pAppendWithSynthKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  SkipListBlock* pAllocBlock = nullptr;
+  i8 iNewKey = m_iSyntheticKey + 1;
 
-  // Check the free list if it has a block that we can re-use
-  if(m_iFreeListEntries > 0) {
-    // Get the dummy root block
-    SkipListBlock* pFreeListDummyRoot = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
-
-    // Get the next block (It should exist)
-    SkipListBlock* pNextFree = pNextSLBlock(pFreeListDummyRoot, 0);
-    RASSERT(pNextFree != nullptr);
-
-    pAllocBlock = pNextFree;
-
-    SkipListBlock* pNextNext = pNextSLBlock(pAllocBlock, 0);
-
-    // Set the dummy root to point to next->next
-    // next->next can be null, which is ok
-    bool bResult = bSetNextSLBlock(pFreeListDummyRoot, pNextNext, 0);
-    RASSERT(bResult == 1);
-
-    m_iFreeListEntries--;
-    RASSERT(m_iFreeListEntries >= 0);
-  } else {
-    pAllocBlock = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
-  }
-
-  if (! pAllocBlock) {
-//    vTrace("Unable to allocate new entry in PDS SkipList\n"_Stz);
+  SkipListBlock* pNewSLBlock = pInsert(iNewKey);
+  if(pNewSLBlock == nullptr)
     return nullptr;
-  }
 
-  pAllocBlock->vSetKey(iKey);
+  // Assert the new block was added to the end
+  RASSERT(pNewSLBlock->m_xNode.uNext(0) == 0);
 
-//  vTrace("Block addr: %p\n"_Stz, pAllocBlock);
-  return pAllocBlock;
+  // Update the main key
+  m_iSyntheticKey++;
+
+  return pNewSLBlock;
 }
-
 /*----------------------------------------------------------------------------*/
 /* remove key from in use skip list and move to free list                     */
 /*----------------------------------------------------------------------------*/
 bool Pds::bDelete(i8 iKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
 
   // TODO: Add an assert to check that all the entries are deleted where
   // the entry to delete has a non-zero value in it's respective level.
@@ -208,21 +187,21 @@ void Pds::vDumpFreeList(void) {
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
 
-    SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
+  SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 
-    vTrace("| %5lld | %6lld | "_Stz, 0, m_iFreeListEntries);
+  vTrace("| %5lld | %6lld | "_Stz, 0, m_iFreeListEntries);
 
-    for(i8 iNumEntries = 0; iNumEntries < m_iFreeListEntries + 1; iNumEntries++) {
-      vTrace("%lld-->"_Stz, pCursor->iKey());
+  for(i8 iNumEntries = 0; iNumEntries < m_iFreeListEntries + 1; iNumEntries++) {
+    vTrace("%lld-->"_Stz, pCursor->iKey());
 
-      pCursor = pNextSLBlock(pCursor, 0);
-      if(pCursor == nullptr) {
-        break;
-      }
+    pCursor = pNextSLBlock(pCursor, 0);
+    if(pCursor == nullptr) {
+      break;
     }
-    vTrace("END\n"_Stz);
-    vTrace("--------------------------------------------------"
-           "--------------------------------------------------\n"_Stz);
+  }
+  vTrace("END\n"_Stz);
+  vTrace("--------------------------------------------------"
+         "--------------------------------------------------\n"_Stz);
 
 
   vTrace("=================================================="
@@ -267,6 +246,62 @@ void Pds::vDumpInUseList(void) {
 
   vTrace("=================================================="
          "===================================================\n\n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Insert Key                                                                 */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::pInsert(i8 iKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  // try to allocate a block as mini-Heap may be full
+  SkipListBlock* pNewSLBlock = aAllotSkipListBlock(iKey);
+  if(pNewSLBlock == nullptr) {
+    return nullptr;
+  }
+
+  u2 uNewOffset = uGetOffsetFromBase(pNewSLBlock);
+
+  SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
+
+  // Get the prior vector at all levels for this key, i.e
+  // the elements at each level of the skip list after which
+  // we want to insert this key.
+  bool bResult = bPriorVecToKey(iKey, xPriorVec);
+
+  if( ! bResult) {
+    // Got duplicate key, error
+    vMoveToFreeList(pNewSLBlock);
+    // vTrace("Pds Skip List attempting to insert a duplicate key %lld\nAborting insert...\n"_Stz, iKey);
+    return nullptr;
+  }
+
+  // Iterate this vector for each level, and we may or may not
+  // insert the key
+  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
+
+    i8 iRMod = rand() % (i_Level+1);
+    if(iRMod != 0) {
+      break;
+    }
+
+    SkipListBlock* pCursor = xPriorVec[i_Level];
+
+    // Insert element, update offset values
+    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
+
+    bool bResult = bSetNextSLBlock(pCursor, pNewSLBlock, i_Level);
+    RASSERT(bResult);
+
+    bResult = bSetNextSLBlock(pNewSLBlock, pNext, i_Level);
+    RASSERT(bResult);
+
+    m_iNumEntries[i_Level]++;
+  }
+
+  return pNewSLBlock;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,6 +336,80 @@ SkipListBlock* Pds::pFind(i8 iKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Number of elements in this Skip List                                       */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::pFirstBlock(void)
+{
+  if(m_iNumEntries[0] == 0)
+    return nullptr;
+
+  SkipListBlock* pRootBlock = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+
+  SkipListBlock* pFirstBlock = pNextSLBlock(pRootBlock, 0);
+
+  RASSERT(pFirstBlock != nullptr);
+  
+  return pFirstBlock;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Number of elements in this Skip List                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pds::iNumEntries(void)
+{
+  return m_iNumEntries[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* allot a skip list block in its mini-heap buffer                            */
+/*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::aAllotSkipListBlock(i8 iKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
+
+  SkipListBlock* pAllocBlock = nullptr;
+
+  // Check the free list if it has a block that we can re-use
+  if(m_iFreeListEntries > 0) {
+    // Get the dummy root block
+    SkipListBlock* pFreeListDummyRoot = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
+
+    // Get the next block (It should exist)
+    SkipListBlock* pNextFree = pNextSLBlock(pFreeListDummyRoot, 0);
+    RASSERT(pNextFree != nullptr);
+
+    pAllocBlock = pNextFree;
+
+    SkipListBlock* pNextNext = pNextSLBlock(pAllocBlock, 0);
+
+    // Set the dummy root to point to next->next
+    // next->next can be null, which is ok
+    bool bResult = bSetNextSLBlock(pFreeListDummyRoot, pNextNext, 0);
+    RASSERT(bResult == 1);
+
+    m_iFreeListEntries--;
+    RASSERT(m_iFreeListEntries >= 0);
+  } else {
+    pAllocBlock = aAllotItem(CN_SKIPLISTBLOCK, m_nBlockSize);
+  }
+
+  if (! pAllocBlock) {
+//    vTrace("Unable to allocate new entry in PDS SkipList\n"_Stz);
+    return nullptr;
+  }
+
+  pAllocBlock->vSetKey(iKey);
+
+//  vTrace("Block addr: %p\n"_Stz, pAllocBlock);
+  return pAllocBlock;
+}
+
+/*----------------------------------------------------------------------------*/
 /* calculate address from base address of this object + offset                */
 /*----------------------------------------------------------------------------*/
 void* Pds::pGetAddrFromOffset(u2 uOffset)
@@ -331,79 +440,26 @@ u2 Pds::uGetOffsetFromBase(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Insert Key                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Pds::bInsert(i8 iKey)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
-
-  // try to allocate a block as mini-Heap may be full
-  SkipListBlock* pNewSLSet = aAllotSkipListBlock(iKey);
-  if(pNewSLSet == nullptr)
-    return false;
-
-  u2 uNewOffset = uGetOffsetFromBase(pNewSLSet);
-
-  SkipListBlock* xPriorVec[C_MAX_LVL_LEVELS];
-
-  // Get the prior vector at all levels for this key, i.e
-  // the elements at each level of the skip list after which
-  // we want to insert this key.
-  bool bResult = bPriorVecToKey(iKey, xPriorVec);
-
-  if( ! bResult) {
-    // Got duplicate key, error
-    vMoveToFreeList(pNewSLSet);
-//    vTrace("Pds Skip List attempting to insert a duplicate key %lld\nAborting insert...\n"_Stz, iKey);
-    return false;
-  }
-
-  // Iterate this vector for each level, and we may or may not
-  // insert the key
-  for (i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-
-    i8 iRMod = rand() % (i_Level+1);
-    if(iRMod != 0) {
-      break;
-    }
-
-    SkipListBlock* pCursor = xPriorVec[i_Level];
-
-    // Insert element, update offset values
-    SkipListBlock* pNext = pNextSLBlock(pCursor, i_Level);
-
-    bool bResult = bSetNextSLBlock(pCursor, pNewSLSet, i_Level);
-    RASSERT(bResult);
-
-    bResult = bSetNextSLBlock(pNewSLSet, pNext, i_Level);
-    RASSERT(bResult);
-
-    m_iNumEntries[i_Level]++;
-  }
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* move given block to the free list                                          */
 /*----------------------------------------------------------------------------*/
-void Pds::vMoveToFreeList(SkipListBlock* pSLSet)
+void Pds::vMoveToFreeList(SkipListBlock* pSLBlock)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
   // Clear its values
-  pSLSet->vSetKey(0);
+  pSLBlock->vSetKey(0);
   for(i8 i_Level = 0; i_Level < C_MAX_LVL_LEVELS; i_Level++) {
-    pSLSet->m_xNode.vNext(i_Level, 0);
+    pSLBlock->m_xNode.vNext(i_Level, 0);
   }
 
   SkipListBlock* pCursor = (SkipListBlock*) pGetAddrFromOffset(m_uFreeListRootOffset);
 
   SkipListBlock* pNext = pNextSLBlock(pCursor, 0);
 
-  bool bResult = bSetNextSLBlock(pSLSet, pNext, 0);
+  bool bResult = bSetNextSLBlock(pSLBlock, pNext, 0);
   RASSERT(bResult);
 
-  bResult = bSetNextSLBlock(pCursor, pSLSet, 0);
+  bResult = bSetNextSLBlock(pCursor, pSLBlock, 0);
   RASSERT(bResult);
 
   m_iFreeListEntries++;

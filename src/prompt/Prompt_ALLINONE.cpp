@@ -3069,10 +3069,11 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 
   bool bResult = false;
   PDS_i16 = new Pds_i16();
+  SkipListBlock* pResultBlock = nullptr;
 
   // Insert single element
-  bResult = PDS_i16->bInsert(1);
-  RASSERT(bResult);
+  pResultBlock = PDS_i16->pInsert(1);
+  RASSERT(pResultBlock);
 
 //  PDS_i16->vDumpInUseList();
 //  PDS_i16->vDumpFreeList();
@@ -3123,26 +3124,26 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   PDS_i16 = new Pds_i16();
 
   // Insert 10 elements out of order
-  bResult = PDS_i16->bInsert(10);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(3);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(1);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(7);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(6);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(9);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(4);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(8);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(2);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(5);
-  RASSERT(bResult);
+  pResultBlock = PDS_i16->pInsert(10);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(3);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(1);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(7);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(6);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(9);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(4);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(8);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(2);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(5);
+  RASSERT(pResultBlock);
 
   RASSERT(PDS_i16->m_iNumEntries[0] == 10);
   RASSERT(PDS_i16->m_iFreeListEntries == 0);
@@ -3251,8 +3252,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 
   for(; iInsert < C_I8_MAX; iInsert++)
   {
-    bResult = PDS_i16->bInsert(rand());
-    if(!bResult) {
+    pResultBlock = PDS_i16->pInsert(rand());
+    if(pResultBlock == nullptr) {
      break;
     }
   }
@@ -3267,10 +3268,10 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
                   // Test Case - Insert duplicate key
 /*----------------------------------------------------------------------------*/
   PDS_i16 = new Pds_i16();
-  bResult = PDS_i16->bInsert(10);
-  RASSERT(bResult);
-  bResult = PDS_i16->bInsert(10);
-  RASSERT( ! bResult);
+  pResultBlock = PDS_i16->pInsert(10);
+  RASSERT(pResultBlock);
+  pResultBlock = PDS_i16->pInsert(10);
+  RASSERT(pResultBlock == nullptr);
 
 //  PDS_i16->vDumpInUseList();
 //  PDS_i16->vDumpFreeList();
@@ -3294,8 +3295,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
   iFreeBytes = PDS_CharArr->nFreeBytes();
 
   // Insert single element
-  bResult = PDS_CharArr->bInsert(1);
-  RASSERT(bResult);
+  pResultBlock = PDS_CharArr->pInsert(1);
+  RASSERT(pResultBlock);
 
 //  PDS_CharArr->vDumpInUseList();
 //  PDS_CharArr->vDumpFreeList();
@@ -3343,8 +3344,8 @@ bool PROMPT::bPrompt_pdsTest(SePrompt* pPrompt)
 
   for(; iInsert < C_I8_MAX; iInsert++)
   {
-    bResult = PDS_CharArr->bInsert(rand());
-    if(!bResult) {
+    pResultBlock = PDS_CharArr->pInsert(rand());
+    if(pResultBlock == nullptr) {
       break;
     }
   }
