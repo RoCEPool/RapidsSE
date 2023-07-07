@@ -2,27 +2,30 @@
 /* __CS: Code Synthesizer V2                                                  */
 /*============================================================================*/
 
-create table datums (
-  int_col0   INTEGER NOT NULL,
-  int_col1   INTEGER,
-  bol_col2   BOOLEAN,
-  bol_col3   BOOLEAN,
-  dte_col4   DATE,
-  dte_col5   DATE,
-  dec_col6   DECIMAL(19,2),
-  dec_col7   DECIMAL(19,2),
-  flt_col8   FLOAT,
-  flt_col9   FLOAT,
-  tme_col10  TIME,
-  tme_col11  TIME,
-  tsp_col12  TIMESTAMP,
-  tsp_col13  TIMESTAMP,
-  vch_col14  VARCHAR(32),
-  vch_col15  VARCHAR(32)
-);
+__TPCH_SCHEMA;
 
-load datums "../DATA/Transliterate/decimal.csv" ;
-create table substringTbl(a varchar,b char);
-load substringTbl "../DATA/Expressions/subString.csv";
+/optimise_passthru
+pipeline Q
+begin
 
-select * from substringTbl where substr(a,1,1)='A';
+ stage first on origin :
+   start
+   | pulse once
+   | next
+
+ stage Gs_ORDERS on all partitions :
+   scan orders
+   | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >= O_ORDERDATE DATE '1993-10-01' < and "
+   | project " type INTEGER as _orderkey O_ORDERKEY ,
+               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
+   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="  "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+   | combined 0
+   | next
+
+ stage last on origin :
+    output
+    | sink
+    | first
+
+  end ;
+
