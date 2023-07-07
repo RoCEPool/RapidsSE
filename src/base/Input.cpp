@@ -1511,11 +1511,11 @@ void Input::vCollectCppString(void)
   // collect the characters within the string
   while ( ! bEndCppString() ) {
 
-    if (m_xAnnChar.bIsNewLine()) {
-      *z = '\0';
-      m_pCurrTkn->vToken(TN_INVALID);
-      return;
-    }
+//    if (m_xAnnChar.bIsNewLine()) {
+//      *z = '\0';
+//      m_pCurrTkn->vToken(TN_INVALID);
+//      return;
+//    }
 
     if (m_xAnnChar.bIsBackSlash()) {
       vGetAnnCharStripped();

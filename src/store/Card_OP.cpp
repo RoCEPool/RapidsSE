@@ -182,7 +182,8 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 
     pCI->G.p_constraint = pSub_constraint();
     pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-    pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
+    if (pCI->G.p_boolCalc)
+      pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
   }
 
   if (bIsCard(CK_SORT)) {

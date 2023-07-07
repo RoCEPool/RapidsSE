@@ -232,6 +232,18 @@ void XF::vTransform_passThru(void)
       m_pCI->G.p_indexScan->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
     }
     m_pCI->vEndTransform();
+    m_pCI->vTransform(__func__, XF_NONE, "tweak key exists"_Stz);
+    while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
+      m_pCI->G.p_keyExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
+      m_pCI->G.p_keyExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+    }
+    m_pCI->vEndTransform();
+    m_pCI->vTransform(__func__, XF_NONE, "tweak key not exists"_Stz);
+    while (m_pCI->G_bEachMain(CK_KEYNOTEXISTS)) {
+      m_pCI->G.p_keyNotExists->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
+      m_pCI->G.p_keyNotExists->pSub_bound()->pSymbol()->Y_vSet(P_ChosenBound);
+    }
+    m_pCI->vEndTransform();
 
 
 

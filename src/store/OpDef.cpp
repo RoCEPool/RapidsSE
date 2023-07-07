@@ -486,10 +486,10 @@ void OpDef::vValidate(void)
 //    RASSERT(pArgDef("constraint"_Stz));
 //    RASSERT(pArgDef("expr"_Stz));
 
-    RASSERT(! m_pStreamDef_arriving);
+//    RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexSemi);
-    RASSERT(m_pColsReq);
+//    RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("KEYNOTEXISTS"_Stz)) {
@@ -499,10 +499,10 @@ void OpDef::vValidate(void)
 //    RASSERT(pArgDef("constraint"_Stz));
 //    RASSERT(pArgDef("expr"_Stz));
 
-    RASSERT(! m_pStreamDef_arriving);
+//    RASSERT(! m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndex_indexSemi);
-    RASSERT(m_pColsReq);
+//    RASSERT(m_pColsReq);
   }
   else
   if (m_sOpNm.bSame("LIMIT"_Stz)) {

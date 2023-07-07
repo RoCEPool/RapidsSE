@@ -4,7 +4,9 @@
 
 __TPCH_SCHEMA;
 
+/glean_interactive
 /optimise_passthru
+/pipeline_def
 pipeline Q
 begin
 

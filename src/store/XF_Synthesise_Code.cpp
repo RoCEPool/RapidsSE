@@ -185,13 +185,13 @@ void XF_Synthesise_Code::vCraftOpDef(Card_OP* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SYNTHESISE_CODE, _FOOTER_);
 
-  if (p_OP->bIsCard(CK_INDEXJOIN))
+  if (p_OP->bIsCard(CK_KEYEXISTS))
     vDebugPoint();
 
   if (p_OP->bIsOne(CK_CAST,CK_COMBINED,CK_SEND,CK_NONE))
     return;
 
-  if (p_OP->bIsCard(CK_HAVING))
+       if (p_OP->bIsCard(CK_HAVING))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"filter"_Stz);
   else if (p_OP->bIsCard(CK_HASH))
     m_pOpDef = new OpDef(m_pStageDef->nItems(),"hash"_Stz);
@@ -461,6 +461,8 @@ void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
     case CK_CROSSJOIN:
     case CK_INDEXJOIN:
     case CK_INDEXSCAN:
+    case CK_KEYEXISTS:
+    case CK_KEYNOTEXISTS:
     case CK_SCAN:
       p_table = p_OP->pSub_table();
        break;
