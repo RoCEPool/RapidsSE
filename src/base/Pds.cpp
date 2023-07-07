@@ -256,9 +256,6 @@ SkipListBlock* Pds::pInsert(i8 iKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PDS,_FOOTER_);
 
-  // What happens when we delete ..?
-  RASSERT(m_iNumEntries[0] == m_iSyntheticKey);
-
   // try to allocate a block as mini-Heap may be full
   SkipListBlock* pNewSLBlock = aAllotSkipListBlock(iKey);
   if(pNewSLBlock == nullptr) {
