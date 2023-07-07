@@ -46,6 +46,7 @@ namespace BASE
     void            vDumpInUseList(void);
     SkipListBlock*  pInsert(i8 iKey);
     SkipListBlock*  pFind(i8 iKey);
+    SkipListBlock*  pFirstBlock(void);
     i8              iNumEntries(void);
 
     // private:

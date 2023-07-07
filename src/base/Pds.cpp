@@ -341,6 +341,18 @@ SkipListBlock* Pds::pFind(i8 iKey)
 /*----------------------------------------------------------------------------*/
 /* Number of elements in this Skip List                                       */
 /*----------------------------------------------------------------------------*/
+SkipListBlock* Pds::pFirstBlock(void)
+{
+  if(m_iNumEntries[0] == 0)
+    return nullptr;
+
+  SkipListBlock* pRootBlock = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
+  return pNextSLBlock(pRootBlock, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Number of elements in this Skip List                                       */
+/*----------------------------------------------------------------------------*/
 i8 Pds::iNumEntries(void)
 {
   return m_iNumEntries[0];
