@@ -41,6 +41,7 @@ namespace STORE
     void vCleanup(void);
     void vDropAllPagingLocks(void);
     void vDump(void);
+    CrwBuffer* pGetBuffer(SkipListBlock* pSLBlock);
 
 
 

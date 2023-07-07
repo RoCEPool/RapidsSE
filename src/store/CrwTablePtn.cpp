@@ -190,11 +190,7 @@ void CrwTablePtn::vDump(void)
     return;
 
   while(pCursor) {
-    BufferId oBufferId = *(BufferId*)pCursor->aItemBody();
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(oBufferId));
-
-    RASSERT(pCrwBuffer != nullptr);
-    RASSERT(pCrwBuffer->bIsClassNo(BASE::CN_CRWBUFFER));
+    CrwBuffer* pCrwBuffer = pGetBuffer(pCursor);
 
     pCrwBuffer->vShow();
 
@@ -208,6 +204,21 @@ void CrwTablePtn::vDump(void)
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract the bufferid from pds and get the address of the buffer            */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* CrwTablePtn::pGetBuffer(SkipListBlock* pSLBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  BufferId oBufferId = *(BufferId*)pSLBlock->aItemBody();
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(oBufferId));
+
+  RASSERT(pCrwBuffer != nullptr);
+  RASSERT(pCrwBuffer->bIsClassNo(BASE::CN_CRWBUFFER));
+  return pCrwBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -275,12 +286,32 @@ void CrwTablePtn::vTruncate(void)
     pIndexTree->vTruncate();
   }
   #*/
+#ifdef WITH_PAGING
+  SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
+  // Change above line to:
+  // SkipListBlock* pCurrBlock = m_pPdsBufferId->pFind(1);
 
+  if(pCurrBlock == nullptr)
+    return;
+
+  while(pCurrBlock) {
+    SkipListBlock* pNextBlock = m_pPdsBufferId->pNextSLBlock(pCurrBlock, 0);
+
+    CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
+    delete pCrwBuffer;
+
+    m_pPdsBufferId->bDelete(pCurrBlock->iKey());
+    pCurrBlock = pNextBlock;
+  }
+
+  RASSERT(m_pPdsBufferId->iNumEntries() == 0);
+#else
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
+#endif
 }
 
 

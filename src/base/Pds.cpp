@@ -347,7 +347,14 @@ SkipListBlock* Pds::pFirstBlock(void)
     return nullptr;
 
   SkipListBlock* pRootBlock = (SkipListBlock*) pGetAddrFromOffset(m_uInUseRootOffset);
-  return pNextSLBlock(pRootBlock, 0);
+
+  // Sanity check
+  // TODO: Remove
+  SkipListBlock* pFirstBlock = pFind(1);
+  RASSERT(pFirstBlock != nullptr);
+  RASSERT(pFirstBlock == pNextSLBlock(pRootBlock, 0));
+
+  return pFirstBlock;
 }
 
 /*----------------------------------------------------------------------------*/
