@@ -25,6 +25,8 @@ namespace STORE
     JoinOrdering(CardIter* pCI);
    ~JoinOrdering(void) noexcept(false);
 
+    static void vJoinOrdering(CardIter* pCI);
+
     void vJoinOrdering(void);
 
   private:
