@@ -1819,6 +1819,7 @@ void AdaptorWL::vCreateAndAddRow(std::vector<com::rapidsdata::wirelineprotocol::
 
     if (bIsNull) {
       xColumnWL.__set_isNull(true);
+      xColumns.push_back(xColumnWL);
       continue;
     }
 

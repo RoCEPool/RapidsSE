@@ -9,12 +9,10 @@
 /*----------------------------------------------------------------------------*/
 : bpa_DataMarker \handler
 
-  2 trace!
-
   //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
-  <bpaType> "region" str.same if
+  <bpaType> "regions" str.same if
     // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
     C_TDEF_BPAREGIONS op__tableDef_infoSet assert
     infoSetTable[] StreamDefLft[].new
@@ -27,7 +25,7 @@
     infoSetTable[] StreamSet[].addBpaRegions
     StreamSet[].pipeOut
 
-  else <bpaType> "object" str.same if
+  else <bpaType> "objects" str.same if
     // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
     C_TDEF_BPAOBJECTS op__tableDef_infoSet assert
     infoSetTable[] StreamDefLft[].new

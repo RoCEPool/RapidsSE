@@ -648,18 +648,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "persistent"_Stz,
-                          "tiny"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          false,    // tiny heap is always the smallest
-                          C_VARGS_END);
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "tiny"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      false,    // tiny heap is always the smallest
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
@@ -695,19 +696,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "persistent"_Stz,
-                          "small"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          bChgHeap,
-                          C_VARGS_END);
-
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "small"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
 //  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
@@ -743,19 +744,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "persistent"_Stz,
-                          "medium"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          bChgHeap,
-                          C_VARGS_END);
-
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "medium"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
 //  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
@@ -791,18 +792,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "persistent"_Stz,
-                          "large"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          bChgHeap,
-                          C_VARGS_END);
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "persistent"_Stz,
+                                      "large"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
 //  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
@@ -836,18 +838,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     MagLib::vByteMag(nSumObjSize,sMagObj);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "transient"_Stz,
-                          "tiny"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          false,      // tiny heap is the smallest
-                          C_VARGS_END);
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "tiny"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      false,      // tiny heap is the smallest
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
 //  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
@@ -883,18 +886,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "transient"_Stz,
-                          "small"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          bChgHeap,
-                          C_VARGS_END);
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "small"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
 //  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
@@ -930,18 +934,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "transient"_Stz,
-                          "medium"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          bChgHeap,
-                          C_VARGS_END);
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "medium"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
 //  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
@@ -977,18 +982,19 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 
     bool bChgHeap = (nObjSize < C_SIZE_TINY_OBJECT);
 
-    pStreamSet->pAllotRow(pStreamDef,
-                          C_VARGS_BEGIN,
-                          "transient"_Stz,
-                          "large"_Stz,
-                          aCN[eClass],
-                          nCntObj,
-                          nObjSize,
-                          nSumObjSize,
-                          sMagObj.szStz(),
-                          iPctUse,
-                          bChgHeap,
-                          C_VARGS_END);
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "transient"_Stz,
+                                      "large"_Stz,
+                                      aCN[eClass],
+                                      nCntObj,
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      bChgHeap,
+                                      C_VARGS_END);
+    ASSERT(pRow);
   }
 //  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
 //  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
@@ -1000,6 +1006,51 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 //           nObjInHeap, AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
 //    vTrace("  ******************************************************************\n"_Stz);
 //  }
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // BufferPool Object Summary
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
+    iCountObjects[i_Index] = 0;
+
+
+  for (i8 i_PoolBuffer = gpBufferPool->iBufferFirst();
+       i_PoolBuffer <= gpBufferPool->iBufferLast();
+       i_PoolBuffer++) {
+
+    PoolBuffer* pBuffer = FileMap::pToPoolBuffer(i_PoolBuffer);
+    iCountObjects[pBuffer->eGetClassNo()]++;
+  }
+
+  nBlockSize = C_SIZE_POOL_BUFFER;
+
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+
+    if (iCountObjects[eClass] == 0)
+      continue;
+
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = iCountObjects[eClass] * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                      C_VARGS_BEGIN,
+                                      "bufferpool"_Stz,
+                                      0,
+                                      aCN[eClass],
+                                      iCountObjects[eClass],
+                                      nObjSize,
+                                      nSumObjSize,
+                                      sMagObj.szStz(),
+                                      iPctUse,
+                                      false,
+                                      C_VARGS_END);
+    ASSERT(pRow);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1320,12 +1371,6 @@ void PoolHelper::vRegionSummary()
 void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
 {
   _static_
-
-  // get MagLib of the various buffer pools
-  s32 sMagTiny;   MagLib::vByteMag(C_SIZE_TINY_OBJECT,  sMagTiny);
-  s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
-  s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
-  s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
 
   pStreamSet->pAllotRow(pStreamDef,
                         C_VARGS_BEGIN,
