@@ -466,6 +466,29 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Handle a warning received from the execution engine                        */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
+{
+  ASSERT(m_pStmtCtx);
+
+  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} ));
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_WARNINGS));
+
+  Row *pInfoRow = pInfoSet->pFirstRow();
+
+  ASSERT(!pInfoRow->bIsColNull(0));
+
+  Stz* szReason    = pInfoRow->szColVal_ofs(0);
+  Stz* szSqlState  = pInfoRow->bIsColNull(1) ? nullptr : pInfoRow->szColVal_ofs(1);
+  i8   iVendorCode = pInfoRow->bIsColNull(2) ? 0 : pInfoRow->iColVal_int(2);
+
+  vSerialiseWarningResponse(szReason,
+                            szSqlState,
+                            iVendorCode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Update the state after the child job has exited                            */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vChildJobExited()
@@ -1019,6 +1042,26 @@ void AdaptorWL::vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...)
 
   // Serialise the error message to a payload and add it to the output queue
   vSerialiseAndSendMsg(&oErrorResponse, MessageTypes::ErrorResponse);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Serialises a thrift WarningResponse with a given message.                  */
+/* Adds the serialised message to the output queue.                           */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vSerialiseWarningResponse(Stz* szReason, Stz* szSqlState, i8 iVendorCode)
+{
+  // Create and populate the warning response object to be serialised
+  WarningResponse oWarningResponse;
+  oWarningResponse.__set_warningString(szReason->azChar());
+
+  if (szSqlState) {
+    oWarningResponse.__set_sqlStateCode(szSqlState->azChar());
+  }
+
+  oWarningResponse.__set_warningCode(iVendorCode);
+
+  // Serialise the error message to a payload and add it to the output queue
+  vSerialiseAndSendMsg(&oWarningResponse, MessageTypes::WarningResponse);
 }
 
 

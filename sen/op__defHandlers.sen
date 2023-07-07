@@ -85,6 +85,7 @@
 : EV_I_RETURNPIPELINE_handler   \handler STANDARD_PIPEOUT ;
 : EV_I_SEEKOFFSETS_handler      \handler STANDARD_PIPEOUT ;
 : EV_I_TOTALUNITS_handler       \handler STANDARD_PIPEOUT ;
+: EV_I_WARNINGS_handler         \handler STANDARD_PIPEOUT ;
 
 : EV_M_CANCEL_handler           \handler STANDARD_PIPEOUT ;
 : EV_M_CANCELLING_handler       \handler STANDARD_PIPEOUT ;
@@ -465,6 +466,7 @@
   abnormalHandler EV_I_RETURNPIPELINE   [op].handler!
   abnormalHandler EV_I_SEEKOFFSETS      [op].handler!
   abnormalHandler EV_I_TOTALUNITS       [op].handler!
+  abnormalHandler EV_I_WARNINGS         [op].handler!
 
   //[op].opName@ "DONE SETTING default_lowMemHandlers for OP %v" str.format .
 ;

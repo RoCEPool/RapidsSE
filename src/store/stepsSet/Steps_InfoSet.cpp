@@ -47,6 +47,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].addRowCount"_Stz,      &Step::vInfoSetAddRowCount);
   vAddStep("InfoSet[].addRowVargs"_Stz,      &Step::vInfoSetAddRowVargs);
   vAddStep("InfoSet[].addTotalUnits"_Stz,    &Step::vInfoSetAddTotalUnits);
+  vAddStep("InfoSet[].addWarning"_Stz,       &Step::vInfoSetAddWarning);
   vAddStep("InfoSet[].chunkFile"_Stz,        &Step::vInfoSetChunkFile);
   vAddStep("InfoSet[].colVal@"_Stz,          &Step::vInfoSetColValFetch);
   vAddStep("InfoSet[].delete"_Stz,           &Step::vInfoSetDelete);
@@ -58,6 +59,7 @@ void Step::vAddSteps_InfoSet(void)
   vAddStep("InfoSet[].isNull"_Stz,           &Step::vInfoSetIsNull);
   vAddStep("InfoSet[].isProgress"_Stz,       &Step::vInfoSetIsProgress);
   vAddStep("InfoSet[].isTotalUnits"_Stz,     &Step::vInfoSetIsTotalUnits);
+  vAddStep("InfoSet[].isWarning"_Stz,        &Step::vInfoSetIsWarning);
   vAddStep("InfoSet[].name"_Stz,             &Step::vInfoSetName);
   vAddStep("InfoSet[].new"_Stz,              &Step::vInfoSetNew);
   vAddStep("InfoSet[].nextRow"_Stz,          &Step::vInfoSetNextRow);
@@ -377,6 +379,39 @@ void Step::vInfoSetAddTotalUnits(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* InfoSet[].addWarning -- add a row to infoset with a warning                */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetAddWarning(void)
+{
+  ENTRY();
+
+  s4K sReason;
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // Get the warning reason
+  m_pDataStack->vPopStr(sReason, __func__);
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
+  pInfoSet->vOpInfoSet(OI_WARNINGS);
+
+  Row* pRow = pInfoSet->pAllotRow(pStreamDef,
+                                  C_VARGS_BEGIN,
+                                  sReason.szStz(),
+                                  nullptr,
+                                  nullptr,
+                                  C_VARGS_END);
+
+  m_pDataStack->vPushBol(pRow != nullptr);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* InfoSet[].chunkFile -- info set chunk file                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetChunkFile(void)
@@ -646,8 +681,9 @@ void Step::vInfoSetInfoRows(void)
   ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
   
   InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
-  
-  m_pDataStack->vPushInt(pInfoSet->nRows());
+
+  i8 nRows = pInfoSet->nRows();
+  m_pDataStack->vPushInt(nRows);
   
   EXIT();
 }
@@ -707,6 +743,22 @@ void Step::vInfoSetIsTotalUnits(void)
   
   m_pDataStack->vPushInt(pInfoSet->eOpInfoSet() == OI_TOTALUNITS ? true : false);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* InfoSet[].isWarning --is infoset a warning info set ?                      */
+/*----------------------------------------------------------------------------*/
+void Step::vInfoSetIsWarning(void)
+{
+  ENTRY();
+
+  ASSERT ( ! m_pLogicUnit->m_xpInfoSet.bIsNull() );
+
+  InfoSet* pInfoSet = _pInfoSet(*m_pLogicUnit->m_xpInfoSet);
+
+  m_pDataStack->vPushInt(pInfoSet->eOpInfoSet() == OI_WARNINGS ? true : false);
+
   EXIT();
 }
 

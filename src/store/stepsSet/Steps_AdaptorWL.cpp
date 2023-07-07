@@ -24,6 +24,7 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].crwBuffer"_Stz,           &Step::vAdaptorWLCrwBuffer);
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].executionError"_Stz,      &Step::vAdaptorWLExecutionError);
+  vAddStep("AdaptorWL[].executionWarning"_Stz,    &Step::vAdaptorWLExecutionWarning);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].hasQuery"_Stz,            &Step::vAdaptorWLHasQuery);
   vAddStep("AdaptorWL[].isAbortEarly"_Stz,        &Step::vAdaptorWLIsAbortEarly);
@@ -146,6 +147,23 @@ void Step::vAdaptorWLExecutionError(void)
   ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
 
   pAdaptorWL->vExecutionError(pInfoSet);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].executionWarning -- Received a warning from the execution engine*/
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLExecutionWarning(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  InfoSet* pInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pInfoSet);
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_WARNINGS));
+
+  pAdaptorWL->vExecutionWarning(pInfoSet);
 
   EXIT();
 }

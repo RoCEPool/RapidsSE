@@ -6,6 +6,7 @@
 
 #include "TagConstants.h"
 #include "StreamSet.hpp"
+#include "InfoSet.hpp"
 
 extern SizeHeap     gxaSizeHeap[];
 extern ClassCatalog gxClassCatalog;
@@ -613,7 +614,8 @@ void PoolHelper::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 /* summary report on objects in the pool and heaps                            */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
+void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
 {
   _static_
 
@@ -663,16 +665,20 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
     ASSERT(pRow);
   }
 
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent tiny heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pTiny->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   nBlockSize = C_SIZE_SMALL_OBJECT;
@@ -710,16 +716,21 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
                                       C_VARGS_END);
     ASSERT(pRow);
   }
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent small heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pSmall->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -758,16 +769,21 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
                                       C_VARGS_END);
     ASSERT(pRow);
   }
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent medium heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pMedium->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -806,16 +822,21 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
                                       C_VARGS_END);
     ASSERT(pRow);
   }
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
+
+  if(nObjInHeap != AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In persistent large heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Persistent.m_pLarge->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -852,16 +873,21 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
                                       C_VARGS_END);
     ASSERT(pRow);
   }
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Transient.m_pTiny->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pTiny->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient tiny heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pTiny->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -900,16 +926,21 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
                                       C_VARGS_END);
     ASSERT(pRow);
   }
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Transient.m_pSmall->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pSmall->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient small heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pSmall->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -948,16 +979,21 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
                                       C_VARGS_END);
     ASSERT(pRow);
   }
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Transient.m_pMedium->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
+
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pMedium->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient medium heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pMedium->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -996,17 +1032,21 @@ void PoolHelper::vObjectSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
                                       C_VARGS_END);
     ASSERT(pRow);
   }
-//  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
-//  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
-//
-//  if(nObjInHeap != AM::pHeaps()->Transient.m_pLarge->nCurrAllocated())
-//  {
-//    vTrace("  ******************************************************************\n"_Stz);
-//    vTrace("  WARNING: Number of objects: %lld does not match current allocs: %lld\n"_Stz,
-//           nObjInHeap, AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
-//    vTrace("  ******************************************************************\n"_Stz);
-//  }
 
+  if(nObjInHeap != AM::pHeaps()->Transient.m_pLarge->nCurrAllocated())
+  {
+    s2K sReason;
+    sReason.vSprint("In transient large heap, number of objects (%lld) does not match current allocs (%lld)"_Stz,
+                    nObjInHeap,
+                    AM::pHeaps()->Transient.m_pLarge->nCurrAllocated());
+
+    pWarnInfoSet->pAllotRow(pWarnDef,
+                            C_VARGS_BEGIN,
+                            sReason.szStz(),
+                            nullptr,
+                            nullptr,
+                            C_VARGS_END);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // BufferPool Object Summary
@@ -1368,9 +1408,12 @@ void PoolHelper::vRegionSummary()
 /*----------------------------------------------------------------------------*/
 /* report on shm region                                                       */
 /*----------------------------------------------------------------------------*/
-void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef)
+void PoolHelper::vRegionSummary(StreamSet* pStreamSet, StreamDef* pStreamDef,
+                                InfoSet* pWarnInfoSet, StreamDef* pWarnDef)
 {
   _static_
+  UNUSED(pWarnInfoSet);
+  UNUSED(pWarnDef);
 
   Heap* pHeap;
   i8 iChunkSize;

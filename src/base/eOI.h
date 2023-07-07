@@ -22,7 +22,8 @@ enum eOI // operator Infoset
   /*    */ OI_RETURNPIPELINE,
   /*    */ OI_SEEKOFFSETS,
   /*    */ OI_TOTALUNITS,
- 
+  /*    */ OI_WARNINGS,
+
   /*    */ OI_ENUMS,
 };
 
@@ -45,6 +46,7 @@ static Stz* aOI[]
   /*    */ "OI_RETURNPIPELINE"_Stz,
   /*    */ "OI_SEEKOFFSETS"_Stz,
   /*    */ "OI_TOTALUNITS"_Stz,
+  /*    */ "OI_WARNINGS"_Stz,
 
   /*    */ "OI_ENUMS"_Stz,
 };

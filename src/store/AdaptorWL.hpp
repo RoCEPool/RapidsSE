@@ -102,6 +102,7 @@ namespace STORE
     void vStatementSubmissionFailed(eEC eErrCode);
     void vCompilerError(InfoSet* pInfoSet);
     void vExecutionError(InfoSet* pInfoSet);
+    void vExecutionWarning(InfoSet* pInfoSet);
     void vChildJobExited();
     bool bIsChildJobActive();
     void vResultMetadata(StreamDef* pStreamDef);
@@ -116,6 +117,7 @@ namespace STORE
     void vDeserialiseMsg(i8 iMessageType);
     void vCleanupCurrentMsg();
     void vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...);
+    void vSerialiseWarningResponse(Stz* szReason, Stz* szSqlState, i8 iVendorCode);
     void vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType, bool bHandleBufferFull = true);
     void vNextState(eState eNextState);
 

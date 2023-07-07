@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* it_warnings.sen -- Define __warnings table                                 */
+/*============================================================================*/
+
+" it_warnings.sen" .verbose
+
+: start::it_warnings
+
+  // C_TDEF_WARNINGS
+
+  STD_BOOTFORK_TAG
+  "
+  define table __warnings (
+    REASON      VARCHAR NOT NULL ,
+    SQLSTATESTR VARCHAR ,
+    VENDORCODE  INTEGER
+
+  ) < infoSet > = 1 ;
+  "
+  
+  api::forkChild  api:executeCheck
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

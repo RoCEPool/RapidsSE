@@ -166,7 +166,18 @@ void Step::vStreamSetAddBpaObjects(void)
 {
   ENTRY();
 
-  // get the table
+  // Get the warning infoset and definition
+  InfoSet* pWarnInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pWarnInfoSet);
+  ASSERT(pWarnInfoSet->eOpInfoSet() == OI_WARNINGS);
+
+  Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
+  ASSERT(pWarnTable);
+  StreamDef* pWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pWarnDef);
+
+
+  // get the streamset table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
   // get the streamDef from the table
@@ -174,7 +185,7 @@ void Step::vStreamSetAddBpaObjects(void)
 
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
-  PoolHelper::vObjectSummary(pStreamSet, pStreamDef);
+  PoolHelper::vObjectSummary(pStreamSet, pStreamDef, pWarnInfoSet, pWarnDef);
 
   EXIT();
 }
@@ -186,6 +197,17 @@ void Step::vStreamSetAddBpaRegions(void)
 {
   ENTRY();
 
+  // Get the warning infoset and definition
+  InfoSet* pWarnInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pWarnInfoSet);
+  ASSERT(pWarnInfoSet->eOpInfoSet() == OI_WARNINGS);
+
+  Table* pWarnTable = _pTable(* m_pLogicUnit->m_xpInfoSetTable);
+  ASSERT(pWarnTable);
+  StreamDef* pWarnDef = pWarnTable->pStreamDef();
+  ASSERT(pWarnDef);
+
+
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
@@ -194,7 +216,7 @@ void Step::vStreamSetAddBpaRegions(void)
 
   StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
 
-  PoolHelper::vRegionSummary(pStreamSet, pStreamDef);
+  PoolHelper::vRegionSummary(pStreamSet, pStreamDef, pWarnInfoSet, pWarnDef);
 
   EXIT();
 }

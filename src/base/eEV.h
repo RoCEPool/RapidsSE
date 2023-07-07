@@ -48,6 +48,7 @@ enum eEV // events
   /*    */ EV_I_RETURNPIPELINE,
   /*    */ EV_I_SEEKOFFSETS,
   /*    */ EV_I_TOTALUNITS,
+  /*    */ EV_I_WARNINGS,
 
   /*    */ EV_M_CANCEL,
   /*    */ EV_M_CANCELLING,
@@ -131,6 +132,7 @@ static Stz* aEV[]
   /*    */ "EV_I_RETURNPIPELINE"_Stz,
   /*    */ "EV_I_SEEKOFFSETS"_Stz,
   /*    */ "EV_I_TOTALUNITS"_Stz,
+  /*    */ "EV_I_WARNINGS"_Stz,
 
   /*    */ "EV_M_CANCEL"_Stz,
   /*    */ "EV_M_CANCELLING"_Stz,

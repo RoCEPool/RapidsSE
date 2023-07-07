@@ -250,6 +250,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_TOTALUNITS"_Stz,    C_TDEF_TOTALUNITS);
   vAddConstant("C_TDEF_VERIFYINDEX"_Stz,   C_TDEF_VERIFYINDEX);
   vAddConstant("C_TDEF_VERIFYTABLE"_Stz,   C_TDEF_VERIFYTABLE);
+  vAddConstant("C_TDEF_WARNINGS"_Stz,      C_TDEF_WARNINGS);
 
   // hardware
   vAddConstant("HW_CLOCK_FREQUENCY"_Stz, TickingDevice::iTicksPerSec());
@@ -582,6 +583,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("OI_RETURNPIPELINE"_Stz,OI_RETURNPIPELINE);
   /*  0 */ vAddConstant("OI_SEEKOFFSETS"_Stz,   OI_SEEKOFFSETS);
   /*  0 */ vAddConstant("OI_TOTALUNITS"_Stz,    OI_TOTALUNITS);
+  /*  0 */ vAddConstant("OI_WARNINGS"_Stz,      OI_WARNINGS);
 
   // PD_ : pipe direction
   /*  0 */ vAddConstant("PD_NONE"_Stz,      PD_NONE);
@@ -727,6 +729,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_I_RETURNPIPELINE"_Stz,  EV_I_RETURNPIPELINE);
   /*  0 */ vAddConstant("EV_I_SEEKOFFSETS"_Stz,     EV_I_SEEKOFFSETS);
   /*  0 */ vAddConstant("EV_I_TOTALUNITS"_Stz,      EV_I_TOTALUNITS);
+  /*  0 */ vAddConstant("EV_I_WARNINGS"_Stz,        EV_I_WARNINGS);
 
   /*  0 */ vAddConstant("EV_M_CANCEL"_Stz,          EV_M_CANCEL);
   /*  0 */ vAddConstant("EV_M_CANCELLING"_Stz,      EV_M_CANCELLING);

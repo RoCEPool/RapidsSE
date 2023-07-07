@@ -170,6 +170,7 @@ cmd::fillOut_allCmds
   "it_totalUnits.sen"       include
   "it_verifyIndex.sen"      include
   "it_verifyTable.sen"      include
+  "it_warnings.sen"         include
 
 
   "job_startSystem.sen"     include // last last

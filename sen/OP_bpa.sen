@@ -9,34 +9,59 @@
 /*----------------------------------------------------------------------------*/
 : bpa_DataMarker \handler
 
+//  2 trace!
+
   //"Operand:- EV_M_DATAPULSE" .verbose
   PipeIn[].pipeOut
 
+
   <bpaType> "regions" str.same if
+    // Create a warnings infoset. We may not need it.
+    C_TDEF_WARNINGS op__tableDef_infoSet assert
+    InfoSetTable[] InfoSet[].new
+    OI_WARNINGS InfoSet[].opInfoset!
+
     // find the C_TDEF_BPAREGIONS table definition, create a streamDef and pipe it out
-    C_TDEF_BPAREGIONS op__tableDef_infoSet assert
-    infoSetTable[] StreamDefLft[].new
+    C_TDEF_BPAREGIONS op__tableDef_streamSet assert
+    streamSetTable[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
     // create streamset
-    infoSetTable[] streamSet[].new
+    streamSetTable[] streamSet[].new
 
     // populate streamset
-    infoSetTable[] StreamSet[].addBpaRegions
+    streamSetTable[] StreamSet[].addBpaRegions
     StreamSet[].pipeOut
+
+    InfoSet[].infoRows 0 > if
+      InfoSet[].pipeOut
+    else
+      InfoSet[].delete
+    then
 
   else <bpaType> "objects" str.same if
+    // Create a warnings infoset. We may not need it.
+    C_TDEF_WARNINGS op__tableDef_infoSet assert
+    InfoSetTable[] InfoSet[].new
+    OI_WARNINGS InfoSet[].opInfoset!
+
     // find the C_TDEF_BPAOBJECTS table definition, create a streamDef and pipe it out
-    C_TDEF_BPAOBJECTS op__tableDef_infoSet assert
-    infoSetTable[] StreamDefLft[].new
+    C_TDEF_BPAOBJECTS op__tableDef_streamSet assert
+    streamSetTable[] StreamDefLft[].new
     StreamDefLft[].pipeOut
 
     // create streamset
-    infoSetTable[] streamSet[].new
+    streamSetTable[] streamSet[].new
 
     // populate streamset
-    infoSetTable[] StreamSet[].addBpaObjects
+    streamSetTable[] StreamSet[].addBpaObjects
     StreamSet[].pipeOut
+
+    InfoSet[].infoRows 0 > if
+      InfoSet[].pipeOut
+    else
+      InfoSet[].delete
+    then
 
   else
     <bpaType> EC_INVALID_PARAMETER attachmap::errorText@ "%v: %v" str.format EC_INVALID_PARAMETER op__execErrMsg

@@ -4358,6 +4358,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_RETURNPIPELINE: eOperand = EV_I_RETURNPIPELINE; break;
         case OI_SEEKOFFSETS:    eOperand = EV_I_SEEKOFFSETS;    break;
         case OI_TOTALUNITS:     eOperand = EV_I_TOTALUNITS;     break;
+        case OI_WARNINGS:       eOperand = EV_I_WARNINGS;       break;
         default:
           RASSERT(0);
       }
