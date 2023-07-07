@@ -4,31 +4,32 @@
 
 __TPCH_SCHEMA;
 
-// TPCH QUERY 4
-// validate failing
+// TPCH QUERY 3
 
 /weaved
+/pipeline_def
 /glean_interactive
-select o_orderpriority,
-  count(*) as order_count
+select l_orderkey,
+  sum(l_extendedprice*(1-l_discount)) as revenue,
+  o_orderdate,
+  o_shippriority
 from
-  orders
-where o_orderdate >= DATE '1993-07-01'
-  and o_orderdate < DATE '1993-10-01'
-  and
-exists (
-  select
-    *
-  from
-    lineitem
-  where
-    l_orderkey = o_orderkey
-    and l_commitdate < l_receiptdate
-  )
+  customer,
+  orders,
+  lineitem
+where c_mktsegment = 'BUILDING'
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < '1995-03-15'
+  and l_shipdate > '1995-03-15'
 group by
-  o_orderpriority
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
 order by
-  o_orderpriority;
+  revenue desc,
+  o_orderdate
+limit 10;
 
 
 /*============================================================================*/
