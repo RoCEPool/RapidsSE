@@ -13,6 +13,7 @@
 
 #include "XF_Fix_table_Pos.hpp"
 #include "XF_Derive_bounds.hpp"
+#include "XF_Delete_Empty_where.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -77,9 +78,7 @@ void JoinOrdering::vJoinOrdering(void)
   m_pCI->vEndTransform();
 
   // delete empty where
-  m_pCI->vTransform(__func__, XF_NONE, "delete empty where"_Stz);
-  Card_Where::vDeleteEmpyWhere(m_pCI);
-  m_pCI->vEndTransform();
+  XF_Delete_Empty_where::vXF_Delete_Empty_where(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Index Bounds : move table filter predicates to table index bounds

@@ -450,6 +450,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_CULL_USED_BOUND,
   /* */ CN_XF_CUT_SORT,
   /* */ CN_XF_DEDUPE_AS,
+  /* */ CN_XF_DELETE_EMPTY_WHERE,
   /* */ CN_XF_DELETE_FLAT,
   /* */ CN_XF_DELETE_UNNEEDED,
   /* */ CN_XF_DERIVE_BOUNDS,
@@ -927,6 +928,7 @@ static Stz* aCN[]
   /* */ "XF_CULL_USED_BOUND"_Stz,           // CN_XF_CULL_USED_BOUND
   /* */ "XF_CUT_SORT"_Stz,                  // CN_XF_CUT_SORT
   /* */ "XF_DEDUPE_AS"_Stz,                 // CN_XF_DEDUPE_AS
+  /* */ "XF_DELETE_EMPTY_WHERE"_Stz,        // CN_XF_DELETE_EMPTY_WHERE
   /* */ "XF_DELETE_FLAT"_Stz,               // CN_XF_DELETE_FLAT
   /* */ "XF_DELETE_UNNEEDED"_Stz,           // CN_XF_DELETE_UNNEEDED
   /* */ "XF_DERIVE_BOUNDS"_Stz,             // CN_XF_DERIVE_BOUNDS

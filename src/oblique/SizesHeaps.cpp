@@ -296,6 +296,7 @@
 #include "XF_Fix_table_Pos.hpp"
 #include "XF_Derive_bounds.hpp"
 #include "XF_stmCol_To_tblCol.hpp"
+#include "XF_Delete_Empty_where.hpp"
 
 #include "CardUsage.hpp"
 
@@ -763,9 +764,10 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_CULL_USED_BOUND,          sizeof(XF_Cull_Used_bound),          HT_T_TINY    , FILL },
   {CN_XF_CUT_SORT,                 sizeof(XF_Cut_sort),                 HT_T_TINY    , FILL },
   {CN_XF_DEDUPE_AS,                sizeof(XF_Dedupe_as),                HT_T_TINY    , FILL },
+  {CN_XF_DELETE_EMPTY_WHERE,       sizeof(XF_Delete_Empty_where),       HT_T_TINY    , FILL },
   {CN_XF_DELETE_FLAT,              sizeof(XF_Delete_flat),              HT_T_TINY    , FILL },
   {CN_XF_DELETE_UNNEEDED,          sizeof(XF_Delete_Unneeded),          HT_T_TINY    , FILL },
-  {CN_XF_DERIVE_BOUNDS,            sizeof(XF_Derive_bounds)         ,    HT_T_TINY    , FILL },
+  {CN_XF_DERIVE_BOUNDS,            sizeof(XF_Derive_bounds),            HT_T_TINY    , FILL },
   {CN_XF_DERIVE_PROJECTION_KEY,    sizeof(XF_Derive_projection_key),    HT_T_TINY    , FILL },
   {CN_XF_EARLY_PROJECTION,         sizeof(XF_Early_projection),         HT_T_TINY    , FILL },
   {CN_XF_FIX_TABLE_POS,            sizeof(XF_Fix_table_Pos),            HT_T_TINY    , FILL },
