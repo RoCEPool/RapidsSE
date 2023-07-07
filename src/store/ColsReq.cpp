@@ -24,6 +24,7 @@ ColsReq::ColsReq(void)
 
   for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++) {
     m_axCols[i_Col].m_i_Col_base1 = C_UNKNOWN;
+    m_axCols[i_Col].m_i_Col2_base1 = C_UNKNOWN;
     m_axCols[i_Col].m_bPayload = false;
   }
   m_nCols = 0;
@@ -53,11 +54,12 @@ ColsReq::~ColsReq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void ColsReq::vAddCol(i8 i_Col_base1, Stz *szColNm, bool bPayLoad)
+void ColsReq::vAddCol(i8 i_Col_base1, i8 i_Col2_base1, Stz *szColNm, bool bPayLoad)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
   m_axCols[m_nCols].m_i_Col_base1 = i_Col_base1;
+  m_axCols[m_nCols].m_i_Col2_base1 = i_Col2_base1;
   m_axCols[m_nCols].m_sColNm      = szColNm;
   m_axCols[m_nCols].m_bPayload    = bPayLoad;
 
@@ -74,8 +76,10 @@ void ColsReq::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("               Col %lld: %s %s\n"_Stz,
+    vTrace("               Col [%lld]: %lld %lld %s %s\n"_Stz,
            i_Col,
+           m_axCols[i_Col].m_i_Col_base1,
+           m_axCols[i_Col].m_i_Col2_base1,
            m_axCols[i_Col].m_sColNm.szStz(),
            m_axCols[i_Col].m_bPayload ? "payload" : "key");
   }

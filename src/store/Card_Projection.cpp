@@ -412,8 +412,11 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
   s32 sColNm_mapped;
   eCT eColType;
 
+  i8 i_Key = C_UNKNOWN;
+
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_Col++) {
     Card_Expr *p_expr = xProjection.p_expr();
+    i_Key = C_UNKNOWN;
 
     if (CK_PROJECT == eOP) {
       if (p_expr->pSub_as())
@@ -445,7 +448,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
 
       Symbol* pSymbol = p_expr->pGetSymbol(0);
-      i8 i_Key = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
+      i_Key = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
       if (i_Key) {
         vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_Key);
 
@@ -496,7 +499,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
-      pColMap->vAddCol(i_Col, sColNm_mapped, bPayload);
+      pColMap->vAddCol(i_Col, i_Key, sColNm_mapped, bPayload);
     }
   }
 
