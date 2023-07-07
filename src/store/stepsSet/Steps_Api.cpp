@@ -102,6 +102,9 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_WEAVER1))
     pCmdTagSet->vInsert(C_TAG_WEAVER1);
 
+  if (pJobTags->bHasName(C_TAG_WEAVER2))
+    pCmdTagSet->vInsert(C_TAG_WEAVER2);
+
   if (pJobTags->bHasName(C_CODE_BLOCK))
     pCmdTagSet->vInsert(C_CODE_BLOCK);
 
