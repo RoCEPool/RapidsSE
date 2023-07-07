@@ -184,14 +184,30 @@ void CrwTablePtn::vDropAllPagingLocks(void)
 void CrwTablePtn::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+#ifdef WITH_PAGING
+  SkipListBlock* pCursor = m_pPdsBufferId->pFirstBlock();
+  if(pCursor == nullptr)
+    return;
 
+  while(pCursor) {
+    BufferId oBufferId = *(BufferId*)pCursor->aItemBody();
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(BufferId::aAddressFromId(oBufferId));
+
+    RASSERT(pCrwBuffer != nullptr);
+    RASSERT(pCrwBuffer->bIsClassNo(BASE::CN_CRWBUFFER));
+
+    pCrwBuffer->vShow();
+
+    pCursor = m_pPdsBufferId->pNextSLBlock(pCursor, 0);
+  }
+#else
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
 
   while (pCrwBuffer) {
     pCrwBuffer->vShow();
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
-
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +239,7 @@ CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the root row buffer                                                    */
+/* get the root row buffer id                                                 */
 /*----------------------------------------------------------------------------*/
 BufferId CrwTablePtn::oRootCrwBufferId(void)
 {
