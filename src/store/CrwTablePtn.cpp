@@ -288,7 +288,7 @@ void CrwTablePtn::vTruncate(void)
   #*/
 #ifdef WITH_PAGING
   SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
-  // Change above line to:
+  // TODO: Change above line to:
   // SkipListBlock* pCurrBlock = m_pPdsBufferId->pFind(1);
 
   if(pCurrBlock == nullptr)
@@ -323,8 +323,28 @@ bool CrwTablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  CrwBuffer* pCrwBuffer = m_pRootBuffer;
   bool bVerify = true;
+
+#ifdef WITH_PAGING
+  SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
+  // TODO: Change above line to:
+  // SkipListBlock* pCurrBlock = m_pPdsBufferId->pFind(1);
+
+  if(pCurrBlock == nullptr)
+    return bVerify;
+
+  while(pCurrBlock) {
+    CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
+    bVerify = pCrwBuffer->bVerify();
+    if (! bVerify )
+      break;
+
+    pCurrBlock = m_pPdsBufferId->pNextSLBlock(pCurrBlock, 0);
+  }
+
+  return bVerify;
+#else
+  CrwBuffer* pCrwBuffer = m_pRootBuffer;
 
   while (pCrwBuffer) {
     bVerify = pCrwBuffer->bVerify();
@@ -334,6 +354,7 @@ bool CrwTablePtn::bVerifyTable(void)
   }
 
   return bVerify;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,6 +364,21 @@ void CrwTablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
+#ifdef WITH_PAGING
+  SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
+  // TODO: Change above line to:
+  // SkipListBlock* pCurrBlock = m_pPdsBufferId->pFind(1);
+
+  if(pCurrBlock == nullptr)
+    return;
+
+  while(pCurrBlock) {
+    CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
+    vTrace("%lld"_Stz, pCrwBuffer->iDecile());
+
+    pCurrBlock = m_pPdsBufferId->pNextSLBlock(pCurrBlock, 0);
+  }
+#else
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
 
   if (! pCrwBuffer)
@@ -354,6 +390,7 @@ void CrwTablePtn::vVisualizeTable(void)
     pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
   }
   vTrace("\n"_Stz);
+#endif
 }
 
 /*============================================================================*/
