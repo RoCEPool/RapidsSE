@@ -153,7 +153,6 @@ enum eCN : u2 // Class Number
   /* */ CN_JOBMETRICS,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
-  /* */ CN_JOINORDERING,
 
   /* */ CN__K__,
   /* */ CN_KEY,
@@ -460,6 +459,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_FLATTEN,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
+  /* */ CN_XF_JOIN_ORDERING,
   /* */ CN_XF_MORPH_SCAN_TO_INDEXSCAN,
   /* */ CN_XF_MORPH_TABLE_TO_EEOP,
   /* */ CN_XF_MOVE_ON,
@@ -633,7 +633,6 @@ static Stz* aCN[]
   /* */ "JOBMETRICS"_Stz,           // CN_JOBMETRICS
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
-  /* */ "JOINORDERING"_Stz,         // CN_JOINORDERING
 
   /* */ "_K__"_Stz,                 // CN__K__
   /* */ "KEY"_Stz,                  // CN_KEY
@@ -940,6 +939,7 @@ static Stz* aCN[]
   /* */ "XF_FLATTEN"_Stz,                   // CN_XF_FLATTEN
   /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
+  /* */ "XF_JOIN_ORDERING"_Stz,             // CN_XF_JOIN_ORDERING
   /* */ "XF_MORPH_SCAN_TO_INDEXSCAN"_Stz,   // CN_XF_MORPH_SCAN_TO_INDEXSCAN
   /* */ "XF_MORPH_TABLE_TO_EEOP"_Stz,       // CN_XF_MORPH_TABLE_TO_EEOP
   /* */ "XF_MOVE_ON"_Stz,                   // CN_XF_MOVE_ON
