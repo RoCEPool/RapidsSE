@@ -57,7 +57,7 @@ XF_Join_Ordering::~XF_Join_Ordering(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_Join_Ordering::vJoinOrdering(CardIter* pCI)
+void XF_Join_Ordering::vXF_Join_Ordering(CardIter* pCI)
 {
   _static_
 
@@ -111,6 +111,8 @@ void XF_Join_Ordering::vJoinOrdering(void)
 
   // reorder the tables
   vReorderTables();
+
+  XF_Predicate_Reposition::vXF_Predicate_Reposition(m_pCI);
 
   XF_Predicate_Pull_Up::vXF_Predicate_Pull_Up(m_pCI);
 

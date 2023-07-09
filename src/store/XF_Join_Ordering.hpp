@@ -25,7 +25,7 @@ namespace STORE
     XF_Join_Ordering(CardIter* pCI);
    ~XF_Join_Ordering(void) noexcept(false);
 
-    static void vJoinOrdering(CardIter* pCI);
+    static void vXF_Join_Ordering(CardIter* pCI);
 
     void vJoinOrdering(void);
 

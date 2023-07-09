@@ -226,7 +226,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // things to do to this outer query after flattening it's sub-queries
 
-  XF_Join_Ordering::vJoinOrdering(m_pCI);
+  XF_Join_Ordering::vXF_Join_Ordering(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sub-query has been flattened
