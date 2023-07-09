@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Projection.cpp -- Stream                                                  */
+/* Card_Projection.cpp -- Projection                                          */
 /*============================================================================*/
 
 #include "Card_Projection.hpp"
@@ -411,6 +411,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
   s32 sColNm;
   s32 sColNm_mapped;
   eCT eColType;
+  Symbol* pSymbol;
 
   i8 i_SrcCol = C_UNKNOWN;
 
@@ -448,24 +449,36 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
       p_expr->vDump();
 
-      Symbol* pSymbol = p_expr->pFirstStmCol();
-      vTrace("%s\n"_Stz,pSymbol->szSymbol());
-      i_SrcCol = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
-      if (i_SrcCol) {
-        vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_SrcCol);
+      if ((pSymbol = p_expr->pFirstKeyCol())) {
+        vTrace("%s\n"_Stz, pSymbol->szSymbol());
+        i_SrcCol = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
+        if (i_SrcCol) {
+          vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_SrcCol);
 
 
-        sNm_modified.vSprint("C%lld_COL%lld"_Stz,
-                             xProjection.i_Child(),
-                             i_SrcCol);
-        sColNm_mapped = sNm_modified;
+          sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                               xProjection.i_Child(),
+                               i_SrcCol);
+          sColNm_mapped = sNm_modified;
+        }
+      }
+      else
+      if ((pSymbol = p_expr->pFirstStmCol())) {
+        vTrace("%s\n"_Stz, pSymbol->szSymbol());
+        i_SrcCol = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
+        if (i_SrcCol) {
+          vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_SrcCol);
+
+
+          sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                               xProjection.i_Child(),
+                               i_SrcCol);
+          sColNm_mapped = sNm_modified;
+        }
       }
       else {
         i_SrcCol = i_DstCol;
       }
-
-      vTrace("%s %s %lld\n"_Stz, sColNm.azChar(), pSymbol->szSymbol(), i_SrcCol);
-
 
       vDebugPoint();
 
