@@ -316,7 +316,20 @@ void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get first stm col                                                          */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pFirstStmCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* p_stmCol = pSub_rpnCalc()->pFirstStmCol();
+
+  return p_stmCol;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get symbol of given term                                                   */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_Expr::pGetSymbol(i8 i_Term)
 {
@@ -332,7 +345,7 @@ Symbol* Card_Expr::pGetSymbol(i8 i_Term)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* get given term                                                             */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 {
@@ -344,7 +357,7 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this expression an aggregate function ?s                                 */
+/* is this expression an aggregate function ?                                 */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsAggFn(void)
 {
