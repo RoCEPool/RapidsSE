@@ -2,37 +2,87 @@
 /* _ray1                                                                      */
 /*============================================================================*/
 
-// NOTE: OPDEF for Indexjoin has : ArgDef: [2] expr  BOUND BOUND $I1 l_int_col0 ==
+// NOTE: the expr in S02 for gbyAgg has $1 $1 :
+/*
+ArgDef: [0] expr  groupBy
+                    type INTEGER as COL2 $2
+                  aggregates
+                    type INTEGER as COL1 $1 $1 sum
+                  , type INTEGER as COL2 $2
+*/
 
-create table L (l_int_col0 integer);
-create table R(r_int_col0 integer, r_vch_col1 varchar);
-create index L_idx on L(l_int_col0);
-create index R_idx on R(r_int_col0);
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
 
-load L "../DATA/Joins/L.csv";
-load R "../DATA/Joins/R.csv";
+load datums "../DATA/Transliterate/groupBy.csv" ;
 
-/glean_interactive
-/weaver2
-/weaved
 /optimise_passthru
-pipeline _ray1
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | next
-  stage stageMarker0142 on all partitions :
-    scan rapidsse public L
-    | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
-    | dynamic 0
-    | next
-  stage stageLast on origin :
-    output
-    | sink
-    | first
-end ;
+/pipeline_def
+pipeline _unnamed_
+ begin
+
+   stage S00 on origin :
+       start
+     | pulse     once
+     | next
+
+   stage S01 on all partitions :
+       scan      datums
+     | project   "   type INTEGER as C0_int_col0 $1
+                  , type INTEGER as C1_int_col1 $2 "
+     | combined 0
+     | next
+
+   stage S02 on all partitions :
+     gbyAgg    " groupBy
+                   type INTEGER as COL2 $2
+                 aggregates
+                   type INTEGER as COL1 ) $1 sum
+                 , type INTEGER as COL2 $K1 "
+     | combined 0
+     | next
+
+   stage S03 on all nodes :
+     gbyAgg    " groupBy
+                   type INTEGER as COL2 $2
+                 aggregates
+                   type INTEGER as COL1 ) $1 sum
+                 , type INTEGER as COL2 $K1 "
+     | combined 0
+     | next
+
+   stage S04 on origin :
+     gbyAgg    " groupBy
+                   type INTEGER as COL2 $2
+                 aggregates
+                   type INTEGER as COL1 ) $1 sum
+                 , type INTEGER as COL2 $K1 "
+     | combined 0
+     | next
+
+   stage S05 on origin :
+       output
+     | sink
+     | first
+
+ end ;
+
 
 /*============================================================================*/
 /* end                                                                        */
