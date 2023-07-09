@@ -257,6 +257,20 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return first key col in this rpn sequence                                  */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_RpnCalc::pFirstKeyCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->bIsKeyOdn())
+      return xKid.p_term()->pSymbol();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return first stmCol in this rpn sequence                                   */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_RpnCalc::pFirstStmCol(void)

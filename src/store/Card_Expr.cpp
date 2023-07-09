@@ -316,6 +316,17 @@ void Card_Expr::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first key col                                                          */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pFirstKeyCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* p_stmCol = pSub_rpnCalc()->pFirstStmCol();
+
+  return p_stmCol;
+}
+/*----------------------------------------------------------------------------*/
 /* get first stm col                                                          */
 /*----------------------------------------------------------------------------*/
 Symbol* Card_Expr::pFirstStmCol(void)
@@ -326,7 +337,6 @@ Symbol* Card_Expr::pFirstStmCol(void)
 
   return p_stmCol;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get symbol of given term                                                   */

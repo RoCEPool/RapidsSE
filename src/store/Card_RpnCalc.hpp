@@ -26,6 +26,7 @@ namespace STORE
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
     void vEnsureTypesFor_stmOdn(CardIter* pCI);
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
+    Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Symbol* pSymbol);

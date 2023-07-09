@@ -407,16 +407,16 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
   StreamDef* pStreamDef = new StreamDef;
 
-  i8 i_Col = 1;
+  i8 i_DstCol = 1;
   s32 sColNm;
   s32 sColNm_mapped;
   eCT eColType;
 
-  i8 i_Key = C_UNKNOWN;
+  i8 i_SrcCol = C_UNKNOWN;
 
-  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_Col++) {
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_DstCol++) {
     Card_Expr *p_expr = xProjection.p_expr();
-    i_Key = C_UNKNOWN;
+    i_SrcCol = C_UNKNOWN;
 
     if (CK_PROJECT == eOP) {
       if (p_expr->pSub_as())
@@ -446,24 +446,25 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       sColNm = sNm_modified;
       sColNm_mapped = sColNm;
 
+      p_expr->vDump();
 
-      Symbol* pSymbol = p_expr->pGetSymbol(0);
+      Symbol* pSymbol = p_expr->pFirstStmCol();
       vTrace("%s\n"_Stz,pSymbol->szSymbol());
-      i_Key = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
-      if (i_Key) {
-        vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_Key);
+      i_SrcCol = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
+      if (i_SrcCol) {
+        vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_SrcCol);
 
 
         sNm_modified.vSprint("C%lld_COL%lld"_Stz,
                              xProjection.i_Child(),
-                             i_Key);
+                             i_SrcCol);
         sColNm_mapped = sNm_modified;
       }
       else {
-        i_Key = i_Col;
+        i_SrcCol = i_DstCol;
       }
 
-      vTrace("%s %s %lld\n"_Stz,sColNm.azChar(),pSymbol->szSymbol(),i_Key);
+      vTrace("%s %s %lld\n"_Stz, sColNm.azChar(), pSymbol->szSymbol(), i_SrcCol);
 
 
       vDebugPoint();
@@ -483,7 +484,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       sColNm = sNm_modified;
       sColNm_mapped = sColNm;
 
-      i_Key = i_Col;
+      i_SrcCol = i_DstCol;
     }
     else {
       if (p_expr->pSub_as())
@@ -519,7 +520,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
-      pColMap->vAddCol(i_Col, i_Key, sColNm_mapped, bPayload);
+      pColMap->vAddCol(i_DstCol, i_SrcCol, sColNm_mapped, bPayload);
     }
   }
 
