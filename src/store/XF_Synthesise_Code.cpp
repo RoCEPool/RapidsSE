@@ -433,10 +433,6 @@ void XF_Synthesise_Code::vCraftStreamDefs(Card_OP* p_OP)
     ppColMap = &m_pOpDef->m_pColMap_top;
 
   m_pOpDef->m_pStreamDef_emitted = p_OP->pCraftStreamDef_emitted(ppColMap);
-//  m_pOpDef->m_pColMap_gbyAgg =
-//      p_OP->pCraftColMap_gbyAgg(m_pOpDef->m_pStreamDef_emitted,
-//                                m_pOpDef->m_pIndexDef_gbyAgg);
-
 
   if (! m_pOpDef->m_pStreamDef_emitted && p_OP->bIsCard(CK_HASH))
     m_pOpDef->m_pStreamDef_emitted = m_pOpDef->m_pStreamDef_arriving->pDup();

@@ -448,6 +448,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
 
       Symbol* pSymbol = p_expr->pGetSymbol(0);
+      vTrace("%s\n"_Stz,pSymbol->szSymbol());
       i_Key = StrLib::iGleanInt(pSymbol->szSymbol()->azChar());
       if (i_Key) {
         vTrace("%s %lld\n"_Stz, pSymbol->szSymbol(), i_Key);

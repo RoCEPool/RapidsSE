@@ -288,6 +288,23 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this rpnCalc an aggregate function sequence ?                           */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsAggFn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() < 0)
+    return false;
+
+  Card_Term* p_term_0 = pGetTerm(0);
+  if (! p_term_0->pSymbol()->bSameAs(')'))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsSoleCol(void)

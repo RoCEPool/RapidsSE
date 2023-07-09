@@ -344,6 +344,20 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this expression an aggregate function ?s                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsAggFn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
+    return p_rpnCalc->bIsAggFn();
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsDescending(void)
