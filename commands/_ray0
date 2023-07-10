@@ -25,12 +25,61 @@ create table datums (
 
 load datums "../DATA/Transliterate/groupBy.csv" ;
 
+
+///////////////
+//EXAMPLE 1
+///////////////
+/*
+
+NOTE: THIS WORKS OK
+
 /glean_interactive
 /weaved
 /transliterated
 /pipeline_def
 select sum(int_col0), int_col1 from datums group by int_col1;
+*/
 
+
+
+///////////////
+//EXAMPLE 1
+///////////////
+
+/*
+
+NOTE: THIS IS NOT OK
+
+StageDef: [1] S02 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] gbyAgg
+         : StreamDef_arriving 0x20485da00040
+            Col 0: C0_int_col0 INTEGER
+            Col 1: C1_int_col1 INTEGER
+         : StreamDef_emitted  0x20485db00040
+            Col 0: C0_COL1 INTEGER
+            Col 1: C1_COL2 INTEGER
+         : Index_indexScan 0x0
+         : Index_indexJoin 0x0
+         : Index_indexSemi 0x0
+         : IndexDef_gbyAgg 0x20484e264040
+IndexDef --NO_NAME-- NoDescending
+  Column 00 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+         : ColMap_gbyAgg  0x204871ee0040
+               Col [0]: 1 2 C0_COL2 key
+               Col [1]: 2 2 C1_COL2 payload         --------> THIS SHOULD BE 2 1
+         : IndexDef_sort   0x0
+         : ColMap_sort     0x0
+         : IndexDef_top    0x0
+         : ColMap_top      0x0
+         : ColsReq         0x0
+
+*/
+
+/glean_interactive
+/weaved
+/transliterated
+/pipeline_def
+select int_col1, sum(int_col0) from datums group by int_col1;
 
 /*============================================================================*/
 /* end                                                                        */
