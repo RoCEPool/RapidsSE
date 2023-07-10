@@ -1,33 +1,68 @@
 /*============================================================================*/
 /* __CS: Code Synthesizer V2                                                  */
 /*============================================================================*/
+/*
+_nation;
+/time load nation   "<tpch_dir>/nation.<suffix>";
+create index IxN_NATIONKEY on nation (n_nationkey);
 
-__TPCH_SCHEMA;
+_region;
+/time load region   "<tpch_dir>/region.<suffix>";
+create index IxR_REGIONKEY on Region (R_REGIONKEY);
 
-/glean_interactive
-/optimise_passthru
 /pipeline_def
-pipeline Q
+/optimise_passthru
+pipeline __CS2_semiJoin
 begin
 
- stage first on origin :
-   start
-   | pulse once
+ stage S00 on origin :
+     start
+   | pulse     once
    | next
 
- stage Gs_ORDERS on all partitions :
-   scan orders
-   | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >= O_ORDERDATE DATE '1993-10-01' < and "
-   | project " type INTEGER as _orderkey O_ORDERKEY ,
-               type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
-   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="  "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
-   | combined 0
+ stage S01 on all partitions :
+     scan Nation
+   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | combined  0
    | next
 
- stage last on origin :
-    output
-    | sink
-    | first
+ stage S02 on all partitions :
+     keyExists Region IxR_REGIONKEY
+              " BOUND $I1 $3 == "
+              "type BOOLEAN R_REGIONKEY N_NATIONKEY =="
+   | combined  0
+   | next
 
-  end ;
+ stage S04 on origin :
+     output
+   | sink
+   | first
 
+end ;
+
+*/
+
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+
+load datums "../DATA/Transliterate/groupBy.csv" ;
+
+/weaved
+/pipeline_def
+select sum(int_col0), int_col1 from datums group by int_col1;
