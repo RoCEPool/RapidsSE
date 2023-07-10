@@ -309,7 +309,7 @@
 #include "XF_Flatten_52_W_L_NC_I_join.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
-#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
+#include "XF_Flatten_74_H_A_NC_ro.hpp"
 
 #include "CardUsage.hpp"
 
@@ -793,7 +793,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_FLATTEN_52_W_L_NC_I_JOIN, sizeof(XF_Flatten_52_W_L_NC_I_join), HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS, sizeof(XF_Flatten_53_W_L_NC_NI_exists), HT_T_TINY    , FILL },
   {CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,sizeof(XF_Flatten_53_W_L_NC_NI_join),HT_T_TINY    , FILL },
-  {CN_XF_FLATTEN_74_H_A_NC_RO,     sizeof(XF_Flatten_53_W_L_NC_NI_join),HT_T_TINY    , FILL },
+  {CN_XF_FLATTEN_74_H_A_NC_RO,     sizeof(XF_Flatten_74_H_A_NC_ro),     HT_T_TINY    , FILL },
   {CN_XF_INDEX_ANALYSIS,           sizeof(XF_index_Analysis),           HT_T_TINY    , FILL },
   {CN_XF_INDIVIDUATE_FILTER,       sizeof(XF_Individuate_filter),       HT_T_TINY    , FILL },
   {CN_XF_JOIN_ORDERING,            sizeof(XF_Join_Ordering),            HT_T_TINY    , FILL },

@@ -13,6 +13,18 @@
 #include "Optimiser.hpp"
 #include "XF_Join_Ordering.hpp"
 
+#include "XF_Flatten_10_F.hpp"
+#include "XF_Flatten_24_W_A_C_ro.hpp"
+#include "XF_Flatten_32_W_A_NC_I.hpp"
+#include "XF_Flatten_34_W_A_NC_ro.hpp"
+#include "XF_Flatten_40_W_L_C_E.hpp"
+#include "XF_Flatten_52_W_L_NC_I_exists.hpp"
+#include "XF_Flatten_52_W_L_NC_I_join.hpp"
+#include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
+#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
+#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
+
+
 #include "XF_stmCol_To_tblCol.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -247,7 +259,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
 
   m_pCI->vTransform(__func__, XF_NONE, "Flatten by decision tree (recursive model)"_Stz);
 
-  if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ vFlatten_10_F();
+  if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vXF_Flatten_10_F(m_pCI);
   else
   if (m_pCI->Sqy.m_pSubQuery->bViaWhere()) {
     if (m_pCI->Sqy.m_pSubQuery->bIsAggregation()) {
@@ -256,7 +268,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_A_C_NE         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_C_I          */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_A_C_NI         */ NEVER_REACH
-        else                                             /* W_A_C_ro   Q2,17 */ vFlatten_24_W_A_C_ro();
+        else                                             /* W_A_C_ro   Q2,17 */ XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(m_pCI);
       } else {                                                                      /* 30*/
              if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
