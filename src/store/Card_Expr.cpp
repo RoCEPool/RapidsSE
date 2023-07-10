@@ -322,9 +322,9 @@ Symbol* Card_Expr::pFirstKeyCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol* p_stmCol = pSub_rpnCalc()->pFirstStmCol();
+  Symbol* p_keyCol = pSub_rpnCalc()->pFirstKeyCol();
 
-  return p_stmCol;
+  return p_keyCol;
 }
 /*----------------------------------------------------------------------------*/
 /* get first stm col                                                          */
