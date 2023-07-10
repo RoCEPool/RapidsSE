@@ -83,7 +83,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVALID_PIPELINE'
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -133,7 +133,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -159,7 +159,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -186,7 +186,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -213,7 +213,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -240,7 +240,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -267,7 +267,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -293,7 +293,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -320,7 +320,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 */
 
@@ -347,7 +347,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -378,7 +378,7 @@ begin
     | first
 
  end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -404,7 +404,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 
@@ -432,7 +432,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -459,7 +459,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -487,7 +487,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -520,7 +520,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 
@@ -549,7 +549,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -578,7 +578,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -607,7 +607,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 // gbyAgg and sort
@@ -658,7 +658,7 @@ begin
      | first
 end ;
 
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVLIAD_PIPELINE' 
 pipeline'
 
 
