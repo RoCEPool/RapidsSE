@@ -428,12 +428,12 @@ void Card::vBearing(void)
 
   sPretty = aCK[m_eCard];
 
-  if (m_xSymbol.m_pProperties) {
-    s4K sProperties;
-    m_xSymbol.m_pProperties->vToString(sProperties, true);
-    sPretty.vConcat(": "_Stz);
-    sPretty.vConcat(sProperties);
-  }
+//  if (m_xSymbol.m_pProperties) {
+//    s4K sProperties;
+//    m_xSymbol.m_pProperties->vToString(sProperties, true);
+//    sPretty.vConcat(": "_Stz);
+//    sPretty.vConcat(sProperties);
+//  }
 
   strcat(md_Bearing, " ");
   strcat(md_Bearing, sPretty.azChar());
@@ -555,42 +555,22 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
     vTrace("%s %p:\n"_Stz,szTitle,this);
   else
   if (! iDepth)
-    vTrace("~~Card Dump\n"_Stz);
+    vTrace("^^Card Dump\n"_Stz);
 
-  s48K sProperties;
+  s4K sProperties;
   
   if (m_xSymbol.m_pProperties)
     m_xSymbol.m_pProperties->vToString(sProperties);
   else
-    sProperties = "no properties"_Stz;
-  
-//  vTrace("%s%lld %s %s { %s }\n"_Stz
-//         ,Stz::szTab(iDepth)
-//         ,m_i_Child
-//         ,szCardNm()
-//         ,aCK[m_eCard]
-//         ,sProperties.szStz()
-//         );
+    sProperties = "nil"_Stz;
 
-  if (*szSymbol()->azChar()) {
-    vTrace("%s%s %s { %s }"_Stz
-        , Stz::szTab(iDepth)
-        , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
-        , szSymbol()
-        , sProperties.szStz()
-    );
-  }
-  else {
-    vTrace("%s%s { %s }"_Stz
-        , Stz::szTab(iDepth)
-        , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
-        , sProperties.szStz()
-    );
-  }
-
-  vTrace(" %p"_Stz,this);
-
-  vTrace("\n"_Stz);
+  vTrace("  %p %s%s %s {%s}\n"_Stz
+      , this
+      , Stz::szTab(iDepth)
+      , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
+      , *szSymbol()->azChar() ? szSymbol() : "??NO-SYMBOL"_Stz
+      , sProperties.szStz()
+  );
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)

@@ -110,9 +110,9 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* transform matrix                                                           */
+/* apply transforms                                                           */
 /*----------------------------------------------------------------------------*/
-bool Optimiser::bApplyTransformationMatrix(Error& rxError)
+bool Optimiser::bApplyTransformations(Error& rxError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
@@ -423,7 +423,7 @@ bool Optimiser::bTransform(Error& rxError, InfoSet* pInfoSet)
   bool bJoinOrder = pJobTags->bHasName("<joinOrder>"_Stz);
   bool bJoinPermutations = pJobTags->bHasName("<JoinPermutations>"_Stz);
 
-  bool bClean = bApplyTransformationMatrix(rxError);
+  bool bClean = bApplyTransformations(rxError);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

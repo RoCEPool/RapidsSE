@@ -56,7 +56,7 @@ namespace STORE
 
     static void vRepair(Object* pObject);
 
-    bool bApplyTransformationMatrix(Error& rxError);
+    bool bApplyTransformations(Error& rxError);
 
     Bench* pBench(void);
 
