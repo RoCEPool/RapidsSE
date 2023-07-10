@@ -45,7 +45,7 @@ begin
     | sink
     | stageStart
 end ;
-failure contains: 'EC_INVALID_/optimise_passthru 
+failure contains: 'EC_INVALID_PIPELINE
 pipeline'
 
 //------------------------------------------------------------------------------

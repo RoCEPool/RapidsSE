@@ -251,7 +251,7 @@
 
   0 EV_M_START EG_ZK LogicUnit[].diaryNote
 
-  "OP_COMBINED executing" .
+  //"OP_COMBINED executing" .
 
   Tub[].new
   Pot[].new
