@@ -47,6 +47,7 @@ namespace STORE
     s4K m_sExprString;
 
     s4K m_sLimitExpr;
+    i8  m_iTopCount;
 
     // definitions
     StreamDef* m_pStreamDefLft;
@@ -126,7 +127,8 @@ namespace STORE
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
     void vStreamDefRht(StreamDef* pStreamDefRht);
-    eSK eSketchKind(void);
+    eSK  eSketchKind(void);
+    void vTopCount(i8 iTopCount);
 
   private:
 

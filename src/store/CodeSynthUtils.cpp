@@ -103,6 +103,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         vReplacePayloadBytes(sLine, pOpSketch);
         vReplaceKeyKind(sLine, pOpSketch);
 
+        vReplaceInsertEnt(sLine, pOpSketch);
+
         vReplaceTubPot(sLine, pOpSketch);
 
         // cater to multiple replaces of IndexInfo
@@ -285,6 +287,31 @@ void CodeSynthUtils::vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch) {
     }
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynthUtils::vReplaceInsertEnt(Stz* sLine, OpSketch* pOpSketch) {
+
+  _static_
+
+  bool bResult;
+
+  if (StrLib::bContains(sLine->azChar(), "__EXTERN_INSERTENT__")) {
+    if (pOpSketch->m_eSketchKind == SK_GBYAGG) {
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_INSERTENT__()",
+         "aExtern_IndexTreeInsertEnt(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);");
+      RASSERT(bResult);
+    }
+    else {
+      RASSERT(pOpSketch->m_eSketchKind == SK_TOP);
+      bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_INSERTENT__()",
+        "aExtern_IndexTreeInsertEntTop(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, "
+           "&aCombinedT->m_aEntBottomPL, pOpSketch->m_iTopCount, &aDynamicT->m_iErrorCode);");
+      RASSERT(bResult);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

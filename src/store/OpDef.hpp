@@ -58,6 +58,7 @@ namespace STORE
     ArgDef* pArgDef_expectingVal(Stz* szArgNm);
     ArgDef* pArgDef_expr(void);
     ArgDef* pArgDef_constraint(void);
+    ArgDef* pArgDef_count(void);
 
     ColsReq* pColsLoc_gbyAgg(void);
     void vColsLoc_gbyAgg(ColsReq* pColsLoc_gbyAgg);

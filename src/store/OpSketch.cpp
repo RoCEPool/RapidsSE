@@ -64,6 +64,7 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
 
   m_sExprString  = sExprStr;
   m_sLimitExpr   = ""_Stz;
+  m_iTopCount    = 0;
 
   // definitions
   m_pStreamDefLft = pStreamDefIn;
@@ -347,6 +348,16 @@ void OpSketch::vPayloadBytes(i8 nPayloadBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_nPayloadBytes = nPayloadBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set top count                                                              */
+/*----------------------------------------------------------------------------*/
+void OpSketch::vTopCount(i8 iTopCount)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  m_iTopCount = iTopCount;
 }
 
 /*----------------------------------------------------------------------------*/

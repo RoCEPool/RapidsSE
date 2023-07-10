@@ -700,6 +700,47 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         vAppendCodeFragment(pOpSketch, "vStreamDefEnd"_Stz);
         break;
 
+      case SK_TOP:
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // open the gbyagg code fragments file
+        bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/GbyAgg.cpp"_Stz);
+        RASSERT ( bOpened );
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // operator stub
+        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+
+        // create indexDef and indexTree
+        vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz, pOperatorFile);
+        vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
+        vAppendCodeIndexCols(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
+
+        // populate the payload key
+        vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
+        vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
+        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // create the pay load
+        if (pOpSketch->m_nPayloadBytes)
+          vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
+
+        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
+          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
+        }
+        else {
+          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
+        }
+        vAppendCodePopulatePayloadCols(pOpSketch);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // close the gbyAgg code fragments file
+        pOperatorFile->vClose();
+
+        break;
+
       case SK_TUB:
       case SK_POT:
 

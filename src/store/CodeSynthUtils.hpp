@@ -20,6 +20,7 @@ namespace STORE {
     static void vReplaceColumnName(Stz *sLine, Column *pColumn);
     static bool bReplaceIndexInfo(Stz *sLine, Stz *sReplacedLine, OpSketch *pOpSketch);
     static void vReplaceIndexPosition(Stz *sLine, OpSketch *pOpSketch);
+    static void vReplaceInsertEnt(Stz* sLine, OpSketch* pOpSketch);
     static void vReplaceKeyKind(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceNumColumns(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceOperatorName(Stz *sLine, OpSketch *pOpSketch);

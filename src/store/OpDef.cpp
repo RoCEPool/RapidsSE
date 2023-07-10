@@ -191,6 +191,16 @@ ArgDef* OpDef::pArgDef_expr(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+ArgDef* OpDef::pArgDef_count(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+
+  return pArgDef("count"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 ArgDef* OpDef::pArgDef_constraint(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);

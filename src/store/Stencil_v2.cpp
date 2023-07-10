@@ -439,6 +439,31 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the top OP
+    if (pOpDef->szOpNm()->bSame("top"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchTop(pStageDef, pOpDef, eHandlerKind, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      ePrevStencil_v2 = SR_PL;
+
+      OpSketch *pTopOpSketch = pOpSketch;
+
+      pOpSketch = pSketchEos(pStageDef, HK_EOS, ePrevStencil_v2, sLabelLoop);
+      vAppend(pOpSketch);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pOpSketch = pSketchPotTub(pTopOpSketch, HK_EOS, ePrevStencil_v2, sLabelLoop,bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch->vIndexDef(pTopOpSketch->m_pIndexDef);
+      pOpSketch->vCopyColsMap(pTopOpSketch->m_pColsMap);
+      vAppend(pOpSketch);
+
+      bGeneratePotTub = false;
+      continue;
+    }
+
   }
 
   OpSketch* pLastOpSketch = pOpSketch;
@@ -581,39 +606,6 @@ void Stencil_v2::vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
   pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
   pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
   EntWrk::vEntKind((EntWrk*)pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
-
-  // delete the indexdef in the LU of OP
-  // not the correct place... will come back to it
-  delete *pLogicUnit->m_xpIndexDef;
-  pLogicUnit->m_xpIndexDef = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set up for top                                                             */
-/*----------------------------------------------------------------------------*/
-void Stencil_v2::vSetupTop(Dynamic* pDynamic, Stream* pStream, Op* pOp) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  bool bPayload = true;
-
-  // get the LogicUnit
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  // get the IndexDef from the TopOp
-  IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexDef = new IndexDef(pIndexDef);
-
-  // do we have a payload ?
-  if (pStreamDefOut->nColumns() == pIndexDef->nColumns())
-    bPayload = false;
-
-  // create the indexTree
-  eKE eKind;
-  pDynamic->aDynamicT()->m_xIndexInfoPL.m_aIndexTree = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pDynamic->aDynamicT()->m_xIndexInfoPL.m_aEntWrk, bPayload, pIndexDef->eKeyKind());
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it
@@ -1326,14 +1318,12 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
 
   s4K sLabel;
   s4K sLabelNext;
-  s4K sLabelPrev;
 
   i8 i_Op = pOpDef->i_Op();
 
   // get sort expr from OpDef
   Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  //HACK-OPTIMISER
   // get the columns required
   ColsReq* pColsMap = pOpDef->m_pColMap_sort;
 
@@ -1389,46 +1379,54 @@ OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind) {
 /*----------------------------------------------------------------------------*/
 /* sketch top                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchTop(Dynamic* pDynamic, Op* pOp, eSR ePrevStencil_v2, Stz* sLabelLoop) {
-/*
+OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop)
+{
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
   s4K sLabel;
   s4K sLabelNext;
 
-  i8 i_Op = pOp->i_Op();
-  CodeSynth_v2 *pCodeSynth;
+  i8 i_Op = pOpDef->i_Op();
 
-  // create a new shape for this OP
-  OpSketch *pShape = new OpSketch;
+  // get top expr from OpDef
+  Stz* sTopExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  // get opTags from OP
-  TagSet* pOpTags = pOp->pOpTags();
-  Stz* sKeyExpr = pOpTags->szValue(C_TAG_EXPR);
+  i8 iTopCount = pOpDef->pArgDef_count()->i_Arg();
 
-  i8 iTopCount = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+  // get the streamDefs
+  StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
+  StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
-  // get the streamDefOut
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  // get the columns required
+  ColsReq* pColsMap = pOpDef->m_pColMap_top;
+
+  // create a new opSketch for this OP
+  OpSketch *pOpSketch = new OpSketch(i_Op, sTopExpr, eHandlerKind, SK_TOP, ePrevStencil_v2, ePrevStencil_v2,  II_PL, pStreamDefLft, pStreamDefOut);
+
+  // set the labels in the opSketch
+  sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
+  pOpSketch->vSetLabels(sLabel, ""_Stz, szLabelLoop);
 
   // get the IndexDef from the TopOp
-  IndexDef* pIndexDef = _pIndexDef(pDynamic->aDynamicT()->m_aIndexDefPL);
+  IndexDef* pIndexDef = _pIndexDef(pOpDef->m_pIndexDef_top);
+  pOpSketch->vIndexDef(pIndexDef);
 
-  // get the aggregate type stack
-  IntStack* pPreExpStack = _pIntStack(*pLogicUnit->m_xpPreExpStack);
+  // set the payLoad bytes
+  i8 nPayloadBytes = (pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
+  pOpSketch->vPayloadBytes(nPayloadBytes);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the OP
-  pCodeSynth = new CodeSynth_v2(pStreamDefLft, pStreamDefLft, pIndexDef, nullptr, ePrevStencil_v2, SR_NONE);
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  // set the colsMap (payload information)
+  pOpSketch->vCopyColsMap(pColsMap);
 
-  pCodeSynth->vSynthTop(sKeyExpr, iTopCount, sLabel, sLabelLoop);
-  pShape->vCodeSynthB(pCodeSynth);
+  // set the top count
+  pOpSketch->vTopCount(iTopCount);
 
-  return pShape;
-  */
-  return nullptr;
+  // generate the expression stacks
+  pOpSketch->vGenerateExprStacks(sTopExpr);
+
+  return pOpSketch;
 }
 
 /*----------------------------------------------------------------------------*/

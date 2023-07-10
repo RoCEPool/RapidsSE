@@ -1,9 +1,13 @@
 /*============================================================================*/
-/* __CS2_prj : Code Synthesizer V2                                            */
+/* __CS2_top : Code Synthesizer V2                                            */
 /*============================================================================*/
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
+/weaver2
+/pipeline_def
+/weaved
+/optimise_passthru
 pipeline unamed
 begin
   stage S00 on origin :
@@ -16,7 +20,7 @@ begin
     | combined 0
     | next
   stage S02 on all partitions :
-    top "top type INTEGER $1" 3
+    top "type INTEGER $1" 3
     | combined 0
     | next
   stage S03 on origin :
