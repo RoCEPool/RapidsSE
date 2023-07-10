@@ -22,8 +22,6 @@ namespace STORE
 
     static void vXF_Flatten_52_W_L_NC_I_join(CardIter* pCI);
 
-    void vXF_Flatten_52_W_L_NC_I_join(void);
-
   private:
     Footer* aFooter(void);
   };

@@ -4,6 +4,9 @@
 
 #include "XF_Flatten_52_W_L_NC_I_join.hpp"
 
+#include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
+#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
+
 #include "Fold.hpp"
 #include "Smooth.hpp"
 
@@ -45,11 +48,15 @@ void XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(CardIter* pCI)
 {
   _static_
 
-  XF_Flatten_52_W_L_NC_I_join* pXF_Flatten_52_W_L_NC_I_join = new XF_Flatten_52_W_L_NC_I_join(pCI);
+  Fold* pFold = new Fold(0,pCI->G.pDeck);
+  i8 nTables = pFold->nTables_In_SubQuery(pCI,"52_W_L_NC_I_join"_Stz,CK_WHERE);
 
-  pXF_Flatten_52_W_L_NC_I_join->vXF_Flatten_52_W_L_NC_I_join();
+  delete pFold;
 
-  delete pXF_Flatten_52_W_L_NC_I_join;
+  if (1 == nTables)
+    XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(pCI);
+  else
+    XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(pCI);
 }
 
 
@@ -57,23 +64,6 @@ void XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(CardIter* pCI)
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_JOIN, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
-
-  m_pCI->vEndTransform();
-
-  vValidate();
-}
 
 /*============================================================================*/
 /* end                                                                        */

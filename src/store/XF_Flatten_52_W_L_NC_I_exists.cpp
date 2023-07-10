@@ -4,6 +4,8 @@
 
 #include "XF_Flatten_52_W_L_NC_I_exists.hpp"
 
+#include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
+
 #include "Fold.hpp"
 #include "Smooth.hpp"
 
@@ -45,11 +47,7 @@ void XF_Flatten_52_W_L_NC_I_exists::vXF_Flatten_52_W_L_NC_I_exists(CardIter* pCI
 {
   _static_
 
-  XF_Flatten_52_W_L_NC_I_exists* pXF_Flatten_52_W_L_NC_I_exists = new XF_Flatten_52_W_L_NC_I_exists(pCI);
-
-  pXF_Flatten_52_W_L_NC_I_exists->vXF_Flatten_52_W_L_NC_I_exists();
-
-  delete pXF_Flatten_52_W_L_NC_I_exists;
+  XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(pCI);
 }
 
 
@@ -57,23 +55,6 @@ void XF_Flatten_52_W_L_NC_I_exists::vXF_Flatten_52_W_L_NC_I_exists(CardIter* pCI
 /*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* add level to op                                                            */
-/*----------------------------------------------------------------------------*/
-void XF_Flatten_52_W_L_NC_I_exists::vXF_Flatten_52_W_L_NC_I_exists(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, _FOOTER_);
-
-  m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
-
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
-
-  m_pCI->vEndTransform();
-
-  vValidate();
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -286,8 +286,8 @@ void XF_Flatten::vFlattenByDecisionTree(void)
       } else {                                                                      /* 50*/
              if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_NC_E         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_L_NC_NE        */ NEVER_REACH
-        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_NC_I         */ vFlatten_52_W_L_NC_I_join();
-        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ vFlatten_53_W_L_NC_NI_join();
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_NC_I         */ XF_Flatten_52_W_L_NC_I_join::vXF_Flatten_52_W_L_NC_I_join(m_pCI);
+        else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_NC_NI    Q16 */ XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(m_pCI);
         else                                             /* W_L_NC_ro        */ NEVER_REACH
       }
     }
