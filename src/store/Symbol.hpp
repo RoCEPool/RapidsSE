@@ -49,6 +49,7 @@ namespace STORE
     bool bIsComma(void);            // ,
     bool bIsIndexColumn(void);      // $In
     bool bIsKeyOrdinal(void);       // $Kn
+    bool bIsName(void);             //
     bool bIsParameterOrdinal(void); // %n
     bool bIsRelnOp(void);           // <, <=, ... >
     bool bIsStreamOrdinal(void);    // $n
@@ -60,6 +61,7 @@ namespace STORE
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
     void vPpyStr(String* pString);
+
 
     bool bSameAs(char cArg);
     bool bSameAs(Stz* szArg);
@@ -81,6 +83,8 @@ namespace STORE
 
     Stz* szType(void);
     void vType(Stz* szType);
+
+    Stz* szWhatIs(void);
 
     void Y_vAll(Card* pCard_arg);
     void Y_vAll(TagSet* pProperties);

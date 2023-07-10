@@ -378,6 +378,19 @@ bool Symbol::bIsKeyOrdinal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a name?                                                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsName(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (StrLib::bIsSqlName(m_sSymbol.azChar()))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsParameterOrdinal(void)
@@ -525,7 +538,7 @@ bool Symbol::bNeedsBrace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert properties to string                                               */
 /*----------------------------------------------------------------------------*/
 void Symbol::vPpyStr(String* pString)
 {
@@ -743,6 +756,31 @@ void Symbol:: vType(Stz* szType)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   Y_vSet(P_Type,szType);
+}
+
+/*----------------------------------------------------------------------------*/
+/* what is this symbol?                                                       */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szWhatIs(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIsAggOp())            return "AggOp"_Stz;
+  if (bIsBoolFn())           return "BoolFn"_Stz;
+  if (bIsBound())            return "Bound"_Stz;
+  if (bIsColumnOrdinal())    return "ColumnOrdinal"_Stz;
+  if (bIsComma())            return "Comma"_Stz;
+  if (bIsIndexColumn())      return "IndexColumn"_Stz;
+  if (bIsKeyOrdinal())       return "KeyOrdinal"_Stz;
+  if (bIsParameterOrdinal()) return "ParameterOrdinal"_Stz;
+  if (bIsRelnOp())           return "RelnOp"_Stz;
+  if (bIsName())             return "Name"_Stz;
+  if (bIsStreamOrdinal())    return "StreamOrdinal"_Stz;
+  if (bIsSubQueryOp())       return "SubQueryOp"_Stz;
+  if (bIsSubQueryColumn())   return "SubQueryColumn"_Stz;
+  if (bIsSyntheticAs())      return "SyntheticAs"_Stz;
+
+  return "??WhatIs"_Stz;
 }
 
 

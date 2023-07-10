@@ -558,12 +558,13 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
   s4K sProperties;
   m_xSymbol.vPpyStr(sProperties);
 
-  vTrace("  %p %s%s : %s {%s}\n"_Stz
+  vTrace("  %p %s%s : %s {%s} %s\n"_Stz
         , this
         , Stz::szTab(iDepth)
         , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
-        , *szSymbol()->azChar() ? szSymbol() : "??NO-SYMBOL"_Stz
+        , *szSymbol()->azChar() ? szSymbol() : "??Symbol"_Stz
         , sProperties.szStz()
+        , pSymbol()->szWhatIs()
   );
 
   i8 nSubCards = this->nChildCards();
