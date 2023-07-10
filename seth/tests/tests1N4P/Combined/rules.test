@@ -84,7 +84,6 @@ begin
 
 end ;
 failure contains: 'EC_INVALID_PIPELINE'
-pipeline'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine (nothing to do)
@@ -133,8 +132,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // OP after combinedOp
@@ -159,8 +157,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // No OP after hashOp
@@ -186,8 +183,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // haspOP and no hashcast
@@ -213,8 +209,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // multiple projectOp's
@@ -240,8 +235,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // project after aggregate
@@ -267,8 +261,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // scan to be a first OP
@@ -293,8 +286,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple scanOp's
@@ -320,8 +312,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 */
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -347,8 +338,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexJoin / keyExists allowed in a stage
@@ -378,8 +368,7 @@ begin
     | first
 
  end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple indexScanOp's
@@ -404,8 +393,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -432,8 +420,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple projectOp's
@@ -459,8 +446,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple limitOp's
@@ -487,8 +473,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple keyExistsOp's
@@ -520,8 +505,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -549,8 +533,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple topOp's
@@ -578,8 +561,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // sort and topOp
@@ -607,8 +589,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // gbyAgg and sort
 /optimise_passthru 
@@ -658,8 +639,7 @@ begin
      | first
 end ;
 
-failure contains: 'EC_INVLIAD_PIPELINE' 
-pipeline'
+failure contains: 'EC_INVALID_PIPELINE'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
