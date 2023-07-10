@@ -858,14 +858,14 @@ void Constants::vAddConstantsCpp(void)
 #ifdef WITH_WEAVER2
   vAddConstant("WITH_WEAVER2"_Stz,(i8)true);
 
-  s32 sTagName = "<weaver2>"_Stz;
-  gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
+  //s32 sTagName = "<weaver2>"_Stz;
+  //gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
 
 #else
   vAddConstant("WITH_WEAVER2"_Stz,(i8)false);
 
-  s32 sTagName = "<weaver1>"_Stz;
-  gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
+  //s32 sTagName = "<weaver1>"_Stz;
+  //gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
 
 #endif
 }

@@ -32563,7 +32563,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 EV_M_START EG_ZK LogicUnit[].diaryNote\n"
     "\n"
-    "  \"OP_COMBINED executing\" .\n"
+    "  //\"OP_COMBINED executing\" .\n"
     "\n"
     "  Tub[].new\n"
     "  Pot[].new\n"

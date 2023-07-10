@@ -280,16 +280,15 @@ eEC Api::eForkJobChild(JobId& rtChildJobId,
   pJobTagSet->vCopy(pCmdTagSet);
 
 #ifdef WITH_WEAVER2
-  if (pJobTagSet->bHasName(C_TAG_WEAVER1)) {
-    pJobTagSet->vInsert(C_TAG_WEAVER1);
-    pJobTagSet->vDelete(C_TAG_WEAVER2);
+  if ( ! pJobTagSet->bHasName(C_TAG_WEAVER1) ) {
+    pJobTagSet->vInsert(C_TAG_WEAVER2);
   }
+
 #endif
 
 #ifdef WITH_WEAVER1
-  if (pJobTagSet->bHasName(C_TAG_WEAVER2)) {
-    pJobTagSet->vInsert(C_TAG_WEAVER2);
-    pJobTagSet->vDelete(C_TAG_WEAVER1);
+  if ( ! pJobTagSet->bHasName(C_TAG_WEAVER2) ) {
+    pJobTagSet->vInsert(C_TAG_WEAVER1);
   }
 #endif
 
