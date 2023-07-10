@@ -300,6 +300,17 @@
 #include "XF_Predicate_Pull_Up.hpp"
 #include "XF_Predicate_Reposition.hpp"
 
+#include "XF_Flatten_10_F.hpp"
+#include "XF_Flatten_24_W_A_C_ro.hpp"
+#include "XF_Flatten_32_W_A_NC_I.hpp"
+#include "XF_Flatten_34_W_A_NC_ro.hpp"
+#include "XF_Flatten_40_W_L_C_E.hpp"
+#include "XF_Flatten_52_W_L_NC_I_exists.hpp"
+#include "XF_Flatten_52_W_L_NC_I_join.hpp"
+#include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
+#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
+#include "XF_Flatten_74_H_A_NC_ro.hpp"
+
 #include "CardUsage.hpp"
 
 #include "graph/PlanConstants.hpp"
