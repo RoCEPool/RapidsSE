@@ -479,11 +479,12 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
 
   ASSERT(!pInfoRow->bIsColNull(0));
 
-  Stz* szReason    = pInfoRow->szColVal_ofs(0);
+  s2K sReason;
+  sReason.vSprint("Warning: %s"_Stz, pInfoRow->szColVal_ofs(0));
   Stz* szSqlState  = pInfoRow->bIsColNull(1) ? nullptr : pInfoRow->szColVal_ofs(1);
   i8   iVendorCode = pInfoRow->bIsColNull(2) ? 0 : pInfoRow->iColVal_int(2);
 
-  vSerialiseWarningResponse(szReason,
+  vSerialiseWarningResponse(sReason.szStz(),
                             szSqlState,
                             iVendorCode);
 }
