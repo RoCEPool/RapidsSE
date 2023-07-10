@@ -457,6 +457,16 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_EARLY_PROJECTION,
   /* */ CN_XF_FIX_TABLE_POS,
   /* */ CN_XF_FLATTEN,
+  /* */ CN_XF_FLATTEN_10_F,
+  /* */ CN_XF_FLATTEN_24_W_A_C_RO,
+  /* */ CN_XF_FLATTEN_32_W_A_NC_I,
+  /* */ CN_XF_FLATTEN_34_W_A_NC_RO,
+  /* */ CN_XF_FLATTEN_40_W_L_C_E,
+  /* */ CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,
+  /* */ CN_XF_FLATTEN_52_W_L_NC_I_JOIN,
+  /* */ CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS,
+  /* */ CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,
+  /* */ CN_XF_FLATTEN_74_H_A_NC_RO,
   /* */ CN_XF_INDEX_ANALYSIS,
   /* */ CN_XF_INDIVIDUATE_FILTER,
   /* */ CN_XF_JOIN_ORDERING,
@@ -937,6 +947,16 @@ static Stz* aCN[]
   /* */ "XF_EARLY_PROJECTION"_Stz,          // CN_XF_EARLY_PROJECTION
   /* */ "XF_FIX_TABLE_POS"_Stz,             // CN_XF_FIX_TABLE_POS
   /* */ "XF_FLATTEN"_Stz,                   // CN_XF_FLATTEN
+  /* */ "XF_FLATTEN_10_F"_Stz,              // CN_XF_FLATTEN_10_F,
+  /* */ "XF_FLATTEN_24_W_A_C_RO"_Stz,       // CN_XF_FLATTEN_24_W_A_C_RO,
+  /* */ "XF_FLATTEN_32_W_A_NC_I"_Stz,       // CN_XF_FLATTEN_32_W_A_NC_I,
+  /* */ "XF_FLATTEN_34_W_A_NC_RO"_Stz,      // CN_XF_FLATTEN_34_W_A_NC_RO,
+  /* */ "XF_FLATTEN_40_W_L_C_E"_Stz,        // CN_XF_FLATTEN_40_W_L_C_E,
+  /* */ "XF_FLATTEN_52_W_L_NC_I_EXISTS"_Stz,// CN_XF_FLATTEN_52_W_L_NC_I_EXISTS,
+  /* */ "XF_FLATTEN_52_W_L_NC_I_JOIN"_Stz,  // CN_XF_FLATTEN_52_W_L_NC_I_JOIN,
+  /* */ "XF_FLATTEN_53_W_L_NC_NI_EXISTS"_Stz,  // CN_XF_FLATTEN_53_W_L_NC_NI_EXISTS,
+  /* */ "XF_FLATTEN_53_W_L_NC_NI_JOIN"_Stz, // CN_XF_FLATTEN_53_W_L_NC_NI_JOIN,
+  /* */ "XF_FLATTEN_74_H_A_NC_RO"_Stz,      // CN_XF_FLATTEN_74_H_A_NC_RO,
   /* */ "XF_INDEX_ANALYSIS"_Stz,            // CN_XF_INDEX_ANALYSIS
   /* */ "XF_INDIVIDUATE_FILTER"_Stz,        // CN_XF_INDIVIDUATE_FILTER
   /* */ "XF_JOIN_ORDERING"_Stz,             // CN_XF_JOIN_ORDERING
