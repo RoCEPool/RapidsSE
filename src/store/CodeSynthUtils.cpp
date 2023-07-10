@@ -299,7 +299,8 @@ void CodeSynthUtils::vReplaceInsertEnt(Stz* sLine, OpSketch* pOpSketch) {
   bool bResult;
 
   if (StrLib::bContains(sLine->azChar(), "__EXTERN_INSERTENT__")) {
-    if (pOpSketch->m_eSketchKind == SK_GBYAGG) {
+    if (pOpSketch->m_eSketchKind == SK_GBYAGG ||
+        pOpSketch->m_eSketchKind == SK_SORT) {
       bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_INSERTENT__()",
          "aExtern_IndexTreeInsertEnt(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);");
       RASSERT(bResult);
