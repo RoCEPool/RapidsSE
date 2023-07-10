@@ -64,11 +64,44 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
+  m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
+  // H A NC ro (refer: Q11)
+  // - the nc subquery produces a single nc result, such as avg(col)
+  // - that SQ result needs to be in every OQ row so the Having clause
+  //     can use it to filter rows
+
+  /* ARCHETYPE _r_a_b_HAVING:
+      select l_orderkey, sum(l_quantity)
+        from lineitem
+       group by l_orderkey
+      having sum(l_quantity) > (select avg(l_quantity)
+                                  from lineitem);
+  */
+
+  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_74_H_A_NC_ro))"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold of subQuery
+
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  CarryForward* pCarryForward =
+      pFold->pFold_nc_subQuery(m_pCI, "H_A_NC_ro"_Stz,
+                               CK_HAVING, QO_RELN_OP, SM_NONE);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
+
+  Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->G.pDeck->vClearMarksRecursive();
+
+  delete pFold;
+  delete pCarryForward;
+  delete pSmooth;
 
   m_pCI->vEndTransform();
 

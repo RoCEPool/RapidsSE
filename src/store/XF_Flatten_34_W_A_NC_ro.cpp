@@ -65,13 +65,51 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_34_W_A_NC_RO, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
+  m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
+  // W A NC ro
+  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+  // as an aggregation-fan (projecting a single aggregated value)
+  // (refer: Q15)
+
+  /*
+   */
+
+  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_34_W_A_NC_ro))"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold of subQuery
+
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  CarryForward* pCarryForward =
+      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_ro"_Stz,
+                               CK_WHERE, QO_RELN_OP, SM_NONE);
+
+  m_pCI->vPrintBoard(__LINE__);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smoothing W_A_NC_ro
+
+  // Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
+
+  m_pCI->vRestart();
+  //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
+  RASSERT(m_pCI->G_bEachMain(CK_FOLD));
+
+  Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pCI->G.pDeck->vClearMarksRecursive();
+
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
+
+  delete pSmooth;
+  delete pCarryForward;
+  delete pFold;
 
   vValidate();
 }

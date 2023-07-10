@@ -22,7 +22,7 @@
 #include "XF_Flatten_52_W_L_NC_I_join.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
-#include "XF_Flatten_53_W_L_NC_NI_join.hpp"
+#include "XF_Flatten_74_H_A_NC_ro.hpp"
 
 
 #include "XF_stmCol_To_tblCol.hpp"
@@ -272,13 +272,13 @@ void XF_Flatten::vFlattenByDecisionTree(void)
       } else {                                                                      /* 30*/
              if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_A_NC_E         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_A_NC_NE        */ NEVER_REACH
-        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ vFlatten_32_W_A_NC_I();
+        else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_A_NC_I     Q18 */ XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(m_pCI);
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_A_NC_NI        */ NEVER_REACH
-        else                                             /* W_A_NC_ro    Q15 */ vFlatten_34_W_A_NC_ro();
+        else                                             /* W_A_NC_ro    Q15 */ XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(m_pCI);
       }
     } else {
       if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 40*/
-             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_C_E       Q4 */ vFlatten_40_W_L_C_E();
+             if (m_pCI->Sqy.m_pSubQuery->bByExists())    /* W_L_C_E       Q4 */ XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(m_pCI);
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* W_L_C_NE         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* W_L_C_I          */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* W_L_C_NI         */ NEVER_REACH
@@ -306,7 +306,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
         else if (m_pCI->Sqy.m_pSubQuery->bByNotExists()) /* H_A_NC_NE        */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByIn())        /* H_A_NC_I         */ NEVER_REACH
         else if (m_pCI->Sqy.m_pSubQuery->bByNotIn())     /* H_A_NC_NI        */ NEVER_REACH
-        else                                             /* H_A_NC_ro    Q11 */ vFlatten_74_H_A_NC_ro();
+        else                                             /* H_A_NC_ro    Q11 */ XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(m_pCI);
       }
     } else {
       if (m_pCI->Sqy.m_pSubQuery->bIsCorrelated()) {                                /* 80*/

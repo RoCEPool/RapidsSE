@@ -64,13 +64,49 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_32_W_A_NC_I, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
+  m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G_vRestart();
-  while (m_pCI->G_bEachMain())
-    ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
+  // W A NC I
+  // push a (single-value aggregate non-correlated in) sub-query before the main-query
+  // as an aggregation-fan (projecting a single aggregated value)
+  // (refer: Q18)
+
+  /* ARCHETYPE :
+      select count(*)
+        from orders, lineitem
+       where O_ORDERKEY = L_ORDERKEY
+         and O_ORDERKEY in (select L_ORDERKEY
+                              from lineitem
+                             group by L_ORDERKEY
+                            having sum(l_quantity) > 100)
+      ;
+   */
+
+  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_32_W_A_NC_I))"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // fold of subQuery
+
+  Fold* pFold = new Fold(0,m_pCI->G.pDeck);
+  CarryForward* pCarryForward =
+      pFold->pFold_nc_subQuery(m_pCI, "W_A_NC_I"_Stz,
+                               CK_WHERE, QO_IN_OP, SM_NONE);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
+
+  Smooth* pSmooth = new Smooth;
+  pSmooth->vSmooth(m_pCI,pCarryForward);
+
+  m_pCI->G.pDeck->vClearMarksRecursive();
+
+  m_pCI->vPrintBoard(__LINE__);
 
   m_pCI->vEndTransform();
+
+  delete pCarryForward;
+  delete pSmooth;
+  delete pFold;
 
   vValidate();
 }
