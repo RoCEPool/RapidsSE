@@ -511,6 +511,8 @@ bool Symbol::bIsValueOrdinal(void)
 /*----------------------------------------------------------------------------*/
 bool Symbol::bNeedsBrace(void)
 {
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
        if (m_sSymbol.bSame("between"_Stz))        return true;
   else if (m_sSymbol.bSame("case"_Stz))           return true;
   else if (m_sSymbol.bSame("in"_Stz))             return true;
@@ -520,6 +522,19 @@ bool Symbol::bNeedsBrace(void)
   else if (m_sSymbol.bSame("matchTrailing"_Stz))  return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vPpyStr(String* pString)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (m_pProperties)
+    m_pProperties->vToString(pString->szStz());
+  else
+    pString->vCopy("nil"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

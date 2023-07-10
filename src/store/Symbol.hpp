@@ -59,6 +59,8 @@ namespace STORE
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
 
+    void vPpyStr(String* pString);
+
     bool bSameAs(char cArg);
     bool bSameAs(Stz* szArg);
     bool bSameAs(Symbol* pArg);

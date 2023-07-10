@@ -548,28 +548,22 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (0 == iDepth)
-    vDebugPoint();
-
-  if (szTitle)
-    vTrace("%s %p:\n"_Stz,szTitle,this);
-  else
-  if (! iDepth)
-    vTrace("^^Card Dump\n"_Stz);
+  if (0 == iDepth) {
+    if (szTitle)
+      vTrace("^^%s:\n"_Stz,szTitle);
+    else
+      vTrace("^^Card Dump\n"_Stz);
+  }
 
   s4K sProperties;
-  
-  if (m_xSymbol.m_pProperties)
-    m_xSymbol.m_pProperties->vToString(sProperties);
-  else
-    sProperties = "nil"_Stz;
+  m_xSymbol.vPpyStr(sProperties);
 
-  vTrace("  %p %s%s %s {%s}\n"_Stz
-      , this
-      , Stz::szTab(iDepth)
-      , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
-      , *szSymbol()->azChar() ? szSymbol() : "??NO-SYMBOL"_Stz
-      , sProperties.szStz()
+  vTrace("  %p %s%s : %s {%s}\n"_Stz
+        , this
+        , Stz::szTab(iDepth)
+        , md_Bearing[0] ? md_Bearing : (char*)aCK[m_eCard]
+        , *szSymbol()->azChar() ? szSymbol() : "??NO-SYMBOL"_Stz
+        , sProperties.szStz()
   );
 
   i8 nSubCards = this->nChildCards();

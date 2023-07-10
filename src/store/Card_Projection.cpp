@@ -447,7 +447,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       sColNm = sNm_modified;
       sColNm_mapped = sColNm;
 
-      p_expr->vDump();
+      //p_expr->vDump();
 
       if ((pSymbol = p_expr->pFirstKeyCol())) {
         //vTrace("%s\n"_Stz, pSymbol->szSymbol());
