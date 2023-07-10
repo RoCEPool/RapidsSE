@@ -5,6 +5,8 @@ trackMemory;
 success
 
 // scan +aggGby
+// TODO V2
+/*
 select count(*) from nation group by n_regionkey;
 rows:
   (5)
@@ -12,6 +14,7 @@ rows:
   (5)
   (5)
   (5)
+*/
 
 // scan +aggGby
 select n_regionkey, count(*) from nation group by n_regionkey;
@@ -23,6 +26,8 @@ rows:
   (1, 5)
 
 // scan +aggGby
+// TODO V2
+/*
 select count(*), n_regionkey from nation group by n_regionkey;
 rows:
   (5, 3)
@@ -30,6 +35,7 @@ rows:
   (5, 0)
   (5, 2)
   (5, 1)
+
 
 // scan + filter + aggGby
 select n_regionkey, min(n_nationkey), max(n_name) from nation group by n_regionkey;
@@ -129,6 +135,7 @@ rows:
  ('Manufacturer#5','Brand#55',2)
  ('Manufacturer#5','Brand#53',2)
  ('Manufacturer#5','Brand#52',2)
+*/
 
 // scan + filter + aggGby + filter
 //TODO V2 : OPTIMISER

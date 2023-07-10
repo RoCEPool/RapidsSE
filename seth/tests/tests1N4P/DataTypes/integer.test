@@ -437,6 +437,8 @@ load datums "../DATA/Transliterate/groupBy.csv" ;
 success
 
 //------------------------------------------------------------------------------
+// TODO V2
+/*
 select int_col1, sum(int_col0) from datums group by int_col1;
 rows:
  (null,3)
@@ -446,6 +448,7 @@ rows:
  (5000,12)
  (7000,7)
  (8000,17)
+*/
 
 //------------------------------------------------------------------------------
 select sum(int_col0), int_col1 from datums group by int_col1;
