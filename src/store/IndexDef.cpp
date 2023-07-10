@@ -265,7 +265,7 @@ void IndexDef::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_INDEXDEF, _FOOTER_);
 
-  vListContents(0);
+  vListContents(i_Tab);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -342,19 +342,19 @@ void IndexDef::vKeyKind(eKE eKeyKind)
 /*----------------------------------------------------------------------------*/
 /* list contents                                                              */
 /*----------------------------------------------------------------------------*/
-void IndexDef::vListContents(i8 i_Depth)
+void IndexDef::vListContents(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEF,_FOOTER_);
   
   vTrace("%sIndexDef %s %s\n"_Stz,
-         Stz::szTab(i_Depth),
+         Stz::szTab(i_Tab),
          m_sIndexNm.szStz(),
          m_bHasDescending ? "HasDescending" : "NoDescending");
 
   for (i8 i_Col = 0; i_Col < m_nColumns; i_Col++) {
     Column* pColumn = pGetColumn(i_Col);
 
-    pColumn->vListContents(i_Depth+1);
+    pColumn->vListContents(i_Tab + 1);
   }
 }
 

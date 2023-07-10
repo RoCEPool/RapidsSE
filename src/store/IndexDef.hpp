@@ -69,7 +69,7 @@ namespace STORE
     void   vIsUnique(bool bUnique);
     eKE    eKeyKind(void);
     void   vKeyKind(eKE eKeyKind);
-    void   vListContents(i8 i_Depth);
+    void   vListContents(i8 i_Tab);
     Location* pLocation(void);
     void   vPrint(void);
     void   vSetColSet(i8 iColumnNo, i8 iColumnSet);
