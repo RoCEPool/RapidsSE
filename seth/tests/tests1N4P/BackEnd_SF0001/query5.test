@@ -208,8 +208,7 @@ success
 
 //------------------------------------------------------------------------------
 // OPTIMIZED Q5_v2
-// Pushed predicates up in the /optimise_passthru 
-pipeline
+// Pushed predicates up in the /optimise_passthru
 //------------------------------------------------------------------------------
 
 /optimise_passthru 
