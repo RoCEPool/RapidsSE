@@ -50,7 +50,10 @@ namespace STORE
     bool bIsIndexColumn(void);      // $In
     bool bIsKeyOrdinal(void);       // $Kn
     bool bIsName(void);             //
+    bool bIsNumber(void);           //
+    bool bIsNumbOp(void);           //
     bool bIsParameterOrdinal(void); // %n
+    bool bIsParenthesis(void);      // ( or )
     bool bIsRelnOp(void);           // <, <=, ... >
     bool bIsStreamOrdinal(void);    // $n
     bool bIsSubQueryOp(void);       // exists, in, notExists, notIn

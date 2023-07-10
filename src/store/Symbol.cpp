@@ -391,6 +391,34 @@ bool Symbol::bIsName(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a number?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsNumber(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (StrLib::bIsDecimal(m_sSymbol.azChar()))  return true;
+  if (StrLib::bIsFloat(m_sSymbol.azChar()))    return true;
+  if (StrLib::bIsInteger(m_sSymbol.azChar()))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a numeric operator ?                                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsNumbOp(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (m_sSymbol.bSame("+"_Stz))     return true;
+  if (m_sSymbol.bSame("-"_Stz))     return true;
+  if (m_sSymbol.bSame("*"_Stz))     return true;
+  if (m_sSymbol.bSame("/"_Stz))     return true;
+
+  return false;
+}
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsParameterOrdinal(void)
@@ -408,6 +436,19 @@ bool Symbol::bIsParameterOrdinal(void)
   else
     return false;
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a parenthesis?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsParenthesis(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (m_sSymbol.bSame("("_Stz))     return true;
+  if (m_sSymbol.bSame(")"_Stz))     return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -772,7 +813,10 @@ Stz* Symbol::szWhatIs(void)
   if (bIsComma())            return "Comma"_Stz;
   if (bIsIndexColumn())      return "IndexColumn"_Stz;
   if (bIsKeyOrdinal())       return "KeyOrdinal"_Stz;
+  if (bIsNumber())           return "Number"_Stz;
+  if (bIsNumbOp())           return "NumbOp"_Stz;
   if (bIsParameterOrdinal()) return "ParameterOrdinal"_Stz;
+  if (bIsParenthesis())      return "Parenthesis"_Stz;
   if (bIsRelnOp())           return "RelnOp"_Stz;
   if (bIsName())             return "Name"_Stz;
   if (bIsStreamOrdinal())    return "StreamOrdinal"_Stz;
