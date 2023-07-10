@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_74_H_A_NC_ro, CN_XF_ADD_LEVEL)
-__aNewFunction(XF_Flatten_74_H_A_NC_ro, CN_XF_ADD_LEVEL)
-__vDeleteFunction(XF_Flatten_74_H_A_NC_ro, CN_XF_ADD_LEVEL)
+__pCastFunction(STORE, XF_Flatten_74_H_A_NC_ro, CN_XF_FLATTEN_74_H_A_NC_RO)
+__aNewFunction(XF_Flatten_74_H_A_NC_ro, CN_XF_FLATTEN_74_H_A_NC_RO)
+__vDeleteFunction(XF_Flatten_74_H_A_NC_ro, CN_XF_FLATTEN_74_H_A_NC_RO)
 __aFooterFunction(XF_Flatten_74_H_A_NC_ro)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_74_H_A_NC_ro)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_74_H_A_NC_ro::XF_Flatten_74_H_A_NC_ro(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_74_H_A_NC_RO, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ADD_LEVEL);
+  _checkInitialised_(CN_XF_FLATTEN_74_H_A_NC_RO);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_74_H_A_NC_ro::XF_Flatten_74_H_A_NC_ro(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_74_H_A_NC_ro::~XF_Flatten_74_H_A_NC_ro(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_74_H_A_NC_RO, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
 

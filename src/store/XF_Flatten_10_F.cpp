@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_Flatten_10_F.cpp -- Add Level                                              */
+/* XF_Flatten_10_F.cpp -- Flatten                                             */
 /*============================================================================*/
 
 #include "XF_Flatten_10_F.hpp"
@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_10_F, CN_XF_ADD_LEVEL)
-__aNewFunction(XF_Flatten_10_F, CN_XF_ADD_LEVEL)
-__vDeleteFunction(XF_Flatten_10_F, CN_XF_ADD_LEVEL)
+__pCastFunction(STORE, XF_Flatten_10_F, CN_XF_FLATTEN_10_F)
+__aNewFunction(XF_Flatten_10_F, CN_XF_FLATTEN_10_F)
+__vDeleteFunction(XF_Flatten_10_F, CN_XF_FLATTEN_10_F)
 __aFooterFunction(XF_Flatten_10_F)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_10_F)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_10_F::XF_Flatten_10_F(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_10_F, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ADD_LEVEL);
+  _checkInitialised_(CN_XF_FLATTEN_10_F);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_10_F::XF_Flatten_10_F(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_10_F::~XF_Flatten_10_F(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_10_F::vXF_Flatten_10_F(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_10_F, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
 

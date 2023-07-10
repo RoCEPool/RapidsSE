@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_53_W_L_NC_NI_join, CN_XF_ADD_LEVEL)
-__aNewFunction(XF_Flatten_53_W_L_NC_NI_join, CN_XF_ADD_LEVEL)
-__vDeleteFunction(XF_Flatten_53_W_L_NC_NI_join, CN_XF_ADD_LEVEL)
+__pCastFunction(STORE, XF_Flatten_53_W_L_NC_NI_join, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN)
+__aNewFunction(XF_Flatten_53_W_L_NC_NI_join, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN)
+__vDeleteFunction(XF_Flatten_53_W_L_NC_NI_join, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN)
 __aFooterFunction(XF_Flatten_53_W_L_NC_NI_join)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_53_W_L_NC_NI_join)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_53_W_L_NC_NI_join::XF_Flatten_53_W_L_NC_NI_join(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ADD_LEVEL);
+  _checkInitialised_(CN_XF_FLATTEN_53_W_L_NC_NI_JOIN);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_53_W_L_NC_NI_join::XF_Flatten_53_W_L_NC_NI_join(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_53_W_L_NC_NI_join::~XF_Flatten_53_W_L_NC_NI_join(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_53_W_L_NC_NI_JOIN, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
 

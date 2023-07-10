@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Flatten_52_W_L_NC_I_exists, CN_XF_ADD_LEVEL)
-__aNewFunction(XF_Flatten_52_W_L_NC_I_exists, CN_XF_ADD_LEVEL)
-__vDeleteFunction(XF_Flatten_52_W_L_NC_I_exists, CN_XF_ADD_LEVEL)
+__pCastFunction(STORE, XF_Flatten_52_W_L_NC_I_exists, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS)
+__aNewFunction(XF_Flatten_52_W_L_NC_I_exists, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS)
+__vDeleteFunction(XF_Flatten_52_W_L_NC_I_exists, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS)
 __aFooterFunction(XF_Flatten_52_W_L_NC_I_exists)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Flatten_52_W_L_NC_I_exists)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Flatten_52_W_L_NC_I_exists::XF_Flatten_52_W_L_NC_I_exists(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ADD_LEVEL);
+  _checkInitialised_(CN_XF_FLATTEN_52_W_L_NC_I_EXISTS);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Flatten_52_W_L_NC_I_exists::XF_Flatten_52_W_L_NC_I_exists(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Flatten_52_W_L_NC_I_exists::~XF_Flatten_52_W_L_NC_I_exists(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Flatten_52_W_L_NC_I_exists::vXF_Flatten_52_W_L_NC_I_exists(CardIter* pCI
 /*----------------------------------------------------------------------------*/
 void XF_Flatten_52_W_L_NC_I_exists::vXF_Flatten_52_W_L_NC_I_exists(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN_52_W_L_NC_I_EXISTS, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_NONE, "add level to op"_Stz);
 
