@@ -3,44 +3,32 @@
 /*============================================================================*/
 
 _nation
-create index IxN_NATIONKEY on nation (n_nationkey);
-load nation "../DATA/TPCH/nation.tbl";
+/time load nation   "<tpch_dir>/nation.<suffix>";
 
-_region
-create index IxR_REGIONKEY on Region (R_REGIONKEY);
-create index IxR_NAME on Region (R_NAME);
-load Region "../DATA/TPCH/region.tbl";
-
-/glean_interactive
-/optimise_passthru
+/weaver2
 /pipeline_def
 /weaved
-pipeline _unnamed_
+/optimise_passthru
+pipeline unamed
 begin
-
   stage S00 on origin :
-     start
-   | pulse     once
-   | next
-
+    start
+    | pulse once
+    | next
   stage S01 on all partitions :
-     scan      Nation
-   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-   | dynamic
-   | next
-
+    scan rapidsse public Nation
+    | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
+    | combined 0
+    | next
   stage S02 on all partitions :
-     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
-   | dynamic
-   | next
-
-  stage S04 on origin :
-     output
-   | sink
-   | first
-
+    top "type INTEGER $1" 3
+    | combined 0
+    | next
+  stage S03 on origin :
+    output
+    | sink
+    | first
 end ;
-
 
 /*============================================================================*/
 /* end                                                                        */
