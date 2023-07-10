@@ -2,7 +2,12 @@
 /* _ray1                                                                      */
 /*============================================================================*/
 
-// NOTE: the expr in S02 for gbyAgg has $1 $1 :
+// NOTE: the expr in S02 for gbyAgg has expr as :
+                  type INTEGER as COL1 $1 $1 sum
+                  , type INTEGER as COL2 $2
+
+    Note the $1 $1
+
 /*
 ArgDef: [0] expr  groupBy
                     type INTEGER as COL2 $2
