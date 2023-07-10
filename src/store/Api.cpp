@@ -52,6 +52,9 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
   // Note that the szCommand being passed in may contain multiple statements to
   // be executed. e.g. "lstbl; SELECT * FROM t1; DROP TABLE t1;".
   // A separate task will be created for each statement.
+  // Similarly, one single command might be implemented as multiple separate
+  // commands. e.g. "run _myfile.sql;". This outer run command is replaced with
+  // the specific inner commands that are actually executed.
   //
   // The purpose of this API is to:
   //   (1) Provide command translation;

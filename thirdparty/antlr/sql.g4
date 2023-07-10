@@ -34,6 +34,8 @@ statementChoice   :   queryStatement
                     | trackmemory
                     | memoryleaks
                     | bpa
+                    | run
+                    | noop
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
@@ -185,6 +187,8 @@ sztbl             : SZTBL tableName ;
 trackmemory       : TRACKMEMORY ;
 memoryleaks       : MEMORYLEAKS ;
 bpa               : BPA type=(REGIONS | OBJECTS);
+run               : RUN (identifier | stringLiteral) ;
+noop              : NOOP ;
 
 // table/column definition ------------------------------------------------------------
 
@@ -521,11 +525,11 @@ nonReservedWord   :
                   | KEY
                   | LIMIT | LOAD | LOOP | LSIDX | LSTBL
                   | MEMORYLEAKS | MINUTES | MONOTONIC | MONTHS
-                  | NODE | NOW
+                  | NODE | NOOP | NOW
                   | OBJECTS | OFFSET
                   | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE | REGIONS | REPLICATED | ROWSIZE
+                  | REFERENCE | REGIONS | REPLICATED | ROWSIZE | RUN
                   | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
@@ -644,6 +648,7 @@ MONTHS                : M O N T H S;
 NATURAL               : N A T U R A L;
 NO                    : N O;
 NODE                  : N O D E;
+NOOP                  : N O O P;
 NOT                   : N O T;
 NOW                   : N O W;
 SQL_NULL              : N U L L;
@@ -671,6 +676,7 @@ REPLICATED            : R E P L I C A T E D;
 RIGHT                 : R I G H T;
 ROW                   : R O W;
 ROWSIZE               : R O W S I Z E;
+RUN                   : R U N;
 SCHEMA                : S C H E M A;
 SECOND                : S E C O N D;
 SECONDS               : S E C O N D S;

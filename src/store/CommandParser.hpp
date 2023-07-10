@@ -38,6 +38,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     s48K      m_sCurStmtStr;
     Stz*      m_szProcName;
     TokenVec* m_pArgValues;
+    TaskList* m_pChildTasks;  // e.g. a "run" command is represented by a series of child tasks
 
     Footer m_xFooter;
 
@@ -80,6 +81,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     antlrcpp::Any visitSzidx(Parser::sqlParser::SzidxContext *pCtx)                       override;
     antlrcpp::Any visitSztbl(Parser::sqlParser::SztblContext *pCtx)                       override;
     antlrcpp::Any visitBpa(Parser::sqlParser::BpaContext *pCtx)                           override;
+    antlrcpp::Any visitRun(Parser::sqlParser::RunContext *pCtx)                           override;
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

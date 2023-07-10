@@ -108,6 +108,7 @@ enum eEC : u2 // error codes
   EC_EXPR_TYPE_INCOMPATIBLE,        // SQL Compiler Subsystem
 
   /* _F_ */
+  EC_FILE_TOO_LARGE,
   EC_FOLDER_IN_USE,
   EC_FOLDER_NOT_EMPTY,
 
@@ -161,6 +162,7 @@ enum eEC : u2 // error codes
   EC_INVALID_TOKEN,
   EC_INVALID_TYPES,
   EC_INVALID_VALUE,
+  EC_IO_ERROR,
 
   /* _J_ */
 
@@ -393,6 +395,7 @@ static Stz* aEC[] =
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",       // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_TOO_LARGE                */ (Stz*)"EC_FILE_TOO_LARGE",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"folder not empty",
 
@@ -446,6 +449,7 @@ static Stz* aEC[] =
   /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
+  /* EC_IO_ERROR                      */ (Stz*)"EC_IO_ERROR",
 
   /* _J_ */
 
@@ -671,6 +675,7 @@ static Stz* aEC2[] = // error code
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",         // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_TOO_LARGE                */ (Stz*)"EC_FILE_TOO_LARGE",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"EC_FOLDER_IN_USE",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"EC_FOLDER_NOT_EMPTY",
 
@@ -724,6 +729,7 @@ static Stz* aEC2[] = // error code
   /* EC_INVALID_TOKEN                 */ (Stz*)"EC_INVALID_TOKEN",
   /* EC_INVALID_TYPES                 */ (Stz*)"EC_INVALID_TYPES",
   /* EC_INVALID_VALUE                 */ (Stz*)"EC_INVALID_VALUE",
+  /* EC_IO_ERROR                      */ (Stz*)"EC_IO_ERROR",
 
   /* _J_ */
 
@@ -959,6 +965,7 @@ static Stz* aErrorMsg[] =
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"Incompatible expression types",                            // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_TOO_LARGE                */ (Stz*)"file size is too large",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"folder not empty",
 
@@ -1012,6 +1019,7 @@ static Stz* aErrorMsg[] =
   /* EC_INVALID_TOKEN                 */ (Stz*)"Invalid token",
   /* EC_INVALID_TYPES                 */ (Stz*)"Invalid types in arithmetic/logical/relational operation",
   /* EC_INVALID_VALUE                 */ (Stz*)"invalid value",
+  /* EC_IO_ERROR                      */ (Stz*)"I/O error",
 
   /* _J_ */
 

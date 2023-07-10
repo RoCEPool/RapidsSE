@@ -52,8 +52,9 @@ CommandParser::CommandParser(TagSet* pCommonTagSet, Task* pParentTask)
   // Information pertaining to the current statement
   m_pCurStmtTagSet = nullptr;
   // m_sCurStmtStr
-  m_szProcName = nullptr;
-  m_pArgValues = nullptr;
+  m_szProcName  = nullptr;
+  m_pArgValues  = nullptr;
+  m_pChildTasks = nullptr;
 
   _checkInitialised_(CN_COMMANDPARSER);
   
@@ -74,6 +75,7 @@ CommandParser::~CommandParser(void) noexcept
   ASSERT(!m_pCurStmtTagSet);
   ASSERT(!m_szProcName);
   delete m_pArgValues;
+  delete m_pChildTasks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +123,8 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand)
   TaskList* pTaskList = m_pTaskList;
   m_pTaskList = nullptr;
 
+  ASSERT(!m_pChildTasks);
+
   return pTaskList;
 }
 
@@ -165,47 +169,67 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
 
   visitChildren(pCtx);
 
+  JobId tParentId;
+  tParentId = m_pParentTask->pOuterJobOfTask()->tJobId();
+
   // Except for raw pipeline statements being specified, all commands should be resolvable
   // to a procedure or pipeline statement in the dictionary.
+  // Some commands are virtual and are replaced by their children. e.g. "run myfile.sql;"
+  // will be replaced by the commands found in myfile.sql.
   sSTMT sStmt;
   if (m_szProcName) {
+    ASSERT(!m_pChildTasks);
+
     m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, m_szProcName);
+    // TODO: raw pipeline specified?
 
     if (!Procedure::bTranslateToPipeline(m_szProcName, m_pArgValues, m_sCurStmtStr.szStz(), sStmt.pString())) {
       // All external commands should be resolvable.
       NEVER_REACH
     }
 
+    Task* pTask = Api::pCreateTask(sStmt.szStz(), m_pCurStmtTagSet, tParentId, m_sCurStmtStr.szStz());
+
+    // cleanup
+    delete m_pCurStmtTagSet;
+    m_pCurStmtTagSet = nullptr;
+    m_sCurStmtStr.vReset();
+    m_szProcName = nullptr;
+    delete m_pArgValues;
+    m_pArgValues = nullptr;
+
+    if (!pTask) {
+      i8 iLine = pCtx->start->getLine();
+      i8 iColumn = pCtx->start->getCharPositionInLine();
+      Parser::SyntaxException::vThrow(iLine, iColumn, EC_INVALID_COMMAND);
+    }
+
+    m_pTaskList->vGrabLock();
+    m_pTaskList->vAddTask(pTask);
+    m_pTaskList->vDropLock();
+
+    return nullptr;
+
+  } else if (m_pChildTasks) {
+    ASSERT(m_pChildTasks->nTasks() > 0);
+
+    m_pChildTasks->vGrabLock();
+    m_pTaskList->vGrabLock();
+
+    Task* pTask;
+    while ( (pTask = m_pChildTasks->pPopTask()) != nullptr) {
+      m_pTaskList->vAddTask(pTask);
+    }
+
+    m_pTaskList->vDropLock();
+    m_pChildTasks->vDropLock();
+
+    delete m_pChildTasks;
+    return nullptr;
+
   } else {
-    // TODO: raw pipeline specified?
-    sStmt.vCopy(m_sCurStmtStr);
-    m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, "pipeline"_Stz);
+    NEVER_REACH
   }
-
-  JobId tParentId;
-  tParentId = m_pParentTask->pOuterJobOfTask()->tJobId();
-
-  Task* pTask = Api::pCreateTask(sStmt.szStz(), m_pCurStmtTagSet, tParentId, m_sCurStmtStr.szStz());
-
-  // cleanup
-  delete m_pCurStmtTagSet;
-  m_pCurStmtTagSet = nullptr;
-  m_sCurStmtStr.vReset();
-  m_szProcName = nullptr;
-  delete m_pArgValues;
-  m_pArgValues = nullptr;
-
-  if (!pTask) {
-    i8 iLine = pCtx->start->getLine();
-    i8 iColumn = pCtx->start->getCharPositionInLine();
-    Parser::SyntaxException::vThrow(iLine, iColumn, EC_INVALID_COMMAND);
-  }
-
-  m_pTaskList->vGrabLock();
-  m_pTaskList->vAddTask(pTask);
-  m_pTaskList->vDropLock();
-
-  return nullptr;
 }
 
 
@@ -244,6 +268,8 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return nullptr; }
   else if (pCtx->memoryleaks())   { m_szProcName = "memoryleaks"_Stz;     return nullptr; }
   else if (pCtx->bpa())           { m_szProcName = "bpa"_Stz;             return visitChildren(pCtx); }
+  else if (pCtx->run())           { m_szProcName = nullptr;               return visitChildren(pCtx); }
+  else if (pCtx->noop())          { m_szProcName = "noop"_Stz;            return nullptr; }
 
   else                            { NOT_IMPLEMENTED_YET }
 
@@ -657,6 +683,102 @@ antlrcpp::Any CommandParser::visitBpa(Parser::sqlParser::BpaContext *pCtx)
   }
 
   m_pArgValues->vAppendToken(szAnalysisType, TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Parse a RUN statement                                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitRun(Parser::sqlParser::RunContext *pCtx)
+{
+  s256 sFilePath;
+  if (pCtx->identifier()) {
+    vCleanString(pCtx->identifier(), sFilePath);
+  } else {
+    ASSERT(pCtx->stringLiteral());
+    vCleanString(pCtx->stringLiteral(), sFilePath);
+  }
+
+  // Handle an empty path
+  if (sFilePath.bIsEmpty()) {
+    Parser::SemanticException::vThrow(EC_INVALID_VALUE,
+                                      ": file path cannot be an empty string"_Stz);
+  }
+
+  // Validate that the file exists
+  if (!File::bExists(sFilePath.szStz(), false)) {
+    Parser::SemanticException::vThrow(EC_NO_SUCH_FILE,
+                                      ": %s"_Stz,
+                                      sFilePath.szStz());
+  }
+
+  // Validate that the size of the file is < max length of string
+  s48K sFileContents;
+  i8 iFileSize = File::nSize(sFilePath.szStz());
+  if (iFileSize >= sFileContents.nSize()) {
+    Parser::SemanticException::vThrow(EC_FILE_TOO_LARGE,
+                                      ": File size (%lld) is too large for buffer (%lld) for file %s"_Stz,
+                                      iFileSize,
+                                      sFileContents.nSize(),
+                                      sFilePath.szStz());
+  }
+
+  // Read the file contents
+  File* pFile = new File(this);
+  bool bResult;
+
+  bResult = pFile->bOpenRead(sFilePath.szStz());
+  if (!bResult) {
+    delete pFile;
+    Parser::SemanticException::vThrow(EC_IO_ERROR,
+                                      ": Unable to open file: %s"_Stz,
+                                      sFilePath.szStz());
+  }
+
+  i8 iBytesRead = pFile->nReadFile(sFileContents);
+  if (iBytesRead <= 0) {
+    delete pFile;
+    Parser::SemanticException::vThrow(EC_IO_ERROR,
+                                      ": Read %lld bytes from file: %s"_Stz,
+                                      iBytesRead,
+                                      sFilePath.szStz());
+  }
+
+  delete pFile;
+  pFile = nullptr;
+
+  // Parse the file contents.
+  // Create a new parser using the current statement's tag set as the base.
+  ASSERT(!m_pChildTasks);
+  ASSERT(sFileContents.nLength() > 0);
+
+  CommandParser* nestedParser = new CommandParser(m_pCurStmtTagSet, m_pParentTask);
+
+  try {
+    m_pChildTasks = nestedParser->pParseCommand(sFileContents.szStz());
+
+  } catch (Parser::SyntaxException& e) {
+    delete nestedParser;
+    throw e;
+
+  } catch (Parser::SemanticException& e) {
+    delete nestedParser;
+    throw e;
+  }
+
+  delete nestedParser;
+
+  // Check for no commands. If so, substitute an empty command instead
+  ASSERT(m_pChildTasks);
+  if (m_pChildTasks->nTasks() == 0) {
+    delete m_pChildTasks;
+    m_pChildTasks = nullptr;
+
+    // Nulling the m_pChildTasks and setting this procname will insert a noop
+    // into the current task list.
+    m_szProcName = "noop"_Stz;
+  }
 
   return nullptr; // No need to visit any further down the tree
 }

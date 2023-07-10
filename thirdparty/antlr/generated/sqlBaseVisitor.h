@@ -241,6 +241,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitRun(sqlParser::RunContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNoop(sqlParser::NoopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }
