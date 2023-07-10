@@ -156,6 +156,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR ...                                         */
+/*----------------------------------------------------------------------------*/
+: sink_InternalError \handler
+
+  //"Operand:- EV_M_INTERNALERROR" .verbose
+
+  // check if sink has seen low memory
+  [pipeline].internalError@ if
+    PipeIn[].delete
+  else
+    // mark pipeline as running low on memory
+    true [pipeline].internalError!
+    PipeIn[].pipeOut
+  then
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* handler for EV_M_LOWMEMORY ...                                             */
 /*----------------------------------------------------------------------------*/
 : sink_LowMemory \handler
@@ -242,6 +262,7 @@
   find: sink_ErrorMarker     EV_M_ERROR      [op].handler!
   find: sink_ErroringMarker  EV_M_ERRORING   [op].handler!
   find: sink_Exiting         EV_M_EXITING    [op].handler!
+  find: sink_InternalError   EV_M_INTERNALERROR  [op].handler!
   find: sink_LeaveMarker     EV_M_LEAVE      [op].handler!
   find: sink_LeavingMarker   EV_M_LEAVING    [op].handler!
   find: sink_LowMemory       EV_M_LOWMEMORY  [op].handler!

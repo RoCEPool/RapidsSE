@@ -48,6 +48,17 @@
 
   true
 ;
+/*----------------------------------------------------------------------------*/
+/* handler for EV_M_INTERNALERROR operand                                     */
+/*----------------------------------------------------------------------------*/
+: execOnEnd_internalError \handler
+
+  "EV_M_INTERNALERROR_handler" .verbose
+
+  PipeIn[].pipeToOutput
+
+  true
+;
 
 /*----------------------------------------------------------------------------*/
 /* handler for EV_M_LOWMEMORY operand                                         */
@@ -76,6 +87,7 @@
 
   find: execOnEnd_EndMarker     EV_M_END           [op].handler!
 
+  find: execOnEnd_InternalError EV_M_INTERNALERROR [op].handler!
   find: execOnEnd_LowMemory     EV_M_LOWMEMORY     [op].handler!
   find: execOnEnd_ChildExit     EV_X_CHILDEXIT     [op].handler!
 

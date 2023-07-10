@@ -168,8 +168,9 @@ void Engine::vPreliminary(void)
      vTrace("Setting signal handlers...\n"_Stz);
   
   // Segmentation Violation
-  signal(SIGSEGV, Engine::vSignalHandler);
-  
+  //signal(SIGSEGV, Engine::vSignalHandler);
+
+  vRegisterSignalHandler();
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
      vTrace("Init H/W counters...\n"_Stz);
@@ -1666,6 +1667,7 @@ void Engine::vSanityCheck(void)
 /*----------------------------------------------------------------------------*/
 /* signal handler                                                             */
 /*----------------------------------------------------------------------------*/
+/*
 void Engine::vSignalHandler(int iSignal)
 {
   vTrace("Engine::vSignalHandler:\n"
@@ -1691,6 +1693,89 @@ void Engine::vSignalHandler(int iSignal)
   
   vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
          "Error: signal %d:\n"_Stz, iSignal);
+}
+*/
+
+
+void Engine::vSignalHandler(int iSignal)
+{
+  vRegisterSignalHandler();
+
+
+  vTrace("Engine::vSignalHandler:\n"
+         "  Node = %s\n"
+         "  iSignal = %lld\n"_Stz
+
+      ,AM::pGrid()->pThisNode()->szNodeNm()->azChar()
+      ,(i8)iSignal
+  );
+
+  Stz *szWordNm = (Stz *) PsxThd::pTlsGet(giTLS_HandlerKey);
+  vTrace("  last known handler = %s\n"_Stz, szWordNm);
+
+  Stz *szStepNm = (Stz *) PsxThd::pTlsGet(giTLS_StepKey);
+  vTrace("  last known step = %s\n"_Stz, szStepNm);
+
+
+  // print out all the frames to stderr
+  //vThreadCallStackDump();
+
+
+  switch(iSignal)
+  {
+    case SIGABRT:
+      vTrace("Caught SIGABRT: usually caused by an abort() or assert()\n"_Stz);
+      THROW_INTERNALERROR();
+      break;
+    case SIGFPE:
+      vTrace("Caught SIGFPE: arithmetic exception, such as divide by zero or overflow\n"_Stz);
+      THROW_INTERNALERROR();
+      break;
+    case SIGILL:
+      fputs("Caught SIGILL: illegal instruction, corruption in the code or to an attempt to execute data\n", stdout);
+      THROW_INTERNALERROR();
+      //siglongjmp (contextThread3, 1); // restore stack context
+      break;
+    case SIGINT:
+      vTrace("Caught SIGINT: interactive attention signal, probably a ctrl+c\n"_Stz);
+      break;
+    case SIGBUS:
+    case SIGSEGV:
+      vTrace("\nCaught SIGSEGV: segfault: Invalid access to storage\n"_Stz);
+      THROW_INTERNALERROR();
+      break;
+    case SIGUSR1:
+      vTrace("Caught SIGUSR1: \n"_Stz);
+      break;
+    case SIGUSR2:
+      vTrace("Caught SIGUSR1: \n"_Stz);
+      break;
+    case SIGCHLD:
+      vTrace("Caught SIGCHLD: \n"_Stz);
+      break;
+    case SIGTERM:
+    default:
+      vTrace("Caught SIGTERM: a termination request was sent to the program\n"_Stz);
+      break;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Register Signal Handler                                                    */
+/*----------------------------------------------------------------------------*/
+void Engine::vRegisterSignalHandler() {
+  struct sigaction sa ;
+  memset(&sa, 0, sizeof(sa));
+  sigemptyset(&sa.sa_mask);
+
+  sa.sa_handler = vSignalHandler;
+  sa.sa_flags = SA_RESETHAND;
+
+  sigaction(SIGSEGV, &sa, 0);
+  sigaction(SIGFPE, &sa, 0);
+  sigaction(SIGILL, &sa, 0);
+  sigaction(SIGBUS, &sa, 0);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -57,6 +57,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("[task].trace!"_Stz,         &Step::vTaskTraceStore);
   vAddStep("[task].thread@"_Stz,        &Step::vTaskThreadFetch);
   vAddStep("[task].transition!"_Stz,    &Step::vTaskTransitionStore);
+  vAddStep("[task].throwInternalError"_Stz, &Step::vTaskThrowInternalError);
   vAddStep("[task].throwLowMemory"_Stz, &Step::vTaskThrowLowMemory);
   vAddStep("[task].wait"_Stz,           &Step::vTaskWait);
   vAddStep("[task].yield"_Stz,          &Step::vTaskYield);
@@ -475,6 +476,18 @@ void Step::vTaskTransitionStore(void)
   RASSERT(bIsLocked());
   m_eTransition = eTransition;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [task].throwInternalError -- throw Internal error exception                */
+/*----------------------------------------------------------------------------*/
+void Step::vTaskThrowInternalError(void)
+{
+  ENTRY();
+
+  THROW_INTERNALERROR();
+
   EXIT();
 }
 

@@ -218,9 +218,12 @@ assert::stack_0
 "s" .verbose
 
   "OP_scan.sen"                 include
+  "OP_segViolation.sen"         include
   "OP_sendSE.sen"               include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
+  "OP_sigfpe.sen"               include
+  "OP_sigill.sen"               include
   "OP_sigsegv.sen"              include
   "OP_sink.sen"                 include
   "OP_sizeIndex.sen"            include

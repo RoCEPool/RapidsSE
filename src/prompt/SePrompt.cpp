@@ -284,6 +284,11 @@ void SePrompt::vPromptLoop(void)
       RASSERT(0);
       continue;
     }
+    catch (InternalError xInternalError) {
+      vTrace("error: Prompt got Internal Error exception\n"_Stz);
+      RASSERT(0);
+      continue;
+    }
 
   } // while
 }

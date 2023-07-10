@@ -261,6 +261,15 @@ void SeDeputy::vDeputyLoop(void)
       }
     }
 
+    catch (InternalError xInternalError) {
+      vTrace("got Internal Error\n"_Stz);
+      m_eError = EC_INTERNAL_ERROR;
+      if ( ! bPromptSignalled) {
+        m_pSePrompt->vMutexLock(this);
+        m_pSePrompt->vMutexSignalAndUnlock(this);
+      }
+    }
+
 #ifdef WITH_OOM_FAULTINJECTION
     PsxThd::vTlsSet(gbTLS_FaultInjection,(void*)false);
     PsxThd::vTlsSet(giTLS_FaultPoint,(void*)C_UNKNOWN);

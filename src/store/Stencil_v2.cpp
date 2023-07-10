@@ -77,6 +77,10 @@ Stencil_v2::Stencil_v2(void)
   catch (LowMemory xLowMemory) {
     throw xLowMemory;
   }
+  catch (InternalError xInternalError) {
+
+    throw xInternalError;
+  }
 
   _checkInitialised_(CN_STENCIL_V2);
   
