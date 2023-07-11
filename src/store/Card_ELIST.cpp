@@ -169,7 +169,7 @@ Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
       break;
     Card_Expr* p_expr = pGetExpr(i_Expr);
 //    if (p_expr->bIsOdn(pSymbol->szSymbol()))
-    if (p_expr->bOf(pSymbol))
+    if (p_expr->bExpressionOfSymbol(pSymbol))
       return p_expr;
   }
 

@@ -157,6 +157,7 @@ static Stz* P_Injected     = "bInjected"_Stz;
 static Stz* P_InjCrlKey    = "bInjCrlKey"_Stz;
 static Stz* P_Invalid      = "bInvalid"_Stz;
 static Stz* P_JoinedBuff   = "nJoinedBuff"_Stz;
+static Stz* P_Key          = "bKey"_Stz;
 static Stz* P_Level        = "eLevel"_Stz;
 static Stz* P_Network      = "nNetwork"_Stz;
 static Stz* P_Payload      = "bPayload"_Stz;

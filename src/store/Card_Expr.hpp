@@ -41,8 +41,8 @@ namespace STORE
     bool bIsDescending(void);
     bool bIsSoleCol(void);
     bool bIsExpressionOfKey(void);
+    bool bExpressionOfSymbol(Symbol* pSymbol);
     bool bHasTerm(Symbol* pSymbol);
-    bool bOf(Symbol* pSymbol);
     Card_Expr* pPropagate(void);
     void vReconstruct(Card_As*    p_as,
                       Card_Term*  p_term_0);

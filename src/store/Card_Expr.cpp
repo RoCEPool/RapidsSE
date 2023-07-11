@@ -414,7 +414,7 @@ bool Card_Expr::bIsSoleCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* is this an expression of a key                                             */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsExpressionOfKey(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -427,6 +427,24 @@ bool Card_Expr::bIsExpressionOfKey(void) {
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is this an expression of given symbol ?                                    */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
+
+  if (pSymbol_0->bSameAs(pSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does expression have term ?                                                */
+/*----------------------------------------------------------------------------*/
 bool Card_Expr::bHasTerm(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -440,21 +458,6 @@ bool Card_Expr::bHasTerm(Symbol* pSymbol)
     bHas = p_rpnCalc->bHasTerm(pSymbol);
 
   return bHas;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bOf(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
-
-  if (pSymbol_0->bSameAs(pSymbol))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
