@@ -223,9 +223,12 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
     if (! pCI->Analysis.m_pProjection_prior)
       return C_CONTINUE_RECURSION;
 
+    if (! p_term->pSymbol()->bIsColNm())
+      return C_CONTINUE_RECURSION;
+
     if (Card_Expr* p_expr_col =
         pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
-      p_expr_col->vDump();
+      //p_expr_col->vDump();
       p_term->pSymbol()->vSet(p_expr_col->pSymbol());
     }
 
@@ -234,10 +237,10 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (6 == i_Child()) {
-    vDump();
-    vDebugPoint();
-  }
+//  if (6 == i_Child()) {
+//    vDump();
+//    vDebugPoint();
+//  }
 
   vApply_lambdaFn_ToAll_term(pCI, bfLambdaFn);
 
@@ -264,7 +267,7 @@ void Card_OP::vConvert_rpnCalc_To_boolCalc(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
+void Card_OP:: vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -287,7 +290,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
   if (CK_WHERE   == pCI->G.e_MainCard)
     vDebugPoint();
 
-  if (CK_AGGREG  == pCI->G.e_MainCard) pCI->G.p_aggreg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
+       if (CK_AGGREG  == pCI->G.e_MainCard) pCI->G.p_aggreg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_FILTER  == pCI->G.e_MainCard) pCI->G.p_filter->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_GBYAGG  == pCI->G.e_MainCard) pCI->G.p_gbyAgg->vConvert_stmColOdn_terms_To_tblColOdn(pCI);
   else if (CK_PROJECT == pCI->G.e_MainCard) pCI->G.p_project->vConvert_stmColOdn_terms_To_tblColOdn(pCI);

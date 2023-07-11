@@ -302,6 +302,20 @@ bool Symbol::bIsBound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this a colun name?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsColNm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if ( StrLib::bIsSqlName(m_sSymbol.azChar()) &&
+       ( (! bIsAggOp()) && (! bIsBoolFn()) && (! bIsBound()) && (! bIsSubQueryOp()) ) )
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a table-column (i.e. $c.n)                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsColumnOrdinal(void)

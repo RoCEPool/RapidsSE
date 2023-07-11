@@ -45,6 +45,7 @@ namespace STORE
     bool bIsAggOp(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
     bool bIsBound(void);            // LBOUND, UBOUND
+    bool bIsColNm(void);            //
     bool bIsColumnOrdinal(void);    // $c.n
     bool bIsComma(void);            // ,
     bool bIsIndexColumn(void);      // $In

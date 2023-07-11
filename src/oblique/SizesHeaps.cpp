@@ -245,7 +245,7 @@
 #include "ParamsSpec.hpp"
 #include "Scope.hpp"
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 #include "XF_Flatten.hpp"
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
@@ -660,7 +660,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SMALLTRANSIENT,  sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
   { CN_SMALLVIRTUAL,    sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
   { CN_SMOOSH,          sizeof(Smoosh),             HT_T_TINY    , FILL },
-  { CN_SMOOTH,          sizeof(Smooth),             HT_T_TINY    , FILL },
+  { CN_SMOOTH,          sizeof(XF_Smooth),          HT_T_TINY    , FILL },
   { CN_SNBCD,           sizeof(SN_Bcd),             HT_INVALID   , FILL },
   { CN_SNBOL,           sizeof(SN_Bol),             HT_INVALID   , FILL },
   { CN_SNDTE,           sizeof(SN_Dte),             HT_INVALID   , FILL },

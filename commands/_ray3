@@ -15,7 +15,10 @@ load Region "../DATA/TPCH/region.tbl";
 CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 
+/glean_interactive
 /optimise_passthru
+/transliterated
+/pipeline_def
 pipeline __ray3
 begin
 
