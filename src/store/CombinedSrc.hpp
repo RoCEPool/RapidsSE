@@ -56,10 +56,11 @@ namespace STORE {
 
 
   private:
+    void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, i8 iKeyColumn);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile = nullptr);
     void vAppendCodeFragment(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, File* pCodeFile = nullptr);
     void vAppendCodeFragmentPL(OpSketch* pOpSketch, Stz* szFunction, Column* pColumn, i8 iPayLoad);
-    void vAppendCodeFragmentKey(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyType);
+    void vAppendCodeFragmentKEY(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile, i8 iKeyColumn);
     void vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
     void vAppendCodeInflateRightCols(OpSketch* pOpSketch, Stz* szReturnPrefix, File* pCodeFile = nullptr);
     void vAppendCodeInflateRowCols(OpSketch* pOpSketch, Stz* szFunction, File* pCodeFile);
