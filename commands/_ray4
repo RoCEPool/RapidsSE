@@ -8,11 +8,22 @@ tag default <suffix>   = "csv";
 
 load nation "../DATA/TPCH/nation.tbl";
 
+/*
+THIS WORKS
+
 /glean_interactive
 /weaved
 /transliterated
 /pipeline_def
 select count(*), n_regionkey from nation group by n_regionkey;
+*/
+
+
+/glean_interactive
+/weaved
+/transliterated
+/pipeline_def
+select n_regionkey, count(*) from nation group by n_regionkey;
 
 /*============================================================================*/
 /* end                                                                        */

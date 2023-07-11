@@ -1440,13 +1440,12 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
   s256 sColNm;
   i8 i_DupCtr = 1;
-  i8 iPayLoad = 0;
   i8 nColumns = pStreamDefOut->nColumns();
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     i8 i_ColMap = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Cell;
-    Column *pColumn = pStreamDefOut->pGetColumn(i_ColMap)-1;
+    Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the payload ?
@@ -1455,20 +1454,19 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
     if (bIsPayload) {
 
       // make the column name
-      vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_ColMap);
+      //vMakeColumnNmStruct(pStreamDefOut, sColNm, i_DupCtr, i_ColMap);
 
     switch (pColumn->eColumnType()) {
 
       case CT_VARCHAR:
       case CT_CHAR:
-        vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubVchCol"_Stz, pColumn, iPayLoad);
+        vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubVchCol"_Stz, pColumn, i_ColMap-1);
         break;
 
       default:
-        vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubCol"_Stz, pColumn, iPayLoad);
+        vAppendCodeFragmentPL(pOpSketch, "vPayLoadToTubCol"_Stz, pColumn, i_ColMap-1);
         break;
     }
-    iPayLoad++;
   }
 
     else {
