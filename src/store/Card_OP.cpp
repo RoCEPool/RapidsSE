@@ -1847,7 +1847,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap)
   ColsReq* pColMap = ppColMap? *ppColMap : nullptr;
 
   StreamDef* pStreamDef_emitted =
-      p_projection->pToStreamDef(pColMap, p_key, eCard());
+      p_projection->pToStreamDef(pColMap, p_key, eCard(), this);
 
   if (ppColMap)
     (*ppColMap)->vValidate();

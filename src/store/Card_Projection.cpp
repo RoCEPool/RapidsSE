@@ -401,7 +401,8 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
                                          Card_Key* p_key,
-                                         eCK eOP)
+                                         eCK eOP,
+                                         Card* p_OP)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -541,6 +542,13 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       bool bPayload = false;
       if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
+
+      vTrace("ColMap addCol: %lld %lld %s %s [%s]\n"_Stz,
+             i_DstCol,
+             i_SrcCol,
+             sColNm_mapped.szStz(),
+             bPayload ? "payload" : "key",
+             p_OP->szBearing());
 
       pColMap->vAddCol(i_DstCol, i_SrcCol, sColNm_mapped, bPayload);
     }

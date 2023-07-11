@@ -36,7 +36,8 @@ namespace STORE
 
     StreamDef* pToStreamDef(ColsReq* pColMap,
                             Card_Key* p_key,
-                            eCK eOP);
+                            eCK eOP,
+                            Card* p_OP);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

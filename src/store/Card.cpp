@@ -572,7 +572,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
     pGetChild(i_Sub)->vDump(iDepth + 1);
 
   if (0 == iDepth)
-    vTrace("$$\n\n"_Stz);
+    vTrace("$$\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
