@@ -412,7 +412,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
   s32 sColNm;
   s32 sColNm_mapped;
   eCT eColType;
-  Symbol* pSymbol;
+  //Symbol* pSymbol;
 
   i8 i_Cell = C_UNKNOWN;
 
@@ -450,18 +450,18 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
       p_expr->vDump();
 
-      if ((pSymbol = p_expr->pFirstKeyCol())) {
-        //vTrace("%s\n"_Stz, pSymbol->szSymbol());
+      if (Symbol* pSymbol_key = p_expr->pFirstKeyCol()) {
+        vTrace("%s\n"_Stz, pSymbol_key->szSymbol());
 
         i8 i_Child;
         Card_Expr* p_expr_key =
-          _pCard_Expr(p_key->pFindChild(CK_EXPR,pSymbol->szSymbol(),i_Child));
+          _pCard_Expr(p_key->pFindChild(CK_EXPR, pSymbol_key->szSymbol(), i_Child));
 
         Symbol* pSymbol_stm = p_expr_key->pFirstStmCol();
 
         i_Cell = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
         if (i_Cell) {
-          //vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_Cell);
+          vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_Cell);
 
 
           sNm_modified.vSprint("C%lld_COL%lld"_Stz,
@@ -472,12 +472,12 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       }
       else
       if (Symbol* pSymbol_stm = p_expr->pFirstStmCol()) {
-        //vTrace("%s\n"_Stz, pSymbol_stm->szSymbol());
+        vTrace("%s\n"_Stz, pSymbol_stm->szSymbol());
 
 
         i_Cell = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
         if (i_Cell) {
-          //vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_Cell);
+          vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_Cell);
 
 
           sNm_modified.vSprint("C%lld_COL%lld"_Stz,
