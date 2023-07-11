@@ -2,6 +2,7 @@
 /* _rayX : Code Synthesizer V2                                                */
 /*============================================================================*/
 
+
 // NOTE:
 _part
 _partSupp
@@ -19,8 +20,30 @@ load partsupp "../TPCH/SF_0001/partsupp.csv";
 /weaved
 /transliterated
 /pipeline_def
-select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand
-  order by p_brand, p_mfgr;
+select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand;
+
+//////////////////////////
+/*
+Ray I would like the column mapping for the above query to be in the colMap as follows:
+( It helps me to navigate the keys incrementing the size (strlen in case of VARCHAR),
+more easily. I would like to move from key 1 to key 2 to the payloads.)
+
+ColMap_gbyAgg  0x20486ffc0040
+
+               Col [0]: 2 1 key
+               Col [1]: 1 2 key
+               Col [2]: 3 1 payload
+
+instead of :
+
+ColMap_gbyAgg  0x20486ffc0040
+
+              Col [0]: 1 2 key
+              Col [1]: 2 1 key
+              Col [2]: 3 1 payload
+*/
+
+
 
 /*
 

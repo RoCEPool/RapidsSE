@@ -20,7 +20,7 @@
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
 bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
-                                String* sCode, Column* pColumn, i8 iPayLoadIndex)
+                                String* sCode, Column* pColumn, i8 iIndexColumn)
 {
   _static_
 
@@ -85,8 +85,8 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
         if (pColumn)
           vReplaceColumnName(sLine, pColumn);
 
-        if (iPayLoadIndex != C_UNKNOWN)
-          vReplacePayloadIndex(sLine, iPayLoadIndex);
+        if (iIndexColumn != C_UNKNOWN)
+          vReplaceIndexColumn(sLine, iIndexColumn);
 
         vReplaceStructTo(sLine, pOpSketch);
         vReplaceStructFrom(sLine, pOpSketch);
@@ -529,14 +529,14 @@ void CodeSynthUtils::vReplaceNumColumns(Stz* sLine, OpSketch* pOpSketch) {
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynthUtils::vReplacePayloadIndex(Stz* sLine, i8 iPayLoadIndex)
+void CodeSynthUtils::vReplaceIndexColumn(Stz* sLine, i8 iIndexColumn)
 {
   _static_
 
-  if (StrLib::bContains(sLine->azChar(), "__PAYLOAD_INDEX__")) {
-    s256 sPayLoadIndex;
-    StrLib::vSprint(sPayLoadIndex,"%lld"_Stz,iPayLoadIndex);
-    bool bResult = StrLib::bReplace(sLine->azChar(), "__PAYLOAD_INDEX__", sPayLoadIndex.azChar());
+  if (StrLib::bContains(sLine->azChar(), "__INDEX_COLUMN__")) {
+    s256 sIndexColumn;
+    StrLib::vSprint(sIndexColumn,"%lld"_Stz,iIndexColumn);
+    bool bResult = StrLib::bReplace(sLine->azChar(), "__INDEX_COLUMN__", sIndexColumn.azChar());
     RASSERT(bResult);
   }
 

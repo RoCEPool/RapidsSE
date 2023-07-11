@@ -900,7 +900,7 @@ void vTubRowStr(Dynamic_T* aDynamicT) {
 // function-vPayLoadToTubCol
 void vPayLoadToTubCol(Dynamic_T* aDynamicT) {
 
-  i8 __PAYLOAD_INDEX__;
+  i8 __INDEX_COLUMN__;
 
   struct __STRUCT_FROM__ {
     union Int_T __COLUMN_FROM__;
@@ -918,7 +918,7 @@ void vPayLoadToTubCol(Dynamic_T* aDynamicT) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // column __COLUMN_NO__
 
-    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
+    p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = aDynamicT->m_aiPayload[__INDEX_COLUMN__];
 
   // marker-end
 }
@@ -929,7 +929,7 @@ void vPayLoadToTubCol(Dynamic_T* aDynamicT) {
 // function-vPayLoadToTubVchCol
 void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 
-  i8 __PAYLOAD_INDEX__;
+  i8 __INDEX_COLUMN__;
   i8 nSrcSize;
 
   i8 iOffset;
@@ -954,7 +954,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // column __COLUMN_NO__
 
-   szSrcStz = (char*)(char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
+   szSrcStz = (char*)(char*)aDynamicT->m_aiPayload[__INDEX_COLUMN__];
    if (szSrcStz == (char*)C_DATUM_NULL) {
      // copy the source to the destination
      p__STRUCT_TO__->__COLUMN_TO__.m_iAsI8 = C_DATUM_NULL;
@@ -988,7 +988,7 @@ void vPayLoadToTubVchCol(Dynamic_T* aDynamicT) {
 // function-vPopulateIntPL
 void vPopulateIntPL(Dynamic_T* aDynamicT) {
 
-  i8 __PAYLOAD_INDEX__;
+  i8 __INDEX_COLUMN__;
   struct __STRUCT_FROM__ {
     union Int_T __COLUMN_FROM__;
   };
@@ -1004,7 +1004,7 @@ void vPopulateIntPL(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // column __COLUMN_NO__
 
-  aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
+  aDynamicT->m_aiPayload[__INDEX_COLUMN__] = p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
 
   // marker-end
 }
@@ -1015,7 +1015,7 @@ void vPopulateIntPL(Dynamic_T* aDynamicT) {
 // function-vPopulateVchPL
 void vPopulateVchPL(Dynamic_T* aDynamicT) {
 
-  i8 __PAYLOAD_INDEX__;
+  i8 __INDEX_COLUMN__;
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
   };
@@ -1033,16 +1033,16 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
 
   szSrcStz = (char*)p__STRUCT_FROM__->__COLUMN_FROM__.m_iAsI8;
   if ((i8)szSrcStz == C_DATUM_NULL) {
-    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = C_DATUM_NULL;
+    aDynamicT->m_aiPayload[__INDEX_COLUMN__] = C_DATUM_NULL;
   }
   else {
     nSrcSize = strlen(szSrcStz);
 #ifdef WITH_CLANG
-    aDynamicT->m_aiPayload[__PAYLOAD_INDEX__] = (i8)aExtern_IndexTreeAllotPayStr(
+    aDynamicT->m_aiPayload[__INDEX_COLUMN__] = (i8)aExtern_IndexTreeAllotPayStr(
         aDynamicT->m_xIndexInfoPL.m_aIndexTree, szSrcStz);
 #endif
 
-    szDstStz = (char*)aDynamicT->m_aiPayload[__PAYLOAD_INDEX__];
+    szDstStz = (char*)aDynamicT->m_aiPayload[__INDEX_COLUMN__];
     strncpy(szDstStz, szSrcStz, nSrcSize);
   }
   // marker-end
@@ -1119,7 +1119,7 @@ i8 iResetPLKey(Dynamic_T* aDynamicT) {
 // function-vEosLimit
 void vEosLimit(Dynamic_T* aDynamicT) {
 
-  i8 __LIMIT_ROWS__;
+  i8 __LIMIT_ROWS__ = 0;
   i8*   paW;
 
   // marker-start

@@ -10,7 +10,7 @@ namespace STORE {
   class CodeSynthUtils {
   public:
     static bool bExtract(File *pFile, OpSketch *pOpSketch,
-                           Stz *szFunMkr,String *sCode, Column *pColumn, i8 iPayLoadIndex);
+                           Stz *szFunMkr,String *sCode, Column *pColumn, i8 iIndexColumn);
 
     static bool bExtractInflate(File *pFile, Column* pColumn, Stz *sReturnToLabel,
                                 Stz *szFunMkr, String *sCode);
@@ -24,7 +24,7 @@ namespace STORE {
     static void vReplaceKeyKind(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceNumColumns(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceOperatorName(Stz *sLine, OpSketch *pOpSketch);
-    static void vReplacePayloadIndex(Stz *sLine, i8 iPayloadIndex);
+    static void vReplaceIndexColumn(Stz *sLine, i8 iIndexColumn);
     static void vReplacePayloadBytes(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceStructTo(Stz *sLine, OpSketch *pOpSketch);
     static void vReplaceStructFrom(Stz *sLine, OpSketch *pOpSketch);
