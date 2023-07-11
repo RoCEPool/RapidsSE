@@ -7,7 +7,7 @@ grammar sql ;
 }
 
 // statement / query -----------------------------------------------------------
-statements        :  statement+ ;
+statements        :  statement* ;
 statement         :  tags statementChoice ';' ;
 statementChoice   :   queryStatement
                     | explainStatement
@@ -34,7 +34,7 @@ statementChoice   :   queryStatement
                     | trackmemory
                     | memoryleaks
                     | bpa
-                    | run
+                    | file
                     | noop
                     ;
 
@@ -187,7 +187,7 @@ sztbl             : SZTBL tableName ;
 trackmemory       : TRACKMEMORY ;
 memoryleaks       : MEMORYLEAKS ;
 bpa               : BPA type=(REGIONS | OBJECTS);
-run               : RUN (identifier | stringLiteral) ;
+file              : FILE (identifier | stringLiteral) ;
 noop              : NOOP ;
 
 // table/column definition ------------------------------------------------------------
@@ -519,7 +519,7 @@ nonReservedWord   :
                   | CATALOG | CHARS | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
                   | ESCAPE_CHAR | EXPLAIN
-                  | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FORMAT
+                  | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX
                   | KEY
@@ -529,7 +529,7 @@ nonReservedWord   :
                   | OBJECTS | OFFSET
                   | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
-                  | REFERENCE | REGIONS | REPLICATED | ROWSIZE | RUN
+                  | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
@@ -602,6 +602,7 @@ EXTRACT               : E X T R A C T;
 SQL_FALSE             : F A L S E;
 FEDERATION            : F E D E R A T I O N;
 FIELD_DELIMITER       : F I E L D '_' D E L I M I T E R;
+FILE                  : F I L E;
 FLOAT                 : F L O A T;
 FOR                   : F O R;
 FORMAT                : F O R M A T;
@@ -676,7 +677,6 @@ REPLICATED            : R E P L I C A T E D;
 RIGHT                 : R I G H T;
 ROW                   : R O W;
 ROWSIZE               : R O W S I Z E;
-RUN                   : R U N;
 SCHEMA                : S C H E M A;
 SECOND                : S E C O N D;
 SECONDS               : S E C O N D S;
@@ -765,7 +765,7 @@ fragment DIGIT        : '0' .. '9' ;
 fragment DUBLSINGL    : '\'\'' ;
 fragment DUBLDUBL     : '""' ;
 
-PLAIN_IDENTIFIER      : LETTER (LETTER | DIGIT | '_')* ;
+PLAIN_IDENTIFIER      : '_'* LETTER (LETTER | DIGIT | '_')* ;
 BAKTIKD_IDENTIFIER    : '`' (~[`\r\n])+ '`';
 DUBLQUOTED_IDENTIFIER : { isDublQuoteId }?  ( '"' (DUBLDUBL | ~["\r\n])+ '"' );
 

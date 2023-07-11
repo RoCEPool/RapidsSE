@@ -68,12 +68,14 @@ CommandParser::~CommandParser(void) noexcept
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPARSER,_FOOTER_);
 
-  delete m_pCommonTagSet;
+  m_pCommonTagSet = nullptr; // not owned
   m_pParentTask = nullptr;
   delete m_pTaskList;
 
-  ASSERT(!m_pCurStmtTagSet);
-  ASSERT(!m_szProcName);
+  delete m_pCurStmtTagSet;
+  m_pCurStmtTagSet = nullptr;
+  m_szProcName = nullptr;
+
   delete m_pArgValues;
   delete m_pChildTasks;
 }
@@ -87,17 +89,27 @@ CommandParser::~CommandParser(void) noexcept
 /*----------------------------------------------------------------------------*/
 TaskList* CommandParser::pParseCommand(Stz* szCommand)
 {
+  // The thing that gets told of parsing errors.
+  Parser::ErrorListener errorListener;
+
   // We need to give the Lexer a CharStream, but that requires an STL-string...
   std::string sqlStr(szCommand->azChar());
   antlr4::ANTLRInputStream stream(sqlStr);
-  
+
   // Create the lexer and get the stream of tokens representing the input command.
   Parser::sqlLexer lexer(&stream);
+  lexer.removeErrorListeners();
+  lexer.addErrorListener(&errorListener);
+
+  // Tokenise the input stream
   antlr4::CommonTokenStream tokens(&lexer);
-  
-  // The thing that gets told of parsing errors.
-  Parser::ErrorListener errorListener;
-  
+
+  // Check for any syntax errors
+  if (errorListener.bGotError()) {
+    //vTrace("%s\n"_Stz, errorListener.szErrorMsg()->azChar());
+    Parser::SyntaxException::vThrowAntlr(errorListener.iLine(), errorListener.iColumn(), errorListener.szErrorMsg());
+  }
+
   // Create a parser from the stream of tokens.
   Parser::sqlParser parser(&tokens);
   
@@ -138,6 +150,12 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitStatements(Parser::sqlParser::StatementsContext *pCtx)
 {
+  if (pCtx->start == nullptr || pCtx->stop == nullptr) {
+    // Handle a file with no statements, just comments
+    m_sQueryStr.vReset();
+    return visitChildren(pCtx);
+  }
+
   // Save the whole query text which may contain multiple statements.
   antlr4::misc::Interval interval(pCtx->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
@@ -224,7 +242,15 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
     m_pTaskList->vDropLock();
     m_pChildTasks->vDropLock();
 
+    delete m_pCurStmtTagSet;
+    m_pCurStmtTagSet = nullptr;
+    m_sCurStmtStr.vReset();
+    m_szProcName = nullptr;
     delete m_pChildTasks;
+    m_pChildTasks = nullptr;
+    delete m_pArgValues;
+    m_pArgValues = nullptr;
+
     return nullptr;
 
   } else {
@@ -268,7 +294,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return nullptr; }
   else if (pCtx->memoryleaks())   { m_szProcName = "memoryleaks"_Stz;     return nullptr; }
   else if (pCtx->bpa())           { m_szProcName = "bpa"_Stz;             return visitChildren(pCtx); }
-  else if (pCtx->run())           { m_szProcName = nullptr;               return visitChildren(pCtx); }
+  else if (pCtx->file())          { m_szProcName = nullptr;               return visitChildren(pCtx); }
   else if (pCtx->noop())          { m_szProcName = "noop"_Stz;            return nullptr; }
 
   else                            { NOT_IMPLEMENTED_YET }
@@ -690,7 +716,7 @@ antlrcpp::Any CommandParser::visitBpa(Parser::sqlParser::BpaContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Parse a RUN statement                                                      */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitRun(Parser::sqlParser::RunContext *pCtx)
+antlrcpp::Any CommandParser::visitFile(Parser::sqlParser::FileContext *pCtx)
 {
   s256 sFilePath;
   if (pCtx->identifier()) {
@@ -716,11 +742,18 @@ antlrcpp::Any CommandParser::visitRun(Parser::sqlParser::RunContext *pCtx)
   // Validate that the size of the file is < max length of string
   s48K sFileContents;
   i8 iFileSize = File::nSize(sFilePath.szStz());
-  if (iFileSize >= sFileContents.nSize()) {
+  if (iFileSize >= sFileContents.nSpace()) {
     Parser::SemanticException::vThrow(EC_FILE_TOO_LARGE,
                                       ": File size (%lld) is too large for buffer (%lld) for file %s"_Stz,
                                       iFileSize,
                                       sFileContents.nSize(),
+                                      sFilePath.szStz());
+  }
+
+  // Validate that the file is not empty
+  if (iFileSize == 0) {
+    Parser::SemanticException::vThrow(EC_FILE_IS_EMPTY,
+                                      ": %s"_Stz,
                                       sFilePath.szStz());
   }
 
@@ -738,6 +771,7 @@ antlrcpp::Any CommandParser::visitRun(Parser::sqlParser::RunContext *pCtx)
 
   i8 iBytesRead = pFile->nReadFile(sFileContents);
   if (iBytesRead <= 0) {
+    pFile->vClose();
     delete pFile;
     Parser::SemanticException::vThrow(EC_IO_ERROR,
                                       ": Read %lld bytes from file: %s"_Stz,
@@ -745,6 +779,7 @@ antlrcpp::Any CommandParser::visitRun(Parser::sqlParser::RunContext *pCtx)
                                       sFilePath.szStz());
   }
 
+  pFile->vClose();
   delete pFile;
   pFile = nullptr;
 

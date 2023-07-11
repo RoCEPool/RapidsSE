@@ -50,6 +50,8 @@
   AM::MEMORY::isNotFreeing if
     AM::MEMORY::stopTracking
     memoryleaks_sendStreamDef   // so that the wireline protocol knows its an empty resultset
+    Marker[].newEosMarker
+    Marker[].pipeOut
     true
 //    traceOff
     exit
@@ -68,7 +70,7 @@
   12 to Counter0[]
 
   begin
-    numAttempts Counter0[] > jobs::numActive jobs::numThreshold >= and
+    Counter0[] numAttempts > jobs::numActive jobs::numThreshold >= and
   while
     numAttempts 1 + to numAttempts
     200 [task].sleepMsec
@@ -80,7 +82,7 @@
   12 to Counter0[]
 
   begin
-    numAttempts Counter0[] >
+    Counter0[] numAttempts >
   while
     numAttempts 1 + to numAttempts
 
@@ -90,6 +92,8 @@
     AM::MEMORY::hasMemoryLeaks not if
       AM::MEMORY::stopTracking
       memoryleaks_sendStreamDef   // so that the wireline protocol knows its an empty resultset
+      Marker[].newEosMarker
+      Marker[].pipeOut
       true
 //      traceOff
       exit

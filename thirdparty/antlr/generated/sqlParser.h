@@ -27,20 +27,20 @@ public:
     DETAIL = 67, DIGITS = 68, DISTINCT = 69, DLOAD = 70, DROP = 71, ELSE = 72, 
     END = 73, ESCAPE = 74, ESCAPE_CHAR = 75, EXCEPT = 76, EXISTS = 77, EXPLAIN = 78, 
     EXTRACT = 79, SQL_FALSE = 80, FEDERATION = 81, FIELD_DELIMITER = 82, 
-    FLOAT = 83, FOR = 84, FORMAT = 85, FULL = 86, FROM = 87, GROUP = 88, 
-    HASH = 89, HASHKEY = 90, HAVING = 91, HEAP = 92, HOUR = 93, HOURS = 94, 
-    IF = 95, IFNULL = 96, IN = 97, INDEX = 98, INNER = 99, INSERT = 100, 
-    INTEGER = 101, INTERSECT = 102, INTERVAL = 103, INTO = 104, IS = 105, 
-    JOIN = 106, KEY = 107, LEADING = 108, LEFT = 109, LIKE = 110, LIMIT = 111, 
-    LOAD = 112, LOOP = 113, LSCOL = 114, LSIDX = 115, LSIDXCOL = 116, LSTBL = 117, 
-    MAX = 118, MEMORYLEAKS = 119, MIN = 120, MINUTE = 121, MINUTES = 122, 
-    MONOTONIC = 123, MONTH = 124, MONTHS = 125, NATURAL = 126, NO = 127, 
-    NODE = 128, NOOP = 129, NOT = 130, NOW = 131, SQL_NULL = 132, NULLIF = 133, 
-    OBJECTS = 134, OFFSET = 135, ON = 136, OR = 137, ORDER = 138, OUTER = 139, 
-    OVER = 140, OVERLAY = 141, PARTITION = 142, PATHS = 143, PLACING = 144, 
-    POSITION = 145, PRETTY = 146, PRIMARY = 147, QUARTER = 148, QUARTERS = 149, 
-    RECURSIVE = 150, REFERENCE = 151, REGIONS = 152, REPLICATED = 153, RIGHT = 154, 
-    ROW = 155, ROWSIZE = 156, RUN = 157, SCHEMA = 158, SECOND = 159, SECONDS = 160, 
+    FILE = 83, FLOAT = 84, FOR = 85, FORMAT = 86, FULL = 87, FROM = 88, 
+    GROUP = 89, HASH = 90, HASHKEY = 91, HAVING = 92, HEAP = 93, HOUR = 94, 
+    HOURS = 95, IF = 96, IFNULL = 97, IN = 98, INDEX = 99, INNER = 100, 
+    INSERT = 101, INTEGER = 102, INTERSECT = 103, INTERVAL = 104, INTO = 105, 
+    IS = 106, JOIN = 107, KEY = 108, LEADING = 109, LEFT = 110, LIKE = 111, 
+    LIMIT = 112, LOAD = 113, LOOP = 114, LSCOL = 115, LSIDX = 116, LSIDXCOL = 117, 
+    LSTBL = 118, MAX = 119, MEMORYLEAKS = 120, MIN = 121, MINUTE = 122, 
+    MINUTES = 123, MONOTONIC = 124, MONTH = 125, MONTHS = 126, NATURAL = 127, 
+    NO = 128, NODE = 129, NOOP = 130, NOT = 131, NOW = 132, SQL_NULL = 133, 
+    NULLIF = 134, OBJECTS = 135, OFFSET = 136, ON = 137, OR = 138, ORDER = 139, 
+    OUTER = 140, OVER = 141, OVERLAY = 142, PARTITION = 143, PATHS = 144, 
+    PLACING = 145, POSITION = 146, PRETTY = 147, PRIMARY = 148, QUARTER = 149, 
+    QUARTERS = 150, RECURSIVE = 151, REFERENCE = 152, REGIONS = 153, REPLICATED = 154, 
+    RIGHT = 155, ROW = 156, ROWSIZE = 157, SCHEMA = 158, SECOND = 159, SECONDS = 160, 
     SELECT = 161, SEMI = 162, SET = 163, SKIPLIST = 164, SPACE = 165, STAGE = 166, 
     STATS = 167, STATISTICS = 168, STATUS = 169, SUBSTR = 170, SUBSTRING = 171, 
     SUM = 172, SZIDX = 173, SZTBL = 174, TABLE = 175, TABLESIZE = 176, TEXT = 177, 
@@ -70,7 +70,7 @@ public:
     RuleDropIndexQuery = 36, RuleTruncateQuery = 37, RuleLoad = 38, RuleDload = 39, 
     RuleLoadOption = 40, RuleLoadOptionKeys = 41, RuleCount = 42, RuleSpace = 43, 
     RuleStatus = 44, RuleSzidx = 45, RuleSztbl = 46, RuleTrackmemory = 47, 
-    RuleMemoryleaks = 48, RuleBpa = 49, RuleRun = 50, RuleNoop = 51, RuleTableDefinition = 52, 
+    RuleMemoryleaks = 48, RuleBpa = 49, RuleFile = 50, RuleNoop = 51, RuleTableDefinition = 52, 
     RuleTablePartitioning = 53, RuleColumnDefinition = 54, RuleColumnNameList = 55, 
     RuleIndexDefinition = 56, RuleIndexMethod = 57, RuleDataType = 58, RuleSqlDataType = 59, 
     RuleIntervalType = 60, RuleYearMonthIntervalType = 61, RuleDayTimeIntervalType = 62, 
@@ -156,7 +156,7 @@ public:
   class TrackmemoryContext;
   class MemoryleaksContext;
   class BpaContext;
-  class RunContext;
+  class FileContext;
   class NoopContext;
   class TableDefinitionContext;
   class TablePartitioningContext;
@@ -290,7 +290,7 @@ public:
     TrackmemoryContext *trackmemory();
     MemoryleaksContext *memoryleaks();
     BpaContext *bpa();
-    RunContext *run();
+    FileContext *file();
     NoopContext *noop();
 
 
@@ -1217,11 +1217,11 @@ public:
 
   BpaContext* bpa();
 
-  class  RunContext : public antlr4::ParserRuleContext {
+  class  FileContext : public antlr4::ParserRuleContext {
   public:
-    RunContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    FileContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *RUN();
+    antlr4::tree::TerminalNode *FILE();
     IdentifierContext *identifier();
     StringLiteralContext *stringLiteral();
 
@@ -1230,7 +1230,7 @@ public:
    
   };
 
-  RunContext* run();
+  FileContext* file();
 
   class  NoopContext : public antlr4::ParserRuleContext {
   public:
@@ -2929,6 +2929,7 @@ public:
     antlr4::tree::TerminalNode *SQL_FALSE();
     antlr4::tree::TerminalNode *FEDERATION();
     antlr4::tree::TerminalNode *FIELD_DELIMITER();
+    antlr4::tree::TerminalNode *FILE();
     antlr4::tree::TerminalNode *FORMAT();
     antlr4::tree::TerminalNode *HASH();
     antlr4::tree::TerminalNode *HASHKEY();
@@ -2960,7 +2961,6 @@ public:
     antlr4::tree::TerminalNode *REGIONS();
     antlr4::tree::TerminalNode *REPLICATED();
     antlr4::tree::TerminalNode *ROWSIZE();
-    antlr4::tree::TerminalNode *RUN();
     antlr4::tree::TerminalNode *SCHEMA();
     antlr4::tree::TerminalNode *SECONDS();
     antlr4::tree::TerminalNode *SKIPLIST();

@@ -103,12 +103,14 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
     pTaskList = pCommandParser->pParseCommand(szCommand);
 
   } catch (Parser::SyntaxException& e) {
+    delete pCommonTagSet;
     delete pCommandParser;
     eErrCode = e.eErrorCode();
     sErrStr.vCopy(e.szError());
     return nullptr;
 
   } catch (Parser::SemanticException& e) {
+    delete pCommonTagSet;
     delete pCommandParser;
     eErrCode = e.eErrorCode();
     sErrStr.vCopy(e.szError());
@@ -117,7 +119,7 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
 
   ASSERT(pTaskList);
   ASSERT(pTaskList->nTasks() > 0);
-  pCommonTagSet = nullptr; // Owned by CommandParser
+  delete pCommonTagSet;
   delete pCommandParser;
 
   // Do any final adjustments to each command's tag set.

@@ -368,9 +368,9 @@ void AdaptorWL::vStatementSubmitted()
 void AdaptorWL::vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg)
 {
   ASSERT(bCheckState( {QUERY_BEGUN} ));
-  Stz* szErrFmt= "Error: %s; %s: %s"_Stz;
+  Stz* szErrFmt= "Error: %s; %s"_Stz;
 
-  vSerialiseErrorResponse(eErrCode, szErrFmt, aEC2[eErrCode], aErrorMsg[eErrCode], szErrMsg);
+  vSerialiseErrorResponse(eErrCode, szErrFmt, aEC2[eErrCode], szErrMsg);
   ASSERT(!m_pStmtCtx);
 }
 
@@ -452,11 +452,10 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
   Stz* szErrorText = pInfoRow->szColVal_ofs(2);
 
-  Stz* szMsgFmt = "Error: %s; %s; %s"_Stz;
+  Stz* szMsgFmt = "Error: %s; %s"_Stz;
   vSerialiseErrorResponse(eErrorCode,
                           szMsgFmt,
                           szNodeName,
-                          aEC2[eErrorCode],
                           szErrorText);
 
   m_pStmtCtx->vGotError(true);
@@ -857,18 +856,21 @@ void AdaptorWL::vQueryComplete()
 {
   ASSERT(bCheckState( { QUERY_BEGUN,
                         API_CHILD_JOB_EXITED } ));
+  eState eLastState = m_eProtocolState;
   vNextState(QUERY_COMPLETED);
 
-  u8 uQueryEndNanos = Hardware::uReadClock();
-  double dQueryTime = (double) (uQueryEndNanos - m_oQueryCtx.uQueryStartNanos()) / C_1B;
+  if (eLastState != QUERY_BEGUN) {
+    u8 uQueryEndNanos = Hardware::uReadClock();
+    double dQueryTime = (double) (uQueryEndNanos - m_oQueryCtx.uQueryStartNanos()) / C_1B;
 
-  QueryExecuteResponse xResponse;
-  xResponse.executionTime = dQueryTime;
-  xResponse.numStatementsParsed    = m_oQueryCtx.nStmtParsed();
-  xResponse.numStatementsSucceeded = m_oQueryCtx.nStmtSucceeded();
-  xResponse.numStatementsFailed    = m_oQueryCtx.nStmtFailed();
+    QueryExecuteResponse xResponse;
+    xResponse.executionTime = dQueryTime;
+    xResponse.numStatementsParsed = m_oQueryCtx.nStmtParsed();
+    xResponse.numStatementsSucceeded = m_oQueryCtx.nStmtSucceeded();
+    xResponse.numStatementsFailed = m_oQueryCtx.nStmtFailed();
 
-  vSerialiseAndSendMsg(&xResponse, MessageTypes::type::QueryExecuteResponse);
+    vSerialiseAndSendMsg(&xResponse, MessageTypes::type::QueryExecuteResponse);
+  }
 
   // Doing this after changing the state to QUERY_COMPLETED will delete m_pCurrentMsg
   m_oQueryCtx.vReset();

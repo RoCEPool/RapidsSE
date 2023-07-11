@@ -132,7 +132,7 @@ public:
 
     virtual antlrcpp::Any visitBpa(sqlParser::BpaContext *context) = 0;
 
-    virtual antlrcpp::Any visitRun(sqlParser::RunContext *context) = 0;
+    virtual antlrcpp::Any visitFile(sqlParser::FileContext *context) = 0;
 
     virtual antlrcpp::Any visitNoop(sqlParser::NoopContext *context) = 0;
 

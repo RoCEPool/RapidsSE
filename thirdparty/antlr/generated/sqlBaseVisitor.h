@@ -241,7 +241,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitRun(sqlParser::RunContext *ctx) override {
+  virtual antlrcpp::Any visitFile(sqlParser::FileContext *ctx) override {
     return visitChildren(ctx);
   }
 

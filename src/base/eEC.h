@@ -108,6 +108,7 @@ enum eEC : u2 // error codes
   EC_EXPR_TYPE_INCOMPATIBLE,        // SQL Compiler Subsystem
 
   /* _F_ */
+  EC_FILE_IS_EMPTY,
   EC_FILE_TOO_LARGE,
   EC_FOLDER_IN_USE,
   EC_FOLDER_NOT_EMPTY,
@@ -395,6 +396,7 @@ static Stz* aEC[] =
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",       // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_IS_EMPTY                 */ (Stz*)"EC_FILE_IS_EMPTY",
   /* EC_FILE_TOO_LARGE                */ (Stz*)"EC_FILE_TOO_LARGE",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"folder not empty",
@@ -675,6 +677,7 @@ static Stz* aEC2[] = // error code
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"EC_EXPR_TYPE_INCOMPATIBLE",         // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_IS_EMPTY                 */ (Stz*)"EC_FILE_IS_EMPTY",
   /* EC_FILE_TOO_LARGE                */ (Stz*)"EC_FILE_TOO_LARGE",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"EC_FOLDER_IN_USE",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"EC_FOLDER_NOT_EMPTY",
@@ -965,6 +968,7 @@ static Stz* aErrorMsg[] =
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ (Stz*)"Incompatible expression types",                            // SQL Compiler Subsystem
 
   /* _F_ */
+  /* EC_FILE_IS_EMPTY                 */ (Stz*)"file is empty",
   /* EC_FILE_TOO_LARGE                */ (Stz*)"file size is too large",
   /* EC_FOLDER_IN_USE                 */ (Stz*)"folder in use",
   /* EC_FOLDER_NOT_EMPTY              */ (Stz*)"folder not empty",
