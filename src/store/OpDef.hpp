@@ -16,8 +16,9 @@ namespace STORE
               , public ListExo2_t<ArgDef>
   {
   public:
-    i8  m_i_Op;
-    s32 m_sOpNm;
+    i8   m_i_Op;
+    s32  m_sOpNm;
+    char md_Bearing[256];
 
     i8   m_nCollapses;
     bool m_bCollapsed;
@@ -48,8 +49,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    OpDef(void);
-    OpDef(i8 i_Op, Stz* szOpNm);
+    //OpDef(void);
+    OpDef(i8 i_Op, Stz* szOpNm, Stz* zzBearing=nullptr);
     ~OpDef(void) noexcept(false);
 
     i8      nArgs(void);

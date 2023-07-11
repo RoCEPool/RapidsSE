@@ -42,8 +42,8 @@ load datums "../DATA/Transliterate/groupBy.csv" ;
 /glean_interactive
 /weaved
 /transliterated
-/optimise_passthru
 /pipeline_def
+/optimise_passthru
 pipeline _unnamed_
  begin
 

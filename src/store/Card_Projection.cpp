@@ -447,7 +447,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       sColNm = sNm_modified;
       sColNm_mapped = sColNm;
 
-      //p_expr->vDump();
+      p_expr->vDump();
 
       if ((pSymbol = p_expr->pFirstKeyCol())) {
         //vTrace("%s\n"_Stz, pSymbol->szSymbol());
@@ -470,10 +470,9 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
         }
       }
       else
-      if ((pSymbol = p_expr->pSymbol())) {
-        //vTrace("%s\n"_Stz, pSymbol->szSymbol());
+      if (Symbol* pSymbol_stm = p_expr->pFirstStmCol()) {
+        //vTrace("%s\n"_Stz, pSymbol_stm->szSymbol());
 
-        Symbol* pSymbol_stm = p_expr->pFirstStmCol();
 
         i_SrcCol = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
         if (i_SrcCol) {

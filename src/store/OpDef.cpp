@@ -18,48 +18,52 @@ __aFooterFunction(OpDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDef::OpDef(void)
-    : Object(CN_OPDEF)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
-
-  m_i_Op = C_UNKNOWN;
-  m_nCollapses = 0;
-  m_bCollapsed = false;
-
-  m_pStreamDef_arriving = nullptr;
-  m_pStreamDef_emitted  = nullptr;
-
-  m_pIndex_indexScan    = nullptr;
-  m_pIndex_indexJoin    = nullptr;
-  m_pIndex_indexSemi    = nullptr;
-
-  m_pIndexDef_gbyAgg    = nullptr;
-  m_pColMap_gbyAgg      = nullptr;
-
-  m_pIndexDef_sort      = nullptr;
-  m_pColMap_sort        = nullptr;
-
-  m_pIndexDef_top       = nullptr;
-  m_pColMap_top         = nullptr;
-
-  m_pColsReq            = nullptr;
-
-  _checkInitialised_(CN_OPDEF);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
-}
+//OpDef::OpDef(void)
+//    : Object(CN_OPDEF)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
+//
+//  m_i_Op = C_UNKNOWN;
+//  m_nCollapses = 0;
+//  m_bCollapsed = false;
+//
+//  m_pStreamDef_arriving = nullptr;
+//  m_pStreamDef_emitted  = nullptr;
+//
+//  m_pIndex_indexScan    = nullptr;
+//  m_pIndex_indexJoin    = nullptr;
+//  m_pIndex_indexSemi    = nullptr;
+//
+//  m_pIndexDef_gbyAgg    = nullptr;
+//  m_pColMap_gbyAgg      = nullptr;
+//
+//  m_pIndexDef_sort      = nullptr;
+//  m_pColMap_sort        = nullptr;
+//
+//  m_pIndexDef_top       = nullptr;
+//  m_pColMap_top         = nullptr;
+//
+//  m_pColsReq            = nullptr;
+//
+//  _checkInitialised_(CN_OPDEF);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpDef::OpDef(i8 i_Op, Stz* szOpNm)
+OpDef::OpDef(i8 i_Op, Stz* szOpNm, Stz* szBearing)
     : Object(CN_OPDEF)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPDEF, _FOOTER_);
 
   vOp(i_Op);
   vOpNm(szOpNm);
+
+  MemLib::vZero(md_Bearing,sizeof(md_Bearing),CN_OPDEF);
+  if (szBearing)
+    StrLib::vCopy(md_Bearing,szBearing->azChar());
 
   m_nCollapses = 0;
   m_bCollapsed = false;
@@ -256,8 +260,8 @@ void OpDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
   i8 nTab_plus = 4;
-  vTrace("%sOpDef: [%lld] %s\n"_Stz,
-         Stz::szTab(i_Tab),m_i_Op,m_sOpNm.szStz());
+  vTrace("%sOpDef: [%lld] %s %s\n"_Stz,
+         Stz::szTab(i_Tab),m_i_Op,m_sOpNm.szStz(),md_Bearing);
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {
