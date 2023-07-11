@@ -11,20 +11,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Smoosh, CN_SMOOSH)
-__aNewFunction(XF_Smoosh, CN_SMOOSH)
-__vDeleteFunction(XF_Smoosh, CN_SMOOSH)
+__pCastFunction(STORE, XF_Smoosh, CN_XF_SMOOSH)
+__aNewFunction(XF_Smoosh, CN_XF_SMOOSH)
+__vDeleteFunction(XF_Smoosh, CN_XF_SMOOSH)
 __aFooterFunction(XF_Smoosh)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Smoosh::XF_Smoosh(void)
-: Object(CN_SMOOSH)
+: Object(CN_XF_SMOOSH)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ XF_Smoosh::XF_Smoosh(void)
 /*----------------------------------------------------------------------------*/
 XF_Smoosh::~XF_Smoosh(void) noexcept(false)
 {
-_precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
+_precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 }
 
 
@@ -45,7 +45,7 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 void XF_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 
 }
 
@@ -54,7 +54,7 @@ void XF_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 /*----------------------------------------------------------------------------*/
 void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 
   pCI->G_vRestart();
   RASSERT(pCI->G_bEachMain_foldBreak(CK_TABLE));

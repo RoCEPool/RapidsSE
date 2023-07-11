@@ -47,7 +47,7 @@ namespace STORE
 
     void vArgAbsJoin     (Stz* szOpArgs,  Card_AbsJoin*   pCard_AbsJoin);
     void vArgAggreg      (Stz* szOpArgs,  Card_Aggreg*    pCard_Aggreg);
-    void vArgCast        (Stz* szOpArgs, Card_Cast*      pCard_Next);
+    void vArgCast        (Stz* szOpArgs,  Card_Cast*      pCard_Next);
     void vArgCombined    (Stz* szOpArgs,  Card_Combined*  pCard_Combine);
     void vArgCrossJoin   (Stz* szOpArgs,  Card_CrossJoin* pCard_CrossJoin);
     void vArgFilter      (Stz* szOpArgs,  Card_Filter*    pCard_Filter);

@@ -408,17 +408,17 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
   StreamDef* pStreamDef = new StreamDef;
 
-  i8 i_DstCol = 1;
+  i8 i_EmittedCol = 1;
   s32 sColNm;
   s32 sColNm_mapped;
   eCT eColType;
   Symbol* pSymbol;
 
-  i8 i_SrcCol = C_UNKNOWN;
+  i8 i_Cell = C_UNKNOWN;
 
-  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_DstCol++) {
+  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
     Card_Expr *p_expr = xProjection.p_expr();
-    i_SrcCol = C_UNKNOWN;
+    i_Cell = C_UNKNOWN;
 
     if (CK_PROJECT == eOP) {
       if (p_expr->pSub_as())
@@ -459,14 +459,14 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
 
         Symbol* pSymbol_stm = p_expr_key->pFirstStmCol();
 
-        i_SrcCol = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
-        if (i_SrcCol) {
-          //vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_SrcCol);
+        i_Cell = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
+        if (i_Cell) {
+          //vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_Cell);
 
 
           sNm_modified.vSprint("C%lld_COL%lld"_Stz,
                                xProjection.i_Child(),
-                               i_SrcCol);
+                               i_Cell);
           sColNm_mapped = sNm_modified;
         }
       }
@@ -475,19 +475,19 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
         //vTrace("%s\n"_Stz, pSymbol_stm->szSymbol());
 
 
-        i_SrcCol = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
-        if (i_SrcCol) {
-          //vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_SrcCol);
+        i_Cell = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
+        if (i_Cell) {
+          //vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_Cell);
 
 
           sNm_modified.vSprint("C%lld_COL%lld"_Stz,
                                xProjection.i_Child(),
-                               i_SrcCol);
+                               i_Cell);
           sColNm_mapped = sNm_modified;
         }
       }
       else {
-        i_SrcCol = i_DstCol;
+        i_Cell = i_EmittedCol;
       }
 
       vDebugPoint();
@@ -507,7 +507,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       sColNm = sNm_modified;
       sColNm_mapped = sColNm;
 
-      i_SrcCol = i_DstCol;
+      i_Cell = i_EmittedCol;
     }
     else {
       if (p_expr->pSub_as())
@@ -543,14 +543,13 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
       if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
         bPayload = true;
 
-      vTrace("ColMap addCol: %lld %lld %s %s [%s]\n"_Stz,
-             i_DstCol,
-             i_SrcCol,
-             sColNm_mapped.szStz(),
-             bPayload ? "payload" : "key",
+      vTrace("ColMap addCol: %lld <- %s %lld [%s]\n"_Stz,
+             i_EmittedCol,
+             bPayload ? "payload cell" : "key cell",
+             i_Cell,
              p_OP->szBearing());
 
-      pColMap->vAddCol(i_DstCol, bPayload, i_SrcCol);
+      pColMap->vAddCol(i_EmittedCol, bPayload, i_Cell);
     }
   }
 
