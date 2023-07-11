@@ -5,6 +5,7 @@
 
 #include "ArgDef.hpp"
 #include "IndexDef.hpp"
+#include "ColMap.hpp"
 #include "ColsReq.hpp"
 #include "StreamDef.hpp"
 #include "IntStack.hpp"
