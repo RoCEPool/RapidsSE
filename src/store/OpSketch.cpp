@@ -233,10 +233,10 @@ void OpSketch::vCopyColsMap(ColsReq* pColsMap)
 
   m_pColsMap->m_nCols = pColsMap->m_nCols;
   for (i8 i_Col = 0; nCols < pColsMap->m_nCols; i_Col++) {
-    if (pColsMap->m_axCols[i_Col].m_i_Col_base1 != C_UNKNOWN) {
+    if (pColsMap->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
       nCols++;
-      m_pColsMap->m_axCols[i_Col].m_i_Col_base1 = pColsMap->m_axCols[i_Col].m_i_Col_base1;
-      m_pColsMap->m_axCols[i_Col].m_i_Col2_base1 = pColsMap->m_axCols[i_Col].m_i_Col2_base1;
+      m_pColsMap->m_axCols[i_Col].m_i_EmittedCol = pColsMap->m_axCols[i_Col].m_i_EmittedCol;
+      m_pColsMap->m_axCols[i_Col].m_i_Cell = pColsMap->m_axCols[i_Col].m_i_Cell;
       m_pColsMap->m_axCols[i_Col].m_sColNm = pColsMap->m_axCols[i_Col].m_sColNm;
       m_pColsMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
     }
@@ -256,9 +256,9 @@ void OpSketch::vCopyColsReq(ColsReq* pColsReq)
 
   m_pColsReq->m_nCols = pColsReq->m_nCols;
   for (i8 i_Col = 0; nCols < pColsReq->m_nCols; i_Col++) {
-    if (pColsReq->m_axCols[i_Col].m_i_Col_base1 != C_UNKNOWN) {
+    if (pColsReq->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
       nCols++;
-      m_pColsReq->m_axCols[i_Col].m_i_Col_base1 = pColsReq->m_axCols[i_Col].m_i_Col_base1;
+      m_pColsReq->m_axCols[i_Col].m_i_EmittedCol = pColsReq->m_axCols[i_Col].m_i_EmittedCol;
       m_pColsReq->m_axCols[i_Col].m_sColNm = pColsReq->m_axCols[i_Col].m_sColNm;
       m_pColsReq->m_axCols[i_Col].m_bPayload = pColsReq->m_axCols[i_Col].m_bPayload;
     }

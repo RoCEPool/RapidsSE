@@ -16,10 +16,12 @@ namespace STORE
     i8 m_nCols;
 
     struct {
-      i8   m_i_Col_base1;
-      i8   m_i_Col2_base1;
-      s32  m_sColNm;
+      i8   m_i_EmittedCol;
+
       bool m_bPayload;
+      i8   m_i_Cell;
+
+      s32  m_sColNm;
     } m_axCols[C_COLSREQ];
 
   protected:

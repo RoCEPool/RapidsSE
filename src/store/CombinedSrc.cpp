@@ -958,7 +958,7 @@ void CombinedSrc::vAppendCodeInflateCols(OpSketch* pOpSketch, Stz* sReturnPrefix
 
     StrLib::vSprint(sReturnToColumn, "%s%lld"_Stz, sReturnPrefix, i_Col+1);
 
-//    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_Col_base1 == C_UNKNOWN) {
+//    if (pOpSketch->m_pColsReq->m_axCols[i_Col+1].m_i_EmittedCol == C_UNKNOWN) {
 //      sCode = ""_Stz;
 //      pOperatorFile->vSeekStart();
 //
@@ -1445,7 +1445,7 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
-    i8 i_ColMap = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Col2_base1;
+    i8 i_ColMap = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Cell;
     Column *pColumn = pStreamDefOut->pGetColumn(i_ColMap)-1;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
