@@ -9,9 +9,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Column_Mapping, CN_XF_ADD_LEVEL)
-__aNewFunction(XF_Column_Mapping, CN_XF_ADD_LEVEL)
-__vDeleteFunction(XF_Column_Mapping, CN_XF_ADD_LEVEL)
+__pCastFunction(STORE, XF_Column_Mapping, CN_XF_COLUMN_MAPPING)
+__aNewFunction(XF_Column_Mapping, CN_XF_COLUMN_MAPPING)
+__vDeleteFunction(XF_Column_Mapping, CN_XF_COLUMN_MAPPING)
 __aFooterFunction(XF_Column_Mapping)
 
 
@@ -19,13 +19,13 @@ __aFooterFunction(XF_Column_Mapping)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Column_Mapping::XF_Column_Mapping(CardIter* pCI)
-: XF_TRANSFORM(CN_XF_ADD_LEVEL, pCI)
+: XF_TRANSFORM(CN_XF_COLUMN_MAPPING, pCI)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 
-  _checkInitialised_(CN_XF_ADD_LEVEL);
+  _checkInitialised_(CN_XF_COLUMN_MAPPING);
   
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ XF_Column_Mapping::XF_Column_Mapping(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 XF_Column_Mapping::~XF_Column_Mapping(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void XF_Column_Mapping::vXF_Column_Mapping(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void XF_Column_Mapping::vXF_Column_Mapping(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_COLUMN_MAPPING, _FOOTER_);
 
   m_pCI->vTransform(__func__, XF_NONE, "column mapping for gbyAgg"_Stz);
 

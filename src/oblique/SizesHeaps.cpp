@@ -299,6 +299,7 @@
 #include "XF_Delete_Empty_where.hpp"
 #include "XF_Predicate_Pull_Up.hpp"
 #include "XF_Predicate_Reposition.hpp"
+#include "XF_Column_Mapping.hpp"
 
 #include "XF_Flatten_10_F.hpp"
 #include "XF_Flatten_24_W_A_C_ro.hpp"
@@ -775,6 +776,7 @@ SizeHeap gxaSizeHeap[]
   {CN_XF_ADD_LEVEL,                sizeof(XF_Add_level),             HT_T_TINY    , FILL },
   {CN_XF_AS_REVIEW,                sizeof(XF_as_Review),             HT_T_TINY    , FILL },
   {CN_XF_COLNM_TO_STMCOL,          sizeof(XF_colNm_To_stmCol),       HT_T_TINY    , FILL },
+  {CN_XF_COLUMN_MAPPING,           sizeof(XF_Column_Mapping),        HT_T_TINY    , FILL },
   {CN_XF_CULL_NONUSED_BOUND,       sizeof(XF_Cull_NonUsed_bound),    HT_T_TINY    , FILL },
   {CN_XF_CULL_USED_BOUND,          sizeof(XF_Cull_Used_bound),          HT_T_TINY    , FILL },
   {CN_XF_CUT_SORT,                 sizeof(XF_Cut_sort),                 HT_T_TINY    , FILL },
