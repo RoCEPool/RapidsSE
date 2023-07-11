@@ -53,9 +53,12 @@ FileMap::FileMap(void)
   m_szFilePath = gxCmdLineArgs.m_xSysArgs.m_sPageFilePath;
 
 //  vInitialise();
-
+#ifdef WITH_PAGING
   m_pPageFile = new PageFile(m_szFilePath, 0);
-
+#else
+  m_pPageFile = nullptr;
+  m_iSynthBufferId = 0;
+#endif
   _checkInitialised_(CN_FILEMAP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -93,8 +96,12 @@ DataBuffer* FileMap::pDataBufferFromDisk(BufferId oBufferId)
 
   //---------------------------------------------------------------------------
   // Read from page file
-
+#ifdef WITH_PAGING
   return m_pPageFile->pReadDataBufferFromPFile(oBufferId);
+#else
+  NEVER_REACH;
+  return nullptr;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,13 +152,16 @@ void FileMap::vToDisk(DataBuffer* pDataBuffer)
 
   //---------------------------------------------------------------------------
   // Write to page file
+#ifdef WITH_PAGING
   RASSERT(CN_ROWBUFFER == pDataBuffer->eGetClassNo() ||
           CN_CRWBUFFER == pDataBuffer->eGetClassNo());
 
   m_pPageFile->vWriteDataBufferToPFile(pDataBuffer);
+#else
+  NEVER_REACH;
+#endif
 }
 
-#ifdef WITH_PAGING
 /*----------------------------------------------------------------------------*/
 /* Find a free chunk in a page file and return that address                   */
 /*----------------------------------------------------------------------------*/
@@ -170,7 +180,7 @@ BufferId FileMap::oGetNewBufferId(void)
   vGrabWriteLock();
 
   BufferId oFreeBufferId;
-
+#ifdef WITH_PAGING
   u8 uFreeSubset = m_pPageFile->uNextFreeSubset();
   RASSERT(uFreeSubset != C_DATUM_NULL);
 
@@ -180,10 +190,16 @@ BufferId FileMap::oGetNewBufferId(void)
 
   vDropWriteLock();
   return oFreeBufferId;
+#else
+  m_iSynthBufferId++;
+  oFreeBufferId.m_uSeekOffset = m_iSynthBufferId;
+  oFreeBufferId.m_uPageFile = 0;
+  oFreeBufferId.m_bIdFlag = 1;
 
-//  return BufferId::vBufferIdFromNo(iPoolBufferNo);
-}
+  vDropWriteLock();
+  return oFreeBufferId;
 #endif
+}
 
 /*----------------------------------------------------------------------------*/
 /* translate pool buffer number to allocated buffer                           */
@@ -246,13 +262,16 @@ void FileMap::vDropReadLock(void)
 void FileMap::vStartPageIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
-
+#ifdef WITH_PAGING
   vGrabReadLock();
 
   if(! m_pPageFile->m_pFile->bIsOpen()) {
     m_pPageFile->m_pFile->bOpenMode(
         m_pPageFile->m_szPFilePath, C_OPEN_READ_WRITE_EXIST);
   }
+#else
+  NEVER_REACH;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,7 +280,11 @@ void FileMap::vStartPageIn(void)
 void FileMap::vEndPageIn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
+#ifdef WITH_PAGING
   vDropReadLock();
+#else
+  NEVER_REACH;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,14 +293,16 @@ void FileMap::vEndPageIn(void)
 void FileMap::vStartPageOut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
-
+#ifdef WITH_PAGING
   vGrabWriteLock();
 
   if(! m_pPageFile->m_pFile->bIsOpen()) {
     m_pPageFile->m_pFile->bOpenMode(
         m_pPageFile->m_szPFilePath, C_OPEN_READ_WRITE_EXIST);
   }
-
+#else
+  NEVER_REACH;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,10 +311,13 @@ void FileMap::vStartPageOut(void)
 void FileMap::vEndPageOut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FILEMAP,_FOOTER_);
-
+#ifdef WITH_PAGING
   m_pPageFile->m_pFile->vFlush();
   m_pPageFile->m_pFile->vSync();
   m_pPageFile->m_pFile->vClose();
+#else
+  NEVER_REACH;
+#endif
 }
 
 

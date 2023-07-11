@@ -748,9 +748,7 @@ namespace OBLIQUE
 
     static JobList* pDemonJobs(void);
     static JobList* pExitedJobs(void);
-#ifdef WITH_PAGING
     static HashMap* pHashMap(void);
-#endif
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);

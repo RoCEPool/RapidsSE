@@ -1511,7 +1511,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
     {
       // Operand is not null
       // Check if it is a BufferId
-#ifdef WITH_PAGING
+
       BufferId oBufferId;
       oBufferId.m_pvAsAddress = (void*)pPeekOperand;
       if(1 == oBufferId.m_bIdFlag)
@@ -1521,6 +1521,11 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
         pPeekOperand = (Operand*) BufferId::aAddressFromId(oBufferId);
         if(pPeekOperand == nullptr)
         {
+          vTrace("Pop: %p\n"_Stz, oBufferId.m_pvAsAddress);
+#ifndef WITH_PAGING
+          // If paging is not enabled, address should always be accessable via hashmap
+          NEVER_REACH;
+#endif
           // Operand is not in memory.
           // Queue a request to the PageIn Demon and return (Will perform pagein bide)
           // Queue request -> PageIn Demon(BufferId + m_pTask)
@@ -1536,7 +1541,7 @@ Operand* Op::pPopOoOLeft(bool* pbPageIn)
         }
         // Operand is present in memory, so proceed as normal
       }
-#endif
+
       // Assign pOperand the peeked operand. It may or may not have been converted from a BufferId
       pOperand = pPeekOperand;
 

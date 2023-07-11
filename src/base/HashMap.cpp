@@ -154,6 +154,7 @@ void HashMap::vDeleteKey(void* pKey)
       // If it is, it should not be locked
 
       DataBuffer *pDataBuffer = _pDataBuffer(pIter->m_pValObject);
+#ifdef WITH_PAGING
       if (pDataBuffer->bOutputQueued()) {
         RASSERT( ! pIter->m_okLock.bIsLocked());
       } else {
@@ -164,7 +165,10 @@ void HashMap::vDeleteKey(void* pKey)
         // assert it is not locked
         RASSERT( ! pIter->m_okLock.bIsLocked());
       }
-
+#else
+      if(pIter->m_okLock.bIsLocked())
+        pIter->m_okLock.vResetLock();
+#endif
       // How to ensure it is not paged out between unlock and delete?
       // We need to unlock to check if anyone else has a lock on it..
       // Can we check the number of read locks?
@@ -203,8 +207,8 @@ void HashMap::vDropKeyLock(void* pKey)
   while ( pIter != nullptr ) {
 
     if ( pIter->m_pKeyObject == pKey ) {
-      RASSERT(pIter->m_okLock.bIsLocked());
-      pIter->m_okLock.vDropRead();
+//      RASSERT(pIter->m_okLock.bIsLocked());
+//      pIter->m_okLock.vDropRead();
 //      if(MY::pTask())
 //        vTrace("Drop key %p read locks task %p %s\n"_Stz, pIter->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
 //      else
@@ -269,7 +273,7 @@ void HashMap::vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex)
   pEntry->m_pNext = pGetEntryAtIndex(uIndex);
   // Grab a read lock, to prevent this entry from
   // being paged out
-  pEntry->m_okLock.vGrabRead();
+//  pEntry->m_okLock.vGrabRead();
 //  vTrace("Inserting key %p read locks task %p %s\n"_Stz, pEntry->m_pKeyObject, MY::pTask(), MY::pTask()->szTaskNm());
 
   vSetEntryAtIndex(pEntry, uIndex);
@@ -415,7 +419,7 @@ Object* HashMap::pValueAt(void* pKey)
     if ( pIter->m_pKeyObject == pKey ) {
       // Grab HashMapEntry read lock, to prevent it from potentially
       // being paged out immediately
-      pIter->m_okLock.vGrabRead();
+//      pIter->m_okLock.vGrabRead();
 //      vTrace("Value at key %p read locks task\n"_Stz, pIter->m_pKeyObject);
 
       // Release the HashMap lock

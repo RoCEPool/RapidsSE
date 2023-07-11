@@ -83,9 +83,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_xHeaps.vInit();
 
   m_pFileMap        = new FileMap();
-#ifdef WITH_PAGING
   m_pHashMap        = new HashMap();
-#endif
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;

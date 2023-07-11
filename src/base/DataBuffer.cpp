@@ -39,7 +39,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
-#ifdef WITH_PAGING
+
   if(eClassNo == CN_CRWBUFFER ||
      eClassNo == CN_ROWBUFFER) {
 
@@ -49,7 +49,7 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   } else {
     m_oBufferId.m_iAsI8 = 0;
   }
-#endif
+
   m_tLglPtn     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
@@ -407,7 +407,6 @@ void DataBuffer::vSetBufferNo(i8 iBufferNo)
   m_iBufferNo = iBufferNo;
 }
 
-#ifdef WITH_PAGING
 /*----------------------------------------------------------------------------*/
 /* get the buffer id of this row buffer                                       */
 /*----------------------------------------------------------------------------*/
@@ -427,7 +426,6 @@ void DataBuffer::vSetBufferId(void* pIdAsAddr)
 
   m_oBufferId.m_pvAsAddress = pIdAsAddr;
 }
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

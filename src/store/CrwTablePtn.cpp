@@ -61,6 +61,7 @@ CrwTablePtn::~CrwTablePtn(void) noexcept(false)
 
   // delete the index data vector
   //delete m_pIndexTreeVec;
+  delete m_pPdsBufferId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,6 +104,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
     m_oRootBufferId = pCrwBuffer->oGetBufferId();
     RASSERT(nBuffers() == 0);
 #endif
+    m_oRootBufferId = pCrwBuffer->oGetBufferId();
     m_pRootBuffer = pCrwBuffer;
   }
   else {
@@ -128,7 +130,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 
   // Update the contents of it's body with the BufferId
   *pItem = pCrwBuffer->oGetBufferId();
-
+#endif
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are done with the current buffer, allow it to be paged out by dropping
   // the lock
@@ -136,7 +138,6 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   if(m_pCurrentBuffer)
     AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
 
-#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
@@ -172,10 +173,8 @@ void CrwTablePtn::vDropAllPagingLocks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-#ifdef WITH_PAGING
   if(m_pCurrentBuffer)
     AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

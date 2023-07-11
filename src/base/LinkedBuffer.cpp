@@ -266,7 +266,14 @@ void LinkedBuffer::vLowerLinkedBuffer(BufferNo tLowerBufferNo)
 LinkedBuffer* LinkedBuffer::pNextLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
+  if(this->bIsClassNo(CN_CRWBUFFER) ||
+     this->bIsClassNo(CN_ROWBUFFER)) {
+
+    BufferId oBufferId = this->oNextLinkedBufferId();
+    return _pLinkedBuffer(AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress));
+  }
+
   LinkedBuffer* pNextBuffer = m_tNextBuffer.pGetLinkedBuffer();
 
   return pNextBuffer;
@@ -282,6 +289,20 @@ void LinkedBuffer::vNextLinkedBuffer(LinkedBuffer* pNextBuffer)
   m_tNextBuffer = pNextBuffer;
 
   RASSERT(m_tNextBuffer.pGetLinkedBuffer() == pNextBuffer);
+
+  if(this->bIsClassNo(CN_CRWBUFFER) ||
+     this->bIsClassNo(CN_ROWBUFFER)) {
+
+    if(pNextBuffer == nullptr) {
+      this->vNextLinkedBufferId(nullptr);
+    } else {
+      RASSERT(pNextBuffer->bIsClassNo(CN_CRWBUFFER) ||
+              pNextBuffer->bIsClassNo(CN_ROWBUFFER));
+
+      DataBuffer* pDataBuffer = _pDataBuffer(pNextBuffer);
+      this->vNextLinkedBufferId(pDataBuffer->oGetBufferId());
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -320,7 +341,14 @@ void LinkedBuffer::vNextLinkedBufferId(BufferId oBufferId)
 LinkedBuffer* LinkedBuffer::pPrevLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
+  if(this->bIsClassNo(CN_CRWBUFFER) ||
+     this->bIsClassNo(CN_ROWBUFFER)) {
+
+    BufferId oBufferId = this->oPrevLinkedBufferId();
+    return _pLinkedBuffer(AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress));
+  }
+
   LinkedBuffer* pPrevBuffer = m_tPrevBuffer.pGetLinkedBuffer();
 
   return pPrevBuffer;
@@ -337,6 +365,19 @@ void LinkedBuffer::vPrevLinkedBuffer(LinkedBuffer* pPrevBuffer)
   
   m_tPrevBuffer = pPrevBuffer;
   RASSERT(m_tPrevBuffer.pGetLinkedBuffer() == pPrevBuffer);
+
+  if(this->bIsClassNo(CN_CRWBUFFER) ||
+     this->bIsClassNo(CN_ROWBUFFER)) {
+    if(pPrevBuffer == nullptr) {
+      this->vPrevLinkedBufferId(nullptr);
+    } else {
+      RASSERT(pPrevBuffer->bIsClassNo(CN_CRWBUFFER) ||
+              pPrevBuffer->bIsClassNo(CN_ROWBUFFER));
+
+      DataBuffer *pDataBuffer = _pDataBuffer(pPrevBuffer);
+      this->vPrevLinkedBufferId(pDataBuffer->oGetBufferId());
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
