@@ -1818,7 +1818,7 @@ ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
 //    else
 //      payload
 
-    pColMap_gbyAgg->vAddCol(i_Col, i_Col, pCol->szColNm(), false);
+    pColMap_gbyAgg->vAddCol(i_Col, i_Col, false);
   }
 
   pColMap_gbyAgg->vValidate();

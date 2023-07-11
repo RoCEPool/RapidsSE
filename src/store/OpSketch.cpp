@@ -236,9 +236,8 @@ void OpSketch::vCopyColsMap(ColsReq* pColsMap)
     if (pColsMap->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
       nCols++;
       m_pColsMap->m_axCols[i_Col].m_i_EmittedCol = pColsMap->m_axCols[i_Col].m_i_EmittedCol;
-      m_pColsMap->m_axCols[i_Col].m_i_Cell = pColsMap->m_axCols[i_Col].m_i_Cell;
-      m_pColsMap->m_axCols[i_Col].m_sColNm = pColsMap->m_axCols[i_Col].m_sColNm;
       m_pColsMap->m_axCols[i_Col].m_bPayload = pColsMap->m_axCols[i_Col].m_bPayload;
+      m_pColsMap->m_axCols[i_Col].m_i_Cell = pColsMap->m_axCols[i_Col].m_i_Cell;
     }
   }
 }
@@ -259,8 +258,8 @@ void OpSketch::vCopyColsReq(ColsReq* pColsReq)
     if (pColsReq->m_axCols[i_Col].m_i_EmittedCol != C_UNKNOWN) {
       nCols++;
       m_pColsReq->m_axCols[i_Col].m_i_EmittedCol = pColsReq->m_axCols[i_Col].m_i_EmittedCol;
-      m_pColsReq->m_axCols[i_Col].m_sColNm = pColsReq->m_axCols[i_Col].m_sColNm;
       m_pColsReq->m_axCols[i_Col].m_bPayload = pColsReq->m_axCols[i_Col].m_bPayload;
+      m_pColsReq->m_axCols[i_Col].m_i_Cell = pColsReq->m_axCols[i_Col].m_i_Cell;
     }
   }
 }

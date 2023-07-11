@@ -550,7 +550,7 @@ StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
              bPayload ? "payload" : "key",
              p_OP->szBearing());
 
-      pColMap->vAddCol(i_DstCol, i_SrcCol, sColNm_mapped, bPayload);
+      pColMap->vAddCol(i_DstCol, i_SrcCol, bPayload);
     }
   }
 

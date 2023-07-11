@@ -21,7 +21,7 @@ namespace STORE
       bool m_bPayload;
       i8   m_i_Cell;
 
-      s32  m_sColNm;
+      //s32  m_sColNm;
     } m_axCols[C_COLSREQ];
 
   protected:
@@ -36,7 +36,7 @@ namespace STORE
 
    ~ColsReq(void) noexcept(false);
 
-    void vAddCol(i8 i_Col_base1, i8 i_Col2_base1, Stz* szColNm, bool bPayLoad=false);
+    void vAddCol(i8 i_Col_base1, i8 i_Col2_base1, bool bPayLoad);
 
     void vDump(i8 i_Tab=0);
 
