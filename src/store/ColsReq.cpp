@@ -24,8 +24,8 @@ ColsReq::ColsReq(void)
 
   for (i8 i_Col = 0; i_Col < C_COLSREQ; i_Col++) {
     m_axCols[i_Col].m_i_EmittedCol = C_UNKNOWN;
-    m_axCols[i_Col].m_i_Cell = C_UNKNOWN;
-    m_axCols[i_Col].m_bPayload = false;
+    m_axCols[i_Col].m_bPayload     = false;
+    m_axCols[i_Col].m_i_Cell       = C_UNKNOWN;
   }
   m_nCols = 0;
 
@@ -52,15 +52,15 @@ ColsReq::~ColsReq(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* add column mapping                                                         */
 /*----------------------------------------------------------------------------*/
-void ColsReq::vAddCol(i8 i_Col_base1, i8 i_Col2_base1, bool bPayLoad)
+void ColsReq::vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
-  m_axCols[m_nCols].m_i_EmittedCol = i_Col_base1;
-  m_axCols[m_nCols].m_i_Cell = i_Col2_base1;
-  m_axCols[m_nCols].m_bPayload    = bPayLoad;
+  m_axCols[m_nCols].m_i_EmittedCol = i_EmittedCol;
+  m_axCols[m_nCols].m_bPayload     = bPayLoad;
+  m_axCols[m_nCols].m_i_Cell       = i_Cell;
 
   m_nCols++;
 
@@ -68,7 +68,7 @@ void ColsReq::vAddCol(i8 i_Col_base1, i8 i_Col2_base1, bool bPayLoad)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void ColsReq::vDump(i8 i_Tab)
 {
@@ -84,7 +84,7 @@ void ColsReq::vDump(i8 i_Tab)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* validate                                                                   */
 /*----------------------------------------------------------------------------*/
 void ColsReq::vValidate(void)
 {

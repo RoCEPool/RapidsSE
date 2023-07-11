@@ -563,7 +563,7 @@ void XF_Synthesise_Code::vUpdateColsReq_terms(Card_Table* p_table, ColsReq* pCol
     else
       sColNm = "??"_Stz;
 
-    pColsReq->vAddCol(i_Col, i_Col, false);
+    pColsReq->vAddCol(i_Col, false, i_Col);
 
     return C_CONTINUE_RECURSION;
   };

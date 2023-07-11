@@ -16,10 +16,10 @@ namespace STORE
     i8 m_nCols;
 
     struct {
-      i8   m_i_EmittedCol;
+      i8   m_i_EmittedCol;  // emitted column $n
 
-      bool m_bPayload;
-      i8   m_i_Cell;
+      bool m_bPayload;      // payload or key?
+      i8   m_i_Cell;        // cell (base 0) of payload/key
 
       //s32  m_sColNm;
     } m_axCols[C_COLSREQ];
@@ -36,7 +36,7 @@ namespace STORE
 
    ~ColsReq(void) noexcept(false);
 
-    void vAddCol(i8 i_Col_base1, i8 i_Col2_base1, bool bPayLoad);
+    void vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell);
 
     void vDump(i8 i_Tab=0);
 
