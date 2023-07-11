@@ -8,7 +8,7 @@
 #include "CardIter.hpp"
 #include "Fold.hpp"
 #include "Smoosh.hpp"
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 #include "Optimiser.hpp"
 
 #include "XF_Fix_table_Pos.hpp"

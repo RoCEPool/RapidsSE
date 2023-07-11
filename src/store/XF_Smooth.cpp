@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Smooth.cpp -- Smooth                                                       */
+/* XF_Smooth.cpp -- XF_Smooth                                                       */
 /*============================================================================*/
 
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 
 #include "CardIter.hpp"
 #include "CarryForward.hpp"
@@ -11,18 +11,20 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Smooth, CN_SMOOTH)
-__aNewFunction(Smooth, CN_SMOOTH)
-__vDeleteFunction(Smooth, CN_SMOOTH)
-__aFooterFunction(Smooth)
+__pCastFunction(STORE, XF_Smooth, CN_SMOOTH)
+__aNewFunction(XF_Smooth, CN_SMOOTH)
+__vDeleteFunction(XF_Smooth, CN_SMOOTH)
+__aFooterFunction(XF_Smooth)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Smooth::Smooth(void)
+XF_Smooth::XF_Smooth(void)
 : Object(CN_SMOOTH)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
+
+  _checkInitialised_(CN_SMOOTH);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 }
@@ -30,7 +32,7 @@ Smooth::Smooth(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Smooth::~Smooth(void) noexcept(false)
+XF_Smooth::~XF_Smooth(void) noexcept(false)
 {
 _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 }
@@ -43,7 +45,7 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit)
+void XF_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 

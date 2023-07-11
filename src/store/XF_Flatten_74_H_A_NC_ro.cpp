@@ -5,7 +5,7 @@
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -92,7 +92,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

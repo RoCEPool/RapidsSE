@@ -5,7 +5,7 @@
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 #include "Smoosh.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +110,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   CarryForward* pCarryForward = new CarryForward;
   pCarryForward->Table.m_bReproject = true;
 
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   m_pCI->vPrintBoard(__LINE__);

@@ -225,6 +225,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 
     if (Card_Expr* p_expr_col =
         pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
+      p_expr_col->vDump();
       p_term->pSymbol()->vSet(p_expr_col->pSymbol());
     }
 

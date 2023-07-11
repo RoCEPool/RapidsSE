@@ -7,7 +7,7 @@
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

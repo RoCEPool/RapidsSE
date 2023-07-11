@@ -5,7 +5,7 @@
 #include "XF_Flatten_40_W_L_C_E.hpp"
 
 #include "Fold.hpp"
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 #include "Smoosh.hpp"
 
 

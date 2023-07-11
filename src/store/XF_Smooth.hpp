@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Smooth.hpp -- Smooth                                                       */
+/* XF_Smooth.hpp -- XF_Smooth                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@ namespace STORE
   class CardIter;
   class CarryForward;
 
-  class Smooth : public Object
+  class XF_Smooth : public Object
   {
   private:
 
@@ -21,8 +21,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Smooth(void);
-   ~Smooth(void) noexcept(false);
+    XF_Smooth(void);
+   ~XF_Smooth(void) noexcept(false);
 
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit=false);
 
@@ -30,7 +30,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Smooth* _pSmooth(void* aAddr);
+  XF_Smooth* _pXF_Smooth(void* aAddr);
 
 }
 

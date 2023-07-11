@@ -9,7 +9,7 @@
 #include "Fold.hpp"
 #include "CorrelatedJoin.hpp"
 #include "Smoosh.hpp"
-#include "Smooth.hpp"
+#include "XF_Smooth.hpp"
 #include "Optimiser.hpp"
 #include "XF_Join_Ordering.hpp"
 
@@ -371,7 +371,7 @@ void XF_Flatten::vFlatten_10_F(void)
   // smoothing
 
   pCarryForward->Table.m_bReproject = true;
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   m_pCI->G.pDeck->vProjectionUpdate(m_pCI);
@@ -483,7 +483,7 @@ void XF_Flatten::vFlatten_32_W_A_NC_I(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   m_pCI->G.pDeck->vClearMarksRecursive();
@@ -535,7 +535,7 @@ void XF_Flatten::vFlatten_34_W_A_NC_ro(void)
   //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -679,7 +679,7 @@ void XF_Flatten::vFlatten_53_W_L_NC_NI_exists(void)
   m_pCI->vPrintBoard(__LINE__);
 
 
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
   m_pCI->vPrintBoard(__LINE__);
 
@@ -746,7 +746,7 @@ void XF_Flatten::vFlatten_53_W_L_NC_NI_join(void)
   CarryForward* pCarryForward = new CarryForward;
   pCarryForward->Table.m_bReproject = true;
 
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   m_pCI->vPrintBoard(__LINE__);
@@ -796,7 +796,7 @@ void XF_Flatten::vFlatten_74_H_A_NC_ro(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
 
-  Smooth* pSmooth = new Smooth;
+  XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
