@@ -47,8 +47,10 @@ void Paging::vRandomAlgo(i8 nTotal)
     iTimeOut++;
     if(iTimeOut > 3)
       break;
+
+    i8 iRand = rand()% uSize;
     // Start iterating the hashmap from a random point
-    for(u8 i = arc4random() % uSize; i < uSize; i++) {
+    for(u8 i = iRand; i < uSize; i++) {
       HashMapEntry* pEntry = pHashMap->pGetEntryAtIndex(i);
 
       if(pEntry == nullptr)
