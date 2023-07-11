@@ -233,6 +233,11 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (6 == i_Child()) {
+    vDump();
+    vDebugPoint();
+  }
+
   vApply_lambdaFn_ToAll_term(pCI, bfLambdaFn);
 
   if (pSymbol()->Y_bHas(P_BreakPt)) {

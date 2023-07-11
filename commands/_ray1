@@ -2,11 +2,13 @@
 /* _ray1                                                                      */
 /*============================================================================*/
 
+/*
 // NOTE: the expr in S02 for gbyAgg has expr as :
                   type INTEGER as COL1 $1 $1 sum
                   , type INTEGER as COL2 $2
 
     Note the $1 $1
+*/
 
 /*
 ArgDef: [0] expr  groupBy
@@ -37,6 +39,9 @@ create table datums (
 
 load datums "../DATA/Transliterate/groupBy.csv" ;
 
+/glean_interactive
+/weaved
+/transliterated
 /optimise_passthru
 /pipeline_def
 pipeline _unnamed_
