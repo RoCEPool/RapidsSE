@@ -17,6 +17,7 @@
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
 #include "ColsReq.hpp"
+#include "ColMap.hpp"
 
 namespace STORE
 {
@@ -58,7 +59,7 @@ namespace STORE
     IndexDef*  m_pIndexDef;
 
     ColsReq*   m_pColsReq;
-    ColsReq*   m_pColsMap;
+    ColMap*    m_pColsMap;
 
     // stencils
     eSR m_eStencilFrom;
@@ -113,7 +114,7 @@ namespace STORE
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
     void vCopyColsReq(ColsReq* pColsReq);
-    void vCopyColsMap(ColsReq* pColsMap);
+    void vCopyColsMap(ColMap* pColsMap);
     void vCopyInitStack(TypedStack* pInitStack);
 
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);

@@ -5,6 +5,7 @@
 
 #include "Card_ELIST.hpp"
 #include "ColsReq.hpp"
+#include "ColMap.hpp"
 
 namespace STORE
 {
@@ -34,7 +35,7 @@ namespace STORE
     Card_Projection* pReducedCopy(void);
     void vReviewAs(CardIter* pCI);
 
-    StreamDef* pToStreamDef(ColsReq* pColMap,
+    StreamDef* pToStreamDef(ColMap* pColMap,
                             Card_Key* p_key,
                             eCK eOP,
                             Card* p_OP);

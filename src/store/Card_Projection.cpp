@@ -399,7 +399,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
 /*----------------------------------------------------------------------------*/
-StreamDef* Card_Projection::pToStreamDef(ColsReq* pColMap,
+StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
                                          Card_Key* p_key,
                                          eCK eOP,
                                          Card* p_OP)

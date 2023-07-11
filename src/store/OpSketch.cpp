@@ -223,13 +223,13 @@ void OpSketch::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_Du
 /*----------------------------------------------------------------------------*/
 /* copy columns map (for gbyAgg and ordAgg)                                    */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vCopyColsMap(ColsReq* pColsMap)
+void OpSketch::vCopyColsMap(ColMap* pColsMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   i8 nCols = 0;
 
-  m_pColsMap = new ColsReq;
+  m_pColsMap = new ColMap;
 
   m_pColsMap->m_nCols = pColsMap->m_nCols;
   for (i8 i_Col = 0; nCols < pColsMap->m_nCols; i_Col++) {

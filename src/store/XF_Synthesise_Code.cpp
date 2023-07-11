@@ -422,7 +422,7 @@ void XF_Synthesise_Code::vCraftStreamDefs(Card_OP* p_OP)
   if (m_pStreamDef_prior)
     m_pOpDef->m_pStreamDef_arriving = m_pStreamDef_prior->pDup();
 
-  ColsReq** ppColMap = nullptr;
+  ColMap** ppColMap = nullptr;
   if (p_OP->bIsCard(CK_GBYAGG))
     ppColMap = &m_pOpDef->m_pColMap_gbyAgg;
   else

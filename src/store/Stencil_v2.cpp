@@ -1277,7 +1277,7 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHan
   Stz* sGbyAggExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the columns required
-  ColsReq* pColsMap = pOpDef->m_pColMap_gbyAgg;
+  ColMap* pColsMap = pOpDef->m_pColMap_gbyAgg;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1325,7 +1325,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandl
   Stz* sSortExpr = pOpDef->pArgDef_expr()->szArgVal();
 
   // get the columns required
-  ColsReq* pColsMap = pOpDef->m_pColMap_sort;
+  ColMap* pColsMap = pOpDef->m_pColMap_sort;
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1399,7 +1399,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef, eHK eHandle
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // get the columns required
-  ColsReq* pColsMap = pOpDef->m_pColMap_top;
+  ColMap* pColsMap = pOpDef->m_pColMap_top;
 
   // create a new opSketch for this OP
   OpSketch *pOpSketch = new OpSketch(i_Op, sTopExpr, eHandlerKind, SK_TOP, ePrevStencil_v2, ePrevStencil_v2,  II_PL, pStreamDefLft, pStreamDefOut);

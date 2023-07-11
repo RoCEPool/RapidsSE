@@ -6,6 +6,7 @@
 #include "Card.hpp"
 #include "IndexDef.hpp"
 #include "ColsReq.hpp"
+#include "ColMap.hpp"
 
 namespace STORE
 {
@@ -96,7 +97,7 @@ namespace STORE
     IndexDef* pCraftIndexDef_sort(void);
     IndexDef* pCraftIndexDef_top(void);
 
-    StreamDef* pCraftStreamDef_emitted(ColsReq** ppColMap);
+    StreamDef* pCraftStreamDef_emitted(ColMap** ppColMap);
   };
 
   Card_OP* _pCard_OP(void* aAddr);
