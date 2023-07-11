@@ -68,6 +68,15 @@ void Card_GbyAgg::vBump_Rightwards(i8 nBumpBy)
 }
 
 /*----------------------------------------------------------------------------*/
+/* column mapping                                                             */
+/*----------------------------------------------------------------------------*/
+void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert terms which are stmCol to tblCol                                   */
 /*----------------------------------------------------------------------------*/
 void Card_GbyAgg::vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI)

@@ -22,6 +22,8 @@ namespace STORE
 
     void vBump_Rightwards(i8 nBumpBy);
 
+    void vColumn_Mapping(CardIter* pCI);
+
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
 
     void vDerive_Projection_Key(CardIter* pCI);

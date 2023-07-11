@@ -16,6 +16,8 @@ namespace STORE
     Card_Top(Stz* szRows);
    ~Card_Top(void) noexcept(false);
 
+    void vColumn_Mapping(CardIter* pCI);
+
     void vComputeProjection(CardIter* pCI); // prototype
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);

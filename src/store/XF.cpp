@@ -38,6 +38,7 @@
 #include "XF_subQuery_Analysis.hpp"
 #include "XF_table_Analysis.hpp"
 #include "XF_tblCol_To_stmCol.hpp"
+#include "XF_Column_Mapping.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -184,6 +185,9 @@ void XF::vTransform(void)
   XF_stmCol_To_colNm::vXF_stmCol_To_colNm(m_pCI);
 
   XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
+
+  XF_Column_Mapping::vXF_Column_Mapping(m_pCI);
+
   m_pCI->m_pBench->vMadeWeavable(true);
 
 

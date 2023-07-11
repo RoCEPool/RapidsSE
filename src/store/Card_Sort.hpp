@@ -16,6 +16,8 @@ namespace STORE
     Card_Sort(void);
    ~Card_Sort(void) noexcept(false);
 
+    void vColumn_Mapping(CardIter* pCI);
+
     void vCut_sort(CardIter* pCI);
 
     void vDerive_Projection_Key(CardIter* pCI);
