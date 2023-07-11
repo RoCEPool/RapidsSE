@@ -333,7 +333,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SMALLTRANSIENT,
   /* */ CN_SMALLVIRTUAL,
   /* */ CN_SMOOSH,
-  /* */ CN_SMOOTH,
   /* */ CN_SNBCD,
   /* */ CN_SNBOL,
   /* */ CN_SNDTE,
@@ -486,6 +485,7 @@ enum eCN : u2 // Class Number
   /* */ CN_XF_RPNCALC_TO_BOOLCALC,
   /* */ CN_XF_SCAN_TO_TABLE,
   /* */ CN_XF_SHORTEN_QUERYNM,
+  /* */ CN_XF_SMOOTH,
   /* */ CN_XF_STAGE_CAST,
   /* */ CN_XF_STMCOL_TO_COLNM,
   /* */ CN_XF_STMCOL_TO_TBLCOL,
@@ -826,7 +826,6 @@ static Stz* aCN[]
   /* */ "SMALLTRANSIENT"_Stz,       // CN_SMALLTRANSIENT
   /* */ "SMALLVIRTUAL"_Stz,         // CN_SMALLVIRTUAL
   /* */ "SMOOSH"_Stz,               // CN_SMOOSH
-  /* */ "SMOOTH"_Stz,               // CN_SMOOTH
   /* */ "SNBCD"_Stz,                // CN_SNBCD
   /* */ "SNBOL"_Stz,                // CN_SNBOL
   /* */ "SNDTE"_Stz,                // CN_SNDTE
@@ -979,6 +978,7 @@ static Stz* aCN[]
   /* */ "XF_RPNCALC_TO_BOOLCALC"_Stz,       // CN_XF_RPNCALC_TO_BOOLCALC
   /* */ "XF_SCAN_TO_TABLE"_Stz,             // CN_XF_SCAN_TO_TABLE
   /* */ "XF_SHORTEN_QUERYNNM"_Stz,          // CN_XF_SHORTEN_QUERYNM
+  /* */ "XF_SMOOTH"_Stz,                    // CN_XF_SMOOTH
   /* */ "XF_STAGE_CAST"_Stz,                // CN_XF_STAGE_CAST
   /* */ "XF_STMCOL_TO_COLNM"_Stz,           // CN_XF_STMCOL_TO_COLNM
   /* */ "XF_STMCOL_TO_TBLCOL"_Stz,          // CN_XF_STMCOL_TO_TBLCOL

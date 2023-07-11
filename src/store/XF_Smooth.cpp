@@ -11,22 +11,22 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, XF_Smooth, CN_SMOOTH)
-__aNewFunction(XF_Smooth, CN_SMOOTH)
-__vDeleteFunction(XF_Smooth, CN_SMOOTH)
+__pCastFunction(STORE, XF_Smooth, CN_XF_SMOOTH)
+__aNewFunction(XF_Smooth, CN_XF_SMOOTH)
+__vDeleteFunction(XF_Smooth, CN_XF_SMOOTH)
 __aFooterFunction(XF_Smooth)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 XF_Smooth::XF_Smooth(void)
-: Object(CN_SMOOTH)
+: Object(CN_XF_SMOOTH)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
 
-  _checkInitialised_(CN_SMOOTH);
+  _checkInitialised_(CN_XF_SMOOTH);
 
-  _postcondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
+  _postcondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ XF_Smooth::XF_Smooth(void)
 /*----------------------------------------------------------------------------*/
 XF_Smooth::~XF_Smooth(void) noexcept(false)
 {
-_precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
+_precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
 }
 
 
@@ -47,7 +47,7 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 void XF_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOTH, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOTH, _FOOTER_);
 
   // todo: REMOVE
   if (bEarlyExit)
