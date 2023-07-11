@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Smoosh.hpp -- Smoosh                                                       */
+/* XF_Smoosh.hpp -- XF_Smoosh                                                       */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace STORE
   class CardIter;
   class CarryForward;
 
-  class Smoosh : public Object
+  class XF_Smoosh : public Object
   {
   private:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Smoosh(void);
-   ~Smoosh(void) noexcept(false);
+    XF_Smoosh(void);
+   ~XF_Smoosh(void) noexcept(false);
 
     void vSmoosh(CardIter* pCI, eSM eSmoosh);
 
@@ -33,7 +33,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Smoosh* _pSmoosh(void* aAddr);
+  XF_Smoosh* _pXF_Smoosh(void* aAddr);
 
 }
 

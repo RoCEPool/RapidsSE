@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Smoosh.cpp -- Smoosh                                                       */
+/* XF_Smoosh.cpp -- XF_Smoosh                                                       */
 /*============================================================================*/
 
-#include "Smoosh.hpp"
+#include "XF_Smoosh.hpp"
 
 #include "CardIter.hpp"
 #include "CarryForward.hpp"
@@ -11,15 +11,15 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE, Smoosh, CN_SMOOSH)
-__aNewFunction(Smoosh, CN_SMOOSH)
-__vDeleteFunction(Smoosh, CN_SMOOSH)
-__aFooterFunction(Smoosh)
+__pCastFunction(STORE, XF_Smoosh, CN_SMOOSH)
+__aNewFunction(XF_Smoosh, CN_SMOOSH)
+__vDeleteFunction(XF_Smoosh, CN_SMOOSH)
+__aFooterFunction(XF_Smoosh)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Smoosh::Smoosh(void)
+XF_Smoosh::XF_Smoosh(void)
 : Object(CN_SMOOSH)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
@@ -30,7 +30,7 @@ Smoosh::Smoosh(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Smoosh::~Smoosh(void) noexcept(false)
+XF_Smoosh::~XF_Smoosh(void) noexcept(false)
 {
 _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 }
@@ -43,7 +43,7 @@ _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
+void XF_Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 
@@ -52,7 +52,7 @@ void Smoosh::vSmoosh(CardIter* pCI, eSM Smoosh)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
+void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_SMOOSH, _FOOTER_);
 

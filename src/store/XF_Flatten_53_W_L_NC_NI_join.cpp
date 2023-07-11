@@ -6,7 +6,7 @@
 
 #include "Fold.hpp"
 #include "XF_Smooth.hpp"
-#include "Smoosh.hpp"
+#include "XF_Smoosh.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -95,7 +95,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smooshing
 
-  Smoosh* pSmoosh = new Smoosh();
+  XF_Smoosh* pSmoosh = new XF_Smoosh();
 
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
   m_pCI->vPrintBoard(__LINE__);

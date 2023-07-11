@@ -249,7 +249,7 @@
 #include "XF_Flatten.hpp"
 #include "CarryForward.hpp"
 #include "Equivalence.hpp"
-#include "Smoosh.hpp"
+#include "XF_Smoosh.hpp"
 #include "XF_Join_Ordering.hpp"
 #include "SawOpCards.hpp"
 #include "CorrelatedJoin.hpp"
@@ -649,7 +649,7 @@ SizeHeap gxaSizeHeap[]
   { CN_SHAPE,           sizeof(Shape),              HT_T_TINY    , FILL },
   { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
-  { CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
+  { CN_SINCE,           sizeof(Birth),             HT_INVALID   , FILL },
   {CN_SKIPLIST,        sizeof(SkipListNL),         HT_T_TINY    , FILL },
   {CN_SKIPLISTNODE,    sizeof(SkipListNode),       HT_INVALID   , FILL },
   {CN_SKIPLISTBLOCK,   sizeof(SkipListBlock),      HT_INVALID   , FILL },
@@ -659,7 +659,7 @@ SizeHeap gxaSizeHeap[]
   {CN_SMALLPERSISTENT, sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
   {CN_SMALLTRANSIENT,  sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
   {CN_SMALLVIRTUAL,    sizeof(Heap),/*correct*/    HT_INVALID   , FILL },
-  {CN_SMOOSH,          sizeof(Smoosh),             HT_T_TINY    , FILL },
+  {CN_SMOOSH,          sizeof(XF_Smoosh),          HT_T_TINY    , FILL },
   {CN_SNBCD,           sizeof(SN_Bcd),             HT_INVALID   , FILL },
   {CN_SNBOL,           sizeof(SN_Bol),             HT_INVALID   , FILL },
   {CN_SNDTE,           sizeof(SN_Dte),             HT_INVALID   , FILL },
