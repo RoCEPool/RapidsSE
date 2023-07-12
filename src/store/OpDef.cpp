@@ -240,8 +240,13 @@ void OpDef::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPDEF,_FOOTER_);
 
   i8 nTab_plus = 4;
-  vTrace("%sOpDef: [%lld] %s %s\n"_Stz,
-         Stz::szTab(i_Tab),m_i_Op,m_sOpNm.szStz(),md_Bearing);
+  vTrace("%sOpDef: [%lld] %s%s /%lld %s\n"_Stz,
+         Stz::szTab(i_Tab),
+         m_i_Op,
+         m_sOpNm.szStz(),
+         m_bCollapsed ? " COLLAPSED" : "",
+         m_nCollapses,
+         md_Bearing);
 
   i8 nSpaces = 4;
   if (m_pStreamDef_arriving) {

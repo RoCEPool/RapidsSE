@@ -155,14 +155,13 @@ void XF_Synthesise_Code::vCraftPipelineDef(Board* pBoard)
 
   }
 
+  m_pPipelineDef->vCollapseOps();
+  m_pPipelineDef->vValidate();
+
   if (AM::JOB::bHasTag(C_PIPELINE_DEF)) {
     m_pPipelineDef->vDump();
     vDebugPoint();
   }
-
-  m_pPipelineDef->vValidate();
-  m_pPipelineDef->vCollapseOps();
-  m_pPipelineDef->vValidate();
 }
 
 /*----------------------------------------------------------------------------*/

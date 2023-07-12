@@ -36,7 +36,7 @@ namespace STORE
 
    ~ColMap(void) noexcept(false);
 
-    void vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell);
+    void vAdd(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell);
 
     void vDump(i8 i_Tab=0);
 

@@ -539,17 +539,26 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
     if (pColMap) {
       RASSERT(p_key);
 
-      bool bPayload = false;
-      if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
-        bPayload = true;
+//      bool bPayload = false;
+//      if (CK_TOP != eOP && ! p_expr->bIsExpressionOfKey())
+//        bPayload = true;
+//
+//      vTrace("ColMap addCol: %lld <- %s %lld [%s]\n"_Stz,
+//             i_EmittedCol,
+//             bPayload ? "payload cell" : "key cell",
+//             i_Cell,
+//             p_OP->szBearing());
+//
+//      pColMap->vAddCol(i_EmittedCol, bPayload, i_Cell);
 
-      vTrace("ColMap addCol: %lld <- %s %lld [%s]\n"_Stz,
-             i_EmittedCol,
-             bPayload ? "payload cell" : "key cell",
-             i_Cell,
-             p_OP->szBearing());
-
-      pColMap->vAddCol(i_EmittedCol, bPayload, i_Cell);
+      if (p_expr->pSymbol()->Y_bHas(P_Key))
+        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
+                      false,
+                      p_expr->pSymbol()->Y_iGet(P_Cell));
+      else
+        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
+                      true,
+                      p_expr->pSymbol()->Y_iGet(P_Cell));
     }
   }
 

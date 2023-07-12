@@ -54,7 +54,7 @@ ColMap::~ColMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add column mapping                                                         */
 /*----------------------------------------------------------------------------*/
-void ColMap::vAddCol(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
+void ColMap::vAdd(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
