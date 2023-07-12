@@ -580,6 +580,9 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
         vDebugPoint();
 
+        eColType = p_expr->eColumnType();
+        pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+
         pColMap->vAdd(i_KeyCol, false, i_EmittedCol);
 
         i_EmittedCol++;
@@ -648,8 +651,11 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
         vDebugPoint();
 
+        eColType = p_expr->eColumnType();
+        pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+
         pColMap->vAdd(i_EmittedCol, true, i_PayLoadCol);
-        pColMap->vDump();
+        //pColMap->vDump();
         i_EmittedCol++;
 
         break;
