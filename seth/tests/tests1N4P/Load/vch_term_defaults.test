@@ -20,7 +20,7 @@ Load vch "../DATA/Load/vch_term_defaults.csv"
   <enclosed_by_leading> =  "'";
 success
 
-tableScan vch;
+select * from vch;
 rows: 18
 
 predicateFetch vch "vch_testno 501 ==";

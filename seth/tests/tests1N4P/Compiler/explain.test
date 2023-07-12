@@ -34,7 +34,7 @@ rows:
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,7 +59,7 @@ rows:
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -359,7 +359,7 @@ rows:
 -> -> -> -> -> projectOp
                » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.nation)')
 
 

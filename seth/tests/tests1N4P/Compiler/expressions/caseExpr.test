@@ -64,7 +64,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -88,7 +88,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -111,7 +111,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -135,7 +135,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN true WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN false ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN true WHEN ($2 = ''INDIA'') THEN false ELSE NULL END)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -181,7 +181,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END) ; type: VARCHAR
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -205,7 +205,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) ; type: VARCHAR
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -229,7 +229,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN NULL ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE ''everywhere'' END) ; type: VARCHAR
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -253,7 +253,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN NULL ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE NULL END) ; type: NULL
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -277,7 +277,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1.0000000000e+00 WHEN ($2 = ''INDIA'') THEN 1.0000000000e+00 ELSE NULL END) ; type: FLOAT
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -301,7 +301,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.extractTest.col2 = ''AUSTRALIA'') THEN (CAST(rapidsse.public.extractTest.col1 AS DECIMAL)) WHEN (rapidsse.public.extractTest.col2 = ''INDIA'') THEN rapidsse.public.extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN (CAST($1 AS DECIMAL)) WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 
@@ -325,7 +325,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.extractTest.col2 = ''AUSTRALIA'') THEN rapidsse.public.extractTest.col8 WHEN (rapidsse.public.extractTest.col2 = ''INDIA'') THEN (CAST(rapidsse.public.extractTest.col9 AS FLOAT)) ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN $6 WHEN ($2 = ''INDIA'') THEN (CAST($7 AS FLOAT)) ELSE NULL END) ; type: FLOAT
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 
@@ -349,7 +349,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN TIMESTAMP ''2000-01-01 00:00:00'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN TIMESTAMP ''2000-01-01 00:00:00'' WHEN ($2 = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END) ; type: TIMESTAMP
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -403,7 +403,7 @@ rows: (*,'explainPlan','
          » expr: ((CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) = ''everywhere'')
          » ordinal expr: ((CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) = ''everywhere'')
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)')
 
 
@@ -427,7 +427,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 + (CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN (2 * rapidsse.public.nation.n_nationkey) WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN (3 * rapidsse.public.nation.n_nationkey) ELSE rapidsse.public.nation.n_nationkey END) ; Ordinal Expr = 1 + (CASE WHEN ($2 = ''AUSTRALIA'') THEN (2 * $1) WHEN ($2 = ''INDIA'') THEN (3 * $1) ELSE $1 END))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -459,7 +459,7 @@ rows: (*,'explainPlan','
 -> -> -> -> projectOp
             » column: (Expr = MAX(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MAX($1))
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 -> mainSubquery
@@ -476,7 +476,7 @@ rows: (*,'explainPlan','
             » expr: (rapidsse.public.nation.n_nationkey = __subquery0003())
             » ordinal expr: ($1 = __subquery0003())
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -489,7 +489,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = __subquery0005()) THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = __subquery0005()) THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -518,7 +518,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE (CASE WHEN (rapidsse.public.nation.n_nationkey = 1) THEN ''out there'' WHEN (rapidsse.public.nation.n_nationkey = 2) THEN ''over there'' ELSE ''everywhere'' END) END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE (CASE WHEN ($1 = 1) THEN ''out there'' WHEN ($1 = 2) THEN ''over there'' ELSE ''everywhere'' END) END)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 

@@ -146,16 +146,16 @@ rows: (*,'explainPlan',
             » predicate: (true)
             » ordinal predicate: (true)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.supplier)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.partsupp)'
 )
 */
@@ -339,10 +339,10 @@ rows: (*,'explainPlan',
       » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
       » ordinal predicate: ($1 = $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.region)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)'
 )
 
@@ -482,10 +482,10 @@ rows: (*,'explainPlan',
       » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
       » ordinal predicate: ($1 = $5)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.t1)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.t2)'
 )
 */

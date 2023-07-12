@@ -41,7 +41,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -65,7 +65,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -89,7 +89,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -113,7 +113,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -137,7 +137,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -161,7 +161,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -192,7 +192,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
             » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)'
 )
 
@@ -226,7 +226,7 @@ rows: (*,'explainPlan','
                » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
                » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.nation)'
 )
 
@@ -276,7 +276,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)
 
 -> -> -> -> -> statementMarker: select
@@ -286,7 +286,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)'
 )
 
@@ -327,7 +327,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)
 
 -> -> -> -> -> statementMarker: select
@@ -337,7 +337,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)'
 )
 
@@ -372,7 +372,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)
 
 -> -> -> -> -> statementMarker: select
@@ -382,7 +382,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)'
 )
 
@@ -424,7 +424,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Alias = name ; Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -445,7 +445,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -480,7 +480,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = nkey ; Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)
 
 -> -> -> -> -> statementMarker: select
@@ -490,7 +490,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
                   » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)'
 )
 

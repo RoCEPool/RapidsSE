@@ -59,7 +59,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -106,7 +106,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -122,7 +122,7 @@ unordered rows:
       » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 
@@ -158,7 +158,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -204,7 +204,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -249,7 +249,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -297,7 +297,7 @@ unordered rows:
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -369,7 +369,7 @@ unordered rows:
 -> -> -> projectOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -388,7 +388,7 @@ unordered rows:
 -> -> -> projectOp
          » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.region)
 
@@ -464,7 +464,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -525,7 +525,7 @@ unordered rows:
                   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                   » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » location: all partitions
                      » table: (rapidsse.public.nation)
 
@@ -573,7 +573,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -648,7 +648,7 @@ ordered rows:
                » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
                » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -708,7 +708,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -755,7 +755,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -806,7 +806,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -853,7 +853,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -906,7 +906,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -927,7 +927,7 @@ unordered rows:
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.region)
 
@@ -1004,7 +1004,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.nation)
 
@@ -1075,7 +1075,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.nation)
 
@@ -1154,7 +1154,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -1187,7 +1187,7 @@ unordered rows:
 -> -> -> -> projectOp
             » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.region)' )
 
@@ -1218,7 +1218,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -1239,7 +1239,7 @@ unordered rows:
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.region)
 
@@ -1306,7 +1306,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -1328,7 +1328,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -1359,7 +1359,7 @@ unordered rows:
             » predicate: (t1.n_regionkey = rapidsse.public.region.r_regionkey)
             » ordinal predicate: ($6 = $1)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.region)
 
@@ -1429,7 +1429,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1474,7 +1474,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1517,7 +1517,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1579,7 +1579,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)
 
@@ -1600,7 +1600,7 @@ unordered rows:
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.region)
 
@@ -1677,7 +1677,7 @@ unordered rows:
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.region)
 
@@ -1703,7 +1703,7 @@ unordered rows:
             » predicate: (true)
             » ordinal predicate: (true)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.nation)
 
@@ -1736,7 +1736,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.nation)
 
@@ -1762,7 +1762,7 @@ unordered rows:
             » predicate: (rapidsse.public.region.r_regionkey = t21.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.region)
 
@@ -1855,7 +1855,7 @@ unordered rows:
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.region)
 
@@ -1877,7 +1877,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.nation)
 
@@ -1938,7 +1938,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.nation)
 
@@ -1959,7 +1959,7 @@ unordered rows:
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » location: all partitions
                » table: (rapidsse.public.region)
 
@@ -2095,7 +2095,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 -> tableSubquery
@@ -2115,7 +2115,7 @@ unordered rows:
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 -> mainSubquery
@@ -2208,7 +2208,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 -> tableSubquery
@@ -2336,7 +2336,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 -> tableSubquery
@@ -2356,7 +2356,7 @@ unordered rows:
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 -> mainSubquery
@@ -2408,7 +2408,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -2491,7 +2491,7 @@ unordered rows:
             » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
             » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 -> tableSubquery
@@ -2511,7 +2511,7 @@ unordered rows:
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 -> mainSubquery
@@ -2656,7 +2656,7 @@ unordered rows:
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -2716,7 +2716,7 @@ unordered rows:
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 -> mainSubquery
@@ -2753,7 +2753,7 @@ unordered rows:
       » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 
@@ -2782,7 +2782,7 @@ unordered rows:
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -2798,7 +2798,7 @@ unordered rows:
       » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 
@@ -2826,7 +2826,7 @@ unordered rows:
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -2842,7 +2842,7 @@ unordered rows:
       » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 
@@ -2872,7 +2872,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -2919,7 +2919,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -2969,7 +2969,7 @@ unordered rows:
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery

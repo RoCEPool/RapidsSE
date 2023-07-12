@@ -62,7 +62,7 @@ rows: (*,'explainPlan','
          » expr: ((EXTRACT (YEAR FROM rapidsse.public.extractTest.COL3)) = 2021)
          » ordinal expr: ((EXTRACT (YEAR FROM $3)) = 2021)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.extractTest)')
 
 // Extract MONTH
@@ -82,7 +82,7 @@ rows: (*,'explainPlan','
          » expr: ((EXTRACT (MONTH FROM rapidsse.public.extractTest.COL3)) = 11)
          » ordinal expr: ((EXTRACT (MONTH FROM $3)) = 11)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.extractTest)')
 
 // Extract DAY
@@ -102,7 +102,7 @@ rows: (*,'explainPlan','
          » expr: ((EXTRACT (DAY FROM rapidsse.public.extractTest.COL3)) = 5)
          » ordinal expr: ((EXTRACT (DAY FROM $3)) = 5)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.extractTest)')
 
 // Extract HOUR
@@ -122,7 +122,7 @@ rows: (*,'explainPlan','
          » expr: ((EXTRACT (HOUR FROM rapidsse.public.extractTest.COL4)) = 14)
          » ordinal expr: ((EXTRACT (HOUR FROM $4)) = 14)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.extractTest)')
 
 // Extract MINUTE
@@ -142,7 +142,7 @@ rows: (*,'explainPlan','
          » expr: ((EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL4)) = 52)
          » ordinal expr: ((EXTRACT (MINUTE FROM $4)) = 52)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.extractTest)')
 
 // Extract SECOND
@@ -162,7 +162,7 @@ rows: (*,'explainPlan','
          » expr: ((CAST(EXTRACT (SECOND FROM rapidsse.public.extractTest.COL4) AS FLOAT)) > 1.0000000000e+00)
          » ordinal expr: ((CAST(EXTRACT (SECOND FROM $4) AS FLOAT)) > 1.0000000000e+00)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.extractTest)')
 
 
@@ -182,7 +182,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.123000'') ; Ordinal Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.123000''))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.extractTest)')
 
 // Extract from a columnRef
@@ -198,7 +198,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Extract from a computed expression
@@ -214,7 +214,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM (rapidsse.public.extractTest.COL3 + (2 * INTERVAL ''3'' DAY))) ; Ordinal Expr = EXTRACT (YEAR FROM ($3 + (2 * INTERVAL ''3'' DAY)))) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Extract from a subquery
@@ -241,7 +241,7 @@ rows: (*,'explainPlan','
                » expr: (rapidsse.public.extractTest.col1 = 0)
                » ordinal expr: ($1 = 0)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.extractTest)
 
 ∆ mainSubquery
@@ -254,7 +254,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM __subquery0003()) ; Ordinal Expr = EXTRACT (YEAR FROM __subquery0003()))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // -----
@@ -271,7 +271,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract year from a timestamp
@@ -287,7 +287,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract year from an interval_ym
@@ -303,7 +303,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (YEAR FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract year from a NULL literal
@@ -319,7 +319,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM NULL) ; Ordinal Expr = EXTRACT (YEAR FROM NULL))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Cannot extract year from a time
@@ -344,7 +344,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (MONTH FROM $3))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract month from a timestamp
@@ -360,7 +360,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract month from an interval_ym
@@ -376,7 +376,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH) ; Ordinal Expr = EXTRACT (MONTH FROM INTERVAL ''3-2'' YEAR TO MONTH)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract month from a NULL literal
@@ -392,7 +392,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MONTH FROM NULL) ; Ordinal Expr = EXTRACT (MONTH FROM NULL))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Cannot extract month from a time
@@ -417,7 +417,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (DAY FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (DAY FROM $3))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract day from a timestamp
@@ -433,7 +433,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (DAY FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract day from an interval_dt
@@ -449,7 +449,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (DAY FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract day from a NULL literal
@@ -465,7 +465,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (DAY FROM NULL) ; Ordinal Expr = EXTRACT (DAY FROM NULL))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Cannot extract day from a time
@@ -490,7 +490,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.extractTest.COL4) ; Ordinal Expr = EXTRACT (HOUR FROM $4))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract hour from a timestamp
@@ -506,7 +506,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract hour from an interval_dt
@@ -522,7 +522,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR) ; Ordinal Expr = EXTRACT (HOUR FROM INTERVAL ''1 2'' DAY TO HOUR)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract hour from a NULL literal
@@ -538,7 +538,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (HOUR FROM NULL) ; Ordinal Expr = EXTRACT (HOUR FROM NULL))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Cannot extract hour from a date
@@ -563,7 +563,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL4) ; Ordinal Expr = EXTRACT (MINUTE FROM $4))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract minute from a timestamp
@@ -579,7 +579,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract minute from an interval_dt
@@ -595,7 +595,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (MINUTE FROM INTERVAL ''1 2:3:4'' DAY TO SECOND)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Cannot extract minute from a day to hour interval
@@ -615,7 +615,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MINUTE FROM NULL) ; Ordinal Expr = EXTRACT (MINUTE FROM NULL))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Cannot extract minute from a date
@@ -640,7 +640,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.extractTest.COL4) ; Ordinal Expr = EXTRACT (SECOND FROM $4))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract second from a timestamp
@@ -656,7 +656,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract second from an interval_dt
@@ -672,7 +672,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND) ; Ordinal Expr = EXTRACT (SECOND FROM INTERVAL ''1 2:3:4.500000'' DAY TO SECOND)) ; type: DECIMAL
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Can extract second from a NULL literal
@@ -688,7 +688,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (SECOND FROM NULL) ; Ordinal Expr = EXTRACT (SECOND FROM NULL))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Cannot extract second from a date
@@ -717,7 +717,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Ensure extract of an month returns an integer
@@ -733,7 +733,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Ensure extract of an day returns an integer
@@ -749,7 +749,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (DAY FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Ensure extract of an hour returns an integer
@@ -765,7 +765,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Ensure extract of an minute returns an integer
@@ -781,7 +781,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5)) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // Ensure extract of an second returns an decimal
@@ -797,7 +797,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5)) ; type: DECIMAL
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.extractTest)')
 
 // -----

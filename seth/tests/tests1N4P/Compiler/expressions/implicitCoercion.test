@@ -51,7 +51,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 + 2 ; Ordinal Expr = 1 + 2)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // string int + integer
@@ -67,7 +67,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2 + 1 ; Ordinal Expr = 2 + 1)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // string int + string int
@@ -83,7 +83,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 + 2 ; Ordinal Expr = 1 + 2)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
          
 // string date < date
@@ -99,7 +99,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = DATE ''2000-01-01'' < DATE ''2021-11-29'' ; Ordinal Expr = DATE ''2000-01-01'' < DATE ''2021-11-29'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -116,7 +116,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(rapidsse.public.coercionTest.col3 AS TIMESTAMP)) < TIMESTAMP ''2000-01-01 01:02:03.040000'' ; Ordinal Expr = (CAST($3 AS TIMESTAMP)) < TIMESTAMP ''2000-01-01 01:02:03.040000'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -135,7 +135,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = ((CAST(rapidsse.public.coercionTest.col1 + 1 AS FLOAT)) < rapidsse.public.coercionTest.col8) AND ((SUBSTRING((CAST(rapidsse.public.coercionTest.col10 AS VARCHAR)), 1, 1)) = ''T'') ; Ordinal Expr = ((CAST($1 + 1 AS FLOAT)) < $6) AND ((SUBSTRING((CAST($8 AS VARCHAR)), 1, 1)) = ''T''))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -162,7 +162,7 @@ rows: (*,'explainPlan','
          » expr: ((1 + rapidsse.public.nation.n_nationkey) < 5)
          » ordinal expr: ((1 + $1) < 5)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)')
 
 
@@ -183,7 +183,7 @@ rows: (*,'explainPlan','
          » expr: (TIMESTAMP ''2000-01-01 00:00:00'' < rapidsse.public.coercionTest.col5)
          » ordinal expr: (TIMESTAMP ''2000-01-01 00:00:00'' < $5)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.coercionTest)')
 
 
@@ -208,7 +208,7 @@ rows: (*,'explainPlan','
          » column: (Expr = SUM(rapidsse.public.coercionTest.col8) ; Ordinal Expr = SUM($6))
          » group by: (Expr = rapidsse.public.coercionTest.col1 ; Ordinal Expr = $1)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.coercionTest)')
 
 // cast decimal columnRef to float in having clause
@@ -232,7 +232,7 @@ rows: (*,'explainPlan','
          » group by: (Expr = rapidsse.public.coercionTest.col1 ; Ordinal Expr = $1)
          » group by: (Expr = rapidsse.public.coercionTest.col9 ; Ordinal Expr = $7)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.coercionTest)')
 
 
@@ -255,10 +255,10 @@ rows: (*,'explainPlan','
          » predicate: ((CAST(rapidsse.public.nation.n_nationkey AS FLOAT)) = (rapidsse.public.coercionTest.col8 + 1.0000000000e+00))
          » ordinal predicate: ((CAST($1 AS FLOAT)) = ($10 + 1.0000000000e+00))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.coercionTest)')
 
 
@@ -297,7 +297,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(rapidsse.public.coercionTest.col1 * 1 AS DECIMAL)) + rapidsse.public.coercionTest.col9 ; Ordinal Expr = (CAST($1 * 1 AS DECIMAL)) + $7)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 //   Test integer literal -> decimal
@@ -313,7 +313,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(2 * 1 AS DECIMAL)) + rapidsse.public.coercionTest.col9 ; Ordinal Expr = (CAST(2 * 1 AS DECIMAL)) + $7)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -330,7 +330,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(rapidsse.public.coercionTest.col1 * 1 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST($1 * 1 AS FLOAT)) + $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -347,7 +347,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(2 * 1 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST(2 * 1 AS FLOAT)) + $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -364,7 +364,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(rapidsse.public.coercionTest.col9 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST($7 AS FLOAT)) + $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -381,7 +381,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(2.1 * 1.0 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST(2.1 * 1.0 AS FLOAT)) + $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -398,7 +398,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (2 * 1) + rapidsse.public.coercionTest.col1 ; Ordinal Expr = (2 * 1) + $1)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 //   Test string integer literal -> integer       with a negative value
@@ -414,7 +414,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = -1 + 1 ; Ordinal Expr = -1 + 1)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -431,7 +431,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2. + rapidsse.public.coercionTest.col9 ; Ordinal Expr = 2. + $7)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 //   Test string decimal literal -> decimal       (from a literal only)
@@ -447,7 +447,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2.1 + rapidsse.public.coercionTest.col9 ; Ordinal Expr = 2.1 + $7)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 //   Test string integer literal -> float         (from a literal only)
@@ -463,7 +463,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2.0000000000e+00 + rapidsse.public.coercionTest.col8 ; Ordinal Expr = 2.0000000000e+00 + $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -480,7 +480,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = -1.0000000000e+00 + 1.0000000000e+00 ; Ordinal Expr = -1.0000000000e+00 + 1.0000000000e+00)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 //   Test string decimal literal -> float         (from a literal only)
@@ -496,7 +496,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = -1.2000000000e+00 + 1.0000000000e+00 ; Ordinal Expr = -1.2000000000e+00 + 1.0000000000e+00)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 //   Test string float literal -> float           (from a literal only)
@@ -512,7 +512,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2.0000000000e+01 + rapidsse.public.coercionTest.col8 ; Ordinal Expr = 2.0000000000e+01 + $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -529,7 +529,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = -2.0000000000e+01 + rapidsse.public.coercionTest.col8 ; Ordinal Expr = -2.0000000000e+01 + $6)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -546,7 +546,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1.0000000000e-01 + 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e-01 + 1.0000000000e+00)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -563,7 +563,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = -1.0000000000e-01 + 1.0000000000e+00 ; Ordinal Expr = -1.0000000000e-01 + 1.0000000000e+00)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -580,7 +580,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1.0000000000e+01 + 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e+01 + 1.0000000000e+00)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -597,7 +597,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = DATE ''2000-01-01'' < rapidsse.public.coercionTest.col3 ; Ordinal Expr = DATE ''2000-01-01'' < $3)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -614,7 +614,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = TIME ''13:14:15'' < rapidsse.public.coercionTest.col4 ; Ordinal Expr = TIME ''13:14:15'' < $4)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -631,7 +631,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-01-01 00:00:00'' < rapidsse.public.coercionTest.col5 ; Ordinal Expr = TIMESTAMP ''2000-01-01 00:00:00'' < $5)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -648,7 +648,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-01-01 13:14:15'' < rapidsse.public.coercionTest.col5 ; Ordinal Expr = TIMESTAMP ''2000-01-01 13:14:15'' < $5)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
          
 
@@ -665,7 +665,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(rapidsse.public.coercionTest.col3 AS TIMESTAMP)) < rapidsse.public.coercionTest.col5 ; Ordinal Expr = (CAST($3 AS TIMESTAMP)) < $5)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
          
 
@@ -682,7 +682,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-01-01 00:00:00'' < rapidsse.public.coercionTest.col5 ; Ordinal Expr = TIMESTAMP ''2000-01-01 00:00:00'' < $5)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -699,7 +699,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = (CAST(rapidsse.public.coercionTest.col10 AS VARCHAR)) = ''TRUE'' ; Ordinal Expr = (CAST($8 AS VARCHAR)) = ''TRUE'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -716,7 +716,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = ''TRUE'' = ''TRUE'' ; Ordinal Expr = ''TRUE'' = ''TRUE'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -968,7 +968,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.coercionTest.col1 = 1) THEN 1 WHEN (rapidsse.public.coercionTest.col1 = 2) THEN (CASE WHEN (rapidsse.public.coercionTest.col10 = true) THEN rapidsse.public.coercionTest.col1 ELSE 0 END) ELSE 3 END ; Ordinal Expr = CASE WHEN ($1 = 1) THEN 1 WHEN ($1 = 2) THEN (CASE WHEN ($8 = true) THEN $1 ELSE 0 END) ELSE 3 END) ; type: INTEGER
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)' )
 
 
@@ -996,7 +996,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING((CAST(rapidsse.public.coercionTest.col10 AS VARCHAR)), ((1 + 2) + 3)) ; Ordinal Expr = SUBSTRING((CAST($8 AS VARCHAR)), ((1 + 2) + 3))) ; type: VARCHAR
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.coercionTest)')
 
 
@@ -1088,7 +1088,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 123 ; Ordinal Expr = 123)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // string to decimal
@@ -1104,7 +1104,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 123.0 ; Ordinal Expr = 123.0)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // string to float
@@ -1120,7 +1120,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1.2300000000e+02 ; Ordinal Expr = 1.2300000000e+02)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // string to date
@@ -1136,7 +1136,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = DATE ''2000-01-01'' ; Ordinal Expr = DATE ''2000-01-01'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // string to time
@@ -1152,7 +1152,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = TIME ''20:01:01'' ; Ordinal Expr = TIME ''20:01:01'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // string to timestamp
@@ -1168,7 +1168,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-01-01 20:01:01'' ; Ordinal Expr = TIMESTAMP ''2000-01-01 20:01:01'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -1185,7 +1185,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = ''123'' ; Ordinal Expr = ''123'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Integer to decimal
@@ -1201,7 +1201,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 123.00 ; Ordinal Expr = 123.00)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Integer to float
@@ -1217,7 +1217,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1.2300000000e+02 ; Ordinal Expr = 1.2300000000e+02)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Decimal to float
@@ -1233,7 +1233,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1.2300000000e+02 ; Ordinal Expr = 1.2300000000e+02)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Date to timestamp
@@ -1249,7 +1249,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = TIMESTAMP ''2000-01-01 00:00:00'' ; Ordinal Expr = TIMESTAMP ''2000-01-01 00:00:00'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Boolean to string
@@ -1265,7 +1265,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = ''TRUE'' ; Ordinal Expr = ''TRUE'')
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
@@ -1282,7 +1282,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS VARCHAR) ; Ordinal Expr = CAST(NULL AS VARCHAR))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Not a valid implicit coercion: string containing a decimal being cast to integer
@@ -1299,7 +1299,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 123 ; Ordinal Expr = 123)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Invalid: string to boolean

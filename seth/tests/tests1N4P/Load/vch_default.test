@@ -18,7 +18,7 @@ success
 Load vch "../DATA/Load/vch_no_enclosed.csv" ;
 success
 
-tableScan vch;
+select * from vch;
 rows: 17
 
 predicateFetch vch "vch_testno 201 =";
@@ -112,7 +112,7 @@ Load vch "../DATA/Load/vch_no_enclosed.csv"
 ;
 success
 
-tableScan vch;
+select * from vch;
 rows: 17
 
 predicateFetch vch "vch_testno 201 =";

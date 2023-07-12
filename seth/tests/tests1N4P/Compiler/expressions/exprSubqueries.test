@@ -86,7 +86,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -107,7 +107,7 @@ unordered rows:
          » expr: (rapidsse.public.nation.n_nationkey > __subquery0003())
          » ordinal expr: ($1 > __subquery0003())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)' )
 
@@ -141,7 +141,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -167,7 +167,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MAX(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MAX($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -188,7 +188,7 @@ unordered rows:
          » expr: ((rapidsse.public.nation.n_nationkey > __subquery0003()) AND (rapidsse.public.nation.n_nationkey < __subquery0005()))
          » ordinal expr: (($1 > __subquery0003()) AND ($1 < __subquery0005()))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)' )
 
@@ -222,7 +222,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -237,7 +237,7 @@ unordered rows:
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
       » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » location: all partitions
          » table: (rapidsse.public.nation)' )
 
@@ -271,7 +271,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -297,7 +297,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MAX(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MAX($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -313,7 +313,7 @@ unordered rows:
       » column: (Alias = nationMin ; Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
       » column: (Alias = nationMax ; Expr = __subquery0005() ; Ordinal Expr = __subquery0005())
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » location: all partitions
          » table: (rapidsse.public.nation)' )
 
@@ -360,7 +360,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -386,7 +386,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -405,7 +405,7 @@ unordered rows:
          » expr: (rapidsse.public.nation.n_nationkey > __subquery0005())
          » ordinal expr: ($1 > __subquery0005())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » location: all partitions
             » table: (rapidsse.public.nation)' )
 
@@ -447,7 +447,7 @@ unordered rows:
                   » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
                   » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » location: all partitions
                      » table: (rapidsse.public.nation)
 
@@ -519,7 +519,7 @@ unordered rows:
             » expr: (rapidsse.public.nation.n_regionkey = n1.n_regionkey)
             » ordinal expr: ($3 = %1)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -539,7 +539,7 @@ unordered rows:
          » expr: ((CAST(n1.n_nationkey AS DECIMAL)) > __subquery0003(n1.n_regionkey))
          » ordinal expr: ((CAST($1 AS DECIMAL)) > __subquery0003($3))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » alias: (n1)
             » table: (rapidsse.public.nation)' )
 
@@ -567,7 +567,7 @@ unordered rows:
             » expr: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal expr: ($1 = %1)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -587,7 +587,7 @@ unordered rows:
          » expr: ((CAST(rapidsse.public.nation.n_nationkey AS DECIMAL)) > __subquery0003(rapidsse.public.nation.n_regionkey))
          » ordinal expr: ((CAST($1 AS DECIMAL)) > __subquery0003($3))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)' )
 
 
@@ -614,7 +614,7 @@ unordered rows:
             » expr: ((rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey) AND (rapidsse.public.region.r_name != rapidsse.public.nation.n_name))
             » ordinal expr: (($1 = %1) AND ($2 != %2))
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -634,7 +634,7 @@ unordered rows:
          » expr: ((CAST(rapidsse.public.nation.n_nationkey AS DECIMAL)) > __subquery0003(rapidsse.public.nation.n_regionkey, rapidsse.public.nation.n_name))
          » ordinal expr: ((CAST($1 AS DECIMAL)) > __subquery0003($3, $2))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)' )
 
 
@@ -664,7 +664,7 @@ unordered rows:
             » expr: ((rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey) AND (regionsum > 0))
             » ordinal expr: (($1 = %1) AND (%2 > 0))
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -689,7 +689,7 @@ unordered rows:
             » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
             » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)' )
 
 
@@ -746,7 +746,7 @@ unordered rows:
             » expr: (rapidsse.public.nation.n_regionkey = n1.n_regionkey)
             » ordinal expr: ($3 = %1)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -760,7 +760,7 @@ unordered rows:
       » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
       » column: (Alias = region_average ; Expr = __subquery0003(n1.n_regionkey) ; Ordinal Expr = __subquery0003($3))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » alias: (n1)
          » table: (rapidsse.public.nation)' )
 
@@ -795,7 +795,7 @@ rows: (*,'explainPlan','
 -> -> -> -> -> projectOp
                » column: (Expr = rapidsse.public.region.r_regionkey ; Ordinal Expr = $1)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -815,7 +815,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_regionkey IN __subquery0003())
          » ordinal expr: ($3 IN __subquery0003())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)')
 
 
@@ -841,7 +841,7 @@ rows: (*,'explainPlan','
             » expr: (n1.n_name != rapidsse.public.region.r_name)
             » ordinal expr: (%1 != $2)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -861,7 +861,7 @@ rows: (*,'explainPlan','
          » expr: (n1.n_regionkey IN __subquery0003(n1.n_name))
          » ordinal expr: ($3 IN __subquery0003($2))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » alias: (n1)
             » table: (rapidsse.public.nation)')
 
@@ -895,7 +895,7 @@ rows: (*,'explainPlan','
 -> -> -> -> -> projectOp
                » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -909,7 +909,7 @@ rows: (*,'explainPlan','
       » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
       » column: (Expr = n1.n_nationkey IN __subquery0003() ; Ordinal Expr = $1 IN __subquery0003())
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » alias: (n1)
          » table: (rapidsse.public.nation)')
 
@@ -947,7 +947,7 @@ rows: (*,'explainPlan','
                   » expr: ((n1.n_regionkey % 2) = 0)
                   » ordinal expr: ((%1 % 2) = 0)
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -961,7 +961,7 @@ rows: (*,'explainPlan','
       » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
       » column: (Expr = n1.n_nationkey IN __subquery0003(n1.n_regionkey) ; Ordinal Expr = $1 IN __subquery0003($3))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » alias: (n1)
          » table: (rapidsse.public.nation)')
 
@@ -1015,7 +1015,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -1035,7 +1035,7 @@ rows: (*,'explainPlan','
          » expr: (EXISTS __subquery0003())
          » ordinal expr: (EXISTS __subquery0003())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)')
             
             
@@ -1059,7 +1059,7 @@ rows: (*,'explainPlan','
          » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
          » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -1079,7 +1079,7 @@ rows: (*,'explainPlan','
          » expr: (EXISTS __subquery0003())
          » ordinal expr: (EXISTS __subquery0003())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)')
 
 
@@ -1108,7 +1108,7 @@ rows: (*,'explainPlan','
             » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
             » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 -> mainSubquery
@@ -1145,7 +1145,7 @@ rows: (*,'explainPlan','
          » expr: (EXISTS __subquery0004())
          » ordinal expr: (EXISTS __subquery0004())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)')
 
 
@@ -1173,7 +1173,7 @@ rows: (*,'explainPlan','
             » expr: (n1.n_name != rapidsse.public.region.r_name)
             » ordinal expr: (%1 != $2)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -1193,7 +1193,7 @@ rows: (*,'explainPlan','
          » expr: (EXISTS __subquery0003(n1.n_name))
          » ordinal expr: (EXISTS __subquery0003($2))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » alias: (n1)
             » table: (rapidsse.public.nation)')
 
@@ -1227,7 +1227,7 @@ rows: (*,'explainPlan','
                » expr: (n1.n_name != rapidsse.public.region.r_name)
                » ordinal expr: (%1 != $2)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.region)
 
 -> mainSubquery
@@ -1264,7 +1264,7 @@ rows: (*,'explainPlan','
          » expr: (EXISTS __subquery0004(n1.n_name))
          » ordinal expr: (EXISTS __subquery0004($2))
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » alias: (n1)
             » table: (rapidsse.public.nation)')
 
@@ -1294,7 +1294,7 @@ rows: (*,'explainPlan','
          » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
          » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1308,7 +1308,7 @@ rows: (*,'explainPlan','
       » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
       » column: (Expr = EXISTS __subquery0003() ; Ordinal Expr = EXISTS __subquery0003())
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » alias: (n1)
          » table: (rapidsse.public.nation)')
 
@@ -1342,7 +1342,7 @@ rows: (*,'explainPlan','
             » expr: ((n1.n_regionkey % 2) = 0)
             » ordinal expr: ((%1 % 2) = 0)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1356,7 +1356,7 @@ rows: (*,'explainPlan','
       » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
       » column: (Expr = EXISTS __subquery0003(n1.n_regionkey) ; Ordinal Expr = EXISTS __subquery0003($3))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » alias: (n1)
          » table: (rapidsse.public.nation)')
 
@@ -1390,7 +1390,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = 12 ; Ordinal Expr = 12)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.nation)
 
 -> mainSubquery
@@ -1407,7 +1407,7 @@ unordered rows:
             » expr: (rapidsse.public.nation.n_nationkey = __subquery0003())
             » ordinal expr: ($1 = __subquery0003())
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1427,7 +1427,7 @@ unordered rows:
          » expr: (rapidsse.public.nation.n_name = __subquery0005())
          » ordinal expr: ($2 = __subquery0005())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)' )
 
 
@@ -1458,7 +1458,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = 12 ; Ordinal Expr = 12)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.nation)
 
 -> exprSubquery
@@ -1494,7 +1494,7 @@ unordered rows:
             » expr: (rapidsse.public.nation.n_nationkey = __subquery0004())
             » ordinal expr: ($1 = __subquery0004())
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1514,7 +1514,7 @@ unordered rows:
          » expr: (rapidsse.public.nation.n_name = __subquery0006())
          » ordinal expr: ($2 = __subquery0006())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)' )
 
 
@@ -1544,7 +1544,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.nation)
 
 -> mainSubquery
@@ -1560,7 +1560,7 @@ unordered rows:
 -> -> -> -> projectOp
             » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1573,7 +1573,7 @@ unordered rows:
 -> -> projectOp
       » column: (Expr = __subquery0005() ; Ordinal Expr = __subquery0005())
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 
@@ -1604,7 +1604,7 @@ unordered rows:
 -> -> -> -> -> projectOp
                » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.nation)
 
 -> exprSubquery
@@ -1639,7 +1639,7 @@ unordered rows:
 -> -> -> -> projectOp
             » column: (Expr = __subquery0004() ; Ordinal Expr = __subquery0004())
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -1652,7 +1652,7 @@ unordered rows:
 -> -> projectOp
       » column: (Expr = __subquery0006() ; Ordinal Expr = __subquery0006())
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)' )
 
 
@@ -1708,7 +1708,7 @@ unordered rows:
                   » column: (Expr = AVG(rapidsse.public.region.r_regionkey) ; Ordinal Expr = AVG($1))
                   » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM(%1))
 
--> -> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> -> select * fromOp
                      » table: (rapidsse.public.region)
 
 -> mainSubquery
@@ -1749,7 +1749,7 @@ unordered rows:
             » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
             » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.nation)' )
 
 
@@ -1799,7 +1799,7 @@ unordered rows: (*,'explainPlan','
                » expr: (rapidsse.public.employees.department_id = e.department_id)
                » ordinal expr: ($10 = %1)
 
--> -> -> -> -> -> tableScanOp
+-> -> -> -> -> -> select * fromOp
                   » table: (rapidsse.public.employees)
 
 -> mainSubquery
@@ -1841,11 +1841,11 @@ unordered rows: (*,'explainPlan','
             » predicate: (d.department_id = e.department_id)
             » ordinal predicate: ($11 = $10)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » alias: (e)
                » table: (rapidsse.public.employees)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » alias: (d)
                » table: (rapidsse.public.departments)')
 
@@ -1881,7 +1881,7 @@ unordered rows:
 -> -> -> -> projectOp
             » column: (Expr = rapidsse.public.region.r_regionkey ; Ordinal Expr = $1)
 
--> -> -> -> -> tableScanOp
+-> -> -> -> -> select * fromOp
                » table: (rapidsse.public.region)
 
 ∆ exprSubquery
@@ -1920,7 +1920,7 @@ unordered rows:
          » expr: (rapidsse.public.nation.n_regionkey = __subquery0004())
          » ordinal expr: ($3 = __subquery0004())
 
--> -> -> -> tableScanOp
+-> -> -> -> select * fromOp
             » table: (rapidsse.public.nation)' )
 
 // Negative case - expression subquery refers to a table subquery not in scope

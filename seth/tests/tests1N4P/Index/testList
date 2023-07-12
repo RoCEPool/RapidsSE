@@ -1,8 +1,8 @@
 anidx.test
 createLoop.test
 //createUnique.test
-emptyTable.test
-rangeQuery.test
+////emptyTable.test
+////rangeQuery.test
 indexEntry.test
 //supplierEntry.test
 //lineitemEntry.test

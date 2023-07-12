@@ -79,7 +79,7 @@ rows: (*,'explainPlan','
       » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 // Can we run a basic SELECT against this table (no data)?
@@ -100,7 +100,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
 
--> -> -> tableScanOp
+-> -> -> select * fromOp
          » table: (rapidsse.public.nation)')
 
 
