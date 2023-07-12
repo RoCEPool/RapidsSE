@@ -7,6 +7,7 @@
 
 namespace STORE
 {
+
   static const i8 C_CARDIMAGE_LINE  = 32;
   static const i8 C_CARDIMAGE_LINES = (C_SIZE_SMALL_OBJECT - 128) / C_CARDIMAGE_LINE;
 
@@ -14,10 +15,13 @@ namespace STORE
     char m_cCardLine[C_CARDIMAGE_LINE];
   };
 
+  class Card;
+
   class CardImage : public Object
   {
   private:
-    i8 m_i_Line;
+    Card*     m_pCard;
+    i8        m_i_Line;
     _CardLine m_xaCardLines[C_CARDIMAGE_LINES];
 
   protected:
@@ -28,13 +32,13 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    CardImage(void);
+    CardImage(Card* pCard);
    ~CardImage(void) noexcept(false);
 
-    void vAddLine(char *azLine);
+    void vAddLine(Stz* szLine);
 
-    char* azLine(i8 i_Line);
-    i8    nLines(void);
+    Stz* szLine(i8 i_Line);
+    i8   nLines(void);
 
   protected:
     Footer* aFooter(void);

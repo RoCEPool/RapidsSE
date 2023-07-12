@@ -13,8 +13,8 @@ namespace STORE
   class Card;
 
   struct _CardHistory {
-    i8    m_iKey;
-    Card* m_pCard;
+    i8         m_iKey;
+    CardImage* m_pImage;
   };
 
   class CardHistory : public Object
@@ -22,6 +22,8 @@ namespace STORE
   private:
 
     Pds* m_pHistoryPds;
+
+    CardImage* m_pImage_curr;
 
   protected:
     // must be last
@@ -34,7 +36,9 @@ namespace STORE
     CardHistory(void);
    ~CardHistory(void) noexcept(false);
 
-    CardImage* pImage(void);
+    void vAddImage(Card* pCard);
+    void vAddLine(Stz* szText);
+
     CardImage* pImage(i8 i_Image);
     i8 nImages(void);
 

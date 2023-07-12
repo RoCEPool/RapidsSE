@@ -17,11 +17,12 @@ __aFooterFunction(CardImage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardImage::CardImage(void)
+CardImage::CardImage(Card* pCard)
 : Object(CN_CARDIMAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
+  m_pCard = pCard;
   m_i_Line = 0;
 
   MemLib::vZero(m_xaCardLines,sizeof(m_xaCardLines),CN_CARDIMAGE);
@@ -47,17 +48,17 @@ CardImage::~CardImage(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add line                                                                   */
 /*----------------------------------------------------------------------------*/
-void CardImage::vAddLine(char *azLine)
+void CardImage::vAddLine(Stz* szLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
-  StrLib::vCopy(m_xaCardLines[m_i_Line++].m_cCardLine,azLine);
+  StrLib::vCopy(m_xaCardLines[m_i_Line++].m_cCardLine,szLine->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
 /* return given line                                                          */
 /*----------------------------------------------------------------------------*/
-char* CardImage::azLine(i8 i_Line)
+Stz* CardImage::szLine(i8 i_Line)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
@@ -65,7 +66,7 @@ char* CardImage::azLine(i8 i_Line)
     return nullptr;
 
   char* azLine = m_xaCardLines[i_Line].m_cCardLine;
-  return azLine;
+  return reinterpret_cast<Stz*>(azLine);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -437,28 +437,8 @@ void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText)
   RibbonLine* pRibbonLine = pGet(i_Line);
 
   pRibbonLine->vPut(i_Char,szText);
-}
 
-/*----------------------------------------------------------------------------*/
-/* put some text                                                              */
-/*----------------------------------------------------------------------------*/
-void Ribbon::vPutTextRight(Stz* szText, i8 i_Line, i8 i_Char)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  vSufficientLines(i_Line);
-  
-  RibbonLine* pRibbonLine = pGet(i_Line);
-
-  i8 i_Right;
-  if (C_UNKNOWN == i_Char) {
-    RASSERT(C_UNKNOWN != m_jRibbonWidth);
-    i_Right = m_jRibbonWidth - StrLib::nSize((char*)szText) + 1;
-  }
-  else
-    i_Right = i_Char;
-
-  pRibbonLine->vPut(i_Right,szText);
+  //m_pCardCtl->pCardHistory()->vAddLine(szText);
 }
 
 /*----------------------------------------------------------------------------*/
