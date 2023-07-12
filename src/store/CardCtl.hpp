@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eCK.h"
+#include "CardHistory.hpp"
 
 namespace STORE
 {
@@ -47,6 +48,8 @@ namespace STORE
 
     i8  m_iPrintNo;
 
+    CardHistory* m_pCardHistory;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -61,6 +64,7 @@ namespace STORE
     bool bBenchPrint(void);
     bool bBoardPrint(void);
 
+    CardHistory* pCardHistory(void);
     bool bCued(void);
     void vCued(bool bCued);
     bool bCueDisabled(void);

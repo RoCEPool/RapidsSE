@@ -7,6 +7,7 @@
 
 #include "RibbonLine.hpp"
 #include "StzList.hpp"
+#include "CardCtl.hpp"
 
 namespace BASE
 {
@@ -16,7 +17,7 @@ namespace BASE
   {
   private:
 
-    Object* m_pCtl;
+    CardCtl* m_pCardCtl;
     Object* m_pSurface;
 
     i8 m_nMaxLanesAcross;  // maximum number of lanes across
@@ -40,7 +41,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Ribbon(Object* pCtl, Object* pSurface, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
+    Ribbon(CardCtl* pCardCtl, Object* pSurface, i8 nMaxLanesAcross=C_RIBBON_ACROSS);
    ~Ribbon(void) noexcept(false);
 
     i8   i_Char(void);

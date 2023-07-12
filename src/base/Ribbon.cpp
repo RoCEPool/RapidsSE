@@ -18,14 +18,14 @@ __aFooterFunction(Ribbon)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Ribbon::Ribbon(Object* pCtl, Object* pSurface, i8 nMaxLanesAcross)
+Ribbon::Ribbon(CardCtl* pCardCtl, Object* pSurface, i8 nMaxLanesAcross)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
   m_pLaneTabs = new IntSet(C_RIBBON_MAX_LANES);
   vInitTabs(0, C_RIBBON_LANE_WIDTH + C_RIBBON_LANE_GAP);
 
-  m_pCtl = pCtl;
+  m_pCardCtl = pCardCtl;
   m_pSurface = pSurface;
 
   m_nMaxLanesAcross = nMaxLanesAcross;
@@ -78,7 +78,7 @@ Object* Ribbon::pCtl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-  return m_pCtl;
+  return m_pCardCtl;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -48,6 +48,8 @@ CardCtl::CardCtl(void)
 
   m_iPrintNo = 0;
 
+  m_pCardHistory = new CardHistory;
+
   _checkInitialised_(CN_CARDCTL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
@@ -59,6 +61,8 @@ CardCtl::CardCtl(void)
 CardCtl::~CardCtl(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  delete m_pCardHistory;
 }
 
 
@@ -90,6 +94,16 @@ bool CardCtl::bBoardPrint(void)
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card history                                                           */
+/*----------------------------------------------------------------------------*/
+CardHistory* CardCtl::pCardHistory(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
+
+  return m_pCardHistory;
 }
 
 /*----------------------------------------------------------------------------*/
