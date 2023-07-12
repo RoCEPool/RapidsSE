@@ -75,11 +75,12 @@ void ColMap::vDump(i8 i_Tab)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
-    vTrace("               [%lld] $%lld <- %s %lld \n"_Stz,
+    vTrace("               [%lld] %s %lld -> $%lld\n"_Stz,
            i_Col,
-           m_axCols[i_Col].m_i_EmittedCol,
            m_axCols[i_Col].m_bPayload ? "payload cell" : "key cell",
-           m_axCols[i_Col].m_i_Cell);
+           m_axCols[i_Col].m_i_Cell,
+           m_axCols[i_Col].m_i_EmittedCol
+           );
   }
 }
 
