@@ -192,6 +192,9 @@ void Step::vCrwBufferGetNextLinkedBufferId(void)
   CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
   BufferId oNextBufferId = pCrwBuffer->oNextLinkedBufferId();
 
+//  DataBuffer* pDataBuffer = _pDataBuffer(pCrwBuffer->pNextCrwBuffer());
+//  RASSERT(pDataBuffer == _pDataBuffer(AM::pHashMap()->pValueAt(oNextBufferId.m_pvAsAddress)));
+
   m_pDataStack->vPushPtr((Object*)oNextBufferId.m_pvAsAddress);
 
   EXIT();

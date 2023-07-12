@@ -226,7 +226,7 @@ load LineItem_3 "../TPCH/SF1/lineitem.tbl" ;
 space;
 
 select * from Lineitem_1 where L_ORDERKEY < 5;
-
+select * from Lineitem_2;
 load LineItem_4 "../TPCH/SF1/lineitem.tbl" ;
 load LineItem_5 "../TPCH/SF1/lineitem.tbl" ;
 

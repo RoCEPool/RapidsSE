@@ -43,8 +43,8 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
   m_oRootBufferId.m_pvAsAddress = nullptr;
-  m_pPdsBufferId = new Pds_t<xBufferId>();
-
+//  m_pPdsBufferId = new Pds_t<xBufferId>();
+  m_pPdsBufferId = nullptr;
   //m_pIndexTreeVec  = new IndexTreeVec;
 
   _checkInitialised_(CN_CRWTABLEPTN);
@@ -61,7 +61,7 @@ CrwTablePtn::~CrwTablePtn(void) noexcept(false)
 
   // delete the index data vector
   //delete m_pIndexTreeVec;
-  delete m_pPdsBufferId;
+//  delete m_pPdsBufferId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,8 +150,16 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 i8 CrwTablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-
+#ifdef WITH_PAGING
   return m_pPdsBufferId->iNumEntries();
+#else
+  i8 nBufferCount = 0;
+
+  if (m_pRootBuffer)
+    nBufferCount = m_pRootBuffer->nLinkedBufferCount();
+
+  return nBufferCount;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,6 +318,7 @@ void CrwTablePtn::vTruncate(void)
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
+  m_oRootBufferId.m_iAsI8 = 0;
 #endif
 }
 
