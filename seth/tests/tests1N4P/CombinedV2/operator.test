@@ -181,7 +181,7 @@ begin
 
   stage S01 on all partitions :
      scan      Nation
-   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | project "type INTEGER N_NATIONKEY , type VARCHAR N_NAME , type INTEGER N_REGIONKEY"
    | combined 0
    | next
 

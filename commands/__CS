@@ -40,7 +40,7 @@ begin
 
 end ;
 
-*/
+
 
 create table datums (
   int_col0   INTEGER NOT NULL,
@@ -65,4 +65,13 @@ load datums "../DATA/Transliterate/groupBy.csv" ;
 
 /weaved
 /pipeline_def
-select sum(int_col0), int_col1 from datums group by int_col1;
+select dec_col6 from datums order by dec_col6;
+
+*/
+create table interval6(a date,b timestamp,c time);
+load interval6 "../DATA/QA/interval/interval6.csv";
+select a+interval '1' month,count(*) from interval6 group by a+interval '1' month;
+*/
+
+_lineitem;
+select L_LINENUMBER, sum(L_DISCOUNT) , sum(L_LINENUMBER) from lineitem group by L_LINENUMBER;
