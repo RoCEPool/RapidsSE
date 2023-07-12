@@ -314,6 +314,9 @@
 
 #include "CardUsage.hpp"
 #include "ColMap.hpp"
+#include "CardImage.hpp"
+#include "CardHistory.hpp"
+
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -374,10 +377,12 @@ SizeHeap gxaSizeHeap[]
   { CN__C__,                     'C' - ('A' - 1),            HT_INVALID   ,FILL },
   { CN_CARD,                     sizeof(Card),               HT_T_SMALL   ,FILL },
   { CN_CARDCTL,                  sizeof(CardCtl),            HT_T_LARGE   ,FILL },
-  { CN_CARDITER,                 sizeof(CardIter),         HT_T_SMALL   , FILL },
-  { CN_CARDITERMEMBERS,          sizeof(CardIterMembers),  HT_T_SMALL   , FILL },
+  { CN_CARDHISTORY,              sizeof(CardHistory),        HT_T_SMALL   , FILL },
+  { CN_CARDIMAGE,                sizeof(CardImage),          HT_T_SMALL   , FILL },
+  { CN_CARDITER,                 sizeof(CardIter),           HT_T_SMALL   , FILL },
+  { CN_CARDITERMEMBERS,          sizeof(CardIterMembers),    HT_T_SMALL   , FILL },
   { CN_CARDUSAGE,                sizeof(CardUsage),          HT_T_SMALL   ,FILL },
-  { CN_CARRYFORWARD,             sizeof(CarryForward),     HT_T_TINY    , FILL },
+  { CN_CARRYFORWARD,             sizeof(CarryForward),       HT_T_TINY    , FILL },
   { CN_CATALOG,                  sizeof(Catalog),            HT_INVALID   ,FILL },
   { CN_CHARSER,                  sizeof(Charser),            HT_T_LARGE   ,FILL },
   { CN_CHILDEXIT,                sizeof(ChildExit),          HT_T_TINY    ,FILL },
