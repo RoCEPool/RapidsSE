@@ -144,40 +144,79 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   // this projection will be in an aggreg, gbyAgg or ordAgg
   RASSERT(pCI->G.p_OP->bIsEarlyRoot());
 
+  pCI->G.p_key = pSub_key();
+
   Card_Needed* p_needed = new Card_Needed;
 
+
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 1) get factored columns of key as start of needed projection
+  // 1) append the referenced col's in rpnCalc of this projection into needed projection
+
+  CardIter xCI_projection(this);
+  while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
+
+    xCI_projection.G.p_rpnCalc->vDump();
+    CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
+    while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+      // only interested in columns
+
+      if (xCI_rpnCalc.G.p_term->bIsKeyOdn()) {
+        RASSERT(pCI->G.p_key);
+
+        Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(xCI_rpnCalc.G.p_term->pSymbol());
+        p_expr_key->vDump();
+        Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
+
+        vDebugPoint();
+
+        if (p_needed->pFindExpr(pSymbol_tblCol))
+          continue;
+
+        p_needed->vAppend(p_expr_key->pClone());
+      }
+      else
+      if (xCI_rpnCalc.G.p_term->bIsValOdn()) {
+
+        // which we haven't already added
+        if (p_needed->pFindExpr(xCI_rpnCalc.G.p_term->pSymbol()))
+          continue;
+
+        if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
+          p_needed->vAppend(p_expr_col->pClone());
+      }
+      else {
+
+      }
+    }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 2) get factored columns of key as start of needed projection
 
   if (pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG)) {
     if ((pCI->G.p_key = pSub_key())) {
       // + projection of gbyAgg/ordAgg has a key
 
-      pCI->G.p_key->vFactorAll_col_IntoDistinct_expr(pCI);
-      p_needed->vTransferChildren(pCI->G.p_subSet);
-      DELETE_CARD(pCI->G.p_subSet);
+      CardIter xCI_key(pCI->G.p_key);
+      while (xCI_key.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
+        CardIter xCI_rpnCalc(xCI_key.G.p_rpnCalc);
+        while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+          // only interested in columns
+          if (!xCI_rpnCalc.G.p_term->bIsValOdn())
+            continue;
+          // which we haven't already added
+          if (p_needed->pFindExpr(xCI_rpnCalc.G.p_term->pSymbol()))
+            continue;
+
+          if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
+            p_needed->vAppend(p_expr_col->pClone());
+        }
+      }
     }
   }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 2) append the referenced col's in rpnCalc of this projection into needed projection
-
-  CardIter xCI_projection(this);
-  while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
-
-    CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
-    while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
-      // only interested in columns
-      if (!xCI_rpnCalc.G.p_term->bIsValOdn())
-        continue;
-      // which we havent already added
-      if (p_needed->pFindExpr(xCI_rpnCalc.G.p_term->pSymbol()))
-        continue;
-
-      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
-        p_needed->vAppend(p_expr_col->pClone());
-    }
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -186,6 +225,56 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
 
   return p_needed;
 }
+/*----------------------------------------------------------------------------*/
+//Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  // this projection will be in an aggreg, gbyAgg or ordAgg
+//  RASSERT(pCI->G.p_OP->bIsEarlyRoot());
+//
+//  Card_Needed* p_needed = new Card_Needed;
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // 1) get factored columns of key as start of needed projection
+//
+//  if (pCI->G.p_OP->bIsCard(CK_GBYAGG) || pCI->G.p_OP->bIsCard(CK_ORDAGG)) {
+//    if ((pCI->G.p_key = pSub_key())) {
+//      // + projection of gbyAgg/ordAgg has a key
+//
+//      pCI->G.p_key->vFactorAll_col_IntoDistinct_expr(pCI);
+//      p_needed->vTransferChildren(pCI->G.p_subSet);
+//      DELETE_CARD(pCI->G.p_subSet);
+//    }
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // 2) append the referenced col's in rpnCalc of this projection into needed projection
+//
+//  CardIter xCI_projection(this);
+//  while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
+//
+//    CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
+//    while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+//      // only interested in columns
+//      if (!xCI_rpnCalc.G.p_term->bIsValOdn())
+//        continue;
+//      // which we havent already added
+//      if (p_needed->pFindExpr(xCI_rpnCalc.G.p_term->pSymbol()))
+//        continue;
+//
+//      if (Card_Expr *p_expr_col = pCI->pExpr_For_col(xCI_rpnCalc.G.p_term))
+//        p_needed->vAppend(p_expr_col->pClone());
+//    }
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  p_needed->vRenumberAll_expr();
+//  //p_needed->vDump();
+//
+//  return p_needed;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

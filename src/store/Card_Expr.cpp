@@ -326,6 +326,7 @@ Symbol* Card_Expr::pFirstKeyCol(void)
 
   return p_keyCol;
 }
+
 /*----------------------------------------------------------------------------*/
 /* get first stm col                                                          */
 /*----------------------------------------------------------------------------*/
@@ -336,6 +337,18 @@ Symbol* Card_Expr::pFirstStmCol(void)
   Symbol* p_stmCol = pSub_rpnCalc()->pFirstStmCol();
 
   return p_stmCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first tbl col                                                          */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_Expr::pFirstTblCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Symbol* p_tblCol = pSub_rpnCalc()->pFirstTblCol();
+
+  return p_tblCol;
 }
 
 /*----------------------------------------------------------------------------*/

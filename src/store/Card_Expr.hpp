@@ -35,6 +35,7 @@ namespace STORE
     void vFactorAll_valOdn_IntoDistinct_expr(CardIter* pCI);
     Symbol* pFirstKeyCol(void);
     Symbol* pFirstStmCol(void);
+    Symbol* pFirstTblCol(void);
     Symbol* pGetSymbol(i8 i_Term);
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsAggFn(void);

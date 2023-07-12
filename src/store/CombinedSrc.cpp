@@ -1431,7 +1431,7 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
     i8 i_Cell = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Cell;
     i8 i_EmittedCol = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_EmittedCol;
-    Column *pColumn = pStreamDefOut->pGetColumn(i_EmittedCol);
+    Column *pColumn = pStreamDefOut->pGetColumn(i_EmittedCol-1);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the payload ?

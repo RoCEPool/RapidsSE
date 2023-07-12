@@ -285,6 +285,20 @@ Symbol* Card_RpnCalc::pFirstStmCol(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return first tblCol in this rpn sequence                                   */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_RpnCalc::pFirstTblCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->bIsColOdn())
+      return xKid.p_term()->pSymbol();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a term                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_RpnCalc::pGetTerm(i8 i_Term)
