@@ -83,20 +83,48 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
 
+  i8 nExpr_key = 0;
   for (Kid xKey(pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_key = xKey.p_expr();
+    nExpr_key++;
+
     Symbol* pSymbol_key = p_expr_key->pSymbol();
 
     Card_Expr* p_expr_projection = pCI->G.p_projection->pDecodeExpr(pSymbol_key);
     if (! p_expr_projection)
       continue;
 
-    i_Cell_key = pSymbol_key->iExtractOrdinal();
+    i_Cell_key = p_expr_projection->pSymbol()->iExtractOrdinal();
 
     p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
     p_expr_projection->pSymbol()->Y_vSet(P_Key);
     p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_key);
 
+  }
+
+  i_Cell_payload = 1;
+
+  for (Kid xProjection(pCI->G.p_projection); xProjection.bEach(CK_EXPR); /**/) {
+    Card_Expr* p_expr_projection = xProjection.p_expr();
+
+    if (p_expr_projection->bIsExpressionOfKey())
+      continue;
+
+    Symbol* pSymbol_stmCol_projection = p_expr_projection->pFirstStmCol();
+
+    if (pSymbol_stmCol_projection) {
+      i_Cell_payload = pSymbol_stmCol_projection->iExtractOrdinal() - nExpr_key;
+
+      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+      p_expr_projection->pSymbol()->Y_vSet(P_Payload);
+      p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
+    }
+    else {
+
+      p_expr_projection->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+      p_expr_projection->pSymbol()->Y_vSet(P_Payload);
+      p_expr_projection->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
+    }
   }
 
 }
