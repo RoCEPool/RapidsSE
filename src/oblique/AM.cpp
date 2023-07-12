@@ -2803,6 +2803,17 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get base address of shm region                                             */
+/*----------------------------------------------------------------------------*/
+void* AM::SYSARGS::aRegionAddr(void)
+{
+  _static_
+
+  return gpAttachMap->m_xSysArgs.m_aRegionAddr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get collect sys metrics option                                             */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSARGS::bSysMetrics(void)

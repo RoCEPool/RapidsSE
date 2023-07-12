@@ -618,6 +618,7 @@ namespace OBLIQUE
       static i8   iOptimiserLvl(void);
       static void vOptimiserLvl(i8 iOptimiserLvl);
       static i8   nPtnsPerNode(void);
+      static void* aRegionAddr(void);
       static bool bSysMetrics(void);
       static void vSysMetrics(bool bJobMetrics);
       static TagSet* pTagSet(void);
