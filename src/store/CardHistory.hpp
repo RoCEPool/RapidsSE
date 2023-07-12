@@ -5,12 +5,23 @@
 
 #include "BASE.h"
 
+#include "Pds.hpp"
+#include "CardImage.hpp"
 
 namespace STORE
 {
+  class Card;
+
+  struct _CardHistory {
+    i8    m_iKey;
+    Card* m_pCard;
+  };
+
   class CardHistory : public Object
   {
   private:
+
+    Pds* m_pHistoryPds;
 
   protected:
     // must be last
@@ -22,6 +33,10 @@ namespace STORE
   
     CardHistory(void);
    ~CardHistory(void) noexcept(false);
+
+    CardImage* pImage(void);
+    CardImage* pImage(i8 i_Image);
+    i8 nImages(void);
 
   protected:
     Footer* aFooter(void);
