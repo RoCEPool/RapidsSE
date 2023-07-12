@@ -497,13 +497,172 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
   StreamDef* pStreamDef = new StreamDef;
 
-  i8 i_EmittedCol = 1;
   s32 sColNm;
   s32 sColNm_mapped;
   eCT eColType;
   //Symbol* pSymbol;
 
-  i8 i_Cell = C_UNKNOWN;
+
+
+  i8 i_EmittedCol = 1;
+
+
+  if (CK_GBYAGG == eOP) {
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    i8 i_KeyCol = C_UNKNOWN;
+    i8 nKeyCol = 0;
+
+    bool bFound_key = true;
+    while (bFound_key) {
+      bFound_key = false;
+      for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+        Card_Expr *p_expr = xProjection.p_expr();
+
+        if (! p_expr->bIsExpressionOfKey())
+          continue;
+        if (!p_expr->pSymbol()->Y_bHas(P_EmittedCol))
+          continue;
+        if (p_expr->pSymbol()->Y_iGet(P_EmittedCol) != i_EmittedCol)
+          continue;
+
+        bFound_key = true;
+
+        if (p_expr->pSub_as())
+          sColNm = p_expr->pSub_as()->szSymbol();
+        else
+          sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+        p_key->vX();
+
+        vDebugPoint();
+
+        s32 sNm_modified;
+        sNm_modified.vSprint("C%lld_%s"_Stz,
+                             xProjection.i_Child(),
+                             sColNm.azChar());
+        sColNm = sNm_modified;
+        sColNm_mapped = sColNm;
+
+        p_expr->vDump();
+
+        if (Symbol *pSymbol_key = p_expr->pFirstKeyCol()) {
+          vTrace("%s\n"_Stz, pSymbol_key->szSymbol());
+
+          i_KeyCol = StrLib::iGleanInt(pSymbol_key->szSymbol()->azChar());
+          if (i_KeyCol) {
+            vTrace("%s %lld\n"_Stz, pSymbol_key->szSymbol(), i_KeyCol);
+
+
+            sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                                 xProjection.i_Child(),
+                                 i_KeyCol);
+            sColNm_mapped = sNm_modified;
+          }
+        } else if (Symbol *pSymbol_stm = p_expr->pFirstStmCol()) {
+          vTrace("%s\n"_Stz, pSymbol_stm->szSymbol());
+
+
+          i_KeyCol = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
+          if (i_KeyCol) {
+            vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_KeyCol);
+
+
+            sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                                 xProjection.i_Child(),
+                                 i_KeyCol);
+            sColNm_mapped = sNm_modified;
+          }
+        } else {
+          i_KeyCol = i_EmittedCol;
+        }
+
+        vDebugPoint();
+
+        pColMap->vAdd(i_KeyCol, false, i_EmittedCol);
+
+        i_EmittedCol++;
+        nKeyCol++;
+        break;
+      }
+    }
+
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+    i8 i_PayLoadCol = 1;
+    bool bFound_payload = true;
+    while (bFound_payload) {
+      bFound_payload = false;
+      for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+        Card_Expr *p_expr = xProjection.p_expr();
+
+        if (p_expr->bIsExpressionOfKey())
+          continue;
+        if (!p_expr->pSymbol()->Y_bHas(P_EmittedCol))
+          continue;
+        if (p_expr->pSymbol()->Y_iGet(P_EmittedCol) != i_EmittedCol)
+          continue;
+
+        bFound_payload = true;
+
+        if (p_expr->pSub_as())
+          sColNm = p_expr->pSub_as()->szSymbol();
+        else
+          sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+        p_key->vX();
+
+        vDebugPoint();
+
+        s32 sNm_modified;
+        sNm_modified.vSprint("C%lld_%s"_Stz,
+                             xProjection.i_Child(),
+                             sColNm.azChar());
+        sColNm = sNm_modified;
+        sColNm_mapped = sColNm;
+
+        p_expr->vDump();
+
+        if (Symbol *pSymbol_stm = p_expr->pFirstStmCol()) {
+          vTrace("%s\n"_Stz, pSymbol_stm->szSymbol());
+
+
+          i_PayLoadCol = StrLib::iGleanInt(pSymbol_stm->szSymbol()->azChar());
+          if (i_PayLoadCol) {
+            i_PayLoadCol = i_PayLoadCol - nKeyCol;
+
+            vTrace("%s %lld\n"_Stz, pSymbol_stm->szSymbol(), i_PayLoadCol);
+
+
+            sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+                                 xProjection.i_Child(),
+                                 i_PayLoadCol);
+            sColNm_mapped = sNm_modified;
+          }
+        } else {
+          i_PayLoadCol = i_EmittedCol - nKeyCol;
+        }
+
+
+        vDebugPoint();
+
+        pColMap->vAdd(i_EmittedCol, true, i_PayLoadCol);
+        pColMap->vDump();
+        i_EmittedCol++;
+
+        break;
+      }
+    }
+
+
+    return pStreamDef;
+  }
+
+
+
+  i8 i_Cell;
 
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
     Card_Expr *p_expr = xProjection.p_expr();
