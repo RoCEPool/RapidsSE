@@ -84,12 +84,9 @@ void Step::vCombinedExecute(void)
   //aCombinedT->m_iProcessRow = 1;
 
   if (pDataBuffer) {
-//    vTrace("Combined op processing BufferId %p\n"_Stz, pDataBuffer->oGetBufferId().m_pvAsAddress);
     if (pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
       // CRWBUFFER
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-      RASSERT(pCrwBuffer->bValidCrwBuffer());
-//      pCrwBuffer->vDump();
       aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
       aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aCombinedT->m_nRows      = pCrwBuffer->nRows();
