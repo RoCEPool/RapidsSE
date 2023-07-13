@@ -60,10 +60,14 @@ void CardHistory::vAddImage(Card* pCard)
 
   _CardHistory* aCardHistory = static_cast<_CardHistory*>(pSLB->aItemKey());
 
-  CardImage* pImage = new CardImage(pCard);
-  aCardHistory->m_pImage = pImage;
+  CardImage* pCardImage = new CardImage(pCard);
+  aCardHistory->m_pImage = pCardImage;
 
   m_pImage_curr = aCardHistory->m_pImage;
+
+  CardImage* pTest = pImage(aCardHistory->m_iKey);
+
+  RASSERT(pTest == pCardImage);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,12 +87,14 @@ void CardHistory::vDump(i8 i_Tab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
 
+  m_pHistoryPds->vDumpInUseList();
+
   i8 nImages = m_pHistoryPds->nItems();
-  for (i8 i_Image = 0; i_Image < nImages; i_Image++) {
-    CardImage* pImage = reinterpret_cast<CardImage*>(m_pHistoryPds->pFind(i_Image));
-    if (! pImage)
-      continue;
-    pImage->vDump(i_Tab);
+  for (i8 i_Image = 1; /**/; i_Image++) {
+    CardImage* pCardImage = pImage(i_Image);
+    if (! pCardImage)
+      break;
+    pCardImage->vDump(i_Tab);
   }
 
 }
@@ -102,6 +108,9 @@ CardImage* CardHistory::pImage(i8 i_Image)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
 
   SkipListBlock* pSLB = m_pHistoryPds->pFind(i_Image);
+
+  if (! pSLB)
+    return nullptr;
 
   _CardHistory* aCardHistory = static_cast<_CardHistory*>(pSLB->aItemKey());
 
