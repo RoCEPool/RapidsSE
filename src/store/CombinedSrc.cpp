@@ -1435,7 +1435,7 @@ void CombinedSrc::vAppendCodeToTubCols(OpSketch* pOpSketch) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the payload ?
-    bool bIsPayload = pOpSketch->bIsPayload(pColumn->iColumnNo());
+    bool bIsPayload = pOpSketch->bIsPayload(i_Col);
 
     if (bIsPayload) {
 
