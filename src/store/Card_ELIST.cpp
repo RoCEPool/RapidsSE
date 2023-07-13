@@ -3,8 +3,8 @@
 /*============================================================================*/
 
 #include "Card_ELIST.hpp"
-#include "Card_As.hpp"
 #include "CardIter.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -14,7 +14,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ELIST::Card_ELIST(eCK eCard)
-: Card(eCard)
+: Card_LIST(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -137,9 +137,7 @@ Card_Expr* Card_ELIST::pDecodeExpr(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i_Expr  = pSymbol->iExtractOrdinal() - 1;
-
-  Card_Expr* p_expr = pGetExpr(i_Expr);
+  Card_Expr* p_expr = _pCard_Expr(pGetChild_bySym(pSymbol));
 
   return p_expr;
 }

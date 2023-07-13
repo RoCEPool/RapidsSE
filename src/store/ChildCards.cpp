@@ -295,6 +295,18 @@ Card* ChildCards::pGetChild(i8 i_Child, eCK& reCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get expr relating to term                                                  */
+/*----------------------------------------------------------------------------*/
+Card* ChildCards::pGetChild_bySym(STORE::Symbol *pSymbol)
+{
+  i8 i_Child  = pSymbol->iExtractOrdinal() - 1;
+
+  Card* pCard = pGetChild(i_Child);
+
+  return pCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* morph all children of eFrom to be eTo                                      */
 /*----------------------------------------------------------------------------*/
 void ChildCards::vMorphChildrenTo(eCK eFrom, eCK eTo)

@@ -12,6 +12,7 @@ namespace STORE
 {
   class Card;
   class Card_Table;
+  class Symbol;
 
   class ChildCards : public ListExo2_t<Card>
   {
@@ -33,6 +34,7 @@ namespace STORE
 
     Card* pGetChild(i8 i_Child);
     Card* pGetChild(i8 i_Child, eCK& reCard);
+    Card* pGetChild_bySym(Symbol* pSymbol);
 
     void vMorphChildrenTo(eCK eFrom, eCK eTo);
 
