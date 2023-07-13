@@ -264,7 +264,7 @@ void Ribbon::vSprintData(Stz* szFormat, ...)
   StrLib::vSprint(zData, xArgs, (char*)szFormat);
   va_end(xArgs);
 
-  vPutOther(m_i_Line++,m_i_Char,(Stz*)zData);
+  vPutData(m_i_Line++,m_i_Char,(Stz*)zData);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,7 +339,7 @@ void Ribbon::vSprintDataRight(Stz* szFormat, ...)
 
   StrLib::vSprint(zDataRight, m_sRightFormat.szStz(), (Stz*)zData);
 
-  vPutOther(m_i_Line++,m_i_Char,(Stz*)zDataRight);
+  vPutData(m_i_Line++,m_i_Char,(Stz*)zDataRight);
 }
 
 /*----------------------------------------------------------------------------*/
