@@ -138,7 +138,6 @@ namespace STORE
     void G_vMainResynch(void);
     void G_vMainResynch(Card* pCard);
     void G_vMember(eCK eMember, Card* pCard, const char* asFuncNm);
-    Stz* szMemberNm(eCK eMember);
     bool bMore(void);
     bool G_bMoreMain(void);
     void G_vMorphCard(Card* pCard, eCK eCard);

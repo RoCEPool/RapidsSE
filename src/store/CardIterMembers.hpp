@@ -123,6 +123,7 @@ namespace STORE
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
+    Card_Cell *          p_cell;
     Card_CmpPred *       p_cmpPred;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
@@ -167,11 +168,14 @@ namespace STORE
     Card_JoinPredList *  p_joinPredList;
 
     Card_Key *           p_key;
+    Card_KeyCells *      p_keyCells;
     Card_KeyExists *     p_keyExists;
     Card_KeyNotExists *  p_keyNotExists;
 
     Card_Level *         p_level;
     Card_Limit *         p_limit;
+
+    Card_Mapping *       p_mapping;
 
     Card_NCorrCols *     p_nCorrCols;
     Card_Needed *        p_needed;
@@ -185,6 +189,7 @@ namespace STORE
     Card_OuterColNm *    p_outerColNm;
     Card_OuterJoin *     p_outerJoin;
 
+    Card_PayloadCells *  p_payloadCells;
     Card_Project *       p_project;
     Card_Projection *    p_projection;
 

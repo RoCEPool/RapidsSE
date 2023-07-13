@@ -253,10 +253,14 @@ void CardIter::G_vClearMembers(void)
   G.p_aggreg           = nullptr;
   G.p_andPred          = nullptr;
   G.p_as               = nullptr;
+
   G.p_boolCalc         = nullptr;
   G.p_bound            = nullptr;
   G.p_bounds           = nullptr;
+
   G.p_call             = nullptr;
+  G.p_cast             = nullptr;
+  G.p_cell             = nullptr;
   G.p_cmpPred          = nullptr;
   G.p_combined         = nullptr;
   G.p_constraint       = nullptr;
@@ -267,8 +271,11 @@ void CardIter::G_vClearMembers(void)
   G.p_costUnicast      = nullptr;
   G.p_count            = nullptr;
   G.p_crossJoin        = nullptr;
+
   G.p_direction        = nullptr;
+
   G.p_expr             = nullptr;
+
   G.p_filter           = nullptr;
   G.p_filtPred         = nullptr;
   G.p_filtPredList     = nullptr;
@@ -276,10 +283,13 @@ void CardIter::G_vClearMembers(void)
   G.p_fold             = nullptr;
   G.p_foldElist        = nullptr;
   G.p_from             = nullptr;
+
   G.p_gbyAgg           = nullptr;
+
   G.p_hash             = nullptr;
   G.p_having           = nullptr;
   G.p_hshCol           = nullptr;
+
   G.p_idxCol           = nullptr;
   G.p_idxColList       = nullptr;
   G.p_index            = nullptr;
@@ -287,31 +297,43 @@ void CardIter::G_vClearMembers(void)
   G.p_indexList        = nullptr;
   G.p_indexNm          = nullptr;
   G.p_indexScan        = nullptr;
+
   G.p_joinCast         = nullptr;
   G.p_joinOrder        = nullptr;
   G.p_joinOrdering     = nullptr;
   G.p_joinPredList     = nullptr;
+
   G.p_key              = nullptr;
+  G.p_keyCells         = nullptr;
   G.p_keyExists        = nullptr;
   G.p_keyNotExists     = nullptr;
+
   G.p_level            = nullptr;
   G.p_limit            = nullptr;
+
   G.p_joinEstimate     = nullptr;
+
+  G.p_mapping          = nullptr;
+
   G.p_nCorrCols        = nullptr;
   G.p_needed           = nullptr;
-  G.p_cast             = nullptr;
   G.p_note             = nullptr;
   G.p_notPred          = nullptr;
+
   G.p_on               = nullptr;
   G.p_ordAgg           = nullptr;
   G.p_orPred           = nullptr;
   G.p_outerColNm       = nullptr;
   G.p_outerJoin        = nullptr;
+
+  G.p_payloadCells     = nullptr;
   G.p_project          = nullptr;
   G.p_projection       = nullptr;
+
   G.p_rowCount         = nullptr;
   G.p_rowSize          = nullptr;
   G.p_rpnCalc          = nullptr;
+
   G.p_scan             = nullptr;
   G.p_section          = nullptr;
   G.p_send             = nullptr;
@@ -324,6 +346,7 @@ void CardIter::G_vClearMembers(void)
   G.p_streamHead       = nullptr;
   G.p_streamJoin       = nullptr;
   G.p_subSet           = nullptr;
+
   G.p_table            = nullptr;
   G.p_tableList        = nullptr;
   G.p_tableNm          = nullptr;
@@ -332,7 +355,9 @@ void CardIter::G_vClearMembers(void)
   G.p_term             = nullptr;
   G.p_top              = nullptr;
   G.p_topology         = nullptr;
+
   G.p_unique           = nullptr;
+
   G.p_where            = nullptr;
 
   G.p_NEW              = nullptr;
@@ -1194,11 +1219,14 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_AGGREG:           return G.p_aggreg;
     case CK_ANDPRED:          return G.p_andPred;
     case CK_AS:               return G.p_as;
+
     case CK_BOOLCALC:         return G.p_boolCalc;
     case CK_BOUND:            return G.p_bound;
     case CK_BOUNDS:           return G.p_bounds;
+
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
+    case CK_CELL:             return G.p_cell;
     case CK_CMPPRED:          return G.p_cmpPred;
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
@@ -1209,8 +1237,11 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_COSTUNICAST:      return G.p_costUnicast;
     case CK_COUNT:            return G.p_count;
     case CK_CROSSJOIN:        return G.p_crossJoin;
+
     case CK_DIRECTION:        return G.p_direction;
+
     case CK_EXPR:             return G.p_expr;
+
     case CK_FILTER:           return G.p_filter;
     case CK_FILTPRED:         return G.p_filtPred;
     case CK_FILTPREDLIST:     return G.p_filtPredList;
@@ -1218,10 +1249,13 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_FOLD:             return G.p_fold;
     case CK_FOLDELIST:        return G.p_foldElist;
     case CK_FROM:             return G.p_from;
+
     case CK_GBYAGG:           return G.p_gbyAgg;
+
     case CK_HASH:             return G.p_hash;
     case CK_HAVING:           return G.p_having;
     case CK_HSHCOL:           return G.p_hshCol;
+
     case CK_IDXCOL:           return G.p_idxCol;
     case CK_IDXCOLLIST:       return G.p_idxColList;
     case CK_INDEX:            return G.p_index;
@@ -1229,30 +1263,42 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_INDEXLIST:        return G.p_indexList;
     case CK_INDEXNM:          return G.p_indexNm;
     case CK_INDEXSCAN:        return G.p_indexScan;
+
     case CK_JOINCAST:         return G.p_joinCast;
     case CK_JOINESTIMATE:     return G.p_joinEstimate;
     case CK_JOINORDER:        return G.p_joinOrder;
     case CK_JOINORDERING:     return G.p_joinOrdering;
     case CK_JOINPREDLIST:     return G.p_joinPredList;
+
     case CK_KEY:              return G.p_key;
+    case CK_KEYCELLS:         return G.p_keyCells;
     case CK_KEYEXISTS:        return G.p_keyExists;
     case CK_KEYNOTEXISTS:     return G.p_keyNotExists;
+
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
+
+    case CK_MAPPING:          return G.p_mapping;
+
     case CK_NCORRCOLS:        return G.p_nCorrCols;
     case CK_NEEDED:           return G.p_needed;
     case CK_NOTE:             return G.p_note;
     case CK_NOTPRED:          return G.p_notPred;
+
     case CK_ON:               return G.p_on;
     case CK_ORDAGG:           return G.p_ordAgg;
     case CK_ORPRED:           return G.p_orPred;
     case CK_OUTERCOLNM:       return G.p_outerColNm;
     case CK_OUTERJOIN:        return G.p_outerJoin;
+
+    case CK_PAYLOADCELLS:     return G.p_payloadCells;
     case CK_PROJECT:          return G.p_project;
     case CK_PROJECTION:       return G.p_projection;
+
     case CK_ROWCOUNT:         return G.p_rowCount;
     case CK_ROWSIZE:          return G.p_rowSize;
     case CK_RPNCALC:          return G.p_rpnCalc;
+
     case CK_SCAN:             return G.p_scan;
     case CK_SECTION:          return G.p_section;
     case CK_SEND:             return G.p_send;
@@ -1265,6 +1311,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_SORT:             return G.p_sort;
     case CK_STAGE:            return G.p_stage;
     case CK_SUBSET:           return G.p_subSet;
+
     case CK_TABLE:            return G.p_table;
     case CK_TABLELIST:        return G.p_tableList;
     case CK_TABLENM:          return G.p_tableNm;
@@ -1273,7 +1320,9 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_TERM:             return G.p_term;
     case CK_TOP:              return G.p_top;
     case CK_TOPOLOGY:         return G.p_topology;
+
     case CK_UNIQUE:           return G.p_unique;
+
     case CK_WHERE:            return G.p_where;
 
     default:
@@ -1389,14 +1438,18 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_ANDPRED:          *((Card**)&G.p_andPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
     case CK_AS:               *((Card**)&G.p_as)               = pCard; break;
+
     case CK_BOOLCALC:         *((Card**)&G.p_boolCalc)         = pCard; break;
     case CK_BOUND:            *((Card**)&G.p_bound)            = pCard; break;
     case CK_BOUNDS:           *((Card**)&G.p_bounds)           = pCard; break;
+
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+    case CK_CELL:             *((Card**)&G.p_cell)             = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
+
     case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
     case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;
     case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
@@ -1407,8 +1460,11 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_COUNT:            *((Card**)&G.p_count)            = pCard; break;
     case CK_CROSSJOIN:        *((Card**)&G.p_crossJoin)        = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+
     case CK_DIRECTION:        *((Card**)&G.p_direction)        = pCard; break;
+
     case CK_EXPR:             *((Card**)&G.p_expr)             = pCard; break;
+
     case CK_FILTER:           *((Card**)&G.p_filter)           = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_FILTPRED:         *((Card**)&G.p_filtPred)         = pCard; break;
@@ -1417,12 +1473,15 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_FOLD:             *((Card**)&G.p_fold)             = pCard; break;
     case CK_FOLDELIST:        *((Card**)&G.p_foldElist)        = pCard; break;
     case CK_FROM:             *((Card**)&G.p_from)             = pCard; break;
+
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+
     case CK_HASH:             *((Card**)&G.p_hash)             = pCard; break;
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_HSHCOL:           *((Card**)&G.p_hshCol)           = pCard; break;
+
     case CK_IDXCOL:           *((Card**)&G.p_idxCol)           = pCard; break;
     case CK_IDXCOLLIST:       *((Card**)&G.p_idxColList)       = pCard; break;
     case CK_INDEX:            *((Card**)&G.p_index)            = pCard; break;
@@ -1432,24 +1491,32 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_INDEXNM:          *((Card**)&G.p_indexNm)          = pCard; break;
     case CK_INDEXSCAN:        *((Card**)&G.p_indexScan)        = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+
     case CK_JOINCAST:         *((Card**)&G.p_joinCast)         = pCard; break;
     case CK_JOINESTIMATE:     *((Card**)&G.p_joinEstimate)     = pCard; break;
     case CK_JOINORDER:        *((Card**)&G.p_joinOrder)        = pCard; break;
     case CK_JOINORDERING:     *((Card**)&G.p_joinOrdering)     = pCard; break;
     case CK_JOINPREDLIST:     *((Card**)&G.p_joinPredList)     = pCard; break;
+
     case CK_KEY:              *((Card**)&G.p_key)              = pCard; break;
+    case CK_KEYCELLS:         *((Card**)&G.p_keyCells)         = pCard; break;
     case CK_KEYEXISTS:        *((Card**)&G.p_keyExists)        = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_KEYNOTEXISTS:     *((Card**)&G.p_keyNotExists)     = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+
     case CK_LEVEL:            *((Card**)&G.p_level)            = pCard; break;
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+
+    case CK_MAPPING:          *((Card**)&G.p_mapping)          = pCard; break;
+
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
     case CK_NEEDED:           *((Card**)&G.p_needed)           = pCard; break;
     case CK_NOTE:             *((Card**)&G.p_note)             = pCard; break;
     case CK_NOTPRED:          *((Card**)&G.p_notPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
+
     case CK_ON:               *((Card**)&G.p_on)               = pCard; break;
     case CK_ORDAGG:           *((Card**)&G.p_ordAgg)           = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
@@ -1457,12 +1524,16 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
                               *((Card**)&G.p_PRED)             = pCard; break;
     case CK_OUTERCOLNM:       *((Card**)&G.p_outerColNm)       = pCard; break;
     case CK_OUTERJOIN:        *((Card**)&G.p_outerJoin)        = pCard; break;
+
+    case CK_PAYLOADCELLS:     *((Card**)&G.p_payloadCells)     = pCard; break;
     case CK_PROJECT:          *((Card**)&G.p_project)          = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_PROJECTION:       *((Card**)&G.p_projection)       = pCard; break;
+
     case CK_ROWCOUNT:         *((Card**)&G.p_rowCount)         = pCard; break;
     case CK_ROWSIZE:          *((Card**)&G.p_rowSize)          = pCard; break;
     case CK_RPNCALC:          *((Card**)&G.p_rpnCalc)          = pCard; break;
+
     case CK_SCAN:             *((Card**)&G.p_scan)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_SECTION:          *((Card**)&G.p_section)          = pCard; break;
@@ -1481,6 +1552,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_SUBSET:           *((Card**)&G.p_subSet)           = pCard; break;
     case CK_TABLE:            *((Card**)&G.p_table)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
+
     case CK_TABLELIST:        *((Card**)&G.p_tableList)        = pCard; break;
     case CK_TABLENM:          *((Card**)&G.p_tableNm)          = pCard; break;
     case CK_TABLEPTN:         *((Card**)&G.p_tablePtn)         = pCard; break;
@@ -1489,108 +1561,11 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_TOP:              *((Card**)&G.p_top)              = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_TOPOLOGY:         *((Card**)&G.p_topology)         = pCard; break;
+
     case CK_UNIQUE:           *((Card**)&G.p_unique)           = pCard; break;
+
     case CK_WHERE:            *((Card**)&G.p_where)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
-    default:
-      NEVER_REACH
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* update member card                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* CardIter::szMemberNm(eCK eMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  switch (eMember) {
-
-    case CK_ABSJOIN:          return "G.p_absJoin"_Stz;
-    case CK_AGGREG:           return "G.p_aggreg"_Stz;
-    case CK_ANDPRED:          return "G.p_andPred"_Stz;
-    case CK_AS:               return "G.p_as"_Stz;
-    case CK_BOOLCALC:         return "G.p_boolCalc"_Stz;
-    case CK_BOUND:            return "G.p_bound"_Stz;
-    case CK_BOUNDS:           return "G.p_bounds"_Stz;
-    case CK_CALL:             return "G.p_call"_Stz;
-    case CK_CAST:             return "G.p_cast"_Stz;
-    case CK_CMPPRED:          return "G.p_cmpPred"_Stz;
-    case CK_COMBINED:         return "G.p_combined"_Stz;
-    case CK_CONSTRAINT:       return "G.p_constraint"_Stz;
-    case CK_COSTJOINING:      return "G.p_costJoining"_Stz;
-    case CK_COSTNETWORK:      return "G.p_costNetwork"_Stz;
-    case CK_COSTSTREAM:       return "G.p_costQuery"_Stz;
-    case CK_COSTUNICAST:      return "G.p_costUnicast"_Stz;
-    case CK_CORRELATION:      return "G.p_correlation"_Stz;
-    case CK_COUNT:            return "G.p_count"_Stz;
-    case CK_CROSSJOIN:        return "G.p_crossJoin"_Stz;
-    case CK_DIRECTION:        return "G.p_direction"_Stz;
-    case CK_EXPR:             return "G.p_expr"_Stz;
-    case CK_FILTER:           return "G.p_filter"_Stz;
-    case CK_FILTPRED:         return "G.p_filtPred"_Stz;
-    case CK_FILTPREDLIST:     return "G.p_filtPredList"_Stz;
-    case CK_FLAT:             return "G.p_flat"_Stz;
-    case CK_FOLD:             return "G.p_fold"_Stz;
-    case CK_FOLDELIST:        return "G.p_foldElist"_Stz;
-    case CK_FROM:             return "G.p_from"_Stz;
-    case CK_GBYAGG:           return "G.p_gbyAgg"_Stz;
-    case CK_HASH:             return "G.p_hash"_Stz;
-    case CK_HAVING:           return "G.p_having"_Stz;
-    case CK_HSHCOL:           return "G.p_hshCol"_Stz;
-    case CK_IDXCOLLIST:       return "G.p_idxColList"_Stz;
-    case CK_INDEX:            return "G.p_index"_Stz;
-    case CK_INDEXJOIN:        return "G.p_indexJoin"_Stz;
-    case CK_INDEXLIST:        return "G.p_indexList"_Stz;
-    case CK_INDEXNM:          return "G.p_indexNm"_Stz;
-    case CK_INDEXSCAN:        return "G.p_indexScan"_Stz;
-    case CK_JOINCAST:         return "G.p_joinCast"_Stz;
-    case CK_JOINESTIMATE:     return "G.p_joinEstimate"_Stz;
-    case CK_JOINORDER:        return "G.p_joinOrder"_Stz;
-    case CK_JOINORDERING:     return "G.p_joinOrdering"_Stz;
-    case CK_JOINPREDLIST:     return "G.p_joinPredList"_Stz;
-    case CK_KEY:              return "G.p_key"_Stz;
-    case CK_KEYEXISTS:        return "G.p_keyExists"_Stz;
-    case CK_KEYNOTEXISTS:     return "G.p_keyNotExists"_Stz;
-    case CK_LEVEL:            return "G.p_level"_Stz;
-    case CK_LIMIT:            return "G.p_limit"_Stz;
-    case CK_NCORRCOLS:        return "G.p_nCorrCols"_Stz;
-    case CK_NEEDED:           return "G.p_needed"_Stz;
-    case CK_NOTE:             return "G.p_note"_Stz;
-    case CK_NOTPRED:          return "G.p_notPred"_Stz;
-    case CK_ON:               return "G.p_on"_Stz;
-    case CK_ORDAGG:           return "G.p_ordAgg"_Stz;
-    case CK_ORPRED:           return "G.p_orPred"_Stz;
-    case CK_OUTERCOLNM:       return "G.p_outerColNm"_Stz;
-    case CK_OUTERJOIN:        return "G.p_outerJoin"_Stz;
-    case CK_PROJECT:          return "G.p_project"_Stz;
-    case CK_PROJECTION:       return "G.p_projection"_Stz;
-    case CK_ROWCOUNT:         return "G.p_rowCount"_Stz;
-    case CK_ROWSIZE:          return "G.p_rowSize"_Stz;
-    case CK_RPNCALC:          return "G.p_rpnCalc"_Stz;
-    case CK_SCAN:             return "G.p_scan"_Stz;
-    case CK_SECTION:          return "G.p_section"_Stz;
-    case CK_SEND:             return "G.p_send"_Stz;
-    case CK_SORT:             return "G.p_sort"_Stz;
-    case CK_STAGE:            return "G.p_stage"_Stz;
-    case CK_STREAMHEAD:       return "G.p_streamHead"_Stz;
-    case CK_STREAMJOIN:       return "G.p_streamJoin"_Stz;
-    case CK_STREAMKEY:        return "G.p_streamKey"_Stz;
-    case CK_STREAMPER:        return "G.p_streamPer"_Stz;
-    case CK_STREAMPTN:        return "G.p_streamPtn"_Stz;
-    case CK_STREAMSET:        return "G.p_streamSet"_Stz;
-    case CK_SUBSET:           return "G.p_subSet"_Stz;
-    case CK_TABLE:            return "G.p_table"_Stz;
-    case CK_TABLELIST:        return "G.p_tableList"_Stz;
-    case CK_TABLENM:          return "G.p_tableNm"_Stz;
-    case CK_TABLEPTN:         return "G.p_tablePtn"_Stz;
-    case CK_TABLESIZE:        return "G.p_tableSize"_Stz;
-    case CK_TERM:             return "G.p_term"_Stz;
-    case CK_TOP:              return "G.p_top"_Stz;
-    case CK_TOPOLOGY:         return "G.p_topology"_Stz;
-    case CK_UNIQUE:           return "G.p_unique"_Stz;
-    case CK_WHERE:            return "G.p_where"_Stz;
-
     default:
       NEVER_REACH
   }
