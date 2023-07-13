@@ -22,6 +22,7 @@
 #include "Card_Bounds.hpp"
 
 #include "Card_Call.hpp"
+#include "Card_Cell.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_COL.hpp"
 #include "Card_Combined.hpp"
@@ -70,11 +71,14 @@
 #include "Card_JoinPredList.hpp" //
 
 #include "Card_Key.hpp"          //
+#include "Card_KeyCells.hpp"     //
 #include "Card_KeyExists.hpp"    //
 #include "Card_KeyNotExists.hpp" //
 
 #include "Card_Level.hpp"        //
 #include "Card_Limit.hpp"        //
+
+#include "Card_Mapping.hpp"      //
 
 #include "Card_NCorrCols.hpp"
 #include "Card_Needed.hpp"
@@ -89,6 +93,7 @@
 #include "Card_OuterColNm.hpp"
 #include "Card_OuterJoin.hpp"
 
+#include "Card_PayloadCells.hpp"
 #include "Card_Project.hpp"
 #include "Card_Projection.hpp"
 

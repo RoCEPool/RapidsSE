@@ -18,6 +18,7 @@ enum eCK : i8 // card kind
 
   /* */ CK_CALL,
   /* */ CK_CAST,
+  /* */ CK_CELL,
   /* */ CK_CMPPRED,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
@@ -64,11 +65,14 @@ enum eCK : i8 // card kind
   /* */ CK_JOINPREDLIST,
 
   /* */ CK_KEY,
+  /* */ CK_KEYCELLS,
   /* */ CK_KEYEXISTS,
   /* */ CK_KEYNOTEXISTS,
 
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
+
+  /* */ CK_MAPPING,
 
   /* */ CK_NCORRCOLS,
   /* */ CK_NEEDED,
@@ -81,6 +85,7 @@ enum eCK : i8 // card kind
   /* */ CK_OUTERCOLNM,
   /* */ CK_OUTERJOIN,
 
+  /* */ CK_PAYLOADCELLS,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
 
@@ -137,6 +142,7 @@ static Stz* aCK[]
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CAST"_Stz,         // CK_CAST
+  /* */ "CK_CELL"_Stz,         // CK_CELL
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
@@ -183,11 +189,14 @@ static Stz* aCK[]
   /* */ "CK_JOINPREDLIST"_Stz, // CK_JOINPREDLIST
 
   /* */ "CK_KEY"_Stz,          // CK_KEY
+  /* */ "CK_KEYCELLS"_Stz,     // CK_KEYCELLS
   /* */ "CK_KEYEXISTS"_Stz,    // CK_KEYEXISTS
   /* */ "CK_KEYNOTEXISTS"_Stz, // CK_KEYNOTEXISTS
 
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
+
+  /* */ "CK_MAPPING"_Stz,      // CK_MAPPING
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
   /* */ "CK_NEEDED"_Stz,       // CK_NEEDED
@@ -200,6 +209,7 @@ static Stz* aCK[]
   /* */ "CK_OUTERCOLNM"_Stz,   // CK_OUTERCOLNM
   /* */ "CK_OUTERJOIN"_Stz,    // CK_OUTERJOIN
 
+  /* */ "CK_PAYLOADCELLS"_Stz, // CK_PAYLOADCELLS
   /* */ "CK_PROJECT"_Stz,      // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,   // CK_PROJECTION
 
@@ -256,6 +266,7 @@ static Stz* aCK_short[]
 
   /* */ "call"_Stz,            // CK_CALL
   /* */ "cast"_Stz,            // CK_CAST
+  /* */ "cell"_Stz,            // CK_CELL
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
@@ -302,6 +313,7 @@ static Stz* aCK_short[]
   /* */ "joinPredList"_Stz,    // CK_JOINPREDLIST
 
   /* */ "key"_Stz,             // CK_KEY
+  /* */ "keyCells"_Stz,        // CK_KEYCELLS
   /* */ "keyExists"_Stz,       // CK_KEYEXISTS
   /* */ "keyNotExists"_Stz,    // CK_KEYNOTEXISTS
 
@@ -319,6 +331,9 @@ static Stz* aCK_short[]
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 
+  /* */ "mapping"_Stz,         // CK_MAPPING
+
+  /* */ "payloadCells"_Stz,    // CK_PAYLOADCELLS
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
 
