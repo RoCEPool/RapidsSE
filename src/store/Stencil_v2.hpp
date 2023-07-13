@@ -80,20 +80,22 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     eEC  eSynthesise(StageDef* pStageDef);
     void vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, Stz* sDefault);
 
-    OpSketch* pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
+    OpSketch* pSketchAggreg  (StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef);
+
     OpSketch* pSketchEos(StageDef* pStageDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchFilter(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop);
-    OpSketch* pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop);
-    OpSketch* pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, Stz* sLabelLoop);
-    OpSketch* pSketchLimit(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchProject(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* sLabelLoop);
-    OpSketch* pSketchSort(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
-    OpSketch* pSketchTop(StageDef* pStageDef, OpDef* pOpDef, eHK eHandlerKind, eSR ePrevStencil_v2, Stz* szLabelLoop);
+    OpSketch* pSketchFilter(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchLimit(StageDef* pStageDef, OpDef* pOpDefp);
+    OpSketch* pSketchProject(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchSort(StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchTop(StageDef* pStageDef, OpDef* pOpDef);
+
     OpSketch* pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind);
     OpSketch* pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2,
                             Stz* sLabelLoop, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr);
