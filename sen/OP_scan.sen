@@ -154,7 +154,7 @@
     Table[] StreamDefOut[].newFromTable
     StreamDefOut[] to Pipein[]
     nullptr to StreamDefOut[]
-    Pipein[].pipeBackIn
+    Pipein[].pipeOut
   then
 
   //[args].developer if

@@ -15432,7 +15432,7 @@ void Task::vAddMunged(Task* )
     "    Table[] StreamDefOut[].newFromTable\n"
     "    StreamDefOut[] to Pipein[]\n"
     "    nullptr to StreamDefOut[]\n"
-    "    Pipein[].pipeBackIn\n"
+    "    Pipein[].pipeOut\n"
     "  then\n"
     "\n"
     "  //[args].developer if\n"

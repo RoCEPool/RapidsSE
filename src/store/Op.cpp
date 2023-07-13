@@ -630,13 +630,11 @@ bool Op::bIsEventValid(i8 i_OperandKind)
   switch(i_OperandKind) {
 
     case EV_M_CANCELLING:
-      
       // should not have received a EV_M_CANCELLING already
       if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("%s: multiple EV_M_CANCELLING arrived\n"_Stz, szOpNm());
         return false;
       }
-      
       // should not have received a EV_M_CANCELLED
       if ( m_pEvMgr->m_naEventCount[EV_M_CANCELLED]) {
         vTrace("%s: %s  arrived after EV_M_CANCELLED\n"_Stz,
@@ -644,15 +642,15 @@ bool Op::bIsEventValid(i8 i_OperandKind)
         return false;
       }
       break;
-      
+
     case EV_M_CANCELLED:
       // Only StartOP receives an EV_M_CANCELLED
-      if ( ! szOpNm()->bSame("start"_Stz) ) {
+      if ( ! szOpNm()->bSame("start"_Stz)) {
         vTrace("%s: incorrectly received a %s\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should have received a EV_M_CANCEL
       if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&
            ! m_pEvMgr->m_naEventCount[EV_M_LOWMEMORY]) {
@@ -660,13 +658,13 @@ bool Op::bIsEventValid(i8 i_OperandKind)
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should not have received a EV_M_CANCELLED already
       if (m_pEvMgr->m_naEventCount[i_OperandKind]) {
         vTrace("multiple EV_M_CANCELLED arrived\n"_Stz);
         return false;
       }
-      
+
       break;
 
     case EV_D_CSVBUFFER:
@@ -683,17 +681,20 @@ bool Op::bIsEventValid(i8 i_OperandKind)
     case EV_D_ROWBUFFER:
     case EV_D_SRTBUFFER:
       // should have received a EV_M_DATAPULSE
-      if ( ! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
+      if (! m_pEvMgr->m_naEventCount[EV_M_DATAPULSE]) {
         vTrace("%s: %s arrived without a prior EV_M_DATAPULSE\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should have received a EV_D_STREAMDEF
-      if ( ! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
-        vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
-               szOpNm(), aEV[i_OperandKind]);
-        return false;
+      // scanOP does not receive a STREAMDEF and can reeive a CRWBUFFER piped back to itself
+      if (!szOpNm()->bSame("scan"_Stz)) {
+        if (! m_pEvMgr->m_naEventCount[EV_D_STREAMDEF]) {
+          vTrace("%s: %s arrived without a prior EV_D_STREAMDEF\n"_Stz,
+                 szOpNm(), aEV[i_OperandKind]);
+          return false;
+        }
       }
       
       // should not have received EV_M_EOS's > EV_M_DATAPULSE's
