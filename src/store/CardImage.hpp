@@ -5,6 +5,7 @@
 
 #include "BASE.h"
 #include "eCK.h"
+#include "eAL.h"
 
 namespace STORE
 {
@@ -23,6 +24,7 @@ namespace STORE
   private:
     Card*     m_pCard;
     eCK       m_eCard;
+    eAL       m_eLevel;
     i8        m_iSLB;
     i8        m_iXform;
 
@@ -45,6 +47,8 @@ namespace STORE
     eCK  eCard(void);
 
     void vDump(i8 i_Tab=0);
+    eAL  eLevel(void);
+
     Stz* szLine(i8 i_Line);
     i8   nLines(void);
 

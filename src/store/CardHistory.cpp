@@ -134,7 +134,7 @@ i8 CardHistory::nImages(void)
 /*----------------------------------------------------------------------------*/
 /* print images                                                               */
 /*----------------------------------------------------------------------------*/
-void CardHistory::vPrintImages(eCK eCard)
+void CardHistory::vPrintImages(eCK eCard, eAL eLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
 
@@ -144,6 +144,8 @@ void CardHistory::vPrintImages(eCK eCard)
     if (! pCardImage)
       break;
     if (pCardImage->eCard() != eCard)
+      continue;
+    if (AL_NONE != eLevel && pCardImage->eLevel() != eLevel)
       continue;
     i8 nLines = pCardImage->nLines();
     if (nLines > nMaxLines)
@@ -156,6 +158,8 @@ void CardHistory::vPrintImages(eCK eCard)
       if (! pCardImage)
         break;
       if (pCardImage->eCard() != eCard)
+        continue;
+      if (AL_NONE != eLevel && pCardImage->eLevel() != eLevel)
         continue;
       pCardImage->vPrintLine(i_Line);
     }

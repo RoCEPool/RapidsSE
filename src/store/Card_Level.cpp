@@ -16,12 +16,12 @@ __vDeleteFunction(Card_Level, CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Level::Card_Level(eAL eAggLevel)
+Card_Level::Card_Level(eAL eLevel)
 : Card(CK_LEVEL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pSymbol()->Y_vSet(P_Level, (i8)eAggLevel);
+  pSymbol()->Y_vSet(P_Level, (i8)eLevel);
   
   _checkInitialised_(CN_CARD);
   
@@ -44,11 +44,11 @@ void Card_Level::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  eAL eAggLevel = (eAL)pSymbol()->Y_iGet(P_Level);
+  eAL eLevel = (eAL)pSymbol()->Y_iGet(P_Level);
 
-  RASSERT(AL_PARTITION == eAggLevel ||
-          AL_NODE == eAggLevel ||
-          AL_ORIGIN == eAggLevel);
+  RASSERT(AL_PARTITION == eLevel ||
+          AL_NODE      == eLevel ||
+          AL_ORIGIN    == eLevel);
 
 }
 

@@ -73,7 +73,7 @@ Optimiser::~Optimiser(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   if (m_pCardCtl->pCardHistory())
-    m_pCardCtl->pCardHistory()->vPrintImages(CK_GBYAGG);
+    m_pCardCtl->pCardHistory()->vPrintImages(CK_GBYAGG,AL_PARTITION);
 
   delete m_pCardCtl;
   

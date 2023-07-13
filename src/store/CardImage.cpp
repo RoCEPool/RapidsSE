@@ -4,6 +4,7 @@
 
 #include "CardImage.hpp"
 #include "Card.hpp"
+#include "Card_Level.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -25,6 +26,9 @@ CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform)
   m_pCard  = pCard;
   m_eCard  = m_pCard->eCard();
 
+  m_eLevel = AL_NONE;
+  if (pCard->pSub_level())
+    m_eLevel = (eAL)pCard->pSub_level()->pSymbol()->Y_iGet(P_Level);
   m_iSLB   = iSLB;
   m_iXform = iXform;
 
@@ -90,6 +94,17 @@ void CardImage::vDump(i8 i_Tab)
            m_xaCardLines[i_Line].m_zCardLine);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* return eLevel                                                              */
+/*----------------------------------------------------------------------------*/
+eAL CardImage::eLevel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDIMAGE, _FOOTER_);
+
+  return m_eLevel;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* return given line                                                          */
