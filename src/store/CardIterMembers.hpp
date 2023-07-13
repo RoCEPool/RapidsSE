@@ -123,7 +123,6 @@ namespace STORE
     Card_Bounds *        p_bounds;
 
     Card_Call *          p_call;
-    Card_Cell *          p_cell;
     Card_CmpPred *       p_cmpPred;
     Card_Combined *      p_combined;
     Card_Constraint *    p_constraint;
@@ -175,6 +174,7 @@ namespace STORE
     Card_Level *         p_level;
     Card_Limit *         p_limit;
 
+    Card_Map *           p_map;
     Card_Mapping *       p_mapping;
 
     Card_NCorrCols *     p_nCorrCols;

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Cell.hpp -- Cell                                                      */
+/* Card_Map.hpp -- Map                                                        */
 /*============================================================================*/
 #pragma once
 
@@ -7,17 +7,17 @@
 
 namespace STORE
 {
-  class Card_Cell : public Card
+  class Card_Map : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Cell(void);
-   ~Card_Cell(void) noexcept(false);
+    Card_Map(void);
+   ~Card_Map(void) noexcept(false);
   };
 
-  Card_Cell* _pCard_Cell(void* aAddr);
+  Card_Map* _pCard_Map(void* aAddr);
 }
 
 /*============================================================================*/

@@ -18,7 +18,6 @@ enum eCK : i8 // card kind
 
   /* */ CK_CALL,
   /* */ CK_CAST,
-  /* */ CK_CELL,
   /* */ CK_CMPPRED,
   /* */ CK_COMBINED,
   /* */ CK_CONSTRAINT,
@@ -72,6 +71,7 @@ enum eCK : i8 // card kind
   /* */ CK_LEVEL,
   /* */ CK_LIMIT,
 
+  /* */ CK_MAP,
   /* */ CK_MAPPING,
 
   /* */ CK_NCORRCOLS,
@@ -142,7 +142,6 @@ static Stz* aCK[]
 
   /* */ "CK_CALL"_Stz,         // CK_CALL
   /* */ "CK_CAST"_Stz,         // CK_CAST
-  /* */ "CK_CELL"_Stz,         // CK_CELL
   /* */ "CK_CMPPRED"_Stz,      // CK_CMPPRED
   /* */ "CK_COMBINED"_Stz,     // CK_COMBINED
   /* */ "CK_CONSTRAINT"_Stz,   // CK_CONSTRAINT
@@ -196,6 +195,7 @@ static Stz* aCK[]
   /* */ "CK_LEVEL"_Stz,        // CK_LEVEL
   /* */ "CK_LIMIT"_Stz,        // CK_LIMIT
 
+  /* */ "CK_MAP"_Stz,          // CK_MAP
   /* */ "CK_MAPPING"_Stz,      // CK_MAPPING
 
   /* */ "CK_NCORRCOLS"_Stz,    // CK_NCORRCOLS
@@ -266,7 +266,6 @@ static Stz* aCK_short[]
 
   /* */ "call"_Stz,            // CK_CALL
   /* */ "cast"_Stz,            // CK_CAST
-  /* */ "cell"_Stz,            // CK_CELL
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "combined"_Stz,        // CK_COMBINED
   /* */ "constraint"_Stz,      // CK_CONSTRAINT
@@ -320,6 +319,9 @@ static Stz* aCK_short[]
   /* */ "level"_Stz,           // CK_LEVEL
   /* */ "limit"_Stz,           // CK_LIMIT
 
+  /* */ "map"_Stz,             // CK_MAP
+  /* */ "mapping"_Stz,         // CK_MAPPING
+
   /* */ "nCorrCols"_Stz,       // CK_NCORRCOLS
   /* */ "needed"_Stz,          // CK_NEEDED
   /* */ "note"_Stz,            // CK_NOTE
@@ -331,7 +333,6 @@ static Stz* aCK_short[]
   /* */ "outerColNm"_Stz,      // CK_OUTERCOLNM
   /* */ "outerJoin"_Stz,       // CK_OUTERJOIN
 
-  /* */ "mapping"_Stz,         // CK_MAPPING
 
   /* */ "payloadCells"_Stz,    // CK_PAYLOADCELLS
   /* */ "project"_Stz,         // CK_PROJECT

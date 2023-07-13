@@ -22,7 +22,6 @@
 #include "Card_Bounds.hpp"
 
 #include "Card_Call.hpp"
-#include "Card_Cell.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_COL.hpp"
 #include "Card_Combined.hpp"
@@ -78,6 +77,7 @@
 #include "Card_Level.hpp"        //
 #include "Card_Limit.hpp"        //
 
+#include "Card_Map.hpp"
 #include "Card_Mapping.hpp"      //
 
 #include "Card_NCorrCols.hpp"

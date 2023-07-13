@@ -260,7 +260,6 @@ void CardIter::G_vClearMembers(void)
 
   G.p_call             = nullptr;
   G.p_cast             = nullptr;
-  G.p_cell             = nullptr;
   G.p_cmpPred          = nullptr;
   G.p_combined         = nullptr;
   G.p_constraint       = nullptr;
@@ -313,6 +312,7 @@ void CardIter::G_vClearMembers(void)
 
   G.p_joinEstimate     = nullptr;
 
+  G.p_map              = nullptr;
   G.p_mapping          = nullptr;
 
   G.p_nCorrCols        = nullptr;
@@ -1226,7 +1226,6 @@ Card* CardIter::G_pGetMember(eCK eMember)
 
     case CK_CALL:             return G.p_call;
     case CK_CAST:             return G.p_cast;
-    case CK_CELL:             return G.p_cell;
     case CK_CMPPRED:          return G.p_cmpPred;
     case CK_COMBINED:         return G.p_combined;
     case CK_CONSTRAINT:       return G.p_constraint;
@@ -1278,6 +1277,7 @@ Card* CardIter::G_pGetMember(eCK eMember)
     case CK_LEVEL:            return G.p_level;
     case CK_LIMIT:            return G.p_limit;
 
+    case CK_MAP:              return G.p_map;
     case CK_MAPPING:          return G.p_mapping;
 
     case CK_NCORRCOLS:        return G.p_nCorrCols;
@@ -1446,7 +1446,6 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CALL:             *((Card**)&G.p_call)             = pCard; break;
     case CK_CAST:             *((Card**)&G.p_cast)             = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
-    case CK_CELL:             *((Card**)&G.p_cell)             = pCard; break;
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
 
@@ -1509,6 +1508,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
 
+    case CK_MAP:              *((Card**)&G.p_map)             = pCard; break;
     case CK_MAPPING:          *((Card**)&G.p_mapping)          = pCard; break;
 
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;
