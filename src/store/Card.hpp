@@ -186,6 +186,7 @@ static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
 static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
 static Stz* C_NA                = "n/a"_Stz;
 
+static Stz* C_CARD_HISTORY = "<card_history>"_Stz;
 static Stz* C_CODE_BLOCK = "<code_block>"_Stz;
 static Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
 static Stz* C_EP_ENABLE  = "<ep_enable>"_Stz;

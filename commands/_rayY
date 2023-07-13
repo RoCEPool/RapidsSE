@@ -16,6 +16,7 @@ CREATE INDEX IxPS_SUPPKEY ON partsupp(ps_partkey);
 load partsupp "../TPCH/SF_0001/partsupp.csv";
 
 /glean_interactive
+/card_history
 /weaved
 /transliterated
 /pipeline_def

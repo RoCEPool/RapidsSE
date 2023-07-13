@@ -60,7 +60,7 @@ void CardHistory::vAddImage(Card* pCard)
 
   _CardHistory* aCardHistory = static_cast<_CardHistory*>(pSLB->aItemKey());
 
-  CardImage* pCardImage = new CardImage(pCard);
+  CardImage* pCardImage = new CardImage(pCard,pSLB->iKey(),0);
   aCardHistory->m_pImage = pCardImage;
 
   m_pImage_curr = aCardHistory->m_pImage;
@@ -81,7 +81,7 @@ void CardHistory::vAddLine(Stz* szLine)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add new image                                                              */
+/* dump images                                                                */
 /*----------------------------------------------------------------------------*/
 void CardHistory::vDump(i8 i_Tab)
 {
@@ -129,6 +129,39 @@ i8 CardHistory::nImages(void)
   i8 nImages = m_pHistoryPds->nItems();
 
   return nImages;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print images                                                               */
+/*----------------------------------------------------------------------------*/
+void CardHistory::vPrintImages(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
+
+  i8 nMaxLines = 0;
+  for (i8 i_Image = 1; /**/; i_Image++) {
+    CardImage* pCardImage = pImage(i_Image);
+    if (! pCardImage)
+      break;
+    if (pCardImage->eCard() != eCard)
+      continue;
+    i8 nLines = pCardImage->nLines();
+    if (nLines > nMaxLines)
+      nMaxLines = nLines;
+  }
+
+  for (i8 i_Line = 0; i_Line < nMaxLines; i_Line++) {
+    for (i8 i_Image = 1; /**/; i_Image++) {
+      CardImage *pCardImage = pImage(i_Image);
+      if (! pCardImage)
+        break;
+      if (pCardImage->eCard() != eCard)
+        continue;
+      pCardImage->vPrintLine(i_Line);
+    }
+    vTrace("\n"_Stz);
+  }
+
 }
 
 

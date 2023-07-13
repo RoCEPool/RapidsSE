@@ -49,8 +49,8 @@ CardCtl::CardCtl(void)
   m_iPrintNo = 0;
 
   m_pCardHistory = nullptr;
-//  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
-//    m_pCardHistory = new CardHistory;
+  if (AM::JOB::bHasTag(C_CARD_HISTORY))
+    m_pCardHistory = new CardHistory;
 
   _checkInitialised_(CN_CARDCTL);
 

@@ -7,7 +7,7 @@
 
 #include "Pds.hpp"
 #include "CardImage.hpp"
-
+#include "eCK.h"
 namespace STORE
 {
   class Card;
@@ -43,6 +43,8 @@ namespace STORE
 
     CardImage* pImage(i8 i_Image);
     i8 nImages(void);
+
+    void vPrintImages(eCK eCard=CK_GBYAGG);
 
   protected:
     Footer* aFooter(void);

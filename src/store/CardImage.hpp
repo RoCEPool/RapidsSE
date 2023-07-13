@@ -4,6 +4,7 @@
 #pragma once
 
 #include "BASE.h"
+#include "eCK.h"
 
 namespace STORE
 {
@@ -21,6 +22,10 @@ namespace STORE
   {
   private:
     Card*     m_pCard;
+    eCK       m_eCard;
+    i8        m_iSLB;
+    i8        m_iXform;
+
     i8        m_i_Line;
     _CardLine m_xaCardLines[C_CARDIMAGE_LINES];
 
@@ -32,14 +37,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    CardImage(Card* pCard);
+    CardImage(Card* pCard, i8 iSLB, i8 iXform);
    ~CardImage(void) noexcept(false);
 
     void vAddLine(Stz* szLine);
 
+    eCK  eCard(void);
+
     void vDump(i8 i_Tab=0);
     Stz* szLine(i8 i_Line);
     i8   nLines(void);
+
+    void vPrintLine(i8 i_Line);
 
   protected:
     Footer* aFooter(void);

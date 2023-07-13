@@ -17,17 +17,29 @@ __aFooterFunction(CardImage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardImage::CardImage(Card* pCard)
+CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform)
 : Object(CN_CARDIMAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
-  m_pCard = pCard;
+  m_pCard  = pCard;
+  m_eCard  = m_pCard->eCard();
+
+  m_iSLB   = iSLB;
+  m_iXform = iXform;
+
   m_i_Line = 0;
 
   MemLib::vZero(m_xaCardLines,sizeof(m_xaCardLines),CN_CARDIMAGE);
 
   _checkInitialised_(CN_CARDIMAGE);
+
+  s32 sXform;
+  sXform.vSprint("Image %lld X %lld"_Stz,m_iSLB,m_iXform);
+
+  s32 sXform_padded;
+  sXform_padded.vSprint("%-20s"_Stz,sXform.szStz());
+  vAddLine(sXform_padded);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 }
@@ -53,6 +65,16 @@ void CardImage::vAddLine(Stz* szLine)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
   StrLib::vCopy(m_xaCardLines[m_i_Line++].m_zCardLine, szLine->azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* return eCard                                                               */
+/*----------------------------------------------------------------------------*/
+eCK CardImage::eCard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDIMAGE, _FOOTER_);
+
+  return m_eCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +113,20 @@ i8 CardImage::nLines(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
   return m_i_Line;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void CardImage::vPrintLine(i8 i_Line)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
+
+  if (i_Line < m_i_Line)
+    vTrace("%s"_Stz,
+           m_xaCardLines[i_Line].m_zCardLine);
+  else
+    vTrace("%20s"_Stz,"");
 }
 
 /*============================================================================*/
