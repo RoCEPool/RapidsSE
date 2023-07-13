@@ -50,7 +50,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2)
          » ordinal expr: ($1 BETWEEN 1 AND 2)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -67,7 +67,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2 ; Ordinal Expr = $1 BETWEEN 1 AND 2)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -97,7 +97,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey BETWEEN -2 AND -1 ; Ordinal Expr = $1 BETWEEN -2 AND -1)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -149,7 +149,7 @@ rows: (*,'explainPlan','
          » expr: (1 BETWEEN 0 AND 9)
          » ordinal expr: (1 BETWEEN 0 AND 9)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -170,7 +170,7 @@ rows: (*,'explainPlan','
          » expr: (1.2300000000e+00 BETWEEN 1.0000000000e-01 AND 1.5000000000e+00)
          » ordinal expr: (1.2300000000e+00 BETWEEN 1.0000000000e-01 AND 1.5000000000e+00)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -191,7 +191,7 @@ rows: (*,'explainPlan','
          » expr: (1.23 BETWEEN 0.1 AND 1.5)
          » ordinal expr: (1.23 BETWEEN 0.1 AND 1.5)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -212,7 +212,7 @@ rows: (*,'explainPlan','
          » expr: (DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02'')
          » ordinal expr: (DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02'')
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -233,7 +233,7 @@ rows: (*,'explainPlan','
          » expr: (TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00'')
          » ordinal expr: (TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00'')
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -254,7 +254,7 @@ rows: (*,'explainPlan','
          » expr: (TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00'')
          » ordinal expr: (TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00'')
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -275,7 +275,7 @@ rows: (*,'explainPlan','
          » expr: (''aa'' BETWEEN ''a'' AND ''aaa'')
          » ordinal expr: (''aa'' BETWEEN ''a'' AND ''aaa'')
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -296,7 +296,7 @@ rows: (*,'explainPlan','
          » expr: (1 BETWEEN 0 AND NULL)
          » ordinal expr: (1 BETWEEN 0 AND NULL)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -317,7 +317,7 @@ rows: (*,'explainPlan','
          » expr: (NULL BETWEEN 0 AND 9)
          » ordinal expr: (NULL BETWEEN 0 AND 9)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -338,7 +338,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey BETWEEN ((rapidsse.public.nation.n_nationkey - 1) + 1) AND 9)
          » ordinal expr: ($1 BETWEEN (($1 - 1) + 1) AND 9)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -359,7 +359,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey BETWEEN 0 AND ((rapidsse.public.nation.n_nationkey - 1) + 1))
          » ordinal expr: ($1 BETWEEN 0 AND (($1 - 1) + 1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -380,7 +380,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey BETWEEN (rapidsse.public.nation.n_regionkey / 2) AND (rapidsse.public.nation.n_regionkey * 2))
          » ordinal expr: ($1 BETWEEN ($3 / 2) AND ($3 * 2))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -401,7 +401,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = MIN(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -418,7 +418,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey BETWEEN __subquery0003() AND 9)
          » ordinal expr: ($1 BETWEEN __subquery0003() AND 9)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -439,7 +439,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = MAX(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -456,7 +456,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey BETWEEN 0 AND __subquery0003())
          » ordinal expr: ($1 BETWEEN 0 AND __subquery0003())
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -477,7 +477,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = MIN(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
 ∆ exprSubquery
@@ -494,7 +494,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = MAX(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
@@ -511,7 +511,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey BETWEEN __subquery0003() AND __subquery0005())
          » ordinal expr: ($1 BETWEEN __subquery0003() AND __subquery0005())
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -535,7 +535,7 @@ rows: (*,'explainPlan','
          » expr: ((rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2) AND true)
          » ordinal expr: (($1 BETWEEN 1 AND 2) AND true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -556,7 +556,7 @@ rows: (*,'explainPlan','
          » expr: ((true AND (rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2)) AND true)
          » ordinal expr: ((true AND ($1 BETWEEN 1 AND 2)) AND true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -581,7 +581,7 @@ rows: (*,'explainPlan','
          » expr: ((rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2) OR true)
          » ordinal expr: (($1 BETWEEN 1 AND 2) OR true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -602,7 +602,7 @@ rows: (*,'explainPlan','
          » expr: (NOT (1 BETWEEN 0 AND 9))
          » ordinal expr: (NOT (1 BETWEEN 0 AND 9))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -634,7 +634,7 @@ rows: (*,'explainPlan','
          » expr: (INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH)
          » ordinal expr: (INTERVAL ''13'' MONTH BETWEEN INTERVAL ''1'' YEAR AND INTERVAL ''14'' MONTH)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 -- Mixed DT intervals
@@ -654,7 +654,7 @@ rows: (*,'explainPlan','
          » expr: (INTERVAL ''1 2:3:4.500000'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR)
          » ordinal expr: (INTERVAL ''1 2:3:4.500000'' DAY TO SECOND BETWEEN INTERVAL ''2'' MINUTE AND INTERVAL ''27'' HOUR)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 

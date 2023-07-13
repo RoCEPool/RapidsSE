@@ -64,7 +64,7 @@ rows:
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
             » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
 )
 
@@ -93,7 +93,7 @@ rows: (*,'explainPlan','
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
             » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
 )
 
@@ -118,7 +118,7 @@ rows: (*,'explainPlan','
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
             » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
 )
 
@@ -143,7 +143,7 @@ rows: (*,'explainPlan','
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
          » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -169,7 +169,7 @@ rows: (*,'explainPlan','
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
          » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -191,7 +191,7 @@ rows: (*,'explainPlan','
          » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
          » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -213,7 +213,7 @@ rows: (*,'explainPlan','
          » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
          » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -248,7 +248,7 @@ rows:
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
             » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
 )
 
@@ -278,7 +278,7 @@ rows:
          » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
          » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -310,7 +310,7 @@ rows:
             » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
             » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
 )
 
@@ -339,7 +339,7 @@ rows:
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
          » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -370,7 +370,7 @@ rows:
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
          » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -396,7 +396,7 @@ rows:
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
          » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -421,7 +421,7 @@ rows: (*, 'explainPlan','
 -> -> -> projectOp
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -441,7 +441,7 @@ rows: (*, 'explainPlan','
       » column: (Expr = SUBSTRING(''abc'', 1) ; Ordinal Expr = SUBSTRING(''abc'', 1))
       » column: (Expr = 1 + 1 ; Ordinal Expr = 1 + 1)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -465,7 +465,7 @@ rows: (*, 'explainPlan','
 -> -> -> projectOp
          » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -491,7 +491,7 @@ rows: (*, 'explainPlan','
          » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
          » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -515,7 +515,7 @@ rows: (*, 'explainPlan','
 -> -> -> projectOp
          » column: (Expr = SUM(1) ; Ordinal Expr = SUM(1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -539,7 +539,7 @@ rows: (*, 'explainPlan','
 -> -> -> projectOp
          » column: (Expr = SUM(NULL) ; Ordinal Expr = SUM(NULL))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -563,7 +563,7 @@ rows: (*, 'explainPlan','
 -> -> -> projectOp
          » column: (Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

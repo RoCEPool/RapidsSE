@@ -172,7 +172,7 @@ rows: (*,'partitionExplain','
       » location: origin
       » column: (Alias = regionCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_regionkey)) ; Ordinal Expr = COUNT(DISTINCT($3)))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » location: all partitions
          » table: (rapidsse.public.nation)')
 
@@ -196,7 +196,7 @@ rows: (*,'partitionExplain','
          » expr: ((rapidsse.public.nation.n_regionkey % 2) = 0)
          » ordinal expr: (($3 % 2) = 0)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » location: all partitions
             » table: (rapidsse.public.nation)')
 
@@ -221,7 +221,7 @@ rows: (*,'partitionExplain','
          » location: origin
          » column: (Alias = regionCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_regionkey)) ; Ordinal Expr = COUNT(DISTINCT($3)))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » location: all partitions
             » table: (rapidsse.public.nation)')
 
@@ -243,7 +243,7 @@ rows: (*,'partitionExplain','
       » column: (Alias = nationCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = COUNT(DISTINCT($1)))
       » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » location: all partitions
          » table: (rapidsse.public.nation)')
 
@@ -270,7 +270,7 @@ rows: (*,'partitionExplain','
          » column: (Alias = nationCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = COUNT(DISTINCT($1)))
          » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » location: all partitions
             » table: (rapidsse.public.nation)')
 
@@ -292,7 +292,7 @@ rows: (*,'partitionExplain','
       » column: (Alias = distinctNations ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = COUNT(DISTINCT($1)))
       » column: (Alias = rowCount ; Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » location: all partitions
          » table: (rapidsse.public.nation)')
 
@@ -315,7 +315,7 @@ rows: (*,'partitionExplain','
       » column: (Alias = nationsInRegion ; Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
       » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » location: all partitions
          » table: (rapidsse.public.nation)')
 
@@ -337,7 +337,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUM(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = SUM($1 + NULL))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -354,7 +354,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = AVG(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = AVG($1 + NULL))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -371,7 +371,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = MIN(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = MIN($1 + NULL))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -388,7 +388,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = MAX(rapidsse.public.nation.n_nationkey + NULL) ; Ordinal Expr = MAX($1 + NULL))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 

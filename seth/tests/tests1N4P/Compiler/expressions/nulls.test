@@ -34,7 +34,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 + NULL ; Ordinal Expr = 1 + NULL) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -50,7 +50,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 - NULL ; Ordinal Expr = 1 - NULL) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -66,7 +66,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 * NULL ; Ordinal Expr = 1 * NULL) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -82,7 +82,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 / NULL ; Ordinal Expr = 1 / NULL) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -98,7 +98,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = NULL / 1 ; Ordinal Expr = NULL / 1) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -114,7 +114,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 3 % NULL ; Ordinal Expr = 3 % NULL) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -130,7 +130,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = NULL % 3 ; Ordinal Expr = NULL % 3) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -146,7 +146,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = -NULL ; Ordinal Expr = -NULL) ; type: NULL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -174,7 +174,7 @@ rows: (*,'partitionPlan','
 -> -> -> -> projectOp
             » column: (Expr = SUM(1 + NULL) ; Ordinal Expr = SUM(1 + NULL)) ; type: NULL
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.nation)')
 
@@ -199,7 +199,7 @@ rows: (*,'partitionPlan','
 -> -> -> -> projectOp
             » column: (Expr = COUNT(1 + NULL) ; Ordinal Expr = COUNT(1 + NULL)) ; type: INTEGER
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.nation)')
 
@@ -224,7 +224,7 @@ rows: (*,'partitionPlan','
 -> -> -> -> projectOp
             » column: (Expr = MIN(1 + NULL) ; Ordinal Expr = MIN(1 + NULL)) ; type: NULL
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.nation)')
 
@@ -249,7 +249,7 @@ rows: (*,'partitionPlan','
 -> -> -> -> projectOp
             » column: (Expr = MAX(1 + NULL) ; Ordinal Expr = MAX(1 + NULL)) ; type: NULL
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.nation)')
 
@@ -276,7 +276,7 @@ rows: (*,'partitionPlan','
             » column: (Expr = SUM(1 + NULL) ; Ordinal Expr = SUM(1 + NULL)) ; type: NULL
             » column: (Expr = COUNT(1 + NULL) ; Ordinal Expr = COUNT(1 + NULL)) ; type: INTEGER
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.nation)')
 

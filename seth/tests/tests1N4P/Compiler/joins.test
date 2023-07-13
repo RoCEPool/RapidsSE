@@ -117,10 +117,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
          » ordinal predicate: ($1 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -143,10 +143,10 @@ rows: (*,'explainPlan','
          » predicate: (true)
          » ordinal predicate: (true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -179,13 +179,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -214,13 +214,13 @@ rows: (*,'explainPlan','
             » predicate: (true)
             » ordinal predicate: (true)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -259,16 +259,16 @@ rows: (*,'explainPlan','
                » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
                » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.region)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.supplier)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.partsupp)'
 )
 
@@ -303,16 +303,16 @@ rows: (*,'explainPlan','
                » predicate: (true)
                » ordinal predicate: (true)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.region)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » table: (rapidsse.public.nation)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.supplier)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.partsupp)'
 )
 
@@ -337,10 +337,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.nation.n_nationkey = n2.n_regionkey)
          » ordinal predicate: ($1 = $7)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » alias: (n2)
             » table: (rapidsse.public.nation)'
 )
@@ -364,10 +364,10 @@ rows: (*,'explainPlan','
          » predicate: (true)
          » ordinal predicate: (true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » alias: (n2)
             » table: (rapidsse.public.nation)'
 )
@@ -393,11 +393,11 @@ rows: (*,'explainPlan','
          » predicate: (n1.n_nationkey = n2.n_regionkey)
          » ordinal predicate: ($1 = $7)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » alias: (n1)
             » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » alias: (n2)
             » table: (rapidsse.public.nation)'
 )
@@ -421,11 +421,11 @@ rows: (*,'explainPlan','
          » predicate: (true)
          » ordinal predicate: (true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » alias: (n1)
             » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » alias: (n2)
             » table: (rapidsse.public.nation)'
 )
@@ -473,15 +473,15 @@ rows: (*,'explainPlan','
             » predicate: (n1.n_nationkey = n2.n_regionkey)
             » ordinal predicate: ($1 = $7)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » alias: (n1)
                » table: (rapidsse.public.nation)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » alias: (n2)
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)'
 )
 
@@ -513,14 +513,14 @@ rows: (*,'explainPlan','
             » predicate: (n1.n_regionkey = rapidsse.public.region.r_regionkey)
             » ordinal predicate: ($3 = $5)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » alias: (n1)
                » table: (rapidsse.public.nation)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » alias: (n2)
             » table: (rapidsse.public.nation)'
 )
@@ -552,10 +552,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
          » ordinal predicate: ($1 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -580,10 +580,10 @@ rows: (*,'explainPlan','
          » predicate: (true)
          » ordinal predicate: (true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -614,10 +614,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
          » ordinal predicate: ($1 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -642,10 +642,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
          » ordinal predicate: ($1 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -670,10 +670,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
          » ordinal predicate: ($1 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -698,10 +698,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
          » ordinal predicate: ($1 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -726,10 +726,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
          » ordinal predicate: ($1 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.region)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
 )
 
@@ -796,13 +796,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -834,13 +834,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -872,13 +872,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -916,13 +916,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -952,13 +952,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -1005,13 +1005,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -1041,13 +1041,13 @@ rows: (*,'explainPlan','
             » predicate: (true)
             » ordinal predicate: (true)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -1079,13 +1079,13 @@ rows: (*,'explainPlan','
             » predicate: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
             » ordinal predicate: ($1 = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -1116,13 +1116,13 @@ rows: (*,'explainPlan','
             » predicate: (true)
             » ordinal predicate: (true)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.supplier)'
 )
 
@@ -1157,10 +1157,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
          » ordinal predicate: ($1 = $5)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1192,10 +1192,10 @@ rows: (*,'explainPlan','
          » predicate: (true)
          » ordinal predicate: (true)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1227,10 +1227,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
          » ordinal predicate: ($1 = $5)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1262,10 +1262,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
          » ordinal predicate: ($1 = $5)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1297,10 +1297,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
          » ordinal predicate: ($1 = $5)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1327,10 +1327,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
          » ordinal predicate: ($1 = $5)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1356,10 +1356,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.t1.colA = rapidsse.public.t2.colA)
          » ordinal predicate: ($1 = $5)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1424,10 +1424,10 @@ rows: (*,'explainPlan','
          » predicate: ((rapidsse.public.t1.colA = rapidsse.public.t2.colA) AND (rapidsse.public.t1.colB = rapidsse.public.t2.colB))
          » ordinal predicate: (($1 = $5) AND ($2 = $6))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1460,10 +1460,10 @@ rows: (*,'explainPlan','
          » predicate: ((rapidsse.public.t1.colA = rapidsse.public.t2.colA) OR (rapidsse.public.t1.colB = rapidsse.public.t2.colB))
          » ordinal predicate: (($1 = $5) OR ($2 = $6))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1516,10 +1516,10 @@ rows: (*,'explainPlan','
          » predicate: (rapidsse.public.t1.colB = rapidsse.public.t2.colB)
          » ordinal predicate: ($2 = $6)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1553,10 +1553,10 @@ rows: (*,'explainPlan','
          » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
          » ordinal predicate: (($2 = $6) AND ($3 = $7))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1590,10 +1590,10 @@ rows: (*,'explainPlan','
          » predicate: (((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC)) AND (rapidsse.public.t1.colA = rapidsse.public.t2.colA))
          » ordinal predicate: ((($2 = $6) AND ($3 = $7)) AND ($1 = $5))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t2)'
 )
 
@@ -1661,13 +1661,13 @@ rows: (*,'explainPlan','
             » predicate: ((rapidsse.public.t1.colB = rapidsse.public.t2.colB) AND (rapidsse.public.t1.colC = rapidsse.public.t2.colC))
             » ordinal predicate: (($2 = $6) AND ($3 = $7))
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.t3)'
 )
 

@@ -61,7 +61,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -78,7 +78,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(''abcdef'', 1, 2) ; Ordinal Expr = SUBSTRING(''abcdef'', 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -102,7 +102,7 @@ rows: (*,'explainPlan','
 -> -> -> -> projectOp
             » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -115,7 +115,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(__subquery0003(), 1, 2) ; Ordinal Expr = SUBSTRING(__subquery0003(), 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 // Extract from a boolean
@@ -131,7 +131,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(''TRUE'', 1, 2) ; Ordinal Expr = SUBSTRING(''TRUE'', 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 // Substring from a integer
@@ -171,7 +171,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(''abcdef'', 1, 2) ; Ordinal Expr = SUBSTRING(''abcdef'', 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 // Extract from a null
@@ -187,7 +187,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(NULL, 1, 2) ; Ordinal Expr = SUBSTRING(NULL, 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -208,7 +208,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 // Extract with a float     FROM argument
@@ -248,7 +248,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, NULL, 2) ; Ordinal Expr = SUBSTRING($2, NULL, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 
@@ -269,7 +269,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 // Extract with a float     LENGTH argument
@@ -309,7 +309,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, NULL) ; Ordinal Expr = SUBSTRING($2, 1, NULL))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 // Extract with a NULL FROM argument
@@ -336,7 +336,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1) ; Ordinal Expr = SUBSTRING($2, 1))
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
 
 

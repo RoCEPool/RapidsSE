@@ -60,7 +60,7 @@ rows: (*,'stageMarkers','
       » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » location: all partitions
          » table: (rapidsse.public.nation)'
 )
@@ -96,7 +96,7 @@ rows: (*,'stageMarkers','
                » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)
 
@@ -112,7 +112,7 @@ rows: (*,'stageMarkers','
                » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
                » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)'
 )
@@ -159,7 +159,7 @@ rows: (*,'stageMarkers','
                      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.nation)
 
@@ -175,7 +175,7 @@ rows: (*,'stageMarkers','
                      » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
                      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.nation)
 
@@ -191,7 +191,7 @@ rows: (*,'stageMarkers','
                » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                » column: (Expr = rapidsse.public.nation.n_comment ; Ordinal Expr = $4)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.nation)')
 
@@ -228,11 +228,11 @@ rows: (*,'stageMarkers','
                » location: all partitions
                » routing: broadcast
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.region)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.nation)'
 )
@@ -282,15 +282,15 @@ rows: (*,'stageMarkers','
                      » location: all partitions
                      » routing: broadcast
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.region)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.nation)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.supplier)'
 )
@@ -348,11 +348,11 @@ rows: (*,'stageMarkers','
                            » location: all partitions
                            » routing: broadcast
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.region)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.nation)'
 )
@@ -404,7 +404,7 @@ rows: (*,'stageMarkers','
                            » column: (Expr = 1 ; Ordinal Expr = 1)
                            » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.nation)'
 )

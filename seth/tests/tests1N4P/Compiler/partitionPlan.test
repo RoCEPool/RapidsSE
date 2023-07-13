@@ -133,7 +133,7 @@ rows:
       » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
       » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » location: all partitions
          » table: (rapidsse.public.t1)'
 )
@@ -163,7 +163,7 @@ rows:
          » expr: (((CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2) > 0.0000000000e+00)
          » ordinal expr: (((CAST($1 AS FLOAT)) / $2) > 0.0000000000e+00)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » location: all partitions
             » table: (rapidsse.public.t1)'
 )
@@ -202,7 +202,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -238,7 +238,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -287,7 +287,7 @@ rows: (*,'partitionExplain','
                         » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                         » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -336,7 +336,7 @@ rows: (*,'partitionExplain','
                         » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                         » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -381,7 +381,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
                   » column: (Expr = rapidsse.public.t1.c2 ; Ordinal Expr = $2)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -425,7 +425,7 @@ rows: (*,'partitionExplain','
                   » expr: (((CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2) > 0.0000000000e+00)
                   » ordinal expr: (((CAST($1 AS FLOAT)) / $2) > 0.0000000000e+00)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -475,7 +475,7 @@ rows: (*,'partitionExplain','
                      » expr: (((CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2) > 0.0000000000e+00)
                      » ordinal expr: (((CAST($1 AS FLOAT)) / $2) > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -516,7 +516,7 @@ rows: (*,'partitionExplain','
                   » expr: (((CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2) > 0.0000000000e+00)
                   » ordinal expr: (((CAST($1 AS FLOAT)) / $2) > 0.0000000000e+00)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -570,7 +570,7 @@ rows: (*,'partitionExplain','
                            » expr: (((CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2) > 0.0000000000e+00)
                            » ordinal expr: (((CAST($1 AS FLOAT)) / $2) > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.t1)'
 )
@@ -630,7 +630,7 @@ rows: (*,'partitionExplain','
                               » expr: (((CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2) > 0.0000000000e+00)
                               » ordinal expr: (((CAST($1 AS FLOAT)) / $2) > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> -> tableScanOp
                                  » location: all partitions
                                  » table: (rapidsse.public.t1)'
 )
@@ -678,7 +678,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
             » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.t1)'
 )
@@ -728,7 +728,7 @@ rows: (*,'partitionExplain','
                » expr: (rapidsse.public.t1.c1 > 0)
                » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -778,7 +778,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -829,7 +829,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -878,7 +878,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -940,7 +940,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                   » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -1001,7 +1001,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                   » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -1068,7 +1068,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                      » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -1123,7 +1123,7 @@ rows: (*,'partitionExplain','
                   » expr: (rapidsse.public.t1.c1 > 0)
                   » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -1189,7 +1189,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c1 > 0)
                      » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -1249,7 +1249,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c1 > 0)
                      » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -1320,7 +1320,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c1 > 0)
                         » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -1380,7 +1380,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c1 > 0)
                      » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -1450,7 +1450,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c1 > 0)
                         » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -1514,7 +1514,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c1 > 0)
                         » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -1589,7 +1589,7 @@ rows: (*,'partitionExplain','
                            » expr: (rapidsse.public.t1.c1 > 0)
                            » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.t1)'
 )
@@ -1649,7 +1649,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c1 > 0)
                      » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -1720,7 +1720,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c1 > 0)
                         » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -1755,7 +1755,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
             » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.t1)'
 )
@@ -1805,7 +1805,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
             » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.t1)'
 )
@@ -1857,7 +1857,7 @@ rows: (*,'partitionExplain','
                » expr: (rapidsse.public.t1.c1 > 0)
                » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -1909,7 +1909,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -1961,7 +1961,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -2012,7 +2012,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -2075,7 +2075,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MAX((CAST(rapidsse.public.t1.c1 AS FLOAT)) + rapidsse.public.t1.c2) ; Ordinal Expr = MAX((CAST($1 AS FLOAT)) + $2))
                   » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -2138,7 +2138,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MAX((CAST(rapidsse.public.t1.c1 AS FLOAT)) + rapidsse.public.t1.c2) ; Ordinal Expr = MAX((CAST($1 AS FLOAT)) + $2))
                   » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -2206,7 +2206,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = MAX((CAST(rapidsse.public.t1.c1 AS FLOAT)) + rapidsse.public.t1.c2) ; Ordinal Expr = MAX((CAST($1 AS FLOAT)) + $2))
                      » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -2263,7 +2263,7 @@ rows: (*,'partitionExplain','
                   » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                   » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -2331,7 +2331,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                      » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -2393,7 +2393,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                      » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -2469,7 +2469,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                         » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -2530,7 +2530,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                      » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -2602,7 +2602,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                         » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -2668,7 +2668,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                         » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -2745,7 +2745,7 @@ rows: (*,'partitionExplain','
                            » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                            » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.t1)'
 )
@@ -2806,7 +2806,7 @@ rows: (*,'partitionExplain','
                      » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                      » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)'
 )
@@ -2878,7 +2878,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                         » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)'
 )
@@ -2923,7 +2923,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $4)
                » group by: (Expr = rapidsse.public.t1.c4 ; Ordinal Expr = $4)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )
@@ -2960,7 +2960,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
             » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.t1)
 
@@ -2972,7 +2972,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
             » column: (Alias = y3 ; Expr = (CAST(rapidsse.public.t2.colA AS FLOAT)) / rapidsse.public.t2.colB ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » location: all partitions
                » table: (rapidsse.public.t2)'
 )
@@ -3012,7 +3012,7 @@ rows: (*,'partitionExplain','
                » expr: (rapidsse.public.t1.c1 > 0)
                » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)
 
@@ -3028,7 +3028,7 @@ rows: (*,'partitionExplain','
                » expr: (rapidsse.public.t2.COLA > 0)
                » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t2)'
 )
@@ -3083,7 +3083,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)
 
@@ -3116,7 +3116,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t2)'
 )
@@ -3183,7 +3183,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c1 > 0)
                         » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)
 
@@ -3224,7 +3224,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t2.colA > 0)
                         » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t2)'
 )
@@ -3282,7 +3282,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                   » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)
 
@@ -3316,7 +3316,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
                   » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t2)'
 )
@@ -3386,7 +3386,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                         » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t1)
 
@@ -3428,7 +3428,7 @@ rows: (*,'partitionExplain','
                         » expr: (rapidsse.public.t2.colB > 0.0000000000e+00)
                         » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> tableScanOp
                            » location: all partitions
                            » table: (rapidsse.public.t2)'
 )
@@ -3509,7 +3509,7 @@ rows: (*,'partitionExplain','
                            » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                            » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.t1)
 
@@ -3562,7 +3562,7 @@ rows: (*,'partitionExplain','
                            » expr: (rapidsse.public.t2.colB > 0.0000000000e+00)
                            » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.t2)'
 )
@@ -3643,7 +3643,7 @@ rows: (*,'partitionExplain','
                            » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                            » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.t1)
 
@@ -3696,7 +3696,7 @@ rows: (*,'partitionExplain','
                            » expr: (rapidsse.public.t2.colB > 0.0000000000e+00)
                            » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> tableScanOp
                               » location: all partitions
                               » table: (rapidsse.public.t2)'
 )
@@ -3743,7 +3743,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                   » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)
 
@@ -3755,7 +3755,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                   » column: (Alias = y3 ; Expr = (CAST(rapidsse.public.t2.colA AS FLOAT)) / rapidsse.public.t2.colB ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t2)'
 )
@@ -3797,7 +3797,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                   » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)
 
@@ -3809,7 +3809,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                   » column: (Alias = y3 ; Expr = (CAST(rapidsse.public.t2.colA AS FLOAT)) / rapidsse.public.t2.colB ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t2)'
 )
@@ -3856,7 +3856,7 @@ rows: (*,'partitionExplain','
                      » column: (Alias = x2 ; Expr = rapidsse.public.t1.c2 + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                      » column: (Alias = x3 ; Expr = (CAST(rapidsse.public.t1.c1 AS FLOAT)) / rapidsse.public.t1.c2 ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t1)
 
@@ -3868,7 +3868,7 @@ rows: (*,'partitionExplain','
                      » column: (Alias = y2 ; Expr = rapidsse.public.t2.colB + 1.0000000000e+00 ; Ordinal Expr = $2 + 1.0000000000e+00)
                      » column: (Alias = y3 ; Expr = (CAST(rapidsse.public.t2.colA AS FLOAT)) / rapidsse.public.t2.colB ; Ordinal Expr = (CAST($1 AS FLOAT)) / $2)
 
--> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
                         » table: (rapidsse.public.t2)'
 )
@@ -3948,7 +3948,7 @@ rows: (*,'partitionExplain','
                                  » expr: (rapidsse.public.t1.c1 > 0)
                                  » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> -> -> tableScanOp
                                     » location: all partitions
                                     » table: (rapidsse.public.t1)
 
@@ -3989,7 +3989,7 @@ rows: (*,'partitionExplain','
                                  » expr: (rapidsse.public.t2.colA > 0)
                                  » ordinal expr: ($1 > 0)
 
--> -> -> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> -> -> tableScanOp
                                     » location: all partitions
                                     » table: (rapidsse.public.t2)'
 )
@@ -4072,7 +4072,7 @@ rows: (*,'partitionExplain','
                                  » expr: (rapidsse.public.t1.c2 > 0.0000000000e+00)
                                  » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> -> -> tableScanOp
                                     » location: all partitions
                                     » table: (rapidsse.public.t1)
 
@@ -4114,7 +4114,7 @@ rows: (*,'partitionExplain','
                                  » expr: (rapidsse.public.t2.colB > 0.0000000000e+00)
                                  » ordinal expr: ($2 > 0.0000000000e+00)
 
--> -> -> -> -> -> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> -> -> -> -> -> tableScanOp
                                     » location: all partitions
                                     » table: (rapidsse.public.t2)'
 )
@@ -4182,7 +4182,7 @@ rows: (*,'partitionExplain','
       » column: (Expr = 1 ; Ordinal Expr = 1)
       » column: (Expr = 2 + 3 ; Ordinal Expr = 2 + 3)
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » location: all partitions
          » table: (rapidsse.public.t1)'
 )
@@ -4226,7 +4226,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = 2 + 3 ; Ordinal Expr = 2 + 3)
                   » column: (Expr = SUM(rapidsse.public.t1.c1) ; Ordinal Expr = SUM($1))
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
                      » table: (rapidsse.public.t1)'
 )
@@ -4268,7 +4268,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = 1 ; Ordinal Expr = 1)
                » column: (Expr = 2 + 3 ; Ordinal Expr = 2 + 3)
 
--> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> tableScanOp
                   » location: all partitions
                   » table: (rapidsse.public.t1)'
 )

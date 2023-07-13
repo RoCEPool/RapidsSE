@@ -45,7 +45,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey IN (1, 2, 3, 4))
          » ordinal expr: ($1 IN (1, 2, 3, 4))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -73,7 +73,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -90,7 +90,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey IN __subquery0003())
          » ordinal expr: ($1 IN __subquery0003())
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -110,7 +110,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
@@ -127,7 +127,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey IN (1, __subquery0003()))
          » ordinal expr: ($1 IN (1, __subquery0003()))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -152,7 +152,7 @@ rows: (*,'explainPlan','
 -> -> -> -> projectOp
             » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
 -> mainSubquery
@@ -184,7 +184,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey IN (1, __subquery0004()))
          » ordinal expr: ($1 IN (1, __subquery0004()))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -208,7 +208,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey IN (rapidsse.public.nation.n_nationkey))
          » ordinal expr: ($1 IN ($1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -228,7 +228,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey IN (rapidsse.public.nation.n_nationkey, rapidsse.public.nation.n_regionkey))
          » ordinal expr: ($1 IN ($1, $3))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -248,7 +248,7 @@ rows: (*,'explainPlan','
          » expr: (rapidsse.public.nation.n_nationkey IN (rapidsse.public.nation.n_nationkey + 1, rapidsse.public.nation.n_regionkey - 1))
          » ordinal expr: ($1 IN ($1 + 1, $3 - 1))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 

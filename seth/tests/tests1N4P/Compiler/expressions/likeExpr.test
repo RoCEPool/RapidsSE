@@ -106,7 +106,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = NOT (''abc'' LIKE ''abc'') ; Ordinal Expr = NOT (''abc'' LIKE ''abc''))
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -185,7 +185,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'')
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -212,7 +212,7 @@ failure contains: 'ESCAPE clause can only contain a single character'
 //         » expr: (rapidsse.public.likeTest.col1 LIKE ''a_b_c%'' ESCAPE rapidsse.public.likeTest.col2)
 //         » ordinal expr: ($1 LIKE ''a_b_c%'' ESCAPE $2)
 //
-//-> -> -> -> select * fromOp
+//-> -> -> -> tableScanOp
 //            » table: (rapidsse.public.likeTest)')
 // TODO: Disable when no longer required
 SELECT * FROM likeTest WHERE col1 like 'a_b_c%' ESCAPE col2;
@@ -244,7 +244,7 @@ failure contains: 'Expression must be a literal: LIKE escape expression'
 //-> -> -> -> projectOp
 //            » column: (Expr = ''#'' ; Ordinal Expr = ''#'')
 //
-//-> -> -> -> -> select * fromOp
+//-> -> -> -> -> tableScanOp
 //               » table: (rapidsse.public.nation)
 //
 //∆ mainSubquery
@@ -260,7 +260,7 @@ failure contains: 'Expression must be a literal: LIKE escape expression'
 //-> -> -> projectOp
 //         » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003() ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003())
 //
-//-> -> -> -> select * fromOp
+//-> -> -> -> tableScanOp
 //            » table: (rapidsse.public.nation)')
 // TODO: Disable when no longer required
 EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 1) FROM NATION LIMIT 1;
@@ -315,7 +315,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = ''abc'' LIKE ''abc'' ; Ordinal Expr = ''abc'' LIKE ''abc'')
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -335,7 +335,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = ''abc'' LIKE ''abc'' ESCAPE ''#'' ; Ordinal Expr = ''abc'' LIKE ''abc'' ESCAPE ''#'')
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
 
 
@@ -359,7 +359,7 @@ rows: (*,'explainPlan','
             » expr: (rapidsse.public.nation.n_name LIKE ''A%'')
             » ordinal expr: ($2 LIKE ''A%'')
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)')
 
 
@@ -383,7 +383,7 @@ rows: (*,'explainPlan','
             » expr: (rapidsse.public.nation.n_name LIKE ''A%'' ESCAPE ''#'')
             » ordinal expr: ($2 LIKE ''A%'' ESCAPE ''#'')
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)')
 
 

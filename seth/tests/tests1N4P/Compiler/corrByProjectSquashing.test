@@ -60,7 +60,7 @@ rows:
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -71,7 +71,7 @@ rows:
             » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
 )
 
@@ -100,7 +100,7 @@ rows:
             » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t4)
 
 -> -> -> statementMarker: select
@@ -111,7 +111,7 @@ rows:
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)'
 )
 
@@ -140,7 +140,7 @@ rows:
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -151,7 +151,7 @@ rows:
             » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t4)'
 )
 
@@ -180,7 +180,7 @@ rows: (*,'explainPlan','
             » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -191,7 +191,7 @@ rows: (*,'explainPlan','
             » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
             » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t4)'
 )
 
@@ -228,7 +228,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col7 ; Expr = rapidsse.public.t1.col7 ; Ordinal Expr = $7)
             » column: (Alias = col8 ; Expr = rapidsse.public.t1.col8 ; Ordinal Expr = $8)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -244,7 +244,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col7 ; Expr = rapidsse.public.t2.col7 ; Ordinal Expr = $7)
             » column: (Alias = col8 ; Expr = rapidsse.public.t2.col8 ; Ordinal Expr = $8)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
 )
 
@@ -272,7 +272,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t4)
 
 -> -> -> statementMarker: select
@@ -283,7 +283,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)'
 )
 
@@ -311,7 +311,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -322,7 +322,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t4)'
 )
 
@@ -350,7 +350,7 @@ rows: (*,'explainPlan','
             » column: (Alias = c4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = c6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -361,7 +361,7 @@ rows: (*,'explainPlan','
             » column: (Alias = c4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
             » column: (Alias = c6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t4)')
 
 
@@ -395,7 +395,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
             » group by: (Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -405,7 +405,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
             » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)')
 
 EXPLAIN
@@ -431,7 +431,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -442,7 +442,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
 )
 
@@ -472,7 +472,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -482,7 +482,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
 )
 
@@ -513,7 +513,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -524,7 +524,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
 )
 
@@ -566,7 +566,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
                   » group by: (Expr = c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -577,7 +577,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
 )
 
@@ -605,7 +605,7 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
             » group by: (Expr = c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -625,7 +625,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
                   » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t2)'
 )
 
@@ -663,7 +663,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
                   » group by: (Expr = c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -683,7 +683,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
                   » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t2)'
 )
 
@@ -727,7 +727,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
                   » group by: (Expr = c1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -746,7 +746,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
                   » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t2)'
 )
 
@@ -788,7 +788,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -805,7 +805,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t4)
 
 -> -> -> -> -> statementMarker: select
@@ -816,7 +816,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t2)'
 )
 
@@ -856,7 +856,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
 
 -> -> -> -> -> statementMarker: select
@@ -867,7 +867,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t4)
 
 -> -> -> statementMarker: select
@@ -878,7 +878,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t2.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t2.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
 )
 
@@ -920,7 +920,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
 
 -> -> -> -> -> statementMarker: select
@@ -931,7 +931,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t4)
 
 -> -> -> statementMarker: select
@@ -942,7 +942,7 @@ rows: (*,'explainPlan','
             » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
             » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t5)'
 )
 
@@ -979,7 +979,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -996,7 +996,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t4)
 
 -> -> -> -> -> statementMarker: select
@@ -1007,7 +1007,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
                   » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t5)'
 )
 
@@ -1045,7 +1045,7 @@ rows: (*,'explainPlan','
             » column: (Alias = col4 ; Expr = rapidsse.public.t1.col4 ; Ordinal Expr = $4)
             » column: (Alias = col6 ; Expr = rapidsse.public.t1.col6 ; Ordinal Expr = $6)
 
--> -> -> -> -> select * fromOp
+-> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
 
 -> -> -> statementMarker: select
@@ -1062,7 +1062,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = col4 ; Expr = rapidsse.public.t4.delta ; Ordinal Expr = $4)
                   » column: (Alias = col6 ; Expr = rapidsse.public.t4.foxtrot ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t4)
 
 -> -> -> -> -> statementMarker: select
@@ -1073,7 +1073,7 @@ rows: (*,'explainPlan','
                   » column: (Expr = rapidsse.public.t5.colD ; Ordinal Expr = $4)
                   » column: (Expr = rapidsse.public.t5.colF ; Ordinal Expr = $6)
 
--> -> -> -> -> -> -> select * fromOp
+-> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t5)'
 )
 

@@ -44,7 +44,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col1 AS BOOLEAN) ; Ordinal Expr = CAST($1 AS BOOLEAN)) ; type: BOOLEAN
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col1  AS CHAR(10))         FROM castTest;
@@ -59,7 +59,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col1  AS DATE)         FROM castTest;
@@ -98,7 +98,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col1 AS VARCHAR) ; Ordinal Expr = CAST($1 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -118,7 +118,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col2  AS DATE)         FROM castTest;
@@ -136,7 +136,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col2  AS FLOAT)        FROM castTest;
@@ -151,7 +151,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS FLOAT) ; Ordinal Expr = CAST($2 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col2  AS INTEGER)      FROM castTest;
@@ -166,7 +166,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTEGER) ; Ordinal Expr = CAST($2 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 // Cannot cast to a multi-field interval
@@ -190,7 +190,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL YEAR) ; Ordinal Expr = CAST($2 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL MONTH)  FROM castTest;
@@ -205,7 +205,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL MONTH) ; Ordinal Expr = CAST($2 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL DAY)  FROM castTest;
@@ -220,7 +220,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL DAY) ; Ordinal Expr = CAST($2 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL HOUR)  FROM castTest;
@@ -235,7 +235,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL HOUR) ; Ordinal Expr = CAST($2 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL MINUTE)  FROM castTest;
@@ -250,7 +250,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($2 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS INTERVAL SECOND)  FROM castTest;
@@ -265,7 +265,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL SECOND) ; Ordinal Expr = CAST($2 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col2  AS TIME)         FROM castTest;
@@ -286,7 +286,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS VARCHAR) ; Ordinal Expr = CAST($2 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -306,7 +306,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col3  AS DATE)         FROM castTest;
@@ -324,7 +324,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS DECIMAL) ; Ordinal Expr = CAST($3 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col3  AS FLOAT)        FROM castTest;
@@ -339,7 +339,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS FLOAT) ; Ordinal Expr = CAST($3 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col3  AS INTEGER)      FROM castTest;
@@ -354,7 +354,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTEGER) ; Ordinal Expr = CAST($3 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 // Cannot cast to a multi-field interval
@@ -378,7 +378,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL YEAR) ; Ordinal Expr = CAST($3 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL MONTH)  FROM castTest;
@@ -393,7 +393,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL MONTH) ; Ordinal Expr = CAST($3 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL DAY)  FROM castTest;
@@ -408,7 +408,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL DAY) ; Ordinal Expr = CAST($3 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL HOUR)  FROM castTest;
@@ -423,7 +423,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL HOUR) ; Ordinal Expr = CAST($3 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL MINUTE)  FROM castTest;
@@ -438,7 +438,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($3 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS INTERVAL SECOND)  FROM castTest;
@@ -453,7 +453,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL SECOND) ; Ordinal Expr = CAST($3 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col3  AS TIME)         FROM castTest;
@@ -474,7 +474,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS VARCHAR) ; Ordinal Expr = CAST($3 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -494,7 +494,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col4  AS DATE)         FROM castTest;
@@ -512,7 +512,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS DECIMAL) ; Ordinal Expr = CAST($4 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col4  AS FLOAT)        FROM castTest;
@@ -527,7 +527,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS FLOAT) ; Ordinal Expr = CAST($4 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col4  AS INTEGER)      FROM castTest;
@@ -542,7 +542,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTEGER) ; Ordinal Expr = CAST($4 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 // Cannot cast to a multi-field interval
@@ -566,7 +566,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL YEAR) ; Ordinal Expr = CAST($4 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL MONTH)  FROM castTest;
@@ -581,7 +581,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL MONTH) ; Ordinal Expr = CAST($4 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL DAY)  FROM castTest;
@@ -596,7 +596,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL DAY) ; Ordinal Expr = CAST($4 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL HOUR)  FROM castTest;
@@ -611,7 +611,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL HOUR) ; Ordinal Expr = CAST($4 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL MINUTE)  FROM castTest;
@@ -626,7 +626,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($4 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS INTERVAL SECOND)  FROM castTest;
@@ -641,7 +641,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL SECOND) ; Ordinal Expr = CAST($4 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col4  AS TIME)         FROM castTest;
@@ -662,7 +662,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS VARCHAR) ; Ordinal Expr = CAST($4 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -682,7 +682,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS DATE)         FROM castTest;
@@ -697,7 +697,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS DATE) ; Ordinal Expr = CAST($5 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS DECIMAL)      FROM castTest;
@@ -712,7 +712,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS DECIMAL) ; Ordinal Expr = CAST($5 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS FLOAT)        FROM castTest;
@@ -727,7 +727,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS FLOAT) ; Ordinal Expr = CAST($5 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS INTEGER)      FROM castTest;
@@ -742,7 +742,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS INTEGER) ; Ordinal Expr = CAST($5 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS INTERVAL YEAR TO MONTH)  FROM castTest;
@@ -766,7 +766,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS TIME) ; Ordinal Expr = CAST($5 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS TIMESTAMP)    FROM castTest;
@@ -781,7 +781,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS TIMESTAMP) ; Ordinal Expr = CAST($5 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col5  AS VARCHAR)      FROM castTest;
@@ -796,7 +796,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS VARCHAR) ; Ordinal Expr = CAST($5 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -817,7 +817,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS DATE)         FROM castTest;
@@ -832,7 +832,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS DATE) ; Ordinal Expr = CAST($6 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS DECIMAL)      FROM castTest;
@@ -847,7 +847,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS DECIMAL) ; Ordinal Expr = CAST($6 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS FLOAT)        FROM castTest;
@@ -862,7 +862,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS FLOAT) ; Ordinal Expr = CAST($6 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS INTEGER)      FROM castTest;
@@ -877,7 +877,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS INTEGER) ; Ordinal Expr = CAST($6 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col6  AS INTERVAL YEAR TO MONTH)  FROM castTest;
@@ -901,7 +901,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS TIME) ; Ordinal Expr = CAST($6 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS TIMESTAMP)    FROM castTest;
@@ -916,7 +916,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS TIMESTAMP) ; Ordinal Expr = CAST($6 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col6  AS VARCHAR)      FROM castTest;
@@ -931,7 +931,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS VARCHAR) ; Ordinal Expr = CAST($6 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 // *** Cast a DATE column ***
@@ -950,7 +950,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col7  AS DATE)         FROM castTest;
@@ -965,7 +965,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS DATE) ; Ordinal Expr = CAST($7 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col7  AS DECIMAL)      FROM castTest;
@@ -1001,7 +1001,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS TIMESTAMP) ; Ordinal Expr = CAST($7 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT CAST(col7  AS VARCHAR)      FROM castTest;
@@ -1016,7 +1016,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS VARCHAR) ; Ordinal Expr = CAST($7 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1037,7 +1037,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col8  AS DATE)         FROM castTest;
@@ -1073,7 +1073,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS TIME) ; Ordinal Expr = CAST($8 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col8  AS TIMESTAMP)    FROM castTest;
@@ -1088,7 +1088,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS TIMESTAMP) ; Ordinal Expr = CAST($8 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col8  AS VARCHAR)      FROM castTest;
@@ -1103,7 +1103,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS VARCHAR) ; Ordinal Expr = CAST($8 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1124,7 +1124,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS DATE)         FROM castTest;
@@ -1139,7 +1139,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS DATE) ; Ordinal Expr = CAST($9 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS DECIMAL)      FROM castTest;
@@ -1172,7 +1172,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS TIME) ; Ordinal Expr = CAST($9 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS TIMESTAMP)    FROM castTest;
@@ -1187,7 +1187,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS TIMESTAMP) ; Ordinal Expr = CAST($9 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(col9  AS VARCHAR)      FROM castTest;
@@ -1202,7 +1202,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS VARCHAR) ; Ordinal Expr = CAST($9 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1230,7 +1230,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2. ; Ordinal Expr = 2.) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS FLOAT)        FROM castTest;
@@ -1245,7 +1245,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2.0000000000e+00 ; Ordinal Expr = 2.0000000000e+00) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTEGER)      FROM castTest;
@@ -1260,7 +1260,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2 ; Ordinal Expr = 2) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL YEAR)  FROM castTest;
@@ -1275,7 +1275,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2'' YEAR ; Ordinal Expr = INTERVAL ''2'' YEAR) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL MONTH)  FROM castTest;
@@ -1290,7 +1290,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''24'' MONTH ; Ordinal Expr = INTERVAL ''24'' MONTH) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL YEAR TO MONTH)  FROM castTest;
@@ -1305,7 +1305,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''2-0'' YEAR TO MONTH) ; type: INTERVAL YEAR TO MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' year AS INTERVAL DAY)  FROM castTest;
@@ -1371,7 +1371,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2. ; Ordinal Expr = 2.) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1387,7 +1387,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2.0000000000e+00 ; Ordinal Expr = 2.0000000000e+00) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1403,7 +1403,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 2 ; Ordinal Expr = 2) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL YEAR)  FROM castTest;
@@ -1427,7 +1427,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2'' DAY ; Ordinal Expr = INTERVAL ''2'' DAY) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL HOUR)  FROM castTest;
@@ -1442,7 +1442,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''48'' HOUR ; Ordinal Expr = INTERVAL ''48'' HOUR) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL MINUTE)  FROM castTest;
@@ -1457,7 +1457,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2880'' MINUTE ; Ordinal Expr = INTERVAL ''2880'' MINUTE) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL SECOND)  FROM castTest;
@@ -1472,7 +1472,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''172800'' SECOND ; Ordinal Expr = INTERVAL ''172800'' SECOND) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1488,7 +1488,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2 0'' DAY TO HOUR ; Ordinal Expr = INTERVAL ''2 0'' DAY TO HOUR) ; type: INTERVAL DAY TO HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL DAY TO MINUTE)  FROM castTest;
@@ -1503,7 +1503,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2 0:0'' DAY TO MINUTE ; Ordinal Expr = INTERVAL ''2 0:0'' DAY TO MINUTE) ; type: INTERVAL DAY TO MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL DAY TO SECOND)  FROM castTest;
@@ -1518,7 +1518,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2 0:0:0'' DAY TO SECOND ; Ordinal Expr = INTERVAL ''2 0:0:0'' DAY TO SECOND) ; type: INTERVAL DAY TO SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL HOUR TO MINUTE)  FROM castTest;
@@ -1533,7 +1533,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''48:0'' HOUR TO MINUTE ; Ordinal Expr = INTERVAL ''48:0'' HOUR TO MINUTE) ; type: INTERVAL HOUR TO MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL HOUR TO SECOND)  FROM castTest;
@@ -1548,7 +1548,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''48:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''48:0:0'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(interval '2' day AS INTERVAL MINUTE TO SECOND)  FROM castTest;
@@ -1563,7 +1563,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''2880:0'' MINUTE TO SECOND ; Ordinal Expr = INTERVAL ''2880:0'' MINUTE TO SECOND) ; type: INTERVAL MINUTE TO SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1590,7 +1590,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS BOOLEAN) ; Ordinal Expr = CAST(NULL AS BOOLEAN)) ; type: BOOLEAN
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1606,7 +1606,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS CHAR) ; Ordinal Expr = CAST(NULL AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1622,7 +1622,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS DATE) ; Ordinal Expr = CAST(NULL AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1638,7 +1638,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS DECIMAL) ; Ordinal Expr = CAST(NULL AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1654,7 +1654,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS FLOAT) ; Ordinal Expr = CAST(NULL AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1670,7 +1670,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTEGER) ; Ordinal Expr = CAST(NULL AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1686,7 +1686,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL YEAR) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL MONTH)  FROM castTest;
@@ -1701,7 +1701,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL MONTH) ; Ordinal Expr = CAST(NULL AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL YEAR TO MONTH)  FROM castTest;
@@ -1716,7 +1716,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL YEAR TO MONTH) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR TO MONTH)) ; type: INTERVAL YEAR TO MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY)  FROM castTest;
@@ -1731,7 +1731,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL DAY) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL HOUR)  FROM castTest;
@@ -1746,7 +1746,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL HOUR) ; Ordinal Expr = CAST(NULL AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL MINUTE)  FROM castTest;
@@ -1761,7 +1761,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL MINUTE) ; Ordinal Expr = CAST(NULL AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL SECOND)  FROM castTest;
@@ -1776,7 +1776,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY TO HOUR)  FROM castTest;
@@ -1791,7 +1791,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO HOUR) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO HOUR)) ; type: INTERVAL DAY TO HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY TO MINUTE)  FROM castTest;
@@ -1806,7 +1806,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO MINUTE) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO MINUTE)) ; type: INTERVAL DAY TO MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL DAY TO SECOND)  FROM castTest;
@@ -1821,7 +1821,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO SECOND)) ; type: INTERVAL DAY TO SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL HOUR TO MINUTE)  FROM castTest;
@@ -1836,7 +1836,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL HOUR TO MINUTE) ; Ordinal Expr = CAST(NULL AS INTERVAL HOUR TO MINUTE)) ; type: INTERVAL HOUR TO MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL HOUR TO SECOND)  FROM castTest;
@@ -1851,7 +1851,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL HOUR TO SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL HOUR TO SECOND)) ; type: INTERVAL HOUR TO SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT CAST(NULL  AS INTERVAL MINUTE TO SECOND)  FROM castTest;
@@ -1866,7 +1866,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL MINUTE TO SECOND) ; Ordinal Expr = CAST(NULL AS INTERVAL MINUTE TO SECOND)) ; type: INTERVAL MINUTE TO SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1882,7 +1882,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS TIME) ; Ordinal Expr = CAST(NULL AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1898,7 +1898,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS TIMESTAMP) ; Ordinal Expr = CAST(NULL AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1914,7 +1914,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS VARCHAR) ; Ordinal Expr = CAST(NULL AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -1944,7 +1944,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col1 AS BOOLEAN) ; Ordinal Expr = CAST($1 AS BOOLEAN)) ; type: BOOLEAN
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (CHAR(10)) col1         FROM castTest;
@@ -1959,7 +1959,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col1 AS CHAR) ; Ordinal Expr = CAST($1 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DATE) col1         FROM castTest;
@@ -1998,7 +1998,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col1 AS VARCHAR) ; Ordinal Expr = CAST($1 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -2018,7 +2018,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS CHAR) ; Ordinal Expr = CAST($2 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (DATE) col2         FROM castTest;
@@ -2036,7 +2036,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS DECIMAL) ; Ordinal Expr = CAST($2 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col2        FROM castTest;
@@ -2051,7 +2051,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS FLOAT) ; Ordinal Expr = CAST($2 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col2      FROM castTest;
@@ -2066,7 +2066,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTEGER) ; Ordinal Expr = CAST($2 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -2082,7 +2082,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL YEAR) ; Ordinal Expr = CAST($2 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MONTH) col2  FROM castTest;
@@ -2097,7 +2097,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL MONTH) ; Ordinal Expr = CAST($2 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) col2  FROM castTest;
@@ -2115,7 +2115,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL DAY) ; Ordinal Expr = CAST($2 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL HOUR) col2  FROM castTest;
@@ -2130,7 +2130,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL HOUR) ; Ordinal Expr = CAST($2 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MINUTE) col2  FROM castTest;
@@ -2145,7 +2145,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($2 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL SECOND) col2  FROM castTest;
@@ -2160,7 +2160,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS INTERVAL SECOND) ; Ordinal Expr = CAST($2 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY TO HOUR) col2  FROM castTest;
@@ -2200,7 +2200,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col2 AS VARCHAR) ; Ordinal Expr = CAST($2 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -2220,7 +2220,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS CHAR) ; Ordinal Expr = CAST($3 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (DATE) col3         FROM castTest;
@@ -2238,7 +2238,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS DECIMAL) ; Ordinal Expr = CAST($3 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col3        FROM castTest;
@@ -2253,7 +2253,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS FLOAT) ; Ordinal Expr = CAST($3 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col3      FROM castTest;
@@ -2268,7 +2268,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTEGER) ; Ordinal Expr = CAST($3 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) col3  FROM castTest;
@@ -2283,7 +2283,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL YEAR) ; Ordinal Expr = CAST($3 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (INTERVAL MONTH) col3  FROM castTest;
@@ -2298,7 +2298,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL MONTH) ; Ordinal Expr = CAST($3 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) col3  FROM castTest;
@@ -2316,7 +2316,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL DAY) ; Ordinal Expr = CAST($3 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (INTERVAL HOUR) col3  FROM castTest;
@@ -2331,7 +2331,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL HOUR) ; Ordinal Expr = CAST($3 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MINUTE) col3  FROM castTest;
@@ -2346,7 +2346,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($3 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL SECOND) col3  FROM castTest;
@@ -2361,7 +2361,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS INTERVAL SECOND) ; Ordinal Expr = CAST($3 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY TO HOUR) col3  FROM castTest;
@@ -2401,7 +2401,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col3 AS VARCHAR) ; Ordinal Expr = CAST($3 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -2421,7 +2421,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS CHAR) ; Ordinal Expr = CAST($4 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (DATE) col4         FROM castTest;
@@ -2439,7 +2439,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS DECIMAL) ; Ordinal Expr = CAST($4 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col4        FROM castTest;
@@ -2454,7 +2454,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS FLOAT) ; Ordinal Expr = CAST($4 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col4      FROM castTest;
@@ -2469,7 +2469,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTEGER) ; Ordinal Expr = CAST($4 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (INTERVAL YEAR) col4  FROM castTest;
@@ -2484,7 +2484,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL YEAR) ; Ordinal Expr = CAST($4 AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MONTH) col4  FROM castTest;
@@ -2499,7 +2499,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL MONTH) ; Ordinal Expr = CAST($4 AS INTERVAL MONTH)) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) col4  FROM castTest;
@@ -2517,7 +2517,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL DAY) ; Ordinal Expr = CAST($4 AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL HOUR) col4  FROM castTest;
@@ -2532,7 +2532,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL HOUR) ; Ordinal Expr = CAST($4 AS INTERVAL HOUR)) ; type: INTERVAL HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MINUTE) col4  FROM castTest;
@@ -2547,7 +2547,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL MINUTE) ; Ordinal Expr = CAST($4 AS INTERVAL MINUTE)) ; type: INTERVAL MINUTE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL SECOND) col4  FROM castTest;
@@ -2562,7 +2562,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS INTERVAL SECOND) ; Ordinal Expr = CAST($4 AS INTERVAL SECOND)) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY TO HOUR) col4  FROM castTest;
@@ -2601,7 +2601,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col4 AS VARCHAR) ; Ordinal Expr = CAST($4 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -2621,7 +2621,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS CHAR) ; Ordinal Expr = CAST($5 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DATE) col5         FROM castTest;
@@ -2636,7 +2636,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS DATE) ; Ordinal Expr = CAST($5 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DECIMAL) col5      FROM castTest;
@@ -2651,7 +2651,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS DECIMAL) ; Ordinal Expr = CAST($5 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (FLOAT) col5        FROM castTest;
@@ -2666,7 +2666,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS FLOAT) ; Ordinal Expr = CAST($5 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTEGER) col5      FROM castTest;
@@ -2681,7 +2681,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS INTEGER) ; Ordinal Expr = CAST($5 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) col5  FROM castTest;
@@ -2736,7 +2736,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS TIME) ; Ordinal Expr = CAST($5 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (TIMESTAMP) col5    FROM castTest;
@@ -2751,7 +2751,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS TIMESTAMP) ; Ordinal Expr = CAST($5 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (VARCHAR) col5      FROM castTest;
@@ -2766,7 +2766,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col5 AS VARCHAR) ; Ordinal Expr = CAST($5 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -2787,7 +2787,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS CHAR) ; Ordinal Expr = CAST($6 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (DATE) col6         FROM castTest;
@@ -2802,7 +2802,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS DATE) ; Ordinal Expr = CAST($6 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (DECIMAL) col6      FROM castTest;
@@ -2817,7 +2817,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS DECIMAL) ; Ordinal Expr = CAST($6 AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (FLOAT) col6        FROM castTest;
@@ -2832,7 +2832,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS FLOAT) ; Ordinal Expr = CAST($6 AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (INTEGER) col6      FROM castTest;
@@ -2847,7 +2847,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS INTEGER) ; Ordinal Expr = CAST($6 AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) col6  FROM castTest;
@@ -2902,7 +2902,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS TIME) ; Ordinal Expr = CAST($6 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (TIMESTAMP) col6    FROM castTest;
@@ -2917,7 +2917,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS TIMESTAMP) ; Ordinal Expr = CAST($6 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (VARCHAR) col6      FROM castTest;
@@ -2932,7 +2932,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col6 AS VARCHAR) ; Ordinal Expr = CAST($6 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 // *** Cast a DATE column ***
@@ -2951,7 +2951,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS CHAR) ; Ordinal Expr = CAST($7 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (DATE) col7         FROM castTest;
@@ -2966,7 +2966,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS DATE) ; Ordinal Expr = CAST($7 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (DECIMAL) col7      FROM castTest;
@@ -3033,7 +3033,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS TIMESTAMP) ; Ordinal Expr = CAST($7 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
          
 EXPLAIN with_types SELECT (VARCHAR) col7      FROM castTest;
@@ -3048,7 +3048,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col7 AS VARCHAR) ; Ordinal Expr = CAST($7 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3069,7 +3069,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS CHAR) ; Ordinal Expr = CAST($8 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DATE) col8         FROM castTest;
@@ -3136,7 +3136,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS TIME) ; Ordinal Expr = CAST($8 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (TIMESTAMP) col8    FROM castTest;
@@ -3151,7 +3151,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS TIMESTAMP) ; Ordinal Expr = CAST($8 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (VARCHAR) col8      FROM castTest;
@@ -3166,7 +3166,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col8 AS VARCHAR) ; Ordinal Expr = CAST($8 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3187,7 +3187,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS CHAR) ; Ordinal Expr = CAST($9 AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DATE) col9         FROM castTest;
@@ -3202,7 +3202,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS DATE) ; Ordinal Expr = CAST($9 AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (DECIMAL) col9      FROM castTest;
@@ -3266,7 +3266,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS TIME) ; Ordinal Expr = CAST($9 AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (TIMESTAMP) col9    FROM castTest;
@@ -3281,7 +3281,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS TIMESTAMP) ; Ordinal Expr = CAST($9 AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (VARCHAR) col9      FROM castTest;
@@ -3296,7 +3296,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(rapidsse.public.castTest.col9 AS VARCHAR) ; Ordinal Expr = CAST($9 AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3336,7 +3336,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (FLOAT) INTERVAL '1-2' YEAR TO MONTH        FROM castTest;
@@ -3354,7 +3354,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e+00) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTEGER) INTERVAL '1-2' YEAR TO MONTH      FROM castTest;
@@ -3372,7 +3372,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 ; Ordinal Expr = 1) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL MONTH) INTERVAL '1-2' YEAR TO MONTH  FROM castTest;
@@ -3387,7 +3387,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''14'' MONTH ; Ordinal Expr = INTERVAL ''14'' MONTH) ; type: INTERVAL MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR TO MONTH) INTERVAL '1' YEAR  FROM castTest;
@@ -3402,7 +3402,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''1-0'' YEAR TO MONTH ; Ordinal Expr = INTERVAL ''1-0'' YEAR TO MONTH) ; type: INTERVAL YEAR TO MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY) INTERVAL '1-2' YEAR TO MONTH  FROM castTest;
@@ -3468,7 +3468,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (FLOAT) INTERVAL '1 2' DAY TO HOUR        FROM castTest;
@@ -3486,7 +3486,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1.0000000000e+00 ; Ordinal Expr = 1.0000000000e+00) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTEGER) INTERVAL '1 2' DAY TO HOUR      FROM castTest;
@@ -3504,7 +3504,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = 1 ; Ordinal Expr = 1) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) INTERVAL '1 2' DAY TO HOUR  FROM castTest;
@@ -3525,7 +3525,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''93600'' SECOND ; Ordinal Expr = INTERVAL ''93600'' SECOND) ; type: INTERVAL SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL HOUR TO SECOND) INTERVAL '1' DAY      FROM castTest;
@@ -3540,7 +3540,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = INTERVAL ''24:0:0'' HOUR TO SECOND ; Ordinal Expr = INTERVAL ''24:0:0'' HOUR TO SECOND) ; type: INTERVAL HOUR TO SECOND
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (TIME) INTERVAL '1 2' DAY TO HOUR         FROM castTest;
@@ -3577,7 +3577,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS BOOLEAN) ; Ordinal Expr = CAST(NULL AS BOOLEAN)) ; type: BOOLEAN
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3593,7 +3593,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS CHAR) ; Ordinal Expr = CAST(NULL AS CHAR)) ; type: CHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3609,7 +3609,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS DATE) ; Ordinal Expr = CAST(NULL AS DATE)) ; type: DATE
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3625,7 +3625,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS DECIMAL) ; Ordinal Expr = CAST(NULL AS DECIMAL)) ; type: DECIMAL
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3641,7 +3641,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS FLOAT) ; Ordinal Expr = CAST(NULL AS FLOAT)) ; type: FLOAT
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3657,7 +3657,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTEGER) ; Ordinal Expr = CAST(NULL AS INTEGER)) ; type: INTEGER
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3673,7 +3673,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL YEAR TO MONTH) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR TO MONTH)) ; type: INTERVAL YEAR TO MONTH
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL YEAR) NULL  FROM castTest;
@@ -3688,7 +3688,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL YEAR) ; Ordinal Expr = CAST(NULL AS INTERVAL YEAR)) ; type: INTERVAL YEAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3704,7 +3704,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL DAY TO HOUR) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY TO HOUR)) ; type: INTERVAL DAY TO HOUR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (INTERVAL DAY) NULL  FROM castTest;
@@ -3719,7 +3719,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS INTERVAL DAY) ; Ordinal Expr = CAST(NULL AS INTERVAL DAY)) ; type: INTERVAL DAY
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 EXPLAIN with_types SELECT (TIME) NULL         FROM castTest;
@@ -3734,7 +3734,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS TIME) ; Ordinal Expr = CAST(NULL AS TIME)) ; type: TIME
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3750,7 +3750,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS TIMESTAMP) ; Ordinal Expr = CAST(NULL AS TIMESTAMP)) ; type: TIMESTAMP
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3766,7 +3766,7 @@ rows: (*,'explainPlan','
 -> -> projectOp
       » column: (Expr = CAST(NULL AS VARCHAR) ; Ordinal Expr = CAST(NULL AS VARCHAR)) ; type: VARCHAR
 
--> -> -> select * fromOp
+-> -> -> tableScanOp
          » table: (rapidsse.public.castTest)')
 
 
@@ -3800,7 +3800,7 @@ rows: (*,'explainPlan','
          » column: (Expr = ''2022-01-02'' ; Ordinal Expr = ''2022-01-02'') ; type: VARCHAR
          » column: (Expr = ''01:02:03'' ; Ordinal Expr = ''01:02:03'') ; type: VARCHAR
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.castTest)')
 
 
@@ -3822,7 +3822,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = DATE ''2020-11-12'' ; Ordinal Expr = DATE ''2020-11-12'') ; type: DATE
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.castTest)')
 
 
@@ -3843,7 +3843,7 @@ rows: (*,'explainPlan','
 -> -> -> projectOp
          » column: (Expr = TIME ''11:12:13'' ; Ordinal Expr = TIME ''11:12:13'') ; type: TIME
 
--> -> -> -> select * fromOp
+-> -> -> -> tableScanOp
             » table: (rapidsse.public.castTest)')
 
 
