@@ -25,7 +25,7 @@ namespace STORE
     i8          m_iXform;
     i8          m_iTrace;
     s32         m_sXhand;
-    s256        m_sXform;
+    s256        m_sXfunc;
     s256        m_sXdesc;
 
     struct {
@@ -198,9 +198,9 @@ namespace STORE
     void vUsingBoard(Board* pBoard);
 
     Stz* szXdesc(void);
-    void vXdesc(Stz* szDescription);
-    Stz* szXform(void);
-    void vXform(Stz* szTransformation);
+    void vXdesc(Stz* szXdesc);
+    Stz* szXfunc(void);
+    void vXfunc(Stz* szXfunc);
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
 

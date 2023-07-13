@@ -1785,7 +1785,7 @@ void CardIter::vPrintBoard(i8 iLineNo)
   G.pBoard->vPrintBoard(szXdesc());
 
   s256 sWhere;
-  sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXform());
+  sWhere.vCatSprint("%s :: %s"_Stz, szXhand(), szXfunc());
 
   vTrace("%s\n"_Stz, sWhere.azChar());
 }
@@ -1806,16 +1806,16 @@ void CardIter::vPrintBoard(i8 iLineNo)
 //  for (;;) {
 //    G.pBoard->vPrintBoard(szXdesc());
 //
-//    if (! m_pCardCtl->bCueUser(szXhand(), szXform())) {
+//    if (! m_pCardCtl->bCueUser(szXhand(), szXfunc())) {
 //      m_pCardCtl->vFormPrompt(sPrompt,
-//                              cPrefix, szXhand(), szXform(),
+//                              cPrefix, szXhand(), szXfunc(),
 //                              G.pBoard->i_Board(), nBoards, iLineNo);
 //      printf("%s\n", sPrompt.azChar());
 //      break;
 //    }
 //
 //    m_pCardCtl->vFormPrompt(sPrompt,
-//                            cPrefix, szXhand(), szXform(),
+//                            cPrefix, szXhand(), szXfunc(),
 //                            G.pBoard->i_Board(), nBoards, iLineNo);
 //    if (OA_REPRINT_BOARD != eCueUser(sPrompt))
 //      break;
@@ -2329,7 +2329,7 @@ bool CardIter::bIsTracing(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  return m_pCardCtl->bTracing(szXhand(),szXform());
+  return m_pCardCtl->bTracing(szXhand(), szXfunc());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2359,8 +2359,8 @@ void CardIter::vTransform(const char* azFunc, eXF eTransform, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  vXform((Stz*)azFunc);
-  G.pBoard->vXform((Stz*)azFunc);
+  vXfunc((Stz *) azFunc);
+  G.pBoard->vXfunc((Stz *) azFunc);
   vXdesc(szXdesc);
 
   m_iXform++;
@@ -2371,8 +2371,8 @@ void CardIter::vTransform(const char* azFunc, eXF eTransform, Stz* szXdesc)
 
   this->vRestart();
 
-  if (m_pCardCtl->bTracing(szXhand(), szXform())) {
-    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXform());
+  if (m_pCardCtl->bTracing(szXhand(), szXfunc())) {
+    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXfunc());
   }
 }
 
@@ -2424,32 +2424,35 @@ Stz* CardIter::szXdesc(void)
 /*----------------------------------------------------------------------------*/
 /* set description of transformation                                          */
 /*----------------------------------------------------------------------------*/
-void CardIter::vXdesc(Stz* szDescription)
+void CardIter::vXdesc(Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_sXdesc = szDescription;
-  G.pBoard->vXdesc(szDescription);
+  m_sXdesc = szXdesc;
+  G.pBoard->vXdesc(szXdesc);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
+/* get transformation function                                                */
 /*----------------------------------------------------------------------------*/
-Stz* CardIter::szXform(void)
+Stz* CardIter::szXfunc(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_sXform;
+  return m_sXfunc;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
+/* set transformation function                                                */
 /*----------------------------------------------------------------------------*/
-void CardIter::vXform(Stz* szTransformation)
+void CardIter::vXfunc(Stz* szXfunc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  m_sXform = szTransformation;
+  m_sXfunc = szXfunc;
+
+  G.pBoard->vXfunc(szXfunc);
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -186,6 +186,7 @@ static Stz* C_GLEAN_XFORM       = "<glean_xform>"_Stz;
 static Stz* C_GLEAN_XHAND       = "<glean_xhand>"_Stz;
 static Stz* C_NA                = "n/a"_Stz;
 
+static Stz* C_CARD_HISTORY = "<card_history>"_Stz;
 static Stz* C_CODE_BLOCK = "<code_block>"_Stz;
 static Stz* C_EP_DISABLE = "<ep_disable>"_Stz;
 static Stz* C_EP_ENABLE  = "<ep_enable>"_Stz;
@@ -320,7 +321,7 @@ namespace STORE
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,
-                             bool bPrintBelow);
+                             bool bPrintBelow, i8 iXform, Stz* szXfunc);
     void vPrintCard_byCustomNm(Ribbon* pRibbon, i8 iDepth, Stz* szCustomNm);
     void vPrintCard_byKind(Ribbon* pRibbon, i8 iDepth);
     void vPrintCard_bySettings(Ribbon* pRibbon, i8 iDepth);

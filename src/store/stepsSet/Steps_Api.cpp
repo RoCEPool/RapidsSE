@@ -93,6 +93,9 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_GLEAN_INTERACTIVE))
     pCmdTagSet->vInsert(C_TAG_GLEAN_INTERACTIVE);
 
+  if (pJobTags->bHasName(C_CARD_HISTORY))
+    pCmdTagSet->vInsert(C_CARD_HISTORY);
+
   if (pJobTags->bHasName(C_TAG_TRANSLITERATED))
     pCmdTagSet->vInsert(C_TAG_TRANSLITERATED);
 

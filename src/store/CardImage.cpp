@@ -4,6 +4,7 @@
 
 #include "CardImage.hpp"
 #include "Card.hpp"
+#include "Card_Level.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -17,17 +18,44 @@ __aFooterFunction(CardImage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardImage::CardImage(Card* pCard)
+CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform, Stz* szXfunc)
 : Object(CN_CARDIMAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
-  m_pCard = pCard;
+  m_pCard  = pCard;
+  m_eCard  = m_pCard->eCard();
+
+  m_eLevel = AL_NONE;
+  if (pCard->pSub_level())
+    m_eLevel = (eAL)pCard->pSub_level()->pSymbol()->Y_iGet(P_Level);
+  m_iSLB   = iSLB;
+  m_iXform = iXform;
+  m_sXfunc = szXfunc;
+
   m_i_Line = 0;
 
   MemLib::vZero(m_xaCardLines,sizeof(m_xaCardLines),CN_CARDIMAGE);
 
   _checkInitialised_(CN_CARDIMAGE);
+
+  s32 sXinfo;
+  s32 sXinfo_padded;
+
+  sXinfo.vSprint("Img %lld XF %lld"_Stz, m_iSLB, m_iXform);
+  sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
+  vAddLine(sXinfo_padded);
+
+  sXinfo.vSprint("%s"_Stz, szXfunc);
+  StrLib::vRemoveTill(sXinfo.azChar(), '_', true);
+  StrLib::vPut(sXinfo.azChar(), 20, '\0');
+  sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
+  vAddLine(sXinfo_padded);
+
+  sXinfo.vSprint("%s"_Stz, "<note>"_Stz);
+  StrLib::vPut(sXinfo.azChar(), 20, '\0');
+  sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
+  vAddLine(sXinfo_padded);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 }
@@ -56,6 +84,16 @@ void CardImage::vAddLine(Stz* szLine)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return eCard                                                               */
+/*----------------------------------------------------------------------------*/
+eCK CardImage::eCard(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDIMAGE, _FOOTER_);
+
+  return m_eCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void CardImage::vDump(i8 i_Tab)
@@ -68,6 +106,17 @@ void CardImage::vDump(i8 i_Tab)
            m_xaCardLines[i_Line].m_zCardLine);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* return eLevel                                                              */
+/*----------------------------------------------------------------------------*/
+eAL CardImage::eLevel(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARDIMAGE, _FOOTER_);
+
+  return m_eLevel;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* return given line                                                          */
@@ -91,6 +140,20 @@ i8 CardImage::nLines(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
   return m_i_Line;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void CardImage::vPrintLine(i8 i_Line)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
+
+  if (i_Line < m_i_Line)
+    vTrace("%s"_Stz,
+           m_xaCardLines[i_Line].m_zCardLine);
+  else
+    vTrace("%20s"_Stz,"");
 }
 
 /*============================================================================*/
