@@ -23,5 +23,8 @@ create table datums (
 
 load datums "../DATA/DataTypes/dataTypes.csv" ;
 
+/glean_interactive
+/weaved
+/transliterated
 /pipeline_def
 select sum(int_col0), int_col1 from datums group by int_col1;
