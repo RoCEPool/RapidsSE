@@ -1298,15 +1298,16 @@ void OpSketch::vPushAggCol(TypedStack* pExprStack, ePE ePreExp, eDM eExprType,i8
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
-  s256 sColumn;
   s256 sStructColumn;
   s256 sOperation;
 
   // make the column name
-  vMakeColumnNmStruct(m_pStreamDefOut, sColumn, i_DupCtr, i_Col);
+  //vMakeColumnNmStruct(m_pStreamDefOut, sColumn, i_DupCtr, i_Col);
 
-  sStructColumn.vSprint("p%s->%s"_Stz,
-                        xStencilRow[m_eStencilTo], sColumn.azChar());
+  Stz* sColumn = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
+
+  sStructColumn.vSprint("p%s->%s.m_iAsI8"_Stz,
+                        xStencilRow[m_eStencilTo], sColumn);
 
   if (m_eSketchKind == SK_GBYAGG) {
     vInitAgg(ePreExp);
