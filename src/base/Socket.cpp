@@ -425,6 +425,15 @@ bool Socket::bHeaderRecv(void)
     return false;
   }
 
+  // Check that the magic is valid. This can happen if a wireline client
+  // connects to the internal cluster port rather than the wireline port.
+  if (!m_aHeader->bIsMagicValid()) {
+    vTrace("Socket::pRecvObject (header) : Header magic bytes are invalid. "
+           "Is this a wireline client connecting to the wrong port?\n"_Stz);
+    vSuccess(false);
+    return false;
+  }
+
   return true;
 }
 

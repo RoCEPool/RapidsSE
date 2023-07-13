@@ -1539,6 +1539,9 @@ void vDdlLockAssertNone(void);
   void vPtnStreamSeek(void);
   void vPtnStreamSet(void);
 
+  // ptr
+  void vPtrIsNull(void);
+
   // push
   void vPushI(void);
   void vPushJ(void);
@@ -1846,6 +1849,7 @@ void vDdlLockAssertNone(void);
   void vSocketObjectFetch(void);
   void vSocketObjectFetchClear(void);
   void vSocketObjectDelete(void);
+  void vSocketObjectIsNull(void);
   void vSocketObjectIsNotNull(void);
   void vSocketNew(void);
   void vSocketCopy(void);

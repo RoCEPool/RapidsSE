@@ -67,6 +67,7 @@ void Step::vAddSteps_Socket(void)
   vAddStep("Socket[].object@"_Stz,   &Step::vSocketObjectFetch);
   vAddStep("Socket[].object@\\clear"_Stz,   &Step::vSocketObjectFetchClear);
   vAddStep("Socket[].object.delete"_Stz,    &Step::vSocketObjectDelete);
+  vAddStep("Socket[].object.isNull"_Stz,    &Step::vSocketObjectIsNull);
   vAddStep("Socket[].object.isNotNull"_Stz, &Step::vSocketObjectIsNotNull);
   vAddStep("Socket[].recvObject"_Stz,&Step::vSocketRecvObject);
   vAddStep("Socket[].recvWLMsg"_Stz, &Step::vSocketRecvWLMsg);
@@ -322,6 +323,22 @@ void Step::vSocketObjectDelete(void)
   pSocket->vReceivedObject(nullptr);
   delete pObject;
 
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Socket[].object.isNull: test if the socket object is null                  */
+/*----------------------------------------------------------------------------*/
+void Step::vSocketObjectIsNull(void)
+{
+  ENTRY();
+
+  Socket* pSocket = *m_pLogicUnit->m_xpSocket;
+
+  Object* pObject = pSocket->pReceivedObject();
+
+  m_pDataStack->vPushInt(pObject == nullptr ? 1 : 0);
 
   EXIT();
 }

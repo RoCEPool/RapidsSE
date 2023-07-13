@@ -166,6 +166,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PtnDef();
   Step::vAddSteps_PtnMap();
   Step::vAddSteps_PtnStream();
+  Step::vAddSteps_Ptr();
   Step::vAddSteps_Push();
 
   Step::vAddSteps_RecvdObject();
