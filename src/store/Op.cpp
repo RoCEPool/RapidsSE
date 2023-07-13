@@ -1140,13 +1140,11 @@ void Op::vOpTrace(Operand* pOperand
   if (pOperand) {
     if (BufferId::bIsBufferId(pOperand))
       sOperand = "BUFFERID"_Stz;
-    else {
-      if (AM::pOperandName(pOperand))
-        sOperand = AM::pOperandName(pOperand);
-      else
-        sOperand = "NULL"_Stz;
-    }
-  }
+    else
+      sOperand = AM::pOperandName(pOperand);
+  } else
+    sOperand = "NULL"_Stz;
+
 
   vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
          "%18s %-15s %p %s\n"_Stz,
