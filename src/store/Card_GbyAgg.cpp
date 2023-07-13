@@ -82,10 +82,56 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
   i8 i_Cell_payload = 1;
   i8 i_Cell_key;
 
+
+  pCI->G_vAppendNewChild(this,CK_MAPPING);
+  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_KEYCELLS);
+  pCI->G_vAppendNewChild(pCI->G.p_mapping,CK_PAYLOADCELLS);
+
+
+  i8 i_Emit = 0;
+
+  i8 i_Cell = 0;
+  for (Kid xKey(pCI->G.p_key); xKey.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_key = xKey.p_expr();
+
+    i_Cell++;
+    i_Emit++;
+    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->szSymbol());
+    pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+
+
+    //pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
+  }
+
+  i_Cell = 0;
+  for (Kid xProjection(pCI->G.p_projection); xProjection.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_projection = xProjection.p_expr();
+
+    if (p_expr_projection->bIsExpressionOfKey()) {
+      Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
+
+      Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_keyCol);
+
+      i8 i_Cell_keyCol = pSymbol_keyCol->iExtractOrdinal();
+
+    }
+    else {
+      i_Cell++;
+      i_Emit++;
+      pCI->G_vAppendNewChild(pCI->G.p_payloadCells, CK_MAP,p_expr_projection->szSymbol());
+      pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
+
+      pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
+    }
+  }
+
+
   for (Kid xPrjn(pCI->G.p_projection); xPrjn.bEach(CK_EXPR); /**/) {
     Card_Expr *p_expr_prjn = xPrjn.p_expr();
 
     if (p_expr_prjn->bIsExpressionOfKey()) {
+
+      //pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP);
 
       nExpr_key++;
 
@@ -99,6 +145,8 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
     }
       // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     else {
+
+      //pCI->G_vAppendNewChild(pCI->G.p_payloadCells,CK_MAP);
 
       Symbol* pSymbol_stmCol_projection = p_expr_prjn->pFirstStmCol();
 
