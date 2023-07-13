@@ -12,7 +12,7 @@ namespace STORE
   static const i8 C_CARDIMAGE_LINES = (C_SIZE_SMALL_OBJECT - 128) / C_CARDIMAGE_LINE;
 
   struct _CardLine {
-    char m_cCardLine[C_CARDIMAGE_LINE];
+    char m_zCardLine[C_CARDIMAGE_LINE];
   };
 
   class Card;
@@ -37,6 +37,7 @@ namespace STORE
 
     void vAddLine(Stz* szLine);
 
+    void vDump(i8 i_Tab=0);
     Stz* szLine(i8 i_Line);
     i8   nLines(void);
 

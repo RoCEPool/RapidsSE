@@ -48,7 +48,9 @@ CardCtl::CardCtl(void)
 
   m_iPrintNo = 0;
 
-  m_pCardHistory = new CardHistory;
+  m_pCardHistory = nullptr;
+//  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
+//    m_pCardHistory = new CardHistory;
 
   _checkInitialised_(CN_CARDCTL);
 
@@ -62,7 +64,8 @@ CardCtl::~CardCtl(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
 
-  delete m_pCardHistory;
+  if (m_pCardHistory)
+    delete m_pCardHistory;
 }
 
 

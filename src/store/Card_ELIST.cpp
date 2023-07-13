@@ -221,12 +221,12 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
     if (xCI_expr.G.p_as) {
       pStzList->vAppend(xCI_expr.G.p_as->szSymbol());
     }
-    pRibbon->vSprintList(pStzList, 20);
+    pRibbon->vSprintDataList(pStzList, 20);
     pStzList->vRemoveAll();
 
     if (xCI_expr.G.p_rpnCalc) {
       xCI_expr.G.p_rpnCalc->vOntoStzList(pStzList);
-      pRibbon->vSprintList(pStzList, 20);
+      pRibbon->vSprintDataList(pStzList, 20);
       pStzList->vRemoveAll();
     }
 

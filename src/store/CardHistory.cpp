@@ -76,6 +76,23 @@ void CardHistory::vAddLine(Stz* szLine)
   m_pImage_curr->vAddLine(szLine);
 }
 
+/*----------------------------------------------------------------------------*/
+/* add new image                                                              */
+/*----------------------------------------------------------------------------*/
+void CardHistory::vDump(i8 i_Tab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
+
+  i8 nImages = m_pHistoryPds->nItems();
+  for (i8 i_Image = 0; i_Image < nImages; i_Image++) {
+    CardImage* pImage = reinterpret_cast<CardImage*>(m_pHistoryPds->pFind(i_Image));
+    if (! pImage)
+      continue;
+    pImage->vDump(i_Tab);
+  }
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* return given image                                                         */

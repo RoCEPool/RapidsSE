@@ -522,7 +522,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprint("Transform: %02lld Board %lld %s %p Query %s"_Stz,
+  pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s"_Stz,
                    m_iXform,
                    m_i_Board,
                    m_sBoardNm.szStz(),
@@ -531,15 +531,15 @@ void Board::vPinTitle(Ribbon* pRibbon,
                    );
 
   // line 2
-  pRibbon->vSprint("%s"_Stz,szXdesc());
+  pRibbon->vSprintOther("%s"_Stz,szXdesc());
 
   // line 3
   if (0 == m_i_Board)
-    pRibbon->vSprint("%s %s"_Stz,
+    pRibbon->vSprintOther("%s %s"_Stz,
                      "MainQuery"_Stz,
                      aQD[m_pSubQuery->eDisposition()]);
   else
-    pRibbon->vSprint("%s(%lld params) %s caller: board[%lld] %s %s %s"_Stz,
+    pRibbon->vSprintOther("%s(%lld params) %s caller: board[%lld] %s %s %s"_Stz,
                      "SubQuery"_Stz,
                      m_pSubQuery->nCorrCols(),
                      aQD[m_pSubQuery->eDisposition()],

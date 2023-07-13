@@ -39,6 +39,8 @@ namespace STORE
     void vAddImage(Card* pCard);
     void vAddLine(Stz* szText);
 
+    void vDump(i8 i_Tab=0);
+
     CardImage* pImage(i8 i_Image);
     i8 nImages(void);
 

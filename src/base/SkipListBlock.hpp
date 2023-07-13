@@ -30,6 +30,8 @@ namespace BASE
     void* aItemKey(void);
     i8 iKey(void);
 
+    SkipListBlock* aNext(void);
+
     void vSetKey(i8 iKey);
 
   };

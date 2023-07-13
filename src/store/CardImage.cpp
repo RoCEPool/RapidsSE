@@ -52,7 +52,21 @@ void CardImage::vAddLine(Stz* szLine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 
-  StrLib::vCopy(m_xaCardLines[m_i_Line++].m_cCardLine,szLine->azChar());
+  StrLib::vCopy(m_xaCardLines[m_i_Line++].m_zCardLine, szLine->azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void CardImage::vDump(i8 i_Tab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
+
+  for (i8 i_Line = 0; i_Line < m_i_Line; i_Line++) {
+    vTrace("%s%s\n"_Stz,
+           Stz::szTab(i_Tab),
+           m_xaCardLines[i_Line].m_zCardLine);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +79,7 @@ Stz* CardImage::szLine(i8 i_Line)
   if (i_Line >= m_i_Line)
     return nullptr;
 
-  char* azLine = m_xaCardLines[i_Line].m_cCardLine;
+  char* azLine = m_xaCardLines[i_Line].m_zCardLine;
   return reinterpret_cast<Stz*>(azLine);
 }
 

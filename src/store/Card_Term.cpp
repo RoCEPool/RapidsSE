@@ -354,7 +354,7 @@ void Card_Term::vPrint(Ribbon* pRibbon, i8 iDepth)
   s256 sTerm = szSymbol();
   s32 sType_short = pSymbol()->Y_szGet(P_Type);
 
-  pRibbon->vSprintRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
+  pRibbon->vSprintDataRight("%s %s"_Stz,sTerm.szStz(),sType_short.szStz());
 
   //vPrintCard_bySettings(pRibbon, iDepth);
 }
