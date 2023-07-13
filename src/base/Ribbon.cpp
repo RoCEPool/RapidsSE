@@ -442,6 +442,42 @@ void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText)
 }
 
 /*----------------------------------------------------------------------------*/
+/* put some data                                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vPutData(i8 i_Line, i8 i_Char, Stz* szData)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  vPutText2(i_Line, i_Char, szData);
+  m_pCardCtl->pCardHistory()->vAddLine(szData);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put some text                                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vPutOther(i8 i_Line, i8 i_Char, Stz* szOther)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  vPutText2(i_Line, i_Char, szOther);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put some text                                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vPutText2(i8 i_Line, i8 i_Char, Stz* szText2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  vSufficientLines(i_Line);
+
+  RibbonLine* pRibbonLine = pGet(i_Line);
+
+  pRibbonLine->vPut(i_Char, szText2);
+}
+
+/
+/*----------------------------------------------------------------------------*/
 /* check sufficient lines                                                     */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vSufficientLines(i8 i_Line)

@@ -63,6 +63,9 @@ namespace BASE
     void vPinSubRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
     void vPrintRibbon(i8 iPrintNo=C_UNKNOWN);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
+    void vPutData(i8 i_Line, i8 i_Char, Stz* szData);
+    void vPutOther(i8 i_Line, i8 i_Char, Stz* szOther);
+    void vPutText2(i8 i_Line, i8 i_Char, Stz* szText2);
 
     void vSprint(Stz* szFormat, ...);
     void vSprintList(StzList* pStzList, i8 nWidth);
