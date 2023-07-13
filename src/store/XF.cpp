@@ -262,6 +262,8 @@ void XF::vTransform_passThru(void)
   m_pCI->vUsingBoard((i8)0);
   XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(m_pCI);
 
+  XF_Column_Mapping::vXF_Column_Mapping(m_pCI);
+
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 }
 

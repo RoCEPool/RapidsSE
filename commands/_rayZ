@@ -9,6 +9,7 @@ _nation
 /pipeline_def
 /weaved
 /optimise_passthru
+/glean_interactive
 pipeline unamed
 begin
   stage S00 on origin :
