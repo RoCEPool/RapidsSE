@@ -2,12 +2,13 @@
 /* _ray5 :                                                                    */
 /*============================================================================*/
 
-__TPCH_SCHEMA_LOAD_SF0001
+_nation;
+load nation "../TPCH/SF_0001/nation.csv";
 
 /glean_interactive
 /weaved
-/weaver2
-select n_regionKey, max(n_name) from nation group by n_regionKey;
+/pipeline_def
+select n_regionKey, n_nationkey from nation order by n_regionKey;
 
 /*============================================================================*/
 /* end                                                                        */
