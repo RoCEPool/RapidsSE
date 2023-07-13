@@ -95,7 +95,6 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
     Card_Expr *p_expr_key = xKey.p_expr();
 
     i_Cell++;
-    i_Emit++;
     pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->szSymbol());
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
 
@@ -110,9 +109,11 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
     if (p_expr_projection->bIsExpressionOfKey()) {
       Symbol *pSymbol_keyCol = p_expr_projection->pFirstKeyCol();
 
-      Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_keyCol);
+      Card_Map* p_map_keyCell = pCI->G.p_keyCells->pDecodeMap(pSymbol_keyCol);
 
-      i8 i_Cell_keyCol = pSymbol_keyCol->iExtractOrdinal();
+      i_Emit++;
+      p_map_keyCell->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
+      p_map_keyCell->pSymbol()->Y_vSet(P_StmCol, p_expr_projection->szSymbol());
 
     }
     else {
@@ -124,6 +125,10 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
       pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
     }
   }
+
+
+
+
 
 
   for (Kid xPrjn(pCI->G.p_projection); xPrjn.bEach(CK_EXPR); /**/) {

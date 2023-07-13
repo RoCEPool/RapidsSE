@@ -17,7 +17,7 @@ __vDeleteFunction(Card_KeyCells,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyCells::Card_KeyCells(void)
-: Card(CK_KEYCELLS)
+: Card_CELLS(CK_KEYCELLS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -38,7 +38,18 @@ Card_KeyCells::~Card_KeyCells(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get key relating to symbol                                                 */
+/*----------------------------------------------------------------------------*/
+Card_Map* Card_KeyCells::pDecodeMap(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-//*============================================================================*/
+  Card_Map* p_map = _pCard_Map(pGetChild_bySym(pSymbol));
+
+  return p_map;
+}
+
+/*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

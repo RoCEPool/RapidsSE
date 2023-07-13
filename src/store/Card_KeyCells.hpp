@@ -3,11 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_CELLS.hpp"
+#include "Card_Map.hpp"
 
 namespace STORE
 {
-  class Card_KeyCells : public Card
+  class Card_KeyCells : public Card_CELLS
   {
   public:
     void* operator new(size_t);
@@ -15,6 +16,8 @@ namespace STORE
   
     Card_KeyCells(void);
    ~Card_KeyCells(void) noexcept(false);
+
+    Card_Map* pDecodeMap(Symbol* pSymbol);
   };
 
   Card_KeyCells* _pCard_KeyCells(void* aAddr);
