@@ -74,7 +74,6 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-
   i8 i_Emitted = 1;
 
   pCI->G.p_key = pSub_key();
@@ -105,6 +104,7 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
 
   }
 
+  // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 
 

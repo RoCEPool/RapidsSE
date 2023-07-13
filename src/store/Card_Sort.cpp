@@ -46,6 +46,52 @@ void Card_Sort::vColumn_Mapping(CardIter *pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
+
+  pCI->G.p_key = pSub_key();
+  pCI->G.p_projection = pSub_projection();
+
+  i8 nExpr_key = 0;
+  i8 i_Emitted = 1;
+  i8 i_Cell_payload = 1;
+  i8 i_Cell_key;
+
+  for (Kid xPrjn(pCI->G.p_projection); xPrjn.bEach(CK_EXPR); /**/) {
+    Card_Expr *p_expr_prjn = xPrjn.p_expr();
+
+    if (p_expr_prjn->bIsExpressionOfKey()) {
+
+      nExpr_key++;
+
+      Symbol *pSymbol_key = p_expr_prjn->pFirstKeyCol();
+
+      i_Cell_key = pSymbol_key->iExtractOrdinal();
+
+      p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+      p_expr_prjn->pSymbol()->Y_vSet(P_Key);
+      p_expr_prjn->pSymbol()->Y_vSet(P_Cell, i_Cell_key);
+    }
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    else {
+
+      Symbol* pSymbol_stmCol_projection = p_expr_prjn->pFirstStmCol();
+
+      if (pSymbol_stmCol_projection) {
+        i_Cell_payload = pSymbol_stmCol_projection->iExtractOrdinal() - nExpr_key;
+
+        p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Payload);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
+      }
+      else {
+
+        p_expr_prjn->pSymbol()->Y_vSet(P_EmittedCol, i_Emitted++);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Payload);
+        p_expr_prjn->pSymbol()->Y_vSet(P_Cell, i_Cell_payload++);
+      }
+
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
