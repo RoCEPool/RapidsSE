@@ -285,10 +285,11 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       m_ePreviousStencil = SR_AT;
+      m_eHandlerKind = HK_EOS;
 
       OpSketch *pAggOpSketch = pOpSketch;
 
-      pOpSketch = pSketchEos(pStageDef, HK_EOS, m_ePreviousStencil, m_sLabelLoop);
+      pOpSketch = pSketchEos(pStageDef);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -319,10 +320,11 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       m_ePreviousStencil = SR_PL;
+      m_eHandlerKind = HK_EOS;
 
       OpSketch *pGbyAggOpSketch = pOpSketch;
 
-      pOpSketch = pSketchEos(pStageDef, HK_EOS, m_ePreviousStencil, m_sLabelLoop);
+      pOpSketch = pSketchEos(pStageDef);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -419,10 +421,11 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       m_ePreviousStencil = SR_PL;
+      m_eHandlerKind = HK_EOS;
 
       OpSketch *pSortOpSketch = pOpSketch;
 
-      pOpSketch = pSketchEos(pStageDef, HK_EOS, m_ePreviousStencil, m_sLabelLoop);
+      pOpSketch = pSketchEos(pStageDef);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -444,10 +447,11 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       m_ePreviousStencil = SR_PL;
+      m_eHandlerKind = HK_EOS;
 
       OpSketch *pTopOpSketch = pOpSketch;
 
-      pOpSketch = pSketchEos(pStageDef, HK_EOS, m_ePreviousStencil, m_sLabelLoop);
+      pOpSketch = pSketchEos(pStageDef);
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -475,7 +479,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sketch EOS handler function
-    pOpSketch = pSketchEos(pStageDef, HK_EOS, m_ePreviousStencil, m_sLabelLoop);
+    m_eHandlerKind = HK_EOS;
+    pOpSketch = pSketchEos(pStageDef);
     vAppend(pOpSketch);
   }
 
@@ -779,6 +784,28 @@ OpSketch* Stencil_v2::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* sketch eos                                                                 */
+/*----------------------------------------------------------------------------*/
+OpSketch* Stencil_v2::pSketchEos(StageDef* pStageDef) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  // create a new opSketch
+  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_EOS, m_ePreviousStencil, SR_NONE, II_NONE, nullptr, nullptr);
+
+  sLabel = ""_Stz;
+  sLabelNext = ""_Stz;
+
+  // set the labels in the opSketch
+  pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
+
+  return pOpSketch;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sketch filter                                                              */
 /*----------------------------------------------------------------------------*/
 OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef) {
@@ -808,28 +835,6 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef) {
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sFilterExpr);
-
-  return pOpSketch;
-}
-
-/*----------------------------------------------------------------------------*/
-/* sketch eos                                                                 */
-/*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchEos(StageDef* pStageDef, eHK eHandlerKind, eSR m_ePreviousStencil, Stz* sLabelLoop) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  s4K sLabel;
-  s4K sLabelNext;
-
-  // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, eHandlerKind, SK_EOS, m_ePreviousStencil, SR_NONE, II_NONE, nullptr, nullptr);
-
-  sLabel = ""_Stz;
-  sLabelNext = ""_Stz;
-
-  // set the labels in the opSketch
-  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
 
   return pOpSketch;
 }
