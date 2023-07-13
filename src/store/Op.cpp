@@ -1127,13 +1127,25 @@ void Op::vOpTrace(Operand* pOperand
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+  s256 sOperand;
+
   if (AM::TRACE::bVBlong())
     goto L_Long_Form;
 
   
   if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
-  
+
+  if (pOperand) {
+    if (BufferId::bIsBufferId(pOperand))
+      sOperand = "BUFFERID"_Stz;
+    else {
+      if (AM::pOperandName(pOperand))
+        sOperand = AM::pOperandName(pOperand);
+      else
+        sOperand = "NULL"_Stz;
+    }
+  }
 
   vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
          "%18s %-15s %p %s\n"_Stz,
@@ -1145,7 +1157,7 @@ void Op::vOpTrace(Operand* pOperand
          pOuterJobOfOp(),
 
          szFunNm,
-         pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
+         sOperand.azChar(),
          pOperand,
          szSupplemental);
 
