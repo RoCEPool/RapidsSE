@@ -27,4 +27,5 @@ load datums "../DATA/DataTypes/dataTypes.csv" ;
 /weaved
 /transliterated
 /pipeline_def
+/card_history
 select sum(int_col0), int_col1 from datums group by int_col1;

@@ -500,7 +500,13 @@ void Board::vPinCards(Ribbon* pRibbon)
     Card_Level* p_level = xBI.G.p_MainCard->pSub_level();
     if (p_level)
       eLevel = (eAL) p_level->pSymbol()->Y_iGet(P_Level);
-    xBI.G.p_MainCard->vPrintCardRecursive(pSubRibbon, 0, m_pCard_Deck, bPrune, eLevel, false);
+    xBI.G.p_MainCard->vPrintCardRecursive(pSubRibbon,
+                                          0,
+                                          m_pCard_Deck,
+                                          bPrune,
+                                          eLevel,
+                                          false,
+                                          m_iXform);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);

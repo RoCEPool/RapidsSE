@@ -35,7 +35,7 @@ CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform)
   _checkInitialised_(CN_CARDIMAGE);
 
   s32 sXform;
-  sXform.vSprint("Image %lld X %lld"_Stz,m_iSLB,m_iXform);
+  sXform.vSprint("Img %lld Xfm %lld"_Stz,m_iSLB,m_iXform);
 
   s32 sXform_padded;
   sXform_padded.vSprint("%-20s"_Stz,sXform.szStz());
