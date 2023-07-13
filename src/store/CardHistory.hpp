@@ -36,7 +36,7 @@ namespace STORE
     CardHistory(void);
    ~CardHistory(void) noexcept(false);
 
-    void vAddImage(Card* pCard, i8 iXform);
+    void vAddImage(Card* pCard, i8 iXform, Stz* szFunc);
     void vAddLine(Stz* szText);
 
     void vDump(i8 i_Tab=0);

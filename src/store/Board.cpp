@@ -402,7 +402,7 @@ void Board::vPinBanners(Ribbon* pRibbon)
   pRibbon->vDrawH('=');
 
   //pRibbon->vPutTextRight(szXhand(),1);
-  //pRibbon->vPutTextRight(szXform(),2);
+  //pRibbon->vPutTextRight(szXfunc(),2);
 
   s32 sLeftMargin;
 
@@ -469,31 +469,6 @@ void Board::vPinCards(Ribbon* pRibbon)
     else
       pSubRibbon->vLaneNext();
 
-    /*
-    if (pCard->bIsCard(CK_INDEXJOIN) ||
-        pCard->bIsCard(CK_SCAN)      ||
-        pCard->bIsCard(CK_TABLE)) {
-      eLevel = AL_PARTITION;
-    }
-    else
-    if (   pCard->bIsCard(CK_AGGREG)
-        || pCard->bIsCard(CK_PROJECT)) {
-      Card_Level* p_level = pCard->pSub_level();
-      if (p_level)
-        eLevel = (eAL)p_level->Y_iGet(P_Level);
-    }
-    else
-    if (pCard->bIsCard(CK_STAGE)) {
-      Card_Topology* p_topology = pCard->pSub_topology();
-      eYG eStageTopo = (eYG)p_topology->Y_iGet(P_StageTopo);
-      switch (eStageTopo) {
-        case YG_ALL_PARTITIONS : eLevel = AL_PARTITION; break;
-        case YG_ALL_NODES      : eLevel = AL_NODE;      break;
-        case YG_ORIGIN_NODE    : eLevel = AL_ORIGIN;    break;
-        default                : eLevel = AL_NONE;      break;
-      }
-    }
-*/
 
     bool bPrune = false;
     eAL eLevel = AL_NONE;
@@ -506,7 +481,8 @@ void Board::vPinCards(Ribbon* pRibbon)
                                           bPrune,
                                           eLevel,
                                           false,
-                                          m_iXform);
+                                          m_iXform,
+                                          m_sXfunc);
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);
@@ -671,15 +647,15 @@ Stz* Board::szXdesc(void)
 /*----------------------------------------------------------------------------*/
 /* set description of transformation                                          */
 /*----------------------------------------------------------------------------*/
-void Board::vXdesc(Stz* szDescription)
+void Board::vXdesc(Stz* szXdesc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_sXdesc = szDescription;
+  m_sXdesc = szXdesc;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
+/* get transformation number                                                  */
 /*----------------------------------------------------------------------------*/
 i8 Board::iXform(void)
 {
@@ -689,7 +665,7 @@ i8 Board::iXform(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
+/* set transformation number                                                  */
 /*----------------------------------------------------------------------------*/
 void Board::vXform(i8 iXform)
 {
@@ -699,23 +675,23 @@ void Board::vXform(i8 iXform)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
+/* get transformation function                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Board::szXform(void)
+Stz* Board::szXfunc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  return m_sXform;
+  return m_sXfunc;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation                                                         */
+/* set transformation function                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vXform(Stz* szTransformation)
+void Board::vXfunc(Stz* szXfunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_sXform = szTransformation;
+  m_sXfunc = szXfunc;
 }
 
 /*----------------------------------------------------------------------------*/

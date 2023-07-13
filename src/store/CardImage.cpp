@@ -18,7 +18,7 @@ __aFooterFunction(CardImage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform)
+CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform, Stz* szXfunc)
 : Object(CN_CARDIMAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
@@ -31,6 +31,7 @@ CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform)
     m_eLevel = (eAL)pCard->pSub_level()->pSymbol()->Y_iGet(P_Level);
   m_iSLB   = iSLB;
   m_iXform = iXform;
+  m_sXfunc = szXfunc;
 
   m_i_Line = 0;
 
@@ -38,12 +39,23 @@ CardImage::CardImage(Card* pCard, i8 iSLB, i8 iXform)
 
   _checkInitialised_(CN_CARDIMAGE);
 
-  s32 sXform;
-  sXform.vSprint("Img %lld Xfm %lld"_Stz,m_iSLB,m_iXform);
+  s32 sXinfo;
+  s32 sXinfo_padded;
 
-  s32 sXform_padded;
-  sXform_padded.vSprint("%-20s"_Stz,sXform.szStz());
-  vAddLine(sXform_padded);
+  sXinfo.vSprint("Img %lld XF %lld"_Stz, m_iSLB, m_iXform);
+  sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
+  vAddLine(sXinfo_padded);
+
+  sXinfo.vSprint("%s"_Stz, szXfunc);
+  StrLib::vRemoveTill(sXinfo.azChar(), '_', true);
+  StrLib::vPut(sXinfo.azChar(), 20, '\0');
+  sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
+  vAddLine(sXinfo_padded);
+
+  sXinfo.vSprint("%s"_Stz, "<note>"_Stz);
+  StrLib::vPut(sXinfo.azChar(), 20, '\0');
+  sXinfo_padded.vSprint("%-20s"_Stz, sXinfo.szStz());
+  vAddLine(sXinfo_padded);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARDIMAGE,_FOOTER_);
 }

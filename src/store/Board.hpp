@@ -153,7 +153,7 @@ namespace STORE
     Card_Deck*  m_pCard_Deck;
 
     s32         m_sXhand;
-    s256        m_sXform;
+    s256        m_sXfunc;
     i8          m_iXform;
     s256        m_sXdesc;
 
@@ -209,11 +209,11 @@ namespace STORE
     void vTransform(eXF eTransform);
 
     Stz* szXdesc(void);
-    void vXdesc(Stz* szDescription);
+    void vXdesc(Stz* szXdesc);
     i8   iXform(void);
     void vXform(i8   iXform);
-    Stz* szXform(void);
-    void vXform(Stz* szTransformation);
+    Stz* szXfunc(void);
+    void vXfunc(Stz* szXfunc);
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
 

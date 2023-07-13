@@ -11,7 +11,7 @@ namespace STORE
 {
 
   static const i8 C_CARDIMAGE_LINE  = 32;
-  static const i8 C_CARDIMAGE_LINES = (C_SIZE_SMALL_OBJECT - 128) / C_CARDIMAGE_LINE;
+  static const i8 C_CARDIMAGE_LINES = (C_SIZE_SMALL_OBJECT - 256) / C_CARDIMAGE_LINE;
 
   struct _CardLine {
     char m_zCardLine[C_CARDIMAGE_LINE];
@@ -27,6 +27,7 @@ namespace STORE
     eAL       m_eLevel;
     i8        m_iSLB;
     i8        m_iXform;
+    s32       m_sXfunc;
 
     i8        m_i_Line;
     _CardLine m_xaCardLines[C_CARDIMAGE_LINES];
@@ -39,7 +40,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    CardImage(Card* pCard, i8 iSLB, i8 iXform);
+    CardImage(Card* pCard, i8 iSLB, i8 iXform, Stz* szXfunc);
    ~CardImage(void) noexcept(false);
 
     void vAddLine(Stz* szLine);

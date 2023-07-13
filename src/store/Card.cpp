@@ -972,7 +972,7 @@ void Card::vMark2(char cMark2)
 /*----------------------------------------------------------------------------*/
 void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                                bool& rbPrune, eAL eLevel,
-                               bool bPrintBelow, i8 iXform)
+                               bool bPrintBelow, i8 iXform, Stz* szXfunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -986,7 +986,7 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
     }
 
     if (pRibbon->pCardCtl()->pCardHistory())
-      pRibbon->pCardCtl()->pCardHistory()->vAddImage(this,iXform);
+      pRibbon->pCardCtl()->pCardHistory()->vAddImage(this,iXform,szXfunc);
     vPrintHeader(pRibbon,eLevel);
   }
 
@@ -1027,8 +1027,14 @@ void Card::vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
-    pSubCard->vPrintCardRecursive(pRibbon, iDepth + 1, this,
-                                  rbPrune, eLevel, bPrintBelow, iXform);
+    pSubCard->vPrintCardRecursive(pRibbon,
+                                  iDepth + 1,
+                                  this,
+                                  rbPrune,
+                                  eLevel,
+                                  bPrintBelow,
+                                  iXform,
+                                  szXfunc);
   }
 
   delete pSubCard_I;

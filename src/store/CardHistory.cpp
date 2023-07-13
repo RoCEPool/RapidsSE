@@ -49,7 +49,7 @@ CardHistory::~CardHistory(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add new image                                                              */
 /*----------------------------------------------------------------------------*/
-void CardHistory::vAddImage(Card* pCard, i8 iXform)
+void CardHistory::vAddImage(Card* pCard, i8 iXform, Stz* szFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARDHISTORY,_FOOTER_);
 
@@ -60,7 +60,7 @@ void CardHistory::vAddImage(Card* pCard, i8 iXform)
 
   _CardHistory* aCardHistory = static_cast<_CardHistory*>(pSLB->aItemKey());
 
-  CardImage* pCardImage = new CardImage(pCard,pSLB->iKey(),iXform);
+  CardImage* pCardImage = new CardImage(pCard,pSLB->iKey(),iXform,szFunc);
   aCardHistory->m_pImage = pCardImage;
 
   m_pImage_curr = aCardHistory->m_pImage;
