@@ -52,14 +52,14 @@ __aFooterFunction(OpSketch)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
-                   eSR eStencilOut, eII eIndexInfo, StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack)
+                   eSR eStencilOut, eII eIndexInfo, TypedStack* pInitStack)
     : Object(CN_OPSKETCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
 
   m_iOperatorNo = iOperatorNo;
 
-  m_eSketchKind = eSketchKind;
+  m_eSketchKind  = eSketchKind;
   m_eHandlerKind = eHandlerKind;
 
   m_sExprString  = sExprStr;
@@ -67,8 +67,8 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_iTopCount    = 0;
 
   // definitions
-  m_pStreamDefLft = pStreamDefIn;
-  m_pStreamDefOut = pStreamDefOut;
+  m_pStreamDefLft = nullptr;
+  m_pStreamDefOut = nullptr;
   m_pStreamDefRht = nullptr;
   m_pTable        = nullptr;
   m_pIndex        = nullptr;
@@ -1195,11 +1195,13 @@ void OpSketch::vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sL
 /*----------------------------------------------------------------------------*/
 /* set the streamRht                                                          */
 /*----------------------------------------------------------------------------*/
-void OpSketch::vStreamDefRht(StreamDef* pStreamDefRht) {
+void OpSketch::vStreamDefs(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_OPSKETCH, _FOOTER_);
 
-  m_pStreamDefRht     = pStreamDefRht;
+  m_pStreamDefLft = pStreamDefLft;
+  m_pStreamDefRht = pStreamDefRht;
+  m_pStreamDefOut = pStreamDefOut;
 }
 
 /*----------------------------------------------------------------------------*/

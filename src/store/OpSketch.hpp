@@ -104,8 +104,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    OpSketch(i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn, eSR eStencilOut, eII eIndexInfo,
-             StreamDef* pStreamDefIn, StreamDef* pStreamDefOut, TypedStack* pInitStack = nullptr);
+    OpSketch(i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
+             eSR eStencilOut, eII eIndexInfo, TypedStack* pInitStack = nullptr);
 
    ~OpSketch(void) noexcept(false);
 
@@ -127,7 +127,7 @@ namespace STORE
     void vLimitExpr(Stz* sLimitExpr);
     void vPayloadBytes(i8 nPayloadBytes);
     void vSetLabels(Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, Stz* sLabelOuterLoop = ""_Stz);
-    void vStreamDefRht(StreamDef* pStreamDefRht);
+    void vStreamDefs(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut);
     eSK  eSketchKind(void);
     void vTopCount(i8 iTopCount);
 

@@ -293,8 +293,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pAggOpSketch, HK_EOS, m_ePreviousStencil, m_sLabelLoop,
-                                bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pAggOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -328,8 +327,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pGbyAggOpSketch, HK_EOS, m_ePreviousStencil, m_sLabelLoop,
-                                bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pGbyAggOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
       pOpSketch->vIndexDef(pGbyAggOpSketch->m_pIndexDef);
       pOpSketch->vCopyColsMap(pGbyAggOpSketch->m_pColsMap);
       vAppend(pOpSketch);
@@ -429,7 +427,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pSortOpSketch, HK_EOS, m_ePreviousStencil, m_sLabelLoop,bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
       pOpSketch->vIndexDef(pSortOpSketch->m_pIndexDef);
       pOpSketch->vCopyColsMap(pSortOpSketch->m_pColsMap);
       vAppend(pOpSketch);
@@ -455,7 +453,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pOpSketch = pSketchPotTub(pTopOpSketch, HK_EOS, m_ePreviousStencil, m_sLabelLoop,bGeneratePot, sHashExpr, sLimitExpr);
+      pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
       pOpSketch->vIndexDef(pTopOpSketch->m_pIndexDef);
       pOpSketch->vCopyColsMap(pTopOpSketch->m_pColsMap);
       vAppend(pOpSketch);
@@ -474,7 +472,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sketch pot/tub
-    pOpSketch = pSketchPotTub(pLastOpSketch, m_eHandlerKind, m_ePreviousStencil, m_sLabelLoop, bGeneratePot, sHashExpr, sLimitExpr);
+    pOpSketch = pSketchPotTub(pLastOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
     vAppend(pOpSketch);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -486,7 +484,8 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sketch StreamDef function
-  pOpSketch = pSketchStreamDef(pLastOpSketch, HK_STREAMDEF);
+  m_eHandlerKind = HK_STREAMDEF;
+  pOpSketch = pSketchStreamDef(pLastOpSketch);
   vAppend(pOpSketch);
 
 
@@ -642,19 +641,22 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
-  pOpSketch = new OpSketch(i_Op, sJoinExpr, m_eHandlerKind, SK_INDEXJOIN, m_ePreviousStencil, SR_TJ, II_JJ, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op, sJoinExpr, m_eHandlerKind, SK_INDEXJOIN, m_ePreviousStencil, SR_TJ, II_JJ);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
 
-  // set the labels in the opSketch
-  sLabelOuterLoop = m_sLabelLoop;
-  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
-
   // HACK-OPTIMISER
   // set the streamDefRht
   Table* pTable = pIndex->pTable();
-  pOpSketch->vStreamDefRht(pTable->pStreamDef());
+  pStreamDefRht = pTable->pStreamDef();
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
+
+  // set the labels in the opSketch
+  sLabelOuterLoop = m_sLabelLoop;
+  pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, sLabelOuterLoop);
 
   // set the indexDef
   pOpSketch->vTable(pTable);
@@ -693,7 +695,10 @@ OpSketch* Stencil_v2::pSketchIndexScan(StageDef* pStageDef, OpDef* pOpDef)
   Index* pIndex = pOpDef->m_pIndex_indexScan;
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(i_Op,sIndexScanExpr, m_eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op,sIndexScanExpr, m_eHandlerKind, SK_INDEXSCAN, SR_NONE, SR_IT, II_ST);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(),i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
@@ -738,7 +743,10 @@ OpSketch* Stencil_v2::pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef) {
   ColsReq* pColsReq = pOpDef->m_pColsReq;
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_CRW, SR_NONE, SR_IT, II_NONE);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   // make the labels
   sLabel.vSprint("L_InflateCrwT"_Stz);
@@ -771,7 +779,10 @@ OpSketch* Stencil_v2::pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
 
   // create a new opSketch for this OP
-  pOpSketch = new OpSketch(i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE, pStreamDefLft, pStreamDefLft);
+  pOpSketch = new OpSketch(i_Op, ""_Stz, m_eHandlerKind, SK_INFLATE_ROW, SR_NONE, SR_IT, II_NONE);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefLft);
 
   // make the labels
   sLabel.vSprint("L_InflateRowT"_Stz);
@@ -794,7 +805,7 @@ OpSketch* Stencil_v2::pSketchEos(StageDef* pStageDef) {
   s4K sLabelNext;
 
   // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_EOS, m_ePreviousStencil, SR_NONE, II_NONE, nullptr, nullptr);
+  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_EOS, m_ePreviousStencil, SR_NONE, II_NONE);
 
   sLabel = ""_Stz;
   sLabelNext = ""_Stz;
@@ -825,7 +836,10 @@ OpSketch* Stencil_v2::pSketchFilter(StageDef* pStageDef, OpDef* pOpDef) {
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(i_Op, sFilterExpr, m_eHandlerKind, SK_FILTER, m_ePreviousStencil, SR_NONE, II_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sFilterExpr, m_eHandlerKind, SK_FILTER, m_ePreviousStencil, SR_NONE, II_NONE);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
@@ -874,7 +888,16 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the semi-join
-  pOpSketch = new OpSketch(i_Op, sJoinExpr, m_eHandlerKind, SK_SEMIJOIN, m_ePreviousStencil, SR_IJ, II_JJ, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op, sJoinExpr, m_eHandlerKind, SK_SEMIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
+
+  //HACK-OPTIMISER
+  // set the streamDefRht
+  // pOpSketch->vStreamDefRht(pStreamDefRht);
+  Table* pTable = pIndex->pTable();
+  pStreamDefRht = pTable->pStreamDef();
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   //sLabelOuterLoop.vSprint("L_%s_END_%d"_Stz, pOpDef->szOpNm(), i_Op);
@@ -882,12 +905,6 @@ OpSketch* Stencil_v2::pSketchSemiJoin(StageDef* pStageDef, OpDef* pOpDef) {
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
-
-  //HACK-OPTIMISER
-  // set the streamDefRht
-  // pOpSketch->vStreamDefRht(pStreamDefRht);
-  Table* pTable = pIndex->pTable();
-  pOpSketch->vStreamDefRht(pTable->pStreamDef());
 
   // set the indexDef
   pOpSketch->vTable(pTable);
@@ -926,7 +943,10 @@ OpSketch* Stencil_v2::pSketchLimit(StageDef* pStageDef, OpDef* pOpDef) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(i_Op, sLimitExpr, m_eHandlerKind, SK_LIMIT, m_ePreviousStencil, SR_NONE, II_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sLimitExpr, m_eHandlerKind, SK_LIMIT, m_ePreviousStencil, SR_NONE, II_NONE);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
@@ -1017,7 +1037,10 @@ OpSketch* Stencil_v2::pSketchAggreg(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(i_Op, sAggregExpr, m_eHandlerKind, SK_AGGREG, m_ePreviousStencil, SR_AT, II_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sAggregExpr, m_eHandlerKind, SK_AGGREG, m_ePreviousStencil, SR_AT, II_NONE);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
@@ -1063,19 +1086,22 @@ OpSketch* Stencil_v2::pSketchAntiJoin(StageDef* pStageDef, OpDef* pOpDef) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the semi-join
-  pOpSketch = new OpSketch(i_Op, sJoinExpr, m_eHandlerKind, SK_ANTIJOIN, m_ePreviousStencil, SR_IJ, II_JJ, pStreamDefLft, pStreamDefOut);
+  pOpSketch = new OpSketch(i_Op, sJoinExpr, m_eHandlerKind, SK_ANTIJOIN, m_ePreviousStencil, SR_IJ, II_JJ);
+
+  //HACK-OPTIMISER
+  // set the streamDefRht
+  // pOpSketch->vStreamDefRht(pStreamDefRht);
+  Table* pTable = pIndex->pTable();
+  pStreamDefRht = pTable->pStreamDef();
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, pStreamDefRht, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AdvanceNextRow"_Stz);
 
   // set the labels in the opSketch
   pOpSketch->vSetLabels(sLabel, sLabelNext, "L_AdvanceNextRowJ"_Stz, m_sLabelLoop);
-
-  //HACK-OPTIMISER
-  // set the streamDefRht
-  // pOpSketch->vStreamDefRht(pStreamDefRht);
-  Table* pTable = pIndex->pTable();
-  pOpSketch->vStreamDefRht(pTable->pStreamDef());
 
   // set the indexDef
   pOpSketch->vTable(pTable);
@@ -1110,7 +1136,10 @@ OpSketch* Stencil_v2::pSketchProject(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(i_Op, sProjectExpr, m_eHandlerKind, SK_PROJECT, m_ePreviousStencil, SR_PT, II_NONE, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sProjectExpr, m_eHandlerKind, SK_PROJECT, m_ePreviousStencil, SR_PT, II_NONE);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStageDef, i_Op, "L_AddRowToTubPot"_Stz);
@@ -1149,7 +1178,10 @@ OpSketch* Stencil_v2::pSketchGbyAgg(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(i_Op, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_AT, II_PL, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sGbyAggExpr, m_eHandlerKind, SK_GBYAGG, m_ePreviousStencil, SR_AT, II_PL);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   // set the labels in the opSketch
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
@@ -1197,7 +1229,10 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(i_Op, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, m_ePreviousStencil,  II_PL, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sSortExpr, m_eHandlerKind, SK_SORT, m_ePreviousStencil, m_ePreviousStencil,  II_PL);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   // set the labels in the opSketch
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
@@ -1224,7 +1259,7 @@ OpSketch* Stencil_v2::pSketchSort(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch streamDef                                                           */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind) {
+OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1236,7 +1271,10 @@ OpSketch* Stencil_v2::pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind) {
   RASSERT(pStreamDefOut);
 
   // create a new opSketch
-  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, eHandlerKind, SK_STREAMDEF, SR_NONE,  SR_NONE, II_NONE, pStreamDefOut, pStreamDefOut);
+  OpSketch* pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_STREAMDEF, SR_NONE,  SR_NONE, II_NONE);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
 
   return pOpSketch;
 }
@@ -1267,7 +1305,10 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
   ColMap* pColsMap = pOpDef->m_pColMap_top;
 
   // create a new opSketch for this OP
-  OpSketch *pOpSketch = new OpSketch(i_Op, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, m_ePreviousStencil,  II_PL, pStreamDefLft, pStreamDefOut);
+  OpSketch *pOpSketch = new OpSketch(i_Op, sTopExpr, m_eHandlerKind, SK_TOP, m_ePreviousStencil, m_ePreviousStencil,  II_PL);
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefLft, nullptr, pStreamDefOut);
 
   // set the labels in the opSketch
   sLabel.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), i_Op);
@@ -1297,8 +1338,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
 /*----------------------------------------------------------------------------*/
 /* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
-OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR m_ePreviousStencil,
-                                 Stz* sLabelLoop, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr) {
+OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
 
@@ -1312,21 +1352,24 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR m_e
 
   // create a new opSketch
   if (bGeneratePot) {
-    pOpSketch = new OpSketch(C_UNKNOWN, sHashExpr, eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL, pStreamDefOut, pStreamDefOut);
+    pOpSketch = new OpSketch(C_UNKNOWN, sHashExpr, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
 
     // generate the expression stack
     pOpSketch->vGenerateExprStacks(sHashExpr);
   }
   else {
-    pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, eHandlerKind, SK_TUB, m_ePreviousStencil, SR_TO,  II_PL, pStreamDefOut, pStreamDefOut);
+    pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_TUB, m_ePreviousStencil, SR_TO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
   }
+
+  // set the streamDef's
+  pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
 
   // set the labels in the opSketch
   sLabel = "L_AddRowToTubPot"_Stz;
   sLabelNext = ""_Stz;
-  pOpSketch->vSetLabels(sLabel, sLabelNext, sLabelLoop);
+  pOpSketch->vSetLabels(sLabel, sLabelNext, m_sLabelLoop);
 
   if (pLastOp->m_pInitStack)
     pOpSketch->vCopyInitStack(pLastOp->m_pInitStack);

@@ -91,18 +91,15 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchLimit     (StageDef* pStageDef, OpDef* pOpDefp);
+    OpSketch* pSketchPotTub    (OpSketch* pLastOp, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr);
     OpSketch* pSketchProject   (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchSort      (StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchStreamDef (OpSketch* pLastOp);
     OpSketch* pSketchTop       (StageDef* pStageDef, OpDef* pOpDef);
-
-    OpSketch* pSketchStreamDef(OpSketch* pLastOp, eHK eHandlerKind);
-    OpSketch* pSketchPotTub(OpSketch* pLastOp, eHK eHandlerKind, eSR ePrevStencil_v2,
-                            Stz* sLabelLoop, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr);
 
     eEC eValidateStage(StageDef* pStageDef);
 
     void vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-
     OpSketch* pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
 
