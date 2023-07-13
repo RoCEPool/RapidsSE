@@ -88,28 +88,6 @@ CombinedSrc::~CombinedSrc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* form column name from streamDef for given ordinal column                   */
-/*----------------------------------------------------------------------------*/
-void CombinedSrc::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column)
-{
-  _static_
-
-  s256 sUpper;
-
-  // get the column from the streamDef
-  Column* pColumn = pStreamDef->pGetColumn(i_Column);
-
-  sUpper = pColumn->szColNm();
-  StrLib::vToUpper((char *) sUpper.azChar());
-
-  if (pStreamDef->bIsDuplicateName(pColumn))
-    sColNm.vSprint("%s%lld.m_iAsI8"_Stz, sUpper.azChar(), i_DupCtr++);
-  else
-    sColNm.vSprint("%s.m_iAsI8"_Stz, sUpper.azChar());
-
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1024,8 +1002,6 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
   _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
 
   s16KB sCode;
-  s256 sColumn;
-  i8 i_DupCtr = 1;
   i8 iPayLoad = 0;
 
   for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefOut->nColumns(); i_Col++) {
@@ -1046,9 +1022,6 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
     if ( ! bIsPayload ) {
       continue;
     }
-
-    // make the column name
-    vMakeColumnNmStruct(pOpSketch->m_pStreamDefOut, sColumn, i_DupCtr, i_Col);
 
     if ( pColumn->eColumnType() == CT_VARCHAR ||
          pColumn->eColumnType() == CT_CHAR ) {
