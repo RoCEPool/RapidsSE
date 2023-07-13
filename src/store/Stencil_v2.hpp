@@ -52,6 +52,10 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     stageOps_V2  m_xStageOps;
     CombinedSrc* m_pOpSource;
 
+    eHK          m_eHandlerKind;
+    eSR          m_ePreviousStencil;
+    s256         m_sLabelLoop;
+
     // must be last
     Footer m_xFooter;
   
@@ -97,9 +101,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     eEC eValidateStage(StageDef* pStageDef);
 
     void vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-
-    void vSketchEosSort(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    void vSketchEosTop(Dynamic* pDynamic, Stream* pStream, Op* pOp);
 
     OpSketch* pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
                          eSR ePrevStencil_v2, Stz* sLabelLoop);
