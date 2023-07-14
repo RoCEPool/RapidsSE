@@ -110,8 +110,6 @@ namespace STORE
    ~OpSketch(void) noexcept(false);
 
     static void vMakeColumnNm(StreamDef *pStreamDef, Stz *szColumn, eSR eStencilRow, i8 i_Column);
-    static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
-    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
 
     void vCopyColsReq(ColsReq* pColsReq);
     void vCopyColsMap(ColMap* pColsMap);
