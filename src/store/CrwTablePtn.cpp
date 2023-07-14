@@ -137,7 +137,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // set the current buffer
   m_pCurrentBuffer = pCrwBuffer;
 
-  bVerifyTable();
+  bVerifyPds();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +306,7 @@ void CrwTablePtn::vTruncate(void)
     pIndexTree->vTruncate();
   }
   #*/
-  bVerifyTable();
+  bVerifyPds();
 
   SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
   // TODO: Change above line to:
@@ -331,7 +331,7 @@ void CrwTablePtn::vTruncate(void)
   m_pCurrentBuffer = nullptr;
   m_oRootBufferId.m_iAsI8 = 0;
 
-  bVerifyTable();
+  bVerifyPds();
 }
 
 /*----------------------------------------------------------------------------*/

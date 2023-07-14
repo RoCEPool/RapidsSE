@@ -214,7 +214,13 @@ _paging
 
 space;
 
+_paging
 load LineItem_1 "../TPCH/SF1/lineitem.tbl" ;
+select * from Lineitem_1 where L_ORDERKEY < 5;
+truncate Lineitem_1;
+select * from Lineitem_1 where L_ORDERKEY < 5;
+drop table LineItem_1;
+
 load LineItem_2 "../TPCH/SF1/lineitem.tbl" ;
 
 drop table LineItem_1;
@@ -229,7 +235,7 @@ select * from Lineitem_1 where L_ORDERKEY < 5;
 select * from Lineitem_2;
 load LineItem_4 "../TPCH/SF1/lineitem.tbl" ;
 load LineItem_5 "../TPCH/SF1/lineitem.tbl" ;
-
+truncate Lineitem_1;
 space;
 
 load LineItem_6 "../TPCH/SF1/lineitem.tbl" ;
