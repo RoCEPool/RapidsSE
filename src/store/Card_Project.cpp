@@ -151,7 +151,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
     if (! p_expr_needed->pGetTerm(0)->bIsColOdn()) {
-      p_expr_needed->vDump();
+      p_expr_needed->vDump(__func__);
       NEVER_REACH;
       //continue;
     }
@@ -172,7 +172,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 
   p_projection_early->vRenumberAll_expr();
 
-  p_projection_early->vDump();
+  p_projection_early->vDump(__func__);
 
   return p_projection_early;
 }

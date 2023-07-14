@@ -266,7 +266,7 @@ void Board::vValidate_SubQuery(CardIter *pCI)
       case CK_WHERE:        xCI.G.p_where->vValidate        (&xCI,0,pDeck); break;
 
       default:
-        xCI.G.p_MainCard->vDump();
+        xCI.G.p_MainCard->vDump(__func__);
         vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
         NEVER_REACH
     }

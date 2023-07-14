@@ -83,7 +83,7 @@ void Card_Filter::vIndividuate_filter(CardIter* pCI)
   _static_
 
   if (! pCI->G.p_MainCard->pSub_projection())
-    pCI->G.p_MainCard->vDump();
+    pCI->G.p_MainCard->vDump(__func__);
 
   RASSERT(pCI->G.p_MainCard->pSub_projection());
 

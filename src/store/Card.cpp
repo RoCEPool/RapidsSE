@@ -544,15 +544,15 @@ eCT Card::eColType(void)
 /*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vDump(i8 iDepth, Stz* szTitle)
+void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (0 == iDepth) {
     if (szTitle)
-      vTrace("^^%s:\n"_Stz,szTitle);
+      vTrace("^^%s [%s]\n"_Stz,szTitle,azFunc);
     else
-      vTrace("^^Card Dump\n"_Stz);
+      vTrace("^^Card Dump [%s]\n"_Stz,azFunc);
   }
 
   s4K sProperties;
@@ -569,7 +569,7 @@ void Card::vDump(i8 iDepth, Stz* szTitle)
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
-    pGetChild(i_Sub)->vDump(iDepth + 1);
+    pGetChild(i_Sub)->vDump(azFunc, iDepth + 1);
 
   if (0 == iDepth)
     vTrace("$$\n"_Stz);
@@ -1746,7 +1746,7 @@ void Card::vValidate_mayHave(eCK eCard_first, ...)
     va_end(xArgs);
 
     if (! bMayHave)
-      vDump();
+      vDump(__func__);
     RASSERT(bMayHave);
   }
 
@@ -1780,7 +1780,7 @@ void Card::vValidate_mustHave(eCK eCard_first, ...)
 
     if (! bMustHave) {
       vTrace("vValidate_mustHave: missing %lld %lls\n"_Stz,(i8)eCard_mustHave,aCK[eCard_mustHave]);
-      vDump();
+      vDump(__func__);
       RASSERT(bMustHave);
     }
 
@@ -1823,7 +1823,7 @@ eCK Card::eValidate_mustEither(eCK eCard_first, ...)
   }
 
   if (1 != nHas)
-    vDump();
+    vDump(__func__);
   RASSERT(1 == nHas);
 
   va_end(xArgs);
@@ -1859,7 +1859,7 @@ void Card::vValidate_notHave(eCK eCard, ...)
     }
 
     if (bNotHave)
-      vDump();
+      vDump(__func__);
     RASSERT(! bNotHave);
 
     eCard_mustHave = (eCK)va_arg(xArgs, i8);

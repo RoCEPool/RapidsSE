@@ -624,7 +624,7 @@ void Card_Expr::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (! pSymbol()->bTest_mustHave_ppy(P_Type,nullptr)) {
-    vDump();
+    vDump(__func__);
     RASSERT(0);
   }
 

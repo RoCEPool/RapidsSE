@@ -546,7 +546,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
       // missing??
 
       default:
-        pCI->G.p_MainCard->vDump();
+        pCI->G.p_MainCard->vDump(__func__);
         NEVER_REACH
     }
   }
@@ -980,8 +980,8 @@ void Card_OP::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
         p_term->pSymbol()->bIsColumnOrdinal()) {
 
       if (!p_term->pSymbol()->Y_bHas(P_Type)) {
-        p_term->vDump();
-        pChildCard->vDump();
+        p_term->vDump(__func__);
+        pChildCard->vDump(__func__);
         RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
       }
     }
@@ -1158,8 +1158,8 @@ void Card_OP::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
         p_term->pSymbol()->bIsColumnOrdinal()) {
 
       if (!p_term->pSymbol()->Y_bHas(P_Type)) {
-        p_term->vDump();
-        pSubCard->vDump();
+        p_term->vDump(__func__);
+        pSubCard->vDump(__func__);
         RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
       }
     }
@@ -1216,8 +1216,8 @@ void Card_OP::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
             p_term->pSymbol()->bIsColumnOrdinal()) {
 
           if (!p_term->pSymbol()->Y_bHas(P_Type)) {
-            p_term->vDump();
-            pSubCard->vDump();
+            p_term->vDump(__func__);
+            pSubCard->vDump(__func__);
             RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
           }
         }
@@ -1272,8 +1272,8 @@ void Card_OP::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
           p_term->pSymbol()->bIsColumnOrdinal()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
-          p_term->vDump();
-          pSubCard->vDump();
+          p_term->vDump(__func__);
+          pSubCard->vDump(__func__);
           RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
         }
       }
@@ -1376,8 +1376,8 @@ void Card_OP::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists
           p_term->pSymbol()->bIsColumnOrdinal()) {
 
         if (!p_term->pSymbol()->Y_bHas(P_Type)) {
-          p_term->vDump();
-          pSubCard->vDump();
+          p_term->vDump(__func__);
+          pSubCard->vDump(__func__);
           RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
         }
       }
@@ -1697,7 +1697,7 @@ void Card_OP::vRpnCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_RpnCalc)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (!pCard_RpnCalc->pSymbol()->Y_bHas(P_Type)) {
-    pCard_RpnCalc->vDump();
+    pCard_RpnCalc->vDump(__func__);
     RASSERT(pCard_RpnCalc->pSymbol()->Y_bHas(P_Type));
   }
 
@@ -1786,7 +1786,7 @@ void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
       pCard_Term->pSymbol()->bIsColumnOrdinal()) {
 
     if (!pCard_Term->pSymbol()->Y_bHas(P_Type)) {
-      pCard_Term->vDump();
+      pCard_Term->vDump(__func__);
       RASSERT(pCard_Term->pSymbol()->Y_bHas(P_Type));
     }
   }
