@@ -1847,7 +1847,7 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
   ColMap* pColMap = ppColMap? *ppColMap : nullptr;
 
   StreamDef* pStreamDef_emitted =
-      p_projection->pToStreamDef(pColMap, p_key, eCard(), this);
+      p_projection->pToStreamDef(pColMap, p_key, this);
 
 
   if (CK_GBYAGG == eCard()) {
