@@ -101,7 +101,7 @@ end ;
 
 rows:
  (1499,TIMESTAMP '1992-08-21 00:00:00')
- (1499,,TIMESTAMP '1993-10-24 00:00:00')
+ (1499,TIMESTAMP '1993-10-24 00:00:00')
 
 
 // drop the table
