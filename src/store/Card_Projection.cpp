@@ -157,7 +157,6 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
   CardIter xCI_projection(this);
   while (xCI_projection.G_bEachMainWithSub(CK_EXPR,CK_RPNCALC)) {
 
-    xCI_projection.G.p_rpnCalc->vDump(__func__);
     CardIter xCI_rpnCalc(xCI_projection.G.p_rpnCalc);
     while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
       // only interested in columns
@@ -166,7 +165,6 @@ Card_Needed* Card_Projection::pCraftRoot_needed(CardIter* pCI)
         RASSERT(pCI->G.p_key);
 
         Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(xCI_rpnCalc.G.p_term->pSymbol());
-        p_expr_key->vDump(__func__);
         Symbol* pSymbol_tblCol = p_expr_key->pFirstTblCol();
 
         vDebugPoint();
@@ -500,136 +498,32 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
   s32 sColNm;
   s32 sColNm_mapped;
   eCT eColType;
-  //Symbol* pSymbol;
 
 
 
-  i8 i_EmittedCol = 1;
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (CK_GBYAGG == eOP) {
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    i8 i_Col = 1;
+    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xProjection.p_expr();
 
-    i8 i_Cell_tbf = 1;
-    bool bFound_key = true;
-    while (bFound_key) {
-      bFound_key = false;
-      for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-        Card_Expr *p_expr = xProjection.p_expr();
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
 
-        if (! p_expr->bIsExpressionOfKey())
-          continue;
+      p_key->vX();
+      vDebugPoint();
 
-        RASSERT(p_expr->pSymbol()->Y_bHas(P_EmittedCol));
-        RASSERT(p_expr->pSymbol()->Y_bHas(P_Key));
-        RASSERT(p_expr->pSymbol()->Y_bHas(P_Cell));
+      sColNm_mapped.vSprint("C%lld_COL%lld"_Stz,
+                            xProjection.i_Child(),
+                            i_Col);
 
-        i8 i_EmittedCol = p_expr->pSymbol()->Y_iGet(P_EmittedCol);
-        //bool bKey       = p_expr->pSymbol()->Y_iGet(P_Key);
-        i8 i_Cell       = p_expr->pSymbol()->Y_iGet(P_Cell);
-
-        if (i_Cell != i_Cell_tbf)
-          continue;
-
-        bFound_key = true;
-
-        if (p_expr->pSub_as())
-          sColNm = p_expr->pSub_as()->szSymbol();
-        else
-          sColNm = p_expr->pGetTerm(0)->szSymbol();
-
-        p_key->vX();
-
-        vDebugPoint();
-
-        s32 sNm_modified;
-        sNm_modified.vSprint("C%lld_%s"_Stz,
-                             xProjection.i_Child(),
-                             sColNm.azChar());
-        sColNm = sNm_modified;
-        sColNm_mapped = sColNm;
-
-        p_expr->vDump(__func__);
-
-        sNm_modified.vSprint("C%lld_COL%lld"_Stz,
-                             xProjection.i_Child(),
-                             i_Cell);
-        sColNm_mapped = sNm_modified;
-
-        vDebugPoint();
-
-        eColType = p_expr->eColumnType();
-        pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-
-        //pColMap->vAdd(i_EmittedCol, false, i_Cell);
-
-        i_Cell_tbf++;
-        break;
-      }
+      eColType = p_expr->eColumnType();
+      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
     }
-
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-    i_Cell_tbf = 1;
-    bool bFound_payload = true;
-    while (bFound_payload) {
-      bFound_payload = false;
-      for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
-        Card_Expr *p_expr = xProjection.p_expr();
-
-        if (p_expr->bIsExpressionOfKey())
-          continue;
-
-        RASSERT(p_expr->pSymbol()->Y_bHas(P_EmittedCol));
-        RASSERT(p_expr->pSymbol()->Y_bHas(P_Payload));
-        RASSERT(p_expr->pSymbol()->Y_bHas(P_Cell));
-
-        i8 i_EmittedCol = p_expr->pSymbol()->Y_iGet(P_EmittedCol);
-        //bool bPayload   = p_expr->pSymbol()->Y_iGet(P_Payload);
-        i8 i_Cell       = p_expr->pSymbol()->Y_iGet(P_Cell);
-
-        if (i_Cell != i_Cell_tbf)
-          continue;
-
-        bFound_payload = true;
-
-        if (p_expr->pSub_as())
-          sColNm = p_expr->pSub_as()->szSymbol();
-        else
-          sColNm = p_expr->pGetTerm(0)->szSymbol();
-
-        p_key->vX();
-
-        vDebugPoint();
-
-        s32 sNm_modified;
-        sNm_modified.vSprint("C%lld_%s"_Stz,
-                             xProjection.i_Child(),
-                             sColNm.azChar());
-        sColNm = sNm_modified;
-        sColNm_mapped = sColNm;
-
-        p_expr->vDump(__func__);
-
-        sNm_modified.vSprint("C%lld_COL%lld"_Stz,
-                             xProjection.i_Child(),
-                             i_Cell);
-        sColNm_mapped = sNm_modified;
-
-        vDebugPoint();
-
-        eColType = p_expr->eColumnType();
-        pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
-
-        //pColMap->vAdd(i_EmittedCol, true, i_Cell);
-
-        i_Cell_tbf++;
-        break;
-      }
-    }
-
 
     return pStreamDef;
   }
@@ -638,6 +532,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RASSERT(CK_GBYAGG != eOP);
+  i8 i_EmittedCol = 1;
 
   i8 i_Cell;
 
@@ -713,6 +608,233 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
 
   return pStreamDef;
 }
+/*----------------------------------------------------------------------------*/
+//StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
+//                                         Card_Key* p_key,
+//                                         eCK eOP,
+//                                         Card* p_OP)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  StreamDef* pStreamDef = new StreamDef;
+//
+//  s32 sColNm;
+//  s32 sColNm_mapped;
+//  eCT eColType;
+//  //Symbol* pSymbol;
+//
+//
+//
+//  i8 i_EmittedCol = 1;
+//
+//
+//  if (CK_GBYAGG == eOP) {
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    i8 i_Cell_tbf = 1;
+//    bool bFound_key = true;
+//    while (bFound_key) {
+//      bFound_key = false;
+//      for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+//        Card_Expr *p_expr = xProjection.p_expr();
+//
+//        if (! p_expr->bIsExpressionOfKey())
+//          continue;
+//
+//        RASSERT(p_expr->pSymbol()->Y_bHas(P_EmittedCol));
+//        RASSERT(p_expr->pSymbol()->Y_bHas(P_Key));
+//        RASSERT(p_expr->pSymbol()->Y_bHas(P_Cell));
+//
+//        i8 i_EmittedCol = p_expr->pSymbol()->Y_iGet(P_EmittedCol);
+//        //bool bKey       = p_expr->pSymbol()->Y_iGet(P_Key);
+//        i8 i_Cell       = p_expr->pSymbol()->Y_iGet(P_Cell);
+//
+//        if (i_Cell != i_Cell_tbf)
+//          continue;
+//
+//        bFound_key = true;
+//
+//        if (p_expr->pSub_as())
+//          sColNm = p_expr->pSub_as()->szSymbol();
+//        else
+//          sColNm = p_expr->pGetTerm(0)->szSymbol();
+//
+//        p_key->vX();
+//
+//        vDebugPoint();
+//
+//        s32 sNm_modified;
+//        sNm_modified.vSprint("C%lld_%s"_Stz,
+//                             xProjection.i_Child(),
+//                             sColNm.azChar());
+//        sColNm = sNm_modified;
+//        sColNm_mapped = sColNm;
+//
+//        p_expr->vDump(__func__);
+//
+//        sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+//                             xProjection.i_Child(),
+//                             i_Cell);
+//        sColNm_mapped = sNm_modified;
+//
+//        vDebugPoint();
+//
+//        eColType = p_expr->eColumnType();
+//        pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+//
+//        //pColMap->vAdd(i_EmittedCol, false, i_Cell);
+//
+//        i_Cell_tbf++;
+//        break;
+//      }
+//    }
+//
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    i_Cell_tbf = 1;
+//    bool bFound_payload = true;
+//    while (bFound_payload) {
+//      bFound_payload = false;
+//      for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+//        Card_Expr *p_expr = xProjection.p_expr();
+//
+//        if (p_expr->bIsExpressionOfKey())
+//          continue;
+//
+//        RASSERT(p_expr->pSymbol()->Y_bHas(P_EmittedCol));
+//        RASSERT(p_expr->pSymbol()->Y_bHas(P_Payload));
+//        RASSERT(p_expr->pSymbol()->Y_bHas(P_Cell));
+//
+//        i8 i_EmittedCol = p_expr->pSymbol()->Y_iGet(P_EmittedCol);
+//        //bool bPayload   = p_expr->pSymbol()->Y_iGet(P_Payload);
+//        i8 i_Cell       = p_expr->pSymbol()->Y_iGet(P_Cell);
+//
+//        if (i_Cell != i_Cell_tbf)
+//          continue;
+//
+//        bFound_payload = true;
+//
+//        if (p_expr->pSub_as())
+//          sColNm = p_expr->pSub_as()->szSymbol();
+//        else
+//          sColNm = p_expr->pGetTerm(0)->szSymbol();
+//
+//        p_key->vX();
+//
+//        vDebugPoint();
+//
+//        s32 sNm_modified;
+//        sNm_modified.vSprint("C%lld_%s"_Stz,
+//                             xProjection.i_Child(),
+//                             sColNm.azChar());
+//        sColNm = sNm_modified;
+//        sColNm_mapped = sColNm;
+//
+//        p_expr->vDump(__func__);
+//
+//        sNm_modified.vSprint("C%lld_COL%lld"_Stz,
+//                             xProjection.i_Child(),
+//                             i_Cell);
+//        sColNm_mapped = sNm_modified;
+//
+//        vDebugPoint();
+//
+//        eColType = p_expr->eColumnType();
+//        pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+//
+//        //pColMap->vAdd(i_EmittedCol, true, i_Cell);
+//
+//        i_Cell_tbf++;
+//        break;
+//      }
+//    }
+//
+//
+//    return pStreamDef;
+//  }
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  RASSERT(CK_GBYAGG != eOP);
+//
+//  i8 i_Cell;
+//
+//  for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
+//    Card_Expr *p_expr = xProjection.p_expr();
+//    i_Cell = C_UNKNOWN;
+//
+//    if (CK_PROJECT == eOP) {
+//      if (p_expr->pSub_as())
+//        sColNm = p_expr->pSub_as()->szSymbol();
+//      else
+//        sColNm = p_expr->pGetTerm(0)->szSymbol();
+//
+//      sColNm_mapped = sColNm;
+//
+//    }
+//    else
+//    if (CK_SORT == eOP) {
+//      if (p_expr->pSub_as())
+//        sColNm = p_expr->pSub_as()->szSymbol();
+//      else
+//        sColNm = p_expr->pGetTerm(0)->szSymbol();
+//
+//      s32 sNm_modified;
+//      sNm_modified.vSprint("C%lld_%s"_Stz,
+//                           xProjection.i_Child(),
+//                           sColNm.azChar());
+//      sColNm = sNm_modified;
+//      sColNm_mapped = sColNm;
+//
+//      i_Cell = i_EmittedCol;
+//    }
+//    else {
+//      if (p_expr->pSub_as())
+//        sColNm = p_expr->pSub_as()->szSymbol();
+//      else
+//        sColNm = p_expr->pGetTerm(0)->szSymbol();
+//
+//      s32 sNm_modified;
+//      sNm_modified.vSprint("C%lld_%s"_Stz,
+//                           xProjection.i_Child(),
+//                           sColNm.azChar());
+//      sColNm = sNm_modified;
+//      sColNm_mapped = sColNm;
+//    }
+//
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // stream def column
+//
+//    eColType = p_expr->eColumnType();
+//
+//    //vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColType]);
+//
+//    pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // col map (gbyagg) column
+//
+//    if (pColMap) {
+//      RASSERT(p_key);
+//
+//      if (p_expr->pSymbol()->Y_bHas(P_Key))
+//        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
+//                      false,
+//                      p_expr->pSymbol()->Y_iGet(P_Cell));
+//      else
+//        pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
+//                      true,
+//                      p_expr->pSymbol()->Y_iGet(P_Cell));
+//    }
+//  }
+//
+//  return pStreamDef;
+//}
+
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
