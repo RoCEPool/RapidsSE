@@ -562,7 +562,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
         eColType = p_expr->eColumnType();
         pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
 
-        pColMap->vAdd(i_EmittedCol, false, i_Cell);
+        //pColMap->vAdd(i_EmittedCol, false, i_Cell);
 
         i_Cell_tbf++;
         break;
@@ -623,7 +623,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
         eColType = p_expr->eColumnType();
         pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
 
-        pColMap->vAdd(i_EmittedCol, true, i_Cell);
+        //pColMap->vAdd(i_EmittedCol, true, i_Cell);
 
         i_Cell_tbf++;
         break;
@@ -635,6 +635,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
   }
 
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 i_Cell;
 
