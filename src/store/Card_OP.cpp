@@ -1859,6 +1859,11 @@ StreamDef* Card_OP::pCraftStreamDef_emitted(ColMap** ppColMap)
     Card_Mapping* p_mapping = pSub_mapping();
     pColMap = p_mapping->pToColMap(pColMap,p_key,this);
   }
+  else
+  if (CK_TOP == eCard()) {
+    Card_Mapping* p_mapping = pSub_mapping();
+    pColMap = p_mapping->pToColMap(pColMap,p_key,this);
+  }
 
   if (ppColMap)
     (*ppColMap)->vValidate();

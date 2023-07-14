@@ -1064,27 +1064,25 @@ Card* Dissector::pOp_Top(void)
 
   vCheckArgs(2);
 
-
-  i8 i_Expr = 1;
-  Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
-  Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr);
-
   i8 iCount = iGetInt(1);
 
   s32 sCount;
   sCount = iCount;
   Card_Top* pCard_Top = new Card_Top(sCount);
 
+
   eAL eAggLevel = m_pStageSpec->eAggegLevel();
   Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
-  pCard_Top->vPush(pCard_AggLevel);
+  pCard_Top->vAppend(pCard_AggLevel);
 
-  pCard_Top->vAppend(pCard_Expr);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sbyElist : sortBy expression list
 
-  Card_Key* p_key = new Card_Key;
+  Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+  Card_Key* pCard_Key = pPopKey(pCard_RpnTerms, false);
+  pCard_Top->vAppend(pCard_Key);
 
-  p_key->vAppend(pCard_Expr->pClone());
-  pCard_Top->vAppend(p_key);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Symbol xSymbol;
   xSymbol = iCount;
@@ -1092,11 +1090,55 @@ Card* Dissector::pOp_Top(void)
   pCard_Count->pSymbol()->vSet(&xSymbol);
   pCard_Top->vAppend(pCard_Count);
 
-  pCard_Top->vDump(__func__);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  delete pCard_RpnTerms;
 
   return pCard_Top;
 }
+/*----------------------------------------------------------------------------*/
+//Card* Dissector::pOp_Top(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // op arguments
+//
+//  vCheckArgs(2);
+//
+//
+//  i8 i_Expr = 1;
+//  Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
+//  Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr);
+//
+//  i8 iCount = iGetInt(1);
+//
+//  s32 sCount;
+//  sCount = iCount;
+//  Card_Top* pCard_Top = new Card_Top(sCount);
+//
+//  eAL eAggLevel = m_pStageSpec->eAggegLevel();
+//  Card_Level* pCard_AggLevel = new Card_Level(eAggLevel);
+//  pCard_Top->vPush(pCard_AggLevel);
+//
+//  //pCard_Top->vAppend(pCard_Expr);
+//
+//  Card_Key* p_key = new Card_Key;
+//
+//  p_key->vAppend(pCard_Expr);
+//  pCard_Top->vAppend(p_key);
+//
+//  Symbol xSymbol;
+//  xSymbol = iCount;
+//  Card_Count* pCard_Count = new Card_Count;
+//  pCard_Count->pSymbol()->vSet(&xSymbol);
+//  pCard_Top->vAppend(pCard_Count);
+//
+//  //pCard_Top->vDump(__func__);
+//
+//
+//  return pCard_Top;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

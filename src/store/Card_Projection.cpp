@@ -554,6 +554,34 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
     return pStreamDef;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (CK_TOP == p_OP->eCard()) {
+
+    i8 i_Col = 1;
+    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
+      Card_Expr *p_expr = xProjection.p_expr();
+
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      p_key->vX();
+      vDebugPoint();
+
+      sColNm_mapped.vSprint("C%lld_COL%lld"_Stz,
+                            xProjection.i_Child(),
+                            i_Col);
+
+      eColType = p_expr->eColumnType();
+      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+    }
+
+    return pStreamDef;
+  }
+
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
