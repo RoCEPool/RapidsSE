@@ -154,25 +154,6 @@ OpSketch::~OpSketch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* form column name from streamDef for given ordinal column                   */
-/*----------------------------------------------------------------------------*/
-void OpSketch::vMakeColumnNm(StreamDef* pStreamDef, Stz* sColumn, eSR eStencilRow, i8 i_Column)
-{
-  _static_
-
-  // get the column from the streamDef
-  Column* pColumn = pStreamDef->pGetColumn(i_Column);
-
-  // convert column name to uppercase
-  s256 sColNm;
-  sColNm = pColumn->szColNm();
-  StrLib::vToUpper((char*)sColNm.azChar());
-
-  // form the column name
-  sColumn->vSprint("p%s->%s.m_iAsI8"_Stz, xStencilRow[eStencilRow], sColNm.azChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1806,9 +1787,12 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
 
   // select left column
-  vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
+  //vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
 
-  sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+  sColumn = pColumn->szColNm();
+  StrLib::vToUpper((char*)sColumn.azChar());
+
+  sPush.vSprint("_PSH_COL(p%s->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], sColumn.azChar());
   pExprStack->vPushStz(sPush);
 
   if (pExprStack == m_pGbyStack) {
