@@ -1,0 +1,127 @@
+/*----------------------------------------------------------------------------*/
+/* gbyAgg.test -- Group by aggregate tests                                    */
+/*----------------------------------------------------------------------------*/
+
+// begin tracking memory
+trackMemory;
+success
+
+//------------------------------------------------------------------------------
+// create table lineitem
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+success
+
+create index IxL_SHIPDATE  ON Lineitem (l_SHIPDATE)  ;
+success
+
+create index IxL_ORDER_PART ON lineitem(L_ORDERKEY, L_PARTKEY);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+/pipeline_def
+/optimise_passthru
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan lineitem
+    | project "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
+    | top "type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageB on all nodes :
+    top "type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageC on origin :
+    top "type TIMESTAMP $2" 2
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ (1117,TIMESTAMP '1998-11-25 00:00:00')
+ (221,TIMESTAMP '1998-11-27 00:00:00')
+
+/optimise_passthru
+pipeline Q
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan lineitem
+    | project "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
+    | top "type INTEGER $1" 2
+    | combined 0
+    | next
+  stage stageB on all nodes :
+    top "type INTEGER $1" 2
+    | combined 0
+    | next
+  stage stageC on origin :
+    top "type INTEGER $1" 2
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+rows:
+ (1499,TIMESTAMP '1992-08-21 00:00:00')
+ (1499,,TIMESTAMP '1993-10-24 00:00:00')
+
+
+// drop the table
+drop table nation;
+success
+
+// get memory leaks
+memoryLeaks;
+rows: 0
+
+CLEANUP {
+  
+  // drop the table
+  drop table lineitem;
+  mute
+  
+  bye;
+  mute
+}
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
