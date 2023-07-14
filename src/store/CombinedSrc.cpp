@@ -648,13 +648,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey2"_Stz);
         }
         else {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey2"_Stz);
         }
         vAppendCodePopulatePayloadCols(pOpSketch);
-
+        vAppendCodeFragment(pOpSketch, "iIndexInsertContinue"_Stz);
         break;
 
       case SK_STREAMDEF:
@@ -690,14 +690,14 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         // create indexDef and indexTree
-        vAppendCodeFragment(pOpSketch, "iGbyAggBegin"_Stz, pOperatorFile);
+        vAppendCodeFragment(pOpSketch, "iSortBegin"_Stz);
+        vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
         vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
         vAppendCodeIndexCols(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
 
         // populate the payload key
-        vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
-        vGenerateExprCode(pOpSketch->m_pGbyStack, "  "_Stz);
+        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -706,12 +706,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey2"_Stz);
         }
         else {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey2"_Stz);
         }
         vAppendCodePopulatePayloadCols(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "iIndexInsertContinue"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the gbyAgg code fragments file
@@ -1004,13 +1005,18 @@ void CombinedSrc::vAppendCodePopulatePayloadCols(OpSketch* pOpSketch)
   s16KB sCode;
   i8 iPayLoad = 0;
 
-  for (i8 i_Col = 0; i_Col < pOpSketch->m_pStreamDefOut->nColumns(); i_Col++) {
+  i8 nColumns = pOpSketch->m_pStreamDefLft->nColumns();
+  RASSERT(nColumns == pOpSketch->m_pColsMap->m_nCols);
 
-    Column *pColumn = pOpSketch->m_pStreamDefOut->pGetColumn(i_Col);
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+
+    i8 i_Cell = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_Cell;
+    i8 i_EmittedCol = pOpSketch->m_pColsMap->m_axCols[i_Col].m_i_EmittedCol;
+    Column *pColumn = pOpSketch->m_pStreamDefLft->pGetColumn(i_EmittedCol-1);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the payload ?
-    bool bIsPayload = pOpSketch->bIsPayload(pColumn->iColumnNo());
+    bool bIsPayload = pOpSketch->bIsPayload(i_Col);
 
 //    // is the column part of the aggregate group by key ?
 //    Column* pIndexColumn = pOpSketch->m_pIndexDef->pFindColumn(i_Col);

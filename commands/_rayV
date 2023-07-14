@@ -15,9 +15,9 @@ create table lineitem (
   L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
   L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
   L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
-  l_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
-  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
-  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
   L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
   L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
   L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
@@ -35,6 +35,7 @@ load lineitem "../TPCH/SF_0001/lineitem.csv";
 /glean_interactive
 /pipeline_def
 /optimise_passthru
+/weaved
 pipeline Q
 begin
   stage stageStart on origin :
@@ -43,24 +44,49 @@ begin
     | next
   stage stageA on all partitions :
     scan lineitem
-    | project "type INTEGER $1 , type TIMESTAMP L_SHIPDATE"
-    | top "type TIMESTAMP $2" 2
+    //| project "type INTEGER $1 , type DATE L_SHIPDATE"
+    | project "type INTEGER $1 , type DATE $11"
+    | top "type DATE $2" 2
     | combined 0
     | next
+    /*
   stage stageB on all nodes :
-    top "type TIMESTAMP $2" 2
+    top "type DATE $2" 2
     | combined 0
     | next
   stage stageC on origin :
-    top "type TIMESTAMP $2" 2
+    top "type DATE $2" 2
     | combined 0
     | next
+    */
   stage stageLast on origin :
     output
     | sink
     | first
 end ;
 
+/*
+
+EntBuffer: 0x20487a800040 (buffer 1960): items: 2 used: 192(B) freespace 1042240(B)
+  higherBuffer 0x0 (L...) prevBuffer 0x0 nextBuffer 0x0
+  index: null partition: -1 height: 0
+  skipRoots: 0x20487a8febc8[0, 0, 65535, 65535, 65535, 65535, 65535]
+  listLengths: [2, 1, 0, 0, 0, 0, 0]
+----------------------------------------------------------------------------------------------------
+
+Arguments (by headEntry vector[0]):
+tET 0000 0000000 0x20487a8002b0  64B KE_INT Pay Rrf 0.00000 IntElm0 50553 PaySize 16 Payload 1117  0  EntNo 65535 levels 2 0004 ffff
+tET 0004 0000128 0x20487a800330  64B KE_INT Pay Rrf 0.00000 IntElm0 50555 PaySize 16 Payload 221  0  EntNo 65535 levels 1 ffff
+
+====================================================================================================
+
+metadata: (COL1 INTEGER,COL2 DATE)
+
+row: (1117,1998-11-25)
+row: (221,1998-11-27)
+success: 2 rows fetched
+
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

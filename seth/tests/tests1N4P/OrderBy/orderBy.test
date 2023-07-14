@@ -107,7 +107,7 @@ rows:
   (4002.48)
 
 //------------------------------------------------------------------------------
-select flt_col9, flt_col9 / 2 from datums order by flt_col9
+select flt_col9, flt_col9 / 2 from datums order by flt_col9;
 rows:
   (5.111111e+00,2.55555e+00)
   (5.999999e+00,2.999999e+00)

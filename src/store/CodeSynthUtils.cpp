@@ -307,11 +307,17 @@ void CodeSynthUtils::vReplaceInsertEnt(Stz* sLine, OpSketch* pOpSketch) {
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_TOP);
+
       bResult = StrLib::bReplace(sLine->azChar(), "__EXTERN_INSERTENT__()",
         "aExtern_IndexTreeInsertEntTop(aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, "
-           "&aCombinedT->m_aEntBottomPL, pOpSketch->m_iTopCount, &aDynamicT->m_iErrorCode);");
+           "&aDynamicT->m_xIndexInfoPL.m_aEntBottom, __TOP_COUNT__, &aDynamicT->m_iErrorCode)");
+      RASSERT(bResult);
+
+      bResult = StrLib::bReplace(sLine->azChar(), "__TOP_COUNT__",pOpSketch->m_sLimitExpr.azChar());
       RASSERT(bResult);
     }
+
+
   }
 }
 

@@ -1289,7 +1289,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
   // get top expr from OpDef
   Stz* sTopExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  i8 iTopCount = pOpDef->pArgDef_count()->i_Arg();
+  Stz* szTopCount = pOpDef->pArgDef_count()->szArgVal();
 
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
@@ -1321,7 +1321,7 @@ OpSketch* Stencil_v2::pSketchTop(StageDef* pStageDef, OpDef* pOpDef)
   pOpSketch->vCopyColsMap(pColsMap);
 
   // set the top count
-  pOpSketch->vTopCount(iTopCount);
+  pOpSketch->vLimitExpr(szTopCount);
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sTopExpr);

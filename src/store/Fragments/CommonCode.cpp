@@ -154,6 +154,45 @@ i8 iIndexInsertIntKey(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- iIndexInsertIntKey2 -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iIndexInsertIntKey2
+i8 iIndexInsertIntKey2(Dynamic_T* aDynamicT) {
+
+  void* aEntInserted;
+  void* aEntFound;
+  i8 __PAYLOADBYTES__;
+
+  // marker-start
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert key in the payload
+#ifdef WITH_CLANG
+  //aEntInserted = aExtern_IndexTreeInsertEnt(
+    //    aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
+    aEntInserted = __EXTERN_INSERTENT__();
+#endif
+
+  // check for error
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+    return 0;
+  }
+
+  // did we insert the key ?
+  if (aEntInserted) {
+    aDynamicT->m_iRowsProcessed++;
+    aDynamicT->m_aiPayload = (i8 * )((char *) aEntInserted
+                                     + sizeof(struct Ent_int)
+                                     + 8);
+
+// marker-end
+  }
+
+  return 0; // ray-alka
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- iIndexInsertVchKey ------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-iIndexInsertVchKey
@@ -192,6 +231,62 @@ i8 iIndexInsertVchKey(Dynamic_T* aDynamicT) {
 // marker-end
 
   return 0; // ray-alka
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- iIndexInsertVchKey2 -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iIndexInsertVchKey2
+  i8 iIndexInsertVchKey2(Dynamic_T* aDynamicT) {
+
+    void* aEntInserted;
+    void* aEntFound;
+    i8 __PAYLOADBYTES__;
+
+    // marker-start
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // insert key in the payload
+#ifdef WITH_CLANG
+    //aEntInserted = aExtern_IndexTreeInsertEnt(
+  //    aDynamicT->m_xIndexInfoPL.m_aIndexTree, aDynamicT->m_xIndexInfoPL.m_aEntInt, &aDynamicT->m_iErrorCode);
+  aEntInserted = __EXTERN_INSERTENT__();
+#endif
+
+    // check for error
+    if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {
+      return 0;
+    }
+
+    // did we insert the key ?
+    if (aEntInserted) {
+      aDynamicT->m_iRowsProcessed++;
+      aDynamicT->m_aiPayload = (i8 * )((char *) aEntInserted
+                                       + sizeof(struct Ent_int)
+                                       + ((struct Ent_int *) aEntInserted)->m_iIntElm0
+                                       + 8);
+
+// marker-end
+    }
+
+    return 0; // ray-alka
+
+  }
+
+ /*----------------------------------------------------------------------------*/
+/*-- iIndexInsertContinue -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-iIndexInsertContinue
+    i8 iIndexInsertContinue(Dynamic_T* aDynamicT) {
+
+  {
+      // marker-start
+
+    }
+// marker-end
+
+   return 0; // ray-alka
 
 }
 

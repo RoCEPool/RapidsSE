@@ -31,7 +31,7 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-  struct __STRUCT_TO__* p__STRUCT_TO__;
+  //struct __STRUCT_TO__* p__STRUCT_TO__;
 
   __L_LABEL__:
 
