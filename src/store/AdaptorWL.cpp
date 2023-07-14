@@ -1517,6 +1517,8 @@ void AdaptorWL::vProcessQueryExecuteRequest()
     return;
   }
 
+  vTrace("QueryExecuteRequest contains query string: %s\n"_Stz, pMsg->query.c_str());
+
   vNextState(QUERY_BEGUN);
 
   // Move the current QueryExecuteRequest to the QueryContext object
