@@ -124,7 +124,6 @@ OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchK
   m_eUpperIP = IP_NONE;
 
   m_nPayloadBytes = 0;
-  m_iLimitRows = 0;
 
   _checkInitialised_(CN_OPSKETCH);
 
@@ -158,7 +157,7 @@ OpSketch::~OpSketch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy columns map (for gbyAgg and ordAgg)                                    */
+/* copy columns map (for gbyAgg, sort, top and ordAgg)                        */
 /*----------------------------------------------------------------------------*/
 void OpSketch::vCopyColsMap(ColMap* pColsMap)
 {

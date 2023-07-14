@@ -95,8 +95,6 @@ namespace STORE
 
     i8 m_nPayloadBytes;
 
-    i8 m_iLimitRows;
-
     // must be last
     Footer m_xFooter;
   

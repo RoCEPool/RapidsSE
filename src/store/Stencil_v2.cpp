@@ -328,8 +328,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchPotTub(pGbyAggOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
-      pOpSketch->vIndexDef(pGbyAggOpSketch->m_pIndexDef);
-      pOpSketch->vCopyColsMap(pGbyAggOpSketch->m_pColsMap);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -428,8 +426,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchPotTub(pSortOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
-      pOpSketch->vIndexDef(pSortOpSketch->m_pIndexDef);
-      pOpSketch->vCopyColsMap(pSortOpSketch->m_pColsMap);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -454,8 +450,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pOpSketch = pSketchPotTub(pTopOpSketch, bGeneratePot, sHashExpr, sLimitExpr);
-      pOpSketch->vIndexDef(pTopOpSketch->m_pIndexDef);
-      pOpSketch->vCopyColsMap(pTopOpSketch->m_pColsMap);
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
@@ -1365,6 +1359,17 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* s
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
+
+  if (pLastOp->eSketchKind() == SK_GBYAGG ||
+      pLastOp->eSketchKind() == SK_TOP    ||
+      pLastOp->eSketchKind() == SK_SORT) {
+
+    // set the indexDef
+    pOpSketch->vIndexDef(pLastOp->m_pIndexDef);
+
+    // copy the colsMap
+    pOpSketch->vCopyColsMap(pLastOp->m_pColsMap);
+  }
 
   // set the labels in the opSketch
   sLabel = "L_AddRowToTubPot"_Stz;
