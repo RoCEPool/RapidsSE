@@ -81,11 +81,15 @@ namespace STORE
   class Card_JoinPredList;
 
   class Card_Key;
+  class Card_KeyCells;
   class Card_KeyExists;
   class Card_KeyNotExists;
 
   class Card_Level;
   class Card_Limit;
+
+  class Card_Map;
+  class Card_Mapping;
 
   class Card_NCorrCols;
   class Card_Needed;
@@ -100,6 +104,7 @@ namespace STORE
   class Card_OuterColNm;
   class Card_OuterJoin;
 
+  class Card_PayloadCells;
   class Card_PRED;
   class Card_Project;
   class Card_Projection;
@@ -400,6 +405,7 @@ namespace STORE
     Card_StreamSet*   pSub_joinPermAll(void);
     Card_StreamPer*   pSub_joinPermList(void);
     Card_Key*           pSub_key(void);
+    Card_KeyCells*      pSub_keyCells(void);
     Card_KeyExists*     pSub_keyExists(void);
     Card_KeyNotExists*  pSub_keyNotExists(void);
     Card_Level*         pSub_level(void);
@@ -408,6 +414,8 @@ namespace STORE
     Card_CostNetwork*   pSub_costNetwork(void);
     Card_CostStream*     pSub_costQuery(void);
     Card_CostUnicast*   pSub_costUnicast(void);
+    Card_Map*           pSub_map(void);
+    Card_Mapping*       pSub_mapping(void);
     Card_NCorrCols*     pSub_nCorrCols(void);
     Card_Needed*        pSub_needed(void);
     Card_Cast*          pSub_next(void);
@@ -416,6 +424,7 @@ namespace STORE
     Card_On*            pSub_on(void);
     Card_OuterColNm*    pSub_outerColNm(void);
     Card_OuterJoin*     pSub_outerJoin(void);
+    Card_PayloadCells*  pSub_payloadCells(void);
     Card_Projection*    pSub_projection(void);
     Card_RowCount*      pSub_rowCount(void);
     Card_RowSize*       pSub_rowSize(void);

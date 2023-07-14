@@ -35,6 +35,10 @@ namespace STORE
     Card_Projection* pReducedCopy(void);
     void vReviewAs(CardIter* pCI);
 
+    ColMap* pToColMap(ColMap* pColMap,
+                      Card_Key* p_key,
+                      Card* p_OP);
+
     StreamDef* pToStreamDef(ColMap* pColMap,
                             Card_Key* p_key,
                             eCK eOP,

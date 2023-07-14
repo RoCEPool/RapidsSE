@@ -2345,6 +2345,45 @@ Card_CostUnicast* Card::pSub_costUnicast(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+#include "Card_KeyCells.hpp"
+Card_KeyCells* Card::pSub_keyCells(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_KeyCells* p_keyCells =
+      _pCard_KeyCells(pFindSubCard(CK_KEYCELLS));
+  return p_keyCells;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Map.hpp"
+Card_Map* Card::pSub_map(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Map* p_map =
+      _pCard_Map(pFindSubCard(CK_MAP));
+  return p_map;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_Mapping.hpp"
+Card_Mapping* Card::pSub_mapping(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Mapping* p_mapping =
+      _pCard_Mapping(pFindSubCard(CK_MAPPING));
+  return p_mapping;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 #include "Card_NCorrCols.hpp"
 Card_NCorrCols* Card::pSub_nCorrCols(void)
 {
@@ -2445,6 +2484,19 @@ Card_OuterJoin* Card::pSub_outerJoin(void)
   Card_OuterJoin* p_outerJoin =
       _pCard_OuterJoin(pFindSubCard(CK_OUTERJOIN));
   return p_outerJoin;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+#include "Card_PayloadCells.hpp"
+Card_PayloadCells* Card::pSub_payloadCells(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_PayloadCells* p_payloadCells =
+      _pCard_PayloadCells(pFindSubCard(CK_PAYLOADCELLS));
+  return p_payloadCells;
 }
 
 /*----------------------------------------------------------------------------*/

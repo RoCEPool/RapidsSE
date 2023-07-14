@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card.hpp"
+#include "ColMap.hpp"
 
 namespace STORE
 {
@@ -15,6 +16,10 @@ namespace STORE
   
     Card_Mapping(void);
    ~Card_Mapping(void) noexcept(false);
+
+    ColMap* pToColMap(ColMap* pColMap,
+                      Card_Key* p_key,
+                      Card* p_OP);
   };
 
   Card_Mapping* _pCard_Mapping(void* aAddr);
