@@ -38,9 +38,9 @@ namespace STORE
     Symbol* pFirstTblCol(void);
     Symbol* pGetSymbol(i8 i_Term);
     Card_Term* pGetTerm(i8 i_Term);
-    bool bIsAggFn(void);
+    bool bIsAggCalc(void);
     bool bIsDescending(void);
-    bool bIsSoleCol(void);
+    bool bIsScalarCol(void);
     bool bIsExpressionOfKey(void);
     bool bExpressionOfSymbol(Symbol* pSymbol);
     bool bHasTerm(Symbol* pSymbol);

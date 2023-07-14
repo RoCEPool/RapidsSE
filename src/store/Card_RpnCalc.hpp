@@ -31,8 +31,8 @@ namespace STORE
     Symbol* pFirstTblCol(void);
     Card_Term* pGetTerm(i8 i_Term);
     bool bHasTerm(Symbol* pSymbol);
-    bool bIsAggFn(void);
-    bool bIsSoleCol(void);
+    bool bIsAggCalc(void);
+    bool bIsScalarCol(void);
     bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
     Card_RpnCalc* pPropagate(Card_Expr* p_expr_encasing);

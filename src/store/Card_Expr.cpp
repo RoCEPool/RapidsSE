@@ -382,12 +382,12 @@ Card_Term* Card_Expr::pGetTerm(i8 i_Term)
 /*----------------------------------------------------------------------------*/
 /* is this expression an aggregate function ?                                 */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsAggFn(void)
+bool Card_Expr::bIsAggCalc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    return p_rpnCalc->bIsAggFn();
+    return p_rpnCalc->bIsAggCalc();
   }
 
   return false;
@@ -410,17 +410,17 @@ bool Card_Expr::bIsDescending(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsSoleCol(void)
+bool Card_Expr::bIsScalarCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   bool bSoleCol = false;
   if (Card_BoolCalc* p_boolCalc = pSub_boolCalc()) {
-    bSoleCol = p_boolCalc->bIsSoleCol();
+    bSoleCol = p_boolCalc->bIsScalarCol();
   }
   else
   if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bSoleCol = p_rpnCalc->bIsSoleCol();
+    bSoleCol = p_rpnCalc->bIsScalarCol();
   }
 
   return bSoleCol;

@@ -332,7 +332,7 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* is this rpnCalc an aggregate function sequence ?                           */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsAggFn(void)
+bool Card_RpnCalc::bIsAggCalc(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -349,7 +349,7 @@ bool Card_RpnCalc::bIsAggFn(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_RpnCalc::bIsSoleCol(void)
+bool Card_RpnCalc::bIsScalarCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

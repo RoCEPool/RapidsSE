@@ -93,7 +93,7 @@ void Card_Projection::vAdjust(Card_Key* p_key)
 
     //xKid.p_expr()->vDump();
 
-    if (! xKid.p_expr()->bIsSoleCol())
+    if (! xKid.p_expr()->bIsScalarCol())
       continue;
 
     Symbol* pSymbol_expr_sole = xKid.p_expr()->pGetSymbol(0);

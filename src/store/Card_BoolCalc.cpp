@@ -306,7 +306,7 @@ Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_BoolCalc::bIsSoleCol(void) {
+bool Card_BoolCalc::bIsScalarCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (nChildCards() > 1)
@@ -323,6 +323,9 @@ bool Card_BoolCalc::bIsSoleCol(void) {
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bHasTerm(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
