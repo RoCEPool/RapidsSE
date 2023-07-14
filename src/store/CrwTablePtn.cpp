@@ -43,8 +43,7 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
   m_oRootBufferId.m_pvAsAddress = nullptr;
-//  m_pPdsBufferId = new Pds_t<xBufferId>();
-  m_pPdsBufferId = nullptr;
+  m_pPdsBufferId = new Pds_t<xBufferId>();
   //m_pIndexTreeVec  = new IndexTreeVec;
 
   _checkInitialised_(CN_CRWTABLEPTN);
@@ -61,7 +60,7 @@ CrwTablePtn::~CrwTablePtn(void) noexcept(false)
 
   // delete the index data vector
   //delete m_pIndexTreeVec;
-//  delete m_pPdsBufferId;
+  delete m_pPdsBufferId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,10 +99,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
-#ifdef WITH_PAGING
-    m_oRootBufferId = pCrwBuffer->oGetBufferId();
     RASSERT(nBuffers() == 0);
-#endif
     m_oRootBufferId = pCrwBuffer->oGetBufferId();
     m_pRootBuffer = pCrwBuffer;
   }
@@ -120,8 +116,6 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 #endif
   }
 
-#ifdef WITH_PAGING
-
   // Append a new Skip List Block to the PDS
   SkipListBlock* pSLBlock = m_pPdsBufferId->pAppendWithSynthKey();
 
@@ -130,7 +124,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 
   // Update the contents of it's body with the BufferId
   *pItem = pCrwBuffer->oGetBufferId();
-#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are done with the current buffer, allow it to be paged out by dropping
   // the lock
@@ -142,6 +136,8 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pCrwBuffer;
+
+  bVerifyTable();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,16 +146,15 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 i8 CrwTablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-#ifdef WITH_PAGING
-  return m_pPdsBufferId->iNumEntries();
-#else
+
   i8 nBufferCount = 0;
 
   if (m_pRootBuffer)
     nBufferCount = m_pRootBuffer->nLinkedBufferCount();
 
+  RASSERT(m_pPdsBufferId->iNumEntries() == nBufferCount);
+
   return nBufferCount;
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,6 +248,15 @@ CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
+  SkipListBlock* pSLBlock = m_pPdsBufferId->pFirstBlock();
+  if(pSLBlock == nullptr) {
+    RASSERT(m_pRootBuffer == nullptr);
+    return m_pRootBuffer;
+  }
+
+  CrwBuffer* pCrwBuffer = pGetBuffer(pSLBlock);
+  RASSERT(m_pRootBuffer == pCrwBuffer);
+
   return m_pRootBuffer;
 }
 
@@ -262,6 +266,15 @@ CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
 BufferId CrwTablePtn::oRootCrwBufferId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
+  SkipListBlock* pSLBlock = m_pPdsBufferId->pFirstBlock();
+  if(pSLBlock == nullptr) {
+    RASSERT(m_oRootBufferId.m_iAsI8 == 0);
+    return m_oRootBufferId;
+  }
+
+  BufferId oBufferId = *(BufferId*)pSLBlock->aItemBody();
+  RASSERT(oBufferId.m_iAsI8 == m_oRootBufferId.m_iAsI8);
 
   return m_oRootBufferId;
 }
@@ -293,36 +306,61 @@ void CrwTablePtn::vTruncate(void)
     pIndexTree->vTruncate();
   }
   #*/
-#ifdef WITH_PAGING
+  bVerifyTable();
+
   SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
   // TODO: Change above line to:
   // SkipListBlock* pCurrBlock = m_pPdsBufferId->pFind(1);
-
-  if(pCurrBlock == nullptr)
-    return;
 
   while(pCurrBlock) {
     SkipListBlock* pNextBlock = m_pPdsBufferId->pNextSLBlock(pCurrBlock, 0);
 
     CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
-    delete pCrwBuffer;
-
+//    delete pCrwBuffer;
+    RASSERT(pCrwBuffer->eGetClassNo() == BASE::CN_CRWBUFFER);
     m_pPdsBufferId->bDelete(pCurrBlock->iKey());
     pCurrBlock = pNextBlock;
   }
 
   RASSERT(m_pPdsBufferId->iNumEntries() == 0);
-#else
+
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
 
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
   m_oRootBufferId.m_iAsI8 = 0;
-#endif
+
+  bVerifyTable();
 }
 
+/*----------------------------------------------------------------------------*/
+/* verify the Pds contains the same buffers as the linked list                */
+/*----------------------------------------------------------------------------*/
+bool CrwTablePtn::bVerifyPds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
+  bool bVerify = true;
+
+
+  SkipListBlock* pPdsCursor = m_pPdsBufferId->pFirstBlock();
+  // TODO: Change above line to:
+  // SkipListBlock* pCurrBlock = m_pPdsBufferId->pFind(1);
+
+  CrwBuffer* pLLCursor = m_pRootBuffer;
+
+  while(pPdsCursor) {
+    CrwBuffer* pCrwBuffer = pGetBuffer(pPdsCursor);
+    RASSERT(pCrwBuffer == pLLCursor);
+
+    pPdsCursor = m_pPdsBufferId->pNextSLBlock(pPdsCursor, 0);
+    pLLCursor = pLLCursor->pNextCrwBuffer();
+  }
+
+  RASSERT(pPdsCursor == nullptr);
+  RASSERT(pLLCursor == nullptr);
+}
 
 /*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */

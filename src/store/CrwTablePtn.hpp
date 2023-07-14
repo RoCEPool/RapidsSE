@@ -53,6 +53,7 @@ namespace STORE
     Table* pTable(void);
     void vTruncate(void);
 
+    bool bVerifyPds(void);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
 
