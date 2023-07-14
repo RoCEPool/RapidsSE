@@ -64,8 +64,70 @@ rows:
  (3,5)
  (4,5)
 
-// drop the table
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/DataTypes/dataTypes.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select dec_col6 + 1.44 from datums order by dec_col6;
+rows:
+  (null)
+  (null)
+  (24.48)
+  (42.48)
+  (42.48)
+  (42.48)
+  (42.48)
+  (48.48)
+  (478.48)
+  (478.48)
+  (478.48)
+  (478.48)
+  (4002.48)
+
+//------------------------------------------------------------------------------
+select flt_col9, flt_col9 / 2 from datums order by flt_col9
+rows:
+  (5.111111e+00,2.55555e+00)
+  (5.999999e+00,2.999999e+00)
+  (31.456000e+00,15.728000e+00)
+  (31.456000e+00,15.728000e+00)
+  (31.456000e+00,15.728000e+00)
+  (31.456000e+00,15.728000e+00)
+  (76.456000e+00,38.228000e+00)
+  (108.456000e+00,54.228000e+00)
+  (108.456000e+00,54.228000e+00)
+  (108.456000e+00,54.228000e+00)
+  (108.456000e+00,54.228000e+00)
+  (108.456000e+00,54.228000e+00)
+  (108.456000e+00,54.228000e+00)
+
+// drop the tables
 drop table nation;
+success
+
+drop table datums;
 success
 
 // get memory leaks
@@ -77,7 +139,10 @@ CLEANUP {
   // drop the table
   drop table nation;
   mute
-  
+
+  drop table datums;
+  mute
+
   bye;
   mute
 }
