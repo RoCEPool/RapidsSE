@@ -292,16 +292,16 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
     AM::METRICS::vDerefMetrics((i8) pOperand, pOperand->eGetClassNo(), DR_ENQUEUE);
 
     // TODO: Arjun - Hack to convert Buffer address to BufferId before appending to queue
-//    if (pOperand->eGetClassNo() == BASE::CN_ROWBUFFER ||
-//        pOperand->eGetClassNo() == BASE::CN_CRWBUFFER) {
-//      //vTrace("vAppendLeft() converting Operator to bufferId\n"_Stz);
-//      // Replace RowBuffer address with BufferId and append to queue
-//      DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
-//      // Assert Prev and Next pointers are null
-//      BufferId oBufferId = pDataBuffer->oGetBufferId();
-//      pOperand = (Operand *) oBufferId.m_pvAsAddress;
-//      AM::pHashMap()->vDropKeyLock(pOperand);
-//    }
+    if (pOperand->eGetClassNo() == BASE::CN_ROWBUFFER ||
+        pOperand->eGetClassNo() == BASE::CN_CRWBUFFER) {
+      //vTrace("vAppendLeft() converting Operator to bufferId\n"_Stz);
+      // Replace RowBuffer address with BufferId and append to queue
+      DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
+      // Assert Prev and Next pointers are null
+      BufferId oBufferId = pDataBuffer->oGetBufferId();
+      pOperand = (Operand *) oBufferId.m_pvAsAddress;
+      AM::pHashMap()->vDropKeyLock(pOperand);
+    }
   }
 //  else
 //  {
