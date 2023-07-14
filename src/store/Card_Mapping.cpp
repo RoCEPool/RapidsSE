@@ -51,6 +51,8 @@ ColMap* Card_Mapping::pToColMap(ColMap* pColMap,
 //  for (Kid xKeyCells(); xMapping.bEach(CK_EXPR); /**/) {
 //
 //  }
+
+  return nullptr;
 }
 
 //*============================================================================*/
