@@ -62,7 +62,7 @@ void XF_Dedupe_as::vXF_Dedupe_as(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DEDUPE_AS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "de-duplicate as (column names)"_Stz);
+  m_pCI->vTransform(__func__, XF_DEDUPE_AS, "de-duplicate as (column names)"_Stz);
 
   m_pCI->G_vRestart();
 

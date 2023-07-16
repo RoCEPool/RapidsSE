@@ -62,7 +62,7 @@ void XF_Derive_projection_key::vXF_Derive_projection_key(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_DERIVE_PROJECTION_KEY, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "Derive projection keys"_Stz);
+  m_pCI->vTransform(__func__, XF_DERIVE_PROJECTION_KEY, "Derive projection keys"_Stz);
 
   m_pCI->G_vRestart();
 

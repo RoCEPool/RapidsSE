@@ -62,7 +62,7 @@ void XF_Cut_sort::vXF_Cut_sort(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CUT_SORT, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "Cut sort"_Stz);
+  m_pCI->vTransform(__func__, XF_CUT_SORT, "Cut sort"_Stz);
 
   m_pCI->G_vRestart();
 

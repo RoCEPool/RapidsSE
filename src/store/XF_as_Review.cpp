@@ -62,7 +62,7 @@ void XF_as_Review::vXF_as_Review(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_AS_REVIEW, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "as review"_Stz);
+  m_pCI->vTransform(__func__, XF_AS_REVIEW, "as review"_Stz);
 
   m_pCI->G_vRestart();
 

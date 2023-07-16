@@ -71,7 +71,7 @@ void XF_Early_projection::vXF_Early_projection(void)
   if (AM::JOB::bHasTag(C_EP_DISABLE))
     return;
 
-  m_pCI->vTransform(__func__, XF_NONE, "Early projections"_Stz);
+  m_pCI->vTransform(__func__, XF_EARLY_PROJECTION, "Early projections"_Stz);
 
   m_pCI->G_vRestart();
 

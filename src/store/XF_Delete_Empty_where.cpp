@@ -62,7 +62,7 @@ void XF_Delete_Empty_where::vXF_Delete_Empty_where(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_ADD_LEVEL, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "delete empty where"_Stz);
+  m_pCI->vTransform(__func__, XF_DELETE_EMPTY_WHERE, "delete empty where"_Stz);
   Card_Where::vDeleteEmpyWhere(m_pCI);
   m_pCI->vEndTransform();
 

@@ -62,7 +62,7 @@ void XF_Move_on::vXF_Move_on(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MOVE_ON, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "move <on> in <absJoin>'s to <where>"_Stz);
+  m_pCI->vTransform(__func__, XF_MOVE_ON, "move <on> in <absJoin>'s to <where>"_Stz);
 
   Card_Where::vMove_All_on_To_where(m_pCI);
 

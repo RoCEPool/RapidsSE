@@ -132,7 +132,7 @@ void XF_Join_Ordering::vReorderTables(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_JOIN_ORDERING, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "join ordering"_Stz);
+  m_pCI->vTransform(__func__, XF_JOIN_ORDERING, "join ordering"_Stz);
 
   File* pFile = nullptr;
 

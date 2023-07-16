@@ -212,13 +212,13 @@ void XF::vTransform_passThru(void)
     XF_table_Analysis::vXF_table_Analysis_passThru(m_pCI,&m_cTableSyn);
     XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
-    m_pCI->vTransform(__func__, XF_NONE, "all $n become $c.n"_Stz);
+    m_pCI->vTransform(__func__, XF_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);
     while (m_pCI->G_bEachMain())
       ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_stmColOdn_To_tblColOdn(m_pCI);
     m_pCI->vEndTransform();
 
     // todo: needs discussion with Alka re constraint
-    m_pCI->vTransform(__func__, XF_NONE, "all colNm become $c.n"_Stz);
+    m_pCI->vTransform(__func__, XF_COLNM_TO_STMCOL, "all colNm become $c.n"_Stz);
     while (m_pCI->G_bEachMain())
       ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_colNm_To_stmCol(m_pCI);
     m_pCI->vEndTransform();

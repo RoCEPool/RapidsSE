@@ -82,7 +82,7 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_32_W_A_NC_I))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_32_W_A_NC_I, "((vFlatten_32_W_A_NC_I))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery

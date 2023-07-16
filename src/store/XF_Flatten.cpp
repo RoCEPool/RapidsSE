@@ -257,7 +257,7 @@ void XF_Flatten::vFlattenByDecisionTree(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_FLATTEN, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "Flatten by decision tree (recursive model)"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN, "Flatten by decision tree (recursive model)"_Stz);
 
   if (m_pCI->Sqy.m_pSubQuery->bViaFrom())                /* Fsq_      Q7,8,9 */ XF_Flatten_10_F::vXF_Flatten_10_F(m_pCI);
   else
@@ -355,7 +355,7 @@ void XF_Flatten::vFlatten_10_F(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_10_F))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_10_F, "((vFlatten_10_F))"_Stz);
 
   m_pCI->vPrintBoard(__LINE__);
 
@@ -424,7 +424,7 @@ void XF_Flatten::vFlatten_24_W_A_C_ro(void)
     ;
  */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_24_W_A_C_ro))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_24_W_A_C_RO, "((vFlatten_24_W_A_C_ro))"_Stz);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"24_W_A_C_ro"_Stz,CK_WHERE);
@@ -470,7 +470,7 @@ void XF_Flatten::vFlatten_32_W_A_NC_I(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_32_W_A_NC_I))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_32_W_A_NC_I, "((vFlatten_32_W_A_NC_I))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
@@ -514,7 +514,7 @@ void XF_Flatten::vFlatten_34_W_A_NC_ro(void)
   /*
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_34_W_A_NC_ro))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_34_W_A_NC_RO, "((vFlatten_34_W_A_NC_ro))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery
@@ -571,7 +571,7 @@ void XF_Flatten::vFlatten_40_W_L_C_E(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_40_W_L_C_E))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_40_W_L_C_E, "((vFlatten_40_W_L_C_E))"_Stz);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"40_W_L_C_E"_Stz,CK_WHERE);
@@ -642,7 +642,7 @@ void XF_Flatten::vFlatten_53_W_L_NC_NI_exists(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_53_W_L_NC_NI_EXISTS, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
@@ -716,7 +716,7 @@ void XF_Flatten::vFlatten_53_W_L_NC_NI_join(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_53_W_L_NC_NI_EXISTS, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery
@@ -783,7 +783,7 @@ void XF_Flatten::vFlatten_74_H_A_NC_ro(void)
                                   from lineitem);
   */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_74_H_A_NC_ro))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_74_H_A_NC_RO, "((vFlatten_74_H_A_NC_ro))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery

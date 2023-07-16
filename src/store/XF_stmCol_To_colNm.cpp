@@ -62,7 +62,7 @@ void XF_stmCol_To_colNm::vXF_stmCol_To_colNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_STMCOL_TO_COLNM, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "stream-column to column-name"_Stz);
+  m_pCI->vTransform(__func__, XF_STMCOL_TO_COLNM, "stream-column to column-name"_Stz);
 
   m_pCI->vRestart();
 

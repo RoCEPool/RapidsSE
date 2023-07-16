@@ -80,7 +80,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
       ;
  */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_53_W_L_NC_NI_EXISTS, "((vFlatten_53_W_L_NC_NI_exists))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of exists subQuery

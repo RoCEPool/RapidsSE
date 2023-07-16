@@ -513,7 +513,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
                    );
 
   // line 2
-  pRibbon->vSprintOther("%s"_Stz,szXdesc());
+  pRibbon->vSprintOther("%s %s"_Stz,aXF[m_eTransform],szXdesc());
 
   // line 3
   if (0 == m_i_Board)

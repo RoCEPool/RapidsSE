@@ -62,7 +62,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SHORTEN_QUERYNM, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "shorten query names"_Stz);
+  m_pCI->vTransform(__func__, XF_SHORTEN_QUERYNM, "shorten query names"_Stz);
 
   s32 sBoardNm = m_pCI->G.pBoard->szBoardNm();
   if (Symbol::b_IsSubQueryName(sBoardNm)) {

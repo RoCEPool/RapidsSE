@@ -79,7 +79,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
                                   from lineitem);
   */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_74_H_A_NC_ro))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_74_H_A_NC_RO, "((vFlatten_74_H_A_NC_ro))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery

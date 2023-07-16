@@ -75,7 +75,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
   /*
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_34_W_A_NC_ro))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_34_W_A_NC_RO, "((vFlatten_34_W_A_NC_ro))"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fold of subQuery

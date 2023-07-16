@@ -62,7 +62,7 @@ void XF_Cull_Used_bound::vXF_Cull_Used_bound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_CULL_USED_BOUND, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "((desc))"_Stz);
+  m_pCI->vTransform(__func__, XF_CULL_USED_BOUND, "cull nused bounds"_Stz);
 
   m_pCI->vPrintBoard(__LINE__);
 

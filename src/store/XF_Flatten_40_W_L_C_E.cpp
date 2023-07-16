@@ -78,7 +78,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
       ;
    */
 
-  m_pCI->vTransform(__func__, XF_NONE, "((vFlatten_40_W_L_C_E))"_Stz);
+  m_pCI->vTransform(__func__, XF_FLATTEN_40_W_L_C_E, "((vFlatten_40_W_L_C_E))"_Stz);
 
   Fold* pFold = new Fold(0,m_pCI->G.pDeck);
   pFold->vFold_basic(m_pCI,"40_W_L_C_E"_Stz,CK_WHERE);

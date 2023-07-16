@@ -76,7 +76,7 @@ void XF_table_Analysis::vXF_table_Analysis(char* acTableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "add a <tableSyn> to all <table>'s"_Stz);
+  m_pCI->vTransform(__func__, XF_TABLE_ANALYSIS, "add a <tableSyn> to all <table>'s"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
@@ -99,7 +99,7 @@ void XF_table_Analysis::vXF_table_Analysis_passThru(char* acTableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "add a <tableSyn> to all <table>'s"_Stz);
+  m_pCI->vTransform(__func__, XF_TABLE_ANALYSIS, "add a <tableSyn> to all <table>'s"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table

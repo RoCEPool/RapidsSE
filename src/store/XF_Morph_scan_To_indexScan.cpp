@@ -62,7 +62,7 @@ void XF_Morph_scan_To_indexScan::vXF_Morph_scan_To_indexScan(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_MORPH_SCAN_TO_INDEXSCAN, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "morph scan to indexScan"_Stz);
+  m_pCI->vTransform(__func__, XF_MORPH_SCAN_TO_INDEXSCAN, "morph scan to indexScan"_Stz);
 
   m_pCI->G_vRestart();
   if (m_pCI->G_bEachMainWith2Sub(CK_SCAN,CK_INDEXLIST,CK_BOUNDS)) {

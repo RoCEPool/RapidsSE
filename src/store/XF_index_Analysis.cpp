@@ -76,7 +76,7 @@ void XF_index_Analysis::vXF_index_Analysis(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_INDEX_ANALYSIS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "index analysis"_Stz);
+  m_pCI->vTransform(__func__, XF_INDEX_ANALYSIS, "index analysis"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Append Index List Under All Table
@@ -102,7 +102,7 @@ void XF_index_Analysis::vXF_index_Analysis_passThru(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_INDEX_ANALYSIS, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "index analysis"_Stz);
+  m_pCI->vTransform(__func__, XF_INDEX_ANALYSIS, "index analysis"_Stz);
 
   while (m_pCI->G_bEachMain(CK_INDEXSCAN)) {
     m_pCI->G.p_indexScan->vUpdate_projection(m_pCI);

@@ -62,7 +62,7 @@ void XF_Promote_gbyAgg_To_ordAgg::vXF_Promote_gbyAgg_To_ordAgg(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_PROMOTE_GBYAGG_TO_ORDAGG, _FOOTER_);
 
-  m_pCI->vTransform(__func__, XF_NONE, "Promote gbyAgg to ordAgg"_Stz);
+  m_pCI->vTransform(__func__, XF_PROMOTE_GBYAGG_TO_ORDAGG, "Promote gbyAgg to ordAgg"_Stz);
 
   m_pCI->G_vRestart();
 
