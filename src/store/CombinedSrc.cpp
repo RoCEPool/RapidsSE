@@ -559,78 +559,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         pOperatorFile->vClose();
 
         break;
-/*
-      case SK_SEMIJOIN:
 
-        bHasIndexInflate = true;
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // open the index, indexJoin, inflate  and filter code fragments file
-        bOpened = pIndexFile->bOpenRead("../src/store/Fragments/Index.cpp"_Stz);
-        RASSERT ( bOpened );
-
-        bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/IndexJoin.cpp"_Stz);
-        RASSERT ( bOpened );
-
-        bOpened = pInflateFile->bOpenRead("../src/store/Fragments/InflateCrw.cpp"_Stz);
-        RASSERT ( bOpened );
-
-        bOpened = pFilterFile->bOpenRead("../src/store/Fragments/Filter.cpp"_Stz);
-        RASSERT ( bOpened );
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
-        vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // initialize with key kind
-        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
-          vAppendCodeFragmentKey(pOpSketch, "vIndexJoinIntKey"_Stz, pOperatorFile, (i8)KE_INT);
-        else
-          vAppendCodeFragmentKey(pOpSketch, "vIndexJoinGenKey"_Stz, pOperatorFile, (i8)KE_GENERAL);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // generate expressions for populating the key
-        RASSERT(pOpSketch->m_pExprStack->nValues());
-        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // position at lower bound
-        vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
-        vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // dereference the join
-        vAppendCodeFragment(pOpSketch, "vIndexJoinDereference"_Stz, pOperatorFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // inflate the right table columns
-        vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // generate code for the contraint
-        vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-        vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pFilterFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // semi-join end
-        vAppendCodeFragment(pOpSketch, "vSemiJoinEnd"_Stz, pOperatorFile);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // close the code fragments file
-        pInflateFile->vClose();
-        pOperatorFile->vClose();
-        pIndexFile->vClose();
-        pFilterFile->vClose();
-
-        break;
-*/
       case SK_SORT:
+      case SK_TOP:
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
@@ -678,48 +609,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         vAppendCodeFragment(pOpSketch, "iStreamDefBegin"_Stz);
         vAppendCodePixCols(pOpSketch, bLastStage );
         vAppendCodeFragment(pOpSketch, "vStreamDefEnd"_Stz);
-        break;
-
-      case SK_TOP:
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // open the gbyagg code fragments file
-        bOpened = pOperatorFile->bOpenRead("../src/store/Fragments/GbyAgg.cpp"_Stz);
-        RASSERT ( bOpened );
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
-        // create indexDef and indexTree
-        vAppendCodeFragment(pOpSketch, "iSortBegin"_Stz);
-        vAppendCodeFragment(pOpSketch, "iResetPLKey"_Stz);
-        vAppendCodeFragment(pOpSketch, "vIndexDefBegin"_Stz);
-        vAppendCodeIndexCols(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vIndexDefContinue"_Stz);
-
-        // populate the payload key
-        vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
-        vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // create the pay load
-        if (pOpSketch->m_nPayloadBytes)
-          vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
-
-        if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
-        }
-        else {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
-        }
-        vAppendCodePopulatePayloadCols(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vCloseBraces"_Stz);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // close the gbyAgg code fragments file
-        pOperatorFile->vClose();
-
         break;
 
       case SK_TUB:
