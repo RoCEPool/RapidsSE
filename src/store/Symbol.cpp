@@ -731,6 +731,8 @@ void Symbol::vSetSyntheticAs(i8 iAsNo)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("COL%lld"_Stz, iAsNo);
+
+  Y_vSet(P_Synthetic);
 }
 
 /*----------------------------------------------------------------------------*/

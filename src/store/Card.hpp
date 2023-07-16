@@ -179,6 +179,7 @@ static Stz* P_Smoothed     = "bSmoothed"_Stz;
 static Stz* P_StageTopo    = "eStageTopo"_Stz;
 static Stz* P_StmCol       = "szStmCol"_Stz;
 static Stz* P_SubQryCall   = "bSubQryCall"_Stz;
+static Stz* P_Synthetic    = "bSynthetic"_Stz;
 static Stz* P_TableUsed    = "bTableUsed"_Stz;
 static Stz* P_TblCol       = "szTblCol"_Stz;
 static Stz* P_Type         = "szType"_Stz;

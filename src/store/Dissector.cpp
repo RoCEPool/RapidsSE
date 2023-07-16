@@ -477,6 +477,7 @@ Card* Dissector::pOp_GbyAgg(void)
 
   delete pCard_RpnTerms;
 
+  pCard_Aggreg->vDump(__func__ );
   return pCard_Aggreg;
 }
 

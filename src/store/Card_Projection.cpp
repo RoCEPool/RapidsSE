@@ -443,45 +443,67 @@ void Card_Projection::vReviewAs(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  i8 nPrjExpr = nChildCards();
-  for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
+  for (Kid xProjection(this); xProjection.bEach(); /**/) {
+    Card_Expr *p_expr_prj = xProjection.p_expr();
 
-    // get <gbyAgg>/<projection>/<expr>
-    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
+    if (p_expr_prj->bIsScalarKey()) {
 
-    //Stz* szPrjCol_prj = p_expr_prj->szGetOdn();
-    Card_Term* p_term_prj = p_expr_prj->pGetTerm(0);
-    if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKeyOrdinal())) )
+      Symbol* pSymbol_key_term = p_expr_prj->pGetTerm(0)->pSymbol();
+      Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
+
+      p_expr_prj->pSub_as()->vSymbol(p_expr_key->pSub_as());
+      p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
+
       continue;
-
-    // the <gbyAgg>/<projection>/<expr> is a single projected column
-
-    // get corresponding <gbyAgg>/<key>/<expr>
-    Card_Term* pTerm_prj = p_expr_prj->pGetTerm(0);
-    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj->pSymbol());
-
-    if (! p_expr_key)
-      continue;
-    else
-    if (p_expr_key->pSub_as()) {
-
-      if (p_expr_prj->pSub_as()) {
-        p_expr_key->vDeleteChild(pCI->G.p_as);
-        p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
-      }
-      else {
-        p_expr_prj->vAppend(p_expr_key->pSub_as()->pDupCardRecursive());
-      }
-    }
-    else
-    if (p_expr_prj->pSub_as()) {
-      p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
     }
 
-    vDebugPoint();
   }
 
 }
+/*----------------------------------------------------------------------------*/
+//void Card_Projection::vReviewAs(CardIter* pCI)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  i8 nPrjExpr = nChildCards();
+//  for (i8 i_PrjExpr = 0; i_PrjExpr < nPrjExpr; i_PrjExpr++) {
+//
+//    // get <gbyAgg>/<projection>/<expr>
+//    Card_Expr *p_expr_prj = pGetExpr(i_PrjExpr);
+//
+//    //Stz* szPrjCol_prj = p_expr_prj->szGetOdn();
+//    Card_Term* p_term_prj = p_expr_prj->pGetTerm(0);
+//    if ( (! p_term_prj || (!p_term_prj->pSymbol()->bIsKeyOrdinal())) )
+//      continue;
+//
+//    // the <gbyAgg>/<projection>/<expr> is a single projected column
+//
+//    // get corresponding <gbyAgg>/<key>/<expr>
+//    Card_Term* pTerm_prj = p_expr_prj->pGetTerm(0);
+//    Card_Expr* p_expr_key = pCI->G.p_key->pDecodeExpr(pTerm_prj->pSymbol());
+//
+//    if (! p_expr_key)
+//      continue;
+//    else
+//    if (p_expr_key->pSub_as()) {
+//
+//      if (p_expr_prj->pSub_as()) {
+//        p_expr_key->vDeleteChild(pCI->G.p_as);
+//        p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
+//      }
+//      else {
+//        p_expr_prj->vAppend(p_expr_key->pSub_as()->pDupCardRecursive());
+//      }
+//    }
+//    else
+//    if (p_expr_prj->pSub_as()) {
+//      p_expr_key->vAppend(p_expr_prj->pSub_as()->pDupCardRecursive());
+//    }
+//
+//    vDebugPoint();
+//  }
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* convert to streamDef                                                       */
