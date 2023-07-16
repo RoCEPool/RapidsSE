@@ -28,6 +28,7 @@ namespace STORE
     Card_PRED* pFindMarkedPred(char cWithMark);
     Card_PRED* pFindRemove_CorrPred(void);
     bool bIsScalarCol(void);
+    bool bIsScalarKey(void);
     bool bHasTerm(Symbol* pSymbol);
     void vMarkWrt_table(CardIter* pCI);
     void vPush_CrlKeyPred_As_CrlKeyTest(Card_PRED* p_PRED);

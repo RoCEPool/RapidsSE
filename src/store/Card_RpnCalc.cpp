@@ -347,7 +347,7 @@ bool Card_RpnCalc::bIsAggCalc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* is this rpnCalc a simple expression of a column ?                          */
 /*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bIsScalarCol(void)
 {
@@ -358,6 +358,23 @@ bool Card_RpnCalc::bIsScalarCol(void)
 
   Card_Term* p_term_0 = pGetTerm(0);
   if (! p_term_0->bIsValOdn())
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this rpnCalc a simple expression of a key ?                             */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsScalarKey(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return false;
+
+  Card_Term* p_term_0 = pGetTerm(0);
+  if (! p_term_0->bIsKeyOdn())
     return false;
 
   return true;

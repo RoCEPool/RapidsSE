@@ -408,25 +408,6 @@ bool Card_Expr::bIsDescending(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bIsScalarCol(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  bool bSoleCol = false;
-  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc()) {
-    bSoleCol = p_boolCalc->bIsScalarCol();
-  }
-  else
-  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
-    bSoleCol = p_rpnCalc->bIsScalarCol();
-  }
-
-  return bSoleCol;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this an expression of a key                                             */
 /*----------------------------------------------------------------------------*/
 bool Card_Expr::bIsExpressionOfKey(void) {
@@ -438,6 +419,44 @@ bool Card_Expr::bIsExpressionOfKey(void) {
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this expr a simple expression of a column?                              */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsScalarCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bScalarCol = false;
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc()) {
+    bScalarCol = p_boolCalc->bIsScalarCol();
+  }
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
+    bScalarCol = p_rpnCalc->bIsScalarCol();
+  }
+
+  return bScalarCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this expr a simple expression of a key?                                 */
+/*----------------------------------------------------------------------------*/
+bool Card_Expr::bIsScalarKey(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bScalarKey = false;
+  if (Card_BoolCalc* p_boolCalc = pSub_boolCalc()) {
+    bScalarKey = p_boolCalc->bIsScalarKey();
+  }
+  else
+  if (Card_RpnCalc* p_rpnCalc = pSub_rpnCalc()) {
+    bScalarKey = p_rpnCalc->bIsScalarKey();
+  }
+
+  return bScalarKey;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* _colAs1 : Column As testing                                                */
+/*============================================================================*/
+
+_part
+CREATE INDEX IxP_PARTKEY ON part(p_partkey);
+load part "../TPCH/SF_0001/part.csv";
+
+/glean_interactive
+/weaved
+/transliterated
+/pipeline_def
+/pipelineName = "_colAs1"
+select p_mfgr,
+       p_brand,
+       count(*)
+  from part
+ where p_size < 5
+ group by p_mfgr,
+          p_brand
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

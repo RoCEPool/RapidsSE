@@ -33,6 +33,7 @@ namespace STORE
     bool bHasTerm(Symbol* pSymbol);
     bool bIsAggCalc(void);
     bool bIsScalarCol(void);
+    bool bIsScalarKey(void);
     bool bNeedsBrace(void);
     void vOntoStzList(StzList* pStzList);
     Card_RpnCalc* pPropagate(Card_Expr* p_expr_encasing);

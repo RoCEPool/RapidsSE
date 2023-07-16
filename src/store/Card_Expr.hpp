@@ -40,9 +40,10 @@ namespace STORE
     Card_Term* pGetTerm(i8 i_Term);
     bool bIsAggCalc(void);
     bool bIsDescending(void);
-    bool bIsScalarCol(void);
-    bool bIsExpressionOfKey(void);
     bool bExpressionOfSymbol(Symbol* pSymbol);
+    bool bIsScalarCol(void);
+    bool bIsScalarKey(void);
+    bool bIsExpressionOfKey(void);
     bool bHasTerm(Symbol* pSymbol);
     Card_Expr* pPropagate(void);
     void vReconstruct(Card_As*    p_as,

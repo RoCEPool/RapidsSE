@@ -304,7 +304,7 @@ Card_PRED* Card_BoolCalc::pFindRemove_CorrPred(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* is this boolCalc a simple expression of a column                           */
 /*----------------------------------------------------------------------------*/
 bool Card_BoolCalc::bIsScalarCol(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -322,6 +322,27 @@ bool Card_BoolCalc::bIsScalarCol(void) {
 
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is this boolCalc a simple expression of a key                              */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolCalc::bIsScalarKey(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return false;
+
+  Card *p_card_0 = pGetChild(0);
+  if (!p_card_0->bIsCard(CK_TERM))
+    return false;
+
+  Card_Term *p_term_0 = _pCard_Term(p_card_0);
+  if (!p_term_0->bIsKeyOdn())
+    return false;
+
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
