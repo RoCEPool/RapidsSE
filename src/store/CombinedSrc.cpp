@@ -300,11 +300,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         // insert key
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
           vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "vIndexInsertContinue"_Stz);
           vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
           vAppendCodeFragment(pOpSketch, "iGbyAggIntKeyEnd"_Stz, pOperatorFile);
         }
         else {
           vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
+          vAppendCodeFragment(pOpSketch, "vIndexInsertContinue"_Stz);
           vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
           vAppendCodeFragment(pOpSketch, "iGbyAggGenKeyEnd"_Stz, pOperatorFile);
         }
@@ -648,13 +650,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey2"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
         }
         else {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey2"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
         }
         vAppendCodePopulatePayloadCols(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "iIndexInsertContinue"_Stz);
+        vAppendCodeFragment(pOpSketch, "vCloseBraces"_Stz);
         break;
 
       case SK_STREAMDEF:
@@ -706,13 +708,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
           vAppendCodeFragment(pOpSketch, "vCreatePayLoad"_Stz);
 
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT) {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey2"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertIntKey"_Stz);
         }
         else {
-          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey2"_Stz);
+          vAppendCodeFragment(pOpSketch, "iIndexInsertVchKey"_Stz);
         }
         vAppendCodePopulatePayloadCols(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "iIndexInsertContinue"_Stz);
+        vAppendCodeFragment(pOpSketch, "vCloseBraces"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the gbyAgg code fragments file
