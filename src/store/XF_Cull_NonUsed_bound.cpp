@@ -69,7 +69,7 @@ void XF_Cull_NonUsed_bound::vXF_Cull_NonUsed_bound(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
 
   while (m_pCI->G_bEachMain()) {
 

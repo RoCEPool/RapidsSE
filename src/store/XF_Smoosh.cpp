@@ -56,7 +56,7 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_SMOOSH, _FOOTER_);
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
   RASSERT(pCI->G_bEachMain_foldBreak(CK_TABLE));
 
 
@@ -144,14 +144,14 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   pCI->vPrintBoard();
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
   if (pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vCullPred(MARK_AT);
   }
 
   pCI->vPrintBoard();
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
   pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
 
   pCI->vRenumberCards();

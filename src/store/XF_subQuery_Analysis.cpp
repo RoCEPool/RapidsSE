@@ -112,7 +112,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // search for parameters
 
-    m_pCI->G_vRestart();
+    m_pCI->vClearRestart();
     i8 nParams = 0;
     while (m_pCI->G_bEachMain(CK_CORRELATION))
       nParams++;

@@ -73,7 +73,7 @@ void XF_Early_projection::vXF_Early_projection(void)
 
   m_pCI->vTransform(__func__, XF_EARLY_PROJECTION, "Early projections"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
 
   m_pCI->vRenumberCards();
 

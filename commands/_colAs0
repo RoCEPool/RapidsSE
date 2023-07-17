@@ -11,7 +11,7 @@ load part "../TPCH/SF_0001/part.csv";
 /transliterated
 /pipeline_def
 /pipelineName = "_colAs0"
-select p_brand,
+select p_brand as X,
        p_mfgr
   from part
  where p_size < 5

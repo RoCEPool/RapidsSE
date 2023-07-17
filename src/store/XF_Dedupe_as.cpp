@@ -64,7 +64,7 @@ void XF_Dedupe_as::vXF_Dedupe_as(void)
 
   m_pCI->vTransform(__func__, XF_DEDUPE_AS, "de-duplicate as (column names)"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
 
   while (m_pCI->G_bEachMain(CK_PROJECT)) {
     m_pCI->G.p_project->vDedupe_as();

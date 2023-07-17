@@ -64,7 +64,7 @@ void XF_Add_level::vXF_Add_level(void)
 
   m_pCI->vTransform(__func__, XF_ADD_LEVEL, "add level to op"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain())
     ((Card_OP*)m_pCI->G.p_MainCard)->vAddLevel();
 

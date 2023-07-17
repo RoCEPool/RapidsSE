@@ -262,7 +262,7 @@ void Fold::vFold_basic(CardIter* pCI, Stz* szFold, eCK eCardWithSQ)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
   while (pCI->G_bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_projection())
@@ -343,7 +343,7 @@ CarryForward* Fold::pFold_from(Stz* szFold, CardIter* pCI)
   pCI->vPrintBoard(__LINE__);
 
   // 7) derive the fold (SQ result) expr
-  pCI->G_vRestart();
+  pCI->vClearRestart();
   if (pCI->G_bEachMain(CK_FOLD)) {
     pCI->Sqy.m_i_FoldCard = pCI->G.i_MainCard;
     Board::vDerive_foldProjection_F(pCI);
@@ -405,7 +405,7 @@ CarryForward* Fold::pFold_nc_subQuery(CardIter* pCI, Stz* szFold,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
   while (pCI->G_bEachMain()) {
 
     if (pCI->G.p_MainCard->pSub_projection())

@@ -76,12 +76,12 @@ void XF_Delete_Unneeded::vXF_Delete_Unneeded(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Send
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   Card_Send::vDeleteAllSend(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Stage
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   Card_Stage::vDeleteAllStage(m_pCI);
 
   m_pCI->vEndTransform();

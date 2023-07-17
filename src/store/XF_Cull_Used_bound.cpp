@@ -69,7 +69,7 @@ void XF_Cull_Used_bound::vXF_Cull_Used_bound(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark any cmpPred that are a bound in bounds
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain()) {
 
     if (! (m_pCI->G.p_MainCard->bIsCard(CK_INDEXJOIN) ||
@@ -116,7 +116,7 @@ void XF_Cull_Used_bound::vXF_Cull_Used_bound(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cull marked cmpPred from filter
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
 //  Card_Constraint::vCullUsedBounds(m_pCI);
 
   while (m_pCI->G_bEachMain()) {
@@ -129,7 +129,7 @@ void XF_Cull_Used_bound::vXF_Cull_Used_bound(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete any filter if empty
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   Card_Filter::vDeleteEmptyFilters(m_pCI);
 
 //  while (m_pCI->G_bEachMain()) {

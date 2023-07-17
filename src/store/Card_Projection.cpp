@@ -447,16 +447,15 @@ void Card_Projection::vReviewAs(CardIter* pCI)
     Card_Expr *p_expr_prj = xProjection.p_expr();
 
     if (p_expr_prj->bIsScalarKey()) {
-
       Symbol* pSymbol_key_term = p_expr_prj->pGetTerm(0)->pSymbol();
-      Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
 
-      p_expr_prj->pSub_as()->vSymbol(p_expr_key->pSub_as());
-      p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
+      if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
+        Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
 
-      continue;
+        p_expr_prj->pSub_as()->vSymbol(p_expr_key->pSub_as());
+        p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
+      }
     }
-
   }
 
 }
