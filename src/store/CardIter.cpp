@@ -1740,7 +1740,7 @@ void CardIter::vPrintBoard(i8 iLineNo)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  if (!m_pCardCtl->bBoardPrint())
+  if (! AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
     return;
 
   G.pBoard->vPrintBoard(szXdesc());

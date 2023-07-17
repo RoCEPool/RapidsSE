@@ -73,32 +73,6 @@ CardCtl::~CardCtl(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* print bench ?                                                              */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bBenchPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print board ?                                                              */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bBoardPrint(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (AM::JOB::bHasTag(C_GLEAN_INTERACTIVE))
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card history                                                           */
 /*----------------------------------------------------------------------------*/
 CardHistory* CardCtl::pCardHistory(void)

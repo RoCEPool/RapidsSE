@@ -60,9 +60,6 @@ namespace STORE
     CardCtl(void);
    ~CardCtl(void) noexcept(false);
 
-    bool bBenchPrint(void);
-    bool bBoardPrint(void);
-
     CardHistory* pCardHistory(void);
     bool bCued(void);
     void vCued(bool bCued);
