@@ -352,7 +352,7 @@ bool CrwTablePtn::bVerifyPds(void)
   CrwBuffer* pLLCursor = m_pRootBuffer;
 
   i8 iLLNumEntries = 0;
-  while(pLLCursor) {
+  while(pLLCursor != nullptr) {
     iLLNumEntries++;
     pLLCursor = pLLCursor->pNextCrwBuffer();
   }
