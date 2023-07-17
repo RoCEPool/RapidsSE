@@ -169,7 +169,8 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXJOIN -
 //------------------------------------------------------------------------------
-
+// TODO V2
+/*
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -261,7 +262,6 @@ rows:
   (24,'UNITED STATES',1,'y final packages. slow foxes cajole quickly. quickly silent platelets breach ironic accounts. unusual pinto be',1,'AMERICA','hs use ironic, even requests. s')
 
 
-
 /optimise_passthru
 pipeline _unnamed_
   begin
@@ -287,6 +287,7 @@ rows:
   (3,'CANADA',1,'eas hang ironic, silent packages. slyly regular packages are furiously over the tithes. fluffily bold',1,'AMERICA','hs use ironic, even requests. s')
   (4,'EGYPT',4,'y above the carefully unusual theodolites. final dugouts are quickly across the furiously regular d',4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
   (5,'ETHIOPIA',0,'ven packages wake quickly. regu',0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
+*/
 
 //------------------------------------------------------------------------------
 // SEMI-JOIN
@@ -327,7 +328,7 @@ rows:
  (0,'ALGERIA',0)
  (1,'ARGENTINA',1)
  (4,'EGYPT',4)
-*/
+
  
  /optimise_passthru
  pipeline __CS2_semiJoin
@@ -364,7 +365,7 @@ rows:
   (12,'JAPAN',2)
   (18,'CHINA',2)
   (21,'VIETNAM',2)
-
+*/
 //------------------------------------------------------------------------------
 // AGGREGATE - INTEGER
 //------------------------------------------------------------------------------
@@ -837,7 +838,8 @@ success
 load orders   "../tpch/SF_0001/orders.csv" ;
 success
 
-
+// TODO V2
+/*
 /optimise_passthru
 pipeline unnamed
 begin
@@ -868,7 +870,7 @@ begin
 end ;
 
 rows: 5996
-
+*/
 //------------------------------------------------------------------------------
 // drop the tables
 

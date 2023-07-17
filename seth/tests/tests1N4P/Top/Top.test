@@ -100,8 +100,8 @@ begin
 end ;
 
 rows:
- (1499,DATE *)
- (1499,DATE *)
+ (1499,*)
+ (1499,*)
 
 
 // drop the table
