@@ -69,7 +69,7 @@ void XF_scan_To_table::vXF_scan_To_table(void)
 
   m_pCI->vTransform(__func__, XF_SCAN_TO_TABLE, "scan to table"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain(CK_SCAN))
     Card_Scan::vScanBecomesTable(m_pCI);
 

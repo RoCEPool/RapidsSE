@@ -64,7 +64,7 @@ void XF_Derive_projection_key::vXF_Derive_projection_key(void)
 
   m_pCI->vTransform(__func__, XF_DERIVE_PROJECTION_KEY, "Derive projection keys"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);

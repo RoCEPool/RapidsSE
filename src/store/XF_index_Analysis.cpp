@@ -87,7 +87,7 @@ void XF_index_Analysis::vXF_index_Analysis(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix TblColOdn To All IdxCol
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   Card_Table::vAffixTableColOrd(m_pCI);
 
   m_pCI->vEndTransform();

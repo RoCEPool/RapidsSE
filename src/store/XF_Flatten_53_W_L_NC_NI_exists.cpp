@@ -95,7 +95,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // smoothing
 
-//  m_pCI->G_vRestart();
+//  m_pCI->vClearRestart();
 //  if (m_pCI->G_bEachMainWithSub(CK_WHERE,CK_BOOLCALC)) {
 //    m_pCI->G.p_where->Y_vSet(P_Smoothed);
 //    m_pCI->G.p_boolCalc->vCullPred(MARK_AT);

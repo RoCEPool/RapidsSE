@@ -35,7 +35,7 @@ XF_not_Ops::~XF_not_Ops(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_NOT_OPS, _FOOTER_);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
     m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
 
@@ -69,7 +69,7 @@ void XF_not_Ops::vXF_not_Ops(void)
 
   m_pCI->vTransform(__func__, XF_NOT_OPS, "not ops"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachSubOfMain(CK_RPNCALC))
     m_pCI->G.p_rpnCalc->vConvert_sqyOp_not_To_notSqyOp();
 

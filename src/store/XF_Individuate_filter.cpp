@@ -68,22 +68,22 @@ void XF_Individuate_filter::vXF_Individuate_filter(void)
 
   m_pCI->vTransform(__func__, XF_INDIVIDUATE_FILTER, "individuate <scan|indexJoin>/<filter> as main <filter>"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_INDEXJOIN,CK_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_CROSSJOIN,CK_FILTER)) {
     Card_Filter::vIndividuate_filter(m_pCI);
   }

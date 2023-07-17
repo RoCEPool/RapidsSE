@@ -84,7 +84,7 @@ void XF_table_Analysis::vXF_table_Analysis(char* acTableSyn)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   Card_Table::vProduceTablePtns(m_pCI);
 
   m_pCI->vEndTransform();
@@ -107,7 +107,7 @@ void XF_table_Analysis::vXF_table_Analysis_passThru(char* acTableSyn)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table
-//  m_pCI->G_vRestart();
+//  m_pCI->vClearRestart();
 //  Card_Table::vProduceTablePtns(m_pCI);
 
   m_pCI->vEndTransform();

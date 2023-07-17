@@ -64,11 +64,11 @@ void XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(void)
 
   m_pCI->vTransform(__func__, XF_RPNCALC_TO_BOOLCALC, "all $n become $c.n"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_RPNCALC))
     ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
   while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_RPNCALC))
     ((Card_OP*)m_pCI->G.p_MainCard)->vConvert_rpnCalc_To_boolCalc(m_pCI);
 

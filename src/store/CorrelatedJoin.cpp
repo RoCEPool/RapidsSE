@@ -75,7 +75,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   //   p                          //           $d.2  ((pCI->m_pTerm_corrCol))
   //                              //             %1
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
   while (pCI->G_bEachMainWith2Sub(CK_TABLE,CK_PROJECTION,CK_FILTER))
    if (bIdentify_Correlation_Key_Predicate(pCI))
      break;
@@ -145,7 +145,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // yank the correlation predicate from SQ
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
 
   // v                             //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
@@ -208,7 +208,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   // TODO: this should be done using standard predicate moving
 
-  pCI->G_vRestart();
+  pCI->vClearRestart();
 
   //                   v           //  ]filter
   // T A A A P F T T T W A A A     //  .]boolCalc
@@ -224,7 +224,7 @@ void CorrelatedJoin::vVia_gbyAgg_Promotion(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  pCI->G_vRestart();
+//  pCI->vClearRestart();
 //  if (pCI->G_bEachMain(CK_FOLD)) {
 //    if (pCI->G_bEachMain(CK_WHERE)) {
 //      // TODO:

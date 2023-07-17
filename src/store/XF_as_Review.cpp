@@ -64,7 +64,7 @@ void XF_as_Review::vXF_as_Review(void)
 
   m_pCI->vTransform(__func__, XF_AS_REVIEW, "as review"_Stz);
 
-  m_pCI->G_vRestart();
+  m_pCI->vClearRestart();
 
   RASSERT(nullptr == m_pCI->StreamOrder.m_pProjection_running);
   RASSERT(nullptr == m_pCI->StreamOrder.m_pKey_running);

@@ -12,7 +12,7 @@ load part "../TPCH/SF_0001/part.csv";
 /pipeline_def
 /pipelineName = "_colAs1"
 select p_mfgr,
-       p_brand,
+       p_brand as X,
        count(*)
   from part
  where p_size < 5

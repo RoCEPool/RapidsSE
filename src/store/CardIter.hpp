@@ -86,12 +86,11 @@ namespace STORE
     void vChangeCard(Card* pCard);
     i8   i_Child(void);
     Card* pChild(void);
-    void G_vClearMembers(void);
     void G_vClearRegisters(void);
     void G_vClearRegistersIf(Card* pCard);
+    void vClearRestart(void);
     eOA  eCueUser(Stz* szPrompt);
 
-    void G_vDeleteMember(eCK eMember);
     void G_vDeleteMember(Card* pMember);
     void G_vDeleteWhenEmptySub(eCK eMain, eCK eSub);
     void vDontDescend(void);
@@ -132,7 +131,6 @@ namespace STORE
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoardNm(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
-    bool bIsActive(void);
 
     bool bJustRestarted(void);
 
@@ -140,8 +138,6 @@ namespace STORE
     void G_vMainResynch(Card* pCard);
     void G_vMember(eCK eMember, Card* pCard, const char* asFuncNm);
     bool bMore(void);
-    bool G_bMoreMain(void);
-    void G_vMorphCard(Card* pCard, eCK eCard);
 
     void  G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void  G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
@@ -174,7 +170,6 @@ namespace STORE
     void vRenumberCards(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Projection* pResolvePrior_projection(void);
-    void G_vRestart(void);
     void vRestore(void);
     void vRewind(void);
     Card* pRewindChild(void);
@@ -186,8 +181,6 @@ namespace STORE
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 i_Child);
     void G_vSetBoard(Board* pBoard);
-    void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
-    void vSubQueryIteration(void);
 
     void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
     i8   iTransformDepth(void);
@@ -203,6 +196,7 @@ namespace STORE
     void vXhand(const char* asXhand);
 
   protected:
+    void G_vClearMembers(void);
 
     bool bPopRecurseIter(void);
     void vPushRecurseIter(void);
