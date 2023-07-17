@@ -351,6 +351,14 @@ bool CrwTablePtn::bVerifyPds(void)
 
   CrwBuffer* pLLCursor = m_pRootBuffer;
 
+  i8 iLLNumEntries = 0;
+  while(pLLCursor) {
+    iLLNumEntries++;
+    pLLCursor = pLLCursor->pNextCrwBuffer();
+  }
+
+  pLLCursor = m_pRootBuffer;
+
   while(pPdsCursor) {
     CrwBuffer* pCrwBuffer = pGetBuffer(pPdsCursor);
     RASSERT(pCrwBuffer == pLLCursor);
@@ -359,8 +367,17 @@ bool CrwTablePtn::bVerifyPds(void)
     pLLCursor = pLLCursor->pNextCrwBuffer();
   }
 
-  RASSERT(pPdsCursor == nullptr);
-  RASSERT(pLLCursor == nullptr);
+//  RASSERT(pPdsCursor == nullptr);
+//  RASSERT(pLLCursor == nullptr);
+  if(pPdsCursor != nullptr) {
+    vThreadCallStackDump();
+    RASSERT(pPdsCursor == nullptr);
+  }
+  if(pLLCursor != nullptr) {
+    vTrace("LL entries: %lld, Pds entries: %lld\n"_Stz, iLLNumEntries, m_pPdsBufferId->iNumEntries());
+    vThreadCallStackDump();
+    RASSERT(pLLCursor == nullptr);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
