@@ -14,11 +14,19 @@ load nation "../TPCH/SF_0001/nation.csv";
 /weaved
 /transliterated
 /pipeline_def
-SELECT n_regionkey , n_name
-FROM nation
-where n_regionkey < 2
-order by n_name, n_regionKey;
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+                                             FROM nation
+                                             GROUP BY region;
+                                             //HAVING region > 1;
 
+/*
+rows:
+  (3,2)
+  (4,4)
+  (0,2)
+  (2,3)
+  (1,4)
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
