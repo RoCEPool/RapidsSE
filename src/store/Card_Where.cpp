@@ -48,7 +48,7 @@ void Card_Where::vCullMarkedCmpPred(CardIter* pCI) {
 
   _static_
 
-  pCI->vRestart();
+  pCI->vBeginEach();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
     pCI->G.p_boolCalc->vCullPred(MARK_AT);
@@ -62,7 +62,7 @@ void Card_Where::vDeleteEmpyWhere(CardIter* pCI) {
 
   _static_
 
-  pCI->vRestart();
+  pCI->vBeginEach();
 
   while (pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC)) {
     if (0 == pCI->G.p_boolCalc->nChildCards()) {
@@ -109,7 +109,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
   // find the <where> (and /<rpnCalc> in the pipeline
   // n.b. there might not be a <where> yet
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   if (pCI->G_bEachMain(CK_WHERE))
     pCI->G.p_rpnCalc = pCI->G.p_where->pSub_rpnCalc();
 
@@ -117,7 +117,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
   // for each <absJoin>/<on>/<rpnCalc>
   //   move/append to <where>/<rpnCalc>
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMainWithSub_reverse(CK_ABSJOIN,CK_ON)) {
 
     // ignore

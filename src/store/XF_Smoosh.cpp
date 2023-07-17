@@ -85,13 +85,13 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
 
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_TABLE));
   Card_Projection* p_projection_table = pCI->G.p_table->pSub_projection();
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   RASSERT(pCI->G_bEachMain_reverse_foldBreak(CK_WHERE));
 
 

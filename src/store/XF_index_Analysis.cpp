@@ -111,7 +111,7 @@ void XF_index_Analysis::vXF_index_Analysis_passThru(void)
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
   }
 
-  m_pCI->vRestart();
+  m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
     m_pCI->G.p_indexJoin->vUpdate_projection(m_pCI);
 
@@ -122,7 +122,7 @@ void XF_index_Analysis::vXF_index_Analysis_passThru(void)
     m_pCI->G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
   }
 
-  m_pCI->vRestart();
+  m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain(CK_KEYEXISTS)) {
     m_pCI->G.p_keyExists->vUpdate_projection(m_pCI);
 
@@ -130,7 +130,7 @@ void XF_index_Analysis::vXF_index_Analysis_passThru(void)
     m_pCI->G.p_index->pSymbol()->Y_vSet(P_ChosenIndex);
   }
 
-  m_pCI->vRestart();
+  m_pCI->vBeginEach();
   while (m_pCI->G_bEachMain(CK_KEYNOTEXISTS)) {
     m_pCI->G.p_keyNotExists->vUpdate_projection(m_pCI);
 

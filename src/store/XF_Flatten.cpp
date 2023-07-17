@@ -119,7 +119,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
 
   for (;;) {
 
-    m_pCI->vRestart();
+    m_pCI->vBeginEach();
     if (! m_pCI->G_bEachMain(CK_CALL))
       break;
 
@@ -147,7 +147,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   bool bFound;
 
   do {
-     m_pCI->vRestart();
+    m_pCI->vBeginEach();
 
     if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_WHERE, CK_BOOLCALC))
       break;
@@ -191,7 +191,7 @@ void XF_Flatten::vFlatten_recurse(i8 iDepth)
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
   do {
-    m_pCI->vRestart();
+    m_pCI->vBeginEach();
 
     if (! m_pCI->G_bEachMainWithSub_reverse_foldBreak(CK_HAVING, CK_BOOLCALC))
       break;

@@ -64,7 +64,7 @@ void XF_stmCol_To_colNm::vXF_stmCol_To_colNm(void)
 
   m_pCI->vTransform(__func__, XF_STMCOL_TO_COLNM, "stream-column to column-name"_Stz);
 
-  m_pCI->vRestart();
+  m_pCI->vBeginEach();
 
   while (m_pCI->G_bEachMain()) {
 

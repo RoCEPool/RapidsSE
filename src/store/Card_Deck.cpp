@@ -278,12 +278,12 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMain(CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
       pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
 
   while (pCI->G_bEachMain()) {
@@ -355,12 +355,12 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachSubOfMain(CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
       pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
 
   while (pCI->G_bEachMain()) {
@@ -456,14 +456,14 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMain(CK_TABLE))
     if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
       pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
 
   bool bSawFold = false;
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
 
   while (pCI->G_bEachMain()) {

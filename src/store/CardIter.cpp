@@ -219,7 +219,7 @@ void CardIter::vChangeCard(Card* pCard)
 
   G.xKid.vParent(pCard);
 
-  vRestart();
+  vBeginEach();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2099,7 +2099,7 @@ Card_Projection* CardIter::pResolvePrior_projection(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void CardIter::vRestart(void)
+void CardIter::vBeginEach(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
@@ -2114,7 +2114,7 @@ void CardIter::G_vRestart(void)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  this->vRestart();
+  this->vBeginEach();
 
   G_vClearMembers();
   G_vClearRegisters();
@@ -2341,7 +2341,7 @@ void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
   vXfunc((Stz *) azFunc);
   vXdesc(szXdesc);
 
-  this->vRestart();
+  this->vBeginEach();
 
   if (m_pCardCtl->bTracing(szXhand(), szXfunc())) {
     vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXfunc());

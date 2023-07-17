@@ -74,7 +74,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    m_pCI->vRestart();
+    m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain()) {
       if (m_pCI->G.p_MainCard->bIsCard(CK_AGGREG) ||
           m_pCI->G.p_MainCard->bIsCard(CK_GBYAGG)) {
@@ -86,7 +86,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // search for from calls to sub-queries
 
-    m_pCI->vRestart();
+    m_pCI->vBeginEach();
     while (m_pCI->G_bEachMain(CK_CALL)) {
 
       vAnalysis_Of_from_call(m_pCI);
@@ -96,7 +96,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // search for where calls to sub-queries
 
-    m_pCI->vRestart();
+    m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWithSub(CK_WHERE, CK_BOOLCALC)) {
       vAnalysis_Of_where_boolCalc(m_pCI);
     }
@@ -104,7 +104,7 @@ void XF_subQuery_Analysis::vXF_subQuery_Analysis(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // search for having calls to sub-queries
 
-    m_pCI->vRestart();
+    m_pCI->vBeginEach();
     while (m_pCI->G_bEachMainWithSub(CK_HAVING, CK_BOOLCALC)) {
       vAnalysis_Of_having_boolCalc(m_pCI);
     }

@@ -214,7 +214,7 @@ void XF_Join_Ordering::vReorderTables(void)
   p_streamPrmAll->vRemoveInvalid();
   m_pCI->G.pDeck->vAppend(new Card_Section("Valid Permutations"_Stz));
 
-  xCI.vRestart();
+  xCI.vBeginEach();
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
   m_pCI->vRenumberCards();
@@ -232,14 +232,14 @@ void XF_Join_Ordering::vReorderTables(void)
 
   p_streamPrmAll->vEstCostsForAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_filtPredList);
   m_pCI->G.pDeck->vAppend(new Card_Section("Join Cost Est."_Stz));
-  xCI.vRestart();
+  xCI.vBeginEach();
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
   m_pCI->vRenumberCards();
   m_pCI->vPrintBoard(__LINE__);
 
   // get the join permutations strings
-  xCI.vRestart();
+  xCI.vBeginEach();
   i8 iJoinPermutations = 0;
   while (xCI.G_bEachMain(CK_STREAMPER)) {
     Card_JoinOrdering* p_joinOrdering = Card_JoinOrdering::pDerive(xCI.G.p_streamPer);

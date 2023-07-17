@@ -66,12 +66,12 @@ void XF_Delete_Unneeded::vXF_Delete_Unneeded(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All AbsJoin
-  m_pCI->vRestart();
+  m_pCI->vBeginEach();
   Card_AbsJoin::vDeleteAllAbsJoin(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Delete All Combined
-  m_pCI->vRestart();
+  m_pCI->vBeginEach();
   Card_Combined::vDeleteAllCombined(m_pCI);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -92,7 +92,7 @@ void XF_Flatten_34_W_A_NC_ro::vXF_Flatten_34_W_A_NC_ro(void)
 
   // Fold | Table* Where GbyAgg_P GbyAgg_N GbyAgg_O
 
-  m_pCI->vRestart();
+  m_pCI->vBeginEach();
   //RASSERT(m_pCI->G_bEachMainWithSub(CK_PROJECT,CK_PROJECTION));
   RASSERT(m_pCI->G_bEachMain(CK_FOLD));
 

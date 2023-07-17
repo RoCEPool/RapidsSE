@@ -155,11 +155,11 @@ void Card_Table::vDeriveBoundsFromFilter(CardIter* pCI) {
 
   _static_
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_INDEXLIST))
     pCI->G.p_indexList->vDeleteAll_bounds();
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_FILTER))
     pCI->G.p_table->vDeriveBoundsFrom_filter(pCI->G.p_filter);
 }
@@ -252,7 +252,7 @@ i8 Card_Table::nTables(CardIter* pCI)
 
   i8 nTables = 0;
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMain(CK_TABLE))
     nTables++;
 
@@ -268,7 +268,7 @@ i8 Card_Table::nTables_foldBreak(CardIter* pCI)
 
   i8 nTables = 0;
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMain()) {
     if (pCI->G.p_MainCard->bIsCard(CK_FOLD))
       break;
@@ -288,7 +288,7 @@ i8 Card_Table::nTables_reverse_foldBreak(CardIter* pCI)
 
   i8 nTables = 0;
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   while (pCI->G_bEachMain_reverse_foldBreak(CK_TABLE))
     nTables++;
 

@@ -173,7 +173,7 @@ namespace STORE
     void vRenumberCards(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Projection* pResolvePrior_projection(void);
-    void vRestart(void);
+    void vBeginEach(void);
     void G_vRestart(void);
     void vRestore(void);
     void vRewind(void);

@@ -192,7 +192,7 @@ void CarryForward::vSetSeen(CardIter* pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARRYFORWARD, _FOOTER_);
 
-  pCI->vRestart();
+  pCI->vBeginEach();
 
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));

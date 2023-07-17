@@ -54,7 +54,7 @@ void XF_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyE
     return;
 
 
-  pCI->vRestart();
+  pCI->vBeginEach();
   RASSERT(pCI->G_bEachMain(CK_FOLD));
   RASSERT(pCI->G.p_MainCard->bIsCard(CK_FOLD));
   //RASSERT(pCI->m_pExpr_fold);
