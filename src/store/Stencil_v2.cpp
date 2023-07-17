@@ -1348,9 +1348,6 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* s
   if (bGeneratePot) {
     pOpSketch = new OpSketch(C_UNKNOWN, sHashExpr, m_eHandlerKind, SK_POT, m_ePreviousStencil, SR_PO,  II_PL);
     pOpSketch->vLimitExpr(sLimitExpr);
-
-    // generate the expression stack
-    pOpSketch->vGenerateExprStacks(sHashExpr);
   }
   else {
     pOpSketch = new OpSketch(C_UNKNOWN, ""_Stz, m_eHandlerKind, SK_TUB, m_ePreviousStencil, SR_TO,  II_PL);
@@ -1359,6 +1356,11 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* s
 
   // set the streamDef's
   pOpSketch->vStreamDefs(pStreamDefOut, nullptr, pStreamDefOut);
+
+  if (bGeneratePot) {
+    // generate the expression stack
+    pOpSketch->vGenerateExprStacks(sHashExpr);
+  }
 
   if (pLastOp->eSketchKind() == SK_GBYAGG ||
       pLastOp->eSketchKind() == SK_TOP    ||
