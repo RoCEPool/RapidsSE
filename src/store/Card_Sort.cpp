@@ -228,6 +228,78 @@ void Card_Sort::vDerive_Projection_Key(CardIter* pCI)
 }
 
 /*----------------------------------------------------------------------------*/
+/* smooth                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  pCI->G.p_key = pCI->G.p_sort->pSub_key();
+
+  if ((pCI->G.p_projection = pCI->G.p_sort->pSub_projection()))
+
+    pCI->G.p_sort->vDeleteChild(pCI->G.p_projection);
+
+  Card_Projection* p_projection_sort =  pCI->Analysis.m_pProjection_prior->pPropagate();
+  for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
+    Card_Expr* p_expr_key = xKey_sort.p_expr();
+
+    Symbol* pSym_expr_x = p_expr_key->pFirstStmCol();
+    Card_Expr* p_expr_prj = p_projection_sort->pDecodeExpr(pSym_expr_x);
+
+    p_expr_prj->pGetTerm(0)->vSymbol(p_expr_key);
+  }
+
+  pCI->G.p_sort->vAppend(p_projection_sort);
+
+  pCI->Analysis.m_pProjection_prior = pSub_projection();
+
+  pCI->vRenumberCards();
+}
+/*----------------------------------------------------------------------------*/
+//void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  pCI->G.p_key = pCI->G.p_sort->pSub_key();
+//
+//  if ((pCI->G.p_projection = pCI->G.p_sort->pSub_projection())) {
+//
+//    pCI->G.p_sort->vDeleteChild(pCI->G.p_projection);
+//
+//    //pCI->G.p_sort->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
+//
+//
+//    pCI->G_vAppendNewChild(pCI->G.p_sort,CK_PROJECTION);
+//    for (Kid xPrior(pCI->Analysis.m_pProjection_prior); xPrior.bEach(); /**/) {
+//      Card_Expr* p_expr_prior = xPrior.p_expr();
+//
+//      if (p_expr_prior->bIsExpressionOfKey()) {
+//        Symbol* pSym = p_expr_prior->pGetTerm(0)->pSymbol();
+//        Card_Expr* p_expr_key = pCI->G.p_key->pFind_expr_Of_term(pSym);
+//        if (p_expr_key) {
+//
+//          // todo: create simple expr from key expr
+//
+//          pCI->G.p_projection->vAppend( nullptr );
+//
+//          continue;
+//        }
+//
+//      }
+//
+//      // todo: ... clone expr?
+//    }
+//
+//  }
+//
+//  pCI->Analysis.m_pProjection_prior = pSub_projection();
+//
+//  pCI->vRenumberCards();
+//}
+
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
@@ -239,6 +311,7 @@ void Card_Sort::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   pSub_level()->vValidate(pCI,iDepth+1,this);
   pSub_key()->vValidate(pCI,iDepth+1,this);
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

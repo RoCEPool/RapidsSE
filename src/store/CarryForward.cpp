@@ -55,6 +55,9 @@ CarryForward::CarryForward(void)
   Having.m_bSeen                 = false;
   Having.m_bCorrect_After_Inject = false;
 
+  Sort.m_bSeen                 = false;
+  Sort.m_bCorrect_After_Inject = false;
+
   Unproject.m_bSeen               = false;
   Unproject.m_bUnproject_foldExpr = false;
 
@@ -226,6 +229,11 @@ void CarryForward::vSetSeen(CardIter* pCI)
   // Having
   if (pCI->G_bIsNextMain(CK_HAVING) && pCI->G_bEachMain(CK_HAVING)) {
     Having.m_bSeen = true;
+  }
+
+  // Sort
+  if (pCI->G_bIsNextMain(CK_SORT) && pCI->G_bEachMain(CK_SORT)) {
+    Sort.m_bSeen = true;
   }
 
 }

@@ -120,6 +120,14 @@ void XF_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyE
     }
   }
 
+  // Sort
+  if (pCI->G_bIsNextMain(CK_SORT) && pCI->G_bEachMain(CK_SORT)) {
+    if (pCarryForward->Sort.m_bSeen) {
+      pCI->G.p_sort->vSmooth(pCI, pCarryForward);
+      pCI->vPrintBoard(__LINE__);
+    }
+  }
+
   //  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
   if (pCarryForward->Project_postAgg.m_bSeen &&  pCI->G.p_having) {

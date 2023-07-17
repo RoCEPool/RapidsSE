@@ -90,7 +90,7 @@ void XF_Flatten_74_H_A_NC_ro::vXF_Flatten_74_H_A_NC_ro(void)
                                CK_HAVING, QO_RELN_OP, SM_NONE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having
+  // smoothing of: subQuery | Fold | Table* [Where] GbyAgg_PNO [Project (avg)] Having [Sort]
 
   XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);

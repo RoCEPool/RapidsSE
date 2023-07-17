@@ -82,7 +82,10 @@ void Card_Having::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if (pCarryForward->Having.m_bCorrect_After_Inject)
     vCorrect_After_Inject(pCI, bBump);
 
+  pCI->G.p_having->vUpdate_projection(pCI);
+
   pCI->Analysis.m_pProjection_prior = pSub_projection();
+
 
   pCI->vRenumberCards();
 }
@@ -153,9 +156,13 @@ void Card_Having::vUpdate_projection(CardIter* pCI)
   if ((pCI->G.p_projection = pCI->G.p_having->pSub_projection())) {
 
     pCI->G.p_having->vDeleteChild(pCI->G.p_projection);
-    pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    //pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
 
   }
+
+  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/

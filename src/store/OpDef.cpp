@@ -507,6 +507,8 @@ void OpDef::vValidate(void)
     RASSERT(m_pStreamDef_emitted);
     RASSERT(m_pIndexDef_sort);
     RASSERT(m_pColMap_sort);
+
+    //RASSERT(m_pStreamDef_emitted->nColumns() == m_pStreamDef_arriving->nColumns());
   }
   else
   if (m_sOpNm.bSame("TOP"_Stz)) {
@@ -515,6 +517,8 @@ void OpDef::vValidate(void)
     RASSERT(pArgDef("count"_Stz));
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);
+
+    RASSERT(m_pStreamDef_emitted->nColumns() == m_pStreamDef_arriving->nColumns());
   }
   else {
     // an operator is missing

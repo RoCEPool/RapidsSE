@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card_OP.hpp"
+#include "CarryForward.hpp"
 
 namespace STORE
 {
@@ -21,6 +22,8 @@ namespace STORE
     void vCut_sort(CardIter* pCI);
 
     void vDerive_Projection_Key(CardIter* pCI);
+
+    void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

@@ -703,6 +703,7 @@ bool Card_OP::bNeedsProjectionAnalysis(void)
 
   if (bIsCard(CK_TABLE)        ||
       bIsCard(CK_SCAN)         ||
+      bIsCard(CK_SORT)         ||
       bIsCard(CK_KEYEXISTS)    ||
       bIsCard(CK_KEYNOTEXISTS) ||
       bIsCard(CK_INDEXSCAN)    ||

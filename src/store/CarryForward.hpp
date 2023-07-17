@@ -58,6 +58,11 @@ namespace STORE
 
     struct {
       bool m_bSeen;
+      bool m_bCorrect_After_Inject;
+    } Sort;
+
+    struct {
+      bool m_bSeen;
       bool m_bUnproject_foldExpr;
     } Unproject;
 

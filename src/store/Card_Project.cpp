@@ -150,11 +150,13 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
   for (Kid x_needed(pCI->Early.m_pNeeded_later); x_needed.bEach(CK_EXPR); /**/) {
     Card_Expr* p_expr_needed = x_needed.p_expr();
 
-    if (! p_expr_needed->pGetTerm(0)->bIsColOdn()) {
-      p_expr_needed->vDump(__func__);
-      NEVER_REACH;
-      //continue;
-    }
+//    if (! p_expr_needed->pGetTerm(0)->bIsColOdn()) {
+//      this->vDump(__func__ );
+//      pCI->Analysis.m_pProjection_prior->vDump(__func__);
+//      p_expr_needed->vDump(__func__);
+//      NEVER_REACH;
+//      //continue;
+//    }
 
     if (! pCI->Analysis.m_pProjection_prior->pContains(p_expr_needed))
       continue;

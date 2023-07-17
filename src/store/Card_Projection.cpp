@@ -387,6 +387,8 @@ Card_Projection* Card_Projection::pPropagate(void) {
     p_projection_propagated->vAppend(p_expr_propagated);
   }
 
+  p_projection_propagated->vRenumberAll_expr();
+
   return p_projection_propagated;
 }
 

@@ -23,6 +23,7 @@ namespace STORE
     static Card_Expr* pGby_expr_From_expr_corr(Card_Expr* pExpr_corr);
     static Card_Expr* pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs=nullptr);
     static Card_Expr* pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col);
+    static Card_Expr* pProj_Simple_expr_Of_key(Card_Expr* p_expr_key);
 
     void vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr=false);
     eCT  eColumnType(void);
