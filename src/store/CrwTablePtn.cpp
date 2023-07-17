@@ -335,7 +335,7 @@ void CrwTablePtn::vTruncate(void)
   bVerifyPds();
 }
 
-#pragma optimize( "", off )
+//#pragma optimize( "", off )
 /*----------------------------------------------------------------------------*/
 /* verify the Pds contains the same buffers as the linked list                */
 /*----------------------------------------------------------------------------*/
@@ -382,8 +382,10 @@ bool CrwTablePtn::bVerifyPds(void)
     vThreadCallStackDump();
     RASSERT(pLLCursor == nullptr);
   }
+
+  return true;
 }
-#pragma optimize( "", on )
+//#pragma optimize( "", on )
 /*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */
 /*----------------------------------------------------------------------------*/
