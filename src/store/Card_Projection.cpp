@@ -603,14 +603,69 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
     return pStreamDef;
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  i8 i_EmittedCol = 1;
+  if (CK_PROJECT == p_OP->eCard()) {
+    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
+      Card_Expr *p_expr = xProjection.p_expr();
+
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
+
+      eColType = p_expr->eColumnType();
+
+      vTrace("pToStreamDef: %s %s\n"_Stz,sColNm.szStz(),aCT[eColType]);
+
+      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+
+    }
+
+    return pStreamDef;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  i_EmittedCol = 1;
+  if (CK_SCAN == p_OP->eCard()) {
+    for (Kid xProjection(this); xProjection.bEach(CK_EXPR); i_EmittedCol++) {
+      Card_Expr *p_expr = xProjection.p_expr();
+
+      if (p_expr->pSub_as())
+        sColNm = p_expr->pSub_as()->szSymbol();
+      else
+        sColNm = p_expr->pGetTerm(0)->szSymbol();
+
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
+      sColNm_mapped = sColNm;
+
+      eColType = p_expr->eColumnType();
+
+      pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
+
+    }
+
+    return pStreamDef;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   RASSERT(CK_GBYAGG != p_OP->eCard());
-  i8 i_EmittedCol = 1;
+  i_EmittedCol = 1;
 
   i8 i_Cell;
 
@@ -627,7 +682,7 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       sColNm_mapped = sColNm;
 
     }
-    elseerror:
+    else
     if (CK_SORT == p_OP->eCard()) {
       if (p_expr->pSub_as())
         sColNm = p_expr->pSub_as()->szSymbol();
@@ -681,6 +736,8 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
         pColMap->vAdd(p_expr->pSymbol()->Y_iGet(P_EmittedCol),
                       true,
                       p_expr->pSymbol()->Y_iGet(P_Cell));
+
+
     }
   }
 
