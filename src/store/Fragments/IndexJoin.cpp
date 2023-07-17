@@ -234,6 +234,45 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- vIndexCrossJoinContinue ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexCrossJoinContinue
+void vIndexCrossJoinContinue(Dynamic_T* aDynamicT) {
+
+  void *aHeadLineSav;
+  void *aHeadLine;
+  void *aCrwJ;
+
+  i8 iBufferJ;
+  i8 iItemJ;
+
+  static const void *C_ADR_REGION = (void *) 0x204800000000;
+  static const i8 C_CRW_HEADBYTES = 32;
+  static const i8 C_CRW_FIRSTHEAD = 640;
+
+  __L_LABEL_OUTER_LOOP__:
+  __L_LABEL_LOOP__:
+
+  // marker-start
+
+  __L_LABEL_INDEX_DEREF__:
+
+  // did we find the entry ?
+  if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt ) {
+    aDynamicT->m_iProcessRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  aDynamicT->m_iProcessRow = 1;
+
+  // marker-end
+
+  L_Return:
+  return;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- vIndexJoinContinueLO0 ---------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinContinueLO0
