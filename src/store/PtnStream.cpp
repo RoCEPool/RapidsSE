@@ -116,7 +116,7 @@ bool PtnStream::bOpen(void)
 
   return m_pPtnStm_cursor->bOpen();
 
-  //vReset();
+  //vBegin();
   //return true;
 
 }
@@ -174,7 +174,7 @@ bool PtnStream::bSeek(i8 iBufferNo) {
 
 /*
   if (iBufferNo < m_iLglBufferNo)
-    vReset();
+    vBegin();
 
   while (m_iLglBufferNo < iBufferNo) {
     m_pNextBuffer = _pDataBuffer(m_pNextBuffer->pNextLinkedBuffer());

@@ -78,6 +78,8 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild);
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
+    void vBeginEach(void);
+
     Board* pBoard(void);
     void vBoardIteration(void);
 
@@ -131,7 +133,6 @@ namespace STORE
     bool G_bIsBoardNm(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
     bool bIsActive(void);
-    bool bIsTracing(void);
 
     bool bJustRestarted(void);
 
@@ -173,7 +174,6 @@ namespace STORE
     void vRenumberCards(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Projection* pResolvePrior_projection(void);
-    void vBeginEach(void);
     void G_vRestart(void);
     void vRestore(void);
     void vRewind(void);
@@ -189,7 +189,6 @@ namespace STORE
     void G_vSkipNextMain(bool bClearMembers=false, bool bClearRegisters=false);
     void vSubQueryIteration(void);
 
-    void vTracer(Stz* szFormat, ...);
     void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
     i8   iTransformDepth(void);
 

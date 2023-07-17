@@ -74,7 +74,7 @@ Queue::~Queue(void) noexcept(false)
   if (m_nItems)
     vPostMortem();
   
-  //vReset();
+  //vBegin();
 
   while (m_pTopBuffer)
     vDiscard();

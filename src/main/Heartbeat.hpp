@@ -180,7 +180,7 @@ public:
 
 
 /*
-  void vReset() {
+  void vBegin() {
     std::lock_guard<std::mutex> lock(m_mutexHB);
     m_iWriteIdx = m_iReadIdx;
     m_bFull = false;

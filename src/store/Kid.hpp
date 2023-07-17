@@ -105,7 +105,7 @@ namespace STORE
 
     void vChild(i8 i_Child);
 
-    void vReset(void);
+    void vBegin(void);
 
     void vSynch(Card *pChild_with);
 

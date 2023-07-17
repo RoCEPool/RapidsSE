@@ -33,7 +33,6 @@ namespace STORE
   protected:
     b8 m_bCued;
     b8 m_bCueDisabled;
-    b8 m_bTrace;
 
     _CardCtl m_xaCardCtl[CK_ENUMS];
 
@@ -123,10 +122,6 @@ namespace STORE
     void vSetSubsPrintNone(void);
 
     void vShowSettings(i8 i_Card);
-
-    bool bTrace(void);
-    void vTraceing(bool bTrace);
-    bool bTracing(Stz* szXhand, Stz* szXform);
 
     void vUseDefault(void);
     void vUseExpanded(void);

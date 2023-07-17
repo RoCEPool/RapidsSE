@@ -24,7 +24,6 @@ CardCtl::CardCtl(void)
 
   m_bCued = false;
   m_bCueDisabled = false;
-  m_bTrace = false;
 
   vReset();
 
@@ -812,48 +811,6 @@ void CardCtl::vShowSettings(i8 i_Card)
   vTrace("  m_bPrintPptName    %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintPptName    ? "true" : "false");
   vTrace("  m_bPrintSubCards   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubCards   ? "true" : "false");
   vTrace("  m_bPrintSubShort   %s\n"_Stz,m_xaCardCtl[i_Card].m_bPrintSubShort   ? "true" : "false");
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cued                                                                   */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bTrace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  return m_bTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set cued                                                                   */
-/*----------------------------------------------------------------------------*/
-void CardCtl::vTraceing(bool bTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  m_bTrace = bTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cued                                                                   */
-/*----------------------------------------------------------------------------*/
-bool CardCtl::bTracing(Stz* szXhand, Stz* szXform)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARDCTL,_FOOTER_);
-
-  if (m_bTrace)
-    return true;
-
-  if (! AM::JOB::bHasTag(C_GLEAN_TRACE))
-    return false;
-
-  Stz* szTagTrace = AM::JOB::szTagValue(C_GLEAN_TRACE);
-  if (   (szTagTrace->bSame(szXhand) && szXform->bSame(C_NA))
-         || (szXform && szTagTrace->bSame(szXform))) {
-    return true;
-  }
-
-  return false;
 }
 
 

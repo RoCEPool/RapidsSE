@@ -135,13 +135,6 @@ void CardIter::G_vAppendChild(eCK eParent, eCK eChild)
   Card* pChild  = G_pGetMember(eChild);
 
   pParent->vAppend(pChild);
-
-  if (! bIsTracing())
-    return;
-
-  vTrace("  %s\n"_Stz,__func__);
-  vTrace("    parent %s\n"_Stz,pParent->szBearing());
-  vTrace("    child  %s\n"_Stz,pChild->szBearing());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,13 +147,6 @@ void CardIter::G_vAppendChild(eCK eParent, Card* pChild)
   Card* pParent = G_pGetMember(eParent);
 
   pParent->vAppend(pChild);
-
-  if (! bIsTracing())
-    return;
-
-  vTrace("  %s\n"_Stz,__func__);
-  vTrace("    parent %s\n"_Stz,pParent->szBearing());
-  vTrace("    child  %s\n"_Stz,pChild->szBearing());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1851,11 +1837,8 @@ bool CardIter::G_bPushBoard(Stz* szBoardNm)
 
   Board* pSubQueryBoard = m_pBench->pGetBoard(szBoardNm);
   if (! pSubQueryBoard) {
-    vTracer("DID NOT FIND Board: %s\n"_Stz,szBoardNm);
-    return false;
+     return false;
   }
-
-  vTracer("Found SubQuery Board: %s\n"_Stz,pSubQueryBoard->szBoardNm());
 
   G_vPushBoard(pSubQueryBoard);
 
@@ -2103,8 +2086,7 @@ void CardIter::vBeginEach(void)
 {
   _precondition_(_MAGIC_, _FOOTER_);
 
-  G.xKid.vReset();
-  G.xKid.m_bActive = true;
+  G.xKid.vBegin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2296,37 +2278,6 @@ bool CardIter::bIsActive(void)
   return G.xKid.m_bActive;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* is tracing enabled?                                                        */
-/*----------------------------------------------------------------------------*/
-bool CardIter::bIsTracing(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  return m_pCardCtl->bTracing(szXhand(), szXfunc());
-}
-
-/*----------------------------------------------------------------------------*/
-/* conditionally trace                                                        */
-/*----------------------------------------------------------------------------*/
-void CardIter::vTracer(Stz* szFormat, ...)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  if (! bIsTracing())
-    return;
-
-  s256 sValue;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sValue.azChar(),xArgs,(char*)szFormat);
-  va_end(xArgs);
-
-  vTrace("  [%02lld] %s"_Stz,m_iTrace++,sValue.szStz());
-}
-
 /*----------------------------------------------------------------------------*/
 /* begin and record transformation information                                */
 /*----------------------------------------------------------------------------*/
@@ -2342,10 +2293,6 @@ void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
   vXdesc(szXdesc);
 
   this->vBeginEach();
-
-  if (m_pCardCtl->bTracing(szXhand(), szXfunc())) {
-    vTrace("\n\nTracing %s::%s\n"_Stz, szXhand(), szXfunc());
-  }
 }
 
 /*----------------------------------------------------------------------------*/

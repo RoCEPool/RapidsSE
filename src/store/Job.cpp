@@ -1709,7 +1709,7 @@ void Job::vPostRecv(void)
   /* 03 */ m_pMutex       = nullptr;
   /* 04 */ m_pOutput      = nullptr;
   /* 05 */ m_p_ResponseOp = nullptr;
-  /* 06 */ m_oResponseTimer.vStart();   // vReset
+  /* 06 */ m_oResponseTimer.vStart();   // vBegin
   /* 07 */ m_pTask        = nullptr;
   /* 08 */ m_bWasReceived = true;
   /* 19 */ m_pMarkerChain = nullptr;

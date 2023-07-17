@@ -1453,7 +1453,7 @@ TypedStack* CodeSynth::pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelL
 
   // cleanup
   m_pExprStack->vReset();
-  //m_pInitStack->vReset();
+  //m_pInitStack->vBegin();
 
   return pPostStack;
 }
