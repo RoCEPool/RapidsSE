@@ -832,10 +832,10 @@ success
 create index IxO_ORDERKEY  on Orders   (O_ORDERKEY);
 success
 
-load lineitem "../tpch/SF_0001/lineitem.csv" ;
+load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-load orders   "../tpch/SF_0001/orders.csv" ;
+load orders "../TPCH/SF_0001/orders.csv";
 success
 
 // TODO V2

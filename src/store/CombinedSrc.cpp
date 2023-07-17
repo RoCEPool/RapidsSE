@@ -445,30 +445,34 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         // posisition the index
         if (pOpSketch->m_pExprStack->nValues()) {
           vAppendCodeFragment(pOpSketch, "vIndexPositionLower"_Stz, pIndexFile);
+
+          if (pOpSketch->m_bLeftOuter) {
+            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO0"_Stz, pOperatorFile);
+            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
+            vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+            vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
+            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
+
+            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO3"_Stz, pOperatorFile);
+            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
+            vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+            vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
+            vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
+            vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+          }
+          else {
+            vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
+            vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
+          }
         }
         else {
           // cross join
-          vAppendCodeFragment(pOpSketch, "vIndexPositionBegin"_Stz, pIndexFile);
+          vAppendCodeFragment(pOpSketch, "vIndexCrossPositionBegin"_Stz, pIndexFile);
+          vAppendCodeFragment(pOpSketch, "vIndexCrossJoinContinue"_Stz, pOperatorFile);
+          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
         }
 
-        if (pOpSketch->m_bLeftOuter) {
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO0"_Stz, pOperatorFile);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
-          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-          vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
 
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO3"_Stz, pOperatorFile);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO1"_Stz, pOperatorFile);
-          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-          vAppendCodeNullRightCols(pOpSketch, "vCopyNulls"_Stz);
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinueLO2"_Stz, pOperatorFile);
-          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-        }
-        else {
-          vAppendCodeFragment(pOpSketch, "vIndexJoinContinue"_Stz, pOperatorFile);
-          vAppendCodeCopyCols(pOpSketch, "vCopyVchCol"_Stz);
-        }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // dereference the join

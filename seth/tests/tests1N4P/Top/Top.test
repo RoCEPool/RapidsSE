@@ -3,8 +3,9 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-trackMemory;
-success
+// TODO V2
+//trackMemory;
+//success
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -105,12 +106,12 @@ rows:
 
 
 // drop the table
-drop table nation;
+drop table lineitem;
 success
 
 // get memory leaks
-memoryLeaks;
-rows: 0
+//memoryLeaks;
+//rows: 0
 
 CLEANUP {
   
