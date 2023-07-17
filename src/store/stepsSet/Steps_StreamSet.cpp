@@ -377,7 +377,7 @@ void Step::vStreamSetAddListFolder(void)
 void Step::vStreamSetAddListIndex(void)
 {
   ENTRY();
-  
+
   // get the table
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
   

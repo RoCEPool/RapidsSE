@@ -184,6 +184,110 @@ Stz* Card_Key::szP_Type(void)
   return szP_Type;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert key to indexDef                                                    */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_Key::pToIndexDef(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bHasDescending = false;
+
+  IndexDef* pIndexDef = new IndexDef;
+
+  Kid xKey(this);
+  while (xKey.bEach(CK_EXPR)) {
+    Card_Expr* p_expr = xKey.p_expr();
+
+    Card_RpnCalc* p_rpnCalc = p_expr->pSub_rpnCalc();
+
+    Card_Term* p_term = p_rpnCalc->pGetTerm(0);
+    if (! p_term)
+      continue;
+
+    Stz* szColNm  = p_term->szSymbol();
+    eCT  eColType = p_term->eColType();
+
+    if (! szColNm || CT_NONE == eColType)
+      continue;
+
+    bool bAscending = true;
+    if (p_expr->bIsDescending()) {
+      bAscending = false;
+      bHasDescending = true;
+    }
+    pIndexDef->vAddColumn(szColNm,eColType,bAscending);
+  }
+
+  if (bHasDescending)
+    pIndexDef->vHasDescending(true);
+
+  if (pIndexDef->nColumns())
+    return pIndexDef;
+
+  delete pIndexDef;
+  return nullptr;
+}
+/*----------------------------------------------------------------------------*/
+//IndexDef* Card_Key::pToIndexDef(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  IndexDef* pIndexDef = new IndexDef;
+//
+//  Card_RpnCalc* p_rpnCalc = pSub_rpnCalc();
+//  if (! p_rpnCalc)
+//    return nullptr;
+//
+//  Kid xRpnCalc(p_rpnCalc);
+//  while (xRpnCalc.bEach(CK_EXPR)) {
+//    Card_Expr* p_expr = xRpnCalc.p_expr();
+//
+//    Card_Term* p_term = p_expr->pGetTerm(0);
+//    if (! p_term)
+//      continue;
+//
+//    Stz* szColNm  = p_term->szSymbol();
+//    eCT  eColType = p_term->eColType();
+//
+//    if (! szColNm || CT_NONE == eColType)
+//      continue;
+//
+//    pIndexDef->vAddColumn(szColNm,eColType);
+//  }
+//
+//  if (pIndexDef->nColumns())
+//    return pIndexDef;
+//
+//  delete pIndexDef;
+//  return nullptr;
+//}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vX(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Key::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_EXPR,CK_NONE);
+
+  Kid xKey(this);
+  while (xKey.bEach(CK_EXPR)) {
+    Card_Expr *p_expr = xKey.p_expr();
+
+    p_expr->vValidate(pCI,iDepth+1,this);
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

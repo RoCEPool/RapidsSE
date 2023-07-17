@@ -48,7 +48,8 @@ enum eLR // Logic Unit Registers
   /*  */ LR_INTSTACK,
   
   /*  */ LR_JOBMETRICS,
-  
+
+  /*  */ LR_LIBINFO,
   /*  */ LR_LIST,
   
   /*  */ LR_MARKER,
@@ -163,7 +164,8 @@ static Stz* aLR[]
   /*  */ "LR_INTSTACK"_Stz,
   
   /*  */ "LR_JOBMETRICS"_Stz,
-  
+
+  /*  */ "LR_LIBINFO"_Stz,
   /*  */ "LR_LIST"_Stz,
   
   /*  */ "LR_MARKER"_Stz,

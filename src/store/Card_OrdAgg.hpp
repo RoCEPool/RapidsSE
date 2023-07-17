@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_Project.hpp"
+#include "Card_AGG.hpp"
 
 namespace STORE
 {
-  class Card_OrdAgg : public Card_Project
+  class Card_OrdAgg : public Card_AGG
   {  
   public:
     void* operator new(size_t);
@@ -21,6 +21,7 @@ namespace STORE
     void vEarlyProject_root(CardIter* pCI);
     void vUpdate_projection(CardIter* pCI);
 
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_OrdAgg* _pCard_OrdAgg(void* aAddr);

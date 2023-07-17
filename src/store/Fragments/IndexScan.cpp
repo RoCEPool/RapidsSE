@@ -5,7 +5,9 @@
 #include "BASE.h"
 #include "Dynamic.hpp"
 #include "IndexDef.hpp"
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
+#include "ClangDynamic.h"
+#include "ClangStuff.h"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
@@ -23,105 +25,58 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 
   i8 i_CurrentRow;
   i8*   paW;
+  i8    iaPow10[15];
+
+  char* __INDEXNAME__;
 
   __L_LABEL_LOOP__:
 
   // marker-start
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INDEXSCAN-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   struct __STRUCT_TO__* p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
 
   __L_LABEL__:
 
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
+
+  iaPow10[0] = 1;
+  iaPow10[1] = 10;
+  iaPow10[2] = 100;
+  iaPow10[3] = 1000;
+  iaPow10[4] = 10000;
+  iaPow10[5] = 100000;
+  iaPow10[6] = 1000000;
+  iaPow10[7] = 10000000;
+  iaPow10[8] = 100000000;
+  iaPow10[9] = 1000000000;
+  iaPow10[10] = 10000000000;
+  iaPow10[11] = 100000000000;
+  iaPow10[12] = 1000000000000;
+  iaPow10[13] = 10000000000000;
+  iaPow10[14] = 100000000000000;
+
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+
   paW = &aDynamicT->m_aW[0];
+
+  strcpy(&aDynamicT->m_xIndexInfoT.m_cTableName[0], "__TABLENAME__");
+  strcpy(&aDynamicT->m_xIndexInfoT.m_cIndexName[0], "__INDEXNAME__");
+
+#ifdef WITH_CLANG
+  aDynamicT->m_xIndexInfoT.m_aTable = aExtern_FindTable(aDynamicT->m_xIndexInfoT.m_cTableName);
+  aDynamicT->m_xIndexInfoT.m_aIndex = aExtern_FindIndex(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_cIndexName);
+  aDynamicT->m_xIndexInfoT.m_aIndexDef = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoT.m_aIndex);
+  aDynamicT->m_xIndexInfoT.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoT.m_aTable, aDynamicT->m_xIndexInfoT.m_aIndex);
+#endif
 
   i_CurrentRow = -1;
 
-  // position at beginning of the index
-  aDynamicT->m_xIndexInfoT.m_aEntInt =(struct Ent_int*)aIndexTree_begin(
-        aDynamicT->m_xIndexInfoT.m_aIndexTree, &aDynamicT->m_xIndexInfoT.m_aEntBuffer);
-
-  if ( ! aDynamicT->m_xIndexInfoT.m_aEntInt )
-    goto L_Return;
-
   // marker-end
 
   L_Return:
   return;
 
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexUpperCheck --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexUpperCheck
-void vIndexUpperCheck(Dynamic_T* aDynamicT) {
-
-  // marker-start
-
-  /// position at upper bound
-  aDynamicT->m_xIndexInfoT.m_aEntUpper =  (struct Ent_int *)aIndexTree_positionLT(
-      aDynamicT->m_xIndexInfoT.m_aIndexTree, aDynamicT->m_xIndexInfoT.m_aEntKey);
-
-  L_IndexScanDeref:
-
-  // reached upper bound ?
-  if (aDynamicT->m_xIndexInfoT.m_aEntInt == aDynamicT->m_xIndexInfoT.m_aEntUpper) {
-    goto L_Return;
-  }
-
-  // process the row
-  aDynamicT->m_iProcessRow = 1;
-
-  // marker-end
-
-  L_Return:
-  return;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- vIndexScanReturn --------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vIndexScanReturn
-void vIndexScanReturn(Dynamic_T* aDynamicT) {
-
-  void* aHeadLine;
-  void* aHeadLineSav;
-  void* aSubReturnLabel;
-
-  // marker-start
-  goto L__IndexScanRet;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // INFLATE-CRW-RET
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  L__IndexScanRet:
-
-  aHeadLine = aHeadLineSav;
-
-  goto __L_LABEL_NEXT__;
-
-  __L_LABEL_LOOP__:
-
-  // move to next entry
-  aDynamicT->m_xIndexInfoT.m_aEntInt = (struct Ent_int*)aEntBuffer_nextEntry(
-      &aDynamicT->m_xIndexInfoT.m_aEntBuffer, aDynamicT->m_xIndexInfoT.m_aEntInt);
-  goto L_IndexScanDeref;
-
-  // marker-end
-
-  __L_LABEL_NEXT__:
-  L_IndexScanDeref:
-
-  return;
 }
 
 /*============================================================================*/

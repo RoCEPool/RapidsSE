@@ -38,7 +38,7 @@
 
   ) < internal > = 1 ;
   "
-  api::forkChild  api:executeCheck
+  nullptr api::forkChild  api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERATORS
@@ -71,7 +71,7 @@
     bytesFreed        VARCHAR NOT NULL
      ) < internal > = 1 ;
       "
-      api::forkChild  api:executeCheck
+      nullptr api::forkChild  api:executeCheck
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBMETRICS
@@ -101,7 +101,7 @@
     
   ) < internal > = 1 ;
   "
-  api::forkChild  api:executeCheck
+  nullptr api::forkChild  api:executeCheck
 
 ;
 

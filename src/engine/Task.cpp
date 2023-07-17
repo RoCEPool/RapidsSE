@@ -190,6 +190,9 @@ void Task::vTask(void)
   m_pOpLowMemWord  = nullptr;
   m_pJobLowMemWord = nullptr;
 
+  m_pOpInternalErrorWord  = nullptr;
+  m_pJobInternalErrorWord = nullptr;
+
   // m_oDicStack
   // m_oSaveDicStack
   m_pSearchWord = new(nullptr) Word(""_Stz);
@@ -311,9 +314,16 @@ void Task::vTaskLoop(void)
       //
     }
 
-      // catch lowMemory exception
+    // catch lowMemory exception
     catch (LowMemory xLowMemory) {
+      //vTrace("Got xLowMemory\n"_Stz);
       vLowMemoryHandler();
+    }
+
+    // catch internal error exception
+    catch (InternalError xInternalError) {
+      //vTrace("Got INTERNAL ERROR\n"_Stz);
+      vInternalErrorHandler();
     }
 
     // catch exception
@@ -426,6 +436,17 @@ void Task::vLowMemoryHandler(void)
   _noPreconditions_
 
   vSetSenLowMemContext();
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* caught an internal error exception in vTaskLoop catch(InternalError...)    */
+/*----------------------------------------------------------------------------*/
+void Task::vInternalErrorHandler(void)
+{
+  _noPreconditions_
+
+  vSetSenInternalErrorContext();
 
 }
 
@@ -1255,6 +1276,52 @@ void Task::vSetSenRecoverContext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset sen execution context for internal error                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSetSenInternalErrorContext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_pAuxStack->vReset();
+  m_pDataStack->vReset();
+
+  //Task::vSeeFrameStack();
+  //WHY: why > 2
+  while (m_pReturnStack->nValues() > 2) {
+
+#ifdef WITH_LOCALS_OOM
+
+    if (m_pLocalVars) {
+      void* aDiscardPoint_return = m_pReturnStack->aTopVal();
+      if (m_pLocalVars->aDiscardPoint() == aDiscardPoint_return) {
+        m_pLocalVars->vFramePop(aDiscardPoint_return);
+      }
+    }
+
+#else
+
+    if (m_pLocalFrame
+        && m_pLocalFrame->aDiscardPoint() ==
+           (TypeValueArea*)m_pReturnStack->aTopVal())
+      vLocalsPop();
+
+#endif
+
+    m_pReturnStack->vDiscardTop();
+  }
+
+  //Task::vSeeFrameStack();
+
+
+  if (MY::pOp())
+    m_aInxPtr = m_pOpInternalErrorWord->aFirstCell();
+  else
+    m_aInxPtr = m_pJobInternalErrorWord->aFirstCell();
+
+  //Task::vSeeFrameStack();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset sen execution context for low memory                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vSetSenLowMemContext(void)
@@ -1502,6 +1569,19 @@ void Task::vSetInxPtr(Word* pEntryWord)
   Word* pJobLowMemWord = pDicRoot->pFindWord("JobLowMemory_recoveryWord"_Stz);
   if (pJobLowMemWord) {
     m_pJobLowMemWord = pJobLowMemWord;
+  }
+
+  Word* pOpInternalErrorWord = pDicRoot->pFindWord("OpInternalError_recoveryWord"_Stz);
+  if (pOpInternalErrorWord) {
+    //vTrace(" found OpInternalError_recoveryWord\n"_Stz);
+    m_pOpInternalErrorWord = pOpInternalErrorWord;
+  }
+
+
+  Word* pJobInternalErrorWord = pDicRoot->pFindWord("JobInternalError_recoveryWord"_Stz);
+  if (pJobInternalErrorWord) {
+    //vTrace(" found JobInternalError_recoveryWord\n"_Stz);
+    m_pJobInternalErrorWord = pJobInternalErrorWord;
   }
 }
 

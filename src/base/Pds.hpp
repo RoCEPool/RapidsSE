@@ -1,0 +1,73 @@
+/*============================================================================*/
+/* Pds.hpp -- Primary Data Structure (PDS)                                    */
+/*============================================================================*/
+#pragma once
+
+#include "SkipListNode.hpp"
+#include "SkipListBlock.hpp"
+
+namespace BASE
+{
+  class Pds : public Object,
+              public InternalHeap_t<SkipListBlock>
+  {
+    static const i8 C_MIN_KEY_LEN = sizeof(i8);
+
+  public:
+    i8 m_nBlockSize; // Size of SLN + Item in bytes
+    i8 m_nPaddingPerBlk; // Size of padding for each Skip List Block
+    u2 m_uFreeListRootOffset;
+    i8 m_iFreeListEntries; // Number of free entries available (Does not include dummy root node)
+
+    u2 m_uInUseRootOffset;
+    i8 m_iNumEntries[C_MAX_LVL_LEVELS];
+
+    i8 m_iSyntheticKey; // Synthetic key used when we only append to the Skip List
+
+    // Save the last usable offset for asserts
+
+    // must be last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    Pds(i8 nBytes);
+    ~Pds(void) noexcept(false);
+
+
+
+    // Note: Only the public functions grab a lock
+    // public:
+    SkipListBlock*  pAppendWithSynthKey(void);
+    bool            bDelete(i8 iKey);
+    void            vDumpFreeList(void);
+    void            vDumpInUseList(void);
+    SkipListBlock*  pInsert(i8 iKey);
+    SkipListBlock*  pFind(i8 iKey);
+    SkipListBlock*  pFirstBlock(void);
+    i8              iNumEntries(void);
+
+    // private:
+    SkipListBlock*  aAllotSkipListBlock(i8 iKey);
+    void*           pGetAddrFromOffset(u2 uOffset);
+    u2              uGetOffsetFromBase(void* aAddress);
+    void            vMoveToFreeList(SkipListBlock* pSLBlock);
+    SkipListBlock*  pNextSLBlock(SkipListBlock* pSLBlock , i8 iLevel);
+    bool            bPriorVecToKey(i8 iKey, SkipListBlock* aPriorVec[]);
+    bool            bSetNextSLBlock(SkipListBlock* pStartBlk, SkipListBlock* pEndBlock, i8 iLevel);
+    bool            bSetNextSLBlock(SkipListBlock* pStartBlk, u2 uOffset, i8 iLevel);
+
+  public:
+    Footer* aFooter(void);
+  };
+
+  Pds* _pPds(void* aAddr);
+
+}
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

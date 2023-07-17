@@ -177,6 +177,7 @@ rows:
   (true)
 
 select true = bol_col2 from datums;
+rows:
  (false)
  (null)
  (true)

@@ -46,10 +46,7 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 
   m_pSubQuery = new SubQuery(this);
 
-  m_bPrepareSubQueries  = false;
-  m_bFlattenSubQueries  = false;
-  m_bApplyOptimisations = false;
-  m_bMakeWeavable       = false;
+  m_eTransform = XF_NONE;
 
   _checkInitialised_(CN_BOARD);
 
@@ -107,6 +104,7 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
   pCI->G.p_term->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
   pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
+  pCI->G.p_expr->pSymbol()->Y_vSet(P_Type, p_expr_found->szP_Type());
 
 }
 
@@ -209,47 +207,11 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vIndividuate_indexJoin_filter_b(CardIter* pCI)
-{
-  _static_
-
-  // todo: xt
-
-  pCI->G.p_indexJoin->vRemoveChild(pCI->G.p_filter);
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter,
-                             pCI->G.p_indexJoin);
-
-  if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPush(pCI->G.p_indexJoin->pSub_level()->pDupCardRecursive());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vIndividuate_crossJoin_filter(CardIter* pCI)
-{
-  _static_
-
-  // todo: xt
-
-  pCI->G.p_crossJoin->vRemoveChild(pCI->G.p_filter);
-  pCI->G.pDeck->vInsertAfter(pCI->G.p_filter,
-                             pCI->G.p_crossJoin);
-
-  if (! pCI->G.p_filter->pSub_level()) {
-    pCI->G.p_filter->vPush(pCI->G.p_crossJoin->pSub_level()->pDupCardRecursive());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vValidate(CardIter* pCI)
 {
   _static_
 
-  pCI->vUsingBoard(BK_SUBQUERY, 0);
+  //pCI->vUsingBoard((i8)0);
 
   if (pCI->G.pBoard->eBoardKind() == BK_SUBQUERY)
     vValidate_SubQuery(pCI);
@@ -262,59 +224,56 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 {
   _static_
 
-  if (! pCI->G.pBoard->bPrepareSubQueries())
+  if (!pCI->m_pBench->bMadeSimpler())
     return;
+
+  Card_Deck* pDeck = pCI->G.pDeck;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // main cards
 
   CardIter xCI(pCI);
+  RASSERT(xCI.m_pBench);
   while (xCI.G_bEachMain()) {
 
     switch (xCI.G.e_MainCard) {
 
-      case CK_AGGREG:
-        break;
-      case CK_CALL:
-        break;
-      case CK_FILTER:
-        if ((xCI.G.p_boolCalc = xCI.G.p_MainCard->pSub_boolCalc())) {
-
-        }
-        break;
-      case CK_GBYAGG:
-        break;
-      case CK_HAVING:
-        break;
-      case CK_INDEXJOIN:
-        break;
-      case CK_INDEXSCAN:
-        break;
-      case CK_LIMIT:
-        break;
-      case CK_ORDAGG:
-        break;
-      case CK_PROJECT:
-        break;
-      case CK_SCAN:
-        break;
-      case CK_SORT:
-        break;
-      case CK_TABLE:
-        break;
-      case CK_TOP:
-        break;
-      case CK_WHERE:
-        break;
+      case CK_AGGREG:       xCI.G.p_aggreg->vValidate       (&xCI,0,pDeck); break;
+      case CK_CALL:         xCI.G.p_call->vValidate         (&xCI,0,pDeck); break;
+      case CK_CAST:         xCI.G.p_cast->vValidate         (&xCI,0,pDeck); break;
+      case CK_COMBINED:     xCI.G.p_combined->vValidate     (&xCI,0,pDeck); break;
+      case CK_CORRELATION:  break;
+      case CK_CROSSJOIN:    xCI.G.p_crossJoin->vValidate    (&xCI,0,pDeck); break;
+      case CK_FLAT:         xCI.G.p_flat->vValidate         (&xCI,0,pDeck); break;
+      case CK_FILTER:       xCI.G.p_filter->vValidate       (&xCI,0,pDeck); break;
+      case CK_FOLD:         xCI.G.p_fold->vValidate         (&xCI,0,pDeck); break;
+      case CK_GBYAGG:       xCI.G.p_gbyAgg->vValidate       (&xCI,0,pDeck); break;
+      case CK_HAVING:       xCI.G.p_having->vValidate       (&xCI,0,pDeck); break;
+      case CK_HASH:         xCI.G.p_hash->vValidate         (&xCI,0,pDeck); break;
+      case CK_INDEXJOIN:    xCI.G.p_indexJoin->vValidate    (&xCI,0,pDeck); break;
+      case CK_INDEXSCAN:    xCI.G.p_indexScan->vValidate    (&xCI,0,pDeck); break;
+      case CK_KEYEXISTS:    xCI.G.p_keyExists->vValidate    (&xCI,0,pDeck); break;
+      case CK_KEYNOTEXISTS: xCI.G.p_keyNotExists->vValidate (&xCI,0,pDeck); break;
+      case CK_LIMIT:        xCI.G.p_limit->vValidate        (&xCI,0,pDeck); break;
+      case CK_ORDAGG:       xCI.G.p_ordAgg->vValidate       (&xCI,0,pDeck); break;
+      case CK_PROJECT:      xCI.G.p_project->vValidate      (&xCI,0,pDeck); break;
+      case CK_SCAN:         xCI.G.p_scan->vValidate         (&xCI,0,pDeck); break;
+      case CK_SEND:         break;
+      case CK_SORT:         xCI.G.p_sort->vValidate         (&xCI,0,pDeck); break;
+      case CK_STAGE:        xCI.G.p_stage->vValidate        (&xCI,0,pDeck); break;
+      case CK_TABLE:        xCI.G.p_table->vValidate        (&xCI,0,pDeck); break;
+      case CK_TOP:          xCI.G.p_top->vValidate          (&xCI,0,pDeck); break;
+      case CK_WHERE:        xCI.G.p_where->vValidate        (&xCI,0,pDeck); break;
 
       default:
+        xCI.G.p_MainCard->vDump();
         vTrace("Missing Case: %lld %s\n"_Stz, (i8) xCI.G.e_MainCard, aCK[xCI.G.e_MainCard]);
         NEVER_REACH
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // sub lists
-
+/*
     if ((xCI.G.p_indexList = xCI.G.p_MainCard->pSub_indexList())) {
       CardIter xCI_indexList(&xCI);
       while (xCI_indexList.G_bEachMain()) {
@@ -359,7 +318,9 @@ void Board::vValidate_SubQuery(CardIter *pCI)
 
     }
 
+  */
   }
+
 
 }
 
@@ -561,10 +522,11 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprint("Transform: %02lld Board %lld %s Query %s"_Stz,
+  pRibbon->vSprint("Transform: %02lld Board %lld %s %p Query %s"_Stz,
                    m_iXform,
                    m_i_Board,
                    m_sBoardNm.szStz(),
+                   this,
                    m_pBench->pOptimiser()->szQueryNm()
                    );
 
@@ -600,6 +562,8 @@ void Board::vPrintBoard(Stz* szDescription)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  CardCtl* pCardCtl = m_pBench->pOptimiser()->pCardCtl();
+
   Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
 
   vPinTitle(pRibbon, m_iXform, szDescription);
@@ -608,10 +572,23 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinBanners(pRibbon);
 
-  pRibbon->vPrintRibbon();
+  i8 iPrintNo = pCardCtl->iPrintNo();
+  pRibbon->vPrintRibbon(iPrintNo);
+  pCardCtl->vPrintNoInc();
 
   delete pRibbon;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Bench* Board::pBench(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BOARD, _FOOTER_);
+
+  return m_pBench;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -636,12 +613,44 @@ void Board::vBoardNo(i8 i_Board)
 /*----------------------------------------------------------------------------*/
 /* get sub-query                                                              */
 /*----------------------------------------------------------------------------*/
+void Board::vRenumberCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_pCard_Deck->vRenumberRoot(m_i_Board);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-query                                                              */
+/*----------------------------------------------------------------------------*/
 SubQuery* Board::pSubQuery(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   return m_pSubQuery;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get transform                                                              */
+/*----------------------------------------------------------------------------*/
+eXF Board::eTransform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  return m_eTransform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transform                                                              */
+/*----------------------------------------------------------------------------*/
+void Board::vTransform(eXF eTransform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  m_eTransform = eTransform;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */
@@ -721,86 +730,6 @@ void Board::vXhand(const char* asXhand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_sXhand = asXhand;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bPrepareSubQueries(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_bPrepareSubQueries;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPrepareSubQueries(bool bPrepareSubQueries)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_bPrepareSubQueries = bPrepareSubQueries;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bFlattenSubQueries(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_bFlattenSubQueries;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vFlattenSubQueries(bool bFlattenSubQueries)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_bFlattenSubQueries = bFlattenSubQueries;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bApplyOptimisations(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_bApplyOptimisations;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vApplyOptimisations(bool bApplyOptimisations)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_bApplyOptimisations = bApplyOptimisations;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Board::bMakeWeavable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_bMakeWeavable;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vMakeWeavable(bool bMakeWeavable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_bMakeWeavable = bMakeWeavable;
 }
 
 /*============================================================================*/

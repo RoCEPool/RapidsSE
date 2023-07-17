@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_OP.hpp"
+#include "Card_COND.hpp"
 
 namespace STORE
 {
-  class Card_KeyExists : public Card_OP
+  class Card_KeyExists : public Card_COND
   {
   public:
     void* operator new(size_t);
@@ -25,6 +25,9 @@ namespace STORE
     static void vMorph_table_To_keyExists(CardIter* pCI);
 
     void vUpdate_projection(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
 
   };
 

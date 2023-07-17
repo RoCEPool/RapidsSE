@@ -19,7 +19,7 @@ __vDeleteFunction(Card_KeyExists,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_KeyExists::Card_KeyExists(void)
-: Card_OP(CK_KEYEXISTS)
+: Card_COND(CK_KEYEXISTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -106,7 +106,7 @@ void Card_KeyExists::vEarlyProject_recurse_add(CardIter* pCI)
   pCI->G_vInsertBefore(p_project_early, this);
   pCI->G_vMainResynch();
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
   Card_OP::vEarlyProject_backstep(pCI);
@@ -224,6 +224,24 @@ void Card_KeyExists::vUpdate_projection(CardIter* pCI)
     vAppend(pCI->G.p_projection);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_KeyExists::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_CONSTRAINT,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+  pSub_table()->vValidate(pCI,iDepth+1,this);
+  pSub_indexList()->vValidate(pCI,iDepth+1,this);
+  pSub_constraint()->vValidate(pCI,iDepth+1,this);
+
+  RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

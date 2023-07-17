@@ -121,6 +121,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("CodeBlock[]"_Stz)) {
+    pCurrentWord->vEncodeCall("CodeBlock[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("CounterA[]"_Stz)) {
     pCurrentWord->vEncodeCall("CounterA[].set"_Stz);
     EXIT();
@@ -236,6 +241,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Fun4[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Fun4[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Grid[]"_Stz)) {
     pCurrentWord->vEncodeCall("Grid[].set"_Stz);
     EXIT();
@@ -278,6 +288,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("InfoSetTable[]"_Stz)) {
     pCurrentWord->vEncodeCall("InfoSetTable[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("LibInfo[]"_Stz)) {
+    pCurrentWord->vEncodeCall("LibInfo[].set"_Stz);
     EXIT();
     return;
   }
@@ -471,7 +486,12 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  
+  else if (szTerm->bSame("TinyC[]"_Stz)) {
+    pCurrentWord->vEncodeCall("TinyC[].set"_Stz);
+    EXIT();
+    return;
+  }
+
   else if (szTerm->bSame("Vertex[]"_Stz)) {
     pCurrentWord->vEncodeCall("Vertex[].set"_Stz);
     EXIT();

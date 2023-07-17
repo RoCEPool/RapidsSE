@@ -31,6 +31,7 @@ success;
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
+/optimise_passthru 
 pipeline Q6
 begin
 

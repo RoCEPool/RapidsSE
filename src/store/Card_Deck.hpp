@@ -22,18 +22,20 @@ namespace STORE
 
     void vAddStageCasts(CardIter* pCI);
 
-    eXK eAddStageCast_toPrev_cast(CardIter*       pCI,
-                                  Card_StreamPtn* p_streamPtn,
-                                  Card_Project*   p_project_prev,
-                                  Card_Combined*  p_combined_prev,
-                                  Card_Cast*      p_cast_prev,
-                                  Card_OP*        p_OP_curr);
+    eXK eAddStageCast_toPrev_cast(CardIter*        pCI,
+                                  Card_StreamPtn*  p_streamPtn,
+                                  Card_Project*    p_project_prev,
+                                  Card_Combined*   p_combined_prev,
+                                  Card_Cast*       p_cast_prev,
+                                  Card_Projection* p_projection_prev,
+                                  Card_OP*         p_OP_curr);
 
     void vProjectionUpdate(CardIter* pCI);
 
     Card_Projection* p_projection_fold(void);
 
     void vProjectionAnalysis(CardIter* pCI);
+    void vProjectionAnalysis_passThru(CardIter* pCI);
 
   };
 

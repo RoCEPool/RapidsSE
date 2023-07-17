@@ -32,7 +32,7 @@
 //  debug::breakpoint
 
   // fork a child job for the command
-  sForkTags sForkCmd api::forkChild not if
+  sForkTags sForkCmd nullptr api::forkChild not if
     nullptr [job].responseOp!
     op__execErr
     true

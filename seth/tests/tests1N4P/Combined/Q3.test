@@ -68,6 +68,7 @@ success
 load Orders "../TPCH/SF_0001/orders.csv";
 success
 
+/optimise_passthru 
 pipeline Q3
 begin
 

@@ -7,6 +7,8 @@
 #include "CardIter.hpp"
 #include "SawOpCards.hpp"
 
+#include "CardUsage.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -95,6 +97,13 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
     p_main = pCI->G.pDeck->pGetChild(i_Main);
     e_main = p_main->eCard();
+
+
+
+    //RASSERT(Card_OP::bIsOp(p_main));
+
+
+
     eAL e_level_main = (eAL) p_main->pSub_level()->pSymbol()->Y_iGet(P_Level);
 
     // change of level
@@ -212,8 +221,21 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
 
     // if filter then continue?
     if (CK_FILTER == e_main || CK_HAVING == e_main) {
+
       bSawFilterOp = true;
+      if (CK_FILTER == e_main && ! bSawAggOp)
+       continue;
+
+      vAddNext(pCI, p_main, i_Main,""_Stz);
+      vAddStage(pCI, p_main, i_Main, e_level_running,nStages);
+      bSawAggOp = false;
+      bSawFilterOp = false;
+      bSawIndexJoinOp = false;
+      bSawProjectOp = false;
+      bSawScanOp = false;
+      bSawSortOp = true;
       continue;
+
     }
 
     if (bSawAggOp || bSawIndexJoinOp) {
@@ -259,8 +281,11 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
 {
   _static_
 
+  CardUsage* pStager = new CardUsage;
+  RASSERT(0 == pStager->nSaw());
+
   i8 nStages = 0;
-  SawOpCards* pSawOpCards = new SawOpCards;
+  //SawOpCards* pSawOpCards = new SawOpCards;
   eAL e_level_running = Card::eStageTopologyToAggrLevel(YG_ALL_PARTITIONS);
 
   for (i8 i_Main = 1; i_Main < pCI->G.pDeck->nChildCards(); i_Main++) {
@@ -269,31 +294,27 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
     eCK      e_card_OP = p_card_OP->eCard();
     eAL      e_level   = (eAL) p_card_OP->pSub_level()->pSymbol()->Y_iGet(P_Level);
 
-    if (bAddCombined(pSawOpCards,p_card_OP))
+    RASSERT(Card_OP::bIsOp(p_card_OP));
+
+    if (pStager->bAddCombined(p_card_OP))
       vAddCombined(pCI, p_card_OP, i_Main);
 
-    if (bAddNext(pSawOpCards,p_card_OP))
+    if (pStager->bAddNext(p_card_OP))
       vAddNext(pCI, p_card_OP, i_Main, ""_Stz);
 
-    if (bAddStage(pSawOpCards,p_card_OP)) {
+    if (pStager->bAddStage(p_card_OP)) {
       vAddStage(pCI, p_card_OP, i_Main, e_level_running, nStages);
-      pSawOpCards->vReset();
+      pStager->vClearAll();
     }
 
-    pSawOpCards->vSaw(p_card_OP);
+   //pSawOpCards->vSaw(p_card_OP);
+
+    pStager->vSaw(p_card_OP);
   }
 
-  delete pSawOpCards;
-}
+  //delete pSawOpCards;
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Stage::bAddCombined(SawOpCards* pSawOpCards, Card_OP* p_card_OP)
-{
-  _static_
-
-  return false;
+  delete pStager;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -311,16 +332,6 @@ void Card_Stage::vAddCombined(CardIter* pCI, Card* p_main, i8& ri_main)
   ri_main++;
   RASSERT(pCI->G.pDeck->pGetChild(ri_main) == p_main);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_Stage::bAddNext(SawOpCards* pSawOpCards, Card_OP* p_card_OP)
-{
-  _static_
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -345,16 +356,6 @@ void Card_Stage::vAddNext(CardIter* pCI, Card* p_main, i8& ri_main, Stz* szNextV
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Stage::bAddStage(SawOpCards* pSawOpCards, Card_OP* p_card_OP)
-{
-  _static_
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level_running, i8& nStages)
 {
   _static_
@@ -373,6 +374,16 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Stage::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_notHave(CK_LEVEL,CK_NONE);
+}
 
 /*============================================================================*/
 /* end                                                                        */

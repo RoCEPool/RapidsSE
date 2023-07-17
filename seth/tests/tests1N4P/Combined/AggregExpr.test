@@ -28,6 +28,7 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -55,6 +56,7 @@ pipeline unnamed
 
  rows: (6000)
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -125,6 +127,7 @@ pipeline unnamed
    (143,154,155,22290,22680,22304,22304)
    ( 23, 34, 35,21690,22080,21704,21704)
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :

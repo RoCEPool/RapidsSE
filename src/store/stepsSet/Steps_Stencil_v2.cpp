@@ -89,7 +89,7 @@ void Step::vStencilSetup_v2(void)
   pDynamic->aDynamicT()->m_pTub        = *m_pLogicUnit->m_xpTub;
   pDynamic->aDynamicT()->m_pPot        = *m_pLogicUnit->m_xpPot;
 
-  pStencil->vSetup(pDynamic, pStream);
+  //pStencil->vSetup(pDynamic, pStream);
 
   EXIT();
 }
@@ -100,7 +100,7 @@ void Step::vStencilSetup_v2(void)
 void Step::vStencilSketch_v2(void)
 {
   ENTRY();
-
+/*
   Stencil_v2* pStencil   = * m_pLogicUnit->m_xpStencil_v2;
 
   Dynamic* pDynamic = _pDynamic(m_pDataStack->pPopPtr(__func__));
@@ -125,12 +125,12 @@ void Step::vStencilSketch_v2(void)
     if (pTagSet->bHasName(C_TAG_CCODE))
       bGenerateCCode = true;
 
-    pStencil->vCombine(bGenerateCCode);
+    pStencil->vCombine(true, bGenerateCCode);
     pStencil->vPrint();
   }
 
   m_pDataStack->vPushInt(eError);
-
+*/
   EXIT();
 }
 

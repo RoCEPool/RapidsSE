@@ -37,7 +37,6 @@ namespace BASE
     static bool bStartCppString(char cArg);
     static bool bEndCppString(char cArg);
 
-    static bool bStartCodeBlock(char* azArg);
     static bool bStartSenInteger(char cArg);
     static bool bStartSenName(char cArg);
     static bool bStartSenString(char cArg);

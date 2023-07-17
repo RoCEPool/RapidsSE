@@ -165,10 +165,11 @@ void Step::vPotRluRowPixStore(void)
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   i8 iAddPtnHsh = m_pDataStack->iPopIntBol(__func__);
 
-  pStreamDef->vToRowPix(&m_pLogicUnit->m_oRowPix,(bool)iAddPtnHsh);
+  RowPix* pRowPix = new RowPix;
+  pStreamDef->vToRowPix(pRowPix,(bool)iAddPtnHsh);
 
   Pot* pPot = _pPot(m_pLogicUnit->m_xRluCommon.m_pPot);
-  pPot->vRowPix(&m_pLogicUnit->m_oRowPix);
+  pPot->vRowPix(pRowPix);
 
   EXIT();
 }

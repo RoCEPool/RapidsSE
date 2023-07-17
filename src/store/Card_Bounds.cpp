@@ -87,6 +87,17 @@ Card_Bound* Card_Bounds::pFindChosenBound(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vEnsureTypes_For_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_BOUND); /**/)
+    xKid.p_bound()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does this bounds have a bound logically equivalent to given compare?       */
 /*----------------------------------------------------------------------------*/
 bool Card_Bounds::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
@@ -115,6 +126,18 @@ bool Card_Bounds::bUsesSqyRsl(void)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  for (Kid xCI(this); xCI.bEach(CK_BOUND); /**/) {
+    xCI.p_bound()->vValidate(pCI, iDepth + 1, this);
+  }
 }
 
 /*============================================================================*/

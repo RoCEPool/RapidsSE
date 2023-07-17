@@ -5,7 +5,8 @@
 #include "BASE.h"
 #include "Dynamic.hpp"
 #include "IndexDef.hpp"
-#include "TccStuff.h"
+#include "ClangStuff.h"
+#include "ClangDynamic.h"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
@@ -27,12 +28,11 @@ void vFilterBegin(Dynamic_T* aDynamicT) {
   __L_LABEL_LOOP__:
 
   // marker-start
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // FILTER-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 __L_LABEL__:
+
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -42,10 +42,10 @@ __L_LABEL__:
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- iFilterEnd --------------------------------------------------------------*/
+/*-- vFilterEnd --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-// function-iFilterEnd
-i8 iFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
+// function-vFilterEnd
+void vFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
 
   // marker-start
   if (bFilterResult && bFilterResult != C_DATUM_NULL) {
@@ -54,6 +54,7 @@ i8 iFilterEnd(Dynamic_T* aDynamicT, bool bFilterResult) {
     aDynamicT->m_iProcessRow = 0;
   }
   // marker-end
+
 }
 
 

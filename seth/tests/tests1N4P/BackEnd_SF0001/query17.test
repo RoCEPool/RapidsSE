@@ -13,7 +13,7 @@ select sum(l_extendedprice) / 7.0 as avg_yearly
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -100,6 +100,7 @@ end ;
 // SF10: executes in 194ms
 // modified MED BOX to MED BAG for SF0001
 
+/optimise_passthru 
 pipeline Query17
 begin
   stage S00 on origin :

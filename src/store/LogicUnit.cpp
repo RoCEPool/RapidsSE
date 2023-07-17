@@ -32,6 +32,8 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 
+#include "LibInfo.hpp"
+
 #include "Node.hpp"
 #include "Node_I.hpp"
 #include "OpSpec.hpp"
@@ -63,6 +65,7 @@
 #include "Table.hpp"
 
 #include "MY.hpp"
+#include "CompileLib.hpp"
 
 extern void* C_ADR_REGION;
 
@@ -119,6 +122,7 @@ LogicUnit::LogicUnit(void)
 
 ,     m_xpJobMetrics(this,RF_REPAIR_DELETE,    JobMetrics::vRepair,     LR_JOBMETRICS)
 
+,          m_xpLibInfo(this,RF_REPAIR_DELETE,         LibInfo::vRepair,     LR_LIBINFO)
 ,           m_xpList(this,RF_REPAIR_DELETE,     RowSingle::vRepairList,       LR_LIST)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                         LR_MARKER)
@@ -226,6 +230,7 @@ LogicUnit::LogicUnit(void)
   m_afFun1 = nullptr;
   m_afFun2 = nullptr;
   m_afFun3 = nullptr;
+  m_afFun4 = nullptr;
 
   m_sStringA  = ""_Stz;
   m_sString0  = ""_Stz;
@@ -458,7 +463,7 @@ void LogicUnit::vCleanup(void)
     free(m_aTinyFunc);
     m_aTinyFunc = nullptr;
   }
-  
+
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 

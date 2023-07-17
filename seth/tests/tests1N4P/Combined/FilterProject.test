@@ -28,6 +28,7 @@ success
 load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -57,6 +58,7 @@ rows:
  (3,'AIR','ongside of the furiously brave acco')
  (3,'SHIP','nal foxes wake. ')
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -86,6 +88,7 @@ rows:
  (3,'AIR','ongside of the furiously brave acco')
  (3,'SHIP','nal foxes wake. ')
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -109,6 +112,7 @@ rows:
  (3,45.00)
  (3,22.00)
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -132,7 +136,8 @@ rows:
  (3,45.00)
  (3,22.00)
 
- pipeline unnamed
+ /optimise_passthru 
+pipeline unnamed
  begin
    stage stageStart on origin :
      start
@@ -155,6 +160,7 @@ rows:
  (3,42970,'ongside of the furiously brave acco')
  (3,1284483,'nal foxes wake. ')
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -178,7 +184,8 @@ pipeline unnamed
  (3,42970,'ongside of the furiously brave acco')
  (3,1284483,'nal foxes wake. ')
 
- pipeline unnamed
+ /optimise_passthru 
+pipeline unnamed
  begin
    stage stageStart on origin :
      start
@@ -204,6 +211,7 @@ pipeline unnamed
  (1,'FOB',' pending foxes. slyly re')
  (1,'MAIL','arefully slyly ex')
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -230,6 +238,7 @@ pipeline unnamed
  (1,'FOB',' pending foxes. slyly re')
  (1,'MAIL','arefully slyly ex')
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -258,6 +267,7 @@ end ;
 rows:
   (11,2579506)
 
+/optimise_passthru 
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -286,6 +296,7 @@ end ;
 rows:
   (11,2579506)
 
+/optimise_passthru 
 pipeline unnamed
  begin
    stage stageStart on origin :

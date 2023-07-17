@@ -30,6 +30,7 @@ void Step::vAddSteps_TinyC(void)
   vAddStep("TinyC[].isNotNull"_Stz,    &Step::vTinyCIsNotNull);
   vAddStep("TinyC[].new"_Stz,          &Step::vTinyCNew);
   vAddStep("TinyC[].relocate"_Stz,     &Step::vTinyCRelocate);
+  vAddStep("TinyC[].set"_Stz,          &Step::vTinyCSet);
   vAddStep("TinyC[].symbols"_Stz,      &Step::vTinyCSymbols);
 
   vAddStep("TinyC[].compile_dynamoCode"_Stz, &Step::vTinyCCompiledynamoCode);
@@ -116,13 +117,13 @@ void Step::vTinyCDelete(void)
   //---------------------------------------------------------
   // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
   //---------------------------------------------------------
-  /*
+/*
   void* aTinyFunc = m_pLogicUnit->m_aTinyFunc;
   if (aTinyFunc) {
     free(aTinyFunc);
     m_pLogicUnit->m_aTinyFunc = nullptr;
   }
-  */
+*/
 
   EXIT();
 }
@@ -161,7 +162,7 @@ void Step::vTinyCGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* TinyC[].isNotNull -- get TinyC                                                   */
+/* TinyC[].isNotNull -- get TinyC                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vTinyCIsNotNull(void)
 {
@@ -207,6 +208,19 @@ void Step::vTinyCRelocate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* TinyC[].set -- set TinyC                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTinyCSet(void)
+{
+  ENTRY();
+
+  m_pLogicUnit->m_xpTinyC =
+    _pTinyC(m_pDataStack->pPopPtr(__func__));
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 void vNeverReach(i8 iLine) {
@@ -246,10 +260,13 @@ DynamicSymbol xaSymbolSet1[]
   { "vRowSingle_Print"_Stz,            (const void *)RowSingle::vPrint           },
 
   { "aPot_AllotRow"_Stz,               (const void *)Pot::aAllotRow              },
+
+  { "aRowPix_new"_Stz,                 (const void *)RowPix::aRowPixNew          },
   { "vPot_RowStrSize"_Stz,             (const void *)Pot::vRowStrSize            },
 
   { "aTub_AllotRow"_Stz,               (const void *)Tub::aAllotRow              },
   { "vTub_RowStrSize"_Stz,             (const void *)Tub::vRowStrSize            },
+  { "vTub_RowPix"_Stz,                 (const void *)Tub::vSetRowPix             },
 
   { "StrLib_iLike2"_Stz,                (const void *)StrLib::iLike2             },
   { "StrLib_iLike3"_Stz,                (const void *)StrLib::iLike3             },

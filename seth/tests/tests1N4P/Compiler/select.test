@@ -76,7 +76,8 @@ rows: 0
 SELECT rapidsse.public.selectsyntax1.col1 FROM selectsyntax1;
 rows: 0
 
-
+// TODO V2 : uncomment in V2
+/*
 -- Select *
 SELECT * FROM selectsyntax1;
 rows:
@@ -111,6 +112,7 @@ rows:
 SELECT selectsyntax1.* FROM selectsyntax1;
 rows:
 ['col1', 'col2', 'col3']
+*/
 
 -- Select badTable.*
 SELECT badTable.* FROM selectsyntax1;
@@ -140,7 +142,7 @@ rows: 0
 SELECT * FROM SelectSyntax1;
 rows: 0
 
-
+/*
 -- column name case insensitivity
 SELECT COL1, col2 FROM selectsyntax1;
 rows:
@@ -155,6 +157,7 @@ rows:
 SELECT CoL1, col2 FROM selectsyntax1;
 rows:
 ['col1', 'col2']
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

@@ -74,7 +74,7 @@ Card_IndexList* Card_IndexList::pDerive(Table* pTable)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* delete all bounds (within this indexList)                                  */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vDeleteAll_bounds(void)
 {
@@ -87,7 +87,7 @@ void Card_IndexList::vDeleteAll_bounds(void)
 
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* find chosen index                                                          */
 /*----------------------------------------------------------------------------*/
 Card_Index* Card_IndexList::pFindChosenIndex(void)
 {
@@ -103,7 +103,29 @@ Card_Index* Card_IndexList::pFindChosenIndex(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* choose appropriate index for crossJoin                                     */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vChoose_index_For_crossJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  CardIter xCI(this);
+  while (xCI.G_bEachMain(CK_INDEX)) {
+    xCI.G.p_bounds = xCI.G.p_index->pSub_bounds();
+    if (! xCI.G.p_bounds)
+      continue;
+    xCI.G.p_bound = xCI.G.p_bounds->pSub_bound();
+    if (! xCI.G.p_bound)
+      continue;
+    xCI.G.p_index->vSet_Choose_index();
+    xCI.G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
+    return;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* choose appropriate index for indexJoin                                     */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vChoose_index_For_indexJoin(void)
 {
@@ -125,7 +147,7 @@ void Card_IndexList::vChoose_index_For_indexJoin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* choose appropriate index for indexScan                                     */
 /*----------------------------------------------------------------------------*/
 void Card_IndexList::vChoose_index_For_indexScan(void)
 {
@@ -133,12 +155,33 @@ void Card_IndexList::vChoose_index_For_indexScan(void)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_INDEX)) {
-    if (xCI.G.p_index->pSub_bounds()) {
-      xCI.G.p_index->vSet_Choose_index();
-      break;
+    if (! xCI.G.p_index->pSub_bounds())
+      continue;
+    CardIter xCI_bounds(xCI.G.p_index->pSub_bounds());
+    while (xCI_bounds.G_bEachMain(CK_BOUND)) {
+      if (xCI_bounds.G.p_bound->bIsLBound() ||
+          xCI_bounds.G.p_bound->bIsUBound()) {
+        xCI.G.p_index->vSet_Choose_index();
+        xCI_bounds.G.p_bound->pSymbol()->Y_vSet(P_ChosenBound);
+        return;
+      }
     }
   }
+
 }
+/*----------------------------------------------------------------------------*/
+//void Card_IndexList::vChoose_index_For_indexScan(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+//
+//  CardIter xCI(this);
+//  while (xCI.G_bEachMain(CK_INDEX)) {
+//    if (xCI.G.p_index->pSub_bounds()) {
+//      xCI.G.p_index->vSet_Choose_index();
+//      break;
+//    }
+//  }
+//}
 
 /*----------------------------------------------------------------------------*/
 /* does this index-list have a bound logically equivalent to given compare?   */
@@ -156,7 +199,7 @@ bool Card_IndexList::bHasEquivalentBound(Card_CmpPred* p_cmpPred)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* does an index in this indexList use sql result?                            */
 /*----------------------------------------------------------------------------*/
 bool Card_IndexList::bUsesSqyRsl(void)
 {
@@ -170,6 +213,34 @@ bool Card_IndexList::bUsesSqyRsl(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* ensure types for all stream-columns                                        */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vTypes_For_stmColOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_INDEX); /**/)
+    xKid.p_index()->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/* validate                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card_IndexList::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nChosenIndexes = 0;
+
+  for (Kid xCI(this); xCI.bEach(CK_INDEX); /**/) {
+    xCI.p_index()->vValidate(pCI, iDepth + 1, this);
+    if (xCI.p_index()->pSymbol()->Y_bHas(P_ChosenIndex))
+      nChosenIndexes++;
+  }
+
+  RASSERT(nChosenIndexes <= 1);
+}
 
 /*============================================================================*/
 /* end                                                                        */

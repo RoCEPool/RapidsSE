@@ -23,9 +23,23 @@ namespace STORE
     void  operator delete(void*);
 
     ArgDef(void);
-
+    ArgDef(i8 i_Arg, Stz* szArgNm, Stz* szArgVal);
     ~ArgDef(void) noexcept(false);
 
+    i8 i_Arg(void);
+    void vArg(i8 i_Arg);
+
+    Stz* szArgNm(void);
+    void vArgNm(Stz* szArgNm);
+
+    Stz* szArgVal(void);
+    void vArgVal(Stz* szArgVal);
+
+    void vDump(i8 i_Tab=3);
+
+    void vStore(i8 i_Arg, Stz* szArgNm, Stz* szArgVal);
+
+    void vValidate(void);
 
   protected:
     Footer* aFooter(void);

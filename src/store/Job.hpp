@@ -13,6 +13,7 @@
 #include "Output.hpp"
 #include "Statement.hpp"
 #include "MarkerChain.hpp"
+#include "ExtendedText.hpp"
 
 namespace STORE
 {
@@ -85,6 +86,9 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     /* 12 */ SkipNode* m_pJobsSkipNode;     // Jobs list skip node
     /* 13 */ SkipNode* m_pGenericSkipNode;  // generic list skip node
 
+    /* 14 */ ExtendedText* m_pCmdText;    // command text experiment
+    /* 15 */ ExtendedText* m_pCodeBlock;   // code block experiment
+
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 
     i8  m_iTscParticipant;
@@ -114,7 +118,8 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet = nullptr);
+    Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
+        TagSet* pCmdTagSet=nullptr);
 
    ~Job(void) noexcept(false);
 
@@ -134,11 +139,15 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
     Job* pCancelledJob(void);
     void vCancelledJob(Job* pCancelledJob);
-    eEC eChildError(void);
+    eEC  eChildError(void);
     void vChildError(eEC eErrorCode);
     void vCleanupOutput(void);
-    Stz* szCmd(void);
-    void vCmd(Stz* szCmd);
+    ExtendedText* pCmdText(void);
+    Stz* szCmdText(void);
+    void vCmdText(Stz* szCmdText);
+    void vCmdText(ExtendedText* pCmdText);
+    ExtendedText* pCodeBlock(void);
+    void vCodeBlock(ExtendedText* pCodeBlock);
     void vDisableObjectTracker(void);
     JobId tDistId(void);
     void vDistIdGenerate(void);
@@ -243,6 +252,12 @@ typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
     void vProcessOutput(void);
     Timer* pProgressTimer(void);
     void vPtpJobNodeFailure(void);
+
+    bool bRecvCmdText(void);
+    bool bRecvCodeBlock(void);
+
+    bool bSendCmdText(void);
+    bool bSendCodeBlock(void);
 
     void vUpdateParent(bool bUpdateParent);
     bool bUpdateParent(void);

@@ -8,6 +8,7 @@
 #include "PermGen.hpp"
 #include "Index.hpp"
 #include "Bench.hpp"
+#include "eXF.h"
 
 namespace STORE
 {
@@ -70,6 +71,7 @@ namespace STORE
     CardIter(CardIter* pCardIter_src);
     CardIter(Bench* pBench);
    ~CardIter(void) noexcept(false);
+    void vInit(void);
 
     void G_vAppendChild(eCK eParent, eCK eChild);
     void G_vAppendChild(eCK eParent, Card* pChild);
@@ -109,6 +111,7 @@ namespace STORE
     bool G_bEachMainWith3Sub(eCK eOfMainKind, eCK eAndSubKind1, eCK eAndSubKind2, eCK eAndSubKind3);
 
     bool G_bEachSubOfMain(eCK eSubKind);
+    bool G_bEachSubOfMain_reverse(eCK eSubKind);
     bool G_bEach2SubOfMain(eCK eSubKind1, eCK eSubKind2);
     bool G_bEach3SubOfMain(eCK eSubKind1, eCK eSubKind2, eCK eSubKind3);
 
@@ -127,6 +130,7 @@ namespace STORE
     void G_vInsertBefore(Card* pCard, Card* pBefore);
     bool G_bIsBoardNm(Stz* szBoardNm);
     bool G_bIsNextMain(eCK eMember);
+    bool bIsActive(void);
     bool bIsTracing(void);
 
     bool bJustRestarted(void);
@@ -150,7 +154,6 @@ namespace STORE
     void G_vPopIter(void);
     Card* pPrevChild(void);
     Card* pPrevChildIf(eCK eCard);
-    void vPrintBench(eBK eBoard, i8 i_Board=C_UNKNOWN);
     void vPrintBoard(i8 iLineNo=C_UNKNOWN);
     void G_vPushBoard(Board* pBoard);
     void G_vPushBoard(Stz* szBoardNm);
@@ -168,6 +171,7 @@ namespace STORE
     void vRemoveDeleteCurr(eCK eCrossCheck);
     void G_vRemoveDeleteMain(eCK eCrossCheck);
     void G_vRemoveMain(eCK eCrossCheck);
+    void vRenumberCards(void);
     Card_Expr* pResolvePrior_expr(Card_Term* p_term);
     Card_Projection* pResolvePrior_projection(void);
     void vRestart(void);
@@ -187,10 +191,11 @@ namespace STORE
     void vSubQueryIteration(void);
 
     void vTracer(Stz* szFormat, ...);
-    void vTransform(const char* azFunc, Stz* szXdesc);
+    void vTransform(const char* azFunc, eXF eTransform, Stz* szXdesc);
     i8   iTransformDepth(void);
 
-    void vUsingBoard(eBK eBoard, i8 i_Board);
+    void vUsingBoard(i8 i_Board);
+    void vUsingBoard(Board* pBoard);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);

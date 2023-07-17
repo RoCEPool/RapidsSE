@@ -127,7 +127,10 @@ void TypeValueArea::vCopy(TypeValueArea* aSrcVal, i8 nBytes)
 {
   if (! nBytes)
     nBytes = aSrcVal->nStackUsage();
-  
+
+  if (nBytes > 40000)
+    MY::pTask()->vSeeFrameStack();
+
   MemLib::vCopy(this,aSrcVal,nBytes,CN_STACK);
 }
 

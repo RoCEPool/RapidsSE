@@ -198,9 +198,11 @@ namespace STORE {
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, ePE ePreExp, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
+    void vGenerateExpr_old(char *sExpr, TypedStack* pPostStack, eEK eExprKind, StreamDef *pStreamDef, Stz* sLabelNext, bool *pbLeftOuter = nullptr);
     void vGenerateExpr(char *sExpr, TypedStack* pPostStack, eEK eExprKind, StreamDef *pStreamDef, Stz* sLabelNext, bool *pbLeftOuter = nullptr);
 
-    TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack);
+    TypedStack* pWorkingStack_old(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack);
+    TypedStack* pWorkingStack(eEK eExprKind, ePE ePreExp);
 
     Footer *aFooter(void);
   };

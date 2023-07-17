@@ -120,6 +120,18 @@ _static_
 }
 
 /*----------------------------------------------------------------------------*/
+/* affix table syntax to all tables                                           */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, char* cTableSyn) {
+
+  _static_
+
+  while (pCI->G_bEach2SubOfMain(CK_TABLE, CK_TABLENM))  {
+    pCI->G.p_table->vSet_Syn(cTableSyn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* append index list under all tables                                         */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vAppendIndexList(CardIter* pCI) {
@@ -165,7 +177,8 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     pCI->G.p_table->vAppend(pCI->G.p_tablePtn);
 
     Card_TableNm* p_tableNm = pCI->G.p_table->pSub_tableNm();
-    Table* pTable = AM::pTableFind(p_tableNm->szSymbol());
+    Table* pTable = pAccess_Table(p_tableNm->szSymbol());
+    pCI->G.p_table->pSymbol()->Y_vSet(P_Pointer,pTable);
 
     i8 jTableSize;
     i8 jRowSize;
@@ -361,6 +374,9 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (pSymbol()->bSameAs('I'))
+    vDebugPoint();
+
   Card_IndexList* p_indexList = this->pSub_indexList();
 
   Card_BoolCalc* p_boolCalc = p_filter->pSub_boolCalc();
@@ -398,8 +414,8 @@ void Card_Table::vDeriveBoundsFrom_filter(Card_Filter* p_filter)
 
       p_pred_Of_filter->vMark1(MARK_UP);
 
-      if (p_bound->bIsEBound())
-        p_index->vSet_Choose_index();
+//      if (p_bound->bIsEBound())
+//        p_index->vSet_Choose_index();
 
       return C_CONTINUE_RECURSION;
     };
@@ -419,6 +435,22 @@ bool Card_Table::bUsesSqyRsl(void)
 
   if (Card_IndexList* p_indexList = pSub_indexList())
     return p_indexList->bUsesSqyRsl();
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given symbol a $c.n of this table?                                      */
+/*----------------------------------------------------------------------------*/
+bool Card_Table::bIsTblColOf(Stz* szTblCol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  char cTbl_this = *this->pSymbol()->szSymbol()->azChar();
+  char cTbl_arg  = *(szTblCol->azChar()+1);
+
+  if (cTbl_this == cTbl_arg)
+    return true;
 
   return false;
 }
@@ -455,7 +487,7 @@ void Card_Table::vMorph_table_To_EEop(CardIter* pCI)
     Card_IndexJoin::vMorph_table_To_indexJoin(pCI);
   }
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 
@@ -555,7 +587,7 @@ void Card_Table::vSmooth(CardIter* pCI)
   pCI->G.p_table->pSymbol()->Y_vSet(P_Smoothed);
 
   pCI->G.p_table->vUpdate_projection(pCI);
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,9 +601,33 @@ void Card_Table::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   RASSERT(pCarryForward->Table.m_bReproject);
   pCI->G.p_table->vUpdate_projection(pCI);
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Table::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (pParent->bIsCard(CK_DECK)) {
+    vValidate_mustHave(CK_LEVEL, CK_TABLENM, CK_TABLEPTN,
+                       CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_PROJECTION, CK_NONE);
+    pSub_level()->vValidate(pCI,iDepth+1,this);
+  }
+  else
+  if (pParent->bIsCard(CK_KEYEXISTS) || pParent->bIsCard(CK_KEYNOTEXISTS)) {
+    vValidate_mustHave(CK_TABLENM, CK_NONE);
+  }
+  else {
+    vValidate_mustHave(CK_TABLENM, CK_TABLEPTN,
+                       CK_TABLESIZE, CK_ROWSIZE, CK_ROWCOUNT, CK_NONE);
+  }
+
+  if (Card_IndexList* p_indexList = pSub_indexList())
+    p_indexList->vValidate(pCI,iDepth+1,this);
+}
 
 /*============================================================================*/
 /* end                                                                        */

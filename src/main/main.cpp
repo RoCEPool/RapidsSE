@@ -79,8 +79,12 @@ int main(int argc, char* argv[])
 //  printf("sizeof(RowBuffer) %lld\n",(i8)sizeof(RowBuffer));
 //  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
 
-
-  printf("sizeof(Ent) %lld\n",(i8)sizeof(Ent));
+#ifdef WITH_DEBUG_VERSION
+  printf("sizeof(Ent) %lld\n",   (i8)sizeof(Ent));
+  printf("sizeof(Object) %lld\n",(i8)sizeof(Object));
+  printf("sizeof(Header) %lld\n",(i8)sizeof(Header));
+  printf("sizeof(Footer) %lld\n",(i8)sizeof(Footer));
+#endif
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

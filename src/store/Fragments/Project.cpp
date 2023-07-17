@@ -5,7 +5,9 @@
 #include "BASE.h"
 #include "Combined.hpp"
 #include "IndexDef.hpp"
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
+#include "ClangDynamic.h"
+#include "ClangStuff.h"
 #include "Pay.hpp"
 #include "Key.hpp"
 #include "Ent.hpp"
@@ -21,39 +23,38 @@
 // function-vProjectBegin
 void vProjectBegin(Dynamic_T* aDynamicT) {
 
-  struct __STRUCT_FROM__ {
-    i8 N_NATIONKEY;
-  };
-
   struct __STRUCT_FROM__* p__STRUCT_FROM__;
+
+  RowInfo __ROW_INFO_FROM__;
+  RowInfo __ROW_INFO_TO__;
 
   char* szStrArea;
 
   __L_LABEL_LOOP__:
 
   // marker-start
-
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // PROJECT-OP
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  struct __STRUCT_FROM__* __STRUCT_FROM__;
   struct __STRUCT_TO__* p__STRUCT_TO__;
 
-  __L_LABEL__:
+__L_LABEL__:
 
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
+
+  // Process row ?
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;
   }
 
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+  // PROJECT FROM
+  p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 
-  aDynamicT->m_xRowInfoPT.m_racStrArea = aDynamicT->m_xRowInfoPT.m_racStrAreaSav;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoPT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoPT.m_racStrArea;
+  // PROJECT TO
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
+  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+  szStrArea = __ROW_INFO_TO__.m_acStrArea;
+
   // marker-end
 
   return;
@@ -77,7 +78,7 @@ i8 iProjectEnd(Dynamic_T* aDynamicT) {
   }
 
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoPT.m_aRowCellArray;
-  szStrArea = aDynamicT->m_xRowInfoPT.m_racStrArea;
+  szStrArea = aDynamicT->m_xRowInfoPT.m_acStrArea;
 
   // marker-end
 

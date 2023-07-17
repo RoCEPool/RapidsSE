@@ -25,6 +25,7 @@ namespace STORE
 
   static eEC  eForkJobChild(JobId& rtChildJobId,
                            TokenVec* pCmdTknVec, TagSet* pCmdTagSet,
+                           ExtendedText* pCodeBlock,
                            JobId tParentId, JobId tOriginId, JobId tDistId,
                            Job* pParentJob,
                            bool bUpdateParent,

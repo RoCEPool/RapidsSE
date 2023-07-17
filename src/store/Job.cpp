@@ -45,7 +45,8 @@ __aFooterFunction(Job)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* pCmdTagSet)
+Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId,
+         TagSet* pCmdTagSet)
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , m_okLock(this)
@@ -113,6 +114,9 @@ Job::Job(Stz* szJobNm, JobId tParentId, JobId tOriginId, JobId tDistId, TagSet* 
 
   /* 11 */ m_pJobsSkipNode    = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
   /* 12 */ m_pGenericSkipNode = new(C_SKIPLIST_LEVELS,nullptr) SkipNode(this);
+
+  /* 14 */ m_pCmdText   = nullptr;
+  /* 15 */ m_pCodeBlock = nullptr;
 
   m_iTscParticipant = 0;
   
@@ -188,6 +192,11 @@ Job::~Job(void) noexcept(false)
     if (m_pMetricsPipeline) {
       delete m_pMetricsPipeline;
     }
+
+    if (m_pCmdText)
+      delete m_pCmdText;
+    if (m_pCodeBlock)
+      delete m_pCodeBlock;
 
     if (m_pTask) {
       m_pTask->vGrabTaskLock((Stz *) __func__);
@@ -445,26 +454,78 @@ void Job::vChildError(eEC eErrorCode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get command                                                                */
+/* get command text                                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Job::szCmd(void)
+ExtendedText* Job::pCmdText(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-    
-  Stz* szCmd = m_oJobTags.szValue(C_TAG_CMD);
-  
-  return szCmd;
+
+  return m_pCmdText;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set command                                                                */
+/* get command text                                                           */
 /*----------------------------------------------------------------------------*/
-void Job::vCmd(Stz* szCmd)
+Stz* Job::szCmdText(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-    
-  m_oJobTags.vReplace(C_TAG_CMD,szCmd);
+
+  if (! m_pCmdText)
+    return nullptr;
+
+  Stz* szTextBlock_0 = m_pCmdText->szTextBlock(0);
+
+  return szTextBlock_0;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set command text                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vCmdText(Stz* szCmdText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (! m_pCmdText)
+    m_pCmdText = new ExtendedText;
+
+  m_pCmdText->vCopy(szCmdText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set command text                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vCmdText(ExtendedText* pCmdText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  ASSERT(! pCmdText || ! m_pCmdText);
+
+  m_pCmdText = pCmdText;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get code text                                                              */
+/*----------------------------------------------------------------------------*/
+ExtendedText* Job::pCodeBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_pCodeBlock;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code block                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vCodeBlock(ExtendedText* pCodeBlock)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  //ASSERT(! m_pCmdText);
+
+  m_pCodeBlock = pCodeBlock;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* disable object tracker                                                     */
@@ -1459,6 +1520,62 @@ Pipeline* Job::pPipeline(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test if command text is to be received?                                    */
+/*----------------------------------------------------------------------------*/
+bool Job::bRecvCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCmdText) {
+    m_pCmdText = nullptr;
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if code block is to be received?                                      */
+/*----------------------------------------------------------------------------*/
+bool Job::bRecvCodeBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCodeBlock) {
+    m_pCodeBlock = nullptr;
+    return true;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if command text is to be sent?                                        */
+/*----------------------------------------------------------------------------*/
+bool Job::bSendCmdText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCmdText)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if code block is to be sent?                                          */
+/*----------------------------------------------------------------------------*/
+bool Job::bSendCodeBlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (m_pCodeBlock)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get pipeline                                                               */
 /*----------------------------------------------------------------------------*/
 Pipeline* Job::pMetricsPipeline(void)
@@ -1500,6 +1617,12 @@ void Job::vPipeoutResponse(Operand* pOperand)
       // is it an EXIT MARKER ?
       if (pOperand->bIsMarker()) {
         Marker* pMarker = _pMarker(pOperand);
+
+        if (pMarker->eOpMarker() == OM_INTERNALERROR) {
+          //vTrace("PARENT RESPONSE: INTERNAL ERROR IGNORED\n"_Stz);
+          pParentJob->m_p_ResponseOp->vPipeToThis(pOperand, pCurTask);
+          return;
+        }
 
         if (pMarker->eOpMarker() == OM_LOWMEMORY) {
           //vTrace("PARENT RESPONSE: LOWMEMORY IGNORED\n"_Stz);
@@ -1595,6 +1718,10 @@ void Job::vPostRecv(void)
   /* 11 */ m_pJobsSkipNode    = nullptr;
   /* 12 */ m_pGenericSkipNode = nullptr;
 
+  /* 14 */// m_pCmdText = nullptr;
+
+  /* 15 */ //RASSERT(! m_pCodeBlock);
+
   m_tJobId.vNextJobId();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1682,7 +1809,7 @@ void Job::vPrintJobContents(void)
          
          ,spJobId.sz(m_tJobId.iAsI8())     // 0
          ,m_sJobNm.szStz()           // 1
-         ,szCmd()                    // 3
+         ,szCmdText()                    // 3
          ,iOriginNodeId()            // 4
 
          ,m_tParentId.uJobNo()          // 6

@@ -211,7 +211,11 @@ bool BASE::bTraceWith(Stz* szWith)
   if (szWith->bSame("WITH_TRACE_API"_Stz))
     return true;
 #endif
-  
+
+#ifdef WITH_WEAVER2
+  if (szWith->bSame("WITH_WEAVER2"_Stz))
+    return true;
+#endif
       
   return false;
 }
@@ -294,6 +298,10 @@ void BASE::vTraceWith(void)
   
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
+#endif
+
+#ifdef WITH_WEAVER2
+  vTrace("  WITH_WEAVER2\n"_Stz);
 #endif
 
 }

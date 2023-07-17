@@ -89,7 +89,7 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 /*
 
@@ -203,6 +203,7 @@ from (
 */
 
 //customer->nation
+/optimise_passthru 
 pipeline Query7
 begin
    stage S00 on origin :
@@ -311,7 +312,8 @@ rows:
 JUST AN EXPERIMENT
 // LINEITEM (INDEXSCAN) ->
 //SF10: 43secs
-/time pipeline Query7
+/time /optimise_passthru 
+pipeline Query7
 begin
   stage stageStart on origin :
     start

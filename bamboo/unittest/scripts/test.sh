@@ -290,7 +290,9 @@ do
 
     # Clean up the SETH process and its subordinate SE prompt
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
+    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
     echo "${SE_PROMPT_PID}" | xargs -r kill -9
     exit 1
   fi
@@ -322,7 +324,9 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
+    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
     kill -9 "${SE_PROMPT_PID}" || true
     exit 1
   fi
@@ -342,7 +346,9 @@ do
 
     # Ensure we kill any SE prompt with SETH. Don't worry about SE - it'll get cleaned up later.
     SE_PROMPT_PID=$(ps -o pid= --ppid ${SETH_PID})
+    echo "Cleaning up. Killing SETH pid ${SETH_PID:-(none)}"
     kill -9 "${SETH_PID}" &>/dev/null || true
+    echo "Cleaning up. Killing SE Prompt pid ${SE_PROMPT_PID:-(none)}"
     kill -9 "${SE_PROMPT_PID}" || true
     exit 1;
   fi

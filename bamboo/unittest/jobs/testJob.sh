@@ -131,6 +131,12 @@ function copyLogs() {
     done
 
     cp "${installDir}/clusterStatus.log" "${outputDir}/clusterStatus.${nodeName}.log" &>/dev/null || true
+
+    # Copy any queryLib source and log files
+    local queryLibDir="${nodeDir}/queryLibs"
+    mkdir -p "${queryLibDir}"
+    cp -r "${installDir}/queryLibs/src" "${queryLibDir}"
+
   done
 
   mv "${BAMBOO_RESULTS_DIR}"/log-* "${outputDir}/seth.log" &>/dev/null &>/dev/null || true

@@ -39,22 +39,6 @@ Card_Scan::~Card_Scan(void) noexcept(false)
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
- void Card_Scan::vIndividuateFilter(CardIter* pCI) {
-
-   _static_
-
-   while (pCI->G_bEachMainWithSub(CK_SCAN,CK_FILTER)) {
-     pCI->G.p_scan->vRemoveChild(pCI->G.p_filter);
-     pCI->G.pDeck->vInsertAfter(pCI->G.p_filter, pCI->G.p_scan);
-
-     if (! pCI->G.p_filter->pSub_level()) {
-       pCI->G.p_filter->vPush(pCI->G.p_scan->pSub_level()->pDupCardRecursive());
-     }
-   }
- }
 
 /*----------------------------------------------------------------------------*/
 /* table morphs to scan                                                       */
@@ -74,8 +58,18 @@ void Card_Scan::vScanBecomesTable(STORE::CardIter *pCI)
 {
   _static_
 
+  Card_Level* p_level = nullptr;
+  if ((p_level = pCI->G.p_scan->pSub_level())) {
+    pCI->G.p_scan->vRemoveChild(p_level);
+  }
+
+  Card_Table* p_table = pCI->G.p_scan->pSub_table();
+
   pCI->G.pDeck->vReplaceChildWithItsSubs(pCI->G.p_scan);
   DELETE_CARD(pCI->G.p_scan);
+
+  if (p_level)
+    p_table->vInsert(p_level);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,6 +100,18 @@ void Card_Scan::vComputeProjection(CardIter* pCI)
    pCI->vPrintBoard();
 
    vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Scan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+ _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
 }
 
 /*============================================================================*/

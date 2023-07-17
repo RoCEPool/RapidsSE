@@ -9,6 +9,7 @@
 #include "Card_IdxColList.hpp"
 #include "Card_IdxCol.hpp"
 #include "CardIter.hpp"
+#include "IndexDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -204,6 +205,75 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_Index::pGetIndexDef(Card_Table *p_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
+  if (! pTable)
+    return nullptr;
+
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
+  if (! pIndex)
+    return nullptr;
+
+  IndexDef* IndexDef = pIndex->pIndexDef();
+
+  return IndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Index* Card_Index::pGetIndex(Card_Table *p_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
+  if (! pTable)
+    return nullptr;
+
+  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
+  if (! pIndex)
+    return nullptr;
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Index::vEnsureTypes_For_stmOdn(CardIter *pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if ((pCI->G.p_bounds = pSub_bounds()))
+    pCI->G.p_bounds->vEnsureTypes_For_stmOdn(pCI);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Index::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_INDEXNM,CK_NONE);
+
+  if (Card_Bounds* p_bounds = pSub_bounds())
+    p_bounds->vValidate(pCI,iDepth+1,this);
+
+  if (pSymbol()->Y_bHas(P_ChosenIndex)) {
+    RASSERT(pFindPpyRecursive(P_ChosenBound, CK_BOUND));
+  }
+  else {
+    RASSERT(! pFindPpyRecursive(P_ChosenBound, CK_BOUND));
+  }
 }
 
 /*============================================================================*/

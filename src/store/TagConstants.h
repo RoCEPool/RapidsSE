@@ -7,7 +7,6 @@ static Stz* C_TAGSET_NAME      = "<aTagSetNm>"_Stz;
 
 static Stz* C_TAG_BYPROMPT     = "<byPrompt>"_Stz;
 static Stz* C_TAG_CCODE        = "<ccode>"_Stz;
-static Stz* C_TAG_CMD          = "<cmd>"_Stz;
 static Stz* C_TAG_CMDFILE      = "<cmdFile>"_Stz;
 static Stz* C_TAG_CMDLINE      = "<cmdLine>"_Stz;
 static Stz* C_TAG_COUNT        = "<count>"_Stz;
@@ -23,10 +22,12 @@ static Stz* C_TAG_FAULTPOINT   = "<faultPoint>"_Stz;
 static Stz* C_TAG_FLOW         = "<flow>"_Stz;
 static Stz* C_TAG_FORCELOG     = "<forceLog>"_Stz;
 static Stz* C_TAG_FREEPCT      = "<freePct>"_Stz;
+static Stz* C_TAG_GLEAN_INTERACTIVE = "<glean_interactive>"_Stz;
 static Stz* C_TAG_GRID         = "<grid>"_Stz;
 static Stz* C_TAG_HOST         = "<host>"_Stz;
 static Stz* C_TAG_INFOSET      = "<infoSet>"_Stz;
 static Stz* C_TAG_INTERNAL     = "<internal>"_Stz;
+static Stz* C_TAG_INTERNALERROR  = "<internalError>"_Stz;
 static Stz* C_TAG_JOBNM        = "<jobNm>"_Stz;
 static Stz* C_TAG_JOBMETRICS   = "<jobMetrics>"_Stz;
 static Stz* C_TAG_KEYEXPR      = "<keyExpr>"_Stz;
@@ -63,12 +64,15 @@ static Stz* C_TAG_TABLENM      = "<tableNm>"_Stz;
 static Stz* C_TAG_TIME         = "<time>"_Stz;
 static Stz* C_TAG_TRACEAPI     = "<traceApi>"_Stz;
 static Stz* C_TAG_TRACEOP      = "<traceOp>"_Stz;
+static Stz* C_TAG_TRANSLITERATED = "<transliterated>"_Stz;
 static Stz* C_TAG_WHEN         = "<when>"_Stz;
 static Stz* C_TAG_XFER         = "<xfer>"_Stz;
 static Stz* C_TAG_SENDKIND     = "<sendKind>"_Stz;
 static Stz* C_TAG_SENDS        = "<sends>"_Stz;
 static Stz* C_TAG_WAIT         = "<wait>"_Stz;
-
+static Stz* C_TAG_WEAVED       = "<weaved>"_Stz;
+static Stz* C_TAG_WEAVER1      = "<weaver1>"_Stz;
+static Stz* C_TAG_WEAVER2      = "<weaver2>"_Stz;
 
 static Stz* C_TAG_LD_DATE_FORMAT          = "<date_format>"_Stz;
 static Stz* C_TAG_LD_ENCLOSED_BY_LEADING  = "<enclosed_by_leading>"_Stz;

@@ -12,7 +12,7 @@
 #include "parser/common/ErrorListener.hpp"
 #include "SqlException.hpp"
 
-#include "Text.hpp"
+#include "ExtendedText.hpp"
 #include "AttachMap.hpp"
 #include "TagConstants.h"
 #include "Procedure.hpp"

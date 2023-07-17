@@ -1,0 +1,30 @@
+/*============================================================================*/
+/* __CS2_OPT_ray : Code Synthesizer V2 called from Optimiser                  */
+/*============================================================================*/
+
+// --initial __CS2_OPT_ray
+
+tag default <tpch_dir> = "../tpch/sf_0001";
+tag default <suffix>   = "csv";
+
+_nation
+
+/time load nation   "<tpch_dir>/nation.<suffix>";
+
+/joWrite
+/glean_interactive
+/transliterated
+/weaved
+/weaver2
+/filterPred
+/pipelineName = "__CS2_OPT_ray"
+select
+       n_nationkey, n_name
+  from
+       nation
+ where
+       n_regionkey < 3;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

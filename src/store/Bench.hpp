@@ -5,10 +5,9 @@
 
 #include "Board.hpp"
 
-
 namespace STORE
 {
-  class MakeFlat;
+  class XF_Flatten;
   class Fold;
 
   class Bench : public Object
@@ -20,6 +19,13 @@ namespace STORE
     char m_cPrefix;
 
     bool m_bIsFlat;
+
+    bool m_bMadeSimpler;
+    bool m_bMadeFlat;
+    bool m_bMadeOptimal;
+    bool m_bMadeWeavable;
+    bool m_bMadeCode;
+
 
   public:
     CardIter*    m_pCI;
@@ -35,15 +41,15 @@ namespace STORE
    ~Bench(void) noexcept(false);
 
 
+    static void vValidate(CardIter* pCI);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     void vAddBoard(Board* pBoard);
-    bool bBoardExists(eBK eBoard, i8 i_SubBoard = C_UNKNOWN);
+    bool bBoardExists(i8 i_SubBoard = C_UNKNOWN);
     i8   nBoards(void);
     CardCtl* pCardCtl(void);
     void vClearMarks(void);
-    Board* pGetBoard(eBK eBoard, i8 i_Board);
     Board* pGetBoard(i8 i_Board);
     Board* pGetBoard(Stz* szBoardNm);
     SubQuery* pGetSubQuery(Stz* szSubQueryNm);
@@ -54,8 +60,19 @@ namespace STORE
     char cPrefix(void);
     void vPrefix(char cPrefix);
 
-    void vEndSeries(eBK eBoard, i8 i_Board=C_UNKNOWN);
-    void vSeries(eBK eBoard, i8 i_Board, const char* azHand);
+
+    bool bMadeSimpler(void);
+    void vMadeSimpler(bool bMadeSimpler);
+    bool bMadeFlat(void);
+    void vMadeFlat(bool bMadeFlat);
+    bool bMadeOptimal(void);
+    void vMadeOptimal(bool bMadeOptimal);
+    bool bMadeWeavable(void);
+    void vMadeWeavable(bool bMadeWeavable);
+    bool bMadeCode(void);
+    void vMadeCode(bool bMadeCode);
+
+    void vRenumberCards(void);
 
   private:
     Footer* aFooter(void);

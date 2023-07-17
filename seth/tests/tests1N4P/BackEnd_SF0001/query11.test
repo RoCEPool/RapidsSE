@@ -41,7 +41,7 @@ select ps_partkey, sum(ps_supplycost * ps_availqty) as value
 
 pipeline unamed
 begin
-  pipeline __subquery0003
+pipeline __subquery0003
   begin
     stage stageStart on origin :
       start
@@ -126,6 +126,7 @@ end ;
 // SF1: 393ms
 //SF10: 8.1s
 
+/optimise_passthru 
 pipeline Query11
 begin
   stage stageStart on origin :
@@ -218,6 +219,7 @@ success
 //supplier->nation->partsupp
 //SF1: 289ms
 //SF10: 1.8s
+/optimise_passthru 
 pipeline Query11
 begin
   stage stageStart on origin :
@@ -309,6 +311,7 @@ success
 //nation->supplier->partsupp...>nation->supplier->partsupp
 //SF1: 278ms
 //SF10: 1.6s
+/optimise_passthru 
 pipeline Query11
 begin
   stage S00 on origin :
@@ -404,6 +407,7 @@ sleep 4;
 success
 */
 
+/optimise_passthru 
 pipeline Query11
 begin
   stage S00 on origin :

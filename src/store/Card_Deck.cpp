@@ -49,10 +49,11 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_OP*       p_OP_prev        = nullptr;
-  Card_Project*  p_project_prior  = nullptr;
-  Card_Cast*     p_cast_prior     = nullptr;
-  Card_Combined* p_combined_prior = nullptr;
+  Card_OP*         p_OP_prev          = nullptr;
+  Card_Project*    p_project_prior    = nullptr;
+  Card_Projection* p_projection_prior = nullptr;
+  Card_Cast*       p_cast_prior       = nullptr;
+  Card_Combined*   p_combined_prior   = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -79,6 +80,7 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
                                                              p_project_prior,
                                                              p_combined_prior,
                                                              p_cast_prior,
+                                                             p_projection_prior,
                                                              pCI->G.p_OP);
         pCI->G_vMainResynch();
         pCI->vPrintBoard(__LINE__);
@@ -102,6 +104,10 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
     else if (CK_CAST == pCI->G.e_MainCard) {
       p_cast_prior = pCI->G.p_cast;
     }
+
+    // -- -- -- -- --
+//    if (pCI->G.p_OP->pSub_projection())
+//      p_projection_prior = pCI->G.p_OP->pSub_projection();
   }
 
   delete p_streamPtn;
@@ -113,12 +119,13 @@ void Card_Deck::vAddStageCasts(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*       pCI,
-                                         Card_StreamPtn* p_streamPtn,
-                                         Card_Project*   p_project_prev,
-                                         Card_Combined*  p_combined_prev,
-                                         Card_Cast*      p_cast_prev,
-                                         Card_OP*        p_OP_curr)
+eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*        pCI,
+                                         Card_StreamPtn*  p_streamPtn,
+                                         Card_Project*    p_project_prev,
+                                         Card_Combined*   p_combined_prev,
+                                         Card_Cast*       p_cast_prev,
+                                         Card_Projection* p_projection_prev,
+                                         Card_OP*         p_OP_curr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -174,7 +181,7 @@ eXK Card_Deck::eAddStageCast_toPrev_cast(CardIter*       pCI,
       p_cast_prev->vSymbol("hashcast"_Stz);
 
       pCI->G.p_expr = pCI->pExpr_For_col(p_term_tblCol_hash, pCI->G.i_MainCard);
-      p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr);
+      p_hash_prior_new = Card_Hash::pDerive(pCI->G.p_expr,p_projection_prev);
 
       if (p_combined_prev) {
         pCI->G_vInsertBefore(p_hash_prior_new, p_combined_prev);
@@ -281,6 +288,8 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
   while (pCI->G_bEachMain()) {
 
+    if (pCI->G.p_MainCard->bIsCard(CK_TOP))
+      vDebugPoint();
 
     if (CK_TABLE == pCI->G.e_MainCard) {
       pCI->G.p_table->vUpdate_projection(pCI);
@@ -290,11 +299,34 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
     if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
-      continue;
+
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+
+      //continue;
     }
 
-    if (33 == pCI->G.p_MainCard->i_Child())
-      vDebugPoint();
+//    if (CK_LIMIT == pCI->G.e_MainCard || CK_SORT == pCI->G.e_MainCard) {
+//      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+//    }
+//    if (CK_SORT == pCI->G.e_MainCard) {
+//      Card_Projection* p_projection_propagated =
+//          pCI->Analysis.m_pProjection_prior->pPropagate();
+//      p_projection_propagated->vAdjust(pCI->G.p_MainCard->pSub_key());
+//
+//      pCI->G.p_MainCard->vAppend(p_projection_propagated);
+//    }
+
+    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_TOP,CK_NONE)) {
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    }
+    else
+    if (CK_SORT == pCI->G.e_MainCard) {
+      Card_Projection* p_projection_propagated =
+          pCI->Analysis.m_pProjection_prior->pPropagate();
+      p_projection_propagated->vAdjust(pCI->G.p_MainCard->pSub_key());
+
+      pCI->G.p_MainCard->vAppend(p_projection_propagated);
+    }
 
     if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
       if (pCI->Analysis.m_pProjection_prior) {
@@ -315,6 +347,107 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/* initial projection analysis                                                */
+/*----------------------------------------------------------------------------*/
+void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  pCI->vRestart();
+  while (pCI->G_bEachSubOfMain(CK_TABLE))
+    if ((pCI->G.p_projection = pCI->G.p_table->pSub_projection()))
+      pCI->G.p_table->vDeleteChild(pCI->G.p_projection);
+
+  pCI->vRestart();
+  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection = nullptr;
+
+  while (pCI->G_bEachMain()) {
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (CK_KEYEXISTS == pCI->G.e_MainCard ||
+        CK_KEYNOTEXISTS == pCI->G.e_MainCard) {
+
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
+
+      if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
+        if (pCI->Analysis.m_pProjection_prior) {
+          pCI->G.p_indexList->vTypes_For_stmColOdn(pCI);
+        }
+      }
+
+      continue;
+    }
+
+    if (CK_SCAN == pCI->G.e_MainCard ||
+        CK_INDEXJOIN == pCI->G.e_MainCard ||
+        CK_INDEXSCAN == pCI->G.e_MainCard) {
+      pCI->G.p_table = pCI->G.p_MainCard->pSub_table();
+      pCI->G.p_table->vUpdate_projection(pCI);
+
+      pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
+
+      if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
+        if (pCI->Analysis.m_pProjection_prior) {
+          pCI->G.p_indexList->vTypes_For_stmColOdn(pCI);
+        }
+      }
+
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (pCI->G.p_MainCard->bIsCard(CK_HASH)) {
+      pCI->G.p_hshCol = pCI->G.p_MainCard->pSub_hshCol();
+      pCI->G.p_hshCol->vDump();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    if (CK_WHERE == pCI->G.e_MainCard || CK_HAVING == pCI->G.e_MainCard) {
+      if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
+        pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
+
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+
+      //continue;
+    }
+
+    if (pCI->G.p_MainCard->bIsOne(CK_HASH,CK_KEYEXISTS,CK_KEYNOTEXISTS,CK_LIMIT,CK_TOP,CK_NONE)) {
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    }
+    else
+    if (CK_SORT == pCI->G.e_MainCard) {
+      Card_Projection* p_projection_propagated =
+          pCI->Analysis.m_pProjection_prior->pPropagate();
+      p_projection_propagated->vAdjust(pCI->G.p_MainCard->pSub_key());
+
+      pCI->G.p_MainCard->vAppend(p_projection_propagated);
+    }
+
+    if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
+      if (pCI->Analysis.m_pProjection_prior) {
+        pCI->G.p_key->vTypes_For_stmColOdn(pCI);
+        pCI->G.p_key->vRenumberAll_expr();
+      }
+    }
+
+    if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
+
+      if (pCI->Analysis.m_pProjection_prior) {
+        pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
+        pCI->G.p_projection->vRenumberAll_expr();
+      }
+
+      pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();
+    }
+
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* update projections after some change                                       */
@@ -340,27 +473,61 @@ void Card_Deck::vProjectionUpdate(CardIter* pCI)
       continue;
     }
 
-    if (CK_TABLE == pCI->G.e_MainCard) {
-      pCI->G.p_table->vUpdate_projection(pCI);
+    switch (pCI->G.e_MainCard) {
+
+      case CK_AGGREG:
+        pCI->G.p_aggreg->Card_Aggreg::vUpdate_projection(pCI);
+        break;
+
+      case CK_GBYAGG:
+        pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_projection(pCI);
+        break;
+
+      case CK_HAVING:
+        pCI->G.p_having->Card_Having::vUpdate_projection(pCI);
+        break;
+
+      case CK_ORDAGG:
+        pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_projection(pCI);
+        break;
+
+      case CK_PROJECT:
+        //if (pCI->G.p_MainCard->pSub_needed())
+          pCI->G.p_project->Card_Project::vUpdate_projection(pCI);
+        break;
+
+      case CK_SORT:
+        break;
+
+      case CK_TABLE:
+        pCI->G.p_table->vUpdate_projection(pCI);
+
+        if (pCI->G.p_filter = pCI->G.p_table->pSub_filter()) {
+          if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
+
+            pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
+            pCI->G.p_filter->vAppend(pCI->G.p_table->pSub_projection()->pClone());
+
+          }
+        }
+
+        break;
+
+      case CK_WHERE:
+        pCI->G.p_where->Card_Where::vUpdate_projection(pCI);
+        break;
+
+      default:
+        if (pCI->G.p_MainCard->pSub_projection()) {
+          vTrace("UPDATE? %s"_Stz, pCI->G.p_MainCard->szCardNm());
+          vDebugPoint();
+        }
+        break;
     }
-    else if (CK_PROJECT == pCI->G.e_MainCard) {
-      if (pCI->G.p_MainCard->pSub_needed()) {
-        pCI->G.p_project->Card_Project::vUpdate_projection(pCI);
-      }
-    }
-    else if (CK_AGGREG == pCI->G.e_MainCard) {
-      pCI->G.p_aggreg->Card_Aggreg::vUpdate_projection(pCI);
-    }
-    else if (CK_GBYAGG == pCI->G.e_MainCard) {
-      pCI->G.p_gbyAgg->Card_GbyAgg::vUpdate_projection(pCI);
-    }
-    else if (CK_ORDAGG == pCI->G.e_MainCard) {
-      pCI->G.p_ordAgg->Card_OrdAgg::vUpdate_projection(pCI);
-    }
-    else if (pCI->G.p_MainCard->pSub_projection()) {
-      vTrace("UPDATE? %s"_Stz,pCI->G.p_MainCard->szCardNm());
-      vDebugPoint();
-    }
+
+//    if (pCI->G.p_filter = pCI->G.p_MainCard->pSub_filter()) {
+//      pCI->G.p_filter->Card_Filter::vUpdate_projection(pCI);
+//    }
 
     if (pCI->G.p_MainCard->pSub_projection()) {
       pCI->Analysis.m_pProjection_prior = pCI->G.p_MainCard->pSub_projection();

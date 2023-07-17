@@ -2362,7 +2362,7 @@ void CodeSynth::vPayloadAgg(void) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nothing to generate if no payload expressions
-//  if (!m_pExprStack->nValues())
+//  if (!m_pPreExprStack->nValues())
 //    return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2938,7 +2938,7 @@ void CodeSynth::vInitAgg(ePE ePreExp)
 /*----------------------------------------------------------------------------*/
 /* convert postfix to expr macros                                             */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind,
+void CodeSynth::vGenerateExpr_old(char* sExpr, TypedStack* pPostStack, eEK eExprKind,
                               StreamDef* pStreamDef, Stz* sLabelNext, bool *pbLeftOuter) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
@@ -2977,7 +2977,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack
-  pExprStack = pWorkingStack(EK_NONE, ePreExp, pPostStack);
+  pExprStack = pWorkingStack_old(EK_NONE, ePreExp, pPostStack);
 
   if (!pExprStack)
     pExprStack = m_pExprStack;
@@ -3045,7 +3045,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      pExprStack = pWorkingStack_old(eExprKind, ePreExp, pPostStack);
 
       continue;
     }
@@ -3057,7 +3057,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      pExprStack = pWorkingStack_old(eExprKind, ePreExp, pPostStack);
       RASSERT(pExprStack == m_pGbyStack);
 
       continue;
@@ -3070,7 +3070,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      pExprStack = pWorkingStack_old(eExprKind, ePreExp, pPostStack);
       RASSERT(pExprStack == m_pGbyStack);
 
       continue;
@@ -3109,7 +3109,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
-      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      pExprStack = pWorkingStack_old(eExprKind, ePreExp, pPostStack);
 
       continue;
     }
@@ -3120,7 +3120,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working stack
-      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      pExprStack = pWorkingStack_old(eExprKind, ePreExp, pPostStack);
 
       continue;
     }
@@ -3133,7 +3133,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working stack
-      pExprStack = pWorkingStack(eExprKind, ePreExp, pPostStack);
+      pExprStack = pWorkingStack_old(eExprKind, ePreExp, pPostStack);
 
       continue;
     }
@@ -3146,7 +3146,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working stack
-      pExprStack = pWorkingStack(eExprKind, ePreExp, m_pExprStack);
+      pExprStack = pWorkingStack_old(eExprKind, ePreExp, m_pExprStack);
 
       continue;
     }
@@ -3418,7 +3418,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack
       RASSERT(pPostStack);
-      pExprStack = pWorkingStack(EK_NONE, ePreExp, pPostStack);
+      pExprStack = pWorkingStack_old(EK_NONE, ePreExp, pPostStack);
       RASSERT(pExprStack == pPostStack);
 
       continue;
@@ -3659,10 +3659,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
-  nExpr = m_pExprStack->nValues() - 1;
+  nExpr = m_pPreExprStack->nValues() - 1;
 
   while ( nExpr >= 0) {
-    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    pTypedCell = m_pPreExprStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 
@@ -3727,6 +3727,812 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
   */
+#endif
+
+
+  delete pExprType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert postfix to expr macros                                             */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind,
+                                  StreamDef* pStreamDef, Stz* sLabelNext, bool *pbLeftOuter) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  eDM eExprType = DM_UNK;
+
+  bool bIndexJoin = false;
+  bool bAssignJoin = false;
+  bool bLowerBound = false;
+  bool bUpperBound = false;
+
+  TypedStack *pExprStack;
+  IntStack   *pExprType;
+
+  Token *pTkn;
+
+  i8 i_Col = 0;
+  i8 i_ColPL = 0;
+  i8 i_DupCtr = 1;
+  i8 iGbyCols = 0;
+  i8 iGkyCols = 0;
+  eDM eCastType = DM_NONE;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the expression
+  m_pTokenVec = AM::TOKENISE::pTokeniseSen((Stz *) sExpr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the ExprType stack
+  pExprType = new IntStack;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the predicate expression
+  ePE ePreExp = PE_EXP;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set working ExprStack
+  pExprStack = pWorkingStack(eExprKind, ePreExp);
+  RASSERT(m_pExprStack == pExprStack);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate tokens of the expression
+  for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
+
+    pTkn = m_pTokenVec->pGet(i_Tkn);
+
+
+#ifdef WITH_DEBUG_VERSION
+    //    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+//
+//    // dump the TypeStack
+//    vTrace("--------------------------------------\n"_Stz);
+//    vTrace("EXPRTYPE:\n"_Stz);
+//    i8 nExpr = pExprType->nItems() - 1;
+//
+//    while ( nExpr >= 0) {
+//      eDM eType = (eDM)pExprType->iPeek(nExpr--);
+//      vTrace("%s\n"_Stz, aDM[eType]);
+//    }
+//    vTrace("--------------------------------------\n"_Stz);
+#endif
+
+    if (pTkn->bSame(","_Stz)) {
+      // skip the comma
+
+      if (ePreExp == PE_GBY) {
+        // push assign column
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+        iGbyCols++;
+
+        if (eExprKind == EK_AGGORD && iGbyCols >= 2)
+            m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
+      }
+      else if (ePreExp == PE_GKY) {
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
+        iGkyCols++;
+      }
+      else {
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col + iGkyCols, i_ColPL, i_DupCtr);
+        i_Col++;
+        i_ColPL++;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // move to the next predicate expression
+      if (ePreExp != PE_GBY)
+        ePreExp = PE_EXP;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp);
+
+      continue;
+    }
+
+    if (pTkn->bSame("groupby"_Stz)) {
+
+      ePreExp = PE_GBY;
+
+      iGbyCols = 0;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp);
+      RASSERT(pExprStack == m_pGbyStack);
+
+      continue;
+    }
+
+    if (pTkn->bSame("ordGroupby"_Stz)) {
+
+      ePreExp = PE_GBY;
+
+      iGbyCols = 0;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp);
+      RASSERT(pExprStack == m_pGbyStack);
+
+      continue;
+    }
+
+    if (pTkn->bSame("aggregates"_Stz)) {
+
+      RASSERT(ePreExp == PE_GBY);
+
+      // push assign column
+      vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, iGbyCols, i_ColPL, i_DupCtr);
+      iGbyCols++;
+
+      if (eExprKind == EK_AGGORD) {
+        if (iGbyCols == 2 || (iGbyCols > 2 && iGbyCols % 2))
+          m_pOrdAggStack->vPushStz("_AND_BOLBOL(aCombinedT->m_iErrorCode)"_Stz);
+      }
+
+      i_Col = 0;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set the next predicate expression
+      ePreExp = PE_EXP;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack
+      pExprStack = pWorkingStack(eExprKind, ePreExp);
+
+      continue;
+    }
+
+    if (pTkn->bSame("sort"_Stz)) {
+
+      eExprKind = EK_SORT;
+
+      RASSERT(pExprStack == m_pExprStack);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the top expression
+    if (pTkn->bSame("top"_Stz)) {
+
+      eExprKind = EK_TOP;
+
+      RASSERT(pExprStack == m_pExprStack);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the filter expression
+    if (pTkn->bSame("filter"_Stz)) {
+
+      eExprKind = EK_FILTER;
+
+      RASSERT(pExprStack == m_pExprStack);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // left_outer
+    if (pTkn->bSame("left_outer"_Stz)) {
+      *pbLeftOuter = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // bound
+    if (pTkn->bSame("bound"_Stz)) {
+      bIndexJoin = true;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lbound
+    if (pTkn->bSame("lbound"_Stz)) {
+
+      RASSERT(ePreExp == PE_EXP);
+
+      // push upperBound assign column
+      if (bUpperBound)
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_ColPL, i_DupCtr);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the lower bound  stack
+      pExprStack = m_pLowerStack;
+      bLowerBound = true;
+      bUpperBound = false;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ubound
+    if (pTkn->bSame("ubound"_Stz)) {
+
+      RASSERT(ePreExp == PE_EXP);
+
+      // push lowerBound assign column
+      if (bLowerBound)
+        vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col, i_ColPL, i_DupCtr);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the upper bound stack
+      pExprStack = m_pUpperStack;
+      bUpperBound = true;
+      bLowerBound = false;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // push the hash in expr list count
+    // strings in query can have "#Brand3" etc
+    // need a better solution...
+    // TODO: ALKA cleanup
+    if (pTkn->szChars()->bContains("#"_Stz)) {
+      char *sHash = (char*)(pTkn->szChars());
+      if (sHash[0] == '#') {
+        char *sCount = (char*)(pTkn->szChars() + 1);
+        if (StrLib::bIsDigit(sCount[0])) {
+          vPushCount(pExprStack, pExprType, pTkn);
+          continue;
+        }
+      }
+
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // push the ordinal column on the expr stack
+    // TODO: ALKA cleanup
+    if (pTkn->szChars()->bContains("$"_Stz)) {
+      char *sDollar = (char*)(pTkn->szChars());
+      if (sDollar[0] == '$') {
+        char *sNext = (char*)(pTkn->szChars() + 1);
+        if (StrLib::bIsDigit(sNext[0])) {
+          vPushOrdCol(pExprStack, pExprType, ePreExp, eExprKind, pTkn);
+          continue;
+        }
+        else {
+          if (sNext[0] == 'K') {
+            ePreExp = PE_GKY;
+          }
+          char *sNextDigit = (char*)(pTkn->szChars() + 2);
+          if (StrLib::bIsDigit(sNextDigit[0])) {
+            vPushOrdCol(pExprStack, pExprType, ePreExp, eExprKind, pTkn);
+            continue;
+          }
+        }
+      }
+
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the final expression type
+    if (pTkn->bSame("type"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      eExprType = StreamDefBase::eDatum(pTkn->szChars());
+      pExprType->vPush(eExprType);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get asc / desc
+    if (pTkn->bSame("asc"_Stz) || pTkn->bSame("desc"_Stz)) {
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the case expression
+    if (pTkn->bSame("case"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_CSE);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the in expression
+    if (pTkn->bSame("inList"_Stz) || pTkn->bSame("in"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_INX);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the between expression
+    if (pTkn->bSame("between"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_BET);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_day expression
+    if (pTkn->bSame("extract_day"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_XDY);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_hour expression
+    if (pTkn->bSame("extract_hour"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_XHR);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_minute expression
+    if (pTkn->bSame("extract_minute"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_XMN);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_month expression
+    if (pTkn->bSame("extract_month"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_XMT);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the extract_second expression
+    if (pTkn->bSame("extract_second"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_XSC);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the between expression
+    if (pTkn->bSame("extract_year"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_XYR);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the like expression
+    if (pTkn->bSame("like2"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_LK2);
+      continue;
+    }
+
+    if (pTkn->bSame("like3"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_LK3);
+      continue;
+    }
+
+    if (pTkn->bSame("matchLeading"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_MLE);
+      continue;
+    }
+
+    if (pTkn->bSame("matchMiddle"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_MMD);
+      continue;
+    }
+
+    if (pTkn->bSame("matchMiddle1"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_MM1);
+      continue;
+    }
+
+    if (pTkn->bSame("matchMiddle2"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_MM2);
+      continue;
+    }
+
+    if (pTkn->bSame("matchTrailing"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_MTR);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the substring2 expression
+    if (pTkn->bSame("substring2"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_SS2);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the substring3 expression
+    if (pTkn->bSame("substring3"_Stz)) {
+      vPushFunc(pExprStack, pExprType, PE_SS3);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip the alias
+    if (pTkn->bSame("as"_Stz)) {
+      i_Tkn++;
+      continue;
+    }
+
+    if (pTkn->bSame("}"_Stz)) {
+      RASSERT(pExprStack = m_pExprStack);
+      continue;
+    }
+
+    // get the cast expression type
+    if (pTkn->bSame("casttype"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      eCastType = StreamDefBase::eDatum(pTkn->szChars());
+      continue;
+    }
+
+    if (pTkn->bSame("cast"_Stz)) {
+      ePreExp = PE_CST;
+      vPushCast(pExprStack, pExprType, eCastType);
+      continue;
+    }
+
+    if (pTkn->bSame(")"_Stz)) {
+
+      ePreExp = PE_EXP;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the normal expression stack
+      pExprStack = pWorkingStack(eExprKind, ePreExp);
+      continue;
+    }
+
+    if (pTkn->bSame("count"_Stz)) {
+
+      ePreExp = PE_CNT;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eExprType = (eDM)pExprType->iPop();
+      vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      continue;
+    }
+
+    if (pTkn->bSame("countAll"_Stz)) {
+
+      ePreExp = PE_ALL;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eExprType = (eDM)pExprType->iPop();
+      vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      continue;
+    }
+
+    if ( pTkn->bSame("countDistinct"_Stz)) {
+
+      ePreExp = PE_CNT;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eExprType = (eDM)pExprType->iPop();
+      vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      continue;
+    }
+
+    if (pTkn->bSame("min"_Stz)) {
+
+      ePreExp = PE_MIN;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eExprType = (eDM)pExprType->iPop();
+      vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      continue;
+    }
+
+    if ( pTkn->bSame("max"_Stz)) {
+
+      ePreExp = PE_MAX;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eExprType = (eDM)pExprType->iPop();
+      vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      continue;
+    }
+
+    if (pTkn->bSame("sum"_Stz)) {
+
+      ePreExp = PE_SUM;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eExprType = (eDM)pExprType->iPop();
+      vPushAggCol(pExprStack, pPostStack, ePreExp, eExprKind, eExprType, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+      continue;
+    }
+
+    if (pTkn->bIsBoolean()) {
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_BOL);
+      continue;
+    }
+
+    if (pTkn->bIsFloat()) {
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_FLT);
+      continue;
+    }
+
+    if (pTkn->bIsInteger()) {
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_INT);
+      continue;
+    }
+
+    if (pTkn->bIsDecimal()) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_BCD);
+      continue;
+    }
+
+    if (pTkn->bSame("DATE"_Stz) ) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_DTE);
+      continue;
+    }
+
+    if (pTkn->bSame("INTERVAL_DT"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_IVD);
+      continue;
+    }
+
+    if (pTkn->bSame("INTERVAL_YM"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_IVY);
+      continue;
+    }
+
+    if (pTkn->bSame("TIME"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_TME);
+      continue;
+    }
+
+    if (pTkn->bSame("TIMESTAMP"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_TSP);
+      continue;
+    }
+
+    if (pTkn->bSame("null"_Stz) ) {
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_UNK);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // negate operator
+    if (pTkn->bSame("negate"_Stz)) {
+
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
+
+      vPushArithmetic(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // else
+    if (pTkn->bSame("else"_Stz)) {
+      eDM eColType1 = (eDM) pExprType->iPop();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // endif
+    if (pTkn->bSame("endif"_Stz)) {
+      pExprStack->vPushStz("}"_Stz);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // then
+    if (pTkn->bSame("then"_Stz)) {
+      eDM eColType1 = (eDM) pExprType->iPop();
+      pExprStack->vPushStz("}"_Stz);
+      pExprStack->vPushStz("else {"_Stz);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // when
+    if (pTkn->bSame("when"_Stz)) {
+      pExprStack->vPushStz("_ASSIGN(bFilterResult)"_Stz);
+      eDM eColType1 = (eDM) pExprType->iPop();
+      RASSERT(eColType1 == DM_BOL);
+      pExprStack->vPushStz("if (bFilterResult && bFilterResult != C_DATUM_NULL) {"_Stz);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // arithmetic operator
+    if (pTkn->bIsArithmetic()) {
+
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
+
+      vPushArithmetic(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // logical operator
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
+
+      vPushLogical(pExprStack, pExprType, pTkn);
+
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // !f operator (exit early if true (OR))
+    if (pTkn->bSame("!t"_Stz)) {
+      s4K sOperation;
+      sOperation.vSprintCat("_FILTER_EXIT_ON_TRUE(%s)"_Stz, sLabelNext);
+      pExprStack->vPushStz(sOperation);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // !f operator (exit early if false (AND))
+    if (pTkn->bSame("!f"_Stz)) {
+      s4K sOperation;
+      sOperation.vSprintCat("_FILTER_EXIT_ON_FALSE(%s)"_Stz, sLabelNext);
+      pExprStack->vPushStz(sOperation);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+
+      // skip == op if indexJoin expr
+      if (bIndexJoin) {
+        if (pTkn->bSame("=="_Stz))
+          bAssignJoin = true;
+        continue;
+      }
+
+      if (bLowerBound || bUpperBound) {
+
+        RASSERT(pTkn->bIsRelational());
+
+        if (pTkn->bSame(">"_Stz)) {
+          RASSERT(bLowerBound);
+          m_sLowerPosition = "aIndexTree_positionGT"_Stz;
+        } else if (pTkn->bSame(">="_Stz)) {
+          RASSERT(bLowerBound);
+          m_sLowerPosition = "aIndexTree_positionGE"_Stz;
+        } else if (pTkn->bSame("<"_Stz)) {
+          RASSERT(bUpperBound);
+          m_sUpperPosition = "aIndexTree_positionLT"_Stz;
+        } else if (pTkn->bSame("<="_Stz)) {
+          RASSERT(bUpperBound);
+          m_sUpperPosition = "aIndexTree_positionLE"_Stz;
+        } else {
+          RASSERT(0);
+        }
+
+        continue;
+      }
+
+      vPushRelational(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // save the column name
+    if (pTkn->bIsString()) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push literal
+      vPushLiteral(pExprStack, pExprType, pTkn, ePreExp, eExprKind, DM_VCH);
+    }
+    else {
+      vPushColumn(pExprStack, pExprType, pStreamDef,  pTkn);
+    }
+
+  }
+
+  if ( !bIndexJoin || (bIndexJoin && bAssignJoin))
+    vPushAssignCol(pExprStack, pPostStack, eExprKind, ePreExp, i_Col+iGkyCols, i_ColPL, i_DupCtr);
+
+
+#ifdef WITH_DEBUG_VERSION
+/*
+  TypeValueArea* pTypedCell;
+
+
+  vTrace("Expr: \"%s\"; eEK: %s\n"_Stz, sExpr, aEK[eExprKind]);
+
+  // dump the TypeStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("EXPRTYPE:\n"_Stz);
+  i8 nExpr = pExprType->nItems() - 1;
+
+  while ( nExpr >= 0) {
+    eDM eType = (eDM)pExprType->iPeek(nExpr--);
+    vTrace("%s\n"_Stz, aDM[eType]);
+  }
+
+  // dump the ExprStack
+//  vTrace("--------------------------------------\n"_Stz);
+//  vTrace("EXPRSTACK:\n"_Stz);
+//  nExpr = m_pPreExpStack->nItems() - 1;
+
+  while ( nExpr >= 0) {
+    ePE ePreExp = (ePE)m_pPreExpStack->iPeek(nExpr--);
+    vTrace("%s\n"_Stz, aPE[ePreExp]);
+  }
+
+  // dump the NullStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("NULLSTACK:\n"_Stz);
+  nExpr = m_pNullStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pNullStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the InitStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("INITSTACK:\n"_Stz);
+  nExpr = m_pInitStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pInitStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the LowerStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("LOWERSTACK:\n"_Stz);
+  nExpr = m_pLowerStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the UpperStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("UPPERSTACK:\n"_Stz);
+  nExpr = m_pUpperStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+  vTrace("--------------------------------------\n"_Stz);
+
+  // dump the m_pGbyStack stack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("GROUPBYSTACK:\n"_Stz);
+  nExpr = m_pGbyStack ? m_pGbyStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the PostStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("POSTSTACK:\n"_Stz);
+  nExpr = pPostStack ? pPostStack->nValues() - 1 : -1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = pPostStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+*/
 #endif
 
 
@@ -5421,7 +6227,7 @@ void CodeSynth::vGenerateStruct(u8 uSelectColumns) {
 /*----------------------------------------------------------------------------*/
 /* get working stack                                                          */
 /*----------------------------------------------------------------------------*/
-TypedStack* CodeSynth::pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack)
+TypedStack* CodeSynth::pWorkingStack_old(eEK eExprKind, ePE ePreExp, TypedStack* pPostStack)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -5478,6 +6284,50 @@ TypedStack* CodeSynth::pWorkingStack(eEK eExprKind, ePE ePreExp, TypedStack* pPo
       }
       else
         return m_pExprStack;
+
+    default:
+      NEVER_REACH;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get working stack                                                          */
+/*----------------------------------------------------------------------------*/
+TypedStack* CodeSynth::pWorkingStack(eEK eExprKind, ePE ePreExp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  switch(eExprKind) {
+    case EK_GBYAGG:
+    case EK_AGGREG:
+      if (ePreExp == PE_GKY ||
+          ePreExp == PE_EXP)
+        return m_pExprStack;
+
+      if (ePreExp == PE_GBY)
+        return m_pGbyStack;
+
+      return m_pInitStack;
+
+    case EK_AGGORD:
+      if (ePreExp == PE_GBY)
+        return m_pGbyStack;
+      else
+        return m_pExprStack;
+
+    case EK_FILTER:
+    case EK_HASH:
+    case EK_INDEXJOIN:
+    case EK_INDEXSCAN:
+    case EK_PROJECT:
+    case EK_SORT:
+    case EK_TOP:
+      return m_pExprStack;
+
+    case EK_NONE:
+      return m_pExprStack;
 
     default:
       NEVER_REACH;

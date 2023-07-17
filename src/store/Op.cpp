@@ -638,11 +638,12 @@ bool Op::bIsEventValid(i8 i_OperandKind)
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
-      
+
       // should have received a EV_M_CANCEL
       if ( ! m_pEvMgr->m_naEventCount[EV_M_CANCEL] &&
+           ! m_pEvMgr->m_naEventCount[EV_M_INTERNALERROR] &&
            ! m_pEvMgr->m_naEventCount[EV_M_LOWMEMORY]) {
-        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_LOWMEMORY\n"_Stz,
+        vTrace("%s: %s arrived without a prior EV_M_CANCEL / EV_M_INTERNALERROR / EV_M_LOWMEMORY\n"_Stz,
                szOpNm(), aEV[i_OperandKind]);
         return false;
       }
@@ -1749,6 +1750,9 @@ void Op::vSpawnTask(void)
   Task* pTask = this->pTask();
 
 
+  if (m_p_OpSpec->szOpNm()->bSame("dynamic"_Stz)) {
+    pTask->m_pLogicUnit->m_xpLibInfo = pJob->pTask()->m_pLogicUnit->m_xpLibInfo;
+  }
 /*
  //---------------------------------------------------------
  // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)

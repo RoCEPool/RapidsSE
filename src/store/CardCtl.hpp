@@ -45,6 +45,8 @@ namespace STORE
 
     _CardCtl m_xaCardCtl_save[CK_ENUMS];
 
+    i8  m_iPrintNo;
+
   protected:
     // must be last
     Footer m_xFooter;
@@ -83,6 +85,9 @@ namespace STORE
     void vPrintName(i8 i_Card, bool bPrintName);
     bool bPrintNo(i8 i_Card);
     void vPrintNo(i8 i_Card, bool bPrintNo);
+    i8   iPrintNo(void);
+    void vPrintNoInc(void);
+
     bool bPrintValue(i8 i_Card);
     void vPrintValue(i8 i_Card, bool bPrintValue);
     bool bPrintPptName(i8 i_Card);

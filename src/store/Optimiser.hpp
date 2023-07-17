@@ -10,6 +10,8 @@
 #include "Weaver.hpp"
 #include "PermGen.hpp"
 #include "Error.hpp"
+#include "PipelineDef.hpp"
+#include "ExtendedText.hpp"
 
 namespace STORE
 {
@@ -29,14 +31,17 @@ namespace STORE
   
     Bench*       m_pBench;
     Dissector*   m_pDissector;
-    Weaver*      m_pWeaver;
 
     i8           m_nJoinPermutations;
     s256         m_sJoinPermutation[C_PERMUTATIONS]; // join permutation string
 
     s256         m_sJoinOrder; // join order string
 
-    CardIter*    m_pCI;
+    CardIter*     m_pCI;
+    PipelineDef*  m_pPipelineDef;
+    ExtendedText* m_pOptStmt;
+    ExtendedText* m_pCodeBlock;
+
 
     // must be last
     Footer m_xFooter;
@@ -52,12 +57,14 @@ namespace STORE
     static void vRepair(Object* pObject);
 
     bool bApplyTransformationMatrix(Error& rxError);
-    void vApplyTransformationMatrix(void);
 
     Bench* pBench(void);
 
     CardCtl* pCardCtl(void);
-  
+
+    ExtendedText* pCodeBlock(void);
+    void vCodeBlock(ExtendedText* pCodeBlock);
+
     void vDissect(VertexSpec* pm_pUnOptPipeSpec);
 
     TagSet* pJobTags(void);
@@ -70,10 +77,16 @@ namespace STORE
     i8 nJoinPermutations(void);
     void vJoinPermutations(i8 iJoinPermutations);
 
+    ExtendedText* pOptStmt(void);
+    void vOptStmt(ExtendedText* pOptSmt);
+
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
     bool bTransform(Error& rxError, InfoSet* pInfoSet);
+
+    PipelineDef* pPipelineDef(void);
+    void vPipelineDef(PipelineDef* pPipelineDef);
 
     void vPipeSpec(VertexSpec* pUnOptPlineSpec);
 

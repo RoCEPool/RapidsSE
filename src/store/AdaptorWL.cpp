@@ -897,7 +897,7 @@ void AdaptorWL::vQueryReceipt(ENGINE::TaskList* pTaskList)
   while (pTask != nullptr) {
     ++nStatements;
 
-    Stz* szCommand = pTask->pJob()->szCmd();
+    Stz* szCommand = pTask->pJob()->szCmdText();
     s256 sJobId;
     sJobId.vSprint("%lld"_Stz, pTask->pJob()->tJobId().iAsI8());
 

@@ -244,17 +244,36 @@ void Card_ELIST::vPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card_ELIST::vRenumberAll_expr(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   bool bIsKeyExpr = bIsCard(CK_KEY);
 
   i8 i_Expr = 1;
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_EXPR))
+  for (Kid xCI(this); xCI.bEach(CK_EXPR); /**/) {
     if (bIsKeyExpr)
-      xCI.G.p_expr->vRenumberForm_keyOdn(i_Expr++);
+      xCI.p_expr()->vRenumberForm_keyOdn(i_Expr++);
     else
-      xCI.G.p_expr->vRenumberForm_stmOdn(i_Expr++);
+      xCI.p_expr()->vRenumberForm_stmOdn(i_Expr++);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber all synthetic as (return number of synthetic as's)                */
+/*----------------------------------------------------------------------------*/
+i8 Card_ELIST::nRenumberAll_syntheticAs(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  bool bIsKeyExpr = bIsCard(CK_KEY);
+
+  i8 i_Col = 0;
+  for (Kid xCI(this); xCI.bEach(CK_EXPR); /**/) {
+    if (Card_As* p_as = xCI.p_expr()->pSub_as())
+      if (p_as->pSymbol()->bIsSyntheticAs())
+        p_as->pSymbol()->vSetSyntheticAs(++i_Col);
+  }
+
+  return i_Col;
 }
 
 /*============================================================================*/

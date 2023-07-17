@@ -22,7 +22,7 @@ select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -141,6 +141,7 @@ end ;
 
 // NOTE: CHANGED KEY NOT EXISTS to KEY EXISTS for SF0001 data
 
+/optimise_passthru 
 pipeline Query22
 begin
   stage S00 on origin :

@@ -28,6 +28,8 @@ namespace STORE
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     Card_Projection* pCraft_projection_early(CardIter* pCI);
 
+    void vDedupe_as(void);
+
     void vDerive_Projection_Key(CardIter* pCI);
 
     void vEarlyProject_given_leaf(CardIter* pCI);
@@ -39,6 +41,8 @@ namespace STORE
     void vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward);
 
     void vUpdate_projection_off_running(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Project* _pCard_Project(void* aAddr);

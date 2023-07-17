@@ -22,7 +22,7 @@ select p_brand, p_type, p_size, count(distinct ps_suppkey) as supplier_cnt
 
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 /*
 
@@ -100,7 +100,7 @@ success
 // Changed Scans followed by AbstractJoins to concrete joins
 //------------------------------------------------------------------------------
 /*
-pipeline unamed
+/optimise_passthru 
 begin
   pipeline __subquery0003
   begin
@@ -227,6 +227,7 @@ end ;
 
 
 // JOIN ORDER : partsupp -> part
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -317,6 +318,7 @@ end ;
 */
 
 // JOIN ORDER : partsupp -> part
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -467,6 +469,7 @@ rows:
 
 
 // JOIN ORDER : part -> partsupp
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -616,6 +619,7 @@ rows:
  ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
 
 // JOIN ORDER : part -> partsupp
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -767,6 +771,7 @@ rows:
 
 // moved filters and added projections early
 //sf10 : 7.8s
+/optimise_passthru 
 pipeline Query16
 begin
   stage S00 on origin :
@@ -925,6 +930,7 @@ rows:
  ('Brand#55','STANDARD ANODIZED BRASS' ,36 ,1)
  ('Brand#55','STANDARD BRUSHED COPPER' , 3 ,1)
 /*
+/optimise_passthru 
 pipeline Query16
 begin
   stage S00 on origin :
@@ -1079,6 +1085,7 @@ rows:
 /*
 sf10: 27.8s
 
+/optimise_passthru 
 pipeline unamed
   begin
     stage stageStart on origin :
@@ -1154,6 +1161,7 @@ pipeline unamed
 
 //sf10:
 /*
+/optimise_passthru 
 pipeline unamed
   begin
     stage stageStart on origin :
@@ -1240,6 +1248,7 @@ rows:
 
 // Early group by
 // best result
+/optimise_passthru 
 pipeline Query16
 begin
   stage S00 on origin :

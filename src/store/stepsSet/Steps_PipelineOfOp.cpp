@@ -46,6 +46,8 @@ void Step::vAddSteps_PipelineOfOp(void)
   vAddStep("[pipeline].errored!"_Stz,       &Step::vPipelineOfOpErroredStore);
   vAddStep("[pipeline].getAccum"_Stz,       &Step::vPipelineOfOpGetAccum);
   vAddStep("[pipeline].grabDebugLock"_Stz,  &Step::vPipelineOfOpGrabDebugLock);
+  vAddStep("[pipeline].internalError@"_Stz,     &Step::vPipelineOfOpInternalErrorFetch);
+  vAddStep("[pipeline].internalError!"_Stz,     &Step::vPipelineOfOpInternalErrorStore);
   vAddStep("[pipeline].lowMemory@"_Stz,     &Step::vPipelineOfOpLowMemoryFetch);
   vAddStep("[pipeline].lowMemory!"_Stz,     &Step::vPipelineOfOpLowMemoryStore);
   vAddStep("[pipeline].pulsed@"_Stz,        &Step::vPipelineOfOpPulsedFetch);
@@ -220,6 +222,37 @@ void Step::vPipelineOfOpGrabDebugLock(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* [pipeline].internalError@ -- has this pipeline been cancelled?             */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOfOpInternalErrorFetch(void)
+{
+  ENTRY();
+
+  Pipeline* pPipeline = m_pOp->pPipeline();
+
+  m_pDataStack->vPushInt(pPipeline->bInternalError());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [pipeline].internalError! -- fetch this pipeline's cancelled indicator     */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineOfOpInternalErrorStore(void)
+{
+  ENTRY();
+
+  Pipeline* pPipeline = m_pOp->pPipeline();
+
+  pPipeline->vInternalError(m_pDataStack->iPopBol(__func__));
+
+  EXIT();
+}
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* [pipeline].lowMemory@ -- has this pipeline been cancelled?                 */

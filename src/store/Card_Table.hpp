@@ -27,6 +27,7 @@ namespace STORE
 
     static void vAffixTableColOrd(CardIter* pCI);
     static void vAffixTableSyn(CardIter* pCI, char* cTableSyn);
+    static void vAffixTableSyn_passThru(CardIter* pCI, char* cTableSyn);
     static void vAppendIndexList(CardIter* pCI);
     static void vDeriveBoundsFromFilter(CardIter* pCI);
     static Card_Table* pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
@@ -41,15 +42,18 @@ namespace STORE
     void vBounds_AddPred(Card_Index* p_index,
                            Card_Bounds* p_bounds, Card_PRED *p_PRED);
     Stz* szColNm(i8 i_Col_base0);
+    bool bIsTblColOf(Stz* szTblCol);
+    void vPrint(Ribbon* pRibbon, i8 iDepth);
     void vDeriveBoundsFrom_filter(Card_Filter* p_filter);
     bool bUsesSqyRsl(void);
     void vMorph_table_To_EEop(CardIter *pCI);
-    void vPrint(Ribbon* pRibbon, i8 iDepth);
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
     void vSet_Syn(char* cTableSyn);
     void vSmooth(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Table* _pCard_Table(void* aAddr);

@@ -52,6 +52,7 @@ namespace STORE
     Card_IdxCol* p_idxCol(void);
     Card_Index*  p_index(void);
     Card_OP*     p_OP(void);
+    Card_Stage*  p_stage(void);
     Card_Table*  p_table(void);
     Card_Term*   p_term(void);
 
@@ -74,6 +75,7 @@ namespace STORE
     void vParent(Card*  pParent);
     void vChild(i8 i_Child);
     void vReset(void);
+    void vSynch(Card*  pChild_with);
 
 //  private:
 //
@@ -129,6 +131,7 @@ namespace STORE
     Card_CostNetwork *   p_costNetwork;
     Card_CostStream *    p_costQuery;
     Card_CostUnicast *   p_costUnicast;
+    Card_Count *         p_count;
     Card_CrossJoin *     p_crossJoin;
 
     Card_Direction *     p_direction;
