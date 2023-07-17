@@ -292,7 +292,8 @@ rows:
 // SEMI-JOIN
 //------------------------------------------------------------------------------
 
-
+// TODO V2
+/*
 /optimise_passthru
 pipeline __CS2_semiJoin
 begin
@@ -326,7 +327,7 @@ rows:
  (0,'ALGERIA',0)
  (1,'ARGENTINA',1)
  (4,'EGYPT',4)
-
+*/
  
  /optimise_passthru
  pipeline __CS2_semiJoin

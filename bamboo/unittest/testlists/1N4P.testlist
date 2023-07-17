@@ -4,6 +4,12 @@
 # This is a recursive testList file.
 
 ../../../seth/tests/dummyTests/testList
+
+../../../seth/tests/tests1N4P/GbyAgg/testList
+../../../seth/tests/tests1N4P/OrderBy/testList
+../../../seth/tests/tests1N4P/Top/testList
+../../../seth/tests/tests1N4P/CombinedV2/testList
+
 //../../../seth/tests/tests1N4P/CombinedV2/testList
 ../../../seth/tests/tests1N4P/DataTypes/testList
 ../../../seth/tests/tests1N4P/Expressions/testList

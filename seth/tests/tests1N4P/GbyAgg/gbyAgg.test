@@ -178,6 +178,35 @@ rows:
  (5,0.10,5)
  (6,0.07,6)
 
+//------------------------------------------------------------------------------
+create table Nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+)
+success
+
+//------------------------------------------------------------------------------
+load nation "../TPCH/SF_0001/nation.csv";
+success
+
+//------------------------------------------------------------------------------
+// TODO V2
+/*
+/pipeline_def
+SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
+                                             FROM nation
+                                             GROUP BY region
+                                             HAVING region > 1;
+rows:
+  (3,2)
+  (4,4)
+  (0,2)
+  (2,3)
+  (1,4)
+*/
+
 // drop the table
 drop table datums;
 success
@@ -192,6 +221,10 @@ success
 
 // drop the table
 drop table partsupp;
+success
+
+// drop the table
+drop table nation;
 success
 
 // get memory leaks
