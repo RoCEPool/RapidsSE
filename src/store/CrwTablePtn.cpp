@@ -87,6 +87,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
     return;
   }
 
+  RASSERT(pCrwBuffer->pNextLinkedBuffer() == nullptr);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark crwBuffer as permanent
   pCrwBuffer->vIsPermanent(true);
