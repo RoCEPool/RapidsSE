@@ -7,7 +7,7 @@ grammar sql ;
 }
 
 // statement / query -----------------------------------------------------------
-statements        :  statement* ;
+statements        :  statement+ ;
 statement         :  tags statementChoice ';' ;
 statementChoice   :   queryStatement
                     | explainStatement
