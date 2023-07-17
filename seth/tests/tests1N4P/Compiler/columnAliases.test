@@ -57,8 +57,7 @@ success
 --   ['region', 'nationcount']
 
 -- HAVING clause
-// TODO V2
-/*
+
 EXPLAIN SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
 FROM nation
 GROUP BY region
@@ -74,7 +73,6 @@ HAVING region > 1;
 -- success
 rows:
   ['region', 'nationcount']
-*/
 
 -- ORDER BY clause
 -- Commented out until ORDER BY is supported in the execution engine

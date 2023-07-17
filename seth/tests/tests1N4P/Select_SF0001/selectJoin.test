@@ -100,8 +100,6 @@ rows:
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + AggGby + Filter
-// TODO V2
-/*
 select sum(ps_supplycost), p_partkey
   from Part,
        PartSupp
@@ -113,7 +111,6 @@ select sum(ps_supplycost), p_partkey
 rows:
   (2099.74, 43)
   (1688.59, 185)
-*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 MemoryLeaks;

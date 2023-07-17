@@ -184,28 +184,23 @@ create table Nation (
 	 N_NAME            CHAR(25)     NOT NULL,
 	 N_REGIONKEY       INTEGER      NOT NULL,
 	 N_COMMENT         VARCHAR(152)
-)
+);
 success
 
 //------------------------------------------------------------------------------
-load nation "../TPCH/SF_0001/nation.csv";
+load nation "../DATA/TPCH/nation.tbl";
 success
 
 //------------------------------------------------------------------------------
-// TODO V2
-/*
-/pipeline_def
 SELECT n_regionkey AS region , COUNT(n_nationkey) AS nationcount
                                              FROM nation
                                              GROUP BY region
                                              HAVING region > 1;
 rows:
-  (3,2)
-  (4,4)
-  (0,2)
-  (2,3)
-  (1,4)
-*/
+  (3,5)
+  (4,5)
+  (2,5)
+
 
 // drop the table
 drop table datums;
@@ -235,6 +230,22 @@ CLEANUP {
   
   // drop the table
   drop table datums;
+  mute
+
+  // drop the table
+  drop table lineitem;
+  mute
+
+  // drop the table
+  drop table part;
+  mute
+
+  // drop the table
+  drop table partsupp;
+  mute
+
+  // drop the table
+  drop table nation;
   mute
   
   bye;

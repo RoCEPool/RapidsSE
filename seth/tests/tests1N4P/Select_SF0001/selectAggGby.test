@@ -5,8 +5,6 @@ trackMemory;
 success
 
 // scan +aggGby
-// TODO V2
-/*
 select count(*) from nation group by n_regionkey;
 rows:
   (5)
@@ -14,7 +12,6 @@ rows:
   (5)
   (5)
   (5)
-*/
 
 // scan +aggGby
 select n_regionkey, count(*) from nation group by n_regionkey;
@@ -26,8 +23,6 @@ rows:
   (1, 5)
 
 // scan +aggGby
-// TODO V2
-/*
 select count(*), n_regionkey from nation group by n_regionkey;
 rows:
   (5, 3)
@@ -135,11 +130,8 @@ rows:
  ('Manufacturer#5','Brand#55',2)
  ('Manufacturer#5','Brand#53',2)
  ('Manufacturer#5','Brand#52',2)
-*/
 
 // scan + filter + aggGby + filter
-//TODO V2 : OPTIMISER
-/*
 select p_brand, p_mfgr, count(*) from part where p_size < 5 group by p_mfgr, p_brand order by p_brand, p_mfgr;
 ordered rows:
  ('Brand#11','Manufacturer#1',1)
@@ -175,8 +167,6 @@ ordered rows:
  (2,'Brand#53','Manufacturer#5')
  (2,'Brand#55','Manufacturer#5')
 
-*/
-
 // indexScan + filter + aggGby + filter
 select P_MFGR, count(*) from part where p_partkey < 5 group by P_MFGR order by P_MFGR;
 ordered rows:
@@ -200,8 +190,6 @@ ordered rows:
  ('Manufacturer#5','Brand#54',1)
  ('Manufacturer#5','Brand#55',1)
 
-//TODO V2 : OPTIMISER
-/*
 // indexScan + filter + aggGby + filter
 select p_brand, p_mfgr, count(*) from part where p_partkey < 15 group by p_mfgr, p_brand order by p_brand, p_mfgr;
 ordered rows:
@@ -233,7 +221,6 @@ ordered rows:
  (1,'Brand#54','Manufacturer#5')
  (1,'Brand#55','Manufacturer#5')
  (3,'Brand#13','Manufacturer#1')
-*/
 
 MemoryLeaks;
 rows: 0
