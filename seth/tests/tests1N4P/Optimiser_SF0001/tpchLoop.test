@@ -55,12 +55,9 @@ INCLUDE 'OptQ3.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2
-/*
 LOG 'Running tpch query 4...';
 INCLUDE 'OptQ4.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 5...';
@@ -78,7 +75,7 @@ INCLUDE 'OptQ7.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2 (0.00 instead of 0.0000)
+// TODO V2 ALK TO LOOK AT (0.00 instead of 0.0000)
 /*
 LOG 'Running tpch query 8...';
 INCLUDE 'OptQ8.test';
@@ -144,9 +141,12 @@ INCLUDE 'sleep.test';
 */
 
 //------------------------------------------------------------------------------
+// TODO V2
+/*
 LOG 'Running tpch query 17...';
 INCLUDE 'OptQ17.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
 // TODO V2
