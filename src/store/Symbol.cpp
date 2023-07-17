@@ -703,6 +703,16 @@ void Symbol::vSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Symbol::vSetCrossRef(i8 iCrossRef)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSprint("#%lld"_Stz, iCrossRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);

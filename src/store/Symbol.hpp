@@ -73,6 +73,7 @@ namespace STORE
     bool bSameAs(Symbol* pArg);
 
     void vSet(Symbol* pSymbol);
+    void vSetCrossRef(i8 iCrossRef);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSetStreamOrdinal(i8 iStmColOdn);
