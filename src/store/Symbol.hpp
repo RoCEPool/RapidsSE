@@ -48,6 +48,7 @@ namespace STORE
     bool bIsColNm(void);            //
     bool bIsColumnOrdinal(void);    // $c.n
     bool bIsComma(void);            // ,
+    bool bIsCrossRef(void);         // #n
     bool bIsIndexColumn(void);      // $In
     bool bIsKeyOrdinal(void);       // $Kn
     bool bIsName(void);             //

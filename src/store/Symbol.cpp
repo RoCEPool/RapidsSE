@@ -302,7 +302,7 @@ bool Symbol::bIsBound(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a colun name?                                                      */
+/* is this a column name?                                                     */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsColNm(void)
 {
@@ -344,6 +344,23 @@ bool Symbol::bIsComma(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if (m_sSymbol.bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsCrossRef(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+
+  if ('#' == acFirst &&
+      StrLib::bIsDigit(acSecond))
     return true;
   else
     return false;
