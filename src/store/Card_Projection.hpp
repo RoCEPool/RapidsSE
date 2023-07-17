@@ -15,8 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Projection(void);
-    Card_Projection(eCK eCard);
+    Card_Projection(i8 iCrossRef);
    ~Card_Projection(void) noexcept(false);
 
     static Card_Projection* pResolvePriorProjection(CardIter* pCI);
@@ -29,10 +28,10 @@ namespace STORE
     void vDeletePrjKey(CardIter* pCI);
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
-    Card_Projection* pPropagate(void);
+    Card_Projection* pPropagate(CardIter* pCI);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     bool bHasTerm(Symbol* pSymbol);
-    Card_Projection* pReducedCopy(void);
+    Card_Projection* pReducedCopy(CardIter* pCI);
     void vReviewAs(CardIter* pCI);
 
     StreamDef* pToStreamDef(ColMap* pColMap,

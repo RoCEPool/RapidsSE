@@ -66,7 +66,7 @@ void Card_Project::vUnproject_foldExpr(CardIter* pCI,
   p_project_unproject->vAppend(p_level);
   //pCI->G.p_level->Y_vSet(P_Level, (i8)AL_ORIGIN);
 
-  Card_Projection* p_projection_unproject = new Card_Projection;
+  Card_Projection* p_projection_unproject = new Card_Projection(pCI->m_iXform);
   p_project_unproject->vAppend(p_projection_unproject);
 
   i8 i_Col = 0;
@@ -143,7 +143,7 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Projection* p_projection_early = new Card_Projection;
+  Card_Projection* p_projection_early = new Card_Projection(pCI->m_iXform);
 
   //pCI->Early.m_pNeeded_later->vDump();
 

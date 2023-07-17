@@ -96,7 +96,6 @@ void CardIter::vInit(void)
 
 
   m_iXform     = 0;
-  m_iTrace     = 0;
 
   Sqy.m_pCard_sqCopy   = nullptr;
 

@@ -240,7 +240,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
     pCI->G.p_sort->vDeleteChild(pCI->G.p_projection);
 
-  Card_Projection* p_projection_sort =  pCI->Analysis.m_pProjection_prior->pPropagate();
+  Card_Projection* p_projection_sort =  pCI->Analysis.m_pProjection_prior->pPropagate(pCI);
   for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
     Card_Expr* p_expr_key = xKey_sort.p_expr();
 

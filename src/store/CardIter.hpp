@@ -23,7 +23,6 @@ namespace STORE
     CardCtl*    m_pCardCtl;
 
     i8          m_iXform;
-    i8          m_iTrace;
     s32         m_sXhand;
     s256        m_sXfunc;
     s256        m_sXdesc;

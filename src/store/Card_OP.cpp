@@ -850,9 +850,9 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   if (pCI->Analysis.m_pProjection_prior)
 //    p_projection = pCI->Analysis.m_pProjection_prior->pClone();
-    p_projection = pCI->Analysis.m_pProjection_prior->pReducedCopy();
+    p_projection = pCI->Analysis.m_pProjection_prior->pReducedCopy(pCI);
   else
-    p_projection = new Card_Projection;
+    p_projection = new Card_Projection(pCI->m_iXform);
 
   //  --  --  --  --  --  --  --  --  --  --  --  --  --
 

@@ -22,29 +22,17 @@ __vDeleteFunction(Card_Projection, CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Projection::Card_Projection(void)
+Card_Projection::Card_Projection(i8 iCrossRef)
 : Card_ELIST(CK_PROJECTION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
   _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Projection::Card_Projection(eCK eCard)
-: Card_ELIST(eCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
+  pSymbol()->vSetCrossRef(iCrossRef);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
@@ -376,10 +364,10 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 /*----------------------------------------------------------------------------*/
 /* propagate this projection                                                  */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pPropagate(void) {
+Card_Projection* Card_Projection::pPropagate(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Projection *p_projection_propagated = new Card_Projection;
+  Card_Projection *p_projection_propagated = new Card_Projection(pCI->m_iXform);
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
@@ -423,11 +411,11 @@ bool Card_Projection::bHasTerm(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* return a reduced copy of this projection                                   */
 /*----------------------------------------------------------------------------*/
-Card_Projection* Card_Projection::pReducedCopy(void)
+Card_Projection* Card_Projection::pReducedCopy(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Projection* p_projection_reduced = new Card_Projection;
+  Card_Projection* p_projection_reduced = new Card_Projection(pCI->m_iXform);
 
   i8 i_Expr = 0;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {

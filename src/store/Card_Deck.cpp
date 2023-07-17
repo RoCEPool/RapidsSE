@@ -322,7 +322,7 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
     else
     if (CK_SORT == pCI->G.e_MainCard) {
       Card_Projection* p_projection_propagated =
-          pCI->Analysis.m_pProjection_prior->pPropagate();
+          pCI->Analysis.m_pProjection_prior->pPropagate(pCI);
       p_projection_propagated->vAdjust(pCI->G.p_MainCard->pSub_key());
 
       pCI->G.p_MainCard->vAppend(p_projection_propagated);
@@ -370,7 +370,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
     if (CK_KEYEXISTS == pCI->G.e_MainCard ||
         CK_KEYNOTEXISTS == pCI->G.e_MainCard) {
 
-      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
+      pCI->G.p_MainCard->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate(pCI));
 
       if ((pCI->G.p_indexList = pCI->G.p_MainCard->pSub_indexList())) {
         if (pCI->Analysis.m_pProjection_prior) {
@@ -422,7 +422,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
     else
     if (CK_SORT == pCI->G.e_MainCard || CK_TOP == pCI->G.e_MainCard) {
       Card_Projection* p_projection_propagated =
-          pCI->Analysis.m_pProjection_prior->pPropagate();
+          pCI->Analysis.m_pProjection_prior->pPropagate(pCI);
       p_projection_propagated->vAdjust(pCI->G.p_MainCard->pSub_key());
 
       pCI->G.p_MainCard->vAppend(p_projection_propagated);

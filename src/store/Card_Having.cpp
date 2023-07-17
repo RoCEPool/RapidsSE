@@ -157,7 +157,7 @@ void Card_Having::vUpdate_projection(CardIter* pCI)
 
     pCI->G.p_having->vDeleteChild(pCI->G.p_projection);
     //pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
-    pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
+    pCI->G.p_having->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate(pCI));
 
   }
 
