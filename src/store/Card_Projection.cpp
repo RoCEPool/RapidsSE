@@ -537,9 +537,11 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       p_key->vX();
       vDebugPoint();
 
-      sColNm_mapped.vSprint("C%lld_COL%lld"_Stz,
-                            xProjection.i_Child(),
-                            i_Col);
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -564,9 +566,11 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       p_key->vX();
       vDebugPoint();
 
-      sColNm_mapped.vSprint("C%lld_COL%lld"_Stz,
-                            xProjection.i_Child(),
-                            i_Col);
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -591,9 +595,11 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
       p_key->vX();
       vDebugPoint();
 
-      sColNm_mapped.vSprint("C%lld_COL%lld"_Stz,
-                            xProjection.i_Child(),
-                            i_Col);
+      s32 sNm_modified;
+      sNm_modified.vSprint("C%lld_%s"_Stz,
+                           xProjection.i_Child(),
+                           sColNm.azChar());
+      sColNm = sNm_modified;
 
       eColType = p_expr->eColumnType();
       pStreamDef->vAddColumn(sColNm, eColType, C_UNKNOWN, C_UNKNOWN);
@@ -619,7 +625,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
                            xProjection.i_Child(),
                            sColNm.azChar());
       sColNm = sNm_modified;
-      sColNm_mapped = sColNm;
 
       eColType = p_expr->eColumnType();
 
@@ -650,7 +655,6 @@ StreamDef* Card_Projection::pToStreamDef(ColMap* pColMap,
                            xProjection.i_Child(),
                            sColNm.azChar());
       sColNm = sNm_modified;
-      sColNm_mapped = sColNm;
 
       eColType = p_expr->eColumnType();
 
