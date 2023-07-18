@@ -9,4 +9,6 @@ CLASSPATH="${CLASSPATH}:${DIR}/*:${DIR}/shell/*"
 export SE_USERNAME=""
 export SE_PASSWORD=""
 
-java -cp "${CLASSPATH}" com.rapidsdata.shell.RapidsShell "$@"
+OPTIONS="--continueBatchOnError"
+
+java -cp "${CLASSPATH}" com.rapidsdata.shell.RapidsShell "${OPTIONS}" "$@"
