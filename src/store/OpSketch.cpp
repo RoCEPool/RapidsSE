@@ -358,7 +358,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack
   pExprStack = pWorkingStack(ePreExp, bConstraint);
-  RASSERT(m_pExprStack == pExprStack || m_pConstraintStack == pExprStack);
+  RASSERT(pExprStack == m_pExprStack ||
+          ((pExprStack == m_pConstraintStack) && bConstraint));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate tokens of the expression
@@ -367,9 +368,9 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     pTkn = pTokenVec->pGet(i_Tkn);
 
 
-//#ifdef WITH_DEBUG_VERSION
-//
-//       vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+#ifdef WITH_DEBUG_VERSION
+
+//    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 //
 //    // dump the TypeStack
 //    vTrace("--------------------------------------\n"_Stz);
@@ -381,8 +382,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 //      vTrace("%s\n"_Stz, aDM[eType]);
 //    }
 //    vTrace("--------------------------------------\n"_Stz);
-//
-//#endif
+
+#endif
 
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
@@ -729,7 +730,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     }
 
     if (pTkn->bSame("}"_Stz)) {
-      RASSERT(pExprStack = m_pExprStack);
+      RASSERT(pExprStack == m_pExprStack ||
+             ((pExprStack == m_pConstraintStack) && bConstraint));
       continue;
     }
 
@@ -908,6 +910,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // endif
     if (pTkn->bSame("endif"_Stz)) {
+      pExprType->vPush(eResultExprType);
       pExprStack->vPushStz("}"_Stz);
       continue;
     }
@@ -1036,7 +1039,6 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
 
 #ifdef WITH_DEBUG_VERSION
-/*
   TypeValueArea* pTypedCell;
 
   vTrace("\n*****************************************************\n"_Stz);
@@ -1060,6 +1062,16 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 
   while ( nExpr >= 0) {
     pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+ // dump the ConstraintStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("CONSTRAINTSTACK:\n"_Stz);
+  nExpr = m_pConstraintStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pConstraintStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 
@@ -1113,7 +1125,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     pTypedCell = m_pGbyStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
-*/
+
 #endif
 
 
@@ -2346,6 +2358,8 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
     case SK_SEMIJOIN:
       if (bConstraint)
         return m_pConstraintStack;
+      else
+        return m_pExprStack;
     case SK_NONE:
       return m_pExprStack;
 
