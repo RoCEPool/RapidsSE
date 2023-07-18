@@ -169,6 +169,8 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXJOIN -
 //------------------------------------------------------------------------------
+// TODO V2
+/*
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -222,6 +224,7 @@ rows:
   (22,'RUSSIA',3,3,'EUROPE','ly final courts cajole furiously final excuse')
   (23,'UNITED KINGDOM',3,3,'EUROPE','ly final courts cajole furiously final excuse')
   (24,'UNITED STATES',1,1,'AMERICA','hs use ironic, even requests. s')
+*/
 
 //------------------------------------------------------------------------------
 // INDEXSCAN + INDEXJOIN

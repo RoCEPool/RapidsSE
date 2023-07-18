@@ -367,9 +367,9 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     pTkn = pTokenVec->pGet(i_Tkn);
 
 
-//#ifdef WITH_DEBUG_VERSION
-//
-//       vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+#ifdef WITH_DEBUG_VERSION
+
+//    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 //
 //    // dump the TypeStack
 //    vTrace("--------------------------------------\n"_Stz);
@@ -381,8 +381,8 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
 //      vTrace("%s\n"_Stz, aDM[eType]);
 //    }
 //    vTrace("--------------------------------------\n"_Stz);
-//
-//#endif
+
+#endif
 
     if (pTkn->bSame(","_Stz)) {
       // skip the comma
@@ -908,6 +908,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // endif
     if (pTkn->bSame("endif"_Stz)) {
+      pExprType->vPush(eResultExprType);
       pExprStack->vPushStz("}"_Stz);
       continue;
     }
