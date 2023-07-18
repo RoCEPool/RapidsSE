@@ -625,9 +625,6 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
   // get join expr from OpDef
   Stz* sJoinExpr = pOpDef->pArgDef_expr()->szArgVal();
 
-  // get join constraint from OP
-  Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
-
   // get the streamDefs
   StreamDef *pStreamDefLft = pOpDef->m_pStreamDef_arriving;
   StreamDef *pStreamDefOut = pOpDef->m_pStreamDef_emitted;
@@ -663,7 +660,12 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sJoinExpr);
-  pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
+  // get join constraint from OP
+  if (pOpDef->pArgDef_constraint()) {
+    Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
+    pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
+  }
+
 
   return pOpSketch;
 }
