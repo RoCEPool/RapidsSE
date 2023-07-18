@@ -125,12 +125,9 @@ INCLUDE 'sleep.test';
 //
 // COUNT DISTINCT changed to COUNT
 //
-// TODO V2
-/*
 LOG 'Running tpch query 16...';
 INCLUDE 'OptQ16.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 17...';
