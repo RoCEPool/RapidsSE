@@ -51,11 +51,20 @@ __aFooterFunction(OpSketch)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSketch::OpSketch(i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
-                   eSR eStencilOut, eII eIndexInfo, TypedStack* pInitStack)
+OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHandlerKind, eSK eSketchKind,
+                   eSR eStencilIn, eSR eStencilOut, eII eIndexInfo, TypedStack* pInitStack)
     : Object(CN_OPSKETCH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSKETCH,_FOOTER_);
+
+  if (pStageDef) {
+    m_iStageNo    = pStageDef->i_Stage();
+    m_sStageNm    = pStageDef->szStageNm();
+  }
+  else {
+    m_iStageNo    = C_UNKNOWN;
+    m_sStageNm    = ""_Stz;
+  }
 
   m_iOperatorNo = iOperatorNo;
 
