@@ -143,12 +143,9 @@ INCLUDE 'OptQ17.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2
-/*
 LOG 'Running tpch query 18...';
 INCLUDE 'OptQ18.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 19...';
