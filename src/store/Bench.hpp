@@ -31,6 +31,8 @@ namespace STORE
     s256        m_sXfunc;
     s256        m_sXdesc;
 
+    eXF         m_eXform;
+
 
   public:
     CardIter*    m_pCI;
@@ -78,6 +80,19 @@ namespace STORE
     void vMadeCode(bool bMadeCode);
 
     void vRenumberCards(void);
+
+    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
+
+    Stz* szXdesc(void);
+    void vXdesc(Stz* szXdesc);
+    eXF  eXform(void);
+    void vXform(eXF eXform);
+    i8   iXform(void);
+    void vXform_Inc(void);
+    Stz* szXfunc(void);
+    void vXfunc(Stz* szXfunc);
+    Stz* szXhand(void);
+    void vXhand(const char* asXhand);
 
   private:
     Footer* aFooter(void);

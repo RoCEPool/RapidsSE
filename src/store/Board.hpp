@@ -217,6 +217,8 @@ namespace STORE
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szXdesc);
+    eXF  eXform(void);
+    void vXform(eXF eXform);
     i8   iXform(void);
     void vXform_Inc(void);
     Stz* szXfunc(void);

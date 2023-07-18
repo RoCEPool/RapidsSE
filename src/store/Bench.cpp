@@ -37,6 +37,7 @@ Bench::Bench(Optimiser* pOptimiser)
   m_bMadeCode     = false;
 
   m_iXform        = 0;
+  m_eXform        = XF_NONE;
 
   m_pCI = new CardIter(this);
 
@@ -379,6 +380,119 @@ void Bench::vRenumberCards(void)
 
     pBoard->vRenumberCards();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin and record transformation information                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  vXform_Inc();
+  vXfunc((Stz *) azFunc);
+  vXform(eXform);
+  vXdesc(szXdesc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szXdesc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_sXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set description of transformation                                          */
+/*----------------------------------------------------------------------------*/
+void Bench::vXdesc(Stz* szXdesc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sXdesc = szXdesc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation                                                         */
+/*----------------------------------------------------------------------------*/
+eXF Bench::eXform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_eXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc transform number                                                       */
+/*----------------------------------------------------------------------------*/
+void Bench::vXform(eXF eXform)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_eXform = eXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation number                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Bench::iXform(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_iXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc transform number                                                       */
+/*----------------------------------------------------------------------------*/
+void Bench::vXform_Inc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_iXform++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation function                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szXfunc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_sXfunc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation function                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vXfunc(Stz* szXfunc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sXfunc = szXfunc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Bench::szXhand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  return m_sXhand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set transformation phase                                                   */
+/*----------------------------------------------------------------------------*/
+void Bench::vXhand(const char* asXhand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  m_sXhand = asXhand;
 }
 
 
