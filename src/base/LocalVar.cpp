@@ -319,6 +319,21 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
   ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get 8B value from given typeValue                                          */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vGetValue(TypeValueArea* aTypedValueArea)
+{
+  _nonProper_
+
+  TypeValue* axTypeValue = this->axTypeValue();
+
+  MemLib::vCopy(aTypedValueArea,
+                axTypeValue,
+                sizeof(TypeValue),
+                CN_STACK);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

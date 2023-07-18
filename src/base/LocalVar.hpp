@@ -44,6 +44,9 @@ namespace BASE
     void vSetType(TypeValueArea* aTypeValueArea);
     void vSetText(TypeValueArea* aTypeValueArea);
     void vSetValue(TypeValueArea* aTypedValue);
+
+    void vGetValue(TypeValueArea* aTypedValue);
+
   };
 
   LocalVar* _pLocalVar(void* aAddr);

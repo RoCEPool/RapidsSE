@@ -713,9 +713,10 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 
     m_rTop.vAdvance(sizeof(TypeValue));
 
-    m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
-                                   sizeof(TypeValue));
+//    m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
+//                                   sizeof(TypeValue));
 
+    axLocalVar->vGetValue(m_rTop.m_aTypeValueArea);
   }
   
 //  vStackContents(sStackContents);
