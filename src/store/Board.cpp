@@ -42,11 +42,7 @@ Board::Board(Stz* szBoardNm, eBK eBoardKind, i8 i_Board, Bench* pBench)
 
   m_pCard_Deck = new Card_Deck;
 
-  m_iXform = C_UNKNOWN;
-
   m_pSubQuery = new SubQuery(this);
-
-  m_eTransform = XF_NONE;
 
   _checkInitialised_(CN_BOARD);
 
@@ -481,8 +477,8 @@ void Board::vPinCards(Ribbon* pRibbon)
                                           bPrune,
                                           eLevel,
                                           false,
-                                          m_iXform,
-                                          m_sXfunc);
+                                          m_pBench->iXform(),
+                                          m_pBench->szXfunc());
   }
 
   pRibbon->vPinSubRibbon(pRibbon->i_Heat(), 0, pSubRibbon);
@@ -505,7 +501,7 @@ void Board::vPinTitle(Ribbon* pRibbon,
 
   // line 1
   pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s"_Stz,
-                   m_iXform,
+                        m_pBench->iXform(),
                    m_i_Board,
                    m_sBoardNm.szStz(),
                    this,
@@ -513,7 +509,9 @@ void Board::vPinTitle(Ribbon* pRibbon,
                    );
 
   // line 2
-  pRibbon->vSprintOther("%s %s"_Stz,aXF[m_eTransform],szXdesc());
+  pRibbon->vSprintOther("%s %s"_Stz,
+                        aXF[m_pBench->eXform()],
+                        m_pBench->szXdesc());
 
   // line 3
   if (0 == m_i_Board)
@@ -548,7 +546,7 @@ void Board::vPrintBoard(Stz* szDescription)
 
   Ribbon* pRibbon = new Ribbon(m_pBench->pOptimiser()->pCardCtl(),this);
 
-  vPinTitle(pRibbon, m_iXform, szDescription);
+  vPinTitle(pRibbon, m_pBench->iXform(), szDescription);
 
   vPinCards(pRibbon);
 
@@ -612,67 +610,7 @@ SubQuery* Board::pSubQuery(void)
   return m_pSubQuery;
 }
 
-/*----------------------------------------------------------------------------*/
-/* set transform                                                              */
-/*----------------------------------------------------------------------------*/
-void Board::vTransform(eXF eTransform)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_eTransform = eTransform;
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin and record transformation information                                */
-/*----------------------------------------------------------------------------*/
-void Board::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  vXform_Inc();
-  vXfunc((Stz *) azFunc);
-  vTransform(eXform);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Board::szXdesc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_sXdesc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation number                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Board::iXform(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_iXform;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc transform number                                                       */
-/*----------------------------------------------------------------------------*/
-void Board::vXform_Inc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_iXform++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transformation function                                                */
-/*----------------------------------------------------------------------------*/
-void Board::vXfunc(Stz* szXfunc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_sXfunc = szXfunc;
-}
 
 /*============================================================================*/
 /* end                                                                        */

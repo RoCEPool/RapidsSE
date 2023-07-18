@@ -2075,7 +2075,6 @@ void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.pBoard->vTransform(azFunc, eXform, szXdesc);
   m_pBench->vTransform(azFunc, eXform, szXdesc);
 
   this->vBeginEach();

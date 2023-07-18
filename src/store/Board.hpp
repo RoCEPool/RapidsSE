@@ -157,13 +157,6 @@ namespace STORE
     SubQuery*   m_pSubQuery;
     Card_Deck*  m_pCard_Deck;
 
-    s32         m_sXhand;
-    s256        m_sXfunc;
-    i8          m_iXform;
-    s256        m_sXdesc;
-
-    eXF         m_eTransform;
-
   private:
     // must be last
     Footer m_xFooter;
@@ -181,8 +174,6 @@ namespace STORE
     static bool bFindAndMarkSubQryCall(CardIter* pCI);
 
     static void vMorphAll_table_To_EEop(CardIter* pCI);
-
-    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
 
     static void vValidate(CardIter* pCI);
     static void vValidate_SubQuery(CardIter* pCI);
@@ -211,14 +202,6 @@ namespace STORE
     SubQuery* pSubQuery(void);
 
     void vRenumberCards(void);
-
-    void vTransform(eXF eTransform);
-
-    Stz* szXdesc(void);
-    i8   iXform(void);
-    void vXform_Inc(void);
-    void vXfunc(Stz* szXfunc);
-
 
   private:
     Footer* aFooter(void);
