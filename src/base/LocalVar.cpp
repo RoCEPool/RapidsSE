@@ -241,8 +241,8 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
   else
     axLocalStr = this->axLocalStrAllot();
 
-  if (! m_pText)
-    m_pText = new Text;
+//  if (! m_pText)
+//    m_pText = new Text;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -253,7 +253,7 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 
   eType_local = this->eType();
   ASSERT(CN_STZVAL == eType_local);
-  ASSERT(m_pText);
+  //ASSERT(m_pText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,7 +268,7 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 
   vSetType(aTypeValueArea);
 
-  ASSERT(m_pText);
+  //ASSERT(m_pText);
 
   LocalStr* axLocalStr = this->axLocalStr();
 
@@ -283,7 +283,7 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pText->vSet(reinterpret_cast<Stz*>(ayByte));
+  //m_pText->vSet(reinterpret_cast<Stz*>(ayByte));
 }
 
 /*----------------------------------------------------------------------------*/
