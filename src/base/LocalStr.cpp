@@ -25,8 +25,10 @@ LocalStr::LocalStr(void)
 /*----------------------------------------------------------------------------*/
 LocalStr::~LocalStr(void) noexcept(false)
 {
-  if (m_pText)
+  if (m_pText) {
     delete m_pText;
+    m_pText = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

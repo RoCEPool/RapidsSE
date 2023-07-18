@@ -19,7 +19,6 @@ LocalVar::LocalVar(void)
   //m_xTypeValue
   m_axLocalStr    = nullptr;
 
-  m_pText         = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,12 +27,6 @@ LocalVar::LocalVar(void)
 LocalVar::~LocalVar(void) noexcept(false)
 {
   _nonProper_
-
-  if (m_pText) {
-    //RASSERT(CN_STZVAL == this->eType());
-    delete m_pText;
-    m_pText = nullptr;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,8 +234,8 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
   else
     axLocalStr = this->axLocalStrAllot();
 
-//  if (! m_pText)
-//    m_pText = new Text;
+  if (! m_axLocalStr->m_pText)
+    m_axLocalStr->m_pText = new Text;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -283,7 +276,7 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //m_pText->vSet(reinterpret_cast<Stz*>(ayByte));
+  m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(ayByte));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -299,20 +292,20 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
   eCN eType_local = this->eType();
 
   if (CN_STZVAL == eType_local) {
-    ASSERT(m_pText);
+    ASSERT(m_axLocalStr->m_pText);
     this->vLocalStrRevert();
    }
   else {
     //ASSERT(! m_pText);
   }
 
-  if (m_pText) {
-    delete m_pText;
-    m_pText = nullptr;
+  if (m_axLocalStr && m_axLocalStr->m_pText) {
+    delete m_axLocalStr->m_pText;
+    m_axLocalStr->m_pText = nullptr;
   }
 
 
-  ASSERT(! m_pText);
+  ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 
   TypeValue* axTypeValue = this->axTypeValue();
 
@@ -323,7 +316,7 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 
   eType_local = this->eType();
   ASSERT(CN_STZVAL != eType_local);
-  ASSERT(! m_pText);
+  ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 }
 
 /*============================================================================*/
