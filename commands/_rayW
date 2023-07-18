@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _rayW : Code Synthesizer V2                                                */
+/* _rayW : Code Synthesizer V2 - Q12                                          */
 /*============================================================================*/
 
 tag default <tpch_dir> = "../tpch/sf_0001";
@@ -12,33 +12,29 @@ __TPCH_SCHEMA_LOAD_SF0001
 /transliterated
 /pipeline_def
 select
-  ps_partkey,
-  sum(ps_supplycost * ps_availqty) as value
+  l_shipmode,
+  sum(case when o_orderpriority ='1-URGENT' or o_orderpriority ='2-HIGH' then 1 else 0 end) as high_line_count,
+  sum(case when o_orderpriority <> '1-URGENT' and o_orderpriority <> '2-HIGH' then 1 else 0 end) as low_line_count
 from
-  partsupp,
-  supplier,
-  nation
+  orders,
+  lineitem
 where
-  ps_suppkey = s_suppkey
-  and s_nationkey = n_nationkey
-  and n_name = 'IRAQ'
+  o_orderkey = l_orderkey
+  and l_shipmode in ('MAIL', 'SHIP')
+  and l_commitdate < l_receiptdate
+  and l_shipdate < l_commitdate
+  and l_receiptdate >= DATE '1994-01-01'
+  and l_receiptdate < DATE '1995-01-01'
 group by
-  ps_partkey having
-    sum(ps_supplycost * ps_availqty) >
-    (
-      select
-        sum(ps_supplycost * ps_availqty) * 0.0001
-      from
-        partsupp,
-        supplier,
-        nation
-      where
-        ps_suppkey = s_suppkey
-        and s_nationkey = n_nationkey
-        and n_name = 'IRAQ'
-    )
+  l_shipmode
 order by
-   value desc;
+  l_shipmode;
+
+/*
+rows:
+  ('MAIL',4,6)
+  ('SHIP',5,10)
+*/
 
 /*============================================================================*/
 /* end                                                                        */
