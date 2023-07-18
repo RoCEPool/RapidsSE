@@ -166,6 +166,23 @@ Dtm* LocalVar::axValue(void)
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 {
+  eCN eType_stack = aTypeValueArea->eType();
+  eCN eType_local = this->eType();
+
+  if (CN_STZVAL == eType_stack) {
+    LocalStr *axLocalStr;
+    if (CN_STZVAL == eType_local)
+      axLocalStr = this->axLocalStr();
+    else
+      axLocalStr = this->axLocalStrAllot();
+  }
+  else {
+    if (CN_STZVAL == eType_local)
+      this->vLocalStrRevert();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   MemLib::vCopy(axType(),
                 aTypeValueArea,
                 sizeof(_Header),

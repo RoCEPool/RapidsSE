@@ -520,12 +520,6 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
   eCN eType_local = axLocalVar->eType();
 
   if (CN_STZVAL == eType_stack) {
-    
-    LocalStr* axLocalStr;
-    if (CN_STZVAL == eType_local)
-      axLocalStr = axLocalVar->axLocalStr();
-    else
-      axLocalStr = axLocalVar->axLocalStrAllot();
 
     axLocalVar->vSetType(m_rTop.m_aTypeValueArea);
 
@@ -538,8 +532,8 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
   }
   else {
     
-    if (CN_STZVAL == eType_local)
-      axLocalVar->vLocalStrRevert();
+//    if (CN_STZVAL == eType_local)
+//      axLocalVar->vLocalStrRevert();
 
     axLocalVar->vSetValue(m_rTop.m_aTypeValueArea);
 
