@@ -15,7 +15,7 @@ LocalStr::LocalStr(void)
   m_i_LclStr   = C_UNKNOWN;
   m_i_NextFree = C_UNKNOWN;
 
-  m_pText      = nullptr;
+ m_pText = nullptr;
 
   // m_xSizeArea
 }
@@ -25,7 +25,8 @@ LocalStr::LocalStr(void)
 /*----------------------------------------------------------------------------*/
 LocalStr::~LocalStr(void) noexcept(false)
 {
-
+  if (m_pText)
+    delete m_pText;
 }
 
 /*----------------------------------------------------------------------------*/

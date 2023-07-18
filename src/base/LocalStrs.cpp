@@ -32,12 +32,9 @@ LocalStrs::LocalStrs(void)
     rxLocalStr.m_i_LclStr   = i_LclStr;
     rxLocalStr.m_i_NextFree = i_LclStr - 1;
 
-//    rxLocalStr.m_xSizeArea.m_jStrSize = 1;
-//    MemLib::vZero(rxLocalStr.m_xSizeArea.m_caArea,
-//                  sizeof(rxLocalStr.m_xSizeArea.m_caArea),
-//                  CN_LOCALSTRS);
-    
     rxLocalStr.vReInitialise();
+    rxLocalStr.m_pText = new Text;
+
   }
   
   _checkInitialised_(CN_LOCALSTRS);
