@@ -10,7 +10,12 @@ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 load Orders "../TPCH/SF_0001/orders.csv";
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 
+/glean_interactive
+/pipeline_def
+/weaved
+select * from orders where O_ORDERDATE >= TIMESTAMP '1993-07-01 00:00:00';
 
+/glean_interactive
 /pipeline_def
 /weaved
 /optimise_passthru

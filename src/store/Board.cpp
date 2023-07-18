@@ -500,13 +500,15 @@ void Board::vPinTitle(Ribbon* pRibbon,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // line 1
-  pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s"_Stz,
-                        m_pBench->iXform(),
-                   m_i_Board,
-                   m_sBoardNm.szStz(),
-                   this,
-                   m_pBench->pOptimiser()->szQueryNm()
-                   );
+  pRibbon->vSprintOther("Transform: %02lld Board %lld %s %p Query %s %s"_Stz,
+                         m_pBench->iXform(),
+                         m_i_Board,
+                         m_sBoardNm.szStz(),
+                         this,
+                         m_pBench->pOptimiser()->szQueryNm(),
+                         AM::JOB::bHasTag(C_OPTIMISE_PASSTHRU) ?
+                           "/optimise_passthru" : ""
+                         );
 
   // line 2
   pRibbon->vSprintOther("%s %s"_Stz,
