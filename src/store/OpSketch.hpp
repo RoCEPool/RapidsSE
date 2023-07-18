@@ -18,6 +18,7 @@
 #include "FunMatrix.h"
 #include "ColsReq.hpp"
 #include "ColMap.hpp"
+#include "StageDef.hpp"
 
 namespace STORE
 {
@@ -38,6 +39,9 @@ namespace STORE
     friend class CodeSynthUtils;
 
   private:
+
+    i8   m_iStageNo;
+    s256 m_sStageNm;
 
     i8 m_iOperatorNo;
 
@@ -102,7 +106,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    OpSketch(i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
+    OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sEprStr, eHK eHandlerKind, eSK eSketchKind, eSR eStencilIn,
              eSR eStencilOut, eII eIndexInfo, TypedStack* pInitStack = nullptr);
 
    ~OpSketch(void) noexcept(false);
