@@ -8494,7 +8494,6 @@ void Task::vAddMunged(Task* )
     "  \"adaptorWL_Payload - EV_D_PAYLOAD\" .verbose\n"
     "\n"
     "  PipeIn[]\\clear locals| pPayloadObj |\n"
-    "  0              locals| sSmt        |\n"
     "\n"
     "  // Check if we previously received an error\n"
     "  AdaptorWL[].protocolErrorTest if\n"

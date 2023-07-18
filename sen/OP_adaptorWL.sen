@@ -113,7 +113,6 @@
   "adaptorWL_Payload - EV_D_PAYLOAD" .verbose
 
   PipeIn[]\clear locals| pPayloadObj |
-  0              locals| sSmt        |
 
   // Check if we previously received an error
   AdaptorWL[].protocolErrorTest if
