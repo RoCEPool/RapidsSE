@@ -521,19 +521,18 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 
   if (CN_STZVAL == eType_stack) {
 
-    axLocalVar->vSetType(m_rTop.m_aTypeValueArea);
+//    axLocalVar->vSetType(m_rTop.m_aTypeValueArea);
+//
+//    i8 nBytes = aTopVal()->nStackUsage();
+//
+//    axLocalVar->vSetText(m_rTop.m_ayStackPtr + sizeof(_Header),
+//                         nBytes - sizeof(_Header));
 
-    i8 nBytes = aTopVal()->nStackUsage();
-    
-    axLocalVar->vSetText(m_rTop.m_ayStackPtr + sizeof(_Header),
-                         nBytes - sizeof(_Header));
+    axLocalVar->vSetText2(m_rTop.m_aTypeValueArea);
 
 
   }
   else {
-    
-//    if (CN_STZVAL == eType_local)
-//      axLocalVar->vLocalStrRevert();
 
     axLocalVar->vSetValue(m_rTop.m_aTypeValueArea);
 

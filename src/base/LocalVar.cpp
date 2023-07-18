@@ -203,6 +203,25 @@ void LocalVar::vSetText(byte* ayByte, i8 nBytes)
                 nBytes,
                 CN_STACK);
 }
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetText2(TypeValueArea* aTypeValueArea)
+{
+  eCN eType_stack = aTypeValueArea->eType();
+  RASSERT(CN_STZVAL == eType_stack);
+
+  vSetType(aTypeValueArea);
+
+  LocalStr* axLocalStr = this->axLocalStr();
+
+  SizeArea* axSizeArea = axLocalStr->axSizeArea();
+  byte* ayByte = reinterpret_cast<byte*>(aTypeValueArea->axValue());
+  i8 nBytes = aTypeValueArea->nStackUsage() - sizeof(_Header);
+
+  MemLib::vCopy(axSizeArea,
+                ayByte,
+                nBytes,
+                CN_STACK);
+}
 
 /*----------------------------------------------------------------------------*/
 /* set type                                                                   */
