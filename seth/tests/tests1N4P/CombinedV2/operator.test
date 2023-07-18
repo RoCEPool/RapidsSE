@@ -169,8 +169,6 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXJOIN -
 //------------------------------------------------------------------------------
-// TODO V2
-/*
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -287,7 +285,6 @@ rows:
   (3,'CANADA',1,'eas hang ironic, silent packages. slyly regular packages are furiously over the tithes. fluffily bold',1,'AMERICA','hs use ironic, even requests. s')
   (4,'EGYPT',4,'y above the carefully unusual theodolites. final dugouts are quickly across the furiously regular d',4,'MIDDLE EAST','uickly special accounts cajole carefully blithely close requests. carefully final asymptotes haggle furiousl')
   (5,'ETHIOPIA',0,'ven packages wake quickly. regu',0,'AFRICA','lar deposits. blithely final packages cajole. regular waters are final requests. regular accounts are according to ')
-*/
 
 //------------------------------------------------------------------------------
 // SEMI-JOIN
