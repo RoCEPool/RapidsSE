@@ -552,9 +552,9 @@ void Board::vPrintBoard(Stz* szDescription)
 
   vPinBanners(pRibbon);
 
-  i8 iPrintNo = pCardCtl->iPrintNo();
+  i8 iPrintNo = m_pBench->iXform();
   pRibbon->vPrintRibbon(iPrintNo);
-  pCardCtl->vPrintNoInc();
+  m_pBench->vXform_Inc();
 
   delete pRibbon;
 }
@@ -568,7 +568,6 @@ Bench* Board::pBench(void)
 
   return m_pBench;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -609,8 +608,6 @@ SubQuery* Board::pSubQuery(void)
 
   return m_pSubQuery;
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
