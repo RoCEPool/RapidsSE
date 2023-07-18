@@ -141,7 +141,19 @@ i8 LocalVar::nStackUsage(void)
 {
   _nonProper_
 
-  return 0;
+  i8 nBytes;
+
+  if (CN_STZVAL == eType()) {
+    i8 jStz = jStzSize();
+    i8 jSizeStz = sizeof(i8) + jStz;
+
+    nBytes = sizeof(_Header) + jSizeStz;
+  }
+  else {
+    nBytes = sizeof(TypeValue);
+  }
+
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/

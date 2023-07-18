@@ -691,6 +691,8 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
     i8 jSizeStz = sizeof(i8) + jStz;
     i8 jHeaderSizeStz = sizeof(_Header) + jSizeStz;
 
+    RASSERT(axLocalVar->nStackUsage() == jHeaderSizeStz);
+
     m_rTop.vAdvance(jHeaderSizeStz);
 
     MemLib::vCopy(m_rTop.m_ayStackPtr,
@@ -707,7 +709,8 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 
   }
   else {
-    
+    RASSERT(axLocalVar->nStackUsage() == sizeof(TypeValue));
+
     m_rTop.vAdvance(sizeof(TypeValue));
 
     m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
