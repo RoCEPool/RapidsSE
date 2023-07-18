@@ -53,13 +53,6 @@ namespace STORE
       Card_Projection * m_pProjection_running;
     } StreamOrder;
 
-
-  private:
-    i8          m_iXform;
-    s256        m_sXfunc;
-    s256        m_sXdesc;
-    s32         m_sXhand;
-
   protected:
     // must be last
     Footer m_xFooter;
@@ -177,26 +170,20 @@ namespace STORE
     bool G_bRewindMain(void);
 
     void vSave(void);
-    i8   iSentinalsDepth(void);
     void vSet(Card* pChild);
     void vSet(CardIter* pCardIter_src);
     void vSet(i8 i_Child);
     void G_vSetBoard(Board* pBoard);
 
     void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
-    i8   iTransformDepth(void);
 
     void vUsingBoard(i8 i_Board);
     void vUsingBoard(Board* pBoard);
 
-    i8   iXform(void);
-    void vXform_Inc(void);
     Stz* szXdesc(void);
-    void vXdesc(Stz* szXdesc);
+    i8   iXform(void);
     Stz* szXfunc(void);
-    void vXfunc(Stz* szXfunc);
     Stz* szXhand(void);
-    void vXhand(const char* asXhand);
 
   protected:
     void G_vClearMembers(void);

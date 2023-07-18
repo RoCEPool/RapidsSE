@@ -95,8 +95,6 @@ void CardIter::vInit(void)
   G.xKid.m_bActive = false;
 
 
-  m_iXform     = 0;
-
   Sqy.m_pCard_sqCopy   = nullptr;
 
   Sqy.m_pExpr_fold = nullptr;
@@ -2021,15 +2019,6 @@ void CardIter::vSave(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-i8 CardIter::iSentinalsDepth(void)
-{
-
-  return this->nItems();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void CardIter::vSet(Card* pChild)
 {
   _precondition_(_MAGIC_, _FOOTER_);
@@ -2087,23 +2076,9 @@ void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
   _precondition_( _MAGIC_, _FOOTER_);
 
   G.pBoard->vTransform(azFunc, eXform, szXdesc);
-
-  vXform_Inc();
-
-  vXfunc((Stz *) azFunc);
-  vXdesc(szXdesc);
+  m_pBench->vTransform(azFunc, eXform, szXdesc);
 
   this->vBeginEach();
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-i8 CardIter::iTransformDepth(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  return iSentinalsDepth();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2138,17 +2113,7 @@ i8 CardIter::iXform(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_iXform;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inc transform number                                                       */
-/*----------------------------------------------------------------------------*/
-void CardIter::vXform_Inc(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-
-  m_iXform++;
+  return m_pBench->iXform();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2158,18 +2123,7 @@ Stz* CardIter::szXdesc(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_sXdesc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-void CardIter::vXdesc(Stz* szXdesc)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  m_sXdesc = szXdesc;
-  G.pBoard->vXdesc(szXdesc);
+  return m_pBench->szXdesc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2179,20 +2133,7 @@ Stz* CardIter::szXfunc(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_sXfunc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transformation function                                                */
-/*----------------------------------------------------------------------------*/
-void CardIter::vXfunc(Stz* szXfunc)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  m_sXfunc = szXfunc;
-
-  G.pBoard->vXfunc(szXfunc);
-
+  return m_pBench->szXfunc();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2202,26 +2143,13 @@ Stz* CardIter::szXhand(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return m_sXhand;
+  return m_pBench->szXhand();
 }
-
-/*----------------------------------------------------------------------------*/
-/* set transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-void CardIter::vXhand(const char* asXhand)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  m_sXhand = asXhand;
-
-  G.pBoard->vXhand(asXhand);
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* clear the M members                                                        */
