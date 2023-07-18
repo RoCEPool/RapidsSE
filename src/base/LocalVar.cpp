@@ -160,6 +160,19 @@ Dtm* LocalVar::axValue(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* set local variable                                                         */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSet(TypeValueArea* aTypeValueArea)
+{
+  eCN eType_stack = aTypeValueArea->eType();
+
+  if (CN_STZVAL == eType_stack)
+    vSetText(aTypeValueArea);
+  else
+    vSetValue(aTypeValueArea);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* set type                                                                   */
@@ -190,21 +203,9 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set type                                                                   */
+/* set text                                                                   */
 /*----------------------------------------------------------------------------*/
-void LocalVar::vSetText(byte* ayByte, i8 nBytes)
-{
-  LocalStr* axLocalStr = this->axLocalStr();
-
-  SizeArea* axSizeArea = axLocalStr->axSizeArea();
-
-  MemLib::vCopy(axSizeArea,
-                ayByte,
-                nBytes,
-                CN_STACK);
-}
-/*----------------------------------------------------------------------------*/
-void LocalVar::vSetText2(TypeValueArea* aTypeValueArea)
+void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 {
   eCN eType_stack = aTypeValueArea->eType();
   RASSERT(CN_STZVAL == eType_stack);
@@ -224,7 +225,7 @@ void LocalVar::vSetText2(TypeValueArea* aTypeValueArea)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set type                                                                   */
+/* set 8B value                                                               */
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSetValue(TypeValueArea* aTypedValue)
 {

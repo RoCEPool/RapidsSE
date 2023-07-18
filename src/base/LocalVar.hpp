@@ -42,12 +42,10 @@ namespace BASE
     TypeValue* axTypeValue(void);
     Dtm*  axValue(void);
 
+    void vSet(TypeValueArea* aTypeValueArea);
     void vSetType(TypeValueArea* aTypeValueArea);
-    void vSetText(byte* ayByte, i8 nBytes);
-    void vSetText2(TypeValueArea* aTypeValueArea);
+    void vSetText(TypeValueArea* aTypeValueArea);
     void vSetValue(TypeValueArea* aTypedValue);
-
-
   };
 
   LocalVar* _pLocalVar(void* aAddr);
