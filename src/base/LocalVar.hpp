@@ -18,6 +18,8 @@ namespace BASE
     TypeValue  m_xTypeValue;
     LocalStr*  m_axLocalStr;
 
+    Text*      m_pText;
+
   public:
     LocalVar(void);
    ~LocalVar(void) noexcept(false);

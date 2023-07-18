@@ -15,7 +15,9 @@ LocalVar::LocalVar(void)
   m_i_LocalVar    = C_UNKNOWN;
   m_aDiscardPoint = nullptr;
   //m_xTypeValue
-  m_axLocalStr     = nullptr;
+  m_axLocalStr    = nullptr;
+
+  m_pText         = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +25,8 @@ LocalVar::LocalVar(void)
 /*----------------------------------------------------------------------------*/
 LocalVar::~LocalVar(void) noexcept(false)
 {
-
+  if (m_pText)
+    delete m_pText;
 }
 
 /*----------------------------------------------------------------------------*/
