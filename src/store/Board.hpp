@@ -212,19 +212,12 @@ namespace STORE
 
     void vRenumberCards(void);
 
-    eXF eTransform(void);
     void vTransform(eXF eTransform);
 
     Stz* szXdesc(void);
-    void vXdesc(Stz* szXdesc);
-    eXF  eXform(void);
-    void vXform(eXF eXform);
     i8   iXform(void);
     void vXform_Inc(void);
-    Stz* szXfunc(void);
     void vXfunc(Stz* szXfunc);
-    Stz* szXhand(void);
-    void vXhand(const char* asXhand);
 
 
   private:

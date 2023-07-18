@@ -613,16 +613,6 @@ SubQuery* Board::pSubQuery(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transform                                                              */
-/*----------------------------------------------------------------------------*/
-eXF Board::eTransform(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_eTransform;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set transform                                                              */
 /*----------------------------------------------------------------------------*/
 void Board::vTransform(eXF eTransform)
@@ -655,16 +645,6 @@ Stz* Board::szXdesc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set description of transformation                                          */
-/*----------------------------------------------------------------------------*/
-void Board::vXdesc(Stz* szXdesc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_sXdesc = szXdesc;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get transformation number                                                  */
 /*----------------------------------------------------------------------------*/
 i8 Board::iXform(void)
@@ -685,16 +665,6 @@ void Board::vXform_Inc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transformation function                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Board::szXfunc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_sXfunc;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set transformation function                                                */
 /*----------------------------------------------------------------------------*/
 void Board::vXfunc(Stz* szXfunc)
@@ -702,26 +672,6 @@ void Board::vXfunc(Stz* szXfunc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   m_sXfunc = szXfunc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Board::szXhand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  return m_sXhand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set transformation phase                                                   */
-/*----------------------------------------------------------------------------*/
-void Board::vXhand(const char* asXhand)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  m_sXhand = asXhand;
 }
 
 /*============================================================================*/
