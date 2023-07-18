@@ -515,18 +515,6 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 //  vTrace("POP %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
 //         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
 //         sStackContents.szStz());
-  
-//  eCN eType_stack = m_rTop.m_aTypeValueArea->eType();
-//
-//  if (CN_STZVAL == eType_stack) {
-//
-//    axLocalVar->vSetText(m_rTop.m_aTypeValueArea);
-//  }
-//  else {
-//
-//    axLocalVar->vSetValue(m_rTop.m_aTypeValueArea);
-//
-//  }
 
   axLocalVar->vSet(m_rTop.m_aTypeValueArea);
 

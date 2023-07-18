@@ -161,7 +161,7 @@ Dtm* LocalVar::axValue(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* set local variable                                                         */
+/* set local variable for given typeValue                                     */
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 {
@@ -175,24 +175,23 @@ void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 
 
 /*----------------------------------------------------------------------------*/
-/* set type                                                                   */
+/* set type of local variable from given typeValue                            */
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 {
   eCN eType_stack = aTypeValueArea->eType();
   eCN eType_local = this->eType();
 
-  if (CN_STZVAL == eType_stack) {
-    LocalStr *axLocalStr;
-    if (CN_STZVAL == eType_local)
-      axLocalStr = this->axLocalStr();
-    else
-      axLocalStr = this->axLocalStrAllot();
-  }
-  else {
-    if (CN_STZVAL == eType_local)
-      this->vLocalStrRevert();
-  }
+  ASSERT(CN_STZVAL == eType_stack);
+
+  LocalStr *axLocalStr;
+  if (CN_STZVAL == eType_local)
+    axLocalStr = this->axLocalStr();
+  else
+    axLocalStr = this->axLocalStrAllot();
+
+  if (! m_pText)
+    m_pText = new Text;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -203,12 +202,12 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set text                                                                   */
+/* set text from given typeValue                                              */
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 {
   eCN eType_stack = aTypeValueArea->eType();
-  RASSERT(CN_STZVAL == eType_stack);
+  ASSERT(CN_STZVAL == eType_stack);
 
   vSetType(aTypeValueArea);
 
@@ -225,16 +224,30 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set 8B value                                                               */
+/* set 8B value from given typeValue                                          */
 /*----------------------------------------------------------------------------*/
-void LocalVar::vSetValue(TypeValueArea* aTypedValue)
+void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 {
+  eCN eType_stack = aTypedValueArea->eType();
+  ASSERT(CN_STZVAL != eType_stack);
+
+  eCN eType_local = this->eType();
+
+  if (CN_STZVAL == eType_local) {
+    this->vLocalStrRevert();
+    if (m_pText)
+      delete m_pText;
+  }
+
   TypeValue* axTypeValue = this->axTypeValue();
 
   MemLib::vCopy(axTypeValue,
-                aTypedValue,
+                aTypedValueArea,
                 sizeof(TypeValue),
                 CN_STACK);
+
+  eType_local = this->eType();
+  ASSERT(CN_STZVAL != eType_local);
 }
 
 /*============================================================================*/
