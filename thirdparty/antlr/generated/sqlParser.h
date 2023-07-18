@@ -70,30 +70,30 @@ public:
     RuleDropIndexQuery = 36, RuleTruncateQuery = 37, RuleLoad = 38, RuleDload = 39, 
     RuleLoadOption = 40, RuleLoadOptionKeys = 41, RuleCount = 42, RuleSpace = 43, 
     RuleStatus = 44, RuleSzidx = 45, RuleSztbl = 46, RuleTrackmemory = 47, 
-    RuleMemoryleaks = 48, RuleBpa = 49, RuleFile = 50, RuleNoop = 51, RuleTableDefinition = 52, 
-    RuleTablePartitioning = 53, RuleColumnDefinition = 54, RuleColumnNameList = 55, 
-    RuleIndexDefinition = 56, RuleIndexMethod = 57, RuleDataType = 58, RuleSqlDataType = 59, 
-    RuleIntervalType = 60, RuleYearMonthIntervalType = 61, RuleDayTimeIntervalType = 62, 
-    RuleFixedLenChar = 63, RuleVaryingLenChar = 64, RuleAsSubquery = 65, 
-    RuleSelectOrValues = 66, RuleSelectList = 67, RuleSelectListItem = 68, 
-    RuleGroupByList = 69, RuleGroupByListItem = 70, RuleOrderByList = 71, 
-    RuleOrderByListItem = 72, RuleJoinUsingList = 73, RuleJoinUsingListItem = 74, 
-    RuleCorrList = 75, RuleCorrListItem = 76, RuleColAliases = 77, RuleColAliasList = 78, 
-    RuleColAliasListItem = 79, RulePropertyList = 80, RuleProperty = 81, 
-    RuleValueList = 82, RulePredicate = 83, RuleJoinPredicate = 84, RuleCasePredicate = 85, 
-    RuleExpr = 86, RuleVariableName = 87, RuleColumnRef = 88, RuleColumnWildcard = 89, 
-    RuleClassName = 90, RuleFunctionName = 91, RuleMethodName = 92, RuleCatalogName = 93, 
-    RuleSchemaName = 94, RuleTableName = 95, RuleTableAlias = 96, RuleColumnName = 97, 
-    RuleColumnAlias = 98, RuleCollationName = 99, RuleIndexName = 100, RulePropertyName = 101, 
-    RuleHintName = 102, RuleExprHint = 103, RulePropertyValue = 104, RuleHintValue = 105, 
-    RuleIdentifier = 106, RuleQualifier = 107, RulePrecision = 108, RuleScale = 109, 
-    RuleSize = 110, RuleLiteral = 111, RuleSimpleLiteral = 112, RuleBooleanLiteral = 113, 
-    RuleIntegerLiteral = 114, RuleSignedIntegerLiteral = 115, RuleDecimalLiteral = 116, 
-    RuleSignedDecimalLiteral = 117, RuleFloatLiteral = 118, RuleSignedFloatLiteral = 119, 
-    RuleDateLiteral = 120, RuleTimeLiteral = 121, RuleTimestampLiteral = 122, 
-    RuleStringLiteral = 123, RuleIntervalLiteral = 124, RuleYearMonthInterval = 125, 
-    RuleDayTimeInterval = 126, RuleLscol = 127, RuleLsidx = 128, RuleLsidxcol = 129, 
-    RuleLstbl = 130, RuleNonReservedWord = 131
+    RuleMemoryleaks = 48, RuleBpa = 49, RuleFile = 50, RuleNoop = 51, RuleEmptyCommand = 52, 
+    RuleTableDefinition = 53, RuleTablePartitioning = 54, RuleColumnDefinition = 55, 
+    RuleColumnNameList = 56, RuleIndexDefinition = 57, RuleIndexMethod = 58, 
+    RuleDataType = 59, RuleSqlDataType = 60, RuleIntervalType = 61, RuleYearMonthIntervalType = 62, 
+    RuleDayTimeIntervalType = 63, RuleFixedLenChar = 64, RuleVaryingLenChar = 65, 
+    RuleAsSubquery = 66, RuleSelectOrValues = 67, RuleSelectList = 68, RuleSelectListItem = 69, 
+    RuleGroupByList = 70, RuleGroupByListItem = 71, RuleOrderByList = 72, 
+    RuleOrderByListItem = 73, RuleJoinUsingList = 74, RuleJoinUsingListItem = 75, 
+    RuleCorrList = 76, RuleCorrListItem = 77, RuleColAliases = 78, RuleColAliasList = 79, 
+    RuleColAliasListItem = 80, RulePropertyList = 81, RuleProperty = 82, 
+    RuleValueList = 83, RulePredicate = 84, RuleJoinPredicate = 85, RuleCasePredicate = 86, 
+    RuleExpr = 87, RuleVariableName = 88, RuleColumnRef = 89, RuleColumnWildcard = 90, 
+    RuleClassName = 91, RuleFunctionName = 92, RuleMethodName = 93, RuleCatalogName = 94, 
+    RuleSchemaName = 95, RuleTableName = 96, RuleTableAlias = 97, RuleColumnName = 98, 
+    RuleColumnAlias = 99, RuleCollationName = 100, RuleIndexName = 101, 
+    RulePropertyName = 102, RuleHintName = 103, RuleExprHint = 104, RulePropertyValue = 105, 
+    RuleHintValue = 106, RuleIdentifier = 107, RuleQualifier = 108, RulePrecision = 109, 
+    RuleScale = 110, RuleSize = 111, RuleLiteral = 112, RuleSimpleLiteral = 113, 
+    RuleBooleanLiteral = 114, RuleIntegerLiteral = 115, RuleSignedIntegerLiteral = 116, 
+    RuleDecimalLiteral = 117, RuleSignedDecimalLiteral = 118, RuleFloatLiteral = 119, 
+    RuleSignedFloatLiteral = 120, RuleDateLiteral = 121, RuleTimeLiteral = 122, 
+    RuleTimestampLiteral = 123, RuleStringLiteral = 124, RuleIntervalLiteral = 125, 
+    RuleYearMonthInterval = 126, RuleDayTimeInterval = 127, RuleLscol = 128, 
+    RuleLsidx = 129, RuleLsidxcol = 130, RuleLstbl = 131, RuleNonReservedWord = 132
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -158,6 +158,7 @@ public:
   class BpaContext;
   class FileContext;
   class NoopContext;
+  class EmptyCommandContext;
   class TableDefinitionContext;
   class TablePartitioningContext;
   class ColumnDefinitionContext;
@@ -292,6 +293,7 @@ public:
     BpaContext *bpa();
     FileContext *file();
     NoopContext *noop();
+    EmptyCommandContext *emptyCommand();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1244,6 +1246,18 @@ public:
   };
 
   NoopContext* noop();
+
+  class  EmptyCommandContext : public antlr4::ParserRuleContext {
+  public:
+    EmptyCommandContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  EmptyCommandContext* emptyCommand();
 
   class  TableDefinitionContext : public antlr4::ParserRuleContext {
   public:

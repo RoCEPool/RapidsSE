@@ -87,6 +87,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   private:
+    Task*        pCreateNoopTask(Stz* szStmt);
     static Text* pCleanId(Parser::sqlParser::IdentifierContext* pCtx);
     static Text* pCleanString(Parser::sqlParser::StringLiteralContext* pCtx);
     static Text* pCleanString(antlr4::Token* pToken);

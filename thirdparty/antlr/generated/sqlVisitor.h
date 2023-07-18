@@ -136,6 +136,8 @@ public:
 
     virtual antlrcpp::Any visitNoop(sqlParser::NoopContext *context) = 0;
 
+    virtual antlrcpp::Any visitEmptyCommand(sqlParser::EmptyCommandContext *context) = 0;
+
     virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *context) = 0;
 
     virtual antlrcpp::Any visitTablePartitioning(sqlParser::TablePartitioningContext *context) = 0;

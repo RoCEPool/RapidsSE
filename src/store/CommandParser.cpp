@@ -23,6 +23,8 @@ extern AttachMap*  gpAttachMap;
 
 using namespace STORE;
 
+static Stz* C_EMPTY_CMD = "emptyCommand"_Stz;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -162,7 +164,25 @@ antlrcpp::Any CommandParser::visitStatements(Parser::sqlParser::StatementsContex
 
   m_sQueryStr.vCopy((Stz*) queryStlStr.c_str());
 
-  return visitChildren(pCtx);
+  visitChildren(pCtx);
+
+  // If there aren't any tasks created then we will insert a noop task.
+  // Reason being that the client has sent a request and that request is not
+  // really invalid, it's just empty. The server shouldn't respond with an error
+  // so the easiest thing is to just execute a noop and let it respond affirmatively.
+  // Empty commands that occur in the presence of a batched query are otherwise
+  // ignored.
+
+  if (m_pTaskList->nTasks() == 0) {
+
+    Task* pNoopTask = pCreateNoopTask((Stz*) queryStlStr.c_str());
+
+    m_pTaskList->vGrabLock();
+    m_pTaskList->vAddTask(pNoopTask);
+    m_pTaskList->vDropLock();
+  }
+
+  return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -197,6 +217,21 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
   sSTMT sStmt;
   if (m_szProcName) {
     ASSERT(!m_pChildTasks);
+
+    if (m_szProcName == C_EMPTY_CMD) {
+      // It's an empty command. We don't want to create a task for this, unless
+      // it is the only statement in the query (but we will do that in visitStatements())
+
+      // cleanup
+      delete m_pCurStmtTagSet;
+      m_pCurStmtTagSet = nullptr;
+      m_sCurStmtStr.vReset();
+      m_szProcName = nullptr;
+      delete m_pArgValues;
+      m_pArgValues = nullptr;
+
+      return nullptr;
+    }
 
     m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, m_szProcName);
     // TODO: raw pipeline specified?
@@ -296,6 +331,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->bpa())           { m_szProcName = "bpa"_Stz;             return visitChildren(pCtx); }
   else if (pCtx->file())          { m_szProcName = nullptr;               return visitChildren(pCtx); }
   else if (pCtx->noop())          { m_szProcName = "noop"_Stz;            return nullptr; }
+  else if (pCtx->emptyCommand())  { m_szProcName = C_EMPTY_CMD;           return nullptr; }
 
   else                            { NOT_IMPLEMENTED_YET }
 
@@ -821,6 +857,37 @@ antlrcpp::Any CommandParser::visitFile(Parser::sqlParser::FileContext *pCtx)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Creates a noop task specifically                                           */
+/*----------------------------------------------------------------------------*/
+Task* CommandParser::pCreateNoopTask(Stz* szStmt)
+{
+  ASSERT(m_pCommonTagSet);
+  Stz* szProcName = "noop"_Stz;
+  sSTMT sStmt;
+
+  TagSet* pCurStmtTagSet = new TagSet();
+  pCurStmtTagSet->vCopy(m_pCommonTagSet);
+
+  pCurStmtTagSet->vReplace(C_TAG_JOBNM, szProcName);
+
+  if (!Procedure::bTranslateToPipeline(szProcName, nullptr, szProcName, sStmt.pString())) {
+    // All external commands should be resolvable.
+    NEVER_REACH
+  }
+
+  JobId tParentId;
+  tParentId = m_pParentTask->pOuterJobOfTask()->tJobId();
+
+  Task* pTask = Api::pCreateTask(sStmt.szStz(), pCurStmtTagSet, tParentId, szStmt);
+  ASSERT(pTask);
+
+  // cleanup
+  delete pCurStmtTagSet;
+
+  return pTask;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Clean up a name of an object. Returned string is dynamically allocated.    */

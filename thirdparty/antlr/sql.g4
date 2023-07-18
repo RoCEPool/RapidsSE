@@ -36,6 +36,7 @@ statementChoice   :   queryStatement
                     | bpa
                     | file
                     | noop
+                    | emptyCommand    // must be last
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
@@ -189,6 +190,7 @@ memoryleaks       : MEMORYLEAKS ;
 bpa               : BPA type=(REGIONS | OBJECTS);
 file              : FILE (identifier | stringLiteral) ;
 noop              : NOOP ;
+emptyCommand      : ;
 
 // table/column definition ------------------------------------------------------------
 
