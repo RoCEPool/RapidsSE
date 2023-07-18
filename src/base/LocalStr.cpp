@@ -12,10 +12,11 @@
 /*----------------------------------------------------------------------------*/
 LocalStr::LocalStr(void)
 {
-  m_pLocalStrs = nullptr;
   m_i_LclStr   = C_UNKNOWN;
   m_i_NextFree = C_UNKNOWN;
-  
+
+  m_pText      = nullptr;
+
   // m_xSizeArea
 }
 
@@ -45,6 +46,14 @@ LocalStr::operator LocalStr*(void)
 char* LocalStr::azArea(void)
 {
   return m_xSizeArea.azArea();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get text                                                                   */
+/*----------------------------------------------------------------------------*/
+Text* LocalStr::pText(void)
+{
+  return m_pText;
 }
 
 /*----------------------------------------------------------------------------*/

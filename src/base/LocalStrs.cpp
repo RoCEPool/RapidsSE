@@ -19,28 +19,25 @@ __aFooterFunction(LocalStrs)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LocalStrs::LocalStrs(LocalVars* pLocalVars)
+LocalStrs::LocalStrs(void)
 : Object(CN_LOCALSTRS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSTRS,_FOOTER_);
- 
-  m_pLocalVars = pLocalVars;
 
-  m_i_FirstFree = C_LOCAL_STRS - 1;
+  m_i_FirstFree = C_LOCAL_STRS_reduced - 1;
   
-  for (i8 i_LclStr = 0; i_LclStr < C_LOCAL_STRS; i_LclStr++) {
-    LocalStr& rxLvlStr = m_xaLocalStr[i_LclStr];
-    
-    rxLvlStr.m_pLocalStrs = this;
-    rxLvlStr.m_i_LclStr   = i_LclStr;
-    rxLvlStr.m_i_NextFree = i_LclStr - 1;
+  for (i8 i_LclStr = 0; i_LclStr < C_LOCAL_STRS_reduced; i_LclStr++) {
+    LocalStr& rxLocalStr = m_xaLocalStr[i_LclStr];
 
-//    rxLvlStr.m_xSizeArea.m_jStrSize = 1;
-//    MemLib::vZero(rxLvlStr.m_xSizeArea.m_caArea,
-//                  sizeof(rxLvlStr.m_xSizeArea.m_caArea),
+    rxLocalStr.m_i_LclStr   = i_LclStr;
+    rxLocalStr.m_i_NextFree = i_LclStr - 1;
+
+//    rxLocalStr.m_xSizeArea.m_jStrSize = 1;
+//    MemLib::vZero(rxLocalStr.m_xSizeArea.m_caArea,
+//                  sizeof(rxLocalStr.m_xSizeArea.m_caArea),
 //                  CN_LOCALSTRS);
     
-    rxLvlStr.vReInitialise();
+    rxLocalStr.vReInitialise();
   }
   
   _checkInitialised_(CN_LOCALSTRS);

@@ -25,7 +25,7 @@ LocalVars::LocalVars(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
   
-  m_pLocalStrs = new LocalStrs(this);
+  m_pLocalStrs = new LocalStrs;
   
   m_nLocalVars = 0;
   
