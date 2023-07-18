@@ -138,7 +138,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   // set the current buffer
   m_pCurrentBuffer = pCrwBuffer;
 
-  bVerifyPds();
+  vVerifyPds();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +307,7 @@ void CrwTablePtn::vTruncate(void)
     pIndexTree->vTruncate();
   }
   #*/
-  bVerifyPds();
+  vVerifyPds();
 
   SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
   // TODO: Change above line to:
@@ -317,6 +317,7 @@ void CrwTablePtn::vTruncate(void)
     SkipListBlock* pNextBlock = m_pPdsBufferId->pNextSLBlock(pCurrBlock, 0);
 
     CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
+    // Uncomment when replacing the LinkedList with Pds
 //    delete pCrwBuffer;
     RASSERT(pCrwBuffer->eGetClassNo() == BASE::CN_CRWBUFFER);
     m_pPdsBufferId->bDelete(pCurrBlock->iKey());
@@ -332,32 +333,21 @@ void CrwTablePtn::vTruncate(void)
   m_pCurrentBuffer = nullptr;
   m_oRootBufferId.m_iAsI8 = 0;
 
-  bVerifyPds();
+  vVerifyPds();
 }
 
-//#pragma optimize( "", off )
 /*----------------------------------------------------------------------------*/
 /* verify the Pds contains the same buffers as the linked list                */
 /*----------------------------------------------------------------------------*/
-bool CrwTablePtn::bVerifyPds(void)
+void CrwTablePtn::vVerifyPds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-
-  bool bVerify = true;
-
 
   SkipListBlock* pPdsCursor = m_pPdsBufferId->pFirstBlock();
   // TODO: Change above line to:
   // SkipListBlock* pCurrBlock = m_pPdsBufferId->pFind(1);
 
   CrwBuffer* pLLCursor = m_pRootBuffer;
-
-  i8 iLLNumEntries = 0;
-  while(pLLCursor != nullptr) {
-    iLLNumEntries++;
-    pLLCursor = pLLCursor->pNextCrwBuffer();
-  }
-  RASSERT(pLLCursor == nullptr);
 
   pLLCursor = m_pRootBuffer;
 
@@ -369,23 +359,10 @@ bool CrwTablePtn::bVerifyPds(void)
     pLLCursor = pLLCursor->pNextCrwBuffer();
   }
 
-//  RASSERT(pPdsCursor == nullptr);
-//  RASSERT(pLLCursor == nullptr);
-  if(pPdsCursor != nullptr) {
-    vThreadCallStackDump();
-    RASSERT(pPdsCursor == nullptr);
-  }
-  if(pLLCursor != nullptr) {
-
-    vTrace("LL entries: %lld, %p %x, Pds entries: %lld\n"_Stz, iLLNumEntries, pLLCursor, pLLCursor, m_pPdsBufferId->iNumEntries());
-    vTrace("LL bufferId: %p\n"_Stz, pLLCursor->oGetBufferId().m_pvAsAddress);
-    vThreadCallStackDump();
-    RASSERT(pLLCursor == nullptr);
-  }
-
-  return true;
+  RASSERT(pPdsCursor == nullptr);
+  RASSERT(pLLCursor == nullptr);
 }
-//#pragma optimize( "", on )
+
 /*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */
 /*----------------------------------------------------------------------------*/
