@@ -2086,9 +2086,9 @@ void CardIter::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
 {
   _precondition_( _MAGIC_, _FOOTER_);
 
-  G.pBoard->vXform(++m_iXform);
-  G.pBoard->vXfunc((Stz *) azFunc);
-  G.pBoard->vTransform(eXform);
+  G.pBoard->vTransform(azFunc, eXform, szXdesc);
+
+  vXform_Inc();
 
   vXfunc((Stz *) azFunc);
   vXdesc(szXdesc);
@@ -2129,6 +2129,26 @@ void CardIter::vUsingBoard(Board* pBoard)
   G.pDeck  = G.pBoard->pDeck();
 
   this->vChangeCard(G.pBoard->pDeck());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get transform number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 CardIter::iXform(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  return m_iXform;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc transform number                                                       */
+/*----------------------------------------------------------------------------*/
+void CardIter::vXform_Inc(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  m_iXform++;
 }
 
 /*----------------------------------------------------------------------------*/

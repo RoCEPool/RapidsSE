@@ -36,6 +36,8 @@ Bench::Bench(Optimiser* pOptimiser)
   m_bMadeWeavable = false;
   m_bMadeCode     = false;
 
+  m_iXform        = 0;
+
   m_pCI = new CardIter(this);
 
   _checkInitialised_(CN_BENCH);

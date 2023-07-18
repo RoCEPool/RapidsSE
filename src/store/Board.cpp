@@ -632,7 +632,17 @@ void Board::vTransform(eXF eTransform)
   m_eTransform = eTransform;
 }
 
+/*----------------------------------------------------------------------------*/
+/* begin and record transformation information                                */
+/*----------------------------------------------------------------------------*/
+void Board::vTransform(const char* azFunc, eXF eXform, Stz* szXdesc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  vXform_Inc();
+  vXfunc((Stz *) azFunc);
+  vTransform(eXform);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get description of transformation                                          */
@@ -665,13 +675,13 @@ i8 Board::iXform(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set transformation number                                                  */
+/* inc transform number                                                       */
 /*----------------------------------------------------------------------------*/
-void Board::vXform(i8 iXform)
+void Board::vXform_Inc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_iXform = iXform;
+  m_iXform++;
 }
 
 /*----------------------------------------------------------------------------*/

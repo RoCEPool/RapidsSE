@@ -182,6 +182,8 @@ namespace STORE
 
     static void vMorphAll_table_To_EEop(CardIter* pCI);
 
+    void vTransform(const char* azFunc, eXF eXform, Stz* szXdesc);
+
     static void vValidate(CardIter* pCI);
     static void vValidate_SubQuery(CardIter* pCI);
 
@@ -216,7 +218,7 @@ namespace STORE
     Stz* szXdesc(void);
     void vXdesc(Stz* szXdesc);
     i8   iXform(void);
-    void vXform(i8   iXform);
+    void vXform_Inc(void);
     Stz* szXfunc(void);
     void vXfunc(Stz* szXfunc);
     Stz* szXhand(void);

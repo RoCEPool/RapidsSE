@@ -367,7 +367,7 @@ void Card_Projection::vEnsureTypes_For_stmColOdn(CardIter *pCI)
 Card_Projection* Card_Projection::pPropagate(CardIter* pCI) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Card_Projection *p_projection_propagated = new Card_Projection(pCI->m_iXform);
+  Card_Projection *p_projection_propagated = new Card_Projection(pCI->iXform());
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
@@ -415,7 +415,7 @@ Card_Projection* Card_Projection::pReducedCopy(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Projection* p_projection_reduced = new Card_Projection(pCI->m_iXform);
+  Card_Projection* p_projection_reduced = new Card_Projection(pCI->iXform());
 
   i8 i_Expr = 0;
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {

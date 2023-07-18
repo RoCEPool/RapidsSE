@@ -26,6 +26,11 @@ namespace STORE
     bool m_bMadeWeavable;
     bool m_bMadeCode;
 
+    i8          m_iXform;
+    s32         m_sXhand;
+    s256        m_sXfunc;
+    s256        m_sXdesc;
+
 
   public:
     CardIter*    m_pCI;
