@@ -160,6 +160,33 @@ Dtm* LocalVar::axValue(void)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
+{
+  MemLib::vCopy(axType(),
+                aTypeValueArea,
+                sizeof(_Header),
+                CN_STACK);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetText(byte* ayByte, i8 nBytes)
+{
+  LocalStr* axLocalStr = this->axLocalStr();
+
+  SizeArea* axSizeArea = axLocalStr->axSizeArea();
+
+  MemLib::vCopy(axSizeArea,
+                ayByte,
+                nBytes,
+                CN_STACK);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

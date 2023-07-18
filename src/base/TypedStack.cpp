@@ -529,10 +529,11 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
         
     SizeArea* axSizeArea = axLocalStr->axSizeArea();
     
-    MemLib::vCopy(axLocalVar->axType(),
-                  m_rTop.m_aTypeValueArea,
-                  sizeof(_Header),
-                  CN_STACK);
+//    MemLib::vCopy(axLocalVar->axType(),
+//                  m_rTop.m_aTypeValueArea,
+//                  sizeof(_Header),
+//                  CN_STACK);
+    axLocalVar->vSetType(m_rTop.m_aTypeValueArea);
 
     i8 nBytes = aTopVal()->nStackUsage();
     
@@ -541,10 +542,14 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 //           m_rTop.m_ayStackPtr + sizeof(_Header),
 //           nBytes - sizeof(_Header));
 
-    MemLib::vCopy(axSizeArea,
-                  m_rTop.m_ayStackPtr + sizeof(_Header),
-                  nBytes - sizeof(_Header),
-                  CN_STACK);
+//    MemLib::vCopy(axSizeArea,
+//                  m_rTop.m_ayStackPtr + sizeof(_Header),
+//                  nBytes - sizeof(_Header),
+//                  CN_STACK);
+    axLocalVar->vSetText(m_rTop.m_ayStackPtr + sizeof(_Header),
+                         nBytes - sizeof(_Header));
+
+
   }
   else {
     
