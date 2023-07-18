@@ -469,15 +469,8 @@ void Weaver::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 
   pCard_IndexJoin->vRpnIndexJoin(sRpnExpr, pCard_IndexJoin);
 
-  if (Card_OuterJoin* p_outerJoin = pCard_IndexJoin->pSub_outerJoin()) {
-    if (p_outerJoin->bIsSymbol("left_outer"_Stz))
-      szOpArgs->vCatSprint("%s %s \"LEFT_OUTER %s \""_Stz,
-                           p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
-  }
-  else {
-    szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
-                         p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
-  }
+  szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
+                       p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/

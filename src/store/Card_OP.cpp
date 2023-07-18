@@ -1143,6 +1143,11 @@ void Card_OP::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
     }
   }
 
+  if (pCard_IndexJoin->pSub_outerJoin()) {
+    if (pCard_IndexJoin->pSub_outerJoin()->pSymbol()->bSameAs("LEFT_OUTER"_Stz)) {
+      szRpnExpr->vCatSprint(" %s"_Stz,"LEFT_OUTER"_Stz);
+    }
+  }
 
   szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
 

@@ -579,25 +579,18 @@ void Weaver2::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 
   s4K sRpnExpr;
 
-  Card_TableNm* p_tableNm = pCard_IndexJoin->pSub_tableNm();
+  Card_TableNm *p_tableNm = pCard_IndexJoin->pSub_tableNm();
 
-  Card_Index* p_index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
-  if (! p_index) {
+  Card_Index *p_index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
+  if (!p_index) {
     NEVER_REACH
   }
-  Card_IndexNm* p_indexNm = p_index->pSub_indexNm();
+  Card_IndexNm *p_indexNm = p_index->pSub_indexNm();
 
   pCard_IndexJoin->vRpnIndexJoin(sRpnExpr, pCard_IndexJoin);
 
-  if (Card_OuterJoin* p_outerJoin = pCard_IndexJoin->pSub_outerJoin()) {
-    if (p_outerJoin->bIsSymbol("left_outer"_Stz))
-      szOpArgs->vCatSprint("%s %s \"LEFT_OUTER %s \""_Stz,
-                           p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
-  }
-  else {
-    szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
-                         p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
-  }
+  szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
+                       p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
