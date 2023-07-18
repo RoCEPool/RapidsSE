@@ -11,6 +11,8 @@
 /*----------------------------------------------------------------------------*/
 LocalVar::LocalVar(void)
 {
+  _nonProper_
+
   m_pLocalVars    = nullptr;
   m_i_LocalVar    = C_UNKNOWN;
   m_aDiscardPoint = nullptr;
@@ -25,8 +27,13 @@ LocalVar::LocalVar(void)
 /*----------------------------------------------------------------------------*/
 LocalVar::~LocalVar(void) noexcept(false)
 {
-  if (m_pText)
+  _nonProper_
+
+  if (m_pText) {
+    //RASSERT(CN_STZVAL == this->eType());
     delete m_pText;
+    m_pText = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,6 +45,8 @@ LocalVar::~LocalVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 LocalVar::operator LocalVar*(void)
 {
+  _nonProper_
+
   return this;
 }
 
@@ -47,6 +56,8 @@ LocalVar::operator LocalVar*(void)
 /*----------------------------------------------------------------------------*/
 char* LocalVar::azArea(void)
 {
+  _nonProper_
+
   return m_axLocalStr->azArea();
 }
 
@@ -55,6 +66,8 @@ char* LocalVar::azArea(void)
 /*----------------------------------------------------------------------------*/
 Stz* LocalVar::szArea(void)
 {
+  _nonProper_
+
   return m_axLocalStr->szArea();
 }
 
@@ -63,6 +76,8 @@ Stz* LocalVar::szArea(void)
 /*----------------------------------------------------------------------------*/
 void* LocalVar::aDiscardPoint(void)
 {
+  _nonProper_
+
   return m_aDiscardPoint;
 }
 
@@ -71,6 +86,8 @@ void* LocalVar::aDiscardPoint(void)
 /*----------------------------------------------------------------------------*/
 LocalStr* LocalVar::axLocalStr(void)
 {
+  _nonProper_
+
   return m_axLocalStr;
 }
 
@@ -79,6 +96,8 @@ LocalStr* LocalVar::axLocalStr(void)
 /*----------------------------------------------------------------------------*/
 LocalStr* LocalVar::axLocalStrAllot(void)
 {
+  _nonProper_
+
   //vTrace("LocalVar: %lld StrAllot\n"_Stz,m_i_LocalVar);
   
   RASSERT(! m_axLocalStr);
@@ -94,6 +113,8 @@ LocalStr* LocalVar::axLocalStrAllot(void)
 /*----------------------------------------------------------------------------*/
 i8 LocalVar::i_LocalVar(void)
 {
+  _nonProper_
+
   return m_i_LocalVar;
 }
 
@@ -103,6 +124,8 @@ i8 LocalVar::i_LocalVar(void)
 /*----------------------------------------------------------------------------*/
 void LocalVar::vLocalStrRevert(void)
 {
+  _nonProper_
+
   //vTrace("LocalVar: %lld StrRevert\n"_Stz,m_i_LocalVar);
   
   m_pLocalVars->vLocalStrRevert(m_axLocalStr);
@@ -116,6 +139,8 @@ void LocalVar::vLocalStrRevert(void)
 /*----------------------------------------------------------------------------*/
 i8 LocalVar::nStackUsage(void)
 {
+  _nonProper_
+
   return 0;
 }
 
@@ -124,6 +149,8 @@ i8 LocalVar::nStackUsage(void)
 /*----------------------------------------------------------------------------*/
 i8 LocalVar::jStzSize(void)
 {
+  _nonProper_
+
   return m_axLocalStr->jStrSize();
 }
 
@@ -132,6 +159,8 @@ i8 LocalVar::jStzSize(void)
 /*----------------------------------------------------------------------------*/
 eCN LocalVar::eType(void)
 {
+  _nonProper_
+
   return m_xTypeValue.m_wxType.eGetClassNo();
 }
 
@@ -140,6 +169,8 @@ eCN LocalVar::eType(void)
 /*----------------------------------------------------------------------------*/
 _Header* LocalVar::axType(void)
 {
+  _nonProper_
+
   return m_xTypeValue.axType();
 }
 
@@ -148,6 +179,8 @@ _Header* LocalVar::axType(void)
 /*----------------------------------------------------------------------------*/
 TypeValue* LocalVar::axTypeValue(void)
 {
+  _nonProper_
+
   return & m_xTypeValue;
 }
 
@@ -156,6 +189,8 @@ TypeValue* LocalVar::axTypeValue(void)
 /*----------------------------------------------------------------------------*/
 Dtm* LocalVar::axValue(void)
 {
+  _nonProper_
+
   return m_xTypeValue.axValue();
 }
 
@@ -165,6 +200,8 @@ Dtm* LocalVar::axValue(void)
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 {
+  _nonProper_
+
   eCN eType_stack = aTypeValueArea->eType();
 
   if (CN_STZVAL == eType_stack)
@@ -179,6 +216,8 @@ void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 {
+  _nonProper_
+
   eCN eType_stack = aTypeValueArea->eType();
   eCN eType_local = this->eType();
 
@@ -199,6 +238,10 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
                 aTypeValueArea,
                 sizeof(_Header),
                 CN_STACK);
+
+  eType_local = this->eType();
+  ASSERT(CN_STZVAL == eType_local);
+  ASSERT(m_pText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,10 +249,14 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 {
+  _nonProper_
+
   eCN eType_stack = aTypeValueArea->eType();
   ASSERT(CN_STZVAL == eType_stack);
 
   vSetType(aTypeValueArea);
+
+  ASSERT(m_pText);
 
   LocalStr* axLocalStr = this->axLocalStr();
 
@@ -221,6 +268,10 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
                 ayByte,
                 nBytes,
                 CN_STACK);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_pText->vSet(reinterpret_cast<Stz*>(ayByte));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,16 +279,28 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 /*----------------------------------------------------------------------------*/
 void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 {
+  _nonProper_
+
   eCN eType_stack = aTypedValueArea->eType();
   ASSERT(CN_STZVAL != eType_stack);
 
   eCN eType_local = this->eType();
 
   if (CN_STZVAL == eType_local) {
+    ASSERT(m_pText);
     this->vLocalStrRevert();
-    if (m_pText)
-      delete m_pText;
+   }
+  else {
+    //ASSERT(! m_pText);
   }
+
+  if (m_pText) {
+    delete m_pText;
+    m_pText = nullptr;
+  }
+
+
+  ASSERT(! m_pText);
 
   TypeValue* axTypeValue = this->axTypeValue();
 
@@ -248,6 +311,7 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 
   eType_local = this->eType();
   ASSERT(CN_STZVAL != eType_local);
+  ASSERT(! m_pText);
 }
 
 /*============================================================================*/
