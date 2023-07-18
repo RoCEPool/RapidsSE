@@ -187,6 +187,19 @@ void LocalVar::vSetText(byte* ayByte, i8 nBytes)
                 CN_STACK);
 }
 
+/*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetValue(TypeValueArea* aTypedValue)
+{
+  TypeValue* axTypeValue = this->axTypeValue();
+
+  MemLib::vCopy(axTypeValue,
+                aTypedValue,
+                sizeof(TypeValue),
+                CN_STACK);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

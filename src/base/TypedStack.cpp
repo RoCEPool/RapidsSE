@@ -526,26 +526,11 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
       axLocalStr = axLocalVar->axLocalStr();
     else
       axLocalStr = axLocalVar->axLocalStrAllot();
-        
-    SizeArea* axSizeArea = axLocalStr->axSizeArea();
-    
-//    MemLib::vCopy(axLocalVar->axType(),
-//                  m_rTop.m_aTypeValueArea,
-//                  sizeof(_Header),
-//                  CN_STACK);
+
     axLocalVar->vSetType(m_rTop.m_aTypeValueArea);
 
     i8 nBytes = aTopVal()->nStackUsage();
     
-//    vTrace("Copy: %p %p %lld\n"_Stz,
-//           axSizeArea,
-//           m_rTop.m_ayStackPtr + sizeof(_Header),
-//           nBytes - sizeof(_Header));
-
-//    MemLib::vCopy(axSizeArea,
-//                  m_rTop.m_ayStackPtr + sizeof(_Header),
-//                  nBytes - sizeof(_Header),
-//                  CN_STACK);
     axLocalVar->vSetText(m_rTop.m_ayStackPtr + sizeof(_Header),
                          nBytes - sizeof(_Header));
 
@@ -555,11 +540,9 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
     
     if (CN_STZVAL == eType_local)
       axLocalVar->vLocalStrRevert();
-    
-    MemLib::vCopy(axLocalVar->axTypeValue(),
-                  m_rTop.m_aTypeValueArea,
-                  sizeof(TypeValue),
-                  CN_STACK);
+
+    axLocalVar->vSetValue(m_rTop.m_aTypeValueArea);
+
   }
   
   m_rTop.vRewind();
