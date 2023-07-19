@@ -188,12 +188,29 @@ void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 
   eCN eType_onStack = aTypeValueArea->eType();
 
-  if (CN_STZVAL == eType_onStack)
+  if (CN_STZVAL == eType_onStack) {
+    vSetType(aTypeValueArea);
     vSetText(aTypeValueArea);
-  else
+  }
+  else {
+//    eCN eType_ofLocal = this->eType();
+//
+//    if (CN_STZVAL == eType_ofLocal) {
+//      ASSERT(m_axLocalStr->m_pText);
+//      this->vLocalStrRevert();
+//     }
+//    else {
+//      //ASSERT(! m_pText);
+//    }
+//
+//    if (m_axLocalStr && m_axLocalStr->m_pText) {
+//      delete m_axLocalStr->m_pText;
+//      m_axLocalStr->m_pText = nullptr;
+//    }
+    vNixText();
     vSetValue(aTypeValueArea);
+  }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set type of local variable from given typeValue                            */
@@ -213,8 +230,7 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
   else
     axLocalStr = this->axLocalStrAllot();
 
-  if (! m_axLocalStr->m_pText)
-    m_axLocalStr->m_pText = new Text;
+  vEnsureText();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -238,7 +254,7 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
   eCN eType_onStack = aTypeValueArea->eType();
   ASSERT(CN_STZVAL == eType_onStack);
 
-  vSetType(aTypeValueArea);
+  //vSetType(aTypeValueArea);
 
   //ASSERT(m_pText);
 
@@ -268,25 +284,6 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 {
   _nonProper_
 
-  eCN eType_onStack = aTypedValueArea->eType();
-  ASSERT(CN_STZVAL != eType_onStack);
-
-  eCN eType_ofLocal = this->eType();
-
-  if (CN_STZVAL == eType_ofLocal) {
-    ASSERT(m_axLocalStr->m_pText);
-    this->vLocalStrRevert();
-   }
-  else {
-    //ASSERT(! m_pText);
-  }
-
-  if (m_axLocalStr && m_axLocalStr->m_pText) {
-    delete m_axLocalStr->m_pText;
-    m_axLocalStr->m_pText = nullptr;
-  }
-
-
   ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 
   TypeValue* axTypeValue = this->axTypeValue();
@@ -296,7 +293,7 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
                 sizeof(TypeValue),
                 CN_STACK);
 
-  eType_ofLocal = this->eType();
+  eCN eType_ofLocal = this->eType();
   ASSERT(CN_STZVAL != eType_ofLocal);
   ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 }
@@ -392,6 +389,38 @@ void LocalVar::vGetValue(TypeValueArea* aTypedValueArea)
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* ensure text                                                                */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vEnsureText(void)
+{
+  _nonProper_
+
+  if (! m_axLocalStr->m_pText)
+    m_axLocalStr->m_pText = new Text;
+}
+
+/*----------------------------------------------------------------------------*/
+/* nix text                                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vNixText(void)
+{
+  _nonProper_
+
+  eCN eType_ofLocal = this->eType();
+
+  if (CN_STZVAL == eType_ofLocal) {
+    ASSERT(m_axLocalStr->m_pText);
+    this->vLocalStrRevert();
+  }
+
+  if (m_axLocalStr && m_axLocalStr->m_pText) {
+    delete m_axLocalStr->m_pText;
+    m_axLocalStr->m_pText = nullptr;
+  }
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* set value given size argument                                              */

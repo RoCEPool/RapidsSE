@@ -49,6 +49,8 @@ namespace BASE
     void vGetValue(TypeValueArea* aTypedValueArea);
 
   private:
+    void vEnsureText(void);
+    void vNixText(void);
     void vSetSize(i8 jSize);
     void vSetValue(i8 iValue);
   };
