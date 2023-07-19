@@ -14,7 +14,7 @@
   PipeIn[].pipeOut
 
   // Record the memory object allocations
-  AM::MEMORY::trackingSnapshot not if
+  <force> >bol AM::MEMORY::trackingSnapshot not if
     // Note: Error code and string are on stack
     op__execErrMsg
 
@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: trackmemory :: trackmemory ;
+cmdSyntax: trackmemory :: trackmemory <force> ;
 
 : trackmemory_cmdTags _cmdTags tagCopy: op_tags
   tags{

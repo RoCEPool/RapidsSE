@@ -185,7 +185,7 @@ status            : STATUS ;
 szidx             : SZIDX tableName indexName ;
 sztbl             : SZTBL tableName ;
 
-trackmemory       : TRACKMEMORY ;
+trackmemory       : TRACKMEMORY FORCE?;
 memoryleaks       : MEMORYLEAKS ;
 bpa               : BPA type=(REGIONS | OBJECTS);
 file              : FILE (identifier | stringLiteral) ;
@@ -521,7 +521,7 @@ nonReservedWord   :
                   | CATALOG | CHARS | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
                   | ESCAPE_CHAR | EXPLAIN
-                  | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORMAT
+                  | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX
                   | KEY
@@ -607,6 +607,7 @@ FIELD_DELIMITER       : F I E L D '_' D E L I M I T E R;
 FILE                  : F I L E;
 FLOAT                 : F L O A T;
 FOR                   : F O R;
+FORCE                 : F O R C E;
 FORMAT                : F O R M A T;
 FULL                  : F U L L;
 FROM                  : F R O M;

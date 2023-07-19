@@ -326,7 +326,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->status())        { m_szProcName = "status"_Stz;          return nullptr; }
   else if (pCtx->szidx())         { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->sztbl())         { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return nullptr; }
+  else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->memoryleaks())   { m_szProcName = "memoryleaks"_Stz;     return nullptr; }
   else if (pCtx->bpa())           { m_szProcName = "bpa"_Stz;             return visitChildren(pCtx); }
   else if (pCtx->file())          { m_szProcName = nullptr;               return visitChildren(pCtx); }
@@ -691,6 +691,17 @@ antlrcpp::Any CommandParser::visitCount(Parser::sqlParser::CountContext *pCtx)
   s256 sTableName;
   vCleanString(pCtx->tableName()->identifier(), sTableName);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SZIDX statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitTrackmemory(Parser::sqlParser::TrackmemoryContext* pCtx)
+{
+  // Add command parameters
+  m_pArgValues->vAppendToken(pCtx->FORCE() ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
 
   return nullptr; // No need to visit any further down the tree
 }

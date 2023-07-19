@@ -19,13 +19,14 @@
   STD_PATH_TAG
   "
   procedure trackmemory
+    parameters $force
   begin
 
     stage stageA on origin :
       start | pulse once | stageB
 
     stage stageB on origin :
-      trackmemory | stageC
+      trackmemory $force | stageC
 
     stage stageC on origin :
       output | sink | stageA

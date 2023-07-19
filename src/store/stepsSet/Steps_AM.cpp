@@ -621,17 +621,33 @@ void Step::vAM_TakeTrackingSnapshot(void)
 {
   ENTRY();
 
+  bool bForce = m_pDataStack->iPopBol(__func__ );
+
   if (AM::MEMORY::pSnapshotAtTrackingMemory() ||
       AM::MEMORY::pSnapshotAtMemoryLeaks()) {
-    // push error string and error code on stack
-    eEC eErr = EC_MEMORY_ALREADY_TRACKED;
-    s2K sBuf;
-    sBuf.vSprint("%s : run memoryleaks to close current analysis"_Stz, aErrorMsg[eErr]);
 
-    m_pDataStack->vPushStz(sBuf.szStz());
-    m_pDataStack->vPushInt(eErr);
-    m_pDataStack->vPushBol(false);
-    return;
+    if (bForce) {
+      ObjectSnapshot* pSnapshot = AM::MEMORY::pSnapshotAtTrackingMemory();
+      delete pSnapshot;
+      AM::MEMORY::vSnapshotAtTrackingMemory(nullptr);
+
+      pSnapshot = AM::MEMORY::pSnapshotAtMemoryLeaks();
+      delete pSnapshot;
+      AM::MEMORY::vSnapshotAtMemoryLeaks(nullptr);
+
+      // Now carry on
+
+    } else {
+      // push error string and error code on stack
+      eEC eErr = EC_MEMORY_ALREADY_TRACKED;
+      s2K sBuf;
+      sBuf.vSprint("%s : run memoryleaks to close current analysis"_Stz, aErrorMsg[eErr]);
+
+      m_pDataStack->vPushStz(sBuf.szStz());
+      m_pDataStack->vPushInt(eErr);
+      m_pDataStack->vPushBol(false);
+      return;
+    }
   }
 
   // Create the object snapshots for both trackingmemory time and memoryleaks time
