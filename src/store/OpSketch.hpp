@@ -115,6 +115,8 @@ namespace STORE
     void vCopyColsMap(ColMap* pColsMap);
     void vCopyInitStack(TypedStack* pInitStack);
 
+    bool bColReq(i8 i_Col);
+
     void vGenerateExprStacks(Stz* sExpr, bool bConstraint = false);
 
     void vTable(Table* pTable);
