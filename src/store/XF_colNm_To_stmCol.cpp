@@ -68,9 +68,10 @@ void XF_colNm_To_stmCol::vXF_colNm_To_stmCol(void)
   while (m_pCI->G_bEachMain_reverse()) {
 
     m_pCI->Analysis.m_pProjection_prior = Card_Projection::pResolvePriorProjection(m_pCI);
-    m_pCI->Analysis.m_pProjection_prior->vDump(__func__ );
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_colNm_To_stmCol(m_pCI);
-
+    if (m_pCI->Analysis.m_pProjection_prior) {
+      m_pCI->Analysis.m_pProjection_prior->vDump(__func__);
+      ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_colNm_To_stmCol(m_pCI);
+    }
   }
 
   m_pCI->vEndTransform();
