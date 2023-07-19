@@ -108,6 +108,8 @@ OpDef::~OpDef(void) noexcept(false)
   delete m_pColMap_gbyAgg;
   delete m_pIndexDef_sort;
   delete m_pColMap_sort;
+  delete m_pIndexDef_top;
+  delete m_pColMap_top;
 
   delete m_pColsReq;
 }

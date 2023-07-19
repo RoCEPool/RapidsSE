@@ -8,9 +8,9 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,ColMap,CN_COLSREQ)
-__aNewFunction(ColMap,CN_COLSREQ)
-__vDeleteFunction(ColMap,CN_COLSREQ)
+__pCastFunction(STORE,ColMap,CN_COLMAP)
+__aNewFunction(ColMap,CN_COLMAP)
+__vDeleteFunction(ColMap,CN_COLMAP)
 __aFooterFunction(ColMap)
 
 
@@ -18,9 +18,9 @@ __aFooterFunction(ColMap)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ColMap::ColMap(void)
-    : Object(CN_COLSREQ)
+    : Object(CN_COLMAP)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < C_COLMAP; i_Col++) {
     m_axCols[i_Col].m_i_EmittedCol = C_UNKNOWN;
@@ -29,7 +29,7 @@ ColMap::ColMap(void)
   }
   m_nCols = 0;
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COLMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ ColMap::ColMap(void)
 /*----------------------------------------------------------------------------*/
 ColMap::~ColMap(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLSREQ,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLMAP,_FOOTER_);
 
 }
 
@@ -56,7 +56,7 @@ ColMap::~ColMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ColMap::vAdd(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
 
   m_axCols[m_nCols].m_i_EmittedCol = i_EmittedCol;
   m_axCols[m_nCols].m_bPayload     = bPayLoad;
@@ -72,7 +72,7 @@ void ColMap::vAdd(i8 i_EmittedCol, bool bPayLoad, i8 i_Cell)
 /*----------------------------------------------------------------------------*/
 void ColMap::vDump(i8 i_Tab)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
 
   for (i8 i_Col = 0; i_Col < m_nCols; i_Col++) {
     vTrace("               [%lld] %s %lld -> $%lld\n"_Stz,
@@ -89,7 +89,7 @@ void ColMap::vDump(i8 i_Tab)
 /*----------------------------------------------------------------------------*/
 void ColMap::vValidate(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_COLSREQ, _FOOTER_);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COLMAP, _FOOTER_);
 
 
 }
