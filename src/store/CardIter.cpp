@@ -1631,6 +1631,16 @@ void CardIter::vPrintBoard(i8 iLineNo)
 //  }
 //}
 
+/*----------------------------------------------------------------------------*/
+/* capture prior projection                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vPriorProjection(void)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  if (Card_Projection* p_projection = G.p_OP->pSub_projection())
+    Prior.m_pProjection = p_projection;
+}
 
 /*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
