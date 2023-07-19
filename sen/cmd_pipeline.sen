@@ -183,6 +183,7 @@ then
 /* org_ org */ "<optimise>" [job].tagSet@ tagSet.hasName
 /* org_ org */ "<optimise_passThru>" [job].tagSet@ tagSet.hasName
                "<weaver2>" [job].tagSet@ tagSet.hasName and or if
+
 /* org_ org */    Optimiser[].new
 /* org_ org */    PipeSpec[] Optimiser[].dissect
 /* org_ org */
