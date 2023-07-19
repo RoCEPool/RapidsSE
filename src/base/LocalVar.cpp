@@ -135,7 +135,7 @@ i8 LocalVar::jStzSize(void)
 {
   _nonProper_
 
-  return m_axLocalStr->jStrSize();
+  return m_xTypeValue.m_wxValue.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,6 +208,7 @@ void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 //      m_axLocalStr->m_pText = nullptr;
 //    }
     vNixText();
+    vSetType(aTypeValueArea);
     vSetValue(aTypeValueArea);
   }
 }
@@ -219,29 +220,11 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_onStack = aTypeValueArea->eType();
-  eCN eType_ofLocal = this->eType();
-
-  ASSERT(CN_STZVAL == eType_onStack);
-
-  LocalStr *axLocalStr;
-  if (CN_STZVAL == eType_ofLocal)
-    axLocalStr = this->axLocalStr();
-  else
-    axLocalStr = this->axLocalStrAllot();
-
-  vEnsureText();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   MemLib::vCopy(axType(),
                 aTypeValueArea,
                 sizeof(_Header),
                 CN_STACK);
 
-  eType_ofLocal = this->eType();
-  ASSERT(CN_STZVAL == eType_ofLocal);
-  //ASSERT(m_pText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,6 +241,8 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 
   //ASSERT(m_pText);
 
+  vEnsureText();
+
   LocalStr* axLocalStr = this->axLocalStr();
 
   SizeArea* axSizeArea = axLocalStr->axSizeArea();
@@ -265,10 +250,10 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
   i8 jBytes_valueStz = aTypeValueArea->nStackUsage() - sizeof(_Header);
   i8 jBytes_stz = jBytes_valueStz - sizeof(i8);
 
-  MemLib::vCopy(axSizeArea,
-                ayByte,
-                jBytes_valueStz,
-                CN_STACK);
+//  MemLib::vCopy(axSizeArea,
+//                ayByte,
+//                jBytes_valueStz,
+//                CN_STACK);
 
   vSetSize(jBytes_stz);
 
@@ -288,9 +273,9 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 
   TypeValue* axTypeValue = this->axTypeValue();
 
-  MemLib::vCopy(axTypeValue,
-                aTypedValueArea,
-                sizeof(TypeValue),
+  MemLib::vCopy(axTypeValue->axValue(),
+                aTypedValueArea->axValue(),
+                sizeof(Dtm),
                 CN_STACK);
 
   eCN eType_ofLocal = this->eType();
@@ -313,6 +298,7 @@ void LocalVar::vGet(TypeValueArea* aTypeValueArea)
 
   }
   else {
+    vGetType(aTypeValueArea);
     vGetValue(aTypeValueArea);
   }
 
@@ -340,6 +326,8 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 
 
   i8 jStz = this->jStzSize();
+  RASSERT(jStz == m_xTypeValue.m_wxValue.iAsI8());
+
   i8 jSizeStz = sizeof(i8) + jStz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -378,11 +366,9 @@ void LocalVar::vGetValue(TypeValueArea* aTypedValueArea)
 {
   _nonProper_
 
-  TypeValue* axTypeValue = this->axTypeValue();
-
-  MemLib::vCopy(aTypedValueArea,
-                axTypeValue,
-                sizeof(TypeValue),
+  MemLib::vCopy(aTypedValueArea->axValue(),
+                axValue(),
+                sizeof(Dtm),
                 CN_STACK);
 }
 
@@ -396,6 +382,9 @@ void LocalVar::vGetValue(TypeValueArea* aTypedValueArea)
 void LocalVar::vEnsureText(void)
 {
   _nonProper_
+
+  if (! m_axLocalStr)
+    axLocalStrAllot();
 
   if (! m_axLocalStr->m_pText)
     m_axLocalStr->m_pText = new Text;

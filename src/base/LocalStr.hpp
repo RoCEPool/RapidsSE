@@ -28,8 +28,7 @@ namespace BASE
 
     void  vReInitialise(void);
     SizeArea* axSizeArea(void);
-  
-    i8 jStrSize(void);  
+
   };
 
   LocalStr* _pLocalStr(void* aAddr);
