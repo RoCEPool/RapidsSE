@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_projection_Analysis.cpp -- Projection Analysis                          */
+/* XF_projection_Analysis.cpp -- Projection Prior                          */
 /*============================================================================*/
 
 #include "XF_projection_Analysis.hpp"

@@ -30,8 +30,8 @@ namespace STORE
     } Early;
 
     struct {
-      Card_Projection * m_pProjection_prior;
-    } Analysis;
+      Card_Projection * m_pProjection;
+    } Prior;
 
     struct {
       i8         m_i_SubQuery;

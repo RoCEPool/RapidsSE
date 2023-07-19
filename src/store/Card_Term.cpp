@@ -149,7 +149,7 @@ void Card_Term::vEnsureTypeFor_stmOdn(CardIter* pCI)
     p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
   else
   if (bIsStmOdn())
-    p_expr_found = pCI->Analysis.m_pProjection_prior->pGetExpr(iOdn - 1);
+    p_expr_found = pCI->Prior.m_pProjection->pGetExpr(iOdn - 1);
   else
     return;
 

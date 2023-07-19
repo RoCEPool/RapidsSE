@@ -270,7 +270,7 @@ void Card_Filter::vUpdate_projection(CardIter* pCI)
   if ((pCI->G.p_projection = pCI->G.p_filter->pSub_projection())) {
 
     pCI->G.p_filter->vDeleteChild(pCI->G.p_projection);
-    pCI->G.p_filter->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    pCI->G.p_filter->vAppend(pCI->Prior.m_pProjection->pClone());
 
   }
 }

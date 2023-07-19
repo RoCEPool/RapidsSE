@@ -230,7 +230,7 @@ void Card_Where::vEarlyProject_recurse_update(CardIter* pCI)
 
   pCI->vPrintBoard();
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
   // restore needed
   delete pCI->Early.m_pNeeded_later;
@@ -279,7 +279,7 @@ void Card_Where::vUpdate_projection(CardIter* pCI)
   if ((pCI->G.p_projection = pCI->G.p_where->pSub_projection())) {
 
     pCI->G.p_where->vDeleteChild(pCI->G.p_projection);
-    pCI->G.p_where->vAppend(pCI->Analysis.m_pProjection_prior->pClone());
+    pCI->G.p_where->vAppend(pCI->Prior.m_pProjection->pClone());
 
   }
 }

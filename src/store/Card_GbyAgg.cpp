@@ -334,7 +334,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
   if (pCI->pPrevChild()->bIsCard(CK_PROJECT)) {
 
     pCI->Early.m_pOP_leaf = this;
-    pCI->Analysis.m_pProjection_prior = pSub_projection();
+    pCI->Prior.m_pProjection = pSub_projection();
 
     pCI->vPrintBoard();
     return;
@@ -366,7 +366,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
   pCI->vPrintBoard();
 
@@ -376,7 +376,7 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_projection = pSub_projection();
 
-  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_projection;
 
   pCI->vPrintBoard();
 
@@ -447,7 +447,7 @@ void Card_GbyAgg::vSmooth(CardIter* pCI, bool bInject_foldExpr, i8 nBumpBy)
     pCI->G.p_gbyAgg->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_projection();
 
   pCI->vRenumberCards();
 }
@@ -488,7 +488,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if ((pCI->G.p_key = pCI->G.p_MainCard->pSub_key())) {
-    if (pCI->Analysis.m_pProjection_prior) {
+    if (pCI->Prior.m_pProjection) {
       pCI->G.p_key->vTypes_For_stmColOdn(pCI);
       pCI->G.p_key->vRenumberAll_expr();
     }
@@ -496,7 +496,7 @@ void Card_GbyAgg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
-    if (pCI->Analysis.m_pProjection_prior) {
+    if (pCI->Prior.m_pProjection) {
       pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
       pCI->G.p_projection->vRenumberAll_expr();
     }

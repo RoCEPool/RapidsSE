@@ -239,7 +239,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
   if ((pCI->G.p_projection = pCI->G.p_sort->pSub_projection()))
     pCI->G.p_sort->vDeleteChild(pCI->G.p_projection);
 
-  Card_Projection* p_projection_sort =  pCI->Analysis.m_pProjection_prior->pPropagate(pCI);
+  Card_Projection* p_projection_sort =  pCI->Prior.m_pProjection->pPropagate(pCI);
   for (Kid xKey_sort(pSub_key()); xKey_sort.bEach(); /**/) {
     Card_Expr* p_expr_key = xKey_sort.p_expr();
 
@@ -251,7 +251,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   pCI->G.p_sort->vAppend(p_projection_sort);
 
-  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_projection();
 
   pCI->vRenumberCards();
 }
@@ -266,11 +266,11 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 //
 //    pCI->G.p_sort->vDeleteChild(pCI->G.p_projection);
 //
-//    //pCI->G.p_sort->vAppend(pCI->Analysis.m_pProjection_prior->pPropagate());
+//    //pCI->G.p_sort->vAppend(pCI->Prior.m_pProjection->pPropagate());
 //
 //
 //    pCI->G_vAppendNewChild(pCI->G.p_sort,CK_PROJECTION);
-//    for (Kid xPrior(pCI->Analysis.m_pProjection_prior); xPrior.bEach(); /**/) {
+//    for (Kid xPrior(pCI->Prior.m_pProjection); xPrior.bEach(); /**/) {
 //      Card_Expr* p_expr_prior = xPrior.p_expr();
 //
 //      if (p_expr_prior->bIsExpressionOfKey()) {
@@ -292,7 +292,7 @@ void Card_Sort::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 //
 //  }
 //
-//  pCI->Analysis.m_pProjection_prior = pSub_projection();
+//  pCI->Prior.m_pProjection = pSub_projection();
 //
 //  pCI->vRenumberCards();
 //}

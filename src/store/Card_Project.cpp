@@ -152,13 +152,13 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
 
 //    if (! p_expr_needed->pGetTerm(0)->bIsColOdn()) {
 //      this->vDump(__func__ );
-//      pCI->Analysis.m_pProjection_prior->vDump(__func__);
+//      pCI->Prior.m_pProjection->vDump(__func__);
 //      p_expr_needed->vDump(__func__);
 //      NEVER_REACH;
 //      //continue;
 //    }
 
-    if (! pCI->Analysis.m_pProjection_prior->pContains(p_expr_needed))
+    if (! pCI->Prior.m_pProjection->pContains(p_expr_needed))
       continue;
 
     Card_Expr* p_expr_clone = p_expr_needed->pClone();
@@ -248,7 +248,7 @@ void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
   if (! (pCI->G.p_needed = pSub_needed()))
     return;
@@ -257,7 +257,7 @@ void Card_Project::vEarlyProject_needed_recurse(CardIter* pCI)
 
   vInsertBefore(pCI->G.p_projection,pCI->G.p_needed);
 
-  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_projection;
 
   pCI->vPrintBoard();
 
@@ -330,7 +330,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
   pCI->vPrintBoard();
 
@@ -340,7 +340,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_projection = pSub_projection();
 
-  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_projection;
 
   pCI->vPrintBoard();
 
@@ -361,7 +361,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, i8 nBumpBy)
     pCI->G.p_project->vBump_Rightwards(nBumpBy);
   }
 
-  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_projection();
 
 }
 
@@ -378,7 +378,7 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
     pCI->G.p_project->vBump_Rightwards(pCarryForward->Project_postAgg.m_nBumpBy);
   }
 
-  pCI->Analysis.m_pProjection_prior = pSub_projection();
+  pCI->Prior.m_pProjection = pSub_projection();
 
 }
 

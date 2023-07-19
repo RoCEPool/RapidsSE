@@ -101,7 +101,7 @@ void XF_Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyE
       pCI->vPrintBoard(__LINE__);
 
     }
-    pCI->Analysis.m_pProjection_prior = pCI->G.p_gbyAgg->pSub_projection();
+    pCI->Prior.m_pProjection = pCI->G.p_gbyAgg->pSub_projection();
   }
 
   // [project (avg)]

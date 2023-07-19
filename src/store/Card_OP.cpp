@@ -154,7 +154,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
   if (bIsCard(CK_HASH)) {
     Card_HshCol *p_hshCol = pSub_hshCol();
     if (Card_Expr *p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFindExpr(p_hshCol->pSymbol())) {
+        pCI->Prior.m_pProjection->pFindExpr(p_hshCol->pSymbol())) {
       p_hshCol->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
     }
   }
@@ -220,7 +220,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
       vDebugPoint();
     }
 
-    if (! pCI->Analysis.m_pProjection_prior)
+    if (! pCI->Prior.m_pProjection)
       return C_CONTINUE_RECURSION;
 
     if (! p_term->pSymbol()->bIsColNm())
@@ -229,13 +229,13 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
     p_term->vDump(__func__);
 
     if (Card_Expr* p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
+        pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
       //p_expr_col->vDump();
       p_term->pSymbol()->vSet(p_expr_col->pSymbol());
     }
     else
     if (Card_Expr* p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFind_expr_By_as(p_term->pSymbol())) {
+        pCI->Prior.m_pProjection->pFind_expr_By_as(p_term->pSymbol())) {
       p_expr_col->vDump(__func__);
       p_term->pSymbol()->vSet(p_expr_col->pSymbol());
     }
@@ -337,9 +337,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (!p_term->bIsColOdn())
       return C_CONTINUE_RECURSION;
 
-    if (pCI->Analysis.m_pProjection_prior) {
+    if (pCI->Prior.m_pProjection) {
       if (Card_Expr* p_expr_col =
-          pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
+          pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
         // record what $c.n it was
         p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
         p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
@@ -841,9 +841,9 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     vRemoveChild(p_projection_needed);
 
   if (pSub_keyExists() || pSub_keyNotExists()) {
-    p_projection = _pCard_Projection(pCI->Analysis.m_pProjection_prior->pDupCardRecursive());
+    p_projection = _pCard_Projection(pCI->Prior.m_pProjection->pDupCardRecursive());
     vAppend(p_projection);
-    pCI->Analysis.m_pProjection_prior = p_projection;
+    pCI->Prior.m_pProjection = p_projection;
     if (p_projection_needed)
       vAppend(p_projection_needed);
     return;
@@ -856,9 +856,9 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
   Table* pTable = Card_Table::pAccess_Table(pCI->G.p_tableNm->szSymbol());
   StreamDef* pStreamDef = pTable->pStreamDef();
 
-  if (pCI->Analysis.m_pProjection_prior)
-//    p_projection = pCI->Analysis.m_pProjection_prior->pClone();
-    p_projection = pCI->Analysis.m_pProjection_prior->pReducedCopy(pCI);
+  if (pCI->Prior.m_pProjection)
+//    p_projection = pCI->Prior.m_pProjection->pClone();
+    p_projection = pCI->Prior.m_pProjection->pReducedCopy(pCI);
   else
     p_projection = new Card_Projection(pCI->iXform());
 
@@ -900,7 +900,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   vAppend(p_projection);
 
-  pCI->Analysis.m_pProjection_prior = p_projection;
+  pCI->Prior.m_pProjection = p_projection;
 
   if (p_projection_needed)
     vAppend(p_projection_needed);

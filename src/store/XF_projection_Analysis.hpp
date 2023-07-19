@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* XF_projection_Analysis.hpp -- Projection Analysis                          */
+/* XF_projection_Analysis.hpp -- Projection Prior                          */
 /*============================================================================*/
 #pragma once
 

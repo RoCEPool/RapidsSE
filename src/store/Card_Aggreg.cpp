@@ -121,7 +121,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(pCI->Early.m_pOP_leaf);
 
-  vCorrectStmOdn(pCI->Analysis.m_pProjection_prior);
+  vCorrectStmOdn(pCI->Prior.m_pProjection);
 
   pCI->vPrintBoard();
 
@@ -131,7 +131,7 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   pCI->G.p_projection = pSub_projection();
 
-  pCI->Analysis.m_pProjection_prior = pCI->G.p_projection;
+  pCI->Prior.m_pProjection = pCI->G.p_projection;
 
   pCI->vPrintBoard();
 
@@ -157,7 +157,7 @@ void Card_Aggreg::vUpdate_projection(CardIter* pCI)
 
   if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
-    if (pCI->Analysis.m_pProjection_prior) {
+    if (pCI->Prior.m_pProjection) {
       pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
       pCI->G.p_projection->vRenumberAll_expr();
     }

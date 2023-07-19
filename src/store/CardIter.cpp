@@ -245,7 +245,7 @@ void CardIter::G_vClearRegisters(void)
 
   Sqy.m_pTerm_corrCol      = nullptr;
 
-  Analysis.m_pProjection_prior = nullptr;
+  Prior.m_pProjection = nullptr;
 
   Early.m_pOP_root   = nullptr;
   Early.m_pOP_leaf   = nullptr;

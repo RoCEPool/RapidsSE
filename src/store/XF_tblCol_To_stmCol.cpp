@@ -67,12 +67,12 @@ void XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
   m_pCI->vClearRestart();
   while (m_pCI->G_bEachMain_reverse()) {
 
-    m_pCI->Analysis.m_pProjection_prior = Card_Projection::pResolvePriorProjection(m_pCI);
+    m_pCI->Prior.m_pProjection = Card_Projection::pResolvePriorProjection(m_pCI);
 
     ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
 //    if (m_pCI->G.p_OP->pSub_projection())
-//      m_pCI->Analysis.m_pProjection_prior =
+//      m_pCI->Prior.m_pProjection =
 //          m_pCI->G.p_OP->pSub_projection();
   }
   m_pCI->vEndTransform();

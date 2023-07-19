@@ -106,7 +106,7 @@ void XF_Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   if (pCI->G.p_cmpPred->bIsSymbol("notIn"_Stz) || pCI->G.p_cmpPred->bIsSymbol("notExists"_Stz))
     p_table_exists->vAppend(new Card_KeyNotExists);
 
-  pCI->Analysis.m_pProjection_prior = p_projection_table;
+  pCI->Prior.m_pProjection = p_projection_table;
   pCI->G.p_cmpPred->vMorph_SqlOp_To_Eq(pCI, pCI->G.p_term);
 
   DELETE_CARD(pCI->G.p_term);
