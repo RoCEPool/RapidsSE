@@ -205,38 +205,31 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (pSymbol()->Y_bHas(P_BreakPt)) {
-    //vDump();
+  if (pSymbol()->Y_bHas(P_BreakPt))
     vDebugPoint();
-  }
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  RASSERT(pCI->Prior.m_pProjection);
 
-  auto bfLambdaFn = [pCI,this](Card* pCard)
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto b_colNm_To_stmCol = [pCI,this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
-
-    if (pSymbol()->Y_bHas(P_BreakPt)) {
-      vDebugPoint();
-    }
-
-    if (! pCI->Prior.m_pProjection)
-      return C_CONTINUE_RECURSION;
-
     if (! p_term->pSymbol()->bIsColNm())
       return C_CONTINUE_RECURSION;
 
     p_term->vDump(__func__);
 
-    if (Card_Expr* p_expr_col =
-        pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
-      //p_expr_col->vDump();
-      p_term->pSymbol()->vSet(p_expr_col->pSymbol());
-    }
-    else
+//    // todo: delete
+//    if (Card_Expr* p_expr_col =
+//        pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
+//      //p_expr_col->vDump();
+//      p_term->pSymbol()->vSet(p_expr_col->pSymbol());
+//    }
+//    else
     if (Card_Expr* p_expr_col =
         pCI->Prior.m_pProjection->pFind_expr_By_as(p_term->pSymbol())) {
-      p_expr_col->vDump(__func__);
+//      p_expr_col->vDump(__func__);
       p_term->pSymbol()->vSet(p_expr_col->pSymbol());
     }
 
@@ -245,17 +238,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//  if (6 == i_Child()) {
-//    vDump();
-//    vDebugPoint();
-//  }
-
-  vApply_lambdaFn_ToAll_term(pCI, bfLambdaFn);
-
-  if (pSymbol()->Y_bHas(P_BreakPt)) {
-    //vDump();
-    vDebugPoint();
-  }
+  vApply_lambdaFn_ToAll_term(pCI, b_colNm_To_stmCol);
 }
 
 /*----------------------------------------------------------------------------*/
