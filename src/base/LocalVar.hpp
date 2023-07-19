@@ -48,6 +48,9 @@ namespace BASE
     void vGetText(TypeValueArea* aTypeValueArea);
     void vGetValue(TypeValueArea* aTypedValueArea);
 
+  private:
+    void vSetSize(i8 jSize);
+    void vSetValue(i8 iValue);
   };
 
   LocalVar* _pLocalVar(void* aAddr);

@@ -246,18 +246,19 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 
   SizeArea* axSizeArea = axLocalStr->axSizeArea();
   byte* ayByte = reinterpret_cast<byte*>(aTypeValueArea->axValue());
-  i8 nBytes = aTypeValueArea->nStackUsage() - sizeof(_Header);
+  i8 jBytes_valueStz = aTypeValueArea->nStackUsage() - sizeof(_Header);
+  i8 jBytes_stz = jBytes_valueStz - sizeof(i8);
 
   MemLib::vCopy(axSizeArea,
                 ayByte,
-                nBytes,
+                jBytes_valueStz,
                 CN_STACK);
 
-  m_xTypeValue.axValue()->vAsI8(nBytes);
+  vSetSize(jBytes_stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(ayByte + 8));
+  m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(aTypeValueArea->szStz()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,15 +341,9 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  SizeArea* axSizeArea = axLocalStr()->axSizeArea();
 
   i8 jStz = this->jStzSize();
   i8 jSizeStz = sizeof(i8) + jStz;
-
-//  MemLib::vCopy(aTypeValueArea->axValue(),
-//                axSizeArea,
-//                jSizeStz,
-//                CN_STACK);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -362,11 +357,12 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
                 CN_STACK);
 
   i8 jStz_this = m_xTypeValue.axValue()->iAsI8();
-  RASSERT(jStz_this == jSizeStz);
+  RASSERT(jStz_this == jStz);
 
 
 
-  MemLib::vCopy(reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
+  MemLib::vCopy(//reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
+                aTypeValueArea->szStz(),
                 m_axLocalStr->m_pText->szGet(),
                 jStz,
                 CN_STACK);
@@ -379,7 +375,7 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get 8B value from given typeValue                                          */
+/* get 8B value from this localVar into given typedValueArea                  */
 /*----------------------------------------------------------------------------*/
 void LocalVar::vGetValue(TypeValueArea* aTypedValueArea)
 {
@@ -391,6 +387,30 @@ void LocalVar::vGetValue(TypeValueArea* aTypedValueArea)
                 axTypeValue,
                 sizeof(TypeValue),
                 CN_STACK);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set value given size argument                                              */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetSize(i8 jSize)
+{
+  _nonProper_
+
+  vSetValue(jSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set value given argument                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetValue(i8 iValue)
+{
+  _nonProper_
+
+  m_xTypeValue.axValue()->vAsI8(iValue);
 }
 
 /*============================================================================*/
