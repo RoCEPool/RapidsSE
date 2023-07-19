@@ -7,16 +7,16 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_STRS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(LocalStr);
-  static const i8 C_LOCAL_STRS_reduced = 16;
 
   class LocalVars;
 
   class LocalStrs : public Object
   {
+    static const i8 C_LOCAL_STRS = 16;
+
   public:
     i8         m_i_FirstFree;  // C_UNKNOWN indicates end
-    LocalStr   m_xaLocalStr[C_LOCAL_STRS_reduced];
+    LocalStr   m_xaLocalStr[C_LOCAL_STRS];
 
     // must be last
     Footer m_xFooter;

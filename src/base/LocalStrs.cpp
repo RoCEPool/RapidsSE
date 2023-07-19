@@ -24,9 +24,9 @@ LocalStrs::LocalStrs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSTRS,_FOOTER_);
 
-  m_i_FirstFree = C_LOCAL_STRS_reduced - 1;
+  m_i_FirstFree = C_LOCAL_STRS - 1;
   
-  for (i8 i_LclStr = 0; i_LclStr < C_LOCAL_STRS_reduced; i_LclStr++) {
+  for (i8 i_LclStr = 0; i_LclStr < C_LOCAL_STRS; i_LclStr++) {
     LocalStr& rxLocalStr = m_xaLocalStr[i_LclStr];
 
     rxLocalStr.m_i_LclStr   = i_LclStr;

@@ -18,11 +18,10 @@ namespace BASE
   public:
     LocalStr(void);
    ~LocalStr(void) noexcept(false);
-  
-    // auto conversion
-    operator LocalStr*(void);
 
-    Text*    pText(void);
+    void  vEnsureText(void);
+
+    Text* pText(void);
   };
 
   LocalStr* _pLocalStr(void* aAddr);

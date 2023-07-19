@@ -13,8 +13,8 @@ namespace BASE
   {
   public:
     LocalVars* m_pLocalVars;
-    i8         m_i_LocalVar;
     void*      m_aDiscardPoint;
+
     TypeValue  m_xTypeValue;
     LocalStr*  m_axLocalStr;
 
@@ -27,9 +27,7 @@ namespace BASE
   
 
     void* aDiscardPoint(void);
-    i8    i_LocalVar(void);
-    LocalStr* axLocalStr(void);
-    LocalStr* axLocalStrAllot(void);
+    void  vLocalStrAllot(void);
     void  vLocalStrRevert(void);
     i8    jStackUsage(void);
     i8    jStzSize(void);
@@ -50,7 +48,6 @@ namespace BASE
 
   private:
     void vEnsureText(void);
-    void vNixText(void);
     void vSetSize(i8 jSize);
     void vSetValue(i8 iValue);
   };

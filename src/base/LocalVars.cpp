@@ -33,7 +33,6 @@ LocalVars::LocalVars(void)
     LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
 
     rxLocalVar.m_pLocalVars    = this;
-    rxLocalVar.m_i_LocalVar    = i_LocalVar;
     rxLocalVar.m_aDiscardPoint = nullptr;
     rxLocalVar.m_axLocalStr     = nullptr;
   }
@@ -109,8 +108,6 @@ void LocalVars::vFramePop(void* aDiscardPoint_return)
 
     //vVerify();
 
-    RASSERT(! rxLocalVar.axLocalStr());
-    
     rxLocalVar.m_aDiscardPoint = nullptr;
 
     //vVerify();
@@ -155,7 +152,6 @@ bool LocalVars::bFramePush(i8 nLocals, void* aDiscardPoint)
     LocalVar& rxLocalVar = m_xaLocalVar[i_LocalVar];
     
     rxLocalVar.m_aDiscardPoint = aDiscardPoint;
-    RASSERT(! rxLocalVar.axLocalStr());
   }
   
   //vVerify();
