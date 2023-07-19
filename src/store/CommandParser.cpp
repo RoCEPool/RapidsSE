@@ -743,19 +743,45 @@ antlrcpp::Any CommandParser::visitSztbl(Parser::sqlParser::SztblContext *pCtx)
 antlrcpp::Any CommandParser::visitBpa(Parser::sqlParser::BpaContext *pCtx)
 {
   // Add command parameters
-  Stz* szAnalysisType;
-  s256 sBuf;
 
-  if (pCtx->type) {
+  if (pCtx->type && !pCtx->ALL()) {
+    Stz* szAnalysisType;
+    s256 sBuf;
+
     vCleanString(pCtx->type, sBuf);
     szAnalysisType = sBuf.szStz();
 
-  } else {
-    // The default if no bpa parameter is given
-    szAnalysisType = "region"_Stz;
-  }
+    m_pArgValues->vAppendToken(szAnalysisType, TN_STRING);
 
-  m_pArgValues->vAppendToken(szAnalysisType, TN_STRING);
+  } else {
+    // The default if no bpa parameter is given is to run both bpa sub-commands
+
+    // Create a new parser using the current statement's tag set as the base.
+    ASSERT(!m_pChildTasks);
+
+    CommandParser* nestedParser = new CommandParser(m_pCurStmtTagSet, m_pParentTask);
+
+    try {
+      Stz* szBpaAllCmd = "bpa regions; bpa objects;"_Stz;
+      m_pChildTasks = nestedParser->pParseCommand(szBpaAllCmd);
+
+    } catch (Parser::SyntaxException& e) {
+      delete nestedParser;
+      throw e;
+
+    } catch (Parser::SemanticException& e) {
+      delete nestedParser;
+      throw e;
+    }
+
+    delete nestedParser;
+
+    ASSERT(m_pChildTasks);
+    ASSERT(m_pChildTasks->nTasks() > 0);
+
+    // This ensures that the two nested sub-commands will get picked.
+    m_szProcName = nullptr;
+  }
 
   return nullptr; // No need to visit any further down the tree
 }

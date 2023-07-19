@@ -1213,6 +1213,7 @@ public:
     antlr4::tree::TerminalNode *BPA();
     antlr4::tree::TerminalNode *REGIONS();
     antlr4::tree::TerminalNode *OBJECTS();
+    antlr4::tree::TerminalNode *ALL();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

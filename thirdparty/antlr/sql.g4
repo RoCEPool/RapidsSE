@@ -187,7 +187,7 @@ sztbl             : SZTBL tableName ;
 
 trackmemory       : TRACKMEMORY FORCE?;
 memoryleaks       : MEMORYLEAKS ;
-bpa               : BPA type=(REGIONS | OBJECTS);
+bpa               : BPA type=(REGIONS | OBJECTS | ALL)?;
 file              : FILE (identifier | stringLiteral) ;
 noop              : NOOP ;
 emptyCommand      : ;
