@@ -15,8 +15,6 @@ namespace BASE
 
     Text*    m_pText;
 
-    SizeArea m_xSizeArea;
-
   public:
     LocalStr(void);
    ~LocalStr(void) noexcept(false);
@@ -25,10 +23,6 @@ namespace BASE
     operator LocalStr*(void);
 
     Text*    pText(void);
-
-    void  vReInitialise(void);
-    SizeArea* axSizeArea(void);
-
   };
 
   LocalStr* _pLocalStr(void* aAddr);

@@ -234,26 +234,13 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_onStack = aTypeValueArea->eType();
-  ASSERT(CN_STZVAL == eType_onStack);
-
-  //vSetType(aTypeValueArea);
-
-  //ASSERT(m_pText);
+  ASSERT(CN_STZVAL == aTypeValueArea->eType());
 
   vEnsureText();
 
-  LocalStr* axLocalStr = this->axLocalStr();
-
-  SizeArea* axSizeArea = axLocalStr->axSizeArea();
-  byte* ayByte = reinterpret_cast<byte*>(aTypeValueArea->axValue());
-  i8 jBytes_valueStz = aTypeValueArea->nStackUsage() - sizeof(_Header);
+  i8 jBytes_typeValueStz = aTypeValueArea->nStackUsage();
+  i8 jBytes_valueStz = jBytes_typeValueStz - sizeof(_Header);
   i8 jBytes_stz = jBytes_valueStz - sizeof(i8);
-
-//  MemLib::vCopy(axSizeArea,
-//                ayByte,
-//                jBytes_valueStz,
-//                CN_STACK);
 
   vSetSize(jBytes_stz);
 
@@ -278,12 +265,9 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
                 sizeof(Dtm),
                 CN_STACK);
 
-  eCN eType_ofLocal = this->eType();
-  ASSERT(CN_STZVAL != eType_ofLocal);
+  ASSERT(CN_STZVAL != this->eType());
   ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get local variable from given typeValue                                    */

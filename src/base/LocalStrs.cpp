@@ -32,7 +32,6 @@ LocalStrs::LocalStrs(void)
     rxLocalStr.m_i_LclStr   = i_LclStr;
     rxLocalStr.m_i_NextFree = i_LclStr - 1;
 
-    rxLocalStr.vReInitialise();
     rxLocalStr.m_pText = new Text;
 
   }
@@ -85,7 +84,6 @@ void LocalStrs::vRevert(LocalStr* axLocalStr)
   //vTrace("LocalStr:  Revert : %lld\n"_Stz,axLocalStr->m_i_LclStr);
   
   RASSERT(C_UNKNOWN == axLocalStr->m_i_NextFree);
-  axLocalStr->vReInitialise();
 
   axLocalStr->m_i_NextFree = m_i_FirstFree;
   m_i_FirstFree = axLocalStr->m_i_LclStr;

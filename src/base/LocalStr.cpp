@@ -15,7 +15,7 @@ LocalStr::LocalStr(void)
   m_i_LclStr   = C_UNKNOWN;
   m_i_NextFree = C_UNKNOWN;
 
- m_pText = nullptr;
+  m_pText      = nullptr;
 
   // m_xSizeArea
 }
@@ -50,23 +50,6 @@ Text* LocalStr::pText(void)
 {
   return m_pText;
 }
-
-/*----------------------------------------------------------------------------*/
-/* re-initialise local string                                                 */
-/*----------------------------------------------------------------------------*/
-void LocalStr::vReInitialise(void)
-{
-  m_xSizeArea.vReInitialise();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size + area                                                            */
-/*----------------------------------------------------------------------------*/
-SizeArea* LocalStr::axSizeArea(void)
-{
-  return & m_xSizeArea;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
