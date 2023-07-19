@@ -678,7 +678,7 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 //         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
 //         sStackContents.szStz());
 
-  i8 jStackNeeded = axLocalVar->nStackUsage();
+  i8 jStackNeeded = axLocalVar->jStackUsage();
   m_rTop.vAdvance(jStackNeeded);
 
   axLocalVar->vGet(m_rTop.m_aTypeValueArea);

@@ -33,7 +33,7 @@ namespace BASE
     LocalStr* axLocalStr(void);
     LocalStr* axLocalStrAllot(void);
     void  vLocalStrRevert(void);
-    i8    nStackUsage(void);
+    i8    jStackUsage(void);
     i8    jStzSize(void);
     eCN   eType(void);
     _Header* axType(void);

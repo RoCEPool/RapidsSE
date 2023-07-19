@@ -128,25 +128,25 @@ void LocalVar::vLocalStrRevert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stack usage                                                            */
+/* get stack usage/required for this var                                      */
 /*----------------------------------------------------------------------------*/
-i8 LocalVar::nStackUsage(void)
+i8 LocalVar::jStackUsage(void)
 {
   _nonProper_
 
-  i8 nBytes;
+  i8 jBytes;
 
   if (CN_STZVAL == eType()) {
     i8 jStz = jStzSize();
     i8 jSizeStz = sizeof(i8) + jStz;
 
-    nBytes = sizeof(_Header) + jSizeStz;
+    jBytes = sizeof(_Header) + jSizeStz;
   }
   else {
-    nBytes = sizeof(TypeValue);
+    jBytes = sizeof(TypeValue);
   }
 
-  return nBytes;
+  return jBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@ i8 LocalVar::jStzSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get type                                                                   */
+/* get type of this var                                                       */
 /*----------------------------------------------------------------------------*/
 eCN LocalVar::eType(void)
 {
@@ -207,9 +207,9 @@ void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypeValueArea->eType();
+  eCN eType_onStack = aTypeValueArea->eType();
 
-  if (CN_STZVAL == eType_stack)
+  if (CN_STZVAL == eType_onStack)
     vSetText(aTypeValueArea);
   else
     vSetValue(aTypeValueArea);
@@ -223,13 +223,13 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypeValueArea->eType();
-  eCN eType_local = this->eType();
+  eCN eType_onStack = aTypeValueArea->eType();
+  eCN eType_ofLocal = this->eType();
 
-  ASSERT(CN_STZVAL == eType_stack);
+  ASSERT(CN_STZVAL == eType_onStack);
 
   LocalStr *axLocalStr;
-  if (CN_STZVAL == eType_local)
+  if (CN_STZVAL == eType_ofLocal)
     axLocalStr = this->axLocalStr();
   else
     axLocalStr = this->axLocalStrAllot();
@@ -244,8 +244,8 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
                 sizeof(_Header),
                 CN_STACK);
 
-  eType_local = this->eType();
-  ASSERT(CN_STZVAL == eType_local);
+  eType_ofLocal = this->eType();
+  ASSERT(CN_STZVAL == eType_ofLocal);
   //ASSERT(m_pText);
 }
 
@@ -256,8 +256,8 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypeValueArea->eType();
-  ASSERT(CN_STZVAL == eType_stack);
+  eCN eType_onStack = aTypeValueArea->eType();
+  ASSERT(CN_STZVAL == eType_onStack);
 
   vSetType(aTypeValueArea);
 
@@ -286,12 +286,12 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypedValueArea->eType();
-  ASSERT(CN_STZVAL != eType_stack);
+  eCN eType_onStack = aTypedValueArea->eType();
+  ASSERT(CN_STZVAL != eType_onStack);
 
-  eCN eType_local = this->eType();
+  eCN eType_ofLocal = this->eType();
 
-  if (CN_STZVAL == eType_local) {
+  if (CN_STZVAL == eType_ofLocal) {
     ASSERT(m_axLocalStr->m_pText);
     this->vLocalStrRevert();
    }
@@ -314,8 +314,8 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
                 sizeof(TypeValue),
                 CN_STACK);
 
-  eType_local = this->eType();
-  ASSERT(CN_STZVAL != eType_local);
+  eType_ofLocal = this->eType();
+  ASSERT(CN_STZVAL != eType_ofLocal);
   ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 }
 
