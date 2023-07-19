@@ -228,12 +228,12 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
 
     p_term->vDump(__func__);
 
-    if (Card_Expr* p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
-      //p_expr_col->vDump();
-      p_term->pSymbol()->vSet(p_expr_col->pSymbol());
-    }
-    else
+//    if (Card_Expr* p_expr_col =
+//        pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
+//      //p_expr_col->vDump();
+//      p_term->pSymbol()->vSet(p_expr_col->pSymbol());
+//    }
+//    else
     if (Card_Expr* p_expr_col =
         pCI->Analysis.m_pProjection_prior->pFind_expr_By_as(p_term->pSymbol())) {
       p_expr_col->vDump(__func__);
