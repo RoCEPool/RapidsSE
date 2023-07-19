@@ -3,9 +3,8 @@
 /*----------------------------------------------------------------------------*/
 
 // begin tracking memory
-// TODO V2
-//trackMemory;
-//success
+trackMemory;
+success
 
 //------------------------------------------------------------------------------
 // create table lineitem
@@ -72,7 +71,7 @@ end ;
 rows:
  (1117,DATE '1998-11-25')
  (221,DATE '1998-11-27')
-
+/*
 /optimise_passthru
 pipeline Q
 begin
@@ -103,15 +102,15 @@ end ;
 rows:
  (1499,*)
  (1499,*)
-
+*/
 
 // drop the table
 drop table lineitem;
 success
 
 // get memory leaks
-//memoryLeaks;
-//rows: 0
+memoryLeaks;
+rows: 0
 
 CLEANUP {
   
