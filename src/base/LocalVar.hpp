@@ -25,8 +25,6 @@ namespace BASE
     // auto conversion
     operator LocalVar*(void);
   
-    char* azArea(void);
-    Stz*  szArea(void);
 
     void* aDiscardPoint(void);
     i8    i_LocalVar(void);

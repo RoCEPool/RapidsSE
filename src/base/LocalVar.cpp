@@ -43,27 +43,6 @@ LocalVar::operator LocalVar*(void)
   return this;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* get string area                                                            */
-/*----------------------------------------------------------------------------*/
-char* LocalVar::azArea(void)
-{
-  _nonProper_
-
-  return m_axLocalStr->azArea();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get string area                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* LocalVar::szArea(void)
-{
-  _nonProper_
-
-  return m_axLocalStr->szArea();
-}
-
 /*----------------------------------------------------------------------------*/
 /* get discard point                                                          */
 /*----------------------------------------------------------------------------*/
@@ -274,6 +253,8 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
                 nBytes,
                 CN_STACK);
 
+  m_xTypeValue.axValue()->vAsI8(nBytes);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(ayByte + 8));
@@ -379,6 +360,12 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
                 &jStz,
                 8,
                 CN_STACK);
+
+  i8 jStz_this = m_xTypeValue.axValue()->iAsI8();
+  RASSERT(jStz_this == jSizeStz);
+
+
+
   MemLib::vCopy(reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
                 m_axLocalStr->m_pText->szGet(),
                 jStz,

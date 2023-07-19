@@ -26,9 +26,6 @@ namespace BASE
 
     Text*    pText(void);
 
-    char* azArea(void);
-    Stz*  szArea(void);
-
     void  vReInitialise(void);
     SizeArea* axSizeArea(void);
   
