@@ -2,7 +2,7 @@
 -- Query1 --- Combined Operators
 --------------------------------------------------------------------------------
 
-//trackMemory;
+//trackmemory force;
 //success;
 
 create table lineitem (

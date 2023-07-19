@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- tpch query15 (SF_0001)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 create table revenue (supplier_no, total_revenue) as

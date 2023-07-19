@@ -8,7 +8,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-trackmemory;
+trackmemory force;
 success
 
 create table nation (

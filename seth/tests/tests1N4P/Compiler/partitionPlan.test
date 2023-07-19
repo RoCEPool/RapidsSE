@@ -107,7 +107,7 @@ create table t2 (
 );
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

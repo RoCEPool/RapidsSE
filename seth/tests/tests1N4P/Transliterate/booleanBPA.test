@@ -1,6 +1,6 @@
 
 
-trackmemory;
+trackmemory force;
 success
 reap;
 success

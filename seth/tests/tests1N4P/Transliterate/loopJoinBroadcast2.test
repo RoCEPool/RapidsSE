@@ -52,7 +52,7 @@ success
 load t3 "../DATA/Transliterate/broadcast_t3.csv" ;
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2,7 +2,7 @@
 -- INDEX JOIN tests --- PARTITIONED ON INDEX KEYJOINS (UNICAST)
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 //------------------------------------------------------------------------------

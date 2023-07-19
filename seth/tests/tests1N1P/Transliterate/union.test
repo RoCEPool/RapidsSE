@@ -8,7 +8,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-trackmemory;
+trackmemory force;
 success
 
 CREATE TABLE unionTbl1 (col1 INTEGER, col2 VARCHAR, col3 DATE, col4 BOOLEAN);

@@ -2,7 +2,7 @@
 -- Scan --- Combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 create table Nation (

@@ -2,7 +2,7 @@
 /* SELECT syntax & semantics tests                                            */
 /*----------------------------------------------------------------------------*/
 
--- trackmemory;
+-- trackmemory force;
 -- success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

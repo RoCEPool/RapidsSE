@@ -31,7 +31,7 @@ success
 load nation "../DATA/TPCH/nation.tbl" ;
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

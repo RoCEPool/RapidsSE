@@ -15,7 +15,7 @@ create table nation (
 success
 
 -- Cannot enable memory tracking as there are memory leaks in the execution engine
-trackmemory;
+trackmemory force;
 success
 
 

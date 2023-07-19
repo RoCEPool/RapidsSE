@@ -2,7 +2,7 @@
 -- INDEX SCAN tests ---
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 create table nation (

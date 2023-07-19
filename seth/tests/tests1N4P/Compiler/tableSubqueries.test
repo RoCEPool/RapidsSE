@@ -29,7 +29,7 @@ success
   // R_NAME
   // R_COMMENT
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 // test to check if memory leaks being detected correctly
-trackMemory;
+trackmemory force;
 success
 
 create table LineItem

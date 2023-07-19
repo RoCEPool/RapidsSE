@@ -36,7 +36,7 @@ create table supplier (
 success
 
 -- memory leak testing not enabled due to memory leaks in the transliteration / back end
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

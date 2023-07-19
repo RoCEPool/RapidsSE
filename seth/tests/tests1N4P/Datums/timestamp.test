@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 // begin tracking memory
-trackMemory;
+trackmemory force;
 success
 
 create table tspTbl (

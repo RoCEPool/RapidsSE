@@ -44,7 +44,7 @@ success
 load t5 "../DATA/Transliterate/table_t5.csv" ;
 failure contains: "invalid"
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

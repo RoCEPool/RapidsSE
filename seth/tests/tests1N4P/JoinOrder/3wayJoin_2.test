@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- 3wayJoin_2.test : 3 tables A,B,C where size(A) = size(B) , size(B) < size(C)
 --------------------------------------------------------------------------------
-trackMemory;
+trackmemory force;
 success
 
 create table A(A_COL0 integer, A_COL1 integer, A_COL2 integer) tablesize 1000;

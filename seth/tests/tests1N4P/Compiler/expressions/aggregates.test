@@ -27,7 +27,7 @@ success
 //	 N_REGIONKEY       INTEGER NOT NULL,
 //	 N_COMMENT         VARCHAR(152)
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

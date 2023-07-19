@@ -2,7 +2,7 @@
 -- Filter-Aggregate --- combined 0 Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 create table lineitem (

@@ -4,7 +4,7 @@
 
 //loop 10 {
   // begin tracking memory
-  trackMemory;
+  trackmemory force;
   success
 
   // (1) create a table

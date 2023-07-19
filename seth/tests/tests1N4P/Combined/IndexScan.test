@@ -2,7 +2,7 @@
 -- IndexScan- --- Combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 // no such table

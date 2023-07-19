@@ -27,7 +27,7 @@ create table t1 (
 );
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

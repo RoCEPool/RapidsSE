@@ -2,7 +2,7 @@
 -- IndexScan-Project --- Combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 create table nation (

@@ -2,7 +2,7 @@
 /* truncate table tests                                                       */
 /*----------------------------------------------------------------------------*/
 
-trackMemory;
+trackmemory force;
 success;
 
 indexEntries 200;

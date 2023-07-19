@@ -2,7 +2,7 @@
 -- Filter-Join --- combined Operators
 --------------------------------------------------------------------------------
 
-trackMemory;
+trackmemory force;
 success;
 
 create table lt (

@@ -51,7 +51,7 @@ CREATE TABLE employees (
 );
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

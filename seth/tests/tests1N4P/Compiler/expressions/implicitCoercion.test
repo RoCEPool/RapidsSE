@@ -30,7 +30,7 @@ CREATE TABLE coercionTest (
 );
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -7,7 +7,7 @@ LOG 'Running regression tests in a loop.';
 
 LOOP 1 {
 
-trackMemory;
+trackmemory force;
 success;
 
 //------------------------------------------------------------------------------

@@ -54,7 +54,7 @@ success
 CREATE TABLE t3 (colA INTEGER, colB VARCHAR, colC DECIMAL);
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

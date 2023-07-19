@@ -29,7 +29,7 @@ success
 CREATE TABLE t5 (colA INTEGER, colB FLOAT, colC DECIMAL, colD VARCHAR, colE BOOLEAN, colF DATE, colG TIME, colH TIMESTAMP);
 success
 
-trackmemory;
+trackmemory force;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

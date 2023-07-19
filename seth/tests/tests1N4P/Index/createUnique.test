@@ -2,7 +2,7 @@
 /* create unqiue index tests                                                  */
 /*----------------------------------------------------------------------------*/
 
-trackMemory;
+trackmemory force;
 success
 
 // (1) create an index (syntax error)
