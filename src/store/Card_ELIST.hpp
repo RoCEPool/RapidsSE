@@ -21,6 +21,7 @@ namespace STORE
     Card_Expr* pDecodeExpr(Symbol* pSymbol);
     i8 nExpr(void);
     Card_Expr* pFindExpr(Symbol* pSymbol);
+    Card_Expr* pFind_expr_By_as(Symbol* pSymbol);
     Card_Expr* pFind_expr_Of_term(Symbol* pSymbol);
 
     Card_Expr* pGetExpr(i8 i_Expr);

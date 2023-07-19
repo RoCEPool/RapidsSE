@@ -317,6 +317,7 @@ namespace STORE
     bool bIsCard(eCK eCard);
     bool bIsOne(eCK eCard, ...);
     bool bIsSymbol(char cSymbol);
+    bool bIsSymbol(Symbol* pSymbol);
     bool bIsSymbol(Stz* szSymbol);
 
 

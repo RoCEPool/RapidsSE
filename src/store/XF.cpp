@@ -39,6 +39,7 @@
 #include "XF_table_Analysis.hpp"
 #include "XF_tblCol_To_stmCol.hpp"
 #include "XF_Column_Mapping.hpp"
+#include "XF_colNm_To_stmCol.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -249,6 +250,8 @@ void XF::vTransform_passThru(void)
     m_pCI->vEndTransform();
 
 
+    XF_rpnCalc_To_boolCalc::vXF_rpnCalc_To_boolCalc(m_pCI);
+    XF_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
 
     vDebugPoint();
   }

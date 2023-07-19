@@ -174,7 +174,29 @@ Card_Expr* Card_ELIST::pFindExpr(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* find expr of term                                                          */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Card_ELIST::pFind_expr_By_as(STORE::Symbol *pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  i8 nExpr = nChildCards();
+  for (i8 i_Expr = 0; i_Expr < nExpr; i_Expr++) {
+    if (! pGetChild(i_Expr)->bIsCard(CK_EXPR))
+      break;
+
+    Card_Expr* p_expr = pGetExpr(i_Expr);
+
+    Card_As* p_as = p_expr->pSub_as();
+    if (p_as && p_as->bIsSymbol(pSymbol->szSymbol()))
+      return p_expr;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find expr of term                                                          */
 /*----------------------------------------------------------------------------*/
 Card_Expr* Card_ELIST::pFind_expr_Of_term(STORE::Symbol *pSymbol)
 {

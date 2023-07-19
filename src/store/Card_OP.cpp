@@ -226,6 +226,8 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
     if (! p_term->pSymbol()->bIsColNm())
       return C_CONTINUE_RECURSION;
 
+    p_term->vDump(__func__);
+
     if (Card_Expr* p_expr_col =
         pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
       //p_expr_col->vDump();
