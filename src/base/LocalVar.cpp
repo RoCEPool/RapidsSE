@@ -276,7 +276,7 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(ayByte));
+  m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(ayByte + 8));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,14 +364,31 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
   i8 jStz = this->jStzSize();
   i8 jSizeStz = sizeof(i8) + jStz;
 
-  MemLib::vCopy(aTypeValueArea->axValue(),
-                axSizeArea,
-                jSizeStz,
-                CN_STACK);
+//  MemLib::vCopy(aTypeValueArea->axValue(),
+//                axSizeArea,
+//                jSizeStz,
+//                CN_STACK);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // todo: copy text from m_pText
+
+  jStz = m_axLocalStr->m_pText->szGet()->nSize();
+  jSizeStz = sizeof(i8) + jStz;
+  MemLib::vCopy(aTypeValueArea->axValue(),
+                &jStz,
+                8,
+                CN_STACK);
+  MemLib::vCopy(reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
+                m_axLocalStr->m_pText->szGet(),
+                jStz,
+                CN_STACK);
+
+//  vTrace("Hmmmm...\n  %s\n  %s\n"_Stz,
+//         aTypeValueArea->axValue(),
+//         m_axLocalStr->m_pText->szGet());
+//
+//  vDebugPoint();
 }
 
 /*----------------------------------------------------------------------------*/
