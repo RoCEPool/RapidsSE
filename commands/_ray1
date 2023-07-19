@@ -29,12 +29,12 @@ begin
 
   stage Gs_ORDERS on all partitions :
     scan orders
-    | filter " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
-                              O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
+    | filter " type BOOLEAN O_ORDERDATE DATE '1993-07-01' >=
+                              O_ORDERDATE DATE '1993-10-01' < and "
     | project "type INTEGER as _orderkey O_ORDERKEY ,
                 type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY"
-    | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
-                                       "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    //| keyExists lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+    //                                   "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
     | combined 0
     | next
 
