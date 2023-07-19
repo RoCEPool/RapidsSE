@@ -320,6 +320,25 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* get local variable from given typeValue                                    */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vGet(TypeValueArea* aTypeValueArea)
+{
+  _nonProper_
+
+  if (CN_STZVAL == this->eType()) {
+    vGetType(aTypeValueArea);
+    vGetText(aTypeValueArea);
+
+  }
+  else {
+    vGetValue(aTypeValueArea);
+  }
+
+}
+
 /*----------------------------------------------------------------------------*/
 /* get type of local variable from given typeValue                            */
 /*----------------------------------------------------------------------------*/
@@ -336,7 +355,7 @@ void LocalVar::vGetType(TypeValueArea* aTypeValueArea)
 /*----------------------------------------------------------------------------*/
 /* get text                                                                   */
 /*----------------------------------------------------------------------------*/
-void LocalVar::vGetText(byte* ayStackPtr)
+void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
@@ -345,11 +364,14 @@ void LocalVar::vGetText(byte* ayStackPtr)
   i8 jStz = this->jStzSize();
   i8 jSizeStz = sizeof(i8) + jStz;
 
-  MemLib::vCopy(aAdd<byte*>(ayStackPtr,sizeof(_Header)),
+  MemLib::vCopy(aTypeValueArea->axValue(),
                 axSizeArea,
                 jSizeStz,
                 CN_STACK);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // todo: copy text from m_pText
 }
 
 /*----------------------------------------------------------------------------*/

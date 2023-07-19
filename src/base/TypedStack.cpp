@@ -671,56 +671,17 @@ void TypedStack::vPushTypeValueArea(TypeValueArea* aTypeValueArea)
 void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
- 
-  static i8 nCount = 0;
-  
+
 //  s48K sStackContents;
 //  vStackContents(sStackContents);
 //  vTrace("PUSH %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
 //         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
 //         sStackContents.szStz());
 
-  TypeValue* axTypeValue = axLocalVar->axTypeValue();
+  i8 jStackNeeded = axLocalVar->nStackUsage();
+  m_rTop.vAdvance(jStackNeeded);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // string case
-  
-  if (CN_STZVAL == axLocalVar->eType()) {
-
-    i8 jStz = axLocalVar->jStzSize();
-    i8 jSizeStz = sizeof(i8) + jStz;
-    i8 jHeaderSizeStz = sizeof(_Header) + jSizeStz;
-
-    RASSERT(axLocalVar->nStackUsage() == jHeaderSizeStz);
-
-    m_rTop.vAdvance(jHeaderSizeStz);
-
-//    MemLib::vCopy(m_rTop.m_ayStackPtr,
-//                  axLocalVar->axType(),
-//                  sizeof(_Header),
-//                  CN_STACK);
-    axLocalVar->vGetType(m_rTop.m_aTypeValueArea);
-
-//    SizeArea* axSizeArea = axLocalVar->axLocalStr()->axSizeArea();
-//
-//    MemLib::vCopy(aAdd<byte*>(m_rTop.m_ayStackPtr,sizeof(_Header)),
-//                  axSizeArea,
-//                  jSizeStz,
-//                  CN_STACK);
-
-    axLocalVar->vGetText(m_rTop.m_ayStackPtr);
-
-  }
-  else {
-    RASSERT(axLocalVar->nStackUsage() == sizeof(TypeValue));
-
-    m_rTop.vAdvance(sizeof(TypeValue));
-
-//    m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
-//                                   sizeof(TypeValue));
-
-    axLocalVar->vGetValue(m_rTop.m_aTypeValueArea);
-  }
+  axLocalVar->vGet(m_rTop.m_aTypeValueArea);
   
 //  vStackContents(sStackContents);
 //  vTrace("PUSH %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,

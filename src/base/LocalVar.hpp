@@ -45,8 +45,9 @@ namespace BASE
     void vSetText(TypeValueArea* aTypeValueArea);
     void vSetValue(TypeValueArea* aTypedValueArea);
 
+    void vGet(TypeValueArea* aTypeValueArea);
     void vGetType(TypeValueArea* aTypeValueArea);
-    void vGetText(byte* ayStackPtr);
+    void vGetText(TypeValueArea* aTypeValueArea);
     void vGetValue(TypeValueArea* aTypedValueArea);
 
   };
