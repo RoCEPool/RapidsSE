@@ -319,6 +319,39 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
   ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get type of local variable from given typeValue                            */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vGetType(TypeValueArea* aTypeValueArea)
+{
+  _nonProper_
+
+  MemLib::vCopy(aTypeValueArea,
+                axType(),
+                sizeof(_Header),
+                CN_STACK);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get text                                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vGetText(byte* ayStackPtr)
+{
+  _nonProper_
+
+  SizeArea* axSizeArea = axLocalStr()->axSizeArea();
+
+  i8 jStz = this->jStzSize();
+  i8 jSizeStz = sizeof(i8) + jStz;
+
+  MemLib::vCopy(aAdd<byte*>(ayStackPtr,sizeof(_Header)),
+                axSizeArea,
+                jSizeStz,
+                CN_STACK);
+
+}
+
 /*----------------------------------------------------------------------------*/
 /* get 8B value from given typeValue                                          */
 /*----------------------------------------------------------------------------*/

@@ -695,17 +695,20 @@ void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 
     m_rTop.vAdvance(jHeaderSizeStz);
 
-    MemLib::vCopy(m_rTop.m_ayStackPtr,
-                  axLocalVar->axType(),
-                  sizeof(_Header),
-                  CN_STACK);
-                    
-    SizeArea* axSizeArea = axLocalVar->axLocalStr()->axSizeArea();
-  
-    MemLib::vCopy(aAdd<byte*>(m_rTop.m_ayStackPtr,sizeof(_Header)),
-                  axSizeArea,
-                  jSizeStz,
-                  CN_STACK);
+//    MemLib::vCopy(m_rTop.m_ayStackPtr,
+//                  axLocalVar->axType(),
+//                  sizeof(_Header),
+//                  CN_STACK);
+    axLocalVar->vGetType(m_rTop.m_aTypeValueArea);
+
+//    SizeArea* axSizeArea = axLocalVar->axLocalStr()->axSizeArea();
+//
+//    MemLib::vCopy(aAdd<byte*>(m_rTop.m_ayStackPtr,sizeof(_Header)),
+//                  axSizeArea,
+//                  jSizeStz,
+//                  CN_STACK);
+
+    axLocalVar->vGetText(m_rTop.m_ayStackPtr);
 
   }
   else {
