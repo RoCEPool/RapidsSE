@@ -191,6 +191,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
         vAppendCodeFragment(pOpSketch, "vFilterEnd"_Stz, pFilterFile);
 
+        vAppendCodeFragment(pOpSketch, "vIndexJoinReturn01"_Stz, pOperatorFile);
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // anti/semi-join end
         if (pOpSketch->eSketchKind() == SK_ANTIJOIN)

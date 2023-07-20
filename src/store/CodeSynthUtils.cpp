@@ -787,11 +787,11 @@ bool CodeSynthUtils::bReplaceRowInfoFrom(Stz* sLine, Stz* sReplacedLine, OpSketc
         RASSERT(bResult);
         break;
       case SR_PO:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoPO");
         RASSERT(bResult);
         break;
       case SR_PT:
-        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoTO");
+        bResult = StrLib::bReplace(sReplacedLine->azChar(), sLine->azChar(), "__ROW_INFO_FROM__", "aDynamicT->m_xRowInfoPT");
         RASSERT(bResult);
         break;
       case SR_TO:
