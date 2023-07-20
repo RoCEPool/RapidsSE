@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LocalStrs.cpp -- Local Variables                                           */
+/* LocalStrs.cpp -- Local Text                                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -58,14 +58,12 @@ LocalStr* LocalStrs::axAllot(void)
   RASSERT(C_UNKNOWN != m_i_FirstFree);
   
   LocalStr* axLocalStr = &m_xaLocalStr[m_i_FirstFree];
-  RASSERT(axLocalStr->m_i_LclStr == m_i_FirstFree);
+  RASSERT(axLocalStr->i_LocalStr() == m_i_FirstFree);
 
-  m_i_FirstFree = axLocalStr->m_i_NextFree;
+  m_i_FirstFree = axLocalStr->i_NextFree();
   
-  axLocalStr->m_i_NextFree = C_UNKNOWN;
-  
-  //vTrace("LocalStr: Allot : %lld\n"_Stz,axLocalStr->m_i_LclStr);
-  
+  axLocalStr->v_NextFree(C_UNKNOWN);
+
   return axLocalStr;
 }
 
@@ -76,12 +74,10 @@ void LocalStrs::vRevert(LocalStr* axLocalStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSTRS,_FOOTER_);
 
-  //vTrace("LocalStr:  Revert : %lld\n"_Stz,axLocalStr->m_i_LclStr);
-  
-  RASSERT(C_UNKNOWN == axLocalStr->m_i_NextFree);
+  RASSERT(C_UNKNOWN == axLocalStr->i_NextFree());
 
-  axLocalStr->m_i_NextFree = m_i_FirstFree;
-  m_i_FirstFree = axLocalStr->m_i_LclStr;
+  axLocalStr->v_NextFree(m_i_FirstFree);
+  m_i_FirstFree = axLocalStr->i_LocalStr();
 }
 
 /*============================================================================*/

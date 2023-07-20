@@ -9,9 +9,8 @@ namespace BASE
 {
   class LocalStr
   {
-    friend class LocalStrs;
   private:
-    i8    m_i_LclStr;
+    i8    m_i_LocalStr;
     i8    m_i_NextFree;  // C_UNKNOWN indicates end
 
     Text* m_pText;

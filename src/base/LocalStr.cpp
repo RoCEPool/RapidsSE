@@ -12,12 +12,10 @@
 /*----------------------------------------------------------------------------*/
 LocalStr::LocalStr(void)
 {
-  m_i_LclStr   = C_UNKNOWN;
+  m_i_LocalStr   = C_UNKNOWN;
   m_i_NextFree = C_UNKNOWN;
 
   m_pText      = nullptr;
-
-  // m_xSizeArea
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +51,7 @@ void LocalStr::vInitialise(i8 i_LclStr, i8 i_NextFree)
 {
   _nonProper_
 
-  m_i_LclStr   = i_LclStr;
+  m_i_LocalStr   = i_LclStr;
   m_i_NextFree = i_NextFree;
 
   if (! m_pText)
@@ -67,7 +65,7 @@ i8 LocalStr::i_LocalStr(void)
 {
   _nonProper_
 
-  return m_i_LclStr;
+  return m_i_LocalStr;
 }
 
 /*----------------------------------------------------------------------------*/
