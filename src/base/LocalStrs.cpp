@@ -28,12 +28,7 @@ LocalStrs::LocalStrs(void)
   
   for (i8 i_LclStr = 0; i_LclStr < C_LOCAL_STRS; i_LclStr++) {
     LocalStr& rxLocalStr = m_xaLocalStr[i_LclStr];
-
-    rxLocalStr.m_i_LclStr   = i_LclStr;
-    rxLocalStr.m_i_NextFree = i_LclStr - 1;
-
-    rxLocalStr.m_pText = new Text;
-
+    rxLocalStr.vInitialise(i_LclStr,i_LclStr - 1);
   }
   
   _checkInitialised_(CN_LOCALSTRS);

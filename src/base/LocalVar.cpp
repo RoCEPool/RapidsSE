@@ -189,7 +189,7 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 
   vSetSize(jBytes_stz);
 
-  m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(aTypeValueArea->szStz()));
+  m_axLocalStr->vText(reinterpret_cast<Stz*>(aTypeValueArea->szStz()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 {
   _nonProper_
 
-  ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
+  ASSERT(! m_axLocalStr || ! m_axLocalStr->szText());
 
   TypeValue* axTypeValue = this->axTypeValue();
 
@@ -209,7 +209,7 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
                 CN_STACK);
 
   ASSERT(CN_STZVAL != this->eType());
-  ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
+  ASSERT(! m_axLocalStr || ! m_axLocalStr->szText());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,7 +260,7 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 
   // todo: copy text from m_pText
 
-  jStz = m_axLocalStr->m_pText->szGet()->nSize();
+  jStz = m_axLocalStr->szText()->nSize();
   jSizeStz = sizeof(i8) + jStz;
   MemLib::vCopy(aTypeValueArea->axValue(),
                 &jStz,
@@ -272,7 +272,7 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 
   MemLib::vCopy(//reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
                 aTypeValueArea->szStz(),
-                m_axLocalStr->m_pText->szGet(),
+                m_axLocalStr->szText(),
                 jStz,
                 CN_STACK);
 
