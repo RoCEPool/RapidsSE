@@ -125,6 +125,9 @@ namespace STORE
     REG<LibInfo,        CN_LIBINFO       > m_xpLibInfo;
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
 
+    REG<LocalStrs,      CN_LOCALSTRS     > m_xpLocalStrs;
+
+
     REG<Operand,        CN_NONE          > m_xpMarker;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;
     REG<MetaGet,        CN_METAGET       > m_xpMetaGet;

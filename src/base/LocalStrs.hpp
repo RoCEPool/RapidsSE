@@ -27,7 +27,9 @@ namespace BASE
     
     LocalStrs(void);
    ~LocalStrs(void) noexcept(false);
-      
+
+    static void vRepair(Object* pObject);
+
     LocalStr* axAllot(void);
     void     vRevert(LocalStr* axLocalStr);
 

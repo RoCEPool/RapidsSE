@@ -53,6 +53,7 @@
 #include "PlanOperand.hpp"
 #include "Dynamo.hpp"
 #include "Port.hpp"
+#include "LocalStrs.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Ent.hpp"
@@ -123,6 +124,7 @@ LogicUnit::LogicUnit(void)
 
 ,          m_xpLibInfo(this,RF_REPAIR_DELETE,         LibInfo::vRepair,     LR_LIBINFO)
 ,           m_xpList(this,RF_REPAIR_DELETE,     RowSingle::vRepairList,       LR_LIST)
+,      m_xpLocalStrs(this,RF_REPAIR_DELETE,     LocalStrs::vRepair,      LR_LOCALSTRS)
 
 ,         m_xpMarker(this,RF_SET_NULL,     nullptr,                         LR_MARKER)
 ,      m_xpMemoryHog(this,RF_REPAIR_DELETE,     RowBuffer::vRepairList,  LR_MEMORYHOG)
