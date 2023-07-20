@@ -20,11 +20,14 @@ namespace BASE
     LocalStr(void);
    ~LocalStr(void) noexcept(false);
 
-    void  vInitialise(i8 i_LclStr, i8 i_NextFree);
-
     void  vEnsureText(void);
 
-    //Text* pText(void);
+    void  vInitialise(i8 i_LclStr, i8 i_NextFree);
+
+    i8   i_LocalStr(void);
+
+    i8   i_NextFree(void);
+    void v_NextFree(i8 i_NextFree);
 
     Stz* szText(void);
     void vText(Stz* szText);
