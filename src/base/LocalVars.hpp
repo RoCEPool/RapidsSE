@@ -8,7 +8,7 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_VARS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(LocalVar);
+  static const i8 C_LOCAL_VARS = (C_SIZE_SMALL_OBJECT - 128) / sizeof(LocalVar);
 
   class LocalStrs;
 

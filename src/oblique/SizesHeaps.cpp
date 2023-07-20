@@ -503,7 +503,7 @@ SizeHeap gxaSizeHeap[]
   { CN_LOCALDIR,                 sizeof(LocalDir),           HT_INVALID   ,FILL },
   { CN_LOCALFILE,                sizeof(LocalFile),          HT_INVALID   ,FILL },
   { CN_LOCALSTRS,                sizeof(LocalStrs),         HT_T_TINY     , FILL },
-  {CN_LOCALVARS,                sizeof(LocalVars),          HT_T_MEDIUM  , FILL },
+  {CN_LOCALVARS,                sizeof(LocalVars),          HT_T_SMALL  , FILL },
   {CN_LOCATION,                 sizeof(BASE::Location),     HT_T_TINY    , FILL },
   {CN_LOCATOR,                  sizeof(Locator),            HT_T_TINY    , FILL },
   {CN_LOCK,                     sizeof(Lock),               HT_INVALID   , FILL },
