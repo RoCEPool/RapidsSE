@@ -213,6 +213,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitSleep(sqlParser::SleepContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitSleepUnits(sqlParser::SleepUnitsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitSpace(sqlParser::SpaceContext *ctx) override {
     return visitChildren(ctx);
   }

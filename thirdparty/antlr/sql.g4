@@ -26,11 +26,13 @@ statementChoice   :   queryStatement
                     | lsidxcol
                     | lstbl
                     | count
+                    | sleep
                     | space
                     | status
                     | szidx
                     | sztbl
 
+                    // Development commands below:
                     | trackmemory
                     | memoryleaks
                     | bpa
@@ -180,6 +182,9 @@ loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=
 loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
 
 count             : COUNT tableName ;
+sleep             : SLEEP integerLiteral sleepUnits?;
+sleepUnits        : seconds=('s' | 'S' | SEC | SECOND | SECONDS) |
+                    millis=(MS | MILLIS | MILLISECOND | MILLISECONDS);
 space             : SPACE ;
 status            : STATUS ;
 szidx             : SZIDX tableName indexName ;
@@ -526,13 +531,14 @@ nonReservedWord   :
                   | IF | IFNULL | INDEX
                   | KEY
                   | LIMIT | LOAD | LOOP | LSIDX | LSTBL
-                  | MEMORYLEAKS | MINUTES | MONOTONIC | MONTHS
+                  | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
+                  | MONOTONIC | MONTHS | MS
                   | NODE | NOOP | NOW
                   | OBJECTS | OFFSET
                   | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | REGIONS | REPLICATED | ROWSIZE
-                  | SCHEMA | SECONDS | SKIPLIST | SPACE | STAGE | STATS | STATISTICS
+                  | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | VALUE
@@ -643,12 +649,16 @@ LSIDXCOL              : L S I D X C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;
 MEMORYLEAKS           : M E M O R Y L E A K S;
+MILLIS                : M I L L I S;
+MILLISECOND           : M I L L I S E C O N D;
+MILLISECONDS          : M I L L I S E C O N D S;
 MIN                   : M I N;
 MINUTE                : M I N U T E;
 MINUTES               : M I N U T E S;
 MONOTONIC             : M O N O T O N I C;
 MONTH                 : M O N T H;
 MONTHS                : M O N T H S;
+MS                    : M S;
 NATURAL               : N A T U R A L;
 NO                    : N O;
 NODE                  : N O D E;
@@ -681,12 +691,14 @@ RIGHT                 : R I G H T;
 ROW                   : R O W;
 ROWSIZE               : R O W S I Z E;
 SCHEMA                : S C H E M A;
+SEC                   : S E C;
 SECOND                : S E C O N D;
 SECONDS               : S E C O N D S;
 SELECT                : S E L E C T;
 SEMI                  : S E M I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
 SET                   : S E T;
 SKIPLIST              : S K I P L I S T;
+SLEEP                 : S L E E P;
 SPACE                 : S P A C E;
 STAGE                 : S T A G E;
 STATS                 : S T A T S;

@@ -37,6 +37,7 @@
   start::defProc_Memoryleaks
   start::defProc_Bpa
   start::defProc_Noop
+  start::defProc_SleepCmd
 
   // define the system tables
   "define the iternal system tables" .verbose

@@ -38,6 +38,7 @@ assert::stack_0
   "pp_memoryleaks.sen"      include
   "pp_bpa.sen"              include
   "pp_noop.sen"             include
+  "pp_sleepCmd.sen"         include
 
   "pp_sqlCompiler.sen"      include 
  

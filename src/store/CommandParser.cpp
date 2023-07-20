@@ -322,6 +322,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->lsidxcol())      { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
   else if (pCtx->lstbl())         { m_szProcName = "lstbl"_Stz;           return nullptr; }
   else if (pCtx->count())         { m_szProcName = "count"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->sleep())         { m_szProcName = "sleepCmd"_Stz;        return visitChildren(pCtx); }
   else if (pCtx->space())         { m_szProcName = "space"_Stz;           return nullptr; }
   else if (pCtx->status())        { m_szProcName = "status"_Stz;          return nullptr; }
   else if (pCtx->szidx())         { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
@@ -702,6 +703,34 @@ antlrcpp::Any CommandParser::visitTrackmemory(Parser::sqlParser::TrackmemoryCont
 {
   // Add command parameters
   m_pArgValues->vAppendToken(pCtx->FORCE() ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SLEEP statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitSleep(Parser::sqlParser::SleepContext *pCtx)
+{
+  // Add command parameters
+  s256 sBuf;
+
+  bool bUnitsAreSec = true;
+
+  if (pCtx->sleepUnits() && pCtx->sleepUnits()->millis) {
+    bUnitsAreSec = false;
+  }
+
+  i8 iVal = iCleanInt(pCtx->integerLiteral());
+
+  if (bUnitsAreSec) {
+    // pipeline expects milliseconds
+    iVal *= C_1K;
+  }
+
+  sBuf.vSprint("%lld"_Stz, iVal);
+
+  m_pArgValues->vAppendToken(sBuf.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }

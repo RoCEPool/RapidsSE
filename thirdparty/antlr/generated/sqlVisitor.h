@@ -118,6 +118,10 @@ public:
 
     virtual antlrcpp::Any visitCount(sqlParser::CountContext *context) = 0;
 
+    virtual antlrcpp::Any visitSleep(sqlParser::SleepContext *context) = 0;
+
+    virtual antlrcpp::Any visitSleepUnits(sqlParser::SleepUnitsContext *context) = 0;
+
     virtual antlrcpp::Any visitSpace(sqlParser::SpaceContext *context) = 0;
 
     virtual antlrcpp::Any visitStatus(sqlParser::StatusContext *context) = 0;
