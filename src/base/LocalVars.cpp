@@ -24,8 +24,10 @@ LocalVars::LocalVars(LocalStrs* pLocalStrs)
 : Object(CN_LOCALVARS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
-  
-  m_pLocalStrs = new LocalStrs;
+
+  RASSERT(pLocalStrs);
+
+  m_p_LocalStrs = pLocalStrs;
   
   m_nLocalVars = 0;
   
@@ -34,7 +36,7 @@ LocalVars::LocalVars(LocalStrs* pLocalStrs)
 
     rxLocalVar.m_pLocalVars    = this;
     rxLocalVar.m_aDiscardPoint = nullptr;
-    rxLocalVar.m_axLocalStr     = nullptr;
+    rxLocalVar.m_axLocalStr    = nullptr;
   }
   
   _checkInitialised_(CN_LOCALVARS);
@@ -48,8 +50,8 @@ LocalVars::LocalVars(LocalStrs* pLocalStrs)
 LocalVars::~LocalVars(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
-  
-  delete m_pLocalStrs;
+
+  // do not delete m_p_LocalStrs [ray]
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,7 +187,7 @@ LocalStr* LocalVars::axLocalStrAllot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  LocalStr* axLocalStr = m_pLocalStrs->axAllot();
+  LocalStr* axLocalStr = m_p_LocalStrs->axAllot();
   
   return axLocalStr;
 }
@@ -197,7 +199,7 @@ void LocalVars::vLocalStrRevert(LocalStr* axLocalStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);
 
-  m_pLocalStrs->vRevert(axLocalStr);
+  m_p_LocalStrs->vRevert(axLocalStr);
 }
 
 /*----------------------------------------------------------------------------*/

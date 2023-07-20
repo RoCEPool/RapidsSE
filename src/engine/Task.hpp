@@ -92,7 +92,8 @@ namespace ENGINE
 
     LocalFrame*  m_pLocalFrame;   // locals| | register frame chain
     LocalVars*   m_pLocalVars;
-  
+    LocalStrs*   m_pLocalStrs;
+
     SenCompiler* m_pSenCompiler;  // sen word compiler
     Input*       m_pInput;        // input stream
 

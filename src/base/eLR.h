@@ -51,7 +51,6 @@ enum eLR // Logic Unit Registers
 
   /*  */ LR_LIBINFO,
   /*  */ LR_LIST,
-  /*  */ LR_LOCALSTRS,
 
   /*  */ LR_MARKER,
   /*  */ LR_MEMORYHOG,
@@ -167,7 +166,6 @@ static Stz* aLR[]
 
   /*  */ "LR_LIBINFO"_Stz,
   /*  */ "LR_LIST"_Stz,
-  /*  */ "LR_LOCALSTRS"_Stz,
 
   /*  */ "LR_MARKER"_Stz,
   /*  */ "LR_MEMORYHOG"_Stz,

@@ -16,6 +16,7 @@
 #include "SP_Word.hpp"
 #include "LogicUnit.hpp"
 #include "LocalVars.hpp"
+#include "LocalStrs.hpp"
 
 #include "MY.hpp"
 #include "HeadsUp.hpp"
@@ -209,16 +210,15 @@ void Task::vTask(void)
   
   m_pLogicUnit = nullptr;
   m_pLocalFrame = nullptr;
-  m_pLocalVars   = nullptr;
+
+  m_pLocalStrs = new LocalStrs;
+
+  m_pLocalVars = new LocalVars(m_pLocalStrs);
 
   _checkInitialised_(CN_TASK);
   
   m_pLogicUnit = new LogicUnit;
 
-  if (MY::pTask() && MY::pTask()->m_pLogicUnit->m_xpLocalStrs.bIsNotNull())
-    m_pLocalVars = new LocalVars(* MY::pTask()->m_pLogicUnit->m_xpLocalStrs);
-  else
-    m_pLocalVars = new LocalVars(nullptr);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -252,6 +252,7 @@ Task::~Task(void) noexcept(false)
     delete pLocalsFrame;
   }
   delete m_pLocalVars;
+  delete m_pLocalStrs;
 
   delete m_pSenCompiler;
   while (m_pInput) {

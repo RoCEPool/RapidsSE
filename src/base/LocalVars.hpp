@@ -16,7 +16,7 @@ namespace BASE
   {
   public:
   
-    LocalStrs* m_pLocalStrs;
+    LocalStrs* m_p_LocalStrs;
   
     i8 m_nLocalVars;
   
