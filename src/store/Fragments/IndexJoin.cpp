@@ -467,6 +467,102 @@ void vIndexJoinReturn(Dynamic_T* aDynamicT) {
   return;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- vIndexJoinReturn01 ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinReturn01
+void vIndexJoinReturn01(Dynamic_T* aDynamicT) {
+
+  void* aHeadLine;
+  void* aHeadLineSav;
+  void* aSubReturnLabel;
+
+  IndexInfo __INDEX_INFO__;
+  RowInfo __ROW_INFO_TO__;
+
+  i8 iLeftOuterRow;
+
+  // marker-start
+  goto __L_LABEL_INDEX_RETURN__;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // INFLATE-CRW-RET
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  __L_LABEL_INDEX_RETURN__:
+
+  aHeadLine = aHeadLineSav;
+  // marker-end
+
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vIndexJoinReturn02 ------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vIndexJoinReturn02
+void vIndexJoinReturn02(Dynamic_T* aDynamicT) {
+
+  void* aHeadLine;
+  void* aHeadLineSav;
+  void* aSubReturnLabel;
+
+  IndexInfo __INDEX_INFO__;
+  RowInfo __ROW_INFO_TO__;
+
+  i8 iLeftOuterRow;
+
+  // marker-start
+  goto __L_LABEL_NEXT__;
+
+  __L_LABEL_LOOP__:
+
+  __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
+
+  // check if last row was a leftOuter
+  if ( iLeftOuterRow ) {
+    printf("got leftOuter \n");
+    iLeftOuterRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  // move to next entry
+#ifdef WITH_CLANG
+  __INDEX_INFO__.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+      &__INDEX_INFO__.m_aEntBuffer, __INDEX_INFO__.m_aEntInt);
+#endif
+
+  goto __L_LABEL_INDEX_DEREF__;
+
+  // marker-end
+
+  __L_LABEL_NEXT__:
+  __L_LABEL_INDEX_DEREF__:
+  __L_LABEL_OUTER_LOOP__:
+
+  return;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- vFilterEndIndexJoin -----------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vFilterEndIndexJoin
+void vFilterEndIndexJoin(Dynamic_T* aDynamicT, bool bFilterResult) {
+
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+  if (bFilterResult && bFilterResult != C_DATUM_NULL) {
+    aDynamicT->m_iProcessRow = 1;
+    aDynamicT->m_iJoinedRows++;
+  } else {
+    aDynamicT->m_iProcessRow = 0;
+  }
+
+  // marker-end
+
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

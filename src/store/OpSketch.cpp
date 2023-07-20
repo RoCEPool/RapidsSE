@@ -2039,7 +2039,7 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
     case SK_INDEXJOIN:
     case SK_SEMIJOIN:
       if ( bConstraint) {
-        RASSERT(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN);
+        RASSERT(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN || m_eSketchKind == SK_INDEXJOIN);
         pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       }
       else {
@@ -2361,7 +2361,6 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
         return m_pExprStack;
 
     case SK_FILTER:
-    case SK_INDEXJOIN:
     case SK_INDEXSCAN:
     case SK_POT:
     case SK_PROJECT:
@@ -2370,6 +2369,7 @@ TypedStack* OpSketch::pWorkingStack( ePE ePreExp, bool bConstraint)
       return m_pExprStack;
 
     case SK_ANTIJOIN:
+    case SK_INDEXJOIN:
     case SK_SEMIJOIN:
       if (bConstraint)
         return m_pConstraintStack;

@@ -481,7 +481,18 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // inflate the right table columns
         vAppendCodeInflateRightCols(pOpSketch, "L_RetT_ColIJ"_Stz, pInflateFile);
-        vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
+
+        if (pOpSketch->m_pConstraintStack->nValues()) {
+          vAppendCodeFragment(pOpSketch, "vIndexJoinReturn01"_Stz, pOperatorFile);
+          vGenerateExprCode(pOpSketch->m_pConstraintStack, "  "_Stz);
+          vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);
+          vAppendCodeFragment(pOpSketch, "vFilterEndIndexJoin"_Stz, pOperatorFile);
+          vAppendCodeFragment(pOpSketch, "vIndexJoinReturn02"_Stz, pOperatorFile);
+        }
+        else {
+          vAppendCodeFragment(pOpSketch, "vIndexJoinReturn"_Stz, pOperatorFile);
+        }
+
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // close the indexJoin code fragments file

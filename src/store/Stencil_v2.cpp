@@ -660,12 +660,12 @@ OpSketch* Stencil_v2::pSketchIndexJoin(StageDef* pStageDef, OpDef* pOpDef)
 
   // generate the expression stacks
   pOpSketch->vGenerateExprStacks(sJoinExpr);
+
   // get join constraint from OP
   if (pOpDef->pArgDef_constraint()) {
     Stz* sConstraintExpr = pOpDef->pArgDef_constraint()->szArgVal();
     pOpSketch->vGenerateExprStacks(sConstraintExpr, true /* constraint */);
   }
-
 
   return pOpSketch;
 }
