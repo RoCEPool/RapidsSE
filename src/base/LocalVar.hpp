@@ -39,6 +39,17 @@ namespace BASE
     _Header* axType(void);
     TypeValue* axTypeValue(void);
     Dtm*  axValue(void);
+
+    void vSet(TypeValueArea* aTypeValueArea);
+    void vSetType(TypeValueArea* aTypeValueArea);
+    void vSetText(TypeValueArea* aTypeValueArea);
+    void vSetValue(TypeValueArea* aTypedValueArea);
+
+    void vGet(TypeValueArea* aTypeValueArea);
+    void vGetType(TypeValueArea* aTypeValueArea);
+    void vGetText(TypeValueArea* aTypeValueArea);
+    void vGetValue(TypeValueArea* aTypedValueArea);
+
   };
 
   LocalVar* _pLocalVar(void* aAddr);

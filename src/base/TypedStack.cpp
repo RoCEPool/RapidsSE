@@ -515,48 +515,9 @@ void TypedStack::vPopLocalVar(LocalVar* axLocalVar,
 //  vTrace("POP %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
 //         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
 //         sStackContents.szStz());
-  
-  eCN eType_stack = m_rTop.m_aTypeValueArea->eType();
-  eCN eType_local = axLocalVar->eType();
 
-  if (CN_STZVAL == eType_stack) {
-    
-    LocalStr* axLocalStr;
-    if (CN_STZVAL == eType_local)
-      axLocalStr = axLocalVar->axLocalStr();
-    else
-      axLocalStr = axLocalVar->axLocalStrAllot();
-        
-    SizeArea* axSizeArea = axLocalStr->axSizeArea();
-    
-    MemLib::vCopy(axLocalVar->axType(),
-                  m_rTop.m_aTypeValueArea,
-                  sizeof(_Header),
-                  CN_STACK);
+  axLocalVar->vSet(m_rTop.m_aTypeValueArea);
 
-    i8 nBytes = aTopVal()->nStackUsage();
-    
-//    vTrace("Copy: %p %p %lld\n"_Stz,
-//           axSizeArea,
-//           m_rTop.m_ayStackPtr + sizeof(_Header),
-//           nBytes - sizeof(_Header));
-
-    MemLib::vCopy(axSizeArea,
-                  m_rTop.m_ayStackPtr + sizeof(_Header),
-                  nBytes - sizeof(_Header),
-                  CN_STACK);
-  }
-  else {
-    
-    if (CN_STZVAL == eType_local)
-      axLocalVar->vLocalStrRevert();
-    
-    MemLib::vCopy(axLocalVar->axTypeValue(),
-                  m_rTop.m_aTypeValueArea,
-                  sizeof(TypeValue),
-                  CN_STACK);
-  }
-  
   m_rTop.vRewind();
   
 //  vStackContents(sStackContents);
@@ -710,49 +671,17 @@ void TypedStack::vPushTypeValueArea(TypeValueArea* aTypeValueArea)
 void TypedStack::vPushLocalVar(LocalVar* axLocalVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
- 
-  static i8 nCount = 0;
-  
+
 //  s48K sStackContents;
 //  vStackContents(sStackContents);
 //  vTrace("PUSH %02lld %p %lld %p>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n%s\n"_Stz,
 //         nCount,axLocalVar,axLocalVar->i_LocalVar(),axLocalVar->aDiscardPoint(),
 //         sStackContents.szStz());
 
-  TypeValue* axTypeValue = axLocalVar->axTypeValue();
+  i8 jStackNeeded = axLocalVar->nStackUsage();
+  m_rTop.vAdvance(jStackNeeded);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // string case
-  
-  if (CN_STZVAL == axLocalVar->eType()) {
-
-    i8 jStz = axLocalVar->jStzSize();
-    i8 jSizeStz = sizeof(i8) + jStz;
-    i8 jHeaderSizeStz = sizeof(_Header) + jSizeStz;
-
-    m_rTop.vAdvance(jHeaderSizeStz);
-
-    MemLib::vCopy(m_rTop.m_ayStackPtr,
-                  axLocalVar->axType(),
-                  sizeof(_Header),
-                  CN_STACK);
-                    
-    SizeArea* axSizeArea = axLocalVar->axLocalStr()->axSizeArea();
-  
-    MemLib::vCopy(aAdd<byte*>(m_rTop.m_ayStackPtr,sizeof(_Header)),
-                  axSizeArea,
-                  jSizeStz,
-                  CN_STACK);
-
-  }
-  else {
-    
-    m_rTop.vAdvance(sizeof(TypeValue));
-
-    m_rTop.m_aTypeValueArea->vCopy((TypeValueArea*)axTypeValue,
-                                   sizeof(TypeValue));
-
-  }
+  axLocalVar->vGet(m_rTop.m_aTypeValueArea);
   
 //  vStackContents(sStackContents);
 //  vTrace("PUSH %02lld<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n%s\n"_Stz,

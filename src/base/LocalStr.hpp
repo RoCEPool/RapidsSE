@@ -7,17 +7,15 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_AREA  = 512 - (2 * sizeof(i8));
-
   class LocalStr
   {
   public:
-  
-    LocalStrs* m_pLocalStrs;
-    i8         m_i_LclStr;
-    i8         m_i_NextFree;  // C_UNKNOWN indicates end
-    
-    SizeArea   m_xSizeArea;
+    i8       m_i_LclStr;
+    i8       m_i_NextFree;  // C_UNKNOWN indicates end
+
+    Text*    m_pText;
+
+    SizeArea m_xSizeArea;
 
   public:
     LocalStr(void);
@@ -25,6 +23,8 @@ namespace BASE
   
     // auto conversion
     operator LocalStr*(void);
+
+    Text*    pText(void);
 
     char* azArea(void);
     Stz*  szArea(void);
