@@ -10,6 +10,7 @@
 
 #include "TagConstants.h"
 #include "LocalVars.hpp"
+#include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -586,9 +587,13 @@ void Step::vLocalsFramePush(void)
   i8 nLocals = m_pDataStack->iPopInt(__func__);
   RASSERT(nLocals > 0 && nLocals <= 24);
   
-    if (! m_pLocalVars)
-    m_pLocalVars = new LocalVars;
-  
+  if (! m_pLocalVars) {
+    if (MY::pTask() && MY::pTask()->m_pLogicUnit->m_xpLocalStrs.bIsNotNull())
+      m_pLocalVars = new LocalVars(*MY::pTask()->m_pLogicUnit->m_xpLocalStrs);
+    else
+      m_pLocalVars = new LocalVars(nullptr);
+  }
+
   TypeValueArea* axDiscardPoint = m_pReturnStack->aTopVal();
   
   RASSERT(0 == m_pReturnStack->nValues() ||

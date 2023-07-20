@@ -29,7 +29,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    LocalVars(void);
+    LocalVars(LocalStrs* pLocalStrs);
    ~LocalVars(void) noexcept(false);
   
     void* aDiscardPoint(void);

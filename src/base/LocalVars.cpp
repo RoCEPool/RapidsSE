@@ -20,7 +20,7 @@ __aFooterFunction(LocalVars)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LocalVars::LocalVars(void)
+LocalVars::LocalVars(LocalStrs* pLocalStrs)
 : Object(CN_LOCALVARS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALVARS,_FOOTER_);

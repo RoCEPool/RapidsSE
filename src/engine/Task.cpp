@@ -203,17 +203,22 @@ void Task::vTask(void)
   m_pDataStack   = new TypedStack(KK_DATA_STACK);
   m_pReturnStack = new TypedStack(KK_RETURN_STACK);
 
-  m_pLocalFrame = nullptr;
-  m_pLocalVars   = new LocalVars;
 
   m_pSenCompiler = new SenCompiler;
   m_pInput       = nullptr;
   
   m_pLogicUnit = nullptr;
-  
+  m_pLocalFrame = nullptr;
+  m_pLocalVars   = nullptr;
+
   _checkInitialised_(CN_TASK);
   
   m_pLogicUnit = new LogicUnit;
+
+  if (MY::pTask() && MY::pTask()->m_pLogicUnit->m_xpLocalStrs.bIsNotNull())
+    m_pLocalVars = new LocalVars(* MY::pTask()->m_pLogicUnit->m_xpLocalStrs);
+  else
+    m_pLocalVars = new LocalVars(nullptr);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
