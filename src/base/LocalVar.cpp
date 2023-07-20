@@ -18,7 +18,6 @@ LocalVar::LocalVar(void)
 
   //m_xTypeValue
   m_axLocalStr    = nullptr;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,18 +29,8 @@ LocalVar::~LocalVar(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Operators ---------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* auto conversion operator : as LocalVar*                                    */
-/*----------------------------------------------------------------------------*/
-LocalVar::operator LocalVar*(void)
-{
-  _nonProper_
-
-  return this;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get discard point                                                          */
@@ -78,9 +67,6 @@ void LocalVar::vLocalStrRevert(void)
   if (CN_STZVAL != eType())
     return;
 
-  //vTrace("LocalVar: %lld StrRevert\n"_Stz,m_i_LocalVar);
-  ASSERT(m_axLocalStr->m_pText);
-
   m_pLocalVars->vLocalStrRevert(m_axLocalStr);
   m_axLocalStr = nullptr;
   
@@ -94,25 +80,18 @@ i8 LocalVar::jStackUsage(void)
 {
   _nonProper_
 
-  i8 jBytes;
+  i8 jStack = sizeof(TypeValue);
 
-  if (CN_STZVAL == eType()) {
-    i8 jStz = jStzSize();
-    i8 jSizeStz = sizeof(i8) + jStz;
+  if (CN_STZVAL == eType())
+    jStack += jStz();
 
-    jBytes = sizeof(_Header) + jSizeStz;
-  }
-  else {
-    jBytes = sizeof(TypeValue);
-  }
-
-  return jBytes;
+  return jStack;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get string size                                                            */
 /*----------------------------------------------------------------------------*/
-i8 LocalVar::jStzSize(void)
+i8 LocalVar::jStz(void)
 {
   _nonProper_
 
@@ -174,20 +153,6 @@ void LocalVar::vSet(TypeValueArea* aTypeValueArea)
     vSetText(aTypeValueArea);
   }
   else {
-//    eCN eType_ofLocal = this->eType();
-//
-//    if (CN_STZVAL == eType_ofLocal) {
-//      ASSERT(m_axLocalStr->m_pText);
-//      this->vLocalStrRevert();
-//     }
-//    else {
-//      //ASSERT(! m_pText);
-//    }
-//
-//    if (m_axLocalStr && m_axLocalStr->m_pText) {
-//      delete m_axLocalStr->m_pText;
-//      m_axLocalStr->m_pText = nullptr;
-//    }
     vLocalStrRevert();
     vSetType(aTypeValueArea);
     vSetValue(aTypeValueArea);
@@ -205,7 +170,6 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
                 aTypeValueArea,
                 sizeof(_Header),
                 CN_STACK);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,8 +188,6 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
   i8 jBytes_stz = jBytes_valueStz - sizeof(i8);
 
   vSetSize(jBytes_stz);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(aTypeValueArea->szStz()));
 }
@@ -266,7 +228,6 @@ void LocalVar::vGet(TypeValueArea* aTypeValueArea)
     vGetType(aTypeValueArea);
     vGetValue(aTypeValueArea);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +251,7 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
   _nonProper_
 
 
-  i8 jStz = this->jStzSize();
+  i8 jStz = this->jStz();
   RASSERT(jStz == m_xTypeValue.m_wxValue.iAsI8());
 
   i8 jSizeStz = sizeof(i8) + jStz;
@@ -308,8 +269,6 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 
   i8 jStz_this = m_xTypeValue.axValue()->iAsI8();
   RASSERT(jStz_this == jStz);
-
-
 
   MemLib::vCopy(//reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
                 aTypeValueArea->szStz(),
@@ -357,11 +316,11 @@ void LocalVar::vEnsureText(void)
 /*----------------------------------------------------------------------------*/
 /* set value given size argument                                              */
 /*----------------------------------------------------------------------------*/
-void LocalVar::vSetSize(i8 jSize)
+void LocalVar::vSetSize(i8 jStz)
 {
   _nonProper_
 
-  vSetValue(jSize);
+  vSetValue(jStz);
 }
 
 /*----------------------------------------------------------------------------*/

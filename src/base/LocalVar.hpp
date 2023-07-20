@@ -21,16 +21,12 @@ namespace BASE
   public:
     LocalVar(void);
    ~LocalVar(void) noexcept(false);
-  
-    // auto conversion
-    operator LocalVar*(void);
-  
 
     void* aDiscardPoint(void);
     void  vLocalStrAllot(void);
     void  vLocalStrRevert(void);
     i8    jStackUsage(void);
-    i8    jStzSize(void);
+    i8    jStz(void);
     eCN   eType(void);
     _Header* axType(void);
     TypeValue* axTypeValue(void);
@@ -48,7 +44,7 @@ namespace BASE
 
   private:
     void vEnsureText(void);
-    void vSetSize(i8 jSize);
+    void vSetSize(i8 jStz);
     void vSetValue(i8 iValue);
   };
 
