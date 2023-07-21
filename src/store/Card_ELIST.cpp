@@ -188,7 +188,7 @@ Card_Expr* Card_ELIST::pFind_expr_By_as(STORE::Symbol *pSymbol)
     Card_Expr* p_expr = pGetExpr(i_Expr);
 
     Card_As* p_as = p_expr->pSub_as();
-    if (p_as && p_as->bIsSymbol(pSymbol->szSymbol()))
+    if (p_as && p_as->bIsSymbol(pSymbol->szSF__print()))
       return p_expr;
   }
 

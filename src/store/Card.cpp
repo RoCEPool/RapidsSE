@@ -46,7 +46,7 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 
   vInit(eCard);
 
-  m_xSymbol.m_sSymbol = pSymbol->szSymbol();
+  m_xSymbol.m_sSymbol = pSymbol->szSF__print();
 
   if (pSymbol->m_pProperties)
     m_xSymbol.Y_vAll(pSymbol->m_pProperties);
@@ -185,7 +185,7 @@ void Card::vCardLeaks(void)
 //    if (gapCard[i_Card]) {
 //      Card *pLeaked = gapCard[i_Card];
 //      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSymbol());
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSF__print());
 //      vDebugPoint();
 //    }
 //  }
@@ -228,7 +228,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //         i_Card,
 //         p_cardInQuestion,
 //         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->szSymbol());
+//         p_cardInQuestion->szSF__print());
 //    vDebugPoint();
 //  }
 //
@@ -733,7 +733,7 @@ Card* Card::pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSymbol(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSF__print(),md_Bearing);
 
   if (eCard == m_eCard && bIsSymbol(szSymbol)) {
     rpParent = _pWalkParent_;
@@ -921,7 +921,7 @@ bool Card::bIsSymbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsSymbol(pSymbol->szSymbol()))
+  if (bIsSymbol(pSymbol->szSF__print()))
     return true;
   else
     return false;
@@ -1621,7 +1621,7 @@ void Card::vSymbol(Card* pCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.m_sSymbol = pCard->m_xSymbol.szSymbol();
+  m_xSymbol.m_sSymbol = pCard->m_xSymbol.szSF__print();
 }
 
 /*----------------------------------------------------------------------------*/

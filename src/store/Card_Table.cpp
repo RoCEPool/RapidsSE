@@ -446,7 +446,7 @@ bool Card_Table::bIsTblColOf(Stz* szTblCol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char cTbl_this = *this->pSymbol()->szSymbol()->azChar();
+  char cTbl_this = *this->pSymbol()->szSF__print()->azChar();
   char cTbl_arg  = *(szTblCol->azChar()+1);
 
   if (cTbl_this == cTbl_arg)
@@ -572,7 +572,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
   Symbol xSymbol_tblSyn;
   xSymbol_tblSyn.vSetTableColSyn(cTableSyn_actual);
 
-  this->vSymbolMark1(xSymbol_tblSyn.szSymbol(), MARK_CHANGED);
+  this->vSymbolMark1(xSymbol_tblSyn.szSF__print(), MARK_CHANGED);
 
   (*cTableSyn)++;
 }

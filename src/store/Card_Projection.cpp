@@ -275,9 +275,9 @@ void Card_Projection::vDedupe_as(void)
 //    Symbol xDeduped;
 //    xDeduped.vSprint("C%lld_%s"_Stz,
 //                     xProjection.i_Child(),
-//                     p_as->pSymbol()->szSymbol());
+//                     p_as->pSymbol()->szSF__print());
     p_as->pSymbol()->vSetDisambiguatedColNm(xProjection.i_Child(),
-                                            p_as->pSymbol()->szSymbol());
+                                            p_as->pSymbol()->szSF__print());
   }
 
   vDebugPoint();
@@ -296,7 +296,7 @@ void Card_Projection::vDedupe_as(void)
 //      continue;
 //
 //    Symbol xDeduped;
-//    xDeduped.vSprint("%s__%lld"_Stz,p_as->pSymbol()->szSymbol(),nBefore+1);
+//    xDeduped.vSprint("%s__%lld"_Stz,p_as->pSymbol()->szSF__print(),nBefore+1);
 //    p_as->pSymbol()->vSet(&xDeduped);
 //  }
 //}

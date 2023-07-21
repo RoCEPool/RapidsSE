@@ -577,7 +577,7 @@ bool Symbol::bSameAs(char cArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (*this->szSymbol()->azChar() == cArg)
+  if (*this->szSF__print()->azChar() == cArg)
     return true;
   else
     return false;
@@ -590,7 +590,7 @@ bool Symbol::bSameAs(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (this->szSymbol()->bSame(szArg))
+  if (this->szSF__print()->bSame(szArg))
     return true;
 
   return false;
@@ -603,7 +603,7 @@ bool Symbol::bSameAs(Symbol* pArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (this->szSymbol()->bSame(pArg->szSymbol()))
+  if (this->szSF__print()->bSame(pArg->szSF__print()))
     return true;
 
   return false;
@@ -769,7 +769,7 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 /* get symbol stz                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szSF_other(void)
+Stz* Symbol::szSF__print(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -779,7 +779,7 @@ Stz* Symbol::szSF_other(void)
 /*----------------------------------------------------------------------------*/
 /* get symbol stz                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szSymbol(void)
+Stz* Symbol::szSF_other(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

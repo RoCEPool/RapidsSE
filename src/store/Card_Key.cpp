@@ -247,7 +247,7 @@ IndexDef* Card_Key::pToIndexDef(void)
 //    if (! p_term)
 //      continue;
 //
-//    Stz* szColNm  = p_term->szSymbol();
+//    Stz* szColNm  = p_term->szSF__print();
 //    eCT  eColType = p_term->eColType();
 //
 //    if (! szColNm || CT_NONE == eColType)

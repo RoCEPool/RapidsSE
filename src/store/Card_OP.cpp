@@ -163,7 +163,7 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 //    Card_HshCol *p_hshCol = pSub_hshCol();
 //    if (Card_Expr *p_expr_col =
 //        pCI->Prior.m_pProjection->pFindExpr(p_hshCol->pSymbol())) {
-//      p_hshCol->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
+//      p_hshCol->vSymbolMark1(p_expr_col->szSF__print(), MARK_CHANGED);
 //    }
 //  }
 //
@@ -318,7 +318,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     Card_Term* p_term = _pCard_Term(pCard);
 
 //    vTrace("CONVERT %s %s (%s %s)\n"_Stz,
-//           p_term->szSymbol(),p_term->szBearing(),
+//           p_term->szSF__print(),p_term->szBearing(),
 //           szCardNm(),szBearing());
 
     if (pSymbol()->Y_bHas(P_BreakPt)) {
@@ -334,7 +334,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
         // record what $c.n it was
         p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
         p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
-        //vTrace("  TO %s\n"_Stz,p_expr_col->szSymbol());
+        //vTrace("  TO %s\n"_Stz,p_expr_col->szSF__print());
         return C_CONTINUE_RECURSION;
       }
     }
@@ -355,9 +355,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamOrdinal(nExpr_prior + i_Col);
-    p_term->vSymbolMark1(xSymbol_stmColOdn.szSymbol(), MARK_CHANGED);
+    p_term->vSymbolMark1(xSymbol_stmColOdn.szSF__print(), MARK_CHANGED);
 
-    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSymbol());
+    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSF__print());
     return C_CONTINUE_RECURSION;
   };
 
@@ -881,7 +881,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Symbol xSymbol_tblCol;
     xSymbol_tblCol.vSetTableColOrdinal(cTblSyn, i_Col + 1);
-    Card_Term *p_term = new Card_Term(xSymbol_tblCol.szSymbol());
+    Card_Term *p_term = new Card_Term(xSymbol_tblCol.szSF__print());
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -1301,7 +1301,7 @@ void Card_OP::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
 //  Card_RpnCalc *pCard_RpnCalc = pCard_Index->pSub_rpnCalc();
 //  CardIter xCI_rpnCalc(pCard_RpnCalc);
 //  while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
-//    szRpnConstraint->vCatSprint(" %s"_Stz, xCI_rpnCalc.G.p_term->szSymbol());
+//    szRpnConstraint->vCatSprint(" %s"_Stz, xCI_rpnCalc.G.p_term->szSF__print());
 //  }
 
 }

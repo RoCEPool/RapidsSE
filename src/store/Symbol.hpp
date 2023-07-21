@@ -81,9 +81,8 @@ namespace STORE
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
 
+    Stz* szSF__print(void);
     Stz* szSF_other(void);
-
-    Stz* szSymbol(void);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 

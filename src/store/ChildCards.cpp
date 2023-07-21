@@ -469,8 +469,8 @@ StzList* ChildCards::pToStzList(void)
 //  i8 nSubCards = nChildCards();
 //  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
 //    Card* p_child = pGetChild(i_Sub);
-//    if (p_child->szSymbol())
-//      pStzList->vAppend(p_child->szSymbol());
+//    if (p_child->szSF__print())
+//      pStzList->vAppend(p_child->szSF__print());
 //  }
 
   vOntoStzList(pStzList);
