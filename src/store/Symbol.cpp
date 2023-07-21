@@ -25,7 +25,10 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  m_eSymbolForm = SF_NONE;
   m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -39,7 +42,10 @@ Symbol::Symbol(Stz* szArg)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szArg;
+  m_eSymbolForm = SF_NONE;
   m_pProperties = nullptr;
+
+  _checkInitialised_(CN_SYMBOL);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -51,7 +57,10 @@ void Symbol::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+
   m_sSymbol = iArg;
+  m_eSymbolForm = SF_NONE;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,6 +71,8 @@ void Symbol::operator =(Stz* szArg)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szArg;
+  m_eSymbolForm = SF_NONE;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +94,8 @@ void Symbol::operator =(Symbol* pSymbol)
     delete m_pProperties;
     m_pProperties = nullptr;
   }
+
+  m_eSymbolForm = pSymbol->m_eSymbolForm;
 }
 
 /*----------------------------------------------------------------------------*/

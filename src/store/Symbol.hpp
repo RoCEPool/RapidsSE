@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Ppy.hpp"
+#include "eSF.h"
 
 namespace STORE
 {
@@ -13,6 +14,7 @@ namespace STORE
   {
   public:
     s256    m_sSymbol;
+    eSF     m_eSymbolForm;
     TagSet* m_pProperties;
 
   protected:

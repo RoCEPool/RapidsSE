@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eXF // cast kind
+enum eXF // transform
 {
   /* */ XF_NONE = 0,   // none
 
@@ -60,7 +60,6 @@ enum eXF // cast kind
   /* */ XF_TBLCOL_TO_STMCOL,
 
   /* */ XF_ENUMS
-
 };
 
 static Stz* aXF[]
