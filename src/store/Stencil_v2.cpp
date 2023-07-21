@@ -43,32 +43,6 @@ Stencil_v2::Stencil_v2(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL_V2,_FOOTER_);
 
   m_szStageNm    = ""_Stz;
-
-  m_xStageOps.m_iAggregOp    = 0;
-  m_xStageOps.m_iFilterOp    = 0;
-  m_xStageOps.m_iHashOp      = 0;
-  m_xStageOps.m_iIndexJoinOp = 0;
-  m_xStageOps.m_iIndexScanOp = 0;
-  m_xStageOps.m_iKeyExistsOp = 0;
-  m_xStageOps.m_iLimitOp     = 0;
-  m_xStageOps.m_iOrdAggOp    = 0;
-  m_xStageOps.m_iProjectOp   = 0;
-  m_xStageOps.m_iScanOp      = 0;
-  m_xStageOps.m_iSortOp      = 0;
-  m_xStageOps.m_iTopOp       = 0;
-
-  m_xStageOps.m_bScan           = false;
-  m_xStageOps.m_bIndexScan      = false;
-
-  m_xStageOps.m_bPayloadOp      = false;
-
-
-  m_xStageOps.m_pHavingFilterOp = nullptr;
-  m_xStageOps.m_pLimitOp        = nullptr;
-
-  m_xStageOps.m_sLabelOrdAgg = ""_Stz;
-  m_xStageOps.m_sHashExpr = ""_Stz;
-
   m_pOpSource    = nullptr;
   m_eHandlerKind = HK_NONE;
   m_ePreviousStencil  = SR_NONE;
@@ -168,18 +142,13 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
   bool bInflateCrw = false;
   bool bGeneratePotTub = true;
   bool bGeneratePot = false;
+  bool bPayload = false;
 
   s256 sHashExpr = ""_Stz;
   s256 sLimitExpr = ""_Stz;
 
   OpSketch *pOpSketch;
   OpDef* pOpDefScan = nullptr;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect the validate information of the stage
-  eEC eError = eValidateStage(pStageDef);
-  if (eError != EC_NONE)
-    return eError;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the stage name
@@ -226,8 +195,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     // generate the code for inflateCrw before handling the current operator
     if (bInflateCrw) {
 
-      RASSERT(!m_xStageOps.m_bIndexScan);
-
       m_eHandlerKind = HK_CRWBUFFER;
       m_sLabelLoop = "L_AdvanceNextCrwT"_Stz;
 
@@ -262,8 +229,6 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflateRow before handling the current operator
     if (!bInflateGenerated) {
-
-      RASSERT(!m_xStageOps.m_bIndexScan);
 
       m_eHandlerKind = HK_ROWBUFFER;
       m_sLabelLoop = "L_AdvanceNextRowT"_Stz;
@@ -331,6 +296,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
+      bPayload = true;
       continue;
     }
 
@@ -364,7 +330,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       //pCombined->aCombinedT()->m_iLimitRows = 1;
 
       // limit after a payload will move to EOSHandler
-      if (m_xStageOps.m_bPayloadOp) {
+      if (bPayload) {
         continue;
       }
 
@@ -429,6 +395,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
+      bPayload = true;
       continue;
     }
 
@@ -453,6 +420,7 @@ eEC Stencil_v2::eSynthesise(StageDef *pStageDef)
       vAppend(pOpSketch);
 
       bGeneratePotTub = false;
+      bPayload = true;
       continue;
     }
 
@@ -1388,343 +1356,6 @@ OpSketch* Stencil_v2::pSketchPotTub(OpSketch* pLastOp, bool bGeneratePot, Stz* s
     pOpSketch->vCopyInitStack(pLastOp->m_pInitStack);
 
   return pOpSketch;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect and validate the stage information of stage being synthesised      */
-/*----------------------------------------------------------------------------*/
-eEC Stencil_v2::eValidateStage(StageDef* pStageDef) {
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL_V2, _FOOTER_);
-
-  i8 iOpsToCombine = 0;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iterate the opDef's
-  for (i8 i_Op = 0; i_Op < pStageDef->nItems(); i_Op++) {
-
-    // get the op
-    OpDef *pOpDef = pStageDef->pGet(i_Op);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // scanOp
-    if (pOpDef->szOpNm()->bSame("scan"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // Should be the first OP after consumeOp
-      if (i_Op != 0) {
-        vTrace("Error: scanOP should be the first OP in the stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE SCAN-OP's
-      if (m_xStageOps.m_iScanOp) {
-        vTrace("Error: Cannot have multiple scan operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_bScan = true;
-      m_xStageOps.m_iScanOp++;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // skip scanOPand count no of OPS to combine
-    iOpsToCombine++;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // groupBy aggregate Op
-    if (pOpDef->szOpNm()->bSame("gbyAgg"_Stz)) {
-
-      m_xStageOps.m_iAggregOp++;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE PAYLOAD OP's
-      if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (gbyAgg/sort/top)"
-               "in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_bPayloadOp = true;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // filterOp
-    if (pOpDef->szOpNm()->bSame("filter"_Stz)) {
-      if (m_xStageOps.m_bPayloadOp)
-        //m_xStageOps.m_pHavingFilterOp = pOp;
-      m_xStageOps.m_iFilterOp++;
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // hashOp
-    if (pOpDef->szOpNm()->bSame("hash"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE HASH OP's
-      if (m_xStageOps.m_iHashOp) {
-        vTrace("Error: Cannot have multiple hashOp's (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // Should be the last OP before CombinedOp
-//      if (i_Op != pStageDef->nItems() - 3) {
-//        vTrace("Error: HashOP should be the last OP before combinedOP (%s)!!!\n"_Stz,
-//               m_szStageNm.azChar());
-//        return EC_INVALID_PIPELINE;
-//      }
-
-      m_xStageOps.m_iHashOp++;
-
-      // set hashRows in combined (needed at runtime)
-      //pDynamic->aDynamicT()->m_iPot = 1;
-
-      // get hash expr from OP
-      //TagSet *pOpTags = pOp->pOpTags();
-      //m_xStageOps.m_sHashExpr = pOpTags->szValue(C_TAG_EXPR);
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // indexJoinOp
-    if (pOpDef->szOpNm()->bSame("indexJoin"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE INDEXJOIN OP's
-      if (m_xStageOps.m_iIndexJoinOp) {
-        vTrace("Error: Cannot have multiple indexJoinOP's (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // CANNOT HAVE INDEXJOIN OP wITH A KEYEXISTS OP
-      if (m_xStageOps.m_iKeyExistsOp) {
-        vTrace("Error: Cannot have indexJoinOP with an keyExistsOP (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_iIndexJoinOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // indexScanOp
-    if (pOpDef->szOpNm()->bSame("indexScan"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // Should be the first OP after consumeOp
-      if (i_Op != 0) {
-        vTrace("Error: indexScanOP should be the first OP in the stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE INDEXSCAN-OP's
-      if (m_xStageOps.m_iIndexScanOp) {
-        vTrace("Error: Cannot have multiple indexScan operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // set indexScan in combined (needed at runtime)
-      //pDynamic->aDynamicT()->m_iIndexScan = 1;
-
-      m_xStageOps.m_bIndexScan = true;
-      m_xStageOps.m_iIndexScanOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // keyExistsOp
-    if (pOpDef->szOpNm()->bSame("keyExists"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE KEYEXISTS-OP's
-      if (m_xStageOps.m_iKeyExistsOp) {
-        vTrace("Error: Cannot have multiple keyExists/keyNotExists operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // CANNOT HAVE KEYEXISTS WITH AN INDEXJOIN OP
-      if (m_xStageOps.m_iIndexJoinOp) {
-        vTrace("Error: Cannot have keyExists with an indexJoinOP (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_iKeyExistsOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // keyNotExistsOp
-    if (pOpDef->szOpNm()->bSame("antijoin"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE LIMIT-OP's
-      if (m_xStageOps.m_iKeyExistsOp) {
-        vTrace("Error: Cannot have multiple keyExists/keyNotExists operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_iKeyExistsOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // limitOp
-    if (pOpDef->szOpNm()->bSame("limit"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE LIMIT-OP's
-      if (m_xStageOps.m_iLimitOp) {
-        vTrace("Error: Cannot have multiple limit operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      //m_xStageOps.m_pLimitOp = pOp;
-      m_xStageOps.m_iLimitOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // ordAggOp
-    if (pOpDef->szOpNm()->bSame("ordAgg"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE LIMIT-OP's
-      if (m_xStageOps.m_iOrdAggOp) {
-        vTrace("Error: Cannot have multiple ordAgg operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-
-      m_xStageOps.m_sLabelOrdAgg.vSprint("L_%s_%d"_Stz, pOpDef->szOpNm(), pOpDef->i_Op());
-
-      m_xStageOps.m_iOrdAggOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // projectOp
-    if (pOpDef->szOpNm()->bSame("project"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE PROJECT-OP's
-      if (m_xStageOps.m_iProjectOp) {
-        vTrace("Error: Cannot have multiple project operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // PROJECT-OP after AGGREG-OP
-      if (m_xStageOps.m_iAggregOp) {
-        vTrace("Error: Cannot have project operator after an aggregate operator in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_iProjectOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // aggreg
-    if (pOpDef->szOpNm()->bSame("aggreg"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE PAYLOAD OP's
-      if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggreg/gbyAgg/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_bPayloadOp = true;
-
-      m_xStageOps.m_iAggregOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // sortOp
-    if (pOpDef->szOpNm()->bSame("sort"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE SORT-OP's
-      if (m_xStageOps.m_iSortOp) {
-        vTrace("Error: Cannot have multiple sort operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE PAYLOAD OP's
-      if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (aggregate/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_bPayloadOp = true;
-      m_xStageOps.m_iSortOp++;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // topOp
-    if (pOpDef->szOpNm()->bSame("top"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE TOP-OP's
-      if (m_xStageOps.m_iTopOp) {
-        vTrace("Error: Cannot have multiple top operators in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // TOP with ORDAGG
-      if (m_xStageOps.m_iOrdAggOp) {
-        vTrace("Error: Cannot have top with OrdAggOP the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // MULTIPLE PAYLOAD OP's
-      if (m_xStageOps.m_bPayloadOp) {
-        vTrace("Error: Cannot have multiple combination of payload operators (gbyAgg/sort/top) in the same stage (%s)!!!\n"_Stz,
-               m_szStageNm.azChar());
-
-        return EC_INVALID_PIPELINE;
-      }
-
-      m_xStageOps.m_bPayloadOp = true;
-      m_xStageOps.m_iTopOp++;
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // any OP's to combine ?
-//  if (iOpsToCombine == 0) {
-//    vTrace("Error: Zero OP's to combine (%s)!!!\n"_Stz,
-//           m_szStageNm.azChar());
-//    return EC_INVALID_PIPELINE;
-//  }
-
-  return EC_NONE;
 }
 
 //*============================================================================*/

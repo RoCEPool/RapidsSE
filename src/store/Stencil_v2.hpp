@@ -10,36 +10,6 @@
 
 #include "PipelineDef.hpp"
 
-
-// information about the stage being combined and its Operators
-// this will help in adding in the rules
-struct stageOps_V2 {
-
-  i8 m_iAggregOp;
-  i8 m_iFilterOp;
-  i8 m_iHashOp;
-  i8 m_iIndexJoinOp;
-  i8 m_iIndexScanOp;
-  i8 m_iKeyExistsOp;
-  i8 m_iLimitOp;
-  i8 m_iOrdAggOp;
-  i8 m_iProjectOp;
-  i8 m_iScanOp;
-  i8 m_iSortOp;
-  i8 m_iTopOp;
-
-  bool m_bScan;
-  bool m_bIndexScan;
-  bool m_bPayloadOp;
-
-  Op* m_pHavingFilterOp;
-  Op* m_pLimitOp;
-
-  s256 m_sHashExpr;
-  s256 m_sLabelOrdAgg;
-
-};
-
 namespace STORE
 {
 static const i8 C_MAX_OPS_PER_STAGE = 32;
@@ -49,7 +19,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
   private:
 
     s256         m_szStageNm;
-    stageOps_V2  m_xStageOps;
     CombinedSrc* m_pOpSource;
 
     eHK          m_eHandlerKind;
@@ -96,8 +65,6 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchSort      (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchStreamDef (OpSketch* pLastOp);
     OpSketch* pSketchTop       (StageDef* pStageDef, OpDef* pOpDef);
-
-    eEC eValidateStage(StageDef* pStageDef);
 
     void vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
     OpSketch* pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
