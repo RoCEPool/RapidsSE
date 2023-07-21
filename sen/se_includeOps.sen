@@ -150,6 +150,7 @@ assert::stack_0
   "OP_listTenants.sen"          include
   "OP_locks.sen"                include
   "OP_locksReset.sen"           include
+  "OP_log.sen"                  include
 
 "m" .verbose
 
@@ -193,7 +194,6 @@ assert::stack_0
   "OP_ping.sen"                 include
   "OP_populateIndex.sen"        include
   "OP_postProject.sen"          include
-  "OP_print.sen"                include
   "OP_progress.sen"             include
   "OP_project.sen"              include
   "OP_projValidation.sen"       include

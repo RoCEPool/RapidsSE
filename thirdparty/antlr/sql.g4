@@ -21,6 +21,7 @@ statementChoice   :   queryStatement
                     | dload
                     | load
 
+                    | log
                     | lscol
                     | lsidx
                     | lsidxcol
@@ -194,7 +195,7 @@ trackmemory       : TRACKMEMORY FORCE?;
 memoryleaks       : MEMORYLEAKS ;
 bpa               : BPA type=(REGIONS | OBJECTS | ALL)?;
 file              : FILE (identifier | stringLiteral) ;
-noop              : NOOP ;
+noop              : NOOP | NOP ;
 emptyCommand      : ;
 
 // table/column definition ------------------------------------------------------------
@@ -503,6 +504,9 @@ dayTimeInterval   :
 
 
 
+// log statement ------------------------------------------------------------
+log : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
+
 // lscol statement ------------------------------------------------------------
 lscol : LSCOL tableName ;
 
@@ -525,16 +529,16 @@ nonReservedWord   :
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
-                  | ESCAPE_CHAR | EXPLAIN
+                  | ECHO | ESCAPE_CHAR | EXPLAIN
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX
                   | KEY
-                  | LIMIT | LOAD | LOOP | LSIDX | LSTBL
+                  | LIMIT | LOAD | LOG | LOOP | LSIDX | LSTBL
                   | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
                   | MONOTONIC | MONTHS | MS
-                  | NODE | NOOP | NOW
-                  | OBJECTS | OFFSET
+                  | NODE | NOOP | NOP | NOW
+                  | OBJECTS | OFF | OFFSET
                   | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | REGIONS | REPLICATED | ROWSIZE
@@ -599,6 +603,7 @@ DIGITS                : D I G I T S ;
 DISTINCT              : D I S T I N C T;
 DLOAD                 : D L O A D;
 DROP                  : D R O P;
+ECHO                  : E C H O;
 ELSE                  : E L S E;
 END                   : E N D;
 ESCAPE                : E S C A P E;
@@ -642,6 +647,7 @@ LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
 LOAD                  : L O A D;
+LOG                   : L O G;
 LOOP                  : L O O P;
 LSCOL                 : L S C O L;
 LSIDX                 : L S I D X;
@@ -663,11 +669,13 @@ NATURAL               : N A T U R A L;
 NO                    : N O;
 NODE                  : N O D E;
 NOOP                  : N O O P;
+NOP                   : N O P;
 NOT                   : N O T;
 NOW                   : N O W;
 SQL_NULL              : N U L L;
 NULLIF                : N U L L I F;
 OBJECTS               : O B J E C T S;
+OFF                   : O F F;
 OFFSET                : O F F S E T;
 ON                    : O N;
 OR                    : O R;

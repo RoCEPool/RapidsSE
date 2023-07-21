@@ -144,6 +144,7 @@ cmd::fillOut_allCmds
   "it_listPartitions.sen"   include
   "it_loadResult.sen"       include
   "it_lockStats.sen"        include
+  "it_logMsg.sen"           include
   "it_lookupCatalog.sen"    include
   "it_lookupIndex.sen"      include
   "it_lookupSchema.sen"     include

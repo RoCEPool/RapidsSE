@@ -130,6 +130,7 @@ static Stz* C_TDEF_LISTNODES        = "__listNodes"_Stz;
 static Stz* C_TDEF_LISTPARTITIONS   = "__listPartitions"_Stz;
 static Stz* C_TDEF_LOADRESULT       = "__loadResult"_Stz;
 static Stz* C_TDEF_LOCKSTATS        = "__lockStats"_Stz;
+static Stz* C_TDEF_LOGMSG           = "__logMsg"_Stz;
 static Stz* C_TDEF_LOOKUPCATALOG    = "__lookupCatalog"_Stz;
 static Stz* C_TDEF_LOOKUPINDEX      = "__lookupIndex"_Stz;
 static Stz* C_TDEF_LOOKUPSCHEMA     = "__lookupSchema"_Stz;

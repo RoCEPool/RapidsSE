@@ -1,45 +1,60 @@
 /*============================================================================*/
-/* OP_print.sen -- Operator print                                             */
+/* OP_log.sen -- log a message to the trace file (& optionally as a resultset)*/
 /*============================================================================*/
 
-" OP_print.sen" .verbose
+" OP_log.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_I_PROMPTOUT ...                                             */
+/* on EV_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
-: print_promptOut \handler
+: log_log \handler
 
-  "print_promptOut:- EV_I_PROMPTOUT" .
-  PipeIn[].delete
+  PipeIn[].pipeOut
+
+  time.currentTsp locals| iTsp |
+
+  <pMsg> iTsp time.tspToStr "[%v] %v" str.format .trace
+
+  <bToResultSet> >bol if
+    // find the C_TDEF_LOGMSG
+    <streamDef> op__tableDef_infoSet assert
+
+    // create a new streamDef
+    infoSetTable[] StreamDefLft[].new
+
+    // pipeout the streamDef
+    StreamDefLft[].pipeOut
+
+    // create a streamSet operand
+    infoSetTable[] streamSet[].new
+
+    <pMsg> iTsp infoSetTable[] StreamSet[].addLogMsg if
+      StreamSet[].pipeOut
+    else
+      StreamSet[].delete
+    then
+  then
+
+  Marker[].newEosMarker
+  Marker[].pipeOut
 
   true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for EV_M_START ...                                                 */
+/* log request                                      (on node where spawned) */
 /*----------------------------------------------------------------------------*/
-: print_startMarker \handler
-
-  "print_startMarker:- EV_M_START" .
-  PipeIn[].delete
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* print request                                      (on node where spawned) */
-/*----------------------------------------------------------------------------*/
-: print_op \operator
+: log_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: print_promptOut    EV_I_PROMPTOUT     [op].handler!
-  find: print_startMarker  EV_M_START   [op].handler!
+  find: log_log  EV_M_DATAPULSE  [op].handler!
 
   op__loop
 
+  // "*** log_req EXITS" .
   _lu_finalise_
   
   op__retires
@@ -50,12 +65,13 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: print :: print ;
+cmdSyntax: log :: log <pMsg> <bToResultSet> ;
 
-: print_cmdTags _cmdTags tagCopy: op_tags
+: log_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "print_op"
+    <opEntry> = "log_op"
+    <streamDef> = __logMsg
   }
 ;
 

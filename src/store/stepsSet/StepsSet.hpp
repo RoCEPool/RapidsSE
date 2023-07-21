@@ -465,6 +465,7 @@ void vDdlLockAssertNone(void);
   void vDot(void);
   void vDotBoot(void);
   void vDotPut(void);
+  void vDotTrace(void);
   void vDotNewline(void);
   void vDotVerbose(void);
 
@@ -2066,6 +2067,7 @@ void vJobIdLastJobIdFetch(void);
   void vStreamSetAddListFolder(void);
   void vStreamSetAddListIndex(void);
   void vStreamSetAddListPartitions(void);
+  void vStreamSetAddLogMsg(void);
   void vStreamSetAddMemoryLeaks(void);
   void vStreamSetAddNodeHeartbeat(void);
   void vStreamSetAddNodeStatus(void);
@@ -2376,6 +2378,8 @@ void vJobIdLastJobIdFetch(void);
 
   // time
   void vTimeCurrent(void);
+  void vTimeCurrentTsp(void);
+  void vTimeTspToStr(void);
 
   // timer
   void vTimerGet(void);

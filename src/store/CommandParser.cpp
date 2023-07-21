@@ -317,6 +317,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->dload())         { m_szProcName = "dload"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->truncateQuery()) { m_szProcName = "truncate"_Stz;        return visitChildren(pCtx); }
 
+  else if (pCtx->log())           { m_szProcName = "logMsg"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->lscol())         { m_szProcName = "lscol"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->lsidx())         { m_szProcName = "lsidx"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->lsidxcol())      { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
@@ -405,6 +406,26 @@ antlrcpp::Any CommandParser::visitExplainStatement(Parser::sqlParser::ExplainSta
 
   // Add command parameters
   m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a log statement                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLog(Parser::sqlParser::LogContext *pCtx)
+{
+  // Add command parameters
+  Text* pLogMsg = pCleanString(pCtx->msg);
+
+  bool bEcho = true;
+  if (pCtx->SQL_FALSE() || pCtx->OFF()) {
+    bEcho = false;
+  }
+
+  m_pArgValues->vAppendToken(pLogMsg->szGet(), TN_STRING);
+  m_pArgValues->vAppendToken(bEcho ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
+
+  delete pLogMsg;
   return nullptr; // No need to visit any further down the tree
 }
 

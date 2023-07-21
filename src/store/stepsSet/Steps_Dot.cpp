@@ -21,6 +21,7 @@ void Step::vAddSteps_Dot(void)
   vAddStep("."_Stz,            &Step::vDot);
   vAddStep(".boot"_Stz,        &Step::vDotBoot);
   vAddStep(".put"_Stz,         &Step::vDotPut);
+  vAddStep(".trace"_Stz,       &Step::vDotTrace);
   vAddStep(".\\n"_Stz,         &Step::vDotNewline);
   vAddStep(".verbose"_Stz,     &Step::vDotVerbose);
 }
@@ -118,6 +119,24 @@ void Step::vDotPut(void)
   else
     vTrace("%s"_Stz,xVariable.szStz());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* .trace -- print top value on stack (with a new line)                       */
+/*----------------------------------------------------------------------------*/
+void Step::vDotTrace(void)
+{
+  ENTRY();
+
+  SenCell xVariable;
+  m_pDataStack->vPopSenCell(xVariable,__func__);
+
+  if (xVariable.bIsIntVal())
+    vTrace("%lld\n"_Stz,xVariable.iGetColVal());
+  else
+    vTrace("%s\n"_Stz,xVariable.szStz());
+
   EXIT();
 }
 

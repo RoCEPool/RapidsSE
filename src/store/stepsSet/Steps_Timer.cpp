@@ -11,6 +11,7 @@
 #include "LogicUnit.hpp"
 
 #include "SP_Timer.hpp"
+#include "SP_Tsp.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -31,7 +32,9 @@ void Step::vAddSteps_Timer(void)
   vAddStep("timer.update"_Stz,    &Step::vTimerUpdate);
   
   vAddStep("time.current"_Stz,    &Step::vTimeCurrent);
-  
+  vAddStep("time.currentTsp"_Stz, &Step::vTimeCurrentTsp);
+  vAddStep("time.tspToStr"_Stz,   &Step::vTimeTspToStr);
+
   
   vAddStep("timer[]"_Stz,      &Step::vTimerGet);
   vAddStep("timer[].get"_Stz,  &Step::vTimerGet);
@@ -231,6 +234,40 @@ void Step::vTimeCurrent(void)
   
   m_pDataStack->vPushStr(s);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* time.currentTsp -- return current time as a timestamp                      */
+/*----------------------------------------------------------------------------*/
+void Step::vTimeCurrentTsp(void)
+{
+  ENTRY();
+
+  Now xNow;
+  xNow.vSetNow();
+
+  i8 iTsp = xNow.wTsp();
+
+  m_pDataStack->vPushInt(iTsp);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* time.tspToStr -- convert a timestamp on the stack to a string              */
+/*----------------------------------------------------------------------------*/
+void Step::vTimeTspToStr(void)
+{
+  ENTRY();
+
+  i8 iTsp = m_pDataStack->iPopInt(__func__);
+
+  SP_Tsp oSpTsp;
+  Stz* szTsp = oSpTsp.sz(iTsp);
+
+  m_pDataStack->vPushStz(szTsp);
+
   EXIT();
 }
 

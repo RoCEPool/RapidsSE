@@ -49,6 +49,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
+  vAddStep("StreamSet[].addLogMsg"_Stz,      &Step::vStreamSetAddLogMsg);
   vAddStep("StreamSet[].addMemoryLeaks"_Stz, &Step::vStreamSetAddMemoryLeaks);
   vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
@@ -440,6 +441,41 @@ void Step::vStreamSetAddListPartitions(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addLogMsg -- add rows to streamSet with log message info       */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddLogMsg(void)
+{
+  ENTRY();
+
+  // get the table
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the timestamp to use
+  i8 iTsp = m_pDataStack->iPopInt(__func__);
+
+  // get the log message to use
+  s2K sMsg;
+  m_pDataStack->vPopStr(sMsg, __func__ );
+
+
+  // get the streamDef from the table
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  StreamSet* pStreamSet = _pStreamSet(*m_pLogicUnit->m_xpStreamSet);
+  ASSERT(pStreamSet);
+
+  Row* pRow = pStreamSet->pAllotRow(pStreamDef,
+                                    C_VARGS_BEGIN,
+                                    iTsp,
+                                    sMsg.szStz(),
+                                    C_VARGS_END);
+
+  m_pDataStack->vPushInt(pRow ? true : false);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* StreamSet[].addMemoryLeaks -- add rows to streamSet with memory leak info  */

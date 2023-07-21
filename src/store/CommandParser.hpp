@@ -66,6 +66,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
 
     antlrcpp::Any visitQueryStatement(Parser::sqlParser::QueryStatementContext *pCtx)     override;
     antlrcpp::Any visitExplainStatement(Parser::sqlParser::ExplainStatementContext *pCtx) override;
+    antlrcpp::Any visitLog(Parser::sqlParser::LogContext *pCtx)                           override;
     antlrcpp::Any visitLscol(Parser::sqlParser::LscolContext *pCtx)                       override;
     antlrcpp::Any visitLsidx(Parser::sqlParser::LsidxContext *pCtx)                       override;
     antlrcpp::Any visitLsidxcol(Parser::sqlParser::LsidxcolContext *pCtx)                 override;

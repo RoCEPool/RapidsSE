@@ -693,6 +693,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitLog(sqlParser::LogContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitLscol(sqlParser::LscolContext *ctx) override {
     return visitChildren(ctx);
   }

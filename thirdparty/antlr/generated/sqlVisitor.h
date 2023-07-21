@@ -358,6 +358,8 @@ public:
 
     virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
 
+    virtual antlrcpp::Any visitLog(sqlParser::LogContext *context) = 0;
+
     virtual antlrcpp::Any visitLscol(sqlParser::LscolContext *context) = 0;
 
     virtual antlrcpp::Any visitLsidx(sqlParser::LsidxContext *context) = 0;

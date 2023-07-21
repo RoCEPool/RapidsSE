@@ -227,6 +227,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LISTPARTITIONS"_Stz,C_TDEF_LISTPARTITIONS);
   vAddConstant("C_TDEF_LOADRESULT"_Stz,    C_TDEF_LOADRESULT);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,     C_TDEF_LOCKSTATS);
+  vAddConstant("C_TDEF_LOGMSG"_Stz,        C_TDEF_LOGMSG);
   vAddConstant("C_TDEF_LOOKUPCATALOG"_Stz, C_TDEF_LOOKUPCATALOG);
   vAddConstant("C_TDEF_LOOKUPINDEX"_Stz,   C_TDEF_LOOKUPINDEX);
   vAddConstant("C_TDEF_LOOKUPSCHEMA"_Stz,  C_TDEF_LOOKUPSCHEMA);
