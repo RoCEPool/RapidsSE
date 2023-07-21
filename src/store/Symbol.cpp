@@ -684,23 +684,6 @@ void Symbol::vSet(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint symbol                                                              */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSprint(Stz* szFormat, ...)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  s256 sSymbol;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
-  va_end(xArgs);
-
-  m_sSymbol = sSymbol;
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetCrossRef(i8 iCrossRef)
@@ -708,6 +691,16 @@ void Symbol::vSetCrossRef(i8 iCrossRef)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("#%lld"_Stz, iCrossRef);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSprint("C%lld_%s"_Stz, i_Child, szColNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1220,6 +1213,28 @@ void Symbol::Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...)
 
   if (szPpyNm->bSame(P_Type))
     RASSERT(! sPpy.bSame("!"_Stz));
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sprint symbol                                                              */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSprint(Stz* szFormat, ...)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  s256 sSymbol;
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
+  va_end(xArgs);
+
+  m_sSymbol = sSymbol;
 }
 
 /*============================================================================*/

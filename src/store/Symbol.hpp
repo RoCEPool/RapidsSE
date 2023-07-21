@@ -74,6 +74,7 @@ namespace STORE
 
     void vSet(Symbol* pSymbol);
     void vSetCrossRef(i8 iCrossRef);
+    void vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSetStreamOrdinal(i8 iStmColOdn);
@@ -81,7 +82,6 @@ namespace STORE
     void vSetSyntheticAs(i8 iAsNo);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableColSyn(char cTblSyn);
-    void vSprint(Stz* szFormat, ...);
 
     Stz* szSymbol(void);
 
@@ -116,6 +116,9 @@ namespace STORE
     void Y_vSet(Stz* szPpyNm, Stz* szPpy);
     void Y_vSet(Stz* szPpyNm, Symbol* pSymbol);
     void Y_vSetSprint(Stz* szPpyNm, Stz* szFormat, ...);
+
+  private:
+    void vSprint(Stz* szFormat, ...);
 
   protected:
     Footer* aFooter(void);

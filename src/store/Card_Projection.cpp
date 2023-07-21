@@ -272,16 +272,12 @@ void Card_Projection::vDedupe_as(void)
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
     Card_As* p_as = xProjection.p_expr()->pSub_as();
 
-    Symbol xDeduped;
-    xDeduped.vSprint("C%lld_%s"_Stz,
-                     xProjection.i_Child(),
-                     p_as->pSymbol()->szSymbol());
-    p_as->pSymbol()->vSet(&xDeduped);
-
-
-    //StrLib::vRemoveHead(xDeduped.szSymbol()->azChar(),'_');
-    //vTrace("%s\n"_Stz,xDeduped.szSymbol());
-
+//    Symbol xDeduped;
+//    xDeduped.vSprint("C%lld_%s"_Stz,
+//                     xProjection.i_Child(),
+//                     p_as->pSymbol()->szSymbol());
+    p_as->pSymbol()->vSetDisambiguatedColNm(xProjection.i_Child(),
+                                            p_as->pSymbol()->szSymbol());
   }
 
   vDebugPoint();
