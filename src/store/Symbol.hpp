@@ -27,7 +27,6 @@ namespace STORE
 
     void operator =(Stz* szArg);
     void operator =(Symbol* pSymbol);
-    void operator =(Symbol& rxSymbol);
 
     // auto conversion
     operator Stz*(void);

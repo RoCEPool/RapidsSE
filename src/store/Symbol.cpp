@@ -86,27 +86,6 @@ void Symbol::operator =(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Symbol::operator =(Symbol& rxSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = rxSymbol.m_sSymbol;
-
-  if (rxSymbol.m_pProperties) {
-    if (! m_pProperties)
-      m_pProperties = new TagSet;
-    m_pProperties->vCopy(rxSymbol.m_pProperties);
-  }
-  else
-  if (m_pProperties) {
-    delete m_pProperties;
-    m_pProperties = nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* auto conversion operator : as Stz*                                         */
 /*----------------------------------------------------------------------------*/
 Symbol::operator Stz*(void)
