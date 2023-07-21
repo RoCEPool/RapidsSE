@@ -675,13 +675,14 @@ bool Symbol::bSameAs(Symbol* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol using given symbol                                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = pSymbol->m_sSymbol;
+  m_eSymbolForm = pSymbol->m_eSymbolForm;
 
   if (pSymbol->m_pProperties) {
     if (! m_pProperties)
@@ -697,99 +698,130 @@ void Symbol::vSet(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given as-name                                           */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_asName(Stz* szAsNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szAsNm;
+  m_eSymbolForm = SF_ASNAME;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetCrossRef(i8 iCrossRef)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("#%lld"_Stz, iCrossRef);
+  m_eSymbolForm = SF_XREFNO;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("C%lld_%s"_Stz, i_Child, szColNm);
+  m_eSymbolForm = SF_DASCNE;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given index-column                                      */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$I%lld"_Stz, iIdxColOdn);
+  m_eSymbolForm = SF_IDXCOL;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$K%lld"_Stz, iKeyOdn);
+  m_eSymbolForm = SF_KEYCOL;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given other                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_other(Stz* szOther)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szOther;
+  m_eSymbolForm = SF_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given stream-column                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$%lld"_Stz, iStmColOdn);
+  m_eSymbolForm = SF_STMCOL;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given subquery-number                                   */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("__sq%02lld"_Stz, iSqNo);
+  m_eSymbolForm = SF_SQRYNO;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given synthetic-as                                      */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetSyntheticAs(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("COL%lld"_Stz, iAsNo);
+  m_eSymbolForm = SF_SASCNM;
 
   Y_vSet(P_Synthetic);
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetTableColSyn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("%c"_Stz, cTblSyn);
+  m_eSymbolForm = SF_TBLSYN;
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* set this symbol to given table-column                                      */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
+  m_eSymbolForm = SF_TBLCOL;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol                                                                 */
+/* get symbol stz                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szSymbol(void)
 {

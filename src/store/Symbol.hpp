@@ -75,10 +75,12 @@ namespace STORE
     bool bSameAs(Symbol* pArg);
 
     void vSet(Symbol* pSymbol);
+    void vSet_asName(Stz* szAsNm);
     void vSetCrossRef(i8 iCrossRef);
     void vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
+    void vSet_other(Stz* szOther);
     void vSetStreamOrdinal(i8 iStmColOdn);
     void vSetSubQueryOrdinal(i8 iSqNo);
     void vSetSyntheticAs(i8 iAsNo);
