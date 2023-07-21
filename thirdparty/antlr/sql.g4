@@ -184,7 +184,7 @@ loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
 
 count             : COUNT tableName ;
 sleep             : SLEEP integerLiteral sleepUnits?;
-sleepUnits        : seconds=('s' | 'S' | SEC | SECOND | SECONDS) |
+sleepUnits        : seconds=( S_ONLY | SEC | SECOND | SECONDS) |
                     millis=(MS | MILLIS | MILLISECOND | MILLISECONDS);
 space             : SPACE ;
 status            : STATUS ;
@@ -542,7 +542,7 @@ nonReservedWord   :
                   | PATHS | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | REGIONS | REPLICATED | ROWSIZE
-                  | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS | STATISTICS
+                  | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | VALUE
@@ -717,6 +717,7 @@ SUBSTRING             : S U B S T R I N G;
 SUM                   : S U M;
 SZIDX                 : S Z I D X;
 SZTBL                 : S Z T B L;
+S_ONLY                : S;
 TABLE                 : T A B L E;
 TABLESIZE             : T A B L E S I Z E;
 TEXT                  : T E X T;
