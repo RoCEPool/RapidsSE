@@ -65,7 +65,7 @@ void Card_CrossJoin::vMorph_table_To_crossJoin(STORE::CardIter *pCI)
   Symbol xSymbol_idxColOdn;
   xSymbol_idxColOdn.vSetIndexColOrdinal(1);
 
-  pCI->G_vNewMember(CK_TERM,xSymbol_idxColOdn);
+  pCI->G_vNewMember(CK_TERM,&xSymbol_idxColOdn);
   pCI->G.p_bound->vAppend(pCI->G.p_term);
 
   pCI->G.p_indexList->vChoose_index_For_crossJoin();

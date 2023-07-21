@@ -69,7 +69,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
     i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
     Symbol xSymbol_sqNo;
     xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);
-    m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo);
+    m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo.szSymbol());
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -84,7 +84,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
 
     Symbol xSymbol_sqNo;
     xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);
-    p_card->vSymbol(xSymbol_sqNo);
+    p_card->vSymbol(&xSymbol_sqNo);
 
     return C_CONTINUE_RECURSION;
   };

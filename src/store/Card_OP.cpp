@@ -355,7 +355,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamOrdinal(nExpr_prior + i_Col);
-    p_term->vSymbolMark1(xSymbol_stmColOdn, MARK_CHANGED);
+    p_term->vSymbolMark1(xSymbol_stmColOdn.szSymbol(), MARK_CHANGED);
 
     //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSymbol());
     return C_CONTINUE_RECURSION;
@@ -866,7 +866,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol;
     xSymbol.vSetStreamOrdinal(i_Expr++);
-    p_expr->vSymbol(xSymbol);
+    p_expr->vSymbol(&xSymbol);
     p_projection->vAppend(p_expr);
 
     eCT eColumnType = pColumn->eColumnType();
@@ -881,7 +881,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Symbol xSymbol_tblCol;
     xSymbol_tblCol.vSetTableColOrdinal(cTblSyn, i_Col + 1);
-    Card_Term *p_term = new Card_Term(xSymbol_tblCol);
+    Card_Term *p_term = new Card_Term(xSymbol_tblCol.szSymbol());
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

@@ -572,7 +572,7 @@ void Card_Table::vSet_Syn(char* cTableSyn)
   Symbol xSymbol_tblSyn;
   xSymbol_tblSyn.vSetTableColSyn(cTableSyn_actual);
 
-  this->vSymbolMark1(xSymbol_tblSyn, MARK_CHANGED);
+  this->vSymbolMark1(xSymbol_tblSyn.szSymbol(), MARK_CHANGED);
 
   (*cTableSyn)++;
 }

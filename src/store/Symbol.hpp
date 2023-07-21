@@ -26,10 +26,6 @@ namespace STORE
     Symbol(Stz* szSymbol);
 
     void operator =(Stz* szArg);
-    void operator =(Symbol* pSymbol);
-
-    // auto conversion
-    operator Stz*(void);
 
     static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
     static eCT  eTo_eCT_str(Stz* szType);

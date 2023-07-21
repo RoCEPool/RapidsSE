@@ -1332,12 +1332,12 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetKeyOrdinal(ri_Expr);
-    pCard_Expr->vSymbol(xSymbol_stmColOdn);
+    pCard_Expr->vSymbol(&xSymbol_stmColOdn);
   }
   else {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamOrdinal(ri_Expr);
-    pCard_Expr->vSymbol(xSymbol_stmColOdn);
+    pCard_Expr->vSymbol(&xSymbol_stmColOdn);
   }
 
   Stz* szP_Type = this->szPopType_char(pCard_RpnTerms);

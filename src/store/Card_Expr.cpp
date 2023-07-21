@@ -569,7 +569,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   xExprNo.vSetStreamOrdinal(i_Expr + 1);
 
   Card_Expr* p_expr_reduced = new Card_Expr;
-  p_expr_reduced->vSymbol(xExprNo);
+  p_expr_reduced->vSymbol(&xExprNo);
   p_expr_reduced->vSetType(this);
 
   if (Card_As* p_as = pSub_as())
@@ -592,7 +592,7 @@ void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetKeyOrdinal(i_Expr);
 
-  vSymbol(xSymbol);
+  vSymbol(&xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,7 +605,7 @@ void Card_Expr::vRenumberForm_stmOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetStreamOrdinal(i_Expr);
 
-  vSymbol(xSymbol);
+  vSymbol(&xSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
