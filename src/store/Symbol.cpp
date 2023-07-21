@@ -36,20 +36,35 @@ Symbol::Symbol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Symbol::Symbol(Stz* szArg)
+Symbol::Symbol(Stz* szSymbol, eSF eSymbolForm)
     : Object(CN_SYMBOL)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_sSymbol = szArg;
-  m_eSymbolForm = SF_NONE;
+  m_sSymbol = szSymbol;
+  m_eSymbolForm = eSymbolForm;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
-\
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Symbol::Symbol(Symbol* pSymbol)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSet(pSymbol);
+
+  _checkInitialised_(CN_SYMBOL);
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

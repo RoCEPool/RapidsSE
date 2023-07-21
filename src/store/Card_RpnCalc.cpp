@@ -487,7 +487,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Symbol xWhen("WHEN"_Stz);
+  Symbol xWhen("WHEN"_Stz,SF_OTHER);
 
   Card_BoolCalc* p_boolCalc = new Card_BoolCalc;
 

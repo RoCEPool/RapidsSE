@@ -23,7 +23,8 @@ namespace STORE
 
   public:
     Symbol(void);
-    Symbol(Stz* szSymbol);
+    Symbol(Stz* szSymbol, eSF eSymbolForm);
+    Symbol(Symbol* pSymbol);
 
     static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
     static eCT  eTo_eCT_str(Stz* szType);
