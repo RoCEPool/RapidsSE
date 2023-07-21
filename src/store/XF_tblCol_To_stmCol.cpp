@@ -58,6 +58,23 @@ void XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* transform table-columns to stream-columns                                  */
 /*----------------------------------------------------------------------------*/
+//void XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
+//
+//  m_pCI->vTransform(__func__, XF_TBLCOL_TO_STMCOL, "transform table-columns to stream-columns"_Stz);
+//
+//  for (m_pCI->vClearRestart(); m_pCI->G_bEachMain(); m_pCI->vPriorProjection()) {
+//    if (! m_pCI->Prior.m_pProjection)
+//      continue;
+//
+//    m_pCI->G.p_OP->vConvert_tblColOdn_To_stmColOdn(m_pCI);
+//  }
+//  m_pCI->vEndTransform();
+//
+//  vValidate();
+//}
+/*----------------------------------------------------------------------------*/
 void XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TBLCOL_TO_STMCOL, _FOOTER_);
@@ -79,6 +96,7 @@ void XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 
   vValidate();
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

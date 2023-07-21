@@ -512,6 +512,11 @@ Card* Dissector::pOp_Hash(void)
   eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol());
   p_hshCol->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
 
+  Card_Term* p_term_hsh = p_term2->pClone();
+  p_term_hsh->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
+  p_hshCol->vAppend(p_term_hsh);
+  p_hshCol->pSymbol()->Y_vSet(P_BreakPt);
+
   pCard_Hash->vAppend(p_hshCol);
 
   delete pCard_RpnTerms;

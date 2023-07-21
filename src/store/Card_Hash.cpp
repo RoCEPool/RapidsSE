@@ -59,6 +59,11 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
 
   RASSERT(p_expr->szP_Type());
   p_hshCol->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
+
+  p_hshCol->vAppend(p_expr->pGetTerm(0)->pClone());
+
+  p_hshCol->pSymbol()->Y_vSet(P_BreakPt);
+
   p_hash->vAppend(p_hshCol);
 
 //  if (p_projection_prev)
