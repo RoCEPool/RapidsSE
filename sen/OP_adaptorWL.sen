@@ -20,7 +20,7 @@
 
       pPayloadObj payloadObj::size@
       pPayloadObj payloadObj::msgType@
-      "AdaptorWL: Sending payload: %v : %v bytes" .printf
+      "AdaptorWL: Piping out payload: %v : %v bytes" .printf
 
       pPayloadObj [op].pipeOut
     repeat
@@ -209,6 +209,8 @@
   PipeIn[] to InfoSet[]
   nullptr to PipeIn[]
 
+  "AdaptorWL: Processing error infoset" .
+
   adaptorWL[].executionError
 
   // now delete the InfoSet[]
@@ -387,11 +389,14 @@
   // only re-emit it after the child job has exited.
 
   AdaptorWL[].isChildJobActive if
+    "AdaptorWL: Saving error marker until child query has completed" .
+
     ErrorMarker[].isNull assert
     Pipein[]\clear ErrorMarker[].set
     true
 
   else
+    "AdaptorWL: Piping out error marker" .
     EV_M_ERROR_handler
   then
 ;

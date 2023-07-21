@@ -439,10 +439,6 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 
   ASSERT(m_pStmtCtx);
 
-  if (m_pStmtCtx->bGotError()) {
-    return;
-  }
-
   ASSERT(bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} ));
   ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
 
@@ -451,6 +447,15 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
   Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
   Stz* szErrorText = pInfoRow->szColVal_ofs(2);
+
+  if (eErrorCode == EC_WL_SOCKET_CLOSED) {
+    m_eProtocolState = DISCONNECTED;
+    return; // No need to serialise and send this.
+  }
+
+  if (m_pStmtCtx->bGotError()) {
+    return;
+  }
 
   Stz* szMsgFmt = "Error: %s; %s"_Stz;
   vSerialiseErrorResponse(eErrorCode,
@@ -514,7 +519,8 @@ void AdaptorWL::vChildJobExited()
     vSerialiseAndSendMsg(&xMsg, MessageTypes::type::StatementResponse);
   }
 
-  bool bAbortRemaining = (m_pStmtCtx->bGotError() && !m_oQueryCtx.bContinueOnError());
+  bool bAbortRemaining = (m_eProtocolState == DISCONNECTED) ||
+                         (m_pStmtCtx->bGotError() && !m_oQueryCtx.bContinueOnError());
 
   delete m_pStmtCtx;
   m_pStmtCtx = nullptr;

@@ -193,6 +193,7 @@ void TaskList::vRepairList(Object* pObject)
 
   pTaskList->vGrabLock();
   while ((pTask = pTaskList->pPopTask()) != nullptr) {
+    pTask->vState(TS_DELETING);
     delete pTask;
   }
   pTaskList->vDropLock();
