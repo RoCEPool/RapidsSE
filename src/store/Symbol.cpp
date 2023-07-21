@@ -769,6 +769,16 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 /*----------------------------------------------------------------------------*/
 /* get symbol stz                                                             */
 /*----------------------------------------------------------------------------*/
+Stz* Symbol::szSF_other(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_sSymbol.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol stz                                                             */
+/*----------------------------------------------------------------------------*/
 Stz* Symbol::szSymbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
