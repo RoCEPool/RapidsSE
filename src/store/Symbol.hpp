@@ -25,7 +25,6 @@ namespace STORE
     Symbol(void);
     Symbol(Stz* szSymbol);
 
-    void operator =(i8 iArg);
     void operator =(Stz* szArg);
     void operator =(Symbol* pSymbol);
     void operator =(Symbol& rxSymbol);
@@ -80,6 +79,7 @@ namespace STORE
     void vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
+    void vSet_number(i8 iNumber);
     void vSet_other(Stz* szOther);
     void vSetStreamOrdinal(i8 iStmColOdn);
     void vSetSubQueryOrdinal(i8 iSqNo);

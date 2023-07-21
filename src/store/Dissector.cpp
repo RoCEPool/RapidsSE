@@ -1090,10 +1090,8 @@ Card* Dissector::pOp_Top(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Symbol xSymbol;
-  xSymbol = iCount;
   Card_Count* pCard_Count = new Card_Count;
-  pCard_Count->pSymbol()->vSet(&xSymbol);
+  pCard_Count->pSymbol()->vSet_number(iCount);
   pCard_Top->vAppend(pCard_Count);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

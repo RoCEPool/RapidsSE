@@ -53,19 +53,6 @@ Symbol::Symbol(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Symbol::operator =(i8 iArg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-
-  m_sSymbol = iArg;
-  m_eSymbolForm = SF_NONE;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Symbol::operator =(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -750,6 +737,17 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 
   vSprint("$K%lld"_Stz, iKeyOdn);
   m_eSymbolForm = SF_KEYCOL;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given number                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_number(i8 iNumber)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+   m_sSymbol = iNumber;
+  m_eSymbolForm = SF_NUMBER;
 }
 
 /*----------------------------------------------------------------------------*/
