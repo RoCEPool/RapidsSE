@@ -288,6 +288,11 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
 
   while (pCI->G_bEachMain()) {
 
+//    if (pCI->Prior.m_pProjection) {
+//      pCI->Prior.m_pProjection->vDump(__func__);
+//      vDebugPoint();
+//    }
+
     if (pCI->G.p_MainCard->bIsCard(CK_TOP))
       vDebugPoint();
 
@@ -300,7 +305,9 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
       if ((pCI->G.p_rpnCalc = pCI->G.p_MainCard->pSub_rpnCalc()))
         pCI->G.p_rpnCalc->vEnsureTypesFor_stmOdn(pCI);
 
-      pCI->G.p_MainCard->vAppend(pCI->Prior.m_pProjection->pClone());
+      Card_Projection* p_clone = pCI->Prior.m_pProjection->pClone();
+      //p_clone->vDump(__func__ );
+      pCI->G.p_MainCard->vAppend(p_clone);
 
       //continue;
     }
@@ -338,8 +345,12 @@ void Card_Deck::vProjectionAnalysis(CardIter* pCI)
     if ((pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection())) {
 
       if (pCI->Prior.m_pProjection) {
+        //pCI->G.p_projection->vDump(__func__);
         pCI->G.p_projection->vEnsureTypes_For_stmColOdn(pCI);
+        //pCI->G.p_projection->vDump(__func__);
         pCI->G.p_projection->vRenumberAll_expr();
+        //pCI->G.p_projection->vDump(__func__);
+        vDebugPoint();
       }
 
       pCI->Prior.m_pProjection = pCI->G.p_MainCard->pSub_projection();

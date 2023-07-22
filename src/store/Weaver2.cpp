@@ -546,10 +546,11 @@ void Weaver2::vArgHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
   m_bSawHash = true;
 
   Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
+  Card_Term* p_term = pCard_Hash->pSub_term();
 
   szOpArgs->vCatSprint("\"type %s %s\""_Stz,
-                       aCT[Symbol::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))],
-                       p_hshCol->szSymbol());
+                       aCT[Symbol::eTo_eCT_char(p_term->pSymbol()->Y_szGet(P_Type))],
+                       p_term->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/

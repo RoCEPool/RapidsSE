@@ -93,8 +93,6 @@ void Card_Aggreg::vEarlyProject_root(CardIter* pCI)
 
   RASSERT(! pCI->Early.m_pNeeded_later);
 
-  pSymbol()->Y_vSet(P_BreakPt);
-
   // get the root needed form of ordAgg's projection
   pCI->Early.m_pOP_root = (Card_OP*)this;
   pCI->G.p_projection = pSub_projection();

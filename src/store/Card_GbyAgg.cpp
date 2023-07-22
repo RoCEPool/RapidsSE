@@ -342,8 +342,6 @@ void Card_GbyAgg::vEarlyProject_root(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSymbol()->Y_vSet(P_BreakPt);
-
   pCI->G.p_key = pSub_key();
   pCI->G.p_projection = pSub_projection();
 

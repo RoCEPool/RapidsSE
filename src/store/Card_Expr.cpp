@@ -518,6 +518,8 @@ Card_Expr* Card_Expr::pPropagate(void)
   p_rpnCalc = pSub_rpnCalc();
 
   Card_Expr* p_expr_propagation = new Card_Expr;
+
+  //vDump(__func__);
   p_expr_propagation->vSetType(this);
 
   if (p_as)
@@ -592,7 +594,7 @@ void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetKeyOrdinal(i_Expr);
 
-  vSymbol(&xSymbol);
+  vSymbol(xSymbol.szSF_other());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,7 +607,7 @@ void Card_Expr::vRenumberForm_stmOdn(BASE::i8 i_Expr)
   Symbol xSymbol;
   xSymbol.vSetStreamOrdinal(i_Expr);
 
-  vSymbol(&xSymbol);
+  vSymbol(xSymbol.szSF_other());
 }
 
 /*----------------------------------------------------------------------------*/

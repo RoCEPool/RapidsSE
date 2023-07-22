@@ -1307,7 +1307,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_CMPPRED:          *((Card**)&G.p_cmpPred)          = pCard;
                               *((Card**)&G.p_PRED)             = pCard; break;
 
-    case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard; break;
+    case CK_COMBINED:         *((Card**)&G.p_combined)         = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_CONSTRAINT:       *((Card**)&G.p_constraint)       = pCard; break;
     case CK_CORRELATION:      *((Card**)&G.p_correlation)      = pCard; break;
     case CK_COSTJOINING:      *((Card**)&G.p_costJoining)      = pCard; break;
@@ -1334,7 +1335,8 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_GBYAGG:           *((Card**)&G.p_gbyAgg)           = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
 
-    case CK_HASH:             *((Card**)&G.p_hash)             = pCard; break;
+    case CK_HASH:             *((Card**)&G.p_hash)             = pCard;
+                              *((Card**)&G.p_OP)               = pCard; break;
     case CK_HAVING:           *((Card**)&G.p_having)           = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
     case CK_HSHCOL:           *((Card**)&G.p_hshCol)           = pCard; break;
@@ -1366,7 +1368,7 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
     case CK_LIMIT:            *((Card**)&G.p_limit)            = pCard;
                               *((Card**)&G.p_OP)               = pCard; break;
 
-    case CK_MAP:              *((Card**)&G.p_map)             = pCard; break;
+    case CK_MAP:              *((Card**)&G.p_map)              = pCard; break;
     case CK_MAPPING:          *((Card**)&G.p_mapping)          = pCard; break;
 
     case CK_NCORRCOLS:        *((Card**)&G.p_nCorrCols)        = pCard; break;

@@ -583,9 +583,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vSymbol(szSymbol());
-  if (m_xSymbol.m_pProperties)
-    pCard_dup->pSymbol()->Y_vAll(this);
+  pCard_dup->vSymbol(pSymbol());
 
   return pCard_dup;
 }
@@ -598,9 +596,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vSymbol(szSymbol());
-  if (m_xSymbol.m_pProperties)
-    pCard_dup->pSymbol()->Y_vAll(this);
+  pCard_dup->vSymbol(pSymbol());
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1547,7 +1543,9 @@ void Card::vSetType(Card* p_card_arg)
 
 //  Ppy xPpy_type( p_card_arg->m_xSymbol.Y_xGet(P_Type).szPpy() );
 
-  vSetType(p_card_arg->m_xSymbol.Y_xGet(P_Type));
+  Ppy xPpy = p_card_arg->m_xSymbol.Y_xGet(P_Type);
+
+  vSetType(xPpy);
 }
 
 /*----------------------------------------------------------------------------*/

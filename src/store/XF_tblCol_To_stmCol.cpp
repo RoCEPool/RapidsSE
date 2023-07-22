@@ -86,7 +86,8 @@ void XF_tblCol_To_stmCol::vXF_tblCol_To_stmCol(void)
 
     m_pCI->Prior.m_pProjection = Card_Projection::pResolvePriorProjection(m_pCI);
 
-    ((Card_OP *) m_pCI->G.p_MainCard)->vConvert_tblColOdn_To_stmColOdn(m_pCI);
+//    m_pCI->G.p_OP->vDump(__func__);
+    m_pCI->G.p_OP->vConvert_tblColOdn_To_stmColOdn(m_pCI);
 
 //    if (m_pCI->G.p_OP->pSub_projection())
 //      m_pCI->Prior.m_pProjection =
