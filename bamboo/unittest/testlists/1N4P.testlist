@@ -43,9 +43,7 @@
 ../../../seth/tests/tests1N4P/LocalFunctions/testList
 ../../../seth/tests/tests1N4P/Operators/testList
 
-// DISABLE FOR V2 _ray101
-//////../../../seth/tests/tests1N4P/Optimiser_SF0001/testList
-////////////////
+../../../seth/tests/tests1N4P/Optimiser_SF0001/testList
 
 ../../../seth/tests/tests1N4P/PartitionKey/testList
 ../../../seth/tests/tests1N4P/Queries/testList
