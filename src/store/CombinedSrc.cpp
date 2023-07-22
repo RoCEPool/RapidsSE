@@ -94,7 +94,7 @@ CombinedSrc::~CombinedSrc(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* Synthesize code for the combined operators                                 */
 /*----------------------------------------------------------------------------*/
-void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool bLastStage)
+void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool bLastStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
 
@@ -119,8 +119,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append the file headers
-  if (bFileHeader)
+  // append the file headers if firstStage
+  if (bFirstStage)
     vAppendFileHeaders();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -322,6 +322,10 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool b
         pOperatorFile->vClose();
         break;
 
+        break;
+
+      case SK_ORDAGG:
+        RASSERT(0);
         break;
 
       case SK_PROJECT:

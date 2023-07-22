@@ -44,7 +44,7 @@ namespace STORE {
     CombinedSrc(void);
     ~CombinedSrc(void) noexcept(false);
 
-    void vSynthesizeCode(Stencil_v2* pStencil, bool bFileHeader, bool bLastStage);
+    void vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool bLastStage);
 
     char *azCode(void);
 

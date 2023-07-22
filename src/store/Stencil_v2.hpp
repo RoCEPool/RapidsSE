@@ -39,8 +39,8 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
 
     static eEC eSynthesise(PipelineDef* pPipelineDef);
 
-    void vSynthesise(i8 i_Stage, bool bLastStage);
     Stz* szOpSource(void);
+    void vSynthesise(bool bFirstStage, bool bLastStage);
     eEC  eSketch(Dynamic* pDynamic, Stream* pStream);
     Stz* szStageNm(void);
 
@@ -56,19 +56,16 @@ static const i8 C_MAX_OPS_PER_STAGE = 32;
     OpSketch* pSketchGbyAgg    (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchIndexJoin (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchIndexScan (StageDef* pStageDef, OpDef* pOpDef);
-    OpSketch* pSketchSemiJoin  (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchInflateCrw(StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchInflateRow(StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchLimit     (StageDef* pStageDef, OpDef* pOpDefp);
+    OpSketch* pSketchOrdAgg    (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchPotTub    (OpSketch* pLastOp, bool bGeneratePot, Stz* sHashExpr, Stz* sLimitExpr);
     OpSketch* pSketchProject   (StageDef* pStageDef, OpDef* pOpDef);
+    OpSketch* pSketchSemiJoin  (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchSort      (StageDef* pStageDef, OpDef* pOpDef);
     OpSketch* pSketchStreamDef (OpSketch* pLastOp);
     OpSketch* pSketchTop       (StageDef* pStageDef, OpDef* pOpDef);
-
-    void vSetupOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp);
-    OpSketch* pSketchOrdAgg(Dynamic* pDynamic, Stream* pStream, Op* pOp,
-                         eSR ePrevStencil_v2, Stz* sLabelLoop);
 
 
     Footer* aFooter(void);
