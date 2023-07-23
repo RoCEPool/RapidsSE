@@ -27,8 +27,32 @@ namespace STORE
     Symbol(Symbol* pSymbol);
 
     static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
+    static eSF  eForm(Stz* szArg);
+    static bool bIsAggOp(Stz* szArg);            // avg, count, ... sum
+    static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
+    static bool bIsBound(Stz* szArg);            // LBOUND, UBOUND
+    static bool bIsColNm(Stz* szArg);            //
+    static bool bIsColumnOrdinal(Stz* szArg);    // $c.n
+    static bool bIsComma(Stz* szArg);            // ,
+    static bool bIsCrossRef(Stz* szArg);         // #n
+    static bool bIsIndexColumn(Stz* szArg);      // $In
+    static bool bIsKeyOrdinal(Stz* szArg);       // $Kn
+    static bool bIsName(Stz* szArg);             //
+    static bool bIsNumber(Stz* szArg);           //
+    static bool bIsNumbOp(Stz* szArg);           //
+    static bool bIsParameterOrdinal(Stz* szArg); // %n
+    static bool bIsParenthesis(Stz* szArg);      // ( or )
+    static bool bIsRelnOp(Stz* szArg);           // <, <=, ... >
+    static bool bIsStreamOrdinal(Stz* szArg);    // $n
+    static bool bIsSubQueryOp(Stz* szArg);       // exists, in, notExists, notIn
+    static bool bIsSubQueryColumn(Stz* szArg);   // __n
+    static bool bIsSyntheticAs(Stz* szArg);      // __n
+    static bool bIsValueOrdinal(Stz* szArg);     // $n or $c.n
+
     static eCT  eTo_eCT_str(Stz* szType);
     static eCT  eTo_eCT_char(Stz* szType);
+
+    // - - - - - -
 
     eCT  eColType(void);
 
@@ -36,6 +60,7 @@ namespace STORE
     eQO  eEvalSubQryOp(void);
     i8   iExtractOrdinal(void);
     char cExtractTableSynonym(void);
+
 
     bool bIsAggOp(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
