@@ -112,7 +112,7 @@ void CardIter::vInit(void)
   Sqy.m_pTerm_sqCall       = nullptr;
 
 
-  G_vClearMembers();
+  vNullMembers();
   G_vClearRegisters();
 }
 
@@ -192,6 +192,26 @@ void CardIter::vBoardIteration(void)
   G.i_Board = C_UNKNOWN;
 }
 
+/*----------------------------------------------------------------------------*/
+/* burst OP                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBurst(Card* pCard)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  for (Kid xCard(pCard); xCard.bEach(); /**/)
+    vMember(xCard.pChild());
+}
+
+/*----------------------------------------------------------------------------*/
+/* burst OP                                                                   */
+/*----------------------------------------------------------------------------*/
+void CardIter::vBurstOP(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+
+  vBurst(G.p_OP);
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -293,7 +313,7 @@ void CardIter::vClearRestart(void)
 
   this->vBeginEach();
 
-  G_vClearMembers();
+  vNullMembers();
   G_vClearRegisters();
 }
 
@@ -1432,6 +1452,16 @@ void CardIter::G_vMember(eCK eMember, Card* pCard, const char* asFuncNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set member card                                                            */
+/*----------------------------------------------------------------------------*/
+void CardIter::vMember(Card* pCard)
+{
+  _precondition_(_MAGIC_, _FOOTER_);
+
+  G_vMember(pCard->eCard(),pCard,__func__);
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool CardIter::bMore(void)
@@ -1538,6 +1568,130 @@ void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
   G_vAppendChild(eOf,eMember);
 }
 
+/*----------------------------------------------------------------------------*/
+/* clear the M members                                                        */
+/*----------------------------------------------------------------------------*/
+void CardIter::vNullMembers(bool bNull_OP)
+{
+  _precondition_( _MAGIC_, _FOOTER_);
+
+  G.p_absJoin          = nullptr;
+  G.p_aggreg           = nullptr;
+  G.p_andPred          = nullptr;
+  G.p_as               = nullptr;
+
+  G.p_boolCalc         = nullptr;
+  G.p_bound            = nullptr;
+  G.p_bounds           = nullptr;
+
+  G.p_call             = nullptr;
+  G.p_cast             = nullptr;
+  G.p_cmpPred          = nullptr;
+  G.p_combined         = nullptr;
+  G.p_constraint       = nullptr;
+  G.p_correlation      = nullptr;
+  G.p_costJoining      = nullptr;
+  G.p_costNetwork      = nullptr;
+  G.p_costQuery        = nullptr;
+  G.p_costUnicast      = nullptr;
+  G.p_count            = nullptr;
+  G.p_crossJoin        = nullptr;
+
+  G.p_direction        = nullptr;
+
+  G.p_expr             = nullptr;
+
+  G.p_filter           = nullptr;
+  G.p_filtPred         = nullptr;
+  G.p_filtPredList     = nullptr;
+  G.p_flat             = nullptr;
+  G.p_fold             = nullptr;
+  G.p_foldElist        = nullptr;
+  G.p_from             = nullptr;
+
+  G.p_gbyAgg           = nullptr;
+
+  G.p_hash             = nullptr;
+  G.p_having           = nullptr;
+  G.p_hshCol           = nullptr;
+
+  G.p_idxCol           = nullptr;
+  G.p_idxColList       = nullptr;
+  G.p_index            = nullptr;
+  G.p_indexJoin        = nullptr;
+  G.p_indexList        = nullptr;
+  G.p_indexNm          = nullptr;
+  G.p_indexScan        = nullptr;
+
+  G.p_joinCast         = nullptr;
+  G.p_joinOrder        = nullptr;
+  G.p_joinOrdering     = nullptr;
+  G.p_joinPredList     = nullptr;
+
+  G.p_key              = nullptr;
+  G.p_keyCells         = nullptr;
+  G.p_keyExists        = nullptr;
+  G.p_keyNotExists     = nullptr;
+
+  G.p_level            = nullptr;
+  G.p_limit            = nullptr;
+
+  G.p_joinEstimate     = nullptr;
+
+  G.p_map              = nullptr;
+  G.p_mapping          = nullptr;
+
+  G.p_nCorrCols        = nullptr;
+  G.p_needed           = nullptr;
+  G.p_note             = nullptr;
+  G.p_notPred          = nullptr;
+
+  G.p_on               = nullptr;
+  G.p_ordAgg           = nullptr;
+  G.p_orPred           = nullptr;
+  G.p_outerColNm       = nullptr;
+  G.p_outerJoin        = nullptr;
+
+  G.p_payloadCells     = nullptr;
+  G.p_project          = nullptr;
+  G.p_projection       = nullptr;
+
+  G.p_rowCount         = nullptr;
+  G.p_rowSize          = nullptr;
+  G.p_rpnCalc          = nullptr;
+
+  G.p_scan             = nullptr;
+  G.p_section          = nullptr;
+  G.p_send             = nullptr;
+  G.p_streamKey        = nullptr;
+  G.p_streamPer        = nullptr;
+  G.p_streamPtn        = nullptr;
+  G.p_streamSet        = nullptr;
+  G.p_sort             = nullptr;
+  G.p_stage            = nullptr;
+  G.p_streamHead       = nullptr;
+  G.p_streamJoin       = nullptr;
+  G.p_subSet           = nullptr;
+
+  G.p_table            = nullptr;
+  G.p_tableList        = nullptr;
+  G.p_tableNm          = nullptr;
+  G.p_tablePtn         = nullptr;
+  G.p_tableSize        = nullptr;
+  G.p_term             = nullptr;
+  G.p_top              = nullptr;
+  G.p_topology         = nullptr;
+
+  G.p_unique           = nullptr;
+
+  G.p_where            = nullptr;
+
+  G.p_NEW              = nullptr;
+  G.p_PRED             = nullptr;
+
+  if (bNull_OP)
+    G.p_OP = nullptr;
+}
 /*----------------------------------------------------------------------------*/
 /* pop/restore M iterator from iter stack                                     */
 /*----------------------------------------------------------------------------*/
@@ -2161,129 +2315,6 @@ Stz* CardIter::szXhand(void)
 /*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* clear the M members                                                        */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vClearMembers(void)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  G.p_absJoin          = nullptr;
-  G.p_aggreg           = nullptr;
-  G.p_andPred          = nullptr;
-  G.p_as               = nullptr;
-
-  G.p_boolCalc         = nullptr;
-  G.p_bound            = nullptr;
-  G.p_bounds           = nullptr;
-
-  G.p_call             = nullptr;
-  G.p_cast             = nullptr;
-  G.p_cmpPred          = nullptr;
-  G.p_combined         = nullptr;
-  G.p_constraint       = nullptr;
-  G.p_correlation      = nullptr;
-  G.p_costJoining      = nullptr;
-  G.p_costNetwork      = nullptr;
-  G.p_costQuery        = nullptr;
-  G.p_costUnicast      = nullptr;
-  G.p_count            = nullptr;
-  G.p_crossJoin        = nullptr;
-
-  G.p_direction        = nullptr;
-
-  G.p_expr             = nullptr;
-
-  G.p_filter           = nullptr;
-  G.p_filtPred         = nullptr;
-  G.p_filtPredList     = nullptr;
-  G.p_flat             = nullptr;
-  G.p_fold             = nullptr;
-  G.p_foldElist        = nullptr;
-  G.p_from             = nullptr;
-
-  G.p_gbyAgg           = nullptr;
-
-  G.p_hash             = nullptr;
-  G.p_having           = nullptr;
-  G.p_hshCol           = nullptr;
-
-  G.p_idxCol           = nullptr;
-  G.p_idxColList       = nullptr;
-  G.p_index            = nullptr;
-  G.p_indexJoin        = nullptr;
-  G.p_indexList        = nullptr;
-  G.p_indexNm          = nullptr;
-  G.p_indexScan        = nullptr;
-
-  G.p_joinCast         = nullptr;
-  G.p_joinOrder        = nullptr;
-  G.p_joinOrdering     = nullptr;
-  G.p_joinPredList     = nullptr;
-
-  G.p_key              = nullptr;
-  G.p_keyCells         = nullptr;
-  G.p_keyExists        = nullptr;
-  G.p_keyNotExists     = nullptr;
-
-  G.p_level            = nullptr;
-  G.p_limit            = nullptr;
-
-  G.p_joinEstimate     = nullptr;
-
-  G.p_map              = nullptr;
-  G.p_mapping          = nullptr;
-
-  G.p_nCorrCols        = nullptr;
-  G.p_needed           = nullptr;
-  G.p_note             = nullptr;
-  G.p_notPred          = nullptr;
-
-  G.p_on               = nullptr;
-  G.p_ordAgg           = nullptr;
-  G.p_orPred           = nullptr;
-  G.p_outerColNm       = nullptr;
-  G.p_outerJoin        = nullptr;
-
-  G.p_payloadCells     = nullptr;
-  G.p_project          = nullptr;
-  G.p_projection       = nullptr;
-
-  G.p_rowCount         = nullptr;
-  G.p_rowSize          = nullptr;
-  G.p_rpnCalc          = nullptr;
-
-  G.p_scan             = nullptr;
-  G.p_section          = nullptr;
-  G.p_send             = nullptr;
-  G.p_streamKey        = nullptr;
-  G.p_streamPer        = nullptr;
-  G.p_streamPtn        = nullptr;
-  G.p_streamSet        = nullptr;
-  G.p_sort             = nullptr;
-  G.p_stage            = nullptr;
-  G.p_streamHead       = nullptr;
-  G.p_streamJoin       = nullptr;
-  G.p_subSet           = nullptr;
-
-  G.p_table            = nullptr;
-  G.p_tableList        = nullptr;
-  G.p_tableNm          = nullptr;
-  G.p_tablePtn         = nullptr;
-  G.p_tableSize        = nullptr;
-  G.p_term             = nullptr;
-  G.p_top              = nullptr;
-  G.p_topology         = nullptr;
-
-  G.p_unique           = nullptr;
-
-  G.p_where            = nullptr;
-
-  G.p_NEW              = nullptr;
-  G.p_OP               = nullptr;
-  G.p_PRED             = nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

@@ -73,9 +73,10 @@ namespace STORE
     void G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szValue);
 
     void vBeginEach(void);
-
     Board* pBoard(void);
     void vBoardIteration(void);
+    void vBurst(Card* pCard);
+    void vBurstOP(void);
 
     void vChangeCard(Card* pCard);
     i8   i_Child(void);
@@ -131,6 +132,7 @@ namespace STORE
     void G_vMainResynch(void);
     void G_vMainResynch(Card* pCard);
     void G_vMember(eCK eMember, Card* pCard, const char* asFuncNm);
+    void vMember(Card* pCard);
     bool bMore(void);
 
     void  G_vNewMember(eCK eMember, bool bUpdateMember= true);
@@ -139,6 +141,7 @@ namespace STORE
     void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);
+    void vNullMembers(bool bNull_OP=true);
 
     void G_vPopBoard(void);
     void G_vPopIter(void);
@@ -187,7 +190,6 @@ namespace STORE
     Stz* szXhand(void);
 
   protected:
-    void G_vClearMembers(void);
 
     bool bPopRecurseIter(void);
     void vPushRecurseIter(void);
