@@ -311,6 +311,7 @@
 #include "XF_Flatten_53_W_L_NC_NI_exists.hpp"
 #include "XF_Flatten_53_W_L_NC_NI_join.hpp"
 #include "XF_Flatten_74_H_A_NC_ro.hpp"
+#include "XC.hpp"
 
 #include "CardUsage.hpp"
 #include "ColMap.hpp"
@@ -777,6 +778,7 @@ SizeHeap gxaSizeHeap[]
   {CN_WSPCONVERGENT_t,            0,                                 HT_INVALID   , FILL },
 
   {CN__X__,                    'X' - ('A' - 1),                      HT_INVALID   , FILL },
+  {CN_XC,                          sizeof(XC),                       HT_T_TINY    , FILL },
   {CN_XF,                          sizeof(XF),                       HT_T_TINY    , FILL },
   {CN_XF_ADD_LEVEL,                sizeof(XF_Add_level),             HT_T_TINY    , FILL },
   {CN_XF_AS_REVIEW,                sizeof(XF_as_Review),             HT_T_TINY    , FILL },

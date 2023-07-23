@@ -445,6 +445,7 @@ enum eCN : u2 // Class Number
   /* */ CN_WSPCONVERGENT_t,
 
   /* */ CN__X__,
+  /* */ CN_XC,
   /* */ CN_XF,
   /* */ CN_XF_ADD_LEVEL,
   /* */ CN_XF_AS_REVIEW,
@@ -942,6 +943,7 @@ static Stz* aCN[]
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t
 
   /* */ "_X__"_Stz,                 // CN__X__
+  /* */ "XC"_Stz,                           // CN_XC
   /* */ "XF"_Stz,                           // CN_XF
   /* */ "XF_ADD_LEVEL"_Stz,                 // CN_XF_ADD_LEVEL
   /* */ "XF_AS_REVIEW"_Stz,                 // CN_XF_AS_REVIEW
