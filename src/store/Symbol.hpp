@@ -26,9 +26,12 @@ namespace STORE
     Symbol(Stz* szSymbol, eSF eSymbolForm);
     Symbol(Symbol* pSymbol);
 
-    static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
-    static eSF  eForm(Stz* szArg);
+    static eSF  eEvalForm(Stz* szArg);
+    static eRO  eEvalRelnOp(Stz* szArg);
+
+
     static bool bIsAggOp(Stz* szArg);            // avg, count, ... sum
+    static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
     static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
     static bool bIsBound(Stz* szArg);            // LBOUND, UBOUND
     static bool bIsColNm(Stz* szArg);            //

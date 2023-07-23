@@ -70,6 +70,60 @@ Symbol::Symbol(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* evaluate symbol form of given arg                                          */
+/*----------------------------------------------------------------------------*/
+eSF Symbol::eEvalForm(Stz* szArg)
+{
+  _static_
+
+  /*
+  enum eSF // symbol form
+  {
+    SF_NONE = 0,   // none
+
+    SF_ASNAME,
+    SF_DASCNE,
+    SF_IDXCOL,
+    SF_KEYCOL,
+    SF_NUMBER,
+
+    SF_OTHER,
+
+    SF_PRMCOL,
+    SF_SASCNM,
+    SF_SQRYNO,
+    SF_STMCOL,
+    SF_TBLCOL,
+    SF_TBLSYN,
+    SF_XREFNO,
+
+    SF_ENUMS
+  };
+  */
+
+  return SF_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Symbol::eEvalRelnOp(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szArg->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szArg->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szArg->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szArg->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szArg->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szArg->bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* is value a __subQuery like name?                                           */
 /*----------------------------------------------------------------------------*/
 bool Symbol::b_IsSubQueryName(BASE::Stz *szStz)
@@ -84,13 +138,348 @@ bool Symbol::b_IsSubQueryName(BASE::Stz *szStz)
 }
 
 /*----------------------------------------------------------------------------*/
-/* determine symbol form of given arg                                         */
+/* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
-eSF Symbol::eForm(Stz* szArg)
+bool Symbol::bIsAggOp(Stz* szArg)
 {
   _static_
 
-  return SF_NONE;
+  if (szArg->bSame("avg"_Stz))      return true;
+  else if (szArg->bSame("count"_Stz))    return true;
+  else if (szArg->bSame("countAll"_Stz)) return true;
+  else if (szArg->bSame("max"_Stz))      return true;
+  else if (szArg->bSame("min"_Stz))      return true;
+//else if (szArg->bSame("stddev"_Stz))   return true;
+  else if (szArg->bSame("sum"_Stz))      return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a boolean function?                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsBoolFn(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("between"_Stz))         return true;
+  else if (szArg->bSame("inList"_Stz))          return true;
+  else if (szArg->bSame("isNull"_Stz))          return true;
+  else if (szArg->bSame("like2"_Stz))           return true;
+  else if (szArg->bSame("like3"_Stz))           return true;
+  else if (szArg->bSame("matchLeading"_Stz))    return true;
+  else if (szArg->bSame("matchMiddle"_Stz))     return true;
+  else if (szArg->bSame("matchMiddle1"_Stz))    return true;
+  else if (szArg->bSame("matchTrailing"_Stz))   return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a bound?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsBound(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("BOUND"_Stz))   return true;
+  else if (szArg->bSame("LBOUND"_Stz))  return true;
+  else if (szArg->bSame("UBOUND"_Stz))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a column name?                                                     */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsColNm(Stz* szArg)
+{
+  _static_
+
+  if ( StrLib::bIsSqlName(szArg->azChar()) &&
+       ( (! bIsAggOp(szArg))  &&
+         (! bIsBoolFn(szArg)) &&
+         (! bIsBound(szArg))  &&
+         (! bIsSubQueryOp(szArg)) ) )
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a table-column (i.e. $c.n)                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsColumnOrdinal(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+
+  if ('$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '.' == acThird
+      && StrLib::bIsDigit(acFourth))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsComma(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a cross-refernece?  (i.e. #n)                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsCrossRef(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+
+  if ('#' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for an index-column?  (i.e. $In)                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsIndexColumn(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+
+  if ('$' == acFirst
+      && ('I' == acSecond || 'i' == acSecond)
+      && StrLib::bIsDigit(acThird)
+      && ! acFourth)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a key symbol? (i.e. $Kn)                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsKeyOrdinal(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+
+  if ('$' == acFirst
+      && ('K' == acSecond || 'k' == acSecond)
+      && StrLib::bIsDigit(acThird)
+      && ! acFourth)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a name?                                                            */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsName(Stz* szArg)
+{
+  _static_
+
+  if (StrLib::bIsSqlName(szArg->azChar()))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a number?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsNumber(Stz* szArg)
+{
+  _static_
+
+  if (StrLib::bIsDecimal(szArg->azChar()))  return true;
+  if (StrLib::bIsFloat(szArg->azChar()))    return true;
+  if (StrLib::bIsInteger(szArg->azChar()))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a numeric operator ?                                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsNumbOp(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("+"_Stz))     return true;
+  if (szArg->bSame("-"_Stz))     return true;
+  if (szArg->bSame("*"_Stz))     return true;
+  if (szArg->bSame("/"_Stz))     return true;
+
+  return false;
+}
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsParameterOrdinal(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+
+  if ('%' == acFirst
+      && StrLib::bIsDigit(acSecond)
+      && ! acThird)
+    return true;
+  else
+    return false;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a parenthesis?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsParenthesis(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("("_Stz))     return true;
+  if (szArg->bSame(")"_Stz))     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a relational-operator?                                      */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsRelnOp(Stz* szArg)
+{
+  _static_
+
+  if (RO_NONE != eEvalRelnOp(szArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a stream-column?  (i.e. $n)                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsStreamOrdinal(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+
+  if ('$' == acFirst &&
+      StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a subQuery-operator?                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsSubQueryOp(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("exists"_Stz))    return true;
+  else if (szArg->bSame("in"_Stz))        return true;
+  else if (szArg->bSame("notExists"_Stz)) return true;
+  else if (szArg->bSame("notIn"_Stz))     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a subQuery-column?  (i.e. __n)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsSubQueryColumn(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && StrLib::bIsDigit(acThird))
+    return true;
+
+  if ('_' == acFirst
+      && '_' == acSecond
+      && 'S' == acThird
+      && 'Q' == acFourth)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a synthetic as?  (i.e. __COLn)                        */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsSyntheticAs(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+  char acFourth = szArg->azChar()[3];
+  char acFifth  = szArg->azChar()[4];
+  char acSixth  = szArg->azChar()[5];
+
+  if (   '_' == acFirst
+         && '_' == acSecond
+         && 'C' == acThird
+         && 'O' == acFourth
+         && 'L' == acFifth
+         && StrLib::bIsDigit(acSixth))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a column?  (i.e. $n or $c.n)                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsValueOrdinal(Stz* szArg)
+{
+  _static_
+
+  if (bIsStreamOrdinal(szArg) || bIsColumnOrdinal(szArg))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
