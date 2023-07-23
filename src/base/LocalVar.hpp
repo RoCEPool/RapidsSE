@@ -13,28 +13,20 @@ namespace BASE
   {
   public:
     LocalVars* m_pLocalVars;
-    i8         m_i_LocalVar;
     void*      m_aDiscardPoint;
+
     TypeValue  m_xTypeValue;
     LocalStr*  m_axLocalStr;
 
   public:
     LocalVar(void);
    ~LocalVar(void) noexcept(false);
-  
-    // auto conversion
-    operator LocalVar*(void);
-  
-    char* azArea(void);
-    Stz*  szArea(void);
 
     void* aDiscardPoint(void);
-    i8    i_LocalVar(void);
-    LocalStr* axLocalStr(void);
-    LocalStr* axLocalStrAllot(void);
+    void  vLocalStrAllot(void);
     void  vLocalStrRevert(void);
-    i8    nStackUsage(void);
-    i8    jStzSize(void);
+    i8    jStackUsage(void);
+    i8    jStz(void);
     eCN   eType(void);
     _Header* axType(void);
     TypeValue* axTypeValue(void);
@@ -50,6 +42,10 @@ namespace BASE
     void vGetText(TypeValueArea* aTypeValueArea);
     void vGetValue(TypeValueArea* aTypedValueArea);
 
+  private:
+    void vEnsureText(void);
+    void vSetSize(i8 jStz);
+    void vSetValue(i8 iValue);
   };
 
   LocalVar* _pLocalVar(void* aAddr);

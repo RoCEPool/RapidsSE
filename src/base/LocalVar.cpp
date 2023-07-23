@@ -14,11 +14,10 @@ LocalVar::LocalVar(void)
   _nonProper_
 
   m_pLocalVars    = nullptr;
-  m_i_LocalVar    = C_UNKNOWN;
   m_aDiscardPoint = nullptr;
+
   //m_xTypeValue
   m_axLocalStr    = nullptr;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,39 +29,8 @@ LocalVar::~LocalVar(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Operators ---------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* auto conversion operator : as LocalVar*                                    */
-/*----------------------------------------------------------------------------*/
-LocalVar::operator LocalVar*(void)
-{
-  _nonProper_
-
-  return this;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get string area                                                            */
-/*----------------------------------------------------------------------------*/
-char* LocalVar::azArea(void)
-{
-  _nonProper_
-
-  return m_axLocalStr->azArea();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get string area                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* LocalVar::szArea(void)
-{
-  _nonProper_
-
-  return m_axLocalStr->szArea();
-}
 
 /*----------------------------------------------------------------------------*/
 /* get discard point                                                          */
@@ -75,19 +43,9 @@ void* LocalVar::aDiscardPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get localStr                                                               */
-/*----------------------------------------------------------------------------*/
-LocalStr* LocalVar::axLocalStr(void)
-{
-  _nonProper_
-
-  return m_axLocalStr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot a localStr                                                           */
 /*----------------------------------------------------------------------------*/
-LocalStr* LocalVar::axLocalStrAllot(void)
+void LocalVar::vLocalStrAllot(void)
 {
   _nonProper_
 
@@ -97,20 +55,7 @@ LocalStr* LocalVar::axLocalStrAllot(void)
   m_axLocalStr = m_pLocalVars->axLocalStrAllot();
   
   m_xTypeValue.m_wxType.vSetClassNo(CN_STZVAL);
-  
-  return m_axLocalStr;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get local                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 LocalVar::i_LocalVar(void)
-{
-  _nonProper_
-
-  return m_i_LocalVar;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* revert a localStr                                                          */
@@ -119,8 +64,9 @@ void LocalVar::vLocalStrRevert(void)
 {
   _nonProper_
 
-  //vTrace("LocalVar: %lld StrRevert\n"_Stz,m_i_LocalVar);
-  
+  if (CN_STZVAL != eType())
+    return;
+
   m_pLocalVars->vLocalStrRevert(m_axLocalStr);
   m_axLocalStr = nullptr;
   
@@ -128,39 +74,32 @@ void LocalVar::vLocalStrRevert(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stack usage                                                            */
+/* get stack usage/required for this var                                      */
 /*----------------------------------------------------------------------------*/
-i8 LocalVar::nStackUsage(void)
+i8 LocalVar::jStackUsage(void)
 {
   _nonProper_
 
-  i8 nBytes;
+  i8 jStack = sizeof(TypeValue);
 
-  if (CN_STZVAL == eType()) {
-    i8 jStz = jStzSize();
-    i8 jSizeStz = sizeof(i8) + jStz;
+  if (CN_STZVAL == eType())
+    jStack += jStz();
 
-    nBytes = sizeof(_Header) + jSizeStz;
-  }
-  else {
-    nBytes = sizeof(TypeValue);
-  }
-
-  return nBytes;
+  return jStack;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get string size                                                            */
 /*----------------------------------------------------------------------------*/
-i8 LocalVar::jStzSize(void)
+i8 LocalVar::jStz(void)
 {
   _nonProper_
 
-  return m_axLocalStr->jStrSize();
+  return m_xTypeValue.m_wxValue.iAsI8();
 }
 
 /*----------------------------------------------------------------------------*/
-/* get type                                                                   */
+/* get type of this var                                                       */
 /*----------------------------------------------------------------------------*/
 eCN LocalVar::eType(void)
 {
@@ -207,14 +146,18 @@ void LocalVar::vSet(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypeValueArea->eType();
+  eCN eType_onStack = aTypeValueArea->eType();
 
-  if (CN_STZVAL == eType_stack)
+  if (CN_STZVAL == eType_onStack) {
+    vSetType(aTypeValueArea);
     vSetText(aTypeValueArea);
-  else
+  }
+  else {
+    vLocalStrRevert();
+    vSetType(aTypeValueArea);
     vSetValue(aTypeValueArea);
+  }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set type of local variable from given typeValue                            */
@@ -223,30 +166,10 @@ void LocalVar::vSetType(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypeValueArea->eType();
-  eCN eType_local = this->eType();
-
-  ASSERT(CN_STZVAL == eType_stack);
-
-  LocalStr *axLocalStr;
-  if (CN_STZVAL == eType_local)
-    axLocalStr = this->axLocalStr();
-  else
-    axLocalStr = this->axLocalStrAllot();
-
-  if (! m_axLocalStr->m_pText)
-    m_axLocalStr->m_pText = new Text;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   MemLib::vCopy(axType(),
                 aTypeValueArea,
                 sizeof(_Header),
                 CN_STACK);
-
-  eType_local = this->eType();
-  ASSERT(CN_STZVAL == eType_local);
-  //ASSERT(m_pText);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,27 +179,17 @@ void LocalVar::vSetText(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypeValueArea->eType();
-  ASSERT(CN_STZVAL == eType_stack);
+  ASSERT(CN_STZVAL == aTypeValueArea->eType());
 
-  vSetType(aTypeValueArea);
+  vEnsureText();
 
-  //ASSERT(m_pText);
+  i8 jBytes_typeValueStz = aTypeValueArea->nStackUsage();
+  i8 jBytes_valueStz = jBytes_typeValueStz - sizeof(_Header);
+  i8 jBytes_stz = jBytes_valueStz - sizeof(i8);
 
-  LocalStr* axLocalStr = this->axLocalStr();
+  vSetSize(jBytes_stz);
 
-  SizeArea* axSizeArea = axLocalStr->axSizeArea();
-  byte* ayByte = reinterpret_cast<byte*>(aTypeValueArea->axValue());
-  i8 nBytes = aTypeValueArea->nStackUsage() - sizeof(_Header);
-
-  MemLib::vCopy(axSizeArea,
-                ayByte,
-                nBytes,
-                CN_STACK);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  m_axLocalStr->m_pText->vSet(reinterpret_cast<Stz*>(ayByte + 8));
+  m_axLocalStr->vText(reinterpret_cast<Stz*>(aTypeValueArea->szStz()));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,40 +199,18 @@ void LocalVar::vSetValue(TypeValueArea* aTypedValueArea)
 {
   _nonProper_
 
-  eCN eType_stack = aTypedValueArea->eType();
-  ASSERT(CN_STZVAL != eType_stack);
-
-  eCN eType_local = this->eType();
-
-  if (CN_STZVAL == eType_local) {
-    ASSERT(m_axLocalStr->m_pText);
-    this->vLocalStrRevert();
-   }
-  else {
-    //ASSERT(! m_pText);
-  }
-
-  if (m_axLocalStr && m_axLocalStr->m_pText) {
-    delete m_axLocalStr->m_pText;
-    m_axLocalStr->m_pText = nullptr;
-  }
-
-
-  ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
+  ASSERT(! m_axLocalStr || ! m_axLocalStr->szText());
 
   TypeValue* axTypeValue = this->axTypeValue();
 
-  MemLib::vCopy(axTypeValue,
-                aTypedValueArea,
-                sizeof(TypeValue),
+  MemLib::vCopy(axTypeValue->axValue(),
+                aTypedValueArea->axValue(),
+                sizeof(Dtm),
                 CN_STACK);
 
-  eType_local = this->eType();
-  ASSERT(CN_STZVAL != eType_local);
-  ASSERT(! m_axLocalStr || ! m_axLocalStr->m_pText);
+  ASSERT(CN_STZVAL != this->eType());
+  ASSERT(! m_axLocalStr || ! m_axLocalStr->szText());
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* get local variable from given typeValue                                    */
@@ -334,9 +225,9 @@ void LocalVar::vGet(TypeValueArea* aTypeValueArea)
 
   }
   else {
+    vGetType(aTypeValueArea);
     vGetValue(aTypeValueArea);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,28 +250,29 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 {
   _nonProper_
 
-  SizeArea* axSizeArea = axLocalStr()->axSizeArea();
 
-  i8 jStz = this->jStzSize();
+  i8 jStz = this->jStz();
+  RASSERT(jStz == m_xTypeValue.m_wxValue.iAsI8());
+
   i8 jSizeStz = sizeof(i8) + jStz;
-
-//  MemLib::vCopy(aTypeValueArea->axValue(),
-//                axSizeArea,
-//                jSizeStz,
-//                CN_STACK);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // todo: copy text from m_pText
 
-  jStz = m_axLocalStr->m_pText->szGet()->nSize();
+  jStz = m_axLocalStr->szText()->nSize();
   jSizeStz = sizeof(i8) + jStz;
   MemLib::vCopy(aTypeValueArea->axValue(),
                 &jStz,
                 8,
                 CN_STACK);
-  MemLib::vCopy(reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
-                m_axLocalStr->m_pText->szGet(),
+
+  i8 jStz_this = m_xTypeValue.axValue()->iAsI8();
+  RASSERT(jStz_this == jStz);
+
+  MemLib::vCopy(//reinterpret_cast<byte*>(aTypeValueArea->axValue()) + 8,
+                aTypeValueArea->szStz(),
+                m_axLocalStr->szText(),
                 jStz,
                 CN_STACK);
 
@@ -392,18 +284,53 @@ void LocalVar::vGetText(TypeValueArea* aTypeValueArea)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get 8B value from given typeValue                                          */
+/* get 8B value from this localVar into given typedValueArea                  */
 /*----------------------------------------------------------------------------*/
 void LocalVar::vGetValue(TypeValueArea* aTypedValueArea)
 {
   _nonProper_
 
-  TypeValue* axTypeValue = this->axTypeValue();
-
-  MemLib::vCopy(aTypedValueArea,
-                axTypeValue,
-                sizeof(TypeValue),
+  MemLib::vCopy(aTypedValueArea->axValue(),
+                axValue(),
+                sizeof(Dtm),
                 CN_STACK);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* ensure text                                                                */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vEnsureText(void)
+{
+  _nonProper_
+
+  if (! m_axLocalStr)
+    vLocalStrAllot();
+
+  m_axLocalStr->vEnsureText();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set value given size argument                                              */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetSize(i8 jStz)
+{
+  _nonProper_
+
+  vSetValue(jStz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set value given argument                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalVar::vSetValue(i8 iValue)
+{
+  _nonProper_
+
+  m_xTypeValue.axValue()->vAsI8(iValue);
 }
 
 /*============================================================================*/

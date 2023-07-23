@@ -9,30 +9,27 @@ namespace BASE
 {
   class LocalStr
   {
-  public:
-    i8       m_i_LclStr;
-    i8       m_i_NextFree;  // C_UNKNOWN indicates end
+  private:
+    i8    m_i_LocalStr;
+    i8    m_i_NextFree;  // C_UNKNOWN indicates end
 
-    Text*    m_pText;
-
-    SizeArea m_xSizeArea;
+    Text* m_pText;
 
   public:
     LocalStr(void);
    ~LocalStr(void) noexcept(false);
-  
-    // auto conversion
-    operator LocalStr*(void);
 
-    Text*    pText(void);
+    void  vEnsureText(void);
 
-    char* azArea(void);
-    Stz*  szArea(void);
+    void  vInitialise(i8 i_LclStr, i8 i_NextFree);
 
-    void  vReInitialise(void);
-    SizeArea* axSizeArea(void);
-  
-    i8 jStrSize(void);  
+    i8   i_LocalStr(void);
+
+    i8   i_NextFree(void);
+    void v_NextFree(i8 i_NextFree);
+
+    Stz* szText(void);
+    void vText(Stz* szText);
   };
 
   LocalStr* _pLocalStr(void* aAddr);
