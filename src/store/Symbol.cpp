@@ -105,7 +105,7 @@ eSF Symbol::eEvalForm(Stz* szArg)
 
   if (bIsColumnOrdinal(szArg))      return SF_TBLCOL;
   if (bIsCrossRef(szArg))           return SF_XREFNO;
-//if (bIsDisambiguatedColNm(szArg)) return SF_DASCNE;
+  if (bIsDisambiguatedColNm(szArg)) return SF_DASCNE;
   if (bIsIndexColumn(szArg))        return SF_IDXCOL;
   if (bIsNumber(szArg))             return SF_NUMBER;
   if (bIsKeyOrdinal(szArg))         return SF_KEYCOL;
@@ -1007,15 +1007,11 @@ bool Symbol::bIsSyntheticAs(void)
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
   char acFourth = m_sSymbol.azChar()[3];
-  char acFifth  = m_sSymbol.azChar()[4];
-  char acSixth  = m_sSymbol.azChar()[5];
 
-  if (   '_' == acFirst
-      && '_' == acSecond
-      && 'C' == acThird
-      && 'O' == acFourth
-      && 'L' == acFifth
-      && StrLib::bIsDigit(acSixth))
+  if (   'C' == acFirst
+      && 'O' == acSecond
+      && 'L' == acThird
+      && StrLib::bIsDigit(acFourth))
     return true;
 
   return false;
@@ -1253,7 +1249,7 @@ void Symbol::vSet_other(Stz* szOther)
   m_eSymbolForm = SF_OTHER;
 
 #ifdef X_SET_CROSS_CHECK
-  //RASSERT(bIsOther());
+  RASSERT(bIsOther());
 #endif
 }
 
