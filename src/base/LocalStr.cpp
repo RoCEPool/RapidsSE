@@ -51,11 +51,11 @@ void LocalStr::vInitialise(i8 i_LclStr, i8 i_NextFree)
 {
   _nonProper_
 
-  m_i_LocalStr   = i_LclStr;
+  m_i_LocalStr = i_LclStr;
   m_i_NextFree = i_NextFree;
+  m_pText      = nullptr;
 
-  if (! m_pText)
-    m_pText = new Text;
+  m_pText = new Text;
 }
 
 /*----------------------------------------------------------------------------*/

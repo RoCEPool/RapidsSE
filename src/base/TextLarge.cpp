@@ -5,36 +5,13 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-TextLarge* BASE::_pTextLarge(void* aAddr)
-{
-  TextLarge* pText = reinterpret_cast<TextLarge*>(aAddr);
-  
-  RASSERT_TYPE(pText,CN_TEXTLARGE);
-  
-  return pText;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new a Text from the heap                                                   */
-/*----------------------------------------------------------------------------*/
-void* TextLarge::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_TEXTLARGE);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void TextLarge::operator delete(void* pTextAddress)
-{
-  TextLarge* pTextLarge = reinterpret_cast<TextLarge*>(pTextAddress);
-  
-  Heaps::vFree(pTextLarge);
-}
+__pCastFunction(BASE,TextLarge,CN_TEXTLARGE)
+__aNewFunction(TextLarge,CN_TEXTLARGE)
+__vDeleteFunction(TextLarge,CN_TEXTLARGE)
+__aFooterFunction(TextLarge)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -71,19 +48,6 @@ Stz* TextLarge::szArea(void)
   return (Stz*)&m_caText[0];
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* TextLarge::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXTLARGE);
-
-  return &m_xFooter;
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

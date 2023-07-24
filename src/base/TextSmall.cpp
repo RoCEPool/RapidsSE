@@ -1,40 +1,17 @@
 /*============================================================================*/
-/* TextSmall.cpp -- Small Text                                                  */
+/* TextSmall.cpp -- Small Text                                                */
 /*============================================================================*/
 
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
+/*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-TextSmall* BASE::_pTextSmall(void* aAddr)
-{
-  TextSmall* pText = reinterpret_cast<TextSmall*>(aAddr);
-  
-  RASSERT_TYPE(pText,CN_TEXTSMALL);
-  
-  return pText;
-}
 
-/*----------------------------------------------------------------------------*/
-/* new a Text from the heap                                                   */
-/*----------------------------------------------------------------------------*/
-void* TextSmall::operator new(size_t)
-{
-  void* pObject = Heaps::pAllocate(CN_TEXTSMALL);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void TextSmall::operator delete(void* pTextAddress)
-{
-  TextSmall* pTextSmall = reinterpret_cast<TextSmall*>(pTextAddress);
-  
-  Heaps::vFree(pTextSmall);
-}
+__pCastFunction(BASE,TextSmall,CN_TEXTSMALL)
+__aNewFunction(TextSmall,CN_TEXTSMALL)
+__vDeleteFunction(TextSmall,CN_TEXTSMALL)
+__aFooterFunction(TextSmall)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -71,19 +48,6 @@ Stz* TextSmall::szArea(void)
   return (Stz*)&m_caText[0];
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* TextSmall::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
-
-  return &m_xFooter;
-}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
