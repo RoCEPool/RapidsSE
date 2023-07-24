@@ -1445,7 +1445,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
-  Card_Projection* pCard_Projection = new Card_Projection(-1);
+  Card_Projection* pCard_Projection = new Card_Projection(0);
 
   i8 iCardNo = 0;
 

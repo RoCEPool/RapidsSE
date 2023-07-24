@@ -10,6 +10,8 @@
 #include "Card_Index.hpp"  // TODO: remove
 #include "Index.hpp"       // TODO: remove
 
+//#define X_SET_CROSS_CHECK
+
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -103,7 +105,7 @@ eSF Symbol::eEvalForm(Stz* szArg)
 
   if (bIsColumnOrdinal(szArg))      return SF_TBLCOL;
   if (bIsCrossRef(szArg))           return SF_XREFNO;
-//if (bIsDisambiguatedColNm(szArg)) return SF_DASCNE;
+  if (bIsDisambiguatedColNm(szArg)) return SF_DASCNE;
   if (bIsIndexColumn(szArg))        return SF_IDXCOL;
   if (bIsNumber(szArg))             return SF_NUMBER;
   if (bIsKeyOrdinal(szArg))         return SF_KEYCOL;
@@ -381,6 +383,17 @@ bool Symbol::bIsNumbOp(Stz* szArg)
 
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is this an other?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsOther(Stz* szArg)
+{
+  _static_
+
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
@@ -774,6 +787,19 @@ bool Symbol::bIsCrossRef(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsDisambiguatedColNm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIsDisambiguatedColNm(m_sSymbol.szStz()))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for an index-column?  (i.e. $In)                          */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsIndexColumn(void)
@@ -856,6 +882,17 @@ bool Symbol::bIsNumbOp(void)
 
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol an other ?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsOther(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return bIsOther(m_sSymbol.szStz());
+}
+
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
@@ -873,7 +910,6 @@ bool Symbol::bIsParameterOrdinal(void)
     return true;
   else
     return false;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -971,15 +1007,11 @@ bool Symbol::bIsSyntheticAs(void)
   char acSecond = m_sSymbol.azChar()[1];
   char acThird  = m_sSymbol.azChar()[2];
   char acFourth = m_sSymbol.azChar()[3];
-  char acFifth  = m_sSymbol.azChar()[4];
-  char acSixth  = m_sSymbol.azChar()[5];
 
-  if (   '_' == acFirst
-      && '_' == acSecond
-      && 'C' == acThird
-      && 'O' == acFourth
-      && 'L' == acFifth
-      && StrLib::bIsDigit(acSixth))
+  if (   'C' == acFirst
+      && 'O' == acSecond
+      && 'L' == acThird
+      && StrLib::bIsDigit(acFourth))
     return true;
 
   return false;
@@ -992,13 +1024,20 @@ bool Symbol::bIsTableSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  char acFirst  = m_sSymbol.azChar()[0];
+//  char acSecond = m_sSymbol.azChar()[1];
+//  char acThird  = m_sSymbol.azChar()[2];
+//
+//  if (   '$' == acFirst
+//      && StrLib::bIsAlpha(acSecond)
+//      && '\0' == acThird)
+//    return true;
+
   char acFirst  = m_sSymbol.azChar()[0];
   char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
 
-  if (   '$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '\0' == acThird)
+  if (StrLib::bIsAlpha(acFirst)
+      && '\0' == acSecond)
     return true;
 
   return false;
@@ -1107,7 +1146,6 @@ void Symbol::vSet(Symbol* pSymbol)
     delete m_pProperties;
     m_pProperties = nullptr;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1119,6 +1157,10 @@ void Symbol::vSet_asName(Stz* szAsNm)
 
   m_sSymbol = szAsNm;
   m_eSymbolForm = SF_ASNAME;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsColNm());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1130,6 +1172,10 @@ void Symbol::vSetCrossRef(i8 iCrossRef)
 
   vSprint("#%lld"_Stz, iCrossRef);
   m_eSymbolForm = SF_XREFNO;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsCrossRef());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1141,6 +1187,10 @@ void Symbol::vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm)
 
   vSprint("C%lld_%s"_Stz, i_Child, szColNm);
   m_eSymbolForm = SF_DASCNE;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsDisambiguatedColNm());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1152,6 +1202,10 @@ void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 
   vSprint("$I%lld"_Stz, iIdxColOdn);
   m_eSymbolForm = SF_IDXCOL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsIndexColumn());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1163,6 +1217,10 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 
   vSprint("$K%lld"_Stz, iKeyOdn);
   m_eSymbolForm = SF_KEYCOL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsKeyOrdinal());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1174,6 +1232,10 @@ void Symbol::vSet_number(i8 iNumber)
 
    m_sSymbol = iNumber;
   m_eSymbolForm = SF_NUMBER;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsNumber());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1185,6 +1247,10 @@ void Symbol::vSet_other(Stz* szOther)
 
   m_sSymbol = szOther;
   m_eSymbolForm = SF_OTHER;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsOther());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1196,6 +1262,10 @@ void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 
   vSprint("$%lld"_Stz, iStmColOdn);
   m_eSymbolForm = SF_STMCOL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsStreamOrdinal());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1207,6 +1277,10 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 
   vSprint("__sq%02lld"_Stz, iSqNo);
   m_eSymbolForm = SF_SQRYNO;
+
+#ifdef X_SET_CROSS_CHECK
+  //RASSERT(bIsSubQueryColumn());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1220,6 +1294,10 @@ void Symbol::vSetSyntheticAs(i8 iAsNo)
   m_eSymbolForm = SF_SASCNM;
 
   Y_vSet(P_Synthetic);
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsSyntheticAs());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1231,6 +1309,10 @@ void Symbol::vSetTableColSyn(char cTblSyn)
 
   vSprint("%c"_Stz, cTblSyn);
   m_eSymbolForm = SF_TBLSYN;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsTableSyn());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1242,6 +1324,10 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
   m_eSymbolForm = SF_TBLCOL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsColumnOrdinal());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
