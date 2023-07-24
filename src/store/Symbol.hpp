@@ -38,6 +38,7 @@ namespace STORE
     static bool bIsColumnOrdinal(Stz* szArg);    // $c.n
     static bool bIsComma(Stz* szArg);            // ,
     static bool bIsCrossRef(Stz* szArg);         // #n
+    static bool bIsDisambiguatedColNm(Stz* szArg);  // C_n
     static bool bIsIndexColumn(Stz* szArg);      // $In
     static bool bIsKeyOrdinal(Stz* szArg);       // $Kn
     static bool bIsName(Stz* szArg);             //
@@ -50,6 +51,7 @@ namespace STORE
     static bool bIsSubQueryOp(Stz* szArg);       // exists, in, notExists, notIn
     static bool bIsSubQueryColumn(Stz* szArg);   // __n
     static bool bIsSyntheticAs(Stz* szArg);      // __n
+    static bool bIsTableSyn(Stz* szArg);         // $c
     static bool bIsValueOrdinal(Stz* szArg);     // $n or $c.n
 
     static eCT  eTo_eCT_str(Stz* szType);
@@ -84,6 +86,7 @@ namespace STORE
     bool bIsSubQueryOp(void);       // exists, in, notExists, notIn
     bool bIsSubQueryColumn(void);   // __n
     bool bIsSyntheticAs(void);      // __n
+    bool bIsTableSyn(void);         // __n
     bool bIsValueOrdinal(void);     // $n or $c.n
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing

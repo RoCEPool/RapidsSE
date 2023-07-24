@@ -101,6 +101,20 @@ eSF Symbol::eEvalForm(Stz* szArg)
   };
   */
 
+  if (bIsColumnOrdinal(szArg))      return SF_TBLCOL;
+  if (bIsCrossRef(szArg))           return SF_XREFNO;
+//if (bIsDisambiguatedColNm(szArg)) return SF_DASCNE;
+  if (bIsIndexColumn(szArg))        return SF_IDXCOL;
+  if (bIsNumber(szArg))             return SF_NUMBER;
+  if (bIsKeyOrdinal(szArg))         return SF_KEYCOL;
+  if (bIsParameterOrdinal(szArg))   return SF_PRMCOL;
+  if (bIsStreamOrdinal(szArg))      return SF_STMCOL;
+  if (bIsSubQueryColumn(szArg))     return SF_SQRYNO;
+  if (bIsSyntheticAs(szArg))        return SF_SASCNM;
+  if (bIsTableSyn(szArg))           return SF_TBLSYN;
+
+  if (StrLib::bIsSqlName(szArg->azChar()))  return SF_ASNAME;
+
   return SF_NONE;
 }
 
@@ -255,6 +269,33 @@ bool Symbol::bIsCrossRef(Stz* szArg)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol for a disambiguated as?  (i.e. Cn_Xyz)                    */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsDisambiguatedColNm(Stz* szArg)
+{
+  _static_
+
+  char* acCursor_arg = szArg->azChar();
+
+  if ('C' != *acCursor_arg++)
+    return false;
+
+  i8 nDigits = 0;
+  while (StrLib::bIsDigit(*acCursor_arg++))
+    nDigits++;
+  if (! nDigits)
+    return false;
+
+  if ('_' != *acCursor_arg++)
+    return false;
+
+  if (StrLib::bIsSqlName(acCursor_arg))
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -464,6 +505,25 @@ bool Symbol::bIsSyntheticAs(Stz* szArg)
          && 'O' == acFourth
          && 'L' == acFifth
          && StrLib::bIsDigit(acSixth))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol a table synonym?  (i.e. $c)                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsTableSyn(Stz* szArg)
+{
+  _static_
+
+  char acFirst  = szArg->azChar()[0];
+  char acSecond = szArg->azChar()[1];
+  char acThird  = szArg->azChar()[2];
+
+  if (   '$' == acFirst
+         && StrLib::bIsAlpha(acSecond)
+         && '\0' == acThird)
     return true;
 
   return false;
@@ -920,6 +980,25 @@ bool Symbol::bIsSyntheticAs(void)
       && 'O' == acFourth
       && 'L' == acFifth
       && StrLib::bIsDigit(acSixth))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this a symbol a table synonym?  (i.e. $c)                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsTableSyn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  char acFirst  = m_sSymbol.azChar()[0];
+  char acSecond = m_sSymbol.azChar()[1];
+  char acThird  = m_sSymbol.azChar()[2];
+
+  if (   '$' == acFirst
+      && StrLib::bIsAlpha(acSecond)
+      && '\0' == acThird)
     return true;
 
   return false;
