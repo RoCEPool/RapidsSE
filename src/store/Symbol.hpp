@@ -44,6 +44,7 @@ namespace STORE
     static bool bIsName(Stz* szArg);             //
     static bool bIsNumber(Stz* szArg);           //
     static bool bIsNumbOp(Stz* szArg);           //
+    static bool bIsOther(Stz* szArg);            //
     static bool bIsParameterOrdinal(Stz* szArg); // %n
     static bool bIsParenthesis(Stz* szArg);      // ( or )
     static bool bIsRelnOp(Stz* szArg);           // <, <=, ... >
@@ -80,6 +81,7 @@ namespace STORE
     bool bIsName(void);             //
     bool bIsNumber(void);           //
     bool bIsNumbOp(void);           //
+    bool bIsOther(void);            //
     bool bIsParameterOrdinal(void); // %n
     bool bIsParenthesis(void);      // ( or )
     bool bIsRelnOp(void);           // <, <=, ... >

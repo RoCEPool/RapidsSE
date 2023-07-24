@@ -383,6 +383,17 @@ bool Symbol::bIsNumbOp(Stz* szArg)
 
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is this an other?                                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsOther(Stz* szArg)
+{
+  _static_
+
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
@@ -871,6 +882,17 @@ bool Symbol::bIsNumbOp(void)
 
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol an other ?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsOther(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return bIsOther(m_sSymbol.szStz());
+}
+
 /*----------------------------------------------------------------------------*/
 /* is this a symbol for a correlation-parameter?  (i.e. %n)                   */
 /*----------------------------------------------------------------------------*/
@@ -888,7 +910,6 @@ bool Symbol::bIsParameterOrdinal(void)
     return true;
   else
     return false;
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1129,7 +1150,6 @@ void Symbol::vSet(Symbol* pSymbol)
     delete m_pProperties;
     m_pProperties = nullptr;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
