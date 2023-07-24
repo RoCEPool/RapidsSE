@@ -330,7 +330,9 @@ bool AdaptorWL::bAbortEarly()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vStatementToSubmit(Task* pNextTask)
 {
-  ASSERT(bCheckState( {QUERY_BEGUN, API_CHILD_JOB_EXITED} ));
+  if (!bCheckState( {QUERY_BEGUN, API_CHILD_JOB_EXITED} )) {
+    return;
+  }
 
   vNextState(API_STATEMENT_TO_SUBMIT);
 
@@ -357,7 +359,9 @@ void AdaptorWL::vStatementToSubmit(Task* pNextTask)
 void AdaptorWL::vStatementSubmitted()
 {
   ASSERT(m_pStmtCtx);
-  ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
+  if (!bCheckState( {API_STATEMENT_TO_SUBMIT} )) {
+    return;
+  }
 
   vNextState(API_STATEMENT_SUBMITTED);
 }
@@ -367,7 +371,10 @@ void AdaptorWL::vStatementSubmitted()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg)
 {
-  ASSERT(bCheckState( {QUERY_BEGUN} ));
+  if (!bCheckState( {QUERY_BEGUN} )) {
+    return;
+  }
+
   Stz* szErrFmt= "Error: %s; %s"_Stz;
 
   vSerialiseErrorResponse(eErrCode, szErrFmt, aEC2[eErrCode], szErrMsg);
@@ -379,7 +386,10 @@ void AdaptorWL::vStatementParsingFailed(eEC eErrCode, Stz* szErrMsg)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vStatementSubmissionFailed(eEC eErrCode)
 {
-  ASSERT(bCheckState( {API_STATEMENT_TO_SUBMIT} ));
+  if (!bCheckState( {API_STATEMENT_TO_SUBMIT} )) {
+    return;
+  }
+
   Stz* szErrMsg= "Error: %s; %s"_Stz;
 
   vSerialiseErrorResponse(eErrCode, szErrMsg, aEC2[eErrCode], aErrorMsg[eErrCode]);
@@ -400,7 +410,10 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
     return;
   }
 
-  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} ));
+  if (!bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} )) {
+    return;
+  }
+
   ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_COMPILEERRORS));
 
   Row *pInfoRow = pInfoSet->pFirstRow();
@@ -438,8 +451,6 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
   }
 
   ASSERT(m_pStmtCtx);
-
-  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} ));
   ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
 
   Row *pInfoRow = pInfoSet->pFirstRow();
@@ -448,12 +459,18 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
   Stz* szErrorText = pInfoRow->szColVal_ofs(2);
 
+  vTrace("AdaptorWL: Error infoset received: %s\n"_Stz, aErrorMsg[eErrorCode]);
+
   if (eErrorCode == EC_WL_SOCKET_CLOSED) {
     m_eProtocolState = DISCONNECTED;
     return; // No need to serialise and send this.
   }
 
   if (m_pStmtCtx->bGotError()) {
+    return;
+  }
+
+  if (!bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} )) {
     return;
   }
 
@@ -476,7 +493,10 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
 {
   ASSERT(m_pStmtCtx);
 
-  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} ));
+  if (!bCheckState( {API_STATEMENT_SUBMITTED, API_METADATA_RECEIVED, API_DATA_RECEIVED} )) {
+    return;
+  }
+
   ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_WARNINGS));
 
   Row *pInfoRow = pInfoSet->pFirstRow();
@@ -499,11 +519,13 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
 void AdaptorWL::vChildJobExited()
 {
   ASSERT(m_pStmtCtx);
-  ASSERT(bCheckState( { API_STATEMENT_TO_SUBMIT,
-                        API_STATEMENT_SUBMITTED,
-                        API_METADATA_RECEIVED,
-                        API_DATA_RECEIVED,
-                        API_STATEMENT_COMPLETED } ));
+  if (!bCheckState( { API_STATEMENT_TO_SUBMIT,
+                      API_STATEMENT_SUBMITTED,
+                      API_METADATA_RECEIVED,
+                      API_DATA_RECEIVED,
+                      API_STATEMENT_COMPLETED } )) {
+    return;
+  }
 
   if (!m_pStmtCtx->bGotError()) {
     // We need to send a StatementResponse message to the client
@@ -555,7 +577,10 @@ bool AdaptorWL::bIsChildJobActive()
 void AdaptorWL::vResultMetadata(StreamDef* pStreamDef)
 {
   ASSERT(m_pStmtCtx);
-  ASSERT(bCheckState( {API_STATEMENT_SUBMITTED} ));
+  if (!bCheckState( {API_STATEMENT_SUBMITTED} )) {
+    return;
+  }
+
   vNextState(API_METADATA_RECEIVED);
 
   if (m_pStmtCtx->bGotError()) {
@@ -647,7 +672,10 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
   ASSERT(m_pStmtCtx);
   ASSERT(m_pStmtCtx->pStreamDef());
 
-  ASSERT(bCheckState({API_METADATA_RECEIVED, API_DATA_RECEIVED}));
+  if (!bCheckState({API_METADATA_RECEIVED, API_DATA_RECEIVED})) {
+    return;
+  }
+
   vNextState(API_DATA_RECEIVED);
 
   if (m_pStmtCtx->bGotError()) {
@@ -761,7 +789,10 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
   ASSERT(m_pStmtCtx);
   ASSERT(m_pStmtCtx->pStreamDef());
 
-  ASSERT(bCheckState({API_METADATA_RECEIVED, API_DATA_RECEIVED}));
+  if (!bCheckState({API_METADATA_RECEIVED, API_DATA_RECEIVED})) {
+    return;
+  }
+
   vNextState(API_DATA_RECEIVED);
 
   if (m_pStmtCtx->bGotError()) {
@@ -860,8 +891,11 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vQueryComplete()
 {
-  ASSERT(bCheckState( { QUERY_BEGUN,
-                        API_CHILD_JOB_EXITED } ));
+  if (!bCheckState( { QUERY_BEGUN,
+                      API_CHILD_JOB_EXITED } )) {
+    return;
+  }
+
   eState eLastState = m_eProtocolState;
   vNextState(QUERY_COMPLETED);
 
@@ -889,7 +923,9 @@ void AdaptorWL::vQueryComplete()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vQueryReceipt(ENGINE::TaskList* pTaskList)
 {
-  ASSERT(bCheckState( {QUERY_BEGUN} ));
+  if (!bCheckState( {QUERY_BEGUN} )) {
+    return;
+  }
 
   QueryReceiptResponse xQueryReceipt;
   std::vector<StatementReceipt> xStatementReceipts;
@@ -1654,37 +1690,74 @@ void AdaptorWL::vProcessClosePreparedStatementRequest()
 
 /*----------------------------------------------------------------------------*/
 /* Check that we are in the correct state when receiving the current message  */
+/* Returns true if everything is ok, or false if we cannot continue.          */
 /*----------------------------------------------------------------------------*/
 bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
 {
+  if (m_eProtocolState == DISCONNECTED) {
+    // Can't really do anything here..the client is already disconnected
+    return false;
+  }
+
   for (eState eProtocolState : eProtocolStates) {
     if (m_eProtocolState == eProtocolState) {
       return true;
     }
   }
 
-  // Make a string list of all applicable states for the error message.
-  s2K sBuf;
-  bool bFirst = true;
-  for (eState eProtocolState : eProtocolStates) {
-    if (bFirst) {
-      bFirst = false;
-    } else {
-      sBuf.vConcat(", "_Stz);
-    }
+  // Is it possible to send an error message to the client?
+  bool bCanSendError = false;
 
-    sBuf.vConcat(aState[eProtocolState]);
+  switch (m_eProtocolState) {
+    case PROTOCOL_COMPATIBLE:       // fall through
+    case TUNNELED:                  // fall through
+    case KERBEROS_NEGOTIATING:      // fall through
+    case AUTHENTICATED:             // fall through
+    case READY:                     // fall through
+    case QUERY_BEGUN:               // fall through
+    case API_STATEMENT_TO_SUBMIT:   // fall through
+    case API_STATEMENT_SUBMITTED:   // fall through
+    case API_METADATA_RECEIVED:     // fall through
+    case API_DATA_RECEIVED:         // fall through
+    case API_STATEMENT_COMPLETED:   // fall through
+    case API_CHILD_JOB_EXITED:
+      bCanSendError = true;
+      break;
+
+    default:
+      // Not possible
+      bCanSendError = false;
+      break;
   }
 
-  Stz* szErrMsg = "Error: %s; %s; Current protocol state is %s. Expected to be in one of the following states [%s]"_Stz;
   const eEC eErrType = EC_WL_PROTOCOL_ERROR;
 
-  vSerialiseErrorResponse(eErrType,
-                          szErrMsg,
-                          aEC2[eErrType],
-                          aErrorMsg[eErrType],
-                          aState[m_eProtocolState],
-                          sBuf.szStz());
+  if (bCanSendError) {
+    // Make a string list of all applicable states for the error message.
+    s2K sBuf;
+    bool bFirst = true;
+    for (eState eProtocolState: eProtocolStates) {
+      if (bFirst) {
+        bFirst = false;
+      } else {
+        sBuf.vConcat(", "_Stz);
+      }
+
+      sBuf.vConcat(aState[eProtocolState]);
+    }
+
+    Stz* szErrMsg = "Error: %s; %s; Current protocol state is %s. Expected to be in one of the following states [%s]"_Stz;
+
+    vSerialiseErrorResponse(eErrType,
+                            szErrMsg,
+                            aEC2[eErrType],
+                            aErrorMsg[eErrType],
+                            aState[m_eProtocolState],
+                            sBuf.szStz());
+  }
+
+  // Disconnect the client. This will get picked up in OP_AdaptorWL and
+  // will cause it to emit an error marker (EV_M_ERROR).
   m_eProtocolError = eErrType;
   m_eProtocolState = DISCONNECTED;
 

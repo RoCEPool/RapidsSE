@@ -8440,6 +8440,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // Check if the protocol is unviable (e.g. received invalid msg or in wrong sequence).\n"
     "  AdaptorWL[].protocolErrorTest if\n"
+    "    \"AdaptorWL: Piping out error marker\" .printf\n"
     "    AdaptorWL[].protocolError@ op__execErr\n"
     "    false\n"
     "    exit\n"

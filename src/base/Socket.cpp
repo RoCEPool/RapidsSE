@@ -514,7 +514,9 @@ bool Socket::bWLHeaderRecv(void)
 
   bool bResult = bBytesRecv(m_pWlpHeader,WLP::C_WLPHEADER_SIZE,oSysCall);
   if (! bResult) {
-    vTrace("Socket::bWLHeaderRecv : bRecvBytes returned false\n"_Stz);
+    vTrace("Client %s:%lld Socket::bWLHeaderRecv : bRecvBytes returned false\n"_Stz,
+           inet_ntoa(this->m_xClientAddr.sin_addr),
+           ntohs(this->m_xClientAddr.sin_port));
     vSuccess(false);
     return false;
   }
