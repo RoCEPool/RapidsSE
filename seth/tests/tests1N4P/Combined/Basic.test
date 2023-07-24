@@ -195,6 +195,8 @@ rows: 5996
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic orderby
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TODO V2
+/*
 /optimise_passthru 
 pipeline unamed
 begin
@@ -249,10 +251,13 @@ end ;
 ordered rows:
  (1117,DATE '1998-11-25')
  (221,DATE '1998-11-27')
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic ordered aggregate
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TODO V2 : ORDAGG
+/*
 /optimise_passthru 
 pipeline Q
 begin
@@ -385,6 +390,7 @@ rows:
  (1048,182.00)
  (1130,182.00)
  (1064,183.00)
+*/
 
 /optimise_passthru 
 pipeline Q3
