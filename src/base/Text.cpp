@@ -220,7 +220,7 @@ void Text::vDeleteBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
-  ASSERT(m_pTextBuffer);
+  RASSERT(m_pTextBuffer);
 
   delete m_pTextBuffer;
   m_pTextBuffer = nullptr;
@@ -233,7 +233,7 @@ void Text::vNewBuffer(i8 nStringSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
-  ASSERT(! m_pTextBuffer);
+  RASSERT(! m_pTextBuffer);
   
   // now allocate a new buffer
   if (nStringSize < C_TEXT_TINY)
