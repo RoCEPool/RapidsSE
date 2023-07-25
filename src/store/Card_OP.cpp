@@ -226,7 +226,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
     if (! p_term->pSymbol()->bIsColNm())
       return C_CONTINUE_RECURSION;
 
-    p_term->vDump(__func__);
+    //p_term->vDump(__func__);
 
 //    // todo: delete
 //    if (Card_Expr* p_expr_col =
