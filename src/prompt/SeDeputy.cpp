@@ -231,7 +231,7 @@ void SeDeputy::vDeputyLoop(void)
 
       iEnd = Hardware::iReadTsc(&uProc_end);
       if (uProc_end == uProc_start) {
-        vTrace("Ticks %lld\n"_Stz, iEnd-iStart);
+        vTrace("Ticks %lld (%lldms)\n"_Stz, iEnd-iStart, TickingDevice::iToMsec(iEnd-iStart));
      }
 
 
