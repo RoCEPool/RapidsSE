@@ -130,6 +130,8 @@ public:
 
     virtual antlrcpp::Any visitSztbl(sqlParser::SztblContext *context) = 0;
 
+    virtual antlrcpp::Any visitUnload(sqlParser::UnloadContext *context) = 0;
+
     virtual antlrcpp::Any visitTrackmemory(sqlParser::TrackmemoryContext *context) = 0;
 
     virtual antlrcpp::Any visitMemoryleaks(sqlParser::MemoryleaksContext *context) = 0;

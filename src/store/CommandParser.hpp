@@ -83,6 +83,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     antlrcpp::Any visitSleep(Parser::sqlParser::SleepContext *pCtx)                       override;
     antlrcpp::Any visitSzidx(Parser::sqlParser::SzidxContext *pCtx)                       override;
     antlrcpp::Any visitSztbl(Parser::sqlParser::SztblContext *pCtx)                       override;
+    antlrcpp::Any visitUnload(Parser::sqlParser::UnloadContext *pCtx)                     override;
     antlrcpp::Any visitBpa(Parser::sqlParser::BpaContext *pCtx)                           override;
     antlrcpp::Any visitFile(Parser::sqlParser::FileContext *pCtx)                         override;
 

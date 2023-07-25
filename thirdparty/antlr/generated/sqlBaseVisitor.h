@@ -237,6 +237,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitUnload(sqlParser::UnloadContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitTrackmemory(sqlParser::TrackmemoryContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -328,6 +328,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->status())        { m_szProcName = "status"_Stz;          return nullptr; }
   else if (pCtx->szidx())         { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
   else if (pCtx->sztbl())         { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->unload())        { m_szProcName = "unload"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->memoryleaks())   { m_szProcName = "memoryleaks"_Stz;     return nullptr; }
   else if (pCtx->bpa())           { m_szProcName = "bpa"_Stz;             return visitChildren(pCtx); }
@@ -783,6 +784,32 @@ antlrcpp::Any CommandParser::visitSztbl(Parser::sqlParser::SztblContext *pCtx)
   s256 sTableName;
   vCleanString(pCtx->tableName()->identifier(), sTableName);
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a UNLOAD statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitUnload(Parser::sqlParser::UnloadContext *pCtx)
+{
+  // Add command parameters
+  s256 sFilePrefix;
+
+  if (pCtx->identifier()) {
+    vCleanString(pCtx->identifier(), sFilePrefix);
+  } else {
+    ASSERT(pCtx->stringLiteral());
+    vCleanString(pCtx->stringLiteral(), sFilePrefix);
+  }
+
+  // Handle an empty path
+  if (sFilePrefix.bIsEmpty()) {
+    Parser::SemanticException::vThrow(EC_INVALID_VALUE,
+                                      ": unload file prefix cannot be an empty string"_Stz);
+  }
+
+  m_pArgValues->vAppendToken(sFilePrefix.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }

@@ -32,6 +32,7 @@ statementChoice   :   queryStatement
                     | status
                     | szidx
                     | sztbl
+                    | unload
 
                     // Development commands below:
                     | trackmemory
@@ -190,6 +191,7 @@ space             : SPACE ;
 status            : STATUS ;
 szidx             : SZIDX tableName indexName ;
 sztbl             : SZTBL tableName ;
+unload            : UNLOAD (identifier | stringLiteral) ;
 
 trackmemory       : TRACKMEMORY FORCE?;
 memoryleaks       : MEMORYLEAKS ;
@@ -545,6 +547,7 @@ nonReservedWord   :
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS | STATISTICS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
+                  | UNLOAD
                   | VALUE
                   | WEEK | WEEKS | WITH_NAMES | WITH_TYPES
                   | XOR
@@ -736,6 +739,7 @@ TYPE                  : T Y P E;
 TYPEOF                : T Y P E O F;
 UNION                 : U N I O N;
 UNIQUE                : U N I Q U E;
+UNLOAD                : U N L O A D;
 UPDATE                : U P D A T E;
 USING                 : U S I N G;
 VALUE                 : V A L U E;  // Note: SQL says this should be a reserved word, but TPC-H Q11 uses it as a column alias!
