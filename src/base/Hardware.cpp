@@ -373,7 +373,8 @@ u8 Hardware::uReadClock(void)
   int iResult = clock_gettime(S_clockSource, &ts);
   UNUSED(iResult);
 
-  u8 uNanos = (ts.tv_sec * (u8)C_1B) + ts.tv_nsec;
+  u8 uNanos = (ts.tv_sec * (u8)C_1G) + ts.tv_nsec;
+
   return uNanos;
 }
 

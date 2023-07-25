@@ -990,7 +990,22 @@ bool File::bReadLine(Stz* szDst)
     *y++ = cNextChar;
 
   }
-  
+
+/*
+  size_t len = 0;
+  char* sRead;
+
+  m_oSysCall.vClear();
+
+  sRead = fgets((char*)szDst, 256, m_aFile);
+
+  if (sRead == NULL)
+    return false;
+  else {
+    m_oSysCall.vSuccess();
+    return true;
+  }
+*/
 }
 
 /*----------------------------------------------------------------------------*/
