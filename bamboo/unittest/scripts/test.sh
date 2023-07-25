@@ -213,9 +213,10 @@ SE_HOSTNAME="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_HOST_KEY}")"
 SE_WIRELINE_PORT="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_CLIENT_PORT_KEY}")"
 
 
-# Classpath of invoking SETH. SETH is not installed so we must
-# invoke it from the current repository.
-readonly CLASSPATH="${SETH_BIN_DIR}/*.jar:${SHELL_DIR}/sejdbc*.jar"
+# Classpath of invoking SETH and the corresponding JDBC driver (in the shell directory).
+# (yes, this will also load the SE Shell jar files, but this way is simpler).
+# SETH is not installed so we must invoke it from the current repository.
+readonly CLASSPATH="${SETH_BIN_DIR}/*:${SHELL_DIR}/*"
 
 readonly SE_LOG_FILE="${INSTALL_DIR}/se.log"
 
@@ -260,7 +261,7 @@ SETH_START_TIME="$(date +%s)"
 # We run it in a subshell with "|| true" to avoid problems with set -e if
 # it returns a non-zero exit code.
 # shellcheck disable=SC2086
-( java -cp ${CLASSPATH} com.rapidsdata.seth.Seth -u "${URL}" "${SETH_ARGS[@]}" || true ) &
+( java -cp "${CLASSPATH}" com.rapidsdata.seth.Seth -u "${URL}" "${SETH_ARGS[@]}" || true ) &
 SETH_PID=$!  # This will actually be the pid of the subshell
 
 # Now wait until SETH finishes running. If SE exits then it has crashed and we have an error.
