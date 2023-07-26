@@ -90,6 +90,9 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_PIPELINENAME))
     pCmdTagSet->vInsert(C_TAG_PIPELINENAME, pJobTags->szValue(C_TAG_PIPELINENAME));
 
+  if (pJobTags->bHasName(C_TAG_KEEPCODEFILE))
+    pCmdTagSet->vInsert(C_TAG_KEEPCODEFILE);
+
   if (pJobTags->bHasName(C_TAG_GLEAN_INTERACTIVE))
     pCmdTagSet->vInsert(C_TAG_GLEAN_INTERACTIVE);
 
