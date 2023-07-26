@@ -528,56 +528,59 @@ then
 /* _ptp beg */    to PipeSpec[]
 
 /****************************************************************************/
-
-                  //---------------------------------------------------------
-                  // DYNAMO:: Pipeline with c++ code
-                  //---------------------------------------------------------
-
-"<hasCodeFile>" [job].tagSet@ tagSet.hasName if
-  "codeFile available" .
-
-  LibInfo[].new
-
-  Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
-  LibInfo[].compileFile not if
-    LibInfo[].error .
-    EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
-    job.sendRejectJob
-    [job]:retireAndExit
-  else
-    LibInfo[].link not if
-      LibInfo[].error .
-      EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
-      job.sendRejectJob
-      [job]:retireAndExit
-    then
-  then
-
-else
-
-                  [job].hasCodeBlock if
-                   // "JOB HAS CODE" .
-
-                    LibInfo[].new
-                    [job].codeBlock@
-                      Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
-                      LibInfo[].compile not if
-                        LibInfo[].error .
-                        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
-                        job.sendRejectJob
-                        [job]:retireAndExit
-                      else
-                        LibInfo[].link not if
-                          LibInfo[].error .
-                          EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
-                          job.sendRejectJob
-                          [job]:retireAndExit
-                        then
-                      then
-                  then
-then
+/* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
+/* _ptp beg */  // pipeline with codeFile
+/* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
+/* _ptp beg */
+/* _ptp beg */"<hasCodeFile>" [job].tagSet@ tagSet.hasName if
+/* _ptp bgn */  [args].distJob if
+/* _ptp bgn */    "pipeline" "ptpBegin"
+/* _ptp bgn */      "_ptp bgn" "lst particpant"                      [job].trace
+/* _ptp bgn */  then
+/* _ptp beg */
+/* _ptp beg */  LibInfo[].new
+/* _ptp beg */
+/* _ptp beg */  Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
+/* _ptp beg */  LibInfo[].compileFile not if
+/* _ptp beg */    LibInfo[].error .
+/* _ptp beg */    EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
+/* _ptp beg */    job.sendRejectJob
+/* _ptp beg */    [job]:retireAndExit
+/* _ptp beg */  else
+/* _ptp beg */    LibInfo[].link not if
+/* _ptp beg */      LibInfo[].error .
+/* _ptp beg */      EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+/* _ptp beg */      job.sendRejectJob
+/* _ptp beg */      [job]:retireAndExit
+/* _ptp beg */    then
+/* _ptp beg */  then
+/* _ptp beg */
+/* _ptp beg */else
+/* _ptp beg */
+/* _ptp beg */                  [job].hasCodeBlock if
+/* _ptp beg */                   // "JOB HAS CODE" .
+/* _ptp beg */
+/* _ptp beg */                    LibInfo[].new
+/* _ptp beg */                    [job].codeBlock@
+/* _ptp beg */                      Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
+/* _ptp beg */                      LibInfo[].compile not if
+/* _ptp beg */                        LibInfo[].error .
+/* _ptp beg */                        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
+/* _ptp beg */                        job.sendRejectJob
+/* _ptp beg */                        [job]:retireAndExit
+/* _ptp beg */                      else
+/* _ptp beg */                        LibInfo[].link not if
+/* _ptp beg */                          LibInfo[].error .
+/* _ptp beg */                          EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+/* _ptp beg */                          job.sendRejectJob
+/* _ptp beg */                          [job]:retireAndExit
+/* _ptp beg */                        then
+/* _ptp beg */                      then
+/* _ptp beg */                  then
+/* _ptp beg */then
+/* _ptp beg */
 /**************************************************************************/
-
+/* _ptp beg */
 /* _ptp beg */  Dynamo[].delete
 /* _ptp beg */
 /* _ptp beg */
