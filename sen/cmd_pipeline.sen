@@ -530,8 +530,30 @@ then
 /****************************************************************************/
 
                   //---------------------------------------------------------
-                  // DYNAMO:: Pipeline with c++ code prototype (__CS2_prjDyn)
+                  // DYNAMO:: Pipeline with c++ code
                   //---------------------------------------------------------
+
+"<hasCodeFile>" [job].tagSet@ tagSet.hasName if
+  "codeFile available" .
+
+  LibInfo[].new
+
+  Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
+  LibInfo[].compileFile not if
+    LibInfo[].error .
+    EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
+    job.sendRejectJob
+    [job]:retireAndExit
+  else
+    LibInfo[].link not if
+      LibInfo[].error .
+      EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+      job.sendRejectJob
+      [job]:retireAndExit
+    then
+  then
+
+else
 
                   [job].hasCodeBlock if
                    // "JOB HAS CODE" .
@@ -546,14 +568,14 @@ then
                         [job]:retireAndExit
                       else
                         LibInfo[].link not if
-                        LibInfo[].error .
-                        EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
-                        job.sendRejectJob
-                        [job]:retireAndExit
+                          LibInfo[].error .
+                          EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+                          job.sendRejectJob
+                          [job]:retireAndExit
+                        then
                       then
-                    then
                   then
-
+then
 /**************************************************************************/
 
 /* _ptp beg */  Dynamo[].delete

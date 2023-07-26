@@ -1213,6 +1213,7 @@ void vJobIdLastJobIdFetch(void);
 
   // LibInfo
   void vLibInfoCompile(void);
+  void vLibInfoCompileFile(void);
   void vLibInfoDelete(void);
   void vLibInfoError(void);
   void vLibInfoFind(void);

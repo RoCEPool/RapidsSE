@@ -26,6 +26,7 @@
 void Step::vAddSteps_LibInfo(void)
 {
   vAddStep("LibInfo[].compile"_Stz,      &Step::vLibInfoCompile);
+  vAddStep("LibInfo[].compileFile"_Stz,  &Step::vLibInfoCompileFile);
   vAddStep("LibInfo[].delete"_Stz,       &Step::vLibInfoDelete);
   vAddStep("LibInfo[].error"_Stz,        &Step::vLibInfoError);
   vAddStep("LibInfo[].find"_Stz,         &Step::vLibInfoFind);
@@ -53,6 +54,29 @@ void Step::vLibInfoCompile(void)
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
 
   bool bClean = CompileLib::bCompile(pCodeBlock, szDynLibNm, pLibInfo);
+
+  if (bClean)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LibInfo[].compileFile -- compile source file using LibInfo                 */
+/*----------------------------------------------------------------------------*/
+void Step::vLibInfoCompileFile(void)
+{
+  ENTRY();
+
+
+  s4K szDynLibNm;
+  m_pDataStack->vPopStr(szDynLibNm,__func__);
+
+  LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
+
+  bool bClean = CompileLib::bCompileFile(szDynLibNm, pLibInfo);
 
   if (bClean)
     m_pDataStack->vPushInt(true);

@@ -273,6 +273,81 @@ bool CompileLib::bCompile(ExtendedText* pSource, Stz* szDynLibNm, LibInfo* pLibI
 }
 
 /*----------------------------------------------------------------------------*/
+/* Compiler source code to a dynamic library. Returns true on success.        */
+/*----------------------------------------------------------------------------*/
+bool CompileLib::bCompileFile(Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompiler)
+{
+  ASSERT(szDynLibNm);
+  ASSERT(pLibInfo);
+  ASSERT(!pLibInfo->m_pvDynLib);
+  ASSERT(!szCompiler || !szCompiler->bIsEmpty());
+  pLibInfo->vClearErrors();
+
+  u8 uStartTime;
+  if (pLibInfo->m_bCollectStats) {
+    uStartTime = Hardware::uReadClock();
+  }
+
+  // Choose or validate a compiler, if necessary
+  if (!bValidateCompiler(szCompiler, pLibInfo)) {
+    return false;
+  }
+
+  // Save the base name
+  pLibInfo->m_sBaseName.vCopy(szDynLibNm);
+
+  // Come up with file path for the source file and output file
+  pLibInfo->m_sSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+  pLibInfo->m_sDynLibPath.vSprint("%s/lib%s.%s"_Stz, C_QUERYLIBS_BIN, pLibInfo->m_sBaseName.szStz(), C_LIB_EXT);
+  pLibInfo->m_sLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, pLibInfo->m_sBaseName.szStz());
+
+  // Build the compile command
+  switch (pLibInfo->m_eCompilerType) {
+    case CB_GCC:        vBuildGccCompileCommand(pLibInfo);    break;
+    case CB_CLANG:      vBuildClangCompileCommand(pLibInfo);  break;
+    case CB_TCC:        vBuildTccCompileCommand(pLibInfo);    break;
+    case CB_SCL_GCC:    vBuildSclGccCompileCommand(pLibInfo); break;
+    case CB_SCL_CLANG:  vBuildSclClangCompileCommand(pLibInfo); break;
+
+    default:
+      NEVER_REACH
+  }
+
+  // Execute the compile command
+
+  if (!bCompileSrc(pLibInfo)) {
+
+    // On failure save the src/log file in a different name
+    // so that they don't get deleted and are copied across
+
+    s256 sNewSrcFilePath;
+    s256 sNewLogFilePath;
+
+    sNewSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+    sNewLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+
+    bool bResult = File::bRename(pLibInfo->m_sSrcFilePath, sNewSrcFilePath);
+    if ( ! bResult )
+      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sSrcFilePath.azChar());
+
+    bResult = File::bRename(pLibInfo->m_sLogFilePath, sNewLogFilePath);
+    if ( ! bResult )
+      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sLogFilePath.azChar());
+
+    return false;
+  }
+
+  // Check that the library exists
+  ASSERT(File::bExists(pLibInfo->m_sDynLibPath.szStz()));
+
+  if (pLibInfo->m_bCollectStats) {
+    pLibInfo->m_uCompileNanos = Hardware::uReadClock() - uStartTime;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Dynamically load a shared object library. Returns true on success.         */
 /*----------------------------------------------------------------------------*/
 bool CompileLib::bDynamicLink(LibInfo* pLibInfo)
