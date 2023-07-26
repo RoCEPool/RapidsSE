@@ -448,7 +448,7 @@ bool CompileLib::bDynamicUnlink(LibInfo* pLibInfo)
 /*----------------------------------------------------------------------------*/
 /* Delete a shared object library & associated files. Returns true on success.*/
 /*----------------------------------------------------------------------------*/
-void CompileLib::vDelete(LibInfo* pLibInfo)
+void CompileLib::vDelete(LibInfo* pLibInfo, bool bDeleteFile)
 {
   ASSERT(pLibInfo);
   ASSERT(!pLibInfo->m_pvDynLib);
@@ -475,17 +475,17 @@ void CompileLib::vDelete(LibInfo* pLibInfo)
   Shell::iExecute(sCmd.szStz(), oSysCall);
 #endif
 
-#ifdef WITH_RELEASE_VERSION
-  // Remove log file, if exists
-  if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sLogFilePath.szStz(), true);
-  }
+  if (bDeleteFile) {
+    // Remove log file, if exists
+    if (!pLibInfo->m_sLogFilePath.bIsEmpty()) {
+      File::bRemove(pLibInfo->m_sLogFilePath.szStz(), true);
+    }
 
-  // Remove source file, if exists
-  if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
-    File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+    // Remove source file, if exists
+    if (!pLibInfo->m_sSrcFilePath.bIsEmpty()) {
+      File::bRemove(pLibInfo->m_sSrcFilePath.szStz(), true);
+    }
   }
-#endif
 
   if (pLibInfo->m_bCollectStats) {
     pLibInfo->m_uDeleteNanos = Hardware::uReadClock() - uStartTime;

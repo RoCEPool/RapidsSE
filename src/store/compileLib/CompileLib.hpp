@@ -24,7 +24,7 @@ namespace STORE
     static bool  bDynamicLink(LibInfo* pLibInfo);
     static void* pvSymbolAddr(Stz* szSymbolNm, LibInfo* pLibInfo);
     static bool  bDynamicUnlink(LibInfo* pLibInfo);
-    static void  vDelete(LibInfo* pLibInfo);
+    static void  vDelete(LibInfo* pLibInfo, bool bDeleteFile = true);
 
     // Temporary
     static void  vTest(Stz* szCompiler = nullptr);

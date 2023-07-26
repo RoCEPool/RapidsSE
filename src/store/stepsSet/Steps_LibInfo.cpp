@@ -92,11 +92,13 @@ void Step::vLibInfoCompileFile(void)
 void Step::vLibInfoDelete(void)
 {
   ENTRY();
-    
+
+  bool bDeleteFile = m_pDataStack->iPopBol(__func__);
+
   LibInfo* pLibInfo = * m_pLogicUnit->m_xpLibInfo;
   m_pLogicUnit->m_xpLibInfo = nullptr;
 
-  CompileLib::vDelete(pLibInfo);
+  CompileLib::vDelete(pLibInfo, bDeleteFile);
 
   delete pLibInfo;
 

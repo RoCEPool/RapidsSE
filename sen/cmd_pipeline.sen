@@ -715,7 +715,13 @@ then
 /* _ptp exe */    then
 /* _ptp exe */  LibInfo[].isNotNull if
 /* _ptp exe */    LibInfo[].Unlink assert
-/* _ptp exe */    LibInfo[].delete
+/* _ptp exe */
+/* _ptp exe */    "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
+/* _ptp exe */       false LibInfo[].delete
+/* _ptp exe */    else
+/* _ptp exe */       true LibInfo[].delete
+/* _ptp exe */    then
+/* _ptp exe */
 /* _ptp exe */  then
 /* _ptp exe */
 /* _ptp exd */  // - - - - - - - - - - - -
