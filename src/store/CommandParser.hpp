@@ -108,6 +108,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     static u8    uCleanInt(Parser::sqlParser::IntegerLiteralContext* pCtx);
     static u8    uCleanInt(antlr4::Token* pToken);
     static u8    uCleanInt(std::string& sStr);
+    static void  vReconstituteStatementWithSpaces(antlr4::tree::ParseTree* pNode, sSTMT& sStmt, char** ppcCrs);
 
   };
   

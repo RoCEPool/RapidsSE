@@ -132,6 +132,18 @@ public:
 
     virtual antlrcpp::Any visitNoopCmd(sqlParser::NoopCmdContext *context) = 0;
 
+    virtual antlrcpp::Any visitPipelineCmd(sqlParser::PipelineCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitPipelineStage(sqlParser::PipelineStageContext *context) = 0;
+
+    virtual antlrcpp::Any visitPipelineOpSeq(sqlParser::PipelineOpSeqContext *context) = 0;
+
+    virtual antlrcpp::Any visitPipelineOperator(sqlParser::PipelineOperatorContext *context) = 0;
+
+    virtual antlrcpp::Any visitPipelineOpParam(sqlParser::PipelineOpParamContext *context) = 0;
+
+    virtual antlrcpp::Any visitPipelineTypeNames(sqlParser::PipelineTypeNamesContext *context) = 0;
+
     virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitSleepUnits(sqlParser::SleepUnitsContext *context) = 0;

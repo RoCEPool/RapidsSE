@@ -23,7 +23,8 @@ extern AttachMap*  gpAttachMap;
 
 using namespace STORE;
 
-static Stz* C_EMPTY_CMD = "emptyCommand"_Stz;
+static Stz* C_EMPTY_CMD    = "emptyCommand"_Stz;
+static Stz* C_PIPELINE_CMD = "pipelineCommand"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -231,14 +232,46 @@ antlrcpp::Any CommandParser::visitStatement(Parser::sqlParser::StatementContext 
       m_pArgValues = nullptr;
 
       return nullptr;
-    }
 
-    m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, m_szProcName);
-    // TODO: raw pipeline specified?
+    } else if (m_szProcName == C_PIPELINE_CMD) {
+      // The pipeline is the statement we want to execute
 
-    if (!Procedure::bTranslateToPipeline(m_szProcName, m_pArgValues, m_sCurStmtStr.szStz(), sStmt.pString())) {
-      // All external commands should be resolvable.
-      NEVER_REACH
+      // The pipeline compiler (dynamo) takes umbrage with certain symbols not being
+      // space separated from the words before them. e.g. "end;", "origin:", etc.
+      // It wants them space separated (e.g. "end ;", "origin : ", etc).
+      // So we will walk the ANTLR parse tree for this command and reconstitute the
+      // pipeline with a single space between each token to ensure that it won't fail
+      // in the dynamo for this reason.
+
+      // Walk the parse tree from the pipelineCmd node. If the node is a TerminalNode then
+      // get the token symbol and append it. Otherwise if it has children then walk the children
+      // and keep recursing until the whole tree is walked.
+      char* pcCrs = sStmt.azChar();
+      vReconstituteStatementWithSpaces(pCtx->statementChoice()->pipelineCmd(), sStmt, &pcCrs);
+      sStmt.vAppend(&pcCrs, ";"_Stz);  // Because we start with the pipelineCmd node,
+                                       // this doesn't include the terminating semicolon.
+
+      // Don't like how the append above is done. Double check we haven't
+      // trampled on anything.
+      ASSERT(sStmt.nFreeBytes() >= 0);
+
+
+      // set the job name as the pipeline names
+      s256 sPipelineName;
+      vCleanString(pCtx->statementChoice()->pipelineCmd()->pipelineName, sPipelineName);
+      m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, sPipelineName);
+      // fall out
+
+    } else {
+      // All other commands need to be looked up by their procedure name
+      // and have any arguments substituted.
+      m_pCurStmtTagSet->vReplace(C_TAG_JOBNM, m_szProcName);
+
+      if (!Procedure::bTranslateToPipeline(m_szProcName, m_pArgValues, m_sCurStmtStr.szStz(), sStmt.pString())) {
+        // All external commands should be resolvable.
+        NEVER_REACH
+      }
+      // fall out
     }
 
     Task* pTask = Api::pCreateTask(sStmt.szStz(), m_pCurStmtTagSet, tParentId, m_sCurStmtStr.szStz());
@@ -301,10 +334,12 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
 {
   // Determine which procedure/pipeline needs to be invoked for a given command.
   // Note that we partially descend the parse tree for any commands that have parameters.
-  // This if statement is ordered in roughly relative order of statement commonality.
+  //
+  // NOTE: This if statement is ordered in roughly relative order of statement commonality.
 
   if (pCtx->queryCmd() || pCtx->explainCmd())
                                     { m_szProcName = "sqlCompiler"_Stz;   return visitChildren(pCtx); }
+  else if (pCtx->pipelineCmd())     { m_szProcName = C_PIPELINE_CMD;      return nullptr; }
   else if (pCtx->createCmd() && pCtx->createCmd()->createTableCmd())
                                     { m_szProcName = "create__table"_Stz; return visitChildren(pCtx); }
   else if (pCtx->createCmd() && pCtx->createCmd()->createIndexCmd())
@@ -1324,6 +1359,26 @@ u8 CommandParser::uCleanInt(std::string& sStr)
   }
 
   return uVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Build a space-separated command string by walking the ANTLR parse tree     */
+/*----------------------------------------------------------------------------*/
+void CommandParser::vReconstituteStatementWithSpaces(antlr4::tree::ParseTree* pNode, sSTMT& sStmt, char** ppcCrs)
+{
+  antlr4::tree::TerminalNode* pTerminal = dynamic_cast<antlr4::tree::TerminalNode *>(pNode);
+
+  if (pTerminal != nullptr) {
+    std::string oTokenStr = pTerminal->getSymbol()->getText();
+    sStmt.vAppend(ppcCrs, (Stz*) oTokenStr.c_str());
+    sStmt.vAppend(ppcCrs, " "_Stz);
+    return;
+  }
+
+  // Recurse into children
+  for (auto pChild : pNode->children) {
+    vReconstituteStatementWithSpaces(pChild, sStmt, ppcCrs);
+  }
 }
 
 

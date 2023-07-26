@@ -241,6 +241,30 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitPipelineCmd(sqlParser::PipelineCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitPipelineStage(sqlParser::PipelineStageContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitPipelineOpSeq(sqlParser::PipelineOpSeqContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitPipelineOperator(sqlParser::PipelineOperatorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitPipelineOpParam(sqlParser::PipelineOpParamContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitPipelineTypeNames(sqlParser::PipelineTypeNamesContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *ctx) override {
     return visitChildren(ctx);
   }

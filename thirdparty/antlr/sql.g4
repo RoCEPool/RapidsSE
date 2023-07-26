@@ -25,6 +25,7 @@ statementChoice   :
                     | lsidxCmd
                     | lsidxcolCmd
                     | lstblCmd
+                    | pipelineCmd
                     | queryCmd    // (select)
                     | sleepCmd
                     | spaceCmd
@@ -206,6 +207,46 @@ noopCmd           : NOOP | NOP ;
 
 // O
 // P
+pipelineCmd       : PIPELINE pipelineName=identifier
+                    BEGIN
+                      pipelineStage+
+                    END
+                  ;
+pipelineStage     : STAGE stageName=identifier
+                    ON (ORIGIN | ALL NODES | ALL PARTITIONS) ':'
+                    pipelineOpSeq
+                  ;
+pipelineOpSeq     : pipelineOperator ( '|' pipelineOperator)* ;
+pipelineOperator  : opName=identifier ( pipelineOpParam (','? pipelineOpParam)* )? ;
+pipelineOpParam   :
+                      identifier
+                    | TYPE  | AS        // some reserved words
+                    | pipelineTypeNames
+                    | booleanLiteral
+                    | signedIntegerLiteral
+                    | signedDecimalLiteral
+                    | signedFloatLiteral
+                    | dateLiteral
+                    | timeLiteral
+                    | DUBLQUOTED_IDENTIFIER
+                    | DUBLQUOTED_STRING
+                    | timestampLiteral
+                    | intervalLiteral
+                    ;
+pipelineTypeNames   :   BOOLEAN
+                      | CHAR
+                      | DATE
+                      | DECIMAL
+                      | FLOAT
+                      | INTEGER
+                      | INTERVAL_DT
+                      | INTERVAL_YM
+                      | TIME
+                      | TIMESTAMP
+                      | VARCHAR
+                      | SQL_NULL
+                    ;
+
 // Q
 // R
 // S
@@ -551,14 +592,14 @@ nonReservedWord   :
                   | ECHO | ESCAPE_CHAR | EXPLAIN
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
-                  | IF | IFNULL | INDEX
+                  | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
                   | LIMIT | LOAD | LOG | LOOP | LSIDX | LSTBL
                   | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
                   | MONOTONIC | MONTHS | MS
-                  | NODE | NOOP | NOP | NOW
-                  | OBJECTS | OFF | OFFSET
-                  | PATHS | PLACING | PRETTY
+                  | NODE | NODES | NOOP | NOP | NOW
+                  | OBJECTS | OFF | OFFSET | ORIGIN
+                  | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | REGIONS | REPLICATED | ROWSIZE
                   | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS | STATISTICS
@@ -578,6 +619,7 @@ ANY                   : A N Y;
 AS                    : A S;
 ASC                   : A S C;
 AVG                   : A V G;
+BEGIN                 : B E G I N;
 BETWEEN               : B E T W E E N;
 BINARY                : B I N A R Y;
 BIT                   : B I T;
@@ -657,6 +699,8 @@ INNER                 : I N N E R;
 INSERT                : I N S E R T;
 INTEGER               : I N T E G E R;
 INTERSECT             : I N T E R S E C T;
+INTERVAL_DT           : I N T E R V A L '_' D T;
+INTERVAL_YM           : I N T E R V A L '_' Y M;
 INTERVAL              : I N T E R V A L;
 INTO                  : I N T O;
 IS                    : I S;
@@ -687,6 +731,7 @@ MONTHS                : M O N T H S;
 MS                    : M S;
 NATURAL               : N A T U R A L;
 NO                    : N O;
+NODES                 : N O D E S;
 NODE                  : N O D E;
 NOOP                  : N O O P;
 NOP                   : N O P;
@@ -700,11 +745,14 @@ OFFSET                : O F F S E T;
 ON                    : O N;
 OR                    : O R;
 ORDER                 : O R D E R;
+ORIGIN                : O R I G I N;
 OUTER                 : O U T E R;
 OVER                  : O V E R;
 OVERLAY               : O V E R L A Y;
+PARTITIONS            : P A R T I T I O N S;
 PARTITION             : P A R T I T I O N;
 PATHS                 : P A T H S;
+PIPELINE              : P I P E L I N E;
 PLACING               : P L A C I N G;
 POSITION              : P O S I T I O N;
 PRETTY                : P R E T T Y;
