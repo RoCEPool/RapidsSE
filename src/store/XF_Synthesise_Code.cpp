@@ -122,6 +122,9 @@ void XF_Synthesise_Code::vSynthesise(void)
 
   vCraftPipelineDef(pBoard);
 
+  if (AM::JOB::bHasTag(C_NOCODESYNTHESIS))
+    return;
+
   eEC eError = Stencil_v2::eSynthesise(m_pPipelineDef);
   UNUSED(eError);
 

@@ -123,14 +123,49 @@
   then
 
   [Op] [job].responseOp!
-  STD_NORMALFORK_SELECT_TAG Text[] nullptr api::forkChild not if
-     //"****Error Code %v" .printf
-     nullptr [job].responseOp!
-     op__execErr
+
+  "<noCodeSynthesis>" [job].tagSet@ tagSet.hasName if
+
+     STD_NORMALFORK_OPT_NOCODE_TAG Text[] nullptr api::forkChild not if
+       //"****Error Code %v" .printf
+       nullptr [job].responseOp!
+       op__execErr
+       true
+       exit
+     else
+       find: transliterate_End       EV_M_END       [op].handler!
+     then
+
      true
      exit
+
+  then
+
+  "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
+
+     STD_NORMALFORK_OPT_KEEP_TAG Text[] nullptr api::forkChild not if
+       //"****Error Code %v" .printf
+       nullptr [job].responseOp!
+       op__execErr
+       true
+       exit
+     else
+       find: transliterate_End       EV_M_END       [op].handler!
+     then
+
+     true
+     exit
+
+  then
+
+  STD_NORMALFORK_OPT_TAG Text[] nullptr api::forkChild not if
+       //"****Error Code %v" .printf
+       nullptr [job].responseOp!
+       op__execErr
+       true
+       exit
   else
-    find: transliterate_End       EV_M_END       [op].handler!
+      find: transliterate_End       EV_M_END       [op].handler!
   then
 
   true

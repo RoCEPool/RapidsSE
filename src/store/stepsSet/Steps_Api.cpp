@@ -93,6 +93,9 @@ void Step::vApiForkChild(void)
   if (pJobTags->bHasName(C_TAG_KEEPCODEFILE))
     pCmdTagSet->vInsert(C_TAG_KEEPCODEFILE);
 
+  if (pJobTags->bHasName(C_TAG_NOCODESYNTHESIS))
+    pCmdTagSet->vInsert(C_TAG_NOCODESYNTHESIS);
+
   if (pJobTags->bHasName(C_TAG_GLEAN_INTERACTIVE))
     pCmdTagSet->vInsert(C_TAG_GLEAN_INTERACTIVE);
 
