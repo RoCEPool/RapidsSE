@@ -9,38 +9,39 @@ grammar sql ;
 // statement / query -----------------------------------------------------------
 statements        :  statement+ EOF;
 statement         :  tags statementChoice ';' ;
-statementChoice   :   queryStatement
-                    | explainStatement
-                    | createQuery
-                    | dropQuery
-//                    | insertQuery
-//                    | deleteQuery
-//                    | updateQuery
-                    | truncateQuery
 
-                    | dload
-                    | load
+statementChoice   :
+                    // Production commands below:
+                      countCmd
+                    | createCmd
+//                  | deleteCmd
+                    | dloadCmd
+                    | dropCmd
+                    | explainCmd
+//                  | insertCmd
+                    | loadCmd
+                    | logCmd
+                    | lscolCmd
+                    | lsidxCmd
+                    | lsidxcolCmd
+                    | lstblCmd
+                    | queryCmd    // (select)
+                    | sleepCmd
+                    | spaceCmd
+                    | statusCmd
+                    | szidxCmd
+                    | sztblCmd
+                    | truncateCmd
+                    | unloadCmd
+//                  | updateCmd
 
-                    | log
-                    | lscol
-                    | lsidx
-                    | lsidxcol
-                    | lstbl
-                    | count
-                    | sleep
-                    | space
-                    | status
-                    | szidx
-                    | sztbl
-                    | unload
-
-                    // Development commands below:
-                    | trackmemory
-                    | memoryleaks
-                    | bpa
-                    | file
-                    | noop
-                    | emptyCommand    // must be last
+                    // Development/debugging commands below:
+                    | trackmemoryCmd
+                    | memoryleaksCmd
+                    | bpaCmd
+                    | fileCmd
+                    | noopCmd
+                    | emptyCmd    // must always be last in this rule
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
@@ -48,20 +49,8 @@ keyValueTag       : '<' keyName=PLAIN_IDENTIFIER '>' '=' (stringLiteral | INTEGE
 keyOnlyTag        : '/' PLAIN_IDENTIFIER |
                     '<' PLAIN_IDENTIFIER '>' ;
 
-// explain statement ----------------------------------------------------------
-explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
-explainOptions    : explainStageList |
-                    explainFormat    |
-                    WITH_NAMES       |
-                    WITH_TYPES;
-explainStageList  : STAGE explainRange (',' explainRange)* ;
-explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
-explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
-explainFormat     : FORMAT (PRETTY | ROW);
-statisticsStatement : (queryHint)* (STATS | STATISTICS) statementChoice ;
-
-// query statement ------------------------------------------------------------
-queryStatement    : query ;
+// query command rules ------------------------------------------------------
+queryCmd          : query ;
 query             : (queryHint)*
                     ( selectQuery
                     | setQuery
@@ -140,67 +129,113 @@ extendedJoinType  : joinType |
 
 valuesExpr        : VALUES '('valueList')' ( ',' '('valueList')' )* ;
 
-insertQuery       : (WITH withQuery (',' withQuery)*)?
-                    INSERT INTO? ref = tableReference ( '('columnName (',' columnName)*')' )?
-                    (valuesExpr | selectQuery | setQuery) ;
 
-deleteQuery       : (WITH withQuery (',' withQuery)*)?
+// other command rules ------------------------------------------------------
+
+// A
+// B
+bpaCmd            : BPA type=(REGIONS | OBJECTS | ALL)?;
+
+// C
+countCmd          : COUNT tableName ;
+createCmd         : createTableCmd | createIndexCmd ;
+createTableCmd    : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS)?*/ /*ref = tableReference*/ tableName
+                    (
+                        tableDefinition
+                      //| ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
+                      //| ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
+                    ) ;
+createIndexCmd    : CREATE UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ idxName = indexName
+                    ON /*tblName = tableReference*/ tableName
+                    /*( USING method = indexMethod )?*/
+                    '(' expr (',' expr)* ')'
+                    ;
+
+// D
+deleteCmd         : (WITH withQuery (',' withQuery)*)?
                     DELETE FROM? ref = tableReference
                     ( (WHERE predicate) | (FROM tableExpr) )? ;
-
-updateQuery       : (WITH withQuery (',' withQuery)*)?
-                    UPDATE ref = tableReference
-                    SET columnName '=' expr (',' columnName '=' expr)*
-                    ( (WHERE predicate) | (FROM tableExpr) )? ;
-
-
-createQuery           : createTableQuery | createIndexQuery ;
-
-createTableQuery      : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS)?*/ /*ref = tableReference*/ tableName
-                        (
-                            tableDefinition
-                          //| ( tableDefinition? AS? asSubquery (WITH noData=NO? DATA)? )
-                          //| ( columnNameList AS? asSubquery (WITH noData=NO? DATA)? )
-                        ) ;
-
-createIndexQuery      : CREATE UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ idxName = indexName
-                        ON /*tblName = tableReference*/ tableName
-                        /*( USING method = indexMethod )?*/
-                        '(' expr (',' expr)* ')'
-                        ;
-dropQuery         : dropTableQuery | dropIndexQuery ;
-
-dropTableQuery    : DROP TABLE /*(IF EXISTS)?*/ name = tableName /*tableReference*/ ;
-dropIndexQuery    : DROP INDEX /*(IF EXISTS)?*/ (
+dloadCmd          : DLOAD tableName PATHS stringLiteral+  ( loadOption (','? loadOption)* )? ;
+dropCmd           : dropTableCmd | dropIndexCmd ;
+dropTableCmd      : DROP TABLE /*(IF EXISTS)?*/ name = tableName /*tableReference*/ ;
+dropIndexCmd      : DROP INDEX /*(IF EXISTS)?*/ (
                       (idxName = indexName ON tblName = tableName /*tableReference*/)
                     | (tblName = tableName idxName = indexName)
                     );
 
-truncateQuery     : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
+// E
+emptyCmd          : ;
 
-load              : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
-dload             : DLOAD tableName PATHS stringLiteral+  ( loadOption (','? loadOption)* )? ;
+explainCmd        : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
+explainOptions    : explainStageList |
+                    explainFormat    |
+                    WITH_NAMES       |
+                    WITH_TYPES;
+explainStageList  : STAGE explainRange (',' explainRange)* ;
+explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
+explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
+explainFormat     : FORMAT (PRETTY | ROW);
+
+// F
+fileCmd           : FILE (identifier | stringLiteral) ;
+
+// G
+// H
+// I
+insertCmd         : (WITH withQuery (',' withQuery)*)?
+                    INSERT INTO? ref = tableReference ( '('columnName (',' columnName)*')' )?
+                    (valuesExpr | selectQuery | setQuery) ;
+
+// J
+// K
+// L
+loadCmd           : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
 loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
 loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
+logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
+lscolCmd          : LSCOL tableName ;
+lsidxCmd          : LSIDX tableName ;
+lsidxcolCmd       : LSIDXCOL tableName indexName;
+lstblCmd          : LSTBL ;
 
-count             : COUNT tableName ;
-sleep             : SLEEP integerLiteral sleepUnits?;
+// M
+memoryleaksCmd    : MEMORYLEAKS ;
+
+// N
+noopCmd           : NOOP | NOP ;
+
+// O
+// P
+// Q
+// R
+// S
+sleepCmd          : SLEEP integerLiteral sleepUnits?;
 sleepUnits        : seconds=( S_ONLY | SEC | SECOND | SECONDS) |
                     millis=(MS | MILLIS | MILLISECOND | MILLISECONDS);
-space             : SPACE ;
-status            : STATUS ;
-szidx             : SZIDX tableName indexName ;
-sztbl             : SZTBL tableName ;
-unload            : UNLOAD (identifier | stringLiteral) ;
+spaceCmd          : SPACE ;
+statusCmd         : STATUS ;
+szidxCmd          : SZIDX tableName indexName ;
+sztblCmd          : SZTBL tableName ;
 
-trackmemory       : TRACKMEMORY FORCE?;
-memoryleaks       : MEMORYLEAKS ;
-bpa               : BPA type=(REGIONS | OBJECTS | ALL)?;
-file              : FILE (identifier | stringLiteral) ;
-noop              : NOOP | NOP ;
-emptyCommand      : ;
+// T
+truncateCmd       : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
+trackmemoryCmd    : TRACKMEMORY FORCE?;
 
-// table/column definition ------------------------------------------------------------
+// U
+updateCmd         : (WITH withQuery (',' withQuery)*)?
+                    UPDATE ref = tableReference
+                    SET columnName '=' expr (',' columnName '=' expr)*
+                    ( (WHERE predicate) | (FROM tableExpr) )? ;
+unloadCmd         : UNLOAD (identifier | stringLiteral) ;
+
+// V
+// W
+// X
+// Y
+// Z
+
+
+// table/column definition rules ------------------------------------------------------
 
 // Note that CREATE TABLE statements get parsed again in StreamDefBase. So the rules
 // here must match that manual parsing.
@@ -503,24 +538,6 @@ dayTimeInterval   :
                     | ( min=MINUTE  ('(' precision ')')? )
                     | ( sec=SECOND  ('(' precision (',' scale)?')')? )
                   ) ;
-
-
-
-// log statement ------------------------------------------------------------
-log : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
-
-// lscol statement ------------------------------------------------------------
-lscol : LSCOL tableName ;
-
-// lsidx statement ------------------------------------------------------------
-lsidx : LSIDX tableName ;
-
-// lsidx statement ------------------------------------------------------------
-lsidxcol : LSIDXCOL tableName indexName;
-
-// lstbl statement ------------------------------------------------------------
-lstbl : LSTBL ;
-
 
 
 // ============================================================================

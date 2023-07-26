@@ -303,38 +303,38 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   // Note that we partially descend the parse tree for any commands that have parameters.
   // This if statement is ordered in roughly relative order of statement commonality.
 
-  if (pCtx->queryStatement() || pCtx->explainStatement())
-                                  { m_szProcName = "sqlCompiler"_Stz;     return visitChildren(pCtx); }
-  else if (pCtx->createQuery() && pCtx->createQuery()->createTableQuery())
-                                  { m_szProcName = "create__table"_Stz;   return visitChildren(pCtx); }
-  else if (pCtx->createQuery() && pCtx->createQuery()->createIndexQuery())
-                                  { m_szProcName = "create__index"_Stz;   return visitChildren(pCtx); }
-  else if (pCtx->dropQuery() && pCtx->dropQuery()->dropTableQuery())
-                                  { m_szProcName = "drop__table"_Stz;     return visitChildren(pCtx); }
-  else if (pCtx->dropQuery() && pCtx->dropQuery()->dropIndexQuery())
-                                  { m_szProcName = "drop__index"_Stz;     return visitChildren(pCtx); }
-  else if (pCtx->load())          { m_szProcName = "load"_Stz;            return visitChildren(pCtx); }
-  else if (pCtx->dload())         { m_szProcName = "dload"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->truncateQuery()) { m_szProcName = "truncate"_Stz;        return visitChildren(pCtx); }
+  if (pCtx->queryCmd() || pCtx->explainCmd())
+                                    { m_szProcName = "sqlCompiler"_Stz;   return visitChildren(pCtx); }
+  else if (pCtx->createCmd() && pCtx->createCmd()->createTableCmd())
+                                    { m_szProcName = "create__table"_Stz; return visitChildren(pCtx); }
+  else if (pCtx->createCmd() && pCtx->createCmd()->createIndexCmd())
+                                    { m_szProcName = "create__index"_Stz; return visitChildren(pCtx); }
+  else if (pCtx->dropCmd() && pCtx->dropCmd()->dropTableCmd())
+                                    { m_szProcName = "drop__table"_Stz;   return visitChildren(pCtx); }
+  else if (pCtx->dropCmd() && pCtx->dropCmd()->dropIndexCmd())
+                                    { m_szProcName = "drop__index"_Stz;   return visitChildren(pCtx); }
+  else if (pCtx->loadCmd())         { m_szProcName = "load"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->dloadCmd())        { m_szProcName = "dload"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->truncateCmd())     { m_szProcName = "truncate"_Stz;      return visitChildren(pCtx); }
 
-  else if (pCtx->log())           { m_szProcName = "logMsg"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->lscol())         { m_szProcName = "lscol"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->lsidx())         { m_szProcName = "lsidx"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->lsidxcol())      { m_szProcName = "lsidxcol"_Stz;        return visitChildren(pCtx); }
-  else if (pCtx->lstbl())         { m_szProcName = "lstbl"_Stz;           return nullptr; }
-  else if (pCtx->count())         { m_szProcName = "count"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->sleep())         { m_szProcName = "sleepCmd"_Stz;        return visitChildren(pCtx); }
-  else if (pCtx->space())         { m_szProcName = "space"_Stz;           return nullptr; }
-  else if (pCtx->status())        { m_szProcName = "status"_Stz;          return nullptr; }
-  else if (pCtx->szidx())         { m_szProcName = "szidx"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->sztbl())         { m_szProcName = "sztbl"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->unload())        { m_szProcName = "unload"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->trackmemory())   { m_szProcName = "trackmemory"_Stz;     return visitChildren(pCtx); }
-  else if (pCtx->memoryleaks())   { m_szProcName = "memoryleaks"_Stz;     return nullptr; }
-  else if (pCtx->bpa())           { m_szProcName = "bpa"_Stz;             return visitChildren(pCtx); }
-  else if (pCtx->file())          { m_szProcName = nullptr;               return visitChildren(pCtx); }
-  else if (pCtx->noop())          { m_szProcName = "noop"_Stz;            return nullptr; }
-  else if (pCtx->emptyCommand())  { m_szProcName = C_EMPTY_CMD;           return nullptr; }
+  else if (pCtx->logCmd())          { m_szProcName = "logMsg"_Stz;        return visitChildren(pCtx); }
+  else if (pCtx->lscolCmd())        { m_szProcName = "lscol"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->lsidxCmd())        { m_szProcName = "lsidx"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->lsidxcolCmd())     { m_szProcName = "lsidxcol"_Stz;      return visitChildren(pCtx); }
+  else if (pCtx->lstblCmd())        { m_szProcName = "lstbl"_Stz;         return nullptr; }
+  else if (pCtx->countCmd())        { m_szProcName = "count"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->sleepCmd())        { m_szProcName = "sleepCmd"_Stz;      return visitChildren(pCtx); }
+  else if (pCtx->spaceCmd())        { m_szProcName = "space"_Stz;         return nullptr; }
+  else if (pCtx->statusCmd())       { m_szProcName = "status"_Stz;        return nullptr; }
+  else if (pCtx->szidxCmd())        { m_szProcName = "szidx"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->sztblCmd())        { m_szProcName = "sztbl"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->unloadCmd())       { m_szProcName = "unload"_Stz;        return visitChildren(pCtx); }
+  else if (pCtx->trackmemoryCmd())  { m_szProcName = "trackmemory"_Stz;   return visitChildren(pCtx); }
+  else if (pCtx->memoryleaksCmd())  { m_szProcName = "memoryleaks"_Stz;   return nullptr; }
+  else if (pCtx->bpaCmd())          { m_szProcName = "bpa"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->fileCmd())         { m_szProcName = nullptr;             return visitChildren(pCtx); }
+  else if (pCtx->noopCmd())         { m_szProcName = "noop"_Stz;          return nullptr; }
+  else if (pCtx->emptyCmd())        { m_szProcName = C_EMPTY_CMD;         return nullptr; }
 
   else                            { NOT_IMPLEMENTED_YET }
 
@@ -389,7 +389,7 @@ antlrcpp::Any CommandParser::visitKeyValueTag(Parser::sqlParser::KeyValueTagCont
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a query statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitQueryStatement(Parser::sqlParser::QueryStatementContext *pCtx)
+antlrcpp::Any CommandParser::visitQueryCmd(Parser::sqlParser::QueryCmdContext* pCtx)
 {
   UNUSED(pCtx);
 
@@ -401,7 +401,7 @@ antlrcpp::Any CommandParser::visitQueryStatement(Parser::sqlParser::QueryStateme
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an explain statement                            */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitExplainStatement(Parser::sqlParser::ExplainStatementContext *pCtx)
+antlrcpp::Any CommandParser::visitExplainCmd(Parser::sqlParser::ExplainCmdContext* pCtx)
 {
   UNUSED(pCtx);
 
@@ -413,7 +413,7 @@ antlrcpp::Any CommandParser::visitExplainStatement(Parser::sqlParser::ExplainSta
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a log statement                                 */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLog(Parser::sqlParser::LogContext *pCtx)
+antlrcpp::Any CommandParser::visitLogCmd(Parser::sqlParser::LogCmdContext *pCtx)
 {
   // Add command parameters
   Text* pLogMsg = pCleanString(pCtx->msg);
@@ -433,7 +433,7 @@ antlrcpp::Any CommandParser::visitLog(Parser::sqlParser::LogContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an lscol statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLscol(Parser::sqlParser::LscolContext *pCtx)
+antlrcpp::Any CommandParser::visitLscolCmd(Parser::sqlParser::LscolCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -446,7 +446,7 @@ antlrcpp::Any CommandParser::visitLscol(Parser::sqlParser::LscolContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an ldidx statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsidx(Parser::sqlParser::LsidxContext *pCtx)
+antlrcpp::Any CommandParser::visitLsidxCmd(Parser::sqlParser::LsidxCmdContext *pCtx)
 {
   // Add command parameters
   s256 sIdentifier;
@@ -459,7 +459,7 @@ antlrcpp::Any CommandParser::visitLsidx(Parser::sqlParser::LsidxContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an ldidx statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsidxcol(Parser::sqlParser::LsidxcolContext *pCtx)
+antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -476,7 +476,7 @@ antlrcpp::Any CommandParser::visitLsidxcol(Parser::sqlParser::LsidxcolContext *p
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an CREATE TABLE statement                       */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitCreateTableQuery(Parser::sqlParser::CreateTableQueryContext *pCtx)
+antlrcpp::Any CommandParser::visitCreateTableCmd(Parser::sqlParser::CreateTableCmdContext* pCtx)
 {
   // The first parameter must be the table name.
 
@@ -546,9 +546,9 @@ antlrcpp::Any CommandParser::visitCreateTableQuery(Parser::sqlParser::CreateTabl
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an CREATE INDEX statement                       */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitCreateIndexQuery(Parser::sqlParser::CreateIndexQueryContext *pCtx)
+antlrcpp::Any CommandParser::visitCreateIndexCmd(Parser::sqlParser::CreateIndexCmdContext *pCtx)
 {
-  // See above comments in visitCreateTableQuery regarding why this is done the
+  // See above comments in visitCreateTableCmd regarding why this is done the
   // way it is.
 
   // First append a token for the table name
@@ -588,7 +588,7 @@ antlrcpp::Any CommandParser::visitCreateIndexQuery(Parser::sqlParser::CreateInde
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an DROP TABLE statement                         */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitDropTableQuery(Parser::sqlParser::DropTableQueryContext *pCtx)
+antlrcpp::Any CommandParser::visitDropTableCmd(Parser::sqlParser::DropTableCmdContext* pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -602,7 +602,7 @@ antlrcpp::Any CommandParser::visitDropTableQuery(Parser::sqlParser::DropTableQue
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an DROP INDEX statement                         */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitDropIndexQuery(Parser::sqlParser::DropIndexQueryContext *pCtx)
+antlrcpp::Any CommandParser::visitDropIndexCmd(Parser::sqlParser::DropIndexCmdContext* pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -620,7 +620,7 @@ antlrcpp::Any CommandParser::visitDropIndexQuery(Parser::sqlParser::DropIndexQue
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an TRUNCATE statement                           */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitTruncateQuery(Parser::sqlParser::TruncateQueryContext *pCtx)
+antlrcpp::Any CommandParser::visitTruncateCmd(Parser::sqlParser::TruncateCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -634,7 +634,7 @@ antlrcpp::Any CommandParser::visitTruncateQuery(Parser::sqlParser::TruncateQuery
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an LOAD statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLoad(Parser::sqlParser::LoadContext *pCtx)
+antlrcpp::Any CommandParser::visitLoadCmd(Parser::sqlParser::LoadCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -656,7 +656,7 @@ antlrcpp::Any CommandParser::visitLoad(Parser::sqlParser::LoadContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an DLOAD statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitDload(Parser::sqlParser::DloadContext *pCtx)
+antlrcpp::Any CommandParser::visitDloadCmd(Parser::sqlParser::DloadCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -708,7 +708,7 @@ antlrcpp::Any CommandParser::visitLoadOption(Parser::sqlParser::LoadOptionContex
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a COUNT statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitCount(Parser::sqlParser::CountContext *pCtx)
+antlrcpp::Any CommandParser::visitCountCmd(Parser::sqlParser::CountCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -721,7 +721,7 @@ antlrcpp::Any CommandParser::visitCount(Parser::sqlParser::CountContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a SZIDX statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitTrackmemory(Parser::sqlParser::TrackmemoryContext* pCtx)
+antlrcpp::Any CommandParser::visitTrackmemoryCmd(Parser::sqlParser::TrackmemoryCmdContext* pCtx)
 {
   // Add command parameters
   m_pArgValues->vAppendToken(pCtx->FORCE() ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
@@ -732,7 +732,7 @@ antlrcpp::Any CommandParser::visitTrackmemory(Parser::sqlParser::TrackmemoryCont
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a SLEEP statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitSleep(Parser::sqlParser::SleepContext *pCtx)
+antlrcpp::Any CommandParser::visitSleepCmd(Parser::sqlParser::SleepCmdContext *pCtx)
 {
   // Add command parameters
   s256 sBuf;
@@ -760,7 +760,7 @@ antlrcpp::Any CommandParser::visitSleep(Parser::sqlParser::SleepContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a SZIDX statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitSzidx(Parser::sqlParser::SzidxContext *pCtx)
+antlrcpp::Any CommandParser::visitSzidxCmd(Parser::sqlParser::SzidxCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -778,7 +778,7 @@ antlrcpp::Any CommandParser::visitSzidx(Parser::sqlParser::SzidxContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a SZTBL statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitSztbl(Parser::sqlParser::SztblContext *pCtx)
+antlrcpp::Any CommandParser::visitSztblCmd(Parser::sqlParser::SztblCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -791,7 +791,7 @@ antlrcpp::Any CommandParser::visitSztbl(Parser::sqlParser::SztblContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a UNLOAD statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitUnload(Parser::sqlParser::UnloadContext *pCtx)
+antlrcpp::Any CommandParser::visitUnloadCmd(Parser::sqlParser::UnloadCmdContext *pCtx)
 {
   // Add command parameters
   s256 sFilePrefix;
@@ -817,7 +817,7 @@ antlrcpp::Any CommandParser::visitUnload(Parser::sqlParser::UnloadContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for a BPA statement                                 */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitBpa(Parser::sqlParser::BpaContext *pCtx)
+antlrcpp::Any CommandParser::visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)
 {
   // Add command parameters
 
@@ -866,7 +866,7 @@ antlrcpp::Any CommandParser::visitBpa(Parser::sqlParser::BpaContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Parse a RUN statement                                                      */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitFile(Parser::sqlParser::FileContext *pCtx)
+antlrcpp::Any CommandParser::visitFileCmd(Parser::sqlParser::FileCmdContext *pCtx)
 {
   s256 sFilePath;
   if (pCtx->identifier()) {

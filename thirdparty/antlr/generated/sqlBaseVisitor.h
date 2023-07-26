@@ -41,35 +41,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitQueryStatement(sqlParser::QueryStatementContext *ctx) override {
+  virtual antlrcpp::Any visitQueryCmd(sqlParser::QueryCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -153,51 +125,83 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *ctx) override {
+  virtual antlrcpp::Any visitBpaCmd(sqlParser::BpaCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDeleteQuery(sqlParser::DeleteQueryContext *ctx) override {
+  virtual antlrcpp::Any visitCountCmd(sqlParser::CountCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitUpdateQuery(sqlParser::UpdateQueryContext *ctx) override {
+  virtual antlrcpp::Any visitCreateCmd(sqlParser::CreateCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCreateQuery(sqlParser::CreateQueryContext *ctx) override {
+  virtual antlrcpp::Any visitCreateTableCmd(sqlParser::CreateTableCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCreateTableQuery(sqlParser::CreateTableQueryContext *ctx) override {
+  virtual antlrcpp::Any visitCreateIndexCmd(sqlParser::CreateIndexCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCreateIndexQuery(sqlParser::CreateIndexQueryContext *ctx) override {
+  virtual antlrcpp::Any visitDeleteCmd(sqlParser::DeleteCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropQuery(sqlParser::DropQueryContext *ctx) override {
+  virtual antlrcpp::Any visitDloadCmd(sqlParser::DloadCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropTableQuery(sqlParser::DropTableQueryContext *ctx) override {
+  virtual antlrcpp::Any visitDropCmd(sqlParser::DropCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDropIndexQuery(sqlParser::DropIndexQueryContext *ctx) override {
+  virtual antlrcpp::Any visitDropTableCmd(sqlParser::DropTableCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *ctx) override {
+  virtual antlrcpp::Any visitDropIndexCmd(sqlParser::DropIndexCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLoad(sqlParser::LoadContext *ctx) override {
+  virtual antlrcpp::Any visitEmptyCmd(sqlParser::EmptyCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDload(sqlParser::DloadContext *ctx) override {
+  virtual antlrcpp::Any visitExplainCmd(sqlParser::ExplainCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitFileCmd(sqlParser::FileCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitInsertCmd(sqlParser::InsertCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLoadCmd(sqlParser::LoadCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -209,11 +213,35 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCount(sqlParser::CountContext *ctx) override {
+  virtual antlrcpp::Any visitLogCmd(sqlParser::LogCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSleep(sqlParser::SleepContext *ctx) override {
+  virtual antlrcpp::Any visitLscolCmd(sqlParser::LscolCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLsidxCmd(sqlParser::LsidxCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLstblCmd(sqlParser::LstblCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNoopCmd(sqlParser::NoopCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -221,47 +249,35 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSpace(sqlParser::SpaceContext *ctx) override {
+  virtual antlrcpp::Any visitSpaceCmd(sqlParser::SpaceCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStatus(sqlParser::StatusContext *ctx) override {
+  virtual antlrcpp::Any visitStatusCmd(sqlParser::StatusCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSzidx(sqlParser::SzidxContext *ctx) override {
+  virtual antlrcpp::Any visitSzidxCmd(sqlParser::SzidxCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSztbl(sqlParser::SztblContext *ctx) override {
+  virtual antlrcpp::Any visitSztblCmd(sqlParser::SztblCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitUnload(sqlParser::UnloadContext *ctx) override {
+  virtual antlrcpp::Any visitTruncateCmd(sqlParser::TruncateCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitTrackmemory(sqlParser::TrackmemoryContext *ctx) override {
+  virtual antlrcpp::Any visitTrackmemoryCmd(sqlParser::TrackmemoryCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitMemoryleaks(sqlParser::MemoryleaksContext *ctx) override {
+  virtual antlrcpp::Any visitUpdateCmd(sqlParser::UpdateCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBpa(sqlParser::BpaContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitFile(sqlParser::FileContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitNoop(sqlParser::NoopContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitEmptyCommand(sqlParser::EmptyCommandContext *ctx) override {
+  virtual antlrcpp::Any visitUnloadCmd(sqlParser::UnloadCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -694,26 +710,6 @@ public:
   }
 
   virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitLog(sqlParser::LogContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitLscol(sqlParser::LscolContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitLsidx(sqlParser::LsidxContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitLsidxcol(sqlParser::LsidxcolContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *ctx) override {
     return visitChildren(ctx);
   }
 

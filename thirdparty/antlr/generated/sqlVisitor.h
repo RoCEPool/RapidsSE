@@ -32,21 +32,7 @@ public:
 
     virtual antlrcpp::Any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *context) = 0;
 
-    virtual antlrcpp::Any visitExplainStatement(sqlParser::ExplainStatementContext *context) = 0;
-
-    virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *context) = 0;
-
-    virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *context) = 0;
-
-    virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *context) = 0;
-
-    virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *context) = 0;
-
-    virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
-
-    virtual antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *context) = 0;
-
-    virtual antlrcpp::Any visitQueryStatement(sqlParser::QueryStatementContext *context) = 0;
+    virtual antlrcpp::Any visitQueryCmd(sqlParser::QueryCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *context) = 0;
 
@@ -88,61 +74,83 @@ public:
 
     virtual antlrcpp::Any visitValuesExpr(sqlParser::ValuesExprContext *context) = 0;
 
-    virtual antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *context) = 0;
+    virtual antlrcpp::Any visitBpaCmd(sqlParser::BpaCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDeleteQuery(sqlParser::DeleteQueryContext *context) = 0;
+    virtual antlrcpp::Any visitCountCmd(sqlParser::CountCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitUpdateQuery(sqlParser::UpdateQueryContext *context) = 0;
+    virtual antlrcpp::Any visitCreateCmd(sqlParser::CreateCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCreateQuery(sqlParser::CreateQueryContext *context) = 0;
+    virtual antlrcpp::Any visitCreateTableCmd(sqlParser::CreateTableCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCreateTableQuery(sqlParser::CreateTableQueryContext *context) = 0;
+    virtual antlrcpp::Any visitCreateIndexCmd(sqlParser::CreateIndexCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitCreateIndexQuery(sqlParser::CreateIndexQueryContext *context) = 0;
+    virtual antlrcpp::Any visitDeleteCmd(sqlParser::DeleteCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropQuery(sqlParser::DropQueryContext *context) = 0;
+    virtual antlrcpp::Any visitDloadCmd(sqlParser::DloadCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropTableQuery(sqlParser::DropTableQueryContext *context) = 0;
+    virtual antlrcpp::Any visitDropCmd(sqlParser::DropCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDropIndexQuery(sqlParser::DropIndexQueryContext *context) = 0;
+    virtual antlrcpp::Any visitDropTableCmd(sqlParser::DropTableCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitTruncateQuery(sqlParser::TruncateQueryContext *context) = 0;
+    virtual antlrcpp::Any visitDropIndexCmd(sqlParser::DropIndexCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitLoad(sqlParser::LoadContext *context) = 0;
+    virtual antlrcpp::Any visitEmptyCmd(sqlParser::EmptyCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitDload(sqlParser::DloadContext *context) = 0;
+    virtual antlrcpp::Any visitExplainCmd(sqlParser::ExplainCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainOptions(sqlParser::ExplainOptionsContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainStageList(sqlParser::ExplainStageListContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainRange(sqlParser::ExplainRangeContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *context) = 0;
+
+    virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
+
+    virtual antlrcpp::Any visitFileCmd(sqlParser::FileCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitInsertCmd(sqlParser::InsertCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitLoadCmd(sqlParser::LoadCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitLoadOption(sqlParser::LoadOptionContext *context) = 0;
 
     virtual antlrcpp::Any visitLoadOptionKeys(sqlParser::LoadOptionKeysContext *context) = 0;
 
-    virtual antlrcpp::Any visitCount(sqlParser::CountContext *context) = 0;
+    virtual antlrcpp::Any visitLogCmd(sqlParser::LogCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitSleep(sqlParser::SleepContext *context) = 0;
+    virtual antlrcpp::Any visitLscolCmd(sqlParser::LscolCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitLsidxCmd(sqlParser::LsidxCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitLstblCmd(sqlParser::LstblCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitNoopCmd(sqlParser::NoopCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitSleepCmd(sqlParser::SleepCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitSleepUnits(sqlParser::SleepUnitsContext *context) = 0;
 
-    virtual antlrcpp::Any visitSpace(sqlParser::SpaceContext *context) = 0;
+    virtual antlrcpp::Any visitSpaceCmd(sqlParser::SpaceCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitStatus(sqlParser::StatusContext *context) = 0;
+    virtual antlrcpp::Any visitStatusCmd(sqlParser::StatusCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitSzidx(sqlParser::SzidxContext *context) = 0;
+    virtual antlrcpp::Any visitSzidxCmd(sqlParser::SzidxCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitSztbl(sqlParser::SztblContext *context) = 0;
+    virtual antlrcpp::Any visitSztblCmd(sqlParser::SztblCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitUnload(sqlParser::UnloadContext *context) = 0;
+    virtual antlrcpp::Any visitTruncateCmd(sqlParser::TruncateCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitTrackmemory(sqlParser::TrackmemoryContext *context) = 0;
+    virtual antlrcpp::Any visitTrackmemoryCmd(sqlParser::TrackmemoryCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitMemoryleaks(sqlParser::MemoryleaksContext *context) = 0;
+    virtual antlrcpp::Any visitUpdateCmd(sqlParser::UpdateCmdContext *context) = 0;
 
-    virtual antlrcpp::Any visitBpa(sqlParser::BpaContext *context) = 0;
-
-    virtual antlrcpp::Any visitFile(sqlParser::FileContext *context) = 0;
-
-    virtual antlrcpp::Any visitNoop(sqlParser::NoopContext *context) = 0;
-
-    virtual antlrcpp::Any visitEmptyCommand(sqlParser::EmptyCommandContext *context) = 0;
+    virtual antlrcpp::Any visitUnloadCmd(sqlParser::UnloadCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitTableDefinition(sqlParser::TableDefinitionContext *context) = 0;
 
@@ -359,16 +367,6 @@ public:
     virtual antlrcpp::Any visitYearMonthInterval(sqlParser::YearMonthIntervalContext *context) = 0;
 
     virtual antlrcpp::Any visitDayTimeInterval(sqlParser::DayTimeIntervalContext *context) = 0;
-
-    virtual antlrcpp::Any visitLog(sqlParser::LogContext *context) = 0;
-
-    virtual antlrcpp::Any visitLscol(sqlParser::LscolContext *context) = 0;
-
-    virtual antlrcpp::Any visitLsidx(sqlParser::LsidxContext *context) = 0;
-
-    virtual antlrcpp::Any visitLsidxcol(sqlParser::LsidxcolContext *context) = 0;
-
-    virtual antlrcpp::Any visitLstbl(sqlParser::LstblContext *context) = 0;
 
     virtual antlrcpp::Any visitNonReservedWord(sqlParser::NonReservedWordContext *context) = 0;
 

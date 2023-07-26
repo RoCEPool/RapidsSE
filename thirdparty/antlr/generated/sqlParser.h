@@ -61,44 +61,43 @@ public:
 
   enum {
     RuleStatements = 0, RuleStatement = 1, RuleStatementChoice = 2, RuleTags = 3, 
-    RuleKeyValueTag = 4, RuleKeyOnlyTag = 5, RuleExplainStatement = 6, RuleExplainOptions = 7, 
-    RuleExplainStageList = 8, RuleExplainRange = 9, RuleExplainRangeChoice = 10, 
-    RuleExplainFormat = 11, RuleStatisticsStatement = 12, RuleQueryStatement = 13, 
-    RuleQuery = 14, RuleQueryHint = 15, RuleHint = 16, RuleSelectQuery = 17, 
-    RuleSelectExpr = 18, RuleSetQuery = 19, RuleSetExpr = 20, RuleCorrClause = 21, 
-    RuleWithQuery = 22, RuleTableExpr = 23, RuleTableReference = 24, RuleJoinType = 25, 
-    RuleExtendedJoinType = 26, RuleValuesExpr = 27, RuleInsertQuery = 28, 
-    RuleDeleteQuery = 29, RuleUpdateQuery = 30, RuleCreateQuery = 31, RuleCreateTableQuery = 32, 
-    RuleCreateIndexQuery = 33, RuleDropQuery = 34, RuleDropTableQuery = 35, 
-    RuleDropIndexQuery = 36, RuleTruncateQuery = 37, RuleLoad = 38, RuleDload = 39, 
-    RuleLoadOption = 40, RuleLoadOptionKeys = 41, RuleCount = 42, RuleSleep = 43, 
-    RuleSleepUnits = 44, RuleSpace = 45, RuleStatus = 46, RuleSzidx = 47, 
-    RuleSztbl = 48, RuleUnload = 49, RuleTrackmemory = 50, RuleMemoryleaks = 51, 
-    RuleBpa = 52, RuleFile = 53, RuleNoop = 54, RuleEmptyCommand = 55, RuleTableDefinition = 56, 
-    RuleTablePartitioning = 57, RuleColumnDefinition = 58, RuleColumnNameList = 59, 
-    RuleIndexDefinition = 60, RuleIndexMethod = 61, RuleDataType = 62, RuleSqlDataType = 63, 
-    RuleIntervalType = 64, RuleYearMonthIntervalType = 65, RuleDayTimeIntervalType = 66, 
-    RuleFixedLenChar = 67, RuleVaryingLenChar = 68, RuleAsSubquery = 69, 
-    RuleSelectOrValues = 70, RuleSelectList = 71, RuleSelectListItem = 72, 
-    RuleGroupByList = 73, RuleGroupByListItem = 74, RuleOrderByList = 75, 
-    RuleOrderByListItem = 76, RuleJoinUsingList = 77, RuleJoinUsingListItem = 78, 
-    RuleCorrList = 79, RuleCorrListItem = 80, RuleColAliases = 81, RuleColAliasList = 82, 
-    RuleColAliasListItem = 83, RulePropertyList = 84, RuleProperty = 85, 
-    RuleValueList = 86, RulePredicate = 87, RuleJoinPredicate = 88, RuleCasePredicate = 89, 
-    RuleExpr = 90, RuleVariableName = 91, RuleColumnRef = 92, RuleColumnWildcard = 93, 
-    RuleClassName = 94, RuleFunctionName = 95, RuleMethodName = 96, RuleCatalogName = 97, 
-    RuleSchemaName = 98, RuleTableName = 99, RuleTableAlias = 100, RuleColumnName = 101, 
-    RuleColumnAlias = 102, RuleCollationName = 103, RuleIndexName = 104, 
-    RulePropertyName = 105, RuleHintName = 106, RuleExprHint = 107, RulePropertyValue = 108, 
-    RuleHintValue = 109, RuleIdentifier = 110, RuleQualifier = 111, RulePrecision = 112, 
-    RuleScale = 113, RuleSize = 114, RuleLiteral = 115, RuleSimpleLiteral = 116, 
-    RuleBooleanLiteral = 117, RuleIntegerLiteral = 118, RuleSignedIntegerLiteral = 119, 
-    RuleDecimalLiteral = 120, RuleSignedDecimalLiteral = 121, RuleFloatLiteral = 122, 
-    RuleSignedFloatLiteral = 123, RuleDateLiteral = 124, RuleTimeLiteral = 125, 
-    RuleTimestampLiteral = 126, RuleStringLiteral = 127, RuleIntervalLiteral = 128, 
-    RuleYearMonthInterval = 129, RuleDayTimeInterval = 130, RuleLog = 131, 
-    RuleLscol = 132, RuleLsidx = 133, RuleLsidxcol = 134, RuleLstbl = 135, 
-    RuleNonReservedWord = 136
+    RuleKeyValueTag = 4, RuleKeyOnlyTag = 5, RuleQueryCmd = 6, RuleQuery = 7, 
+    RuleQueryHint = 8, RuleHint = 9, RuleSelectQuery = 10, RuleSelectExpr = 11, 
+    RuleSetQuery = 12, RuleSetExpr = 13, RuleCorrClause = 14, RuleWithQuery = 15, 
+    RuleTableExpr = 16, RuleTableReference = 17, RuleJoinType = 18, RuleExtendedJoinType = 19, 
+    RuleValuesExpr = 20, RuleBpaCmd = 21, RuleCountCmd = 22, RuleCreateCmd = 23, 
+    RuleCreateTableCmd = 24, RuleCreateIndexCmd = 25, RuleDeleteCmd = 26, 
+    RuleDloadCmd = 27, RuleDropCmd = 28, RuleDropTableCmd = 29, RuleDropIndexCmd = 30, 
+    RuleEmptyCmd = 31, RuleExplainCmd = 32, RuleExplainOptions = 33, RuleExplainStageList = 34, 
+    RuleExplainRange = 35, RuleExplainRangeChoice = 36, RuleExplainFormat = 37, 
+    RuleFileCmd = 38, RuleInsertCmd = 39, RuleLoadCmd = 40, RuleLoadOption = 41, 
+    RuleLoadOptionKeys = 42, RuleLogCmd = 43, RuleLscolCmd = 44, RuleLsidxCmd = 45, 
+    RuleLsidxcolCmd = 46, RuleLstblCmd = 47, RuleMemoryleaksCmd = 48, RuleNoopCmd = 49, 
+    RuleSleepCmd = 50, RuleSleepUnits = 51, RuleSpaceCmd = 52, RuleStatusCmd = 53, 
+    RuleSzidxCmd = 54, RuleSztblCmd = 55, RuleTruncateCmd = 56, RuleTrackmemoryCmd = 57, 
+    RuleUpdateCmd = 58, RuleUnloadCmd = 59, RuleTableDefinition = 60, RuleTablePartitioning = 61, 
+    RuleColumnDefinition = 62, RuleColumnNameList = 63, RuleIndexDefinition = 64, 
+    RuleIndexMethod = 65, RuleDataType = 66, RuleSqlDataType = 67, RuleIntervalType = 68, 
+    RuleYearMonthIntervalType = 69, RuleDayTimeIntervalType = 70, RuleFixedLenChar = 71, 
+    RuleVaryingLenChar = 72, RuleAsSubquery = 73, RuleSelectOrValues = 74, 
+    RuleSelectList = 75, RuleSelectListItem = 76, RuleGroupByList = 77, 
+    RuleGroupByListItem = 78, RuleOrderByList = 79, RuleOrderByListItem = 80, 
+    RuleJoinUsingList = 81, RuleJoinUsingListItem = 82, RuleCorrList = 83, 
+    RuleCorrListItem = 84, RuleColAliases = 85, RuleColAliasList = 86, RuleColAliasListItem = 87, 
+    RulePropertyList = 88, RuleProperty = 89, RuleValueList = 90, RulePredicate = 91, 
+    RuleJoinPredicate = 92, RuleCasePredicate = 93, RuleExpr = 94, RuleVariableName = 95, 
+    RuleColumnRef = 96, RuleColumnWildcard = 97, RuleClassName = 98, RuleFunctionName = 99, 
+    RuleMethodName = 100, RuleCatalogName = 101, RuleSchemaName = 102, RuleTableName = 103, 
+    RuleTableAlias = 104, RuleColumnName = 105, RuleColumnAlias = 106, RuleCollationName = 107, 
+    RuleIndexName = 108, RulePropertyName = 109, RuleHintName = 110, RuleExprHint = 111, 
+    RulePropertyValue = 112, RuleHintValue = 113, RuleIdentifier = 114, 
+    RuleQualifier = 115, RulePrecision = 116, RuleScale = 117, RuleSize = 118, 
+    RuleLiteral = 119, RuleSimpleLiteral = 120, RuleBooleanLiteral = 121, 
+    RuleIntegerLiteral = 122, RuleSignedIntegerLiteral = 123, RuleDecimalLiteral = 124, 
+    RuleSignedDecimalLiteral = 125, RuleFloatLiteral = 126, RuleSignedFloatLiteral = 127, 
+    RuleDateLiteral = 128, RuleTimeLiteral = 129, RuleTimestampLiteral = 130, 
+    RuleStringLiteral = 131, RuleIntervalLiteral = 132, RuleYearMonthInterval = 133, 
+    RuleDayTimeInterval = 134, RuleNonReservedWord = 135
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -117,14 +116,7 @@ public:
   class TagsContext;
   class KeyValueTagContext;
   class KeyOnlyTagContext;
-  class ExplainStatementContext;
-  class ExplainOptionsContext;
-  class ExplainStageListContext;
-  class ExplainRangeContext;
-  class ExplainRangeChoiceContext;
-  class ExplainFormatContext;
-  class StatisticsStatementContext;
-  class QueryStatementContext;
+  class QueryCmdContext;
   class QueryContext;
   class QueryHintContext;
   class HintContext;
@@ -139,34 +131,45 @@ public:
   class JoinTypeContext;
   class ExtendedJoinTypeContext;
   class ValuesExprContext;
-  class InsertQueryContext;
-  class DeleteQueryContext;
-  class UpdateQueryContext;
-  class CreateQueryContext;
-  class CreateTableQueryContext;
-  class CreateIndexQueryContext;
-  class DropQueryContext;
-  class DropTableQueryContext;
-  class DropIndexQueryContext;
-  class TruncateQueryContext;
-  class LoadContext;
-  class DloadContext;
+  class BpaCmdContext;
+  class CountCmdContext;
+  class CreateCmdContext;
+  class CreateTableCmdContext;
+  class CreateIndexCmdContext;
+  class DeleteCmdContext;
+  class DloadCmdContext;
+  class DropCmdContext;
+  class DropTableCmdContext;
+  class DropIndexCmdContext;
+  class EmptyCmdContext;
+  class ExplainCmdContext;
+  class ExplainOptionsContext;
+  class ExplainStageListContext;
+  class ExplainRangeContext;
+  class ExplainRangeChoiceContext;
+  class ExplainFormatContext;
+  class FileCmdContext;
+  class InsertCmdContext;
+  class LoadCmdContext;
   class LoadOptionContext;
   class LoadOptionKeysContext;
-  class CountContext;
-  class SleepContext;
+  class LogCmdContext;
+  class LscolCmdContext;
+  class LsidxCmdContext;
+  class LsidxcolCmdContext;
+  class LstblCmdContext;
+  class MemoryleaksCmdContext;
+  class NoopCmdContext;
+  class SleepCmdContext;
   class SleepUnitsContext;
-  class SpaceContext;
-  class StatusContext;
-  class SzidxContext;
-  class SztblContext;
-  class UnloadContext;
-  class TrackmemoryContext;
-  class MemoryleaksContext;
-  class BpaContext;
-  class FileContext;
-  class NoopContext;
-  class EmptyCommandContext;
+  class SpaceCmdContext;
+  class StatusCmdContext;
+  class SzidxCmdContext;
+  class SztblCmdContext;
+  class TruncateCmdContext;
+  class TrackmemoryCmdContext;
+  class UpdateCmdContext;
+  class UnloadCmdContext;
   class TableDefinitionContext;
   class TablePartitioningContext;
   class ColumnDefinitionContext;
@@ -242,11 +245,6 @@ public:
   class IntervalLiteralContext;
   class YearMonthIntervalContext;
   class DayTimeIntervalContext;
-  class LogContext;
-  class LscolContext;
-  class LsidxContext;
-  class LsidxcolContext;
-  class LstblContext;
   class NonReservedWordContext; 
 
   class  StatementsContext : public antlr4::ParserRuleContext {
@@ -282,31 +280,31 @@ public:
   public:
     StatementChoiceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    QueryStatementContext *queryStatement();
-    ExplainStatementContext *explainStatement();
-    CreateQueryContext *createQuery();
-    DropQueryContext *dropQuery();
-    TruncateQueryContext *truncateQuery();
-    DloadContext *dload();
-    LoadContext *load();
-    LogContext *log();
-    LscolContext *lscol();
-    LsidxContext *lsidx();
-    LsidxcolContext *lsidxcol();
-    LstblContext *lstbl();
-    CountContext *count();
-    SleepContext *sleep();
-    SpaceContext *space();
-    StatusContext *status();
-    SzidxContext *szidx();
-    SztblContext *sztbl();
-    UnloadContext *unload();
-    TrackmemoryContext *trackmemory();
-    MemoryleaksContext *memoryleaks();
-    BpaContext *bpa();
-    FileContext *file();
-    NoopContext *noop();
-    EmptyCommandContext *emptyCommand();
+    CountCmdContext *countCmd();
+    CreateCmdContext *createCmd();
+    DloadCmdContext *dloadCmd();
+    DropCmdContext *dropCmd();
+    ExplainCmdContext *explainCmd();
+    LoadCmdContext *loadCmd();
+    LogCmdContext *logCmd();
+    LscolCmdContext *lscolCmd();
+    LsidxCmdContext *lsidxCmd();
+    LsidxcolCmdContext *lsidxcolCmd();
+    LstblCmdContext *lstblCmd();
+    QueryCmdContext *queryCmd();
+    SleepCmdContext *sleepCmd();
+    SpaceCmdContext *spaceCmd();
+    StatusCmdContext *statusCmd();
+    SzidxCmdContext *szidxCmd();
+    SztblCmdContext *sztblCmd();
+    TruncateCmdContext *truncateCmd();
+    UnloadCmdContext *unloadCmd();
+    TrackmemoryCmdContext *trackmemoryCmd();
+    MemoryleaksCmdContext *memoryleaksCmd();
+    BpaCmdContext *bpaCmd();
+    FileCmdContext *fileCmd();
+    NoopCmdContext *noopCmd();
+    EmptyCmdContext *emptyCmd();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -360,125 +358,9 @@ public:
 
   KeyOnlyTagContext* keyOnlyTag();
 
-  class  ExplainStatementContext : public antlr4::ParserRuleContext {
+  class  QueryCmdContext : public antlr4::ParserRuleContext {
   public:
-    ExplainStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *EXPLAIN();
-    StatementChoiceContext *statementChoice();
-    std::vector<QueryHintContext *> queryHint();
-    QueryHintContext* queryHint(size_t i);
-    std::vector<ExplainOptionsContext *> explainOptions();
-    ExplainOptionsContext* explainOptions(size_t i);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExplainStatementContext* explainStatement();
-
-  class  ExplainOptionsContext : public antlr4::ParserRuleContext {
-  public:
-    ExplainOptionsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    ExplainStageListContext *explainStageList();
-    ExplainFormatContext *explainFormat();
-    antlr4::tree::TerminalNode *WITH_NAMES();
-    antlr4::tree::TerminalNode *WITH_TYPES();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExplainOptionsContext* explainOptions();
-
-  class  ExplainStageListContext : public antlr4::ParserRuleContext {
-  public:
-    ExplainStageListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *STAGE();
-    std::vector<ExplainRangeContext *> explainRange();
-    ExplainRangeContext* explainRange(size_t i);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExplainStageListContext* explainStageList();
-
-  class  ExplainRangeContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::ExplainRangeChoiceContext *begin = nullptr;;
-    sqlParser::ExplainRangeChoiceContext *end = nullptr;;
-    ExplainRangeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    std::vector<ExplainRangeChoiceContext *> explainRangeChoice();
-    ExplainRangeChoiceContext* explainRangeChoice(size_t i);
-    antlr4::tree::TerminalNode *TO();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExplainRangeContext* explainRange();
-
-  class  ExplainRangeChoiceContext : public antlr4::ParserRuleContext {
-  public:
-    antlr4::Token *all = nullptr;;
-    antlr4::Token *num = nullptr;;
-    sqlParser::IdentifierContext *id = nullptr;;
-    ExplainRangeChoiceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ALL();
-    antlr4::tree::TerminalNode *INTEGER_LITERAL();
-    IdentifierContext *identifier();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExplainRangeChoiceContext* explainRangeChoice();
-
-  class  ExplainFormatContext : public antlr4::ParserRuleContext {
-  public:
-    ExplainFormatContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *FORMAT();
-    antlr4::tree::TerminalNode *PRETTY();
-    antlr4::tree::TerminalNode *ROW();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ExplainFormatContext* explainFormat();
-
-  class  StatisticsStatementContext : public antlr4::ParserRuleContext {
-  public:
-    StatisticsStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    StatementChoiceContext *statementChoice();
-    antlr4::tree::TerminalNode *STATS();
-    antlr4::tree::TerminalNode *STATISTICS();
-    std::vector<QueryHintContext *> queryHint();
-    QueryHintContext* queryHint(size_t i);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  StatisticsStatementContext* statisticsStatement();
-
-  class  QueryStatementContext : public antlr4::ParserRuleContext {
-  public:
-    QueryStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    QueryCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     QueryContext *query();
 
@@ -487,7 +369,7 @@ public:
    
   };
 
-  QueryStatementContext* queryStatement();
+  QueryCmdContext* queryCmd();
 
   class  QueryContext : public antlr4::ParserRuleContext {
   public:
@@ -864,10 +746,309 @@ public:
 
   ValuesExprContext* valuesExpr();
 
-  class  InsertQueryContext : public antlr4::ParserRuleContext {
+  class  BpaCmdContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *type = nullptr;;
+    BpaCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *BPA();
+    antlr4::tree::TerminalNode *REGIONS();
+    antlr4::tree::TerminalNode *OBJECTS();
+    antlr4::tree::TerminalNode *ALL();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  BpaCmdContext* bpaCmd();
+
+  class  CountCmdContext : public antlr4::ParserRuleContext {
+  public:
+    CountCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *COUNT();
+    TableNameContext *tableName();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CountCmdContext* countCmd();
+
+  class  CreateCmdContext : public antlr4::ParserRuleContext {
+  public:
+    CreateCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    CreateTableCmdContext *createTableCmd();
+    CreateIndexCmdContext *createIndexCmd();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CreateCmdContext* createCmd();
+
+  class  CreateTableCmdContext : public antlr4::ParserRuleContext {
+  public:
+    CreateTableCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *CREATE();
+    antlr4::tree::TerminalNode *TABLE();
+    TableNameContext *tableName();
+    TableDefinitionContext *tableDefinition();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CreateTableCmdContext* createTableCmd();
+
+  class  CreateIndexCmdContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::IndexNameContext *idxName = nullptr;;
+    CreateIndexCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *CREATE();
+    antlr4::tree::TerminalNode *INDEX();
+    antlr4::tree::TerminalNode *ON();
+    TableNameContext *tableName();
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    IndexNameContext *indexName();
+    antlr4::tree::TerminalNode *UNIQUE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CreateIndexCmdContext* createIndexCmd();
+
+  class  DeleteCmdContext : public antlr4::ParserRuleContext {
   public:
     sqlParser::TableReferenceContext *ref = nullptr;;
-    InsertQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    DeleteCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DELETE();
+    TableReferenceContext *tableReference();
+    antlr4::tree::TerminalNode *WITH();
+    std::vector<WithQueryContext *> withQuery();
+    WithQueryContext* withQuery(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> FROM();
+    antlr4::tree::TerminalNode* FROM(size_t i);
+    antlr4::tree::TerminalNode *WHERE();
+    PredicateContext *predicate();
+    TableExprContext *tableExpr();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DeleteCmdContext* deleteCmd();
+
+  class  DloadCmdContext : public antlr4::ParserRuleContext {
+  public:
+    DloadCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DLOAD();
+    TableNameContext *tableName();
+    antlr4::tree::TerminalNode *PATHS();
+    std::vector<StringLiteralContext *> stringLiteral();
+    StringLiteralContext* stringLiteral(size_t i);
+    std::vector<LoadOptionContext *> loadOption();
+    LoadOptionContext* loadOption(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DloadCmdContext* dloadCmd();
+
+  class  DropCmdContext : public antlr4::ParserRuleContext {
+  public:
+    DropCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    DropTableCmdContext *dropTableCmd();
+    DropIndexCmdContext *dropIndexCmd();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DropCmdContext* dropCmd();
+
+  class  DropTableCmdContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::TableNameContext *name = nullptr;;
+    DropTableCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DROP();
+    antlr4::tree::TerminalNode *TABLE();
+    TableNameContext *tableName();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DropTableCmdContext* dropTableCmd();
+
+  class  DropIndexCmdContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::IndexNameContext *idxName = nullptr;;
+    sqlParser::TableNameContext *tblName = nullptr;;
+    DropIndexCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DROP();
+    antlr4::tree::TerminalNode *INDEX();
+    antlr4::tree::TerminalNode *ON();
+    IndexNameContext *indexName();
+    TableNameContext *tableName();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DropIndexCmdContext* dropIndexCmd();
+
+  class  EmptyCmdContext : public antlr4::ParserRuleContext {
+  public:
+    EmptyCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  EmptyCmdContext* emptyCmd();
+
+  class  ExplainCmdContext : public antlr4::ParserRuleContext {
+  public:
+    ExplainCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *EXPLAIN();
+    StatementChoiceContext *statementChoice();
+    std::vector<QueryHintContext *> queryHint();
+    QueryHintContext* queryHint(size_t i);
+    std::vector<ExplainOptionsContext *> explainOptions();
+    ExplainOptionsContext* explainOptions(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExplainCmdContext* explainCmd();
+
+  class  ExplainOptionsContext : public antlr4::ParserRuleContext {
+  public:
+    ExplainOptionsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ExplainStageListContext *explainStageList();
+    ExplainFormatContext *explainFormat();
+    antlr4::tree::TerminalNode *WITH_NAMES();
+    antlr4::tree::TerminalNode *WITH_TYPES();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExplainOptionsContext* explainOptions();
+
+  class  ExplainStageListContext : public antlr4::ParserRuleContext {
+  public:
+    ExplainStageListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *STAGE();
+    std::vector<ExplainRangeContext *> explainRange();
+    ExplainRangeContext* explainRange(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExplainStageListContext* explainStageList();
+
+  class  ExplainRangeContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::ExplainRangeChoiceContext *begin = nullptr;;
+    sqlParser::ExplainRangeChoiceContext *end = nullptr;;
+    ExplainRangeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ExplainRangeChoiceContext *> explainRangeChoice();
+    ExplainRangeChoiceContext* explainRangeChoice(size_t i);
+    antlr4::tree::TerminalNode *TO();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExplainRangeContext* explainRange();
+
+  class  ExplainRangeChoiceContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *all = nullptr;;
+    antlr4::Token *num = nullptr;;
+    sqlParser::IdentifierContext *id = nullptr;;
+    ExplainRangeChoiceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ALL();
+    antlr4::tree::TerminalNode *INTEGER_LITERAL();
+    IdentifierContext *identifier();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExplainRangeChoiceContext* explainRangeChoice();
+
+  class  ExplainFormatContext : public antlr4::ParserRuleContext {
+  public:
+    ExplainFormatContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *FORMAT();
+    antlr4::tree::TerminalNode *PRETTY();
+    antlr4::tree::TerminalNode *ROW();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExplainFormatContext* explainFormat();
+
+  class  FileCmdContext : public antlr4::ParserRuleContext {
+  public:
+    FileCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *FILE();
+    IdentifierContext *identifier();
+    StringLiteralContext *stringLiteral();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FileCmdContext* fileCmd();
+
+  class  InsertCmdContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::TableReferenceContext *ref = nullptr;;
+    InsertCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *INSERT();
     TableReferenceContext *tableReference();
@@ -886,178 +1067,12 @@ public:
    
   };
 
-  InsertQueryContext* insertQuery();
+  InsertCmdContext* insertCmd();
 
-  class  DeleteQueryContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::TableReferenceContext *ref = nullptr;;
-    DeleteQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *DELETE();
-    TableReferenceContext *tableReference();
-    antlr4::tree::TerminalNode *WITH();
-    std::vector<WithQueryContext *> withQuery();
-    WithQueryContext* withQuery(size_t i);
-    std::vector<antlr4::tree::TerminalNode *> FROM();
-    antlr4::tree::TerminalNode* FROM(size_t i);
-    antlr4::tree::TerminalNode *WHERE();
-    PredicateContext *predicate();
-    TableExprContext *tableExpr();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  DeleteQueryContext* deleteQuery();
-
-  class  UpdateQueryContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::TableReferenceContext *ref = nullptr;;
-    UpdateQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *UPDATE();
-    antlr4::tree::TerminalNode *SET();
-    std::vector<ColumnNameContext *> columnName();
-    ColumnNameContext* columnName(size_t i);
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-    TableReferenceContext *tableReference();
-    antlr4::tree::TerminalNode *WITH();
-    std::vector<WithQueryContext *> withQuery();
-    WithQueryContext* withQuery(size_t i);
-    antlr4::tree::TerminalNode *WHERE();
-    PredicateContext *predicate();
-    antlr4::tree::TerminalNode *FROM();
-    TableExprContext *tableExpr();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  UpdateQueryContext* updateQuery();
-
-  class  CreateQueryContext : public antlr4::ParserRuleContext {
-  public:
-    CreateQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    CreateTableQueryContext *createTableQuery();
-    CreateIndexQueryContext *createIndexQuery();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  CreateQueryContext* createQuery();
-
-  class  CreateTableQueryContext : public antlr4::ParserRuleContext {
-  public:
-    CreateTableQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *CREATE();
-    antlr4::tree::TerminalNode *TABLE();
-    TableNameContext *tableName();
-    TableDefinitionContext *tableDefinition();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  CreateTableQueryContext* createTableQuery();
-
-  class  CreateIndexQueryContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::IndexNameContext *idxName = nullptr;;
-    CreateIndexQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *CREATE();
-    antlr4::tree::TerminalNode *INDEX();
-    antlr4::tree::TerminalNode *ON();
-    TableNameContext *tableName();
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
-    IndexNameContext *indexName();
-    antlr4::tree::TerminalNode *UNIQUE();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  CreateIndexQueryContext* createIndexQuery();
-
-  class  DropQueryContext : public antlr4::ParserRuleContext {
-  public:
-    DropQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    DropTableQueryContext *dropTableQuery();
-    DropIndexQueryContext *dropIndexQuery();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  DropQueryContext* dropQuery();
-
-  class  DropTableQueryContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::TableNameContext *name = nullptr;;
-    DropTableQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *DROP();
-    antlr4::tree::TerminalNode *TABLE();
-    TableNameContext *tableName();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  DropTableQueryContext* dropTableQuery();
-
-  class  DropIndexQueryContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::IndexNameContext *idxName = nullptr;;
-    sqlParser::TableNameContext *tblName = nullptr;;
-    DropIndexQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *DROP();
-    antlr4::tree::TerminalNode *INDEX();
-    antlr4::tree::TerminalNode *ON();
-    IndexNameContext *indexName();
-    TableNameContext *tableName();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  DropIndexQueryContext* dropIndexQuery();
-
-  class  TruncateQueryContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::TableNameContext *name = nullptr;;
-    TruncateQueryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TRUNCATE();
-    TableNameContext *tableName();
-    antlr4::tree::TerminalNode *TABLE();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  TruncateQueryContext* truncateQuery();
-
-  class  LoadContext : public antlr4::ParserRuleContext {
+  class  LoadCmdContext : public antlr4::ParserRuleContext {
   public:
     sqlParser::StringLiteralContext *filePath = nullptr;;
-    LoadContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    LoadCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *LOAD();
     TableNameContext *tableName();
@@ -1070,26 +1085,7 @@ public:
    
   };
 
-  LoadContext* load();
-
-  class  DloadContext : public antlr4::ParserRuleContext {
-  public:
-    DloadContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *DLOAD();
-    TableNameContext *tableName();
-    antlr4::tree::TerminalNode *PATHS();
-    std::vector<StringLiteralContext *> stringLiteral();
-    StringLiteralContext* stringLiteral(size_t i);
-    std::vector<LoadOptionContext *> loadOption();
-    LoadOptionContext* loadOption(size_t i);
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  DloadContext* dload();
+  LoadCmdContext* loadCmd();
 
   class  LoadOptionContext : public antlr4::ParserRuleContext {
   public:
@@ -1121,11 +1117,31 @@ public:
 
   LoadOptionKeysContext* loadOptionKeys();
 
-  class  CountContext : public antlr4::ParserRuleContext {
+  class  LogCmdContext : public antlr4::ParserRuleContext {
   public:
-    CountContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    sqlParser::StringLiteralContext *msg = nullptr;;
+    LogCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *COUNT();
+    antlr4::tree::TerminalNode *LOG();
+    StringLiteralContext *stringLiteral();
+    antlr4::tree::TerminalNode *ECHO();
+    antlr4::tree::TerminalNode *SQL_TRUE();
+    antlr4::tree::TerminalNode *ON();
+    antlr4::tree::TerminalNode *SQL_FALSE();
+    antlr4::tree::TerminalNode *OFF();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  LogCmdContext* logCmd();
+
+  class  LscolCmdContext : public antlr4::ParserRuleContext {
+  public:
+    LscolCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LSCOL();
     TableNameContext *tableName();
 
 
@@ -1133,11 +1149,80 @@ public:
    
   };
 
-  CountContext* count();
+  LscolCmdContext* lscolCmd();
 
-  class  SleepContext : public antlr4::ParserRuleContext {
+  class  LsidxCmdContext : public antlr4::ParserRuleContext {
   public:
-    SleepContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    LsidxCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LSIDX();
+    TableNameContext *tableName();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  LsidxCmdContext* lsidxCmd();
+
+  class  LsidxcolCmdContext : public antlr4::ParserRuleContext {
+  public:
+    LsidxcolCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LSIDXCOL();
+    TableNameContext *tableName();
+    IndexNameContext *indexName();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  LsidxcolCmdContext* lsidxcolCmd();
+
+  class  LstblCmdContext : public antlr4::ParserRuleContext {
+  public:
+    LstblCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *LSTBL();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  LstblCmdContext* lstblCmd();
+
+  class  MemoryleaksCmdContext : public antlr4::ParserRuleContext {
+  public:
+    MemoryleaksCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *MEMORYLEAKS();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  MemoryleaksCmdContext* memoryleaksCmd();
+
+  class  NoopCmdContext : public antlr4::ParserRuleContext {
+  public:
+    NoopCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NOOP();
+    antlr4::tree::TerminalNode *NOP();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  NoopCmdContext* noopCmd();
+
+  class  SleepCmdContext : public antlr4::ParserRuleContext {
+  public:
+    SleepCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *SLEEP();
     IntegerLiteralContext *integerLiteral();
@@ -1148,7 +1233,7 @@ public:
    
   };
 
-  SleepContext* sleep();
+  SleepCmdContext* sleepCmd();
 
   class  SleepUnitsContext : public antlr4::ParserRuleContext {
   public:
@@ -1172,9 +1257,9 @@ public:
 
   SleepUnitsContext* sleepUnits();
 
-  class  SpaceContext : public antlr4::ParserRuleContext {
+  class  SpaceCmdContext : public antlr4::ParserRuleContext {
   public:
-    SpaceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    SpaceCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *SPACE();
 
@@ -1183,11 +1268,11 @@ public:
    
   };
 
-  SpaceContext* space();
+  SpaceCmdContext* spaceCmd();
 
-  class  StatusContext : public antlr4::ParserRuleContext {
+  class  StatusCmdContext : public antlr4::ParserRuleContext {
   public:
-    StatusContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    StatusCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *STATUS();
 
@@ -1196,11 +1281,11 @@ public:
    
   };
 
-  StatusContext* status();
+  StatusCmdContext* statusCmd();
 
-  class  SzidxContext : public antlr4::ParserRuleContext {
+  class  SzidxCmdContext : public antlr4::ParserRuleContext {
   public:
-    SzidxContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    SzidxCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *SZIDX();
     TableNameContext *tableName();
@@ -1211,11 +1296,11 @@ public:
    
   };
 
-  SzidxContext* szidx();
+  SzidxCmdContext* szidxCmd();
 
-  class  SztblContext : public antlr4::ParserRuleContext {
+  class  SztblCmdContext : public antlr4::ParserRuleContext {
   public:
-    SztblContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    SztblCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *SZTBL();
     TableNameContext *tableName();
@@ -1225,11 +1310,68 @@ public:
    
   };
 
-  SztblContext* sztbl();
+  SztblCmdContext* sztblCmd();
 
-  class  UnloadContext : public antlr4::ParserRuleContext {
+  class  TruncateCmdContext : public antlr4::ParserRuleContext {
   public:
-    UnloadContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    sqlParser::TableNameContext *name = nullptr;;
+    TruncateCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TRUNCATE();
+    TableNameContext *tableName();
+    antlr4::tree::TerminalNode *TABLE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TruncateCmdContext* truncateCmd();
+
+  class  TrackmemoryCmdContext : public antlr4::ParserRuleContext {
+  public:
+    TrackmemoryCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TRACKMEMORY();
+    antlr4::tree::TerminalNode *FORCE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TrackmemoryCmdContext* trackmemoryCmd();
+
+  class  UpdateCmdContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::TableReferenceContext *ref = nullptr;;
+    UpdateCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *UPDATE();
+    antlr4::tree::TerminalNode *SET();
+    std::vector<ColumnNameContext *> columnName();
+    ColumnNameContext* columnName(size_t i);
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    TableReferenceContext *tableReference();
+    antlr4::tree::TerminalNode *WITH();
+    std::vector<WithQueryContext *> withQuery();
+    WithQueryContext* withQuery(size_t i);
+    antlr4::tree::TerminalNode *WHERE();
+    PredicateContext *predicate();
+    antlr4::tree::TerminalNode *FROM();
+    TableExprContext *tableExpr();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  UpdateCmdContext* updateCmd();
+
+  class  UnloadCmdContext : public antlr4::ParserRuleContext {
+  public:
+    UnloadCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *UNLOAD();
     IdentifierContext *identifier();
@@ -1240,92 +1382,7 @@ public:
    
   };
 
-  UnloadContext* unload();
-
-  class  TrackmemoryContext : public antlr4::ParserRuleContext {
-  public:
-    TrackmemoryContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TRACKMEMORY();
-    antlr4::tree::TerminalNode *FORCE();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  TrackmemoryContext* trackmemory();
-
-  class  MemoryleaksContext : public antlr4::ParserRuleContext {
-  public:
-    MemoryleaksContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *MEMORYLEAKS();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  MemoryleaksContext* memoryleaks();
-
-  class  BpaContext : public antlr4::ParserRuleContext {
-  public:
-    antlr4::Token *type = nullptr;;
-    BpaContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *BPA();
-    antlr4::tree::TerminalNode *REGIONS();
-    antlr4::tree::TerminalNode *OBJECTS();
-    antlr4::tree::TerminalNode *ALL();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  BpaContext* bpa();
-
-  class  FileContext : public antlr4::ParserRuleContext {
-  public:
-    FileContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *FILE();
-    IdentifierContext *identifier();
-    StringLiteralContext *stringLiteral();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  FileContext* file();
-
-  class  NoopContext : public antlr4::ParserRuleContext {
-  public:
-    NoopContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *NOOP();
-    antlr4::tree::TerminalNode *NOP();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  NoopContext* noop();
-
-  class  EmptyCommandContext : public antlr4::ParserRuleContext {
-  public:
-    EmptyCommandContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  EmptyCommandContext* emptyCommand();
+  UnloadCmdContext* unloadCmd();
 
   class  TableDefinitionContext : public antlr4::ParserRuleContext {
   public:
@@ -2925,82 +2982,6 @@ public:
   };
 
   DayTimeIntervalContext* dayTimeInterval();
-
-  class  LogContext : public antlr4::ParserRuleContext {
-  public:
-    sqlParser::StringLiteralContext *msg = nullptr;;
-    LogContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *LOG();
-    StringLiteralContext *stringLiteral();
-    antlr4::tree::TerminalNode *ECHO();
-    antlr4::tree::TerminalNode *SQL_TRUE();
-    antlr4::tree::TerminalNode *ON();
-    antlr4::tree::TerminalNode *SQL_FALSE();
-    antlr4::tree::TerminalNode *OFF();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  LogContext* log();
-
-  class  LscolContext : public antlr4::ParserRuleContext {
-  public:
-    LscolContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *LSCOL();
-    TableNameContext *tableName();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  LscolContext* lscol();
-
-  class  LsidxContext : public antlr4::ParserRuleContext {
-  public:
-    LsidxContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *LSIDX();
-    TableNameContext *tableName();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  LsidxContext* lsidx();
-
-  class  LsidxcolContext : public antlr4::ParserRuleContext {
-  public:
-    LsidxcolContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *LSIDXCOL();
-    TableNameContext *tableName();
-    IndexNameContext *indexName();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  LsidxcolContext* lsidxcol();
-
-  class  LstblContext : public antlr4::ParserRuleContext {
-  public:
-    LstblContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *LSTBL();
-
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  LstblContext* lstbl();
 
   class  NonReservedWordContext : public antlr4::ParserRuleContext {
   public:
