@@ -526,58 +526,67 @@ then
 /* _ptp beg */  Dynamo[].compile
 /* _ptp beg */    EC_NONE == assert
 /* _ptp beg */    to PipeSpec[]
-
+/* _ptp beg */
 /****************************************************************************/
+/* _ptp beg */
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
-/* _ptp beg */  // pipeline with codeFile
+/* _ptp beg */  // pipeline has codeFile ?
 /* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
 /* _ptp beg */
-/* _ptp beg */"<hasCodeFile>" [job].tagSet@ tagSet.hasName if
-/* _ptp bgn */  [args].distJob if
-/* _ptp bgn */    "pipeline" "ptpBegin"
-/* _ptp bgn */      "_ptp bgn" "lst particpant"                      [job].trace
-/* _ptp bgn */  then
+/* _ptp beg */  "<hasCodeFile>" [job].tagSet@ tagSet.hasName if
+/* _ptp bgn */    [args].distJob if
+/* _ptp bgn */      "pipeline" "ptpBegin"
+/* _ptp bgn */        "_ptp bgn" "pipeline has codeFile"             [job].trace
+/* _ptp bgn */    then
 /* _ptp beg */
-/* _ptp beg */  LibInfo[].new
+/* _ptp beg */    LibInfo[].new
 /* _ptp beg */
-/* _ptp beg */  Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
-/* _ptp beg */  LibInfo[].compileFile not if
-/* _ptp beg */    LibInfo[].error .
-/* _ptp beg */    EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
-/* _ptp beg */    job.sendRejectJob
-/* _ptp beg */    [job]:retireAndExit
-/* _ptp beg */  else
-/* _ptp beg */    LibInfo[].link not if
+/* _ptp beg */    Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
+/* _ptp beg */    LibInfo[].compileFile not if
 /* _ptp beg */      LibInfo[].error .
-/* _ptp beg */      EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+/* _ptp beg */      EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
 /* _ptp beg */      job.sendRejectJob
 /* _ptp beg */      [job]:retireAndExit
+/* _ptp beg */    else
+/* _ptp beg */      LibInfo[].link not if
+/* _ptp beg */        LibInfo[].error .
+/* _ptp beg */        EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+/* _ptp beg */        job.sendRejectJob
+/* _ptp beg */        [job]:retireAndExit
+/* _ptp beg */      then
+/* _ptp beg */    then
+/* _ptp beg */
+/* _ptp beg */  else
+/* _ptp beg */
+/* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
+/* _ptp beg */  // pipeline hasCode ?
+/* _ptp beg */  // - - - - - - - - - - - - - - - - - - -
+/* _ptp beg */
+/* _ptp beg */  [job].hasCodeBlock if
+/* _ptp beg */
+/* _ptp bgn */    [args].distJob if
+/* _ptp bgn */      "pipeline" "ptpBegin"
+/* _ptp bgn */        "_ptp bgn" "pipeline has code"             [job].trace
+/* _ptp bgn */    then
+/* _ptp beg */
+/* _ptp beg */    LibInfo[].new
+/* _ptp beg */    [job].codeBlock@
+/* _ptp beg */      Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
+/* _ptp beg */      LibInfo[].compile not if
+/* _ptp beg */        LibInfo[].error .
+/* _ptp beg */        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
+/* _ptp beg */        job.sendRejectJob
+/* _ptp beg */        [job]:retireAndExit
+/* _ptp beg */      else
+/* _ptp beg */        LibInfo[].link not if
+/* _ptp beg */          LibInfo[].error .
+/* _ptp beg */          EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
+/* _ptp beg */          job.sendRejectJob
+/* _ptp beg */          [job]:retireAndExit
+/* _ptp beg */        then
+/* _ptp beg */      then
 /* _ptp beg */    then
 /* _ptp beg */  then
-/* _ptp beg */
-/* _ptp beg */else
-/* _ptp beg */
-/* _ptp beg */                  [job].hasCodeBlock if
-/* _ptp beg */                   // "JOB HAS CODE" .
-/* _ptp beg */
-/* _ptp beg */                    LibInfo[].new
-/* _ptp beg */                    [job].codeBlock@
-/* _ptp beg */                      Dynamo[].name@ "_" str.cat [grid].thisNodeName@ str.cat
-/* _ptp beg */                      LibInfo[].compile not if
-/* _ptp beg */                        LibInfo[].error .
-/* _ptp beg */                        EC_SYNTHCODE_COMPILATION_ERROR [job].rejectJobError!
-/* _ptp beg */                        job.sendRejectJob
-/* _ptp beg */                        [job]:retireAndExit
-/* _ptp beg */                      else
-/* _ptp beg */                        LibInfo[].link not if
-/* _ptp beg */                          LibInfo[].error .
-/* _ptp beg */                          EC_SYNTHCODE_LINKING_ERROR [job].rejectJobError!
-/* _ptp beg */                          job.sendRejectJob
-/* _ptp beg */                          [job]:retireAndExit
-/* _ptp beg */                        then
-/* _ptp beg */                      then
-/* _ptp beg */                  then
-/* _ptp beg */then
 /* _ptp beg */
 /**************************************************************************/
 /* _ptp beg */
@@ -697,14 +706,18 @@ then
 /* _ptp exe */  Pipeline[].rootDeck@ to Deck[]
 /* _ptp exe */  deck:invoke
 /* _ptp exe */  nullptr to Deck[]
-
+/* _ptp exe */
 /* ---- --- */  // !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!!
-
-                LibInfo[].isNotNull if
-                  LibInfo[].Unlink assert
-                  LibInfo[].delete
-                then
-
+/* _ptp exe */
+/* _ptp exe */    [args].distJob if
+/* _ptp exe */      "pipeline" "ptpBegin"
+/* _ptp exe */        "_ptp bgn" "unlinking and deleting libInfo"   [job].trace
+/* _ptp exe */    then
+/* _ptp exe */  LibInfo[].isNotNull if
+/* _ptp exe */    LibInfo[].Unlink assert
+/* _ptp exe */    LibInfo[].delete
+/* _ptp exe */  then
+/* _ptp exe */
 /* _ptp exd */  // - - - - - - - - - - - -
 /* _ptp exd */  // this job has executed
 /* _ptp exd */  // - - - - - - - - - - - -
@@ -713,8 +726,8 @@ then
 /* _ptp exd */  [ddlLock].testDrop
 /* _ptp exd */  ListedJob[].assertNoRef
 /* _ptp exd */
+/* _ptp exd */  //4 thread::sleepSsec
 /* _ptp exd */
-//4 thread::sleepSsec
 /* _ptp exd */  // - - - - - - - - - - - - - - -
 /* _ptp exd */  // reply executed to originator
 /* _ptp exd */  // - - - - - - - - - - - - - - -
