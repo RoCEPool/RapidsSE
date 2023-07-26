@@ -20,7 +20,7 @@ load nation "../TPCH/SF1/nation.tbl" ;
 success
 
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -61,7 +61,7 @@ rows:
   (24)
 
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -82,7 +82,7 @@ rows: 3
 */
 
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB
@@ -98,7 +98,7 @@ rows: 0
 
 
 /optimise_passthru 
-pipeline is
+pipeline iscan
 begin
   stage stageA on origin :
     start | pulse once | stageB

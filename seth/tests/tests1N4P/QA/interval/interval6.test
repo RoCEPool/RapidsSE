@@ -516,11 +516,11 @@ unordered rows:
 (date '2000-01-31',date '1998-02-28')
 (date '2021-11-12',date '2019-12-12')
 select a,a+interval '1-6.5' year to month from interval6;
-failure contains: "NODE1; EC_SYNTAX_ERROR; Line: 1; Column: 20; Invalid interval format: unexpected character '.' encountered;"
+failure contains: "NODE1; EC_SYNTAX_ERROR; Line: 1; Column: 20; Invalid interval format: unexpected character '.' encountered"
 select a,a+interval 't-6' year to month from interval6;
-failure contains: "NODE1; EC_SYNTAX_ERROR; Line: 1; Column: 20; Invalid interval format: non-digit value 't' encountered;"
+failure contains: "NODE1; EC_SYNTAX_ERROR; Line: 1; Column: 20; Invalid interval format: non-digit value 't' encountered"
 select a,a+interval '1-d' year to month from interval6;
-failure contains: "NODE1; EC_SYNTAX_ERROR; Line: 1; Column: 20; Invalid interval format: non-digit value 'd' encountered;"
+failure contains: "NODE1; EC_SYNTAX_ERROR; Line: 1; Column: 20; Invalid interval format: non-digit value 'd' encountered"
 
 select b,b+interval '1 59:08' day to minute from interval6;
 unordered rows: 

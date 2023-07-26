@@ -4,6 +4,9 @@
 
 //------------------------------------------------------------------------------
 count count;
+failure contains: "EC_SYNTAX_ERROR; mismatched input 'count'"
+
+count badTable;
 failure contains: "Table does not exist"
 
 lsidx lsidx;
@@ -11,7 +14,7 @@ failure contains: "Table does not exist"
 
 // create table with |
 create table | (i integer);
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; mismatched input '|'"
 
 // create a table
 create table t (i integer);
@@ -19,7 +22,7 @@ success
 
 // no key
 create unique index idx on t();
-failure contains: 'invalid columns'
+failure contains: "EC_SYNTAX_ERROR; mismatched input ')'"
 
 // no index
 drop index t idx;
@@ -30,16 +33,16 @@ failure contains: 'no such index'
 //failure contains: 'no such index'
 
 create table;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; mismatched input ';'"
 
 create index;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; mismatched input ';'"
 
 sleep;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; missing INTEGER_LITERAL at ';'"
 
 sleep a;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; mismatched input 'a' expecting INTEGER_LITERAL"
 
 drop table t;
 success

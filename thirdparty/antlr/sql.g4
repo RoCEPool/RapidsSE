@@ -220,7 +220,7 @@ pipelineOpSeq     : pipelineOperator ( '|' pipelineOperator)* ;
 pipelineOperator  : opName=identifier ( pipelineOpParam (','? pipelineOpParam)* )? ;
 pipelineOpParam   :
                       identifier
-                    | TYPE  | AS        // some reserved words
+                    | TYPE  | AS | SUM | AVG | MIN | MAX | ')' | '-' | '+' | '*' | '/' | '%' | PARAM_IDENTIFIER   // some reserved words and symbols
                     | pipelineTypeNames
                     | booleanLiteral
                     | signedIntegerLiteral
@@ -861,6 +861,7 @@ fragment DUBLDUBL     : '""' ;
 PLAIN_IDENTIFIER      : '_'* LETTER (LETTER | DIGIT | '_')* ;
 BAKTIKD_IDENTIFIER    : '`' (~[`\r\n])+ '`';
 DUBLQUOTED_IDENTIFIER : { isDublQuoteId }?  ( '"' (DUBLDUBL | ~["\r\n])+ '"' );
+PARAM_IDENTIFIER      : '$' LETTER (LETTER | DIGIT | '_')* ;
 
 SINGLQUOTED_STRING    : '\'' (DUBLSINGL | (~'\''))* '\'' ;
 DUBLQUOTED_STRING     : '"' (DUBLDUBL | (~'"'))* '"' ;    // NB: this token is not matched if
