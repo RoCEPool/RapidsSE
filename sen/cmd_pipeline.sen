@@ -709,20 +709,6 @@ then
 /* _ptp exe */
 /* ---- --- */  // !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!! exd !!!
 /* _ptp exe */
-/* _ptp exe */    [args].distJob if
-/* _ptp exe */      "pipeline" "ptpBegin"
-/* _ptp exe */        "_ptp bgn" "unlinking and deleting libInfo"   [job].trace
-/* _ptp exe */    then
-/* _ptp exe */  LibInfo[].isNotNull if
-/* _ptp exe */    LibInfo[].Unlink assert
-/* _ptp exe */
-/* _ptp exe */    "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
-/* _ptp exe */       false LibInfo[].delete
-/* _ptp exe */    else
-/* _ptp exe */       true LibInfo[].delete
-/* _ptp exe */    then
-/* _ptp exe */
-/* _ptp exe */  then
 /* _ptp exe */
 /* _ptp exd */  // - - - - - - - - - - - -
 /* _ptp exd */  // this job has executed
@@ -783,7 +769,20 @@ then
 /* _ptp end */  JP_ENDING [job].phase!
 /* _ptp end */  [ddlLock].testDrop
 /* _ptp end */
-
+/* _ptp end */  [args].distJob if
+/* _ptp end */    "pipeline" "ptpExecute"
+/* _ptp end */      "_ptp end" "unlinking and deleting libInfo"   [job].trace
+/* _ptp end */  then
+/* _ptp end */  LibInfo[].isNotNull if
+/* _ptp end */    LibInfo[].Unlink assert
+/* _ptp end */
+/* _ptp end */    "<keepCodeFile>" [job].tagSet@ tagSet.hasName if
+/* _ptp end */       false LibInfo[].delete
+/* _ptp end */    else
+/* _ptp end */       true LibInfo[].delete
+/* _ptp end */    then
+/* _ptp end */
+/* _ptp end */  then
 /* ---- --- */  // !!! edd !!! edd !!! edd !!! edd !!! edd !!! edd !!! edd !!!
 
 /* _ptp edd */  // - - - - - - - - - -
