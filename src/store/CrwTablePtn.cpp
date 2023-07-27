@@ -278,15 +278,21 @@ BufferId CrwTablePtn::oRootCrwBufferId(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
   SkipListBlock* pSLBlock = m_pPdsBufferId->pFirstBlock();
-  if(pSLBlock == nullptr) {
-    BufferId oEmptyBufferId;
-    oEmptyBufferId.m_iAsI8 = 0;
-    return oEmptyBufferId;
+  BufferId oBufferId;
+  oBufferId.m_iAsI8 = 0;
+  if(pSLBlock != nullptr) {
+    oBufferId = *(BufferId*)pSLBlock->aItemBody();
   }
 
-  BufferId oBufferId = *(BufferId*)pSLBlock->aItemBody();
+  BufferId oLLRootBufferId;
+  oLLRootBufferId.m_iAsI8 = 0;
+  if(m_pRootBuffer != nullptr) {
+    oLLRootBufferId = m_pRootBuffer->oGetBufferId();
+  }
 
-  return oBufferId;
+  RASSERT(oLLRootBufferId.m_iAsI8 == oBufferId.m_iAsI8);
+
+  return oLLRootBufferId;
 }
 
 /*----------------------------------------------------------------------------*/
