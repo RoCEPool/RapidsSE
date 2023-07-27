@@ -15366,6 +15366,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  PipeIn[]\\clear to CrwBuffer[]\n"
     "\n"
+    "// Use Pds cursor instead here?\n"
     "  CrwBuffer[].nextBufferId to xNextBufferId\n"
     "\n"
     "  // this overwrite the bufferid in the logic unit\n"

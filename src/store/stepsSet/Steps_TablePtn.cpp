@@ -24,6 +24,8 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+extern pthread_key_t giTLS_PDSCrwTablePtn;
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -92,6 +94,11 @@ void Step::vTablePtnAttemptGrabRead(void)
 
   // attempt to grab the read lock
   bool bSuccess = pTablePtn->bGrabRead();
+  // Save the pds address for each table partition in the thread TLS here
+
+  if(bSuccess) {
+    MY::vPdsCrwTablePtn(pTablePtn->pPdsCrwTablePtn());
+  }
   
   m_pDataStack->vPushInt(bSuccess);
   
@@ -110,6 +117,9 @@ void Step::vTablePtnAttemptGrabWrite(void)
 
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
+  if(bSuccess) {
+    MY::vPdsCrwTablePtn(pTablePtn->pPdsCrwTablePtn());
+  }
   
   m_pDataStack->vPushInt(bSuccess);
   
@@ -141,6 +151,7 @@ void Step::vTablePtnDropRead(void)
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
 
+  MY::vPdsCrwTablePtn(nullptr);
     
   // drop the read lock
   pTablePtn->vDropRead();
@@ -157,6 +168,8 @@ void Step::vTablePtnDropWrite(void)
   
   // get the tablePtn from the register
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+
+  MY::vPdsCrwTablePtn(nullptr);
 
   // drop the write lock
   pTablePtn->vDropWrite();

@@ -15,11 +15,8 @@ namespace BASE
     BufferNo m_tHigherBuffer; // higher buffer
     BufferNo m_tLowerBuffer;  // lower buffer
 
-    BufferId m_oNextBufferId;
-    BufferId m_oPrevBufferId;
-
   private:
-    PadWord  m__PadToCacheLine[2]; // padding to cache line
+    PadWord  m__PadToCacheLine[4]; // padding to cache line
 
   public:
     LinkedBuffer(eCN eClass);
@@ -44,16 +41,10 @@ namespace BASE
     LinkedBuffer* pNextLinkedBuffer(void);
     void          vNextLinkedBuffer(BufferNo tNextBufferNo);
     void          vNextLinkedBuffer(LinkedBuffer* pNextBuffer);
-
-    BufferId      oNextLinkedBufferId(void);
-    void          vNextLinkedBufferId(BufferId oNextBufferId);
   
     LinkedBuffer* pPrevLinkedBuffer(void);
     void          vPrevLinkedBuffer(BufferNo tPrevBufferNo);
     void          vPrevLinkedBuffer(LinkedBuffer* pPrevBuffer);
-
-    BufferId      oPrevLinkedBufferId(void);
-    void          vPrevLinkedBufferId(BufferId oNextBufferId);
   };
   
   LinkedBuffer* _pLinkedBuffer(void* aAddr);

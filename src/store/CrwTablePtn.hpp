@@ -20,7 +20,6 @@ namespace STORE
     CrwBuffer* m_pRootBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
 
-    BufferId m_oRootBufferId;
     Pds_t<xBufferId>* m_pPdsBufferId;
 
     // Note that the IndexTreeVec gets moved upto TablePtn
@@ -42,6 +41,7 @@ namespace STORE
     void vDropAllPagingLocks(void);
     void vDump(void);
     CrwBuffer* pGetBuffer(SkipListBlock* pSLBlock);
+    void* pPds(void);
 
 
 

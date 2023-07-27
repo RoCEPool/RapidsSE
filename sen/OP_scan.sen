@@ -88,6 +88,7 @@
 
   PipeIn[]\clear to CrwBuffer[]
 
+// Use Pds cursor instead here?
   CrwBuffer[].nextBufferId to xNextBufferId
 
   // this overwrite the bufferid in the logic unit

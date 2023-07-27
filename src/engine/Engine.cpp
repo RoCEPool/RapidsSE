@@ -104,6 +104,7 @@ pthread_key_t giTLS_StepAccum  = C_UNKNOWN;
 pthread_key_t gbTLS_FaultInjection  = false;
 pthread_key_t giTLS_FaultPoint      = C_UNKNOWN;
 pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
+pthread_key_t giTLS_PDSCrwTablePtn  = C_UNKNOWN;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */

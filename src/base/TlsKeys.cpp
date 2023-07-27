@@ -16,6 +16,7 @@ extern pthread_key_t giTLS_StepAccum;
 extern pthread_key_t gbTLS_FaultInjection;
 extern pthread_key_t giTLS_FaultPoint;
 extern pthread_key_t giTLS_CurrentPoint;
+extern pthread_key_t giTLS_PDSCrwTablePtn;
 
 /*----------------------------------------------------------------------------*/
 /* initialise tls                                                             */
@@ -47,6 +48,9 @@ void TlsKeys::vInit(void)
   RASSERT(b);
 
   b = PsxThd::bTlsCreate(&giTLS_CurrentPoint);
+  RASSERT(b);
+
+  b = PsxThd::bTlsCreate(&giTLS_PDSCrwTablePtn);
   RASSERT(b);
 }
 

@@ -190,12 +190,18 @@ void Step::vCrwBufferGetNextLinkedBufferId(void)
   ENTRY();
 
   CrwBuffer* pCrwBuffer = *m_pLogicUnit->m_xpCrwBuffer;
-  BufferId oNextBufferId = pCrwBuffer->oNextLinkedBufferId();
+  CrwBuffer* pNextBuffer = pCrwBuffer->pNextCrwBuffer();
 
-//  DataBuffer* pDataBuffer = _pDataBuffer(pCrwBuffer->pNextCrwBuffer());
-//  RASSERT(pDataBuffer == _pDataBuffer(AM::pHashMap()->pValueAt(oNextBufferId.m_pvAsAddress)));
+//  Pds* pPdsCrwTablePtn = (Pds*)MY::pPdsCrwTablePtn();
 
-  m_pDataStack->vPushPtr((Object*)oNextBufferId.m_pvAsAddress);
+      // Try to make the Key in Pds the bufferId instead of making the cursor
+      // Use find() to get the next bufferId
+      // Remove crwBuffer from linkedBuffer
+
+  if(pNextBuffer)
+    m_pDataStack->vPushPtr((Object*)pNextBuffer->oGetBufferId().m_pvAsAddress);
+  else
+    m_pDataStack->vPushPtr(nullptr);
 
   EXIT();
 }

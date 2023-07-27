@@ -13,6 +13,7 @@
 #include "Pipeline.hpp"
 
 extern pthread_key_t giTLS_StepAccum;
+extern pthread_key_t giTLS_PDSCrwTablePtn;
 
 /*----------------------------------------------------------------------------*/
 /* get elapsed time since boot in nanoseconds                                 */
@@ -429,6 +430,32 @@ eEV MY::eOperand(void)
     return pLogicUnit->m_ePipeInOperand;
   else
     return EV_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current crw table pds address                                          */
+/*----------------------------------------------------------------------------*/
+void* MY::pPdsCrwTablePtn(void)
+{
+  _static_
+
+  if (C_UNKNOWN == (i8)giTLS_PDSCrwTablePtn)
+    return nullptr;
+
+  void* pPdsBufferId = static_cast<void*>(PsxThd::pTlsGet(giTLS_PDSCrwTablePtn));
+
+  return pPdsBufferId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current crw table pds address                                          */
+/*----------------------------------------------------------------------------*/
+void MY::vPdsCrwTablePtn(void* pPdsBufferId)
+{
+  _static_
+
+  PsxThd::vTlsSet(giTLS_PDSCrwTablePtn,pPdsBufferId);
+
 }
 
 /*----------------------------------------------------------------------------*/

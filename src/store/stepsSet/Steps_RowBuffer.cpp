@@ -158,10 +158,12 @@ void Step::vRowBufferGetNextLinkedBufferId(void)
   ENTRY();
 
   RowBuffer* pRowBuffer = *m_pLogicUnit->m_xpRowBuffer;
-  BufferId oNextBufferId = pRowBuffer->oNextLinkedBufferId();
+  RowBuffer* pNextBuffer = pRowBuffer->pNextRowBuffer();
 
-  m_pDataStack->vPushPtr((Object*)oNextBufferId.m_pvAsAddress);
-
+  if(pNextBuffer)
+    m_pDataStack->vPushPtr((Object*)pNextBuffer->oGetBufferId().m_pvAsAddress);
+  else
+    m_pDataStack->vPushPtr(nullptr);
   EXIT();
 }
 
