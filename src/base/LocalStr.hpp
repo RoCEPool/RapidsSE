@@ -30,6 +30,8 @@ namespace BASE
 
     Stz* szText(void);
     void vText(Stz* szText);
+
+    void vRevertBuf();
   };
 
   LocalStr* _pLocalStr(void* aAddr);
