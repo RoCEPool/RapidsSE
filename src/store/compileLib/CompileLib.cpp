@@ -317,22 +317,22 @@ bool CompileLib::bCompileFile(Stz* szDynLibNm, LibInfo* pLibInfo, Stz* szCompile
 
   if (!bCompileSrc(pLibInfo)) {
 
-    // On failure save the src/log file in a different name
-    // so that they don't get deleted and are copied across
-
-    s256 sNewSrcFilePath;
-    s256 sNewLogFilePath;
-
-    sNewSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
-    sNewLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
-
-    bool bResult = File::bRename(pLibInfo->m_sSrcFilePath, sNewSrcFilePath);
-    if ( ! bResult )
-      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sSrcFilePath.azChar());
-
-    bResult = File::bRename(pLibInfo->m_sLogFilePath, sNewLogFilePath);
-    if ( ! bResult )
-      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sLogFilePath.azChar());
+//    // On failure save the src/log file in a different name
+//    // so that they don't get deleted and are copied across
+//
+//    s256 sNewSrcFilePath;
+//    s256 sNewLogFilePath;
+//
+//    sNewSrcFilePath.vSprint("%s/%s.c"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+//    sNewLogFilePath.vSprint("%s/%s.log"_Stz, C_QUERYLIBS_SRC, "CompilationFailed");
+//
+//    bool bResult = File::bRename(pLibInfo->m_sSrcFilePath, sNewSrcFilePath);
+//    if ( ! bResult )
+//      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sSrcFilePath.azChar());
+//
+//    bResult = File::bRename(pLibInfo->m_sLogFilePath, sNewLogFilePath);
+//    if ( ! bResult )
+//      vTrace("Unable to rename file: %s"_Stz, pLibInfo->m_sLogFilePath.azChar());
 
     return false;
   }
