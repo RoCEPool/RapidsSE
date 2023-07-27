@@ -58,34 +58,36 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Visited grammar rules:
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    antlrcpp::Any visitStatements(Parser::sqlParser::StatementsContext *pCtx)             override;
-    antlrcpp::Any visitStatement(Parser::sqlParser::StatementContext *pCtx)               override;
-    antlrcpp::Any visitStatementChoice(Parser::sqlParser::StatementChoiceContext *pCtx)   override;
-    antlrcpp::Any visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContext *pCtx)             override;
-    antlrcpp::Any visitKeyValueTag(Parser::sqlParser::KeyValueTagContext *pCtx)           override;
+    antlrcpp::Any visitStatements(Parser::sqlParser::StatementsContext *pCtx)               override;
+    antlrcpp::Any visitStatement(Parser::sqlParser::StatementContext *pCtx)                 override;
+    antlrcpp::Any visitStatementChoice(Parser::sqlParser::StatementChoiceContext *pCtx)     override;
+    antlrcpp::Any visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContext *pCtx)               override;
+    antlrcpp::Any visitKeyValueTag(Parser::sqlParser::KeyValueTagContext *pCtx)             override;
 
-    antlrcpp::Any visitQueryCmd(Parser::sqlParser::QueryCmdContext* pCtx)                 override;
-    antlrcpp::Any visitExplainCmd(Parser::sqlParser::ExplainCmdContext* pCtx)             override;
-    antlrcpp::Any visitLogCmd(Parser::sqlParser::LogCmdContext *pCtx)                     override;
-    antlrcpp::Any visitLscolCmd(Parser::sqlParser::LscolCmdContext *pCtx)                 override;
-    antlrcpp::Any visitLsidxCmd(Parser::sqlParser::LsidxCmdContext *pCtx)                 override;
-    antlrcpp::Any visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdContext *pCtx)           override;
-    antlrcpp::Any visitCreateTableCmd(Parser::sqlParser::CreateTableCmdContext* pCtx)     override;
-    antlrcpp::Any visitCreateIndexCmd(Parser::sqlParser::CreateIndexCmdContext *pCtx)     override;
-    antlrcpp::Any visitDropTableCmd(Parser::sqlParser::DropTableCmdContext* pCtx)         override;
-    antlrcpp::Any visitDropIndexCmd(Parser::sqlParser::DropIndexCmdContext* pCtx)         override;
-    antlrcpp::Any visitTruncateCmd(Parser::sqlParser::TruncateCmdContext *pCtx)           override;
-    antlrcpp::Any visitLoadCmd(Parser::sqlParser::LoadCmdContext *pCtx)                   override;
-    antlrcpp::Any visitDloadCmd(Parser::sqlParser::DloadCmdContext *pCtx)                 override;
-    antlrcpp::Any visitLoadOption(Parser::sqlParser::LoadOptionContext *pCtx)             override;
-    antlrcpp::Any visitCountCmd(Parser::sqlParser::CountCmdContext *pCtx)                 override;
-    antlrcpp::Any visitTrackmemoryCmd(Parser::sqlParser::TrackmemoryCmdContext *pCtx)     override;
-    antlrcpp::Any visitSleepCmd(Parser::sqlParser::SleepCmdContext *pCtx)                 override;
-    antlrcpp::Any visitSzidxCmd(Parser::sqlParser::SzidxCmdContext *pCtx)                 override;
-    antlrcpp::Any visitSztblCmd(Parser::sqlParser::SztblCmdContext *pCtx)                 override;
-    antlrcpp::Any visitUnloadCmd(Parser::sqlParser::UnloadCmdContext *pCtx)               override;
-    antlrcpp::Any visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)                     override;
-    antlrcpp::Any visitFileCmd(Parser::sqlParser::FileCmdContext *pCtx)                   override;
+    antlrcpp::Any visitQueryCmd(Parser::sqlParser::QueryCmdContext* pCtx)                   override;
+    antlrcpp::Any visitExplainCmd(Parser::sqlParser::ExplainCmdContext* pCtx)               override;
+    antlrcpp::Any visitLogCmd(Parser::sqlParser::LogCmdContext *pCtx)                       override;
+    antlrcpp::Any visitLscolCmd(Parser::sqlParser::LscolCmdContext *pCtx)                   override;
+    antlrcpp::Any visitLsidxCmd(Parser::sqlParser::LsidxCmdContext *pCtx)                   override;
+    antlrcpp::Any visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdContext *pCtx)             override;
+    antlrcpp::Any visitCreateTableCmd(Parser::sqlParser::CreateTableCmdContext* pCtx)       override;
+    antlrcpp::Any visitCreateIndexCmd(Parser::sqlParser::CreateIndexCmdContext *pCtx)       override;
+    antlrcpp::Any visitDropTableCmd(Parser::sqlParser::DropTableCmdContext* pCtx)           override;
+    antlrcpp::Any visitDropIndexCmd(Parser::sqlParser::DropIndexCmdContext* pCtx)           override;
+    antlrcpp::Any visitTruncateCmd(Parser::sqlParser::TruncateCmdContext *pCtx)             override;
+    antlrcpp::Any visitCompactIdxCmd(Parser::sqlParser::CompactIdxCmdContext *pCtx)         override;
+    antlrcpp::Any visitLoadCmd(Parser::sqlParser::LoadCmdContext *pCtx)                     override;
+    antlrcpp::Any visitLoadReplicatedCmd(Parser::sqlParser::LoadReplicatedCmdContext *pCtx) override;
+    antlrcpp::Any visitDloadCmd(Parser::sqlParser::DloadCmdContext *pCtx)                   override;
+    antlrcpp::Any visitLoadOption(Parser::sqlParser::LoadOptionContext *pCtx)               override;
+    antlrcpp::Any visitCountCmd(Parser::sqlParser::CountCmdContext *pCtx)                   override;
+    antlrcpp::Any visitTrackmemoryCmd(Parser::sqlParser::TrackmemoryCmdContext *pCtx)       override;
+    antlrcpp::Any visitSleepCmd(Parser::sqlParser::SleepCmdContext *pCtx)                   override;
+    antlrcpp::Any visitSzidxCmd(Parser::sqlParser::SzidxCmdContext *pCtx)                   override;
+    antlrcpp::Any visitSztblCmd(Parser::sqlParser::SztblCmdContext *pCtx)                   override;
+    antlrcpp::Any visitUnloadCmd(Parser::sqlParser::UnloadCmdContext *pCtx)                 override;
+    antlrcpp::Any visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)                       override;
+    antlrcpp::Any visitFileCmd(Parser::sqlParser::FileCmdContext *pCtx)                     override;
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,6 +101,7 @@ class CommandParser : public Object, public Parser::sqlBaseVisitor
     static void  vCleanString(Parser::sqlParser::IdentifierContext* pCtx, s256& sBuf);
     static void  vCleanString(antlr4::Token* pToken, s256& sBuf);
     static void  vCleanString(std::string& sStr, s256& sBuf);
+    static void  vCleanTag(Parser::sqlParser::TagNameContext* pCtx, s256& sBuf);
     static void  vCleanTag(antlr4::Token* pToken, s256& sBuf);
     static i8    iCleanInt(Parser::sqlParser::SignedIntegerLiteralContext* pCtx);
     static i8    iCleanInt(Parser::sqlParser::IntegerLiteralContext* pCtx);

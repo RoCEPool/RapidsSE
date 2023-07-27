@@ -12,7 +12,8 @@ statement         :  tags statementChoice ';' ;
 
 statementChoice   :
                     // Production commands below:
-                      countCmd
+                      compactIdxCmd
+                    | countCmd
                     | createCmd
 //                  | deleteCmd
                     | dloadCmd
@@ -20,6 +21,7 @@ statementChoice   :
                     | explainCmd
 //                  | insertCmd
                     | loadCmd
+                    | loadReplicatedCmd
                     | logCmd
                     | lscolCmd
                     | lsidxCmd
@@ -46,9 +48,10 @@ statementChoice   :
                     ;
 
 tags              : (keyOnlyTag | keyValueTag)* ;
-keyValueTag       : '<' keyName=PLAIN_IDENTIFIER '>' '=' (stringLiteral | INTEGER_LITERAL);
-keyOnlyTag        : '/' PLAIN_IDENTIFIER |
-                    '<' PLAIN_IDENTIFIER '>' ;
+keyValueTag       : '<' keyName=tagName '>' '=' (stringLiteral | INTEGER_LITERAL);
+keyOnlyTag        : '/' tagName |
+                    '<' tagName '>' ;
+tagName           : PLAIN_IDENTIFIER | TIME ;
 
 // query command rules ------------------------------------------------------
 queryCmd          : query ;
@@ -138,6 +141,7 @@ valuesExpr        : VALUES '('valueList')' ( ',' '('valueList')' )* ;
 bpaCmd            : BPA type=(REGIONS | OBJECTS | ALL)?;
 
 // C
+compactIdxCmd     : COMPACTIDX tableName indexName ;
 countCmd          : COUNT tableName ;
 createCmd         : createTableCmd | createIndexCmd ;
 createTableCmd    : CREATE /*reference = REFERENCE?*/ TABLE /*(IF NOT EXISTS)?*/ /*ref = tableReference*/ tableName
@@ -191,6 +195,7 @@ insertCmd         : (WITH withQuery (',' withQuery)*)?
 // K
 // L
 loadCmd           : LOAD tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
+loadReplicatedCmd : LOADREPLICATED tableName filePath=stringLiteral ( loadOption (','? loadOption)* )? ;
 loadOption        : ( ('<' loadOptionKeys '>') | loadOptionKeys ) '=' loadValue=stringLiteral ;
 loadOptionKeys    : FIELD_DELIMITER | ESCAPE_CHAR | DATE_FORMAT ;
 logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF))?;
@@ -587,14 +592,14 @@ dayTimeInterval   :
 nonReservedWord   :
                     ASC
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYTE | BYTES
-                  | CATALOG | CHARS | CONCAT
+                  | CATALOG | CHARS | COMPACTIDX | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
                   | ECHO | ESCAPE_CHAR | EXPLAIN
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
-                  | LIMIT | LOAD | LOG | LOOP | LSIDX | LSTBL
+                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSTBL
                   | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
                   | MONOTONIC | MONTHS | MS
                   | NODE | NODES | NOOP | NOP | NOW
@@ -642,6 +647,7 @@ CHARS                 : C H A R S;
 CHARACTER             : C H A R A C T E R;
 COALESCE              : C O A L E S C E;
 COLLATE               : C O L L A T E;
+COMPACTIDX            : C O M P A C T I D X;
 CONCAT                : C O N C A T;
 CORRESPONDING         : C O R R E S P O N D I N G;
 COUNT                 : C O U N T;
@@ -710,6 +716,7 @@ LEADING               : L E A D I N G;
 LEFT                  : L E F T;
 LIKE                  : L I K E;
 LIMIT                 : L I M I T;
+LOADREPLICATED        : L O A D R E P L I C A T E D;
 LOAD                  : L O A D;
 LOG                   : L O G;
 LOOP                  : L O O P;

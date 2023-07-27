@@ -115,8 +115,8 @@ end ;
 // SORT DESC TO ASC
 //------------------------------------------------------------------------------
 
-trackMemory
-success;
+trackMemory force;
+success
 
 /optimise_passthru 
 pipeline unamed

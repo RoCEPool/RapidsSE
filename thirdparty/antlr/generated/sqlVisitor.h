@@ -32,6 +32,8 @@ public:
 
     virtual antlrcpp::Any visitKeyOnlyTag(sqlParser::KeyOnlyTagContext *context) = 0;
 
+    virtual antlrcpp::Any visitTagName(sqlParser::TagNameContext *context) = 0;
+
     virtual antlrcpp::Any visitQueryCmd(sqlParser::QueryCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitQuery(sqlParser::QueryContext *context) = 0;
@@ -76,6 +78,8 @@ public:
 
     virtual antlrcpp::Any visitBpaCmd(sqlParser::BpaCmdContext *context) = 0;
 
+    virtual antlrcpp::Any visitCompactIdxCmd(sqlParser::CompactIdxCmdContext *context) = 0;
+
     virtual antlrcpp::Any visitCountCmd(sqlParser::CountCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitCreateCmd(sqlParser::CreateCmdContext *context) = 0;
@@ -113,6 +117,8 @@ public:
     virtual antlrcpp::Any visitInsertCmd(sqlParser::InsertCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitLoadCmd(sqlParser::LoadCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitLoadReplicatedCmd(sqlParser::LoadReplicatedCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitLoadOption(sqlParser::LoadOptionContext *context) = 0;
 

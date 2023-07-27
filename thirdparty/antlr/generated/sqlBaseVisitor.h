@@ -41,6 +41,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitTagName(sqlParser::TagNameContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitQueryCmd(sqlParser::QueryCmdContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -129,6 +133,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitCompactIdxCmd(sqlParser::CompactIdxCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitCountCmd(sqlParser::CountCmdContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -202,6 +210,10 @@ public:
   }
 
   virtual antlrcpp::Any visitLoadCmd(sqlParser::LoadCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLoadReplicatedCmd(sqlParser::LoadReplicatedCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 

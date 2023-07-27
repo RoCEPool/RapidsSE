@@ -338,38 +338,40 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   // NOTE: This if statement is ordered in roughly relative order of statement commonality.
 
   if (pCtx->queryCmd() || pCtx->explainCmd())
-                                    { m_szProcName = "sqlCompiler"_Stz;   return visitChildren(pCtx); }
-  else if (pCtx->pipelineCmd())     { m_szProcName = C_PIPELINE_CMD;      return nullptr; }
+                                      { m_szProcName = "sqlCompiler"_Stz;    return visitChildren(pCtx); }
+  else if (pCtx->pipelineCmd())       { m_szProcName = C_PIPELINE_CMD;       return nullptr; }
   else if (pCtx->createCmd() && pCtx->createCmd()->createTableCmd())
-                                    { m_szProcName = "create__table"_Stz; return visitChildren(pCtx); }
+                                      { m_szProcName = "create__table"_Stz;  return visitChildren(pCtx); }
   else if (pCtx->createCmd() && pCtx->createCmd()->createIndexCmd())
-                                    { m_szProcName = "create__index"_Stz; return visitChildren(pCtx); }
+                                      { m_szProcName = "create__index"_Stz;  return visitChildren(pCtx); }
   else if (pCtx->dropCmd() && pCtx->dropCmd()->dropTableCmd())
-                                    { m_szProcName = "drop__table"_Stz;   return visitChildren(pCtx); }
+                                      { m_szProcName = "drop__table"_Stz;    return visitChildren(pCtx); }
   else if (pCtx->dropCmd() && pCtx->dropCmd()->dropIndexCmd())
-                                    { m_szProcName = "drop__index"_Stz;   return visitChildren(pCtx); }
-  else if (pCtx->loadCmd())         { m_szProcName = "load"_Stz;          return visitChildren(pCtx); }
-  else if (pCtx->dloadCmd())        { m_szProcName = "dload"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->truncateCmd())     { m_szProcName = "truncate"_Stz;      return visitChildren(pCtx); }
+                                      { m_szProcName = "drop__index"_Stz;    return visitChildren(pCtx); }
+  else if (pCtx->loadCmd())           { m_szProcName = "load"_Stz;           return visitChildren(pCtx); }
+  else if (pCtx->loadReplicatedCmd()) { m_szProcName = "loadReplicated"_Stz; return visitChildren(pCtx); }
+  else if (pCtx->dloadCmd())          { m_szProcName = "dload"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->compactIdxCmd())     { m_szProcName = "compactidx"_Stz;     return visitChildren(pCtx); }
+  else if (pCtx->truncateCmd())       { m_szProcName = "truncate"_Stz;       return visitChildren(pCtx); }
 
-  else if (pCtx->logCmd())          { m_szProcName = "logMsg"_Stz;        return visitChildren(pCtx); }
-  else if (pCtx->lscolCmd())        { m_szProcName = "lscol"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->lsidxCmd())        { m_szProcName = "lsidx"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->lsidxcolCmd())     { m_szProcName = "lsidxcol"_Stz;      return visitChildren(pCtx); }
-  else if (pCtx->lstblCmd())        { m_szProcName = "lstbl"_Stz;         return nullptr; }
-  else if (pCtx->countCmd())        { m_szProcName = "count"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->sleepCmd())        { m_szProcName = "sleepCmd"_Stz;      return visitChildren(pCtx); }
-  else if (pCtx->spaceCmd())        { m_szProcName = "space"_Stz;         return nullptr; }
-  else if (pCtx->statusCmd())       { m_szProcName = "status"_Stz;        return nullptr; }
-  else if (pCtx->szidxCmd())        { m_szProcName = "szidx"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->sztblCmd())        { m_szProcName = "sztbl"_Stz;         return visitChildren(pCtx); }
-  else if (pCtx->unloadCmd())       { m_szProcName = "unload"_Stz;        return visitChildren(pCtx); }
-  else if (pCtx->trackmemoryCmd())  { m_szProcName = "trackmemory"_Stz;   return visitChildren(pCtx); }
-  else if (pCtx->memoryleaksCmd())  { m_szProcName = "memoryleaks"_Stz;   return nullptr; }
-  else if (pCtx->bpaCmd())          { m_szProcName = "bpa"_Stz;           return visitChildren(pCtx); }
-  else if (pCtx->fileCmd())         { m_szProcName = nullptr;             return visitChildren(pCtx); }
-  else if (pCtx->noopCmd())         { m_szProcName = "noop"_Stz;          return nullptr; }
-  else if (pCtx->emptyCmd())        { m_szProcName = C_EMPTY_CMD;         return nullptr; }
+  else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->lscolCmd())          { m_szProcName = "lscol"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->lsidxCmd())          { m_szProcName = "lsidx"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->lsidxcolCmd())       { m_szProcName = "lsidxcol"_Stz;       return visitChildren(pCtx); }
+  else if (pCtx->lstblCmd())          { m_szProcName = "lstbl"_Stz;          return nullptr; }
+  else if (pCtx->countCmd())          { m_szProcName = "count"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->sleepCmd())          { m_szProcName = "sleepCmd"_Stz;       return visitChildren(pCtx); }
+  else if (pCtx->spaceCmd())          { m_szProcName = "space"_Stz;          return nullptr; }
+  else if (pCtx->statusCmd())         { m_szProcName = "status"_Stz;         return nullptr; }
+  else if (pCtx->szidxCmd())          { m_szProcName = "szidx"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->sztblCmd())          { m_szProcName = "sztbl"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->unloadCmd())         { m_szProcName = "unload"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->trackmemoryCmd())    { m_szProcName = "trackmemory"_Stz;    return visitChildren(pCtx); }
+  else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
+  else if (pCtx->bpaCmd())            { m_szProcName = "bpa"_Stz;            return visitChildren(pCtx); }
+  else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
+  else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
+  else if (pCtx->emptyCmd())          { m_szProcName = C_EMPTY_CMD;          return nullptr; }
 
   else                            { NOT_IMPLEMENTED_YET }
 
@@ -389,9 +391,7 @@ antlrcpp::Any CommandParser::visitKeyOnlyTag(Parser::sqlParser::KeyOnlyTagContex
 {
   s256 sTagName;
 
-  ASSERT(pCtx->PLAIN_IDENTIFIER());
-
-  vCleanTag(pCtx->PLAIN_IDENTIFIER()->getSymbol(), sTagName);
+  vCleanTag(pCtx->tagName(), sTagName);
   m_pCurStmtTagSet->vAppend((Stz*) sTagName.szStz());
 
   return visitChildren(pCtx);
@@ -667,9 +667,48 @@ antlrcpp::Any CommandParser::visitTruncateCmd(Parser::sqlParser::TruncateCmdCont
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an COMPACTIDX statement                         */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitCompactIdxCmd(Parser::sqlParser::CompactIdxCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sIndexName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an LOAD statement                               */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitLoadCmd(Parser::sqlParser::LoadCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sFilePath;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->filePath, sFilePath);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
+
+  // We need to visit children here to extract out any load options
+  // and add them to the tag vector
+  visitChildren(pCtx);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an LOADREPLICATED statement                     */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLoadReplicatedCmd(Parser::sqlParser::LoadReplicatedCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -1207,7 +1246,24 @@ void CommandParser::vCleanString(std::string& sStr, s256& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Clean up a string literal. Returned string is written to the given buffer  */
+/* Clean up a tag name. Returned name is written to the given buffer          */
+/*----------------------------------------------------------------------------*/
+void CommandParser::vCleanTag(Parser::sqlParser::TagNameContext* pCtx, s256& sBuf)
+{
+  // I know that this tag name can only be one of a number of tokens.
+  // So it must only have 1 child which is a terminal node of the parse tree.
+  // This way we don't need to test each token type.
+  ASSERT(pCtx);
+  ASSERT(pCtx->children.size() == 1);
+
+  antlr4::tree::TerminalNode* pChild = dynamic_cast<antlr4::tree::TerminalNode*>(pCtx->children.at(0));
+  ASSERT(pChild);
+
+  return vCleanTag(pChild->getSymbol(), sBuf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a tag name. Returned name is written to the given buffer          */
 /*----------------------------------------------------------------------------*/
 void CommandParser::vCleanTag(antlr4::Token* pToken, s256& sBuf)
 {
