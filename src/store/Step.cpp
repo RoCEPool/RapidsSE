@@ -117,6 +117,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobReport();
   Step::vAddSteps_Jobs();
 
+  Step::vAddSteps_LibInfo();
   Step::vAddSteps_List();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();

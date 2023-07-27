@@ -47,6 +47,8 @@ success
 load Orders "../TPCH/SF_0001/orders.csv";
 success
 
+/optimise_passthru 
+/optimise_passthru 
 pipeline Q4
 begin
 
@@ -125,6 +127,8 @@ success
 load Orders "../TPCH/SF_0001/orders.csv";
 success
 
+/optimise_passthru 
+/optimise_passthru 
 pipeline Q4
 begin
 

@@ -36,6 +36,23 @@ Card_Level::~Card_Level(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Level::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eAL eAggLevel = (eAL)pSymbol()->Y_iGet(P_Level);
+
+  RASSERT(AL_PARTITION == eAggLevel ||
+          AL_NODE == eAggLevel ||
+          AL_ORIGIN == eAggLevel);
+
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

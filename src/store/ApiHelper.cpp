@@ -5,6 +5,7 @@
 #include "BASE.h"
 
 #include "ApiHelper.hpp"
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 
 #include "Output.hpp"

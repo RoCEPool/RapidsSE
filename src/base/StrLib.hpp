@@ -34,7 +34,7 @@ namespace BASE
     static char* azAscii(i8 i_Char);
     
     static bool  bBackward(char** ps, char* pBegin, const char c);
-    static bool  bBeginsWith(char* s, const char* sArg);
+    static bool  bBeginsWith(const char* s, const char* sArg);
     static i8    nBurstArgs(Stz* szaArgv[], Stz* szArgStr);
 
     static Stz*  szCharToStr(char cArg);
@@ -46,6 +46,7 @@ namespace BASE
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 iCase);
     static i8    iCompare(const char* pArg1, const char* pArg2, i8 nBytes, i8 iCase);
     static void  vConcat(char* pWS, char cChar);
+    static void  vConcat(char* psDst, const char* psArg, i8 nLen);
     static void  vConcat(char* psDst, const char* psArg);
     static void  vConcat(char* psDst, const char* psArg1, const char* psArg2);
     static char* wConcat(const char* s1, const char* s2);
@@ -140,7 +141,9 @@ namespace BASE
     static void  vFree(char** ps);
     
     static i8    iGleanInt(char* azArg);
-  
+    static char* azGroupEnd(char* azArg, char cItemSep, i8 nAvailBytes,
+                            i8& rnBytesInGroup, i8& rnLinesInGroup);
+
     static i8    iHexToInw(const char c);
 
     static void  vInsertChar(char* azAt, char cArg);
@@ -194,10 +197,14 @@ namespace BASE
     static bool  bIsSign(const char c);
     static bool  bIsSingleQuote(const char c);
     static bool  bIsSlash(const char c);
+    static bool  bIsSqlName(char* ps);
     static bool  bIsTilde(const char c);
+    static bool  bIsTypical(const char c);
+    static bool  bIsTypical(char* azArg);
     static bool  bIsUnderscore(const char c);
     static bool  bIsUpperCase(const char c);
     static bool  bIsWhite(const char c);
+    static bool  bIsWhiteSpaces(char* ps);
     static bool  bIsX(const char c);
 
     static char* acLast(const char* s);
@@ -224,6 +231,7 @@ namespace BASE
   
     static void  vRemove(char* azArg, const char cLeading);
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
+    static void  vRemoveHead(char* azArg, const char cSep);
     static void  vRemovePrefix(char* azArg, char cIntro);
     static void  vRemoveSuffix(char* azArg, char cIntro);
     static void  vRemoveTail(char* azArg, const char* pTail);
@@ -240,10 +248,12 @@ namespace BASE
     static void  vRotate(char* zArg, i8 nby);
     static void  vRuler(char* azDst, i8 iLength);
 
+    static bool  bSame(const char c1, const char c2);
     static bool  bSame(const char* s1, const char* s2);
     static void  vShortHand(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, const char* azSrc);
     static void  vShuffleLeft(char* azDst, i8 i_Right);
+    static bool  bSimilar(const char* azArg1, const char* azArg2, const char* sSep);
     static i8    nSize(const char* s);
     static void  vSkipCommentBlock(char** ps);
     static void  vSkipCommentLine(char** ps);

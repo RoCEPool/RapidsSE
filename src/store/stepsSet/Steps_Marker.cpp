@@ -65,6 +65,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newExitedMarker"_Stz,      &Step::vMarkerNewExitedMarker);
   vAddStep("Marker[].newFinishedMarker"_Stz,    &Step::vMarkerNewFinishedMarker);
   vAddStep("Marker[].newFlushMarker"_Stz,       &Step::vMarkerNewFlushMarker);
+  vAddStep("Marker[].newInternalError"_Stz,      &Step::vMarkerNewInternalError);
   vAddStep("Marker[].newInvokeMarker"_Stz,      &Step::vMarkerNewInvokeMarker);
   vAddStep("Marker[].newLeaveMarker"_Stz,       &Step::vMarkerNewLeaveMarker);
   vAddStep("Marker[].newLeavingMarker"_Stz,     &Step::vMarkerNewLeavingMarker);
@@ -410,6 +411,21 @@ void Step::vMarkerNewFlushMarker(void)
 
   m_pLogicUnit->m_xpMarker =
     AM::MARKER::pNewMarker(OM_FLUSH,pOuterJobOfTask());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newInternalError -- new a InternalError marker                    */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewInternalError(void)
+{
+  ENTRY();
+
+  ASSERT (m_pLogicUnit->m_xpMarker.bIsNull());
+
+  m_pLogicUnit->m_xpMarker =
+      AM::MARKER::pNewMarker(OM_INTERNALERROR,pOuterJobOfTask());
 
   EXIT();
 }

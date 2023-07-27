@@ -27,7 +27,7 @@ rows: 41
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -118,6 +118,7 @@ end ;
 */
 
 //SF10: 24s
+/optimise_passthru 
 pipeline unamed
   begin
   stage S00 on origin :
@@ -220,6 +221,7 @@ rows: 41
 
 /*
 //SF10: 37s
+/optimise_passthru 
 pipeline Query9
   begin
   stage stageStart on origin :
@@ -297,7 +299,8 @@ rows: 41
 
 //SF10:
 /*
-/time pipeline Query9
+/time /optimise_passthru 
+pipeline Query9
   begin
   stage stageStart on origin :
     start
@@ -376,7 +379,8 @@ rows: 41
 
 /*
 ORDERS PARTITIONED ON O_ORDERKEY
-/time pipeline Query9
+/time /optimise_passthru 
+pipeline Query9
   begin
   stage stageStart on origin :
     start
@@ -456,7 +460,8 @@ rows: 41
 /*
 ORDERS PARTITIONED ON O_ORDERKEY
 SF10: 6.9s
-/time pipeline unamed
+/time /optimise_passthru 
+pipeline unamed
   begin
   stage stageStart on origin :
     start
@@ -531,6 +536,7 @@ SF10: 6.9s
 rows: 41
 */
 
+/optimise_passthru 
 pipeline Query9
   begin
   stage S00 on origin :
@@ -631,6 +637,7 @@ pipeline Query9
 
 rows: 41
 
+/optimise_passthru 
 pipeline Query9
   begin
   stage S00 on origin :

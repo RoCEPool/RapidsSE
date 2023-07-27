@@ -13,7 +13,7 @@ select sum(l_extendedprice*l_discount) as revenue
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -62,6 +62,7 @@ end ;
 // Need multiple threads per partition to improve performance
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline Query6
  begin
    stage S00 on origin :

@@ -136,7 +136,7 @@ void Smooth::vSmooth(CardIter* pCI, CarryForward* pCarryForward, bool bEarlyExit
   }
 
   pCI->vPrintBoard(__LINE__);
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 }
 
 /*============================================================================*/

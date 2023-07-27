@@ -7,6 +7,7 @@
 #include "Card_HshCol.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Term.hpp"
+#include "Card_Projection.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +47,8 @@ Card_Hash::~Card_Hash(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
+Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr,
+                              Card_Projection* p_projection_prev)
 {
   _static_
 
@@ -59,8 +61,20 @@ Card_Hash* Card_Hash::pDerive(Card_Expr* p_expr)
   p_hshCol->pSymbol()->Y_vSet(P_Type,p_expr->szP_Type());
   p_hash->vAppend(p_hshCol);
 
+//  if (p_projection_prev)
+//    p_hash->vAppend(p_projection_prev->pClone());
+
   return p_hash;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Hash::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

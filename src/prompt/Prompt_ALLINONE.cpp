@@ -10,6 +10,7 @@
 
 #include "RowBuffer.hpp"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "Node_I.hpp"
 #include "Grid.hpp"

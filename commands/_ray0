@@ -1,16 +1,36 @@
 /*============================================================================*/
-/*                                                                            */
+/* _ray0                                                                      */
 /*============================================================================*/
 
-select count(*) from se__jobreport;
+// NOTE: the colMap for the gbyAgg is not correct
 
-select max(responseMS), avg(responseMS), max(responseMS) from se__jobreport;
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
 
-select magnitude, count(*) from se__jobReport group by magnitude;
+load datums "../DATA/Transliterate/groupBy.csv" ;
 
-select magnitude, t, j, count(*) from se__jobReport group by magnitude, t, j;
+/glean_interactive
+/weaved
+/transliterated
+/pipeline_def
+select sum(int_col0), int_col1 from datums group by int_col1;
 
-/time load se__jobReport "/Users/ray/Desktop/Folders/RapidsData/report.csv";
 
 /*============================================================================*/
 /* end                                                                        */

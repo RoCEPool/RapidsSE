@@ -419,6 +419,8 @@ void Constants::vAddConstantsCpp(void)
   /* 52 */ vAddConstant("EC_SE_NOT_RUNNING"_Stz,     EC_SE_NOT_RUNNING);
   /* 53 */ vAddConstant("EC_SE_UNKNOWN_ERROR"_Stz,   EC_SE_UNKNOWN_ERROR);
   /* 54 */ vAddConstant("EC_SEND_FAILURE"_Stz,       EC_SEND_FAILURE);
+  /*    */ vAddConstant("EC_SYNTHCODE_COMPILATION_ERROR"_Stz, EC_SYNTHCODE_COMPILATION_ERROR);
+  /*    */ vAddConstant("EC_SYNTHCODE_LINKING_ERROR"_Stz,     EC_SYNTHCODE_LINKING_ERROR);
   /*    */ vAddConstant("EC_SYSTEM_CLOSED"_Stz,      EC_SYSTEM_CLOSED);
 
   /*    */ vAddConstant("EC_TABLE_ALREADY_LOADED"_Stz, EC_TABLE_ALREADY_LOADED);
@@ -741,6 +743,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("EV_M_FINISHED"_Stz,        EV_M_FINISHED);
   /*  0 */ vAddConstant("EV_M_FLUSH"_Stz,           EV_M_FLUSH);
   /*  0 */ vAddConstant("EV_M_HARDABORT"_Stz,       EV_M_HARDABORT);
+  /*  0 */ vAddConstant("EV_M_INTERNALERROR"_Stz,   EV_M_INTERNALERROR);
   /*  0 */ vAddConstant("EV_M_LEAVE"_Stz,           EV_M_LEAVE);
   /*  0 */ vAddConstant("EV_M_LEAVING"_Stz,         EV_M_LEAVING);
   /*  0 */ vAddConstant("EV_M_LEFT"_Stz,            EV_M_LEFT);
@@ -855,6 +858,20 @@ void Constants::vAddConstantsCpp(void)
   #else
   vAddConstant("WITH_TRACE_API"_Stz,(i8)false);
   #endif
+
+#ifdef WITH_WEAVER2
+  vAddConstant("WITH_WEAVER2"_Stz,(i8)true);
+
+  //s32 sTagName = "<weaver2>"_Stz;
+  //gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
+
+#else
+  vAddConstant("WITH_WEAVER2"_Stz,(i8)false);
+
+  //s32 sTagName = "<weaver1>"_Stz;
+  //gxCmdLineArgs.m_xSysArgs.m_oSysTags.vInsert(sTagName,1);
+
+#endif
 }
 
 /*============================================================================*/

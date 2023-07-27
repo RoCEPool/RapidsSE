@@ -112,6 +112,47 @@ IndexTree::~IndexTree(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_IndexTreeAllotPayStr(void* pIndexTree, char* sStr) {
+  return (void*)IndexTree::aAllotPayStr((IndexTree*)pIndexTree, (Stz*)sStr);
+}
+extern "C" void* aExtern_IndexTreeBegin(void* pIndexTree, void** ppEntBuffer) {
+  return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
+}
+extern "C" void* aExtern_IndexTreeFindEntry(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
+}
+extern "C" void* aExtern_IndexTreeFindEntryHint(void* aIndexTree, void* aKey, void* aEnt_recent) {
+  return (void*)IndexTree::aFindEntry_hint((IndexTree*) aIndexTree, (Key*) aKey, (Ent*) aEnt_recent);
+}
+extern "C" void* aExtern_IndexTreeInsertEnt(void* aIndexTree, void* aEnt, i8* piErrorCode) {
+  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt, piErrorCode);
+}
+extern "C" void* aExtern_IndexTreeInsertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount, i8* piErrorCode) {
+  return IndexTree::aInsertEntTop((IndexTree*)aIndexTree, (Ent*)aEnt, (Ent**)aaEntBottom,
+                                  iTopCount, piErrorCode);
+}
+extern "C" void* aExtern_IndexTreeNew(void* aIndexDef, i8* aiKeyKind) {
+  IndexTree* pIndexTree = new IndexTree(nullptr, (IndexDef*)aIndexDef, C_UNKNOWN);
+  *aiKeyKind = (i8)((IndexDef*)aIndexDef)->eKeyKind();
+  return pIndexTree;
+}
+extern "C" void* aExtern_IndexTreePositionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+extern "C" void* aExtern_IndexTreePositionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+extern "C" void *aExtern_IndexTreePositionLE(void* aIndexTree, void* aKey) {
+  return IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
+}
+extern "C" void *aExtern_IndexTreePositionLT(void* aIndexTree, void* aKey) {
+  return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

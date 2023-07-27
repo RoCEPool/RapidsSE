@@ -171,6 +171,11 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
       continue;
 
     Card_Expr* p_expr_early = x_needed.p_expr()->pClone();
+
+    if (! p_expr_early->pSub_as()) {
+      Card_As* p_as_new = new Card_As(p_projection_early->nChildCards());
+      p_expr_early->vAppend(p_as_new);
+    }
     p_projection_early->vInsert(p_expr_early);
   }
 
@@ -181,6 +186,17 @@ Card_Projection* Card_Project::pCraft_projection_early(CardIter* pCI)
   return p_projection_early;
 }
 
+/*----------------------------------------------------------------------------*/
+/* dedupe as                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_Project::vDedupe_as(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Card_Projection* p_projection = pSub_projection())
+    p_projection->vDedupe_as();
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* derive projection key                                                      */
@@ -272,6 +288,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);
+  pCI->G.p_expr->vSetType(pCI->G.p_rpnCalc);
 
   Symbol x_Symbol_stmCol1;
   x_Symbol_stmCol1.vSetStreamOrdinal(1);
@@ -312,7 +329,7 @@ void Card_Project::vEarlyProject_root(CardIter* pCI)
 //  pCI->G_vMainResynch();
   vAppend(pCI->Early.m_pNeeded_later->pDupCardRecursive());
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard();
 
 
@@ -374,6 +391,18 @@ void Card_Project::vSmooth_postAgg(CardIter* pCI, CarryForward* pCarryForward)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Project::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_PROJECTION,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+  pSub_projection()->vValidate(pCI,iDepth+1,this);
+}
 
 /*============================================================================*/
 /* end                                                                        */

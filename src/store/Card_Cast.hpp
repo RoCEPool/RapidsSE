@@ -20,6 +20,8 @@ namespace STORE
                           Symbol* p_Y_tblCol_prior,
                           Symbol* p_Y_tablePtn_join,
                           Symbol* p_Y_idxCol_join);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Cast* _pCard_Cast(void* aAddr);

@@ -2,29 +2,45 @@
 /* _rayZ :                                                                    */
 /*============================================================================*/
 
-create table TABLE9 (
-  pcol9   INTEGER NOT NULL,
-  scol9   INTEGER NOT NULL,
-  tcol9   INTEGER NOT NULL,
-  colb9   VARCHAR(20),
-  cold9   FLOAT,
-  cole9   DECIMAL,
-  colf9   INTEGER,
-  colg9   INTEGER,
-  ucol    INTEGER,
-  ucolvc  VARCHAR(5)
-);
+_nation
+create index IxN_NATIONKEY on nation (n_nationkey);
+load nation "../DATA/TPCH/nation.tbl";
 
-create index table9_ucol on table9(ucol);
-
-create index table9_pcol9 on table9(pcol9);
-
-Load TABLE9 "../DATA/Load/tbl9data.csv" ;
+_region
+create index IxR_REGIONKEY on Region (R_REGIONKEY);
+create index IxR_NAME on Region (R_NAME);
+load Region "../DATA/TPCH/region.tbl";
 
 /glean_interactive
-select count(ucol) - max(cold9) from table9 where ucol > 0;
+/optimise_passthru
+/pipeline_def
+/weaved
+pipeline _unnamed_
+begin
 
-//select * from table9;
+  stage S00 on origin :
+     start
+   | pulse     once
+   | next
+
+  stage S01 on all partitions :
+     scan      Nation
+   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | dynamic
+   | next
+
+  stage S02 on all partitions :
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+   | dynamic
+   | next
+
+  stage S04 on origin :
+     output
+   | sink
+   | first
+
+end ;
+
 
 /*============================================================================*/
 /* end                                                                        */

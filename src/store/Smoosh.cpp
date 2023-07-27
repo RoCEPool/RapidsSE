@@ -111,14 +111,14 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
 
   DELETE_CARD(pCI->G.p_term);
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
 
   pCI->vPrintBoard();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (! pCI->Sqy.m_pCorrelation) {
-    pCI->G.pDeck->vRenumberRecursive();
+    pCI->vRenumberCards();
     return;
   }
 
@@ -154,7 +154,7 @@ void Smoosh::vInto_KEYnotEXISTS(CardIter* pCI)
   pCI->G_vRestart();
   pCI->G_vDeleteWhenEmptySub(CK_WHERE,CK_BOOLCALC);
 
-  pCI->G.pDeck->vRenumberRecursive();
+  pCI->vRenumberCards();
   pCI->vPrintBoard(__LINE__);
   vDebugPoint();
 

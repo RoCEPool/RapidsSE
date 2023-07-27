@@ -45,6 +45,8 @@
 #include "Deck.hpp"
 #include "Port.hpp"
 
+#include "LibInfo.hpp"
+
 #include "eLH.h"
 #include "eXK.h"
 #include "eEK.h"
@@ -119,7 +121,8 @@ namespace STORE
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
     REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
-  
+
+    REG<LibInfo,        CN_LIBINFO       > m_xpLibInfo;
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
 
     REG<Operand,        CN_NONE          > m_xpMarker;
@@ -213,6 +216,7 @@ namespace STORE
     bool (*m_afFun1)(void*);
     bool (*m_afFun2)(void*);
     bool (*m_afFun3)(void*);
+    bool (*m_afFun4)(void*);
 
     s4K  m_sStringA;    // string
     s256 m_sString0;    // string
@@ -247,7 +251,7 @@ namespace STORE
     Timer      m_oTimer;
     AggTimer   m_oAggTimer;
 
-    RowPix     m_oRowPix;    // condensed stream def
+    //RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
     EntWrk     m_oEntWrkPL;
     EntWrk     m_oEntWrkJ;

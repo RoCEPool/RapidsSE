@@ -225,7 +225,7 @@ public:
   void vClassPostRecvWordStore(void);
   void vClassPreSendWordStore(void);
 
-  // column
+// column
   void vColumnIsNullableFetch(void);
   void vColumnIsPartitionKeyFetch(void);
   void vColumnLengthFetch(void);
@@ -236,7 +236,6 @@ public:
   // Combined
   void vCombinedDelete(void);
   void vCombinedExecute(void);
-  void vCombinedExecute_v2(void);
   void vCombinedHashRowsFetch(void);
   void vCombinedGet(void);
   void vCombinedIndexT(void);
@@ -474,14 +473,15 @@ void vDdlLockAssertNone(void);
   void vDynamicExecute(void);
   void vDynamicHashRowsFetch(void);
   void vDynamicGet(void);
-  void vDynamicIndexT(void);
+  void vDynamicIsIndexScanFetch(void);
+  void vDynamicIsIndexScanStore(void);
   void vDynamicNew(void);
+  void vDynamicStreamDefOut(void);
 
-  void vDynamoCodeFetch(void);
   void vDynamoCompile(void);
   void vDynamoDelete(void);
   void vDynamoGet(void);
-  void vDynamoHasCode(void);
+  void vDynamoNameFetch(void);
   void vDynamoNew(void);
 
   // encode
@@ -604,12 +604,16 @@ void vDdlLockAssertNone(void);
   void vFun1Setup(void);
   void vFun2Call(void);
   void vFun2Get(void);
+  void vFun2IsNotNull(void);
   void vFun2Set(void);
   void vFun2Setup(void);
   void vFun3Call(void);
   void vFun3Get(void);
   void vFun3Set(void);
   void vFun3Setup(void);
+  void vFun4Call(void);
+  void vFun4Get(void);
+  void vFun4Set(void);
 
   // grid
   void vGridDumpInfo(void);
@@ -771,6 +775,9 @@ void vDdlLockAssertNone(void);
   void vInjectSigsegv(void);
   void vInjectSigsegv_dbg(void);
   void vInjectThrow(void);
+  void vInjectSegViolation(void);
+  void vInjectFPE(void);
+  void vInjectILL(void);
 
   // input
   void vInputChars(void);
@@ -831,6 +838,9 @@ void vDdlLockAssertNone(void);
   void vJobAssertParticipant(void);
   void vJobAssertReceived(void);
 
+  void vJobCmdPrint(void);
+  void vJobCodeBlockFetch(void);
+
   void vJobDisableAllocate(void);
   void vJobDisableJobMetrics(void);
   void vJobDisableObjectTracker(void);
@@ -855,7 +865,9 @@ void vDdlLockAssertNone(void);
 
   void vJobGet(void);
 
-  void vJobIdLastJobIdFetch(void);
+  void vJobHasCodeBlock(void);
+
+void vJobIdLastJobIdFetch(void);
 
   void vJobLabelObjectTracker(void);
   void vJobListFetch(void);
@@ -1160,6 +1172,7 @@ void vDdlLockAssertNone(void);
   void vMarkerNewExitedMarker(void);
   void vMarkerNewFinishedMarker(void);
   void vMarkerNewFlushMarker(void);
+  void vMarkerNewInternalError(void);
   void vMarkerNewInvokeMarker(void);
   void vMarkerNewLeaveMarker(void);
   void vMarkerNewLeavingMarker(void);
@@ -1208,6 +1221,18 @@ void vDdlLockAssertNone(void);
   void vExitOperandPipeOut(void);
   void vExitOperandPipeToOutput(void);
   void vExitOperandSet(void);
+
+  // LibInfo
+  void vLibInfoCompile(void);
+  void vLibInfoDelete(void);
+  void vLibInfoError(void);
+  void vLibInfoFind(void);
+  void vLibInfoGet(void);
+  void vLibInfoIsNotNull(void);
+  void vLibInfoLink(void);
+  void vLibInfoNew(void);
+  void vLibInfoSet(void);
+  void vLibInfoUnlink(void);
 
   // memory
   void vMemoryByteDump(void);
@@ -1414,6 +1439,8 @@ void vDdlLockAssertNone(void);
   void vPipelineOfOpGet(void);
   void vPipelineOfOpGetAccum(void);
   void vPipelineOfOpGrabDebugLock(void);
+  void vPipelineOfOpInternalErrorFetch(void);
+  void vPipelineOfOpInternalErrorStore(void);
   void vPipelineOfOpLowMemoryFetch(void);
   void vPipelineOfOpLowMemoryStore(void);
   void vPipelineOfOpPulsedFetch(void);
@@ -1458,7 +1485,6 @@ void vDdlLockAssertNone(void);
   void vPotIsNull(void);
   void vPotNew(void);
   void vPotPushBuffer(void);
-  void vPotRowPixStore(void);
 
   // pot Rlu
   void vPotRluCompleted(void);
@@ -2191,6 +2217,7 @@ void vDdlLockAssertNone(void);
   void vTaskTraceFetch(void);
   void vTaskTraceStore(void);
   void vTaskTransitionStore(void);
+  void vTaskThrowInternalError(void);
   void vTaskThrowLowMemory(void);
   void vTaskWait(void);
   void vTaskYield(void);
@@ -2321,6 +2348,7 @@ void vDdlLockAssertNone(void);
   void vTinyCIsNotNull(void);
   void vTinyCNew(void);
   void vTinyCRelocate(void);
+  void vTinyCSet(void);
   void vTinyCSymbols(void);
 
   void vTinyCCompile_v2(void);

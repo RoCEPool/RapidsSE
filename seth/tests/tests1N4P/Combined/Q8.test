@@ -129,6 +129,7 @@ success
 load Nation "../TPCH/SF_0001/nation.csv";
 success
 
+/optimise_passthru 
 pipeline Q7
 begin
 

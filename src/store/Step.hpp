@@ -100,6 +100,7 @@ namespace STORE
     static void vAddSteps_JobReport(void);
     static void vAddSteps_Jobs(void);
 
+    static void vAddSteps_LibInfo(void);
     static void vAddSteps_List(void);
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);

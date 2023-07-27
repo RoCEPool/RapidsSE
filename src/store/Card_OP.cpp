@@ -8,6 +8,8 @@
 #include "Card_Table.hpp"
 #include "CardIter.hpp"
 #include "Table.hpp"
+#include "Index.hpp"
+#include "ColsReq.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -110,6 +112,136 @@ void Card_OP::vAdd_Pred_Under_filter(Card_PRED *p_PRED)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert given lambda function to all terms                                 */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
+                                         std::function<bool(Card* pCard)> bfLambdaFn)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+
+  if (bIsCard(CK_INDEXSCAN) || bIsCard(CK_SCAN)) {
+
+  }
+
+  if (bIsCard(CK_PROJECT)) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
+    pCI->G.p_projection = pSub_projection();
+    pCI->G.p_projection->bApplyRecursive(CK_TERM, bfLambdaFn);
+  }
+
+  if (bIsCard(CK_FILTER) || bIsCard(CK_WHERE) || bIsCard(CK_HAVING)) {
+    if (pCI->G.p_boolCalc = pSub_boolCalc())
+      pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
+    else
+    if (pCI->G.p_rpnCalc = pSub_rpnCalc())
+      pCI->G.p_rpnCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
+  }
+
+  if (bIsCard(CK_AGGREG) && bIsPartitionLevel()) {
+    pCI->G.p_projection = pSub_projection();
+    pCI->G.p_projection->bApplyRecursive(CK_TERM, bfLambdaFn);
+  }
+
+  if ((bIsCard(CK_GBYAGG) || bIsCard(CK_ORDAGG)) && bIsPartitionLevel()) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
+    pCI->G.p_projection = pSub_projection();
+    pCI->G.p_projection->bApplyRecursive(CK_TERM, bfLambdaFn);
+  }
+
+  if (bIsCard(CK_HASH)) {
+    Card_HshCol *p_hshCol = pSub_hshCol();
+    if (Card_Expr *p_expr_col =
+        pCI->Analysis.m_pProjection_prior->pFindExpr(p_hshCol->pSymbol())) {
+      p_hshCol->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
+    }
+  }
+
+  if (bIsCard(CK_INDEXJOIN)) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
+
+    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
+      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
+        p_index_chosen->bApplyRecursive(CK_TERM, bfLambdaFn);
+      }
+    }
+
+    pCI->vPrintBoard(__LINE__);
+    vDebugPoint();
+  }
+
+  if (bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS)) {
+    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
+      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
+        p_index_chosen->bApplyRecursive(CK_TERM, bfLambdaFn);
+      }
+    }
+
+    pCI->G.p_constraint = pSub_constraint();
+    pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
+    if (pCI->G.p_boolCalc)
+      pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
+  }
+
+  if (bIsCard(CK_SORT)) {
+    if ((pCI->G.p_key = pSub_key()))
+      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
+  }
+
+  if (pSymbol()->Y_bHas(P_BreakPt)) {
+    //vDump();
+    vDebugPoint();
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert colNm to stmCol                                                    */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->Y_bHas(P_BreakPt)) {
+    //vDump();
+    vDebugPoint();
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  auto bfLambdaFn = [pCI,this](Card* pCard)
+  {
+    Card_Term* p_term = _pCard_Term(pCard);
+
+    if (pSymbol()->Y_bHas(P_BreakPt)) {
+      vDebugPoint();
+    }
+
+    if (! pCI->Analysis.m_pProjection_prior)
+      return C_CONTINUE_RECURSION;
+
+    if (Card_Expr* p_expr_col =
+        pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
+      p_term->pSymbol()->vSet(p_expr_col->pSymbol());
+    }
+
+   return C_CONTINUE_RECURSION;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vApply_lambdaFn_ToAll_term(pCI, bfLambdaFn);
+
+  if (pSymbol()->Y_bHas(P_BreakPt)) {
+    //vDump();
+    vDebugPoint();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vConvert_rpnCalc_To_boolCalc(CardIter* pCI)
@@ -130,7 +262,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! (   CK_AGGREG  == pCI->G.e_MainCard
+  if (! (      CK_AGGREG  == pCI->G.e_MainCard
             || CK_FILTER  == pCI->G.e_MainCard
             || CK_GBYAGG  == pCI->G.e_MainCard
             || CK_PROJECT == pCI->G.e_MainCard
@@ -160,7 +292,7 @@ void Card_OP::vConvert_stmColOdn_To_tblColOdn(CardIter* pCI)
 
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* convert tblColOdn to stmColOdn                                             */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 {
@@ -173,7 +305,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bLambdaFn = [pCI,this](Card* pCard)
+  auto bfLambdaFn = [pCI,this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
@@ -191,18 +323,23 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     if (pCI->Analysis.m_pProjection_prior) {
       if (Card_Expr* p_expr_col =
           pCI->Analysis.m_pProjection_prior->pFindExpr(p_term->pSymbol())) {
+        // record what $c.n it was
+        p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
         p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
         //vTrace("  TO %s\n"_Stz,p_expr_col->szSymbol());
         return C_CONTINUE_RECURSION;
       }
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
     if (! (pCI->G.p_MainCard->bIsCard(CK_KEYEXISTS) || pCI->G.p_MainCard->bIsCard(CK_KEYNOTEXISTS)))
       return C_CONTINUE_RECURSION;
 
     // column of this table
+
+    // record what $c.n it was
+    p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
 
     pCI->G.p_projection = pCI->G.p_MainCard->pSub_projection();
     i8 nExpr_prior = pCI->G.p_projection->nChildCards();
@@ -218,82 +355,16 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (bIsCard(CK_INDEXSCAN) || bIsCard(CK_SCAN)) {
-
-  }
-
-  if (bIsCard(CK_PROJECT)) {
-    if ((pCI->G.p_key = pSub_key()))
-      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
-    pCI->G.p_projection = pSub_projection();
-    pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
-  }
-
-  if (bIsCard(CK_FILTER) || bIsCard(CK_WHERE) || bIsCard(CK_HAVING)) {
-    pCI->G.p_boolCalc = pSub_boolCalc();
-    pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bLambdaFn);
-  }
-
-  if (bIsCard(CK_AGGREG) && bIsPartitionLevel()) {
-    pCI->G.p_projection = pSub_projection();
-    pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
-  }
-
-  if ((bIsCard(CK_GBYAGG) || bIsCard(CK_ORDAGG)) && bIsPartitionLevel()) {
-    if ((pCI->G.p_key = pSub_key()))
-      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
-    pCI->G.p_projection = pSub_projection();
-    pCI->G.p_projection->bApplyRecursive(CK_TERM, bLambdaFn);
-  }
-
-  if (bIsCard(CK_HASH)) {
-    Card_HshCol *p_hshCol = pSub_hshCol();
-    if (Card_Expr *p_expr_col =
-        pCI->Analysis.m_pProjection_prior->pFindExpr(p_hshCol->pSymbol())) {
-      p_hshCol->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
-    }
-  }
-
-  if (bIsCard(CK_INDEXJOIN)) {
-    if ((pCI->G.p_key = pSub_key()))
-      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
-
-    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
-      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
-        p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
-      }
-    }
-
-    pCI->vPrintBoard(__LINE__);
-    vDebugPoint();
-  }
-
-  if (bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS)) {
-    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
-      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
-        p_index_chosen->bApplyRecursive(CK_TERM, bLambdaFn);
-      }
-    }
-
-    pCI->G.p_constraint = pSub_constraint();
-    pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-    pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bLambdaFn);
-  }
-
-  if (bIsCard(CK_SORT)) {
-    if ((pCI->G.p_key = pSub_key()))
-      pCI->G.p_key->bApplyRecursive(CK_TERM, bLambdaFn);
-  }
+  vApply_lambdaFn_ToAll_term(pCI, bfLambdaFn);
 
   if (pSymbol()->Y_bHas(P_BreakPt)) {
     //vDump();
     vDebugPoint();
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* correct stmOd                                                              */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
 {
@@ -310,7 +381,7 @@ void Card_OP::vCorrectStmOdn(Card_Projection* p_projection_prior)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
+/* delete filter if it's empty                                                */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vDeleteFilterIfEmpty(Card_Filter* p_filter)
 {
@@ -411,6 +482,12 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         pCI->vRestore();
         return;
 
+      case CK_FILTER:
+        pCI->vSave();
+        pCI->G.p_filter->vEarlyProject_recurse_update(pCI);
+        pCI->vRestore();
+        return;
+
       case CK_INDEXJOIN:
         pCI->vSave();
         pCI->G.p_indexJoin->vEarlyProject_recurse_add(pCI);
@@ -453,7 +530,7 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
         return;
 
       case CK_WHERE:
-        pCI->G.p_where->vEarlyProject_recurse_passthru(pCI);
+        pCI->G.p_where->vEarlyProject_recurse_update(pCI);
         return;
 
       // -- -- -- -- -- -- --
@@ -466,6 +543,26 @@ void Card_OP::vEarlyProject_backstep(CardIter* pCI)
   }
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this op bring data into the pipeline                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_OP::bIsDataInclusion(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  eCK eCard = this->eCard();
+
+  switch (eCard) {
+    case CK_INDEXJOIN:
+    case CK_INDEXSCAN:
+    case CK_SCAN:
+    case CK_TABLE:
+      return true;
+    default:
+      return false;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -771,6 +868,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     Card_RpnCalc *p_rpnCalc = new Card_RpnCalc;
     p_expr->vAppend(p_rpnCalc);
     p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
+    p_expr->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
 
     Symbol xSymbol_tblCol;
     xSymbol_tblCol.vSetTableColOrdinal(cTblSyn, i_Col + 1);
@@ -788,6 +886,1082 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
   if (p_projection_needed)
     vAppend(p_projection_needed);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vCraftArg(BASE::String *pString)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for aggreg op                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnAggreg(Stz* szRpnExpr, Card_Aggreg* pCard_Aggreg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Projection* pCard_Projection =
+      _pCard_Projection(pCard_Aggreg->pFindSubCard(CK_PROJECTION));
+
+  if (! pCard_Projection)
+    return;
+
+  nSubCards = pCard_Projection->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_Projection->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for combine                                                           */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnCombined(Stz* szRpnExpr, Card_Combined* pCard_Combined)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  szRpnExpr->vCatSprint("%s"_Stz, pCard_Combined->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for crossJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnCrossJoin(Stz* szRpnExpr, Card_CrossJoin* pCard_CrossJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Bounds* pCard_bounds = pCard_CrossJoin->pSub_bounds();
+  RASSERT(pCard_bounds);
+  Card_Bound* pCard_Bound = pCard_bounds->pSub_bound();
+  RASSERT(pCard_Bound);
+
+  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+  i8 nSubs = pCard_Bound->nChildCards();
+  for (i8 i_Child = 0; i_Child < nSubs; i_Child++) {
+    Card* pChildCard = pCard_Bound->pGet(i_Child);
+
+    if (! pChildCard->bIsCard(CK_TERM))
+      continue;
+
+    Card_Term* p_term = _pCard_Term(pChildCard);
+
+    if (p_term->pSymbol()->bIsStreamOrdinal() ||
+        p_term->pSymbol()->bIsColumnOrdinal()) {
+
+      if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+        p_term->vDump();
+        pChildCard->vDump();
+        RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+      }
+    }
+
+    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for filter op                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnFilter(Stz* szRpnExpr, Card_Filter* pCard_Filter)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_Filter->pSub_boolCalc();
+  if (CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_Filter->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for aggGby op                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnGbyAgg(Stz* szRpnExpr, Card_GbyAgg* pCard_GbyAgg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards;
+
+  Card_Key* pCard_Key =
+      _pCard_Key(pCard_GbyAgg->pFindSubCard(CK_KEY));
+
+  if (! pCard_Key)
+    return;
+
+  szRpnExpr->vConcat(" groupBy"_Stz);
+
+  nSubCards = pCard_Key->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_Key->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  Card_Projection* pCard_Projection =
+      _pCard_Projection(pCard_GbyAgg->pFindSubCard(CK_PROJECTION));
+
+  if (! pCard_Projection)
+    return;
+
+  szRpnExpr->vConcat("\n                 "_Stz);
+  szRpnExpr->vConcat(" aggregates"_Stz);
+
+  nSubCards = pCard_Projection->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_Projection->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* weave : hash  <expr>                                                       */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnHash(Stz* szOpArgs, Card_Hash* pCard_Hash)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_HshCol* p_hshCol = pCard_Hash->pSub_hshCol();
+
+  szOpArgs->vCatSprint("type %s %s"_Stz,
+                       aCT[Symbol::eTo_eCT_char(p_hshCol->pSymbol()->Y_szGet(P_Type))],
+                       p_hshCol->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for having op                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnHaving(Stz* szRpnExpr, Card_Having* pCard_Having)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_Having->pSub_boolCalc();
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_Having->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_IndexList* pCard_IndexList = pCard_IndexJoin->pSub_indexList();
+
+  Card_Index* pCard_Index =
+    _pCard_Index(pCard_IndexList->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+
+  Card_Bounds* pCard_bounds = pCard_Index->pSub_bounds();
+  if (! pCard_bounds)
+    return;
+
+  //Card_Bound* p_bound = (Card_Bound*)pCard_bounds->pGetChild(0);
+
+  Card_Bound* p_bound = nullptr;
+  for (Kid xKid(pCard_bounds); xKid.bEach(CK_BOUND); /**/) {
+
+    if (xKid.pChild()->pSymbol()->Y_bHas(P_ChosenBound)) {
+      p_bound = _pCard_Bound(xKid.pChild());
+      break;
+    }
+  }
+
+
+  szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+  i8 nSubs = p_bound->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+    Card* pSubCard = p_bound->pGet(i_Sub);
+
+    if (! pSubCard->bIsCard(CK_TERM))
+      continue;
+
+    Card_Term* p_term = _pCard_Term(pSubCard);
+
+    if (p_term->pSymbol()->bIsStreamOrdinal() ||
+        p_term->pSymbol()->bIsColumnOrdinal()) {
+
+      if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+        p_term->vDump();
+        pSubCard->vDump();
+        RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+      }
+    }
+
+    szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+  }
+
+  szRpnExpr->vCatSprint(" %s"_Stz, p_bound->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for indexScan op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_IndexList* pCard_IndexList = pCard_IndexScan->pSub_indexList();
+
+  Card_Index* pCard_Index =
+      _pCard_Index(pCard_IndexList->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+
+
+  Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
+  if (! pCard_bounds) {
+    pCard_bounds = pCard_Index->pSub_bounds();
+    if (! pCard_bounds)
+      return;
+  }
+
+  CardIter xCI(pCard_bounds);
+  while (xCI.G_bEachMain(CK_BOUND)) {
+
+    if (xCI.G.p_bound->bIsLBound() || xCI.G.p_bound->bIsUBound()) {
+
+      if (xCI.G.p_bound->bIsLBound())
+        szRpnExpr->vCatSprint(" %s"_Stz,"LBOUND"_Stz);
+      else
+      if (xCI.G.p_bound->bIsUBound())
+        szRpnExpr->vCatSprint(" %s"_Stz,"UBOUND"_Stz);
+      else
+        szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+      i8 nSubs = xCI.G.p_bound->nChildCards();
+      for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+        Card* pSubCard = xCI.G.p_bound->pGet(i_Sub);
+
+        if (! pSubCard->bIsCard(CK_TERM))
+          continue;
+
+        Card_Term* p_term = _pCard_Term(pSubCard);
+
+        if (p_term->pSymbol()->bIsStreamOrdinal() ||
+            p_term->pSymbol()->bIsColumnOrdinal()) {
+
+          if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+            p_term->vDump();
+            pSubCard->vDump();
+            RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+          }
+        }
+
+        szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+      }
+
+    }
+
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Index* pCard_Index = _pCard_Index(pCard_KeyExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
+  if (! pCard_bounds) {
+    pCard_bounds = pCard_KeyExists->pSub_bounds();
+    if (! pCard_bounds)
+      return;
+  }
+
+  CardIter xCI(pCard_bounds);
+  while (xCI.G_bEachMain(CK_BOUND)) {
+
+    if (! xCI.G.p_bound->bIsEBound())
+      continue;
+
+    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+    i8 nSubs = xCI.G.p_bound->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card *pSubCard = xCI.G.p_bound->pGet(i_Sub);
+
+      if (!pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term *p_term = _pCard_Term(pSubCard);
+
+      if (p_term->pSymbol()->bIsStreamOrdinal() ||
+          p_term->pSymbol()->bIsColumnOrdinal()) {
+
+        if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+          p_term->vDump();
+          pSubCard->vDump();
+          RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+        }
+      }
+
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+    }
+
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
+
+  }
+
+
+//  Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
+//  if (! pCard_constraint) {
+//    return;
+//  }
+//
+//  szRpnConstraint->vConcat(" type BOOLEAN"_Stz);
+//
+//  Card_RpnCalc *pCard_RpnCalc = pCard_Index->pSub_rpnCalc();
+//  CardIter xCI_rpnCalc(pCard_RpnCalc);
+//  while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
+//    szRpnConstraint->vCatSprint(" %s"_Stz, xCI_rpnCalc.G.p_term->szSymbol());
+//  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Index* pCard_Index = _pCard_Index(pCard_KeyExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
+  if (! pCard_constraint) {
+    pCard_constraint = pCard_KeyExists->pSub_constraint();
+    if (!pCard_constraint)
+      return;
+  }
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnKeyNotExists(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Index* pCard_Index = _pCard_Index(p_keyNotExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Bounds *pCard_bounds = pCard_Index->pSub_bounds();
+  if (! pCard_bounds) {
+    pCard_bounds = p_keyNotExists->pSub_bounds();
+    if (! pCard_bounds)
+      return;
+  }
+
+  CardIter xCI(pCard_bounds);
+  while (xCI.G_bEachMain(CK_BOUND)) {
+
+    if (! xCI.G.p_bound->bIsEBound())
+      continue;
+
+    szRpnExpr->vCatSprint(" %s"_Stz,"BOUND"_Stz);
+
+    i8 nSubs = xCI.G.p_bound->nChildCards();
+    for (i8 i_Sub = 0; i_Sub < nSubs; i_Sub++) {
+      Card *pSubCard = xCI.G.p_bound->pGet(i_Sub);
+
+      if (!pSubCard->bIsCard(CK_TERM))
+        continue;
+
+      Card_Term *p_term = _pCard_Term(pSubCard);
+
+      if (p_term->pSymbol()->bIsStreamOrdinal() ||
+          p_term->pSymbol()->bIsColumnOrdinal()) {
+
+        if (!p_term->pSymbol()->Y_bHas(P_Type)) {
+          p_term->vDump();
+          pSubCard->vDump();
+          RASSERT(p_term->pSymbol()->Y_bHas(P_Type));
+        }
+      }
+
+      szRpnExpr->vCatSprint(" %s"_Stz, p_term->szSymbol());
+    }
+
+    szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for keyNotExists op                                         */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnKeyNotExists_constraint(Stz* szRpnExpr, Card_KeyNotExists* p_keyNotExists)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Index* pCard_Index = _pCard_Index(p_keyNotExists->pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
+  if (! pCard_constraint) {
+    pCard_constraint = p_keyNotExists->pSub_constraint();
+    if (!pCard_constraint)
+      return;
+  }
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for limit op                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnLimit(Stz* szRpnExpr, Card_Limit*  pCard_Limit)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Limit->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for ordagg op                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnOrdAgg(Stz* szRpnExpr, Card_OrdAgg* pCard_OrdAgg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards;
+
+  Card_Key* pCard_Key =
+      _pCard_Key(pCard_OrdAgg->pFindSubCard(CK_KEY));
+
+  if (! pCard_Key)
+    return;
+
+  szRpnExpr->vConcat(" ordGroupBy"_Stz);
+
+  nSubCards = pCard_Key->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_Key->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  Card_Projection* pCard_Projection =
+      _pCard_Projection(pCard_OrdAgg->pFindSubCard(CK_PROJECTION));
+
+  if (! pCard_Projection)
+    return;
+
+  szRpnExpr->vConcat("\n                 "_Stz);
+  szRpnExpr->vConcat(" aggregates"_Stz);
+
+  nSubCards = pCard_Projection->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard_SUB = pCard_Projection->pGet(i_Child);
+    if (! pCard_SUB->bIsCard(CK_EXPR))
+      return;
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pCard_SUB);
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for project op                                              */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnProject(Stz* szRpnExpr, Card_Project* pCard_Project)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Projection* pCard_Projection =
+      _pCard_Projection(pCard_Project->pFindSubCard(CK_PROJECTION));
+
+  i8 nSubCards = pCard_Projection->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+
+    Card* pSubCard = pCard_Projection->pGet(i_Child);
+    eCK eSubCard = pSubCard->eCard();
+
+    if (CK_EXPR != eSubCard)
+      continue;
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
+
+    if (i_Child) {
+      szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat(" ,"_Stz);
+    }
+    else if (nSubCards > 1) {
+      //szRpnExpr->vConcat("\n                 "_Stz);
+      szRpnExpr->vConcat("  "_Stz);
+    }
+
+    vExpr(szRpnExpr,pCard_Expr);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for scan op                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnScan(Stz* szRpnExpr, Card_Scan* pCard_Scan)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for sort op                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnSort(Stz* szRpnExpr, Card_Sort* pCard_Sort)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Key* pCard_Key =
+      _pCard_Key(pCard_Sort->pFindSubCard(CK_KEY));
+
+  i8 nSubCards = pCard_Key->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+
+    Card* pSubCard = pCard_Key->pGet(i_Child);
+    eCK eSubCard = pSubCard->eCard();
+
+    if (CK_EXPR != eSubCard)
+      continue;
+
+    Card_Expr* pCard_Expr = _pCard_Expr(pSubCard);
+
+    if (i_Child)
+      szRpnExpr->vConcat(" ,"_Stz);
+
+    vExpr(szRpnExpr,pCard_Expr);
+
+    Card* p_direction = pCard_Expr->pSub_direction();
+
+    szRpnExpr->vCatSprint(" %s"_Stz, p_direction->szSymbol());
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for table op                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnTable(Stz* szRpnExpr, Card_Table* pCard_Table)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for top op                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnTop(Stz* szRpnExpr, Card_Top* pCard_Top)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Key *pCard_key = pCard_Top->pSub_key();
+  Card_RpnCalc *pCard_Calc = pCard_key->pSub_rpnCalc();
+
+  eCT eColumnType = Symbol::eTo_eCT_char(pCard_Calc->szP_Type());
+
+  Stz* szColType = aCT[eColumnType];
+
+  szRpnExpr->vCatSprint(" type %s "_Stz,szColType->azChar());
+
+  vRpnCalc(szRpnExpr, pCard_Calc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for filter op                                               */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnWhere(Stz* szRpnExpr, Card_Where* pCard_Where)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_Where->pSub_boolCalc();
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_Where->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* append <rpnExpr> for <calcBool>                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vBoolCalc(Stz* szRpnExpr, Card_BoolCalc* pCard_BoolCalc)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (pCard_BoolCalc->bIsBraced())
+    szRpnExpr->vConcat(" }"_Stz);
+
+  vBoolPart(szRpnExpr, pCard_BoolCalc, 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append part                                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vBoolPart(Stz* szRpnExpr, Card* p_part, i8 i)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  i8 nSubCards = p_part->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pSubCard = p_part->pGet(i_Child);
+
+    eCK eSubCard = pSubCard->eCard();
+
+    switch (eSubCard) {
+      case CK_ANDPRED:
+        vBoolPart(szRpnExpr, _pCard_AndPred(pSubCard), 0);
+        szRpnExpr->vCatSprint(" and"_Stz);
+        break;
+      case CK_CMPPRED:
+        vBoolPart(szRpnExpr, _pCard_CmpPred(pSubCard), 0);
+        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol());
+        break;
+      case CK_NOTPRED:
+        vBoolPart(szRpnExpr, _pCard_NotPred(pSubCard), 0);
+        szRpnExpr->vCatSprint(" not"_Stz);
+        break;
+      case CK_ORPRED:
+        vBoolPart(szRpnExpr, _pCard_OrPred(pSubCard), 0);
+        szRpnExpr->vCatSprint(" or"_Stz);
+        break;
+      case CK_TERM:
+        if (pSubCard->pSymbol()->bIsStreamOrdinal() ||
+            pSubCard->pSymbol()->bIsColumnOrdinal()) {
+
+          if (!pSubCard->pSymbol()->Y_bHas(P_Type)) {
+            //p_part->vDump();
+            //pSubCard->vDump();
+            RASSERT(pSubCard->pSymbol()->Y_bHas(P_Type));
+          }
+        }
+        szRpnExpr->vCatSprint(" %s"_Stz, pSubCard->szSymbol());
+        break;
+      default:
+        NEVER_REACH
+    }
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for pCard_RpnCalc                                          */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnCalc(Stz* szRpnExpr, Card_RpnCalc* pCard_RpnCalc)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (!pCard_RpnCalc->pSymbol()->Y_bHas(P_Type)) {
+    pCard_RpnCalc->vDump();
+    RASSERT(pCard_RpnCalc->pSymbol()->Y_bHas(P_Type));
+  }
+
+  i8 nSubCards = pCard_RpnCalc->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card* pCard = pCard_RpnCalc->pGet(i_Child);
+
+    eCK eCard = pCard->eCard();
+
+    switch (eCard) {
+
+      case CK_TERM:
+        vTerm(szRpnExpr,_pCard_Term(pCard));
+        break;
+
+      default:
+        //{;}
+        //vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+        break;
+    }
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for pCard_Expr                                              */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vExpr(Stz* szRpnExpr, Card_Expr* pCard_Expr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_As*      p_as      = nullptr;
+  Card_RpnCalc* p_rpnCalc = nullptr;
+
+  i8 nSubCards = pCard_Expr->nItems();
+  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
+    Card *pCard = pCard_Expr->pGet(i_Child);
+
+    eCK eCard = pCard->eCard();
+
+    switch (eCard) {
+      case CK_AS:
+        p_as = _pCard_As(pCard);
+        break;
+
+      case CK_RPNCALC:
+        p_rpnCalc = _pCard_RpnCalc(pCard);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  szRpnExpr->vCatSprint(" type %s"_Stz,
+                        aCT[Symbol::eTo_eCT_char(p_rpnCalc->pSymbol()->Y_szGet(P_Type))]);
+
+  if (p_as)
+    vAs(szRpnExpr, p_as);
+
+  if (p_rpnCalc->bNeedsBrace()) {
+    szRpnExpr->vConcat(" }"_Stz);
+  }
+  vRpnCalc(szRpnExpr, p_rpnCalc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for pCard_As                                                */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vAs(Stz* szRpnExpr, Card_As* pCard_As)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  szRpnExpr->vCatSprint(" as %s"_Stz, pCard_As->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* produce <expr> for pCard_Term                                              */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vTerm(Stz* szRpnExpr, Card_Term* pCard_Term)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (pCard_Term->pSymbol()->bIsStreamOrdinal() ||
+      pCard_Term->pSymbol()->bIsColumnOrdinal()) {
+
+    if (!pCard_Term->pSymbol()->Y_bHas(P_Type)) {
+      pCard_Term->vDump();
+      RASSERT(pCard_Term->pSymbol()->Y_bHas(P_Type));
+    }
+  }
+
+  szRpnExpr->vCatSprint(" %s"_Stz, pCard_Term->szSymbol());
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft column map (where to find columns of stream def in index entry       */
+/*----------------------------------------------------------------------------*/
+ColsReq* Card_OP::pCraftColMap_gbyAgg(StreamDef* pStreamDef_emitted,
+                                      IndexDef*  pIndexDef_gbyAgg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (! bIsCard(CK_GBYAGG))
+    return nullptr;
+
+  ColsReq*  pColMap_gbyAgg = new ColsReq;
+
+  i8 nCols = pStreamDef_emitted->nColumns();
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pCol = pStreamDef_emitted->pGetColumn(i_Col);
+
+    /// ????
+//    if $K
+//      key
+//    else
+//      payload
+
+    pColMap_gbyAgg->vAddCol(i_Col, i_Col, pCol->szColNm(), false);
+  }
+
+  pColMap_gbyAgg->vValidate();
+
+  return pColMap_gbyAgg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft emitted streamDef                                                    */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card_OP::pCraftStreamDef_emitted(ColsReq** ppColMap)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Projection* p_projection = pSub_projection();
+  if (! p_projection)
+    return nullptr;
+
+  Card_Key* p_key = nullptr;
+  if (bIsOne(CK_GBYAGG,CK_SORT,CK_TOP,CK_NONE)) {
+    *ppColMap = new ColsReq;
+    p_key = pSub_key();
+    RASSERT(p_key);
+  }
+
+  ColsReq* pColMap = ppColMap? *ppColMap : nullptr;
+
+  StreamDef* pStreamDef_emitted =
+      p_projection->pToStreamDef(pColMap, p_key, eCard());
+
+  if (ppColMap)
+    (*ppColMap)->vValidate();
+
+  return pStreamDef_emitted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft index for indexJoin                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Card_OP::pCraftIndex_indexJoin(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
+    return nullptr;
+
+  Card_IndexList* p_indexList = pSub_indexList();
+  if (! p_indexList)
+    return nullptr;
+
+  Card_Index* p_index = p_indexList->pFindChosenIndex();
+  if (! p_index)
+    return nullptr;
+
+  Index* pIndex = p_index->pGetIndex(p_table);
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft index for indexScan                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Card_OP::pCraftIndex_indexScan(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
+    return nullptr;
+
+  Card_IndexList* p_indexList = pSub_indexList();
+  if (! p_indexList)
+    return nullptr;
+
+  Card_Index* p_index = p_indexList->pFindChosenIndex();
+  if (! p_index)
+    return nullptr;
+
+  Index* pIndex = p_index->pGetIndex(p_table);
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft index for indexSemi                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Card_OP::pCraftIndex_indexSemi(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Table* p_table = pSub_table();
+  if (! p_table)
+    return nullptr;
+
+  Card_IndexList* p_indexList = pSub_indexList();
+  if (! p_indexList)
+    return nullptr;
+
+  Card_Index* p_index = p_indexList->pFindChosenIndex();
+  if (! p_index)
+    return nullptr;
+
+  Index* pIndex = p_index->pGetIndex(p_table);
+
+  return pIndex;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* craft indexDef for gbyAgg                                                  */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_OP::pCraftIndexDef_gbyAgg(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Key* p_key = pSub_key();
+  if (! p_key)
+    return nullptr;
+
+  IndexDef* pIndexDef = p_key->pToIndexDef();
+
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft indexDef for sort                                                    */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_OP::pCraftIndexDef_sort(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Key* p_key = pSub_key();
+  if (! p_key)
+    return nullptr;
+
+  IndexDef* pIndexDef = p_key->pToIndexDef();
+
+  return pIndexDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* craft indexDef for top                                                     */
+/*----------------------------------------------------------------------------*/
+IndexDef* Card_OP::pCraftIndexDef_top(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Key* p_key = pSub_key();
+  if (! p_key)
+    return nullptr;
+
+  IndexDef* pIndexDef = p_key->pToIndexDef();
+
+  return pIndexDef;
 }
 
 /*============================================================================*/

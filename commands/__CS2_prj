@@ -3,24 +3,33 @@
 /*============================================================================*/
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
+trackMemory;
+select * from dummy;
+memoryLeaks;
+/*
+trackMemory;
 
-//explain stage transliterate select n_nationkey, n_name from nation where n_nationkey < 2;
 
-
-/ccode pipeline unamed
+/weaved
+/weaver2
+/glean_interactive
+/optimise_passThru
+pipeline unamed
 begin
-  stage stageStart on origin :
+  stage S00 on origin :
     start
     | pulse once
-    | stageMarker0559
-  stage stageMarker0559 on all partitions :
+    | next
+  stage S01 on all partitions :
     scan rapidsse public Nation
-    | filter " type BOOLEAN  $1 2  <  "
     | project " type INTEGER as n_nationkey $1 , type VARCHAR as n_name $2 "
-    | dynamic_v2 0
-    | stageLast
-  stage stageLast on origin :
+    | combined 0
+    | next
+  stage S03 on origin :
     output
     | sink
-    | stageStart
+    | first
 end ;
+
+memoryLeaks;
+*/

@@ -6,11 +6,13 @@
 #include "BASE.h"
 
 #include "eBK.h"
+#include "eXF.h"
 
 #include "Card.hpp"
 #include "CardCtl.hpp"
 
 #include "Card_AbsJoin.hpp"
+#include "Card_AGG.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
@@ -23,12 +25,14 @@
 #include "Card_CmpPred.hpp"
 #include "Card_COL.hpp"
 #include "Card_Combined.hpp"
+#include "Card_COND.hpp"
 #include "Card_Constraint.hpp"
 #include "Card_Correlation.hpp"
 #include "Card_CostJoining.hpp"  //
 #include "Card_CostNetwork.hpp"  //
 #include "Card_CostStream.hpp"   //
 #include "Card_CostUnicast.hpp"  //
+#include "Card_Count.hpp"        //
 #include "Card_CrossJoin.hpp"
 
 #include "Card_Debug.hpp"
@@ -153,10 +157,7 @@ namespace STORE
     i8          m_iXform;
     s256        m_sXdesc;
 
-    bool        m_bPrepareSubQueries;
-    bool        m_bFlattenSubQueries;
-    bool        m_bApplyOptimisations;
-    bool        m_bMakeWeavable;
+    eXF         m_eTransform;
 
   private:
     // must be last
@@ -176,11 +177,10 @@ namespace STORE
 
     static void vMorphAll_table_To_EEop(CardIter* pCI);
 
-    static void vIndividuate_indexJoin_filter_b(CardIter* pCI);
-    static void vIndividuate_crossJoin_filter(CardIter* pCI);
-
     static void vValidate(CardIter* pCI);
     static void vValidate_SubQuery(CardIter* pCI);
+
+    Bench* pBench(void);
 
     i8  i_Board(void);
     void vBoardNo(i8 i_Board);
@@ -203,6 +203,10 @@ namespace STORE
 
     SubQuery* pSubQuery(void);
 
+    void vRenumberCards(void);
+
+    eXF eTransform(void);
+    void vTransform(eXF eTransform);
 
     Stz* szXdesc(void);
     void vXdesc(Stz* szDescription);
@@ -213,15 +217,6 @@ namespace STORE
     Stz* szXhand(void);
     void vXhand(const char* asXhand);
 
-
-    bool bPrepareSubQueries(void);
-    void vPrepareSubQueries(bool bPrepareSubQueries);
-    bool bFlattenSubQueries(void);
-    void vFlattenSubQueries(bool bFlattenSubQueries);
-    bool bApplyOptimisations(void);
-    void vApplyOptimisations(bool bApplyOptimisations);
-    bool bMakeWeavable(void);
-    void vMakeWeavable(bool bMakeWeavable);
 
   private:
     Footer* aFooter(void);

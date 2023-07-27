@@ -37,7 +37,7 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     if (iArg1 != C_DATUM_NULL)    {                                         \
-      iArg2 = (i8)aIndexTree_allotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg1); \
+      iArg2 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg1); \
     }                                                                       \
   }
 
@@ -46,7 +46,7 @@
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
     if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-      iArg3 = (i8)aIndexTree_allotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg2); \
+      iArg3 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg2); \
     }                                                                       \
   }
 
@@ -162,6 +162,14 @@
 #define _ASSIGN_TO_ENTSTZ(iArgTo)                                           \
   szArg1 = (char*)*(--paW);                                                 \
   vEntWrk_appendElementEntStz(iArgTo,szArg1);
+
+#define _ASSIGN_TO_ENTINT_V2(iArgTo)                                        \
+  iArg1 = *(--paW);                                                         \
+  vExtern_EntWrkAppendElementInt(iArgTo,iArg1);
+
+#define _ASSIGN_TO_ENTSTZ_V2(iArgTo)                                        \
+  szArg1 = (char*)*(--paW);                                                 \
+  vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
 
 #define _COPYSTR_IFTRUE(szAreaTo, iArgTo)                                   \
   {                                                                         \
@@ -312,13 +320,13 @@
       iArg3 = ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                          \
                                                                             \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+        iArg1 = (-1) * iArg1;                                               \
                                                                             \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+        iArg2 = (-1) * iArg2;                                               \
                                                                             \
       if (ivlArg3.m_xIvl.m_bIsNeg)                                          \
-        iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlDT.m_uMicros;                 \
+        iArg3 = (-1) * iArg3;                                               \
                                                                             \
       if (iArg1 > iArg2) {                                                  \
         *(paW++) = 0;                                                       \
@@ -349,13 +357,13 @@
       iArg3 = ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                          \
                                                                             \
       if (ivlArg1.m_xIvl.m_bIsNeg)                                          \
-        iArg1 = (-1) * ivlArg1.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+        iArg1 = (-1) * iArg1;                                               \
                                                                             \
       if (ivlArg2.m_xIvl.m_bIsNeg)                                          \
-        iArg2 = (-1) * ivlArg2.m_xIvl.u.m_xIvlYM.m_uMonths;                 \
+        iArg2 = (-1) * iArg2;                 \
                                                                             \
      if (ivlArg3.m_xIvl.m_bIsNeg)                                           \
-       iArg3 = (-1) * ivlArg3.m_xIvl.u.m_xIvlYM.m_uMonths;                  \
+       iArg3 = (-1) * iArg3;                  \
                                                                             \
       if (iArg1 > iArg2) {                                                  \
         *(paW++) = 0;                                                       \
@@ -469,6 +477,7 @@
 
 #define _BET_UNKANY(eErrorCode)                                            \
   {                                                                        \
+    iArg3 = *(--paW);                                                      \
     iArg2 = *(--paW);                                                      \
     iArg1 = *(--paW);                                                      \
     *paW++ = C_DATUM_NULL;                                                 \
@@ -476,8 +485,9 @@
 
 #define _BET_ANYUNK(eErrorCode)                                            \
   {                                                                        \
-    bcdArg1.m_iAsI8 = *(--paW);                                            \
-    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    iArg3 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    iArg1 = *(--paW);                                                      \
     *paW++ = C_DATUM_NULL;                                                 \
   }
 
@@ -927,6 +937,34 @@
     }                                                                       \
   }
 
+#define _LIKE2_V2(eErrorCode)                                               \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      *(paW++) = iExtern_StrLibLike2(szArg2, szArg1);                       \
+    }                                                                       \
+  }
+
+#define _LIKE3_V2(eErrorCode)                                               \
+  {                                                                         \
+    szArg1 = (char*)*(--paW);                                               \
+    szArg2 = (char*)*(--paW);                                               \
+    szArg3 = (char*)*(--paW);                                               \
+    if (eErrorCode != EC_NONE ||                                            \
+        szArg1  == (char*)C_DATUM_NULL ||                                   \
+        szArg2  == (char*)C_DATUM_NULL) {                                   \
+      *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                       \
+    else {                                                                  \
+      *(paW++) = iExtern_StrLibLike3(szArg3, szArg2, *szArg1);              \
+    }                                                                       \
+  }
 
 #define _MATCH_STRSTR(str,substr,len,bMatch)                                \
   {                                                                         \

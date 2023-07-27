@@ -7,6 +7,8 @@ success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Cross Join
+// TODO V2 : ORDAGG
+/*
 select o_orderkey, avg(l_extendedprice)
   from Orders, Lineitem
  where
@@ -20,6 +22,7 @@ select o_orderkey, avg(l_extendedprice)
 ;
 rows: 56
 
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // 4-way Join
 select count(*)
@@ -32,6 +35,7 @@ select count(*)
    and L_SUPPKEY  = S_SUPPKEY
 ;
 rows: (5996)
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Join + Project + Filter

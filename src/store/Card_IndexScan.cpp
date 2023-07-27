@@ -41,17 +41,6 @@ Card_IndexScan::~Card_IndexScan(void) noexcept(false)
 /*-- static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* individuate filter                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_IndexScan::vIndividuateFilter(CardIter* pCI) {
-
-  _static_
-
-  while (pCI->G_bEachMainWithSub(CK_INDEXSCAN,CK_FILTER)) {
-    Card_Filter::vIndividuate_filter(pCI);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -85,8 +74,6 @@ void Card_IndexScan::vDerive_Projection_Key(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
 {
-  vDump(0,(Stz*)__func__);
-
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   pCI->Early.m_pOP_leaf = this;
@@ -96,6 +83,22 @@ void Card_IndexScan::vEarlyProject_leaf(CardIter* pCI)
   pCI->vPrintBoard();
 
   vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_IndexScan::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_LEVEL,CK_TABLE,CK_INDEXLIST,CK_NONE);
+
+  pSub_level()->vValidate(pCI,iDepth+1,this);
+
+  pSub_indexList()->vValidate(pCI,iDepth+1,this);
+
+  RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
 }
 
 /*============================================================================*/

@@ -23,7 +23,7 @@
   pResponseOp [job].responseOp!
 
   // fork a child job for the command
-  STD_NORMALFORK_TAG sForkCmd api::forkChild not if
+  STD_NORMALFORK_TAG sForkCmd nullptr api::forkChild not if
     nullptr [job].responseOp!
     op__execErr
     true

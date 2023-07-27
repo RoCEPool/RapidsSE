@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_OP.hpp"
+#include "Card_COND.hpp"
 #include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_Filter : public Card_OP
+  class Card_Filter : public Card_COND
   {
   public:
     void* operator new(size_t);
@@ -29,8 +29,15 @@ namespace STORE
     void vCorrectStmOdn(Card_Projection* p_projection_prior);
 
     void vCullPred(char cWithMark);
+
+    void vEarlyProject_add_transients(CardIter* pCI);
+    void vEarlyProject_recurse_update(CardIter* pCI);
+
     bool bIsEmpty(void);
 
+    void vUpdate_projection(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "TccStuff.h"
+#include "CodeSynthCommon.h"
+//#include "TccStuff.h"
 
 // ALERT: If this enum changes, make the change in LogicCompiler (line 765)
 //enum eSI // string inflate

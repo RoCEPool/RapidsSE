@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 
 #include "CmdLineArgs.hpp"
@@ -280,6 +281,11 @@ void SePrompt::vPromptLoop(void)
     }
     catch (LowMemory xLowMemory) {
       vTrace("error: Prompt got low memory exception\n"_Stz);
+      RASSERT(0);
+      continue;
+    }
+    catch (InternalError xInternalError) {
+      vTrace("error: Prompt got Internal Error exception\n"_Stz);
       RASSERT(0);
       continue;
     }

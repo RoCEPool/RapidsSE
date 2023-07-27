@@ -40,8 +40,6 @@ Input::Input(Input* pNext)
   m_pCharser_spares = nullptr;
 
   m_bRevertToCpp = false;
-  m_bCodeBlock = false;
-  m_bCodeEnd = false;
 
   // debugging aids
   d_iDebugMode               = false;
@@ -795,20 +793,11 @@ void Input::vCollectOneToken(void)
     vJot2('>',(Stz*)__func__,""_Stz);
   }
 
-  if (m_bCodeBlock)
-    vCollectCodeBlock();
-  else
-  if (m_bCodeEnd)
-    vCollectCodeEnd();
-  else
   if (bFormCppTokens())
     vCollectCpp();
   else
     vCollectSen();
 
-  if (bIsCodeBlockBegin())
-    m_bCodeBlock = true;
-  
   if (d_iDebugMode) {
     SP_Token spTkn;
     vJot2('<',(Stz*)__func__,spTkn.sz(m_pCurrTkn));
@@ -1522,11 +1511,11 @@ void Input::vCollectCppString(void)
   // collect the characters within the string
   while ( ! bEndCppString() ) {
 
-    if (m_xAnnChar.bIsNewLine()) {
-      *z = '\0';
-      m_pCurrTkn->vToken(TN_INVALID);
-      return;
-    }
+//    if (m_xAnnChar.bIsNewLine()) {
+//      *z = '\0';
+//      m_pCurrTkn->vToken(TN_INVALID);
+//      return;
+//    }
 
     if (m_xAnnChar.bIsBackSlash()) {
       vGetAnnCharStripped();
@@ -1895,85 +1884,6 @@ void Input::vCollectSenTag(void)
   *z = '\0';
 
   m_pCurrTkn->vToken(TN_TAG);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect code block as a string                                             */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectCodeBlock(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
-
-  vTokenCollectBegin();
-
-  char *azChars = StrLib::azNullTerminator(m_pCurrTkn->azChars());
-  char *z = azChars;
-
-  // collect code block
-  while (! m_xAnnChar.bIsEOF()) {
-    *z++ = m_xAnnChar.m_cChar;
-    vGetAnnChar();
-
-    if (bIsCodeBlockEnd(z))
-      break;
-  }
-  *z = '\0';
-
-  StrLib::vRemoveTail(azChars,"__codeEnd__");
-
-  m_pCurrTkn->vToken(TN_STRING);
-
-  m_bCodeBlock = false;
-  m_bCodeEnd = true;
-
-  vTokenCollectEnd();
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect code block as a string                                             */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectCodeEnd(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_INPUT, _FOOTER_);
-
-  vTokenCollectBegin();
-
-  m_pCurrTkn->szChars()->vCopy("__codeEnd__"_Stz);
-
-  m_pCurrTkn->vToken(TN_NAME);
-
-  m_bCodeEnd = false;
-
-  vTokenCollectEnd();
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this token the beginning of a code block  ?                             */
-/*----------------------------------------------------------------------------*/
-bool Input::bIsCodeBlockBegin(void)
-{
-  _precondition_(_MAGIC_,CN_INPUT,_FOOTER_);
-
-  //vTrace("TKN: %s \n"_Stz,m_pCurrTkn->azChars());
-  if (m_pCurrTkn->bSame("__cpp_code__"_Stz))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* have we reached end of code block  ?                                       */
-/*----------------------------------------------------------------------------*/
-bool Input::bIsCodeBlockEnd(char* z)
-{
-  _precondition_(_MAGIC_,CN_INPUT,_FOOTER_);
-
-  if (StrLib::bTailIs(z,(char*)"__codeEnd__"))
-    return true;
-
-  return false;
 }
 
 

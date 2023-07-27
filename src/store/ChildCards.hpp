@@ -65,7 +65,6 @@ namespace STORE
     i8 nTrimChildren(eCK eCard, Stz* szSymbol);
 
 
-
   };
 }
 

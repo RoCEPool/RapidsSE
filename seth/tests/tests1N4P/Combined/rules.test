@@ -63,6 +63,7 @@ success;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -86,6 +87,7 @@ failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine (nothing to do)
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -109,6 +111,7 @@ affected: 0
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // multiple combinedOp's (scan and nothing to combine)
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -129,10 +132,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // OP after combinedOp
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -153,10 +157,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // No OP after hashOp
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -178,10 +183,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // haspOP and no hashcast
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -203,10 +209,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // multiple projectOp's
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -228,10 +235,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // project after aggregate
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -253,10 +261,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // scan to be a first OP
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -277,11 +286,12 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple scanOp's
 /*
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -302,11 +312,12 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 */
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexScan to be a first OP
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -327,10 +338,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexJoin / keyExists allowed in a stage
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -356,10 +368,11 @@ begin
     | first
 
  end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple indexScanOp's
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -380,11 +393,12 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple indexJoinOp's
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -406,10 +420,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple projectOp's
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -431,10 +446,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple limitOp's
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -457,10 +473,11 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple keyExistsOp's
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -488,11 +505,12 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple sortOp's
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -515,11 +533,12 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple topOp's
 
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -542,11 +561,12 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // sort and topOp
 
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -569,9 +589,10 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE'
+failure contains: 'EC_INVALID_PIPELINE' 
 
 // gbyAgg and sort
+/optimise_passthru 
 pipeline Q
 begin
 
@@ -596,6 +617,7 @@ end ;
 failure contains: 'EC_ORDERBY_WITH_AGGREGATES'
 
 // gbyAgg and top
+/optimise_passthru 
 pipeline Q
 begin
 

@@ -13,29 +13,46 @@ CREATE INDEX IxN_NATIONKEY ON nation (N_NATIONKEY);
 CREATE INDEX IxR_REGIONKEY on REGION (R_REGIONKEY);
 CREATE INDEX IxR_NAME      on REGION (R_NAME);
 
-/ccode pipeline _unnamed_
-       begin
-
-         stage S00 on origin :
-             start
-           | pulse     once
-           | next
-
-         stage S01 on all partitions :
-             scan      Nation
-           | project_v2 "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
-           | dynamic_v2  0
-           | next
-
-         stage S02 on all partitions :
-             indexJoin_v2 Region IxR_REGIONKEY " BOUND $I1 $3 == "
-           | dynamic_v2  0
-           | next
+/weaver2
+/glean_interactive
+/transliterated
+/weaved
+select n_nationkey, n_regionkey from nation, region where r_regionKey = n_regionkey;
 
 
-         stage S04 on origin :
-             output
-           | sink
-           | first
 
-       end ;
+
+
+
+
+
+
+/*
+pipeline _unnamed_
+begin
+
+ stage S00 on origin :
+     start
+   | pulse     once
+   | next
+
+ stage S01 on all partitions :
+     indexScan Nation IxN_NATIONKEY "LBOUND $I1 2 >= UBOUND $I1 6 < "
+   | project "type INTEGER as N_NATIONKEY N_NATIONKEY , type VARCHAR as N_NAME N_NAME , type INTEGER as N_REGIONKEY N_REGIONKEY"
+   | dynamic_v2  0
+   | next
+
+ stage S02 on all partitions :
+     indexJoin Region IxR_REGIONKEY " BOUND $I1 $3 == "
+   | dynamic_v2  0
+   | next
+
+
+ stage S04 on origin :
+     output
+   | sink
+   | first
+
+end ;
+
+*/

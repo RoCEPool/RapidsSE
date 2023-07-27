@@ -75,7 +75,7 @@ select
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -198,6 +198,7 @@ begin
 end ;
 
 */
+/optimise_passthru 
 pipeline Query21
 begin
   stage S00 on origin :

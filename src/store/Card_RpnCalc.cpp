@@ -90,6 +90,18 @@ void Card_RpnCalc::vBump_stmOdn(i8 nBumpBy, bool bSkipFoldExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+eCT Card_RpnCalc::eColumnType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (Stz *szType = pSymbol()->szType()) {
+    eCT eColType = Symbol::eTo_eCT_char(szType);
+    return eColType;
+  }
+
+  return CT_NONE;
+}
+
 Card_RpnCalc* Card_RpnCalc::pClone(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -236,11 +248,40 @@ void Card_RpnCalc::vFactorAll_valOdn_IntoDistinct_expr(CardIter *pCI)
     Card_Term* p_term_valOdn = x_term.p_term();
 
     Card_Expr* p_expr_valOdn = new Card_Expr(p_term_valOdn->pSymbol());
+    p_expr_valOdn->pSymbol()->Y_vSet(P_Type,p_term_valOdn->pSymbol()->Y_szGet(P_Type));
 
     p_subSet->vAppend(p_expr_valOdn);
   }
 
   pCI->G.p_subSet = p_subSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return first key col in this rpn sequence                                  */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_RpnCalc::pFirstKeyCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->bIsKeyOdn())
+      return xKid.p_term()->pSymbol();
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return first stmCol in this rpn sequence                                   */
+/*----------------------------------------------------------------------------*/
+Symbol* Card_RpnCalc::pFirstStmCol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  for (Kid xKid(this); xKid.bEach(CK_TERM); /**/)
+    if (xKid.p_term()->bIsStmOdn())
+      return xKid.p_term()->pSymbol();
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,6 +313,40 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this rpnCalc an aggregate function sequence ?                           */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsAggFn(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() < 0)
+    return false;
+
+  Card_Term* p_term_0 = pGetTerm(0);
+  if (! p_term_0->pSymbol()->bSameAs(')'))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_RpnCalc::bIsSoleCol(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  if (nChildCards() > 1)
+    return false;
+
+  Card_Term* p_term_0 = pGetTerm(0);
+  if (! p_term_0->bIsValOdn())
+    return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,6 +406,25 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_RpnCalc* p_rpnCalc_propagated = new Card_RpnCalc;
+
+  p_rpnCalc_propagated->vSetType(szP_Type());
+
+  Card_Term* p_term_propagated = new Card_Term(p_expr_encasing->szSymbol());
+  p_term_propagated->vSetType(szP_Type());
+
+  p_rpnCalc_propagated->vAppend(p_term_propagated);
+
+  return p_rpnCalc_propagated;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
@@ -347,10 +441,6 @@ bool Card_RpnCalc::bSameAs(Card_RpnCalc* p_rpnCalc_arg)
     Stz* szArg = p_term_arg->szSymbol();
 
     if (szThis->bSame(szArg))
-      continue;
-
-    Stz* szArg_tblCol = p_term_arg->pSymbol()->Y_szGet(P_TblCol);
-    if (szArg_tblCol && szThis->bSame(szArg_tblCol))
       continue;
 
     return false;
@@ -611,6 +701,22 @@ Stz* Card_RpnCalc::szP_Type(void)
     return szP_Type;
 
   return szCT_char[CT_NONE];
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_RpnCalc::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vValidate_mustHave(CK_TERM, CK_NONE);
+
+  Kid xRpnCalc(this);
+  while (xRpnCalc.bEach(CK_TERM)) {
+    Card_Term *p_term = xRpnCalc.p_term();
+    p_term->vValidate(pCI, iDepth + 1, this);
+  }
 }
 
 /*============================================================================*/

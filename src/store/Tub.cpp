@@ -16,6 +16,31 @@ __vDeleteFunction(Tub,CN_TUB)
 __aFooterFunction(Tub)
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
+  return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea, piErrorCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) {
+  Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_TubRowPix(void* pTub, void* pRowPix) {
+  Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
 void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
@@ -27,6 +52,13 @@ void* aTub_AllotRow(void* pTub, char** aazStrArea, i8* piErrorCode) {
 /*----------------------------------------------------------------------------*/
 void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
   Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void vTub_RowPix(void* pTub, void* pRowPix) {
+  Tub::vSetRowPix((Tub*)pTub, (RowPix*)pRowPix);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,6 +87,8 @@ Tub::Tub(void)
 Tub::~Tub(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+
+  delete m_pRowPix;
 
   // assert we don't have any dangling buffers
   RASSERT(! m_pBufferChain);
@@ -124,6 +158,19 @@ void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
   RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
   pRowBuffer->vTakeHead(nRowStrSize);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void Tub::vSetRowPix(Tub* pTub, RowPix* pRowPix)
+{
+  _static_
+
+  RASSERT(CN_TUB == pTub->eGetClassNo());
+
+  pTub->vRowPix(pRowPix);
 
 }
 
@@ -255,7 +302,7 @@ RowPix* Tub::pRowPix(void)
 void Tub::vRowPix(RowPix* pRowPix)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
-    
+
   m_pRowPix = pRowPix;
 }
 

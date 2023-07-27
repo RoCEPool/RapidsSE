@@ -71,7 +71,7 @@
 
   // spawn a job for the smt
   [Op] [job].responseOp!
-  STD_NORMALFORK_TAG sSmt api::forkChild not if
+  STD_NORMALFORK_TAG sSmt nullptr api::forkChild not if
     //"Error Code %v" .printf
     nullptr [job].responseOp!
     op__execErr

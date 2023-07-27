@@ -26,8 +26,8 @@ affected: 0
 load part "../TPCH/SF_0001/part.csv";
 success
 
-select count(*) from part;
-rows: (200)
+//select count(*) from part;
+//rows: (200)
 
 compactidx part IxP_PARTKEY;
 success

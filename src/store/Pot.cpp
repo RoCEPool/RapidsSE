@@ -20,6 +20,30 @@ __vDeleteFunction(Pot,CN_POT)
 __aFooterFunction(Pot)
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void* aExtern_PotAllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {
+  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea, piErrorCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_PotRowStrSize(void* pPot, i8 iMixIn, i8 nRowStrSize) {
+  Pot::vRowStrSize((Pot*)pPot, iMixIn, nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_PotRowPix(void* pPot, void* pRowPix) {
+  Pot::vSetRowPix((Pot*)pPot, (RowPix*)pRowPix);
+}
+/*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
 void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea, i8* piErrorCode) {
@@ -57,6 +81,8 @@ Pot::Pot(void)
 Pot::~Pot(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+
+  delete m_pRowPix;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +166,18 @@ void Pot::vRepair(Object* pObject)
   delete pPot;
 }
 
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void Pot::vSetRowPix(Pot* pPot, RowPix* pRowPix)
+{
+  _static_
+
+  RASSERT(CN_POT == pPot->eGetClassNo());
+
+  pPot->vRowPix(pRowPix);
+
+}
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

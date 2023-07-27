@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Card_ELIST.hpp"
+#include "IndexDef.hpp"
 
 namespace STORE
 {
@@ -25,6 +26,13 @@ namespace STORE
     void vFactorAll_col_IntoDistinct_expr(CardIter* pCI);
 
     Stz* szP_Type(void);
+
+    IndexDef* pToIndexDef(void);
+
+    void vX(void);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
+
   };
 
   Card_Key* _pCard_Key(void* aAddr);

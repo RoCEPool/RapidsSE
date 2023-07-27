@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "eYX.h"
+#include "ExtendedText.hpp"
 
 #include "Grid.hpp"
 #include "Api.hpp"

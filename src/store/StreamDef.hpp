@@ -26,9 +26,12 @@ namespace STORE
    ~StreamDef(void) noexcept(false);
 
     static void vPostRecv(void* aStreamDefRht);
+    static StreamDef* pStreamDefNew(i8 nNumCols, ColumnInfo* pColumnInfo);
     static void vRepair(Object* pObject);
 
     StreamDef* pDup(void);
+
+    void vValidate(void);
 
     Footer* aFooter(void);
   };

@@ -19,7 +19,7 @@ select l_shipmode,
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 /*
 
@@ -85,6 +85,7 @@ success
 // moved sort to stageNew (cannot be with an aggregate)
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -165,6 +166,7 @@ rows:
 // pushed lineitem predicate close to join with lineitem in stageMarker31063
 //------------------------------------------------------------------------------
 
+/optimise_passthru 
 pipeline unamed
 begin
   stage stageStart on origin :
@@ -243,7 +245,8 @@ rows:
  // reduced data flow by added projections on required columns
  //------------------------------------------------------------------------------
 
- pipeline unamed
+ /optimise_passthru 
+pipeline unamed
  begin
    stage stageStart on origin :
      start
@@ -307,6 +310,7 @@ rows:
   ('MAIL',4,6)
   ('SHIP',5,10)
 
+/optimise_passthru 
 pipeline unamed
  begin
    stage S00 on origin :
@@ -367,6 +371,7 @@ rows:
   ('MAIL',4,6)
   ('SHIP',5,10)
 
+/optimise_passthru 
 pipeline unamed
  begin
    stage S00 on origin :

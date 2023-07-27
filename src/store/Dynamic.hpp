@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "ClangDynamic.h"
 #include "CrwBuffer.hpp"
 #include "RowBuffer.hpp"
 

@@ -17,6 +17,8 @@ namespace STORE
     DeckSpec*    m_pDeckSpec;
     StageSpec*   m_pStageSpec;
     OpSpec*      m_pOpSpec;
+    Stz*         m_szOpNm;
+    TagSet*      m_pOpArgs;
 
     bool m_bSawAggOp;
     bool m_bSawProjectOp;
@@ -39,50 +41,52 @@ namespace STORE
     void vStage(i8 i_StageSpec);
     void vOp(i8 i_OpSpec);
 
-    Card* pOp_AbsJoin  (TagSet* pArgTags);
-    Card* pOp_Aggreg   (TagSet* pArgTags);
-    Card* pOp_Call     (TagSet* pArgTags);
-    Card* pOp_Combined (TagSet* pArgTags);
-    Card* pOp_Consume  (TagSet* pArgTags);
-    Card* pOp_Debug    (TagSet* pArgTags);
-    Card* pOp_Filter   (TagSet* pArgTags);
-    Card* pOp_GbyAgg   (TagSet* pArgTags);
-    Card* pOp_Hash     (TagSet* pArgTags);
-    Card* pOp_IndexJoin(TagSet* pArgTags);
-    Card* pOp_IndexScan(TagSet* pArgTags);
-    Card* pOp_Limit    (TagSet* pArgTags);
-    Card* pOp_OrdAgg   (TagSet* pArgTags);
-    Card* pOp_Output   (TagSet* pArgTags);
-    Card* pOp_Pulse    (TagSet* pArgTags);
-    Card* pOp_Project  (TagSet* pArgTags);
-    Card* pOp_Scan     (TagSet* pArgTags);
-    Card* pOp_Send     (TagSet* pArgTags);
-    Card* pOp_Sink     (TagSet* pArgTags);
-    Card* pOp_Sort     (TagSet* pArgTags);
-    Card* pOp_Start    (TagSet* pArgTags);
+    Card* pOp_AbsJoin     (void);
+    Card* pOp_Aggreg      (void);
+    Card* pOp_Call        (void);
+    Card* pOp_Combined    (void);
+    Card* pOp_Consume     (void);
+    Card* pOp_Debug       (void);
+    Card* pOp_Filter      (void);
+    Card* pOp_GbyAgg      (void);
+    Card* pOp_Hash        (void);
+    Card* pOp_IndexJoin   (void);
+    Card* pOp_IndexScan   (void);
+    Card* pOp_KeyExists   (void);
+    Card* pOp_KeyNotExists(void);
+    Card* pOp_Limit       (void);
+    Card* pOp_OrdAgg      (void);
+    Card* pOp_Output      (void);
+    Card* pOp_Pulse       (void);
+    Card* pOp_Project     (void);
+    Card* pOp_Scan        (void);
+    Card* pOp_Send        (void);
+    Card* pOp_Sink        (void);
+    Card* pOp_Sort        (void);
+    Card* pOp_Start       (void);
+    Card* pOp_Top         (void);
 
-    Card_Key*        pKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
-    Card_Projection* pProjection (Card_RpnTerms* pCard_RpnTerms);
+    Card_IndexList*  pFormIndex(Stz* szIndexNm, Table* pTable);
+    Card_Table*      pFormTable(Stz* szTableNm, Table* pTable);
 
-    Card_Expr*      pExpr        (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);
-    Card_RpnCalc*   pCalc        (Card_RpnTerms* pCard_RpnTerms);
+    Card_As*         pPopAs         (Card_RpnTerms* pCard_RpnTerms);
+    Card_Bounds*     pPopBounds     (Card_RpnTerms* pCard_RpnTerms);
+    Card_Bound*      pPopBound      (Card_RpnTerms* pCard_RpnTerms);
+    Card_Constraint* pPopConstraint (Card_RpnTerms* pCard_RpnTerms);
+    Card_Direction*  pPopDirection  (Card_RpnTerms* pCard_RpnTerms);
+    Card_Expr*       pPopExpr       (Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr);
+    Card_Key*        pPopKey        (Card_RpnTerms* pCard_RpnTerms, bool bAsc);
+    Card_Projection* pPopProjection (Card_RpnTerms* pCard_RpnTerms);
+    Card_RpnCalc*    pPopRpnCalc    (Card_RpnTerms* pCard_RpnTerms);
+    Stz*             szPopType_char (Card_RpnTerms* pCard_RpnTerms);
 
-    Card_As*        pAs          (Card_RpnTerms* pCard_RpnTerms);
-    void            vAsEnsure    (Card_Expr* p_expr);
-    Card_Direction* pDirection   (Card_RpnTerms* pCard_RpnTerms);
-    Stz*            szType        (Card_RpnTerms* pCard_RpnTerms);
+    void             vCheckArgs     (i8 nArgs);
 
-    Card_RpnTerms* pToRpnTerms   (Stz* szRpnExpr);
-  
-    i8             iArgCheckLast (TagSet* pArgTags, i8 i_Last);
-    Card_RpnTerms* pArgCheckLast (TagSet* pArgTags, i8 i_Last);
-    Card_RpnTerms* pArgCheckLast (TagSet* pArgTags, i8 i_Last,
-                                  Stz*& szTableNm, Stz*& szIndexNm);
-    Stz*           szArgCheckLast(TagSet* pArgTags, i8 i_Last);
-    void           vArgCheck     (TagSet* pArgTags, i8 nArgs);
+    i8               iGetInt        (i8 i_Arg);
+    Card_RpnTerms*   pGetRpnTerms   (i8 i_Arg);
+    Stz*             szGetStz       (i8 i_Arg);
 
-    Stz*           szArgsStz     (TagSet* pArgTags, i8 i_Arg);
-    Card_RpnTerms* pArgsRpnTerms (TagSet* pArgTags, i8 i_Arg);
+    Card_RpnTerms*   pToRpnTerms    (Stz* szRpnExpr);
 
   private:
     Footer* aFooter(void);

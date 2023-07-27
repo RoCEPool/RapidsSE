@@ -15,6 +15,60 @@
 __aFooterFunction(EntWrk)
 
 /*----------------------------------------------------------------------------*/
+/*-- Externs -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* append str key element                                                     */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkAppendElementStz(void* pEntWrk, char* sValue)
+{
+  EntWrk::vAppendElementEntStz((EntWrk*) pEntWrk, (Stz*)sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append int key element                                                     */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkAppendElementInt(void* pEntWrk, i8 iInt)
+{
+  EntWrk::vAppendElementEntInt((EntWrk*) pEntWrk, iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the entry kind in EntWrk                                               */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkEntKind(void* pEntWrk, i8 bPayLoad, i8 iKeyKind)
+{
+  EntWrk::vEntKind((EntWrk*)pEntWrk, bPayLoad, (eKE) iKeyKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload bytes in entwrk                                                */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkPayloadCreate(void* pEntWrk, i8 nPayloadBytes)
+{
+  EntWrk::vPayloadCreate((EntWrk*) pEntWrk, nPayloadBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print an EntWrk                                                            */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkPrint(void* pEntWrk, void* pIndexDef)
+{
+  EntWrk::vPrint((EntWrk*)pEntWrk, (IndexDef*)pIndexDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the EntWrk                                                           */
+/*----------------------------------------------------------------------------*/
+extern "C" void vExtern_EntWrkReset(void* pEntWrk)
+{
+  EntWrk::vEntReset((EntWrk*)pEntWrk);
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* append str key element                                                     */
 /*----------------------------------------------------------------------------*/
 void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue)

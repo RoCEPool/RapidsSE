@@ -484,6 +484,17 @@ bool Output::bProcessOperand(Operand* pOperand)
         goto L_EXIT;
         break;
       }
+      else if (pMarker->eOpMarker() == OM_INTERNALERROR) {
+        if (!m_bHasError) {
+          vTrace("RowsProcessed: %lld\n"_Stz, *m_ixRowsProcessed);
+          vTrace("\nerror: internal error\n"_Stz);
+          m_bHasError = true;
+
+          m_ixRowsProcessed = 0;
+          m_ixRowsInvalid   = 0;
+          m_ixRowsSkipped   = 0;
+        }
+      }
       else {
         RASSERT(0);
       }

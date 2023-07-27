@@ -2,12 +2,10 @@
 /* _r_Q7 -- TCPH query 7 test                                                 */
 /*============================================================================*/
 
-// /glean_interactive
-// /ep_enable
-// /jo_disable
+__TPCH_SCHEMA_LOAD_SF0001
+
+/glean_interactive
 /filterPred
-/jobMetrics
-/joWrite
 /transliterated
 /weaved
 /pipelineName = "_r_Q7"

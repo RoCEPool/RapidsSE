@@ -37,7 +37,7 @@ rows:
 */
 
 //------------------------------------------------------------------------------
-// Pipeline Generated
+// pipeline Generated
 //------------------------------------------------------------------------------
 
 /*
@@ -65,7 +65,7 @@ order by
 
 pipeline unamed
 begin
-  pipeline c_orders
+pipeline c_orders
   begin
     stage stageStart on origin :
       start
@@ -121,6 +121,7 @@ end ;
 //
 // inner query followed by outer query
 //
+/optimise_passthru 
 pipeline Query13
 begin
   stage S00 on origin :
@@ -185,6 +186,7 @@ rows:
   (10,135)
   (20,1)
 
+/optimise_passthru 
 pipeline Query13
 begin
   stage S00 on origin :
@@ -236,6 +238,7 @@ rows:
   (10,135)
   (20,1)
 
+/optimise_passthru 
 pipeline Query13
 begin
   stage S00 on origin :
@@ -290,6 +293,7 @@ begin
    (10,135)
    (20,1)
 
+/optimise_passthru 
 pipeline Query13
 begin
   stage S00 on origin :

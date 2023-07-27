@@ -19,6 +19,7 @@ success
 load nation "../TPCH/SF1/nation.tbl" ;
 success
 
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -59,6 +60,7 @@ rows:
   (23)
   (24)
 
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -79,6 +81,7 @@ rows: 3
  (24,'UNITED STATES')
 */
 
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :
@@ -94,6 +97,7 @@ end ;
 rows: 0
 
 
+/optimise_passthru 
 pipeline is
 begin
   stage stageA on origin :

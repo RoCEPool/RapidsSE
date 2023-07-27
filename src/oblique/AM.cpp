@@ -82,6 +82,7 @@
 #include "PredicateVec.hpp"
 #include "AccessPath.hpp"
 
+#include "ExtendedText.hpp"
 #include "Api.hpp"
 #include "AttachMap.hpp"
 #include "Constants.hpp"
@@ -1033,12 +1034,15 @@ void AM::JOB::vRecvdReject(RejectJob *pRejectJob)
   // get the error
   eEC eError = pRejectJob->eError();
 
+  AM::vJob_DumpOriginating();
+
   Job *pJobFound = AM::pJob_FindOriginating(tOriginId, true);
 
   //may not be able to find the job if node loss
-  vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
-  if ( ! pJobFound )
+  if ( ! pJobFound ) {
+    vTrace("vAckOriginatingJob: No originating job (node loss?)\n"_Stz);
     return;
+  }
 
   // set the error
   pJobFound->vJobError(eError);
@@ -1814,6 +1818,9 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
       return true;
 
     if (pMarker->eOpMarker() == OM_HARDABORT)
+      return true;
+
+    if (pMarker->eOpMarker() == OM_INTERNALERROR)
       return true;
 
     if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
@@ -3240,7 +3247,7 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
   pTknVec->vSoftReset();
   pTknVec->vIntegrityCheck();
 
-  s48K sToken;
+  s1M sToken;
   
   char* azCrs = szString->azChar();
 
@@ -3261,6 +3268,7 @@ void AM::TOKENISE::vTokeniseSen(TokenVec* pTknVec, Stz* szString)
 
       sToken.vReset();
       eToken = Token::eCollectCodeBlock(&azCrs,sToken);
+      //vTrace("%s\n"_Stz,sToken.azChar());
       pTknVec->vAppendToken(sToken,eToken);
       sToken.vReset();
       eToken = Token::eCollectSenName(&azCrs,sToken);
@@ -4372,6 +4380,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OM_FINISHED:           eOperand = EV_M_FINISHED;     break;
         case OM_FLUSH:              eOperand = EV_M_FLUSH;        break;
         case OM_HARDABORT:          eOperand = EV_M_HARDABORT;    break;
+        case OM_INTERNALERROR:      eOperand = EV_M_INTERNALERROR; break;
         case OM_INVOKEMARKER:       eOperand = EV_M_INVOKE;       break;
         case OM_LEAVEMARKER:        eOperand = EV_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = EV_M_LEAVING;      break;

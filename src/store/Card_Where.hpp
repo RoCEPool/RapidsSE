@@ -10,7 +10,7 @@ namespace STORE
 {
   class CarryForward;
 
-  class Card_Where : public Card_OP
+  class Card_Where : public Card_COND
   {
   public:
     void* operator new(size_t);
@@ -29,8 +29,12 @@ namespace STORE
 
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vEarlyProject_add_transients(CardIter* pCI);
-    void vEarlyProject_recurse_passthru(CardIter* pCI);
+    void vEarlyProject_recurse_update(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
+
+    void vUpdate_projection(CardIter* pCI);
+
+    void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };
 
   Card_Where* _pCard_Where(void* aAddr);

@@ -17,7 +17,10 @@ namespace BASE
     i8 m_nBufferSize;
     
   public:
-    
+
+    void* operator new(size_t) = delete;
+    void  operator delete(void*) = delete;
+
     TextAbstract(eCN eClass, i8 nBufferSize);
    ~TextAbstract(void) noexcept(false);
     

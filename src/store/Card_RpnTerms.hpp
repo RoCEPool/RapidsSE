@@ -17,6 +17,8 @@ namespace STORE
    ~Card_RpnTerms(void) noexcept(false);
 
     bool bIsInList(void);
+
+    Card_Term* pPop_term(void);
   };
 
   Card_RpnTerms* _pCard_RpnTerms(void* aAddr);

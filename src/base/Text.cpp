@@ -67,21 +67,8 @@ Text::Text(Stz* szArg)
 Text::~Text(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
-  
-  if (m_pTextBuffer) {
-    
-    eCN eClass = m_pTextBuffer->eGetClassNo();
-    switch (eClass) {
-      case CN_TEXTTINY  :  delete _pTextTiny(m_pTextBuffer);    break;
-      case CN_TEXTSMALL :  delete _pTextSmall(m_pTextBuffer);   break;
-      case CN_TEXTMEDIUM:  delete _pTextMedium(m_pTextBuffer);  break;
-      case CN_TEXTLARGE :  delete _pTextLarge(m_pTextBuffer);   break;
 
-      default:
-        NEVER_REACH;
-    }
-  }
-  
+  vDeleteBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,34 +164,23 @@ void Text::vSet(Stz* szArg)
   // is there a buffer ?
   if ( m_pTextBuffer ) {
     
-    // does the string fit the currest buffer
-    if ( nStringSize > m_pTextBuffer->nBufferSize()) {
-    
-      // delete the text buffer
-      delete m_pTextBuffer;
-      m_pTextBuffer = nullptr;
-    }
+    // does the string fit the current buffer
+    if ( nStringSize > m_pTextBuffer->nBufferSize())
+      // - no
+      vDeleteBuffer();
   }
   
   if ( ! m_pTextBuffer ) {
-    
-    // now allocate a new buffer
-    if (nStringSize < C_TEXT_TINY)
-      m_pTextBuffer = new TextTiny();
-    
-    else if (nStringSize < C_TEXT_SMALL)
-      m_pTextBuffer = new TextSmall();
-
-    else if (nStringSize < C_TEXT_MEDIUM)
-      m_pTextBuffer = new TextMedium();
-
-    else if (nStringSize < C_TEXT_LARGE)
-      m_pTextBuffer = new TextLarge();
-    
+    // allocate a new buffer
+         if (nStringSize < C_TEXT_TINY)   m_pTextBuffer = new TextTiny();
+    else if (nStringSize < C_TEXT_SMALL)  m_pTextBuffer = new TextSmall();
+    else if (nStringSize < C_TEXT_MEDIUM) m_pTextBuffer = new TextMedium();
+    else if (nStringSize < C_TEXT_LARGE)  m_pTextBuffer = new TextLarge();
     else
       RASSERT(0);
   }
-  
+
+  // copy
   m_nSizeText = nStringSize;
   MemLib::vCopy(szGet(),szArg,nStringSize,CN_TEXT);
 }
@@ -218,11 +194,21 @@ void Text::vSet(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 void Text::vDeleteBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
-  
-  ASSERT(m_pTextBuffer);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TEXT);
 
-  delete m_pTextBuffer;
+  if (m_pTextBuffer) {
+
+    eCN eClass = m_pTextBuffer->eGetClassNo();
+    switch (eClass) {
+      case CN_TEXTTINY  :  delete _pTextTiny(m_pTextBuffer);   break;
+      case CN_TEXTSMALL :  delete _pTextSmall(m_pTextBuffer);  break;
+      case CN_TEXTMEDIUM:  delete _pTextMedium(m_pTextBuffer); break;
+      case CN_TEXTLARGE :  delete _pTextLarge(m_pTextBuffer);  break;
+      default:
+        NEVER_REACH;
+    }
+  }
+
   m_pTextBuffer = nullptr;
 }
 
@@ -233,7 +219,7 @@ void Text::vNewBuffer(i8 nStringSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TEXT);
   
-  ASSERT(! m_pTextBuffer);
+  RASSERT(! m_pTextBuffer);
   
   // now allocate a new buffer
   if (nStringSize < C_TEXT_TINY)

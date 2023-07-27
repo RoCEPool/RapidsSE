@@ -63,7 +63,6 @@ assert::stack_0
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_docol.sen"                include
-  "OP_dynamic_v2.sen"           include
   "OP_dropCatalog.sen"          include
   "OP_dropIndex.sen"            include
   "OP_dropSchema.sen"           include
@@ -176,7 +175,6 @@ assert::stack_0
 
 "o" .verbose
 
-  "OP_optimise.sen"             include
   "OP_ordAgg.sen"               include
   "OP_output.sen"               include
 
@@ -220,9 +218,12 @@ assert::stack_0
 "s" .verbose
 
   "OP_scan.sen"                 include
+  "OP_segViolation.sen"         include
   "OP_sendSE.sen"               include
   "OP_setOpValidate.sen"        include
   "OP_showCluster.sen"          include
+  "OP_sigfpe.sen"               include
+  "OP_sigill.sen"               include
   "OP_sigsegv.sen"              include
   "OP_sink.sen"                 include
   "OP_sizeIndex.sen"            include

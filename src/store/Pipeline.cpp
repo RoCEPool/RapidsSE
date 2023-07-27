@@ -56,6 +56,7 @@ Pipeline::Pipeline(Job*        pPipelineJob,
   m_pOpToPulse    = nullptr;
   
   m_bCancelled    = false;
+  m_bInternalError = false;
   m_bLowMemory    = false;
   m_bNodeLossAbort = false;
     
@@ -254,6 +255,29 @@ void Pipeline::vGrabDebugLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pipeline has run into internal error                                       */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vInternalError(bool bInternalError)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  m_bInternalError = bInternalError;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is pipeline running to internal error                                      */
+/*----------------------------------------------------------------------------*/
+bool Pipeline::bInternalError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+
+  if (m_bInternalError)
+    vDebugPoint();
+
+  return m_bInternalError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pipeline has run into low memory                                           */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vLowMemory(bool bLowMemory)
@@ -445,6 +469,10 @@ void Pipeline::vSpawnOpTasks(void)
   catch (LowMemory xLowMemory) {
     m_pVertexRoot->vUnspawnOpTasks();
     throw xLowMemory;
+  }
+  catch (InternalError xInternalError) {
+    m_pVertexRoot->vUnspawnOpTasks();
+    throw xInternalError;
   }
 }
 
