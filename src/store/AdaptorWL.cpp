@@ -457,6 +457,7 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 
   Stz* szNodeName  = pInfoRow->szColVal_ofs(0);
   eEC eErrorCode   = (eEC) pInfoRow->iColVal_int(1);
+  Stz* szErrorCode = aEC2[eErrorCode];
   Stz* szErrorText = pInfoRow->szColVal_ofs(2);
 
   vTrace("AdaptorWL: Error infoset received: %s\n"_Stz, aErrorMsg[eErrorCode]);
@@ -474,10 +475,11 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
     return;
   }
 
-  Stz* szMsgFmt = "Error: %s; %s"_Stz;
+  Stz* szMsgFmt = "Error: %s; %s; %s"_Stz;
   vSerialiseErrorResponse(eErrorCode,
                           szMsgFmt,
                           szNodeName,
+                          szErrorCode,
                           szErrorText);
 
   m_pStmtCtx->vGotError(true);
