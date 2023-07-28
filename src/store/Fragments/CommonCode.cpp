@@ -29,7 +29,7 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   char* szStrArea;
 
-  __L_LABEL_LOOP__:
+  __L_LABEL_OUTER_LOOP__:
 
   // marker-start
   struct __STRUCT_TO__* p__STRUCT_TO__;
@@ -51,7 +51,7 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
   // Process row ?
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_LOOP__;
+    goto __L_LABEL_OUTER_LOOP__;
   }
 
   // marker-end
