@@ -12,16 +12,10 @@
 #include "../src/base/ClangStuff.h"
 #include "../src/base/ClangDynamic.h"
 
-void vNeverReachCode(i8 iLine) {
-
-  //exit(0);
-}
-
 #define NEVER_REACH  { \
-  printf("NEVER_REACH CODE point in synthesised code was reached at line %lld !!!\n", __LINE__); \
-  aDynamicT->m_iErrorCode = (i8)EC_INTERNAL_ERROR;                                               \
-  printf("%x %x\n", paW, &aDynamicT->m_aW[0]);                                                  \
-  return 0; \
+  printf("NEVER_REACH CODE point in synthesised code was reached at line %d !!!\n", __LINE__); \
+  aDynamicT->m_iErrorCode = (i8)EC_INTERNAL_ERROR;                                             \
+  return 0;                                                                                    \
 }
 
 typedef char i1;

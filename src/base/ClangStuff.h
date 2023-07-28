@@ -49,7 +49,6 @@ extern void* aExtern_TubAllotRow(void* pTub, char** aazStrArea, i8* piErrorCode)
 extern void  vExtern_TubRowStrSize(void* pTub, i8 nRowStrSize) __attribute__((weak_import));
 extern void  vExtern_TubRowPix(void* pTub, void* pRowPix) __attribute__((weak_import));
 
-extern void  vNeverReachCode(i8 iLine) __attribute__((weak_import));
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
