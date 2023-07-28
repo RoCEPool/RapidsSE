@@ -91,9 +91,7 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
-#ifdef WITH_PAGING
     m_oRootBufferId = pRowBuffer->oGetBufferId();
-#endif
     m_pRootBuffer = pRowBuffer;
   }
   else {
@@ -102,20 +100,23 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
     pRowBuffer->vPrevLinkedBufferId(m_pCurrentBuffer->oGetBufferId());
     m_pCurrentBuffer->vNextLinkedBufferId(pRowBuffer->oGetBufferId());
 #else
+//    pRowBuffer->vNextLinkedBufferId(m_pCurrentBuffer->oNextLinkedBufferId());
+//    pRowBuffer->vPrevLinkedBufferId(m_pCurrentBuffer->oGetBufferId());
+//    m_pCurrentBuffer->vNextLinkedBufferId(pRowBuffer->oGetBufferId());
+
     pRowBuffer->vNextLinkedBuffer(m_pCurrentBuffer->pNextLinkedBuffer());
     pRowBuffer->vPrevLinkedBuffer(m_pCurrentBuffer);
     m_pCurrentBuffer->vNextLinkedBuffer(pRowBuffer);
 #endif
   }
 
-#ifdef WITH_PAGING
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we are done with the current buffer, allow it to be paged out by dropping
   // the lock
 
   if(m_pCurrentBuffer)
     AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
-#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the current buffer
   m_pCurrentBuffer = pRowBuffer;
@@ -142,6 +143,7 @@ i8 RowTablePtn::nBuffers(void)
 void RowTablePtn::vCleanup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
+
 #ifdef WITH_PAGING
   m_pCurrentBuffer = nullptr;
 #endif
@@ -153,10 +155,9 @@ void RowTablePtn::vCleanup(void)
 void RowTablePtn::vDropAllPagingLocks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWTABLEPTN,_FOOTER_);
-#ifdef WITH_PAGING
+
   if(m_pCurrentBuffer)
     AM::pHashMap()->vDropKeyLock(m_pCurrentBuffer->oGetBufferId().m_pvAsAddress);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,9 +1,13 @@
 /*============================================================================*/
 /* it_pageInRequest.sen -- Define __pageInRequest table                       */
 /*============================================================================*/
+
 " it_pageInRequest.sen" .verbose
+
 : start::it_pageInRequest
+
   // C_TDEF_PAGEINREQUEST
+
   STD_BOOTFORK_TAG
   "
   define table __pageInRequest (
@@ -13,6 +17,7 @@
   "
   nullptr api::forkChild  api:executeCheck
 ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

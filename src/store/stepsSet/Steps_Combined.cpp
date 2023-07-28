@@ -83,11 +83,9 @@ void Step::vCombinedExecute(void)
   //aCombinedT->m_iProcessRow = 1;
 
   if (pDataBuffer) {
-
     if (pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
       // CRWBUFFER
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
-
       aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
       aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aCombinedT->m_nRows      = pCrwBuffer->nRows();

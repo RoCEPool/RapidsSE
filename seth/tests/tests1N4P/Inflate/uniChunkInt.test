@@ -16,11 +16,11 @@ load uniChunkInt "../FASTLOAD/Data/chunkInt.csv" ;
 success
 
 // check no of rows
-tableScan uniChunkInt;
+select * from uniChunkInt;
 rows: 87980
 
 // check data
-//tableScan uniChunkInt;
+//select * from uniChunkInt;
 //result file: 'tests/Inflate/uniChunkInt.result'
 
 // drop the table)

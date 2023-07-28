@@ -16,11 +16,11 @@ load uniFlt "../FASTLOAD/Data/uniFlt.csv" ;
 success
 
 // check no of rows
-tableScan uniFlt;
+select * from uniFlt;
 rows: 48
 
 // check data
-tableScan uniFlt;
+select * from uniFlt;
 rows:
   (0.0)
   (0.1)

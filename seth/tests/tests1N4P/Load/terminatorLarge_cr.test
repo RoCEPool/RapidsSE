@@ -27,7 +27,7 @@ rows:
   (1, 'This is terminatoed by <CR>');
 
 // fetch
-tableScan terminator_cr;
+select * from terminator_cr;
 rows: 6895
 
 CLEANUP {

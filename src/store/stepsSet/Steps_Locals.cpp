@@ -122,6 +122,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("BufferId[]"_Stz)) {
+    pCurrentWord->vEncodeCall("BufferId[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("CodeBlock[]"_Stz)) {
     pCurrentWord->vEncodeCall("CodeBlock[].set"_Stz);
     EXIT();

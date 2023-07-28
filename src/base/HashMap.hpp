@@ -12,7 +12,7 @@ namespace BASE
   class HashMap : public Object
   {
 
-  private:
+  public:
     Lock          m_okLock;        // lock for the entire hash map
     u8            m_uNoOfEntries;
 
@@ -43,6 +43,7 @@ namespace BASE
 
     void    vAnalysis(void);
     void    vDeleteKey(void* pKey);
+    void    vDropKeyLock(void* pKey);
     bool    bExists(void* pKey);
     HashMapEntry* pGetEntryAtIndex(u8 uIndex);
 
@@ -50,6 +51,7 @@ namespace BASE
 
     void    vInsertEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
     void    vInsertKeyValue(void* pKey, Object* pValue);
+    bool    bIsLocked(void* pKey);
     void    vSetEntryAtIndex(HashMapEntry* pEntry, u8 uIndex);
 //    void    vReHash(void);
     Object* pValueAt(void* pKey);

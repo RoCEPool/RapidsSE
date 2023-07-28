@@ -16,11 +16,11 @@ load uniInt "../FASTLOAD/Data/uniInt.csv" ;
 success
 
 // check no of rows
-tableScan uniInt;
+select * from uniInt;
 rows: 166
 
 // check data
-tableScan uniInt;
+select * from uniInt;
 rows:
 (0)
 (1)

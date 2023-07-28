@@ -1754,12 +1754,25 @@ void Task::vTraceStep(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 /* schedule bide                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vScheduleBide(void)
+void Task::vScheduleBideForOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
   RASSERT(bIsLocked());
   m_eTransition = TR_BIDE_FOR_OPERAND;
+}
+
+/*----------------------------------------------------------------------------*/
+/* schedule bide                                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vScheduleBidePageIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  vTrace("Schedule Bide Page In\n"_Stz);
+
+  RASSERT(bIsLocked());
+  m_eTransition = TR_BIDE_FOR_PAGEIN;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1828,7 +1841,7 @@ void Task::vScheduleYield(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get acheduler action                                                       */
+/* get scheduler action                                                       */
 /*----------------------------------------------------------------------------*/
 eTR Task::eTransition(void)
 {

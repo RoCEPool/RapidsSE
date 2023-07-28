@@ -16,11 +16,11 @@ load uniVch "../FASTLOAD/Data/uniVch.csv" ;
 success
 
 // check no of rows
-tableScan uniVch;
+select * from uniVch;
 rows: 53
 
 // check data
-tableScan uniVch;
+select * from uniVch;
 rows:
   ('a')
   ('ab')

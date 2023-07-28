@@ -18,7 +18,7 @@ load T1 "../DATA/Load/emptyString1.csv" ;
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 2
 
 predicateFetch T1 "col_id 1 =";
@@ -51,7 +51,7 @@ load T1 "../DATA/Load/emptyString1.csv" <enclosed_by_leading> = "'";
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 2
 
 predicateFetch T1 "col_id 1 =";
@@ -86,7 +86,7 @@ Load T1 "../DATA/Load/emptyString2.csv"
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 2
 
 predicateFetch T1 "col_id 1 =";
@@ -103,13 +103,13 @@ success
 truncate T1;
 success
 
-tableScan T1;
+select * from T1;
 rows: 0
 
 load T1 "/tmp/T1.csv";
 success
 
-tableScan T1;
+select * from T1;
 rows: 2
 
 //! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed

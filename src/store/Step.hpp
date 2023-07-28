@@ -37,6 +37,7 @@ namespace STORE
   
     static void vAddSteps_Bp(void);
     static void vAddSteps_Build(void);
+    static void vAddSteps_BufferId(void);
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
@@ -231,7 +232,7 @@ namespace STORE
     static void vAddSteps_Zero(void);
   
     /*------------------------------------------------------------------------*/
-  
+
     #include "StepsSet.hpp"
   };
 }
