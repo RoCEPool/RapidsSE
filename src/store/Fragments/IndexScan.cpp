@@ -41,8 +41,6 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
 //  printf("__OPERATOR_NAME__\n");
 //#endif
 
-  if (__INDEX_INFO__.m_iInitialize) {
-
     iaPow10[0] = 1;
     iaPow10[1] = 10;
     iaPow10[2] = 100;
@@ -59,7 +57,9 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
     iaPow10[13] = 10000000000000;
     iaPow10[14] = 100000000000000;
 
-    paW = &aDynamicT->m_aW[0];
+  p__STRUCT_TO__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoIT.m_aRowCellArray;
+
+  paW = &aDynamicT->m_aW[0];
 
     strcpy(&aDynamicT->m_xIndexInfoT.m_cTableName[0], "__TABLENAME__");
     strcpy(&aDynamicT->m_xIndexInfoT.m_cIndexName[0], "__INDEXNAME__");
@@ -72,10 +72,6 @@ void vIndexScanBegin(Dynamic_T* aDynamicT) {
   #endif
 
     i_CurrentRow = -1;
-
-    // mark IndexInfo as initialized
-    __INDEX_INFO__.m_iInitialize = 0;
-  }
 
   // marker-end
 
