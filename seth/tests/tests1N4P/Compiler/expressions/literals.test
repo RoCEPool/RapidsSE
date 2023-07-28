@@ -426,16 +426,16 @@ EXPLAIN SELECT INTERVAL 'aaa'   YEAR FROM nation;
 failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '1a2'   YEAR FROM nation;
-failure contains: 'Invalid interval format: unexpected character ''a'' encountered;'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL 'a12'   YEAR FROM nation;
-failure contains: 'Invalid interval format: non-digit value ''a'' encountered;'
+failure contains: 'Invalid interval format: non-digit value ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '12a'   YEAR FROM nation;
-failure contains: 'Invalid interval format: unexpected character ''a'' encountered;'
+failure contains: 'Invalid interval format: unexpected character ''a'' encountered'
 
 EXPLAIN SELECT INTERVAL '0x1'   YEAR FROM nation;
-failure contains: 'Invalid interval format: unexpected character ''x'' encountered;'
+failure contains: 'Invalid interval format: unexpected character ''x'' encountered'
 
 
 // Single field interval literals
