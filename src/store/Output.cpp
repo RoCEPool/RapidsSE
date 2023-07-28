@@ -203,6 +203,11 @@ void Output::vPipeToThis(Operand* pOperand)
 
   RASSERT( ! BufferId::bIsBufferId(pOperand));
 
+  // The output queue can potentially fill up with buffers and eat up a lot of memory
+  // This can trigger paging so to prevent these buffers from being paged out, we need
+  // to lock them in the hashmap. Unfortunately, the Task can quickly reach the max locks
+  // it can hold. Hence, we use a flag called m_bOutputQueue saved as a member
+  // in DataBuffer to prevent paging out, when queuing to the output.
   if(pOperand->eGetClassNo() == BASE::CN_CRWBUFFER ||
       pOperand->eGetClassNo() == BASE::CN_ROWBUFFER){
     DataBuffer* pDataBuffer = _pDataBuffer(pOperand);

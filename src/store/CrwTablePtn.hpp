@@ -20,7 +20,7 @@ namespace STORE
     CrwBuffer* m_pRootBuffer;    // the data root buffer
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
 
-    Pds_t<xBufferId>* m_pPdsBufferId;
+    Pds_t<xBufferId>* m_pPdsOfBufferIds;
 
     // Note that the IndexTreeVec gets moved upto TablePtn
     //IndexTreeVec* m_pIndexTreeVec;  // vector of index trees

@@ -91,9 +91,6 @@ void RowTablePtn::vAppendBuffer(RowBuffer* pRowBuffer)
   // set the root buffer
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
-#ifdef WITH_PAGING
-    m_oRootBufferId = pRowBuffer->oGetBufferId();
-#endif
     m_oRootBufferId = pRowBuffer->oGetBufferId();
     m_pRootBuffer = pRowBuffer;
   }

@@ -25,6 +25,7 @@ namespace BASE
     // TODO: Arjun - Hack till we figure out a better way to handle the lock problem
     // during output operator
     b8    m_bOutputQueue; // is this Buffer in the Output queue?
+    // Refer: Output::vPipeToThis() for an explanation
 
     tXN m_tTxnNo; // transaction number
 

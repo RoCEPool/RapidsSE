@@ -43,7 +43,7 @@ CrwTablePtn::CrwTablePtn(Table* pTable, LglPtn tLglPtn)
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
 
-  m_pPdsBufferId = new Pds_t<xBufferId>();
+  m_pPdsOfBufferIds = new Pds_t<xBufferId>();
   //m_pIndexTreeVec  = new IndexTreeVec;
 
   _checkInitialised_(CN_CRWTABLEPTN);
@@ -60,7 +60,7 @@ CrwTablePtn::~CrwTablePtn(void) noexcept(false)
 
   // delete the index data vector
   //delete m_pIndexTreeVec;
-  delete m_pPdsBufferId;
+  delete m_pPdsOfBufferIds;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
   }
 
   // Append a new Skip List Block to the PDS
-  SkipListBlock* pSLBlock = m_pPdsBufferId->pAppendWithSynthKey();
+  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pAppendWithSynthKey();
 
   // Get the start address of it's body after the key in ITEM
   BufferId* pItem = (BufferId*) pSLBlock->aItemBody();
@@ -152,7 +152,7 @@ i8 CrwTablePtn::nBuffers(void)
   if (m_pRootBuffer)
     nBufferCount = m_pRootBuffer->nLinkedBufferCount();
 
-  RASSERT(m_pPdsBufferId->iNumEntries() == nBufferCount);
+  RASSERT(m_pPdsOfBufferIds->iNumEntries() == nBufferCount);
 
   return nBufferCount;
 }
@@ -230,7 +230,7 @@ void* CrwTablePtn::pPds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  return (void*)m_pPdsBufferId;
+  return (void*)m_pPdsOfBufferIds;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,7 +258,7 @@ CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  SkipListBlock* pSLBlock = m_pPdsBufferId->pFirstBlock();
+  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pFirstBlock();
   if(pSLBlock == nullptr) {
     RASSERT(m_pRootBuffer == nullptr);
     return m_pRootBuffer;
@@ -277,19 +277,25 @@ BufferId CrwTablePtn::oRootCrwBufferId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  SkipListBlock* pSLBlock = m_pPdsBufferId->pFirstBlock();
+  // Get the root block from the PDS
+  SkipListBlock* pSLBlock = m_pPdsOfBufferIds->pFirstBlock();
   BufferId oBufferId;
+
+  // Extract the buffer Id, set to 0 if it doesnt exist
   oBufferId.m_iAsI8 = 0;
   if(pSLBlock != nullptr) {
     oBufferId = *(BufferId*)pSLBlock->aItemBody();
   }
 
+  // Extract the Root buffer Id from the LinkedList
+  // Set to 0 if it doesnt exist
   BufferId oLLRootBufferId;
   oLLRootBufferId.m_iAsI8 = 0;
   if(m_pRootBuffer != nullptr) {
     oLLRootBufferId = m_pRootBuffer->oGetBufferId();
   }
 
+  // Assert they are the same
   RASSERT(oLLRootBufferId.m_iAsI8 == oBufferId.m_iAsI8);
 
   return oLLRootBufferId;
@@ -324,20 +330,20 @@ void CrwTablePtn::vTruncate(void)
   #*/
   vVerifyPds();
 
-  SkipListBlock* pCurrBlock = m_pPdsBufferId->pFirstBlock();
+  SkipListBlock* pCurrBlock = m_pPdsOfBufferIds->pFirstBlock();
 
   while(pCurrBlock) {
-    SkipListBlock* pNextBlock = m_pPdsBufferId->pNextSLBlock(pCurrBlock, 0);
+    SkipListBlock* pNextBlock = m_pPdsOfBufferIds->pNextSLBlock(pCurrBlock, 0);
 
     CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
     // Uncomment when replacing the LinkedList with Pds
 //    delete pCrwBuffer;
     RASSERT(pCrwBuffer->eGetClassNo() == BASE::CN_CRWBUFFER);
-    m_pPdsBufferId->bDelete(pCurrBlock->iKey());
+    m_pPdsOfBufferIds->bDelete(pCurrBlock->iKey());
     pCurrBlock = pNextBlock;
   }
 
-  RASSERT(m_pPdsBufferId->iNumEntries() == 0);
+  RASSERT(m_pPdsOfBufferIds->iNumEntries() == 0);
 
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
@@ -355,7 +361,7 @@ void CrwTablePtn::vVerifyPds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
 
-  SkipListBlock* pPdsCursor = m_pPdsBufferId->pFirstBlock();
+  SkipListBlock* pPdsCursor = m_pPdsOfBufferIds->pFirstBlock();
 
   CrwBuffer* pLLCursor = m_pRootBuffer;
 
@@ -365,7 +371,7 @@ void CrwTablePtn::vVerifyPds(void)
     CrwBuffer* pCrwBuffer = pGetBuffer(pPdsCursor);
     RASSERT(pCrwBuffer == pLLCursor);
 
-    pPdsCursor = m_pPdsBufferId->pNextSLBlock(pPdsCursor, 0);
+    pPdsCursor = m_pPdsOfBufferIds->pNextSLBlock(pPdsCursor, 0);
     pLLCursor = pLLCursor->pNextCrwBuffer();
   }
 
