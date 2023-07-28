@@ -18,33 +18,6 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*-- vJoinBegin --------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-// function-vJoinBegin
-void vJoinBegin(Dynamic_T* aDynamicT) {
-
-  struct __STRUCT_FROM__* p__STRUCT_FROM__;
-  RowInfo __ROW_INFO_FROM__;
-  RowInfo __ROW_INFO_TO__;
-
-  __L_LABEL_OUTER_LOOP__:
-
-  // marker-start
-  __L_LABEL__:
-
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
-  p__STRUCT_FROM__ = (struct __STRUCT_FROM__ *) __ROW_INFO_FROM__.m_aRowCellArray;
-
-  struct __STRUCT_TO__ *p__STRUCT_TO__;
-  p__STRUCT_TO__ = (struct __STRUCT_TO__ *) __ROW_INFO_TO__.m_aRowCellArray;
-
-// marker-end
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- vSemiJoinEnd ------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vSemiJoinEnd

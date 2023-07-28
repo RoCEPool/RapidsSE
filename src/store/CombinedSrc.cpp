@@ -33,22 +33,19 @@ CombinedSrc::CombinedSrc(void)
 : Object(CN_COMBINEDSRC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINEDSRC,_FOOTER_);
-  
-#ifdef WITH_DEBUG_VERSION
-  MemLib::vSet(m_caCode,0xFF,C_FLATTEN_SOURCE_V2,CN_COMBINEDSRC);
-#endif
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_caCode,sizeof(m_caCode),CN_COMBINEDSRC);
 #endif
 
-  m_pFileHeader     = nullptr;
-  m_pFunctionHeader = nullptr;
-  m_pFunctionFooter = nullptr;
-  m_pCommonCode     = nullptr;
-
-  MemLib::vZero(m_caCode,sizeof(m_caCode),CN_COMBINEDSRC);
   m_azCodeCrs   = m_caCode;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Open the common code fragment files
+  bool bOpen = bOpenCodeFiles();
+  if ( ! bOpen ) {
+    return;
+  }
 
   _checkInitialised_(CN_COMBINEDSRC);
   
@@ -65,17 +62,9 @@ CombinedSrc::~CombinedSrc(void) noexcept(false)
 
   // close the files
 
-  if (m_pFileHeader && m_pFileHeader->bIsOpen())
-    m_pFileHeader->vClose();
-
-  if (m_pFunctionHeader && m_pFunctionHeader->bIsOpen())
-    m_pFunctionHeader->vClose();
-
-  if (m_pFunctionFooter && m_pFunctionFooter->bIsOpen())
-    m_pFunctionFooter->vClose();
-
-  if (m_pCommonCode && m_pCommonCode->bIsOpen())
-    m_pCommonCode->vClose();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Close the common code fragment files
+  vCloseCodeFiles();
 
   delete(m_pFileHeader);
   delete(m_pFunctionHeader);
@@ -112,13 +101,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
   File* pFilterFile   = new File(this);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Open the code fragment files
-  bool bOpen = bOpenCodeFiles();
-  if ( ! bOpen ) {
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append the file headers if firstStage
   if (bFirstStage)
     vAppendFileHeaders();
@@ -153,11 +135,12 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         RASSERT ( bOpened );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
+        // operator begin
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
+        //vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
+        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // initialize with key kind
@@ -433,7 +416,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
 
         vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
+        //vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
+        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // initialize with key kind
@@ -700,20 +684,16 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // end EOS handler
+  // end StreamDef handler
   RASSERT(eCurrentHandler == HK_STREAMDEF);
   vAppendFunctionFooter(nullptr, eCurrentHandler, bHasIndexInflate);
 
-  //vTrace("Synthesized Code: \n %s \n"_Stz, m_caCode);
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete the code file pointers
   delete pOperatorFile;
   delete pIndexFile;
   delete pInflateFile;
   delete pFilterFile;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Close the code fragment files
-  vCloseCodeFiles();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1423,6 +1403,7 @@ void CombinedSrc::vCloseCodeFiles(void)
   // close the files
   m_pFileHeader->vClose();
   m_pFunctionHeader->vClose();
+  m_pFunctionFooter->vClose();
   m_pCommonCode->vClose();
 
 }
