@@ -241,6 +241,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitLsptncolCmd(sqlParser::LsptncolCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitLstblCmd(sqlParser::LstblCmdContext *ctx) override {
     return visitChildren(ctx);
   }

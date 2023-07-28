@@ -132,6 +132,8 @@ public:
 
     virtual antlrcpp::Any visitLsidxcolCmd(sqlParser::LsidxcolCmdContext *context) = 0;
 
+    virtual antlrcpp::Any visitLsptncolCmd(sqlParser::LsptncolCmdContext *context) = 0;
+
     virtual antlrcpp::Any visitLstblCmd(sqlParser::LstblCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitMemoryleaksCmd(sqlParser::MemoryleaksCmdContext *context) = 0;

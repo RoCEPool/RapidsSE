@@ -26,6 +26,7 @@ statementChoice   :
                     | lscolCmd
                     | lsidxCmd
                     | lsidxcolCmd
+                    | lsptncolCmd
                     | lstblCmd
                     | pipelineCmd
                     | queryCmd    // (select)
@@ -202,7 +203,8 @@ logCmd            : LOG msg=stringLiteral (ECHO (SQL_TRUE | ON | SQL_FALSE | OFF
 lscolCmd          : LSCOL tableName ;
 lsidxCmd          : LSIDX tableName ;
 lsidxcolCmd       : LSIDXCOL tableName indexName;
-lstblCmd          : LSTBL ;
+lsptncolCmd       : LSPTNCOL tableName ;
+lstblCmd          : LSTBL;
 
 // M
 memoryleaksCmd    : MEMORYLEAKS ;
@@ -600,7 +602,7 @@ nonReservedWord   :
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
                   | KEY
-                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSTBL
+                  | LIMIT | LOAD | LOADREPLICATED | LOG | LOOP | LSIDX | LSPTNCOL | LSTBL
                   | MEMORYLEAKS | MILLIS | MILLISECOND | MILLISECONDS | MINUTES
                   | MONOTONIC | MONTHS | MS
                   | NODE | NODES | NOOP | NOP | NOW
@@ -608,7 +610,7 @@ nonReservedWord   :
                   | PARTITIONS | PATHS | PIPELINE | PLACING | PRETTY
                   | QUARTER| QUARTERS
                   | REFERENCE | REGIONS | REPLICATED | ROWSIZE
-                  | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS | STATISTICS
+                  | S_ONLY | SCHEMA | SEC | SECONDS | SKIPLIST | SLEEP | SPACE | STAGE | STATS
                   | STATISTICS | STATUS | SUBSTR | SZIDX | SZTBL
                   | TABLESIZE | TEXT | TOP | TRACKMEMORY | TREE | TRUNCATE | TYPE | TYPEOF
                   | UNLOAD
@@ -722,8 +724,9 @@ LOAD                  : L O A D;
 LOG                   : L O G;
 LOOP                  : L O O P;
 LSCOL                 : L S C O L;
-LSIDX                 : L S I D X;
 LSIDXCOL              : L S I D X C O L;
+LSIDX                 : L S I D X;
+LSPTNCOL              : L S P T N C O L;
 LSTBL                 : L S T B L;
 MAX                   : M A X;
 MEMORYLEAKS           : M E M O R Y L E A K S;

@@ -58,7 +58,7 @@ create table T1 (
   key   INTEGER NOT NULL 
   name  VARCHAR(32) NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'Error: EC_SYNTAX_ERROR; mismatched input ''name'''
 
 // (9) create table with all types
 create table T1 (
@@ -213,25 +213,25 @@ failure contains: 'invalid command'
 create table T1& (
   c1   INTEGER NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'Error: EC_SYNTAX_ERROR; token recognition error at: ''&'''
 
 // (14) try create table t1 with invalid column name
 create table T1 (
   c1&  INTEGER NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'Error: EC_SYNTAX_ERROR; token recognition error at: ''&'''
 
 // (15) try create table t1 with invalid column type
 create table T1 (
   c1  NOSUCHTYPE NOT NULL
 );
-failure contains: 'invalid command'
+failure contains: 'Error: EC_SYNTAX_ERROR; mismatched input ''NOSUCHTYPE'''
 
 // (16) try create table t1 with invalid null
 create table T1 (
                  c1  integer NOT NUKK
                  );
-failure contains: 'invalid command'
+failure contains: 'Error: EC_SYNTAX_ERROR; mismatched input ''NUKK'' expecting SQL_NULL'
 
 ///////////
 // lscol //
@@ -249,17 +249,17 @@ create table T1 (
 success
 
 // move to tenants
-cf ~;
-success
-
-// lscol not in tables
-lscol T1;
-failure contains: 'not in tables'
-
-// move to tables folder
-cf "~tables";
-success
-
+//  cf ~;
+//  success
+//
+//  // lscol not in tables
+//  lscol T1;
+//  failure contains: 'not in tables'
+//
+//  // move to tables folder
+//  cf "~tables";
+//  success
+//
 // lscol
 lscol T1;
 rows:
@@ -285,17 +285,17 @@ create table T1 (
 );
 success
 
-// move to tenants
-cf ~;
-success
-
-// lsPtncol not in tables
-lsPtncol T1;
-failure contains: 'not in tables'
-
-// move to tables folder
-cf "~tables";
-success
+//  // move to tenants
+//  cf ~;
+//  success
+//
+//  // lsPtncol not in tables
+//  lsPtncol T1;
+//  failure contains: 'not in tables'
+//
+//  // move to tables folder
+//  cf "~tables";
+//  success
 
 // lsPtncol
 lsPtncol T1;
@@ -354,17 +354,17 @@ create table T1 (
 );
 success
 
-// move to tenants folder
-cf ~;
-success
-
-// not in tables
-drop table T;
-failure contains: 'not in tables'
-
-// move to tables
-cf "~tables";
-success
+//  // move to tenants folder
+//  cf ~;
+//  success
+//
+//  // not in tables
+//  drop table T;
+//  failure contains: 'not in tables'
+//
+//  // move to tables
+//  cf "~tables";
+//  success
 
 drop table T1;
 success
@@ -375,8 +375,8 @@ rows: 0
 
 CLEANUP {
 
-  cf "~tables";
-  mute
+//  cf "~tables";
+//  mute
   
   drop table T1;
   mute

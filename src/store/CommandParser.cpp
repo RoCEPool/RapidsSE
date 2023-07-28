@@ -359,6 +359,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->lsidxCmd())          { m_szProcName = "lsidx"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->lsidxcolCmd())       { m_szProcName = "lsidxcol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->lstblCmd())          { m_szProcName = "lstbl"_Stz;          return nullptr; }
+  else if (pCtx->lsptncolCmd())       { m_szProcName = "lsptncol"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->countCmd())          { m_szProcName = "count"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->sleepCmd())          { m_szProcName = "sleepCmd"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->spaceCmd())          { m_szProcName = "space"_Stz;          return nullptr; }
@@ -504,6 +505,20 @@ antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdCont
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
   m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an LSPTNCOL statement                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLsptncolCmd(Parser::sqlParser::LsptncolCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }
