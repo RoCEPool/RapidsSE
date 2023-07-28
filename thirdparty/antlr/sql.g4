@@ -225,7 +225,8 @@ pipelineOpSeq     : pipelineOperator ( '|' pipelineOperator)* ;
 pipelineOperator  : opName=identifier ( pipelineOpParam (','? pipelineOpParam)* )? ;
 pipelineOpParam   :
                       identifier
-                    | TYPE  | AS | SUM | AVG | MIN | MAX | ')' | '-' | '+' | '*' | '/' | '%' | PARAM_IDENTIFIER   // some reserved words and symbols
+                    | TYPE  | AS | SUM | AVG | MIN | MAX
+                    | ')' | '-' | '+' | '*' | '/' | '%' | '==' | PARAM_IDENTIFIER   // some reserved words and symbols
                     | pipelineTypeNames
                     | booleanLiteral
                     | signedIntegerLiteral
