@@ -359,7 +359,6 @@ namespace STORE
     char cSymbol(void);
     i8   iSymbol(void);
     Stz* szSymbol(void);
-    void vSymbol(char cSymbol);
     void vSymbol(i8 iSymbol);
     void vSymbol(Stz* szSymbol);
     void vSymbol(Symbol* pSymbol);
