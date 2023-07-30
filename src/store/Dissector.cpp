@@ -588,7 +588,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
   if (p_term_first->bIsSymbol("LEFT_OUTER"_Stz)) {
     Card_OuterJoin* pCard_OuterJoin = new Card_OuterJoin;
-    pCard_OuterJoin->vSymbol(p_term_first);
+    pCard_OuterJoin->pSymbol()->vSet(p_term_first->pSymbol());
     pCard_IndexJoin->vAppend(pCard_OuterJoin);
   }
   pCard_Bound->vDeleteChild(p_term_first);

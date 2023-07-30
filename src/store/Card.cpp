@@ -1615,16 +1615,6 @@ Stz* Card::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vSymbol(Card* pCard)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  m_xSymbol.m_sSymbol = pCard->m_xSymbol.szSF__print();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set card symbol                                                            */
-/*----------------------------------------------------------------------------*/
 void Card::vSymbol(char cSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
