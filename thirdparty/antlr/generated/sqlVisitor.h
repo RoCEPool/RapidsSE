@@ -1,5 +1,5 @@
 
-// Generated from /Users/arjun/Boray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -111,6 +111,8 @@ public:
     virtual antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *context) = 0;
 
     virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *context) = 0;
+
+    virtual antlrcpp::Any visitExportCmd(sqlParser::ExportCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitFileCmd(sqlParser::FileCmdContext *context) = 0;
 

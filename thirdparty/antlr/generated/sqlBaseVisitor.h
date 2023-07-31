@@ -1,5 +1,5 @@
 
-// Generated from /Users/arjun/Boray/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -198,6 +198,10 @@ public:
   }
 
   virtual antlrcpp::Any visitExplainFormat(sqlParser::ExplainFormatContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExportCmd(sqlParser::ExportCmdContext *ctx) override {
     return visitChildren(ctx);
   }
 

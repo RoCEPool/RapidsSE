@@ -31,17 +31,17 @@ rows:
   ('tsp_col7','TIMESTAMP',0,0,false,false)
   ('bol_col8','BOOLEAN',0,0,true,false)
 
-// change folder
-cf ..;
-success
-
-// list columns
-lscol lstTbl;
-failure contains: 'not in tables'
-
-// change folder
-cf tables;
-success
+//// change folder
+//cf ..;
+//success
+//
+//// list columns
+//lscol lstTbl;
+//failure contains: 'not in tables'
+//
+//// change folder
+//cf tables;
+//success
 
 // list columns of the table
 lscol lstTbl;

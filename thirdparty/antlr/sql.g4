@@ -19,6 +19,7 @@ statementChoice   :
                     | dloadCmd
                     | dropCmd
                     | explainCmd
+                    | exportCmd
 //                  | insertCmd
                     | loadCmd
                     | loadReplicatedCmd
@@ -181,6 +182,8 @@ explainStageList  : STAGE explainRange (',' explainRange)* ;
 explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
 explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
 explainFormat     : FORMAT (PRETTY | ROW);
+
+exportCmd         : EXPORT tableName filePath=stringLiteral ;
 
 // F
 fileCmd           : FILE (identifier | stringLiteral) ;
@@ -597,7 +600,7 @@ nonReservedWord   :
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | COMPACTIDX | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
-                  | ECHO | ESCAPE_CHAR | EXPLAIN
+                  | ECHO | ESCAPE_CHAR | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
@@ -682,6 +685,7 @@ ESCAPE_CHAR           : E S C A P E '_' C H A R;
 EXCEPT                : E X C E P T;
 EXISTS                : E X I S T S;
 EXPLAIN               : E X P L A I N;
+EXPORT                : E X P O R T;
 EXTRACT               : E X T R A C T;
 SQL_FALSE             : F A L S E;
 FEDERATION            : F E D E R A T I O N;

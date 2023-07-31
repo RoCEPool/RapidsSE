@@ -353,6 +353,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->dloadCmd())          { m_szProcName = "dload"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->compactIdxCmd())     { m_szProcName = "compactidx"_Stz;     return visitChildren(pCtx); }
   else if (pCtx->truncateCmd())       { m_szProcName = "truncate"_Stz;       return visitChildren(pCtx); }
+  else if (pCtx->exportCmd())         { m_szProcName = "export"_Stz;         return visitChildren(pCtx); }
 
   else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->lscolCmd())          { m_szProcName = "lscol"_Stz;          return visitChildren(pCtx); }
@@ -443,6 +444,27 @@ antlrcpp::Any CommandParser::visitExplainCmd(Parser::sqlParser::ExplainCmdContex
 
   // Add command parameters
   m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an EXPORT statement                             */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitExportCmd(Parser::sqlParser::ExportCmdContext* pCtx)
+{
+  UNUSED(pCtx);
+
+  // Add command parameters
+
+  s256 sTableName;
+  s256 sFilePath;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->filePath->start, sFilePath);
+  ASSERT(pCtx->filePath->children.size() == 1);
+
+  m_pArgValues->vAppendToken(sTableName, TN_STRING);
+  m_pArgValues->vAppendToken(sFilePath, TN_STRING);
   return nullptr; // No need to visit any further down the tree
 }
 
