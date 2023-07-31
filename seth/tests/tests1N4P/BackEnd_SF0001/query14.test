@@ -133,7 +133,7 @@ begin
   stage S02 on all partitions :
     indexJoin part IxP_PARTKEY "bound $I1 L_PARTKEY =="
     | aggreg " type DECIMAL )  L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-                type DECIMAL )  }  }  J1_P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
+                type DECIMAL )  }  }  P_TYPE 'PROMO%'  6 matchLeading WHEN  L_EXTENDEDPRICE 1. L_DISCOUNT -  * THEN  0.  ELSE  ENDIF  CASE  sum  "
     | combined 0
     | next
 

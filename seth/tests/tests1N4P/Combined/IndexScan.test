@@ -321,7 +321,7 @@ begin
   stage stageA on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 0 >= "
     | indexJoin orders orders_ord " BOUND $I1 L_ORDERKEY == "
-    | project " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | project " type INTEGER as O_CUSTKEY O_CUSTKEY , type INTEGER as O_ORDERKEY O_ORDERKEY , type TIMESTAMP as O_ORDERDATE O_ORDERDATE  "
     | filter " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
     | next

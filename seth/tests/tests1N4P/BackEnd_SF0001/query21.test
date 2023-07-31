@@ -215,7 +215,7 @@ begin
 
   stage S02 on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 L_ORDERKEY =="
-    | filter " type BOOLEAN  J1_L_SUPPKEY L_SUPPKEY  != "
+    | filter " type BOOLEAN  L_SUPPKEY L_SUPPKEY  != "
     | gbyAgg " groupBy type integer L_ORDERKEY ,
                        type integer L_SUPPKEY
                aggregates type integer as L_ORDERKEY $K1 ,
@@ -225,21 +225,21 @@ begin
 
   stage S02 on all partitions :
     indexJoin Orders IxO_ORDERKEY "BOUND $I1 L_ORDERKEY =="
-    | filter " type BOOLEAN  J1_O_ORDERSTATUS 'F'  == "
+    | filter " type BOOLEAN  O_ORDERSTATUS 'F'  == "
     | project " type INTEGER as L_SUPPKEY L_SUPPKEY "
     | combined 0
     | next
 
   stage S03 on all partitions :
     indexJoin Supplier IxS_SUPPKEY "BOUND $I1 L_SUPPKEY =="
-    | project " type INTEGER as S_NATIONKEY J1_S_NATIONKEY , type VARCHAR as S_NAME J1_S_NAME "
+    | project " type INTEGER as S_NATIONKEY S_NATIONKEY , type VARCHAR as S_NAME S_NAME "
     //| hash "type INTEGER S_NATIONKEY"
     | combined 0
     | next //hashcast
 
   stage S04 on all partitions :
     indexJoin Nation IxN_NATIONKEY "BOUND $I1 S_NATIONKEY =="
-    | filter " type BOOLEAN J1_N_NAME 'SAUDI ARABIA' ==  "
+    | filter " type BOOLEAN N_NAME 'SAUDI ARABIA' ==  "
     | gbyAgg " groupBy  type VARCHAR as S_NAME $2 aggregates  type VARCHAR $K1 , type INTEGER )  countAll  "
     | combined 0
     | next
