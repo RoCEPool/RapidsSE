@@ -110,6 +110,7 @@ namespace STORE
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSet_number(i8 iNumber);
     void vSet_other(Stz* szOther);
+    void vSet_parameterOrdinal(i8 iOrdinal);
     void vSet_stageNo(i8 iStageNo);
     void vSetStreamOrdinal(i8 iStmColOdn);
     void vSetSubQueryOrdinal(i8 iSqNo);

@@ -1266,6 +1266,21 @@ void Symbol::vSet_other(Stz* szOther)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given number                                             */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_parameterOrdinal(i8 iNumber)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSprint("%%%lld"_Stz, iNumber);
+  m_eSymbolForm = SF_PRMCOL;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsNumber());
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to a stage                                                 */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_stageNo(i8 iStageNo)
