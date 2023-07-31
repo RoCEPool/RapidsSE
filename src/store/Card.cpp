@@ -404,18 +404,6 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column type                                                            */
-/*----------------------------------------------------------------------------*/
-eCT Card::eColType(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  eCT eColumnType = pSymbol()->eColType();
-
-  return eColumnType;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vColType(Ppy xPpy_type)
@@ -424,6 +412,17 @@ void Card::vColType(Ppy xPpy_type)
 
   m_xSymbol.Y_vSet(P_Type, xPpy_type.szPpy());
 }
+
+/*----------------------------------------------------------------------------*/
+/* set type of symbol                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vColType(Card* p_card_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.Y_vSet(P_Type, p_card_arg->xColType().szPpy());
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
