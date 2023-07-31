@@ -571,7 +571,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   xExprNo.vSetStreamOrdinal(i_Expr + 1);
 
   Card_Expr* p_expr_reduced = new Card_Expr;
-  p_expr_reduced->vSymbol(&xExprNo);
+  p_expr_reduced->pSymbol()->vSet(&xExprNo);
   p_expr_reduced->vSetType(this);
 
   if (Card_As* p_as = pSub_as())

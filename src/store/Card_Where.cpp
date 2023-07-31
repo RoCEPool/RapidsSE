@@ -261,7 +261,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
     x_Symbol_stmCol1.vSetStreamOrdinal(1);
 
     // replace sqCall with sqResult
-    pCI->Sqy.m_pTerm_sqCall->vSymbol(&x_Symbol_stmCol1);
+    pCI->Sqy.m_pTerm_sqCall->pSymbol()->vSet(&x_Symbol_stmCol1);
   }
 
   pCI->G.p_where->vUpdate_projection(pCI);

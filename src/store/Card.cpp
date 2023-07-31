@@ -583,7 +583,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vSymbol(pSymbol());
+  pCard_dup->pSymbol()->vSet(pSymbol());
 
   return pCard_dup;
 }
@@ -596,7 +596,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->vSymbol(pSymbol());
+  pCard_dup->pSymbol()->vSet(pSymbol());
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1622,16 +1622,6 @@ void Card::vSymbol(Stz* szSymbol)
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
   m_xSymbol.m_sSymbol = szSymbol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set card symbol                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vSymbol(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  m_xSymbol.vSet(pSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

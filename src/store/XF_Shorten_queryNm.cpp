@@ -84,7 +84,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
 
     Symbol xSymbol_sqNo;
     xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);
-    p_card->vSymbol(&xSymbol_sqNo);
+    p_card->pSymbol()->vSet(&xSymbol_sqNo);
 
     return C_CONTINUE_RECURSION;
   };

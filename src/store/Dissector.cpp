@@ -508,7 +508,7 @@ Card* Dissector::pOp_Hash(void)
 
   Card_Term* p_term2 = _pCard_Term(pCard_RpnTerms->pGet(2));
 
-  p_hshCol->vSymbol(p_term2->pSymbol());
+  p_hshCol->pSymbol()->vSet(p_term2->pSymbol());
   eCT eColumnType = Symbol::eTo_eCT_str(p_term->szSymbol());
   p_hshCol->pSymbol()->Y_vSet(P_Type,szCT_char[eColumnType]);
 
@@ -1332,12 +1332,12 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetKeyOrdinal(ri_Expr);
-    pCard_Expr->vSymbol(&xSymbol_stmColOdn);
+    pCard_Expr->pSymbol()->vSet(&xSymbol_stmColOdn);
   }
   else {
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamOrdinal(ri_Expr);
-    pCard_Expr->vSymbol(&xSymbol_stmColOdn);
+    pCard_Expr->pSymbol()->vSet(&xSymbol_stmColOdn);
   }
 
   Stz* szP_Type = this->szPopType_char(pCard_RpnTerms);

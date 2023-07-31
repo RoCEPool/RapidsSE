@@ -360,7 +360,6 @@ namespace STORE
     i8   iSymbol(void);
     Stz* szSymbol(void);
     void vSymbol(Stz* szSymbol);
-    void vSymbol(Symbol* pSymbol);
     void vSymbolMark1(Stz* szSymbol, char cMark1);
     void vSymbolSprint(Stz* szFormat, ...);
 
