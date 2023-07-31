@@ -46,7 +46,7 @@ end ;
 rows: 5996
 
 
-// TODO: Uncomment once LEFTOUTER JOINS ARE ENABLED
+// TODO V2 : Uncomment once LEFTOUTER JOINS ARE ENABLED
 /*
 //------------------------------------------------------------------------------
 // LEFT OUTER INDEX JOIN
