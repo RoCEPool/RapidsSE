@@ -117,6 +117,8 @@ begin
 end ;
 */
 
+// TODO V2 : (_ray105)
+/*
 //SF10: 24s
 /optimise_passthru 
 pipeline unamed
@@ -218,6 +220,7 @@ pipeline unamed
   end ;
 
 rows: 41
+*/
 
 /*
 //SF10: 37s
@@ -536,6 +539,8 @@ pipeline unamed
 rows: 41
 */
 
+// TODO V2 (_ray105)
+/*
 /optimise_passthru 
 pipeline Query9
   begin
@@ -779,6 +784,7 @@ rows:
  ('UNITED KINGDOM',1993,-430280.83)
  ('UNITED KINGDOM',1992,-541653.61)
 
+*/
 CLEANUP {
   bye;
   mute

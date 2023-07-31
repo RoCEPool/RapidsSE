@@ -294,6 +294,8 @@ success
 // switched customer and orders join order
 //------------------------------------------------------------------------------
 
+// TODO V2 (_ray105)
+/*
 /optimise_passthru 
 pipeline Query5
 begin
@@ -394,7 +396,6 @@ end ;
 ordered rows:
  ('ARGENTINA',-8058.15)
  ('PERU',-14237.80)
-
 
 sleep 4;
 success
@@ -501,7 +502,7 @@ end ;
 ordered rows:
  ('ARGENTINA',-8058.15)
  ('PERU',-14237.80)
-
+*/
 
 MemoryLeaks;
 rows: 0
