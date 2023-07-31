@@ -345,7 +345,6 @@ namespace STORE
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
     bool bSameSymbol(Card* pArg);
-    bool bSameSymbolRecursive(Card* pCard_b, i8 iDepth= 0, bool bTestL0= false);
 
     void vSetType(Card* p_card_arg);
     void vSetType(Ppy xPpy_type);

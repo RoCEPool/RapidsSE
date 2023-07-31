@@ -1433,41 +1433,6 @@ bool Card::bSameSymbol(Card* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* are the two cards recursively the same                                     */
-/*----------------------------------------------------------------------------*/
-bool Card::bSameSymbolRecursive(Card* pCard_b, i8 iDepth, bool bTestL0)
-{
-  _static_
-
-  if (iDepth || (0 == iDepth && bTestL0)) {
-
-    eCK eCard_a = this->eCard();
-    eCK eCard_b = pCard_b->eCard();
-
-    if (eCard_a != eCard_b)
-      return false;
-
-    //if (CK_TERM == eCard_a)
-    if (!this->szSymbol()->bSame(pCard_b->szSymbol()))
-      return false;
-  }
-
-  i8 nChildren_a = this->nChildCards();
-  i8 nChildren_b = pCard_b->nChildCards();
-  if (nChildren_a != nChildren_b)
-    return false;
-
-  for (i8 i_Child = 0; i_Child < nChildren_a; i_Child++) {
-    Card* pChild_a = this->pGetChild(i_Child);
-    Card* pChild_b = pCard_b->pGetChild(i_Child);
-    if (!pChild_a->bSameSymbolRecursive(pChild_b, iDepth + 1, bTestL0))
-      return false;
-  }
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
 void Card::vSetType(Card* p_card_arg)
