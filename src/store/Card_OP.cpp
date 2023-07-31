@@ -314,7 +314,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfLambdaFn = [pCI,this](Card* pCard)
+  auto bf_tblColOdn_To_stmColOdn = [pCI,this](Card* pCard)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
@@ -327,12 +327,11 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       vDebugPoint();
     }
 
-    if (!p_term->bIsColOdn())
+    if (!p_term->bIsValOdn())
       return C_CONTINUE_RECURSION;
 
     if (pCI->Prior.m_pProjection) {
-      if (Card_Expr* p_expr_col =
-          pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
+      if (Card_Expr* p_expr_col = pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
         // record what $c.n it was
         p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
         p_term->vSymbol(p_expr_col->szSymbol());
@@ -368,7 +367,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vApply_lambdaFn_ToAll_term(pCI, bfLambdaFn);
+  vApply_lambdaFn_ToAll_term(pCI, bf_tblColOdn_To_stmColOdn);
 
   if (pSymbol()->Y_bHas(P_BreakPt)) {
     //vDump();
