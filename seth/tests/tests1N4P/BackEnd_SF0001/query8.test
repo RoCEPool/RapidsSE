@@ -140,8 +140,6 @@ end ;
 
 */
 
-// TODO V2 (_ray106)
-/*
 //orders->customer->nation->region->lineitem->part->supplier->nation
 //SF1: 563ms
 //SF10 : 7.1s
@@ -237,7 +235,6 @@ rows: (1996,0.00)
 
 sleep 4;
 success
-*/
 
 /*
 //region->nation->customer->orders->lineitem->part->supplier->nation
@@ -366,8 +363,6 @@ sleep 4;
 success
 
 
-// TODO V2 : (_ray106)
-/*
 // customer->
 /optimise_passthru 
 pipeline Query8
@@ -484,7 +479,6 @@ begin
 end ;
 
 rows: (1996,0.00)
-*/
 
 sleep 4;
 success
