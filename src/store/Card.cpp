@@ -438,18 +438,6 @@ Ppy Card::xColType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szColType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szType = m_xSymbol.Y_szGet(P_Type);
-
-  return szType;
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
 /*----------------------------------------------------------------------------*/
 void Card::vDump(const char* azFunc, i8 iDepth, Stz* szTitle)
