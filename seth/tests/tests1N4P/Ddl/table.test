@@ -58,7 +58,7 @@ create table T1 (
   key   INTEGER NOT NULL 
   name  VARCHAR(32) NOT NULL
 );
-failure contains: 'Error: EC_SYNTAX_ERROR; mismatched input ''name'''
+failure contains: 'EC_SYNTAX_ERROR; Line: 3; Column: 2; mismatched input ''name'''
 
 // (9) create table with all types
 create table T1 (
@@ -213,25 +213,25 @@ failure contains: 'invalid command'
 create table T1& (
   c1   INTEGER NOT NULL
 );
-failure contains: 'Error: EC_SYNTAX_ERROR; token recognition error at: ''&'''
+failure contains: 'EC_SYNTAX_ERROR; Line: 1; Column: 15; token recognition error at: ''&'''
 
 // (14) try create table t1 with invalid column name
 create table T1 (
   c1&  INTEGER NOT NULL
 );
-failure contains: 'Error: EC_SYNTAX_ERROR; token recognition error at: ''&'''
+failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 4; token recognition error at: ''&'''
 
 // (15) try create table t1 with invalid column type
 create table T1 (
   c1  NOSUCHTYPE NOT NULL
 );
-failure contains: 'Error: EC_SYNTAX_ERROR; mismatched input ''NOSUCHTYPE'''
+failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 6; mismatched input ''NOSUCHTYPE'''
 
 // (16) try create table t1 with invalid null
 create table T1 (
                  c1  integer NOT NUKK
                  );
-failure contains: 'Error: EC_SYNTAX_ERROR; mismatched input ''NUKK'' expecting SQL_NULL'
+failure contains: 'EC_SYNTAX_ERROR; Line: 2; Column: 33; mismatched input ''NUKK'' expecting SQL_NULL'
 
 ///////////
 // lscol //
