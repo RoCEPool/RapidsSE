@@ -283,8 +283,6 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
 
-//    Ppy  xColType(void);
-//    void vColType(Ppy xPpy_type);
     void vColType(Card* p_card_arg);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
@@ -294,8 +292,6 @@ namespace STORE
 
     Card* pFindCardRecursive(eCK eCard);
     Card* pFindParentRecursive(Card* pSubCard);
-    Card* pFindSymbolRecursive(Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
-    Card* pFindSymbolRecursive(eCK eCard, char cSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
