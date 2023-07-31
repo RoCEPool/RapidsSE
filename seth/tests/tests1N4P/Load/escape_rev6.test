@@ -17,10 +17,10 @@ Load T1 "../DATA/Load/escape_defaults.csv";
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 9
 
-tableScan T1 ;
+select * from T1 ;
 rows:
   (1, null)
   (2, 'N')
@@ -53,10 +53,10 @@ Load T1 "../DATA/Load/escape_enclosed.csv"
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 9
 
-tableScan T1 ;
+select * from T1 ;
 rows:
   (1, null)
   (2, 'N')
@@ -90,10 +90,10 @@ Load T1 "../DATA/Load/escape_enclosedByCurly.csv"
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 10
 
-tableScan T1 ;
+select * from T1 ;
 rows:
   (1, null)
   (2, 'N')

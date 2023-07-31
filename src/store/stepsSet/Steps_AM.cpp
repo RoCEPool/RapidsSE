@@ -343,18 +343,22 @@ void Step::vAM_NodeMonDemonJobIdStore(void)
 void Step::vAM_PageInDemonJobIdFetch(void)
 {
   ENTRY();
+
   JobId tJobId = AM::DEMON::tPageInDemonJobId();
   m_pDataStack->vPushInt(tJobId.iAsI8());
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
 /* AM::DEMON::tPageInDemonJobId! -- store the PageInDemon JobId             */
 /*----------------------------------------------------------------------------*/
 void Step::vAM_PageInDemonJobIdStore(void)
 {
   ENTRY();
+
   JobId tJobId = m_pDataStack->iPopInt(__func__);
   AM::DEMON::vPageInDemonJobId(tJobId);
+
   EXIT();
 }
 

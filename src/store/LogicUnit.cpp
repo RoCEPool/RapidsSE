@@ -223,6 +223,8 @@ LogicUnit::LogicUnit(void)
   m_iCounter6 = 0;
   m_iCounter7 = 0;
 
+  m_oBufferId.m_pvAsAddress = nullptr;
+
   m_bRcvdChildExit = false;
   m_bRcvdEnd = false;
 

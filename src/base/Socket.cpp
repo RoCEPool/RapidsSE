@@ -614,20 +614,19 @@ Object* Socket::pObjectRecv(eCN eClass)
     vSuccess(false);
     return nullptr;
   }
-#ifdef WITH_BUFFER_ID
-    if (1 == DataBuffer::bIsDataBuffer(eClass)) {
+
+    if (eClass == CN_ROWBUFFER ||
+        eClass == CN_CRWBUFFER) {
       DataBuffer* pDataBuffer = _pDataBuffer(pReceivedObject);
       i8 iPoolBufferNo = pDataBuffer->iBufferNo();
       pDataBuffer->vSetBufferNo(iPoolBufferNo);
       pDataBuffer->vSetBufferId(
-          AM::pFileMap()->oGetNewBufferId(iPoolBufferNo));
-#ifdef WITH_HASHMAP
+          AM::pFileMap()->oGetNewBufferId().m_pvAsAddress);
+
       AM::pHashMap()->vInsertKeyValue(
           (void *) pDataBuffer->oGetBufferId().m_pvAsAddress,
           (Object *) pReceivedObject);
-#endif
     }
-#endif
 
   m_pTotup->vAdd(eClass, nSize);
 

@@ -18,10 +18,10 @@ Load T1 "../DATA/Load/spaces.csv" ;
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 4
 
-tableScan T1;
+select * from T1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)
@@ -49,10 +49,10 @@ Load T1 "../DATA/Load/spaces_enclosedBy.csv"
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 4
 
-tableScan T1;
+select * from T1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)
@@ -81,10 +81,10 @@ Load T1 "../DATA/Load/spaces_enclosedByCurly.csv"
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 4
 
-tableScan T1;
+select * from T1;
 rows:
   (1,'   3 leading',3)
   (2,'3 leading',3)

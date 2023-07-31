@@ -20,7 +20,7 @@ Load vch "../DATA/Load/vch_enclosedBy.csv"
 ;
 success
 
-tableScan vch;
+select * from vch;
 rows: 21
 
 predicateFetch vch "vch_testno 101 ==";

@@ -16,11 +16,11 @@ load uniIvl "../FASTLOAD/Data/uniIvl.csv" ;
 success
 
 // check no of rows
-tableScan uniIvl;
+select * from uniIvl;
 rows: 101
 
 // check data
-tableScan uniIvl;
+select * from uniIvl;
 rows:
   (0.000000)
   (1.001000)

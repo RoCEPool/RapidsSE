@@ -503,7 +503,6 @@ namespace OBLIQUE
     public:
       static InfoSet* pToPageIn(Task* pTask, BufferId oBufferId);
     };
-  
     class PARCEL
     {
     public:
@@ -654,7 +653,8 @@ namespace OBLIQUE
     public:
       static DicStack* pDicStack(void);
       static void vRetire(Task* pTask);
-      static void vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask);
+      static void vTriggerBidingOperand(Task* pTaskBiding, Task* pTriggeringTask);
+      static void vTriggerBidingPageIn(Task* pTaskBiding, Task* pTriggeringTask);
     };
   
     class THREAD
@@ -754,9 +754,7 @@ namespace OBLIQUE
 
     static JobList* pDemonJobs(void);
     static JobList* pExitedJobs(void);
-#ifdef WITH_PAGING
     static HashMap* pHashMap(void);
-#endif
     static Heaps* pHeaps(void);
     static i8   nIndexEntries(void);
     static JobList* pLocalJobs(void);

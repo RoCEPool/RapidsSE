@@ -20,6 +20,7 @@ namespace ENGINE
   
   private:
     static void vTaskSelf_BideForOperand(Task* pSelfTask, Thread* pThread);
+    static void vTaskSelf_BideForPageIn(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_HibernateThisTask(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_DeleteThisTask(Task* pSelfTask, Thread* pThread);
     static void vTaskSelf_RetireThisTask(Task* pSelfTask, Thread* pThread);
@@ -38,8 +39,10 @@ namespace ENGINE
                                          Task* pResumingTask);
     static void vTaskCross_ScheduleNextPhase(Task* pTaskParticipant,
                                              Task* pActiviating2PcTask);
-    static void vTaskCross_TriggerBiding(Task* pTaskBiding,
-                                         Task* pTriggeringTask);
+    static void vTaskCross_TriggerBidingOperand(Task* pTaskBidingOperand,
+                                                Task* pTriggeringTask);
+    static void vTaskCross_TriggerBidingPageIn(Task* pTaskBidingPageIn,
+                                                Task* pTriggeringTask);
     static void vTaskCross_WakeSleepers(Task* pWakerTask);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

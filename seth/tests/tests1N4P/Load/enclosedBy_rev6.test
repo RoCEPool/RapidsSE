@@ -23,7 +23,7 @@ Load T1 "../DATA/Load/enclosedBy1.csv" ;
 failure contains: '5 invalid'
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 2
 
 predicateFetch T1 "col_id 1 =";
@@ -60,7 +60,7 @@ Load T1 "../DATA/Load/enclosedBy2.csv" <enclosed_by_leading> = "'" ;
 failure contains: '1 invalid'
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 2
 
 predicateFetch T1 "col_id 1 =";
@@ -98,7 +98,7 @@ load T1 "../DATA/Load/enclosedBy3.csv" <enclosed_by_leading> = "[" <enclosed_by_
 failure contains: '7 invalid'
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 6
 
 predicateFetch T1 "col_id 1 =";

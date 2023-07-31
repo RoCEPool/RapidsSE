@@ -59,7 +59,7 @@ load IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows
-tableScan IntTbl;
+select * from IntTbl;
 rows: 101
 
 // success

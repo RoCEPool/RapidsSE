@@ -98,8 +98,14 @@ DataBuffer* LglBufSet::pCompletedBuffer(LglPtn tLglPtn)
   if (pCompletedBuffer) {
     DataBuffer* pPrevBuffer = (DataBuffer*)pCompletedBuffer->pPrevLinkedBuffer();
     pPrevBuffer->vNextLinkedBuffer(nullptr);
+
+    // TODO: Arjun - Remember to update this section to use the PDS once implemented in RowBuffer
+
+    // TODO: Arjun - Temp test to see if anything uses these pointers after it has left this operator
+    pCompletedBuffer->vNextLinkedBuffer(nullptr);
+    pCompletedBuffer->vPrevLinkedBuffer(nullptr);
   }
-  
+  // Arjun: Potential race condition
   return pCompletedBuffer;
 }
 

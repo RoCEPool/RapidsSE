@@ -100,7 +100,9 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  RASSERT(m_bDeletable);
+  // RowBuffers are pageable, hence we need to comment this out
+  // We delete the buffer after it has been paged out
+//  RASSERT(m_bDeletable);
   
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if(pLogicUnit)

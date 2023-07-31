@@ -16,11 +16,11 @@ load uniDte "../FASTLOAD/Data/uniDte.csv" ;
 success
 
 // check no of rows
-tableScan uniDte;
+select * from uniDte;
 rows: 24
 
 // check data
-tableScan uniDte;
+select * from uniDte;
 rows:
   ('1961-01-01')
   ('1961-02-01')

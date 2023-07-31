@@ -25,6 +25,8 @@ namespace BASE
     void      vLatch(bool bLatch);
     bool      bPeekOoO(void);
     bool      bPeekQueue(void);
+    Operand*  pPeekOoO(void);
+    Operand*  pPeekQueue(void);
     Operand*  pPopOoO(void);
     Operand*  pPopQueue(void);
     i8        nQueuedOperands(void);

@@ -16,11 +16,11 @@ load uniBol "../FASTLOAD/Data/uniBol.csv" ;
 success
 
 // check no of rows
-tableScan uniBol;
+select * from uniBol;
 rows: 4
 
 // check data
-tableScan uniBol;
+select * from uniBol;
 rows:
   (true)
   (false)

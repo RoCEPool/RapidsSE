@@ -20,12 +20,37 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-: CrwBuffer[].pipeOut
+: BufferId[].pipeOut
 
-  CrwBuffer[]
-    nullptr to CrwBuffer[]
+  BufferId[]\clear
 
   [op].pipeout
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+: BufferId[].pipeBackin
+
+  BufferId[]\clear
+
+  [op].pipeBackin
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+
+: CrwBuffer[].pipeOut
+
+  CrwBuffer[].bufferId to BufferId[]
+
+  nullptr to CrwBuffer[]
+
+  BufferId[].dropLock
+
+  BufferId[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -153,10 +178,13 @@
 
 : RowBuffer[].pipeOut
 
-  RowBuffer[]
-    nullptr to RowBuffer[]
+  RowBuffer[].bufferId to BufferId[]
 
-  [op].pipeout
+  nullptr to RowBuffer[]
+
+  BufferId[].dropLock
+
+  BufferId[].pipeOut
 ;
 
 /*----------------------------------------------------------------------------*/

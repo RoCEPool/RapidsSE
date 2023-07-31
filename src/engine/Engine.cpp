@@ -104,6 +104,7 @@ pthread_key_t giTLS_StepAccum  = C_UNKNOWN;
 pthread_key_t gbTLS_FaultInjection  = false;
 pthread_key_t giTLS_FaultPoint      = C_UNKNOWN;
 pthread_key_t giTLS_CurrentPoint    = C_UNKNOWN;
+pthread_key_t giTLS_PDSCrwTablePtn  = C_UNKNOWN;
 
 /*----------------------------------------------------------------------------*/
 /* main entry                                                                 */
@@ -834,6 +835,9 @@ void Engine::vInternalTables(void)
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_OPERANDLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_OPERANDLOG,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_PAGEINREQUEST);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_PAGEINREQUEST,pStreamDef);
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_PROMPTOUT);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_PROMPTOUT,pStreamDef);

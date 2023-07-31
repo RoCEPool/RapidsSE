@@ -208,6 +208,8 @@ namespace STORE
     i8   m_iCounter6;   // counter
     i8   m_iCounter7;   // counter
 
+    BufferId   m_oBufferId;   // bufferId
+
     bool m_bRcvdChildExit;
     bool m_bRcvdEnd;
 

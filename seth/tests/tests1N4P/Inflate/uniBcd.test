@@ -16,11 +16,11 @@ load uniBcd "../FASTLOAD/Data/uniBcd.csv" ;
 success
 
 // check no of rows
-tableScan uniBcd;
+select * from uniBcd;
 rows: 40
 
 // check data
-tableScan uniBcd;
+select * from uniBcd;
 rows:
   (0.00)
   (0.10)

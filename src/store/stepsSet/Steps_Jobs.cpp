@@ -133,8 +133,9 @@ void Step::vJobsSeeRlist(void)
 void Step::vJobsSeeSqueue(void)
 {
   ENTRY();
-  
-  AM::pSchedule()->vDumpBidingSet();
+
+  AM::pSchedule()->vDumpBidingOperandSet();
+  AM::pSchedule()->vDumpBidingPageInSet();
   AM::pSchedule()->vDumpExecutingSet();
   AM::pSchedule()->vDumpReadyQueue();
   //AM::pSchedule()->vDumpReadyQueueLP();

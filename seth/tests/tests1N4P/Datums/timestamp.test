@@ -45,7 +45,7 @@ Load tspTbl "../DATA/Datums/timestamp.csv" ;
 failure contains: '27 invalid'
 
 // check no of rows
-tableScan tspTbl;
+select * from tspTbl;
 rows: 100
 
 // dump index tsp_idx1

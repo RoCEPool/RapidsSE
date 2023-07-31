@@ -41,8 +41,9 @@ CrwToRow::CrwToRow(StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
   m_pStreamDef = pStreamDef;
+
   m_pRowBuffer = new RowBuffer;
-  
+
   m_pRowBuffer->vResolveRowPix(pStreamDef);
   
   _checkInitialised_(CN_CRWTOROW);
@@ -57,7 +58,7 @@ CrwToRow::~CrwToRow(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  ASSERT(! m_pRowBuffer);
+  ASSERT(!m_pRowBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +106,7 @@ bool CrwToRow::bConvertCrwToRow(CrwBuffer* pCrwBuffer)
 
     vAllotNewRow();
     
-    RowInflator::vInflate_AllColumns_into_RowBuffer(m_pRowBuffer,pCrwHead);
+    RowInflator::vInflate_AllColumns_into_RowBuffer(m_pRowBuffer, pCrwHead);
   }
 
   return true;
@@ -119,7 +120,7 @@ RowBuffer* CrwToRow::pDanglingRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
   
   RowBuffer* pDanglingRowBuffer = m_pRowBuffer;
-  
+
   m_pRowBuffer = nullptr;
   
   return pDanglingRowBuffer;
@@ -132,7 +133,7 @@ RowBuffer* CrwToRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTOROW,_FOOTER_);
 
-  if (! m_pRowBuffer)
+  if (!m_pRowBuffer)
     return nullptr;
   
   RowBuffer* pScanRowBuffer = m_pRowBuffer;

@@ -42,7 +42,7 @@ load IntTbl "../DATA/Datums/integer.csv" ;
 failure contains: '16 invalid'
 
 // check no of rows
-tableScan IntTbl;
+select * from IntTbl;
 rows: 101
 
 // dump index int_idx1
@@ -95,7 +95,7 @@ success
 truncate IntTbl;
 success
 
-tableScan IntTbl;
+select * from IntTbl;
 rows: 0
 
 /*
@@ -137,7 +137,7 @@ load IntTbl "/tmp/integer.csv" ;
 success
 
 // check no of rows
-tableScan IntTbl;
+select * from IntTbl;
 rows: 101
 
 // dump index int_idx1
