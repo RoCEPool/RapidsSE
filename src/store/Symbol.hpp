@@ -63,6 +63,9 @@ namespace STORE
     // - - - - - -
 
     eCT  eColType(void);
+    Stz* szColType(void);
+    void vColType(Stz* szColType);
+
 
     eRO  eEvalRelnOp(void);
     eQO  eEvalSubQryOp(void);
@@ -133,13 +136,8 @@ namespace STORE
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 
-    Stz* szType(void);
-    void vType(Stz* szType);
-
     Stz* szWhatIs(void);
 
-    void Y_vAll(Card* pCard_arg);
-    void Y_vAll(TagSet* pProperties);
     void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);
 //    char Y_cGet(i8 i_Ppy);

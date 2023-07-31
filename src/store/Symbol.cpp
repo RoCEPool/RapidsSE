@@ -615,6 +615,28 @@ eCT Symbol::eColType(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get type                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szColType(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Stz* sz = Y_szGet(P_Type);
+
+  return sz;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type                                                                   */
+/*----------------------------------------------------------------------------*/
+void Symbol:: vColType(Stz* szColType)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  Y_vSet(P_Type,szColType);
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
 eRO Symbol::eEvalRelnOp(void)
@@ -1506,28 +1528,6 @@ bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szType(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Stz* sz = Y_szGet(P_Type);
-
-  return sz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get type                                                                   */
-/*----------------------------------------------------------------------------*/
-void Symbol:: vType(Stz* szType)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  Y_vSet(P_Type,szType);
-}
-
-/*----------------------------------------------------------------------------*/
 /* what is this symbol?                                                       */
 /*----------------------------------------------------------------------------*/
 Stz* Symbol::szWhatIs(void)
@@ -1553,41 +1553,6 @@ Stz* Symbol::szWhatIs(void)
   if (bIsSyntheticAs())      return "SyntheticAs"_Stz;
 
   return "??WhatIs"_Stz;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vAll(Card* pCard_arg)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (!pCard_arg->pSymbol()->m_pProperties) {
-    if (m_pProperties) {
-      delete m_pProperties;
-      m_pProperties = nullptr;
-    }
-    return;
-  }
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vCopy(pCard_arg->pSymbol()->m_pProperties);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get given property                                                         */
-/*----------------------------------------------------------------------------*/
-void Symbol::Y_vAll(TagSet* pProperties)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  if (! m_pProperties)
-    m_pProperties = new TagSet;
-
-  m_pProperties->vCopy(pProperties);
 }
 
 /*----------------------------------------------------------------------------*/

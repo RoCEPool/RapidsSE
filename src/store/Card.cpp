@@ -405,7 +405,7 @@ void Card::vColType(Card* pCard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.Y_vSet(P_Type, pCard_arg->pSymbol()->szType());
+  m_xSymbol.Y_vSet(P_Type, pCard_arg->pSymbol()->szColType());
 }
 
 /*----------------------------------------------------------------------------*/

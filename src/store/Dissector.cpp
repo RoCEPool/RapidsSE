@@ -1293,7 +1293,7 @@ Card_Constraint* Dissector::pPopConstraint(Card_RpnTerms* pCard_RpnTerms)
 
   Card_RpnCalc* pCard_RpnCalc = pPopRpnCalc(pCard_RpnTerms);
 
-  pCard_RpnCalc->pSymbol()->vType(szType);
+  pCard_RpnCalc->pSymbol()->vColType(szType);
 
   pCard_Constraint->vAppend(pCard_RpnCalc);
 
