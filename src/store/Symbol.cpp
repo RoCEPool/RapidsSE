@@ -1254,6 +1254,17 @@ void Symbol::vSet_other(Stz* szOther)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to a stage                                                 */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_stageNo(i8 iStageNo)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  vSprint("S%02lld"_Stz, iStageNo);
+  m_eSymbolForm = SF_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given stream-column                                     */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
