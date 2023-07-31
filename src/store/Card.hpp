@@ -293,6 +293,7 @@ namespace STORE
     Card* pFindCardRecursive(eCK eCard);
     Card* pFindParentRecursive(Card* pSubCard);
     Card* pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
+    Card* pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
     bool bHasSubRecursive(Card* pSubCard);
