@@ -46,7 +46,7 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 
   vInit(eCard);
 
-  m_xSymbol.m_sSymbol = pSymbol->szSF__print();
+  m_xSymbol.vSet(pSymbol);
 
   if (pSymbol->m_pProperties)
     m_xSymbol.Y_vAll(pSymbol->m_pProperties);
@@ -89,7 +89,7 @@ void Card::vInit(eCK eCard)
   m_eCard   = eCard;
   m_i_Child = C_UNKNOWN;
 
-  m_xSymbol.m_sSymbol = ""_Stz;
+  //m_xSymbol.m_sSymbol = ""_Stz;
   m_cMark1 = MARK_BLANK;
   m_cMark2 = MARK_BLANK;
 
