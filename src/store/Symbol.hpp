@@ -12,7 +12,7 @@ namespace STORE
 {
   class Symbol : public Object
   {
-  public:
+  private:
     eSF     m_eSymbol;
     s256    m_sSymbol;
   public:
@@ -69,6 +69,7 @@ namespace STORE
     char cExtractTableSynonym(void);
 
     bool bHasSymbolicValue(void);
+    bool bHasProperties(void);
 
     bool bIsAggOp(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing

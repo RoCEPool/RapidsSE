@@ -683,6 +683,19 @@ bool Symbol::bHasSymbolicValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does symbol have properties?                                               */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasProperties(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (m_pProperties)
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsAggOp(void)
