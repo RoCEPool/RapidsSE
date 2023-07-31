@@ -1,0 +1,39 @@
+/*============================================================================*/
+/* _ray107                                                                    */
+/*============================================================================*/
+
+// Query 11
+
+// NOTE: the cross join on line 25. Causing an ASSERT
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/optimise_passthru
+pipeline Query11
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarkerA on all partitions :
+    scan rapidsse public partsupp
+    | project " type INTEGER as PS_SUPPKEY PS_SUPPKEY , type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST , type INTEGER as PS_AVAILQTY PS_AVAILQTY "
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarkerB on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1"
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
