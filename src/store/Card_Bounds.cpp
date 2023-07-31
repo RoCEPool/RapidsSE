@@ -136,7 +136,9 @@ void Card_Bounds::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   for (Kid xCI(this); xCI.bEach(CK_BOUND); /**/) {
-    xCI.p_bound()->vValidate(pCI, iDepth + 1, this);
+    pCI->G.p_bound = xCI.p_bound();
+
+    pCI->G.p_bound->vValidate(pCI, iDepth + 1, this);
   }
 }
 

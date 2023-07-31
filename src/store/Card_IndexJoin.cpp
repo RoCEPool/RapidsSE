@@ -355,7 +355,9 @@ void Card_IndexJoin::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 
   pSub_level()->vValidate(pCI,iDepth+1,this);
 
-  pSub_indexList()->vValidate(pCI,iDepth+1,this);
+  pCI->G.p_indexList = pSub_indexList();
+
+  pCI->G.p_indexList->vValidate(pCI,iDepth+1,this);
 
   RASSERT(pFindPpyRecursive(P_ChosenIndex,CK_INDEX));
 }

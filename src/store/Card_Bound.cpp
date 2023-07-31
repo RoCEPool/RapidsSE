@@ -382,6 +382,9 @@ void Card_Bound::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  if (pSymbol()->bIsIndexColumn())
+    return;
+
   RASSERT(pSymbol()->bIsRelnOp());
 
   for (Kid xKid(this); xKid.bEach(CK_TERM); /**/) {
