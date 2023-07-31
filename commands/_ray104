@@ -1,0 +1,88 @@
+/*============================================================================*/
+/* _ray102 :                                                                  */
+/*============================================================================*/
+
+//__TPCH_SCHEMA
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/optimise_passthru
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageMarker10504 on all partitions :
+    scan rapidsse public customer
+    | next //broadcast
+
+  stage stageMarker10507 on all partitions :
+    indexJoin Orders IxO_CUSTKEY "bound $I1 C_CUSTKEY =="
+    | hash "type INTEGER J1_O_ORDERKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker10510 on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "bound $I1 J1_O_ORDERKEY =="
+    | hash "type INTEGER J2_L_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker10513 on all partitions :
+    indexJoin Supplier IxS_SUPPKEY expr "bound $I1 J2_L_SUPPKEY =="   // Supplier - J3
+    | hash "type INTEGER J3_S_NATIONKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker10516 on all partitions :
+    indexJoin Nation IxN_NATIONKEY expr "bound $I1 J3_S_NATIONKEY =="   // Nation - J4
+    | hash "type INTEGER J4_N_REGIONKEY"
+    | combined 0
+    | next hashcast
+
+  stage stageMarker10519 on all partitions :
+    indexJoin Region IxR_REGIONKEY expr "bound $I1 J4_N_REGIONKEY =="  // REGION - J5
+    | combined 0
+    | next
+
+  stage stageMarker10522 on all partitions :
+    filter " type BOOLEAN C_NATIONKEY J3_S_NATIONKEY ==
+                          J5_R_NAME 'AMERICA'  ==  and
+                          J1_O_ORDERDATE DATE '1994-01-01'  >=  and
+                          J1_O_ORDERDATE DATE '1995-01-01'  <  and  "
+    | gbyAgg " groupBy  type VARCHAR as n_name J4_N_NAME aggregates  type VARCHAR $K1 , type DECIMAL )  J2_L_EXTENDEDPRICE 1.  J2_L_DISCOUNT -  *  sum  "
+    | combined 0
+    | next
+
+  stage stageMarker10525 on all nodes :
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL )  $2 sum  "
+    | combined 0
+    | next
+
+  stage stageMarker10528 on origin :
+    gbyAgg " groupBy  type VARCHAR as n_name $1 aggregates  type VARCHAR $K1 , type DECIMAL as revenue )  $2 sum  "
+    | combined 0
+    | next
+
+  stage stageNew on origin :
+    sort " type DECIMAL $2 DESC  "
+    | combined 0
+    | next
+
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*
+ordered rows:
+ ('ARGENTINA',-8058.15)
+ ('PERU',-14237.80)
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
