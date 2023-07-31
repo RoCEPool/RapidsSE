@@ -135,7 +135,7 @@ begin
 
   stage S02 on all partitions :
     indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-                                 "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+                                 "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | combined 0
     | next
 
@@ -200,7 +200,7 @@ begin
 
   stage S02 on all partitions :
     indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-           "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+           "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | combined 0
     | next
 
@@ -252,10 +252,10 @@ begin
 
   stage S02 on all partitions :
     indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-        "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+        "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
-               type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
-               type VARCHAR as O_COMMENT J1_O_COMMENT"
+               type INTEGER as O_ORDERKEY O_ORDERKEY ,
+               type VARCHAR as O_COMMENT O_COMMENT"
     | combined 0
     | next
 
@@ -307,9 +307,9 @@ begin
 
   stage S02 on all partitions :
     indexJoin orders IxO_CUSTKEY "LEFT_OUTER BOUND $I1 $L1 =="
-        "type BOOLEAN }  J1_O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
+        "type BOOLEAN }  O_COMMENT '%special%requests%'  7 8 matchMiddle1  not"
     | project "type INTEGER as C_CUSTKEY C_CUSTKEY ,
-               type INTEGER as O_ORDERKEY J1_O_ORDERKEY"
+               type INTEGER as O_ORDERKEY O_ORDERKEY"
     | combined 0
     | next
 

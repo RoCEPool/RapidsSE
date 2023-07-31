@@ -407,10 +407,10 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
-    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
-       aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+       aggregates type DECIMAL as Revenue ) L_DISCOUNT sum , type INTEGER as _orderkey $K1
     | combined 0
     | next
 
@@ -438,10 +438,10 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
-    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
-       aggregates type DECIMAL as Revenue ) J1_L_DISCOUNT sum , type INTEGER as _orderkey $K1
+       aggregates type DECIMAL as Revenue ) L_DISCOUNT sum , type INTEGER as _orderkey $K1
     | combined 0
     | next
 
@@ -476,10 +476,10 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
-    | filter "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
-       aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) J1_L_DISCOUNT sum
+       aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) L_DISCOUNT sum
     | combined 0
     | next
 

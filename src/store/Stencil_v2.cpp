@@ -527,10 +527,16 @@ void Stencil_v2::vGetNextLabel(Stz* sLabelNext, StageDef* pStageDef, i8 i_Op, St
     sLabelNext->vCopy(sDefault);
   }
   else {
+
     OpDef *pOpNext = pStageDef->pGet(iNextOp);
 
-    // form next label using next op
-    sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
+    if (pOpNext->szOpNm()->bSame("hash"_Stz))
+      sLabelNext->vCopy(sDefault);
+    else {
+      // form next label using next op
+      sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
+    }
+
   }
 }
 

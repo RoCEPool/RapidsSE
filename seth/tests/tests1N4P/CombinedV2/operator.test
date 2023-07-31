@@ -767,7 +767,7 @@ begin
   stage stageMarker0142 on all partitions :
     scan rapidsse public L
     | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 =="
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :
@@ -790,7 +790,7 @@ begin
   stage stageMarker0142 on all partitions :
     indexScan L L_idx "LBOUND $I1 2 >"
     | indexJoin R R_idx " LEFT_OUTER BOUND $I1 l_int_col0 ==" //J1
-    | project " type INTEGER as l_int_col0 $1 , type INTEGER as J1_r_int_col0 $2 , type VARCHAR as J1_r_vch_col1 $3 "
+    | project " type INTEGER as l_int_col0 $1 , type INTEGER as r_int_col0 $2 , type VARCHAR as r_vch_col1 $3 "
     | combined 0
     | next
   stage stageLast on origin :

@@ -357,7 +357,7 @@ begin
 
  stage S02 on all partitions :
    indexJoin orders IxO_CUSTKEY "bound $I1 $L1 =="
-   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 J1_O_ORDERKEY =="
+   | keyExists lineitem IxL_ORDERKEY  "BOUND $I1 O_ORDERKEY =="
                                         "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
    | combined 0
    | next
