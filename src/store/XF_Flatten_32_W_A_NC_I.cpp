@@ -98,7 +98,7 @@ void XF_Flatten_32_W_A_NC_I::vXF_Flatten_32_W_A_NC_I(void)
   XF_Smooth* pSmooth = new XF_Smooth;
   pSmooth->vSmooth(m_pCI,pCarryForward);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   m_pCI->vPrintBoard(__LINE__);
 

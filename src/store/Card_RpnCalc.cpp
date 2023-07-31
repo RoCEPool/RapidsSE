@@ -224,7 +224,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-    xTerm.p_term()->vSetType(p_rpnCalc_found->szGetType());
+    xTerm.p_term()->vSetType(p_rpnCalc_found->szColType());
   }
 }
 

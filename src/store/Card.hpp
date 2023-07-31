@@ -292,8 +292,9 @@ namespace STORE
     Stz* szCardNm(void);
     i8   i_Child(void);
     void v_Child(i8 i_Child);
-    void vClearMarksRecursive(void);
+
     eCT  eColType(void);
+    Stz* szColType(void);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCard(void);
@@ -307,8 +308,6 @@ namespace STORE
     Card* pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
-    Stz* szGetType(void);
-
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol);
     bool bHasSymbolic(void);
@@ -316,11 +315,11 @@ namespace STORE
     bool bIsCard(eCK eCard);
     bool bIsOne(eCK eCard, ...);
 
-
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
     void vMark2(char cMark2);
+    void vMarksClearRecursive(void);
 
     void vPrintCardRecursive(Ribbon* pRibbon, i8 iDepth, Card* pParent,
                              bool& rbPrune, eAL eLevel,

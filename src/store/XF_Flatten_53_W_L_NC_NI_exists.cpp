@@ -124,7 +124,7 @@ void XF_Flatten_53_W_L_NC_NI_exists::vXF_Flatten_53_W_L_NC_NI_exists(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   m_pCI->vEndTransform();
 

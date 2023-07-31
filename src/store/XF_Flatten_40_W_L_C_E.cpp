@@ -88,7 +88,7 @@ void XF_Flatten_40_W_L_C_E::vXF_Flatten_40_W_L_C_E(void)
   pSmoosh->vInto_KEYnotEXISTS(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   m_pCI->vEndTransform();
 

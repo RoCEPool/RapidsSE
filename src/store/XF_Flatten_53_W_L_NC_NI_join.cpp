@@ -115,7 +115,7 @@ void XF_Flatten_53_W_L_NC_NI_join::vXF_Flatten_53_W_L_NC_NI_join(void)
 
   m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   m_pCI->vEndTransform();
 

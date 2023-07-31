@@ -100,7 +100,7 @@ void XF_Flatten_10_F::vXF_Flatten_10_F(void)
   m_pCI->vRenumberCards();
   m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
 
   m_pCI->vPrintBoard(__LINE__);
 

@@ -372,7 +372,7 @@ void Board::vClearMarks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_pCard_Deck->vClearMarksRecursive();
+  m_pCard_Deck->vMarksClearRecursive();
 }
 
 /*----------------------------------------------------------------------------*/

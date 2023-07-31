@@ -94,7 +94,7 @@ void XF_Flatten_24_W_A_C_ro::vXF_Flatten_24_W_A_C_ro(void)
   pFold->vDerive_Correleted_fold_projection(m_pCI);
   m_pCI->vPrintBoard(__LINE__);
 
-  m_pCI->G.pDeck->vClearMarksRecursive();
+  m_pCI->G.pDeck->vMarksClearRecursive();
   m_pCI->vPrintBoard(__LINE__);
   m_pCI->vEndTransform();
 

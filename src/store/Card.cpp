@@ -479,26 +479,6 @@ void Card::vCard(eCK eCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clear all marks                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vClearMarksRecursive(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vMark1(MARK_BLANK);
-  vMark2(MARK_BLANK);
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card *pSubCard = pGetChild(i_Sub);
-
-    pSubCard->vClearMarksRecursive();
-  }
-
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Card::i_Child(void)
@@ -540,6 +520,18 @@ eCT Card::eColType(void)
   return eColumnType;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szColType(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Stz* szType = m_xSymbol.Y_szGet(P_Type);
+
+  return szType;
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump card and its sub cards                                                */
@@ -769,18 +761,6 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szGetType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Stz* szType = m_xSymbol.Y_szGet(P_Type);
-
-  return szType;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given card a sub card of this card?                                     */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasSubRecursive(Card* pSubCard)
@@ -910,6 +890,25 @@ void Card::vMark2(char cMark2)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_cMark2 = cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear all marks                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vMarksClearRecursive(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  vMark1(MARK_BLANK);
+  vMark2(MARK_BLANK);
+
+  i8 nSubCards = this->nChildCards();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card *pSubCard = pGetChild(i_Sub);
+
+    pSubCard->vMarksClearRecursive();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
