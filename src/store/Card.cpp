@@ -1225,7 +1225,7 @@ char Card::cSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char c = * m_xSymbol.m_sSymbol.azChar();
+  char c = m_xSymbol.cSF_char();
 
   return c;
 }
@@ -1237,7 +1237,7 @@ i8 Card::iSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  i8 i = m_xSymbol.m_sSymbol.iToI8();
+  i8 i = m_xSymbol.iSF_number();
 
   return i;
 }
@@ -1249,7 +1249,9 @@ Stz* Card::szSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  return m_xSymbol.m_sSymbol.szStz();
+  Stz* sz = m_xSymbol.szSF_string();
+
+  return sz;
 }
 
 /*----------------------------------------------------------------------------*/
