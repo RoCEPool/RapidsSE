@@ -95,7 +95,7 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
     Card_Expr *p_expr_key = xKey.p_expr();
 
     i_Cell++;
-    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->szSymbol());
+    pCI->G_vAppendNewChild(pCI->G.p_keyCells,CK_MAP,p_expr_key->pSymbol());
     pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
 
 
@@ -119,7 +119,7 @@ void Card_GbyAgg::vColumn_Mapping(CardIter *pCI)
     else {
       i_Cell++;
       i_Emit++;
-      pCI->G_vAppendNewChild(pCI->G.p_payloadCells, CK_MAP,p_expr_projection->szSymbol());
+      pCI->G_vAppendNewChild(pCI->G.p_payloadCells, CK_MAP,p_expr_projection->pSymbol());
       pCI->G.p_map->pSymbol()->Y_vSet(P_Cell, i_Cell);
 
       pCI->G.p_map->pSymbol()->Y_vSet(P_EmittedCol, i_Emit);
