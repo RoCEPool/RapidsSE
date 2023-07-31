@@ -32,7 +32,7 @@ Card_As::Card_As(i8 iAsNo)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(Stz* szAs)
-: Card(CK_AS,szAs)
+: Card(CK_AS,szAs, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
@@ -45,7 +45,7 @@ Card_As::Card_As(Stz* szAs)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(Card_As* p_as_arg)
-: Card(CK_AS, p_as_arg->szSymbol())
+: Card(CK_AS, p_as_arg->szSymbol(), SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

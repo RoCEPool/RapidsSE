@@ -30,7 +30,7 @@ Card_Note::Card_Note(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Note::Card_Note(Stz* szComment)
-: Card(CK_NOTE,szComment)
+: Card(CK_NOTE,szComment, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

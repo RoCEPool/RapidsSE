@@ -30,7 +30,7 @@ Card_TableNm::Card_TableNm(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableNm::Card_TableNm(Stz* szTableNm)
-    : Card(CK_TABLENM,szTableNm)
+    : Card(CK_TABLENM,szTableNm, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

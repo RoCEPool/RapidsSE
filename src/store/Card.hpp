@@ -254,7 +254,7 @@ namespace STORE
   
     Card(eCK eCard);
     Card(eCK eCard, Symbol* pSymbol);
-    Card(eCK eCard, Stz* szSymbol, eSF eSymbolForm=SF_OTHER);
+    Card(eCK eCard, Stz* szSymbol, eSF eSymbolForm);
     Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, i8 iPpy);
     Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, Stz* szPpy);
     void vInit(eCK eCard);

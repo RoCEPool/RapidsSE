@@ -36,7 +36,7 @@ Card_JoinOrder::Card_JoinOrder(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinOrder::Card_JoinOrder(Stz* szValue)
-    : Card(CK_JOINORDER,szValue)
+    : Card(CK_JOINORDER,szValue, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

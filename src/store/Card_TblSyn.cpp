@@ -35,7 +35,7 @@ Card_TblSyn::Card_TblSyn(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TblSyn::Card_TblSyn(Stz* szTableNm)
-    : Card(CK_TABLE,szTableNm)
+    : Card(CK_TABLE,szTableNm, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

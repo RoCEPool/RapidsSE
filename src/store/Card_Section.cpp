@@ -30,7 +30,7 @@ Card_Section::Card_Section(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Section::Card_Section(Stz* szComment)
-: Card(CK_SECTION,szComment)
+: Card(CK_SECTION,szComment, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

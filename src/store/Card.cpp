@@ -353,7 +353,7 @@ Card* Card::pAppendNewCard(eCK eCard, Stz* szSymbol)
 
   Card* pCard;
   if (szSymbol)
-    pCard = new Card(eCard, szSymbol);
+    pCard = new Card(eCard, szSymbol, SF_OTHER);
   else
     pCard = new Card(eCard);
 
