@@ -545,16 +545,6 @@ void Card::vColType(Ppy xPpy_type)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set type of symbol                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vSetType(Stz* szType_arg)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  m_xSymbol.Y_vSet(P_Type,szType_arg);
-}
-
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szColType(void)
@@ -831,19 +821,6 @@ bool Card::bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol)
     if (p_sub->bHasSubWithSymbolRecursive(eCard, szSymbol))
       return true;
   }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does the card have a symbolic value?                                       */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasSymbolic(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (*m_xSymbol.m_sSymbol.azChar())
-    return true;
 
   return false;
 }
@@ -1212,7 +1189,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
   s256 sNameSymbol;
 
   if (0 == iDepth) {
-    if (bHasSymbolic())
+    if (bSymbolHasValue())
       sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
@@ -1230,7 +1207,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprint("%s%lld]"_Stz,
                           Stz::szDots(iDepth - 1),
                           m_i_Child);
-    if (bHasSymbolic())
+    if (bSymbolHasValue())
       sNameSymbol.vSprintCat("%s%s %s"_Stz,
                              sName.szStz(),
                              sHiddenChildren.szStz(),
@@ -1311,7 +1288,7 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!bHasSymbolic())
+  if (!bSymbolHasValue())
     return;
 
   if (bPrintMarks) {
@@ -1493,6 +1470,20 @@ void Card::vSymbol(Stz* szSymbol)
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
   m_xSymbol.m_sSymbol = szSymbol;
+  //m_xSymbol.m_eSymbolForm = SF_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does the card have a symbolic value?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bSymbolHasValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (*m_xSymbol.m_sSymbol.azChar())
+    return true;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

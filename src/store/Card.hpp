@@ -297,7 +297,6 @@ namespace STORE
     Stz* szColType(void);
     void vColType(Card* p_card_arg);
     void vColType(Ppy xPpy_type);
-    void vSetType(Stz* szType_arg);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCard(void);
@@ -313,7 +312,6 @@ namespace STORE
 
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol);
-    bool bHasSymbolic(void);
 
     bool bIsCard(eCK eCard);
     bool bIsOne(eCK eCard, ...);
@@ -352,6 +350,7 @@ namespace STORE
     i8   iSymbol(void);
     Stz* szSymbol(void);
     void vSymbol(Stz* szSymbol);
+    bool bSymbolHasValue(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 

@@ -224,7 +224,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-    xTerm.p_term()->vSetType(p_rpnCalc_found->szColType());
+    xTerm.p_term()->vColType(p_rpnCalc_found->szColType());
   }
 }
 
@@ -443,10 +443,10 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
 
   Card_RpnCalc* p_rpnCalc_propagated = new Card_RpnCalc;
 
-  p_rpnCalc_propagated->vSetType(szP_Type());
+  p_rpnCalc_propagated->vColType(szP_Type());
 
   Card_Term* p_term_propagated = new Card_Term(p_expr_encasing->szSymbol());
-  p_term_propagated->vSetType(szP_Type());
+  p_term_propagated->vColType(szP_Type());
 
   p_rpnCalc_propagated->vAppend(p_term_propagated);
 
