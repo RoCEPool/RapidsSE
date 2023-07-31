@@ -136,11 +136,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator begin
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
-        vAppendStencilTo(pOpSketch);
-        //vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
-        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
+        vOperatorBegin(pOpSketch);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // initialize with key kind
@@ -210,11 +206,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         RASSERT ( bOpened );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
-        vAppendStencilTo(pOpSketch);
-        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
+        // operator begin
+        vOperatorBegin(pOpSketch);
 
         vAppendCodeFragment(pOpSketch, "vAggregInitBegin"_Stz, pOperatorFile);
         vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
@@ -319,12 +312,9 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         RASSERT ( bOpened );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+        // operator begin
+        vOperatorBegin(pOpSketch);
 
-        vAppendStencilTo(pOpSketch);
-
-        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "iProjectEnd"_Stz, pOperatorFile);
 
@@ -355,7 +345,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
         vAppendStencilTo(pOpSketch);
         vAppendCodeFragment(pOpSketch, "vIndexScanBegin"_Stz, pOperatorFile);
 
@@ -412,12 +401,8 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         RASSERT ( bOpened );
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // operator stub
-        vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
-        vAppendStencilTo(pOpSketch);
-        //vAppendCodeFragment(pOpSketch, "vJoinBegin"_Stz, pOperatorFile);
-        vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
+        // operator begin
+        vOperatorBegin(pOpSketch);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // initialize with key kind
@@ -622,18 +607,17 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // operator stub
         vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // to stencil
         vAppendStencilTo(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
+
+        vAppendCodePixCols(pOpSketch);
+        vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // TUB in EOS handler
         if (pOpSketch->m_eHandlerKind == HK_EOS) {
           if (pOpSketch->m_eStencilFrom == SR_PL) {
-            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-            vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
+
             if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
               vAppendCodeFragment(pOpSketch, "vEosPLIntKeyTraversal"_Stz);
             else
@@ -648,9 +632,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
             vAppendCodeFragment(pOpSketch, "vEosPayLoadTubEnd"_Stz);
           }
           else {
-            vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-            vAppendCodePixCols(pOpSketch);
-            vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBegin"_Stz);
             vGenerateExprCode(pOpSketch->m_pInitStack, "    "_Stz);
             vAppendCodeFragment(pOpSketch, "iEosTubBody"_Stz);
@@ -661,9 +642,6 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         else {
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // TUB in CRW/ROW/INDEX handler
-          vAppendCodeFragment(pOpSketch, "iTubBegin"_Stz);
-          vAppendCodePixCols(pOpSketch);
-          vAppendCodeFragment(pOpSketch, "vTubRowPix"_Stz);
 
           // generate code for the hash value
           if (pOpSketch->eSketchKind() == SK_POT)
@@ -1462,6 +1440,18 @@ bool CombinedSrc::bOpenCodeFiles(void) {
     return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for operator begin                                           */
+/*----------------------------------------------------------------------------*/
+void CombinedSrc::vOperatorBegin(OpSketch* pOpSketch) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_COMBINEDSRC, _FOOTER_);
+
+  vAppendCodeFragment(pOpSketch, "vOperatorStub"_Stz);
+  vAppendStencilTo(pOpSketch);
+  vAppendCodeFragment(pOpSketch, "vOperatorBegin"_Stz);
 }
 
 /*============================================================================*/
