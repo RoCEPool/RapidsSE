@@ -434,7 +434,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Symbol x_Symbol_stmCol1;
     x_Symbol_stmCol1.vSetStreamOrdinal(1);
     if (p_term)
-      x_Symbol_stmCol1.m_sSymbol = p_term->szSymbol();
+      x_Symbol_stmCol1.vSet(p_term->pSymbol());
     else
       x_Symbol_stmCol1.vSetStreamOrdinal(1);
     p_term_head->pSymbol()->vSet(&x_Symbol_stmCol1);

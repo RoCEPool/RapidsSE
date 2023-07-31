@@ -982,7 +982,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
   s256 sNameSymbol;
 
   if (0 == iDepth) {
-    if (bSymbolHasValue())
+    if (m_xSymbol.bHasSymbolicValue())
       sNameSymbol.vSprint("%s%s %s *%lld"_Stz,
                           sName.szStz(),
                           sHiddenChildren.szStz(),
@@ -1000,7 +1000,7 @@ void Card::vPrintNameSymbol(Ribbon* pRibbon, i8 iDepth)
       sNameSymbol.vSprint("%s%lld]"_Stz,
                           Stz::szDots(iDepth - 1),
                           m_i_Child);
-    if (bSymbolHasValue())
+    if (m_xSymbol.bHasSymbolicValue())
       sNameSymbol.vSprintCat("%s%s %s"_Stz,
                              sName.szStz(),
                              sHiddenChildren.szStz(),
@@ -1081,16 +1081,13 @@ void Card::vPrintSymbol(Ribbon* pRibbon, i8 iDepth, bool bPrintMarks)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (!bSymbolHasValue())
+  if (! m_xSymbol.bHasSymbolicValue())
     return;
 
-  if (bPrintMarks) {
+  if (bPrintMarks)
     pRibbon->vSprintDataRight("%c%c%18s"_Stz, m_cMark1, m_cMark2, szSymbol());
-
-  }
-  else {
+  else
     pRibbon->vSprintDataRight("  %s"_Stz, szSymbol());
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1263,21 +1260,7 @@ void Card::vSymbol(Stz* szSymbol, eSF eSymbol)
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.m_sSymbol = szSymbol;
-  m_xSymbol.m_eSymbol = eSymbol;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does the card have a symbolic value?                                       */
-/*----------------------------------------------------------------------------*/
-bool Card::bSymbolHasValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (*m_xSymbol.m_sSymbol.azChar())
-    return true;
-
-  return false;
+  m_xSymbol.vSet(eSymbol,szSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

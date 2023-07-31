@@ -334,7 +334,6 @@ namespace STORE
     i8   iSymbol(void);
     Stz* szSymbol(void);
     void vSymbol(Stz* szSymbol, eSF eSymbol=SF_OTHER);
-    bool bSymbolHasValue(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 

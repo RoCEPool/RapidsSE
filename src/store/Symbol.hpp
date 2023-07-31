@@ -68,6 +68,7 @@ namespace STORE
     i8   iExtractOrdinal(void);
     char cExtractTableSynonym(void);
 
+    bool bHasSymbolicValue(void);
 
     bool bIsAggOp(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
@@ -103,6 +104,7 @@ namespace STORE
     bool bSame(Symbol* pArg);
 
     void vSet(Symbol* pSymbol);
+    void vSet(eSF eSymbol, Stz* szSymbol);
     void vSet_asName(Stz* szAsNm);
     void vSet_colNm(Stz* szColNm);
     void vSetCrossRef(i8 iCrossRef);
@@ -125,6 +127,7 @@ namespace STORE
     i8   iSF_number(void);
     Stz* szSF_other(void);
     Stz* szSF_string(void);
+
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 

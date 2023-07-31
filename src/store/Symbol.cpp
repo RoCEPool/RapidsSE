@@ -670,6 +670,19 @@ char Symbol::cExtractTableSynonym(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does symbol a symbolic value?                                              */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bHasSymbolicValue(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (* m_sSymbol.azChar())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsAggOp(void)
@@ -1146,6 +1159,17 @@ void Symbol::vSet(Symbol* pSymbol)
     delete m_pProperties;
     m_pProperties = nullptr;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol using given symbol                                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet(eSF eSymbol, Stz* szSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szSymbol;
+  m_eSymbol = eSymbol;
 }
 
 /*----------------------------------------------------------------------------*/
