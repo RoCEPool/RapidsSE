@@ -55,9 +55,7 @@ namespace STORE
     FileMap*      m_pFileMap;
     Format        m_oFormat;
     Grid*         m_pGrid;
-#ifdef WITH_PAGING
     HashMap*      m_pHashMap;
-#endif
     Heaps         m_xHeaps;
     InternalTables* m_pInternalTables;
     Jobs*         m_pJobs;

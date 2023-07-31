@@ -9,14 +9,16 @@
 
 namespace BASE
 {
-  class FileMap : public PoolBuffer
+  class FileMap : public Object
   {
   public:
-    Stz* m_szFilePath;
-    i8 m_iFileSize;
-    i8 m_iCreated;
-#ifdef WITH_PAGEFILE
-    PageFile* m_pPageFile; // TODO Arjun: Update to list
+    Lock       m_okLock;
+    Stz*       m_szFilePath;
+    i8         m_iFileSize;
+    i8         m_iCreated;
+    PageFile*  m_pPageFile; // TODO Arjun: Update to list
+#ifndef WITH_PAGING
+    i8         m_iSynthBufferId; // Use synthetic buffer id when paging is disabled;
 #endif
     // Store start and end address of pageable area?
 
@@ -30,12 +32,23 @@ namespace BASE
     FileMap(void);
     ~FileMap(void);
 
-    RowBuffer* pFromDisk(Operand* pOperand);
-#ifdef WITH_BUFFER_ID
-    BufferId oGetNewBufferId(i8 iPoolBufferNo);
-#endif
+    DataBuffer* pDataBufferFromDisk(BufferId oBufferId);
+    BufferId oGetNewBufferId(void);
+
     void vToDisk(Operand* pOperand);
+    void vToDisk(DataBuffer* pDataBuffer);
     static PoolBuffer* pToPoolBuffer(i8 i_PoolBuffer);
+
+    void vGrabWriteLock(void);
+    void vDropWriteLock(void);
+    void vGrabReadLock(void);
+    void vDropReadLock(void);
+
+    void vStartPageIn(void);
+    void vEndPageIn(void);
+
+    void vStartPageOut(void);
+    void vEndPageOut(void);
 
   private:
 

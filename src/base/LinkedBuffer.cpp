@@ -36,7 +36,7 @@ LinkedBuffer::LinkedBuffer(eCN eClassNo)
 : Operand(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
+
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
 }
 
@@ -263,7 +263,7 @@ void LinkedBuffer::vLowerLinkedBuffer(BufferNo tLowerBufferNo)
 LinkedBuffer* LinkedBuffer::pNextLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
   LinkedBuffer* pNextBuffer = m_tNextBuffer.pGetLinkedBuffer();
 
   return pNextBuffer;
@@ -287,7 +287,7 @@ void LinkedBuffer::vNextLinkedBuffer(LinkedBuffer* pNextBuffer)
 void LinkedBuffer::vNextLinkedBuffer(BufferNo tNextBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
   m_tNextBuffer = tNextBufferNo;
 }
 
@@ -297,7 +297,7 @@ void LinkedBuffer::vNextLinkedBuffer(BufferNo tNextBufferNo)
 LinkedBuffer* LinkedBuffer::pPrevLinkedBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
   LinkedBuffer* pPrevBuffer = m_tPrevBuffer.pGetLinkedBuffer();
 
   return pPrevBuffer;

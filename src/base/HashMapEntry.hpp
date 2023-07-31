@@ -10,9 +10,10 @@ namespace BASE
     friend HashMap;
     friend HashMapSlot;
 
-  private:
-    void* m_pKeyObject;
-    Object* m_pValObject;
+  public:
+    Lock          m_okLock;        // lock
+    void*         m_pKeyObject;
+    Object*       m_pValObject;
 
     HashMapEntry* m_pNext;
 

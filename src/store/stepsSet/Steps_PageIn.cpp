@@ -63,6 +63,7 @@ void Step::vPageInPopRequest(void) {
   AM::vGrabTaskLock(pReqTask,(Stz*)__func__);
   AM::TASK::vTriggerBidingPageIn(pReqTask, this);
 #endif
+
   EXIT();
 }
 

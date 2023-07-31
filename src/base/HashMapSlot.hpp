@@ -10,7 +10,7 @@ namespace BASE
   {
   friend HashMap;
 
-  private:
+  public:
     u8 m_uNoOfSlots;
     HashMapEntry* m_pEntry[C_INIT_HASHMAP_SIZE];
 

@@ -47,8 +47,8 @@ ToKeyHshRow::ToKeyHshRow(StreamDef* pStreamDef, Format* pFmt)
   m_nErrors = 0;
   m_i_Rec   = -1;
   m_bFirst  = true;
-  
-  m_pRowBuffer   = nullptr;
+
+  m_pRowBuffer = nullptr;
 
   //--
   
@@ -133,7 +133,7 @@ RowBuffer* ToKeyHshRow::pDanglingRowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
   
   RowBuffer* pRowBuffer = m_pRowBuffer;
-  
+
   m_pRowBuffer = nullptr;
   
   return pRowBuffer;
@@ -146,21 +146,25 @@ RowBuffer* ToKeyHshRow::pFullRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKEYHSHROW,_FOOTER_);
 
-  RowBuffer* pFullRiwBuffer = nullptr;
-  
+  RowBuffer* pFullRowBuffer = nullptr;
+
   RowBuffer* pRowBuffer = m_pRowBuffer ?
                             _pRowBuffer(m_pRowBuffer->pNextLinkedBuffer()) : nullptr;
   while (pRowBuffer) {
-    pFullRiwBuffer = pRowBuffer;
+    pFullRowBuffer = pRowBuffer;
     pRowBuffer = _pRowBuffer(pRowBuffer->pNextLinkedBuffer());
   }
   
-  if (pFullRiwBuffer) {
-    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRiwBuffer->pPrevLinkedBuffer());
+  if (pFullRowBuffer) {
+    RowBuffer* pPrevBuffer = _pRowBuffer(pFullRowBuffer->pPrevLinkedBuffer());
     pPrevBuffer->vNextLinkedBuffer(nullptr);
+
+    // TODO: Arjun - temp test to see if these pointers are needed later
+    pFullRowBuffer->vNextLinkedBuffer(nullptr);
+    pFullRowBuffer->vPrevLinkedBuffer(nullptr);
   }
   
-  return pFullRiwBuffer;
+  return pFullRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,7 +220,7 @@ void ToKeyHshRow::vNewRowBuffer(void)
   
   //  create a new buffer
   RowBuffer* pRowBuffer = new RowBuffer;
-  
+
   // link the new to old
   pRowBuffer->vNextLinkedBuffer(m_pRowBuffer);
   if (m_pRowBuffer)
@@ -888,7 +892,7 @@ bool ToKeyHshRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   // 1) advance to next record in csv chunk
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_AdvanceNextRecord:
-    
+
   m_pRowBuffer->nFreeBytes();
   
   if (iTraceBits & C_BIT_TestMoreRecords)
@@ -965,7 +969,7 @@ L_AdvanceNextRecord:
     ASSERT(aNewRow);
     UNUSED(aNewRow);
   }
- 
+
   m_pRowBuffer->nFreeBytes();
 
   //                                                      end of testMoreRecords
@@ -975,7 +979,7 @@ L_AdvanceNextRecord:
   // 2) while more fields of current record
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 L_NextFieldInRecord:
-  
+
   m_pRowBuffer->nFreeBytes();
   
   ASSERT(EC_NONE == eError);
@@ -1471,7 +1475,7 @@ L_Float:
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                              deposit float
-  
+
   m_pRowBuffer->vDepositColVal(dColVal_float);
   
   goto L_FieldEnd;
@@ -1951,7 +1955,7 @@ L_Timestamp_noTimeComponents:
 
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                          deposit timestamp
-    
+
   vDEPOSIT_VALUE(wxColVal_timestamp);
 
 
@@ -2447,7 +2451,6 @@ L_Varchar_userEnclosed:
   //                                                            deposit varchar
   
 L_Varchar_depositValue:
-
   if ((u8)(nVchChars) > C_VCH_SIZE_MAX)
     goto L_FieldError;
 
@@ -2469,7 +2472,7 @@ L_Varchar_setNull:
   // 4) processing at end of field
   // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 L_FieldEnd:
-    
+
   m_pRowBuffer->nFreeBytes();
 
   if (iTraceBits & C_BIT_PostField)
@@ -2627,7 +2630,7 @@ L_RecordEndLineEnd:
   vSKIP_RECORD_LINE_END();
   
   // deposit key hash
-          
+
   m_pRowBuffer->vDepositColVal(tKeyHsh);
     
   tKeyHsh = 0;

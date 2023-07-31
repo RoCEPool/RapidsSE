@@ -5,31 +5,44 @@
 #include "BASE.h"
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+BufferId::BufferId(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+BufferId::BufferId(void *pAddr)
+{
+  this->m_pvAsAddress = pAddr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+BufferId::BufferId(i8 iVal)
+{
+  this->m_iAsI8 = iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get the address that this BufferId represents                              */
 /*----------------------------------------------------------------------------*/
 // We will update this to use the HashMap, and page in from disk
 // What happens if page out receives a buffer not in memory?
 // Potentially page it in, just to page it back out.
-void* BufferId::vAddressFromId(BufferId oBufferId)
+void* BufferId::aAddressFromId(BufferId oBufferId)
 {
   _static_
 
-  ASSERT(oBufferId.m_bIdFlag == 1);
+  if(oBufferId.m_iAsI8 == 0)
+    return nullptr;
 
-  oBufferId.m_bIdFlag = 0;
+  RASSERT(oBufferId.m_bIdFlag == 1);
 
-  // Convert BufferId to BufferNo to BufferAddress
-  PoolBuffer* pPoolBuffer =
-      FileMap::pToPoolBuffer(oBufferId.m_iAsI8);
-
-  HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(pPoolBuffer);
-
-  DataBuffer* pDataBuffer =
-      reinterpret_cast<DataBuffer*>(pHeapBuffer->aFirstChunk());
-
-  return (void*) pDataBuffer;
-
+  return AM::pHashMap()->pValueAt(oBufferId.m_pvAsAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,12 +74,35 @@ bool BufferId::bIsAddress(BufferId oBufferId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Check if the given BufferId is an address or an Id by checking the flag bit*/
+/*----------------------------------------------------------------------------*/
+bool BufferId::bIsBufferId(BufferId oBufferId)
+{
+  _static_
+
+  return oBufferId.m_bIdFlag == 1;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Check if the given address is a Buffer Id by checking the flag bit         */
+/*----------------------------------------------------------------------------*/
+bool BufferId::bIsBufferId(void* aAddr)
+{
+  _static_
+
+  BufferId oBufferId(aAddr);
+  return oBufferId.m_bIdFlag == 1;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* Set the Buffer Subscript                                                   */
 /*----------------------------------------------------------------------------*/
 //TODO Arjun: Check overflow before setting below members
 void BufferId::vSetBuffSubscript(u8 uBuffSubscript)
 {
-  m_uBuffSubscript = uBuffSubscript;
+  m_uSeekOffset = uBuffSubscript;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -25,7 +25,9 @@ void Step::vAddSteps_PageOut(void) {
 /*----------------------------------------------------------------------------*/
 void Step::vPageOutCheckLowMemory(void) {
   ENTRY();
+
 #ifdef WITH_PAGING
+
   d8 dUsedSpacePercent = gpBufferPool->dUsedSpacePercent();
   if( dUsedSpacePercent < C_MAX_MEMORY_LIMIT) {
     return;

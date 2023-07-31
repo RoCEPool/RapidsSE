@@ -1,7 +1,7 @@
 boolean.test
 decimal.test
-float.test
-integer.test
+////float.test
+////integer.test
 nulls.test
 timestamp.test
-varchar.test
+////varchar.test

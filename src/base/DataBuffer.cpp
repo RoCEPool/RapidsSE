@@ -39,12 +39,17 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   //LOGGABLE ASSERT(CacheLine::bMultipleCacheLines(sizeof(DataBuffer)));
 
   m_iBufferNo  = iBufferNo();
-#ifdef WITH_BUFFER_ID
-  m_oBufferId = AM::pFileMap()->oGetNewBufferId(m_iBufferNo);
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
-#endif
-#endif
+
+  if(eClassNo == CN_CRWBUFFER ||
+     eClassNo == CN_ROWBUFFER) {
+
+    m_oBufferId = AM::pFileMap()->oGetNewBufferId();
+
+    AM::pHashMap()->vInsertKeyValue((void *) m_oBufferId.m_pvAsAddress, (Object *) this);
+  } else {
+    m_oBufferId.m_iAsI8 = 0;
+  }
+
   m_tLglPtn     = C_UNKNOWN;
   
   m_iBufferHeight = 0;
@@ -53,6 +58,8 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
   
   m_pTable_dbuff = nullptr;
   m_pStreamDef_dbuff = nullptr;
+
+  m_bOutputQueue = false;
 
   m_tTxnNo = C_UNKNOWN;
 
@@ -65,11 +72,10 @@ DataBuffer::DataBuffer(eCN eClassNo, bool bIsPermanent)
 DataBuffer::~DataBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-#ifdef WITH_BUFFER_ID
-#ifdef WITH_HASHMAP
-  AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
-#endif
-#endif
+
+  if(m_oBufferId.m_iAsI8 != 0)
+    AM::pHashMap()->vDeleteKey((void*)m_oBufferId.m_pvAsAddress);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,6 +263,16 @@ i8 DataBuffer::iBufferHeight(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop lock for read                                                         */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vDropRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vDropWrite(void)
@@ -264,6 +280,16 @@ void DataBuffer::vDropWrite(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for read                                                         */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vGrabRead(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_okLock.vGrabRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -322,6 +348,36 @@ i8 DataBuffer::iBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get output queue flag                                                      */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bOutputQueued(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_bOutputQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set output queue flag                                                      */
+/*----------------------------------------------------------------------------*/
+void DataBuffer::vOutputQueued(bool bOutputQueued)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  m_bOutputQueue = bOutputQueued;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this buffer locked ?                                                    */
+/*----------------------------------------------------------------------------*/
+bool DataBuffer::bIsLocked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_okLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this buffer permanent ?                                                 */
 /*----------------------------------------------------------------------------*/
 bool DataBuffer::bIsPermanent(void)
@@ -351,7 +407,6 @@ void DataBuffer::vSetBufferNo(i8 iBufferNo)
   m_iBufferNo = iBufferNo;
 }
 
-#ifdef WITH_BUFFER_ID
 /*----------------------------------------------------------------------------*/
 /* get the buffer id of this row buffer                                       */
 /*----------------------------------------------------------------------------*/
@@ -365,13 +420,12 @@ BufferId DataBuffer::oGetBufferId(void)
 /*----------------------------------------------------------------------------*/
 /* set the buffer id                                                          */
 /*----------------------------------------------------------------------------*/
-void DataBuffer::vSetBufferId(BufferId oBufferId)
+void DataBuffer::vSetBufferId(void* pIdAsAddr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_oBufferId = oBufferId;
+  m_oBufferId.m_pvAsAddress = pIdAsAddr;
 }
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

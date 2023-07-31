@@ -8,7 +8,7 @@
 
 namespace BASE
 {
-  static const i8 C_LOCAL_VARS = (C_SIZE_MEDIUM_OBJECT - 128) / sizeof(LocalVar);
+  static const i8 C_LOCAL_VARS = (C_SIZE_SMALL_OBJECT - 128) / sizeof(LocalVar);
 
   class LocalStrs;
 
@@ -16,7 +16,7 @@ namespace BASE
   {
   public:
   
-    LocalStrs* m_pLocalStrs;
+    LocalStrs* m_p_LocalStrs;
   
     i8 m_nLocalVars;
   
@@ -29,7 +29,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    LocalVars(void);
+    LocalVars(LocalStrs* pLocalStrs);
    ~LocalVars(void) noexcept(false);
   
     void* aDiscardPoint(void);

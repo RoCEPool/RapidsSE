@@ -31,11 +31,11 @@ load lineitem_100 "../FASTLOAD/Data/lineitem_100.csv" ;
 success
 
 // check no of rows
-tableScan lineitem_100;
+select * from lineitem_100;
 rows: 100
 
 // check data
-tableScan lineitem_100;
+select * from lineitem_100;
 rows:
   (1,1551894,76910,1,17,33078.94,0.04,0.02,'N','O','1996-03-13','1996-02-12','1996-03-22','DELIVER IN PERSON','TRUCK','egular courts above the')
   (1,673091,73092,2,36,38306.16,0.09,0.06,'N','O','1996-04-12','1996-02-28','1996-04-20','TAKE BACK RETURN','MAIL','ly final dependencies: slyly bold ')

@@ -18,10 +18,10 @@ Load T1 "../DATA/Load/null.csv" ;
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 11
 
-tableScan T1;
+select * from T1;
 rows:
   (NULL,null,NULL)
   (null,null,NULL)
@@ -56,10 +56,10 @@ Load T1 "../DATA/Load/null_enclosedBy.csv"
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 11
 
-tableScan T1;
+select * from T1;
 rows:
   (NULL,null,NULL)
   (null,null,NULL)
@@ -95,10 +95,10 @@ Load T1 "../DATA/Load/null_enclosedByCurly.csv"
 success
 
 // predicateFetch rows
-tableScan T1;
+select * from T1;
 rows: 11
 
-tableScan T1;
+select * from T1;
 rows:
   (NULL,null,NULL)
   (null,null,NULL)

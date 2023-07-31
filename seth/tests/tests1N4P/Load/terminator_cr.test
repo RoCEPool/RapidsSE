@@ -31,7 +31,7 @@ rows:
   (2, 'A', 'Also terminated by <CR>')
 
 // fetch
-tableScan terminator_cr;
+select * from terminator_cr;
 rows: 2
 
 CLEANUP {

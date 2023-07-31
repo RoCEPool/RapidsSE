@@ -20,7 +20,7 @@ Load vch "../DATA/Load/vch_term_no_enclosed.csv"
   <escape_char> = "\0" ;
 success
 
-//tableScan vch;
+//select * from vch;
 //rows: 17
 
 predicateFetch vch "vch_testno 601 =";
