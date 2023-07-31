@@ -534,16 +534,16 @@ Card* Card::pFindParentRecursive(Card* pSubCard)
 /*----------------------------------------------------------------------------*/
 /* attempt find card                                                          */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindCardRecursive(eCK eCard)
+Card* Card::pFindCardRecursive(eCK eOfCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(eCard))
+  if (bIsCard(eOfCard))
     return this;
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    if (Card *pFoundCard = pGetChild(i_Child)->pFindCardRecursive(eCard))
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindCardRecursive(eOfCard))
       return pFoundCard;
   }
 
@@ -553,44 +553,20 @@ Card* Card::pFindCardRecursive(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* attempt find of symbolic value                                             */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _pWalkParent_)
+Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSF__print(),md_Bearing);
 
-  if (eCard == m_eCard && bSameSymbol(szSymbol)) {
+  if (eOfCard == m_eCard && bSameSymbol(pSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(eCard, szSymbol, rpParent, this))
-      return pFoundCard;
-  }
-
-  rpParent = nullptr;
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attempt find of symbolic value                                             */
-/*----------------------------------------------------------------------------*/
-Card* Card::pFindSymbolRecursive(eCK eCard, Symbol* pSymbol, Card*& rpParent, Card* _pWalkParent_)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSF__print(),md_Bearing);
-
-  if (eCard == m_eCard && bSameSymbol(pSymbol)) {
-    rpParent = _pWalkParent_;
-    return this;
-  }
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(eCard, pSymbol, rpParent, this))
+    if (Card *pFoundCard = pGetChild(i_Child)->pFindSymbolRecursive(eOfCard, pSymbol, rpParent, this))
       return pFoundCard;
   }
 
