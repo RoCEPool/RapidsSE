@@ -45,7 +45,7 @@ Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
   Card_Term* p_term = new Card_Term(pSymbol);
   vAppend(p_term);
 
-  vSetType(p_term);
+  vColType(p_term);
 
   _checkInitialised_(CN_CARD);
 
@@ -421,13 +421,13 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
   }
 
   Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
-  p_rpnCalc_reduced->vSetType(this);
+  p_rpnCalc_reduced->vColType(this);
 
   Symbol xExprNo;
   xExprNo.vSetStreamOrdinal(i_Expr + 1);
 
   Card_Term* p_term = new Card_Term(xExprNo.szSF__print());
-  p_term->vSetType(this);
+  p_term->vColType(this);
 
   p_rpnCalc_reduced->vAppend(p_term);
 
