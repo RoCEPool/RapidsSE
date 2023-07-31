@@ -2,8 +2,8 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-_lineitem;
-//create        index IxL_ORDERKEY    on Lineitem (L_ORDERKEY);
-load lineitem "../TPCH/SF_0001/lineitem.csv";
+_part;
+create        index IxP_PARTKEY    on part (P_PARTKEY);
+load part "../TPCH/SF_0001/part.csv";
 
-/keepCodeFile select * from lineitem;
+/keepCodeFile select p_partkey, p_mfgr, p_size from part where p_partkey < 20 and p_brand = 'Brand#11' and p_size > 20;

@@ -76,6 +76,8 @@ namespace STORE {
     void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
     bool bOpenCodeFiles(void);
 
+    void vOperatorBegin(OpSketch* pOpSketch);
+
     Footer *aFooter(void);
   };
 
