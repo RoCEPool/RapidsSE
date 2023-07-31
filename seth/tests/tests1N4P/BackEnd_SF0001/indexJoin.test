@@ -656,8 +656,7 @@ rows : 1497
 // LEFT FILTER & PROJECT & POST PROJECT
 // select c_custkey, c_nationkey, o_custkey from customer inner join orders on customer.c_custkey = orders.o_custkey
 //   where c_nationkey >= 4;
-// TODO V2 : $4 instead of $2
-/*
+
 /optimise_passthru 
 pipeline indexJoinTest
 begin
@@ -688,7 +687,6 @@ end ;
 contains rows :
   (148,11,148)
   (149,19,149)
-*/
 
 //------------------------------------------------------------------------------
 // LEFT FILTER & PROJECT & POST PROJECT
