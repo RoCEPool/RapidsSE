@@ -71,7 +71,7 @@ Card_Projection* Card_Projection::pResolvePriorProjection(CardIter* pCI)
 /*----------------------------------------------------------------------------*/
 /* adjust this projection given key                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Projection::vAdjust(Card_Key* p_key)
+void Card_Projection::vAdjust_Wrt_key(Card_Key* p_key)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -79,7 +79,7 @@ void Card_Projection::vAdjust(Card_Key* p_key)
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
-    //xKid.p_expr()->vDump();
+    xKid.p_expr()->vDump(__func__ );
 
     if (! xKid.p_expr()->bIsScalarCol())
       continue;

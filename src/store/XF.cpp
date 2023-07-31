@@ -221,6 +221,15 @@ void XF::vTransform_passThru(void)
     // todo: needs discussion with Alka re constraint
     XF_colNm_To_stmCol::vXF_colNm_To_stmCol(m_pCI);
 
+
+    m_pCI->vTransform(__func__, XF_NONE, "adjust sort"_Stz);
+    while (m_pCI->G_bEachMainWith2Sub(CK_SORT,CK_KEY,CK_PROJECTION)) {
+      m_pCI->G.p_projection->vAdjust_Wrt_key(m_pCI->G.p_key);
+    }
+    m_pCI->vEndTransform();
+
+
+
     m_pCI->vTransform(__func__, XF_NONE, "tweak index join"_Stz);
     while (m_pCI->G_bEachMain(CK_INDEXJOIN)) {
       m_pCI->G.p_indexJoin->pSub_index()->pSymbol()->Y_vSet(P_ChosenIndex);
