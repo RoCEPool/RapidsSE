@@ -8,6 +8,7 @@ enum eSF // symbol form
   /* */ SF_NONE = 0,   // none
 
   /* */ SF_ASNAME,
+  /* */ SF_COLNM,
   /* */ SF_DASCNE,
   /* */ SF_IDXCOL,
   /* */ SF_KEYCOL,
@@ -31,6 +32,7 @@ static Stz* aSF[]
   /* */ "SF_NONE"_Stz,
 
   /* */ "SF_ASNAME"_Stz,
+  /* */ "SF_COLNM"_Stz,
   /* */ "SF_DASCNM"_Stz,
   /* */ "SF_IDXCOL"_Stz,
   /* */ "SF_KEYCOL"_Stz,

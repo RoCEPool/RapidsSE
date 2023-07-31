@@ -1164,6 +1164,18 @@ void Symbol::vSet_asName(Stz* szAsNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set this symbol to given column-name                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSet_colNm(Stz* szColNm)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szColNm;
+  m_eSymbolForm = SF_COLNM;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSetCrossRef(i8 iCrossRef)

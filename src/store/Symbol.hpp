@@ -103,6 +103,7 @@ namespace STORE
 
     void vSet(Symbol* pSymbol);
     void vSet_asName(Stz* szAsNm);
+    void vSet_colNm(Stz* szColNm);
     void vSetCrossRef(i8 iCrossRef);
     void vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
