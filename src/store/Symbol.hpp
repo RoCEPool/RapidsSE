@@ -15,7 +15,6 @@ namespace STORE
   private:
     eSF     m_eSymbol;
     s256    m_sSymbol;
-  public:
     TagSet* m_pProperties;
 
   protected:

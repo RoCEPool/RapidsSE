@@ -1022,7 +1022,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (! m_xSymbol.m_pProperties)
+  if (! m_xSymbol.bHasProperties())
     return;
 
   CardCtl* pCardCtl = _pCardCtl(pRibbon->pCardCtl());
