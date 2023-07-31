@@ -30,7 +30,7 @@ create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition ;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 12; mismatched input ';' expecting BY"
 
 -- check existence of partition key
 lsPtncol createT1;
@@ -40,7 +40,7 @@ create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 14; mismatched input ';' expecting '('"
 
 -- check existence of partition key
 lsPtncol createT1;
@@ -50,25 +50,25 @@ create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by (;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 16; mismatched input ';'"
 
 create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by ();
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 16; mismatched input ')'"
 
 create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by );
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 15; mismatched input ')' expecting '('"
 
 create table createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by key;
-failure contains: 'invalid command'
+failure contains: "EC_SYNTAX_ERROR; Line: 4; Column: 15; missing '(' at 'key'"
 
 create table createT1 (
 key   INTEGER NOT NULL,
