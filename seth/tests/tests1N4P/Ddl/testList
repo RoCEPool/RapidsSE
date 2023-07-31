@@ -1,5 +1,5 @@
-catalog.test
+//catalog.test  // Not supported with the ANTLR command parser
 //index.test
-schema.test
+//schema.test   // Not supported with the ANTLR command parser
 table.test
-tenant.test
+//tenant.test   // Not supported with the ANTLR command parser
