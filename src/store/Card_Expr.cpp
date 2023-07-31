@@ -161,7 +161,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
 
 
   p_expr_simple->vAppend(p_rpnCalc);
-  p_expr_simple->vColType(p_rpnCalc->xColType());
+  p_expr_simple->vColType(p_rpnCalc);
 
   p_expr_simple->vAppend(p_expr->pSub_as()->pDupCardRecursive());
 
@@ -272,7 +272,7 @@ Card_Expr* Card_Expr::pCraft_expr_early(CardIter* pCI, i8 i_Expr)
   Card_RpnCalc* p_rpnCalc_early = _pCard_RpnCalc(p_rpnCalc->pDupCardRecursive());
   p_expr_early->vAppend(p_rpnCalc_early);
 
-  p_expr_early->vColType(p_rpnCalc_early->xColType());
+  p_expr_early->vColType(p_rpnCalc_early);
   return p_expr_early;
 }
 
@@ -520,7 +520,7 @@ Card_Expr* Card_Expr::pPropagate(void)
   Card_Expr* p_expr_propagation = new Card_Expr;
 
   //vDump(__func__);
-  p_expr_propagation->vColType(this->xColType());
+  p_expr_propagation->vColType(this);
 
   if (p_as)
     p_expr_propagation->vAppend(p_as->pClone());
@@ -572,7 +572,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
 
   Card_Expr* p_expr_reduced = new Card_Expr;
   p_expr_reduced->pSymbol()->vSet(&xExprNo);
-  p_expr_reduced->vColType(this->xColType());
+  p_expr_reduced->vColType(this);
 
   if (Card_As* p_as = pSub_as())
     p_expr_reduced->vAppend(p_as->pClone());

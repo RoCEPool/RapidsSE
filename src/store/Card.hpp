@@ -283,8 +283,8 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
 
-    Ppy  xColType(void);
-    void vColType(Ppy xPpy_type);
+//    Ppy  xColType(void);
+//    void vColType(Ppy xPpy_type);
     void vColType(Card* p_card_arg);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);

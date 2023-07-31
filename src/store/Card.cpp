@@ -406,34 +406,11 @@ Stz* Card::szCardNm(void)
 /*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vColType(Ppy xPpy_type)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  m_xSymbol.Y_vSet(P_Type, xPpy_type.szPpy());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set type of symbol                                                         */
-/*----------------------------------------------------------------------------*/
 void Card::vColType(Card* p_card_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.Y_vSet(P_Type, p_card_arg->xColType().szPpy());
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-Ppy Card::xColType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Ppy xColType = m_xSymbol.Y_xGet(P_Type);
-
-  return xColType;
+  m_xSymbol.Y_vSet(P_Type, p_card_arg->pSymbol()->szType());
 }
 
 /*----------------------------------------------------------------------------*/

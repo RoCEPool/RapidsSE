@@ -158,7 +158,7 @@ void Card_Term::vEnsureTypeFor_stmOdn(CardIter* pCI)
 
   Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-  vColType(p_rpnCalc_found->xColType());
+  vColType(p_rpnCalc_found);
 }
 
 /*----------------------------------------------------------------------------*/

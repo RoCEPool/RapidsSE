@@ -45,7 +45,7 @@ Card_RpnCalc::Card_RpnCalc(Symbol* pSymbol)
   Card_Term* p_term = new Card_Term(pSymbol);
   vAppend(p_term);
 
-  vColType(p_term->xColType());
+  vColType(p_term);
 
   _checkInitialised_(CN_CARD);
 
@@ -224,7 +224,7 @@ void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
 
     Card_RpnCalc *p_rpnCalc_found = p_expr_found->pSub_rpnCalc();
 
-    xTerm.p_term()->vColType(p_rpnCalc_found->xColType());
+    xTerm.p_term()->vColType(p_rpnCalc_found);
   }
 }
 
@@ -421,13 +421,13 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
   }
 
   Card_RpnCalc* p_rpnCalc_reduced = new Card_RpnCalc;
-  p_rpnCalc_reduced->vColType(this->xColType());
+  p_rpnCalc_reduced->vColType(this);
 
   Symbol xExprNo;
   xExprNo.vSetStreamOrdinal(i_Expr + 1);
 
   Card_Term* p_term = new Card_Term(xExprNo.szSF__print());
-  p_term->vColType(this->xColType());
+  p_term->vColType(this);
 
   p_rpnCalc_reduced->vAppend(p_term);
 
@@ -443,10 +443,10 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
 
   Card_RpnCalc* p_rpnCalc_propagated = new Card_RpnCalc;
 
-  p_rpnCalc_propagated->vColType(szP_Type());
+  p_rpnCalc_propagated->vColType(this);
 
   Card_Term* p_term_propagated = new Card_Term(p_expr_encasing->szSymbol());
-  p_term_propagated->vColType(szP_Type());
+  p_term_propagated->vColType(this);
 
   p_rpnCalc_propagated->vAppend(p_term_propagated);
 
