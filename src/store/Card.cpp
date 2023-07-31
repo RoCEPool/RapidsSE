@@ -1625,17 +1625,6 @@ void Card::vSymbol(Stz* szSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set card symbol and Mark1                                                  */
-/*----------------------------------------------------------------------------*/
-void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vSymbol(szSymbol);
-  vMark1(cMark1);
-}
-
-/*----------------------------------------------------------------------------*/
 /* find sub card with given symbol and replace                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with)

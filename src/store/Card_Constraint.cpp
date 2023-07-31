@@ -152,8 +152,10 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
 
     }
 
-    if (szColNm)
-      p_term->vSymbolMark1(szColNm, MARK_CHANGED);
+    if (szColNm) {
+      p_term->vSymbol(szColNm);
+      p_term->vMark1(MARK_CHANGED);
+    }
 
     return C_CONTINUE_RECURSION;
   };

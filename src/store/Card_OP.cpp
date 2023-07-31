@@ -163,7 +163,8 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 //    Card_HshCol *p_hshCol = pSub_hshCol();
 //    if (Card_Expr *p_expr_col =
 //        pCI->Prior.m_pProjection->pFindExpr(p_hshCol->pSymbol())) {
-//      p_hshCol->vSymbolMark1(p_expr_col->szSF__print(), MARK_CHANGED);
+//      p_hshCol->vSymbol(p_expr_col->szSF__print());
+//      p_hshCol->vMark1(MARK_CHANGED);
 //    }
 //  }
 //
@@ -334,7 +335,9 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
           pCI->Prior.m_pProjection->pFindExpr(p_term->pSymbol())) {
         // record what $c.n it was
         p_term->pSymbol()->Y_vSet(P_TblCol,p_term->szSymbol());
-        p_term->vSymbolMark1(p_expr_col->szSymbol(), MARK_CHANGED);
+        p_term->vSymbol(p_expr_col->szSymbol());
+        p_term->vMark1(MARK_CHANGED);
+
         //vTrace("  TO %s\n"_Stz,p_expr_col->szSF__print());
         return C_CONTINUE_RECURSION;
       }
@@ -356,7 +359,8 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamOrdinal(nExpr_prior + i_Col);
-    p_term->vSymbolMark1(xSymbol_stmColOdn.szSF__print(), MARK_CHANGED);
+    p_term->vSymbol(xSymbol_stmColOdn.szSF__print());
+    p_term->vMark1(MARK_CHANGED);
 
     //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSF__print());
     return C_CONTINUE_RECURSION;

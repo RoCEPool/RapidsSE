@@ -360,7 +360,6 @@ namespace STORE
     i8   iSymbol(void);
     Stz* szSymbol(void);
     void vSymbol(Stz* szSymbol);
-    void vSymbolMark1(Stz* szSymbol, char cMark1);
 
     bool bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with);
 
