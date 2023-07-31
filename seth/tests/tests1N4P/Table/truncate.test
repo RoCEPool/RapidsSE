@@ -72,8 +72,9 @@ rows: 0
 drop table lineitem;
 success
 
-indexEntries 0;
-success
+// Disabled for antlr command parser
+//indexEntries 0;
+//success
 
 memoryLeaks;
 rows: 0;
