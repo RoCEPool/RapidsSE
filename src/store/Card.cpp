@@ -531,13 +531,13 @@ void Card::vColType(Card* p_card_arg)
 
   Ppy xPpy = p_card_arg->m_xSymbol.Y_xGet(P_Type);
 
-  vSetType(xPpy);
+  vColType(xPpy);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vSetType(Ppy xPpy_type)
+void Card::vColType(Ppy xPpy_type)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

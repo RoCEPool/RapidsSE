@@ -296,7 +296,7 @@ namespace STORE
     eCT  eColType(void);
     Stz* szColType(void);
     void vColType(Card* p_card_arg);
-    void vSetType(Ppy xPpy_type);
+    void vColType(Ppy xPpy_type);
     void vSetType(Stz* szType_arg);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
