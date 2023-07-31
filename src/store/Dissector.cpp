@@ -148,7 +148,7 @@ void Dissector::vStage(i8 i_StageSpec)
     
 
   Card_Stage* pCard_Stage = new Card_Stage;
-  pCard_Stage->vSymbolSprint("S%02lld"_Stz, i_StageSpec);
+  pCard_Stage->pSymbol()->vSet_stageNo(i_StageSpec);
 
   Card_Topology* pCard_StageTopo = new Card_Topology(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);

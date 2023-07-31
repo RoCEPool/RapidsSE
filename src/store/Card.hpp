@@ -361,7 +361,6 @@ namespace STORE
     Stz* szSymbol(void);
     void vSymbol(Stz* szSymbol);
     void vSymbolMark1(Stz* szSymbol, char cMark1);
-    void vSymbolSprint(Stz* szFormat, ...);
 
     bool bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with);
 

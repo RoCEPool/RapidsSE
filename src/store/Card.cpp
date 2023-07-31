@@ -1636,23 +1636,6 @@ void Card::vSymbolMark1(Stz* szSymbol, char cMark1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sprint card symbol                                                         */
-/*----------------------------------------------------------------------------*/
-void Card::vSymbolSprint(Stz* szFormat, ...)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  s256 sSymbol;
-
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  StrLib::vSprint(sSymbol.azChar(), xArgs, (char*)szFormat);
-  va_end(xArgs);
-
-  vSymbol(sSymbol);
-}
-
-/*----------------------------------------------------------------------------*/
 /* find sub card with given symbol and replace                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bUpdateSymbolRecursive(eCK eSub, Stz* szSymbol, Card_Term* p_term_with)
