@@ -205,24 +205,9 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert eLevel to P/N/O                                                    */
-/*----------------------------------------------------------------------------*/
-char Card::cAggrLevelToChar(eAL eLevel)
-{
-  _static_
-
-  switch (eLevel) {
-    case AL_PARTITION : return 'P';
-    case AL_NODE      : return 'N';
-    case AL_ORIGIN    : return 'O';
-    default           : return '?';
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert eAL to eYG                                                         */
 /*----------------------------------------------------------------------------*/
-eYG Card::eAggrLevelToStageTopology(eAL eLevel)
+eYG Card::e_aggLevel_To_stageTopo(eAL eLevel)
 {
   _static_
 
@@ -235,26 +220,9 @@ eYG Card::eAggrLevelToStageTopology(eAL eLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find eCK by card name                                                      */
-/*----------------------------------------------------------------------------*/
-eCK Card::eTo_eCK(Stz* szCardNm)
-{
-  _static_
-  
-  s32 sName;
-  sName.vSprint("CK_%s"_Stz,szCardNm);
-  
-  for (i8 i_Card = 0; i_Card < CK_ENUMS; i_Card++)
-    if (aCK[i_Card]->bSame(sName))
-      return (eCK)i_Card;
-  
-  return CK_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert eYG to eAL                                                         */
 /*----------------------------------------------------------------------------*/
-eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
+eAL Card::e_stageTopo_To_aggLevel(eYG eStageTopo)
 {
   _static_
 
@@ -274,23 +242,6 @@ eAL Card::eStageTopologyToAggrLevel(eYG eStageTopo)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* append clone of given card                                                 */
-/*----------------------------------------------------------------------------*/
-Card* Card::pAppendClone(Card* p_card)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (! p_card)
-    return nullptr;
-
-  Card* p_card_clone = p_card->pDupCardRecursive();
-
-  vAppend(p_card_clone);
-
-  return p_card_clone;
-}
 
 /*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */

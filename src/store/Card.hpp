@@ -263,18 +263,12 @@ namespace STORE
 
     static void vConsistencyCheck(Card* p_deck, i8 iTransformNo);
 
-    static char cAggrLevelToChar(eAL eLevel);
+    static eYG  e_aggLevel_To_stageTopo(eAL eLevel);
 
-    static eYG  eAggrLevelToStageTopology(eAL eLevel);
-
-
-    static eCK  eTo_eCK(Stz* szCardNm);
-
-    static eAL  eStageTopologyToAggrLevel(eYG eStageTopo);
+    static eAL  e_stageTopo_To_aggLevel(eYG eStageTopo);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    Card* pAppendClone(Card* p_card);
     Card* pAppendNewCard(eCK eCard);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);

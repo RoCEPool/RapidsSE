@@ -69,7 +69,7 @@ void Card_Stage::vReinstate_stages(CardIter* pCI)
   p_stage->vAppend(p_topology);
   pCI->G.pDeck->vPush(p_stage);
 
-  eAL e_level_running = Card::eStageTopologyToAggrLevel(YG_ALL_PARTITIONS);
+  eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
   bool bSawAggOp = false;
   bool bSawFilterOp = false;
@@ -286,7 +286,7 @@ void Card_Stage::vReinstate_stages_v2(CardIter* pCI)
 
   i8 nStages = 0;
   //SawOpCards* pSawOpCards = new SawOpCards;
-  eAL e_level_running = Card::eStageTopologyToAggrLevel(YG_ALL_PARTITIONS);
+  eAL e_level_running = Card::e_stageTopo_To_aggLevel(YG_ALL_PARTITIONS);
 
   for (i8 i_Main = 1; i_Main < pCI->G.pDeck->nChildCards(); i_Main++) {
 
@@ -362,7 +362,7 @@ void Card_Stage::vAddStage(CardIter* pCI, Card* p_main, i8& ri_main, eAL e_level
 
   Card_Stage *p_stage = new Card_Stage;
   p_stage->pSymbol()->vSet_stageNo(++nStages);
-  eYG eStageTopo = Card::eAggrLevelToStageTopology(e_level_running);
+  eYG eStageTopo = Card::e_aggLevel_To_stageTopo(e_level_running);
   Card_Topology *p_topology = new Card_Topology(eStageTopo);
   p_stage->vAppend(p_topology);
   pCI->G.pDeck->vInsertBefore(p_stage, p_main);
