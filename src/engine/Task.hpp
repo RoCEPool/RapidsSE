@@ -92,7 +92,8 @@ namespace ENGINE
 
     LocalFrame*  m_pLocalFrame;   // locals| | register frame chain
     LocalVars*   m_pLocalVars;
-  
+    LocalStrs*   m_pLocalStrs;
+
     SenCompiler* m_pSenCompiler;  // sen word compiler
     Input*       m_pInput;        // input stream
 
@@ -179,7 +180,8 @@ namespace ENGINE
     void vRetire(void);
 
     DicStack* pSaveDicStack(void);
-    void vScheduleBide(void);
+    void vScheduleBideForOperand(void);
+    void vScheduleBidePageIn(void);
     void vScheduleHibernate(void);
     void vScheduleRetire(void);
     void vScheduleSleep(void);

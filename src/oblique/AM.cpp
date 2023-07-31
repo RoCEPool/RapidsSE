@@ -368,13 +368,16 @@ JobId AM::DEMON::tNodeMonDemonJobId(void) {
 /*----------------------------------------------------------------------------*/
 void AM::DEMON::vPageInDemonJobId(JobId tJobId) {
   _static_
+
   gpAttachMap->m_tPageInDemonJobId = tJobId;
 }
+
 /*----------------------------------------------------------------------------*/
 /* get jobId of the pageIn demon in AM                                        */
 /*----------------------------------------------------------------------------*/
 JobId AM::DEMON::tPageInDemonJobId(void) {
   _static_
+
   return gpAttachMap->m_tPageInDemonJobId;
 }
 
@@ -1858,12 +1861,14 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 PAGING                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 /*----------------------------------------------------------------------------*/
 /* pipe page in request to page in demon                                      */
 /*----------------------------------------------------------------------------*/
 InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
 {
   _static_
+
 #ifdef WITH_PAGING
   StreamDef* pStreamDef = AM::pInternalTables()->pStreamDef(TI_PAGEINREQUEST);
   if (! pStreamDef)
@@ -1874,8 +1879,10 @@ InfoSet* AM::PAGING::pToPageIn(Task *pTask, BufferId oBufferId)
       ,pTask
       ,oBufferId.m_iAsI8
       ,C_VARGS_END);
+
   return pInfoSet;
 #else
+  NEVER_REACH;
   return nullptr;
 #endif
 }
@@ -2387,7 +2394,8 @@ void AM::SE::vWhereAmI(void)
   }
 
 
-  AM::pSchedule()->vDumpBidingSet();
+  AM::pSchedule()->vDumpBidingOperandSet();
+  AM::pSchedule()->vDumpBidingPageInSet();
   AM::pSchedule()->vDumpExecutingSet();
   AM::pSchedule()->vDumpReadyQueue();
   AM::pSchedule()->vDumpSleepingQueue();
@@ -3127,15 +3135,24 @@ void AM::TASK::vRetire(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trigger biding task                                                        */
+/* trigger biding operand task                                                */
 /*----------------------------------------------------------------------------*/
-void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
+void AM::TASK::vTriggerBidingOperand(Task* pTaskBiding, Task* pTriggeringTask)
 {
   _static_
-  
-  Scheduler::vTaskCross_TriggerBiding(pTaskBiding,pTriggeringTask);
+
+  Scheduler::vTaskCross_TriggerBidingOperand(pTaskBiding, pTriggeringTask);
 }
 
+/*----------------------------------------------------------------------------*/
+/* trigger biding page in task                                                */
+/*----------------------------------------------------------------------------*/
+void AM::TASK::vTriggerBidingPageIn(Task* pTaskBiding, Task* pTriggeringTask)
+{
+  _static_
+  // Page in Demon triggers this after page in
+  Scheduler::vTaskCross_TriggerBidingPageIn(pTaskBiding, pTriggeringTask);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   THREAD                                   */
@@ -3534,9 +3551,7 @@ i8   AM::iEpoch(void)         { return gpAttachMap->m_iEpoch;                 }
 FileMap* AM::pFileMap(void)   { return gpAttachMap->m_pFileMap;               }
 Format* AM::pFmt(void)        { return & gpAttachMap->m_oFormat;          }
 Grid* AM::pGrid(void)         { return gpAttachMap ? gpAttachMap->m_pGrid : nullptr;                  }
-#ifdef WITH_HASHMAP
 HashMap* AM::pHashMap(void)   { return gpAttachMap->m_pHashMap;           }
-#endif
 Heaps* AM::pHeaps(void)   { return & gpAttachMap->m_xHeaps;             }
 i8   AM::nIndexEntries(void)  { return gpAttachMap->m_xSysArgs.m_nIndexEntries;      }
 JobList* AM::pLocalJobs(void) {
@@ -3622,9 +3637,24 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       
       // permament crw buffers not to be deleted
-      if (pCrwBuffer->bIsPermanent())
+      if (pCrwBuffer->bIsPermanent()) {
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this crwbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pCrwBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pCrwBuffer->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this crwbuffer
+        // should not have any locks on it
+
+        pCrwBuffer->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pCrwBuffer->oGetBufferId().m_pvAsAddress));
         break;
-      
+      }
+
       delete pCrwBuffer;
       break;
     }
@@ -3696,8 +3726,24 @@ void AM::vDeleteOperand(Operand* pOperand, Job* pJob)
     case CN_ROWBUFFER: {
       RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
       // permanent row buffers not to be deleted
-      if (pRowBuffer->bIsPermanent())
+      if (pRowBuffer->bIsPermanent()) {
+        // ensure the output queue flag is set to false
+
+        // if the output queue flag is false, then this rowbuffer
+        // is not part of m_pOutputQueue in Output.cpp
+        // someone is trying to delete it, but since it is permanent
+        // we only need to drop the hashmapentry lock
+        if(! pRowBuffer->bOutputQueued())
+          AM::pHashMap()->vDropKeyLock(pRowBuffer->oGetBufferId().m_pvAsAddress);
+
+        // if the output queue flag is true, then this rowbuffer
+        // should not have any locks on it
+
+        pRowBuffer->vOutputQueued(false);
+        RASSERT( ! AM::pHashMap()->bIsLocked(pRowBuffer->oGetBufferId().m_pvAsAddress));
         break;
+      }
+
       pRowBuffer->vDecidedDelete();
       break;
     }
@@ -4304,6 +4350,7 @@ i8 AM::iOperandEvKind(Operand* pOperand)
         case OI_LOADRESULT:     eOperand = EV_I_LOADRESULT;     break;
         case OI_LOCKSTATS:      eOperand = EV_I_LOCKSTATS;      break;
         case OI_NODEINFO:       eOperand = EV_I_NODEINFO;       break;
+        case OI_PAGEINREQUEST:  eOperand = EV_I_PAGEINREQUEST;  break;
         case OI_PATH:           eOperand = EV_I_PATH;           break;
         case OI_PROGRESSUNITS:  eOperand = EV_I_PROGRESSUNITS;  break;
         case OI_PROMPTOUT:      eOperand = EV_I_PROMPTOUT;      break;

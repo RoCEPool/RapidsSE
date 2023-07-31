@@ -24,7 +24,7 @@ namespace STORE
     void  operator delete(void*);
 
     RowTablePtn(Table* pTable, LglPtn tLglPtn);
-    ~RowTablePtn(void) noexcept(false);
+   ~RowTablePtn(void) noexcept(false);
 
     void vAppendBuffer(RowBuffer* pRowBuffer);
     i8   nBuffers(void);

@@ -228,6 +228,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__P__,
   /* */ CN_PAGEFILE,
+  /* */ CN_PAGEINBUFFER,
   /* */ CN_PAGINGMETRICS,
   /* */ CN_PARAMSPEC,
   /* */ CN_PARAMSSPEC,
@@ -726,6 +727,7 @@ static Stz* aCN[]
 
   /* */ "_P__"_Stz,                 // CN__P__
   /* */ "PAGEFILE"_Stz,             // CN_PAGEFILE
+  /* */ "PAGEINBUFFER"_Stz,         // CN_PAGEINBUFFER
   /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
   /* */ "PARAMSPEC"_Stz,            // CN_PARAMSPEC
   /* */ "PARAMSSPEC"_Stz,           // CN_PARAMSSPEC

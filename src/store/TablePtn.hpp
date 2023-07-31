@@ -55,6 +55,7 @@ namespace STORE
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
+    void* pPdsCrwTablePtn(void);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(i8 iIndexNo);
     DataBuffer* pRootBuffer(void);

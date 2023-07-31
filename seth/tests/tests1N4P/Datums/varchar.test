@@ -54,7 +54,7 @@ Load VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
 failure contains: '2 invalid'
 
 // check no of rows
-tableScan VchTbl;
+select * from VchTbl;
 rows: 101
 
 //------------------------------------------------------------------------------

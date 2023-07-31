@@ -204,6 +204,15 @@ public:
   void vBpInUseSpace(void);
   void vBpTotalSpace(void);
 
+  // BufferId
+  void vBufferIdClear(void);
+  void vBufferIdDropLock(void);
+  void vBufferIdGet(void);
+  void vBufferIdGetAndClear(void);
+  void vBufferIdIsNotNull(void);
+  void vBufferIdIsNull(void);
+  void vBufferIdSet(void);
+
   // build
   void vBuildBranch(void);
   void vBuildDate(void);
@@ -275,6 +284,8 @@ public:
   void vCrwBufferDelete(void);
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
+  void vCrwBufferGetBufferIdAsAddr(void);
+  void vCrwBufferGetNextLinkedBufferId(void);
   void vCrwBufferFlatten(void);
   void vCrwBufferInflate(void);
   void vCrwBufferInflateTcc(void);
@@ -1683,6 +1694,8 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferDecile(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
+  void vRowBufferGetBufferIdAsAddr(void);
+  void vRowBufferGetNextLinkedBufferId(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);

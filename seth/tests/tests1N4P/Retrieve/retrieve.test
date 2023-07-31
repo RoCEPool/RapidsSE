@@ -19,7 +19,7 @@ load retTbl "../DATA/Retrieve/retrieve.csv" ;
 success
 
 // check no of rows
-tableScan retTbl;
+select * from retTbl;
 rows: 10
 
 predicateFetch retrieve retTbl dec_col1 print;

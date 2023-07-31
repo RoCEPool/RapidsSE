@@ -55,6 +55,8 @@ namespace OBLIQUE
     static Op*        pOp(void);
     static LogicUnit* pOpLogicUnit(void);
     static eEV        eOperand(void);
+    static void*      pPdsCrwTablePtn(void);
+    static void       vPdsCrwTablePtn(void*);
     static Pipeline*  pPipeline(void);
     static StepAccum* pStepAccum(void);
     static void       vStepAccum(StepAccum*);

@@ -93,6 +93,7 @@ namespace BASE
     FreePoolBuffer* pToFreePoolBuffer(i8 i_PoolBuffer);
     FreePoolBuffer* pToFreePoolBuffer(PoolBuffer* pBuffer);
     i8   iUsedSpace(void);
+    d8   dUsedSpacePercent(void);
     bool bValidAddress(const void* aAddress);
     bool bVerifyBoundaries(void);
     void vVerifyPool(void);

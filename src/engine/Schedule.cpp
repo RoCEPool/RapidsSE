@@ -72,10 +72,11 @@ Schedule::Schedule(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // task sets
   
-  m_pBidingSet     = new TaskList(QK_BIDING_SET);
-  m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
-  m_pWaitingSet    = new TaskList(QK_WAITING_SET);
-  m_pRetiredSet    = new TaskList(QK_RETIRED_SET);
+  m_pBidingOperandSet = new TaskList(QK_BIDING_OPERAND_SET);
+  m_pBidingPageInSet  = new TaskList(QK_BIDING_PAGEIN_SET);
+  m_pExecutingSet     = new TaskList(QK_EXECUTING_SET);
+  m_pWaitingSet       = new TaskList(QK_WAITING_SET);
+  m_pRetiredSet       = new TaskList(QK_RETIRED_SET);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -228,9 +229,9 @@ void Schedule::vOutline(s4K& sOutline)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add task to biding set                                                     */
+/* add task to biding operand set                                             */
 /*----------------------------------------------------------------------------*/
-void Schedule::vAddBidingSet(Task* pTask)
+void Schedule::vAddBidingOperandSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
@@ -239,17 +240,43 @@ void Schedule::vAddBidingSet(Task* pTask)
   //       before the biding task gets into the biding set
   RASSERT(pTask->bIsLocked());
 
-  RASSERT(TS_BIDING == pTask->eState());
+  RASSERT(TS_BIDING_OPERAND == pTask->eState());
   RASSERT(QK_NONE == pTask->eQueue());
   
-  pTask->vQueue(QK_BIDING_SET);
+  pTask->vQueue(QK_BIDING_OPERAND_SET);
   
-  m_pBidingSet->vGrabLock();
+  m_pBidingOperandSet->vGrabLock();
   
-  m_pBidingSet->vAddTask(pTask);
+  m_pBidingOperandSet->vAddTask(pTask);
   
-  m_pBidingSet->vDropLock();
+  m_pBidingOperandSet->vDropLock();
   
+  // **do not touch task** (other than to drop lock)
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to biding pagein set                                              */
+/*----------------------------------------------------------------------------*/
+void Schedule::vAddBidingPageInSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+
+  // note: a biding task must locked at this point because it is visible to
+  //       other tasks in the system which could invoke a trigger() on it
+  //       before the biding task gets into the biding pagein set
+  RASSERT(pTask->bIsLocked());
+
+  RASSERT(TS_BIDING_PAGEIN == pTask->eState());
+  RASSERT(QK_NONE == pTask->eQueue());
+
+  pTask->vQueue(QK_BIDING_PAGEIN_SET);
+
+  m_pBidingPageInSet->vGrabLock();
+
+  m_pBidingPageInSet->vAddTask(pTask);
+
+  m_pBidingPageInSet->vDropLock();
+
   // **do not touch task** (other than to drop lock)
 }
 
@@ -510,18 +537,35 @@ Task* Schedule::pPopSleepingQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove task from biding set                                               */
+/* remove task from biding operand set                                        */
 /*----------------------------------------------------------------------------*/
-void Schedule::vRemoveBidingSet(Task* pTask)
+void Schedule::vRemoveBidingOperandSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
-  RASSERT(QK_BIDING_SET == pTask->eQueue());
+  RASSERT(QK_BIDING_OPERAND_SET == pTask->eQueue());
   
-  m_pBidingSet->vGrabLock();
-  m_pBidingSet->vRemoveTask(pTask);
-  m_pBidingSet->vDropLock();
+  m_pBidingOperandSet->vGrabLock();
+  m_pBidingOperandSet->vRemoveTask(pTask);
+  m_pBidingOperandSet->vDropLock();
   
+  pTask->vQueue(QK_NONE);
+  pTask->vState(TS_DESISTED);
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove task from biding pagein set                                         */
+/*----------------------------------------------------------------------------*/
+void Schedule::vRemoveBidingPageInSet(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+
+  RASSERT(QK_BIDING_PAGEIN_SET == pTask->eQueue());
+
+  m_pBidingPageInSet->vGrabLock();
+  m_pBidingPageInSet->vRemoveTask(pTask);
+  m_pBidingPageInSet->vDropLock();
+
   pTask->vQueue(QK_NONE);
   pTask->vState(TS_DESISTED);
 }
@@ -724,28 +768,53 @@ void Schedule::vDropThreadIdleQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump the biding set                                                        */
+/* dump the biding operand set                                                */
 /*----------------------------------------------------------------------------*/
-void Schedule::vDumpBidingSet(void)
+void Schedule::vDumpBidingOperandSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
-  m_pBidingSet->vGrabLock();
+  m_pBidingOperandSet->vGrabLock();
   
-  i8 nTasks = m_pBidingSet->nItems();
+  i8 nTasks = m_pBidingOperandSet->nItems();
   
   vTrace("====================================\n"_Stz);
-  vTrace("Biding Set: Tasks %lld\n"_Stz,nTasks);
+  vTrace("Biding Operand Set: Tasks %lld\n"_Stz,nTasks);
   
   if (nTasks) {
     vTrace("------------------------------------\n"_Stz);
-    m_pBidingSet->vContentDump();
+    m_pBidingOperandSet->vContentDump();
   }
   
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
 
-  m_pBidingSet->vDropLock();
+  m_pBidingOperandSet->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the biding pagein set                                                 */
+/*----------------------------------------------------------------------------*/
+void Schedule::vDumpBidingPageInSet(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+
+  m_pBidingPageInSet->vGrabLock();
+
+  i8 nTasks = m_pBidingPageInSet->nItems();
+
+  vTrace("====================================\n"_Stz);
+  vTrace("Biding PageIn Set: Tasks %lld\n"_Stz,nTasks);
+
+  if (nTasks) {
+    vTrace("------------------------------------\n"_Stz);
+    m_pBidingPageInSet->vContentDump();
+  }
+
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+
+  m_pBidingPageInSet->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -894,13 +963,23 @@ void Schedule::vGrabThreadIdleQueue(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get no of tasks in the biding set                                          */
+/* get no of tasks in the biding operand set                                  */
 /*----------------------------------------------------------------------------*/
-i8 Schedule::nTasksBiding(void)
+i8 Schedule::nTasksBidingOperand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
   
-  return m_pBidingSet->nTasks();
+  return m_pBidingOperandSet->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the biding pagein set                                   */
+/*----------------------------------------------------------------------------*/
+i8 Schedule::nTasksBidingPageIn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+
+  return m_pBidingPageInSet->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/

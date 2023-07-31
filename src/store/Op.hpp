@@ -147,7 +147,7 @@ namespace STORE
     void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopOoO(void);
-    Operand* pPopOoOLeft(void);
+    Operand* pPopOoOLeft(bool* pbPageIn);
     Operand* pPopRight(void);
     LglPtn  tLglPtn(void);
     Operand* pPopLeft(void);

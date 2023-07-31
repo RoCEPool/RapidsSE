@@ -12,11 +12,10 @@
 /*----------------------------------------------------------------------------*/
 LocalStr::LocalStr(void)
 {
-  m_pLocalStrs = nullptr;
-  m_i_LclStr   = C_UNKNOWN;
+  m_i_LocalStr   = C_UNKNOWN;
   m_i_NextFree = C_UNKNOWN;
-  
-  // m_xSizeArea
+
+  m_pText      = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,59 +23,85 @@ LocalStr::LocalStr(void)
 /*----------------------------------------------------------------------------*/
 LocalStr::~LocalStr(void) noexcept(false)
 {
-
+  if (m_pText) {
+    delete m_pText;
+    m_pText = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Operators ---------------------------------------------------------------*/
+/*-- public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* auto conversion operator : as LocalStr*                                    */
+/* ensure text                                                                */
 /*----------------------------------------------------------------------------*/
-LocalStr::operator LocalStr*(void)
+void LocalStr::vEnsureText(void)
 {
-  return this;
+  _nonProper_
+
+  if (! m_pText)
+    m_pText = new Text;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get string area                                                            */
+/* initialise                                                                 */
 /*----------------------------------------------------------------------------*/
-char* LocalStr::azArea(void)
+void LocalStr::vInitialise(i8 i_LclStr, i8 i_NextFree)
 {
-  return m_xSizeArea.azArea();
+  _nonProper_
+
+  m_i_LocalStr = i_LclStr;
+  m_i_NextFree = i_NextFree;
+  m_pText      = nullptr;
+
+  m_pText = new Text;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get string area                                                            */
+/* return i_LocalStr                                                          */
 /*----------------------------------------------------------------------------*/
-Stz* LocalStr::szArea(void)
+i8 LocalStr::i_LocalStr(void)
 {
-  return m_xSizeArea.szArea();
+  _nonProper_
+
+  return m_i_LocalStr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* re-initialise local string                                                 */
+/* return i_NextFree                                                          */
 /*----------------------------------------------------------------------------*/
-void LocalStr::vReInitialise(void)
+i8 LocalStr::i_NextFree(void)
 {
-  m_xSizeArea.vReInitialise();
+  _nonProper_
+
+  return m_i_NextFree;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size + area                                                            */
+/* assign i_NextFree                                                          */
 /*----------------------------------------------------------------------------*/
-SizeArea* LocalStr::axSizeArea(void)
+void LocalStr::v_NextFree(i8 i_NextFree)
 {
-  return & m_xSizeArea;
+  _nonProper_
+
+  m_i_NextFree = i_NextFree;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get string size                                                            */
+/* get text                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 LocalStr::jStrSize(void)
+Stz* LocalStr::szText(void)
 {
-  return m_xSizeArea.jStrSize();
+  return m_pText->szGet();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set text                                                                   */
+/*----------------------------------------------------------------------------*/
+void LocalStr::vText(Stz* szText)
+{
+  m_pText->vSet(szText);
 }
 
 /*============================================================================*/
