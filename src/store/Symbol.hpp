@@ -26,6 +26,7 @@ namespace STORE
     Symbol(void);
     Symbol(Stz* szSymbol, eSF eSymbol);
     Symbol(Symbol* pSymbol);
+    ~Symbol(void);
 
     static eSF  eEvalForm(Stz* szArg);
     static eRO  eEvalRelnOp(Stz* szArg);
@@ -139,6 +140,7 @@ namespace STORE
 
     void Y_vAll(Card* pCard_arg);
     void Y_vAll(TagSet* pProperties);
+    void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);
 //    char Y_cGet(i8 i_Ppy);
 //    char Y_cGet(Stz* szPptNm);

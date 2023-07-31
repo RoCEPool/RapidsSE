@@ -68,6 +68,16 @@ Symbol::Symbol(Symbol* pSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Symbol::~Symbol(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  delete m_pProperties;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1578,6 +1588,27 @@ void Symbol::Y_vAll(TagSet* pProperties)
     m_pProperties = new TagSet;
 
   m_pProperties->vCopy(pProperties);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::Y_vAll(Symbol* pSymbol_arg)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (! pSymbol_arg->m_pProperties) {
+    if (m_pProperties) {
+      delete m_pProperties;
+      m_pProperties = nullptr;
+    }
+    return;
+  }
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+
+  m_pProperties->vCopy(pSymbol_arg->m_pProperties);
 }
 
 /*----------------------------------------------------------------------------*/

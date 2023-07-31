@@ -48,8 +48,7 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 
   m_xSymbol.vSet(pSymbol);
 
-  if (pSymbol->m_pProperties)
-    m_xSymbol.Y_vAll(pSymbol->m_pProperties);
+  m_xSymbol.Y_vAll(pSymbol);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -93,8 +92,6 @@ void Card::vInit(eCK eCard)
   m_cMark1 = MARK_BLANK;
   m_cMark2 = MARK_BLANK;
 
-  m_xSymbol.m_pProperties = nullptr;
-
   m_pLastPrintParent = nullptr;
 
   md__SeqNo = Card::m__iSeqGen++;
@@ -136,8 +133,6 @@ Card::~Card(void) noexcept(false)
 
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
-  
-  delete m_xSymbol.m_pProperties;
 }
 
 /*----------------------------------------------------------------------------*/
