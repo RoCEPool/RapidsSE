@@ -1,6 +1,8 @@
 /*============================================================================*/
-/* _ray105                                                                    */
+/* _ray106                                                                    */
 /*============================================================================*/
+
+// Query8
 
 //NOTE: In stageMarkerB : indexJoin customer IxC_CUSTKEY "BOUND $I1 O_CUSTKEY =="
 // is converted to :  indexJoin customer IxC_CUSTKEY " BOUND $I1 $2 == "

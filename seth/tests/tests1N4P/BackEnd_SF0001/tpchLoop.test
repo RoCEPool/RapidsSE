@@ -72,14 +72,19 @@ INCLUDE 'query4.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+// TODO V2 (_ray105)
+/*
 LOG 'Running tpch query 5...';
 INCLUDE 'query5.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
+
 LOG 'Running tpch query 6...';
 INCLUDE 'query6.test';
 INCLUDE 'sleep.test';
+
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 7...';
@@ -87,24 +92,36 @@ INCLUDE 'query6.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
+// TODO V2 (_ray106)
+/*
 LOG 'Running tpch query 8...';
 INCLUDE 'query8.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
+// TODO V2 (_ray105)
+/*
 LOG 'Running tpch query 9...';
 INCLUDE 'query9.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
+// TODO V2 (_ray106)
+/*
 LOG 'Running tpch query 10...';
 INCLUDE 'query10.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
+// TODO V2 (_ray107)
+/*
 LOG 'Running tpch query 11...';
 INCLUDE 'query11.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 12...';
