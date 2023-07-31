@@ -58,14 +58,14 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szSymbol)
+Card::Card(eCK eCard, Stz* szSymbol, eSF eSymbolForm)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vInit(eCard);
 
-  vSymbol(szSymbol);
+  vSymbol(szSymbol,eSymbolForm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1463,14 +1463,14 @@ Stz* Card::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vSymbol(Stz* szSymbol)
+void Card::vSymbol(Stz* szSymbol, eSF eSymbolForm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
   m_xSymbol.m_sSymbol = szSymbol;
-  //m_xSymbol.m_eSymbolForm = SF_OTHER;
+  m_xSymbol.m_eSymbolForm = eSymbolForm;
 }
 
 /*----------------------------------------------------------------------------*/
