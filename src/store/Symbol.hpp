@@ -90,7 +90,7 @@ namespace STORE
     bool bIsSubQueryOp(void);       // exists, in, notExists, notIn
     bool bIsSubQueryColumn(void);   // __n
     bool bIsSyntheticAs(void);      // __n
-    bool bIsTableSyn(void);         // __n
+    bool bIsTableSyn(void);         // c
     bool bIsValueOrdinal(void);     // $n or $c.n
 
     bool bNeedsBrace(void);         // between, case, ... matchTrailing
@@ -120,7 +120,11 @@ namespace STORE
     void vSetTableColSyn(char cTblSyn);
 
     Stz* szSF__print(void);
+    Stz* szSF_any(void);
+    char cSF_char(void);
+    i8   iSF_number(void);
     Stz* szSF_other(void);
+    Stz* szSF_string(void);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 

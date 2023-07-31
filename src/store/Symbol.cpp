@@ -1018,7 +1018,7 @@ bool Symbol::bIsSyntheticAs(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this a symbol a table synonym?  (i.e. $c)                               */
+/* is this a symbol a table synonym?  (i.e. c)                                */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsTableSyn(void)
 {
@@ -1381,7 +1381,49 @@ Stz* Symbol::szSF__print(void)
 /*----------------------------------------------------------------------------*/
 /* get symbol stz                                                             */
 /*----------------------------------------------------------------------------*/
+Stz* Symbol::szSF_any(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_sSymbol.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+char Symbol::cSF_char(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return * m_sSymbol.azChar();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol int                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Symbol::iSF_number(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  i8 i = m_sSymbol.iToI8();
+
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol stz                                                             */
+/*----------------------------------------------------------------------------*/
 Stz* Symbol::szSF_other(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  return m_sSymbol.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol stz                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Symbol::szSF_string(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
