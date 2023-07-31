@@ -275,9 +275,7 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     Card* pAppendClone(Card* p_card);
-    void vAppendClone(Card* p_card);
-    Card* pAppendNewCard(eCK eCard, Stz* szSymbol=nullptr);
-    void vAppendNewCard(eCK eCard, Stz* szSymbol=nullptr);
+    Card* pAppendNewCard(eCK eCard);
     bool bApplyRecursive(eCK eToSubs, std::function<bool(Card* pCard)> bfLambdaFn);
     bool bApplyRecursive_term(std::function<bool(Card_Term* p_term)> bfLambdaFn);
 
@@ -309,7 +307,6 @@ namespace STORE
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
     bool bHasSubRecursive(Card* pSubCard);
-    bool bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol);
 
     bool bIsCard(eCK eCard);
     bool bIsOne(eCK eCard, ...);

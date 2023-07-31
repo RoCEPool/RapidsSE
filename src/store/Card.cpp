@@ -293,39 +293,13 @@ Card* Card::pAppendClone(Card* p_card)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append clone of given card                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vAppendClone(Card* p_card)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Card* p_card_clone = pAppendClone(p_card);
-
-  UNUSED(p_card_clone);
-}
-
-/*----------------------------------------------------------------------------*/
 /* append new card to tail                                                    */
 /*----------------------------------------------------------------------------*/
-void Card::vAppendNewCard(eCK eCard, Stz* szSymbol)
+Card* Card::pAppendNewCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card* pCard = pAppendNewCard(eCard, szSymbol);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append new card to tail                                                    */
-/*----------------------------------------------------------------------------*/
-Card* Card::pAppendNewCard(eCK eCard, Stz* szSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card* pCard;
-  if (szSymbol)
-    pCard = new Card(eCard, szSymbol, SF_OTHER);
-  else
-    pCard = new Card(eCard);
+  Card* pCard = new Card(eCard);
 
   vPushTail(pCard);
 
@@ -768,27 +742,6 @@ bool Card::bHasSubRecursive(Card* pSubCard)
       return true;
 
     if (pTestCard->bHasSubRecursive(pSubCard))
-      return true;
-  }
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is given card a sub card of this card?                                     */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsCard(eCard) && bSameSymbol(szSymbol))
-    return true;
-
-  i8 nSubCards = this->nChildCards();
-  for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
-    Card *p_sub = pGetChild(i_Child);
-
-    if (p_sub->bHasSubWithSymbolRecursive(eCard, szSymbol))
       return true;
   }
 

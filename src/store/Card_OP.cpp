@@ -105,7 +105,7 @@ void Card_OP::vAdd_Pred_Under_filter(Card_PRED *p_PRED)
   Card_Filter* p_filter = this->pSub_filter();
   if (! p_filter) {
     p_filter = _pCard_Filter(this->pAppendNewCard(CK_FILTER));
-    p_filter->vAppendNewCard(CK_BOOLCALC);
+    Card_BoolCalc* p_boolCalc = _pCard_BoolCalc(p_filter->pAppendNewCard(CK_BOOLCALC));
   }
 
   p_filter->vAddPred(p_PRED);
