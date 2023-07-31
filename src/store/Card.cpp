@@ -771,18 +771,6 @@ Card* Card::pFindPpyRecursive(Stz* szPpy, eCK eOfCard)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-eAL Card::eGetLevel(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  eAL eLevel = (eAL) pSymbol()->Y_iGet(P_Level);
-
-  return eLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Stz* Card::szGetType(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -842,19 +830,6 @@ bool Card::bHasSymbolic(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (*m_xSymbol.m_sSymbol.azChar())
-    return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card::bHasType(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  if (m_xSymbol.Y_szGet(P_Type))
     return true;
 
   return false;

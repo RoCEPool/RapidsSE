@@ -307,13 +307,11 @@ namespace STORE
     Card* pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card* _opaque_=nullptr);
     Card* pFindPpyRecursive(Stz* szPpy, eCK eOfCard=CK_NONE);
 
-    eAL  eGetLevel(void);
     Stz* szGetType(void);
 
     bool bHasSubRecursive(Card* pSubCard);
     bool bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol);
     bool bHasSymbolic(void);
-    bool bHasType(void);
 
     bool bIsCard(eCK eCard);
     bool bIsOne(eCK eCard, ...);
