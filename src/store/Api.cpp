@@ -107,7 +107,8 @@ TaskList* Api::pParseCommand(Stz* szCommand, Stz* szCommandTags, Task* pParentTa
     delete pCommonTagSet;
     delete pCommandParser;
     eErrCode = e.eErrorCode();
-    sErrStr.vCopy(e.szError());
+    sErrStr.vSprint("Line: %lld; Column: %lld; "_Stz, e.iLine(), e.iColumn());
+    sErrStr.vConcat(e.szError());
     return nullptr;
 
   } catch (Parser::SemanticException& e) {
