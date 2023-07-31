@@ -63,47 +63,47 @@ success
 create table t~est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t&est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t%est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t^est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t!est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t*est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t:est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t?est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table t est (
   jA  INTEGER
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // (3) create table test 31 characters and more as table name
 
@@ -123,39 +123,39 @@ failure contains: 'EC_MAX_TABLE_NAME_LENGTH'
 create table t (
   c VARCHAR(0)) (
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // 0 length for char
 create table t (
   c CHAR(0)) (
 );
-failure contains: 'EC_INVALID_COMMAND'
+failure contains: 'EC_SYNTAX_ERROR'
 
 
 // Table name cannot be a reserved word
 create table create (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table on (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create table JOIN (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 // case insensitive
 create table join (col1 INTEGER);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 
 // index names are also checked against the reserved word list
 create index left on _test (jA);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create index JOIN on _test (jA);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 create index join on _test (jA);
-failure contains: 'EC_RESERVED_WORD'
+failure contains: 'EC_SYNTAX_ERROR'
 
 
 CLEANUP {
