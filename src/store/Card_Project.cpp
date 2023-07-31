@@ -279,7 +279,7 @@ void Card_Project::vInject_foldExpr(CardIter* pCI)
 
   pCI->G.p_rpnCalc = new Card_RpnCalc;
   pCI->G.p_expr->vAppend(pCI->G.p_rpnCalc);
-  pCI->G.p_expr->vColType(pCI->G.p_rpnCalc);
+  pCI->G.p_expr->vColType(pCI->G.p_rpnCalc->xColType());
 
   Symbol x_Symbol_stmCol1;
   x_Symbol_stmCol1.vSetStreamOrdinal(1);
