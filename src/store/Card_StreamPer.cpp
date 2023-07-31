@@ -136,10 +136,10 @@ void Card_StreamPer::vEstStreamCost(Card_TableList* p_tableList,
 
   // record the sum network and unicast costs
   Card_CostNetwork* p_costNetwork = new Card_CostNetwork;
-  p_costNetwork->vSymbol(nSumNetworkCost);
+  p_costNetwork->pSymbol()->vSet_number(nSumNetworkCost);
 
   Card_CostUnicast* p_costUnicast = new Card_CostUnicast;
-  p_costUnicast->vSymbol(nSumUnicastCost);
+  p_costUnicast->pSymbol()->vSet_number(nSumUnicastCost);
 
   Card_CostStream* p_costQuery = new Card_CostStream;
   p_costQuery->vAppend(p_costNetwork);
@@ -227,7 +227,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
       //+ table is the head of this stream permutation
 
       Card_StreamHead *p_streamHead = new Card_StreamHead;
-      p_streamHead->vSymbol(cTblSyn_ith);
+      p_streamHead->pSymbol()->vSet_number(cTblSyn_ith);
       vAppend(p_streamHead);
 
       p_streamHead->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
@@ -256,7 +256,7 @@ i8 Card_StreamPer::iCreatePerSeq(Card_TableList*    p_tableList,
     // stream join : table is a join in this stream permutation
 
     Card_StreamJoin *p_streamJoin = new Card_StreamJoin;
-    p_streamJoin->vSymbol(cTblSyn_ith);
+    p_streamJoin->pSymbol()->vSet_number(cTblSyn_ith);
     vAppend(p_streamJoin);
 
     p_streamJoin->vAppend(new Card_TableNm(p_table_ith->pSub_tableNm()->szSymbol()));
@@ -379,12 +379,12 @@ i8 Card_StreamPer::iOnePermutedJoin_v2(Card_TableList*    p_tableList,
 
     if (0 == i_Item) {
       Card_StreamHead *p_dataStart = new Card_StreamHead;
-      p_dataStart->vSymbol(cTblSyn_ith);
+      p_dataStart->pSymbol()->vSet_number(cTblSyn_ith);
       vAppend(p_dataStart);
     }
     else {
       Card_StreamJoin *p_joinLocus = new Card_StreamJoin;
-      p_joinLocus->vSymbol(cTblSyn_ith);
+      p_joinLocus->pSymbol()->vSet_number(cTblSyn_ith);
       vAppend(p_joinLocus);
 
       if (i_NotValid == i_Item) {
