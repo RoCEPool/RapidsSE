@@ -69,36 +69,6 @@ Card::Card(eCK eCard, Stz* szSymbol, eSF eSymbolForm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, i8 iPpy)
-    : Object(CN_CARD)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vInit(eCard);
-
-  vSymbol(szSymbol);
-
-  pSymbol()->Y_vSet(szPpyNm, iPpy);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szSymbol, Stz* szPpyNm, Stz* szPpy)
-    : Object(CN_CARD)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  vInit(eCard);
-
-  vSymbol(szSymbol);
-
-  pSymbol()->Y_vSet(szPpyNm, szPpy);
-}
-
-/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 void Card::vInit(eCK eCard)
