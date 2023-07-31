@@ -750,7 +750,15 @@ void Weaver2::vArgSend(Stz* szOpArgs, Card_Send* pCard_Send)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_WEAVER2, _FOOTER_);
 
-  szOpArgs->vCatSprint("%s"_Stz, pCard_Send->szSymbol());
+//  pCard_Send->vDump(__func__ );
+
+  if (XK_BROADCAST == (eXK)pCard_Send->pSymbol()->Y_iGet(P_SendKind))
+      szOpArgs->vCatSprint("%s broadcast"_Stz, pCard_Send->szSymbol());
+  else
+  if (XK_HASHCAST == (eXK)pCard_Send->pSymbol()->Y_iGet(P_SendKind))
+    szOpArgs->vCatSprint("%s hashcast"_Stz, pCard_Send->szSymbol());
+  else
+    szOpArgs->vCatSprint("%s"_Stz, pCard_Send->szSymbol());
 }
 
 /*----------------------------------------------------------------------------*/

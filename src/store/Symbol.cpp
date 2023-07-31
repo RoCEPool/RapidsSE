@@ -1090,7 +1090,7 @@ void Symbol::vPpyStr(String* pString)
 /*----------------------------------------------------------------------------*/
 /* does this card have same symbol as given argument?                         */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSameAs(char cArg)
+bool Symbol::bSame(char cArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1103,7 +1103,7 @@ bool Symbol::bSameAs(char cArg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSameAs(Stz* szArg)
+bool Symbol::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1116,7 +1116,7 @@ bool Symbol::bSameAs(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bSameAs(Symbol* pArg)
+bool Symbol::bSame(Symbol* pArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

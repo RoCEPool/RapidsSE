@@ -97,9 +97,9 @@ namespace STORE
     void vPpyStr(String* pString);
 
 
-    bool bSameAs(char cArg);
-    bool bSameAs(Stz* szArg);
-    bool bSameAs(Symbol* pArg);
+    bool bSame(char cArg);
+    bool bSame(Stz* szArg);
+    bool bSame(Symbol* pArg);
 
     void vSet(Symbol* pSymbol);
     void vSet_asName(Stz* szAsNm);

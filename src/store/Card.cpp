@@ -904,7 +904,7 @@ bool Card::bIsSymbol(char cSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (m_xSymbol.bSameAs(cSymbol))
+  if (m_xSymbol.bSame(cSymbol))
     return true;
   else
     return false;
@@ -930,7 +930,7 @@ bool Card::bIsSymbol(Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (m_xSymbol.bSameAs(szSymbol))
+  if (m_xSymbol.bSame(szSymbol))
     return true;
   else
     return false;

@@ -156,20 +156,20 @@ bool Card_Bound::bValidBoundForRelnOp(Symbol *pBound, Symbol *pRelnOp)
 {
   _static_
 
-  if (pBound->bSameAs("BOUND"_Stz))
-    if (pRelnOp->bSameAs("="_Stz) || pRelnOp->bSameAs("=="_Stz))
+  if (pBound->bSame("BOUND"_Stz))
+    if (pRelnOp->bSame("="_Stz) || pRelnOp->bSame("=="_Stz))
       return true;
     else
       return false;
   else
-  if (pBound->bSameAs("LBOUND"_Stz))
-    if (pRelnOp->bSameAs(">"_Stz) || pRelnOp->bSameAs(">="_Stz))
+  if (pBound->bSame("LBOUND"_Stz))
+    if (pRelnOp->bSame(">"_Stz) || pRelnOp->bSame(">="_Stz))
       return true;
     else
       return false;
   else
-  if (pBound->bSameAs("UBOUND"_Stz))
-    if (pRelnOp->bSameAs("<="_Stz) || pRelnOp->bSameAs("<"_Stz))
+  if (pBound->bSame("UBOUND"_Stz))
+    if (pRelnOp->bSame("<="_Stz) || pRelnOp->bSame("<"_Stz))
       return true;
     else
       return false;
@@ -192,11 +192,11 @@ bool Card_Bound::bEquivalent(Card_CmpPred* p_cmpPred)
   Symbol* pCmp_arg_0  = p_cmpPred->pGetChild(0)->pSymbol();
   Symbol* pCmp_arg_1  = p_cmpPred->pGetChild(1)->pSymbol();
 
-  if (! pCmp_rlnOpr->bSameAs(pBnd_rlnOpr))
+  if (! pCmp_rlnOpr->bSame(pBnd_rlnOpr))
     return false;
 
-  if (pBnd_stmOdn->bSameAs(pCmp_arg_0) ||
-      pBnd_stmOdn->bSameAs(pCmp_arg_1))
+  if (pBnd_stmOdn->bSame(pCmp_arg_0) ||
+      pBnd_stmOdn->bSame(pCmp_arg_1))
     return true;
 
   return false;

@@ -63,7 +63,7 @@ bool Card_StreamPtn::bContainsKey(Symbol *p_Y_tblCol)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_STREAMKEY)) {
-    if (xCI.G.p_streamKey->pSymbol()->bSameAs(p_Y_tblCol))
+    if (xCI.G.p_streamKey->pSymbol()->bSame(p_Y_tblCol))
       return true;
   }
 

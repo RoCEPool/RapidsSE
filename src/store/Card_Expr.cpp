@@ -411,7 +411,7 @@ bool Card_Expr::bIsDescending(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   if (Card_Direction* p_direction = pSub_direction())
-    if (p_direction->pSymbol()->bSameAs("DESC"_Stz))
+    if (p_direction->pSymbol()->bSame("DESC"_Stz))
       return true;
 
   return false;
@@ -478,7 +478,7 @@ bool Card_Expr::bExpressionOfSymbol(Symbol* pSymbol)
 
   Symbol* pSymbol_0 = pGetTerm(0)->pSymbol();
 
-  if (pSymbol_0->bSameAs(pSymbol))
+  if (pSymbol_0->bSame(pSymbol))
     return true;
 
   return false;

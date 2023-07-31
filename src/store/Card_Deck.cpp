@@ -412,7 +412,7 @@ void Card_Deck::vProjectionAnalysis_passThru(CardIter* pCI)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (pCI->G.p_MainCard->bIsCard(CK_HASH)) {
       pCI->G.p_hshCol = pCI->G.p_MainCard->pSub_hshCol();
-      pCI->G.p_hshCol->vDump(__func__);
+      //pCI->G.p_hshCol->vDump(__func__);
       continue;
     }
 
