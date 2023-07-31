@@ -1873,19 +1873,6 @@ void CardIter::G_vPushNewChild(Card* pParent, eCK eChild)
 }
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  Card* pChild = new Card(eChild, szValue, SF_OTHER);
-
-  pParent->vPush(pChild);
-  G_vMember(eChild, pChild, __func__);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push current M iterator onto iter stack                                    */
 /*----------------------------------------------------------------------------*/
 void CardIter::G_vPushIter(void)

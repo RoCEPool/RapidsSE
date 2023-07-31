@@ -154,7 +154,6 @@ namespace STORE
     bool G_bPushBoard(i8 i_Board);
     bool G_bPushBoard(Stz* szBoardNm);
     void G_vPushNewChild(Card* pParent, eCK eChild);
-    void G_vPushNewChild(Card* pParent, eCK eChild, Stz* szValue);
     void G_vPushIter(void);
 
     Card* pRecurseEach(void);

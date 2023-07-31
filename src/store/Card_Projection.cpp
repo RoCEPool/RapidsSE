@@ -79,7 +79,7 @@ void Card_Projection::vAdjust_Wrt_key(Card_Key* p_key)
 
   for (Kid xKid(this); xKid.bEach(CK_EXPR); /**/) {
 
-    xKid.p_expr()->vDump(__func__ );
+    //xKid.p_expr()->vDump(__func__ );
 
     if (! xKid.p_expr()->bIsScalarCol())
       continue;

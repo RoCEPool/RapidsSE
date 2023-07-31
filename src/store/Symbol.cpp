@@ -27,7 +27,7 @@ Symbol::Symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  m_eSymbolForm = SF_NONE;
+  m_eSymbol = SF_NONE;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -38,13 +38,13 @@ Symbol::Symbol(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Symbol::Symbol(Stz* szSymbol, eSF eSymbolForm)
+Symbol::Symbol(Stz* szSymbol, eSF eSymbol)
     : Object(CN_SYMBOL)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szSymbol;
-  m_eSymbolForm = eSymbolForm;
+  m_eSymbol = eSymbol;
   m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
@@ -1134,7 +1134,7 @@ void Symbol::vSet(Symbol* pSymbol)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = pSymbol->m_sSymbol;
-  m_eSymbolForm = pSymbol->m_eSymbolForm;
+  m_eSymbol = pSymbol->m_eSymbol;
 
   if (pSymbol->m_pProperties) {
     if (! m_pProperties)
@@ -1156,7 +1156,7 @@ void Symbol::vSet_asName(Stz* szAsNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szAsNm;
-  m_eSymbolForm = SF_ASNAME;
+  m_eSymbol = SF_ASNAME;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsColNm());
@@ -1171,7 +1171,7 @@ void Symbol::vSet_colNm(Stz* szColNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szColNm;
-  m_eSymbolForm = SF_COLNM;
+  m_eSymbol = SF_COLNM;
 }
 
 
@@ -1183,7 +1183,7 @@ void Symbol::vSetCrossRef(i8 iCrossRef)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("#%lld"_Stz, iCrossRef);
-  m_eSymbolForm = SF_XREFNO;
+  m_eSymbol = SF_XREFNO;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsCrossRef());
@@ -1198,7 +1198,7 @@ void Symbol::vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("C%lld_%s"_Stz, i_Child, szColNm);
-  m_eSymbolForm = SF_DASCNE;
+  m_eSymbol = SF_DASCNE;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsDisambiguatedColNm());
@@ -1213,7 +1213,7 @@ void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$I%lld"_Stz, iIdxColOdn);
-  m_eSymbolForm = SF_IDXCOL;
+  m_eSymbol = SF_IDXCOL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsIndexColumn());
@@ -1228,7 +1228,7 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$K%lld"_Stz, iKeyOdn);
-  m_eSymbolForm = SF_KEYCOL;
+  m_eSymbol = SF_KEYCOL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsKeyOrdinal());
@@ -1243,7 +1243,7 @@ void Symbol::vSet_number(i8 iNumber)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
    m_sSymbol = iNumber;
-  m_eSymbolForm = SF_NUMBER;
+  m_eSymbol = SF_NUMBER;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsNumber());
@@ -1258,7 +1258,7 @@ void Symbol::vSet_other(Stz* szOther)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   m_sSymbol = szOther;
-  m_eSymbolForm = SF_OTHER;
+  m_eSymbol = SF_OTHER;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsOther());
@@ -1273,7 +1273,7 @@ void Symbol::vSet_parameterOrdinal(i8 iNumber)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("%%%lld"_Stz, iNumber);
-  m_eSymbolForm = SF_PRMCOL;
+  m_eSymbol = SF_PRMCOL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsNumber());
@@ -1288,7 +1288,7 @@ void Symbol::vSet_stageNo(i8 iStageNo)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("S%02lld"_Stz, iStageNo);
-  m_eSymbolForm = SF_OTHER;
+  m_eSymbol = SF_OTHER;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1299,7 +1299,7 @@ void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$%lld"_Stz, iStmColOdn);
-  m_eSymbolForm = SF_STMCOL;
+  m_eSymbol = SF_STMCOL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsStreamOrdinal());
@@ -1314,7 +1314,7 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("__sq%02lld"_Stz, iSqNo);
-  m_eSymbolForm = SF_SQRYNO;
+  m_eSymbol = SF_SQRYNO;
 
 #ifdef X_SET_CROSS_CHECK
   //RASSERT(bIsSubQueryColumn());
@@ -1329,7 +1329,7 @@ void Symbol::vSetSyntheticAs(i8 iAsNo)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("COL%lld"_Stz, iAsNo);
-  m_eSymbolForm = SF_SASCNM;
+  m_eSymbol = SF_SASCNM;
 
   Y_vSet(P_Synthetic);
 
@@ -1346,7 +1346,7 @@ void Symbol::vSetTableColSyn(char cTblSyn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("%c"_Stz, cTblSyn);
-  m_eSymbolForm = SF_TBLSYN;
+  m_eSymbol = SF_TBLSYN;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsTableSyn());
@@ -1361,7 +1361,7 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-  m_eSymbolForm = SF_TBLCOL;
+  m_eSymbol = SF_TBLCOL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsColumnOrdinal());

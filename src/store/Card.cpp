@@ -58,14 +58,14 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Stz* szSymbol, eSF eSymbolForm)
+Card::Card(eCK eCard, Stz* szSymbol, eSF eSymbol)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   vInit(eCard);
 
-  vSymbol(szSymbol,eSymbolForm);
+  vSymbol(szSymbol,eSymbol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,11 +406,11 @@ Stz* Card::szCardNm(void)
 /*----------------------------------------------------------------------------*/
 /* set type of symbol                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vColType(Card* p_card_arg)
+void Card::vColType(Card* pCard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  m_xSymbol.Y_vSet(P_Type, p_card_arg->pSymbol()->szType());
+  m_xSymbol.Y_vSet(P_Type, pCard_arg->pSymbol()->szType());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1154,7 +1154,6 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
   Card* pParent = pFindParentRecursive(pSub);
 
   pParent->vReplaceChild(pSub,pWith);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1256,14 +1255,14 @@ Stz* Card::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vSymbol(Stz* szSymbol, eSF eSymbolForm)
+void Card::vSymbol(Stz* szSymbol, eSF eSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
   m_xSymbol.m_sSymbol = szSymbol;
-  m_xSymbol.m_eSymbolForm = eSymbolForm;
+  m_xSymbol.m_eSymbol = eSymbol;
 }
 
 /*----------------------------------------------------------------------------*/

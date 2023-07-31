@@ -13,8 +13,8 @@ namespace STORE
   class Symbol : public Object
   {
   public:
+    eSF     m_eSymbol;
     s256    m_sSymbol;
-    eSF     m_eSymbolForm;
     TagSet* m_pProperties;
 
   protected:
@@ -23,7 +23,7 @@ namespace STORE
 
   public:
     Symbol(void);
-    Symbol(Stz* szSymbol, eSF eSymbolForm);
+    Symbol(Stz* szSymbol, eSF eSymbol);
     Symbol(Symbol* pSymbol);
 
     static eSF  eEvalForm(Stz* szArg);

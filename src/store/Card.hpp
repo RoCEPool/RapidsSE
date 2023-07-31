@@ -254,7 +254,7 @@ namespace STORE
   
     Card(eCK eCard);
     Card(eCK eCard, Symbol* pSymbol);
-    Card(eCK eCard, Stz* szSymbol, eSF eSymbolForm);
+    Card(eCK eCard, Stz* szSymbol, eSF eSymbol);
     void vInit(eCK eCard);
 
    ~Card(void) noexcept(false);
@@ -283,7 +283,7 @@ namespace STORE
     i8   i_Child(void);
     void v_Child(i8 i_Child);
 
-    void vColType(Card* p_card_arg);
+    void vColType(Card* pCard_arg);
 
     void  vDump(const char* azFunc, i8 iDepth=0, Stz* szTitle=nullptr);
     Card* pDupCard(void);
@@ -333,7 +333,7 @@ namespace STORE
     char cSymbol(void);
     i8   iSymbol(void);
     Stz* szSymbol(void);
-    void vSymbol(Stz* szSymbol, eSF eSymbolForm=SF_OTHER);
+    void vSymbol(Stz* szSymbol, eSF eSymbol=SF_OTHER);
     bool bSymbolHasValue(void);
 
     bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
