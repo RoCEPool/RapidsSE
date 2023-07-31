@@ -252,7 +252,7 @@ bool Card_Bound::bIsEBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsSymbol("=="_Stz))
+  if (bSameSymbol("=="_Stz))
     return true;
 
   return false;
@@ -265,7 +265,7 @@ bool Card_Bound::bIsLBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsSymbol(">"_Stz) || bIsSymbol(">="_Stz))
+  if (bSameSymbol(">"_Stz) || bSameSymbol(">="_Stz))
     return true;
 
   return false;
@@ -278,7 +278,7 @@ bool Card_Bound::bIsUBound(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (bIsSymbol("<"_Stz) || bIsSymbol("<="_Stz))
+  if (bSameSymbol("<"_Stz) || bSameSymbol("<="_Stz))
     return true;
 
   return false;

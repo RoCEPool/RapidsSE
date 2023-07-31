@@ -176,7 +176,7 @@ Card* ChildCards::pFindChild(eCK eCard, Stz* szValue, i8& i_Child)
   for (i_Child = 0; i_Child < nChildren; i_Child++) {
     Card* pChildCard = pGetChild(i_Child, eChildCard);
 
-    if (eCard == pChildCard->eCard() && pChildCard->bIsSymbol(szValue)) {
+    if (eCard == pChildCard->eCard() && pChildCard->bSameSymbol(szValue)) {
       pFoundCard = pChildCard;
       break;
     }

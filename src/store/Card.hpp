@@ -317,9 +317,6 @@ namespace STORE
 
     bool bIsCard(eCK eCard);
     bool bIsOne(eCK eCard, ...);
-    bool bIsSymbol(char cSymbol);
-    bool bIsSymbol(Symbol* pSymbol);
-    bool bIsSymbol(Stz* szSymbol);
 
 
     char cMark1(void);
@@ -344,6 +341,9 @@ namespace STORE
     void vRenumberRecursive(Card* pParent);
     void vReplaceSubCard(Card* pSub, Card* pWith);
 
+    bool bSameSymbol(char cSymbol);
+    bool bSameSymbol(Symbol* pSymbol);
+    bool bSameSymbol(Stz* szSymbol);
     bool bSameSymbol(Card* pArg);
 
     void vSetType(Card* p_card_arg);

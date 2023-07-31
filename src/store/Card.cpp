@@ -685,7 +685,7 @@ Card* Card::pFindSymbolRecursive(Stz* szSymbol, Card*& rpParent, Card* _pWalkPar
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsSymbol(szSymbol)) {
+  if (bSameSymbol(szSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -731,7 +731,7 @@ Card* Card::pFindSymbolRecursive(eCK eCard, Stz* szSymbol, Card*& rpParent, Card
 
   //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSF__print(),md_Bearing);
 
-  if (eCard == m_eCard && bIsSymbol(szSymbol)) {
+  if (eCard == m_eCard && bSameSymbol(szSymbol)) {
     rpParent = _pWalkParent_;
     return this;
   }
@@ -820,7 +820,7 @@ bool Card::bHasSubWithSymbolRecursive(eCK eCard, Stz* szSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bIsCard(eCard) && bIsSymbol(szSymbol))
+  if (bIsCard(eCard) && bSameSymbol(szSymbol))
     return true;
 
   i8 nSubCards = this->nChildCards();
@@ -895,45 +895,6 @@ bool Card::bIsOne(eCK eCard, ...)
   va_end(xArgs);
 
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSymbol(char cSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (m_xSymbol.bSame(cSymbol))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSymbol(Symbol* pSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (bIsSymbol(pSymbol->szSF__print()))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* does this card have same symbol as given argument?                         */
-/*----------------------------------------------------------------------------*/
-bool Card::bIsSymbol(Stz* szSymbol)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  if (m_xSymbol.bSame(szSymbol))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1420,6 +1381,45 @@ void Card::vReplaceSubCard(Card* pSub, Card* pWith)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does this card have same symbol as given argument?                         */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameSymbol(char cSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (m_xSymbol.bSame(cSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this card have same symbol as given argument?                         */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameSymbol(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bSameSymbol(pSymbol->szSF__print()))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this card have same symbol as given argument?                         */
+/*----------------------------------------------------------------------------*/
+bool Card::bSameSymbol(Stz* szSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (m_xSymbol.bSame(szSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this card's symbolic value the same as given arg?                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bSameSymbol(Card* pArg)
@@ -1535,7 +1535,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
 
   auto bfUpdateSymbol = [pSymbol, pWith, &bReplaced](Card *pCard)
   {
-    if (! pCard->bIsSymbol(pSymbol))
+    if (! pCard->bSameSymbol(pSymbol))
       return C_CONTINUE_RECURSION;
 
     pCard->m_xSymbol.vSet(pWith);

@@ -424,7 +424,7 @@ bool Card_StreamPer::bHasKnownJoin(char cTblSyn)
   CardIter xCI(this);
   while (xCI.G_bEachMain()) {
     ASSERT(xCI.G.p_MainCard->bIsCard(CK_STREAMHEAD) || xCI.G.p_MainCard->bIsCard(CK_STREAMJOIN))
-    if (xCI.G.p_MainCard->bIsSymbol(cTblSyn))
+    if (xCI.G.p_MainCard->bSameSymbol(cTblSyn))
       return true;
   }
 
@@ -492,7 +492,7 @@ bool Card_StreamPer::bUnicastPermitted(char cTblSyn_prior,
       continue;
 
     xCI.G.p_joinCast = xCI.G.p_streamJoin->pSub_locusCast();
-    if (xCI.G.p_joinCast && !xCI.G.p_joinCast->bIsSymbol("XK_UNICAST"_Stz))
+    if (xCI.G.p_joinCast && !xCI.G.p_joinCast->bSameSymbol("XK_UNICAST"_Stz))
       return false;
 
     if (xCI.G.p_MainCard->cSymbol() == cTblSyn_prev)

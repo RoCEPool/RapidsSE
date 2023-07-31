@@ -209,14 +209,14 @@ eTE Card_Term::eEvalTerm(void)
 
   Stz* szValue = this->szSymbol();
 
-       if (bIsSymbol("and"_Stz))        return TE_AND;
-  else if (bIsSymbol("or"_Stz))         return TE_OR;
-  else if (bIsSymbol("not"_Stz))        return TE_NOT;
-  else if (bIsSymbol("}"_Stz))          return TE_EXECUTE;
-  else if (bIsSymbol("exists"_Stz))     return TE_EXISTS;
-  else if (bIsSymbol("in"_Stz))         return TE_IN;
-  else if (bIsSymbol("notExists"_Stz))  return TE_NOTEXISTS;
-  else if (bIsSymbol("notIn"_Stz))      return TE_NOTIN;
+       if (bSameSymbol("and"_Stz))        return TE_AND;
+  else if (bSameSymbol("or"_Stz))         return TE_OR;
+  else if (bSameSymbol("not"_Stz))        return TE_NOT;
+  else if (bSameSymbol("}"_Stz))          return TE_EXECUTE;
+  else if (bSameSymbol("exists"_Stz))     return TE_EXISTS;
+  else if (bSameSymbol("in"_Stz))         return TE_IN;
+  else if (bSameSymbol("notExists"_Stz))  return TE_NOTEXISTS;
+  else if (bSameSymbol("notIn"_Stz))      return TE_NOTIN;
 
   else if (pSymbol()->bIsRelnOp())     return TE_RELNOP;
   else if (pSymbol()->bIsBoolFn())     return TE_BOOLFN;
@@ -369,7 +369,7 @@ bool Card_Term::bSameAs(Card_Term* p_term_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  bool b = bIsSymbol(p_term_arg->szSymbol());
+  bool b = bSameSymbol(p_term_arg->szSymbol());
 
   return b;
 }

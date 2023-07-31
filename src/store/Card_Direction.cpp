@@ -48,7 +48,7 @@ bool Card_Direction::bIsEqual(Card_Direction* p_direction_arg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (!this->bIsSymbol(p_direction_arg->szSymbol()))
+  if (!this->bSameSymbol(p_direction_arg->szSymbol()))
     return false;
 
   return true;

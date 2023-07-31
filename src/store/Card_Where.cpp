@@ -138,7 +138,7 @@ void Card_Where::vMove_All_on_To_where(CardIter* pCI)
     }
 
     Card_Term *p_term_0 = p_rpnCalc_on->pGetTerm(0);
-    if (p_term_0->bIsSymbol("CROSS"_Stz))
+    if (p_term_0->bSameSymbol("CROSS"_Stz))
       continue;
 
     if (! pCI->G.p_where) {

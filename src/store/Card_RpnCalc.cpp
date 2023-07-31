@@ -143,11 +143,11 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
     if (! xCI.bMore())
       break;
 
-    if (xCI.G.p_term->bIsSymbol("exists"_Stz)) {
+    if (xCI.G.p_term->bSameSymbol("exists"_Stz)) {
 
       RASSERT(xCI.G_bEachMain(CK_TERM));
       Card_Term* p_term_next = xCI.G.p_term;
-      if (p_term_next->bIsSymbol("not"_Stz)) {
+      if (p_term_next->bSameSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
         p_term->vSymbol("notExists"_Stz);
@@ -156,11 +156,11 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       continue;
     }
 
-    if (xCI.G.p_term->bIsSymbol("in"_Stz)) {
+    if (xCI.G.p_term->bSameSymbol("in"_Stz)) {
 
       RASSERT(xCI.G_bEachMain(CK_TERM));
       Card_Term* p_term_next = xCI.G.p_term;
-      if (p_term_next->bIsSymbol("not"_Stz)) {
+      if (p_term_next->bSameSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
         p_term->vSymbol("notIn"_Stz);
@@ -322,7 +322,7 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bIsSymbol(pSymbol->szSF__print()))
+    if (xCI.G.p_term->bSameSymbol(pSymbol->szSF__print()))
       return true;
   }
 
@@ -590,7 +590,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
           RASSERT(p_cmpPred->bIsRelnOp())
         }
         else
-        if (!p_cmpPred->bIsSymbol("=="_Stz)) { // todo: more work
+        if (!p_cmpPred->bSameSymbol("=="_Stz)) { // todo: more work
           p_cmpPred->vCard(CK_CMPPRED);
           RASSERT(p_cmpPred->bIsRelnOp())
         }
