@@ -361,7 +361,7 @@ namespace STORE
     Stz* szSymbol(void);
     void vSymbol(Stz* szSymbol);
 
-    bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Card_Term* p_term_with);
+    bool bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith);
 
     void vValidate_mayHave(eCK eCard_first, ...);
     eCK  eValidate_mustEither(eCK eCard_first, ...);

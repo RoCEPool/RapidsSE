@@ -1627,7 +1627,7 @@ void Card::vSymbol(Stz* szSymbol)
 /*----------------------------------------------------------------------------*/
 /* find sub card with given symbol and replace                                */
 /*----------------------------------------------------------------------------*/
-bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Card_Term* p_term_with)
+bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -1635,12 +1635,12 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Card_Term* p_term_w
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  auto bfUpdateSymbol = [pSymbol, p_term_with, &bReplaced](Card *pCard)
+  auto bfUpdateSymbol = [pSymbol, pWith, &bReplaced](Card *pCard)
   {
     if (! pCard->bIsSymbol(pSymbol))
       return C_CONTINUE_RECURSION;
 
-    pCard->m_xSymbol.vSet(p_term_with->pSymbol());
+    pCard->m_xSymbol.vSet(pWith);
 
     bReplaced = true;
 
