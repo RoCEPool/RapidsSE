@@ -117,9 +117,6 @@ void XF_Synthesise_Code::vSynthesise(void)
 
   Board* pBoard = m_pCI->m_pBench->pGetBoard((i8)0);
 
-  if (AM::JOB::bHasTag(C_WEAVER1))
-    return;
-
   vCraftPipelineDef(pBoard);
 
   if (AM::JOB::bHasTag(C_NOCODESYNTHESIS))

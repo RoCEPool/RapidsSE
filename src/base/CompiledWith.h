@@ -36,9 +36,6 @@
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
 
-#define WITH_WEAVER2 EndDefine               // weaver2
-//#define WITH_WEAVER1 EndDefine                 // weaver1
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // release behaviours
 
@@ -59,9 +56,6 @@
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine     // trace logic unit
-
-#define WITH_WEAVER2 EndDefine               // weaver2
-//#define WITH_WEAVER1 EndDefine                 // weaver1
 
 #endif
 
