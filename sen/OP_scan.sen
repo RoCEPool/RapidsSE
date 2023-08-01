@@ -64,7 +64,7 @@
   repeat
 
 
-  // Table is empty
+  // Finished sending all bufferIds to the next op
   // drop table ptn lock
   TablePtn[].dropRead
 

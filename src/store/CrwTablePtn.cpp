@@ -276,7 +276,7 @@ void CrwTablePtn::vTruncate(void)
     CrwBuffer* pCrwBuffer = pGetBuffer(pCurrBlock);
     delete pCrwBuffer;
 
-    RASSERT(pCrwBuffer->eGetClassNo() == BASE::CN_CRWBUFFER);
+//    RASSERT(pCrwBuffer->eGetClassNo() == BASE::CN_CRWBUFFER);
 
     m_pPdsOfBufferIds->bDelete(pCurrBlock->iKey());
 

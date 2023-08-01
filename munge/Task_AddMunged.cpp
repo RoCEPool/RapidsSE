@@ -16005,7 +16005,7 @@ void Task::vAddMunged(Task* )
     "  repeat\n"
     "\n"
     "\n"
-    "  // Table is empty\n"
+    "  // Finished sending all bufferIds to the next op\n"
     "  // drop table ptn lock\n"
     "  TablePtn[].dropRead\n"
     "\n"
