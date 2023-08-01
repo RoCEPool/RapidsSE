@@ -8,7 +8,6 @@ _nation
 explain stage transliterate select n_regionkey, n_nationkey from nation order by n_nationkey;
 
 /weaved
-/weaver2
 /optimise_passThru
 pipeline unamed
 begin

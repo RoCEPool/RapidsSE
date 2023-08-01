@@ -4,6 +4,4 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-
-/weaver2
 select n_regionKey, max(n_name) from nation group by n_regionKey;

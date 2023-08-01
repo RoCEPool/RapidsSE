@@ -4,7 +4,6 @@
 _nation
 /time load nation   "<tpch_dir>/nation.<suffix>";
 
-/weaver2
 /pipeline_def
 /weaved
 /optimise_passthru
