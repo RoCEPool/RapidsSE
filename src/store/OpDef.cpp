@@ -427,10 +427,11 @@ void OpDef::vValidate(void)
   }
   else
   if (m_sOpNm.bSame("INDEXJOIN"_Stz)) {
-    RASSERT(3 == nArgs());
+    RASSERT(nArgs() >= 3);
     RASSERT(pArgDef("tableNm"_Stz));
     RASSERT(pArgDef("indexNm"_Stz));
     RASSERT(pArgDef_expectingVal("expr"_Stz));
+    RASSERT(nArgs() == 3 || pArgDef_expectingVal("constraint"_Stz));
 
     RASSERT(m_pStreamDef_arriving);
     RASSERT(m_pStreamDef_emitted);

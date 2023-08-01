@@ -299,6 +299,11 @@ void XF_Synthesise_Code::vCraftArgDefs(Card_OP* p_OP)
       m_pOpDef->vAppend(new ArgDef(0, "tableNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
       m_pOpDef->vAppend(new ArgDef(1, "indexNm"_Stz, _pCard_IndexJoin(p_OP)->pSub_tableNm()->szSymbol()));
       m_pOpDef->vAppend(new ArgDef(2, "expr"_Stz, sExpr));
+
+      if (p_OP->pSub_constraint()) {
+        p_OP->vRpnIndexJoin_constraint(sConstraint, _pCard_IndexJoin(p_OP));
+        m_pOpDef->vAppend(new ArgDef(4, "constraint"_Stz, sConstraint));
+      }
       break;
 
     case CK_INDEXSCAN:
