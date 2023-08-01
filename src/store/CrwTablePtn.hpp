@@ -16,10 +16,6 @@ namespace STORE
     Table* m_pTable;        // table this partition belongs to
     LglPtn    m_tLglPtn;        // partition number (in grid)
 
-    // TODO: Arjun - m_pRootBuffer needs to be removed
-    CrwBuffer* m_pRootBuffer;    // the data root buffer
-    CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
-
     Pds_t<xBufferId>* m_pPdsOfBufferIds;
 
     // Note that the IndexTreeVec gets moved upto TablePtn
@@ -53,7 +49,6 @@ namespace STORE
     Table* pTable(void);
     void vTruncate(void);
 
-    void vVerifyPds(void);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
 
