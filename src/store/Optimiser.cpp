@@ -376,6 +376,7 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
+  /*
   if (AM::JOB::bHasTag(C_WEAVER1)) {
     Weaver *pWeaver1 = new Weaver(m_pBench);
 
@@ -388,23 +389,22 @@ Stz* Optimiser::szWeave(void)
 
     delete pWeaver1;
   }
-  else {
+  */
 
-    Weaver2 *pWeaver = new Weaver2(m_pBench,m_pPipelineDef);
+  Weaver2 *pWeaver = new Weaver2(m_pBench,m_pPipelineDef);
 
-    Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
-    pWeaver->vWeaveOptStmt(pBoard_query);
+  Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
+  pWeaver->vWeaveOptStmt(pBoard_query);
 
-    m_pOptStmt = pWeaver->pOptStmt();
-    pWeaver->vOptStmt(nullptr);
+  m_pOptStmt = pWeaver->pOptStmt();
+  pWeaver->vOptStmt(nullptr);
 
-    if (pWeaver->pCodeBlock()) {
-      m_pCodeBlock = pWeaver->pCodeBlock();
-      pWeaver->vCodeBlock(nullptr);
-    }
-
-    delete pWeaver;
+  if (pWeaver->pCodeBlock()) {
+    m_pCodeBlock = pWeaver->pCodeBlock();
+    pWeaver->vCodeBlock(nullptr);
   }
+
+  delete pWeaver;
 
   return m_pOptStmt->szTextBlock(0);
 }

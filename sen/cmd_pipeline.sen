@@ -172,17 +172,10 @@ then
 "<optimise_passThru>" [job].tagSet@ tagSet.hasName if
    "<optimise_passThru>" .
 then
-"<weaver1>" [job].tagSet@ tagSet.hasName if
-   "<weaver1>" .
-then
-"<weaver2>" [job].tagSet@ tagSet.hasName if
-   "<weaver2>" .
-then
 */
 
 /* org_ org */ "<optimise>" [job].tagSet@ tagSet.hasName
-/* org_ org */ "<optimise_passThru>" [job].tagSet@ tagSet.hasName
-               "<weaver2>" [job].tagSet@ tagSet.hasName and or if
+/* org_ org */ "<optimise_passThru>" [job].tagSet@ tagSet.hasName or if
 
 /* org_ org */    Optimiser[].new
 /* org_ org */    PipeSpec[] Optimiser[].dissect

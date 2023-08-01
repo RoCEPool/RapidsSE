@@ -205,7 +205,6 @@ static Stz* C_JOWRITE    = "<joWrite>"_Stz;
 static Stz* C_OPTIMISE_PASSTHRU = "<optimise_passThru>"_Stz;
 static Stz* C_PIPELINE_DEF = "<pipeline_def>"_Stz;
 static Stz* C_WEAVED     = "<weaved>"_Stz;
-static Stz* C_WEAVER1    = "<weaver1>"_Stz;
 static Stz* C_NOCODESYNTHESIS = "<noCodeSynthesis>"_Stz;
 
 static d8 C_EXPANSION_COEFF = 1.60;  // crw -> row buffer
