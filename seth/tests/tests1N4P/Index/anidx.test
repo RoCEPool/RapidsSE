@@ -8,11 +8,11 @@ success
 
 // invalid
 anidx;
-failure contains: "invalid command"
+failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 5; mismatched input ';'"
 
 // invalid
 anidx IntTbl;
-failure contains: "invalid command"
+failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 12; mismatched input ';'"
 
 // Table does not exist
 anidx IntTbl int_idx1;
@@ -29,7 +29,7 @@ success
 
 // invalid
 anidx IntTbl;
-failure contains: "invalid command"
+failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 12; mismatched input ';'"
 
 // no such index
 anidx IntTbl int_idx1;
@@ -41,11 +41,11 @@ success
 
 // invalid
 anidx IntTbl;
-failure contains: "invalid command"
+failure contains: "Error: EC_SYNTAX_ERROR; Line: 1; Column: 12; mismatched input ';'"
 
 // invalid
 anidx IntTbl idx1 idx2;
-failure contains: "invalid command"
+failure contains: "EC_SYNTAX_ERROR; Line: 1; Column: 18; extraneous input 'idx2' expecting ';'"
 
 // invalid
 anidx x int_idx1;
