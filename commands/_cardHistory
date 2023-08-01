@@ -1,0 +1,662 @@
+/*============================================================================*/
+/* _ray109                                                                    */
+/*============================================================================*/
+
+// Query9
+
+/*
+// NOTE: In S06:
+ArgDef: [0] expr  groupBy
+                    type INTEGER as COL1 $1
+                  , type INTEGER as COL2 $1
+
+
+  should be $1, $2
+*/
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/weaved
+/pipeline_def
+/optimise_passthru
+/glean_interactive
+pipeline Query9
+  begin
+  stage S00 on origin :
+    start
+    | pulse once
+    | next
+
+  stage S01 on all partitions :
+    scan rapidsse public part
+    | filter "type BOOLEAN }  P_NAME '%green%' 5 matchMiddle"
+    | project "type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next
+
+  stage S02 on all partitions :
+    indexJoin partsupp IxPS_PARTKEY "bound $I1 P_PARTKEY =="
+    | project "type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | hash "type INTEGER PS_SUPPKEY"
+    | combined 0
+    | next hashcast
+
+  stage S03 on all partitions :
+    indexJoin supplier IxS_SUPPKEY "bound $I1 PS_SUPPKEY =="
+    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER as P_PARTKEY P_PARTKEY ,
+               type INTEGER as PS_SUPPKEY PS_SUPPKEY ,
+               type DECIMAL as PS_SUPPLYCOST PS_SUPPLYCOST"
+    | combined 0
+    | next broadcast
+
+  stage S04 on all partitions :
+    indexJoin LINEITEM IxL_PARTKEY "bound $I1 P_PARTKEY =="
+    | filter "type BOOLEAN L_SUPPKEY PS_SUPPKEY =="
+    | project "type INTEGER as L_ORDERKEY L_ORDERKEY ,
+               type INTEGER as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER as L_SUPPKEY L_SUPPKEY ,
+               type DECIMAL as AMOUNT L_EXTENDEDPRICE 1.0 L_DISCOUNT -  *  PS_SUPPLYCOST L_QUANTITY *  - "
+    | combined 0
+    | next broadcast
+
+  stage S05 on all partitions :
+    indexJoin ORDERS IxO_ORDERKEY "bound $I1 L_ORDERKEY =="
+    | project "type INTEGER as S_NATIONKEY S_NATIONKEY ,
+               type INTEGER as O_YEAR O_ORDERDATE extract_year ,
+               type DECIMAL as AMOUNT AMOUNT"
+    | combined 0
+    | next
+
+  stage S06 on all partitions :
+    gbyAgg "groupBy    type INTEGER S_NATIONKEY ,
+                       type INTEGER O_YEAR
+            aggregates type INTEGER as S_NATIONKEY $K1 ,
+                       type INTEGER as O_YEAR $K2 ,
+                       type DECIMAL as SUM_PROFIT ) AMOUNT sum  "
+    | combined 0
+    | next
+
+  stage S11 on origin :
+    output
+    | sink
+    | first
+  end ;
+
+/*
+rows:
+ ('ARGENTINA',1998,-419055.24)
+ ('ARGENTINA',1997,-436760.81)
+ ('ARGENTINA',1996,-318328.79)
+ ('ARGENTINA',1995,-578217.20)
+ ('ARGENTINA',1994,-621194.32)
+ ('ARGENTINA',1993,-552384.90)
+ ('ARGENTINA',1992,-458738.64)
+ ('IRAN',1997,-180388.92)
+ ('IRAN',1996,-429987.60)
+ ('IRAN',1995,-336785.92)
+ ('IRAN',1994,-153745.88)
+ ('IRAN',1993,-570838.08)
+ ('IRAN',1992,-401772.12)
+ ('IRAQ',1998,-402638.36)
+ ('IRAQ',1997,-547157.56)
+ ('IRAQ',1996,-665277.60)
+ ('IRAQ',1995,-647499.08)
+ ('IRAQ',1994,-544533.96)
+ ('IRAQ',1993,-985782.88)
+ ('IRAQ',1992,-302350.22)
+ ('KENYA',1998,-40301.88)
+ ('KENYA',1997,-105136.44)
+ ('KENYA',1996,-215488.36)
+ ('KENYA',1995,-419160.12)
+ ('KENYA',1994,-131197.08)
+ ('KENYA',1993,-322905.08)
+ ('KENYA',1992,-392335.72)
+ ('MOROCCO',1998,-74149.92)
+ ('MOROCCO',1997,-183387.00)
+ ('MOROCCO',1996,-21783.86)
+ ('MOROCCO',1995,-59660.49)
+ ('MOROCCO',1994,-140614.84)
+ ('MOROCCO',1993,-312128.74)
+ ('MOROCCO',1992,-343648.03)
+ ('UNITED KINGDOM',1998,-154214.69)
+ ('UNITED KINGDOM',1997,-590320.76)
+ ('UNITED KINGDOM',1996,-534419.20)
+ ('UNITED KINGDOM',1995,-124186.13)
+ ('UNITED KINGDOM',1994,-105642.74)
+ ('UNITED KINGDOM',1993,-430280.83)
+ ('UNITED KINGDOM',1992,-541653.61)
+*/
+
+/*
+
+
+PipelineDef: _unnamed_
+  StageDef: [0] S01 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] scan /0 0.1 CK_SCAN
+         : StreamDef_emitted  0x20485b800040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_P_NAME (VARCHAR)
+            Col [2] : $3 C2_P_MFGR (VARCHAR)
+            Col [3] : $4 C3_P_BRAND (VARCHAR)
+            Col [4] : $5 C4_P_TYPE (VARCHAR)
+            Col [5] : $6 C5_P_SIZE (INTEGER)
+            Col [6] : $7 C6_P_CONTAINER (VARCHAR)
+            Col [7] : $8 C7_P_RETAILPRICE (DECIMAL)
+            Col [8] : $9 C8_P_COMMENT (VARCHAR)
+         : ColsReq         0x20484cb00040
+      ArgDef: [0] tableNm part
+    OpDef: [1] filter /0 0.2 CK_WHERE
+         : StreamDef_arriving 0x20484ae00040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_P_NAME (VARCHAR)
+            Col [2] : $3 C2_P_MFGR (VARCHAR)
+            Col [3] : $4 C3_P_BRAND (VARCHAR)
+            Col [4] : $5 C4_P_TYPE (VARCHAR)
+            Col [5] : $6 C5_P_SIZE (INTEGER)
+            Col [6] : $7 C6_P_CONTAINER (VARCHAR)
+            Col [7] : $8 C7_P_RETAILPRICE (DECIMAL)
+            Col [8] : $9 C8_P_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x20484e100040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_P_NAME (VARCHAR)
+            Col [2] : $3 C2_P_MFGR (VARCHAR)
+            Col [3] : $4 C3_P_BRAND (VARCHAR)
+            Col [4] : $5 C4_P_TYPE (VARCHAR)
+            Col [5] : $6 C5_P_SIZE (INTEGER)
+            Col [6] : $7 C6_P_CONTAINER (VARCHAR)
+            Col [7] : $8 C7_P_RETAILPRICE (DECIMAL)
+            Col [8] : $9 C8_P_COMMENT (VARCHAR)
+      ArgDef: [0] expr  type BOOLEAN } $2 '%green%' 5 matchMiddle
+    OpDef: [2] project /0 0.3 CK_PROJECT
+         : StreamDef_arriving 0x20484da00040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_P_NAME (VARCHAR)
+            Col [2] : $3 C2_P_MFGR (VARCHAR)
+            Col [3] : $4 C3_P_BRAND (VARCHAR)
+            Col [4] : $5 C4_P_TYPE (VARCHAR)
+            Col [5] : $6 C5_P_SIZE (INTEGER)
+            Col [6] : $7 C6_P_CONTAINER (VARCHAR)
+            Col [7] : $8 C7_P_RETAILPRICE (DECIMAL)
+            Col [8] : $9 C8_P_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x20485e300040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+      ArgDef: [0] expr  type INTEGER as P_PARTKEY $1
+  StageDef: [1] S02 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] indexJoin /0 0.7 CK_INDEXJOIN
+         : StreamDef_arriving 0x20484db00040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+         : StreamDef_emitted  0x204843c00040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_PARTKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPKEY (INTEGER)
+            Col [3] : $4 C3_PS_AVAILQTY (INTEGER)
+            Col [4] : $5 C4_PS_SUPPLYCOST (DECIMAL)
+            Col [5] : $6 C5_PS_COMMENT (VARCHAR)
+         : Index_indexJoin 0x20481fb5ec40
+            IndexDef IxPS_PARTKEY NoDescending
+              Column 00 PS_PARTKEY type INTEGER length 19 scale 0 datum INTEGER not null partitionKey
+         : ColsReq         0x2048509b0040
+      ArgDef: [0] tableNm partsupp
+      ArgDef: [1] indexNm partsupp
+      ArgDef: [2] expr  BOUND $I1 $1 ==
+    OpDef: [1] project /0 0.8 CK_PROJECT
+         : StreamDef_arriving 0x204857b00040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_PARTKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPKEY (INTEGER)
+            Col [3] : $4 C3_PS_AVAILQTY (INTEGER)
+            Col [4] : $5 C4_PS_SUPPLYCOST (DECIMAL)
+            Col [5] : $6 C5_PS_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x204859e00040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPLYCOST (DECIMAL)
+      ArgDef: [0] expr    type INTEGER as P_PARTKEY $1
+                  , type INTEGER as PS_SUPPKEY $3
+                  , type DECIMAL as PS_SUPPLYCOST $5
+  StageDef: [2] S03 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] indexJoin /0 0.12 CK_INDEXJOIN
+         : StreamDef_arriving 0x20484a800040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPLYCOST (DECIMAL)
+         : StreamDef_emitted  0x20484ef00040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPLYCOST (DECIMAL)
+            Col [3] : $4 C3_L_ORDERKEY (INTEGER)
+            Col [4] : $5 C4_L_PARTKEY (INTEGER)
+            Col [5] : $6 C5_L_SUPPKEY (INTEGER)
+            Col [6] : $7 C6_L_LINENUMBER (INTEGER)
+            Col [7] : $8 C7_L_QUANTITY (DECIMAL)
+            Col [8] : $9 C8_L_EXTENDEDPRICE (DECIMAL)
+            Col [9] : $10 C9_L_DISCOUNT (DECIMAL)
+            Col [10] : $11 C10_L_TAX (DECIMAL)
+            Col [11] : $12 C11_L_RETURNFLAG (VARCHAR)
+            Col [12] : $13 C12_L_LINESTATUS (VARCHAR)
+            Col [13] : $14 C13_l_SHIPDATE (DATE)
+            Col [14] : $15 C14_L_COMMITDATE (DATE)
+            Col [15] : $16 C15_L_RECEIPTDATE (DATE)
+            Col [16] : $17 C16_L_SHIPINSTRUCT (VARCHAR)
+            Col [17] : $18 C17_L_SHIPMODE (VARCHAR)
+            Col [18] : $19 C18_L_COMMENT (VARCHAR)
+         : Index_indexJoin 0x204835e24440
+            IndexDef IxL_PARTKEY NoDescending
+              Column 01 L_PARTKEY type INTEGER length 19 scale 0 datum INTEGER not null
+         : ColsReq         0x204851030040
+      ArgDef: [0] tableNm LINEITEM
+      ArgDef: [1] indexNm LINEITEM
+      ArgDef: [2] expr  BOUND $I1 $1 ==
+    OpDef: [1] filter /0 0.13 CK_WHERE
+         : StreamDef_arriving 0x204847900040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPLYCOST (DECIMAL)
+            Col [3] : $4 C3_L_ORDERKEY (INTEGER)
+            Col [4] : $5 C4_L_PARTKEY (INTEGER)
+            Col [5] : $6 C5_L_SUPPKEY (INTEGER)
+            Col [6] : $7 C6_L_LINENUMBER (INTEGER)
+            Col [7] : $8 C7_L_QUANTITY (DECIMAL)
+            Col [8] : $9 C8_L_EXTENDEDPRICE (DECIMAL)
+            Col [9] : $10 C9_L_DISCOUNT (DECIMAL)
+            Col [10] : $11 C10_L_TAX (DECIMAL)
+            Col [11] : $12 C11_L_RETURNFLAG (VARCHAR)
+            Col [12] : $13 C12_L_LINESTATUS (VARCHAR)
+            Col [13] : $14 C13_l_SHIPDATE (DATE)
+            Col [14] : $15 C14_L_COMMITDATE (DATE)
+            Col [15] : $16 C15_L_RECEIPTDATE (DATE)
+            Col [16] : $17 C16_L_SHIPINSTRUCT (VARCHAR)
+            Col [17] : $18 C17_L_SHIPMODE (VARCHAR)
+            Col [18] : $19 C18_L_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x20484f500040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPLYCOST (DECIMAL)
+            Col [3] : $4 C3_L_ORDERKEY (INTEGER)
+            Col [4] : $5 C4_L_PARTKEY (INTEGER)
+            Col [5] : $6 C5_L_SUPPKEY (INTEGER)
+            Col [6] : $7 C6_L_LINENUMBER (INTEGER)
+            Col [7] : $8 C7_L_QUANTITY (DECIMAL)
+            Col [8] : $9 C8_L_EXTENDEDPRICE (DECIMAL)
+            Col [9] : $10 C9_L_DISCOUNT (DECIMAL)
+            Col [10] : $11 C10_L_TAX (DECIMAL)
+            Col [11] : $12 C11_L_RETURNFLAG (VARCHAR)
+            Col [12] : $13 C12_L_LINESTATUS (VARCHAR)
+            Col [13] : $14 C13_l_SHIPDATE (DATE)
+            Col [14] : $15 C14_L_COMMITDATE (DATE)
+            Col [15] : $16 C15_L_RECEIPTDATE (DATE)
+            Col [16] : $17 C16_L_SHIPINSTRUCT (VARCHAR)
+            Col [17] : $18 C17_L_SHIPMODE (VARCHAR)
+            Col [18] : $19 C18_L_COMMENT (VARCHAR)
+      ArgDef: [0] expr  type BOOLEAN $6 $2 ==
+    OpDef: [2] project /0 0.14 CK_PROJECT
+         : StreamDef_arriving 0x20484e300040
+            Col [0] : $1 C0_P_PARTKEY (INTEGER)
+            Col [1] : $2 C1_PS_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_PS_SUPPLYCOST (DECIMAL)
+            Col [3] : $4 C3_L_ORDERKEY (INTEGER)
+            Col [4] : $5 C4_L_PARTKEY (INTEGER)
+            Col [5] : $6 C5_L_SUPPKEY (INTEGER)
+            Col [6] : $7 C6_L_LINENUMBER (INTEGER)
+            Col [7] : $8 C7_L_QUANTITY (DECIMAL)
+            Col [8] : $9 C8_L_EXTENDEDPRICE (DECIMAL)
+            Col [9] : $10 C9_L_DISCOUNT (DECIMAL)
+            Col [10] : $11 C10_L_TAX (DECIMAL)
+            Col [11] : $12 C11_L_RETURNFLAG (VARCHAR)
+            Col [12] : $13 C12_L_LINESTATUS (VARCHAR)
+            Col [13] : $14 C13_l_SHIPDATE (DATE)
+            Col [14] : $15 C14_L_COMMITDATE (DATE)
+            Col [15] : $16 C15_L_RECEIPTDATE (DATE)
+            Col [16] : $17 C16_L_SHIPINSTRUCT (VARCHAR)
+            Col [17] : $18 C17_L_SHIPMODE (VARCHAR)
+            Col [18] : $19 C18_L_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x20484c000040
+            Col [0] : $1 C0_L_ORDERKEY (INTEGER)
+            Col [1] : $2 C1_L_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+      ArgDef: [0] expr    type INTEGER as L_ORDERKEY $4
+                  , type INTEGER as L_SUPPKEY $6
+                  , type DECIMAL as AMOUNT $9 1.0 $10 - * $3 $8 * -
+    OpDef: [3] hash /0 0.15 CK_HASH
+         : StreamDef_arriving 0x20484dc00040
+            Col [0] : $1 C0_L_ORDERKEY (INTEGER)
+            Col [1] : $2 C1_L_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+         : StreamDef_emitted  0x204872a00040
+            Col [0] : $1 C0_L_ORDERKEY (INTEGER)
+            Col [1] : $2 C1_L_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+      ArgDef: [0] expr type INTEGER $2
+  StageDef: [3] S04 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] indexJoin /0 0.19 CK_INDEXJOIN
+         : StreamDef_arriving 0x204844f00040
+            Col [0] : $1 C0_L_ORDERKEY (INTEGER)
+            Col [1] : $2 C1_L_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+         : StreamDef_emitted  0x20484df00040
+            Col [0] : $1 C0_L_ORDERKEY (INTEGER)
+            Col [1] : $2 C1_L_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+            Col [3] : $4 C3_S_SUPPKEY (INTEGER)
+            Col [4] : $5 C4_S_NAME (VARCHAR)
+            Col [5] : $6 C5_S_ADDRESS (VARCHAR)
+            Col [6] : $7 C6_S_NATIONKEY (INTEGER)
+            Col [7] : $8 C7_S_PHONE (VARCHAR)
+            Col [8] : $9 C8_S_ACCTBAL (DECIMAL)
+            Col [9] : $10 C9_S_COMMENT (VARCHAR)
+         : Index_indexJoin 0x20482f3c7440
+            IndexDef IxS_SUPPKEY NoDescending
+              Column 00 S_SUPPKEY type INTEGER length 19 scale 0 datum INTEGER not null partitionKey
+         : ColsReq         0x20484cc70040
+      ArgDef: [0] tableNm supplier
+      ArgDef: [1] indexNm supplier
+      ArgDef: [2] expr  BOUND $I1 $2 ==
+    OpDef: [1] project /0 0.20 CK_PROJECT
+         : StreamDef_arriving 0x20484ed00040
+            Col [0] : $1 C0_L_ORDERKEY (INTEGER)
+            Col [1] : $2 C1_L_SUPPKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+            Col [3] : $4 C3_S_SUPPKEY (INTEGER)
+            Col [4] : $5 C4_S_NAME (VARCHAR)
+            Col [5] : $6 C5_S_ADDRESS (VARCHAR)
+            Col [6] : $7 C6_S_NATIONKEY (INTEGER)
+            Col [7] : $8 C7_S_PHONE (VARCHAR)
+            Col [8] : $9 C8_S_ACCTBAL (DECIMAL)
+            Col [9] : $10 C9_S_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x204848100040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_L_ORDERKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+      ArgDef: [0] expr    type INTEGER as S_NATIONKEY $7
+                  , type INTEGER as L_ORDERKEY $1
+                  , type DECIMAL as AMOUNT $3
+  StageDef: [4] S05 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] indexJoin /0 0.24 CK_INDEXJOIN
+         : StreamDef_arriving 0x20484ba00040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_L_ORDERKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+         : StreamDef_emitted  0x204845e00040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_L_ORDERKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+            Col [3] : $4 C3_O_ORDERKEY (INTEGER)
+            Col [4] : $5 C4_O_CUSTKEY (INTEGER)
+            Col [5] : $6 C5_O_ORDERSTATUS (VARCHAR)
+            Col [6] : $7 C6_O_TOTALPRICE (DECIMAL)
+            Col [7] : $8 C7_O_ORDERDATE (DATE)
+            Col [8] : $9 C8_O_ORDERPRIORITY (VARCHAR)
+            Col [9] : $10 C9_O_CLERK (VARCHAR)
+            Col [10] : $11 C10_O_SHIPPRIORITY (INTEGER)
+            Col [11] : $12 C11_O_COMMENT (VARCHAR)
+         : Index_indexJoin 0x20483ed57c40
+            IndexDef IxO_ORDERKEY NoDescending
+              Column 00 O_ORDERKEY type INTEGER length 19 scale 0 datum INTEGER not null
+         : ColsReq         0x20484cc30040
+      ArgDef: [0] tableNm ORDERS
+      ArgDef: [1] indexNm ORDERS
+      ArgDef: [2] expr  BOUND $I1 $2 ==
+    OpDef: [1] project /0 0.25 CK_PROJECT
+         : StreamDef_arriving 0x20484e000040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_L_ORDERKEY (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+            Col [3] : $4 C3_O_ORDERKEY (INTEGER)
+            Col [4] : $5 C4_O_CUSTKEY (INTEGER)
+            Col [5] : $6 C5_O_ORDERSTATUS (VARCHAR)
+            Col [6] : $7 C6_O_TOTALPRICE (DECIMAL)
+            Col [7] : $8 C7_O_ORDERDATE (DATE)
+            Col [8] : $9 C8_O_ORDERPRIORITY (VARCHAR)
+            Col [9] : $10 C9_O_CLERK (VARCHAR)
+            Col [10] : $11 C10_O_SHIPPRIORITY (INTEGER)
+            Col [11] : $12 C11_O_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x20484bd00040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+      ArgDef: [0] expr    type INTEGER as S_NATIONKEY $1
+                  , type INTEGER as O_YEAR $8 extract_year
+                  , type DECIMAL as AMOUNT $3
+  StageDef: [5] S06 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] indexJoin /0 0.29 CK_INDEXJOIN
+         : StreamDef_arriving 0x20484a600040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+         : StreamDef_emitted  0x20484bf00040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+            Col [3] : $4 C3_N_NATIONKEY (INTEGER)
+            Col [4] : $5 C4_N_NAME (VARCHAR)
+            Col [5] : $6 C5_N_REGIONKEY (INTEGER)
+            Col [6] : $7 C6_N_COMMENT (VARCHAR)
+         : Index_indexJoin 0x20481fb1c840
+            IndexDef IxN_NATIONKEY NoDescending
+              Column 00 N_NATIONKEY type INTEGER length 19 scale 0 datum INTEGER not null partitionKey
+         : ColsReq         0x204851f10040
+      ArgDef: [0] tableNm NATION
+      ArgDef: [1] indexNm NATION
+      ArgDef: [2] expr  BOUND $I1 $1 ==
+    OpDef: [1] project /0 0.30 CK_PROJECT
+         : StreamDef_arriving 0x204845f00040
+            Col [0] : $1 C0_S_NATIONKEY (INTEGER)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+            Col [3] : $4 C3_N_NATIONKEY (INTEGER)
+            Col [4] : $5 C4_N_NAME (VARCHAR)
+            Col [5] : $6 C5_N_REGIONKEY (INTEGER)
+            Col [6] : $7 C6_N_COMMENT (VARCHAR)
+         : StreamDef_emitted  0x204853900040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+      ArgDef: [0] expr    type VARCHAR as NATION $5
+                  , type INTEGER as O_YEAR $2
+                  , type DECIMAL as AMOUNT $3
+  StageDef: [6] S07 Code 0x0 (YG_ALL_PARTITIONS)
+    OpDef: [0] gbyAgg /0 0.34 CK_GBYAGG
+         : StreamDef_arriving 0x20484a500040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_AMOUNT (DECIMAL)
+         : StreamDef_emitted  0x20484a900040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
+         : IndexDef_gbyAgg 0x204888c37040
+            IndexDef --NO_NAME-- NoDescending
+              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+         : ColMap_gbyAgg  0x204851040040
+               [0] key cell 1 -> $1
+               [1] key cell 2 -> $2
+               [2] payload cell 1 -> $3
+      ArgDef: [0] expr  groupBy
+                    type VARCHAR as COL1 $1
+                  , type INTEGER as COL2 $2
+                  aggregates
+                    type VARCHAR as NATION $K1
+                  , type INTEGER as O_YEAR $K2
+                  , type DECIMAL as SUM_PROFIT ) $3 sum
+  StageDef: [7] S08 Code 0x0 (YG_ALL_NODES)
+    OpDef: [0] gbyAgg /0 0.38 CK_GBYAGG
+         : StreamDef_arriving 0x20484be00040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
+         : StreamDef_emitted  0x20485e400040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
+         : IndexDef_gbyAgg 0x204888c35040
+            IndexDef --NO_NAME-- NoDescending
+              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+         : ColMap_gbyAgg  0x20484cc50040
+               [0] key cell 1 -> $1
+               [1] key cell 2 -> $2
+               [2] payload cell 1 -> $3
+      ArgDef: [0] expr  groupBy
+                    type VARCHAR as COL1 $1
+                  , type INTEGER as COL2 $2
+                  aggregates
+                    type VARCHAR as NATION $K1
+                  , type INTEGER as O_YEAR $K2
+                  , type DECIMAL as SUM_PROFIT ) $3 sum
+  StageDef: [8] S09 Code 0x0 (YG_ORIGIN_NODE)
+    OpDef: [0] gbyAgg /0 0.42 CK_GBYAGG
+         : StreamDef_arriving 0x204848d00040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
+         : StreamDef_emitted  0x20484aa00040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
+         : IndexDef_gbyAgg 0x204888c33040
+            IndexDef --NO_NAME-- NoDescending
+              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+         : ColMap_gbyAgg  0x20484ebe0040
+               [0] key cell 1 -> $1
+               [1] key cell 2 -> $2
+               [2] payload cell 1 -> $3
+      ArgDef: [0] expr  groupBy
+                    type VARCHAR as COL1 $1
+                  , type INTEGER as COL2 $2
+                  aggregates
+                    type VARCHAR as NATION $K1
+                  , type INTEGER as O_YEAR $K2
+                  , type DECIMAL as SUM_PROFIT ) $3 sum
+  StageDef: [9] S10 Code 0x0 (YG_ORIGIN_NODE)
+    OpDef: [0] sort /0 0.46 CK_SORT
+         : StreamDef_arriving 0x20484fd00040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
+         : StreamDef_emitted  0x20485b700040
+            Col [0] : $1 C0_NATION (VARCHAR)
+            Col [1] : $2 C1_O_YEAR (INTEGER)
+            Col [2] : $3 C2_SUM_PROFIT (DECIMAL)
+         : IndexDef_sort   0x204888c31040
+            IndexDef --NO_NAME-- NoDescending
+              Column 00 $1 type VARCHAR length 0 scale 0 datum VARCHAR nullable
+              Column 01 $2 type INTEGER length 0 scale 0 datum INTEGER nullable
+         : ColMap_sort     0x204851f50040
+               [0] key cell 1 -> $1
+               [1] key cell 2 -> $2
+               [2] payload cell 1 -> $3
+      ArgDef: [0] expr  type VARCHAR as NATION $1 ASC , type INTEGER as O_YEAR $2 ASC
+End PipelineDef
+~~ExtendedText : 1 blocks 291 lines 3081 bytes
+~~TextBlock[0] : 3081 bytes
+pipeline _unnamed_
+  tag <optimised> = 1 endTag
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      scan      part
+  //| filter    " type BOOLEAN } $2 '%green%' 5 matchMiddle "
+  //| project   " type INTEGER as P_PARTKEY $1 "
+    | dynamic
+    | next
+
+  stage S02 on all partitions :
+  //  indexJoin partsupp IxPS_PARTKEY " BOUND $I1 $1 == "
+  //| project   "   type INTEGER as P_PARTKEY $1
+  //              , type INTEGER as PS_SUPPKEY $3
+  //              , type DECIMAL as PS_SUPPLYCOST $5 "
+      dynamic
+    | next       broadcast
+
+  stage S03 on all partitions :
+  //  indexJoin LINEITEM IxL_PARTKEY " BOUND $I1 $1 == "
+  //| filter    " type BOOLEAN $6 $2 == "
+  //| project   "   type INTEGER as L_ORDERKEY $4
+  //              , type INTEGER as L_SUPPKEY $6
+  //              , type DECIMAL as AMOUNT $9 1.0 $10 - * $3 $8 * - "
+  //| hash      "type INTEGER $2"
+      dynamic
+    | next       hashcast
+
+  stage S04 on all partitions :
+  //  indexJoin supplier IxS_SUPPKEY " BOUND $I1 $2 == "
+  //| project   "   type INTEGER as S_NATIONKEY $7
+  //              , type INTEGER as L_ORDERKEY $1
+  //              , type DECIMAL as AMOUNT $3 "
+      dynamic
+    | next       broadcast
+
+  stage S05 on all partitions :
+  //  indexJoin ORDERS IxO_ORDERKEY " BOUND $I1 $2 == "
+  //| project   "   type INTEGER as S_NATIONKEY $1
+  //              , type INTEGER as O_YEAR $8 extract_year
+  //              , type DECIMAL as AMOUNT $3 "
+      dynamic
+    | next
+
+  stage S06 on all partitions :
+  //  indexJoin NATION IxN_NATIONKEY " BOUND $I1 $1 == "
+  //| project   "   type VARCHAR as NATION $5
+  //              , type INTEGER as O_YEAR $2
+  //              , type DECIMAL as AMOUNT $3 "
+      dynamic
+    | next
+
+  stage S07 on all partitions :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as COL1 $1
+  //              , type INTEGER as COL2 $2
+  //              aggregates
+  //                type VARCHAR as NATION $K1
+  //              , type INTEGER as O_YEAR $K2
+  //              , type DECIMAL as SUM_PROFIT ) $3 sum "
+      dynamic
+    | next
+
+  stage S08 on all nodes :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as COL1 $1
+  //              , type INTEGER as COL2 $2
+  //              aggregates
+  //                type VARCHAR as NATION $K1
+  //              , type INTEGER as O_YEAR $K2
+  //              , type DECIMAL as SUM_PROFIT ) $3 sum "
+      dynamic
+    | next
+
+  stage S09 on origin :
+  //  gbyAgg    " groupBy
+  //                type VARCHAR as COL1 $1
+  //              , type INTEGER as COL2 $2
+  //              aggregates
+  //                type VARCHAR as NATION $K1
+  //              , type INTEGER as O_YEAR $K2
+  //              , type DECIMAL as SUM_PROFIT ) $3 sum "
+      dynamic
+    | next
+
+  stage S10 on origin :
+  //  sort      " type VARCHAR as NATION $1 ASC , type INTEGER as O_YEAR $2 ASC "
+      dynamic
+    | next
+
+  stage S11 on origin :
+      output
+    | sink
+    | first
+
+end ;
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

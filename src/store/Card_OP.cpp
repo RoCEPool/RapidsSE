@@ -327,7 +327,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
       vDebugPoint();
     }
 
-    if (!p_term->bIsValOdn())
+    if (! p_term->pSymbol()->bIsColumnOrdinal())
       return C_CONTINUE_RECURSION;
 
     if (pCI->Prior.m_pProjection) {
