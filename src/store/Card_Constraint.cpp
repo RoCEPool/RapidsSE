@@ -193,6 +193,35 @@ void Card_Constraint::vCullPred(char cWithMark)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Card_Constraint::vDisambiguate(CardIter* pCI)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  RASSERT(pCI->G.p_projection);
+  pCI->G.p_projection->vDump(__func__);
+
+  for (Kid xRpnCalc(pSub_rpnCalc()); xRpnCalc.bEach(CK_TERM); /**/) {
+    Card_Term* p_term = xRpnCalc.p_term();
+    if (! p_term->bIsColNm())
+      continue;
+
+    vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol());
+
+    Card_Expr* p_expr = pCI->G.p_projection->pFindExprOfAs(p_term->pSymbol());
+    if (p_expr) {
+      p_expr->vDump(__func__);
+
+      i8 i_Child = p_expr->pSymbol()->iExtractOrdinal() - 1;
+      p_term->pSymbol()->vSetDisambiguatedColNm(i_Child,p_term->pSymbol()->szSF_string());
+    }
+  }
+
+  vDebugPoint();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Card_Constraint::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

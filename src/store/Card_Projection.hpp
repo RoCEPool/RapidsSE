@@ -29,6 +29,7 @@ namespace STORE
     void vDerivePrjKey(CardIter* pCI);
     void vEnsureTypes_For_stmColOdn(CardIter* pCI);
     Card_Projection* pPropagate(CardIter* pCI);
+    Card_Expr* pFindExprOfAs(Symbol* pSymbol);
     Card_Expr* pFindExprOfSymbol(Symbol* pSymbol);
     bool bHasTerm(Symbol* pSymbol);
     Card_Projection* pReducedCopy(CardIter* pCI);

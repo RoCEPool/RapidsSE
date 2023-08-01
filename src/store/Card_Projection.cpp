@@ -379,6 +379,25 @@ Card_Projection* Card_Projection::pPropagate(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_Expr* Card_Projection::pFindExprOfAs(Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Card_Expr* p_expr = nullptr;
+
+  Card* pParent;
+  Card_As* p_as = _pCard_As(pFindSymbolRecursive(CK_AS,pSymbol,pParent));
+
+  if (p_as) {
+    p_expr = _pCard_Expr(pParent);
+  }
+
+  return p_expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 Card_Expr* Card_Projection::pFindExprOfSymbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

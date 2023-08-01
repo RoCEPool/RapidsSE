@@ -278,6 +278,19 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this term a column-name ?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card_Term::bIsColNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (pSymbol()->bIsColNm())
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this term a column-value ordinal? $n.c                                  */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsColOdn(void)

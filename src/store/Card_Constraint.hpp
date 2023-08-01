@@ -24,6 +24,7 @@ namespace STORE
     void vCullPred(char cWithMark);
     void vConvert_stmColOdn_terms_To_tblColOdn(CardIter* pCI);
     void vConvert_stmColOdn_To_stmColNm(CardIter* pCI);
+    void vDisambiguate(CardIter* pCI);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
 

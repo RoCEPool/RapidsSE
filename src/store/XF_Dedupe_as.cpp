@@ -66,8 +66,8 @@ void XF_Dedupe_as::vXF_Dedupe_as(void)
 
   m_pCI->vClearRestart();
 
-  while (m_pCI->G_bEachMain(CK_PROJECT)) {
-    m_pCI->G.p_project->vDedupe_as();
+  while (m_pCI->G_bEachMainWith2Sub(CK_INDEXJOIN,CK_PROJECTION,CK_CONSTRAINT)) {
+    m_pCI->G.p_constraint->vDisambiguate(m_pCI);
   }
 
   m_pCI->vEndTransform();
