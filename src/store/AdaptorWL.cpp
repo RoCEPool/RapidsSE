@@ -1168,6 +1168,10 @@ void AdaptorWL::vSerialiseWarningResponse(Stz* szReason, Stz* szSqlState, i8 iVe
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vSerialiseInvalidSkippedRowsWarning()
 {
+  if (!m_pStmtCtx || m_eProtocolState == DISCONNECTED) {
+    return;
+  }
+
   // Send a warning if there are rows skipped or invalid.
   i8 iRowsSkipped = m_pStmtCtx->nRowsSkipped();
   i8 iRowsInvalid = m_pStmtCtx->nRowsInvalid();

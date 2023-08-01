@@ -279,7 +279,7 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_CrwBuffer \handler
 
-  "adaptorWL_CrwBuffer - EV_D_CRWBUFFER" .
+  "adaptorWL_CrwBuffer - EV_D_CRWBUFFER" .verbose
 
   PipeIn[] AdaptorWL[].crwBuffer
   Pipein[].delete
@@ -299,7 +299,7 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_RowBuffer \handler
 
-  "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .
+  "adaptorWL_RowBuffer - EV_D_ROWBUFFER" .verbose
 
   PipeIn[] AdaptorWL[].rowBuffer
   Pipein[].delete
@@ -320,7 +320,7 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_StreamSet \handler
 
-  "adaptorWL_StreamSet - EV_D_STREAMSET" .
+  "adaptorWL_StreamSet - EV_D_STREAMSET" .verbose
 
   PipeIn[] AdaptorWL[].streamSet
   Pipein[].delete
@@ -342,7 +342,7 @@
 /*----------------------------------------------------------------------------*/
 : adaptorWL_LoadResult \handler
 
-  "adaptorWL_LoadResult - EV_I_LOADRESULT" .
+  "adaptorWL_LoadResult - EV_I_LOADRESULT" .verbose
 
   PipeIn[] to InfoSet[]
   nullptr  to PipeIn[]
