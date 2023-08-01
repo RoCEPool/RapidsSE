@@ -1895,7 +1895,7 @@ void Op::vTask(Task* pTask)
 i8 Op::nTmpIndexSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
+   /*
   if (pOpLogicUnit()->m_xpCombined.bIsNull())
     return -8;
 
@@ -1911,6 +1911,9 @@ i8 Op::nTmpIndexSize(void)
   i8 nEntBuffers = pIndexTree->nEntBuffers();
   
   return nEntBuffers;
+    */
+   RASSERT(0);
+   return C_UNKNOWN;
 }
 /*----------------------------------------------------------------------------*/
 /* print stage spec                                                           */
