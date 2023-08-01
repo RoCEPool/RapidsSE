@@ -108,12 +108,12 @@ begin
     | next
 
   stage XYZ on origin :
-    top "TOP type DECIMAL Revenue" 10
+    top "type DECIMAL Revenue" 10
     | combined 0
     | next
 
   stage last on origin :
-    //top "TOP type DECIMAL Revenue" 10
+    //top "type DECIMAL Revenue" 10
     //| combined 0
     output
     | sink

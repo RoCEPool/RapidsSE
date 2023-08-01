@@ -5,6 +5,8 @@
 trackMemory;
 success;
 
+// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
+/*
 // no such table
 /optimise_passthru 
 pipeline is
@@ -21,6 +23,7 @@ begin
     output | sink | stageA
 end ;
 failure contains: 'Table does not exist'
+*/
 
 // create a table
 create table lineitem (

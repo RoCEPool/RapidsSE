@@ -173,7 +173,7 @@ pipeline Query15
      | next
 
    stage S05 on origin :
-     top "TOP type DECIMAL $2" 1
+     top "type DECIMAL $2" 1
      | hash "type INTEGER supplier_no"
      | combined 0
      | next hashcast

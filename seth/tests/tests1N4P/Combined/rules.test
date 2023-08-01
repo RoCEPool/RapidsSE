@@ -550,8 +550,8 @@ begin
   stage Gs_ORDERS on all partitions :
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
-    | top "TOP type INTEGER L_PARTKEY" 2
-    | top "TOP type INTEGER L_PARTKEY" 2
+    | top "type INTEGER L_PARTKEY" 2
+    | top "type INTEGER L_PARTKEY" 2
     | combined 0
     | next
 
@@ -579,7 +579,7 @@ begin
     indexscan lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | indexJoin orders IxO_ORDERKEY "bound $I1 $L1 =="
     | sort "type INTEGER L_PARTKEY ASC"
-    | top "TOP type INTEGER L_PARTKEY" 2
+    | top "type INTEGER L_PARTKEY" 2
     | combined 0
     | next
 
