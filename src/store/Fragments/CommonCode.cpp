@@ -90,8 +90,28 @@ i8 vExprCheck(Dynamic_T* aDynamicT) {
   return 0; // ray-alka
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- vNullCheck---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+// function-vNullCheck
+i8 vNullCheck(Dynamic_T* aDynamicT) {
 
+  bool bNullResult;
 
+  __L_LABEL_OUTER_LOOP__:
+
+  // marker-start
+
+  // check for error
+  if (bNullResult) {
+    aDynamicT->m_iProcessRow = 0;
+    goto __L_LABEL_OUTER_LOOP__;
+  }
+
+  // marker-end
+
+  return 0; // ray-alka
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -1044,7 +1064,7 @@ void vPopulateIntPL(Dynamic_T* aDynamicT) {
 // function-vPopulateVchPL
 void vPopulateVchPL(Dynamic_T* aDynamicT) {
 
-  i8 __INDEX_COLUMN__;
+  i8 __INDEX_COLUMN__ = 0;
   struct __STRUCT_FROM__ {
     union Vch_T __COLUMN_FROM__;
   };
