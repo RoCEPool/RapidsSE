@@ -12,7 +12,9 @@ statement         :  tags statementChoice ';' ;
 
 statementChoice   :
                     // Production commands below:
-                      compactIdxCmd
+                    | anidxCmd
+                    | antblCmd
+                    | compactIdxCmd
                     | countCmd
                     | createCmd
 //                  | deleteCmd
@@ -139,6 +141,9 @@ valuesExpr        : VALUES '('valueList')' ( ',' '('valueList')' )* ;
 // other command rules ------------------------------------------------------
 
 // A
+anidxCmd          : (ANIDX | ( (ANALYZE | ANALYSE) TABLE)) tableName indexName ;
+antblCmd          : (ANTBL | ( (ANALYZE | ANALYSE) INDEX)) tableName ;
+
 // B
 bpaCmd            : BPA type=(REGIONS | OBJECTS | ALL)?;
 
@@ -596,7 +601,7 @@ dayTimeInterval   :
 // lexer ----------------------------------------------------------------------
 
 nonReservedWord   :
-                    ASC
+                    ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | COMPACTIDX | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
@@ -624,7 +629,11 @@ nonReservedWord   :
                   ;
 
 ALL                   : A L L;
+ANALYSE               : A N A L Y S E;
+ANALYZE               : A N A L Y Z E;
 AND                   : A N D;
+ANIDX                 : A N I D X;
+ANTBL                 : A N T B L;
 ANTI                  : A N T I;      // A RapidsSE reserved word so the grammar doesn't treat it as a table alias
 ANY                   : A N Y;
 AS                    : A S;

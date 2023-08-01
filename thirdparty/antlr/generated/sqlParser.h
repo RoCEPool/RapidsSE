@@ -16,50 +16,50 @@ public:
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
     T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
     T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
-    T__20 = 21, T__21 = 22, ALL = 23, AND = 24, ANTI = 25, ANY = 26, AS = 27, 
-    ASC = 28, AVG = 29, BEGIN = 30, BETWEEN = 31, BINARY = 32, BIT = 33, 
-    BITS = 34, BLOB = 35, BLOCK = 36, BLOOM = 37, BOTH = 38, BOOLEAN = 39, 
-    BPA = 40, BTREE = 41, BY = 42, BYTE = 43, BYTES = 44, CASE = 45, CAST = 46, 
-    CATALOG = 47, CHAR = 48, CHARS = 49, CHARACTER = 50, COALESCE = 51, 
-    COLLATE = 52, COMPACTIDX = 53, CONCAT = 54, CORRESPONDING = 55, COUNT = 56, 
-    CREATE = 57, CROSS = 58, CURRENT_CATALOG = 59, CURRENT_SCHEMA = 60, 
-    CURRENT_TIMESTAMP = 61, CURRENT_USER = 62, DATA = 63, DATE = 64, DATE_FORMAT = 65, 
-    DAY = 66, DAYS = 67, DECIMAL = 68, DECODE = 69, DELETE = 70, DESC = 71, 
-    DETAIL = 72, DIGITS = 73, DISTINCT = 74, DLOAD = 75, DROP = 76, ECHO = 77, 
-    ELSE = 78, END = 79, ESCAPE = 80, ESCAPE_CHAR = 81, EXCEPT = 82, EXISTS = 83, 
-    EXPLAIN = 84, EXPORT = 85, EXTRACT = 86, SQL_FALSE = 87, FEDERATION = 88, 
-    FIELD_DELIMITER = 89, FILE = 90, FLOAT = 91, FOR = 92, FORCE = 93, FORMAT = 94, 
-    FULL = 95, FROM = 96, GROUP = 97, HASH = 98, HASHKEY = 99, HAVING = 100, 
-    HEAP = 101, HOUR = 102, HOURS = 103, IF = 104, IFNULL = 105, IN = 106, 
-    INDEX = 107, INNER = 108, INSERT = 109, INTEGER = 110, INTERSECT = 111, 
-    INTERVAL_DT = 112, INTERVAL_YM = 113, INTERVAL = 114, INTO = 115, IS = 116, 
-    JOIN = 117, KEY = 118, LEADING = 119, LEFT = 120, LIKE = 121, LIMIT = 122, 
-    LOADREPLICATED = 123, LOAD = 124, LOG = 125, LOOP = 126, LSCOL = 127, 
-    LSIDXCOL = 128, LSIDX = 129, LSPTNCOL = 130, LSTBL = 131, MAX = 132, 
-    MEMORYLEAKS = 133, MILLIS = 134, MILLISECOND = 135, MILLISECONDS = 136, 
-    MIN = 137, MINUTE = 138, MINUTES = 139, MONOTONIC = 140, MONTH = 141, 
-    MONTHS = 142, MS = 143, NATURAL = 144, NO = 145, NODES = 146, NODE = 147, 
-    NOOP = 148, NOP = 149, NOT = 150, NOW = 151, SQL_NULL = 152, NULLIF = 153, 
-    OBJECTS = 154, OFF = 155, OFFSET = 156, ON = 157, OR = 158, ORDER = 159, 
-    ORIGIN = 160, OUTER = 161, OVER = 162, OVERLAY = 163, PARTITIONS = 164, 
-    PARTITION = 165, PATHS = 166, PIPELINE = 167, PLACING = 168, POSITION = 169, 
-    PRETTY = 170, PRIMARY = 171, QUARTER = 172, QUARTERS = 173, RECURSIVE = 174, 
-    REFERENCE = 175, REGIONS = 176, REPLICATED = 177, RIGHT = 178, ROW = 179, 
-    ROWSIZE = 180, SCHEMA = 181, SEC = 182, SECOND = 183, SECONDS = 184, 
-    SELECT = 185, SEMI = 186, SET = 187, SKIPLIST = 188, SLEEP = 189, SPACE = 190, 
-    STAGE = 191, STATS = 192, STATISTICS = 193, STATUS = 194, SUBSTR = 195, 
-    SUBSTRING = 196, SUM = 197, SZIDX = 198, SZTBL = 199, S_ONLY = 200, 
-    TABLE = 201, TABLESIZE = 202, TEXT = 203, THEN = 204, TIME = 205, TIMESTAMP = 206, 
-    TO = 207, TOP = 208, TRACKMEMORY = 209, TREE = 210, TRIM = 211, TRAILING = 212, 
-    TRUNCATE = 213, SQL_TRUE = 214, TYPE = 215, TYPEOF = 216, UNION = 217, 
-    UNIQUE = 218, UNLOAD = 219, UPDATE = 220, USING = 221, VALUE = 222, 
-    VALUES = 223, VARBINARY = 224, VARCHAR = 225, VARYING = 226, WEEK = 227, 
-    WEEKS = 228, WHEN = 229, WHERE = 230, WITH_NAMES = 231, WITH_TYPES = 232, 
-    WITH = 233, XOR = 234, YEAR = 235, YEARS = 236, PLAIN_IDENTIFIER = 237, 
-    BAKTIKD_IDENTIFIER = 238, DUBLQUOTED_IDENTIFIER = 239, PARAM_IDENTIFIER = 240, 
-    SINGLQUOTED_STRING = 241, DUBLQUOTED_STRING = 242, FLOAT_LITERAL = 243, 
-    DECIMAL_LITERAL = 244, INTEGER_LITERAL = 245, HINT_START = 246, HINT_END = 247, 
-    SLASH_COMMENT = 248, SQL_COMMENT = 249, BLOCK_COMMENT = 250, WHITESPACE = 251
+    T__20 = 21, T__21 = 22, ALL = 23, ANALYSE = 24, ANALYZE = 25, AND = 26, 
+    ANIDX = 27, ANTBL = 28, ANTI = 29, ANY = 30, AS = 31, ASC = 32, AVG = 33, 
+    BEGIN = 34, BETWEEN = 35, BINARY = 36, BIT = 37, BITS = 38, BLOB = 39, 
+    BLOCK = 40, BLOOM = 41, BOTH = 42, BOOLEAN = 43, BPA = 44, BTREE = 45, 
+    BY = 46, BYTE = 47, BYTES = 48, CASE = 49, CAST = 50, CATALOG = 51, 
+    CHAR = 52, CHARS = 53, CHARACTER = 54, COALESCE = 55, COLLATE = 56, 
+    COMPACTIDX = 57, CONCAT = 58, CORRESPONDING = 59, COUNT = 60, CREATE = 61, 
+    CROSS = 62, CURRENT_CATALOG = 63, CURRENT_SCHEMA = 64, CURRENT_TIMESTAMP = 65, 
+    CURRENT_USER = 66, DATA = 67, DATE = 68, DATE_FORMAT = 69, DAY = 70, 
+    DAYS = 71, DECIMAL = 72, DECODE = 73, DELETE = 74, DESC = 75, DETAIL = 76, 
+    DIGITS = 77, DISTINCT = 78, DLOAD = 79, DROP = 80, ECHO = 81, ELSE = 82, 
+    END = 83, ESCAPE = 84, ESCAPE_CHAR = 85, EXCEPT = 86, EXISTS = 87, EXPLAIN = 88, 
+    EXPORT = 89, EXTRACT = 90, SQL_FALSE = 91, FEDERATION = 92, FIELD_DELIMITER = 93, 
+    FILE = 94, FLOAT = 95, FOR = 96, FORCE = 97, FORMAT = 98, FULL = 99, 
+    FROM = 100, GROUP = 101, HASH = 102, HASHKEY = 103, HAVING = 104, HEAP = 105, 
+    HOUR = 106, HOURS = 107, IF = 108, IFNULL = 109, IN = 110, INDEX = 111, 
+    INNER = 112, INSERT = 113, INTEGER = 114, INTERSECT = 115, INTERVAL_DT = 116, 
+    INTERVAL_YM = 117, INTERVAL = 118, INTO = 119, IS = 120, JOIN = 121, 
+    KEY = 122, LEADING = 123, LEFT = 124, LIKE = 125, LIMIT = 126, LOADREPLICATED = 127, 
+    LOAD = 128, LOG = 129, LOOP = 130, LSCOL = 131, LSIDXCOL = 132, LSIDX = 133, 
+    LSPTNCOL = 134, LSTBL = 135, MAX = 136, MEMORYLEAKS = 137, MILLIS = 138, 
+    MILLISECOND = 139, MILLISECONDS = 140, MIN = 141, MINUTE = 142, MINUTES = 143, 
+    MONOTONIC = 144, MONTH = 145, MONTHS = 146, MS = 147, NATURAL = 148, 
+    NO = 149, NODES = 150, NODE = 151, NOOP = 152, NOP = 153, NOT = 154, 
+    NOW = 155, SQL_NULL = 156, NULLIF = 157, OBJECTS = 158, OFF = 159, OFFSET = 160, 
+    ON = 161, OR = 162, ORDER = 163, ORIGIN = 164, OUTER = 165, OVER = 166, 
+    OVERLAY = 167, PARTITIONS = 168, PARTITION = 169, PATHS = 170, PIPELINE = 171, 
+    PLACING = 172, POSITION = 173, PRETTY = 174, PRIMARY = 175, QUARTER = 176, 
+    QUARTERS = 177, RECURSIVE = 178, REFERENCE = 179, REGIONS = 180, REPLICATED = 181, 
+    RIGHT = 182, ROW = 183, ROWSIZE = 184, SCHEMA = 185, SEC = 186, SECOND = 187, 
+    SECONDS = 188, SELECT = 189, SEMI = 190, SET = 191, SKIPLIST = 192, 
+    SLEEP = 193, SPACE = 194, STAGE = 195, STATS = 196, STATISTICS = 197, 
+    STATUS = 198, SUBSTR = 199, SUBSTRING = 200, SUM = 201, SZIDX = 202, 
+    SZTBL = 203, S_ONLY = 204, TABLE = 205, TABLESIZE = 206, TEXT = 207, 
+    THEN = 208, TIME = 209, TIMESTAMP = 210, TO = 211, TOP = 212, TRACKMEMORY = 213, 
+    TREE = 214, TRIM = 215, TRAILING = 216, TRUNCATE = 217, SQL_TRUE = 218, 
+    TYPE = 219, TYPEOF = 220, UNION = 221, UNIQUE = 222, UNLOAD = 223, UPDATE = 224, 
+    USING = 225, VALUE = 226, VALUES = 227, VARBINARY = 228, VARCHAR = 229, 
+    VARYING = 230, WEEK = 231, WEEKS = 232, WHEN = 233, WHERE = 234, WITH_NAMES = 235, 
+    WITH_TYPES = 236, WITH = 237, XOR = 238, YEAR = 239, YEARS = 240, PLAIN_IDENTIFIER = 241, 
+    BAKTIKD_IDENTIFIER = 242, DUBLQUOTED_IDENTIFIER = 243, PARAM_IDENTIFIER = 244, 
+    SINGLQUOTED_STRING = 245, DUBLQUOTED_STRING = 246, FLOAT_LITERAL = 247, 
+    DECIMAL_LITERAL = 248, INTEGER_LITERAL = 249, HINT_START = 250, HINT_END = 251, 
+    SLASH_COMMENT = 252, SQL_COMMENT = 253, BLOCK_COMMENT = 254, WHITESPACE = 255
   };
 
   enum {
@@ -68,42 +68,43 @@ public:
     RuleQuery = 8, RuleQueryHint = 9, RuleHint = 10, RuleSelectQuery = 11, 
     RuleSelectExpr = 12, RuleSetQuery = 13, RuleSetExpr = 14, RuleCorrClause = 15, 
     RuleWithQuery = 16, RuleTableExpr = 17, RuleTableReference = 18, RuleJoinType = 19, 
-    RuleExtendedJoinType = 20, RuleValuesExpr = 21, RuleBpaCmd = 22, RuleCompactIdxCmd = 23, 
-    RuleCountCmd = 24, RuleCreateCmd = 25, RuleCreateTableCmd = 26, RuleCreateIndexCmd = 27, 
-    RuleDeleteCmd = 28, RuleDloadCmd = 29, RuleDropCmd = 30, RuleDropTableCmd = 31, 
-    RuleDropIndexCmd = 32, RuleEmptyCmd = 33, RuleExplainCmd = 34, RuleExplainOptions = 35, 
-    RuleExplainStageList = 36, RuleExplainRange = 37, RuleExplainRangeChoice = 38, 
-    RuleExplainFormat = 39, RuleExportCmd = 40, RuleFileCmd = 41, RuleInsertCmd = 42, 
-    RuleLoadCmd = 43, RuleLoadReplicatedCmd = 44, RuleLoadOption = 45, RuleLoadOptionKeys = 46, 
-    RuleLogCmd = 47, RuleLscolCmd = 48, RuleLsidxCmd = 49, RuleLsidxcolCmd = 50, 
-    RuleLsptncolCmd = 51, RuleLstblCmd = 52, RuleMemoryleaksCmd = 53, RuleNoopCmd = 54, 
-    RulePipelineCmd = 55, RulePipelineStage = 56, RulePipelineOpSeq = 57, 
-    RulePipelineOperator = 58, RulePipelineOpParam = 59, RulePipelineTypeNames = 60, 
-    RuleSleepCmd = 61, RuleSleepUnits = 62, RuleSpaceCmd = 63, RuleStatusCmd = 64, 
-    RuleSzidxCmd = 65, RuleSztblCmd = 66, RuleTruncateCmd = 67, RuleTrackmemoryCmd = 68, 
-    RuleUpdateCmd = 69, RuleUnloadCmd = 70, RuleTableDefinition = 71, RuleTablePartitioning = 72, 
-    RuleColumnDefinition = 73, RuleColumnNameList = 74, RuleIndexDefinition = 75, 
-    RuleIndexMethod = 76, RuleDataType = 77, RuleSqlDataType = 78, RuleIntervalType = 79, 
-    RuleYearMonthIntervalType = 80, RuleDayTimeIntervalType = 81, RuleFixedLenChar = 82, 
-    RuleVaryingLenChar = 83, RuleAsSubquery = 84, RuleSelectOrValues = 85, 
-    RuleSelectList = 86, RuleSelectListItem = 87, RuleGroupByList = 88, 
-    RuleGroupByListItem = 89, RuleOrderByList = 90, RuleOrderByListItem = 91, 
-    RuleJoinUsingList = 92, RuleJoinUsingListItem = 93, RuleCorrList = 94, 
-    RuleCorrListItem = 95, RuleColAliases = 96, RuleColAliasList = 97, RuleColAliasListItem = 98, 
-    RulePropertyList = 99, RuleProperty = 100, RuleValueList = 101, RulePredicate = 102, 
-    RuleJoinPredicate = 103, RuleCasePredicate = 104, RuleExpr = 105, RuleVariableName = 106, 
-    RuleColumnRef = 107, RuleColumnWildcard = 108, RuleClassName = 109, 
-    RuleFunctionName = 110, RuleMethodName = 111, RuleCatalogName = 112, 
-    RuleSchemaName = 113, RuleTableName = 114, RuleTableAlias = 115, RuleColumnName = 116, 
-    RuleColumnAlias = 117, RuleCollationName = 118, RuleIndexName = 119, 
-    RulePropertyName = 120, RuleHintName = 121, RuleExprHint = 122, RulePropertyValue = 123, 
-    RuleHintValue = 124, RuleIdentifier = 125, RuleQualifier = 126, RulePrecision = 127, 
-    RuleScale = 128, RuleSize = 129, RuleLiteral = 130, RuleSimpleLiteral = 131, 
-    RuleBooleanLiteral = 132, RuleIntegerLiteral = 133, RuleSignedIntegerLiteral = 134, 
-    RuleDecimalLiteral = 135, RuleSignedDecimalLiteral = 136, RuleFloatLiteral = 137, 
-    RuleSignedFloatLiteral = 138, RuleDateLiteral = 139, RuleTimeLiteral = 140, 
-    RuleTimestampLiteral = 141, RuleStringLiteral = 142, RuleIntervalLiteral = 143, 
-    RuleYearMonthInterval = 144, RuleDayTimeInterval = 145, RuleNonReservedWord = 146
+    RuleExtendedJoinType = 20, RuleValuesExpr = 21, RuleAnidxCmd = 22, RuleAntblCmd = 23, 
+    RuleBpaCmd = 24, RuleCompactIdxCmd = 25, RuleCountCmd = 26, RuleCreateCmd = 27, 
+    RuleCreateTableCmd = 28, RuleCreateIndexCmd = 29, RuleDeleteCmd = 30, 
+    RuleDloadCmd = 31, RuleDropCmd = 32, RuleDropTableCmd = 33, RuleDropIndexCmd = 34, 
+    RuleEmptyCmd = 35, RuleExplainCmd = 36, RuleExplainOptions = 37, RuleExplainStageList = 38, 
+    RuleExplainRange = 39, RuleExplainRangeChoice = 40, RuleExplainFormat = 41, 
+    RuleExportCmd = 42, RuleFileCmd = 43, RuleInsertCmd = 44, RuleLoadCmd = 45, 
+    RuleLoadReplicatedCmd = 46, RuleLoadOption = 47, RuleLoadOptionKeys = 48, 
+    RuleLogCmd = 49, RuleLscolCmd = 50, RuleLsidxCmd = 51, RuleLsidxcolCmd = 52, 
+    RuleLsptncolCmd = 53, RuleLstblCmd = 54, RuleMemoryleaksCmd = 55, RuleNoopCmd = 56, 
+    RulePipelineCmd = 57, RulePipelineStage = 58, RulePipelineOpSeq = 59, 
+    RulePipelineOperator = 60, RulePipelineOpParam = 61, RulePipelineTypeNames = 62, 
+    RuleSleepCmd = 63, RuleSleepUnits = 64, RuleSpaceCmd = 65, RuleStatusCmd = 66, 
+    RuleSzidxCmd = 67, RuleSztblCmd = 68, RuleTruncateCmd = 69, RuleTrackmemoryCmd = 70, 
+    RuleUpdateCmd = 71, RuleUnloadCmd = 72, RuleTableDefinition = 73, RuleTablePartitioning = 74, 
+    RuleColumnDefinition = 75, RuleColumnNameList = 76, RuleIndexDefinition = 77, 
+    RuleIndexMethod = 78, RuleDataType = 79, RuleSqlDataType = 80, RuleIntervalType = 81, 
+    RuleYearMonthIntervalType = 82, RuleDayTimeIntervalType = 83, RuleFixedLenChar = 84, 
+    RuleVaryingLenChar = 85, RuleAsSubquery = 86, RuleSelectOrValues = 87, 
+    RuleSelectList = 88, RuleSelectListItem = 89, RuleGroupByList = 90, 
+    RuleGroupByListItem = 91, RuleOrderByList = 92, RuleOrderByListItem = 93, 
+    RuleJoinUsingList = 94, RuleJoinUsingListItem = 95, RuleCorrList = 96, 
+    RuleCorrListItem = 97, RuleColAliases = 98, RuleColAliasList = 99, RuleColAliasListItem = 100, 
+    RulePropertyList = 101, RuleProperty = 102, RuleValueList = 103, RulePredicate = 104, 
+    RuleJoinPredicate = 105, RuleCasePredicate = 106, RuleExpr = 107, RuleVariableName = 108, 
+    RuleColumnRef = 109, RuleColumnWildcard = 110, RuleClassName = 111, 
+    RuleFunctionName = 112, RuleMethodName = 113, RuleCatalogName = 114, 
+    RuleSchemaName = 115, RuleTableName = 116, RuleTableAlias = 117, RuleColumnName = 118, 
+    RuleColumnAlias = 119, RuleCollationName = 120, RuleIndexName = 121, 
+    RulePropertyName = 122, RuleHintName = 123, RuleExprHint = 124, RulePropertyValue = 125, 
+    RuleHintValue = 126, RuleIdentifier = 127, RuleQualifier = 128, RulePrecision = 129, 
+    RuleScale = 130, RuleSize = 131, RuleLiteral = 132, RuleSimpleLiteral = 133, 
+    RuleBooleanLiteral = 134, RuleIntegerLiteral = 135, RuleSignedIntegerLiteral = 136, 
+    RuleDecimalLiteral = 137, RuleSignedDecimalLiteral = 138, RuleFloatLiteral = 139, 
+    RuleSignedFloatLiteral = 140, RuleDateLiteral = 141, RuleTimeLiteral = 142, 
+    RuleTimestampLiteral = 143, RuleStringLiteral = 144, RuleIntervalLiteral = 145, 
+    RuleYearMonthInterval = 146, RuleDayTimeInterval = 147, RuleNonReservedWord = 148
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -138,6 +139,8 @@ public:
   class JoinTypeContext;
   class ExtendedJoinTypeContext;
   class ValuesExprContext;
+  class AnidxCmdContext;
+  class AntblCmdContext;
   class BpaCmdContext;
   class CompactIdxCmdContext;
   class CountCmdContext;
@@ -297,6 +300,8 @@ public:
   public:
     StatementChoiceContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    AnidxCmdContext *anidxCmd();
+    AntblCmdContext *antblCmd();
     CompactIdxCmdContext *compactIdxCmd();
     CountCmdContext *countCmd();
     CreateCmdContext *createCmd();
@@ -781,6 +786,41 @@ public:
   };
 
   ValuesExprContext* valuesExpr();
+
+  class  AnidxCmdContext : public antlr4::ParserRuleContext {
+  public:
+    AnidxCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TableNameContext *tableName();
+    IndexNameContext *indexName();
+    antlr4::tree::TerminalNode *ANIDX();
+    antlr4::tree::TerminalNode *TABLE();
+    antlr4::tree::TerminalNode *ANALYZE();
+    antlr4::tree::TerminalNode *ANALYSE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AnidxCmdContext* anidxCmd();
+
+  class  AntblCmdContext : public antlr4::ParserRuleContext {
+  public:
+    AntblCmdContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TableNameContext *tableName();
+    antlr4::tree::TerminalNode *ANTBL();
+    antlr4::tree::TerminalNode *INDEX();
+    antlr4::tree::TerminalNode *ANALYZE();
+    antlr4::tree::TerminalNode *ANALYSE();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AntblCmdContext* antblCmd();
 
   class  BpaCmdContext : public antlr4::ParserRuleContext {
   public:
@@ -3211,6 +3251,10 @@ public:
   public:
     NonReservedWordContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *ANALYSE();
+    antlr4::tree::TerminalNode *ANALYZE();
+    antlr4::tree::TerminalNode *ANIDX();
+    antlr4::tree::TerminalNode *ANTBL();
     antlr4::tree::TerminalNode *ASC();
     antlr4::tree::TerminalNode *BIT();
     antlr4::tree::TerminalNode *BITS();

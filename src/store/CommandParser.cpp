@@ -146,6 +146,7 @@ TaskList* CommandParser::pParseCommand(Stz* szCommand)
 
 /*----------------------------------------------------------------------------*/
 /* Visit functions for parse tree nodes                                       */
+/* Top level statement rules (in rule order)                                  */
 /*----------------------------------------------------------------------------*/
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -355,6 +356,8 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->truncateCmd())       { m_szProcName = "truncate"_Stz;       return visitChildren(pCtx); }
   else if (pCtx->exportCmd())         { m_szProcName = "export"_Stz;         return visitChildren(pCtx); }
 
+  else if (pCtx->antblCmd())          { m_szProcName = "antbl"_Stz;          return visitChildren(pCtx); }
+  else if (pCtx->anidxCmd())          { m_szProcName = "anidx"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->logCmd())            { m_szProcName = "logMsg"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->lscolCmd())          { m_szProcName = "lscol"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->lsidxCmd())          { m_szProcName = "lsidx"_Stz;          return visitChildren(pCtx); }
@@ -423,101 +426,21 @@ antlrcpp::Any CommandParser::visitKeyValueTag(Parser::sqlParser::KeyValueTagCont
   return visitChildren(pCtx);
 }
 
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a query statement                               */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitQueryCmd(Parser::sqlParser::QueryCmdContext* pCtx)
-{
-  UNUSED(pCtx);
 
-  // Add command parameters
-  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
-  return nullptr; // No need to visit any further down the tree
-}
 
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an explain statement                            */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitExplainCmd(Parser::sqlParser::ExplainCmdContext* pCtx)
-{
-  UNUSED(pCtx);
 
-  // Add command parameters
-  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
-  return nullptr; // No need to visit any further down the tree
-}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* Visit functions for parse tree nodes                                       */
+/* Command specific rules (in alphabetical order)                             */
+/*----------------------------------------------------------------------------*/
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an EXPORT statement                             */
+/* Add command parameters for an ANIDX statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitExportCmd(Parser::sqlParser::ExportCmdContext* pCtx)
-{
-  UNUSED(pCtx);
-
-  // Add command parameters
-
-  s256 sTableName;
-  s256 sFilePath;
-
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->filePath->start, sFilePath);
-  ASSERT(pCtx->filePath->children.size() == 1);
-
-  m_pArgValues->vAppendToken(sTableName, TN_STRING);
-  m_pArgValues->vAppendToken(sFilePath, TN_STRING);
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a log statement                                 */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLogCmd(Parser::sqlParser::LogCmdContext *pCtx)
-{
-  // Add command parameters
-  Text* pLogMsg = pCleanString(pCtx->msg);
-
-  bool bEcho = true;
-  if (pCtx->SQL_FALSE() || pCtx->OFF()) {
-    bEcho = false;
-  }
-
-  m_pArgValues->vAppendToken(pLogMsg->szGet(), TN_STRING);
-  m_pArgValues->vAppendToken(bEcho ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
-
-  delete pLogMsg;
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an lscol statement                              */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLscolCmd(Parser::sqlParser::LscolCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an ldidx statement                              */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsidxCmd(Parser::sqlParser::LsidxCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sIdentifier;
-  vCleanString(pCtx->tableName()->identifier(), sIdentifier);
-  m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an ldidx statement                              */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdContext *pCtx)
+antlrcpp::Any CommandParser::visitAnidxCmd(Parser::sqlParser::AnidxCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -532,15 +455,135 @@ antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdCont
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an LSPTNCOL statement                           */
+/* Add command parameters for an ANIDX statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLsptncolCmd(Parser::sqlParser::LsptncolCmdContext *pCtx)
+antlrcpp::Any CommandParser::visitAntblCmd(Parser::sqlParser::AntblCmdContext *pCtx)
 {
   // Add command parameters
   s256 sTableName;
   vCleanString(pCtx->tableName()->identifier(), sTableName);
 
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a BPA statement                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)
+{
+  // Add command parameters
+
+  if (pCtx->type && !pCtx->ALL()) {
+    Stz* szAnalysisType;
+    s256 sBuf;
+
+    vCleanString(pCtx->type, sBuf);
+    szAnalysisType = sBuf.szStz();
+
+    m_pArgValues->vAppendToken(szAnalysisType, TN_STRING);
+
+  } else {
+    // The default if no bpa parameter is given is to run both bpa sub-commands
+
+    // Create a new parser using the current statement's tag set as the base.
+    ASSERT(!m_pChildTasks);
+
+    CommandParser* nestedParser = new CommandParser(m_pCurStmtTagSet, m_pParentTask);
+
+    try {
+      Stz* szBpaAllCmd = "bpa regions; bpa objects;"_Stz;
+      m_pChildTasks = nestedParser->pParseCommand(szBpaAllCmd);
+
+    } catch (Parser::SyntaxException& e) {
+      delete nestedParser;
+      throw e;
+
+    } catch (Parser::SemanticException& e) {
+      delete nestedParser;
+      throw e;
+    }
+
+    delete nestedParser;
+
+    ASSERT(m_pChildTasks);
+    ASSERT(m_pChildTasks->nTasks() > 0);
+
+    // This ensures that the two nested sub-commands will get picked.
+    m_szProcName = nullptr;
+  }
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an COMPACTIDX statement                         */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitCompactIdxCmd(Parser::sqlParser::CompactIdxCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sIndexName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a COUNT statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitCountCmd(Parser::sqlParser::CountCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an CREATE INDEX statement                       */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitCreateIndexCmd(Parser::sqlParser::CreateIndexCmdContext *pCtx)
+{
+  // See above comments in visitCreateTableCmd regarding why this is done the
+  // way it is.
+
+  // First append a token for the table name
+  s256 sIndexName;
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+  m_pArgValues->vAppendToken(sIndexName, TN_STRING);
+
+  // Now reconstitute a string for the rest of the statement.
+  // We also need to add a ';' to make the parsing of this string work. :-(
+  antlr4::misc::Interval interval(pCtx->ON()->getSymbol()->getStartIndex(), pCtx->stop->getStopIndex());
+  std::string sCreateIndexCmd = pCtx->start->getInputStream()->getText(interval);
+  sCreateIndexCmd.append(";");  // Needed to be tokenised as C++ tokens...
+
+  // Now parse this reconstituted string into a token vector
+  Input* pInput = new Input(nullptr);
+  pInput->vUseString((Stz*) sCreateIndexCmd.c_str());
+  eEC eInputErr = EC_NONE;
+  pInput->vFormCppTokens();
+  pInput->vUseBegin();
+  bool bResult = pInput->bReadCommand(eInputErr);
+  ASSERT(bResult);
+
+  // Append these tokens and clean up
+  m_pArgValues->vAppendVector(pInput->pInpTknVec());
+  pInput->vUseEnd();
+  delete pInput;
+
+  // If it is a CREATE UNIQUE INDEX then we need to set a <unique> tag.
+  if (pCtx->UNIQUE()) {
+    m_pCommonTagSet->vAppend("<unique>"_Stz);
+  }
 
   return nullptr; // No need to visit any further down the tree
 }
@@ -615,154 +658,6 @@ antlrcpp::Any CommandParser::visitCreateTableCmd(Parser::sqlParser::CreateTableC
   return nullptr; // No need to visit any further down the tree
 }
 
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an CREATE INDEX statement                       */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitCreateIndexCmd(Parser::sqlParser::CreateIndexCmdContext *pCtx)
-{
-  // See above comments in visitCreateTableCmd regarding why this is done the
-  // way it is.
-
-  // First append a token for the table name
-  s256 sIndexName;
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
-  m_pArgValues->vAppendToken(sIndexName, TN_STRING);
-
-  // Now reconstitute a string for the rest of the statement.
-  // We also need to add a ';' to make the parsing of this string work. :-(
-  antlr4::misc::Interval interval(pCtx->ON()->getSymbol()->getStartIndex(), pCtx->stop->getStopIndex());
-  std::string sCreateIndexCmd = pCtx->start->getInputStream()->getText(interval);
-  sCreateIndexCmd.append(";");  // Needed to be tokenised as C++ tokens...
-
-  // Now parse this reconstituted string into a token vector
-  Input* pInput = new Input(nullptr);
-  pInput->vUseString((Stz*) sCreateIndexCmd.c_str());
-  eEC eInputErr = EC_NONE;
-  pInput->vFormCppTokens();
-  pInput->vUseBegin();
-  bool bResult = pInput->bReadCommand(eInputErr);
-  ASSERT(bResult);
-
-  // Append these tokens and clean up
-  m_pArgValues->vAppendVector(pInput->pInpTknVec());
-  pInput->vUseEnd();
-  delete pInput;
-
-  // If it is a CREATE UNIQUE INDEX then we need to set a <unique> tag.
-  if (pCtx->UNIQUE()) {
-    m_pCommonTagSet->vAppend("<unique>"_Stz);
-  }
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an DROP TABLE statement                         */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitDropTableCmd(Parser::sqlParser::DropTableCmdContext* pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an DROP INDEX statement                         */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitDropIndexCmd(Parser::sqlParser::DropIndexCmdContext* pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  s256 sIndexName;
-
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an TRUNCATE statement                           */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitTruncateCmd(Parser::sqlParser::TruncateCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an COMPACTIDX statement                         */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitCompactIdxCmd(Parser::sqlParser::CompactIdxCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  s256 sIndexName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->indexName()->identifier(), sIndexName);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an LOAD statement                               */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLoadCmd(Parser::sqlParser::LoadCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  s256 sFilePath;
-
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->filePath, sFilePath);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-  m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
-
-  // We need to visit children here to extract out any load options
-  // and add them to the tag vector
-  visitChildren(pCtx);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an LOADREPLICATED statement                     */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLoadReplicatedCmd(Parser::sqlParser::LoadReplicatedCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  s256 sFilePath;
-
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  vCleanString(pCtx->filePath, sFilePath);
-
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-  m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
-
-  // We need to visit children here to extract out any load options
-  // and add them to the tag vector
-  visitChildren(pCtx);
-
-  return nullptr; // No need to visit any further down the tree
-}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Add command parameters for an DLOAD statement                               */
@@ -798,80 +693,9 @@ antlrcpp::Any CommandParser::visitDloadCmd(Parser::sqlParser::DloadCmdContext *p
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Extract any load options and values and add them as tags                   */
+/* Add command parameters for an DROP INDEX statement                         */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitLoadOption(Parser::sqlParser::LoadOptionContext *pCtx)
-{
-  s256 sOptionName;
-  s256 sOptionValue;
-
-  vCleanTag(pCtx->loadOptionKeys()->start, sOptionName);
-  vCleanString(pCtx->loadValue, sOptionValue);
-
-  // load option should be lower case
-  sOptionName.vToLower();
-
-  m_pCurStmtTagSet->vAppend(sOptionName.szStz(), sOptionValue.szStz());
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a COUNT statement                               */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitCountCmd(Parser::sqlParser::CountCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sTableName;
-  vCleanString(pCtx->tableName()->identifier(), sTableName);
-  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a SZIDX statement                               */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitTrackmemoryCmd(Parser::sqlParser::TrackmemoryCmdContext* pCtx)
-{
-  // Add command parameters
-  m_pArgValues->vAppendToken(pCtx->FORCE() ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a SLEEP statement                               */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitSleepCmd(Parser::sqlParser::SleepCmdContext *pCtx)
-{
-  // Add command parameters
-  s256 sBuf;
-
-  bool bUnitsAreSec = true;
-
-  if (pCtx->sleepUnits() && pCtx->sleepUnits()->millis) {
-    bUnitsAreSec = false;
-  }
-
-  i8 iVal = iCleanInt(pCtx->integerLiteral());
-
-  if (bUnitsAreSec) {
-    // pipeline expects milliseconds
-    iVal *= C_1K;
-  }
-
-  sBuf.vSprint("%lld"_Stz, iVal);
-
-  m_pArgValues->vAppendToken(sBuf.szStz(), TN_STRING);
-
-  return nullptr; // No need to visit any further down the tree
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a SZIDX statement                               */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitSzidxCmd(Parser::sqlParser::SzidxCmdContext *pCtx)
+antlrcpp::Any CommandParser::visitDropIndexCmd(Parser::sqlParser::DropIndexCmdContext* pCtx)
 {
   // Add command parameters
   s256 sTableName;
@@ -887,90 +711,49 @@ antlrcpp::Any CommandParser::visitSzidxCmd(Parser::sqlParser::SzidxCmdContext *p
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a SZTBL statement                               */
+/* Add command parameters for an DROP TABLE statement                         */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitSztblCmd(Parser::sqlParser::SztblCmdContext *pCtx)
+antlrcpp::Any CommandParser::visitDropTableCmd(Parser::sqlParser::DropTableCmdContext* pCtx)
 {
   // Add command parameters
   s256 sTableName;
   vCleanString(pCtx->tableName()->identifier(), sTableName);
+
   m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
 
   return nullptr; // No need to visit any further down the tree
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a UNLOAD statement                              */
+/* Add command parameters for an explain statement                            */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitUnloadCmd(Parser::sqlParser::UnloadCmdContext *pCtx)
+antlrcpp::Any CommandParser::visitExplainCmd(Parser::sqlParser::ExplainCmdContext* pCtx)
 {
+  UNUSED(pCtx);
+
   // Add command parameters
-  s256 sFilePrefix;
-
-  if (pCtx->identifier()) {
-    vCleanString(pCtx->identifier(), sFilePrefix);
-  } else {
-    ASSERT(pCtx->stringLiteral());
-    vCleanString(pCtx->stringLiteral(), sFilePrefix);
-  }
-
-  // Handle an empty path
-  if (sFilePrefix.bIsEmpty()) {
-    Parser::SemanticException::vThrow(EC_INVALID_VALUE,
-                                      ": unload file prefix cannot be an empty string"_Stz);
-  }
-
-  m_pArgValues->vAppendToken(sFilePrefix.szStz(), TN_STRING);
-
+  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
   return nullptr; // No need to visit any further down the tree
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for a BPA statement                                 */
+/* Add command parameters for an EXPORT statement                             */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any CommandParser::visitBpaCmd(Parser::sqlParser::BpaCmdContext *pCtx)
+antlrcpp::Any CommandParser::visitExportCmd(Parser::sqlParser::ExportCmdContext* pCtx)
 {
+  UNUSED(pCtx);
+
   // Add command parameters
 
-  if (pCtx->type && !pCtx->ALL()) {
-    Stz* szAnalysisType;
-    s256 sBuf;
+  s256 sTableName;
+  s256 sFilePath;
 
-    vCleanString(pCtx->type, sBuf);
-    szAnalysisType = sBuf.szStz();
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->filePath->start, sFilePath);
+  ASSERT(pCtx->filePath->children.size() == 1);
 
-    m_pArgValues->vAppendToken(szAnalysisType, TN_STRING);
-
-  } else {
-    // The default if no bpa parameter is given is to run both bpa sub-commands
-
-    // Create a new parser using the current statement's tag set as the base.
-    ASSERT(!m_pChildTasks);
-
-    CommandParser* nestedParser = new CommandParser(m_pCurStmtTagSet, m_pParentTask);
-
-    try {
-      Stz* szBpaAllCmd = "bpa regions; bpa objects;"_Stz;
-      m_pChildTasks = nestedParser->pParseCommand(szBpaAllCmd);
-
-    } catch (Parser::SyntaxException& e) {
-      delete nestedParser;
-      throw e;
-
-    } catch (Parser::SemanticException& e) {
-      delete nestedParser;
-      throw e;
-    }
-
-    delete nestedParser;
-
-    ASSERT(m_pChildTasks);
-    ASSERT(m_pChildTasks->nTasks() > 0);
-
-    // This ensures that the two nested sub-commands will get picked.
-    m_szProcName = nullptr;
-  }
-
+  m_pArgValues->vAppendToken(sTableName, TN_STRING);
+  m_pArgValues->vAppendToken(sFilePath, TN_STRING);
   return nullptr; // No need to visit any further down the tree
 }
 
@@ -1078,6 +861,273 @@ antlrcpp::Any CommandParser::visitFileCmd(Parser::sqlParser::FileCmdContext *pCt
 
   return nullptr; // No need to visit any further down the tree
 }
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an LOAD statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLoadCmd(Parser::sqlParser::LoadCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sFilePath;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->filePath, sFilePath);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
+
+  // We need to visit children here to extract out any load options
+  // and add them to the tag vector
+  visitChildren(pCtx);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Extract any load options and values and add them as tags                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLoadOption(Parser::sqlParser::LoadOptionContext *pCtx)
+{
+  s256 sOptionName;
+  s256 sOptionValue;
+
+  vCleanTag(pCtx->loadOptionKeys()->start, sOptionName);
+  vCleanString(pCtx->loadValue, sOptionValue);
+
+  // load option should be lower case
+  sOptionName.vToLower();
+
+  m_pCurStmtTagSet->vAppend(sOptionName.szStz(), sOptionValue.szStz());
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an LOADREPLICATED statement                     */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLoadReplicatedCmd(Parser::sqlParser::LoadReplicatedCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sFilePath;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->filePath, sFilePath);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sFilePath.szStz(), TN_STRING);
+
+  // We need to visit children here to extract out any load options
+  // and add them to the tag vector
+  visitChildren(pCtx);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a log statement                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLogCmd(Parser::sqlParser::LogCmdContext *pCtx)
+{
+  // Add command parameters
+  Text* pLogMsg = pCleanString(pCtx->msg);
+
+  bool bEcho = true;
+  if (pCtx->SQL_FALSE() || pCtx->OFF()) {
+    bEcho = false;
+  }
+
+  m_pArgValues->vAppendToken(pLogMsg->szGet(), TN_STRING);
+  m_pArgValues->vAppendToken(bEcho ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
+
+  delete pLogMsg;
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an lscol statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLscolCmd(Parser::sqlParser::LscolCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an ldidx statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLsidxCmd(Parser::sqlParser::LsidxCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sIdentifier;
+  vCleanString(pCtx->tableName()->identifier(), sIdentifier);
+  m_pArgValues->vAppendToken(sIdentifier.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an ldidx statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLsidxcolCmd(Parser::sqlParser::LsidxcolCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sIndexName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an LSPTNCOL statement                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitLsptncolCmd(Parser::sqlParser::LsptncolCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a query statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitQueryCmd(Parser::sqlParser::QueryCmdContext* pCtx)
+{
+  UNUSED(pCtx);
+
+  // Add command parameters
+  m_pArgValues->vAppendToken(m_sCurStmtStr, TN_STRING);
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SLEEP statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitSleepCmd(Parser::sqlParser::SleepCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sBuf;
+
+  bool bUnitsAreSec = true;
+
+  if (pCtx->sleepUnits() && pCtx->sleepUnits()->millis) {
+    bUnitsAreSec = false;
+  }
+
+  i8 iVal = iCleanInt(pCtx->integerLiteral());
+
+  if (bUnitsAreSec) {
+    // pipeline expects milliseconds
+    iVal *= C_1K;
+  }
+
+  sBuf.vSprint("%lld"_Stz, iVal);
+
+  m_pArgValues->vAppendToken(sBuf.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SZIDX statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitSzidxCmd(Parser::sqlParser::SzidxCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  s256 sIndexName;
+
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  vCleanString(pCtx->indexName()->identifier(), sIndexName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+  m_pArgValues->vAppendToken(sIndexName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SZTBL statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitSztblCmd(Parser::sqlParser::SztblCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a SZIDX statement                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitTrackmemoryCmd(Parser::sqlParser::TrackmemoryCmdContext* pCtx)
+{
+  // Add command parameters
+  m_pArgValues->vAppendToken(pCtx->FORCE() ? "true"_Stz : "false"_Stz, TN_BOOLEAN);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an TRUNCATE statement                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitTruncateCmd(Parser::sqlParser::TruncateCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sTableName;
+  vCleanString(pCtx->tableName()->identifier(), sTableName);
+
+  m_pArgValues->vAppendToken(sTableName.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for a UNLOAD statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitUnloadCmd(Parser::sqlParser::UnloadCmdContext *pCtx)
+{
+  // Add command parameters
+  s256 sFilePrefix;
+
+  if (pCtx->identifier()) {
+    vCleanString(pCtx->identifier(), sFilePrefix);
+  } else {
+    ASSERT(pCtx->stringLiteral());
+    vCleanString(pCtx->stringLiteral(), sFilePrefix);
+  }
+
+  // Handle an empty path
+  if (sFilePrefix.bIsEmpty()) {
+    Parser::SemanticException::vThrow(EC_INVALID_VALUE,
+                                      ": unload file prefix cannot be an empty string"_Stz);
+  }
+
+  m_pArgValues->vAppendToken(sFilePrefix.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
+
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

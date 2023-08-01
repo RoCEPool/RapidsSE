@@ -76,6 +76,10 @@ public:
 
     virtual antlrcpp::Any visitValuesExpr(sqlParser::ValuesExprContext *context) = 0;
 
+    virtual antlrcpp::Any visitAnidxCmd(sqlParser::AnidxCmdContext *context) = 0;
+
+    virtual antlrcpp::Any visitAntblCmd(sqlParser::AntblCmdContext *context) = 0;
+
     virtual antlrcpp::Any visitBpaCmd(sqlParser::BpaCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitCompactIdxCmd(sqlParser::CompactIdxCmdContext *context) = 0;

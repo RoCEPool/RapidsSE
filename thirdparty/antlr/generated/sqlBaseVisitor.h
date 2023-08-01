@@ -129,6 +129,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitAnidxCmd(sqlParser::AnidxCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAntblCmd(sqlParser::AntblCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitBpaCmd(sqlParser::BpaCmdContext *ctx) override {
     return visitChildren(ctx);
   }
