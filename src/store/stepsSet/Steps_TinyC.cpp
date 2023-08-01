@@ -44,16 +44,16 @@ void Step::vTinyCCompile(void)
 {
   ENTRY();
 
-  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
-  
-  Stencil* pStencil;
-  pStencil = _pStencil(m_pDataStack->pPopPtr(__func__));
-
-  bool bClean = pTinyC->bCompile(pStencil->szOpSource()->azChar());
-  if (bClean)
-    m_pDataStack->vPushInt(true);
-  else
-    m_pDataStack->vPushInt(false);
+//  TinyC* pTinyC = * m_pLogicUnit->m_xpTinyC;
+//
+//  Stencil* pStencil;
+//  pStencil = _pStencil(m_pDataStack->pPopPtr(__func__));
+//
+//  bool bClean = pTinyC->bCompile(pStencil->szOpSource()->azChar());
+//  if (bClean)
+//    m_pDataStack->vPushInt(true);
+//  else
+//    m_pDataStack->vPushInt(false);
   
   EXIT();
 }

@@ -57,7 +57,6 @@ enum eCN : u2 // Class Number
   /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
-  /* */ CN_CODESYNTH,
   /* */ CN_COLMAP,
   /* */ CN_COLSREQ,
   /* */ CN_COLUMN,
@@ -112,7 +111,6 @@ enum eCN : u2 // Class Number
   /* */ CN_FILE,
   /* */ CN_FILEMAP,
   /* */ CN_FIPVAL,
-  /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
   /* */ CN_FOLD,
   /* */ CN_FORMAT,
@@ -323,7 +321,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SENDS,
   /* */ CN_SENDWL,
   /* */ CN_SEPROMPT,
-  /* */ CN_SHAPE,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
   /* */ CN_SINCE,
@@ -360,7 +357,6 @@ enum eCN : u2 // Class Number
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
   /* */ CN_STATS,
-  /* */ CN_STENCIL,
   /* */ CN_STENCIL_V2,
   /* */ CN_STEP,
   /* */ CN_STEPACCUM,
@@ -556,7 +552,6 @@ static Stz* aCN[]
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
-  /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLMAP"_Stz,               // CN_COLMAP
   /* */ "COLSREQ"_Stz,              // CN_COLSREQ
   /* */ "COLUMN"_Stz,               // CN_COLUMN
@@ -611,7 +606,6 @@ static Stz* aCN[]
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FILEMAP"_Stz,              // CN_FILEMAP
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
-  /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FOLD"_Stz,                 // CN_FOLD
   /* */ "FORMAT"_Stz,               // CN_FORMAT
@@ -822,7 +816,6 @@ static Stz* aCN[]
   /* */ "SENDS"_Stz,                // CN_SENDS
   /* */ "SENDWL"_Stz,               // CN_SENDWL
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
-  /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
   /* */ "SINCE"_Stz,                // CN_SINCE
@@ -859,7 +852,6 @@ static Stz* aCN[]
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATS"_Stz,                // CN_STATS
-  /* */ "STENCIL"_Stz,              // CN_STENCIL
   /* */ "STENCIL_V2"_Stz,           // CN_STENCIL_V2
   /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM

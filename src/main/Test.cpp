@@ -50,8 +50,6 @@
 #include "SP_Bytes.hpp"
 #include "SP_Timer.hpp"
 
-#include "Flatten.hpp"
-
 #include "PayStr.hpp"
 #include "PayStrBuffer.hpp"
 

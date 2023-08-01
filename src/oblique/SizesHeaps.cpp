@@ -162,13 +162,11 @@
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
-#include "Shape.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
 #include "Starter.hpp"
 #include "Statement.hpp"
-#include "Stencil.hpp"
 #include "Stencil_v2.hpp"
 #include "Steps.hpp"
 #include "Stream.hpp"
@@ -202,8 +200,6 @@
 #include "Parcel.hpp"
 #include "Sends.hpp"
 
-#include "CodeSynth.hpp"
-#include "Flatten.hpp"
 #include "Permit.hpp"
 #include "Totup.hpp"
 #include "Socket.hpp"
@@ -390,7 +386,6 @@ SizeHeap gxaSizeHeap[]
   { CN_CLASSPLACEHOLDER,         sizeof(ClassPlaceHolder),   HT_T_LARGE   ,FILL },
   { CN_CMDLINEARGS,              sizeof(CmdLineArgs),        HT_INVALID   ,FILL },
   { CN_CODEBLOCK,                sizeof(CodeBlock),          HT_T_MEDIUM  ,FILL },
-  { CN_CODESYNTH,                sizeof(CodeSynth),          HT_T_LARGE   ,FILL },
   { CN_COLMAP,                   sizeof(ColMap),             HT_T_MEDIUM  , FILL },
   { CN_COLSREQ,                  sizeof(ColsReq),            HT_T_MEDIUM  , FILL },
   { CN_COLUMN,                   sizeof(Column),             HT_T_TINY    ,FILL },
@@ -445,7 +440,6 @@ SizeHeap gxaSizeHeap[]
   {CN_FILE,                     sizeof(File),                   HT_T_TINY    , FILL },
   {CN_FILEMAP,                  sizeof(FileMap),                HT_INVALID   , FILL },
   {CN_FIPVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
-  {CN_FLATTEN,                  sizeof(Flatten),                HT_T_TINY    , FILL },
   {CN_FLTVAL,                   sizeof(TypeValueArea), /*yes*/  HT_INVALID   , FILL },
   {CN_FOLD,                     sizeof(Fold),                   HT_T_TINY    , FILL },
   {CN_FORMAT,                   sizeof(Format),                 HT_T_TINY    , FILL },
@@ -656,7 +650,6 @@ SizeHeap gxaSizeHeap[]
   { CN_SENDS,           sizeof(Sends),              HT_T_TINY    , FILL },
   { CN_SENDWL,          sizeof(SendWL),             HT_T_TINY    , FILL },
   { CN_SEPROMPT,        sizeof(SePrompt),           HT_T_MEDIUM  , FILL },
-  { CN_SHAPE,           sizeof(Shape),              HT_T_TINY    , FILL },
   { CN_SHORTCUT,        sizeof(ShortCut),           HT_T_MEDIUM  , FILL },
   { CN_SHORTCUTVEC,     sizeof(ShortCutVec),        HT_T_MEDIUM  , FILL },
   {CN_SINCE,           sizeof(Birth),              HT_INVALID   , FILL },
@@ -693,7 +686,6 @@ SizeHeap gxaSizeHeap[]
   { CN_STARTER,                  sizeof(Starter),            HT_T_TINY    ,FILL },
   { CN_STATEMENT,                sizeof(Statement),          HT_T_MEDIUM  ,FILL },
   { CN_STATS,                    sizeof(Stats),              HT_T_TINY    ,FILL },
-  { CN_STENCIL,                  sizeof(Stencil),            HT_T_SMALL   ,FILL },
   { CN_STENCIL_V2,               sizeof(Stencil_v2),         HT_T_LARGE   ,FILL },
   { CN_STEP,                     0,                          HT_INVALID   ,FILL },
   { CN_STEPACCUM,                sizeof(StepAccum),          HT_INVALID   ,FILL },
