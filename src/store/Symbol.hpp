@@ -27,12 +27,11 @@ namespace STORE
     Symbol(Symbol* pSymbol);
     ~Symbol(void);
 
-    static eSF  eEvalForm(Stz* szArg);
+    static eSF  eEvalSymbol(Stz* szSymbol);
     static eRO  eEvalRelnOp(Stz* szArg);
 
 
-    static bool bIsAggOp(Stz* szArg);            // avg, count, ... sum
-    static bool b_IsSubQueryName(Stz* szStz);  // __subqueryN
+    static bool bIsAggFn(Stz* szArg);            // avg, count, ... sum
     static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
     static bool bIsBound(Stz* szArg);            // LBOUND, UBOUND
     static bool bIsColNm(Stz* szArg);            //
@@ -42,14 +41,16 @@ namespace STORE
     static bool bIsDisambiguatedColNm(Stz* szArg);  // C_n
     static bool bIsIndexColumn(Stz* szArg);      // $In
     static bool bIsKeyOrdinal(Stz* szArg);       // $Kn
+    static bool bIsMathOp(Stz* szArg);           // +, -, *, /
     static bool bIsName(Stz* szArg);             //
     static bool bIsNumber(Stz* szArg);           //
-    static bool bIsNumbOp(Stz* szArg);           //
     static bool bIsOther(Stz* szArg);            //
     static bool bIsParameterOrdinal(Stz* szArg); // %n
     static bool bIsParenthesis(Stz* szArg);      // ( or )
     static bool bIsRelnOp(Stz* szArg);           // <, <=, ... >
     static bool bIsStreamOrdinal(Stz* szArg);    // $n
+    static bool bIsSubQueryCKey(Stz* szStz);     // _SQCRLKEY_
+    static bool bIsSubQueryName(Stz* szStz);     // __subqueryN
     static bool bIsSubQueryOp(Stz* szArg);       // exists, in, notExists, notIn
     static bool bIsSubQueryColumn(Stz* szArg);   // __n
     static bool bIsSyntheticAs(Stz* szArg);      // __n
@@ -74,7 +75,7 @@ namespace STORE
     bool bHasSymbolicValue(void);
     bool bHasProperties(void);
 
-    bool bIsAggOp(void);            // avg, count, ... sum
+    bool bIsAggFn(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
     bool bIsBound(void);            // LBOUND, UBOUND
     bool bIsColNm(void);            //
@@ -84,9 +85,9 @@ namespace STORE
     bool bIsDisambiguatedColNm(void);  // C_n
     bool bIsIndexColumn(void);      // $In
     bool bIsKeyOrdinal(void);       // $Kn
+    bool bIsMathOp(void);           // +, -, *, /
     bool bIsName(void);             //
     bool bIsNumber(void);           //
-    bool bIsNumbOp(void);           //
     bool bIsOther(void);            //
     bool bIsParameterOrdinal(void); // %n
     bool bIsParenthesis(void);      // ( or )
@@ -132,15 +133,14 @@ namespace STORE
     Stz* szSF_other(void);
     Stz* szSF_string(void);
 
-
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 
     Stz* szWhatIs(void);
 
     void Y_vAll(Symbol* pSymbol_arg);
     void Y_vCut(Stz* szPpyNm);
-//    char Y_cGet(i8 i_Ppy);
-//    char Y_cGet(Stz* szPptNm);
+//  char Y_cGet(i8 i_Ppy);
+//  char Y_cGet(Stz* szPptNm);
     i8   Y_iGet(i8 i_Ppy);
     i8   Y_iGet(Stz* szPpyNm);
     Object* Y_pGet(i8 i_Ppy);
@@ -166,7 +166,6 @@ namespace STORE
 
   protected:
     Footer* aFooter(void);
-
   };
 
 }

@@ -1506,7 +1506,7 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
       break;
     }
 
-    if (pCard_Term_popped->pSymbol()->bIsAggOp())
+    if (pCard_Term_popped->pSymbol()->bIsAggFn())
       pCard_RpnCalc->pSymbol()->Y_vSet(P_AggOp);
 
     pCard_RpnCalc->vAppend(pCard_Term_popped);
