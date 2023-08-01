@@ -396,7 +396,7 @@ Card* Dissector::pOp_Filter(void)
   // filtElist : filter expression list
 
   i8 i_Expr = 1;
-  Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr);
+  Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr, false);
 
   Card_RpnCalc* pCard_RpnCalc = pCard_Expr->pSub_rpnCalc();
   pCard_Expr->vRemoveSub(pCard_RpnCalc);
@@ -1038,7 +1038,7 @@ Card* Dissector::pOp_Sort(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sbyElist : sortBy expression list
 
-  Card_Key* pCard_Key = pPopKey(pCard_RpnTerms, false);
+  Card_Key* pCard_Key = pPopKey(pCard_RpnTerms, true);
   pCard_Sort->vAppend(pCard_Key);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1085,7 +1085,7 @@ Card* Dissector::pOp_Top(void)
   // sbyElist : sortBy expression list
 
   Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(0);
-  Card_Key* pCard_Key = pPopKey(pCard_RpnTerms, false);
+  Card_Key* pCard_Key = pPopKey(pCard_RpnTerms, true);
   pCard_Top->vAppend(pCard_Key);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1323,7 +1323,9 @@ Card_Direction* Dissector::pPopDirection(Card_RpnTerms* pCard_RpnTerms)
 /*----------------------------------------------------------------------------*/
 /* pop expr                                                                   */
 /*----------------------------------------------------------------------------*/
-Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i8& ri_Expr)
+Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
+                               bool bIsKeyExpr, i8& ri_Expr,
+                               bool bEnsureDirection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -1380,6 +1382,11 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
     Card_Direction* pCard_Direction = pPopDirection(pCard_RpnTerms);
     pCard_Expr->vAppend(pCard_Direction);
   }
+  else
+  if (bEnsureDirection) {
+    Card_Direction* pCard_Direction = new Card_Direction("ASC"_Stz);
+    pCard_Expr->vAppend(pCard_Direction);
+  }
 
 
   if (! pCard_Expr->pSub_as()) {
@@ -1394,7 +1401,7 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms, bool bIsKeyExpr, i
 /*----------------------------------------------------------------------------*/
 /* pop key                                                                    */
 /*----------------------------------------------------------------------------*/
-Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
+Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bEnsureDirection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECTOR,_FOOTER_);
 
@@ -1424,13 +1431,13 @@ Card_Key* Dissector::pPopKey(Card_RpnTerms* pCard_RpnTerms, bool bAsc)
     }
 
     // TYPE <type> <calcExpr> [ AS <as> ]
-    Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, true, i_Expr);
+    Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, true, i_Expr, bEnsureDirection);
     pCard_Expr->v_Child(++i_CardNo);
 
-    if (bAsc) {
-      Card_Direction *p_direction = new Card_Direction("ASC"_Stz);
-      pCard_Expr->vAppend(p_direction);
-    }
+//    if (bEnsureDirection) {
+//      Card_Direction *p_direction = new Card_Direction("ASC"_Stz);
+//      pCard_Expr->vAppend(p_direction);
+//    }
 
     pCard_Key->vAppend(pCard_Expr);
   }
@@ -1472,7 +1479,7 @@ Card_Projection* Dissector::pPopProjection(Card_RpnTerms* pCard_RpnTerms)
     }
 
     // TYPE <type> [ AS <as> ] <rpnCalc>
-    Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr);
+    Card_Expr* pCard_Expr = pPopExpr(pCard_RpnTerms, false, i_Expr, false);
     pCard_Expr->v_Child(++iCardNo);
     //vAsEnsure(pCard_Expr);
 
