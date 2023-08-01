@@ -592,6 +592,14 @@ void Weaver2::vArgIndexJoin(Stz* szOpArgs, Card_IndexJoin* pCard_IndexJoin)
 
   szOpArgs->vCatSprint("%s %s \"%s \""_Stz,
                        p_tableNm->szSymbol(), p_indexNm->szSymbol(), sRpnExpr.szStz());
+
+  if (pCard_IndexJoin->pSub_constraint()) {
+    s4K sRpnConstraint;
+    pCard_IndexJoin->vRpnIndexJoin_constraint(sRpnConstraint, pCard_IndexJoin);
+    szOpArgs->vCatSprint("\n"_Stz);
+    szOpArgs->vCatSprint("                \"%s \""_Stz,sRpnConstraint.szStz());
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

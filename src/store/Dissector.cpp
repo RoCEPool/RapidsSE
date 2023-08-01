@@ -538,9 +538,11 @@ Card* Dissector::pOp_IndexJoin(void)
 
   Stz* szTableNm = szGetStz(0);
   Stz* szIndexNm = szGetStz(1);
-  Card_RpnTerms* pCard_RpnTerms = pGetRpnTerms(2);
+  Card_RpnTerms* p_rpnTerms_bound = pGetRpnTerms(2);
+  Card_RpnTerms* p_rpnTerms_constraint =
+      m_pOpArgs->nItems() >= 4 ? pGetRpnTerms(3) : nullptr;
 
-  //pCard_RpnTerms->vDump();
+  //p_rpnTerms_bound->vDump();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -583,7 +585,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_Bound* pCard_Bound = new Card_Bound;
 
 
-  pCard_Bound->vTransferChildren(pCard_RpnTerms);
+  pCard_Bound->vTransferChildren(p_rpnTerms_bound);
 
   Card_Term* p_term_first = pCard_Bound->pGetTerm(0);
   if (p_term_first->bSameSymbol("LEFT_OUTER"_Stz)) {
@@ -606,8 +608,20 @@ Card* Dissector::pOp_IndexJoin(void)
   pCard_Bounds->vAppend(pCard_Bound);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // constraint
+
+  if (p_rpnTerms_constraint) {
+    Card_Constraint* pCard_Constraint = pPopConstraint(p_rpnTerms_constraint);
+    //pCard_Constraint->vDump(__func__);
+    pCard_IndexJoin->vAppend(pCard_Constraint);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  delete pCard_RpnTerms;
+  delete p_rpnTerms_bound;
+
+  if (p_rpnTerms_constraint)
+    delete p_rpnTerms_constraint;
 
   //pCard_IndexJoin->vDump();
 

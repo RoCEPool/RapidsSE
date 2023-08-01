@@ -1181,6 +1181,40 @@ void Card_OP::vRpnIndexJoin(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
 }
 
 /*----------------------------------------------------------------------------*/
+/* produce <expr> for indexJoin op                                            */
+/*----------------------------------------------------------------------------*/
+void Card_OP::vRpnIndexJoin_constraint(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  Card_Index* pCard_Index = _pCard_Index(pCard_IndexJoin->pFindPpyRecursive(P_ChosenIndex, CK_INDEX));
+  if (! pCard_Index) {
+    szRpnExpr->vConcat(" <<no:chosen index>>"_Stz);
+    return;
+  }
+
+  Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
+  if (! pCard_constraint) {
+    pCard_constraint = pCard_IndexJoin->pSub_constraint();
+    if (!pCard_constraint)
+      return;
+  }
+
+  szRpnExpr->vCatSprint(" type BOOLEAN"_Stz);
+
+  Card* pCard_test = pCard_constraint->pSub_boolCalc();
+  if (pCard_test && CK_BOOLCALC == pCard_test->eCard()) {
+    Card_BoolCalc *pCard_CalcBool = _pCard_BoolCalc(pCard_test);
+    vBoolCalc(szRpnExpr, pCard_CalcBool);
+  }
+  else {
+    Card_RpnCalc *pCard_Calc = pCard_constraint->pSub_rpnCalc();
+    vRpnCalc(szRpnExpr, pCard_Calc);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* produce <expr> for indexScan op                                            */
 /*----------------------------------------------------------------------------*/
 void Card_OP::vRpnIndexScan(Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan)

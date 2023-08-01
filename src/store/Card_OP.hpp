@@ -64,6 +64,7 @@ namespace STORE
     void vRpnHash        (Stz* szRpnExpr, Card_Hash*      pCard_Hash);
     void vRpnHaving      (Stz* szRpnExpr, Card_Having*    pCard_Having);
     void vRpnIndexJoin   (Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
+    void vRpnIndexJoin_constraint(Stz* szRpnExpr, Card_IndexJoin* pCard_IndexJoin);
     void vRpnIndexScan   (Stz* szRpnExpr, Card_IndexScan* pCard_IndexScan);
     void vRpnKeyExists   (Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists);
     void vRpnKeyExists_constraint(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists);
