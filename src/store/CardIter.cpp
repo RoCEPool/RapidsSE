@@ -179,6 +179,9 @@ void CardIter::G_vAppendNewChild(Card* pParent, eCK eChild, Stz* szSymbol, eSF e
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
+  eSF eSymbol_eval = Symbol::eEvalSymbol(szSymbol);
+  RASSERT(eSymbol_eval == eSymbol);
+
   Card* pChild = new Card(eChild, szSymbol, eSymbol);
 
   pParent->vAppend(pChild);

@@ -82,9 +82,27 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Symbol::eEvalRelnOp(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("<"_Stz))   return RO_LESS_THAN;
+  else if (szArg->bSame("<="_Stz))  return RO_LESS_EQUAL;
+  else if (szArg->bSame("="_Stz))   return RO_EQUAL_TO;
+  else if (szArg->bSame("=="_Stz))  return RO_EQUAL_TO;
+  else if (szArg->bSame("!="_Stz))  return RO_NOT_EQUAL;
+  else if (szArg->bSame(">="_Stz))  return RO_GREATER_EQUAL;
+  else if (szArg->bSame(">"_Stz))   return RO_GREATER_THAN;
+
+  else return RO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate symbol form of given arg                                          */
 /*----------------------------------------------------------------------------*/
-eSF Symbol::eEvalForm(Stz* szArg)
+eSF Symbol::eEvalSymbol(Stz* szSymbol)
 {
   _static_
 
@@ -113,60 +131,30 @@ eSF Symbol::eEvalForm(Stz* szArg)
   };
   */
 
-  if (bIsColumnOrdinal(szArg))      return SF_TBLCOL;
-  if (bIsCrossRef(szArg))           return SF_XREFNO;
-  if (bIsDisambiguatedColNm(szArg)) return SF_DASCNE;
-  if (bIsIndexColumn(szArg))        return SF_IDXCOL;
-  if (bIsNumber(szArg))             return SF_NUMBER;
-  if (bIsKeyOrdinal(szArg))         return SF_KEYCOL;
-  if (bIsParameterOrdinal(szArg))   return SF_PRMCOL;
-  if (bIsStreamOrdinal(szArg))      return SF_STMCOL;
-  if (bIsSubQueryColumn(szArg))     return SF_SQRYNO;
-  if (bIsSyntheticAs(szArg))        return SF_SASCNM;
-  if (bIsTableSyn(szArg))           return SF_TBLSYN;
+  if (bIsAggFn(szSymbol))              return SF_AGGFN;
+  if (bIsColumnOrdinal(szSymbol))      return SF_TBLCOL;
+  if (bIsCrossRef(szSymbol))           return SF_XREFNO;
+  if (bIsDisambiguatedColNm(szSymbol)) return SF_DASCNE;
+  if (bIsIndexColumn(szSymbol))        return SF_IDXCOL;
+  if (bIsNumber(szSymbol))             return SF_NUMBER;
+  if (bIsKeyOrdinal(szSymbol))         return SF_KEYCOL;
+  if (bIsParameterOrdinal(szSymbol))   return SF_PRMCOL;
+  if (bIsStreamOrdinal(szSymbol))      return SF_STMCOL;
+  if (bIsSubQueryCKey(szSymbol))       return SF_SQCKEY;
+  if (bIsSubQueryColumn(szSymbol))     return SF_SQRYNO;
+  if (bIsSyntheticAs(szSymbol))        return SF_SASCNM;
+  if (bIsTableSyn(szSymbol))           return SF_TBLSYN;
 
-  if (StrLib::bIsSqlName(szArg->azChar()))  return SF_ASNAME;
+  if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_ASNAME;
 
-  return SF_NONE;
+  return SF_OTHER;
 }
 
-/*----------------------------------------------------------------------------*/
-/* evaluate relational op                                                     */
-/*----------------------------------------------------------------------------*/
-eRO Symbol::eEvalRelnOp(Stz* szArg)
-{
-  _static_
-
-       if (szArg->bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (szArg->bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (szArg->bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (szArg->bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (szArg->bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (szArg->bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (szArg->bSame(">"_Stz))   return RO_GREATER_THAN;
-
-  else return RO_NONE;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* is value a __subQuery like name?                                           */
-/*----------------------------------------------------------------------------*/
-bool Symbol::b_IsSubQueryName(BASE::Stz *szStz)
-{
-  _static_
-
-  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
-      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
-    return true;
-
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsAggOp(Stz* szArg)
+bool Symbol::bIsAggFn(Stz* szArg)
 {
   _static_
 
@@ -223,10 +211,10 @@ bool Symbol::bIsColNm(Stz* szArg)
   _static_
 
   if ( StrLib::bIsSqlName(szArg->azChar()) &&
-       ( (! bIsAggOp(szArg))  &&
-         (! bIsBoolFn(szArg)) &&
-         (! bIsBound(szArg))  &&
-         (! bIsSubQueryOp(szArg)) ) )
+       ((!bIsAggFn(szArg)) &&
+        (! bIsBoolFn(szArg)) &&
+        (! bIsBound(szArg)) &&
+        (! bIsSubQueryOp(szArg)) ) )
     return true;
   else
     return false;
@@ -353,6 +341,21 @@ bool Symbol::bIsKeyOrdinal(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a math operator ?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsMathOp(Stz* szArg)
+{
+  _static_
+
+  if (szArg->bSame("+"_Stz))     return true;
+  if (szArg->bSame("-"_Stz))     return true;
+  if (szArg->bSame("*"_Stz))     return true;
+  if (szArg->bSame("/"_Stz))     return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a name?                                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsName(Stz* szArg)
@@ -375,21 +378,6 @@ bool Symbol::bIsNumber(Stz* szArg)
   if (StrLib::bIsDecimal(szArg->azChar()))  return true;
   if (StrLib::bIsFloat(szArg->azChar()))    return true;
   if (StrLib::bIsInteger(szArg->azChar()))  return true;
-
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this symbol a numeric operator ?                                        */
-/*----------------------------------------------------------------------------*/
-bool Symbol::bIsNumbOp(Stz* szArg)
-{
-  _static_
-
-  if (szArg->bSame("+"_Stz))     return true;
-  if (szArg->bSame("-"_Stz))     return true;
-  if (szArg->bSame("*"_Stz))     return true;
-  if (szArg->bSame("/"_Stz))     return true;
 
   return false;
 }
@@ -445,6 +433,33 @@ bool Symbol::bIsRelnOp(Stz* szArg)
   _static_
 
   if (RO_NONE != eEvalRelnOp(szArg))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a __subQuery like name?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsSubQueryCKey(BASE::Stz *szStz)
+{
+  _static_
+
+  if (StrLib::bBeginsWith(szStz->azChar(), "_SQCRLKEY_"))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is value a __subQuery like name?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsSubQueryName(BASE::Stz *szStz)
+{
+  _static_
+
+  if (StrLib::bBeginsWith(szStz->azChar(), "__subquery") ||
+      StrLib::bBeginsWith(szStz->azChar(), "__sq"))
     return true;
 
   return false;
@@ -730,7 +745,7 @@ bool Symbol::bHasProperties(void)
 /*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsAggOp(void)
+bool Symbol::bIsAggFn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -787,7 +802,7 @@ bool Symbol::bIsColNm(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   if ( StrLib::bIsSqlName(m_sSymbol.azChar()) &&
-       ( (! bIsAggOp()) && (! bIsBoolFn()) && (! bIsBound()) && (! bIsSubQueryOp()) ) )
+       ((!bIsAggFn()) && (! bIsBoolFn()) && (! bIsBound()) && (! bIsSubQueryOp()) ) )
     return true;
   else
     return false;
@@ -821,7 +836,7 @@ bool Symbol::bIsComma(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (m_sSymbol.bSame(","_Stz))
+  if (bIsComma(m_sSymbol))
     return true;
   else
     return false;
@@ -927,16 +942,14 @@ bool Symbol::bIsNumber(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a numeric operator ?                                        */
+/* is this symbol a math operator ?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsNumbOp(void)
+bool Symbol::bIsMathOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (m_sSymbol.bSame("+"_Stz))     return true;
-  if (m_sSymbol.bSame("-"_Stz))     return true;
-  if (m_sSymbol.bSame("*"_Stz))     return true;
-  if (m_sSymbol.bSame("/"_Stz))     return true;
+  if (bIsMathOp(m_sSymbol))
+    return true;
 
   return false;
 }
@@ -1534,7 +1547,7 @@ Stz* Symbol::szWhatIs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsAggOp())            return "AggOp"_Stz;
+  if (bIsAggFn())            return "AggOp"_Stz;
   if (bIsBoolFn())           return "BoolFn"_Stz;
   if (bIsBound())            return "Bound"_Stz;
   if (bIsColumnOrdinal())    return "ColumnOrdinal"_Stz;
@@ -1542,7 +1555,7 @@ Stz* Symbol::szWhatIs(void)
   if (bIsIndexColumn())      return "IndexColumn"_Stz;
   if (bIsKeyOrdinal())       return "KeyOrdinal"_Stz;
   if (bIsNumber())           return "Number"_Stz;
-  if (bIsNumbOp())           return "NumbOp"_Stz;
+  if (bIsMathOp())           return "NumbOp"_Stz;
   if (bIsParameterOrdinal()) return "ParameterOrdinal"_Stz;
   if (bIsParenthesis())      return "Parenthesis"_Stz;
   if (bIsRelnOp())           return "RelnOp"_Stz;
