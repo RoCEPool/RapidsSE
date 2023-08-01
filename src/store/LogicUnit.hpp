@@ -175,7 +175,6 @@ namespace STORE
     REG<TagSet,         CN_TAGSET        > m_xpTagSet;
     REG<Text,           CN_TEXT          > m_xpText;
     REG<Timer,          CN_TIMER         > m_xpTimer;
-    REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToKeyHshRow,    CN_TOKEYHSHROW   > m_xpToKeyHshRow;
     REG<ToLglPtnCrw,    CN_TOLGLPTNCRW   > m_xpToLglPtnCrw;
     REG<ToLglPtnNst,    CN_TOLGLPTNNST   > m_xpToLglPtnNst;
