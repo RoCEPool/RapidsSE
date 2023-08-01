@@ -412,6 +412,13 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
           vAppendCodeFragment(pOpSketch, "vIndexJoinGenKey"_Stz, pOperatorFile);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // generate expressions for null check
+        if (pOpSketch->m_pNullStack->nValues()) {
+          vGenerateExprCode(pOpSketch->m_pNullStack, "  "_Stz);
+          vAppendCodeFragment(pOpSketch, "vNullCheck"_Stz);
+        }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate expressions for populating the key
         vGenerateExprCode(pOpSketch->m_pExprStack, "  "_Stz);
         vAppendCodeFragment(pOpSketch, "vExprCheck"_Stz);

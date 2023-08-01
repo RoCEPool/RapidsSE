@@ -103,7 +103,7 @@ OpSketch::OpSketch(StageDef* pStageDef, i8 iOperatorNo, Stz* sExprStr, eHK eHand
   // expression stacks
   m_pConstraintStack = new TypedStack(KK_DATA_STACK);
   m_pExprStack   = new TypedStack(KK_DATA_STACK);
-  m_pNullStack   = nullptr;
+  m_pNullStack   = new TypedStack(KK_DATA_STACK);
   m_pLowerStack  = new TypedStack(KK_DATA_STACK);
   m_pUpperStack  = new TypedStack(KK_DATA_STACK);
   m_pInitStack   = new TypedStack(KK_DATA_STACK);
@@ -153,6 +153,7 @@ OpSketch::~OpSketch(void) noexcept(false)
   delete m_pInitStack;
   delete m_pGbyStack;
   delete m_pLowerStack;
+  delete m_pNullStack;
   delete m_pUpperStack;
   delete m_pOrdAggStack;
 }
@@ -1580,13 +1581,13 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   }
 
   // if column nullable generate null check expressions
-//  if (pColumn->bIsNullable()) {
-//    sOperation.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
-//    m_pNullStack->vPushStz(sOperation);
-//    sOperation.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
-//    m_pNullStack->vPushStz(sOperation);
-//    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
-//  }
+  if (pColumn->bIsNullable()) {
+    sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
+    m_pNullStack->vPushStz(sOperation);
+    sOperation.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
+    m_pNullStack->vPushStz(sOperation);
+    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1849,13 +1850,13 @@ void OpSketch::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, ePE ePr
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
 
   // if column nullable generate null check expressions
-//  if (pColumn->bIsNullable()) {
-//    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
-//    m_pNullStack->vPushStz(sPush);
-//    sPush.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
-//    m_pNullStack->vPushStz(sPush);
-//    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
-//  }
+  if (pColumn->bIsNullable()) {
+    sPush.vSprint("_PSH_COL(p%s->%s.m_iAsI8)"_Stz, xStencilRow[m_eStencilFrom], sColumn.azChar());
+    m_pNullStack->vPushStz(sPush);
+    sPush.vSprint("_ISNULL(aDynamicT->m_iErrorCode)"_Stz);
+    m_pNullStack->vPushStz(sPush);
+    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
