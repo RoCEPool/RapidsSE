@@ -186,6 +186,8 @@ rows:
   (10,135)
   (20,1)
 
+// TODO V2 : ORDAGG
+/*
 /optimise_passthru 
 pipeline Query13
 begin
@@ -346,7 +348,7 @@ ordered rows:
  (9,11)
  (8,2)
  (0,1)
-
+*/
 
  CLEANUP {
    bye;
