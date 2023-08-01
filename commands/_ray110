@@ -2,6 +2,8 @@
 /* _ray110                                                                    */
 /*============================================================================*/
 
+// Backend_SF0001/indexJoin.test line 660
+
 // NOTE: In S02
   //| project   "   type INTEGER as COL1 $1
   //              , type INTEGER as COL2 $4  -------> should be $2
