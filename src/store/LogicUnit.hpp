@@ -140,6 +140,7 @@ namespace STORE
 
     REG<PathIdentifier, CN_PATHIDENTIFIER> m_xpPathIdentifier;
     REG<Parcel,         CN_PARCEL        > m_xpParcel;
+    REG<PdsCursor,      CN_PDSCURSOR     > m_xpPdsCursor;
     REG<Operand,        CN_NONE          > m_xpPipein;
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;

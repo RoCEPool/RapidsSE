@@ -66,6 +66,7 @@ enum eLR // Logic Unit Registers
   /*  */ LR_OPTIMISER,
   
   /*  */ LR_PARCEL,
+  /*  */ LR_PDSCURSOR,
   /*  */ LR_PATHIDENTIFIER,
   /*  */ LR_PIPEIN,
   /*  */ LR_PIPELINE,
@@ -181,6 +182,7 @@ static Stz* aLR[]
   /*  */ "LR_OPTIMISER"_Stz,
   
   /*  */ "LR_PARCEL"_Stz,
+  /*  */ "LR_PDSCURSOR"_Stz,
   /*  */ "LR_PATHIDENTIFIER"_Stz,
   /*  */ "LR_PIPEIN"_Stz,
   /*  */ "LR_PIPELINE"_Stz,

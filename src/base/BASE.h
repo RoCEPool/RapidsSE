@@ -301,6 +301,7 @@ extern d8 C_D8_MID;
 
 #include "Pds.hpp"
 #include "Pds_t.hpp"
+#include "PdsCursor.hpp"
 // -- -- -- -- -- -- -- --
 
 #include "Dir.hpp"

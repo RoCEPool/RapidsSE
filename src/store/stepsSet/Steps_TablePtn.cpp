@@ -23,6 +23,8 @@
 #include "Job.hpp"
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
+#include "Pds.hpp"
+#include "PdsCursor.hpp"
 
 extern pthread_key_t giTLS_PDSCrwTablePtn;
 
@@ -42,6 +44,7 @@ void Step::vAddSteps_TablePtn(void)
   vAddStep("TablePtn[].populateIndex"_Stz,    &Step::vTablePtnPopulateIndex);
   vAddStep("TablePtn[].root"_Stz ,            &Step::vTablePtnRoot);
   vAddStep("TablePtn[].rootBufferId"_Stz ,    &Step::vTablePtnRootBufferId);
+  vAddStep("TablePtn[].rootPdsCursor"_Stz ,   &Step::vTablePtnRootPdsCursor);
   vAddStep("TablePtn[].set"_Stz  ,            &Step::vTablePtnSet);
   vAddStep("TablePtn[].truncate"_Stz,         &Step::vTablePtnTruncate);
   vAddStep("TablePtn[].truncateIndex"_Stz,    &Step::vTablePtnTruncateIndex);
@@ -235,6 +238,22 @@ void Step::vTablePtnRootBufferId(void)
 
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   m_pDataStack->vPushPtr((Object*)pTablePtn->oRootBufferId().m_pvAsAddress);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TablePtn[].rootPdsCursor -- get the root block of the BufferId pds of the CrwTablePtn*/
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnRootPdsCursor(void)
+{
+  ENTRY();
+
+  TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
+  Pds* pPds = (Pds*)pTablePtn->pPdsCrwTablePtn();
+  PdsCursor* pCursor = new PdsCursor(pPds);
+
+  m_pDataStack->vPushPtr((Object*)pCursor);
 
   EXIT();
 }

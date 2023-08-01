@@ -134,6 +134,7 @@ namespace STORE
     static void vAddSteps_PageIn(void);
     static void vAddSteps_PageOut(void);
     static void vAddSteps_Parcel(void);
+    static void vAddSteps_PdsCursor(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PipelineOfOp(void);

@@ -23,6 +23,7 @@ void Step::vAddSteps_BufferId(void)
   vAddStep("BufferId[].isNotNull"_Stz,      &Step::vBufferIdIsNotNull);
   vAddStep("BufferId[].isNull"_Stz,         &Step::vBufferIdIsNull);
   vAddStep("BufferId[].set"_Stz,            &Step::vBufferIdSet);
+  vAddStep("BufferId[].deRefset"_Stz,        &Step::vBufferIdDeRefSet);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,6 +111,23 @@ void Step::vBufferIdSet(void)
   m_pLogicUnit->m_oBufferId.m_pvAsAddress = m_pDataStack->pPopPtr(__func__);
   if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr)
     ASSERT(m_pLogicUnit->m_oBufferId.m_bIdFlag == 1);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* BufferId[].deRefSet -- dereference and set buffer id                       */
+/*----------------------------------------------------------------------------*/
+void Step::vBufferIdDeRefSet(void)
+{
+  ENTRY();
+
+  BufferId* pBufferId = (BufferId*)m_pDataStack->pPopPtr(__func__);
+
+  RASSERT(pBufferId != nullptr);
+  m_pLogicUnit->m_oBufferId.m_pvAsAddress = pBufferId->m_pvAsAddress;
+  if(m_pLogicUnit->m_oBufferId.m_pvAsAddress != nullptr)
+      ASSERT(m_pLogicUnit->m_oBufferId.m_bIdFlag == 1);
 
   EXIT();
 }

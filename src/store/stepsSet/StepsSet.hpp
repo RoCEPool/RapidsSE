@@ -212,6 +212,7 @@ public:
   void vBufferIdIsNotNull(void);
   void vBufferIdIsNull(void);
   void vBufferIdSet(void);
+  void vBufferIdDeRefSet(void);
 
   // build
   void vBuildBranch(void);
@@ -1652,6 +1653,13 @@ void vJobIdLastJobIdFetch(void);
   void vParcelSendOut(void);
   void vParcelSet(void);
 
+  // pds Cursor
+  void vPdsCursorGet(void);
+  void vPdsCursorItemBodyAddr(void);
+  void vPdsCursorCurrIsNotNull(void);
+  void vPdsCursorNext(void);
+  void vPdsCursorSet(void);
+
   // reg Pipein
   void vPipeinBide(void);
   void vPipeinBideNext(void);
@@ -2161,6 +2169,7 @@ void vJobIdLastJobIdFetch(void);
   void vTablePtnPopulateIndex(void);
   void vTablePtnRoot(void);
   void vTablePtnRootBufferId(void);
+  void vTablePtnRootPdsCursor(void);
   void vTablePtnSet(void);
   void vTablePtnTruncate(void);
   void vTablePtnTruncateIndex(void);

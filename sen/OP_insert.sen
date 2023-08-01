@@ -104,14 +104,6 @@
 
   //"Operand:- EV_M_EOS" .verbose
 
-  // Cleanup any hashmap locks on crw/row buffers that this Task has
-  // Currently we can't grabWrite_msecLoop on replicated tables
-  Table[].isReplicated not if
-    TablePtn[].grabWrite_msecLoop
-      TablePtn[].cleanup
-    TablePtn[].dropWrite
-  then
-
   // send out final progress units
 
   // create an infoSet operand
