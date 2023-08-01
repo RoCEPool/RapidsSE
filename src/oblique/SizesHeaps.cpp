@@ -257,7 +257,7 @@
 #include "XF_Synthesise_Code.hpp"
 #include "Ppy.hpp"
 #include "Symbol.hpp"
-#include "Weaver2.hpp"
+#include "Weaver.hpp"
 #include "XF.hpp"
 #include "XF_Add_level.hpp"
 #include "XF_colNm_To_stmCol.hpp"
@@ -752,27 +752,27 @@ SizeHeap gxaSizeHeap[]
   { CN_TYPEMAP2D,                sizeof(TypeMap2D),    HT_T_TINY    , FILL },
 
   {CN__U__,                     'U' - ('A' - 1),             HT_INVALID   , FILL },
-  {CN_UNITINT,                  sizeof(UnitInt),             HT_T_TINY    , FILL },
-  {CN_UT_SKIPLIST,              sizeof(UT_SkipList),         HT_T_LARGE   , FILL },
+  {CN_UNITINT,                  sizeof(UnitInt),            HT_T_TINY    , FILL },
+  {CN_UT_SKIPLIST,              sizeof(UT_SkipList),        HT_T_LARGE   , FILL },
 
-  { CN__V__,                     'V' - ('A' - 1),            HT_INVALID   , FILL },
-  { CN_VERBOSE,                  sizeof(Verbose),            HT_T_TINY    , FILL },
-  { CN_VERTEX,                   sizeof(Vertex),             HT_T_SMALL   , FILL },
-  { CN_VERTEXSPEC,               sizeof(VertexSpec),         HT_T_TINY    , FILL },
+  {CN__V__,                     'V' - ('A' - 1),            HT_INVALID   , FILL },
+  {CN_VERBOSE,                  sizeof(Verbose),            HT_T_TINY    , FILL },
+  {CN_VERTEX,                   sizeof(Vertex),             HT_T_SMALL   , FILL },
+  {CN_VERTEXSPEC,               sizeof(VertexSpec),         HT_T_TINY    , FILL },
 
-  {CN__W__,                     'W' - ('A' - 1),               HT_INVALID   , FILL },
-  {CN_WAKEUP,                   sizeof(Wakeup),                HT_INVALID   , FILL },
-  {CN_WEAVER2,                  sizeof(Weaver2),                     HT_T_LARGE   , FILL },
-  {CN_WILDERNESS,                 sizeof(Wilderness),                HT_INVALID   , FILL },
-  {CN_WORD,                       sizeof(Word),                      HT_T_TINY    , FILL },
-  {CN_WSPCONVERGENT_t,            0,                                 HT_INVALID   , FILL },
+  {CN__W__,                     'W' - ('A' - 1),            HT_INVALID   , FILL },
+  {CN_WAKEUP,                   sizeof(Wakeup),             HT_INVALID   , FILL },
+  {CN_WEAVER,                   sizeof(Weaver),             HT_T_LARGE   , FILL },
+  {CN_WILDERNESS,               sizeof(Wilderness),         HT_INVALID   , FILL },
+  {CN_WORD,                     sizeof(Word),               HT_T_TINY    , FILL },
+  {CN_WSPCONVERGENT_t,          0,                          HT_INVALID   , FILL },
 
-  {CN__X__,                    'X' - ('A' - 1),                      HT_INVALID   , FILL },
-  {CN_XC,                          sizeof(XC),                       HT_T_TINY    , FILL },
-  {CN_XF,                          sizeof(XF),                       HT_T_TINY    , FILL },
-  {CN_XF_ADD_LEVEL,                sizeof(XF_Add_level),             HT_T_TINY    , FILL },
-  {CN_XF_AS_REVIEW,                sizeof(XF_as_Review),             HT_T_TINY    , FILL },
-  {CN_XF_COLNM_TO_STMCOL,          sizeof(XF_colNm_To_stmCol),       HT_T_TINY    , FILL },
+  {CN__X__,                    'X' - ('A' - 1),             HT_INVALID   , FILL },
+  {CN_XC,                       sizeof(XC),                 HT_T_TINY    , FILL },
+  {CN_XF,                       sizeof(XF),                 HT_T_TINY    , FILL },
+  {CN_XF_ADD_LEVEL,             sizeof(XF_Add_level),       HT_T_TINY    , FILL },
+  {CN_XF_AS_REVIEW,             sizeof(XF_as_Review),       HT_T_TINY    , FILL },
+  {CN_XF_COLNM_TO_STMCOL,       sizeof(XF_colNm_To_stmCol), HT_T_TINY    , FILL },
   {CN_XF_COLUMN_MAPPING,           sizeof(XF_Column_Mapping),        HT_T_TINY    , FILL },
   {CN_XF_CULL_NONUSED_BOUND,       sizeof(XF_Cull_NonUsed_bound),    HT_T_TINY    , FILL },
   {CN_XF_CULL_USED_BOUND,          sizeof(XF_Cull_Used_bound),          HT_T_TINY    , FILL },

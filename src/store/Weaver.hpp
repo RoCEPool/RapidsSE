@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Weaver2.hpp -- Weaver of Cards (for CS2)                                   */
+/* Weaver.hpp -- Weaver of Cards                                              */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  class Weaver2 : public OptimiserTool
+  class Weaver : public OptimiserTool
   {
   protected:
 
@@ -34,8 +34,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Weaver2(Bench* pBench, PipelineDef* pPipelineDef);
-   ~Weaver2(void) noexcept(false);
+    Weaver(Bench* pBench, PipelineDef* pPipelineDef);
+   ~Weaver(void) noexcept(false);
   
     void vWeaveOptStmt(Board* pBoard);
      ExtendedText* pOptStmt(void);
@@ -104,7 +104,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Weaver2* _pWeaver2(void* aAddr);
+  Weaver* _pWeaver(void* aAddr);
 }
 
 /*============================================================================*/

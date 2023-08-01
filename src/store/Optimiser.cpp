@@ -15,7 +15,7 @@
 #include "CarryForward.hpp"
 #include "Error.hpp"
 
-#include "Weaver2.hpp"
+#include "Weaver.hpp"
 #include "XF.hpp"
 
 
@@ -375,7 +375,7 @@ Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
-  Weaver2 *pWeaver = new Weaver2(m_pBench,m_pPipelineDef);
+  Weaver *pWeaver = new Weaver(m_pBench, m_pPipelineDef);
 
   Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
   pWeaver->vWeaveOptStmt(pBoard_query);
