@@ -33,12 +33,13 @@ namespace STORE
 
     static bool bIsAggFn(Stz* szArg);            // avg, count, ... sum
     static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
-    static bool bIsBound(Stz* szArg);            // LBOUND, UBOUND
+    static bool bIsBound(Stz* szArg);            // BOUND, LBOUND, UBOUND
     static bool bIsColNm(Stz* szArg);            //
     static bool bIsColumnOrdinal(Stz* szArg);    // $c.n
     static bool bIsComma(Stz* szArg);            // ,
     static bool bIsCrossRef(Stz* szArg);         // #n
-    static bool bIsDisambiguatedColNm(Stz* szArg);  // C_n
+    static bool bIsDirection(Stz* szArg);        // asc, desc
+    static bool bIsDisambColNm(Stz* szArg);      // C_n
     static bool bIsIndexColumn(Stz* szArg);      // $In
     static bool bIsKeyOrdinal(Stz* szArg);       // $Kn
     static bool bIsMathOp(Stz* szArg);           // +, -, *, /
@@ -77,12 +78,13 @@ namespace STORE
 
     bool bIsAggFn(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
-    bool bIsBound(void);            // LBOUND, UBOUND
+    bool bIsBound(void);            // BOUND, LBOUND, UBOUND
     bool bIsColNm(void);            //
     bool bIsColumnOrdinal(void);    // $c.n
     bool bIsComma(void);            // ,
     bool bIsCrossRef(void);         // #n
-    bool bIsDisambiguatedColNm(void);  // C_n
+    bool bIsDirection(void);        // asc, desc
+    bool bIsDisambColNm(void);      // C_n
     bool bIsIndexColumn(void);      // $In
     bool bIsKeyOrdinal(void);       // $Kn
     bool bIsMathOp(void);           // +, -, *, /

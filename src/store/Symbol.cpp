@@ -134,7 +134,8 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   if (bIsAggFn(szSymbol))              return SF_AGGFN;
   if (bIsColumnOrdinal(szSymbol))      return SF_TBLCOL;
   if (bIsCrossRef(szSymbol))           return SF_XREFNO;
-  if (bIsDisambiguatedColNm(szSymbol)) return SF_DASCNE;
+  if (bIsDirection(szSymbol))          return SF_DIRECT;
+  if (bIsDisambColNm(szSymbol))        return SF_DASCNE;
   if (bIsIndexColumn(szSymbol))        return SF_IDXCOL;
   if (bIsNumber(szSymbol))             return SF_NUMBER;
   if (bIsKeyOrdinal(szSymbol))         return SF_KEYCOL;
@@ -176,7 +177,7 @@ bool Symbol::bIsBoolFn(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("between"_Stz))         return true;
+       if (szArg->bSame("between"_Stz))         return true;
   else if (szArg->bSame("inList"_Stz))          return true;
   else if (szArg->bSame("isNull"_Stz))          return true;
   else if (szArg->bSame("like2"_Stz))           return true;
@@ -196,7 +197,7 @@ bool Symbol::bIsBound(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("BOUND"_Stz))   return true;
+       if (szArg->bSame("BOUND"_Stz))   return true;
   else if (szArg->bSame("LBOUND"_Stz))  return true;
   else if (szArg->bSame("UBOUND"_Stz))  return true;
 
@@ -272,9 +273,22 @@ bool Symbol::bIsCrossRef(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a sort direction?                                           */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsDirection(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("ASC"_Stz))   return true;
+  else if (szArg->bSame("DESC"_Stz))  return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this a symbol for a disambiguated as?  (i.e. Cn_Xyz)                    */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsDisambiguatedColNm(Stz* szArg)
+bool Symbol::bIsDisambColNm(Stz* szArg)
 {
   _static_
 
@@ -489,7 +503,7 @@ bool Symbol::bIsSubQueryOp(Stz* szArg)
 {
   _static_
 
-  if (szArg->bSame("exists"_Stz))    return true;
+       if (szArg->bSame("exists"_Stz))    return true;
   else if (szArg->bSame("in"_Stz))        return true;
   else if (szArg->bSame("notExists"_Stz)) return true;
   else if (szArg->bSame("notIn"_Stz))     return true;
@@ -860,13 +874,26 @@ bool Symbol::bIsCrossRef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this symbol a comma separator?                                          */
+/* is this symbol a sort direction?                                           */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsDisambiguatedColNm(void)
+bool Symbol::bIsDirection(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsDisambiguatedColNm(m_sSymbol.szStz()))
+  if (bIsDirection(m_sSymbol))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a comma separator?                                          */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsDisambColNm(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIsDisambColNm(m_sSymbol))
     return true;
   else
     return false;
