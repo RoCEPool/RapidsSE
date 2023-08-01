@@ -595,6 +595,27 @@ bool Symbol::bIsValueOrdinal(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* strip disambiguation                                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vStripDisamb(String* psArg)
+{
+  _static_
+
+  char* azCrs = psArg->azStr();
+
+  RASSERT(*azCrs++ == 'C');
+
+  RASSERT(StrLib::bIsDigit(*azCrs));
+
+  while(StrLib::bIsDigit(*azCrs))
+    azCrs++;
+
+  RASSERT(*azCrs++ == '_');
+
+  psArg->vCopy((Stz*)azCrs);
+}
+
+/*----------------------------------------------------------------------------*/
 /* find eCT by name                                                           */
 /*----------------------------------------------------------------------------*/
 eCT Symbol::eTo_eCT_str(Stz* szType)

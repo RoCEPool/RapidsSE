@@ -6,6 +6,8 @@
 #include "BASE.h"
 
 #include "Ppy.hpp"
+#include "eQO.h"
+#include "eRO.h"
 #include "eSF.h"
 
 namespace STORE
@@ -29,7 +31,6 @@ namespace STORE
 
     static eSF  eEvalSymbol(Stz* szSymbol);
     static eRO  eEvalRelnOp(Stz* szArg);
-
 
     static bool bIsAggFn(Stz* szArg);            // avg, count, ... sum
     static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
@@ -57,6 +58,8 @@ namespace STORE
     static bool bIsSyntheticAs(Stz* szArg);      // __n
     static bool bIsTableSyn(Stz* szArg);         // $c
     static bool bIsValueOrdinal(Stz* szArg);     // $n or $c.n
+
+    static void vStripDisamb(String* psArg);
 
     static eCT  eTo_eCT_str(Stz* szType);
     static eCT  eTo_eCT_char(Stz* szType);

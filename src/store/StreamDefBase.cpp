@@ -8,6 +8,7 @@
 
 #include "eCX.h"
 #include "ReservedWords.hpp"
+#include "Symbol.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -338,6 +339,33 @@ Column* StreamDefBase::pFindColumn(Stz* szColumnNm)
       return pColumn;
   }
   
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find column with given name                                                */
+/*----------------------------------------------------------------------------*/
+Column* StreamDefBase::pFindColumn_disambig(BASE::Stz *szColNm_find)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
+
+    Column* pColumn = & m_xaColumn[i_Column];
+
+    s32 sColNm = pColumn->szColNm();
+
+    if (Symbol::bIsDisambColNm(sColNm)) {
+      Symbol::vStripDisamb(sColNm);
+    }
+    else {
+
+    }
+
+    if (sColNm.bSame(szColNm_find))
+      return pColumn;
+  }
+
   return nullptr;
 }
 
