@@ -373,6 +373,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->unloadCmd())         { m_szProcName = "unload"_Stz;         return visitChildren(pCtx); }
   else if (pCtx->trackmemoryCmd())    { m_szProcName = "trackmemory"_Stz;    return visitChildren(pCtx); }
   else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
+  else if (pCtx->docolCmd())          { m_szProcName = "docol"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->bpaCmd())            { m_szProcName = "bpa"_Stz;            return visitChildren(pCtx); }
   else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
   else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
@@ -658,9 +659,23 @@ antlrcpp::Any CommandParser::visitCreateTableCmd(Parser::sqlParser::CreateTableC
   return nullptr; // No need to visit any further down the tree
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Add command parameters for an DOCOL statement                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any CommandParser::visitDocolCmd(Parser::sqlParser::DocolCmdContext* pCtx)
+{
+  // Add command parameters
+  s256 sCommand;
+
+  vCleanString(pCtx->identifier(), sCommand);
+
+  m_pArgValues->vAppendToken(sCommand.szStz(), TN_STRING);
+
+  return nullptr; // No need to visit any further down the tree
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* Add command parameters for an DLOAD statement                               */
+/* Add command parameters for an DLOAD statement                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any CommandParser::visitDloadCmd(Parser::sqlParser::DloadCmdContext *pCtx)
 {

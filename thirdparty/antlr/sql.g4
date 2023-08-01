@@ -19,6 +19,7 @@ statementChoice   :
                     | createCmd
 //                  | deleteCmd
                     | dloadCmd
+                    | docolCmd
                     | dropCmd
                     | explainCmd
                     | exportCmd
@@ -168,6 +169,7 @@ deleteCmd         : (WITH withQuery (',' withQuery)*)?
                     DELETE FROM? ref = tableReference
                     ( (WHERE predicate) | (FROM tableExpr) )? ;
 dloadCmd          : DLOAD tableName PATHS stringLiteral+  ( loadOption (','? loadOption)* )? ;
+docolCmd          : DOCOL identifier ;
 dropCmd           : dropTableCmd | dropIndexCmd ;
 dropTableCmd      : DROP TABLE /*(IF EXISTS)?*/ name = tableName /*tableReference*/ ;
 dropIndexCmd      : DROP INDEX /*(IF EXISTS)?*/ (
@@ -604,7 +606,7 @@ nonReservedWord   :
                     ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
                   | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYTE | BYTES
                   | CATALOG | CHARS | COMPACTIDX | CONCAT
-                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD
+                  | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
                   | ECHO | ESCAPE_CHAR | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
@@ -685,6 +687,7 @@ DETAIL                : D E T A I L;
 DIGITS                : D I G I T S ;
 DISTINCT              : D I S T I N C T;
 DLOAD                 : D L O A D;
+DOCOL                 : D O C O L;
 DROP                  : D R O P;
 ECHO                  : E C H O;
 ELSE                  : E L S E;

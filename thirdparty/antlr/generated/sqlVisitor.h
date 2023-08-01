@@ -96,6 +96,8 @@ public:
 
     virtual antlrcpp::Any visitDloadCmd(sqlParser::DloadCmdContext *context) = 0;
 
+    virtual antlrcpp::Any visitDocolCmd(sqlParser::DocolCmdContext *context) = 0;
+
     virtual antlrcpp::Any visitDropCmd(sqlParser::DropCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitDropTableCmd(sqlParser::DropTableCmdContext *context) = 0;

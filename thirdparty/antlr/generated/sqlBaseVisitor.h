@@ -169,6 +169,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitDocolCmd(sqlParser::DocolCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitDropCmd(sqlParser::DropCmdContext *ctx) override {
     return visitChildren(ctx);
   }
