@@ -17,12 +17,19 @@ namespace WLP
       NENUMS
     };
 
+    private:
     s48K  m_sStmtBuf;
     s256  m_sStmtId;
     bool  m_bGotStmtError;
-    i8    m_iAffectedRows;
-    eAffectedVerb m_eVerb;
     StreamDef* m_pStreamDef;  // Definition of the resultset
+
+    i8    m_iRowsProcessed;
+    i8    m_iRowsSkipped;
+    i8    m_iRowsInvalid;
+    i8    m_iRowsSelected;
+    i8    m_iRowsInserted;
+    i8    m_iRowsUpdated;
+    i8    m_iRowsDeleted;
 
     Footer m_xFooter;
 
@@ -38,13 +45,23 @@ namespace WLP
     Stz* szStmtId();
     bool bGotError();
     void vGotError(bool bError);
-    i8   nAffectedRows();
-    void vAddAffectedRows(i8 nRows);
-    void vAffectedRows(i8 nRows);
-    eAffectedVerb eVerb();
-    void vVerb(eAffectedVerb eVerb);
+
     StreamDef* pStreamDef();
     void vStreamDef(StreamDef* pDef);
+
+    i8   nAffectedRows();
+    eAffectedVerb eVerb();
+    i8   nRowsSkipped();
+    i8   nRowsInvalid();
+
+    void vAddRowsProcessed(i8 nRows);
+    void vAddRowsSkipped(i8 nRows);
+    void vAddRowsInvalid(i8 nRows);
+    void vAddRowsSelected(i8 nRows);
+    void vAddRowsInserted(i8 nRows);
+    void vAddRowsUpdated(i8 nRows);
+    void vAddRowsDeleted(i8 nRows);
+
 
     Footer* aFooter(void);
   };

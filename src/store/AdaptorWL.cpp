@@ -516,6 +516,46 @@ void AdaptorWL::vExecutionWarning(InfoSet* pInfoSet)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Accumulate any affected row counts for the current statement               */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
+{
+  if (!bCheckState( {API_STATEMENT_SUBMITTED, API_STATEMENT_COMPLETED} )) {
+    return;
+  }
+
+  // We've already sent a response to the client. Ignore any further affected row counts.
+  // This could occur when affected row counts are sent after an error has
+  // already been received.
+  if (m_eProtocolState == API_STATEMENT_COMPLETED || !m_pStmtCtx) {
+    return;
+  }
+
+  ASSERT(m_pStmtCtx);
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT));
+  ASSERT(pInfoSet->nRows() == 1);
+
+  Row *pInfoRow = pInfoSet->pFirstRow();
+  ASSERT(pInfoRow);
+
+  i8 iRowsProcessed = pInfoRow->iColVal_int(0);
+  i8 iRowsSkipped   = pInfoRow->iColVal_int(1);
+  i8 iRowsInvalid   = pInfoRow->iColVal_int(2);
+  i8 iRowsSelected  = pInfoRow->iColVal_int(3);
+  i8 iRowsInserted  = pInfoRow->iColVal_int(4);
+  i8 iRowsUpdated   = pInfoRow->iColVal_int(5);
+  i8 iRowsDeleted   = pInfoRow->iColVal_int(6);
+
+  m_pStmtCtx->vAddRowsProcessed(iRowsProcessed);
+  m_pStmtCtx->vAddRowsSkipped(iRowsSkipped);
+  m_pStmtCtx->vAddRowsInvalid(iRowsInvalid);
+  m_pStmtCtx->vAddRowsSelected(iRowsSelected);
+  m_pStmtCtx->vAddRowsInserted(iRowsInserted);
+  m_pStmtCtx->vAddRowsUpdated(iRowsUpdated);
+  m_pStmtCtx->vAddRowsDeleted(iRowsDeleted);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Update the state after the child job has exited                            */
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vChildJobExited()
@@ -530,15 +570,22 @@ void AdaptorWL::vChildJobExited()
   }
 
   if (!m_pStmtCtx->bGotError()) {
+    // Send any warnings about skipped or invalid rows before we send the
+    // StatementResponse message because this terminates the sequence.
+    vSerialiseInvalidSkippedRowsWarning();
+
     // We need to send a StatementResponse message to the client
     m_oQueryCtx.vIncStmtSucceeded();
+
+    i8 nAffectedRows = m_pStmtCtx->nAffectedRows();
+    WLP::StatementContext::eAffectedVerb eVerb = m_pStmtCtx->eVerb();
 
     StatementResponse xMsg;
     xMsg.__set_statementId(m_pStmtCtx->szStmtId()->azChar());
     xMsg.__set_statementString(m_pStmtCtx->szStmt()->azChar());
-    xMsg.__set_numMatchedRows(m_pStmtCtx->nAffectedRows());
-    xMsg.__set_numAffectedRows(m_pStmtCtx->nAffectedRows());
-    xMsg.__set_affectedVerb(eToWLAffectedVerb(m_pStmtCtx->eVerb()));
+    xMsg.__set_numMatchedRows(nAffectedRows);
+    xMsg.__set_numAffectedRows(nAffectedRows);
+    xMsg.__set_affectedVerb(eToWLAffectedVerb(eVerb));
 
     vSerialiseAndSendMsg(&xMsg, MessageTypes::type::StatementResponse);
   }
@@ -779,7 +826,7 @@ void AdaptorWL::vRowData(CrwBuffer* pCrwBuffer)
       dScalingFactor = 1.0;
     }
 
-    m_pStmtCtx->vAddAffectedRows(iRowsToSend);
+    m_pStmtCtx->vAddRowsSelected(iRowsToSend);
   }
 }
 
@@ -884,7 +931,7 @@ void AdaptorWL::vRowData(RowBuffer* pRowBuffer)
       dScalingFactor = 1.0;
     }
 
-    m_pStmtCtx->vAddAffectedRows(iRowsToSend);
+    m_pStmtCtx->vAddRowsSelected(iRowsToSend);
   }
 }
 
@@ -1069,6 +1116,10 @@ void AdaptorWL::vCleanupCurrentMsg()
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vSerialiseErrorResponse(eEC eErrorCode, Stz* sFormat, ...)
 {
+  // First, serialise and send any warnings because sending the error will
+  // terminate the statement execution.
+  vSerialiseInvalidSkippedRowsWarning();
+
   va_list args;
 
   // Create the error message
@@ -1111,6 +1162,36 @@ void AdaptorWL::vSerialiseWarningResponse(Stz* szReason, Stz* szSqlState, i8 iVe
   vSerialiseAndSendMsg(&oWarningResponse, MessageTypes::WarningResponse);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Serialises a thrift WarningResponse with a message about the number of rows*/
+/* that were skipped or invalid.                                              */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vSerialiseInvalidSkippedRowsWarning()
+{
+  // Send a warning if there are rows skipped or invalid.
+  i8 iRowsSkipped = m_pStmtCtx->nRowsSkipped();
+  i8 iRowsInvalid = m_pStmtCtx->nRowsInvalid();
+
+  if (iRowsSkipped > 0 || iRowsInvalid > 0) {
+    s2K sReason = "Warning: "_Stz;
+
+    if (iRowsSkipped > 0) {
+      sReason.vCatSprint("%lld rows skipped"_Stz, iRowsSkipped);
+
+      if (iRowsInvalid > 0) {
+        sReason.vConcat(" and "_Stz);
+      }
+    }
+
+    if (iRowsInvalid > 0) {
+      sReason.vCatSprint("%lld rows detected as invalid"_Stz, iRowsInvalid);
+    }
+
+    vSerialiseWarningResponse(sReason.szStz(),
+                              nullptr,
+                              0);
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* Serialises an abstract thrift message and adds it to the output queue.     */

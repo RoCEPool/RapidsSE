@@ -30,10 +30,16 @@ StatementContext::StatementContext(Stz* szStmt, Stz* szId)
   m_sStmtBuf.vCopy(szStmt);
   m_sStmtId  = szId;
   m_bGotStmtError = false;
-  m_iAffectedRows = 0;
-  m_eVerb = NONE;
   m_pStreamDef = nullptr;
-  
+
+  m_iRowsProcessed = 0;
+  m_iRowsSkipped = 0;
+  m_iRowsInvalid = 0;
+  m_iRowsSelected = 0;
+  m_iRowsInserted = 0;
+  m_iRowsUpdated = 0;
+  m_iRowsDeleted = 0;
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STATEMENTCONTEXT,_FOOTER_);
 }
 
@@ -84,46 +90,6 @@ void StatementContext::vGotError(bool bError)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return the count of rows affected by this query                            */
-/*----------------------------------------------------------------------------*/
-i8 StatementContext::nAffectedRows()
-{
-  return m_iAffectedRows;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Add to the count of rows affected by this query                            */
-/*----------------------------------------------------------------------------*/
-void StatementContext::vAddAffectedRows(i8 nRows)
-{
-  m_iAffectedRows += nRows;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Set the count of rows affected by this query                               */
-/*----------------------------------------------------------------------------*/
-void StatementContext::vAffectedRows(i8 nRows)
-{
-  m_iAffectedRows = nRows;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return the affected row verb                                               */
-/*----------------------------------------------------------------------------*/
-StatementContext::eAffectedVerb StatementContext::eVerb()
-{
-  return m_eVerb;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Set the affected row verb                                                  */
-/*----------------------------------------------------------------------------*/
-void StatementContext::vVerb(StatementContext::eAffectedVerb eVerb)
-{
-  m_eVerb = eVerb;
-}
-
-/*----------------------------------------------------------------------------*/
 /* Get the stream definition                                                  */
 /*----------------------------------------------------------------------------*/
 StreamDef* StatementContext::pStreamDef()
@@ -138,6 +104,138 @@ void StatementContext::vStreamDef(StreamDef* pStreamDef)
 {
   m_pStreamDef = pStreamDef;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* Return a single value for the count of rows affected by this query         */
+/*----------------------------------------------------------------------------*/
+i8 StatementContext::nAffectedRows()
+{
+  // The pattern of this needs to match eAffectedVerb()
+
+  if (m_pStreamDef || m_iRowsSelected > 0) {
+    return m_iRowsSelected;
+  }
+
+  if (m_iRowsUpdated >= m_iRowsInserted &&
+      m_iRowsUpdated >= m_iRowsDeleted) {
+    return m_iRowsUpdated;
+  }
+
+  if (m_iRowsInserted >= m_iRowsUpdated &&
+      m_iRowsInserted >= m_iRowsDeleted) {
+    return m_iRowsInserted;
+  }
+
+  if (m_iRowsDeleted >= m_iRowsInserted &&
+      m_iRowsDeleted >= m_iRowsUpdated) {
+    return m_iRowsDeleted;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the affected row verb                                               */
+/*----------------------------------------------------------------------------*/
+StatementContext::eAffectedVerb StatementContext::eVerb()
+{
+  // The pattern of this needs to match nAffectedRows()
+
+  if (m_pStreamDef || m_iRowsSelected > 0) {
+    return SELECTED;
+  }
+
+  if (m_iRowsUpdated >= m_iRowsInserted &&
+      m_iRowsUpdated >= m_iRowsDeleted) {
+    return UPDATED;
+  }
+
+  if (m_iRowsInserted >= m_iRowsUpdated &&
+      m_iRowsInserted >= m_iRowsDeleted) {
+    return INSERTED;
+  }
+
+  if (m_iRowsDeleted >= m_iRowsInserted &&
+      m_iRowsDeleted >= m_iRowsUpdated) {
+    return DELETED;
+  }
+
+  NEVER_REACH
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a count of the number of rows skipped in this statement             */
+/*----------------------------------------------------------------------------*/
+i8 StatementContext::nRowsSkipped()
+{
+  return m_iRowsSkipped;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a count of the number of invalid rows in this statement             */
+/*----------------------------------------------------------------------------*/
+i8 StatementContext::nRowsInvalid()
+{
+  return m_iRowsInvalid;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add to the count of rows processed by this query                           */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddRowsProcessed(i8 nRows)
+{
+  m_iRowsProcessed += nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add to the count of rows skipped by this query                             */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddRowsSkipped(i8 nRows)
+{
+  m_iRowsSkipped += nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add to the count of rows detected as invalid by this query                 */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddRowsInvalid(i8 nRows)
+{
+  m_iRowsInvalid += nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add to the count of rows selected by this query                            */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddRowsSelected(i8 nRows)
+{
+  m_iRowsSelected += nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add to the count of rows inserted by this query                            */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddRowsInserted(i8 nRows)
+{
+  m_iRowsInserted += nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add to the count of rows updated by this query                             */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddRowsUpdated(i8 nRows)
+{
+  m_iRowsUpdated += nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Add to the count of rows deleted by this query                             */
+/*----------------------------------------------------------------------------*/
+void StatementContext::vAddRowsDeleted(i8 nRows)
+{
+  m_iRowsDeleted += nRows;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

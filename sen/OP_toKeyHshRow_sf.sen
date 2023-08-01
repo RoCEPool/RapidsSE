@@ -80,7 +80,7 @@
   infoSetTable[] InfoSet[].new
   OI_LOADRESULT InfoSet[].opInfoset!
   
-  toKeyHshRow[].counters@@ 3 InfoSet[].addRowVargs
+  0 0 0 toKeyHshRow[].counters@@ 6 InfoSet[].addRowVargs
 
   InfoSet[].pipeOut
 */

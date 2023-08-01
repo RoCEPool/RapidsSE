@@ -25,6 +25,7 @@ void Step::vAddSteps_AdaptorWL(void)
   vAddStep("AdaptorWL[].decodePayload"_Stz,       &Step::vAdaptorWLDecodePayload);
   vAddStep("AdaptorWL[].executionError"_Stz,      &Step::vAdaptorWLExecutionError);
   vAddStep("AdaptorWL[].executionWarning"_Stz,    &Step::vAdaptorWLExecutionWarning);
+  vAddStep("adaptorWL[].affectedRowCount"_Stz,    &Step::vAdaptorWLAffectedRowCount);
   vAddStep("AdaptorWL[].hasPayloadToSend@"_Stz,   &Step::vAdaptorWLHasPayloadToSendFetch);
   vAddStep("AdaptorWL[].hasQuery"_Stz,            &Step::vAdaptorWLHasQuery);
   vAddStep("AdaptorWL[].isAbortEarly"_Stz,        &Step::vAdaptorWLIsAbortEarly);
@@ -164,6 +165,23 @@ void Step::vAdaptorWLExecutionWarning(void)
   ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_WARNINGS));
 
   pAdaptorWL->vExecutionWarning(pInfoSet);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adaptorWL[].affectedRowCount -- Accumulate affected row counts             */
+/*----------------------------------------------------------------------------*/
+void Step::vAdaptorWLAffectedRowCount(void)
+{
+  ENTRY();
+
+  AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
+  InfoSet* pInfoSet = * m_pLogicUnit->m_xpInfoSet;
+  ASSERT(pInfoSet);
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT));
+
+  pAdaptorWL->vAffectedRowCount(pInfoSet);
 
   EXIT();
 }

@@ -32,6 +32,7 @@ public:
   void vAdaptorWLDecodePayload(void);
   void vAdaptorWLExecutionError(void);
   void vAdaptorWLExecutionWarning(void);
+  void vAdaptorWLAffectedRowCount(void);
   void vAdaptorWLDelete(void);
   void vAdaptorWLHasPayloadToSendFetch(void);
   void vAdaptorWLHasQuery(void);
