@@ -732,7 +732,6 @@ SizeHeap gxaSizeHeap[]
   { CN_THREADSCRATCH,            sizeof(ThreadScratch),      HT_T_TINY    ,FILL },
   { CN_THREADVEC,                sizeof(ThreadVec),          HT_T_MEDIUM  ,FILL },
   { CN_TIMER,                    sizeof(Timer),              HT_T_TINY    ,FILL },
-  { CN_TINYC,                    sizeof(TinyC),              HT_T_TINY    ,FILL },
   { CN_TINYPERSISTENT,           sizeof(Heap),/*correct*/    HT_INVALID   ,FILL },
   { CN_TINYTRANSIENT,            sizeof(Heap),/*correct*/    HT_INVALID   ,FILL },
   { CN_TINYVIRTUAL,              sizeof(Heap),/*correct*/    HT_INVALID   ,FILL },
