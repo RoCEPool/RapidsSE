@@ -233,14 +233,6 @@ public:
   void vColumnScaleFetch(void);
   void vColumnTypeFetch(void);
 
-  // Combined
-  void vCombinedDelete(void);
-  void vCombinedExecute(void);
-  void vCombinedHashRowsFetch(void);
-  void vCombinedGet(void);
-  void vCombinedIndexT(void);
-  void vCombinedNew(void);
-
   // command processor
   void vCommandBlankLine(void);
   void vCommandDeleteJob(void);
@@ -1892,13 +1884,6 @@ void vJobIdLastJobIdFetch(void);
   void vStatsUpdateTimer(void);
 
   // stencil
-  void vStencilDelete(void);
-  void vStencilGet(void);
-  void vStencilNew(void);
-  void vStencilSetup(void);
-  void vStencilSketch(void);
-  void vStencilSourceFetch(void);
-
   void vStencilDelete_v2(void);
   void vStencilGet_v2(void);
   void vStencilNew_v2(void);
@@ -2339,20 +2324,6 @@ void vJobIdLastJobIdFetch(void);
   void vTimerStart(void);
   void vTimerTicks(void);
   void vTimerUpdate(void);
-
-  // tinyC
-  void vTinyCCompile(void);
-  void vTinyCDelete(void);
-  void vTinyCFind(void);
-  void vTinyCGet(void);
-  void vTinyCIsNotNull(void);
-  void vTinyCNew(void);
-  void vTinyCRelocate(void);
-  void vTinyCSet(void);
-  void vTinyCSymbols(void);
-
-  void vTinyCCompile_v2(void);
-  void vTinyCCompiledynamoCode(void);
 
   // to
   void vToBcd(void);
