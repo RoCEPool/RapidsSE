@@ -144,7 +144,6 @@ namespace STORE
   class Dissector;
   class Optimiser;
   class CardIter;
-  class Weaver;
 
   class Board : public Object
   {

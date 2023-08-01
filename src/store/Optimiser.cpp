@@ -15,7 +15,6 @@
 #include "CarryForward.hpp"
 #include "Error.hpp"
 
-#include "Weaver.hpp"
 #include "Weaver2.hpp"
 #include "XF.hpp"
 
@@ -375,21 +374,6 @@ void Optimiser::vToPipeSpec(VertexSpec* pPipeSpec)
 Stz* Optimiser::szWeave(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  /*
-  if (AM::JOB::bHasTag(C_WEAVER1)) {
-    Weaver *pWeaver1 = new Weaver(m_pBench);
-
-    Board *pBoard_query = m_pBench->pGetBoard((i8) 0);
-    pWeaver1->vWeaveOptStmt(pBoard_query);
-
-    if (! m_pOptStmt)
-      m_pOptStmt = new ExtendedText;
-    m_pOptStmt->vCopy(pWeaver1->szOptStmt());
-
-    delete pWeaver1;
-  }
-  */
 
   Weaver2 *pWeaver = new Weaver2(m_pBench,m_pPipelineDef);
 

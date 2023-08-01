@@ -7,7 +7,6 @@
 
 #include "Bench.hpp"
 #include "CardCtl.hpp"
-#include "Weaver.hpp"
 #include "PermGen.hpp"
 #include "Error.hpp"
 #include "PipelineDef.hpp"

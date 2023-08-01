@@ -142,7 +142,6 @@
 
 #include "ReapLock.hpp"
 #include "Dissector.hpp"
-#include "Weaver.hpp"
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
@@ -763,7 +762,6 @@ SizeHeap gxaSizeHeap[]
 
   {CN__W__,                     'W' - ('A' - 1),               HT_INVALID   , FILL },
   {CN_WAKEUP,                   sizeof(Wakeup),                HT_INVALID   , FILL },
-  {CN_WEAVER,                   sizeof(Weaver),                      HT_T_LARGE   , FILL },
   {CN_WEAVER2,                  sizeof(Weaver2),                     HT_T_LARGE   , FILL },
   {CN_WILDERNESS,                 sizeof(Wilderness),                HT_INVALID   , FILL },
   {CN_WORD,                       sizeof(Word),                      HT_T_TINY    , FILL },
