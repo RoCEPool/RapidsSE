@@ -1259,6 +1259,19 @@ void Card::vSymbol(Stz* szSymbol, eSF eSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set card symbol                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSymbol(Symbol* pSymbol_arg)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
+
+  m_xSymbol.vSet(pSymbol_arg);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* find sub card with given symbol and replace                                */
 /*----------------------------------------------------------------------------*/
 bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
