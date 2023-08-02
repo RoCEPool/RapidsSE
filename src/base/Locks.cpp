@@ -21,7 +21,6 @@ void Locks::vReset(void)
   
   m_oDdlMasterLock.vResetStats();
   m_oDicMasterLock.vResetStats();
-  m_oTccMasterLock.vResetStats();
 
   for (i8 i_Lock = 0; i_Lock < CN_ENUMS; i_Lock++) {
 
@@ -91,24 +90,6 @@ void Locks::vShow(void)
          ,m_oDicMasterLock.iWriteCollisions()
          ,IntLib::iPercent(m_oDicMasterLock.iWriteCollisions(),
                            m_oDicMasterLock.iWriteGrabs())
-         );
-
-  vTrace("%4lld %16s "
-         "|%10lld %9lld %3lld "
-         "|%10lld %9lld %3lld\n"_Stz
-         
-         ,(i8)-1
-         ,aCN[CN_TCCLOCK]
-         
-         ,m_oTccMasterLock.iReadGrabs()
-         ,m_oTccMasterLock.iReadCollisions()
-         ,IntLib::iPercent(m_oTccMasterLock.iReadCollisions(),
-                           m_oTccMasterLock.iReadGrabs())
-         
-         ,m_oTccMasterLock.iWriteGrabs()
-         ,m_oTccMasterLock.iWriteCollisions()
-         ,IntLib::iPercent(m_oTccMasterLock.iWriteCollisions(),
-                           m_oTccMasterLock.iWriteGrabs())
          );
 
   vTrace("----\n"_Stz);

@@ -3584,7 +3584,6 @@ Word* AM::pConstantRoot(void) { return gpAttachMap->m_pConstantRoot;          }
 Word* AM::pWordRoot(void)     { return gpAttachMap->m_pWordRoot;              }
 Steps* AM::pSteps(void)   { return gpAttachMap->m_pSteps;      }
 
-MasterLock* AM::pTccLock(void)      { return & gpAttachMap->m_oLocks.m_oTccMasterLock;            }
 Word* AM::pTenants(void)      { return gpAttachMap->m_pTenants;               }
 void AM::vThreadBegins(void)  { ++ gpAttachMap->m_pSchedule->m_ixThreads; }
 i8   AM::nThreadsBegun(void)  { return * gpAttachMap->m_pSchedule->m_ixThreads; }

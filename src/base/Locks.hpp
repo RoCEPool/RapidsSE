@@ -13,7 +13,6 @@ namespace BASE
   
     DdlLock m_oDdlMasterLock;
     DicLock m_oDicMasterLock;
-    TccLock m_oTccMasterLock;
     
     Atomic  m_ixReadGrabs[CN_ENUMS];       // number of read grabs
     Atomic  m_ixReadCollisions[CN_ENUMS];  // number of read collisions

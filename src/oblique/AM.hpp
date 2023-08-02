@@ -777,7 +777,6 @@ namespace OBLIQUE
     static Steps* pSteps(void);
     static PoolBuffer* pTakenBuffers(void);
     static i8   nTakenBytes(void);
-    static MasterLock* pTccLock(void);
     static Word* pTenants(void);
     static void vPutHeartbeat(i8 iNode, const Heartbeat& xHeartbeat);
     static bool bPutHeartbeat(Stz* pszNodeName, const Heartbeat& xHeartbeat);
