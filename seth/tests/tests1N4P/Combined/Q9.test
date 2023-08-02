@@ -84,7 +84,7 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-// TODO V2: RAY (_ray112)
+// TODO V2 : RAY TO LOOK AT (_ray112)
 /*
 /optimise_passthru 
 pipeline Q9
