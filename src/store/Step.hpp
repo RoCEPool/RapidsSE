@@ -163,6 +163,7 @@ namespace STORE
     static void vAddSteps_Pipein(void);
     static void vAddSteps_RegSends(void);
     static void vAddSteps_ResponseOp(void);
+    static void vAddSteps_RowCounts(void);
     static void vAddSteps_RowOnce(void);
     static void vAddSteps_RowBuffer(void);
     static void vAddSteps_Rstack(void);

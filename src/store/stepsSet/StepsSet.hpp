@@ -1757,6 +1757,18 @@ void vJobIdLastJobIdFetch(void);
   void vRowBufferToCsv_OLD(void);
   void vRowBufferOperandDump(void);
 
+  // rowCounts
+  void vRowCountsDelete(void);
+  void vRowCountsGet(void);
+  void vRowCountsIsNull(void);
+  void vRowCountsNew(void);
+  void vRowCountsAddProcessed(void);
+  void vRowCountsAddSkipped(void);
+  void vRowCountsAddInvalid(void);
+  void vRowCountsAddInserted(void);
+  void vRowCountsAddUpdated(void);
+  void vRowCountsAddDeleted(void);
+
   // rowCursor
   void vRowCursorBegin(void);
   void vRowCursorDelete(void);
