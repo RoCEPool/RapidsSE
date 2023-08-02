@@ -26,8 +26,8 @@ namespace STORE
     static void vGetSizes(Table* pTable, i8& jTableSize, i8& jRowSize, i8& nRowCount);
 
     static void vAffixTableColOrd(CardIter* pCI);
-    static void vAffixTableSyn(CardIter* pCI, char* cTableSyn);
-    static void vAffixTableSyn_passThru(CardIter* pCI, char* cTableSyn);
+    static void vAffixTableSyn(CardIter* pCI, char* acTableSyn);
+    static void vAffixTableSyn_passThru(CardIter* pCI, char* acTableSyn);
     static void vAppendIndexList(CardIter* pCI);
     static void vDeriveBoundsFromFilter(CardIter* pCI);
     static Card_Table* pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);

@@ -62,6 +62,8 @@ XF::XF(CardIter* pCI)
   m_pCI = pCI;
   m_cTableSyn = 'a';
 
+  m_xSymbol_tableSyn.vSetTableSyn('a');
+
   _checkInitialised_(CN_XF);
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_XF, _FOOTER_);

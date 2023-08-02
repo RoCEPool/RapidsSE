@@ -110,24 +110,24 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAffixTableSyn(CardIter* pCI, char* cTableSyn) {
+void Card_Table::vAffixTableSyn(CardIter* pCI, char* acTableSyn) {
 
 _static_
 
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    pCI->G.p_table->vSet_Syn(cTableSyn);
+    pCI->G.p_table->vSet_Syn(acTableSyn);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, char* cTableSyn) {
+void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, char* acTableSyn) {
 
   _static_
 
   while (pCI->G_bEach2SubOfMain(CK_TABLE, CK_TABLENM))  {
-    pCI->G.p_table->vSet_Syn(cTableSyn);
+    pCI->G.p_table->vSet_Syn(acTableSyn);
   }
 }
 
@@ -547,8 +547,6 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
   }
 
   // is the table column within scope?
-  char cTblSyn_term = p_term->pSymbol()->cExtractTableSynonym();
-
   if (pScope->bInScope(p_term->pSymbol()))
     return true;
 
@@ -571,7 +569,7 @@ void Card_Table::vSet_Syn(char* acTableSyn)
     cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
   Symbol xSymbol_tblSyn;
-  xSymbol_tblSyn.vSetTableColSyn(cTableSyn_actual);
+  xSymbol_tblSyn.vSetTableSyn(cTableSyn_actual);
 
   this->vSymbol(&xSymbol_tblSyn);
   this->vMark1(MARK_CHANGED);

@@ -132,7 +132,7 @@ namespace STORE
     void vSetSubQueryOrdinal(i8 iSqNo);
     void vSetSyntheticAs(i8 iAsNo);
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
-    void vSetTableColSyn(char cTblSyn);
+    void vSetTableSyn(char cTblSyn);
 
     Stz* szSF__print(void);
     Stz* szSF_any(void);

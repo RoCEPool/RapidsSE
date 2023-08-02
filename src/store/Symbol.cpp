@@ -1432,7 +1432,7 @@ void Symbol::vSetSyntheticAs(i8 iAsNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetTableColSyn(char cTblSyn)
+void Symbol::vSetTableSyn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 

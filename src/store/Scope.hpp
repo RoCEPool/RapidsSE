@@ -29,7 +29,6 @@ namespace STORE
 
   public:
 
-    bool bInScope(char cTblSyn);
     bool bInScope(Symbol* pSymbol);
     void vInScope(Symbol* pSymbol, bool bInScope);
 

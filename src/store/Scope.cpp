@@ -52,27 +52,6 @@ Scope::~Scope(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* is table in scope?                                                         */
 /*----------------------------------------------------------------------------*/
-bool Scope::bInScope(char cTblSyn)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCOPE,_FOOTER_);
-
-  i8 i_Table = C_UNKNOWN;
-  if (cTblSyn >= 'a' && cTblSyn <= 'j')
-    i_Table = cTblSyn - 'a';
-  else
-  if (cTblSyn >= 'A' && cTblSyn <= 'J')
-    i_Table = cTblSyn - 'A';
-  else
-    NEVER_REACH
-
-  bool bInScope = m_baKnown[i_Table];
-
-  return bInScope;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is table in scope?                                                         */
-/*----------------------------------------------------------------------------*/
 bool Scope::bInScope(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCOPE,_FOOTER_);
