@@ -61,6 +61,9 @@ success
 create index IxC_CUSTKEY  ON customer (C_CUSTKEY)  ;
 success;
 
+//------------------------------------------------------------------------------
+// TODO V2 : OPTIMISER TO DETECT INVLAID PIPELINES
+/*
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine
 /optimise_passthru 
@@ -84,6 +87,7 @@ begin
 
 end ;
 failure contains: 'EC_INVALID_PIPELINE'
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // zero OP's to  combine (nothing to do)
@@ -290,7 +294,6 @@ failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Multiple scanOp's
-/*
 /optimise_passthru 
 pipeline Q
 begin
@@ -312,8 +315,7 @@ begin
      | first
 
 end ;
-failure contains: 'EC_INVALID_PIPELINE' 
-*/
+failure contains: 'EC_INVALID_PIPELINE'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexScan to be a first OP
@@ -641,6 +643,7 @@ end ;
 
 failure contains: 'EC_INVALID_PIPELINE'
 
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks

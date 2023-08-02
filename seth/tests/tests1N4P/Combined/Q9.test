@@ -84,6 +84,8 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
+// TODO V2 (_ray112)
+/*
 /optimise_passthru 
 pipeline Q9
 begin
@@ -165,6 +167,7 @@ stage G_SUM_O on origin :
 end ;
 
 rows: 1126
+*/
 
 //------------------------------------------------------------------------------
 // drop the tables

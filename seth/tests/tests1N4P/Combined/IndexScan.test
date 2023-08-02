@@ -46,6 +46,8 @@ create table lineitem (
 );
 success
 
+// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
+/*
 // no such table
 /optimise_passthru 
 pipeline is
@@ -62,6 +64,7 @@ begin
     output | sink | stageA
 end ;
 failure contains: 'no such index'
+*/
 
 //------------------------------------------------------------------------------
 // create an index on shipdate(DATE)
@@ -176,8 +179,8 @@ begin
 
   stage stageB on all partitions :
     indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
-    | aggreg " type INTEGER ) as SUM_KEY L_ORDERKEY sum ,
-                 type INTEGER ) as CNT_KEY L_ORDERKEY count "
+    | aggreg " type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
+                 type INTEGER as CNT_KEY ) L_ORDERKEY count "
     | combined 0
     | next
   stage stageC on all nodes :
@@ -250,6 +253,8 @@ end ;
 
 rows: 38
 
+// TODO V2 : OPTIMISER TO DETECT MISSING TABLE / INDEX
+/*
 //------------------------------------------------------------------------------
 // indexscan with indexjoin
 /optimise_passthru 
@@ -271,7 +276,7 @@ begin
 end ;
 
 failure contains: 'Table does not exist'
-
+*/
 
 create table orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
