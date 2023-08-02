@@ -19,13 +19,6 @@ cp "${ROOT_DIR}/bin/se.man"         "${LAYOUT_DIR}/bin"
 mkdir -p "${LAYOUT_DIR}/commands"
 cp -r "${ROOT_DIR}/commands" "${LAYOUT_DIR}"
 
-# tcc thirdparty library
-TCC_DIR="thirdparty/tcc/lib/tcc"
-mkdir -p "${LAYOUT_DIR}/${TCC_DIR}"
-mkdir -p "${LAYOUT_DIR}/${TCC_DIR}/include"
-cp "${ROOT_DIR}/${TCC_DIR}/libtcc1.a"     "${LAYOUT_DIR}/${TCC_DIR}"
-cp "${ROOT_DIR}/${TCC_DIR}/include/"*     "${LAYOUT_DIR}/${TCC_DIR}/include"
-
 # dbgen
 mkdir -p "${LAYOUT_DIR}/dbgen"
 cp "${ROOT_DIR}/dbgen/dbgen"                "${LAYOUT_DIR}/dbgen"
@@ -51,8 +44,6 @@ cp "${ROOT_DIR}/src/base/eDM.h"             "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/LogicalMacros.h"   "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/MathMacros.h"      "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/base/RelationalMacros.h" "${LAYOUT_DIR}/src/base"
-cp "${ROOT_DIR}/src/base/TccMacros.h"       "${LAYOUT_DIR}/src/base"
-cp "${ROOT_DIR}/src/base/TccStuff.h"        "${LAYOUT_DIR}/src/base"
 cp "${ROOT_DIR}/src/store/Ent_int.h"        "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/InflateSet.h"     "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/RluCommon.h"      "${LAYOUT_DIR}/src/store"

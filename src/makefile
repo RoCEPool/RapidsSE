@@ -131,17 +131,16 @@ DEPFILES  = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.d, $(SOURCES))
 
 # Include directories
 SRC_INCLUDES := $(shell find . -type d | awk '{print "-I"$$0}')
-THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated -I ../thirdparty/tcc/include 
+THIRDPARTY_INCLUDES := -I../thirdparty -I ../thirdparty/xxhash -I../thirdparty/mersenne -I../thirdparty/antlr/include -I../thirdparty/antlr/generated
 INCLUDES = $(SRC_INCLUDES) $(THIRDPARTY_INCLUDES)
 
 # Linker libraries
-LIBS = -lc -lstdc++ -lpthread -ldl $(strip $(LINUX_LIBS) $(DARWIN_LIBS)) -ltcc -lantlr4-runtime
-LIB_DIRS = -L../thirdparty/tcc/lib -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
+LIBS = -lc -lstdc++ -lpthread -ldl $(strip $(LINUX_LIBS) $(DARWIN_LIBS)) -lantlr4-runtime
+LIB_DIRS = -L../thirdparty/antlr/lib $(strip $(LINUX_LIB_DIRS) $(DARWIN_LIB_DIRS))
 
 # ThirdParty compiled library targets
 ANTLR_LIB := ../thirdparty/antlr/lib/libantlr4-runtime.a
-TCC_LIB := ../thirdparty/tcc/lib/libtcc.a
-COMPILED_LIBS := $(ANTLR_LIB) $(TCC_LIB)
+COMPILED_LIBS := $(ANTLR_LIB)
 
 # A callable function for defining the file that describes whether a target
 # was built as debug or release.
@@ -151,7 +150,7 @@ targetConfigFile = $(shell echo -n "$$(dirname $1)/.$$(basename $1).lastBuildCon
 
 ###############################################################################
 ### Build Rules																														  ###
-###############################################################################
+##############################################cc#################################
 
 # The default target (because it is first)
 all : post-build
@@ -291,12 +290,6 @@ antlr : $(ANTLR_LIB)
 $(ANTLR_LIB) : 
 	+@cd ../thirdparty/antlr && env -u CPPFLAGS -u LDFLAGS $(MAKE)
 
-# Rule for building TCC
-tcc : $(TCC_LIB)
-$(TCC_LIB) : 
-	env
-	+@cd ../thirdparty/tcc && env -u CPPFLAGS -u LDFLAGS $(MAKE)
-
 # Necessary to make some of the above rules run every time.
 FORCE : 
 
@@ -307,7 +300,6 @@ distclean : clean
 	@echo "Removing 3rd-party generated libraries..."
 	@echo ""
 	+@cd ../thirdparty/antlr && $(MAKE) clean
-	+@cd ../thirdparty/tcc && $(MAKE) clean
 
 #To remove RapidsSE-generated files only
 clean :
@@ -325,4 +317,4 @@ print-% : ; @echo $* = $($*)
 .SECONDARY :
 
 # List of make targets that don't correlate to files in the filesystem.
-.PHONY : clean distclean FORCE thirdparty antlr tcc version sql buildConfigCheck target release debug post-build main-build pre-build all
+.PHONY : clean distclean FORCE thirdparty antlr version sql buildConfigCheck target release debug post-build main-build pre-build all
