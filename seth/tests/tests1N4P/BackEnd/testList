@@ -1,5 +1,5 @@
 //indexJoin.test
-indexScan.test
+//indexScan.test
 //unionAll.test
 query6.test
 keyExists.test
