@@ -269,7 +269,7 @@ void XF::vTransform_passThru(void)
 
   XF_Column_Mapping::vXF_Column_Mapping(m_pCI);
 
-  XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
+  //XF_Dedupe_as::vXF_Dedupe_as(m_pCI);
 
   XF_Synthesise_Code::vXF_Make_Code(m_pCI);
 }
