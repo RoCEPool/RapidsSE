@@ -1984,8 +1984,6 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefOutPrint(void);
   void vStreamDefOutSet(void);
 
-  void vStreamDefOutGenerate_V2(void);
-
   // stream def Right
   void vStreamDefRhtDelete(void);
   void vStreamDefRhtDuplicate(void);
