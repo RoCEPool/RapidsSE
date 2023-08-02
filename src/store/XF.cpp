@@ -228,6 +228,12 @@ void XF::vTransform_passThru(void)
     }
     m_pCI->vEndTransform();
 
+    m_pCI->vTransform(__func__, XF_NONE, "adjust top"_Stz);
+    while (m_pCI->G_bEachMainWith2Sub(CK_TOP,CK_KEY,CK_PROJECTION)) {
+      m_pCI->G.p_projection->vAdjust_Wrt_key(m_pCI->G.p_key);
+    }
+    m_pCI->vEndTransform();
+
 
 
     m_pCI->vTransform(__func__, XF_NONE, "tweak index join"_Stz);

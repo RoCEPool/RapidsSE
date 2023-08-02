@@ -27,7 +27,7 @@ begin
 
   stage Gj_LINEITEM on all partitions :
     indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
-    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+    | filter "type BOOLEAN L_SHIPDATE DATE '1995-03-15' >"
 
     | gbyAgg expr groupby type INTEGER O_ORDERKEY
        aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) L_DISCOUNT sum
