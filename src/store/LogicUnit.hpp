@@ -10,7 +10,7 @@
 #include "ToKeyHshRow.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
-
+#include "RowCounts.hpp"
 
 #include "Pot.hpp"
 #include "Tub.hpp"
@@ -153,6 +153,7 @@ namespace STORE
     REG<RecvWL,         CN_RECVWL        > m_xpRecvWL;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpRowBuffer;
     REG<RowOnce,        CN_ROWONCE       > m_xpRowOnce;
+    REG<RowCounts,      CN_ROWCOUNTS     > m_xpRowCounts;
 
     REG<Node,           CN_NODE          > m_xpSendNode;
     REG<Sends,          CN_SENDS         > m_xpSends;

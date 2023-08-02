@@ -153,6 +153,7 @@ LogicUnit::LogicUnit(void)
 ,         m_xpRecvWL(this,RF_REPAIR_NONE,  nullptr,                         LR_RECVWL)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,     RowBuffer::vRepairList,  LR_ROWBUFFER)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,       RowOnce::vRepair,        LR_ROWONCE)
+,      m_xpRowCounts(this,RF_REPAIR_DELETE,     RowCounts::vRepair,      LR_ROWCOUNTS)
 
 ,       m_xpSendNode(this,RF_SET_NULL,     nullptr,                       LR_SENDNODE)
 ,          m_xpSends(this,RF_REPAIR_NONE,  nullptr,                          LR_SENDS)

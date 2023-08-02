@@ -293,6 +293,7 @@ enum eCN : u2 // Class Number
   /* */ CN_ROWBOX,
   /* */ CN_ROWBUFFER,
   /* */ CN_ROWCOMPACTOR,
+  /* */ CN_ROWCOUNTS,
   /* */ CN_ROWONCE,
   /* */ CN_ROWPIX,
   /* */ CN_ROWSINGLE,
@@ -792,6 +793,7 @@ static Stz* aCN[]
   /* */ "ROWBOX"_Stz,               // CN_ROWBOX
   /* */ "ROWBUFFER"_Stz,            // CN_ROWBUFFER
   /* */ "ROWCOMPACTOR"_Stz,         // CN_ROWCOMPACTOR
+  /* */ "ROWCOUNTS"_Stz,            // CN_ROWCOUNTS
   /* */ "ROWONCE"_Stz,              // CN_ROWONCE
   /* */ "ROWPIX"_Stz,               // CN_ROWPIX
   /* */ "ROWSINGLE"_Stz,            // CN_ROWSINGLE

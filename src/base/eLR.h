@@ -80,7 +80,8 @@ enum eLR // Logic Unit Registers
   /*  */ LR_RECVWL,
   /*  */ LR_ROWBUFFER,
   /*  */ LR_ROWONCE,
-  
+  /*  */ LR_ROWCOUNTS,
+
   /*  */ LR_SENDNODE,
   /*  */ LR_SENDS,
   /*  */ LR_SENDWL,
@@ -196,7 +197,8 @@ static Stz* aLR[]
   /*  */ "LR_RECVWL"_Stz,
   /*  */ "LR_ROWBUFFER"_Stz,
   /*  */ "LR_ROWONCE"_Stz,
-  
+  /*  */ "LR_ROWCOUNTS"_Stz,
+
   /*  */ "LR_SENDNODE"_Stz,
   /*  */ "LR_SENDS"_Stz,
   /*  */ "LR_SENDWL"_Stz,
