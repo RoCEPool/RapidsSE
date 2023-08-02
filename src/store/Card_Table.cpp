@@ -557,7 +557,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
 /*----------------------------------------------------------------------------*/
 /* set synonym of table                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vSet_Syn(char* cTableSyn)
+void Card_Table::vSet_Syn(char* acTableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -565,17 +565,17 @@ void Card_Table::vSet_Syn(char* cTableSyn)
 
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
 
-  char cTableSyn_actual = *cTableSyn;
+  char cTableSyn_actual = *acTableSyn;
   if (pTable->bIsReplicated())
     cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
   Symbol xSymbol_tblSyn;
   xSymbol_tblSyn.vSetTableColSyn(cTableSyn_actual);
 
-  this->vSymbol(xSymbol_tblSyn.szSF__print());
+  this->vSymbol(&xSymbol_tblSyn);
   this->vMark1(MARK_CHANGED);
 
-  (*cTableSyn)++;
+  (*acTableSyn)++;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -475,8 +475,7 @@ void XF_Synthesise_Code::vUpdateColsReq(Card_OP* p_OP)
       return;
   }
 
-  Stz* szTbl = p_table->szSymbol();
-  RASSERT(StrLib::bIsAlpha(*szTbl->azChar()));
+  RASSERT(p_table->pSymbol()->bIsTableSyn());
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

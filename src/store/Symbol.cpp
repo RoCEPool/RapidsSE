@@ -597,17 +597,31 @@ bool Symbol::bIsSyntheticAs(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 /* is this a symbol a table synonym?  (i.e. $c)                               */
 /*----------------------------------------------------------------------------*/
+//bool Symbol::bIsTableSyn(Stz* szArg)
+//{
+//  _static_
+//
+//  char acFirst  = szArg->azChar()[0];
+//  char acSecond = szArg->azChar()[1];
+//  char acThird  = szArg->azChar()[2];
+//
+//  if (   '$' == acFirst
+//         && StrLib::bIsAlpha(acSecond)
+//         && '\0' == acThird)
+//    return true;
+//
+//  return false;
+//}
+/*----------------------------------------------------------------------------*/
 bool Symbol::bIsTableSyn(Stz* szArg)
 {
   _static_
 
   char acFirst  = szArg->azChar()[0];
   char acSecond = szArg->azChar()[1];
-  char acThird  = szArg->azChar()[2];
 
-  if (   '$' == acFirst
-         && StrLib::bIsAlpha(acSecond)
-         && '\0' == acThird)
+  if (   StrLib::bIsAlpha(acFirst)
+         && '\0' == acSecond)
     return true;
 
   return false;
