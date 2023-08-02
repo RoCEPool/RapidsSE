@@ -286,7 +286,7 @@ void Step::vInfoSetAddRowCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSet[].addRowVarg -- add a row by variable arguments                    */
+/* InfoSet[].addRowVargs -- add a row by variable arguments                   */
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetAddRowVargs(void)
 {

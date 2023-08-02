@@ -62,9 +62,12 @@ void Step::vTablePtnAppendBuffer(void)
   TablePtn* pTablePtn = _pTablePtn(*m_pLogicUnit->m_xpTablePtn);
   
   // append the buffer to the tablePtn
-  
+
+  i8 nRowsInserted = 0;
   eCN eClassNo = pDataBuffer->eGetClassNo();
-  pTablePtn->vAppendBuffer(pDataBuffer);
+  pTablePtn->vAppendBuffer(pDataBuffer, nRowsInserted);
+
+  m_pDataStack->vPushInt(nRowsInserted);
 
 //  if (CN_CRWBUFFER == eClassNo) {
 //    CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);

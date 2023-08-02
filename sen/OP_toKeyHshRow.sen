@@ -23,8 +23,8 @@
     StreamDefOut[].pipeOut
   then
 
-  // find the __loadResult table def
-  C_TDEF_LOADRESULT op__tableDef_infoSet assert
+  // find the __affectedRows table def
+  C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
 
   true
 ;
@@ -78,7 +78,7 @@
   // pipeout load results
   
   infoSetTable[] InfoSet[].new
-  OI_LOADRESULT InfoSet[].opInfoset!
+  OI_AFFECTEDROWS InfoSet[].opInfoset!
   
   0 0 0 ToKeyHshRow[].counters@@ 6 InfoSet[].addRowVargs
 

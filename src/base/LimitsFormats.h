@@ -102,6 +102,7 @@ static Stz* C_SE_PATH_ROOT = "/"_Stz;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
+static Stz* C_TDEF_AFFECTEDROWS     = "__affectedRows"_Stz;
 static Stz* C_TDEF_ANALYZEINDEX     = "__analyzeIndex"_Stz;
 static Stz* C_TDEF_ANALYZETABLE     = "__analyzeTable"_Stz;
 static Stz* C_TDEF_BPAOBJECTS       = "__bpaObjects"_Stz;
@@ -129,7 +130,6 @@ static Stz* C_TDEF_LISTFOLDER       = "__listFolder"_Stz;
 static Stz* C_TDEF_LISTINDEX        = "__listIndex"_Stz;
 static Stz* C_TDEF_LISTNODES        = "__listNodes"_Stz;
 static Stz* C_TDEF_LISTPARTITIONS   = "__listPartitions"_Stz;
-static Stz* C_TDEF_LOADRESULT       = "__loadResult"_Stz;
 static Stz* C_TDEF_LOCKSTATS        = "__lockStats"_Stz;
 static Stz* C_TDEF_LOGMSG           = "__logMsg"_Stz;
 static Stz* C_TDEF_LOOKUPCATALOG    = "__lookupCatalog"_Stz;

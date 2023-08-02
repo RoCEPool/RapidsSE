@@ -56,7 +56,7 @@ namespace STORE
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows, i8& jRowSize);
-    void    vAppendBuffer_replicated(DataBuffer* pDataBuffer);
+    void vAppendBuffer_replicated(DataBuffer* pDataBuffer, i8& nRowsInserted);
 
     i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);

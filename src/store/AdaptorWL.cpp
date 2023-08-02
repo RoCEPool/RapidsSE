@@ -532,7 +532,7 @@ void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
   }
 
   ASSERT(m_pStmtCtx);
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT));
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS));
   ASSERT(pInfoSet->nRows() == 1);
 
   Row *pInfoRow = pInfoSet->pFirstRow();
@@ -541,15 +541,13 @@ void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
   i8 iRowsProcessed = pInfoRow->iColVal_int(0);
   i8 iRowsSkipped   = pInfoRow->iColVal_int(1);
   i8 iRowsInvalid   = pInfoRow->iColVal_int(2);
-  i8 iRowsSelected  = pInfoRow->iColVal_int(3);
-  i8 iRowsInserted  = pInfoRow->iColVal_int(4);
-  i8 iRowsUpdated   = pInfoRow->iColVal_int(5);
-  i8 iRowsDeleted   = pInfoRow->iColVal_int(6);
+  i8 iRowsInserted  = pInfoRow->iColVal_int(3);
+  i8 iRowsUpdated   = pInfoRow->iColVal_int(4);
+  i8 iRowsDeleted   = pInfoRow->iColVal_int(5);
 
   m_pStmtCtx->vAddRowsProcessed(iRowsProcessed);
   m_pStmtCtx->vAddRowsSkipped(iRowsSkipped);
   m_pStmtCtx->vAddRowsInvalid(iRowsInvalid);
-  m_pStmtCtx->vAddRowsSelected(iRowsSelected);
   m_pStmtCtx->vAddRowsInserted(iRowsInserted);
   m_pStmtCtx->vAddRowsUpdated(iRowsUpdated);
   m_pStmtCtx->vAddRowsDeleted(iRowsDeleted);

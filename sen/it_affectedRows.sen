@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* it_loadResult.sen -- Define __loadResult table                             */
+/* it_affectedRows.sen -- Define __affectedRows table                         */
 /*============================================================================*/
 
-" it_loadResult.sen" .verbose
+" it_affectedRows.sen" .verbose
 
-: start::it_loadResult
+: start::it_affectedRows
 
-  // C_TDEF_LOADRESULT
+  // C_TDEF_AFFECTEDROWS
   
   STD_BOOTFORK_TAG
   "
-  define table __loadResult (
+  define table __affectedRows (
     iRowsProcessed INTEGER NOT NULL ,
     iRowsInvalid   INTEGER NOT NULL ,
     iRowsSkipped   INTEGER NOT NULL ,

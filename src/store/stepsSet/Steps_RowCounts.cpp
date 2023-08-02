@@ -29,6 +29,9 @@ void Step::vAddSteps_RowCounts(void)
   vAddStep("rowCounts[].addInserted"_Stz,    &Step::vRowCountsAddInserted);
   vAddStep("rowCounts[].addUpdated"_Stz,     &Step::vRowCountsAddUpdated);
   vAddStep("rowCounts[].addDeleted"_Stz,     &Step::vRowCountsAddDeleted);
+
+  vAddStep("rowCounts[].getCounters@@"_Stz,  &Step::vRowCountsGetAllCounts);
+  vAddStep("rowCounts[].numCounters"_Stz,    &Step::vRowCountsGetNumCounters);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,6 +185,39 @@ void Step::vRowCountsAddDeleted(void)
   ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
   RowCounts* pRowCounts = _pRowCounts(*m_pLogicUnit->m_xpRowCounts);
   pRowCounts->vAddRowsDeleted(nRows);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowCounts[].getCounters@@ -- push all counter values                       */
+/*----------------------------------------------------------------------------*/
+void Step::vRowCountsGetAllCounts(void)
+{
+  ENTRY();
+
+  ASSERT(!m_pLogicUnit->m_xpRowCounts.bIsNull());
+  RowCounts* pRowCounts = _pRowCounts(*m_pLogicUnit->m_xpRowCounts);
+
+  // These are pushed in reverse order so they can be added to the __affectedRows infoset
+  m_pDataStack->vPushInt(pRowCounts->nRowsDeleted());
+  m_pDataStack->vPushInt(pRowCounts->nRowsUpdated());
+  m_pDataStack->vPushInt(pRowCounts->nRowsInserted());
+  m_pDataStack->vPushInt(pRowCounts->nRowsInvalid());
+  m_pDataStack->vPushInt(pRowCounts->nRowsSkipped());
+  m_pDataStack->vPushInt(pRowCounts->nRowsProcessed());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowCounts[].getNumCounters -- push the number of counter values collected  */
+/*----------------------------------------------------------------------------*/
+void Step::vRowCountsGetNumCounters(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(6);
 
   EXIT();
 }

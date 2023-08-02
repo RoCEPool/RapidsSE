@@ -42,6 +42,7 @@
 
   // define the system tables
   "define the iternal system tables" .verbose
+  start::it_affectedRows
   start::it_analyzeIndex
   start::it_analyzeTable
   start::it_bpaObjects
@@ -67,7 +68,6 @@
   start::it_listIndex
   start::it_listNodes
   start::it_listPartitions
-  start::it_loadResult
   start::it_lockStats
   start::it_logMsg
   start::it_lookupCatalog

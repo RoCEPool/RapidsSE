@@ -28,10 +28,15 @@
 
   //"insert_DataBuffer" .
 
+  0 locals| rowsInserted |
+
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
-  PipeIn[] TablePtn[].appendBuffer
+  PipeIn[] TablePtn[].appendBuffer to rowsInserted
   TablePtn[].dropWrite
+
+  // Accumulate the inserted row counts
+  rowsInserted rowCounts[].addInserted
 
   // null the Pipein
   nullptr to PipeIn[]
@@ -66,10 +71,17 @@
 
   "insert_Replicated" .
 
+  0 locals| rowsInserted |
+
   // insert the buffer into the table ptn
   //TablePtn[].grabWrite_msecLoop
-  PipeIn[] Table[].appendBuffer
+  PipeIn[] Table[].appendBuffer to rowsInserted
   //TablePtn[].dropWrite
+
+  // Accumulate the inserted row counts if we are on the originating node only
+  [grid].thisNodeId@ [job].originNodeId@ == if
+    rowsInserted rowCounts[].addInserted
+  then
 
   // null the Pipein
   nullptr to PipeIn[]
@@ -123,6 +135,25 @@
   // pipeout the infoset
   InfoSet[].pipeOut
 
+
+  // send out an AFFECTEDROWS infoset with the number of rows actually inserted
+  Table[].isReplicated not
+  [grid].thisNodeId@ [job].originNodeId@ ==
+  or if
+
+    C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
+
+    // create an infoSet operand
+    infoSetTable[] InfoSet[].new
+    OI_AFFECTEDROWS InfoSet[].opInfoset!
+
+    // insert row counts to the infoset
+    rowCounts[].getCounters@@ rowCounts[].numCounters InfoSet[].addRowVargs
+
+    // pipeout the infoset
+    InfoSet[].pipeOut
+  then
+
   PipeIn[].pipeOut
 
   true
@@ -152,6 +183,8 @@
     then
     
   then
+
+  rowCounts[].new
 
   true
 ;

@@ -69,13 +69,13 @@
 : EV_D_TABLEPTN_handler         \handler STANDARD_PIPEOUT ;
 
 
+: EV_I_AFFECTEDROWS_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_CALLPIPELINE_handler     \handler STANDARD_PIPEOUT ;
 : EV_I_COMMAND_handler          \handler STANDARD_PIPEOUT ;
 : EV_I_COMPILEERRORS_handler    \handler STANDARD_PIPEOUT ;
 : EV_I_COUNT_handler            \handler STANDARD_PIPEOUT ;
 : EV_I_EXECERRORS_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_FORKCOMMAND_handler      \handler STANDARD_PIPEOUT ;
-: EV_I_LOADRESULT_handler       \handler STANDARD_PIPEOUT ;
 : EV_I_LOCKSTATS_handler        \handler STANDARD_PIPEOUT ;
 : EV_I_NODEINFO_handler         \handler STANDARD_PIPEOUT ;
 : EV_I_PAGEINREQUEST_handler    \handler STANDARD_PIPEOUT ;
@@ -470,13 +470,13 @@
   [op].opName@ "SETTING default_internalErrorHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
+  abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
   abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
   abnormalHandler EV_I_FORKCOMMAND      [op].handler!
-  abnormalHandler EV_I_LOADRESULT       [op].handler!
   abnormalHandler EV_I_LOCKSTATS        [op].handler!
   abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!
@@ -498,13 +498,13 @@
   //[op].opName@ "SETTING default_lowMemHandlers for OP %v" str.format .
   find: ABNORMAL_PIPEIN_DELETE  locals| abnormalHandler |
 
+  abnormalHandler EV_I_AFFECTEDROWS     [op].handler!
   abnormalHandler EV_I_COMMAND          [op].handler!
   abnormalHandler EV_I_CALLPIPELINE     [op].handler!
   abnormalHandler EV_I_COMPILEERRORS    [op].handler!
   abnormalHandler EV_I_COUNT            [op].handler!
   abnormalHandler EV_I_EXECERRORS       [op].handler!
   abnormalHandler EV_I_FORKCOMMAND      [op].handler!
-  abnormalHandler EV_I_LOADRESULT       [op].handler!
   abnormalHandler EV_I_LOCKSTATS        [op].handler!
   abnormalHandler EV_I_NODEINFO         [op].handler!
   abnormalHandler EV_I_PAGEINREQUEST    [op].handler!

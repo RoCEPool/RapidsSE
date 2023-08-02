@@ -1768,6 +1768,8 @@ void vJobIdLastJobIdFetch(void);
   void vRowCountsAddInserted(void);
   void vRowCountsAddUpdated(void);
   void vRowCountsAddDeleted(void);
+  void vRowCountsGetAllCounts(void);
+  void vRowCountsGetNumCounters(void);
 
   // rowCursor
   void vRowCursorBegin(void);

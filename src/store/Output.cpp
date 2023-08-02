@@ -419,7 +419,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         }
         AM::vDeleteOperand(pOperand,nullptr);
       }
-      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT)) {
+      else if (pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS)) {
 
         m_bLoadResult = true;
         Row* pInfoRow = pInfoSet->pFirstRow();

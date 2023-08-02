@@ -303,7 +303,7 @@ void DataBuffer::vGrabWrite(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set logocal partition                                                      */
+/* set logical partition                                                      */
 /*----------------------------------------------------------------------------*/
 void DataBuffer::vLglPtn(LglPtn tLglPtn)
 {

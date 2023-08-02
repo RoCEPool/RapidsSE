@@ -179,7 +179,7 @@ void Step::vAdaptorWLAffectedRowCount(void)
   AdaptorWL* pAdaptorWL = _pAdaptorWL(* m_pLogicUnit->m_xpAdaptorWL);
   InfoSet* pInfoSet = * m_pLogicUnit->m_xpInfoSet;
   ASSERT(pInfoSet);
-  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_LOADRESULT));
+  ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_AFFECTEDROWS));
 
   pAdaptorWL->vAffectedRowCount(pInfoSet);
 

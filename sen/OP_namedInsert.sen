@@ -72,7 +72,7 @@
   while
     CrwBuffer[].appendClose
     TablePtn[].grabWrite_msecLoop
-    CrwBuffer[]\clear TablePtn[].appendBuffer
+    CrwBuffer[]\clear TablePtn[].appendBuffer discard
     TablePtn[].dropWrite
 
     0 ToLglPtnCrw[].completed to CrwBuffer[]
@@ -86,7 +86,7 @@
   while
     CrwBuffer[].appendClose
     TablePtn[].grabWrite_msecLoop
-    CrwBuffer[]\clear TablePtn[].appendBuffer
+    CrwBuffer[]\clear TablePtn[].appendBuffer discard
     TablePtn[].dropWrite
 
     0 ToLglPtnCrw[].dangling to CrwBuffer[]
