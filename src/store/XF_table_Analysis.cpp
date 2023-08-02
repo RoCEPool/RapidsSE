@@ -18,7 +18,7 @@ __aFooterFunction(XF_table_Analysis)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-XF_table_Analysis::XF_table_Analysis(CardIter* pCI, char* acTableSyn)
+XF_table_Analysis::XF_table_Analysis(CardIter* pCI)
 : XF_TRANSFORM(CN_XF_TABLE_ANALYSIS, pCI)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
@@ -39,11 +39,11 @@ XF_table_Analysis::~XF_table_Analysis(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn)
+void XF_table_Analysis::vXF_table_Analysis(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
   _static_
 
-  XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI,acTableSyn);
+  XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI);
 
   pXF_table_Analysis->vXF_table_Analysis(pSymbol_tableSyn);
 
@@ -53,11 +53,11 @@ void XF_table_Analysis::vXF_table_Analysis(CardIter* pCI, char* acTableSyn, Symb
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn)
+void XF_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
   _static_
 
-  XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI,acTableSyn);
+  XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI);
 
   pXF_table_Analysis->vXF_table_Analysis_passThru(pSymbol_tableSyn);
 

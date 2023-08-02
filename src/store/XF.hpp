@@ -14,7 +14,6 @@ namespace STORE
 
     CardIter* m_pCI;
 
-    char m_cTableSyn;
     Symbol m_xSymbol_tableSyn;
 
   protected:
