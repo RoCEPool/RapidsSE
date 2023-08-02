@@ -29,14 +29,15 @@ namespace STORE
     Symbol(Symbol* pSymbol);
     ~Symbol(void);
 
+    static eRO  eEvalRelnOp(Stz* szSymbol);
+    static eQO  eEvalSubQryOp(Stz* szSymbol);
     static eSF  eEvalSymbol(Stz* szSymbol);
-    static eRO  eEvalRelnOp(Stz* szArg);
 
     static bool bIsAggFn(Stz* szArg);            // avg, count, ... sum
     static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
     static bool bIsBoolOp(Stz* szArg);           // and, not, or
     static bool bIsBound(Stz* szArg);            // BOUND, LBOUND, UBOUND
-    static bool bIsColNm(Stz* szArg);            //
+    static bool bIsColNm(Stz* szArg);            // bIsName() but not bIsAggFn() etc
     static bool bIsColumnOrdinal(Stz* szArg);    // $c.n
     static bool bIsComma(Stz* szArg);            // ,
     static bool bIsCrossRef(Stz* szArg);         // #n
@@ -45,8 +46,8 @@ namespace STORE
     static bool bIsIndexColumn(Stz* szArg);      // $In
     static bool bIsKeyOrdinal(Stz* szArg);       // $Kn
     static bool bIsMathOp(Stz* szArg);           // +, -, *, /
-    static bool bIsName(Stz* szArg);             //
-    static bool bIsNumber(Stz* szArg);           //
+    static bool bIsName(Stz* szArg);             // StrLib::bIsSqlName()
+    static bool bIsNumber(Stz* szArg);           // StrLib::bIsDecimal/Float/Integer()
     static bool bIsOther(Stz* szArg);            //
     static bool bIsParameterOrdinal(Stz* szArg); // %n
     static bool bIsParenthesis(Stz* szArg);      // ( or )
@@ -56,7 +57,7 @@ namespace STORE
     static bool bIsSubQueryName(Stz* szStz);     // __subqueryN
     static bool bIsSubQueryOp(Stz* szArg);       // exists, in, notExists, notIn
     static bool bIsSubQueryColumn(Stz* szArg);   // __n
-    static bool bIsSyntheticAs(Stz* szArg);      // __n
+    static bool bIsSyntheticAs(Stz* szArg);      // __COLn
     static bool bIsTableSyn(Stz* szArg);         // $c
     static bool bIsValueOrdinal(Stz* szArg);     // $n or $c.n
 
@@ -84,7 +85,7 @@ namespace STORE
     bool bIsBoolFn(void);           // between, case ... matchTrailing
     bool bIsBoolOp(void);           // and, not, or
     bool bIsBound(void);            // BOUND, LBOUND, UBOUND
-    bool bIsColNm(void);            //
+    bool bIsColNm(void);            // bIsName() but not bIsAggFn() etc
     bool bIsColumnOrdinal(void);    // $c.n
     bool bIsComma(void);            // ,
     bool bIsCrossRef(void);         // #n
@@ -93,8 +94,8 @@ namespace STORE
     bool bIsIndexColumn(void);      // $In
     bool bIsKeyOrdinal(void);       // $Kn
     bool bIsMathOp(void);           // +, -, *, /
-    bool bIsName(void);             //
-    bool bIsNumber(void);           //
+    bool bIsName(void);             // StrLib::bIsSqlName()
+    bool bIsNumber(void);           // StrLib::bIsDecimal/Float/Integer()
     bool bIsOther(void);            //
     bool bIsParameterOrdinal(void); // %n
     bool bIsParenthesis(void);      // ( or )
@@ -102,7 +103,7 @@ namespace STORE
     bool bIsStreamOrdinal(void);    // $n
     bool bIsSubQueryOp(void);       // exists, in, notExists, notIn
     bool bIsSubQueryColumn(void);   // __n
-    bool bIsSyntheticAs(void);      // __n
+    bool bIsSyntheticAs(void);      // __COLn
     bool bIsTableSyn(void);         // c
     bool bIsValueOrdinal(void);     // $n or $c.n
 

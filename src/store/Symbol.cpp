@@ -82,6 +82,21 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* evaluate sub-query op                                                      */
+/*----------------------------------------------------------------------------*/
+eQO Symbol::eEvalSubQryOp(Stz* szSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+       if (szSymbol->bSame("exists"_Stz))    return QO_EXISTS_OP;
+  else if (szSymbol->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
+  else if (szSymbol->bSame("in"_Stz))        return QO_IN_OP;
+  else if (szSymbol->bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+
+  else return QO_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* evaluate relational op                                                     */
 /*----------------------------------------------------------------------------*/
 eRO Symbol::eEvalRelnOp(Stz* szArg)
@@ -709,15 +724,9 @@ eRO Symbol::eEvalRelnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("<"_Stz))   return RO_LESS_THAN;
-  else if (m_sSymbol.bSame("<="_Stz))  return RO_LESS_EQUAL;
-  else if (m_sSymbol.bSame("="_Stz))   return RO_EQUAL_TO;
-  else if (m_sSymbol.bSame("=="_Stz))  return RO_EQUAL_TO;
-  else if (m_sSymbol.bSame("!="_Stz))  return RO_NOT_EQUAL;
-  else if (m_sSymbol.bSame(">="_Stz))  return RO_GREATER_EQUAL;
-  else if (m_sSymbol.bSame(">"_Stz))   return RO_GREATER_THAN;
+  eRO eRelnOp = eEvalRelnOp(m_sSymbol);
 
-  else return RO_NONE;
+  return eRelnOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -727,12 +736,9 @@ eQO Symbol::eEvalSubQryOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("exists"_Stz))    return QO_EXISTS_OP;
-  else if (m_sSymbol.bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
-  else if (m_sSymbol.bSame("in"_Stz))        return QO_IN_OP;
-  else if (m_sSymbol.bSame("notIn"_Stz))     return QO_NOT_IN_OP;
+  eQO eSubQryOp = eEvalSubQryOp(m_sSymbol);
 
-  else return QO_NONE;
+  return eSubQryOp;
 }
 
 /*----------------------------------------------------------------------------*/
