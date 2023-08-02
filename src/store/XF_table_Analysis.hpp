@@ -20,11 +20,11 @@ namespace STORE
     XF_table_Analysis(CardIter* pCI, char* acTableSyn);
    ~XF_table_Analysis(void) noexcept(false);
 
-    static void vXF_table_Analysis(CardIter* pCI, char* acTableSyn);
-    static void vXF_table_Analysis_passThru(CardIter* pCI, char* acTableSyn);
+    static void vXF_table_Analysis(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn);
+    static void vXF_table_Analysis_passThru(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn);
 
-    void vXF_table_Analysis(char* acTableSyn);
-    void vXF_table_Analysis_passThru(char* acTableSyn);
+    void vXF_table_Analysis(char* acTableSyn, Symbol* pSymbol_tableSyn);
+    void vXF_table_Analysis_passThru(char* acTableSyn, Symbol* pSymbol_tableSyn);
 
   private:
     Footer* aFooter(void);

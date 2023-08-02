@@ -130,7 +130,7 @@ void XF::vTransform(void)
     XF_not_Ops::vXF_not_Ops(m_pCI);
 
     //vGroup_MetaAnalysis();
-    XF_table_Analysis::vXF_table_Analysis(m_pCI,&m_cTableSyn);
+    XF_table_Analysis::vXF_table_Analysis(m_pCI,&m_cTableSyn,&m_xSymbol_tableSyn);
     XF_projection_Analysis::vXF_projection_Analysis(m_pCI);
     XF_index_Analysis::vXF_index_Analysis(m_pCI);
 
@@ -212,7 +212,7 @@ void XF::vTransform_passThru(void)
   m_pCI->vBoardIteration();
   while (m_pCI->bEachBoard()) {
 
-    XF_table_Analysis::vXF_table_Analysis_passThru(m_pCI,&m_cTableSyn);
+    XF_table_Analysis::vXF_table_Analysis_passThru(m_pCI,&m_cTableSyn,&m_xSymbol_tableSyn);
     XF_projection_Analysis::vXF_projection_Analysis_passThru(m_pCI);
 
     m_pCI->vTransform(__func__, XF_STMCOL_TO_TBLCOL, "all $n become $c.n"_Stz);

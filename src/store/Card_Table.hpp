@@ -26,8 +26,8 @@ namespace STORE
     static void vGetSizes(Table* pTable, i8& jTableSize, i8& jRowSize, i8& nRowCount);
 
     static void vAffixTableColOrd(CardIter* pCI);
-    static void vAffixTableSyn(CardIter* pCI, char* acTableSyn);
-    static void vAffixTableSyn_passThru(CardIter* pCI, char* acTableSyn);
+    static void vAffixTableSyn(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn);
+    static void vAffixTableSyn_passThru(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn);
     static void vAppendIndexList(CardIter* pCI);
     static void vDeriveBoundsFromFilter(CardIter* pCI);
     static Card_Table* pFind_By_tblSyn(CardIter* pCI, char cTblSyn, i8 i_Before);
@@ -49,7 +49,7 @@ namespace STORE
     void vMorph_table_To_EEop(CardIter *pCI);
     bool bScopeContains_Pred(Card_PRED* p_pred, Scope* pScope);
     bool bScopeContains_term(Card_Term* p_term, Scope* pScope);
-    void vSet_Syn(char* acTableSyn);
+    void vSet_Syn(char* acTableSyn, Symbol* pSymbol_tableSyn);
     void vSmooth(CardIter* pCI);
     void vSmooth(CardIter* pCI, CarryForward* pCarryForward);
 

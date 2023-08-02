@@ -81,6 +81,8 @@ namespace STORE
     bool bHasSymbolicValue(void);
     bool bHasProperties(void);
 
+    void vIncTblSyn(void);
+
     bool bIsAggFn(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
     bool bIsBoolOp(void);           // and, not, or

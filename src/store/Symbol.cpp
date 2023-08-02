@@ -815,6 +815,18 @@ bool Symbol::bHasProperties(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* increment table synonym                                                    */
+/*----------------------------------------------------------------------------*/
+void Symbol::vIncTblSyn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  char cTblSyn = cSF_char();
+
+  vSetTableSyn(cTblSyn + 1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsAggFn(void)
