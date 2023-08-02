@@ -1561,10 +1561,13 @@ void OpSketch::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamD
   pColumn = pStreamDef->pFindColumn(pTkn->szChars());
 
   if ( ! pColumn ) {
-    RASSERT(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN || m_eSketchKind == SK_INDEXJOIN);
-    pColumn = m_pStreamDefRht->pFindColumn(pTkn->szChars());
-    //vMakeColumnNm(m_pStreamDefRht, sColumn, m_eStencilTo, pColumn->iColumnNo());
+    if(m_eSketchKind == SK_SEMIJOIN || m_eSketchKind == SK_ANTIJOIN )
+      pColumn = m_pStreamDefRht->pFindColumn(pTkn->szChars());
+    else if (m_eSketchKind == SK_INDEXJOIN) {
+      pColumn = m_pStreamDefOut->pFindColumn(pTkn->szChars());
+    }
   }
+
   sColumn = pColumn->szColNm();
   StrLib::vToUpper((char*)sColumn.azChar());
   sStructColumn.vSprint("p%s->%s.m_iAsI8"_Stz,
