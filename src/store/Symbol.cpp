@@ -86,7 +86,7 @@ Symbol::~Symbol(void)
 /*----------------------------------------------------------------------------*/
 eQO Symbol::eEvalSubQryOp(Stz* szSymbol)
 {
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+  _static_
 
        if (szSymbol->bSame("exists"_Stz))    return QO_EXISTS_OP;
   else if (szSymbol->bSame("notExists"_Stz)) return QO_NOT_EXISTS_OP;
