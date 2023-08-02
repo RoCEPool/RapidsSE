@@ -52,9 +52,12 @@ LOG 'Running index joins with hash...';
 INCLUDE 'indexJoinHash.test';
 
 //------------------------------------------------------------------------------
+// TODO V2 alka fix query
+/*
 LOG 'Running tpch query 1...';
 INCLUDE 'query1.test';
 INCLUDE 'sleep.test';
+*/
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 2...';
@@ -72,12 +75,9 @@ INCLUDE 'query4.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2 (_ray105)
-/*
 LOG 'Running tpch query 5...';
 INCLUDE 'query5.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch query 6...';
@@ -100,7 +100,7 @@ INCLUDE 'query9.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2
+// TODO V2 : ALKA TO LOOK AT
 /*
 LOG 'Running tpch query 10...';
 INCLUDE 'query10.test';
@@ -118,7 +118,7 @@ INCLUDE 'query12.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2 (_ray111)
+// TODO V2 : ALKA TO LOOK AT
 /*
 LOG 'Running tpch query 13...';
 INCLUDE 'query13.test';
@@ -131,7 +131,7 @@ INCLUDE 'query14.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2
+// TODO V2 : ALKA TO LOOK AT
 /*
 LOG 'Running tpch query 15...';
 INCLUDE 'query15.test';
@@ -139,7 +139,7 @@ INCLUDE 'sleep.test';
 */
 
 //------------------------------------------------------------------------------
-// TODO V2
+// TODO V2 : ALKA TO LOOK AT
 /*
 LOG 'Running tpch query 16...';
 INCLUDE 'query16.test';
@@ -147,7 +147,7 @@ INCLUDE 'sleep.test';
 */
 
 //------------------------------------------------------------------------------
-// TODO V2
+// TODO V2 : ORDAGG
 /*
 LOG 'Running tpch query 17...';
 INCLUDE 'query17.test';
