@@ -10,7 +10,6 @@
 
 #include "eYX.h"
 
-#include "ExprEval2.hpp"
 #include "ExprEval_v2.hpp"
 
 #include "SkipRoots.hpp"
@@ -47,7 +46,6 @@ void Step::vAddSteps_StreamDefLft(void)
   vAddStep("StreamDefLft[].print"_Stz,           &Step::vStreamDefLftPrint);
   vAddStep("StreamDefLft[].replicated"_Stz,      &Step::vStreamDefLftReplicated);
   vAddStep("StreamDefLft[].rowSize"_Stz,         &Step::vStreamDefLftRowSize);
-  vAddStep("StreamDefLft[].selectColumns"_Stz,   &Step::vStreamDefLftSelectColumns);
   vAddStep("StreamDefLft[].set"_Stz,             &Step::vStreamDefLftSet);
 }
 
@@ -138,24 +136,6 @@ void Step::vStreamDefLftGet(void)
   
   m_pDataStack->vPushPtr(*m_pLogicUnit->m_xpStreamDefLft);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* StreamDefLft[].selectColumns -- generate select columns from expr          */
-/*----------------------------------------------------------------------------*/
-void Step::vStreamDefLftSelectColumns(void)
-{
-  ENTRY();
-
-  StreamDef* pStreamDefIn = _pStreamDef(*m_pLogicUnit->m_xpStreamDefLft);
-
-  s4K sExpr;
-  m_pDataStack->vPopStr(sExpr, __func__);
-
-  eEC eError = ExprEval2::eGenerateSelectColumns(pStreamDefIn, sExpr, &m_pLogicUnit->m_uSelectColumns);
-  m_pDataStack->vPushInt(eError);
-
   EXIT();
 }
 

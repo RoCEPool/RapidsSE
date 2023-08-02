@@ -47,7 +47,7 @@
   IndexDef[].new
 
   // generate streamDefOut from expr and streamDefIn
-  <expr> IndexDef[] StreamDefLft[] StreamDefOut[].generate to eError
+  //<expr> IndexDef[] StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if

@@ -1976,15 +1976,12 @@ void vJobIdLastJobIdFetch(void);
   void vStreamDefOutDelete(void);
   void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);
-  void vStreamDefOutGenerate(void);
   void vStreamDefOutIsNull(void);
-  void vStreamDefOutJoin(void);
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);
   void vStreamDefOutNewFromTable(void);
   void vStreamDefOutPrint(void);
-  void vStreamDefOutSelectColumns(void);
   void vStreamDefOutSet(void);
 
   void vStreamDefOutGenerate_V2(void);
