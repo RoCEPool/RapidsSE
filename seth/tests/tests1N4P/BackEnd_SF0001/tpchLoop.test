@@ -52,12 +52,9 @@ LOG 'Running index joins with hash...';
 INCLUDE 'indexJoinHash.test';
 
 //------------------------------------------------------------------------------
-// TODO V2 alka fix query
-/*
 LOG 'Running tpch query 1...';
 INCLUDE 'query1.test';
 INCLUDE 'sleep.test';
-*/
 
 //------------------------------------------------------------------------------
 //LOG 'Running tpch query 2...';
