@@ -269,13 +269,7 @@ typedef enum eEC // error codes
   EC_ZZZ_OTHER,
 
   EC_ENUMS
-#ifdef __TINYC__
-} eEC;
-#else
 };
-#endif
-
-#ifndef __TINYC__
 
 // This should contain the text string representation of the EC enum.
 // Not the error message.
@@ -1094,7 +1088,6 @@ static Stz* aErrorMsg[] =
   /* EC_ENUMS                         */ (Stz*)"enums"
 
 };
-#endif
 
 /*============================================================================*/
 /* end                                                                        */

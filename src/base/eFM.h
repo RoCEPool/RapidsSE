@@ -3,18 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-
-#ifdef __TINYC__
-
-// when being included by the tcc compiler
-enum eFM // function macros
-
-#else
-
 // when not being included by the tcc compiler
 enum eFM : u2 // function macros
-
-#endif
 {
   /*  0 */ FM_NONE=0,
 
@@ -381,8 +371,6 @@ enum eFM : u2 // function macros
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 
-#ifndef __TINYC__
-
 // when not being included by the tcc compiler
 static Stz* aFM[]
 {
@@ -743,8 +731,6 @@ static Stz* aFM[]
 
   /*  */ "ENUMS"_Stz
 };
-
-#endif
 
 /*============================================================================*/
 /* end                                                                        */
