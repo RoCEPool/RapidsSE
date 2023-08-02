@@ -186,7 +186,6 @@
 #include "SN_Tsp.hpp"
 #include "SN_Vch.hpp"
 
-#include "TccLock.hpp"
 #include "ToLglPtnCrw.hpp"
 #include "ToLglPtnRow.hpp"
 #include "TraceLock.hpp"
@@ -715,7 +714,6 @@ SizeHeap gxaSizeHeap[]
   { CN_TASK,                     sizeof(Task),               HT_T_MEDIUM  ,FILL },
   { CN_TASKLIST,                 sizeof(TaskList),           HT_T_TINY    ,FILL },
   { CN_TASKQUEUE,                sizeof(TaskQueue),          HT_T_TINY    ,FILL },
-  { CN_TCCLOCK,                  sizeof(TccLock),            HT_T_TINY    ,FILL },
   { CN_TEMPNAME,                 sizeof(TempName),           HT_T_TINY    ,FILL },
   { CN_TENANT,                   sizeof(Tenant),             HT_T_TINY    ,FILL },
   { CN_TENANTS,                  sizeof(Tenants),            HT_T_TINY    ,FILL },

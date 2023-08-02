@@ -46,7 +46,7 @@ end ;
 rows: 5996
 
 
-// TODO V2 : Uncomment once LEFTOUTER JOINS ARE ENABLED
+// TODO V2 : ALKA TO LOOK AT
 /*
 //------------------------------------------------------------------------------
 // LEFT OUTER INDEX JOIN

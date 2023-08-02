@@ -387,7 +387,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TASK,
   /* */ CN_TASKLIST,
   /* */ CN_TASKQUEUE,
-  /* */ CN_TCCLOCK,
   /* */ CN_TEMPNAME,
   /* */ CN_TENANT,
   /* */ CN_TENANTS,
@@ -880,7 +879,6 @@ static Stz* aCN[]
   /* */ "TASK"_Stz,                 // CN_TASK
   /* */ "TASKLIST"_Stz,             // CN_TASKLIST
   /* */ "TASKQUEUE"_Stz,            // CN_TASKQUEUE
-  /* */ "TCCLOCK"_Stz,              // CN_TCCLOCK
   /* */ "TEMPNAME"_Stz,             // CN_TEMPNAME
   /* */ "TENANT"_Stz,               // CN_TENANT
   /* */ "TENANTS"_Stz,              // CN_TENANTS

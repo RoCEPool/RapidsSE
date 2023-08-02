@@ -195,8 +195,6 @@ rows: 5996
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic orderby
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TODO V2
-/*
 /optimise_passthru 
 pipeline unamed
 begin
@@ -207,7 +205,7 @@ begin
   stage stageMarker0143 on all partitions :
     scan rapidsse public lineitem
     | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
-    | sort " sort type INTEGER as l_partkey $2 ASC  "
+    | sort "type INTEGER $2 ASC  "
     | combined 0
     | next
   stage stageLast on origin :
@@ -221,6 +219,8 @@ rows: 6000
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic top
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TODO
+
 /optimise_passthru 
 pipeline Q
 begin
@@ -251,7 +251,6 @@ end ;
 ordered rows:
  (1117,DATE '1998-11-25')
  (221,DATE '1998-11-27')
-*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic ordered aggregate
@@ -461,7 +460,7 @@ contains rows:
  (2.15,1499)
 
 
-// TODO V2 (_ray112)
+// TODO V2 : RAY TO LOOK AT (_ray112)
 /*
 /optimise_passthru 
 pipeline Q3
