@@ -709,7 +709,7 @@ rows:
   ('woman',true)
   ('man',false)
 
-// TODO V2 : optimiser to detect and give EC_NOT_IMPLENTED
+// TODO V2: OPTIMISER to detect and give EC_NOT_IMPLENTED
 /*
 select
     case when c+d<=0 then '<=0' when c+d>0 and c+d<=1000 then '<=1000' when c+d>1000 and c+d<=10000 then '<=10000' else '>10000' end,

@@ -75,7 +75,7 @@ INCLUDE 'OptQ7.test';
 INCLUDE 'sleep.test';
 
 //------------------------------------------------------------------------------
-// TODO V2 ALK TO LOOK AT (0.00 instead of 0.0000)
+// TODO V2: ALKA TO LOOK AT (0.00 instead of 0.0000)
 /*
 LOG 'Running tpch query 8...';
 INCLUDE 'OptQ8.test';
