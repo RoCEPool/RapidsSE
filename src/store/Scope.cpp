@@ -71,11 +71,13 @@ bool Scope::bInScope(char cTblSyn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set table in scope                                                         */
+/* is table in scope?                                                         */
 /*----------------------------------------------------------------------------*/
-void Scope::vInScope(char cTblSyn, bool bInScope)
+bool Scope::bInScope(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCOPE,_FOOTER_);
+
+  char cTblSyn = pSymbol->cExtractTableSynonym();
 
   i8 i_Table = C_UNKNOWN;
   if (cTblSyn >= 'a' && cTblSyn <= 'j')
@@ -86,7 +88,9 @@ void Scope::vInScope(char cTblSyn, bool bInScope)
   else
     NEVER_REACH
 
-  m_baKnown[i_Table] = bInScope;
+  bool bInScope = m_baKnown[i_Table];
+
+  return bInScope;
 }
 
 /*----------------------------------------------------------------------------*/
