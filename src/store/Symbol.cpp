@@ -247,6 +247,7 @@ bool Symbol::bIsColNm(Stz* szArg)
   if (bIsBoolFn(szArg))      return false;
   if (bIsBoolOp(szArg))      return false;
   if (bIsBound(szArg))       return false;
+  if (bIsDirection(szArg))   return false;
   if (bIsSubQueryOp(szArg))  return false;
 
   return true;
@@ -806,13 +807,8 @@ bool Symbol::bIsAggFn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("avg"_Stz))      return true;
-  else if (m_sSymbol.bSame("count"_Stz))    return true;
-  else if (m_sSymbol.bSame("countAll"_Stz)) return true;
-  else if (m_sSymbol.bSame("max"_Stz))      return true;
-  else if (m_sSymbol.bSame("min"_Stz))      return true;
-//else if (m_sSymbol.bSame("stddev"_Stz))   return true;
-  else if (m_sSymbol.bSame("sum"_Stz))      return true;
+  if (bIsAggFn(m_sSymbol))
+    return true;
 
   return false;
 }
@@ -850,9 +846,8 @@ bool Symbol::bIsBound(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("BOUND"_Stz))   return true;
-  else if (m_sSymbol.bSame("LBOUND"_Stz))  return true;
-  else if (m_sSymbol.bSame("UBOUND"_Stz))  return true;
+  if (bIsBound(m_sSymbol))
+    return true;
 
   return false;
 }
@@ -877,18 +872,10 @@ bool Symbol::bIsColumnOrdinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('$' == acFirst
-      && StrLib::bIsAlpha(acSecond)
-      && '.' == acThird
-      && StrLib::bIsDigit(acFourth))
+  if (bIsColumnOrdinal(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -911,14 +898,10 @@ bool Symbol::bIsCrossRef(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-
-  if ('#' == acFirst &&
-      StrLib::bIsDigit(acSecond))
+  if (bIsCrossRef(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -954,18 +937,10 @@ bool Symbol::bIsIndexColumn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('$' == acFirst
-      && ('I' == acSecond || 'i' == acSecond)
-      && StrLib::bIsDigit(acThird)
-      && ! acFourth)
+  if (bIsIndexColumn(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -975,18 +950,10 @@ bool Symbol::bIsKeyOrdinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('$' == acFirst
-      && ('K' == acSecond || 'k' == acSecond)
-      && StrLib::bIsDigit(acThird)
-      && ! acFourth)
+  if (bIsKeyOrdinal(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -996,10 +963,10 @@ bool Symbol::bIsName(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (StrLib::bIsSqlName(m_sSymbol.azChar()))
+  if (bIsName(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1009,9 +976,8 @@ bool Symbol::bIsNumber(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (StrLib::bIsDecimal(m_sSymbol.azChar()))  return true;
-  if (StrLib::bIsFloat(m_sSymbol.azChar()))    return true;
-  if (StrLib::bIsInteger(m_sSymbol.azChar()))  return true;
+  if (bIsNumber(m_sSymbol))
+    return true;
 
   return false;
 }
@@ -1046,16 +1012,10 @@ bool Symbol::bIsParameterOrdinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-
-  if ('%' == acFirst
-      && StrLib::bIsDigit(acSecond)
-      && ! acThird)
+  if (bIsParameterOrdinal(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1065,8 +1025,8 @@ bool Symbol::bIsParenthesis(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (m_sSymbol.bSame("("_Stz))     return true;
-  if (m_sSymbol.bSame(")"_Stz))     return true;
+  if (bIsParenthesis(m_sSymbol))
+    return true;
 
   return false;
 }
@@ -1078,7 +1038,7 @@ bool Symbol::bIsRelnOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (RO_NONE != eEvalRelnOp())
+  if (bIsRelnOp(m_sSymbol))
     return true;
 
   return false;
@@ -1091,14 +1051,10 @@ bool Symbol::bIsStreamOrdinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-
-  if ('$' == acFirst &&
-      StrLib::bIsDigit(acSecond))
+  if (bIsStreamOrdinal(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1108,10 +1064,8 @@ bool Symbol::bIsSubQueryOp(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("exists"_Stz))    return true;
-  else if (m_sSymbol.bSame("in"_Stz))        return true;
-  else if (m_sSymbol.bSame("notExists"_Stz)) return true;
-  else if (m_sSymbol.bSame("notIn"_Stz))     return true;
+  if (bIsSubQueryOp(m_sSymbol))
+    return true;
 
   return false;
 }
@@ -1123,20 +1077,7 @@ bool Symbol::bIsSubQueryColumn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && StrLib::bIsDigit(acThird))
-    return true;
-
-  if ('_' == acFirst
-      && '_' == acSecond
-      && 'S' == acThird
-      && 'Q' == acFourth)
+  if (bIsSubQueryColumn(m_sSymbol))
     return true;
 
   return false;
@@ -1149,15 +1090,7 @@ bool Symbol::bIsSyntheticAs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-  char acThird  = m_sSymbol.azChar()[2];
-  char acFourth = m_sSymbol.azChar()[3];
-
-  if (   'C' == acFirst
-      && 'O' == acSecond
-      && 'L' == acThird
-      && StrLib::bIsDigit(acFourth))
+  if (bIsSyntheticAs(m_sSymbol))
     return true;
 
   return false;
@@ -1170,20 +1103,7 @@ bool Symbol::bIsTableSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-//  char acFirst  = m_sSymbol.azChar()[0];
-//  char acSecond = m_sSymbol.azChar()[1];
-//  char acThird  = m_sSymbol.azChar()[2];
-//
-//  if (   '$' == acFirst
-//      && StrLib::bIsAlpha(acSecond)
-//      && '\0' == acThird)
-//    return true;
-
-  char acFirst  = m_sSymbol.azChar()[0];
-  char acSecond = m_sSymbol.azChar()[1];
-
-  if (StrLib::bIsAlpha(acFirst)
-      && '\0' == acSecond)
+  if (bIsTableSyn(m_sSymbol))
     return true;
 
   return false;
@@ -1196,7 +1116,7 @@ bool Symbol::bIsValueOrdinal(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsStreamOrdinal() || bIsColumnOrdinal())
+  if (bIsValueOrdinal(m_sSymbol))
     return true;
 
   return false;
