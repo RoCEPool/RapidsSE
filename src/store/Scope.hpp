@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "SubCall.hpp"
+#include "Symbol.hpp"
 
 namespace STORE
 {
@@ -30,6 +31,7 @@ namespace STORE
 
     bool bInScope(char cTblSyn);
     void vInScope(char cTblSyn, bool bInScope);
+    void vInScope(Symbol* pSymbol, bool bInScope);
 
     Footer* aFooter(void);
   };

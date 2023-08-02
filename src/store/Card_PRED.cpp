@@ -582,11 +582,11 @@ char Card_PRED::cTable_WhichTableFor_Pred(CardIter* pCI)
 
     if (CK_TABLE == eMainCard) {
       Card_Table* p_table = _pCard_Table(pMainCard);
-      char cTblSyn = p_table->cSymbol();
-      pScope->vInScope(cTblSyn,true);
+      Symbol* pSymbol_table = p_table->pSymbol();
+      pScope->vInScope(pSymbol_table,true);
       if (p_table->bScopeContains_Pred(this, pScope)) {
-        char cTblSyn = p_table->cSymbol();
         delete pScope;
+        char cTblSyn = p_table->pSymbol()->cSF_char();
         return cTblSyn;
       }
       continue;
