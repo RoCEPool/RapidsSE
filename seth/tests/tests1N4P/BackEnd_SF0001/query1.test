@@ -79,8 +79,6 @@ success
 // next and first
 // Need multiple threads per partition to improve performance
 //------------------------------------------------------------------------------
-// TODO V2
-/*
 /optimise_passthru 
 pipeline Query1
 begin
@@ -96,10 +94,10 @@ begin
       aggregates
       type VARCHAR as L_RETURNFLAG $K1 ,
       type VARCHAR as L_LINESTATUS $K2 ,
-      type DECIMAL ) as SUM_QTY L_QUANTITY sum  ,
-      type DECIMAL ) as SUM_BASE_PRICE L_EXTENDEDPRICE sum  ,
-      type DECIMAL ) as SUM_DISC_PRICE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
-      type DECIMAL ) as SUM_CHARGE L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
+      type DECIMAL as SUM_QTY ) L_QUANTITY sum  ,
+      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1.  L_DISCOUNT -  *  1.  L_TAX +  *  sum  ,
       type INTEGER ) L_EXTENDEDPRICE count  ,
       type INTEGER ) L_QUANTITY count  ,
       type DECIMAL ) L_DISCOUNT sum  ,
@@ -168,7 +166,7 @@ ordered rows:
   ('N','F',1041.00,1614635.42,-64993.33,-132418.45,27.39,42490.41,1.04,38)
   ('N','O',75062.00,112768276.42,-5569437.53,-11358753.47,25.57,38408.81,1.05,2936)
   ('R','F',36470.00,54082045.78,-2697671.68,-5504499.33,25.05,37144.26,1.05,1456)
-*/
+
 MemoryLeaks;
 rows: 0
 

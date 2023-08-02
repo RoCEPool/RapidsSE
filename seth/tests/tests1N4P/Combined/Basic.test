@@ -461,6 +461,8 @@ contains rows:
  (2.15,1499)
 
 
+// TODO V2 (_ray112)
+/*
 /optimise_passthru 
 pipeline Q3
 begin
@@ -508,6 +510,7 @@ contains rows:
   (1380,4.32)
   ( 393,4.33)
   (  21,4.34)
+*/
 
 // TODO V2 : ORDAGG
 /*

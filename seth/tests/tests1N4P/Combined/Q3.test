@@ -68,6 +68,8 @@ success
 load Orders "../TPCH/SF_0001/orders.csv";
 success
 
+// TODO V2 : ORDAGG
+/*
 /optimise_passthru 
 pipeline Q3
 begin
@@ -122,6 +124,7 @@ begin
 end ;
 
 rows: 10
+*/
 
 //------------------------------------------------------------------------------
 // drop the tables

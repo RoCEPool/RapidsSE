@@ -20,10 +20,7 @@
 ../../../seth/tests/tests1N4P/Projections/testList
 //../../../seth/tests/tests1N4P/Regression/testList
 
-// DISABLE FOR V2
-//../../../seth/tests/tests1N4P/Combined/testList
-////////////////
-
+../../../seth/tests/tests1N4P/Combined/testList
 
 ../../../seth/tests/tests1N4P/Transliterate/testList
 
