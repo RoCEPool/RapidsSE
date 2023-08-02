@@ -45,7 +45,7 @@ void XF_table_Analysis::vXF_table_Analysis(CardIter* pCI, char* acTableSyn, Symb
 
   XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI,acTableSyn);
 
-  pXF_table_Analysis->vXF_table_Analysis(acTableSyn,pSymbol_tableSyn);
+  pXF_table_Analysis->vXF_table_Analysis(pSymbol_tableSyn);
 
   delete pXF_table_Analysis;
 }
@@ -59,7 +59,7 @@ void XF_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, char* acTable
 
   XF_table_Analysis* pXF_table_Analysis = new XF_table_Analysis(pCI,acTableSyn);
 
-  pXF_table_Analysis->vXF_table_Analysis_passThru(acTableSyn,pSymbol_tableSyn);
+  pXF_table_Analysis->vXF_table_Analysis_passThru(pSymbol_tableSyn);
 
   delete pXF_table_Analysis;
 }
@@ -72,7 +72,7 @@ void XF_table_Analysis::vXF_table_Analysis_passThru(CardIter* pCI, char* acTable
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis(char* acTableSyn, Symbol* pSymbol_tableSyn)
+void XF_table_Analysis::vXF_table_Analysis(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
 
@@ -80,7 +80,7 @@ void XF_table_Analysis::vXF_table_Analysis(char* acTableSyn, Symbol* pSymbol_tab
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
-  Card_Table::vAffixTableSyn(m_pCI, acTableSyn,pSymbol_tableSyn);
+  Card_Table::vAffixTableSyn(m_pCI, pSymbol_tableSyn);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table
@@ -95,7 +95,7 @@ void XF_table_Analysis::vXF_table_Analysis(char* acTableSyn, Symbol* pSymbol_tab
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void XF_table_Analysis::vXF_table_Analysis_passThru(char* acTableSyn, Symbol* pSymbol_tableSyn)
+void XF_table_Analysis::vXF_table_Analysis_passThru(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_XF_TABLE_ANALYSIS, _FOOTER_);
 
@@ -103,7 +103,7 @@ void XF_table_Analysis::vXF_table_Analysis_passThru(char* acTableSyn, Symbol* pS
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Affix Table Syntax To All Table
-  Card_Table::vAffixTableSyn_passThru(m_pCI, acTableSyn,pSymbol_tableSyn);
+  Card_Table::vAffixTableSyn_passThru(m_pCI, pSymbol_tableSyn);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Produce Table Partition Under All Table

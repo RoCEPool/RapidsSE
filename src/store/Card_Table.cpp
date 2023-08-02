@@ -110,26 +110,26 @@ void Card_Table::vAffixTableColOrd(CardIter* pCI) {
 /*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAffixTableSyn(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn)
+void Card_Table::vAffixTableSyn(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
 
 _static_
 
   while (pCI->G_bEachMainWithSub(CK_TABLE, CK_TABLENM))  {
-    pCI->G.p_table->vSet_Syn(acTableSyn,pSymbol_tableSyn);
+    pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* affix table syntax to all tables                                           */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, char* acTableSyn, Symbol* pSymbol_tableSyn)
+void Card_Table::vAffixTableSyn_passThru(CardIter* pCI, Symbol* pSymbol_tableSyn)
 {
 
   _static_
 
   while (pCI->G_bEach2SubOfMain(CK_TABLE, CK_TABLENM))  {
-    pCI->G.p_table->vSet_Syn(acTableSyn,pSymbol_tableSyn);
+    pCI->G.p_table->vSet_Syn(pSymbol_tableSyn);
   }
 }
 
@@ -558,7 +558,7 @@ bool Card_Table::bScopeContains_term(Card_Term* p_term,
 /*----------------------------------------------------------------------------*/
 /* set synonym of table                                                       */
 /*----------------------------------------------------------------------------*/
-void Card_Table::vSet_Syn(char* acTableSyn, Symbol* pSymbol_tableSyn)
+void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -566,7 +566,8 @@ void Card_Table::vSet_Syn(char* acTableSyn, Symbol* pSymbol_tableSyn)
 
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
 
-  char cTableSyn_actual = *acTableSyn;
+  //char cTableSyn_actual = *acTableSyn;
+  char cTableSyn_actual = pSymbol_tableSyn->cSF_char();
   if (pTable->bIsReplicated())
     cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
@@ -575,8 +576,6 @@ void Card_Table::vSet_Syn(char* acTableSyn, Symbol* pSymbol_tableSyn)
 
   this->vSymbol(&xSymbol_tblSyn);
   this->vMark1(MARK_CHANGED);
-
-  (*acTableSyn)++;
 
   pSymbol_tableSyn->vIncTblSyn();
 }
