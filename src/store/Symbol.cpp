@@ -191,6 +191,20 @@ bool Symbol::bIsBoolFn(Stz* szArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this symbol a boolean operator?                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsBoolOp(Stz* szArg)
+{
+  _static_
+
+       if (szArg->bSame("and"_Stz))  return true;
+  else if (szArg->bSame("not"_Stz))  return true;
+  else if (szArg->bSame("or"_Stz))   return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this symbol a bound?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bIsBound(Stz* szArg)
@@ -211,14 +225,16 @@ bool Symbol::bIsColNm(Stz* szArg)
 {
   _static_
 
-  if ( StrLib::bIsSqlName(szArg->azChar()) &&
-       ((!bIsAggFn(szArg)) &&
-        (! bIsBoolFn(szArg)) &&
-        (! bIsBound(szArg)) &&
-        (! bIsSubQueryOp(szArg)) ) )
-    return true;
-  else
+  if (! StrLib::bIsSqlName(szArg->azChar()))
     return false;
+
+  if (bIsAggFn(szArg))       return false;
+  if (bIsBoolFn(szArg))      return false;
+  if (bIsBoolOp(szArg))      return false;
+  if (bIsBound(szArg))       return false;
+  if (bIsSubQueryOp(szArg))  return false;
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -802,15 +818,21 @@ bool Symbol::bIsBoolFn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-       if (m_sSymbol.bSame("between"_Stz))         return true;
-  else if (m_sSymbol.bSame("inList"_Stz))          return true;
-  else if (m_sSymbol.bSame("isNull"_Stz))          return true;
-  else if (m_sSymbol.bSame("like2"_Stz))           return true;
-  else if (m_sSymbol.bSame("like3"_Stz))           return true;
-  else if (m_sSymbol.bSame("matchLeading"_Stz))    return true;
-  else if (m_sSymbol.bSame("matchMiddle"_Stz))     return true;
-  else if (m_sSymbol.bSame("matchMiddle1"_Stz))    return true;
-  else if (m_sSymbol.bSame("matchTrailing"_Stz))   return true;
+  if (bIsBoolFn(m_sSymbol))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this symbol a boolean operator?                                         */
+/*----------------------------------------------------------------------------*/
+bool Symbol::bIsBoolOp(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  if (bIsBoolOp(m_sSymbol))
+    return true;
 
   return false;
 }
@@ -836,11 +858,10 @@ bool Symbol::bIsColNm(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if ( StrLib::bIsSqlName(m_sSymbol.azChar()) &&
-       ((!bIsAggFn()) && (! bIsBoolFn()) && (! bIsBound()) && (! bIsSubQueryOp()) ) )
+  if (bIsColNm(m_sSymbol))
     return true;
-  else
-    return false;
+
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -205,11 +205,11 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
     if (! p_term->bIsColNm())
       continue;
 
-    vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol());
+    //vTrace("Disambiguate: %s\n"_Stz,p_term->szSymbol());
 
     Card_Expr* p_expr = pCI->G.p_projection->pFindExprOfAs(p_term->pSymbol());
     if (p_expr) {
-      p_expr->vDump(__func__);
+      //p_expr->vDump(__func__);
 
       i8 i_Child = p_expr->pSymbol()->iExtractOrdinal() - 1;
       p_term->pSymbol()->vSetDisambiguatedColNm(i_Child,p_term->pSymbol()->szSF_string());

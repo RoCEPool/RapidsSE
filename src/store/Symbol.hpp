@@ -34,6 +34,7 @@ namespace STORE
 
     static bool bIsAggFn(Stz* szArg);            // avg, count, ... sum
     static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
+    static bool bIsBoolOp(Stz* szArg);           // and, not, or
     static bool bIsBound(Stz* szArg);            // BOUND, LBOUND, UBOUND
     static bool bIsColNm(Stz* szArg);            //
     static bool bIsColumnOrdinal(Stz* szArg);    // $c.n
@@ -81,6 +82,7 @@ namespace STORE
 
     bool bIsAggFn(void);            // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
+    bool bIsBoolOp(void);           // and, not, or
     bool bIsBound(void);            // BOUND, LBOUND, UBOUND
     bool bIsColNm(void);            //
     bool bIsColumnOrdinal(void);    // $c.n
