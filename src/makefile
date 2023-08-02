@@ -36,8 +36,8 @@ UNAME_S := $(shell uname -s)
 # Currently used to build and run RapidsSe in x86_64 architecture on
 # the Arm M1 chip, that allows rosetta to kick in and translate from
 # x86_64 to arm64, since tinyc support for the M1 chip is not ready yet.
-ARCH_FLAG_FORCE = x86_64
-export ARCH_FLAG_FORCE
+# ARCH_FLAG_FORCE = x86_64
+# export ARCH_FLAG_FORCE
 
 ifeq ($(UNAME_S),Linux)
   include makefile.linux.in

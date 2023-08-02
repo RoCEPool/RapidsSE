@@ -12,7 +12,7 @@
 
 #include <sys/utsname.h>
 #include <sys/time.h>
-#include <x86intrin.h>
+//#include <x86intrin.h>
 
 
 // The variable that holds the default clock type to be used on this machine
