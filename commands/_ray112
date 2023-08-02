@@ -1,0 +1,66 @@
+/*============================================================================*/
+/* _ray112                                                                    */
+/*============================================================================*/
+
+// TEST: Combined/Basic.test : line 464
+
+//NOTE: Stage S03 ColMap has 3 columns. Should be 2.
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/glean_interactive
+/pipeline_def
+/weaved
+/keepCodeFile
+/optimise_passthru
+pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    scan Orders
+    | next
+
+  stage Gj_LINEITEM on all partitions :
+    indexJoin Lineitem IxL_ORDERKEY "BOUND $I1 $L1 =="
+    | filter "type BOOLEAN L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
+
+    | gbyAgg expr groupby type INTEGER O_ORDERKEY
+       aggregates type INTEGER as _orderkey $K1 , type DECIMAL as Revenue ) L_DISCOUNT sum
+    | combined 0
+    | next
+
+stage Gj_LINEITEM on all nodes :
+    top "type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+stage Gj_LINEITEM on origin :
+    top "type DECIMAL Revenue" 10
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+/*
+contains rows:
+  ( 905,4.31)
+  ( 780,4.31)
+  ( 907,4.31)
+  ( 508,4.32)
+  (1380,4.32)
+  ( 393,4.33)
+  (  21,4.34)
+  */
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
