@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* _ray115                                                                    */
+/*============================================================================*/
+
+//NOTE: Optimiser should detect index does not exist
+
+_lineitem;
+
+/optimise_passthru
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan lineitem lineitem_ord " LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project " type INTEGER l_orderkey "
+    | combined 0
+    | stageC
+  stage stageC on origin :
+    output | sink | stageA
+end ;
+
+// failure contains: 'no such index'
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
