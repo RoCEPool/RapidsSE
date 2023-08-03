@@ -17,8 +17,12 @@ begin
     | next
 
   stage Gs_ORDERS on all partitions :
-   scan lineitem
+   scan orders
     | combined 0
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    combined 0
     | next
 
   stage last on origin :
