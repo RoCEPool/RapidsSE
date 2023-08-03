@@ -123,7 +123,7 @@ namespace STORE
     void vSet_asName(Stz* szAsNm);
     void vSet_colNm(Stz* szColNm);
     void vSetCrossRef(i8 iCrossRef);
-    void vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm);
+    void vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol);
     void vSetIndexColOrdinal(i8 iIdxColOdn);
     void vSetKeyOrdinal(i8 iKeyOdn);
     void vSet_number(i8 iNumber);
