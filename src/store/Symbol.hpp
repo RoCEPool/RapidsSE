@@ -138,11 +138,9 @@ namespace STORE
     void vSetTableSyn(char cTblSyn);
 
     Stz* szSF__print(void);
-    Stz* szSF_any(void);
-    char cSF_char(void);
     i8   iSF_number(void);
-    Stz* szSF_other(void);
-    Stz* szSF_string(void);
+    Stz* szSF_symbol(void);
+    char cSF_synonym(void);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 

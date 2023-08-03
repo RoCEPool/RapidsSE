@@ -591,10 +591,8 @@ void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol xSymbol;
-  xSymbol.vSetKeyOrdinal(i_Expr);
 
-  vSymbol(xSymbol.szSF_other());
+  pSymbol()->vSetKeyOrdinal(i_Expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,10 +602,7 @@ void Card_Expr::vRenumberForm_stmOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Symbol xSymbol;
-  xSymbol.vSetStreamOrdinal(i_Expr);
-
-  vSymbol(xSymbol.szSF_other());
+  pSymbol()->vSetStreamOrdinal(i_Expr);
 }
 
 /*----------------------------------------------------------------------------*/

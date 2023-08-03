@@ -825,7 +825,7 @@ void Symbol::vIncTblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char cTblSyn = cSF_char();
+  char cTblSyn = cSF_synonym();
 
   vSetTableSyn(cTblSyn + 1);
 }
@@ -1467,7 +1467,7 @@ void Symbol::vSetReplicateTblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  char cTableSyn_actual = cSF_char();
+  char cTableSyn_actual = cSF_synonym();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
   vSprint("%c"_Stz, cTableSyn_actual);
@@ -1505,26 +1505,6 @@ Stz* Symbol::szSF__print(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol stz                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Symbol::szSF_any(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  return m_sSymbol.szStz();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get symbol char                                                            */
-/*----------------------------------------------------------------------------*/
-char Symbol::cSF_char(void)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  return * m_sSymbol.azChar();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get symbol int                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Symbol::iSF_number(void)
@@ -1539,7 +1519,7 @@ i8 Symbol::iSF_number(void)
 /*----------------------------------------------------------------------------*/
 /* get symbol stz                                                             */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szSF_other(void)
+Stz* Symbol::szSF_symbol(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1547,13 +1527,13 @@ Stz* Symbol::szSF_other(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get symbol stz                                                             */
+/* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* Symbol::szSF_string(void)
+char Symbol::cSF_synonym(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  return m_sSymbol.szStz();
+  return * m_sSymbol.azChar();
 }
 
 /*----------------------------------------------------------------------------*/

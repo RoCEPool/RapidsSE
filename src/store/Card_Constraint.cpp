@@ -212,7 +212,7 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
       //p_expr->vDump(__func__);
 
       i8 i_Child = p_expr->pSymbol()->iExtractOrdinal() - 1;
-      p_term->pSymbol()->vSetDisambiguatedColNm(i_Child,p_term->pSymbol()->szSF_string());
+      p_term->pSymbol()->vSetDisambiguatedColNm(i_Child, p_term->pSymbol()->szSF_symbol());
     }
   }
 

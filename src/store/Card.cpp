@@ -1217,7 +1217,7 @@ char Card::cSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  char c = m_xSymbol.cSF_char();
+  char c = m_xSymbol.cSF_synonym();
 
   return c;
 }
@@ -1241,7 +1241,7 @@ Stz* Card::szSymbol(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  Stz* sz = m_xSymbol.szSF_string();
+  Stz* sz = m_xSymbol.szSF_symbol();
 
   return sz;
 }
