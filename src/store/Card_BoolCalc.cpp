@@ -398,10 +398,10 @@ void Card_BoolCalc::vMarkWrt_table(CardIter* pCI)
       xCR.vDontDescend();
       if (((Card_PRED *)p_card)->bContains_callToSubQuery(pCI))
         continue;
-      char cWhichTable = ((Card_PRED *)p_card)->cTable_WhichTableFor_Pred(pCI);
-      if (C_UNKNOWN != cWhichTable) {
+      Symbol* pWhichTable = ((Card_PRED *)p_card)->pTable_WhichTableFor_Pred(pCI);
+      if (pWhichTable) {
         p_card->vMark1(MARK_AT);
-        p_card->vMark2(cWhichTable);
+        p_card->vMark2(pWhichTable->cSF_char());
       }
       continue;
     }

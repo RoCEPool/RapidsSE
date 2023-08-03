@@ -549,72 +549,17 @@ bool Card_PRED::bPredRecursive(std::function<bool(Card_PRED* p_pred, bool bUpwar
 /*----------------------------------------------------------------------------*/
 /* inspect <PRED>                                                             */
 /*----------------------------------------------------------------------------*/
-char Card_PRED::cTable_WhichTableFor_Pred(CardIter* pCI)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Deck* p_deck = pCI->G.pDeck;
-
-  Scope* pScope = new Scope;
-
-  i8 i_Main = 0;
-
-  i8 i_Fold = C_UNKNOWN;
-  for (i8 i_Test = 0 ; i_Test < p_deck->nChildCards() ; i_Test++) {
-    Card *pTestCard = p_deck->pGetChild(i_Test);
-
-    if (pTestCard->bIsCard(CK_FOLD))
-      i_Fold = i_Test;
-  }
-
-  if (C_UNKNOWN != i_Fold)
-    i_Main = i_Fold + 1;
-
-  for (/* none */ ; /* none */ ; i_Main++) {
-    Card *pMainCard = p_deck->pGetChild(i_Main);
-
-    if (CK_WHERE == pMainCard->eCard()) {
-      delete pScope;
-      return C_UNKNOWN;
-    }
-
-    eCK eMainCard = pMainCard->eCard();
-
-    if (CK_TABLE == eMainCard) {
-      Card_Table* p_table = _pCard_Table(pMainCard);
-      Symbol* pSymbol_table = p_table->pSymbol();
-      pScope->vInScope(pSymbol_table,true);
-      if (p_table->bScopeContains_Pred(this, pScope)) {
-        delete pScope;
-        char cTblSyn = p_table->pSymbol()->cSF_char();
-        return cTblSyn;
-      }
-      continue;
-    }
-
-    // skip over any other card??
-    //vTrace("bMovePredLeft skipping mainCard %s\n"_Stz,aCK[eMainCard]);
-  }
-
-  NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* inspect <PRED>                                                             */
-/*----------------------------------------------------------------------------*/
 Symbol* Card_PRED::pTable_WhichTableFor_Pred(CardIter* pCI)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Card_Deck* p_deck = pCI->G.pDeck;
-
   Scope* pScope = new Scope;
 
   i8 i_Main = 0;
 
   i8 i_Fold = C_UNKNOWN;
-  for (i8 i_Test = 0 ; i_Test < p_deck->nChildCards() ; i_Test++) {
-    Card *pTestCard = p_deck->pGetChild(i_Test);
+  for (i8 i_Test = 0 ; i_Test < pCI->G.pDeck->nChildCards() ; i_Test++) {
+    Card *pTestCard = pCI->G.pDeck->pGetChild(i_Test);
 
     if (pTestCard->bIsCard(CK_FOLD))
       i_Fold = i_Test;
@@ -624,7 +569,7 @@ Symbol* Card_PRED::pTable_WhichTableFor_Pred(CardIter* pCI)
     i_Main = i_Fold + 1;
 
   for (/* none */ ; /* none */ ; i_Main++) {
-    Card *pMainCard = p_deck->pGetChild(i_Main);
+    Card *pMainCard = pCI->G.pDeck->pGetChild(i_Main);
 
     if (CK_WHERE == pMainCard->eCard()) {
       delete pScope;
