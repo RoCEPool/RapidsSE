@@ -539,8 +539,8 @@ void AdaptorWL::vAffectedRowCount(InfoSet* pInfoSet)
   ASSERT(pInfoRow);
 
   i8 iRowsProcessed = pInfoRow->iColVal_int(0);
-  i8 iRowsSkipped   = pInfoRow->iColVal_int(1);
-  i8 iRowsInvalid   = pInfoRow->iColVal_int(2);
+  i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
+  i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
   i8 iRowsInserted  = pInfoRow->iColVal_int(3);
   i8 iRowsUpdated   = pInfoRow->iColVal_int(4);
   i8 iRowsDeleted   = pInfoRow->iColVal_int(5);
@@ -1171,22 +1171,22 @@ void AdaptorWL::vSerialiseInvalidSkippedRowsWarning()
   }
 
   // Send a warning if there are rows skipped or invalid.
-  i8 iRowsSkipped = m_pStmtCtx->nRowsSkipped();
   i8 iRowsInvalid = m_pStmtCtx->nRowsInvalid();
+  i8 iRowsSkipped = m_pStmtCtx->nRowsSkipped();
 
   if (iRowsSkipped > 0 || iRowsInvalid > 0) {
     s2K sReason = "Warning: "_Stz;
 
-    if (iRowsSkipped > 0) {
-      sReason.vCatSprint("%lld rows skipped"_Stz, iRowsSkipped);
+    if (iRowsInvalid > 0) {
+      sReason.vCatSprint("%lld rows were invalid"_Stz, iRowsInvalid);
 
-      if (iRowsInvalid > 0) {
+      if (iRowsSkipped > 0) {
         sReason.vConcat(" and "_Stz);
       }
     }
 
-    if (iRowsInvalid > 0) {
-      sReason.vCatSprint("%lld rows detected as invalid"_Stz, iRowsInvalid);
+    if (iRowsSkipped > 0) {
+      sReason.vCatSprint("%lld rows were skipped"_Stz, iRowsSkipped);
     }
 
     vSerialiseWarningResponse(sReason.szStz(),

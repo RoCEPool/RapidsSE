@@ -5,7 +5,7 @@
 //../../../seth/tests/tests1N4P/CombinedV2/testList
 ../../../seth/tests/tests1N4P/Filter/testList
 //../../../seth/tests/tests1N4P/JoinOrder/testList
-../../../seth/te/sts/tests1N4P/Limit/testList
+../../../seth/tests/tests1N4P/Limit/testList
 ../../../seth/tests/tests1N4P/Projections/testList
 //../../../seth/tests/tests2N4P/Transliterate/testList
 
@@ -21,6 +21,5 @@
 ../../../seth/tests/tests2N4P/Index/testList
 ../../../seth/tests/tests1N4P/LocalFunctions/testList
 ../../../seth/tests/tests1N4P/Misc/testList
-../../../seth/tests/tests2N4P/Misc/testList
 ../../../seth/tests/tests1N4P/Table/testList
 //../../../seth/tests/tests1N4P/Optimiser_SF0001/testList

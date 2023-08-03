@@ -321,6 +321,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitTableSizesCmd(sqlParser::TableSizesCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitTruncateCmd(sqlParser::TruncateCmdContext *ctx) override {
     return visitChildren(ctx);
   }

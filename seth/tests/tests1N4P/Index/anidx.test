@@ -56,7 +56,7 @@ anidx IntTbl int_idx1;
 rows: 4
 
 load IntTbl "../DATA/Datums/integer.csv" ;
-failure contains: '16 invalid'
+warning contains: '16 rows were invalid'
 
 // check no of rows
 select * from IntTbl;

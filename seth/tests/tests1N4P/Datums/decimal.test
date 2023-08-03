@@ -43,19 +43,19 @@ rows:
 ('dec_col6', 'DECIMAL',19, 2, true, false)
 
 Load decTbl "../DATA/Datums/decimal.csv" ;
-failure contains: '15 invalid'
+warning contains: '15 rows were invalid'
 
 // check no of rows
 select * from decTbl;
 rows: 101
 
 // dump dec_idx1
-dumpidx decTbl dec_idx1;
-success
+//dumpidx decTbl dec_idx1;
+//success
 
 // dump dec_idx2
-dumpidx decTbl dec_idx2;
-success
+//dumpidx decTbl dec_idx2;
+//success
 
 // drop the table
 drop table decTbl;

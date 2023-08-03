@@ -9,7 +9,7 @@ create table decTest (
 success
 
 load decTest "../DATA/Load/decTest.csv" ;
-failure contains: '9 invalid'
+warning contains: '9 rows were invalid'
 
 select -360287970189639.68 from decTest where dec1 = 0.1;
 failure contains: 'EC_SYNTAX_ERROR'

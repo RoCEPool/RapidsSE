@@ -39,6 +39,7 @@ statementChoice   :
                     | statusCmd
                     | szidxCmd
                     | sztblCmd
+                    | tableSizesCmd
                     | truncateCmd
                     | unloadCmd
 //                  | updateCmd
@@ -277,8 +278,9 @@ szidxCmd          : SZIDX tableName indexName ;
 sztblCmd          : SZTBL tableName ;
 
 // T
+tableSizesCmd     : TABLESIZES ;
 truncateCmd       : TRUNCATE (TABLE)? name = tableName /*tableReference*/ ;
-trackmemoryCmd    : TRACKMEMORY FORCE?;
+trackmemoryCmd    : TRACKMEMORY FORCE? ;
 
 // U
 updateCmd         : (WITH withQuery (',' withQuery)*)?
@@ -814,6 +816,7 @@ SZIDX                 : S Z I D X;
 SZTBL                 : S Z T B L;
 S_ONLY                : S;
 TABLE                 : T A B L E;
+TABLESIZES            : T A B L E S I Z E S;
 TABLESIZE             : T A B L E S I Z E;
 TEXT                  : T E X T;
 THEN                  : T H E N;

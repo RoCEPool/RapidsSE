@@ -371,6 +371,7 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->szidxCmd())          { m_szProcName = "szidx"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->sztblCmd())          { m_szProcName = "sztbl"_Stz;          return visitChildren(pCtx); }
   else if (pCtx->unloadCmd())         { m_szProcName = "unload"_Stz;         return visitChildren(pCtx); }
+  else if (pCtx->tableSizesCmd())     { m_szProcName = "tablesizes"_Stz;     return nullptr; }
   else if (pCtx->trackmemoryCmd())    { m_szProcName = "trackmemory"_Stz;    return visitChildren(pCtx); }
   else if (pCtx->memoryleaksCmd())    { m_szProcName = "memoryleaks"_Stz;    return nullptr; }
   else if (pCtx->docolCmd())          { m_szProcName = "docol"_Stz;          return visitChildren(pCtx); }

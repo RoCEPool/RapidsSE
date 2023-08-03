@@ -172,6 +172,8 @@ public:
 
     virtual antlrcpp::Any visitSztblCmd(sqlParser::SztblCmdContext *context) = 0;
 
+    virtual antlrcpp::Any visitTableSizesCmd(sqlParser::TableSizesCmdContext *context) = 0;
+
     virtual antlrcpp::Any visitTruncateCmd(sqlParser::TruncateCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitTrackmemoryCmd(sqlParser::TrackmemoryCmdContext *context) = 0;

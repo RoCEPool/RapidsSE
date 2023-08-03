@@ -428,7 +428,7 @@ bool Output::bProcessOperand(Operand* pOperand)
         i8 iRowsInvalid   = pInfoRow->iColVal_int(1);
         i8 iRowsSkipped   = pInfoRow->iColVal_int(2);
 
-        m_ixRowsProcessed    += iRowsProcessed;
+        m_ixRowsProcessed += iRowsProcessed;
         m_ixRowsInvalid   += iRowsInvalid;
         m_ixRowsSkipped   += iRowsSkipped;
 
