@@ -150,7 +150,7 @@ void Card::vCardLeaks(void)
 //    if (gapCard[i_Card]) {
 //      Card *pLeaked = gapCard[i_Card];
 //      vTrace("Card Leak ~%02lld %p %s:%s\n"_Stz,
-//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSF__print());
+//             i_Card, pLeaked, aCK[pLeaked->eCard()], pLeaked->szSF_symbol());
 //      vDebugPoint();
 //    }
 //  }
@@ -193,7 +193,7 @@ void Card::vConsistencyCheck(Card* p_deck, i8 iTransformNo)
 //         i_Card,
 //         p_cardInQuestion,
 //         aCK[p_cardInQuestion->eCard()],
-//         p_cardInQuestion->szSF__print());
+//         p_cardInQuestion->szSF_symbol());
 //    vDebugPoint();
 //  }
 //
@@ -552,7 +552,7 @@ Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSF__print(),md_Bearing);
+  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSF_symbol(),md_Bearing);
 
   if (eOfCard == m_eCard && bSameSymbol(pSymbol)) {
     rpParent = _pWalkParent_;
@@ -1168,7 +1168,7 @@ bool Card::bSameSymbol(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  if (bSameSymbol(pSymbol->szSF__print()))
+  if (bSameSymbol(pSymbol->szSF_symbol()))
     return true;
   else
     return false;

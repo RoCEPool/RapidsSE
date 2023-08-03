@@ -69,7 +69,7 @@ void XF_Shorten_queryNm::vXF_Shorten_queryNm(void)
     i8 iSqNo = StrLib::iGleanInt(sBoardNm.azChar());
     Symbol xSymbol_sqNo;
     xSymbol_sqNo.vSetSubQueryOrdinal(iSqNo);
-    m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo.szSF__print());
+    m_pCI->G.pBoard->vBoardNm(xSymbol_sqNo.szSF_symbol());
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

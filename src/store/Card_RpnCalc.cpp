@@ -322,7 +322,7 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bSameSymbol(pSymbol->szSF__print()))
+    if (xCI.G.p_term->bSameSymbol(pSymbol->szSF_symbol()))
       return true;
   }
 
@@ -426,7 +426,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
   Symbol xExprNo;
   xExprNo.vSetStreamOrdinal(i_Expr + 1);
 
-  Card_Term* p_term = new Card_Term(xExprNo.szSF__print());
+  Card_Term* p_term = new Card_Term(xExprNo.szSF_symbol());
   p_term->vColType(this);
 
   p_rpnCalc_reduced->vAppend(p_term);
@@ -526,7 +526,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
     eTE eTerm_next = p_term_next->eEvalTerm();
 
-    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szSF__print());
+    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szSF_symbol());
 
     switch (eTerm_next) {
 

@@ -137,7 +137,6 @@ namespace STORE
     void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
     void vSetTableSyn(char cTblSyn);
 
-    Stz* szSF__print(void);
     i8   iSF_number(void);
     Stz* szSF_symbol(void);
     char cSF_synonym(void);
