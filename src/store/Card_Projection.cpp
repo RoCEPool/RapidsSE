@@ -272,8 +272,7 @@ void Card_Projection::vDedupe_as(void)
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
     Card_As* p_as = xProjection.p_expr()->pSub_as();
 
-    p_as->pSymbol()->vSetDisambiguatedColNm(xProjection.i_Child(),
-                                            p_as->pSymbol()->szSF_symbol());
+    p_as->pSymbol()->vSetDisambiguatedNm(xProjection.i_Child(), p_as->pSymbol());
   }
 
   vDebugPoint();

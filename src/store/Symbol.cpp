@@ -1190,7 +1190,7 @@ bool Symbol::bSame(char cArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (*this->szSF_symbol()->azChar() == cArg)
+  if (*m_sSymbol.azChar() == cArg)
     return true;
   else
     return false;
@@ -1203,7 +1203,7 @@ bool Symbol::bSame(Stz* szArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (this->szSF_symbol()->bSame(szArg))
+  if (m_sSymbol.bSame(szArg))
     return true;
 
   return false;
@@ -1216,7 +1216,7 @@ bool Symbol::bSame(Symbol* pArg)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (this->szSF_symbol()->bSame(pArg->szSF_symbol()))
+  if (m_sSymbol.bSame(pArg->m_sSymbol))
     return true;
 
   return false;
@@ -1300,11 +1300,11 @@ void Symbol::vSetCrossRef(i8 iCrossRef)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetDisambiguatedColNm(i8 i_Child, Stz* szColNm)
+void Symbol::vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vSprint("C%lld_%s"_Stz, i_Child, szColNm);
+  vSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
   m_eSymbol = SF_DASCNE;
 
 #ifdef X_SET_CROSS_CHECK

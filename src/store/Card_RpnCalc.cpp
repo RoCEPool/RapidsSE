@@ -322,7 +322,7 @@ bool Card_RpnCalc::bHasTerm(Symbol* pSymbol)
 
   CardIter xCI(this);
   while (xCI.G_bEachMain(CK_TERM)) {
-    if (xCI.G.p_term->bSameSymbol(pSymbol->szSF_symbol()))
+    if (xCI.G.p_term->bSameSymbol(pSymbol))
       return true;
   }
 
@@ -426,7 +426,7 @@ Card_RpnCalc * Card_RpnCalc::pReducedCopy(i8 i_Expr)
   Symbol xExprNo;
   xExprNo.vSetStreamOrdinal(i_Expr + 1);
 
-  Card_Term* p_term = new Card_Term(xExprNo.szSF_symbol());
+  Card_Term* p_term = new Card_Term(&xExprNo);
   p_term->vColType(this);
 
   p_rpnCalc_reduced->vAppend(p_term);
