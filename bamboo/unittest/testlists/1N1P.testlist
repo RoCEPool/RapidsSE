@@ -5,7 +5,6 @@
 
 ////////////////// to be enabled for V2
 
-../../../seth/tests/dummyTests/testList
 ../../../seth/tests/tests1N4P/Filter/testList
 ../../../seth/tests/tests1N4P/Limit/testList
 ../../../seth/tests/tests1N4P/Misc/testList
