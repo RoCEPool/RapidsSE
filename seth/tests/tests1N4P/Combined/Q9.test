@@ -84,8 +84,6 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-// TODO V2 : RAY TO LOOK AT (_ray112)
-/*
 /optimise_passthru 
 pipeline Q9
 begin
@@ -139,7 +137,7 @@ begin
 stage G_SUM_P on all partitions :
     gbyAgg "groupby type TIMESTAMP l_orderdate
       aggregates
-      type TIMESTAMP as l_orderdate l_orderdate ,
+      type TIMESTAMP as l_orderdate $K1 ,
       type DECIMAL as amount ) l_extendedprice 1.0  l_discount -  *  ps_supplycost l_quantity *  - sum"
     | combined 0
     | next
@@ -147,7 +145,7 @@ stage G_SUM_P on all partitions :
 stage G_SUM_N on all nodes :
     gbyAgg "groupby type TIMESTAMP l_orderdate
     aggregates
-      type TIMESTAMP as l_orderdate l_orderdate ,
+      type TIMESTAMP as l_orderdate $K1 ,
       type DECIMAL as amount ) amount sum"
     | combined 0
     | next
@@ -155,7 +153,7 @@ stage G_SUM_N on all nodes :
 stage G_SUM_O on origin :
     gbyAgg "groupby type TIMESTAMP l_orderdate
     aggregates
-      type TIMESTAMP as o_year l_orderdate ,
+      type TIMESTAMP as o_year $K1 ,
       type DECIMAL as amount ) amount sum"
     | combined 0
     | next
@@ -167,7 +165,6 @@ stage G_SUM_O on origin :
 end ;
 
 rows: 1126
-*/
 
 //------------------------------------------------------------------------------
 // drop the tables
