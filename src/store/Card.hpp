@@ -252,7 +252,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card(eCK eCard);
-    Card(eCK eCard, Symbol* pSymbol);
+    Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties=true);
     Card(eCK eCard, Stz* szSymbol, eSF eSymbol);
     void vInit(eCK eCard);
 

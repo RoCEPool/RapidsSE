@@ -39,7 +39,7 @@ Card::Card(eCK eCard)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eCard, Symbol* pSymbol)
+Card::Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
     : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -48,7 +48,8 @@ Card::Card(eCK eCard, Symbol* pSymbol)
 
   m_xSymbol.vSet(pSymbol);
 
-  m_xSymbol.Y_vAll(pSymbol);
+  if (bCopyProperties)
+    m_xSymbol.Y_vAll(pSymbol);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

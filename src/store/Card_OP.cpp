@@ -268,7 +268,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
 
     Symbol xSymbol_stmColOdn;
     xSymbol_stmColOdn.vSetStreamOrdinal(nExpr_prior + i_Col);
-    p_term->vSymbol(xSymbol_stmColOdn.szSF_symbol());
+    p_term->vSymbol(&xSymbol_stmColOdn);
     p_term->vMark1(MARK_CHANGED);
 
     return C_CONTINUE_RECURSION;

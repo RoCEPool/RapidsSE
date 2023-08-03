@@ -78,7 +78,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
   if (pTerm_0->pSymbol()->bIsColumnOrdinal()) {
     char cTblSyn_term_0 = pTerm_0->pSymbol()->cExtractTableSynonym();
     if (cTblSyn_term_0 == cTblSyn_boundedTo) {
-      p_term = new Card_Term(xSymbol_idxColOdn.szSF_symbol());
+      p_term = new Card_Term(&xSymbol_idxColOdn);
       p_bound->vAppend(p_term);
       p_term = pTerm_1->pClone();
       p_bound->vAppend(p_term);
@@ -87,7 +87,7 @@ Card_Bound* Card_Bound::pCreateFrom_PRED(Card_PRED* p_PRED,
     if (pTerm_1->pSymbol()->bIsColumnOrdinal()) {
       char cTblSyn_term_1 = pTerm_1->pSymbol()->cExtractTableSynonym();
       if (cTblSyn_term_1 == cTblSyn_boundedTo) {
-        p_term = new Card_Term(xSymbol_idxColOdn.szSF_symbol());
+        p_term = new Card_Term(&xSymbol_idxColOdn);
         p_bound->vAppend(p_term);
         p_term = pTerm_0->pClone();
         p_bound->vAppend(p_term);

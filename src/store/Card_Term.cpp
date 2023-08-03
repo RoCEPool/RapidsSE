@@ -32,8 +32,8 @@ Card_Term::Card_Term(Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Term::Card_Term(Symbol* pSymbol)
-: Card(CK_TERM,pSymbol)
+Card_Term::Card_Term(Symbol* pSymbol, bool bCopyProperties)
+: Card(CK_TERM,pSymbol,bCopyProperties)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
