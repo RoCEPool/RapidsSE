@@ -219,8 +219,6 @@ rows: 6000
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  basic top
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TODO
-
 /optimise_passthru 
 pipeline Q
 begin
@@ -459,9 +457,6 @@ contains rows:
  (1.07,1498)
  (2.15,1499)
 
-
-// TODO V2 : RAY TO LOOK AT (_ray112)
-/*
 /optimise_passthru 
 pipeline Q3
 begin
@@ -509,7 +504,6 @@ contains rows:
   (1380,4.32)
   ( 393,4.33)
   (  21,4.34)
-*/
 
 // TODO V2 : ORDAGG
 /*
