@@ -526,8 +526,6 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
     eTE eTerm_next = p_term_next->eEvalTerm();
 
-    //vTrace("%s %s\n"_Stz, aTE[eTerm_next], p_term_next->szSF_symbol());
-
     switch (eTerm_next) {
 
       case TE_AND:

@@ -552,8 +552,6 @@ Card* Card::pFindSymbolRecursive(eCK eOfCard, Symbol* pSymbol, Card*& rpParent, 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  //vTrace("%s `%s`?`%s` %s\n"_Stz,__func__,szSymbol,szSF_symbol(),md_Bearing);
-
   if (eOfCard == m_eCard && bSameSymbol(pSymbol)) {
     rpParent = _pWalkParent_;
     return this;

@@ -191,9 +191,6 @@ void Board::vMorphAll_table_To_EEop(CardIter* pCI)
   pCI->vBeginEach();
   while (pCI->G_bEachMain(CK_TABLE)) {
 
-//    vTrace("MainCard %p : [%lld] %s %s\n"_Stz,
-//           pCI->G.p_table, pCI->G.p_table->i_Child(), aCK[pCI->G.p_table->eCard()], pCI->G.p_table->szSF_symbol());
-
     pCI->G.p_table->vMorph_table_To_EEop(pCI);
   }
 

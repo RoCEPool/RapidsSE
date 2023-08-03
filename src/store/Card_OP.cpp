@@ -121,91 +121,6 @@ void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
 
   pCI->G.p_OP->bApplyRecursive(CK_TERM, bfLambdaFn);
 }
-/*----------------------------------------------------------------------------*/
-//void Card_OP::vApply_lambdaFn_ToAll_term(CardIter* pCI,
-//                                         std::function<bool(Card* pCard)> bfLambdaFn)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-//
-//
-//  if (bIsCard(CK_INDEXSCAN) || bIsCard(CK_SCAN)) {
-//
-//  }
-//
-//  if (bIsCard(CK_PROJECT)) {
-//    if ((pCI->G.p_key = pSub_key()))
-//      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
-//    pCI->G.p_projection = pSub_projection();
-//    pCI->G.p_projection->bApplyRecursive(CK_TERM, bfLambdaFn);
-//  }
-//
-//  if (bIsCard(CK_FILTER) || bIsCard(CK_WHERE) || bIsCard(CK_HAVING)) {
-//    if (pCI->G.p_boolCalc = pSub_boolCalc())
-//      pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
-//    else
-//    if (pCI->G.p_rpnCalc = pSub_rpnCalc())
-//      pCI->G.p_rpnCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
-//  }
-//
-//  if (bIsCard(CK_AGGREG) && bIsPartitionLevel()) {
-//    pCI->G.p_projection = pSub_projection();
-//    pCI->G.p_projection->bApplyRecursive(CK_TERM, bfLambdaFn);
-//  }
-//
-//  if ((bIsCard(CK_GBYAGG) || bIsCard(CK_ORDAGG)) && bIsPartitionLevel()) {
-//    if ((pCI->G.p_key = pSub_key()))
-//      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
-//    pCI->G.p_projection = pSub_projection();
-//    pCI->G.p_projection->bApplyRecursive(CK_TERM, bfLambdaFn);
-//  }
-//
-//  if (bIsCard(CK_HASH)) {
-//    Card_HshCol *p_hshCol = pSub_hshCol();
-//    if (Card_Expr *p_expr_col =
-//        pCI->Prior.m_pProjection->pFindExpr(p_hshCol->pSymbol())) {
-//      p_hshCol->vSymbol(p_expr_col->szSF_symbol());
-//      p_hshCol->vMark1(MARK_CHANGED);
-//    }
-//  }
-//
-//  if (bIsCard(CK_INDEXJOIN)) {
-//    if ((pCI->G.p_key = pSub_key()))
-//      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
-//
-//    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
-//      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
-//        p_index_chosen->bApplyRecursive(CK_TERM, bfLambdaFn);
-//      }
-//    }
-//
-//    pCI->vPrintBoard(__LINE__);
-//    vDebugPoint();
-//  }
-//
-//  if (bIsCard(CK_KEYEXISTS) || bIsCard(CK_KEYNOTEXISTS)) {
-//    if (Card_IndexList* p_indexList_curr = pSub_indexList()) {
-//      if (Card_Index *p_index_chosen = p_indexList_curr->pFindChosenIndex()) {
-//        p_index_chosen->bApplyRecursive(CK_TERM, bfLambdaFn);
-//      }
-//    }
-//
-//    pCI->G.p_constraint = pSub_constraint();
-//    pCI->G.p_boolCalc = pCI->G.p_constraint->pSub_boolCalc();
-//    if (pCI->G.p_boolCalc)
-//      pCI->G.p_boolCalc->bApplyRecursive(CK_TERM, bfLambdaFn);
-//  }
-//
-//  if (bIsCard(CK_SORT)) {
-//    if ((pCI->G.p_key = pSub_key()))
-//      pCI->G.p_key->bApplyRecursive(CK_TERM, bfLambdaFn);
-//  }
-//
-//  if (pSymbol()->Y_bHas(P_BreakPt)) {
-//    //vDump();
-//    vDebugPoint();
-//  }
-//
-//}
 
 /*----------------------------------------------------------------------------*/
 /* convert colNm to stmCol                                                    */
@@ -318,10 +233,6 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
   {
     Card_Term* p_term = _pCard_Term(pCard);
 
-//    vTrace("CONVERT %s %s (%s %s)\n"_Stz,
-//           p_term->szSF_symbol(),p_term->szBearing(),
-//           szCardNm(),szBearing());
-
     if (pSymbol()->Y_bHas(P_BreakPt)) {
       vDump(__func__);
       vDebugPoint();
@@ -337,7 +248,6 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
         p_term->vSymbol(p_expr_col->szSymbol());
         p_term->vMark1(MARK_CHANGED);
 
-        //vTrace("  TO %s\n"_Stz,p_expr_col->szSF_symbol());
         return C_CONTINUE_RECURSION;
       }
     }
@@ -361,7 +271,6 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     p_term->vSymbol(xSymbol_stmColOdn.szSF_symbol());
     p_term->vMark1(MARK_CHANGED);
 
-    //vTrace("  TO %s\n"_Stz,xSymbol_stmColOdn.szSF_symbol());
     return C_CONTINUE_RECURSION;
   };
 
@@ -1328,21 +1237,6 @@ void Card_OP::vRpnKeyExists(Stz* szRpnExpr, Card_KeyExists* pCard_KeyExists)
     szRpnExpr->vCatSprint(" %s"_Stz, xCI.G.p_bound->szSymbol());
 
   }
-
-
-//  Card_Constraint *pCard_constraint = pCard_Index->pSub_constraint();
-//  if (! pCard_constraint) {
-//    return;
-//  }
-//
-//  szRpnConstraint->vConcat(" type BOOLEAN"_Stz);
-//
-//  Card_RpnCalc *pCard_RpnCalc = pCard_Index->pSub_rpnCalc();
-//  CardIter xCI_rpnCalc(pCard_RpnCalc);
-//  while (xCI_rpnCalc.G_bEachMain(CK_TERM)) {
-//    szRpnConstraint->vCatSprint(" %s"_Stz, xCI_rpnCalc.G.p_term->szSF_symbol());
-//  }
-
 }
 
 /*----------------------------------------------------------------------------*/
