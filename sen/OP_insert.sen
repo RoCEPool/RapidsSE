@@ -141,17 +141,22 @@
   [grid].thisNodeId@ [job].originNodeId@ ==
   or if
 
-    C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
+    // Don't emit an infoset if the values are all zeros
+    rowCounts[].areAllZeros not if
 
-    // create an infoSet operand
-    infoSetTable[] InfoSet[].new
-    OI_AFFECTEDROWS InfoSet[].opInfoset!
+      C_TDEF_AFFECTEDROWS op__tableDef_infoSet assert
 
-    // insert row counts to the infoset
-    rowCounts[].getCounters@@ rowCounts[].numCounters InfoSet[].addRowVargs
+      // create an infoSet operand
+      infoSetTable[] InfoSet[].new
+      OI_AFFECTEDROWS InfoSet[].opInfoset!
 
-    // pipeout the infoset
-    InfoSet[].pipeOut
+      // insert row counts to the infoset
+      rowCounts[].getCounters@@ rowCounts[].numCounters InfoSet[].addRowVargs
+
+      // pipeout the infoset
+      InfoSet[].pipeOut
+
+    then
   then
 
   PipeIn[].pipeOut

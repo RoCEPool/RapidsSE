@@ -1768,6 +1768,7 @@ void vJobIdLastJobIdFetch(void);
   void vRowCountsAddInserted(void);
   void vRowCountsAddUpdated(void);
   void vRowCountsAddDeleted(void);
+  void vRowCountsAreAllZeros(void);
   void vRowCountsGetAllCounts(void);
   void vRowCountsGetNumCounters(void);
 
@@ -2460,6 +2461,7 @@ void vJobIdLastJobIdFetch(void);
   // toKeyHshRow
   void vToKeyHshRowCompleted(void);
   void vToKeyHshRowCountersFetch(void);
+  void vToKeyHshRowCountersZero(void);
   void vToKeyHshRowCsvToRow(void);
   void vToKeyHshRowDangling(void);
   void vToKeyHshRowDelete(void);

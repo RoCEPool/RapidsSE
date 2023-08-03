@@ -77,12 +77,14 @@
   // -- -- -- -- -- --
   // pipeout load results
   /*
-  infoSetTable[] InfoSet[].new
-  OI_AFFECTEDROWS InfoSet[].opInfoset!
-  
-  0 0 0 toKeyHshRow[].counters@@ 6 InfoSet[].addRowVargs
+  ToKeyHshRow[].countersAreZero not if
+    infoSetTable[] InfoSet[].new
+    OI_AFFECTEDROWS InfoSet[].opInfoset!
 
-  InfoSet[].pipeOut
+    0 0 0 toKeyHshRow[].counters@@ 6 InfoSet[].addRowVargs
+
+    InfoSet[].pipeOut
+  then
 */
 
   // -- -- -- -- -- --
