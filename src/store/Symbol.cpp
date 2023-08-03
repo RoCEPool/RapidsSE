@@ -60,9 +60,13 @@ Symbol::Symbol(Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  vSet(pSymbol);
+  m_eSymbol = SF_NONE;
+  m_pProperties = nullptr;
 
   _checkInitialised_(CN_SYMBOL);
+
+  vSet(pSymbol);
+
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 }
@@ -1455,6 +1459,25 @@ void Symbol::vSetTableSyn(char cTblSyn)
   RASSERT(bIsTableSyn());
 #endif
 }
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-synonym                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSetReplicateTblSyn(void)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  char cTableSyn_actual = cSF_char();
+  cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+
+  vSprint("%c"_Stz, cTableSyn_actual);
+  m_eSymbol = SF_TBLSYN;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsTableSyn());
+#endif
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-column                                      */

@@ -562,19 +562,14 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  Symbol xSymbol_actual(pSymbol_tableSyn);
+
   Card_TableNm* p_tableNm = this->pSub_tableNm();
-
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
-
-  //char cTableSyn_actual = *acTableSyn;
-  char cTableSyn_actual = pSymbol_tableSyn->cSF_char();
   if (pTable->bIsReplicated())
-    cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
+    xSymbol_actual.vSetReplicateTblSyn();
 
-  Symbol xSymbol_tblSyn;
-  xSymbol_tblSyn.vSetTableSyn(cTableSyn_actual);
-
-  this->vSymbol(&xSymbol_tblSyn);
+  this->vSymbol(&xSymbol_actual);
   this->vMark1(MARK_CHANGED);
 
   pSymbol_tableSyn->vIncTblSyn();
