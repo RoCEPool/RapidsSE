@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* _ray117                                                                    */
+/*============================================================================*/
+
+// NOTE: Optimiser to detect haspOP and no hashcast
+
+__TPCH_SCHEMA_LOAD_SF0001
+
+/weaved
+/optimise_passthru
+pipeline Q
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | project " type INTEGER as l_orderkey $1 , type INTEGER as l_partkey $2 "
+    | hash "type INTEGER $1"
+    | combined 0
+    | next
+
+  stage last on origin :
+     output
+     | sink
+     | first
+
+end ;
+
+//failure contains: 'EC_INVALID_PIPELINE'
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
