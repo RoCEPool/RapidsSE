@@ -36,11 +36,9 @@ namespace STORE
     bool bIsUBound(void);
 
     Card_Term* pGet_idxColOdn(void);
-    Stz* szGet_idxColOdn(void);
 
     Card_Term* pGet_colOdn(void);
     Card_Term* pGet_tblColOdn(void);
-    Stz* szGet_tblColOdn(void);
 
     void vValidate(CardIter* pCI, i8 iDepth, Card* pParent);
   };

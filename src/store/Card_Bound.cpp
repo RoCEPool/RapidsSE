@@ -301,21 +301,6 @@ Card_Term* Card_Bound::pGet_idxColOdn(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get $In of ebound                                                          */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Bound::szGet_idxColOdn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM))
-    if (xCI.G.p_term->pSymbol()->bIsIndexColumn())
-      return xCI.G.p_term->szSymbol();
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get $n or $t.c of ebound                                                   */
 /*----------------------------------------------------------------------------*/
 Card_Term* Card_Bound::pGet_colOdn(void)
@@ -359,21 +344,6 @@ bool Card_Bound::bUsesSqyRsl(void)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* get $t.c of ebound                                                         */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Bound::szGet_tblColOdn(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  CardIter xCI(this);
-  while (xCI.G_bEachMain(CK_TERM))
-    if (xCI.G.p_term->pSymbol()->bIsColumnOrdinal())
-      return xCI.G.p_term->szSymbol();
-
-  return nullptr;
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

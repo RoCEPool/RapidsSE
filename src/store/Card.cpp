@@ -1193,7 +1193,7 @@ bool Card::bSameSymbol(Card* pArg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  if (szSymbol()->bSame(pArg->szSymbol()))
+  if (m_xSymbol.bSame(pArg->pSymbol()))
     return true;
 
   return false;
