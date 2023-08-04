@@ -52,22 +52,28 @@ void vAntiJoinEnd(Dynamic_T* aDynamicT) {
   RowInfo __ROW_INFO_FROM__;
 
   __L_LABEL_INDEX_DEREF__:
-  __L_LABEL_LOOP__:
+  __L_LABEL_OUTER_LOOP__:
 
   // marker-start
   if ( aDynamicT->m_iProcessRow ) {
-#ifdef WITH_CLANG
 
     aDynamicT->m_iProcessRow = 0;
-
-    // move to next entry
-    aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
-        &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
-#endif
-    goto __L_LABEL_INDEX_DEREF__;
+    goto __L_LABEL_OUTER_LOOP__;
   }
   else {
-    aDynamicT->m_iProcessRow = 1;
+
+    if ( ! aDynamicT->m_xIndexInfoJ.m_aEntInt  ||
+           (aDynamicT->m_xIndexInfoJ.m_aEntInt == aDynamicT->m_xIndexInfoJ.m_aEntUpper)) {
+      aDynamicT->m_iProcessRow = 1;
+    }
+    else {
+#ifdef WITH_CLANG
+      // move to next entry
+      aDynamicT->m_xIndexInfoJ.m_aEntInt = (struct Ent_int*)aExtern_EntBufferNextEntry(
+          &aDynamicT->m_xIndexInfoJ.m_aEntBuffer, aDynamicT->m_xIndexInfoJ.m_aEntInt);
+#endif
+      goto __L_LABEL_INDEX_DEREF__;
+    }
   }
 
 // marker-end
@@ -89,7 +95,8 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  // init indexJoin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialize indexJoin
   if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
 #ifdef WITH_CLANG
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
@@ -127,7 +134,8 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 
   // marker-start
 
-  // init indexJoin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialize indexJoin
   if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
 #ifdef WITH_CLANG
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
