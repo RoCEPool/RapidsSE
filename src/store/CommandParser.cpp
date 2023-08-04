@@ -379,8 +379,8 @@ antlrcpp::Any CommandParser::visitStatementChoice(Parser::sqlParser::StatementCh
   else if (pCtx->fileCmd())           { m_szProcName = nullptr;              return visitChildren(pCtx); }
   else if (pCtx->noopCmd())           { m_szProcName = "noop"_Stz;           return nullptr; }
   else if (pCtx->emptyCmd())          { m_szProcName = C_EMPTY_CMD;          return nullptr; }
-
-  else                            { NOT_IMPLEMENTED_YET }
+  else if (pCtx->children.empty())    { m_szProcName = C_EMPTY_CMD;          return nullptr; }
+  else                                { NOT_IMPLEMENTED_YET }
 
   // NOTE:
   // the load/dload commands that accept multiple paths need to convert these
