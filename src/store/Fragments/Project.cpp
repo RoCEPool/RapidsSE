@@ -37,10 +37,6 @@ void vProjectBegin(Dynamic_T* aDynamicT) {
 
 __L_LABEL__:
 
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
   // Process row ?
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
