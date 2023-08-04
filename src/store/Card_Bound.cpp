@@ -36,7 +36,7 @@ Card_Bound::Card_Bound(Stz* szRelnOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vSymbol(szRelnOp);
+  vSymbol(Symbol(szRelnOp,SF_OTHER));
 
   _checkInitialised_(CN_CARD);
 
@@ -127,21 +127,21 @@ Card_Bound* Card_Bound::pBound_New(Stz* szRelnOp)
 
   if (szRelnOp->bSame(">"_Stz) || szRelnOp->bSame(">="_Stz)) {
     Card_Bound* p_lBound =  new Card_Bound(szRelnOp);
-    p_lBound->vSymbol(szRelnOp);
+    p_lBound->vSymbol(Symbol(szRelnOp,SF_OTHER));
     //p_lBound->vAppend(p_term_bound);
     return p_lBound;
   }
 
   if (szRelnOp->bSame("<"_Stz) || szRelnOp->bSame("<="_Stz)) {
     Card_Bound* p_uBound =  new Card_Bound(szRelnOp);
-    p_uBound->vSymbol(szRelnOp);
+    p_uBound->vSymbol(Symbol(szRelnOp,SF_OTHER));
     //p_uBound->vAppend(p_term_bound);
     return p_uBound;
   }
 
   if (szRelnOp->bSame("=="_Stz)) {
     Card_Bound* p_eBound =  new Card_Bound(szRelnOp);
-    p_eBound->vSymbol(szRelnOp);
+    p_eBound->vSymbol(Symbol(szRelnOp,SF_OTHER));
     //p_eBound->vAppend(p_term_bound);
     return p_eBound;
   }

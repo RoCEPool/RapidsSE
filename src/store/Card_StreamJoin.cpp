@@ -207,7 +207,7 @@ i8 Card_StreamJoin::nEstJoinCost(i8 i_Permutation,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_JoinCast* p_joinCast = new Card_JoinCast;
-  p_joinCast->vSymbol(aXK[eJoinCast]);
+  p_joinCast->vSymbol(Symbol(aXK[eJoinCast],SF_OTHER));
 
   Card_CostUnicast*  p_costUnicast  = new Card_CostUnicast;
   Card_CostNetwork*  p_costNetwork  = new Card_CostNetwork;

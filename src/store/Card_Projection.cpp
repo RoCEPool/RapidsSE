@@ -90,7 +90,7 @@ void Card_Projection::vAdjust_Wrt_key(Card_Key* p_key)
     if (! p_expr_sole_key)
       continue;
 
-    pSymbol_expr_sole->vSet(p_expr_sole_key->pSymbol());
+    pSymbol_expr_sole->vUpdate(p_expr_sole_key->pSymbol());
   }
 }
 

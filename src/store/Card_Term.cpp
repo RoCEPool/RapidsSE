@@ -272,7 +272,7 @@ Card_Term* Card_Term::pClone(Symbol* pDiffSymbol)
 
   Card_Term* p_term_clone = pClone();
 
-  p_term_clone->pSymbol()->vSet(pDiffSymbol);
+  p_term_clone->pSymbol()->vUpdate(pDiffSymbol);
 
   return p_term_clone;
 }
@@ -392,9 +392,12 @@ bool Card_Term::bSameAs(Card_Term* p_term_arg)
 /*----------------------------------------------------------------------------*/
 /* validate                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent) {
+void Card_Term::vValidate(CardIter* pCI, i8 iDepth, Card* pParent)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+//  if (m_xSymbol.bIsStreamOrdinal() || m_xSymbol.bIsColumnOrdinal())
+//    RASSERT(m_xSymbol.Y_bHas(P_Type));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,7 +413,7 @@ void Card_Term::vCorrectStmOdn(Card_Projection* p_projection_prior)
 
   Symbol* pSym = pSymbol();
   if (Card_Expr* p_expr = p_projection_prior->pFindExprOfSymbol(pSym)) {
-    pSym->vSet(p_expr->pSymbol());
+    pSym->vUpdate(p_expr->pSymbol());
   }
 }
 

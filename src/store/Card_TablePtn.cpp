@@ -65,7 +65,7 @@ Card_TablePtn* Card_TablePtn::pDerive(Card_Table* p_table)
   Card_TablePtn* p_tablePtn = new Card_TablePtn;
   Symbol xSymbol_tablePtn;
   xSymbol_tablePtn.vSetTableColOrdinal(cTableSyn, iStmColNo + 1);
-  p_tablePtn->pSymbol()->vSet(&xSymbol_tablePtn);
+  p_tablePtn->pSymbol()->vUpdate(&xSymbol_tablePtn);
 
   return p_tablePtn;
 }

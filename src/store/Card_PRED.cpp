@@ -371,17 +371,17 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     pCI->vPrintBoard(__LINE__);
 
-    vSymbol("=="_Stz);
+    vSymbol(Symbol("=="_Stz,SF_OTHER));
 
     Card_Term* p_term_one = _pCard_Term(pGetChild(1));
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_one->szSymbol())); //temp
 
     Symbol x_Symbol_stmCol1;
     if (p_term)
-      x_Symbol_stmCol1.vSet(p_term->pSymbol());
+      x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
     else
       x_Symbol_stmCol1.vSetStreamOrdinal(1);
-    p_term_one->pSymbol()->vSet(&x_Symbol_stmCol1);
+    p_term_one->pSymbol()->vUpdate(&x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
         pCI->Prior.m_pProjection->pGetExpr(0);
@@ -394,7 +394,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bSameSymbol("in"_Stz)) {
 
-    vSymbol("=="_Stz);
+    vSymbol(Symbol("=="_Stz,SF_OTHER));
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
@@ -405,10 +405,10 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
     Symbol x_Symbol_stmCol1;
     if (p_term)
-      x_Symbol_stmCol1.vSet(p_term->pSymbol());
+      x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
     else
       x_Symbol_stmCol1.vSetStreamOrdinal(1);
-    p_term_head->pSymbol()->vSet(&x_Symbol_stmCol1);
+    p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
         pCI->Prior.m_pProjection->pGetExpr(0);
@@ -422,7 +422,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
 
   if (bSameSymbol("notIn"_Stz)) {
 
-    vSymbol("=="_Stz);
+    vSymbol(Symbol("=="_Stz,SF_OTHER));
 
     Card_Term* p_term_popped = _pCard_Term(pPopChild());
     ASSERT(pCI->m_pBench->bIsSubQueryNm(p_term_popped->szSymbol())); //temp
@@ -434,10 +434,10 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     Symbol x_Symbol_stmCol1;
     x_Symbol_stmCol1.vSetStreamOrdinal(1);
     if (p_term)
-      x_Symbol_stmCol1.vSet(p_term->pSymbol());
+      x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
     else
       x_Symbol_stmCol1.vSetStreamOrdinal(1);
-    p_term_head->pSymbol()->vSet(&x_Symbol_stmCol1);
+    p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
     return;
   }
 

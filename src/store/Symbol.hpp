@@ -18,6 +18,7 @@ namespace STORE
     eSF     m_eSymbol;
     s256    m_sSymbol;
     TagSet* m_pProperties;
+    bool    m_bSet;
 
   protected:
     // must be last
@@ -25,6 +26,7 @@ namespace STORE
 
   public:
     Symbol(void);
+    Symbol(i8 iNumber, eSF eSymbol);
     Symbol(Stz* szSymbol, eSF eSymbol);
     Symbol(Symbol* pSymbol);
     ~Symbol(void);
@@ -118,7 +120,6 @@ namespace STORE
     bool bSame(Stz* szArg);
     bool bSame(Symbol* pArg);
 
-    void vSet(Symbol* pSymbol);
     void vSet(eSF eSymbol, Stz* szSymbol);
     void vSet_asName(Stz* szAsNm);
     void vSet_colNm(Stz* szColNm);
@@ -142,6 +143,9 @@ namespace STORE
     char cSF_synonym(void);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
+
+    void vUpdate(Stz* szSymbol);
+    void vUpdate(Symbol* pSymbol, bool bUpdateProperties=false);
 
     Stz* szWhatIs(void);
 

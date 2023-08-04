@@ -475,7 +475,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
 
           Symbol x_Symbol_stmCol1;
           x_Symbol_stmCol1.vSetStreamOrdinal(1);
-          xCI.G.p_MainCard->pSymbol()->vSet(&x_Symbol_stmCol1);  // TODO: hack!!
+          xCI.G.p_MainCard->pSymbol()->vUpdate(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =
               pCI->Prior.m_pProjection->pGetExpr(0);
@@ -495,7 +495,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
           Card_Expr* p_expr_otr = pCI->pExpr_For_colNm(p_term);
           //p_expr_otr->vDump();
           Stz* szProjectedCol = p_expr_otr->pGetTerm(0)->szSymbol();
-          xCI.G.p_MainCard->vSymbol(szProjectedCol);  // TODO: hack!!
+          xCI.G.p_MainCard->vSymbol(Symbol(szProjectedCol,SF_OTHER));  // TODO: hack!!
 
           DELETE_CARD(p_term);
         }

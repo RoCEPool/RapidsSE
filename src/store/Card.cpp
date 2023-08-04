@@ -46,7 +46,7 @@ Card::Card(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
 
   vInit(eCard);
 
-  m_xSymbol.vSet(pSymbol);
+  m_xSymbol.vUpdate(pSymbol);
 
   if (bCopyProperties)
     m_xSymbol.Y_vAll(pSymbol);
@@ -65,7 +65,7 @@ Card::Card(eCK eCard, Stz* szSymbol, eSF eSymbol)
 
   vInit(eCard);
 
-  vSymbol(szSymbol,eSymbol);
+  vSymbol(Symbol(szSymbol,eSymbol));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,6 +406,8 @@ void Card::vColType(Card* pCard_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
+  //pCard_arg->vDump(__func__);
+
   m_xSymbol.Y_vSet(P_Type, pCard_arg->pSymbol()->szColType());
 }
 
@@ -451,7 +453,7 @@ Card* Card::pDupCard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->pSymbol()->vSet(pSymbol());
+  pCard_dup->pSymbol()->vUpdate(pSymbol());
 
   return pCard_dup;
 }
@@ -464,7 +466,7 @@ Card* Card::pDupCardRecursive(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card* pCard_dup = new Card(m_eCard);
-  pCard_dup->pSymbol()->vSet(pSymbol());
+  pCard_dup->pSymbol()->vUpdate(pSymbol(),true);
 
   i8 nSubCards = this->nChildCards();
   for (i8 i_Child = 0; i_Child < nSubCards; i_Child++) {
@@ -1248,13 +1250,13 @@ Stz* Card::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vSymbol(Stz* szSymbol, eSF eSymbol)
+void Card::vSymbol(Symbol xSymbol_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.vSet(eSymbol,szSymbol);
+  m_xSymbol.vUpdate(&xSymbol_arg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1266,7 +1268,7 @@ void Card::vSymbol(Symbol* pSymbol_arg)
 
   //RASSERT(! *m_xSymbol.m_sSymbol.azChar());
 
-  m_xSymbol.vSet(pSymbol_arg);
+  m_xSymbol.vUpdate(pSymbol_arg);
 }
 
 
@@ -1286,7 +1288,7 @@ bool Card::bUpdateSymbolRecursive(eCK eSub, Symbol* pSymbol, Symbol* pWith)
     if (! pCard->bSameSymbol(pSymbol))
       return C_CONTINUE_RECURSION;
 
-    pCard->m_xSymbol.vSet(pWith);
+    pCard->m_xSymbol.vUpdate(pWith,true);
 
     bReplaced = true;
 

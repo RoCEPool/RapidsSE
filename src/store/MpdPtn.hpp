@@ -56,7 +56,7 @@ class MpdPtn : public SEtype
   i8   iPtnNo(void);
   void vPtnNo(i8 iPtnNo);
 
-  //void vSet(LglPtn tLglPtn, i8 iNodeId, i8 iPtnNo);
+  //void vUpdate(LglPtn tLglPtn, i8 iNodeId, i8 iPtnNo);
 
   bool bValid(void);
 };

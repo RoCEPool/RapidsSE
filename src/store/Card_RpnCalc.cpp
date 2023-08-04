@@ -150,7 +150,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       if (p_term_next->bSameSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->vSymbol("notExists"_Stz);
+        p_term->vSymbol(Symbol("notExists"_Stz,SF_OTHER));
         continue;
       }
       continue;
@@ -163,7 +163,7 @@ void Card_RpnCalc::vConvert_sqyOp_not_To_notSqyOp(void)
       if (p_term_next->bSameSymbol("not"_Stz)) {
         xCI.vRewind();
         this->vRemoveChild(p_term_next);
-        p_term->vSymbol("notIn"_Stz);
+        p_term->vSymbol(Symbol("notIn"_Stz,SF_OTHER));
         DELETE_CARD(p_term_next);
         continue;
       }
@@ -217,8 +217,10 @@ void Card_RpnCalc::vEnsureTypesFor_stmOdn(CardIter* pCI)
     if (xTerm.p_term()->bIsKeyOdn())
       p_expr_found = pCI->G.p_key->pGetExpr(iOdn - 1);
     else
-    if (xTerm.p_term()->bIsStmOdn())
+    if (xTerm.p_term()->bIsStmOdn()) {
+      //pCI->Prior.m_pProjection->vDump(__func__);
       p_expr_found = pCI->Prior.m_pProjection->pGetExpr(iOdn - 1);
+    }
     else
       continue;
 
@@ -579,7 +581,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <cmpPred><termSeries><boolCalc>
         RASSERT(p_TermSeries->nChildCards() > 0);
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vSymbol(p_term_next->szSymbol());
+        p_cmpPred->vSymbol(Symbol(p_term_next->szSymbol(),SF_OTHER));
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsRelnOp())
         //p_cmpPred->vDump();
@@ -604,7 +606,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
       case TE_NOTEXISTS:
         // <boolCalc> = <exists><boolCalc>
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vSymbol(p_term_next->szSymbol());
+        p_cmpPred->vSymbol(Symbol(p_term_next->szSymbol(),SF_OTHER));
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsSubQueryOp())
         p_boolCalc->vAppend(p_cmpPred);
@@ -617,7 +619,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vSymbol(p_term_next->szSymbol());
+          p_cmpPred->vSymbol(Symbol(p_term_next->szSymbol(),SF_OTHER));
           p_cmpPred->vTransferChildren(p_TermSeries);
           p_boolCalc->vAppend(p_cmpPred);
           RASSERT(p_cmpPred->bIsSubQueryOp())
@@ -627,7 +629,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vSymbol("in"_Stz);
+          p_cmpPred->vSymbol(Symbol("in"_Stz,SF_OTHER));
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -641,7 +643,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         // <boolCalc> = <in><boolCalc>
         if (p_TermSeries->bIsInList()) {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vSymbol("in"_Stz);
+          p_cmpPred->vSymbol(Symbol("in"_Stz,SF_OTHER));
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsBoolFn())
           p_boolCalc->vAppend(p_cmpPred);
@@ -658,7 +660,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
         }
         else {
           p_cmpPred = new Card_CmpPred;
-          p_cmpPred->vSymbol(p_term_next->szSymbol());
+          p_cmpPred->vSymbol(Symbol(p_term_next->szSymbol(),SF_OTHER));
           p_cmpPred->vTransferChildren(p_TermSeries);
           RASSERT(p_cmpPred->bIsSubQueryOp())
           p_boolCalc->vAppend(p_cmpPred);
@@ -670,7 +672,7 @@ Card_BoolCalc* Card_RpnCalc::pToBoolCalc(CardIter* pCI)
 
       case TE_BOOLFN:
         p_cmpPred = new Card_CmpPred;
-        p_cmpPred->vSymbol(p_term_next->szSymbol());
+        p_cmpPred->vSymbol(Symbol(p_term_next->szSymbol(),SF_OTHER));
         p_cmpPred->vTransferChildren(p_TermSeries);
         RASSERT(p_cmpPred->bIsBoolFn())
         p_boolCalc->vAppend(p_cmpPred);

@@ -29,6 +29,25 @@ Symbol::Symbol(void)
 
   m_eSymbol = SF_NONE;
   m_pProperties = nullptr;
+  m_bSet = false;
+
+  _checkInitialised_(CN_SYMBOL);
+
+  _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Symbol::Symbol(i8 iNumber, eSF eSymbol)
+    : Object(CN_SYMBOL)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = iNumber;
+  m_eSymbol = eSymbol;
+  m_pProperties = nullptr;
+  m_bSet = true;
 
   _checkInitialised_(CN_SYMBOL);
 
@@ -46,6 +65,7 @@ Symbol::Symbol(Stz* szSymbol, eSF eSymbol)
   m_sSymbol = szSymbol;
   m_eSymbol = eSymbol;
   m_pProperties = nullptr;
+  m_bSet = true;
 
   _checkInitialised_(CN_SYMBOL);
 
@@ -65,7 +85,7 @@ Symbol::Symbol(Symbol* pSymbol)
 
   _checkInitialised_(CN_SYMBOL);
 
-  vSet(pSymbol);
+  vUpdate(pSymbol);
 
 
   _postcondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
@@ -1225,31 +1245,12 @@ bool Symbol::bSame(Symbol* pArg)
 /*----------------------------------------------------------------------------*/
 /* set this symbol using given symbol                                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet(Symbol* pSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  m_sSymbol = pSymbol->m_sSymbol;
-  m_eSymbol = pSymbol->m_eSymbol;
-
-  if (pSymbol->m_pProperties) {
-    if (! m_pProperties)
-      m_pProperties = new TagSet;
-    m_pProperties->vCopy(pSymbol->m_pProperties);
-  }
-  else
-  if (m_pProperties) {
-    delete m_pProperties;
-    m_pProperties = nullptr;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* set this symbol using given symbol                                         */
-/*----------------------------------------------------------------------------*/
 void Symbol::vSet(eSF eSymbol, Stz* szSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  RASSERT(! m_bSet);
+  m_bSet = true;
 
   m_sSymbol = szSymbol;
   m_eSymbol = eSymbol;
@@ -1261,6 +1262,9 @@ void Symbol::vSet(eSF eSymbol, Stz* szSymbol)
 void Symbol::vSet_asName(Stz* szAsNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   m_sSymbol = szAsNm;
   m_eSymbol = SF_ASNAME;
@@ -1277,6 +1281,9 @@ void Symbol::vSet_colNm(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+  RASSERT(! m_bSet);
+  m_bSet = true;
+
   m_sSymbol = szColNm;
   m_eSymbol = SF_COLNM;
 }
@@ -1288,6 +1295,9 @@ void Symbol::vSet_colNm(Stz* szColNm)
 void Symbol::vSetCrossRef(i8 iCrossRef)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   vSprint("#%lld"_Stz, iCrossRef);
   m_eSymbol = SF_XREFNO;
@@ -1304,6 +1314,9 @@ void Symbol::vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
   vSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
   m_eSymbol = SF_DASCNE;
 
@@ -1318,6 +1331,9 @@ void Symbol::vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol)
 void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   vSprint("$I%lld"_Stz, iIdxColOdn);
   m_eSymbol = SF_IDXCOL;
@@ -1334,6 +1350,9 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
   vSprint("$K%lld"_Stz, iKeyOdn);
   m_eSymbol = SF_KEYCOL;
 
@@ -1349,7 +1368,10 @@ void Symbol::vSet_number(i8 iNumber)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-   m_sSymbol = iNumber;
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = iNumber;
   m_eSymbol = SF_NUMBER;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1363,6 +1385,9 @@ void Symbol::vSet_number(i8 iNumber)
 void Symbol::vSet_other(Stz* szOther)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   m_sSymbol = szOther;
   m_eSymbol = SF_OTHER;
@@ -1379,6 +1404,9 @@ void Symbol::vSet_parameterOrdinal(i8 iNumber)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
   vSprint("%%%lld"_Stz, iNumber);
   m_eSymbol = SF_PRMCOL;
 
@@ -1394,6 +1422,9 @@ void Symbol::vSet_stageNo(i8 iStageNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
   vSprint("S%02lld"_Stz, iStageNo);
   m_eSymbol = SF_OTHER;
 }
@@ -1404,6 +1435,9 @@ void Symbol::vSet_stageNo(i8 iStageNo)
 void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   vSprint("$%lld"_Stz, iStmColOdn);
   m_eSymbol = SF_STMCOL;
@@ -1420,6 +1454,9 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
   vSprint("__sq%02lld"_Stz, iSqNo);
   m_eSymbol = SF_SQRYNO;
 
@@ -1434,6 +1471,9 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 void Symbol::vSetSyntheticAs(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   vSprint("COL%lld"_Stz, iAsNo);
   m_eSymbol = SF_SASCNM;
@@ -1452,6 +1492,9 @@ void Symbol::vSetTableSyn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
   vSprint("%c"_Stz, cTblSyn);
   m_eSymbol = SF_TBLSYN;
 
@@ -1466,6 +1509,9 @@ void Symbol::vSetTableSyn(char cTblSyn)
 void Symbol::vSetReplicateTblSyn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   char cTableSyn_actual = cSF_synonym();
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
@@ -1485,6 +1531,9 @@ void Symbol::vSetReplicateTblSyn(void)
 void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
 
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
   m_eSymbol = SF_TBLCOL;
@@ -1552,6 +1601,44 @@ bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
   va_end(xArgs);
 
   return bMustHave;
+}
+
+/*----------------------------------------------------------------------------*/
+/* what is this symbol?                                                       */
+/*----------------------------------------------------------------------------*/
+void Symbol::vUpdate(Stz* szSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = szSymbol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol using given symbol                                         */
+/*----------------------------------------------------------------------------*/
+void Symbol::vUpdate(Symbol* pSymbol, bool bUpdateProperties)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  m_sSymbol = pSymbol->m_sSymbol;
+  m_eSymbol = pSymbol->m_eSymbol;
+
+  if (! bUpdateProperties)
+    return;
+
+  if (pSymbol->m_pProperties) {
+    if (! m_pProperties)
+      m_pProperties = new TagSet;
+    m_pProperties->vCopy(pSymbol->m_pProperties);
+  }
+  else
+  if (m_pProperties) {
+    delete m_pProperties;
+    m_pProperties = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

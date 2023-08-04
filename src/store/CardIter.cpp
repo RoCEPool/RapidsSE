@@ -1549,39 +1549,7 @@ void CardIter::G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember)
 
   G_vNewMember(eMember, bUpdateMember);
 
-  G.p_NEW->vSymbol(szValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMemberBefore(eCK eMember, Stz* szValue,
-                                  eCK eBefore, bool bUpdateMember)
-{
-  _precondition_( _MAGIC_, _FOOTER_);
-
-  G_vNewMember(eMember, bUpdateMember);
-
-  G.p_NEW->vSymbol(szValue);
-
-  Card* p_before = G_pGetMember(eBefore);
-
-  G.pDeck->vInsertBefore(G.p_NEW,p_before);
-}
-
-/*----------------------------------------------------------------------------*/
-/* step to next main and set member                                           */
-/*----------------------------------------------------------------------------*/
-void CardIter::G_vNewMemberOf(eCK eMember, Stz* szValue,
-                              eCK eOf, bool bUpdateMember)
-{
-  _precondition_(_MAGIC_, _FOOTER_);
-
-  G_vNewMember(eMember, bUpdateMember);
-
-  G.p_NEW->vSymbol(szValue);
-
-  G_vAppendChild(eOf,eMember);
+  G.p_NEW->vSymbol(Symbol(szValue,SF_OTHER));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -138,8 +138,6 @@ namespace STORE
 
     void  G_vNewMember(eCK eMember, bool bUpdateMember= true);
     void  G_vNewMember(eCK eMember, Stz* szValue, bool bUpdateMember= true);
-    void G_vNewMemberBefore(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
-    void G_vNewMemberOf(eCK eMember, Stz* szValue, eCK eOf, bool bUpdateMember= true);
     Card* pNextChild(void);
     Card* pNextChildIf(eCK eCard);
     void vNullMembers(bool bNull_OP=true);
