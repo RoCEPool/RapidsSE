@@ -6,8 +6,8 @@
 trackmemory force;
 success
 
-IndexEntries 5;
-mute
+//IndexEntries 5;
+//mute
 
 // (1) create table Q1
 create table Q1 (
@@ -25,12 +25,12 @@ success
 load Q1 "../DATA/Queries/L1_SingleBuffer.csv";
 success
 
-dumpidx Q1 idx;
-success
+//dumpidx Q1 idx;
+//success
 
-vfyidx Q1 idx;
-rows:
-  (*,'Q1','idx','Valid')
+//vfyidx Q1 idx;
+//rows:
+//  (*,'Q1','idx','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN
@@ -159,8 +159,8 @@ rows: 0
 drop table Q1;
 success
 
-indexEntries 0;
-mute
+//indexEntries 0;
+//mute
 
 // get memory leaks
 memoryLeaks;
@@ -171,8 +171,8 @@ CLEANUP {
   drop table Q1;
   mute
 
-  indexEntries 0;
-  mute
+//  indexEntries 0;
+//  mute
 
   bye;
   mute

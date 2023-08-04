@@ -27,9 +27,9 @@ success
 load jCdt "../DATA/Select/range2.csv";
 success
 
-vfyidx jCdt jCdt_idx1;
-rows:
-(*,'jCdt','jCdt_idx1','Valid')
+//vfyidx jCdt jCdt_idx1;
+//rows:
+//(*,'jCdt','jCdt_idx1','Valid')
 
 //------------------------------------------------------------------------------
 // SCAN

@@ -5,8 +5,8 @@
 trackmemory force;
 success;
 
-indexEntries 200;
-success;
+//indexEntries 200;
+//success;
 
 // truncate where table does not exist
 truncate noTable;

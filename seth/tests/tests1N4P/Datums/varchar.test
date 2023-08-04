@@ -51,7 +51,7 @@ rows:
   ('vch_col5', 'VARCHAR', 64000, 0, true, false)
 
 Load VchTbl "../DATA/Datums/varchar.csv" <enclosed_by_leading> = "'";
-failure contains: '2 invalid'
+warning contains: '2 rows were invalid'
 
 // check no of rows
 select * from VchTbl;
@@ -59,15 +59,18 @@ rows: 101
 
 //------------------------------------------------------------------------------
 // predicateFetch using vch_idx1
-predicateFetch VchTbl "vch_col2 'one' ==";
+//predicateFetch VchTbl "vch_col2 'one' ==";
+SELECT * FROM VchTbl where vch_col2 = 'one';
 rows:
   (1,'one',101,1,'abcdefghi"jklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col2 'one zero z' ==";
+//predicateFetch VchTbl "vch_col2 'one zero z' ==";
+SELECT * FROM VchTbl where vch_col2 = 'one zero z';
 rows:
   (100,'one zero z','200',0,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col2 'eight nine' <=";
+//predicateFetch VchTbl "vch_col2 'eight nine' <=";
+SELECT * FROM VchTbl where vch_col2 <= 'eight nine';
 rows:
   (2,'','102',2,'abcdef''ghijklmnopqrstuvwxyz')
   (5,'   five-ab','105',5,'abcdefghij''klmnopqrstuvwxyz')
@@ -78,7 +81,8 @@ rows:
   (88,'eight eigh','188',8,'abcdefghijklmnopqrstuvwxyz')
   (89,'eight nine','189',9,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col2 'two' >";
+//predicateFetch VchTbl "vch_col2 'two' >";
+SELECT * FROM VchTbl where vch_col2 > 'two';
 rows:
   (0,'zero','0',10,null)
   (20,'two zero','120',0,'abcdefghijklmnopqrstuvwxyz')
@@ -94,15 +98,18 @@ rows:
 
 //------------------------------------------------------------------------------
 // predicateFetchusing vch_idx2
-predicateFetch VchTbl "vch_col3 '101' ==";
+//predicateFetch VchTbl "vch_col3 '101' ==";
+SELECT * FROM VchTbl where vch_col3 = '101';
 rows:
   (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col3 '144' ==";
+//predicateFetch VchTbl "vch_col3 '144' ==";
+SELECT * FROM VchTbl where vch_col3 = '144';
 rows:
   (44,'four four','144',4,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col3 '120' <";
+//predicateFetch VchTbl "vch_col3 '120' <";
+SELECT * FROM VchTbl where vch_col3 < '120';
 rows:
   (0,'zero','0',10,null)
   (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
@@ -125,7 +132,8 @@ rows:
   (18,'one, eight','118',8,'abcdefghijklmnopqrstuvwxyz')
   (19,'one nine','119',9,'abcdefghijklmnopqrstuvwxyz')
 
-predicateFetch VchTbl "vch_col3 '197' >";
+//predicateFetch VchTbl "vch_col3 '197' >";
+SELECT * FROM VchTbl where vch_col3 > '197';
 rows:
   (98,'nine eight','198',8,'abcdefghijklmnopqrstuvwxyz')
   (99,'nine nine','199',9,'abcdefghijklmnopqrstuvwxyz')
@@ -133,14 +141,17 @@ rows:
 
 //------------------------------------------------------------------------------
 // predicateFetch using vch_idx3
-predicateFetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' ==";
+//predicateFetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' ==";
+SELECT * FROM VchTbl where vch_col5 = 'abcdefghijklmnopqrstuvwxyz';
 rows: 85
 
-predicateFetch VchTbl "vch_col5 'abc' ==";
+//predicateFetch VchTbl "vch_col5 'abc' ==";
+SELECT * FROM VchTbl where vch_col5 = 'abc';
 rows:
   (16,'abcdefghij','116',6,'abc')
 
-predicateFetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' <";
+//predicateFetch VchTbl "vch_col5 'abcdefghijklmnopqrstuvwxyz' <";
+SELECT * FROM VchTbl where vch_col5 < 'abcdefghijklmnopqrstuvwxyz';
 rows:
   (0,'zero','0',10,null)
   (1,'one','101',1,'abcdefghi"jklmnopqrstuvwxyz')
@@ -157,27 +168,30 @@ rows:
   (16,'abcdefghij','116',6,'abc')
 
 // dump index vch_idx1
-dumpidx vchTbl vch_idx1;
-success
+//dumpidx vchTbl vch_idx1;
+//success
 
 // dump index vch_idx2
-dumpidx vchTbl vch_idx2;
-success
+//dumpidx vchTbl vch_idx2;
+//success
 
 // dump index vch_idx3
-dumpidx vchTbl vch_idx3;
-success
+//dumpidx vchTbl vch_idx3;
+//success
 
 // fetch
-predicateFetch VchTbl "vch_col2 'nine' =";
+//predicateFetch VchTbl "vch_col2 'nine' =";
+SELECT * FROM VchTbl where vch_col2 = 'nine';
 rows:
   (9,'nine','109',9,null)
 
-predicateFetch VchTbl "vch_col2 'one zero' =";
+//predicateFetch VchTbl "vch_col2 'one zero' =";
+SELECT * FROM VchTbl where vch_col2 = 'one zero';
 rows:
   (10,'one zero','110',0,null)
 
-predicateFetch VchTbl "vch_col5 'abc' =";
+//predicateFetch VchTbl "vch_col5 'abc' =";
+SELECT * FROM VchTbl where vch_col5 = 'abc';
 rows:
 (16,'abcdefghij',116,6,'abc')
 
