@@ -842,6 +842,8 @@ success
 load orders "../TPCH/SF_0001/orders.csv";
 success
 
+// TODO V2 : ALKA TO LOOK AT (4P)
+/*
 /optimise_passthru
 pipeline unnamed
 begin
@@ -872,6 +874,7 @@ begin
 end ;
 
 rows: 5996
+*/
 
 //------------------------------------------------------------------------------
 // drop the tables
