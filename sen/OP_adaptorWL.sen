@@ -100,6 +100,11 @@
 
   PipeIn[]\clear [op].pipeout
 
+  // Get a temporary copy of the socket so the AdaptorWL knows the client's
+  // IP and port
+  "<ansSocket>" [job].tagSet@ tagSet.hasName assert
+  <ansSocket> >int >ptr
+
   AdaptorWL[].new
   true
 ;

@@ -57,7 +57,7 @@ namespace STORE
 
     static Stz* aState[];
 
-    // Current State enum
+    s256         m_sClientAddr;
     apache::thrift::TBase* m_pCurrentMsg;
     i8           m_iCurrentMsgType;
     PayloadList* m_pPayloadSendList;
@@ -78,7 +78,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    AdaptorWL();
+    AdaptorWL(Stz* szClientAddr);
    ~AdaptorWL() noexcept(false);
   
     static void vRepair(Object* pObject);
@@ -146,6 +146,7 @@ namespace STORE
     void vErrorStateTransition(Stz* szFromState, Stz* szToState);
     void vErrorMessageNotSupported();
     void vErrorFeatureNotSupported(Stz* szFeature);
+    void vDisconnectClient(eEC eReason = EC_WL_SOCKET_CLOSED);
 
     // Helpers
     bool bQueryInProgress();

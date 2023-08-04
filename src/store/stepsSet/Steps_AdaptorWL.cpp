@@ -10,6 +10,7 @@
 
 #include "LogicUnit.hpp"
 #include "StreamSet.hpp"
+#include "Socket.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -53,7 +54,16 @@ void Step::vAdaptorWLNew(void)
 {
   ENTRY();
 
-  m_pLogicUnit->m_xpAdaptorWL = new AdaptorWL;
+  Socket* pSocket = _pSocket(m_pDataStack->pPopPtr(__func__));
+  ASSERT(pSocket);
+  ASSERT(pSocket->eGetClassNo() == CN_SOCKET);
+
+  s256 sClientAddr;
+  pSocket->vClientAddr(sClientAddr);
+
+  m_pLogicUnit->m_xpAdaptorWL = new AdaptorWL(sClientAddr.szStz());
+
+//  vTrace("Spawning wireline adaptor for client at %s\n"_Stz, sClientAddr.szStz());
 
   EXIT();
 }

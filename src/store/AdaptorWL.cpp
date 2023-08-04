@@ -111,11 +111,13 @@ __aFooterFunction(AdaptorWL)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-AdaptorWL::AdaptorWL(void)
+AdaptorWL::AdaptorWL(Stz* szClientAddr)
 : Object(CN_ADAPTORWL)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_ADAPTORWL, _FOOTER_);
+  ASSERT(szClientAddr);
 
+  m_sClientAddr.vCopy(szClientAddr);
   m_pCurrentMsg = nullptr;
   m_iCurrentMsgType = -1;
   m_pPayloadSendList = new PayloadList();
@@ -258,9 +260,8 @@ void AdaptorWL::vProcessWLMsg(void)
                               aEC2[eErrCode],
                               aErrorMsg[eErrCode],
                               sMsgType.c_str());
-      m_eProtocolError = EC_WL_PROTOCOL_ERROR;
-      m_eProtocolState = DISCONNECTED;
-      vCleanupCurrentMsg();
+
+      vDisconnectClient(EC_WL_PROTOCOL_ERROR);
       return;
   }
 
@@ -1070,9 +1071,8 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
                               "Error: %s: Received an unexpected wireline message type of %s."_Stz,
                               aErrorMsg[eErrCode],
                               sMsgType.c_str());
-      m_eProtocolError = EC_WL_PROTOCOL_ERROR;
-      m_eProtocolState = DISCONNECTED;
-      vCleanupCurrentMsg();
+
+      vDisconnectClient(EC_WL_PROTOCOL_ERROR);
       return;
   }
 
@@ -1089,9 +1089,8 @@ void AdaptorWL::vDeserialiseMsg(i8 iMessageType)
                             "%s: Unable to decode wireline message of type %s."_Stz,
                             aErrorMsg[eErrCode],
                             sMsgType.c_str());
-    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
-    m_eProtocolState = DISCONNECTED;
-    vCleanupCurrentMsg();
+
+    vDisconnectClient(EC_WL_PROTOCOL_ERROR);
   }
 
   vTrace("Decoded a wireline message of type: %s\n"_Stz, to_string(eMsgType).c_str());
@@ -1226,7 +1225,6 @@ void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType, b
 
     // Handle this situation by sending an error message and causing the client socket
     // to be closed.
-    m_eProtocolError = EC_WL_MSG_TOO_BIG; // This causes the socket closure.
     s2K sBuf;
     sBuf.vSprint("Error: %s; %s;"_Stz, aEC2[m_eProtocolError], aState[m_eProtocolError]);
 
@@ -1242,6 +1240,8 @@ void AdaptorWL::vSerialiseAndSendMsg(apache::thrift::TBase* pMsg, i8 iMsgType, b
       vTrace("Unable to serialise a simple ErrorResponse about a buffer being full.\n"_Stz);
       // Client will be disconnected anyway.
     }
+
+    vDisconnectClient(EC_WL_MSG_TOO_BIG);
     return;
   }
 
@@ -1319,8 +1319,8 @@ void AdaptorWL::vNextState(eState eNextState)
     vTrace("Wireline client is making an invalid transition from state %s to %s\n"_Stz,
            aState[m_eProtocolState], aState[eNextState]);
     vErrorStateTransition(aState[m_eProtocolState], aState[eNextState]);
-    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
-    m_eProtocolState = DISCONNECTED;
+
+    vDisconnectClient(EC_WL_PROTOCOL_ERROR);
     return;
   }
 
@@ -1400,7 +1400,7 @@ void AdaptorWL::vProcessProtocolCompatibleRequest()
 
     vSerialiseAndSendMsg(&oIncompatibleResponse, MessageTypes::type::ProtocolIncompatibleResponse);
 
-    m_eProtocolError = EC_WL_PROTOCOL_VER_NOT_SUPPORTED;
+    vDisconnectClient(EC_WL_PROTOCOL_VER_NOT_SUPPORTED);
     vNextState(DISCONNECTED);
     return;
   }
@@ -1429,7 +1429,7 @@ void AdaptorWL::vProcessDisconnectRequest()
   // Nothing to do in this message. We set m_eProtocolError to cause the socket
   // to be closed.
 
-  m_eProtocolError = EC_WL_SOCKET_CLOSED; // Cause the socket to be closed.
+  vDisconnectClient(EC_WL_SOCKET_CLOSED);
   vNextState(DISCONNECTED);
 }
 
@@ -1525,7 +1525,7 @@ void AdaptorWL::vProcessKerberosAuthenticationRequest()
 
   vErrorFeatureNotSupported("Kerberos authentication"_Stz);
 
-  m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
+  vDisconnectClient(EC_WL_FEATURE_NOT_SUPPORTED);
   vNextState(DISCONNECTED);
 
   //vNextState(KERBEROS_NEGOTIATING);
@@ -1551,7 +1551,7 @@ void AdaptorWL::vProcessGssNegotiationMsg()
 
   vErrorFeatureNotSupported("Kerberos authentication"_Stz);
 
-  m_eProtocolError = EC_WL_FEATURE_NOT_SUPPORTED;   // cause socket to disconnect
+  vDisconnectClient(EC_WL_FEATURE_NOT_SUPPORTED);
   vNextState(DISCONNECTED);
 
 //  vNextState(AUTHENTICATED);
@@ -1621,12 +1621,12 @@ void AdaptorWL::vProcessQueryExecuteRequest()
   if (pMsg->rowsPerRowDataResponse < 0) {
     // Sending this error before the QueryReceiptResponse ends the dialog
     Stz* szMsg = "Error: %s; %s; Message QueryExecuteRequest field rowsPerRowDataResponse cannot be negative. Current value: %lld"_Stz;
-    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
                             aEC2[m_eProtocolError],
                             aState[m_eProtocolError],
                             pMsg->rowsPerRowDataResponse);
+    vDisconnectClient(EC_WL_PROTOCOL_ERROR);
     vNextState(READY);
     return;
   }
@@ -1634,12 +1634,12 @@ void AdaptorWL::vProcessQueryExecuteRequest()
   if (pMsg->maxRowsToReturn < -1) {
     // Sending this error before the QueryReceiptResponse ends the dialog
     Stz* szMsg = "Error: %s; %s; Message QueryExecuteRequest field maxRowsToReturn cannot be less than -1. Current value: %lld"_Stz;
-    m_eProtocolError = EC_WL_PROTOCOL_ERROR;
     vSerialiseErrorResponse(m_eProtocolError,
                             szMsg,
                             aEC2[m_eProtocolError],
                             aState[m_eProtocolError],
                             pMsg->rowsPerRowDataResponse);
+    vDisconnectClient(EC_WL_PROTOCOL_ERROR);
     vNextState(READY);
     return;
   }
@@ -1843,8 +1843,7 @@ bool AdaptorWL::bCheckState(std::initializer_list<eState> eProtocolStates)
 
   // Disconnect the client. This will get picked up in OP_AdaptorWL and
   // will cause it to emit an error marker (EV_M_ERROR).
-  m_eProtocolError = eErrType;
-  m_eProtocolState = DISCONNECTED;
+  vDisconnectClient(eErrType);
 
   return false;
 }
@@ -1908,6 +1907,23 @@ void AdaptorWL::vErrorFeatureNotSupported(Stz* szFeature)
                           aEC2[eErrType],
                           aErrorMsg[eErrType],
                           szFeature);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Disconnect the client socket to be closed                                  */
+/*----------------------------------------------------------------------------*/
+void AdaptorWL::vDisconnectClient(eEC eReason)
+{
+  // Setting m_eProtoccolError to a value that isn't EC_NONE will cause
+  // the socket to be closed. This happens because the send code ought to
+  // be constantly checking this after each operation (as well as for any
+  // serialised messages to send). If this value is not EC_NONE then an
+  // error is passed down to the OP_SendWL which will then close the socket.
+
+  m_eProtocolError = eReason;
+  m_eProtocolState = DISCONNECTED;
+  vCleanupCurrentMsg();
+  m_oQueryCtx.vAbortEarly(true);
 }
 
 /*----------------------------------------------------------------------------*/
