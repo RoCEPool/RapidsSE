@@ -36,6 +36,10 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
+
   // FROM
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 
@@ -254,6 +258,10 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
   // marker-start
   __L_LABEL__:
 
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
+
   // marker-end
 
   return 0;
@@ -272,6 +280,10 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
   __L_LABEL__:
+
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   iaPow10[0] = 1;
   iaPow10[1] = 10;
@@ -1095,6 +1107,10 @@ void vStreamDefBegin(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // STREAMDEF
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//#ifdef WITH_DEBUG_VERSION
+//  printf("__OPERATOR_NAME__\n");
+//#endif
 
   struct ColumnInfo xColumnInfo[] = {
       // marker-end
