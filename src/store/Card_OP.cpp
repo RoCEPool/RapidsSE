@@ -154,7 +154,7 @@ void Card_OP::vConvert_colNm_To_stmCol(CardIter* pCI)
     if (Card_Expr* p_expr_col =
         pCI->Prior.m_pProjection->pFind_expr_By_as(p_term->pSymbol())) {
 //      p_expr_col->vDump(__func__);
-      p_term->pSymbol()->vUpdate(p_expr_col->pSymbol());
+      p_term->pSymbol()->vUpdate(p_expr_col->pSymbol(),true);
     }
 
     return C_CONTINUE_RECURSION;
