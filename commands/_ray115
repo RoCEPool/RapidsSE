@@ -6,6 +6,7 @@
 
 _lineitem;
 
+/glean_interactive
 /optimise_passthru
 pipeline is
 begin

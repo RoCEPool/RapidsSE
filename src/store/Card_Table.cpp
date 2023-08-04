@@ -18,6 +18,7 @@
 #include "Card_TableNm.hpp"
 #include "PtnDef.hpp"
 #include "Table.hpp"
+#include "Error.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -76,6 +77,13 @@ Table* Card_Table::pAccess_Table(Stz* szTableNm)
   _static_
 
   Table* pTable = AM::pTableFind(szTableNm);
+
+  if (! pTable) {
+    s256 sErrorMsg;
+    sErrorMsg.vSprint("table: %s"_Stz,szTableNm);
+    Error xError(EC_NO_SUCH_TABLE,sErrorMsg,(Stz*)__FILE__,__LINE__);
+    throw xError;
+  }
 
   return pTable;
 }

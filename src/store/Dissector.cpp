@@ -675,7 +675,7 @@ Card* Dissector::pOp_IndexScan(void)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vSymbol(Symbol(pIndex->szIndexNm(),SF_OTHER));
+  p_indexNm->vSymbol(Symbol(szIndexNm,SF_OTHER));
 
   p_indexList->vAppend(p_index);
 

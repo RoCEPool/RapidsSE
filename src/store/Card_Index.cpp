@@ -11,6 +11,8 @@
 #include "CardIter.hpp"
 #include "IndexDef.hpp"
 
+#include "Error.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -210,26 +212,6 @@ bool Card_Index::bTblColOdn_IsKeyIn_index(Stz* szTblColOdn)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-IndexDef* Card_Index::pGetIndexDef(Card_Table *p_Table)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
-
-  Table* pTable = Card_Table::pAccess_Table(p_Table->pSub_tableNm()->szSymbol());
-  if (! pTable)
-    return nullptr;
-
-  Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
-  if (! pIndex)
-    return nullptr;
-
-  IndexDef* IndexDef = pIndex->pIndexDef();
-
-  return IndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 Index* Card_Index::pGetIndex(Card_Table *p_Table)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -239,8 +221,12 @@ Index* Card_Index::pGetIndex(Card_Table *p_Table)
     return nullptr;
 
   Index* pIndex = pTable->pFindIndex(pSub_indexNm()->szSymbol());
-  if (! pIndex)
-    return nullptr;
+  if (! pIndex) {
+    s256 sErrorMsg;
+    sErrorMsg.vSprint("index: %s"_Stz,pSub_indexNm()->szSymbol());
+    Error xError(EC_NO_SUCH_INDEX,sErrorMsg,(Stz*)__FILE__,__LINE__);
+    throw xError;
+  }
 
   return pIndex;
 }
