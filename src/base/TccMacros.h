@@ -3,82 +3,32 @@
 /*============================================================================*/
 #pragma once
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// CODE SYNTHESISER : V2 specifix
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#define _FILTER_EXIT_ON_FALSE_V2(sLabel)                \
-  bFilterResult = *(--paW);                             \
-  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {         \
-    return 0;                                           \
-  }                                                     \
-  if ( bFilterResult ) {                                \
-    *paW++ = (i8)bFilterResult;                         \
-  }                                                     \
-  else {                                                \
-    aDynamicT->m_iProcessRow = 0;                       \
-    goto sLabel;                                        \
-  }
-
-#define _FILTER_EXIT_ON_TRUE_V2(sLabel)                 \
-  bFilterResult = *(--paW);                             \
-  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {         \
-    return 0;                                           \
-  }                                                     \
-  if ( ! bFilterResult ) {                              \
-    *paW++ = (i8)bFilterResult;                         \
-  }                                                     \
-  else {                                                \
-    aDynamicT->m_iProcessRow = 0;                       \
-    goto sLabel;                                        \
-  }
-
-#define _COPYSTR_PL_V2(iArg2)                                               \
-  {                                                                         \
-    iArg1 = *(--paW);                                                       \
-    if (iArg1 != C_DATUM_NULL)    {                                         \
-      iArg2 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg1); \
-    }                                                                       \
-  }
-
-#define _COPYSTR_IFTRUE_PL_V2(iArg3)                                        \
-  {                                                                         \
-    iArg1 = *(--paW);                                                       \
-    iArg2 = *(--paW);                                                       \
-    if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-      iArg3 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg2); \
-    }                                                                       \
-  }
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// CODE SYNTHESISER : common for V1 and V2
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 #define _FILTER_EXIT_ON_FALSE(sLabel)                   \
   bFilterResult = *(--paW);                             \
-  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {        \
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {         \
     return 0;                                           \
   }                                                     \
   if ( bFilterResult ) {                                \
     *paW++ = (i8)bFilterResult;                         \
   }                                                     \
   else {                                                \
-    aCombinedT->m_iProcessRow = 0;                      \
+    aDynamicT->m_iProcessRow = 0;                       \
     goto sLabel;                                        \
   }
 
 #define _FILTER_EXIT_ON_TRUE(sLabel)                    \
   bFilterResult = *(--paW);                             \
-  if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {        \
+  if (aDynamicT->m_iErrorCode != (i8)EC_NONE) {         \
     return 0;                                           \
   }                                                     \
   if ( ! bFilterResult ) {                              \
     *paW++ = (i8)bFilterResult;                         \
   }                                                     \
   else {                                                \
-    aCombinedT->m_iProcessRow = 0;                      \
+    aDynamicT->m_iProcessRow = 0;                       \
     goto sLabel;                                        \
   }
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PUSHES
@@ -157,19 +107,12 @@
 
 #define _ASSIGN_TO_ENTINT(iArgTo)                                           \
   iArg1 = *(--paW);                                                         \
-  vEntWrk_appendElementEntInt(iArgTo,iArg1);
+  vExtern_EntWrkAppendElementInt(iArgTo,iArg1);
 
 #define _ASSIGN_TO_ENTSTZ(iArgTo)                                           \
   szArg1 = (char*)*(--paW);                                                 \
-  vEntWrk_appendElementEntStz(iArgTo,szArg1);
-
-#define _ASSIGN_TO_ENTINT_V2(iArgTo)                                        \
-  iArg1 = *(--paW);                                                         \
-  vExtern_EntWrkAppendElementInt(iArgTo,iArg1);
-
-#define _ASSIGN_TO_ENTSTZ_V2(iArgTo)                                        \
-  szArg1 = (char*)*(--paW);                                                 \
   vExtern_EntWrkAppendElementStz(iArgTo,szArg1);
+
 
 #define _COPYSTR_IFTRUE(szAreaTo, iArgTo)                                   \
   {                                                                         \
@@ -188,7 +131,7 @@
   {                                                                         \
     iArg1 = *(--paW);                                                       \
     if (iArg1 != C_DATUM_NULL)    {                                         \
-      iArg2 = (i8)aIndexTree_allotPayStr((void*)aCombinedT->m_aIndexTreePL, (char*)iArg1); \
+      iArg2 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg1); \
     }                                                                       \
   }
 
@@ -197,7 +140,7 @@
     iArg1 = *(--paW);                                                       \
     iArg2 = *(--paW);                                                       \
     if (iArg1 && iArg2 != C_DATUM_NULL)    {                                \
-      iArg3 = (i8)aIndexTree_allotPayStr((void*)aCombinedT->m_aIndexTreePL, (char*)iArg2); \
+      iArg3 = (i8)aExtern_IndexTreeAllotPayStr((void*)aDynamicT->m_xIndexInfoPL.m_aIndexTree, (char*)iArg2); \
     }                                                                       \
   }
 
