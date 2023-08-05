@@ -49,7 +49,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_eStrInflateRule = SI_NONE;
   m_xDynamicT.m_aHeadLine0      = nullptr;
 
-  m_xDynamicT.m_xRowInfoIT.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoIT.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoIT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -63,7 +63,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIT.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIT.m_cStringArea[0];
 
   // inflate J (SR_IJ)
-  m_xDynamicT.m_xRowInfoIJ.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoIJ.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoIJ.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -77,7 +77,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoIJ.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoIJ.m_cStringArea[0];
 
   // project PL (SR_PL)
-  m_xDynamicT.m_xRowInfoPL.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoPL.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoPL.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -91,7 +91,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoPL.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoPL.m_cStringArea[0];
 
   // project T (SR_PT)
-  m_xDynamicT.m_xRowInfoPT.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoPT.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoPT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -106,7 +106,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
 
   // join T & J (SR_TJ)
-  m_xDynamicT.m_xRowInfoTJ.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoTJ.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoTJ.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -121,7 +121,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
 
   // aggregate T (SR_AT)
-  m_xDynamicT.m_xRowInfoAT.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoAT.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoAT.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -136,7 +136,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // tub output (SR_TO)
   m_xDynamicT.m_pTub        = nullptr;
-  m_xDynamicT.m_xRowInfoTO.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoTO.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoTO.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -152,7 +152,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   // pot output (SR_PO)
   m_xDynamicT.m_iPot        = 0;
   m_xDynamicT.m_pPot        = nullptr;
-  m_xDynamicT.m_xRowInfoPO.m_iInitialize = 1;
+  m_xDynamicT.m_xRowInfoPO.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoPO.m_iCell[i] = 0;
 #ifdef WITH_CHECK_INITIALISED
@@ -167,7 +167,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
 
   // index scan T
-  m_xDynamicT.m_xIndexInfoT.m_iInitialize = 1;
+  m_xDynamicT.m_xIndexInfoT.m_bInitialize = true;
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cTableName,32,CN_BYTES_T);
   MemLib::vZero(m_xDynamicT.m_xIndexInfoT.m_cIndexName,32,CN_BYTES_T);
@@ -189,7 +189,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // index join with J
   m_xDynamicT.m_iJoinedRows    = 0;
-  m_xDynamicT.m_xIndexInfoJ.m_iInitialize   = 1;
+  m_xDynamicT.m_xIndexInfoJ.m_bInitialize = true;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_xDynamicT.m_xIndexInfoJ.m_cTableName,32,CN_BYTES_T);
@@ -213,7 +213,7 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   // payload (gby/srt/top)
   m_xDynamicT.m_aiPayload      = nullptr;
-  m_xDynamicT.m_xIndexInfoPL.m_iInitialize  = 1;
+  m_xDynamicT.m_xIndexInfoPL.m_bInitialize = true;
 
 #ifdef WITH_CHECK_INITIALISED
   MemLib::vZero(m_xDynamicT.m_xIndexInfoPL.m_cTableName,32,CN_BYTES_T);

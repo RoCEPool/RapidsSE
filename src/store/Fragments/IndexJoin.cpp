@@ -90,7 +90,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
   // marker-start
 
   // init indexJoin
-  if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
+  if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
 #ifdef WITH_CLANG
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
@@ -103,7 +103,7 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
     iLeftOuterRow = 0;
-    aDynamicT->m_xIndexInfoJ.m_iInitialize = 0;
+    aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
   }
 
   if (!aDynamicT->m_iProcessRow) {
@@ -128,7 +128,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   // marker-start
 
   // init indexJoin
-  if (aDynamicT->m_xIndexInfoJ.m_iInitialize) {
+  if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
 #ifdef WITH_CLANG
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
@@ -141,7 +141,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
     iLeftOuterRow = 0;
-    aDynamicT->m_xIndexInfoJ.m_iInitialize = 0;
+    aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
   }
   else {
 #ifdef WITH_CLANG
