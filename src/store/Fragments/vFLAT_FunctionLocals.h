@@ -61,7 +61,6 @@
   void *aEntInserted  __attribute__ ((unused));
   void *aEntFound     __attribute__ ((unused));
   void *aCrwJ         __attribute__ ((unused));
-  i8    iaPow10[15]   __attribute__ ((unused));
 
 /*============================================================================*/
 /* end                                                                        */

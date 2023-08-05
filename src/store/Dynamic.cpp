@@ -241,8 +241,9 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
 
   m_xDynamicT.m_aStreamDefOut = nullptr;
 
-  for (i8 iIndex = 0; iIndex < 15; iIndex++) {
-    m_xDynamicT.iaPow10[iIndex] = 10^iIndex;
+  m_xDynamicT.m_iaPow10[0] = 1;
+  for (i8 iIndex = 1; iIndex < 16; iIndex++) {
+    m_xDynamicT.m_iaPow10[iIndex] = 10*m_xDynamicT.m_iaPow10[iIndex-1];
   }
 
   _checkInitialised_(CN_DYNAMIC);
