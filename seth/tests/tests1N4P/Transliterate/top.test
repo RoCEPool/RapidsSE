@@ -30,8 +30,6 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
-// TODO V2 : ALKA TO LOOK AT
-/*
 //------------------------------------------------------------------------------------
 /optimise_passthru
 pipeline Q
@@ -62,7 +60,6 @@ stage stageA on origin :
 rows:
  (1499)
  (1499)
-*/
 
 //------------------------------------------------------------------------------
 // drop the table

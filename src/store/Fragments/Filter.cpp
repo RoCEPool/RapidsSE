@@ -30,10 +30,6 @@ void vFilterBegin(Dynamic_T* aDynamicT) {
   // marker-start
 __L_LABEL__:
 
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
     goto __L_LABEL_LOOP__;

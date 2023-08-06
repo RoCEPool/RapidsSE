@@ -15,7 +15,7 @@ struct ColumnInfo {
 };
 
 struct RowInfo {
-  i8   m_iInitialize;
+  bool m_bInitialize;
   i8   m_iCell[256];
   char m_cStringArea[16384]; // _C_16KB;
   void* m_aRowCellArray;
@@ -24,7 +24,7 @@ struct RowInfo {
 };
 
 struct IndexInfo {
-  i8    m_iInitialize;
+  bool  m_bInitialize;
   char  m_cTableName[32];
   char  m_cIndexName[32];
   void* m_aTable;
@@ -108,7 +108,7 @@ struct Dynamic_T
 //  i8      m_iHasOrdAggRow;
 //  i8      m_iOrdAggDone;
 
-  i8    iaPow10[15];
+  i8    m_iaPow10[16];
 };
 
 /*============================================================================*/

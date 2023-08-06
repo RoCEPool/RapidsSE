@@ -35,10 +35,6 @@ i8 iGbyAggBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
   szStrArea = __ROW_INFO_FROM__.m_acStrArea;
 

@@ -979,7 +979,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // !f operator (exit early if true (OR))
     if (pTkn->bSame("!t"_Stz)) {
       s4K sOperation;
-      sOperation.vSprintCat("_FILTER_EXIT_ON_TRUE_V2(%s)"_Stz, m_sLabelNext.azChar());
+      sOperation.vSprintCat("_FILTER_EXIT_ON_TRUE(%s)"_Stz, m_sLabelNext.azChar());
       pExprStack->vPushStz(sOperation);
       continue;
     }
@@ -988,7 +988,7 @@ void OpSketch::vGenerateExprStacks(Stz* sExpr, bool bConstraint)
     // !f operator (exit early if false (AND))
     if (pTkn->bSame("!f"_Stz)) {
       s4K sOperation;
-      sOperation.vSprintCat("_FILTER_EXIT_ON_FALSE_V2(%s)"_Stz, m_sLabelNext.azChar());
+      sOperation.vSprintCat("_FILTER_EXIT_ON_FALSE(%s)"_Stz, m_sLabelNext.azChar());
       pExprStack->vPushStz(sOperation);
       continue;
     }
@@ -2011,10 +2011,10 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
           if (pColumn->eColumnType() == CT_VARCHAR ||
               pColumn->eColumnType() == CT_CHAR) {
-            sPush.vSprint("_ASSIGN_TO_ENTSTZ_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+            sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
           }
           else {
-            sPush.vSprint("_ASSIGN_TO_ENTINT_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+            sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
           }
           pExprStack->vPushStz(sPush);
         }
@@ -2025,13 +2025,13 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
       pColumn = m_pStreamDefOut->pGetColumn(i_Col);
       if (ePreExp == PE_MIN || ePreExp == PE_MAX) {
         if (pColumn->eColumnType() == CT_VARCHAR)
-          sPush.vSprint("_COPYSTR_IFTRUE_PL_V2(aDynamicT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+          sPush.vSprint("_COPYSTR_IFTRUE_PL(aDynamicT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
         else
           sPush.vSprint("_ASSIGN_IFTRUE(aDynamicT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
       }
       else {
         if (pColumn->eColumnType() == CT_VARCHAR)
-          sPush.vSprint("_COPYSTR_PL_V2(aDynamicT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
+          sPush.vSprint("_COPYSTR_PL(aDynamicT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
         else
           sPush.vSprint("_ASSIGN(aDynamicT->m_aiPayload[%lld])\n"_Stz, i_ColPL);
       }
@@ -2071,10 +2071,10 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
         pIndexColumn = m_pIndexDef->pGetColumn(i_Col);
         if (pIndexColumn->eColumnType() == CT_VARCHAR ||
             pIndexColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ_V2(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
         }
         else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT_V2(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_xIndexInfoT.m_aEntWrk)\n"_Stz);
         }
         pExprStack->vPushStz(sPush);
       }
@@ -2103,10 +2103,10 @@ void OpSketch::vPushAssignCol(TypedStack* pExprStack, ePE ePreExp, i8 i_Col, i8 
 
         if (pColumn->eColumnType() == CT_VARCHAR ||
             pColumn->eColumnType() == CT_CHAR) {
-          sPush.vSprint("_ASSIGN_TO_ENTSTZ_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTSTZ(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
         }
         else {
-          sPush.vSprint("_ASSIGN_TO_ENTINT_V2(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
+          sPush.vSprint("_ASSIGN_TO_ENTINT(aDynamicT->m_xIndexInfoPL.m_aEntWrk)\n"_Stz);
         }
         pExprStack->vPushStz(sPush);
       }

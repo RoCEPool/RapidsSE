@@ -36,10 +36,6 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
   // FROM
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 
@@ -258,10 +254,6 @@ i8 iSortBegin(Dynamic_T* aDynamicT) {
   // marker-start
   __L_LABEL__:
 
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
   // marker-end
 
   return 0;
@@ -276,34 +268,13 @@ i8 iTubBegin(Dynamic_T* aDynamicT) {
 
   RowInfo __ROW_INFO_TO__;
   i8*   paW;
-  i8    iaPow10[15];
 
   // marker-start
   __L_LABEL__:
 
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
-
-  iaPow10[0] = 1;
-  iaPow10[1] = 10;
-  iaPow10[2] = 100;
-  iaPow10[3] = 1000;
-  iaPow10[4] = 10000;
-  iaPow10[5] = 100000;
-  iaPow10[6] = 1000000;
-  iaPow10[7] = 10000000;
-  iaPow10[8] = 100000000;
-  iaPow10[9] = 1000000000;
-  iaPow10[10] = 10000000000;
-  iaPow10[11] = 100000000000;
-  iaPow10[12] = 1000000000000;
-  iaPow10[13] = 10000000000000;
-  iaPow10[14] = 100000000000000;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the RowPix
-  if (__ROW_INFO_TO__.m_iInitialize) {
+  if (__ROW_INFO_TO__.m_bInitialize) {
 
     struct ColumnInfo xColumnInfo[] = {
         // marker-end
@@ -325,7 +296,7 @@ i8 vIndexDefBegin(Dynamic_T* aDynamicT) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the indexDef and the indexTree
 
-  if (__INDEX_INFO__.m_iInitialize) {
+  if (__INDEX_INFO__.m_bInitialize) {
 
     struct ColumnInfo xColumnInfo[] = {
         // marker-end
@@ -370,7 +341,7 @@ i8 vIndexDefContinue(Dynamic_T* aDynamicT) {
 #endif
 
     // mark IndexInfo as initialized
-    __INDEX_INFO__.m_iInitialize = 0;
+    __INDEX_INFO__.m_bInitialize = false;
   }
 
   // marker-end
@@ -396,7 +367,7 @@ void vTubRowPix(Dynamic_T* aDynamicT) {
     //vExtern_TubRowPix(aDynamicT->m_pTub, aRowPix);
     __EXTERN_ROWPIX__(__TUB_POT__, aRowPix);
 #endif
-    __ROW_INFO_TO__.m_iInitialize = 0;
+    __ROW_INFO_TO__.m_bInitialize = false;
     aDynamicT->m_iPot = __POT__;
   }
 
@@ -464,7 +435,7 @@ i8 iEosTubBegin(Dynamic_T* aDynamicT) {
 
   p__STRUCT_FROM__ = (struct __STRUCT_TO__*)aDynamicT->m_xRowInfoAT.m_aRowCellArray;
   szStrArea = aDynamicT->m_xRowInfoAT.m_acStrArea;
-  if ( aDynamicT->m_xRowInfoAT.m_iInitialize == 1 ) {
+  if ( aDynamicT->m_xRowInfoAT.m_bInitialize ) {
     // marker-end
   }
 
@@ -489,7 +460,7 @@ i8 iEosTubBody(Dynamic_T* aDynamicT) {
     }
 
     aDynamicT->m_iRowsProcessed = 1;
-    aDynamicT->m_xRowInfoAT.m_iInitialize = 0;
+    aDynamicT->m_xRowInfoAT.m_bInitialize = false;
   }
 
   // any rows processed ?
@@ -1104,13 +1075,6 @@ void vPopulateVchPL(Dynamic_T* aDynamicT) {
 void vStreamDefBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // STREAMDEF
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-//#ifdef WITH_DEBUG_VERSION
-//  printf("__OPERATOR_NAME__\n");
-//#endif
 
   struct ColumnInfo xColumnInfo[] = {
       // marker-end

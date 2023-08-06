@@ -166,7 +166,6 @@ rows:
 //------------------------------------------------------------------------------
 // INDEXJOIN -
 //------------------------------------------------------------------------------
-// TODO V2 : ALKA TO LOOK AT
 /optimise_passthru
 pipeline _unnamed_
 begin
@@ -843,7 +842,7 @@ success
 load orders "../TPCH/SF_0001/orders.csv";
 success
 
-// TODO V2 : ALKA TO LOOK AT
+// TODO V2 : ALKA TO LOOK AT (4P)
 /*
 /optimise_passthru
 pipeline unnamed
@@ -876,6 +875,7 @@ end ;
 
 rows: 5996
 */
+
 //------------------------------------------------------------------------------
 // drop the tables
 

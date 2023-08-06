@@ -16,7 +16,7 @@
 void vAggregInitBegin(Dynamic_T* aDynamicT) {
 
   // marker-start
-  if ( aDynamicT->m_xRowInfoAT.m_iInitialize == 1 ) {
+  if ( aDynamicT->m_xRowInfoAT.m_bInitialize ) {
   // marker-end
   }
 
@@ -35,7 +35,7 @@ i8 iAggregInitEnd(Dynamic_T* aDynamicT) {
       return 0;
     }
 
-    aDynamicT->m_xRowInfoAT.m_iInitialize = 0;
+    aDynamicT->m_xRowInfoAT.m_bInitialize = false;
   }
 
   // marker-end
