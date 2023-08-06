@@ -153,7 +153,7 @@ void Card_Constraint::vConvert_stmColOdn_To_stmColNm(CardIter* pCI)
     }
 
     if (szColNm) {
-      p_term->pSymbol()->vSet_Col_Nm(szColNm);
+      p_term->SYM(SF_COL_NM,szColNm);
       p_term->vMark1(MARK_CHANGED);
     }
 
@@ -212,7 +212,7 @@ void Card_Constraint::vDisambiguate(CardIter* pCI)
       //p_expr->vDump(__func__);
 
       i8 i_Child = p_expr->pSymbol()->iExtractOrdinal() - 1;
-      p_term->pSymbol()->vSet_Col_Nm_dis(i_Child, p_term->pSymbol());
+      p_term->SYM(SF_AS_NM_syn, i_Child, p_term->pSymbol());
     }
   }
 

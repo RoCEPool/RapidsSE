@@ -1605,13 +1605,30 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* get symbol char                                                            */
 /*----------------------------------------------------------------------------*/
+void Symbol::vSym(eSF eSymbol, i8 iInt, Symbol* pSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eSymbol) {
+
+    case SF_COL_NM_dis: vSet_Col_Nm_dis(iInt,pSymbol); break;
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
 void Symbol::vSym(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   switch (eSymbol) {
 
-    case SF_AS_NM: vSet_As_Nm(szStz); break;
+    case SF_AS_NM:  vSet_As_Nm(szStz);  break;
+    case SF_COL_NM: vSet_Col_Nm(szStz); break;
 
     default: NEVER_REACH;
   }

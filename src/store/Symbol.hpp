@@ -123,10 +123,10 @@ namespace STORE
   private:
     void vSet_As_Nm(Stz* szAsNm);
     void vSet_As_Nm_syn(i8 iAsNo);
-
-  public:
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
+
+  public:
     void vSet_Col_No(i8 iStmColOdn);
     void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
     void vSet_Idx_Col(i8 iIdxColOdn);
@@ -147,6 +147,7 @@ namespace STORE
     void vSym(eSF eSymbol, char cChr);
     void vSym(eSF eSymbol, char cChr, i8 iInt);
     void vSym(eSF eSymbol, i8 iInt);
+    void vSym(eSF eSymbol, i8 iInt, Symbol* pSymbol);
     void vSym(eSF eSymbol, Stz* szStz);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);

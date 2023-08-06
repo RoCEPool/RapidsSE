@@ -28,6 +28,7 @@ namespace STORE
     CARD* SYM(eSF eSymbol, char cChr, i8 iInt);
     CARD* SYM(eSF eSymbol, i8 iInt);
     CARD* SYM(eSF eSymbol, Stz* szStz);
+    CARD* SYM(eSF eSymbol, i8 iInt, Symbol *pSymbol);
   };
 }
 
@@ -181,6 +182,19 @@ CARD* Card_symbol<CARD>::SYM(eSF eSymbol, Stz* szStz)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   m_xSymbol.vSym(eSymbol,szStz);
+
+  return (CARD*)this;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  SYM                                                                       */
+/*----------------------------------------------------------------------------*/
+template <class CARD>
+CARD* Card_symbol<CARD>::SYM(eSF eSymbol, i8 iInt, Symbol* pSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.vSym(eSymbol,iInt,pSymbol);
 
   return (CARD*)this;
 }
