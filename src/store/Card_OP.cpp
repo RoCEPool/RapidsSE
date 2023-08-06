@@ -794,7 +794,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Symbol xSymbol_tblCol;
     xSymbol_tblCol.vSetTableColOrdinal(cTblSyn, i_Col + 1);
-    Card_Term *p_term = new Card_Term(&xSymbol_tblCol);
+    Card_Term *p_term = (new Card_Term) -> SYM(xSymbol_tblCol);
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

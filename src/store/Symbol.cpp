@@ -150,42 +150,42 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   {
     SF_NONE = 0,   // none
 
-    SF_ASNAME,
-    SF_DASCNE,
-    SF_IDXCOL,
-    SF_KEYCOL,
+    SF_AS_NM,
+    SF_COL_NM_dis,
+    SF_IDX_COL,
+    SF_KEY_COL,
     SF_NUMBER,
 
     SF_OTHER,
 
-    SF_PRMCOL,
-    SF_SASCNM,
-    SF_SQRYNO,
-    SF_STMCOL,
+    SF_PRM_COL,
+    SF_AS_NM_syn,
+    SF_SQY_NO,
+    SF_COL_TC,
     SF_TBLCOL,
-    SF_TBLSYN,
-    SF_XREFNO,
+    SF_TBL_SYN,
+    SF_XRF_NO,
 
     SF_ENUMS
   };
   */
 
-  if (bIsAggFn(szSymbol))              return SF_AGGFN;
-  if (bIsColumnOrdinal(szSymbol))      return SF_TBLCOL;
-  if (bIsCrossRef(szSymbol))           return SF_XREFNO;
+  if (bIsAggFn(szSymbol))              return SF_AGG_FN;
+  if (bIsColumnOrdinal(szSymbol))      return SF_COL_TC;
+  if (bIsCrossRef(szSymbol))           return SF_XRF_NO;
   if (bIsDirection(szSymbol))          return SF_DIRECT;
-  if (bIsDisambColNm(szSymbol))        return SF_DASCNE;
-  if (bIsIndexColumn(szSymbol))        return SF_IDXCOL;
+  if (bIsDisambColNm(szSymbol))        return SF_COL_NM_dis;
+  if (bIsIndexColumn(szSymbol))        return SF_IDX_COL;
   if (bIsNumber(szSymbol))             return SF_NUMBER;
-  if (bIsKeyOrdinal(szSymbol))         return SF_KEYCOL;
-  if (bIsParameterOrdinal(szSymbol))   return SF_PRMCOL;
-  if (bIsStreamOrdinal(szSymbol))      return SF_STMCOL;
-  if (bIsSubQueryCKey(szSymbol))       return SF_SQCKEY;
-  if (bIsSubQueryColumn(szSymbol))     return SF_SQRYNO;
-  if (bIsSyntheticAs(szSymbol))        return SF_SASCNM;
-  if (bIsTableSyn(szSymbol))           return SF_TBLSYN;
+  if (bIsKeyOrdinal(szSymbol))         return SF_KEY_COL;
+  if (bIsParameterOrdinal(szSymbol))   return SF_PRM_COL;
+  if (bIsStreamOrdinal(szSymbol))      return SF_COL_TC;
+  if (bIsSubQueryCKey(szSymbol))       return SF_SQY_KEY;
+  if (bIsSubQueryColumn(szSymbol))     return SF_SQY_NO;
+  if (bIsSyntheticAs(szSymbol))        return SF_AS_NM_syn;
+  if (bIsTableSyn(szSymbol))           return SF_TBL_SYN;
 
-  if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_ASNAME;
+  if (StrLib::bIsSqlName(szSymbol->azChar()))  return SF_AS_NM;
 
   return SF_OTHER;
 }
@@ -1267,7 +1267,7 @@ void Symbol::vSet_asName(Stz* szAsNm)
 //  m_bSet = true;
 
   m_sSymbol = szAsNm;
-  m_eSymbol = SF_ASNAME;
+  m_eSymbol = SF_AS_NM;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsColNm());
@@ -1285,7 +1285,7 @@ void Symbol::vSet_colNm(Stz* szColNm)
   m_bSet = true;
 
   m_sSymbol = szColNm;
-  m_eSymbol = SF_COLNM;
+  m_eSymbol = SF_COL_NM;
 }
 
 
@@ -1300,7 +1300,7 @@ void Symbol::vSetCrossRef(i8 iCrossRef)
 //  m_bSet = true;
 
   vSprint("#%lld"_Stz, iCrossRef);
-  m_eSymbol = SF_XREFNO;
+  m_eSymbol = SF_XRF_NO;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsCrossRef());
@@ -1318,7 +1318,7 @@ void Symbol::vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol)
 //  m_bSet = true;
 
   vSprint("C%lld_%s"_Stz, i_Child, pSymbol->m_sSymbol.szStz());
-  m_eSymbol = SF_DASCNE;
+  m_eSymbol = SF_COL_NM_dis;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsDisambiguatedColNm());
@@ -1336,7 +1336,7 @@ void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 //  m_bSet = true;
 
   vSprint("$I%lld"_Stz, iIdxColOdn);
-  m_eSymbol = SF_IDXCOL;
+  m_eSymbol = SF_IDX_COL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsIndexColumn());
@@ -1354,7 +1354,7 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 //  m_bSet = true;
 
   vSprint("$K%lld"_Stz, iKeyOdn);
-  m_eSymbol = SF_KEYCOL;
+  m_eSymbol = SF_KEY_COL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsKeyOrdinal());
@@ -1408,7 +1408,7 @@ void Symbol::vSet_parameterOrdinal(i8 iNumber)
 //  m_bSet = true;
 
   vSprint("%%%lld"_Stz, iNumber);
-  m_eSymbol = SF_PRMCOL;
+  m_eSymbol = SF_PRM_COL;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsNumber());
@@ -1440,7 +1440,7 @@ void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 //  m_bSet = true;
 
   vSprint("$%lld"_Stz, iStmColOdn);
-  m_eSymbol = SF_STMCOL;
+  m_eSymbol = SF_COL_TC;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsStreamOrdinal());
@@ -1458,7 +1458,7 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 //  m_bSet = true;
 
   vSprint("__sq%02lld"_Stz, iSqNo);
-  m_eSymbol = SF_SQRYNO;
+  m_eSymbol = SF_SQY_NO;
 
 #ifdef X_SET_CROSS_CHECK
   //RASSERT(bIsSubQueryColumn());
@@ -1476,7 +1476,7 @@ void Symbol::vSetSyntheticAs(i8 iAsNo)
 //  m_bSet = true;
 
   vSprint("COL%lld"_Stz, iAsNo);
-  m_eSymbol = SF_SASCNM;
+  m_eSymbol = SF_AS_NM_syn;
 
   Y_vSet(P_Synthetic);
 
@@ -1496,7 +1496,7 @@ void Symbol::vSetTableSyn(char cTblSyn)
 //  m_bSet = true;
 
   vSprint("%c"_Stz, cTblSyn);
-  m_eSymbol = SF_TBLSYN;
+  m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsTableSyn());
@@ -1517,7 +1517,7 @@ void Symbol::vSetReplicateTblSyn(void)
   cTableSyn_actual = StrLib::cToUpper(cTableSyn_actual);
 
   vSprint("%c"_Stz, cTableSyn_actual);
-  m_eSymbol = SF_TBLSYN;
+  m_eSymbol = SF_TBL_SYN;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsTableSyn());
@@ -1536,7 +1536,7 @@ void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
 //  m_bSet = true;
 
   vSprint("$%c.%lld"_Stz, cTblSyn, iTblColOdn);
-  m_eSymbol = SF_TBLCOL;
+  m_eSymbol = SF_COL_TC;
 
 #ifdef X_SET_CROSS_CHECK
   RASSERT(bIsColumnOrdinal());
@@ -1573,6 +1573,76 @@ char Symbol::cSF_synonym(void)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   return * m_sSymbol.azChar();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSym(eSF eSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eSymbol) {
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSym(eSF eSymbol, char cChr)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eSymbol) {
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSym(eSF eSymbol, char cChr, i8 iInt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eSymbol) {
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSym(eSF eSymbol, i8 iInt)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eSymbol) {
+
+    default: NEVER_REACH;
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSym(eSF eSymbol, Stz* szStz)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  switch (eSymbol) {
+
+    default: NEVER_REACH;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

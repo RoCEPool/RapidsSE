@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_t.hpp"
 
 #include "Card_Expr.hpp"
 
@@ -11,12 +11,13 @@
 
 namespace STORE
 {
-  class Card_Term : public Card
+  class Card_Term : public Card_t<Card_Term>
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
+    Card_Term(void);
     Card_Term(Stz* szTerm);
     Card_Term(Symbol* pSymbol, bool bCopyProperties=true);
    ~Card_Term(void) noexcept(false);

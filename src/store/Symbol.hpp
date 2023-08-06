@@ -142,6 +142,12 @@ namespace STORE
     Stz* szSF_symbol(void);
     char cSF_synonym(void);
 
+    void vSym(eSF eSymbol);
+    void vSym(eSF eSymbol, char cChr);
+    void vSym(eSF eSymbol, char cChr, i8 iInt);
+    void vSym(eSF eSymbol, i8 iInt);
+    void vSym(eSF eSymbol, Stz* szStz);
+
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 
     void vUpdate(Stz* szSymbol);

@@ -88,11 +88,11 @@ void Board::vDerive_foldExpr_H_A_NC_ro(CardIter* pCI)
 
   pCI->G_vAppendNewChild(pCI->G.p_fold, CK_EXPR);
 
-  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "_SQ1RESULT_"_Stz,SF_ASNAME);
+  pCI->G_vAppendNewChild(pCI->G.p_expr, CK_AS, "_SQ1RESULT_"_Stz, SF_AS_NM);
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   Symbol x_Symbol_stmCol1;
   x_Symbol_stmCol1.vSetStreamOrdinal(1);
-  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc,CK_TERM,"$1"_Stz,SF_STMCOL);
+  pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz, SF_COL_TC);
 
   Card_Expr* p_expr_found =
       pCI->Prior.m_pProjection->pGetExpr(0);

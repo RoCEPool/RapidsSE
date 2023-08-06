@@ -20,7 +20,20 @@ __vDeleteFunction(Card_Term,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Term::Card_Term(Stz* szTerm)
-: Card(CK_TERM,szTerm, SF_OTHER)
+: Card_t(CK_TERM,szTerm, SF_OTHER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Term::Card_Term(void)
+    : Card_t(CK_TERM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -33,7 +46,7 @@ Card_Term::Card_Term(Stz* szTerm)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Term::Card_Term(Symbol* pSymbol, bool bCopyProperties)
-: Card(CK_TERM,pSymbol,bCopyProperties)
+: Card_t(CK_TERM,pSymbol,bCopyProperties)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
