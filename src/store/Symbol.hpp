@@ -120,7 +120,10 @@ namespace STORE
     bool bSame(Stz* szArg);
     bool bSame(Symbol* pArg);
 
+  private:
     void vSet_As_Nm(Stz* szAsNm);
+
+  public:
     void vSet_As_Nm_syn(i8 iAsNo);
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);

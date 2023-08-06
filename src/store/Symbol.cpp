@@ -1609,6 +1609,8 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 
   switch (eSymbol) {
 
+    case SF_AS_NM: vSet_As_Nm(szStz); break;
+
     default: NEVER_REACH;
   }
 

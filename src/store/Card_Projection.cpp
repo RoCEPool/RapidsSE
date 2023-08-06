@@ -434,7 +434,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
       if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
         Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
 
-        p_expr_prj->pSub_as()->pSymbol()->vSet_As_Nm(p_expr_key->pSub_as()->szSymbol());
+        p_expr_prj->pSub_as()->SYM(SF_AS_NM,p_expr_key->pSub_as()->szSymbol());
         p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
       }
     }
