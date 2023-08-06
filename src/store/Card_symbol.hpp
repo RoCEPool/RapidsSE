@@ -138,6 +138,19 @@ CARD* Card_symbol<CARD>::SYMPPY(Symbol* pSymbol)
 /*  SYM                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
+CARD* Card_symbol<CARD>::SYM(eSF eSymbol)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
+
+  m_xSymbol.vSym(eSymbol);
+
+  return (CARD*)this;
+}
+
+/*----------------------------------------------------------------------------*/
+/*  SYM                                                                       */
+/*----------------------------------------------------------------------------*/
+template <class CARD>
 CARD* Card_symbol<CARD>::SYM(eSF eSymbol, char cChr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);

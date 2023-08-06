@@ -29,7 +29,7 @@ Card_Projection::Card_Projection(i8 iCrossRef)
           
   _checkInitialised_(CN_CARD);
 
-  pSymbol()->vSet_Xrf_No(iCrossRef);
+  SYM(SF_XRF_NO,iCrossRef);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

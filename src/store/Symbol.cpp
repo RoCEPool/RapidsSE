@@ -190,6 +190,25 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
   return SF_OTHER;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given table-synonym                                     */
+/*----------------------------------------------------------------------------*/
+void Symbol::vInit_Tbl_Syn(char cTblSyn)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+
+  vSprint("%c"_Stz, cTblSyn);
+  m_eSymbol = SF_TBL_SYN;
+
+#ifdef X_SET_CROSS_CHECK
+  RASSERT(bIsTableSyn());
+#endif
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
@@ -1553,6 +1572,8 @@ void Symbol::vSym(eSF eSymbol)
 
   switch (eSymbol) {
 
+    case SF_TBL_SYN_rep: vSet_Tbl_Syn_rep(); break;
+
     default: NEVER_REACH;
   }
 
@@ -1566,6 +1587,8 @@ void Symbol::vSym(eSF eSymbol, char cChr)
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
   switch (eSymbol) {
+
+    case SF_TBL_SYN: vSet_Tbl_Syn(cChr); break;
 
     default: NEVER_REACH;
   }
@@ -1597,6 +1620,7 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
     case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
     case SF_COL_NO:    vSet_Col_No(iInt);    break;
+    case SF_XRF_NO:    vSet_Xrf_No(iInt);    break;
 
     default: NEVER_REACH;
   }

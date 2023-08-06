@@ -85,6 +85,8 @@ namespace STORE
 
     void vIncTblSyn(void);
 
+    void vInit_Tbl_Syn(char cTblSyn);
+
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
     bool bIsBoolOp(void);           // and, not, or
@@ -136,10 +138,13 @@ namespace STORE
     void vSet_Prm_Col(i8 iOrdinal);
     void vSet_Sqy_No(i8 iSqNo);
     void vSet_Stg_No(i8 iStageNo);
+
+  private:
     void vSet_Tbl_Syn(char cTblSyn);
     void vSet_Tbl_Syn_rep(void);
     void vSet_Xrf_No(i8 iCrossRef);
 
+  public:
     i8   iSF_number(void);
     Stz* szSF_symbol(void);
     char cSF_synonym(void);

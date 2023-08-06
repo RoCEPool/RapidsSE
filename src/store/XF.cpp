@@ -61,7 +61,7 @@ XF::XF(CardIter* pCI)
 
   m_pCI = pCI;
 
-  m_xSymbol_tableSyn.vSet_Tbl_Syn('a');
+  m_xSymbol_tableSyn.vInit_Tbl_Syn('a');
 
   _checkInitialised_(CN_XF);
 
