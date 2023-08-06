@@ -1595,6 +1595,8 @@ void Symbol::vSym(eSF eSymbol, i8 iInt)
 
   switch (eSymbol) {
 
+    case SF_AS_NM_syn: vSet_As_Nm_syn(iInt); break;
+
     default: NEVER_REACH;
   }
 

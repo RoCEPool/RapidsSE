@@ -21,7 +21,7 @@ Card_As::Card_As(i8 iAsNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  pSymbol()->vSet_As_Nm_syn(iAsNo);
+  SYM(SF_AS_NM_syn,iAsNo);
 
   _checkInitialised_(CN_CARD);
 

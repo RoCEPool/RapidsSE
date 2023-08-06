@@ -122,9 +122,9 @@ namespace STORE
 
   private:
     void vSet_As_Nm(Stz* szAsNm);
+    void vSet_As_Nm_syn(i8 iAsNo);
 
   public:
-    void vSet_As_Nm_syn(i8 iAsNo);
     void vSet_Col_Nm(Stz* szColNm);
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
     void vSet_Col_No(i8 iStmColOdn);
