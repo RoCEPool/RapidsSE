@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Topology, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Topology::Card_Topology(eYG eStageTopo)
-: Card(CK_TOPOLOGY)
+: Card_symbol(CK_TOPOLOGY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -27,7 +27,7 @@ __vDeleteFunction(Card_BoolCalc, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_BoolCalc::Card_BoolCalc(void)
-: Card(CK_BOOLCALC)
+: Card_symbol(CK_BOOLCALC)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       

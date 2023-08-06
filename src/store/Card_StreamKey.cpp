@@ -22,7 +22,7 @@ __vDeleteFunction(Card_StreamKey,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamKey::Card_StreamKey(void)
-: Card(CK_STREAMKEY)
+: Card_symbol(CK_STREAMKEY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Debug,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Debug::Card_Debug(void)
-: Card(CK_DEBUG)
+: Card_symbol(CK_DEBUG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

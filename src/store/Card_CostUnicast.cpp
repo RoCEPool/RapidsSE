@@ -25,7 +25,7 @@ __vDeleteFunction(Card_CostUnicast, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CostUnicast::Card_CostUnicast(void)
-: Card(CK_COSTUNICAST)
+: Card_symbol(CK_COSTUNICAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

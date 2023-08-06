@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  class Card_AbsJoin : public Card
+  class Card_AbsJoin : public Card_symbol<Card_AbsJoin>
   {
   public:
     void* operator new(size_t);

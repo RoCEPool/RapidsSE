@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 
 namespace STORE
 {
-  class Card_PRED : public Card
+  class Card_PRED : public Card_symbol<Card_PRED>
   {  
   public:
     Card_PRED(eCK eCard);

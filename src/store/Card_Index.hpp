@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 #include "IndexDef.hpp"
 
 namespace STORE
 {
-  class Card_Index : public Card
+  class Card_Index : public Card_symbol<Card_Index>
   {
   public:
     void* operator new(size_t);

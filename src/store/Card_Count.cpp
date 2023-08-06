@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Count,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Count::Card_Count(void)
-: Card(CK_COUNT)
+: Card_symbol(CK_COUNT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

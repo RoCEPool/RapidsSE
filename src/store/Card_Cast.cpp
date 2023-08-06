@@ -26,7 +26,7 @@ __vDeleteFunction(Card_Cast, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Cast::Card_Cast(void)
-: Card(CK_CAST)
+: Card_symbol(CK_CAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

@@ -22,7 +22,7 @@ __vDeleteFunction(Card_TblSyn, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TblSyn::Card_TblSyn(void)
-: Card(CK_TABLE)
+: Card_symbol(CK_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -35,7 +35,7 @@ Card_TblSyn::Card_TblSyn(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TblSyn::Card_TblSyn(Stz* szTableNm)
-    : Card(CK_TABLE,szTableNm, SF_OTHER)
+    : Card_symbol(CK_TABLE,szTableNm, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

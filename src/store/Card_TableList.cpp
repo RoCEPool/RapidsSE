@@ -27,7 +27,7 @@ __vDeleteFunction(Card_TableList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableList::Card_TableList(void)
-: Card(CK_TABLELIST)
+: Card_symbol(CK_TABLELIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

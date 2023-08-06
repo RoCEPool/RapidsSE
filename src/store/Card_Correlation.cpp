@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Correlation, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Correlation::Card_Correlation(void)
-: Card(CK_CORRELATION)
+: Card_symbol(CK_CORRELATION)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

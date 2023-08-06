@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 #include "IndexDef.hpp"
 #include "ColsReq.hpp"
 #include "ColMap.hpp"
 
 namespace STORE
 {
-  class Card_OP : public Card
+  class Card_OP : public Card_symbol<Card_OP>
   {  
   public:
     Card_OP(eCK eCard);

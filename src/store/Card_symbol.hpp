@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_t.hpp -- Card (template)                                              */
+/* Card_symbol.hpp -- Card (template)                                              */
 /*============================================================================*/
 #pragma once
 
@@ -8,16 +8,16 @@
 namespace STORE
 {
   template <class CARD>
-  class Card_t : public Card
+  class Card_symbol : public Card
   {
   private:
     
   public:
-    Card_t(eCK eCard);
-    Card_t(eCK eCard, Symbol* pSymbol, bool bCopyProperties=true);
-    Card_t(eCK eCard, Stz* szSymbol, eSF eSymbol);
+    Card_symbol(eCK eCard);
+    Card_symbol(eCK eCard, Symbol* pSymbol, bool bCopyProperties=true);
+    Card_symbol(eCK eCard, Stz* szSymbol, eSF eSymbol);
 
-    ~Card_t(void) noexcept(false);
+    ~Card_symbol(void) noexcept(false);
   //CARD* operator [](Symbol* pSymbol);
     CARD* SYM(Symbol xSymbol);
     CARD* SYM(Symbol* pSymbol);
@@ -35,7 +35,7 @@ namespace STORE
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-Card_t<CARD>::Card_t(eCK eCard)
+Card_symbol<CARD>::Card_symbol(eCK eCard)
     : Card(eCard)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -45,7 +45,7 @@ Card_t<CARD>::Card_t(eCK eCard)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-Card_t<CARD>::Card_t(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
+Card_symbol<CARD>::Card_symbol(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
     : Card(eCard, pSymbol, bCopyProperties)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -57,7 +57,7 @@ Card_t<CARD>::Card_t(eCK eCard, Symbol* pSymbol, bool bCopyProperties)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-Card_t<CARD>::Card_t(eCK eCard, Stz* szSymbol, eSF eSymbol)
+Card_symbol<CARD>::Card_symbol(eCK eCard, Stz* szSymbol, eSF eSymbol)
     : Card(eCard, szSymbol, eSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
@@ -70,7 +70,7 @@ Card_t<CARD>::Card_t(eCK eCard, Stz* szSymbol, eSF eSymbol)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-Card_t<CARD>::~Card_t(void) noexcept(false)
+Card_symbol<CARD>::~Card_symbol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -84,7 +84,7 @@ Card_t<CARD>::~Card_t(void) noexcept(false)
 /* operator : []                       ]                                      */
 /*----------------------------------------------------------------------------*/
 //template <class CARD>
-//CARD* Card_t<CARD>::operator [](Symbol* pSymbol)
+//CARD* Card_symbol<CARD>::operator [](Symbol* pSymbol)
 //{
 //  _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 //
@@ -97,7 +97,7 @@ Card_t<CARD>::~Card_t(void) noexcept(false)
 /* SYM                                                                        */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-CARD* Card_t<CARD>::SYM(Symbol xSymbol)
+CARD* Card_symbol<CARD>::SYM(Symbol xSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -110,7 +110,7 @@ CARD* Card_t<CARD>::SYM(Symbol xSymbol)
 /*  SYM                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-CARD* Card_t<CARD>::SYM(Symbol* pSymbol)
+CARD* Card_symbol<CARD>::SYM(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -123,7 +123,7 @@ CARD* Card_t<CARD>::SYM(Symbol* pSymbol)
 /*  SYM                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-CARD* Card_t<CARD>::SYMPPY(Symbol* pSymbol)
+CARD* Card_symbol<CARD>::SYMPPY(Symbol* pSymbol)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -137,7 +137,7 @@ CARD* Card_t<CARD>::SYMPPY(Symbol* pSymbol)
 /*  SYM                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-CARD* Card_t<CARD>::SYM(eSF eSymbol, char cChr)
+CARD* Card_symbol<CARD>::SYM(eSF eSymbol, char cChr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -150,7 +150,7 @@ CARD* Card_t<CARD>::SYM(eSF eSymbol, char cChr)
 /*  SYM                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-CARD* Card_t<CARD>::SYM(eSF eSymbol, char cChr, i8 iInt)
+CARD* Card_symbol<CARD>::SYM(eSF eSymbol, char cChr, i8 iInt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -163,7 +163,7 @@ CARD* Card_t<CARD>::SYM(eSF eSymbol, char cChr, i8 iInt)
 /*  SYM                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-CARD* Card_t<CARD>::SYM(eSF eSymbol, i8 iInt)
+CARD* Card_symbol<CARD>::SYM(eSF eSymbol, i8 iInt)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
@@ -176,7 +176,7 @@ CARD* Card_t<CARD>::SYM(eSF eSymbol, i8 iInt)
 /*  SYM                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class CARD>
-CARD* Card_t<CARD>::SYM(eSF eSymbol, Stz* szStz)
+CARD* Card_symbol<CARD>::SYM(eSF eSymbol, Stz* szStz)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

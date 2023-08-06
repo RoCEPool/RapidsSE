@@ -22,7 +22,7 @@ __vDeleteFunction(Card_Stage,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stage::Card_Stage(void)
-: Card(CK_STAGE)
+: Card_symbol(CK_STAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

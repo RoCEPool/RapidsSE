@@ -30,7 +30,7 @@ __vDeleteFunction(Card_StreamPer, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamPer::Card_StreamPer(void)
-: Card(CK_STREAMPER)
+: Card_symbol(CK_STREAMPER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 #include "CarryForward.hpp"
 
 namespace STORE

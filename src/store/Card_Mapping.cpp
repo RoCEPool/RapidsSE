@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Mapping,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Mapping::Card_Mapping(void)
-: Card(CK_MAPPING)
+: Card_symbol(CK_MAPPING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

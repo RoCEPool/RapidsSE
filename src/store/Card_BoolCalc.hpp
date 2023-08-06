@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class Card_BoolCalc : public Card
+  class Card_BoolCalc : public Card_symbol<Card_BoolCalc>
   {  
   public:
     void* operator new(size_t);

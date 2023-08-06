@@ -25,7 +25,7 @@ __vDeleteFunction(Card_CostStream, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CostStream::Card_CostStream(void)
-: Card(CK_COSTSTREAM)
+: Card_symbol(CK_COSTSTREAM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

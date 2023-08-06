@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 
 #include "Card_Expr.hpp"
 
@@ -11,7 +11,7 @@
 
 namespace STORE
 {
-  class Card_Term : public Card_t<Card_Term>
+  class Card_Term : public Card_symbol<Card_Term>
   {
   public:
     void* operator new(size_t);

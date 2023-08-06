@@ -19,7 +19,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OP::Card_OP(eCK eCard)
-: Card(eCard)
+: Card_symbol(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

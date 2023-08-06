@@ -17,7 +17,7 @@ __vDeleteFunction(Card_OuterColNm, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OuterColNm::Card_OuterColNm(void)
-: Card(CK_OUTERCOLNM)
+: Card_symbol(CK_OUTERCOLNM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

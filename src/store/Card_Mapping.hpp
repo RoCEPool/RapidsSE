@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 #include "ColMap.hpp"
 
 namespace STORE
 {
-  class Card_Mapping : public Card
+  class Card_Mapping : public Card_symbol<Card_Mapping>
   {
   public:
     void* operator new(size_t);

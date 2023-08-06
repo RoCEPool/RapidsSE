@@ -3,13 +3,13 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 
 #include "PermGen.hpp"
 
 namespace STORE
 {
-   class Card_StreamPer : public Card
+   class Card_StreamPer : public Card_symbol<Card_StreamPer>
   {
   public:
     void* operator new(size_t);

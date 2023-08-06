@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Call,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Call::Card_Call(void)
-: Card(CK_CALL)
+: Card_symbol(CK_CALL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

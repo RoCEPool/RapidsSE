@@ -19,7 +19,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_PRED::Card_PRED(eCK eCard)
-: Card(eCard)
+: Card_symbol(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -32,7 +32,7 @@ Card_PRED::Card_PRED(eCK eCard)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_PRED::Card_PRED(eCK eCard, Stz* szValue)
-    : Card(eCard,szValue, SF_OTHER)
+    : Card_symbol(eCard,szValue, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

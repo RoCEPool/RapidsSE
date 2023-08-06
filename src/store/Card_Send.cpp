@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Send,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Send::Card_Send(void)
-: Card(CK_SEND)
+: Card_symbol(CK_SEND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           

@@ -22,7 +22,7 @@ __vDeleteFunction(Card_Expr,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(void)
-: Card(CK_EXPR)
+: Card_symbol(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -35,7 +35,7 @@ Card_Expr::Card_Expr(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(Symbol* pSymbol)
-: Card(CK_EXPR)
+: Card_symbol(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -53,7 +53,7 @@ Card_Expr::Card_Expr(Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(Card_As*      p_as_arg,
                      Card_Term*    p_term_0_arg)
-: Card(CK_EXPR)
+: Card_symbol(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

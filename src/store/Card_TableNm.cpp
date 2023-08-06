@@ -17,7 +17,7 @@ __vDeleteFunction(Card_TableNm,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableNm::Card_TableNm(void)
-: Card(CK_TABLENM)
+: Card_symbol(CK_TABLENM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
           
@@ -30,7 +30,7 @@ Card_TableNm::Card_TableNm(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TableNm::Card_TableNm(Stz* szTableNm)
-    : Card(CK_TABLENM,szTableNm, SF_OTHER)
+    : Card_symbol(CK_TABLENM,szTableNm, SF_OTHER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

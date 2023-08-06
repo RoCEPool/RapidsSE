@@ -3,12 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card_t.hpp"
+#include "Card_symbol.hpp"
 #include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_Constraint : public Card
+  class Card_Constraint : public Card_symbol<Card_Constraint>
   {
   public:
     void* operator new(size_t);

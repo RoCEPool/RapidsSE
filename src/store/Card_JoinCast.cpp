@@ -17,7 +17,7 @@ __vDeleteFunction(Card_JoinCast, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_JoinCast::Card_JoinCast(void)
-: Card(CK_JOINCAST)
+: Card_symbol(CK_JOINCAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   

@@ -18,7 +18,7 @@ __vDeleteFunction(Card_AbsJoin, CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AbsJoin::Card_AbsJoin(void)
-: Card(CK_ABSJOIN)
+: Card_symbol(CK_ABSJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
