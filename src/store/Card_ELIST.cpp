@@ -310,7 +310,7 @@ i8 Card_ELIST::nRenumberAll_syntheticAs(void)
   for (Kid xCI(this); xCI.bEach(CK_EXPR); /**/) {
     if (Card_As* p_as = xCI.p_expr()->pSub_as())
       if (p_as->pSymbol()->bIsSyntheticAs())
-        p_as->pSymbol()->vSetSyntheticAs(++i_Col);
+        p_as->pSymbol()->vSet_As_Nm_syn(++i_Col);
   }
 
   return i_Col;

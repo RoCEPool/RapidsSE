@@ -39,7 +39,7 @@ namespace STORE
     static bool bIsBoolFn(Stz* szArg);           // between, case ... matchTrailing
     static bool bIsBoolOp(Stz* szArg);           // and, not, or
     static bool bIsBound(Stz* szArg);            // BOUND, LBOUND, UBOUND
-    static bool bIsColNm(Stz* szArg);            // bIsName() but not bIsAggFn() etc
+    static bool bIsColNm(Stz* szArg);            // bIsName() but not bIs_Agg_Fn() etc
     static bool bIsColumnOrdinal(Stz* szArg);    // $c.n
     static bool bIsComma(Stz* szArg);            // ,
     static bool bIsCrossRef(Stz* szArg);         // #n
@@ -85,11 +85,11 @@ namespace STORE
 
     void vIncTblSyn(void);
 
-    bool bIsAggFn(void);            // avg, count, ... sum
+    bool bIs_Agg_Fn(void);          // avg, count, ... sum
     bool bIsBoolFn(void);           // between, case ... matchTrailing
     bool bIsBoolOp(void);           // and, not, or
     bool bIsBound(void);            // BOUND, LBOUND, UBOUND
-    bool bIsColNm(void);            // bIsName() but not bIsAggFn() etc
+    bool bIsColNm(void);            // bIsName() but not bIs_Agg_Fn() etc
     bool bIsColumnOrdinal(void);    // $c.n
     bool bIsComma(void);            // ,
     bool bIsCrossRef(void);         // #n
@@ -120,23 +120,22 @@ namespace STORE
     bool bSame(Stz* szArg);
     bool bSame(Symbol* pArg);
 
-    void vSet(eSF eSymbol, Stz* szSymbol);
-    void vSet_asName(Stz* szAsNm);
-    void vSet_colNm(Stz* szColNm);
-    void vSetCrossRef(i8 iCrossRef);
-    void vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol);
-    void vSetIndexColOrdinal(i8 iIdxColOdn);
-    void vSetKeyOrdinal(i8 iKeyOdn);
-    void vSet_number(i8 iNumber);
-    void vSet_other(Stz* szOther);
-    void vSet_parameterOrdinal(i8 iOrdinal);
-    void vSetReplicateTblSyn(void);
-    void vSet_stageNo(i8 iStageNo);
-    void vSetStreamOrdinal(i8 iStmColOdn);
-    void vSetSubQueryOrdinal(i8 iSqNo);
-    void vSetSyntheticAs(i8 iAsNo);
-    void vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn);
-    void vSetTableSyn(char cTblSyn);
+//    void vSet(eSF eSymbol, Stz* szSymbol);
+    void vSet_As_Nm(Stz* szAsNm);
+    void vSet_As_Nm_syn(i8 iAsNo);
+    void vSet_Col_Nm(Stz* szColNm);
+    void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
+    void vSet_Col_No(i8 iStmColOdn);
+    void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
+    void vSet_Idx_Col(i8 iIdxColOdn);
+    void vSet_KeyCol(i8 iKeyOdn);
+    void vSet_Number(i8 iNumber);
+    void vSet_Prm_Col(i8 iOrdinal);
+    void vSet_Sqy_No(i8 iSqNo);
+    void vSet_Stg_No(i8 iStageNo);
+    void vSet_Tbl_Syn(char cTblSyn);
+    void vSet_Tbl_Syn_rep(void);
+    void vSet_Xrf_No(i8 iCrossRef);
 
     i8   iSF_number(void);
     Stz* szSF_symbol(void);

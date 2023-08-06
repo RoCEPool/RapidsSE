@@ -197,15 +197,15 @@ void Card_Table::vProduceTablePtns(CardIter* pCI) {
     Card_Table::vGetSizes(pTable,jTableSize,jRowSize,nRowCount);
 
     pCI->G.p_tableSize = new Card_TableSize;
-    pCI->G.p_tableSize->pSymbol()->vSet_number(jTableSize);
+    pCI->G.p_tableSize->pSymbol()->vSet_Number(jTableSize);
     pCI->G.p_table->vAppend(pCI->G.p_tableSize);
 
     pCI->G.p_rowSize = new Card_RowSize;
-    pCI->G.p_rowSize->pSymbol()->vSet_number(jRowSize);
+    pCI->G.p_rowSize->pSymbol()->vSet_Number(jRowSize);
     pCI->G.p_table->vAppend(pCI->G.p_rowSize);
 
     pCI->G.p_rowCount = new Card_RowCount;
-    pCI->G.p_rowCount->pSymbol()->vSet_number(nRowCount);
+    pCI->G.p_rowCount->pSymbol()->vSet_Number(nRowCount);
     pCI->G.p_table->vAppend(pCI->G.p_rowCount);
 
   }
@@ -575,7 +575,7 @@ void Card_Table::vSet_Syn(Symbol* pSymbol_tableSyn)
   Card_TableNm* p_tableNm = this->pSub_tableNm();
   Table* pTable = Card_Table::pAccess_Table(p_tableNm->szSymbol());
   if (pTable->bIsReplicated())
-    xSymbol_actual.vSetReplicateTblSyn();
+    xSymbol_actual.vSet_Tbl_Syn_rep();
 
   this->pSymbol()->vUpdate(&xSymbol_actual);
   this->vMark1(MARK_CHANGED);

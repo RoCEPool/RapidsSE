@@ -847,13 +847,13 @@ void Symbol::vIncTblSyn(void)
 
   char cTblSyn = cSF_synonym();
 
-  vSetTableSyn(cTblSyn + 1);
+  vSet_Tbl_Syn(cTblSyn + 1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* is this symbol an aggregate op?                                            */
 /*----------------------------------------------------------------------------*/
-bool Symbol::bIsAggFn(void)
+bool Symbol::bIs_Agg_Fn(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1245,21 +1245,21 @@ bool Symbol::bSame(Symbol* pArg)
 /*----------------------------------------------------------------------------*/
 /* set this symbol using given symbol                                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet(eSF eSymbol, Stz* szSymbol)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-  RASSERT(! m_bSet);
-  m_bSet = true;
-
-  m_sSymbol = szSymbol;
-  m_eSymbol = eSymbol;
-}
+//void Symbol::vSet(eSF eSymbol, Stz* szSymbol)
+//{
+//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//
+//  RASSERT(! m_bSet);
+//  m_bSet = true;
+//
+//  m_sSymbol = szSymbol;
+//  m_eSymbol = eSymbol;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_asName(Stz* szAsNm)
+void Symbol::vSet_As_Nm(Stz* szAsNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1277,7 +1277,7 @@ void Symbol::vSet_asName(Stz* szAsNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given column-name                                       */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_colNm(Stz* szColNm)
+void Symbol::vSet_Col_Nm(Stz* szColNm)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1292,7 +1292,7 @@ void Symbol::vSet_colNm(Stz* szColNm)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given cross-reference no                                */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetCrossRef(i8 iCrossRef)
+void Symbol::vSet_Xrf_No(i8 iCrossRef)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1310,7 +1310,7 @@ void Symbol::vSetCrossRef(i8 iCrossRef)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given disambiguated-column-name                         */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol)
+void Symbol::vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1328,7 +1328,7 @@ void Symbol::vSetDisambiguatedNm(i8 i_Child, Symbol* pSymbol)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given index-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
+void Symbol::vSet_Idx_Col(i8 iIdxColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1346,7 +1346,7 @@ void Symbol::vSetIndexColOrdinal(i8 iIdxColOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given key-column                                        */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
+void Symbol::vSet_KeyCol(i8 iKeyOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1364,7 +1364,7 @@ void Symbol::vSetKeyOrdinal(i8 iKeyOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given number                                             */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_number(i8 iNumber)
+void Symbol::vSet_Number(i8 iNumber)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1379,35 +1379,18 @@ void Symbol::vSet_number(i8 iNumber)
 #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/* set this symbol to given other                                             */
-/*----------------------------------------------------------------------------*/
-void Symbol::vSet_other(Stz* szOther)
-{
-  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-
-  m_sSymbol = szOther;
-  m_eSymbol = SF_OTHER;
-
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsOther());
-#endif
-}
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given number                                             */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_parameterOrdinal(i8 iNumber)
+void Symbol::vSet_Prm_Col(i8 iOrdinal)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
 //  RASSERT(! m_bSet);
 //  m_bSet = true;
 
-  vSprint("%%%lld"_Stz, iNumber);
+  vSprint("%%%lld"_Stz, iOrdinal);
   m_eSymbol = SF_PRM_COL;
 
 #ifdef X_SET_CROSS_CHECK
@@ -1418,7 +1401,7 @@ void Symbol::vSet_parameterOrdinal(i8 iNumber)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to a stage                                                 */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSet_stageNo(i8 iStageNo)
+void Symbol::vSet_Stg_No(i8 iStageNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1432,7 +1415,7 @@ void Symbol::vSet_stageNo(i8 iStageNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given stream-column                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
+void Symbol::vSet_Col_No(i8 iStmColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1450,7 +1433,7 @@ void Symbol::vSetStreamOrdinal(i8 iStmColOdn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given subquery-number                                   */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
+void Symbol::vSet_Sqy_No(i8 iSqNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1468,7 +1451,7 @@ void Symbol::vSetSubQueryOrdinal(i8 iSqNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given synthetic-as                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetSyntheticAs(i8 iAsNo)
+void Symbol::vSet_As_Nm_syn(i8 iAsNo)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1488,7 +1471,7 @@ void Symbol::vSetSyntheticAs(i8 iAsNo)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetTableSyn(char cTblSyn)
+void Symbol::vSet_Tbl_Syn(char cTblSyn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1506,7 +1489,7 @@ void Symbol::vSetTableSyn(char cTblSyn)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-synonym                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetReplicateTblSyn(void)
+void Symbol::vSet_Tbl_Syn_rep(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1528,7 +1511,7 @@ void Symbol::vSetReplicateTblSyn(void)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given table-column                                      */
 /*----------------------------------------------------------------------------*/
-void Symbol::vSetTableColOrdinal(char cTblSyn, i8 iTblColOdn)
+void Symbol::vSet_Col_Tc(char cTblSyn, i8 iTblColOdn)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
@@ -1718,7 +1701,7 @@ Stz* Symbol::szWhatIs(void)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-  if (bIsAggFn())            return "AggOp"_Stz;
+  if (bIs_Agg_Fn())            return "AggOp"_Stz;
   if (bIsBoolFn())           return "BoolFn"_Stz;
   if (bIsBound())            return "Bound"_Stz;
   if (bIsColumnOrdinal())    return "ColumnOrdinal"_Stz;

@@ -258,7 +258,7 @@ void Card_Where::vSmooth(CardIter* pCI, CarryForward* pCarryForward)
 
   if (pCarryForward->Where_preAgg.bReplace_sqCall_With_result) {
     Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vSetStreamOrdinal(1);
+    x_Symbol_stmCol1.vSet_Col_No(1);
 
     // replace sqCall with sqResult
     pCI->Sqy.m_pTerm_sqCall->pSymbol()->vUpdate(&x_Symbol_stmCol1);

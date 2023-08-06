@@ -29,7 +29,7 @@ Card_Projection::Card_Projection(i8 iCrossRef)
           
   _checkInitialised_(CN_CARD);
 
-  pSymbol()->vSetCrossRef(iCrossRef);
+  pSymbol()->vSet_Xrf_No(iCrossRef);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -272,7 +272,7 @@ void Card_Projection::vDedupe_as(void)
   for (Kid xProjection(this); xProjection.bEach(CK_EXPR); /**/) {
     Card_As* p_as = xProjection.p_expr()->pSub_as();
 
-    p_as->pSymbol()->vSetDisambiguatedNm(xProjection.i_Child(), p_as->pSymbol());
+    p_as->pSymbol()->vSet_Col_Nm_dis(xProjection.i_Child(), p_as->pSymbol());
   }
 
   vDebugPoint();
@@ -434,7 +434,7 @@ void Card_Projection::vReviewAs(CardIter* pCI)
       if (p_expr_prj->pSub_as()->pSymbol()->Y_bHas(P_Synthetic)) {
         Card_Expr *p_expr_key = pCI->G.p_key->pDecodeExpr(pSymbol_key_term);
 
-        p_expr_prj->pSub_as()->pSymbol()->vSet_asName(p_expr_key->pSub_as()->szSymbol());
+        p_expr_prj->pSub_as()->pSymbol()->vSet_As_Nm(p_expr_key->pSub_as()->szSymbol());
         p_expr_prj->pSub_as()->pSymbol()->Y_vCut(P_Synthetic);
       }
     }

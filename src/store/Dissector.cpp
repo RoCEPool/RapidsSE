@@ -148,7 +148,7 @@ void Dissector::vStage(i8 i_StageSpec)
     
 
   Card_Stage* pCard_Stage = new Card_Stage;
-  pCard_Stage->pSymbol()->vSet_stageNo(i_StageSpec);
+  pCard_Stage->pSymbol()->vSet_Stg_No(i_StageSpec);
 
   Card_Topology* pCard_StageTopo = new Card_Topology(eStageTopo);
   pCard_Stage->vAppend(pCard_StageTopo);
@@ -1105,7 +1105,7 @@ Card* Dissector::pOp_Top(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_Count* pCard_Count = new Card_Count;
-  pCard_Count->pSymbol()->vSet_number(iCount);
+  pCard_Count->pSymbol()->vSet_Number(iCount);
   pCard_Top->vAppend(pCard_Count);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1347,12 +1347,12 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
 
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSetKeyOrdinal(ri_Expr);
+    xSymbol_stmColOdn.vSet_KeyCol(ri_Expr);
     pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn);
   }
   else {
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSetStreamOrdinal(ri_Expr);
+    xSymbol_stmColOdn.vSet_Col_No(ri_Expr);
     pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn);
   }
 
@@ -1527,7 +1527,7 @@ Card_RpnCalc* Dissector::pPopRpnCalc(Card_RpnTerms* pCard_RpnTerms)
       break;
     }
 
-    if (pCard_Term_popped->pSymbol()->bIsAggFn())
+    if (pCard_Term_popped->pSymbol()->bIs_Agg_Fn())
       pCard_RpnCalc->pSymbol()->Y_vSet(P_AggOp);
 
     pCard_RpnCalc->vAppend(pCard_Term_popped);

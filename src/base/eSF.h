@@ -8,13 +8,13 @@ enum eSF // symbol form
   /* */ SF_NONE = 0,    // none
 
   /* */ SF_AGG_FN,      // Aggregate Function  : avg, count, ... sum
-  /* */ SF_AS_NM,       // As Name             : bIsName() but not bIsAggFn() etc
+  /* */ SF_AS_NM,       // As Name             : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_AS_NM_syn,   // As Name (synthetic) : __COLn
   /* */ SF_BOL_FN,      // Boolean Function    : between, case ... matchTrailing
   /* */ SF_BOL_OP,      // Boolean Operator    : and, not, or
   /* */ SF_BOUND,       // Index Bound         : BOUND, LBOUND, UBOUND
 
-  /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIsAggFn() etc
+  /* */ SF_COL_NM,      // Column Name         : bIsName() but not bIs_Agg_Fn() etc
   /* */ SF_COL_NM_dis,  // " (disambiguated)   : Cn_<col_nm>
   /* */ SF_COL_NO,      // Column Number       : $n
   /* */ SF_COL_TC,      // (table) Column No   : $c.n
@@ -28,10 +28,12 @@ enum eSF // symbol form
 
   /* */ SF_PRM_COL,     // Parameter Column    : %n
   /* */ SF_RLN_OP,      // Relational Op       : <, <=, ... >
+  /* */ SF_STG_NO,      // Stage No            : Sn
   /* */ SF_SQY_KEY,     // SubQuery Correl Key :
   /* */ SF_SQY_NO,      // SubQuery No         :
   /* */ SF_SQY_RSL,     // SubQuery Result     :
   /* */ SF_TBL_SYN,     // Table Synonym       : c
+  /* */ SF_TBL_SYN_rep, // " (replicated)      : C
   /* */ SF_XRF_NO,      // CrossRef No         : #n
 
   /* */ SF_ENUMS
@@ -65,6 +67,7 @@ static Stz* aSF[]
   /* */ "SF_SQY_KEY"_Stz,
   /* */ "SF_SQY_NO"_Stz,
   /* */ "SF_SQY_RSL"_Stz,
+  /* */ "SF_STG_NO"_Stz,
   /* */ "SF_TBL_SYN"_Stz,
   /* */ "SF_XRF_NO"_Stz,
 
