@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Card.hpp"
+#include "Card_t.hpp"
 #include "IndexDef.hpp"
 #include "ColsReq.hpp"
 #include "ColMap.hpp"

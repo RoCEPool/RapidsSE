@@ -1243,20 +1243,6 @@ bool Symbol::bSame(Symbol* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set this symbol using given symbol                                         */
-/*----------------------------------------------------------------------------*/
-//void Symbol::vSet(eSF eSymbol, Stz* szSymbol)
-//{
-//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
-//
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
-//
-//  m_sSymbol = szSymbol;
-//  m_eSymbol = eSymbol;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* set this symbol to given as-name                                           */
 /*----------------------------------------------------------------------------*/
 void Symbol::vSet_As_Nm(Stz* szAsNm)
