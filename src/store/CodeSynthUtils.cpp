@@ -80,6 +80,11 @@ bool CodeSynthUtils::bExtract(File* pFile, OpSketch* pOpSketch, Stz* szFunMkr,
     else {
       if (bFoundStart) {
 
+        if (bGenerateExprStack(sLine, sCode, pOpSketch)) {
+          sLine = ""_Stz;
+          continue;
+        }
+
         vReplaceOperatorName(sLine, pOpSketch);
 
         if (pColumn)
@@ -199,6 +204,33 @@ bool CodeSynthUtils::bExtractInflate(File* pFile, Column* pColumn, Stz* sReturnT
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Extract code for function from file                                        */
+/*----------------------------------------------------------------------------*/
+bool CodeSynthUtils::bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOpSketch)
+{
+  _static_
+
+  //s4K sCopy;
+  TypeValueArea* pTypedCell;
+
+  if (StrLib::bContains(sLine->azChar(), "__NULL_EXPRSTACK__")) {
+    TypedStack* pTypedStack = pOpSketch->m_pNullStack;
+
+    i8 nExpr = pTypedStack ? pTypedStack->nValues() - 1 : C_UNKNOWN ;
+
+    while ( nExpr >= 0) {
+      pTypedCell = pTypedStack->aPeekItem(nExpr--);
+      Stz* sExpr = pTypedCell->szStz();
+      //sCopy.vSprint("\n  %s"_Stz, sExpr->azChar());
+      StrLib::vSprintCat(sCode->szStz(), "\n %s"_Stz, sExpr->azChar());
+    }
+    return true;
+  }
+
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Extract code for function from file                                        */

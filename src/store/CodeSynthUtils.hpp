@@ -16,6 +16,8 @@ namespace STORE {
                                 Stz *szFunMkr, String *sCode);
 
   private:
+    static bool bGenerateExprStack(Stz* sLine, String* sCode, OpSketch* pOpSketch);
+
     static void vReplaceColumnNo(Stz *sLine, Column *pColumn);
     static void vReplaceColumnName(Stz *sLine, Column *pColumn);
     static bool bReplaceIndexInfo(Stz *sLine, Stz *sReplacedLine, OpSketch *pOpSketch);
