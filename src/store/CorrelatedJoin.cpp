@@ -564,7 +564,7 @@ void CorrelatedJoin::vConvert_SubQryCall_Into_StmColOdn(CardIter* pCI, Card_Bool
         if (pCI->m_pBench->bIsSubQueryNm(xCI.G.p_MainCard->szSymbol())) {
           Card* p_arg = xCI.pPrevChild();
 
-          Card_Term* p_term_new = new Card_Term("$2"_Stz);
+          Card_Term* p_term_new = (new Card_Term) ->SYM(SF_OTHER,"$2"_Stz);
           p_pred->vInsertAfter(p_term_new,xCI.G.p_MainCard);
 
 

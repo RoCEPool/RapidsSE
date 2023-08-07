@@ -1646,7 +1646,7 @@ Card_RpnTerms* Dissector::pToRpnTerms(Stz* szRpnExpr)
       sDissectedVal = pToken->szChars();
     }
 
-    Card_Term* pCard_Term = new Card_Term(sDissectedVal);
+    Card_Term* pCard_Term = (new Card_Term) ->SYM(SF_OTHER,sDissectedVal);
 
     pCard_RpnTerms->vAppend(pCard_Term);
   }

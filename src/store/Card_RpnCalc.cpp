@@ -123,7 +123,7 @@ void Card_RpnCalc::vConcat(STORE::Card_RpnCalc *p_rpnCalc)
   vTransferChildren(p_rpnCalc);
 
   if (bAppendAnd) {
-    Card_Term *p_term_and = new Card_Term("and"_Stz);
+    Card_Term *p_term_and = (new Card_Term) ->SYM(SF_OTHER,"and"_Stz);
     vAppend(p_term_and);
   }
 }
@@ -446,7 +446,7 @@ Card_RpnCalc* Card_RpnCalc::pPropagate(Card_Expr* p_expr_encasing)
 
   p_rpnCalc_propagated->vColType(this);
 
-  Card_Term* p_term_propagated = new Card_Term(p_expr_encasing->szSymbol());
+  Card_Term* p_term_propagated = (new Card_Term) ->SYM(SF_OTHER,p_expr_encasing->szSymbol());
   p_term_propagated->vColType(this);
 
   p_rpnCalc_propagated->vAppend(p_term_propagated);

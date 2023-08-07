@@ -19,15 +19,15 @@ __vDeleteFunction(Card_Term,CN_CARD)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Term::Card_Term(Stz* szTerm)
-: Card_symbol(CK_TERM, szTerm, SF_OTHER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
+//Card_Term::Card_Term(Stz* szTerm)
+//: Card_symbol(CK_TERM, szTerm, SF_OTHER)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  _checkInitialised_(CN_CARD);
+//
+//  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
