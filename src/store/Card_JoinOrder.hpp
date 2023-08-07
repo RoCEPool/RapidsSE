@@ -14,7 +14,6 @@ namespace STORE
     void  operator delete(void*);
   
     Card_JoinOrder(void);
-    Card_JoinOrder(Stz* szValue);
    ~Card_JoinOrder(void) noexcept(false);
    };
 
