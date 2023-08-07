@@ -85,7 +85,9 @@ namespace STORE
 
     void vIncTblSyn(void);
 
-    void vInit_Col_No(i8 iStmColOdn);
+    void vInit(eSF eSymbol, i8 iInt);
+
+    //void vInit_Col_No(i8 iStmColOdn);
     void vInit_Idx_Col(i8 iPrmCol);
     void vInit_Key_Col(i8 iPrmCol);
     void vInit_Prm_Col(i8 iPrmCol);

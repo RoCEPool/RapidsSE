@@ -410,7 +410,7 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     if (p_term)
       x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
     else
-      x_Symbol_stmCol1.vInit_Col_No(1);
+      x_Symbol_stmCol1.vInit(SF_COL_NO,1);
     p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
 
     Card_Expr* p_expr_found =
@@ -435,11 +435,11 @@ void Card_PRED::vMorph_SqlOp_To_Eq(CardIter* pCI, Card_Term* p_term)
     ASSERT(p_term_head->bSameSymbol("#1"_Stz)); //temp
 
     Symbol x_Symbol_stmCol1;
-    x_Symbol_stmCol1.vInit_Col_No(1);
+    x_Symbol_stmCol1.vInit(SF_COL_NO,1);
     if (p_term)
       x_Symbol_stmCol1.vUpdate(p_term->pSymbol());
     else
-      x_Symbol_stmCol1.vInit_Col_No(1);
+      x_Symbol_stmCol1.vInit(SF_COL_NO,1);
     p_term_head->pSymbol()->vUpdate(&x_Symbol_stmCol1);
     return;
   }

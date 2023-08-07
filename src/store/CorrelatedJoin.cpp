@@ -407,7 +407,7 @@ void CorrelatedJoin::vEnhance_sq_project_To_Include_Correlation_Key(CardIter* pC
   pCI->G_vAppendNewChild(pCI->G.p_expr, CK_RPNCALC);
   pCI->G_vAppendNewChild(pCI->G.p_rpnCalc, CK_TERM, "$1"_Stz, SF_COL_TC);
   Symbol x_Symbol_stmCol1;
-  x_Symbol_stmCol1.vInit_Col_No(1);
+  x_Symbol_stmCol1.vInit(SF_COL_NO,1);
 
   pCI->G.p_rpnCalc->pSymbol()->Y_vSet(P_Type, pCI->G.p_key->szP_Type());
   pCI->G.p_term->pSymbol()->Y_vSet(P_Type, pCI->G.p_key->szP_Type());
@@ -472,7 +472,7 @@ void CorrelatedJoin::vConvert_CrlPrmOdn_Into_StmColOdn(CardIter* pCI, Card_BoolC
         if (xCI.G.p_MainCard->pSymbol()->bIsParameterOrdinal()) {
 
           Symbol x_Symbol_stmCol1;
-          x_Symbol_stmCol1.vInit_Col_No(1);
+          x_Symbol_stmCol1.vInit(SF_COL_NO,1);
           xCI.G.p_MainCard->pSymbol()->vUpdate(&x_Symbol_stmCol1);  // TODO: hack!!
 
           Card_Expr* p_expr_found =

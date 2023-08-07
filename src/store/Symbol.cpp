@@ -193,20 +193,40 @@ eSF Symbol::eEvalSymbol(Stz* szSymbol)
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given stream-column                                     */
 /*----------------------------------------------------------------------------*/
-void Symbol::vInit_Col_No(i8 iStmColOdn)
+void Symbol::vInit(eSF eSymbol, i8 iInt)
 {
   _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
 
-//  RASSERT(! m_bSet);
-//  m_bSet = true;
+  switch (eSymbol) {
 
-  vSprint("$%lld"_Stz, iStmColOdn);
-  m_eSymbol = SF_COL_TC;
+    case SF_COL_NO  : vSet_Col_No(iInt);   break;
+    case SF_IDX_COL : vSet_Idx_Col(iInt);  break;
+    case SF_KEY_COL : vSet_Key_Col(iInt);  break;
+    case SF_PRM_COL : vSet_Prm_Col(iInt);  break;
+    case SF_SQY_NO  : vSet_Sqy_No(iInt);   break;
 
-#ifdef X_SET_CROSS_CHECK
-  RASSERT(bIsStreamOrdinal());
-#endif
+    default: NEVER_REACH;
+  }
+
 }
+
+/*----------------------------------------------------------------------------*/
+/* set this symbol to given stream-column                                     */
+/*----------------------------------------------------------------------------*/
+//void Symbol::vInit_Col_No(i8 iStmColOdn)
+//{
+//  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+//
+////  RASSERT(! m_bSet);
+////  m_bSet = true;
+//
+//  vSprint("$%lld"_Stz, iStmColOdn);
+//  m_eSymbol = SF_COL_TC;
+//
+//#ifdef X_SET_CROSS_CHECK
+//  RASSERT(bIsStreamOrdinal());
+//#endif
+//}
 
 /*----------------------------------------------------------------------------*/
 /* set this symbol to given index-column                                      */
