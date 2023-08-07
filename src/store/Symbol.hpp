@@ -138,6 +138,7 @@ namespace STORE
     void vSym(eSF eSymbol, i8 iInt);
     void vSym(eSF eSymbol, i8 iInt, Symbol* pSymbol);
     void vSym(eSF eSymbol, Stz* szStz);
+    void vSymPpy(Symbol* pSymbol);
 
     bool bTest_mustHave_ppy(Stz* szPpy, ...);
 

@@ -1429,6 +1429,20 @@ void Symbol::vSym(eSF eSymbol, Stz* szStz)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get symbol char                                                            */
+/*----------------------------------------------------------------------------*/
+void Symbol::vSymPpy(Symbol* pSymbol)
+{
+  _precondition_(_MAGIC_, CN_SYMBOL, _FOOTER_);
+
+  m_sSymbol = pSymbol->m_sSymbol;
+  m_eSymbol = pSymbol->m_eSymbol;
+
+  Y_vAll(pSymbol);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* validate symbol properties                                                 */
 /*----------------------------------------------------------------------------*/
 bool Symbol::bTest_mustHave_ppy(Stz* szPpy, ...)
