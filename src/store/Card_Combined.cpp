@@ -25,7 +25,7 @@ Card_Combined::Card_Combined(void)
 
   _checkInitialised_(CN_CARD);
 
-  vSymbol(Symbol((i8)0,SF_OTHER));
+  vUpdateSymbol(Symbol((i8) 0, SF_OTHER));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

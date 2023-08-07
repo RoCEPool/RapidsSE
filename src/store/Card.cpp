@@ -65,7 +65,7 @@ Card::Card(eCK eCard, Stz* szSymbol, eSF eSymbol)
 
   vInit(eCard);
 
-  vSymbol(Symbol(szSymbol,eSymbol));
+  vUpdateSymbol(Symbol(szSymbol, eSymbol));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1250,7 +1250,7 @@ Stz* Card::szSymbol(void)
 /*----------------------------------------------------------------------------*/
 /* set card symbol                                                            */
 /*----------------------------------------------------------------------------*/
-void Card::vSymbol(Symbol xSymbol_arg)
+void Card::vUpdateSymbol(Symbol xSymbol_arg)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 

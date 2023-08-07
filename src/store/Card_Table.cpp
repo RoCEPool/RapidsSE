@@ -50,7 +50,7 @@ Card_Table::Card_Table(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  vSymbol(Symbol(szTableNm,SF_OTHER));
+  vUpdateSymbol(Symbol(szTableNm, SF_OTHER));
 
   _checkInitialised_(CN_CARD);
 

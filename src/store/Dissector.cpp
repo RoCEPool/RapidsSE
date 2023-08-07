@@ -164,7 +164,7 @@ void Dissector::vStage(i8 i_StageSpec)
       m_pBoard->pDeck()->vAppend(p_paramList);
       Card_OuterColNm* p_param = new Card_OuterColNm;
       StrLib::vStrip((char*)pParamsSpec->pGet(0)->szParamNm(),' ');
-      p_param->vSymbol(Symbol(pParamsSpec->pGet(0)->szParamNm(),SF_OTHER));
+      p_param->vUpdateSymbol(Symbol(pParamsSpec->pGet(0)->szParamNm(), SF_OTHER));
       p_param->pSymbol()->Y_vSet(P_ParamOdn, "%1"_Stz);
       p_paramList->vAppend(p_param);
     }
@@ -321,7 +321,7 @@ Card* Dissector::pOp_Call(void)
   StrLib::vStrip(szSubPipeNm->azChar(),' ');
 
   Card_Call* pCard_Call = new Card_Call;
-  pCard_Call->vSymbol(Symbol(szSubPipeNm,SF_OTHER));
+  pCard_Call->vUpdateSymbol(Symbol(szSubPipeNm, SF_OTHER));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -572,7 +572,7 @@ Card* Dissector::pOp_IndexJoin(void)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vSymbol(Symbol(pIndex->szIndexNm(),SF_OTHER));
+  p_indexNm->vUpdateSymbol(Symbol(pIndex->szIndexNm(), SF_OTHER));
 
   p_indexList->vAppend(p_index);
 
@@ -675,7 +675,7 @@ Card* Dissector::pOp_IndexScan(void)
   Card_Index* p_index = new Card_Index;
   Card_IndexNm* p_indexNm = new Card_IndexNm;
   p_index->vAppend(p_indexNm);
-  p_indexNm->vSymbol(Symbol(szIndexNm,SF_OTHER));
+  p_indexNm->vUpdateSymbol(Symbol(szIndexNm, SF_OTHER));
 
   p_indexList->vAppend(p_index);
 
@@ -1175,7 +1175,7 @@ Card_IndexList* Dissector::pFormIndex(Stz* szIndexNm, Table* pTable)
   Card_Index* p_index = new Card_Index;
 
   Card_IndexNm* p_indexNm = new Card_IndexNm;
-  p_indexNm->vSymbol(Symbol(pIndex->szIndexNm(),SF_OTHER));
+  p_indexNm->vUpdateSymbol(Symbol(pIndex->szIndexNm(), SF_OTHER));
 
   p_index->vAppend(p_indexNm);
   p_indexList->vAppend(p_index);
