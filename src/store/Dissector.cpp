@@ -1347,12 +1347,12 @@ Card_Expr* Dissector::pPopExpr(Card_RpnTerms* pCard_RpnTerms,
 
   if (bIsKeyExpr) {
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSet_KeyCol(ri_Expr);
+    xSymbol_stmColOdn.vInit(SF_KEY_COL,ri_Expr);
     pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn);
   }
   else {
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSet_Col_No(ri_Expr);
+    xSymbol_stmColOdn.vInit(SF_COL_NO,ri_Expr);
     pCard_Expr->pSymbol()->vUpdate(&xSymbol_stmColOdn);
   }
 

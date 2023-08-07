@@ -85,8 +85,12 @@ namespace STORE
 
     void vIncTblSyn(void);
 
-    void vInit_Prm_Col(i8 iPrmCol);
-    void vInit_Sqy_No(i8 iSqyNo);
+    void vInit(eSF eSymbol, i8 iInt);
+
+    //void vInit_Idx_Col(i8 iPrmCol);
+    //void vInit_Key_Col(i8 iPrmCol);
+    //void vInit_Prm_Col(i8 iPrmCol);
+    //void vInit_Sqy_No(i8 iSqyNo);
     void vInit_Tbl_Syn(char cTblSyn);
 
     bool bIs_Agg_Fn(void);          // avg, count, ... sum
@@ -131,13 +135,12 @@ namespace STORE
     void vSet_Col_Nm_dis(i8 i_Child, Symbol* pSymbol);
 
   public:
-    void vSet_Col_No(i8 iStmColOdn);
-
-    void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
-    void vSet_Idx_Col(i8 iIdxColOdn);
-    void vSet_KeyCol(i8 iKeyOdn);
 
   private:
+    void vSet_Col_No(i8 iStmColOdn);
+    void vSet_Col_Tc(char cTblSyn, i8 iTblColOdn);
+    void vSet_Idx_Col(i8 iIdxColOdn);
+    void vSet_Key_Col(i8 iKeyOdn);
     void vSet_Number(i8 iNumber);
     void vSet_Prm_Col(i8 iOrdinal);
     void vSet_Sqy_No(i8 iSqNo);

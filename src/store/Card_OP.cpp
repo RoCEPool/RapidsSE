@@ -267,7 +267,7 @@ void Card_OP::vConvert_tblColOdn_To_stmColOdn(CardIter* pCI)
     i8 i_Col = p_term->iGetOdn();
 
     Symbol xSymbol_stmColOdn;
-    xSymbol_stmColOdn.vSet_Col_No(nExpr_prior + i_Col);
+    xSymbol_stmColOdn.vInit(SF_COL_NO,nExpr_prior + i_Col);
     p_term->pSymbol()->vUpdate(xSymbol_stmColOdn.szSF_symbol());
     p_term->vMark1(MARK_CHANGED);
 
@@ -778,7 +778,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
 
     Card_Expr* p_expr = new Card_Expr;
     Symbol xSymbol;
-    xSymbol.vSet_Col_No(i_Expr++);
+    xSymbol.vInit(SF_COL_NO,i_Expr++);
     p_expr->pSymbol()->vUpdate(&xSymbol);
     p_projection->vAppend(p_expr);
 
@@ -792,9 +792,7 @@ void Card_OP::vUpdate_projection(CardIter* pCI)
     p_rpnCalc->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
     p_expr->pSymbol()->Y_vSet(P_Type, szCT_char[eColumnType]);
 
-    Symbol xSymbol_tblCol;
-    xSymbol_tblCol.vSet_Col_Tc(cTblSyn, i_Col + 1);
-    Card_Term *p_term = (new Card_Term) -> SYM(xSymbol_tblCol);
+    Card_Term *p_term = (new Card_Term) -> SYM(SF_COL_TC,cTblSyn, i_Col + 1);
     p_rpnCalc->vAppend(p_term);
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --

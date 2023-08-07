@@ -114,7 +114,7 @@ Card_Expr* Card_Expr::pProj_expr_From_Gby_expr(Card_Expr* p_expr_gby, Stz* szAs)
   RASSERT(p_expr_gby->szP_Type());
 
   Symbol xSymbol_Kn;
-  xSymbol_Kn.vSet_KeyCol(p_expr_gby->i_Child() + 1);
+  xSymbol_Kn.vInit(SF_KEY_COL,p_expr_gby->i_Child() + 1);
 
   Card_Expr*    p_expr    = new Card_Expr;
   Card_As*      p_as      = szAs ? new Card_As(szAs) : nullptr;
@@ -146,7 +146,7 @@ Card_Expr* Card_Expr::pProj_Simple_expr_Of(Card_Expr* p_expr, i8 i_Col)
   RASSERT(p_expr->szP_Type());
 
   Symbol xSymbol_Dn;
-  xSymbol_Dn.vSet_Col_No(i_Col);
+  xSymbol_Dn.vInit(SF_COL_NO,i_Col);
 
   Card_Expr* p_expr_simple = new Card_Expr;
 
@@ -568,7 +568,7 @@ Card_Expr * Card_Expr::pReducedCopy(i8 i_Expr)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
   Symbol xExprNo;
-  xExprNo.vSet_Col_No(i_Expr + 1);
+  xExprNo.vInit(SF_COL_NO,i_Expr + 1);
 
   Card_Expr* p_expr_reduced = new Card_Expr;
   p_expr_reduced->pSymbol()->vUpdate(&xExprNo);
@@ -592,7 +592,7 @@ void Card_Expr::vRenumberForm_keyOdn(BASE::i8 i_Expr)
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
 
-  pSymbol()->vSet_KeyCol(i_Expr);
+  SYM(SF_KEY_COL,i_Expr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -602,7 +602,7 @@ void Card_Expr::vRenumberForm_stmOdn(BASE::i8 i_Expr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CARD, _FOOTER_);
 
-  pSymbol()->vSet_Col_No(i_Expr);
+  pSymbol()->vInit(SF_COL_NO,i_Expr);
 }
 
 /*----------------------------------------------------------------------------*/
