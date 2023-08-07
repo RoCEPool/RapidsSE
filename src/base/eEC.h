@@ -265,6 +265,7 @@ typedef enum eEC // error codes
   EC_VERSION_MISMATCH,
 
   /* _W_ */
+  EC_WL_DISCONNECT_REQ,
   EC_WL_FEATURE_NOT_SUPPORTED,
   EC_WL_INTERNAL_ERROR,
   EC_WL_MSG_NOT_SUPPORTED,
@@ -553,6 +554,7 @@ static Stz* aEC[] =
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
+  /* EC_WL_DISCONNECT_REQ             */ (Stz*)"Wireline protocol client disconnect request",
   /* EC_WL_FEATURE_NOT_SUPPORTED      */ (Stz*)"Wireline protocol feature not yet supported",
   /* EC_WL_INTERNAL_ERROR             */ (Stz*)"Internal wireline protocol error",
   /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"Wireline protocol message not supported yet",
@@ -836,6 +838,7 @@ static Stz* aEC2[] = // error code
   /* EC_VERSION_MISMATCH              */ (Stz*)"EC_VERSION_MISMATCH",
 
   /* _W_ */
+  /* EC_WL_DISCONNECT_REQ             */ (Stz*)"EC_WL_DISCONNECT_REQ",
   /* EC_WL_FEATURE_NOT_SUPPORTED      */ (Stz*)"EC_WL_FEATURE_NOT_SUPPORTED",
   /* EC_WL_INTERNAL_ERROR             */ (Stz*)"EC_WL_INTERNAL_ERROR",
   /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"EC_WL_MSG_NOT_SUPPORTED",
@@ -1128,6 +1131,7 @@ static Stz* aErrorMsg[] =
   /* EC_VERSION_MISMATCH              */ (Stz*)"version mismatch",
 
   /* _W_ */
+  /* EC_WL_DISCONNECT_REQ             */ (Stz*)"Client connection is being closed by request",
   /* EC_WL_FEATURE_NOT_SUPPORTED      */ (Stz*)"Wireline feature not yet supported",
   /* EC_WL_INTERNAL_ERROR             */ (Stz*)"Internal wireline protocol error",
   /* EC_WL_MSG_NOT_SUPPORTED          */ (Stz*)"Wireline protocol message not supported yet",

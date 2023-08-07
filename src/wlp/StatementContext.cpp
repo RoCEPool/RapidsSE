@@ -82,7 +82,7 @@ bool StatementContext::bGotError()
 }
 
 /*----------------------------------------------------------------------------*/
-/* Return whether an error has been seen in the execution of this statement   */
+/* Set whether an error has been seen in the execution of this statement      */
 /*----------------------------------------------------------------------------*/
 void StatementContext::vGotError(bool bError)
 {

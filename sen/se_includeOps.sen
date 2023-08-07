@@ -64,6 +64,7 @@ assert::stack_0
   "OP_debug.sen"                include
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
+  "OP_disconnect.sen"           include
   "OP_docol.sen"                include
   "OP_dropCatalog.sen"          include
   "OP_dropIndex.sen"            include

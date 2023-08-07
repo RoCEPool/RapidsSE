@@ -30,18 +30,20 @@
 
   PipeIn[]\clear locals| pPayloadObj |
 
-  // We expect to see a PayloadObj
-  pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
+  Socket[].isNotNull if
+    // We expect to see a PayloadObj
+    pPayloadObj object.class@ CN_PAYLOADOBJ == ASSERT
 
-  pPayloadObj payloadObj::size@
-  pPayloadObj payloadObj::msgType@
-  "SendWL: Sending payload: %v : %v bytes" .printf
+    pPayloadObj payloadObj::size@
+    pPayloadObj payloadObj::msgType@
+    "SendWL: Sending payload: %v : %v bytes" .printf
 
-  pPayloadObj Socket[].sendWLMsg not if
-    Socket[].clientAddr@  "Error sending wireline message to client at %v" .printf
-    Socket[].close
-    ErrorMarker[].newErrorMarker
-    ErrorMarker[].pipeOut
+    pPayloadObj Socket[].sendWLMsg not if
+      Socket[].clientAddr@  "Error sending wireline message to client at %v" .printf
+      Socket[].close
+      ErrorMarker[].newErrorMarker
+      ErrorMarker[].pipeOut
+    then
   then
 
   pPayloadObj payloadObj::delete
@@ -62,8 +64,11 @@
   // An up-stream operator has sent an error (usually the Adaptor).
   // This SendWL operator will intercept this and close the socket
   // before propagating the error.
-  Socket[].close
-  Socket[].clientAddr@ "Connection closed to client at address %v" .printf
+  Socket[].isNotNull if
+    Socket[].close
+    Socket[].clientAddr@ "Connection closed to client at address %v" .printf
+    Socket[].delete
+  then
 
   EV_M_ERROR_handler
 ;

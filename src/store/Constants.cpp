@@ -445,6 +445,7 @@ void Constants::vAddConstantsCpp(void)
   
   /* 59 */ vAddConstant("EC_VALIDATION_FAILURE"_Stz, EC_VALIDATION_FAILURE);
   /* 60 */ vAddConstant("EC_VERSION_MISMATCH"_Stz,   EC_VERSION_MISMATCH);
+  /* 60 */ vAddConstant("EC_WL_DISCONNECT_REQ"_Stz,  EC_WL_DISCONNECT_REQ);
   /* 60 */ vAddConstant("EC_WL_SOCKET_CLOSED"_Stz,   EC_WL_SOCKET_CLOSED);
   /* 60 */ vAddConstant("EC_WL_PROTOCOL_ERROR"_Stz,  EC_WL_PROTOCOL_ERROR);
   /* 61 */ vAddConstant("EC_ENUMS"_Stz,              EC_ENUMS);

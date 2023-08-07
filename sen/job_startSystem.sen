@@ -23,6 +23,7 @@
   
   start::defProc_NextHB
   start::defProc_Dload
+  start::defProc_disconnect
   start::defProc_Export
   start::defProc_File
   start::defProc_Elasticity

@@ -165,6 +165,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitDisconnectCmd(sqlParser::DisconnectCmdContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitDloadCmd(sqlParser::DloadCmdContext *ctx) override {
     return visitChildren(ctx);
   }

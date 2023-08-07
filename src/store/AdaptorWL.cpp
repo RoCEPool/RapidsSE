@@ -123,6 +123,7 @@ AdaptorWL::AdaptorWL(Stz* szClientAddr)
   m_pPayloadSendList = new PayloadList();
   m_eProtocolError = EC_NONE;
   m_eProtocolState = CONNECTED;
+  m_bGotGracefulDisconnect = false;
 
   //m_oQueryCtx
   m_pStmtCtx = nullptr;
@@ -446,12 +447,6 @@ void AdaptorWL::vCompilerError(InfoSet* pInfoSet)
 /*----------------------------------------------------------------------------*/
 void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
 {
-  if (!m_pStmtCtx) {
-    // This handler is called when a client disconnects. If a statement isn't running then it can be ignored.
-    return;
-  }
-
-  ASSERT(m_pStmtCtx);
   ASSERT(pInfoSet->szBufferNm()->bSame(C_TDEF_EXECERRORS));
 
   Row *pInfoRow = pInfoSet->pFirstRow();
@@ -464,9 +459,28 @@ void AdaptorWL::vExecutionError(InfoSet* pInfoSet)
   vTrace("AdaptorWL: Error infoset received: %s\n"_Stz, aErrorMsg[eErrorCode]);
 
   if (eErrorCode == EC_WL_SOCKET_CLOSED) {
+    // Disconnect immediately
     m_eProtocolState = DISCONNECTED;
     return; // No need to serialise and send this.
+
+  } else if (eErrorCode == EC_WL_DISCONNECT_REQ) {
+    if (m_pStmtCtx) {
+      m_bGotGracefulDisconnect = true;    // Disconnect nicely at the end of the command
+      return; // No need to serialise and send this.
+
+    } else {
+      // No statement running. Disconnect immediately.
+      m_eProtocolState = DISCONNECTED;
+      return; // No need to serialise and send this.
+    }
   }
+
+  if (!m_pStmtCtx) {
+    // This handler is called when a client disconnects. If a statement isn't running then it can be ignored.
+    return;
+  }
+
+  ASSERT(m_pStmtCtx);
 
   if (m_pStmtCtx->bGotError()) {
     return;
@@ -595,7 +609,9 @@ void AdaptorWL::vChildJobExited()
   delete m_pStmtCtx;
   m_pStmtCtx = nullptr;
 
-  vNextState(API_CHILD_JOB_EXITED);
+  if (m_eProtocolState != DISCONNECTED) {
+    vNextState(API_CHILD_JOB_EXITED);
+  }
 
   if (bAbortRemaining) {
     m_oQueryCtx.vAbortEarly(true);
@@ -963,7 +979,15 @@ void AdaptorWL::vQueryComplete()
   // Doing this after changing the state to QUERY_COMPLETED will delete m_pCurrentMsg
   m_oQueryCtx.vReset();
 
-  vNextState(READY);
+
+  if (m_bGotGracefulDisconnect) {
+    // Disconnect the client gracefully after sending the query dialog completion
+    m_eProtocolError = EC_WL_DISCONNECT_REQ;
+    m_eProtocolState = DISCONNECTED;
+
+  } else {
+    vNextState(READY);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

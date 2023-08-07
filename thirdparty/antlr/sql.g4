@@ -18,6 +18,7 @@ statementChoice   :
                     | countCmd
                     | createCmd
 //                  | deleteCmd
+                    | disconnectCmd
                     | dloadCmd
                     | docolCmd
                     | dropCmd
@@ -169,6 +170,7 @@ createIndexCmd    : CREATE UNIQUE? INDEX /*(INDEX | KEY) (IF NOT EXISTS)?*/ idxN
 deleteCmd         : (WITH withQuery (',' withQuery)*)?
                     DELETE FROM? ref = tableReference
                     ( (WHERE predicate) | (FROM tableExpr) )? ;
+disconnectCmd     : DISCONNECT | BYE | EXIT_TOKEN ;   // TODO: add an optional session ID
 dloadCmd          : DLOAD tableName PATHS stringLiteral+  ( loadOption (','? loadOption)* )? ;
 docolCmd          : DOCOL identifier ;
 dropCmd           : dropTableCmd | dropIndexCmd ;
@@ -606,10 +608,10 @@ dayTimeInterval   :
 
 nonReservedWord   :
                     ANALYSE | ANALYZE | ANIDX | ANTBL | ASC
-                  | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYTE | BYTES
+                  | BIT | BITS | BLOCK | BLOOM | BPA | BTREE | BYE | BYTE | BYTES
                   | CATALOG | CHARS | COMPACTIDX | CONCAT
                   | DATA | DATE_FORMAT | DAYS | DECODE | DESC | DETAIL | DIGITS | DLOAD | DOCOL
-                  | ECHO | ESCAPE_CHAR | EXPLAIN | EXPORT
+                  | ECHO | ESCAPE_CHAR | EXIT_TOKEN | EXPLAIN | EXPORT
                   | SQL_FALSE | FEDERATION | FIELD_DELIMITER | FILE | FORCE | FORMAT
                   | HASH | HASHKEY | HOURS
                   | IF | IFNULL | INDEX | INTERVAL_DT | INTERVAL_YM
@@ -655,6 +657,7 @@ BOTH                  : B O T H;
 BOOLEAN               : B O O L E A N;
 BPA                   : B P A;
 BTREE                 : B T R E E;
+BYE                   : B Y E;
 BY                    : B Y;
 BYTE                  : B Y T E;
 BYTES                 : B Y T E S;
@@ -687,6 +690,7 @@ DELETE                : D E L E T E;
 DESC                  : D E S C;
 DETAIL                : D E T A I L;
 DIGITS                : D I G I T S ;
+DISCONNECT            : D I S C O N N E C T;
 DISTINCT              : D I S T I N C T;
 DLOAD                 : D L O A D;
 DOCOL                 : D O C O L;
@@ -698,6 +702,7 @@ ESCAPE                : E S C A P E;
 ESCAPE_CHAR           : E S C A P E '_' C H A R;
 EXCEPT                : E X C E P T;
 EXISTS                : E X I S T S;
+EXIT_TOKEN            : E X I T;    // Cannot use EXIT as a token name because it causes code name conflicts with exit().
 EXPLAIN               : E X P L A I N;
 EXPORT                : E X P O R T;
 EXTRACT               : E X T R A C T;

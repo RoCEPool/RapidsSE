@@ -94,6 +94,8 @@ public:
 
     virtual antlrcpp::Any visitDeleteCmd(sqlParser::DeleteCmdContext *context) = 0;
 
+    virtual antlrcpp::Any visitDisconnectCmd(sqlParser::DisconnectCmdContext *context) = 0;
+
     virtual antlrcpp::Any visitDloadCmd(sqlParser::DloadCmdContext *context) = 0;
 
     virtual antlrcpp::Any visitDocolCmd(sqlParser::DocolCmdContext *context) = 0;

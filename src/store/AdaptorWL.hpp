@@ -63,6 +63,8 @@ namespace STORE
     PayloadList* m_pPayloadSendList;
     eEC          m_eProtocolError;
     eState       m_eProtocolState;
+    bool         m_bGotGracefulDisconnect;
+
 
     WLP::QueryContext m_oQueryCtx;
     WLP::StatementContext* m_pStmtCtx;
