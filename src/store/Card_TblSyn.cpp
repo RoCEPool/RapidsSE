@@ -32,19 +32,6 @@ Card_TblSyn::Card_TblSyn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_TblSyn::Card_TblSyn(Stz* szTableNm)
-    : Card_symbol(CK_TABLE,szTableNm, SF_OTHER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  _checkInitialised_(CN_CARD);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_TblSyn::~Card_TblSyn(void) noexcept(false)

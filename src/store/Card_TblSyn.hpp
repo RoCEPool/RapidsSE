@@ -14,9 +14,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_TblSyn(void);
-    Card_TblSyn(Stz* szTableNm);
    ~Card_TblSyn(void) noexcept(false);
-
   };
 
   Card_TblSyn* _pCard_TblSyn(void* aAddr);
