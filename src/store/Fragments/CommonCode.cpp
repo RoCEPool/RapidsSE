@@ -36,14 +36,17 @@ void vOperatorBegin(Dynamic_T* aDynamicT) {
 
   __L_LABEL__:
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // FROM
   p__STRUCT_FROM__ = (struct __STRUCT_FROM__*)__ROW_INFO_FROM__.m_aRowCellArray;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // TO
   p__STRUCT_TO__ = (struct __STRUCT_TO__*)__ROW_INFO_TO__.m_aRowCellArray;
   __ROW_INFO_TO__.m_acStrArea = __ROW_INFO_TO__.m_acStrAreaSav;
   szStrArea = __ROW_INFO_TO__.m_acStrArea;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Process row ?
   if (!aDynamicT->m_iProcessRow) {
     aDynamicT->m_iProcessRow = 1;
@@ -368,7 +371,7 @@ void vTubRowPix(Dynamic_T* aDynamicT) {
     __EXTERN_ROWPIX__(__TUB_POT__, aRowPix);
 #endif
     __ROW_INFO_TO__.m_bInitialize = false;
-    aDynamicT->m_iPot = __POT__;
+    aDynamicT->m_bGeneratePot = __POT__;
   }
 
   // marker-end

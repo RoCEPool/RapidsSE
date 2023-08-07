@@ -163,7 +163,7 @@ void Step::vDynamicHashRowsFetch(void) {
   Dynamic *pDynamic = *m_pLogicUnit->m_xpDynamic;
   Dynamic_T *aDynamicT = pDynamic->aDynamicT();
 
-  m_pDataStack->vPushInt(aDynamicT->m_iPot);
+  m_pDataStack->vPushInt(aDynamicT->m_bGeneratePot);
 }
 
 /*----------------------------------------------------------------------------*/
