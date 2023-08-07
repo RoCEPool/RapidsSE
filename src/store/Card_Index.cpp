@@ -110,7 +110,7 @@ Card_Index* Card_Index::pDerive(Index* pIndex)
 
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     Card_IdxCol* p_idxCol = new Card_IdxCol;
-    p_idxCol->vUpdateSymbol(Symbol(pColumn->szColNm(), SF_COL_NM));
+    p_idxCol->vUpdateSymbol(Symbol(SF_COL_NM, pColumn->szColNm()));
 
     p_idxColList->vAppend(p_idxCol);
 
