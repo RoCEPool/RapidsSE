@@ -64,7 +64,7 @@ struct Dynamic_T
   i8 m_iHeadSize;
   enum eSI           m_eStrInflateRule;
   struct HeadLine_T* m_aHeadLine0;
-  struct RowInfo  m_xRowInfoIT;
+  struct RowInfo     m_xRowInfoIT;
 
   // inflate J (SR_IJ)
   struct RowInfo m_xRowInfoIJ;
@@ -82,11 +82,11 @@ struct Dynamic_T
   struct RowInfo m_xRowInfoAT;
 
   // Tub Output (SR_TO)
-  void*   m_pTub;
+  void*  m_pTub;
   struct RowInfo m_xRowInfoTO;
 
   // Pot Ouput (SR_PO)
-  i8    m_iPot;
+  bool  m_bGeneratePot;
   void* m_pPot;
   struct RowInfo m_xRowInfoPO;
 

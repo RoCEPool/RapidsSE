@@ -88,27 +88,24 @@ void vIndexJoinIntKey(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-
-  // init indexJoin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // init indexJoin (Integer key)
   if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
+
 #ifdef WITH_CLANG
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
 
-    aDynamicT->m_xIndexInfoJ.m_aTable = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
-    aDynamicT->m_xIndexInfoJ.m_aIndex = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
-    aDynamicT->m_xIndexInfoJ.m_aIndexDef = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
+    aDynamicT->m_xIndexInfoJ.m_aTable     = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
+    aDynamicT->m_xIndexInfoJ.m_aIndex     = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
+    aDynamicT->m_xIndexInfoJ.m_aIndexDef  = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
     aDynamicT->m_xIndexInfoJ.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_aIndex);
 
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
     iLeftOuterRow = 0;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
-  }
 
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_OUTER_LOOP__;
   }
 
 // marker-end
@@ -126,32 +123,31 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
   __L_LABEL_OUTER_LOOP__:
 
   // marker-start
-
-  // init indexJoin
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // init indexJoin (general key)
   if (aDynamicT->m_xIndexInfoJ.m_bInitialize) {
+
 #ifdef WITH_CLANG
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cTableName[0], "__TABLENAME__");
     strcpy(&aDynamicT->m_xIndexInfoJ.m_cIndexName[0], "__INDEXNAME__");
 
-    aDynamicT->m_xIndexInfoJ.m_aTable = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
-    aDynamicT->m_xIndexInfoJ.m_aIndex = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
-    aDynamicT->m_xIndexInfoJ.m_aIndexDef = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
+    aDynamicT->m_xIndexInfoJ.m_aTable     = aExtern_FindTable(aDynamicT->m_xIndexInfoJ.m_cTableName);
+    aDynamicT->m_xIndexInfoJ.m_aIndex     = aExtern_FindIndex(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_cIndexName);
+    aDynamicT->m_xIndexInfoJ.m_aIndexDef  = aExtern_GetIndexDef(aDynamicT->m_xIndexInfoJ.m_aIndex);
     aDynamicT->m_xIndexInfoJ.m_aIndexTree = aExtern_GetIndexTree(aDynamicT->m_xIndexInfoJ.m_aTable, aDynamicT->m_xIndexInfoJ.m_aIndex);
 
     vExtern_EntWrkEntKind(aDynamicT->m_xIndexInfoJ.m_aEntWrk, 0, __KEY_KIND__);
 #endif
     iLeftOuterRow = 0;
     aDynamicT->m_xIndexInfoJ.m_bInitialize = false;
+
   }
   else {
+
 #ifdef WITH_CLANG
     vExtern_EntWrkReset(aDynamicT->m_xIndexInfoJ.m_aEntWrk);
 #endif
-  }
 
-  if (!aDynamicT->m_iProcessRow) {
-    aDynamicT->m_iProcessRow = 1;
-    goto __L_LABEL_OUTER_LOOP__;
   }
 
 // marker-end
@@ -163,19 +159,7 @@ void vIndexJoinGenKey(Dynamic_T* aDynamicT) {
 // function-vIndexJoinContinue
 void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 
-  void *aHeadLineSav;
-  void *aHeadLine;
-  void *aCrwJ;
-
-  i8 iBufferJ;
-  i8 iItemJ;
-
-  static const void *C_ADR_REGION = (void *) 0x204800000000;
-  static const i8 C_CRW_HEADBYTES = 32;
-  static const i8 C_CRW_FIRSTHEAD = 640;
-
   __L_LABEL_OUTER_LOOP__:
-  __L_LABEL_LOOP__:
 
   // marker-start
 
@@ -207,24 +191,12 @@ void vIndexJoinContinue(Dynamic_T* aDynamicT) {
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- vIndexCrossJoinContinue ------------------------------------------------------*/
+/*-- vIndexCrossJoinContinue -------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 // function-vIndexCrossJoinContinue
 void vIndexCrossJoinContinue(Dynamic_T* aDynamicT) {
 
-  void *aHeadLineSav;
-  void *aHeadLine;
-  void *aCrwJ;
-
-  i8 iBufferJ;
-  i8 iItemJ;
-
-  static const void *C_ADR_REGION = (void *) 0x204800000000;
-  static const i8 C_CRW_HEADBYTES = 32;
-  static const i8 C_CRW_FIRSTHEAD = 640;
-
   __L_LABEL_OUTER_LOOP__:
-  __L_LABEL_LOOP__:
 
   // marker-start
 
@@ -239,9 +211,6 @@ void vIndexCrossJoinContinue(Dynamic_T* aDynamicT) {
   aDynamicT->m_iProcessRow = 1;
 
   // marker-end
-
-  L_Return:
-  return;
 
 }
 
@@ -308,9 +277,6 @@ void vIndexJoinContinueLO2(Dynamic_T* aDynamicT) {
 /*----------------------------------------------------------------------------*/
 // function-vIndexJoinContinueLO3
 void vIndexJoinContinueLO3(Dynamic_T* aDynamicT) {
-
-  __L_LABEL_OUTER_LOOP__:
-  __L_LABEL_LOOP__:
 
   // marker-start
 

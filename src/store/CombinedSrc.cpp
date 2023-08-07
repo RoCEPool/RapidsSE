@@ -139,7 +139,7 @@ void CombinedSrc::vSynthesizeCode(Stencil_v2* pStencil, bool bFirstStage, bool b
         vOperatorBegin(pOpSketch);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // initialize with key kind
+        // initialize the indexJoin
         if (pOpSketch->m_pIndexDef->eKeyKind() == KE_INT)
           vAppendCodeFragment(pOpSketch, "vIndexJoinIntKey"_Stz, pOperatorFile);
         else

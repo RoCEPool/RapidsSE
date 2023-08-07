@@ -277,12 +277,12 @@ void CodeSynthUtils::vReplaceTubPot(Stz* sLine, OpSketch* pOpSketch) {
 
   if (StrLib::bContains(sLine->azChar(), "__POT__")) {
     if (pOpSketch->m_eSketchKind == SK_TUB) {
-      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "0");
+      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "false");
       RASSERT(bResult);
     }
     else {
       RASSERT(pOpSketch->m_eSketchKind == SK_POT);
-      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "1");
+      bResult = StrLib::bReplace(sLine->azChar(), "__POT__", "true");
       RASSERT(bResult);
     }
   }

@@ -150,8 +150,8 @@ Dynamic::Dynamic(LogicUnit* pLogicUnit)
   m_xDynamicT.m_xRowInfoTO.m_acStrAreaSav  = (char*)&m_xDynamicT.m_xRowInfoTO.m_cStringArea[0];
 
   // pot output (SR_PO)
-  m_xDynamicT.m_iPot        = 0;
-  m_xDynamicT.m_pPot        = nullptr;
+  m_xDynamicT.m_bGeneratePot = false;
+  m_xDynamicT.m_pPot         = nullptr;
   m_xDynamicT.m_xRowInfoPO.m_bInitialize = true;
   for (i8 i = 0; i < 256; i++)
     m_xDynamicT.m_xRowInfoPO.m_iCell[i] = 0;
