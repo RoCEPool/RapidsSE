@@ -202,7 +202,7 @@ void XF_Join_Ordering::vReorderTables(void)
   Card_StreamSet* p_streamPrmAll =
       Card_StreamSet::pComputeAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_joinPredList);
 
-  m_pCI->G.pDeck->vAppend(new Card_Section("All Permutations"_Stz));
+  m_pCI->G.pDeck->vAppend((new Card_Section) ->SYM(SF_OTHER,"All Permutations"_Stz));
   CardIter xCI(p_streamPrmAll);
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
@@ -212,7 +212,7 @@ void XF_Join_Ordering::vReorderTables(void)
   // 5) Remove invalid permutations
 
   p_streamPrmAll->vRemoveInvalid();
-  m_pCI->G.pDeck->vAppend(new Card_Section("Valid Permutations"_Stz));
+  m_pCI->G.pDeck->vAppend((new Card_Section) ->SYM(SF_OTHER,"Valid Permutations"_Stz));
 
   xCI.vBeginEach();
   while (xCI.G_bEachMain())
@@ -231,7 +231,7 @@ void XF_Join_Ordering::vReorderTables(void)
   // 5) Calculate join load
 
   p_streamPrmAll->vEstCostsForAllPermutations(m_pCI->G.p_tableList, m_pCI->G.p_filtPredList);
-  m_pCI->G.pDeck->vAppend(new Card_Section("Join Cost Est."_Stz));
+  m_pCI->G.pDeck->vAppend((new Card_Section) ->SYM(SF_OTHER,"Join Cost Est."_Stz));
   xCI.vBeginEach();
   while (xCI.G_bEachMain())
     m_pCI->G.pDeck->vAppend(xCI.G.p_streamPer->pDupCardRecursive());
@@ -290,7 +290,7 @@ void XF_Join_Ordering::vReorderTables(void)
     throw xError;
   }
 
-    m_pCI->G.pDeck->vAppend(new Card_Section("Picked Ordering"_Stz));
+    m_pCI->G.pDeck->vAppend((new Card_Section) ->SYM(SF_OTHER,"Picked Ordering"_Stz));
   m_pCI->G.pDeck->vAppend(p_joinOrdering->pDupCardRecursive());
   m_pCI->vRenumberCards();
   m_pCI->vPrintBoard(__LINE__);

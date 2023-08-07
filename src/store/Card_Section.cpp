@@ -27,21 +27,6 @@ Card_Section::Card_Section(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Section::Card_Section(Stz* szComment)
-: Card_symbol(CK_SECTION,szComment, SF_OTHER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  //vSymbol(szComment);
-    
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Section::~Card_Section(void) noexcept(false)
